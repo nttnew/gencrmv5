@@ -37,7 +37,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
   @override
   void initState() {
     // TODO: implement initState
-    Future.delayed(Duration(milliseconds: 100),(){
+    Future.delayed(Duration(milliseconds: 100), () {
       GetDetailClueBloc.of(context).add(InitGetDetailClueEvent(id));
       WorkClueBloc.of(context).add(GetWorkClue(id: id));
     });
@@ -52,7 +52,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
     return Scaffold(
       body: BlocListener<GetDetailClueBloc, DetailClueState>(
         listener: (context, state) async {
-          if(state is SuccessDeleteClueState){
+          if (state is SuccessDeleteClueState) {
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -61,18 +61,18 @@ class _InfoCluePageState extends State<InfoCluePage> {
                   content: "Thành công",
                   textButton1: "OK",
                   backgroundButton1: COLORS.PRIMARY_COLOR,
-                  onTap1: (){
+                  onTap1: () {
                     Get.back();
                     Get.back();
                     Get.back();
                     Get.back();
-                    GetListClueBloc.of(context).add(InitGetListClueEvent('', 1, ''));
+                    GetListClueBloc.of(context)
+                        .add(InitGetListClueEvent('', 1, ''));
                   },
                 );
               },
             );
-          }
-          else if(state is ErrorDeleteClueState){
+          } else if (state is ErrorDeleteClueState) {
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -80,7 +80,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
                   title: MESSAGES.NOTIFICATION,
                   content: state.msg,
                   textButton1: "Quay lại",
-                  onTap1: (){
+                  onTap1: () {
                     Get.back();
                     Get.back();
                     Get.back();
@@ -156,7 +156,9 @@ class _InfoCluePageState extends State<InfoCluePage> {
                           SizedBox(width: 10),
                           InkWell(
                               onTap: () {
-                                AppNavigator.navigateFormAdd('Thêm công việc',21,id: int.parse(id));
+                                AppNavigator.navigateFormAdd(
+                                    'Thêm công việc', 21,
+                                    id: int.parse(id));
                               },
                               child: Text(
                                 'Thêm công việc',
@@ -166,7 +168,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
                         ],
                       ),
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           Get.back();
                           AppNavigator.navigateAddNoteScreen(2, id);
                         },
@@ -185,9 +187,9 @@ class _InfoCluePageState extends State<InfoCluePage> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           Get.back();
-                          AppNavigator.navigateEditDataScreen(id,2);
+                          AppNavigator.navigateEditDataScreen(id, 2);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -204,12 +206,11 @@ class _InfoCluePageState extends State<InfoCluePage> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           ShowDialogCustom.showDialogTwoButton(
-                              onTap2:()=> GetDetailClueBloc.of(context).add(InitDeleteClueEvent(id)),
-                              content: "Bạn chắc chắn muốn xóa không ?"
-                          );
-
+                              onTap2: () => GetDetailClueBloc.of(context)
+                                  .add(InitDeleteClueEvent(id)),
+                              content: "Bạn chắc chắn muốn xóa không ?");
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -236,7 +237,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
                           ),
                           child: Center(
                             child:
-                            Text('Đóng', style: AppStyle.DEFAULT_16_BOLD),
+                                Text('Đóng', style: AppStyle.DEFAULT_16_BOLD),
                           ),
                         ),
                       )
@@ -260,20 +261,18 @@ class _InfoCluePageState extends State<InfoCluePage> {
         List<WorkClueData> listWorkClue = state.data!;
         return ListView.separated(
           shrinkWrap: true,
-          itemBuilder: (context, index) =>
-              WorkCardWidget(
-                nameCustomer: listWorkClue[index].name_customer,
-                nameJob: listWorkClue[index].name_job,
-                startDate: listWorkClue[index].start_date,
-                statusJob: listWorkClue[index].status_job,
-                totalComment: listWorkClue[index].total_comment,
-                color: listWorkClue[index].color,
-              ),
+          itemBuilder: (context, index) => WorkCardWidget(
+            nameCustomer: listWorkClue[index].name_customer,
+            nameJob: listWorkClue[index].name_job,
+            startDate: listWorkClue[index].start_date,
+            statusJob: listWorkClue[index].status_job,
+            totalComment: listWorkClue[index].total_comment,
+            color: listWorkClue[index].color,
+          ),
           itemCount: state.data!.length,
-          separatorBuilder: (BuildContext context, int index) =>
-              SizedBox(
-                height: AppValue.heights * 0.01,
-              ),
+          separatorBuilder: (BuildContext context, int index) => SizedBox(
+            height: AppValue.heights * 0.01,
+          ),
         );
       } else {
         return Center(
@@ -289,48 +288,47 @@ class _InfoCluePageState extends State<InfoCluePage> {
   Container buildGeneralInfor() {
     return Container(
         padding: EdgeInsets.only(bottom: 10),
-        child:SingleChildScrollView(
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               BlocBuilder<GetDetailClueBloc, DetailClueState>(
                   builder: (context, state) {
-                    if (state is UpdateGetDetailClueState) {
-                      return Column(
-                        children: List.generate(state.list.length, (index) => _buildContent(state.list[index])),
-                      );
-                      //   ListView.separated(
-                      //   shrinkWrap: true,
-                      //   scrollDirection: Axis.vertical,
-                      //   itemCount: state.list.length,
-                      //   itemBuilder: (context, index) {
-                      //     return _buildContent(state.list[index]);
-                      //   },
-                      //   separatorBuilder:
-                      //       (BuildContext context, int index) =>
-                      //   const SizedBox(),
-                      // );
-                    }
-                    else {
-                      return Center(
-                        child: WidgetText(
-                          title: 'Không có dữ liệu',
-                          style: AppStyle.DEFAULT_18_BOLD,
-                        ),
-                      );
-                    }
-                  }),
-              Text(
-                'Thảo luận',
-                style: AppStyle.DEFAULT_16
-                    .copyWith(fontWeight: FontWeight.w900),
-              ),
+                if (state is UpdateGetDetailClueState) {
+                  return Column(
+                    children: List.generate(state.list.length,
+                        (index) => _buildContent(state.list[index])),
+                  );
+                  //   ListView.separated(
+                  //   shrinkWrap: true,
+                  //   scrollDirection: Axis.vertical,
+                  //   itemCount: state.list.length,
+                  //   itemBuilder: (context, index) {
+                  //     return _buildContent(state.list[index]);
+                  //   },
+                  //   separatorBuilder:
+                  //       (BuildContext context, int index) =>
+                  //   const SizedBox(),
+                  // );
+                } else {
+                  return Center(
+                    child: WidgetText(
+                      title: 'Không có dữ liệu',
+                      style: AppStyle.DEFAULT_18_BOLD,
+                    ),
+                  );
+                }
+              }),
+              // Text(
+              //   'Thảo luận',
+              //   style: AppStyle.DEFAULT_16
+              //       .copyWith(fontWeight: FontWeight.w900),
+              // ),
               AppValue.vSpaceTiny,
               ListNote(type: 2, id: id)
             ],
           ),
-        )
-    );
+        ));
   }
 
   _buildBack() {
@@ -395,24 +393,32 @@ class _InfoCluePageState extends State<InfoCluePage> {
             //   ),
             // ),
             Column(
-              children: List.generate(detailClue.data!.length, (index) => Container(
-                margin: EdgeInsets.only(bottom: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      detailClue.data![index].label_field!,
-                      style: AppStyle.DEFAULT_12.copyWith(fontWeight: FontWeight.w600,color: COLORS.TEXT_GREY),
-                    ),
-                    SizedBox(width: 8,),
-                    Expanded(
-                      child: Text(detailClue.data![index].value_field??"",
-                          textAlign: TextAlign.right,
-                          style: AppStyle.DEFAULT_12_BOLD.copyWith(color:COLORS.TEXT_GREY_BOLD)),
-                    ),
-                  ],
-                ),
-              )),
+              children: List.generate(
+                  detailClue.data!.length,
+                  (index) => Container(
+                        margin: EdgeInsets.only(bottom: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              detailClue.data![index].label_field!,
+                              style: AppStyle.DEFAULT_12.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: COLORS.TEXT_GREY),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Expanded(
+                              child: Text(
+                                  detailClue.data![index].value_field ?? "",
+                                  textAlign: TextAlign.right,
+                                  style: AppStyle.DEFAULT_12_BOLD
+                                      .copyWith(color: COLORS.TEXT_GREY_BOLD)),
+                            ),
+                          ],
+                        ),
+                      )),
             ),
             const SizedBox(
               height: 8,
@@ -439,7 +445,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
                 padding: EdgeInsets.only(bottom: AppValue.heights * 0),
                 child: WidgetNetworkImage(
                   image: (listNoteClue[index].avatar == "" ||
-                      listNoteClue[index].avatar == null)
+                          listNoteClue[index].avatar == null)
                       ? 'https://via.placeholder.com/150'
                       : listNoteClue[index].avatar!,
                   borderRadius: 30,
@@ -462,7 +468,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
                         " " +
                         listNoteClue[index].passedtime!,
                     style:
-                    AppStyle.DEFAULT_12.copyWith(color: Color(0xff838A91)),
+                        AppStyle.DEFAULT_12.copyWith(color: Color(0xff838A91)),
                   ),
                   SizedBox(
                     height: 4,
@@ -478,8 +484,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
           ],
         );
       },
-      separatorBuilder: (BuildContext context, int index) =>
-      const SizedBox(
+      separatorBuilder: (BuildContext context, int index) => const SizedBox(
         height: 8,
       ),
     );

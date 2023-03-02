@@ -8,21 +8,23 @@ import '../widgets/widget_dialog.dart';
 
 class DioProvider {
   static final Dio dio = Dio();
-  static void instance({String? token,String? sess,String? baseUrl}) {
+  static void instance({String? token, String? sess, String? baseUrl}) {
     dio
-      ..options.baseUrl =baseUrl ?? dotenv.env[PreferencesKey.BASE_URL]!
-      ..options.connectTimeout = Duration(milliseconds: BASE_URL.connectionTimeout)
-      ..options.receiveTimeout = Duration(milliseconds: BASE_URL.connectionTimeout)
+      ..options.baseUrl = baseUrl ?? dotenv.env[PreferencesKey.BASE_URL]!
+      ..options.connectTimeout =
+          Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds
+      ..options.receiveTimeout =
+          Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds
       ..options.headers = {
         BASE_URL.content_type: BASE_URL.application_json,
         //BASE_URL.auth_type: "Bearer $token"
-        BASE_URL.auth_type:sess!=null? "PHPSESSID=$sess":'',
-        "Authorization":token!=null?token:""
+        BASE_URL.auth_type: sess != null ? "PHPSESSID=$sess" : '',
+        "Authorization": token != null ? token : ""
       }
       ..options.followRedirects = false
-      ..options.validateStatus =   (status) {
-        if(status == 401){
-          try{
+      ..options.validateStatus = (status) {
+        if (status == 401) {
+          try {
             Get.dialog(WidgetDialog(
               title: MESSAGES.NOTIFICATION,
               content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -32,12 +34,12 @@ class DioProvider {
                 AppNavigator.navigateLogout();
               },
             ));
-          } catch (e){
+          } catch (e) {
             print("lỗi $e");
           }
         }
-      return status! < 503;
-    }
+        return status! < 503;
+      }
       ..interceptors.add(LogInterceptor(
         request: true,
         responseBody: true,

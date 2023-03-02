@@ -53,9 +53,9 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
           ),
         ),
       ),
-      body:BlocListener<DetailWorkBloc, DetailWorkState>(
+      body: BlocListener<DetailWorkBloc, DetailWorkState>(
         listener: (context, state) async {
-          if(state is SuccessDeleteWorkState){
+          if (state is SuccessDeleteWorkState) {
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -64,7 +64,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                   content: "Thành công",
                   textButton1: "OK",
                   backgroundButton1: COLORS.PRIMARY_COLOR,
-                  onTap1: (){
+                  onTap1: () {
                     Get.back();
                     Get.back();
                     Get.back();
@@ -74,8 +74,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                 );
               },
             );
-          }
-          else if(state is ErrorDeleteWorkState){
+          } else if (state is ErrorDeleteWorkState) {
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -83,7 +82,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                   title: MESSAGES.NOTIFICATION,
                   content: state.msg,
                   textButton1: "Quay lại",
-                  onTap1: (){
+                  onTap1: () {
                     Get.back();
                     Get.back();
                     Get.back();
@@ -100,88 +99,114 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      BlocBuilder<DetailWorkBloc, DetailWorkState>(
-                          builder: (context, state) {
-                            if (state is SuccessDetailWorkState)
-                              return Container(
-                                // height: AppValue.heights * 0.7,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: List.generate(
-                                      state.data_list.length,
-                                          (index) => Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: AppValue.heights * 0.04,
-                                          ),
-                                          WidgetText(
-                                            title: state.data_list[index].group_name??'',
-                                            style: TextStyle(
-                                                fontFamily: "Quicksand",
-                                                color: HexColor("#263238"),
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 14),
-                                          ),
-                                          SizedBox(
-                                            height: AppValue.heights * 0.02,
-                                          ),
-                                          Column(
-                                            children: List.generate(state.data_list[index].data!.length, (index1) => Column(
-                                              children: [
-                                                Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    WidgetText(
-                                                      title: state.data_list[index].data![index1].label_field,
-                                                      style: LabelStyle(),
-                                                    ),
-                                                    SizedBox(width: 8,),
-                                                    Expanded(
-                                                      child:state.data_list[index].data![index1].type!='text_area'? WidgetText(
-                                                        title: state.data_list[index].data![index1].value_field,
-                                                        textAlign: TextAlign.right,
-                                                        style: ValueStyle(),
-                                                      ):Html(
-                                                        data: state.data_list[index].data![index1].value_field,
-
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    BlocBuilder<DetailWorkBloc, DetailWorkState>(
+                        builder: (context, state) {
+                      if (state is SuccessDetailWorkState)
+                        return Container(
+                          // height: AppValue.heights * 0.7,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: List.generate(
+                                state.data_list.length,
+                                (index) => Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: AppValue.heights * 0.04,
+                                        ),
+                                        WidgetText(
+                                          title: state.data_list[index]
+                                                  .group_name ??
+                                              '',
+                                          style: TextStyle(
+                                              fontFamily: "Quicksand",
+                                              color: HexColor("#263238"),
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 14),
+                                        ),
+                                        SizedBox(
+                                          height: AppValue.heights * 0.02,
+                                        ),
+                                        Column(
+                                          children: List.generate(
+                                              state.data_list[index].data!
+                                                  .length,
+                                              (index1) => Column(
+                                                    children: [
+                                                      Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          WidgetText(
+                                                            title: state
+                                                                .data_list[
+                                                                    index]
+                                                                .data![index1]
+                                                                .label_field,
+                                                            style: LabelStyle(),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 8,
+                                                          ),
+                                                          Expanded(
+                                                            child: state
+                                                                        .data_list[
+                                                                            index]
+                                                                        .data![
+                                                                            index1]
+                                                                        .type !=
+                                                                    'text_area'
+                                                                ? WidgetText(
+                                                                    title: state
+                                                                        .data_list[
+                                                                            index]
+                                                                        .data![
+                                                                            index1]
+                                                                        .value_field,
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .right,
+                                                                    style:
+                                                                        ValueStyle(),
+                                                                  )
+                                                                : Html(
+                                                                    data: state
+                                                                        .data_list[
+                                                                            index]
+                                                                        .data![
+                                                                            index1]
+                                                                        .value_field,
+                                                                  ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: AppValue.heights * 0.02,
-                                                ),
-                                              ],
-                                            )),
-                                          ),
-                                          LineHorizontal(),
-                                        ],
-                                      )),
-                                ),
-                              );
-                            else
-                              return Container();
-                          }),
-                      SizedBox(height: 16,),
-                      WidgetText(
-                        title: "Thảo luận",
-                        style: TextStyle(
-                            fontFamily: "Quicksand",
-                            color: HexColor("#263238"),
-                            fontWeight: FontWeight.w700,
-                            fontSize: 14),
-                      ),
-                      SizedBox(
-                        height: AppValue.heights * 0.02,
-                      ),
-                      ListNote(type: 5, id: id.toString()),
-                    ],
-                  ),
-
+                                                      SizedBox(
+                                                        height:
+                                                            AppValue.heights *
+                                                                0.02,
+                                                      ),
+                                                    ],
+                                                  )),
+                                        ),
+                                        LineHorizontal(),
+                                      ],
+                                    )),
+                          ),
+                        );
+                      else
+                        return Container();
+                    }),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    ListNote(type: 5, id: id.toString()),
+                  ],
+                ),
 
                 // Expanded(
                 //     child: SingleChildScrollView(
@@ -289,7 +314,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                     showModalBottomSheet(
                         shape: RoundedRectangleBorder(
                           borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(30)),
+                              BorderRadius.vertical(top: Radius.circular(30)),
                         ),
                         context: context,
                         builder: (context) {
@@ -297,7 +322,8 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                             child: Container(
                               height: AppValue.heights * 0.3,
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
@@ -305,12 +331,14 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                     height: AppValue.heights * 0.03,
                                   ),
                                   GestureDetector(
-                                    onTap: (){
+                                    onTap: () {
                                       Get.back();
-                                      AppNavigator.navigateAddNoteScreen(5, id.toString());
+                                      AppNavigator.navigateAddNoteScreen(
+                                          5, id.toString());
                                     },
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         SizedBox(
                                           width: AppValue.widths * 0.2,
@@ -326,43 +354,51 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                     ),
                                   ),
                                   GestureDetector(
-                                    onTap: (){
+                                    onTap: () {
                                       Get.back();
-                                      AppNavigator.navigateEditDataScreen(id.toString(),5);
+                                      AppNavigator.navigateEditDataScreen(
+                                          id.toString(), 5);
                                     },
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         SizedBox(
                                           width: AppValue.widths * 0.2,
                                         ),
-                                        SvgPicture.asset("assets/icons/edit.svg"),
+                                        SvgPicture.asset(
+                                            "assets/icons/edit.svg"),
                                         SizedBox(
                                           width: AppValue.widths * 0.1,
                                         ),
-                                        Text("Sửa", style: styleTitleBottomSheet())
+                                        Text("Sửa",
+                                            style: styleTitleBottomSheet())
                                       ],
                                     ),
                                   ),
                                   GestureDetector(
-                                    onTap: (){
+                                    onTap: () {
                                       ShowDialogCustom.showDialogTwoButton(
-                                          onTap2:()=> DetailWorkBloc.of(context).add(InitDeleteWorkEvent(id)),
-                                          content: "Bạn chắc chắn muốn xóa không ?"
-                                      );
-
+                                          onTap2: () =>
+                                              DetailWorkBloc.of(context)
+                                                  .add(InitDeleteWorkEvent(id)),
+                                          content:
+                                              "Bạn chắc chắn muốn xóa không ?");
                                     },
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         SizedBox(
                                           width: AppValue.widths * 0.2,
                                         ),
-                                        SvgPicture.asset("assets/icons/delete.svg"),
+                                        SvgPicture.asset(
+                                            "assets/icons/delete.svg"),
                                         SizedBox(
                                           width: AppValue.widths * 0.1,
                                         ),
-                                        Text("Xoá", style: styleTitleBottomSheet())
+                                        Text("Xoá",
+                                            style: styleTitleBottomSheet())
                                       ],
                                     ),
                                   ),
@@ -370,14 +406,15 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       InkWell(
-                                        onTap: () => Navigator.of(context).pop(),
+                                        onTap: () =>
+                                            Navigator.of(context).pop(),
                                         child: Container(
                                           width: AppValue.widths * 0.8,
                                           height: AppValue.heights * 0.06,
                                           decoration: BoxDecoration(
                                             color: HexColor("#D0F1EB"),
                                             borderRadius:
-                                            BorderRadius.circular(17.06),
+                                                BorderRadius.circular(17.06),
                                           ),
                                           child: Center(
                                             child: Text("Đóng"),

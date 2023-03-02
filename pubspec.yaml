@@ -135,7 +135,7 @@ flutter:
           style: italic
 
   assets:
-    - .env
+    - assets/.env
     - assets/lottie/
     - assets/images/
     - assets/fonts/

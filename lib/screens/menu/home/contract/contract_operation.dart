@@ -43,18 +43,21 @@ class _ContractOperationState extends State<ContractOperation> {
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List.generate(state.listDetailContract.length,
-                      (index){
-                        if(state.listDetailContract[index].data!=null){
-                         return _buildContent1(state.listDetailContract[index]);
-                        }
-                        else return Container();
-                      }),
+                  children:
+                      List.generate(state.listDetailContract.length, (index) {
+                    if (state.listDetailContract[index].data != null) {
+                      return _buildContent1(state.listDetailContract[index]);
+                    } else
+                      return Container();
+                  }),
                 ),
-                WidgetText(
-                  title: "Thảo luận",
-                  style: AppStyle.DEFAULT_16_BOLD,
+                WidgetLine(
+                  color: Colors.grey,
                 ),
+                // WidgetText(
+                //   title: "Thảo luận",
+                //   style: AppStyle.DEFAULT_16_BOLD,
+                // ),
                 ListNote(type: 4, id: widget.id)
               ],
             );
@@ -67,7 +70,7 @@ class _ContractOperationState extends State<ContractOperation> {
 
   _buildContent1(DetailContractData data) {
     return Container(
-      padding: EdgeInsets.only(bottom: 8,top: 16),
+      padding: EdgeInsets.only(bottom: 8, top: 16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,37 +78,47 @@ class _ContractOperationState extends State<ContractOperation> {
           WidgetLine(
             color: Colors.grey,
           ),
-          SizedBox(height: 8,),
+          SizedBox(
+            height: 8,
+          ),
           WidgetText(
             title: data.group_name,
             style: AppStyle.DEFAULT_16_BOLD,
           ),
           Column(
-            children: List.generate(data.data!.length, (index){
-              if(data.data![index].field_type=="LINE"){
-                return Container(
-                    margin: EdgeInsets.symmetric(vertical: 3),
-                    child: LineHorizontal());
-              }
-              else
-                return Container(
-                padding: EdgeInsets.only(top: 3,bottom: 3),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: WidgetText(
-                        title: data.data![index].label_field??"",
-                        style: AppStyle.DEFAULT_14.copyWith(color: Colors.grey),
-                      ),
+            children: List.generate(
+              data.data!.length,
+              (index) {
+                if (data.data![index].field_type == "LINE") {
+                  return Container(
+                      margin: EdgeInsets.symmetric(vertical: 3),
+                      child: LineHorizontal());
+                } else
+                  return Container(
+                    padding: EdgeInsets.only(top: 3, bottom: 3),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: WidgetText(
+                            title: data.data![index].label_field ?? "",
+                            style: AppStyle.DEFAULT_14
+                                .copyWith(color: Colors.grey),
+                          ),
+                        ),
+                        Expanded(
+                            flex: 2,
+                            child: WidgetText(
+                                title: data.data![index].value_field ?? '',
+                                textAlign: TextAlign.right,
+                                style: AppStyle.DEFAULT_14))
+                      ],
                     ),
-                    Expanded(flex: 2,child: WidgetText(title: data.data![index].value_field??'',textAlign: TextAlign.right, style: AppStyle.DEFAULT_14))
-                  ],
-                ),
-              );
-            },),
+                  );
+              },
+            ),
           )
         ],
       ),
