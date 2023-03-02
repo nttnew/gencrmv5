@@ -15,6 +15,7 @@ import 'package:gen_crm/screens/menu/home/customer/data_dropdown_item.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../../models/widget_input_date.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
 import '../../../../src/src_index.dart';
@@ -671,11 +672,12 @@ class _AddCustomerState extends State<AddCustomer> {
   }
 
   Future<void> onClick() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-
+    ImagePicker picker = ImagePicker();
+    XFile? result =await picker.pickImage(source: ImageSource.gallery);
     if (result != null) {
-      fileUpload = File(result.files.single.path!);
-      AttackBloc.of(context).add(InitAttackEvent(file: File(result.files.single.path!)));
+      fileUpload = File(result.path);
+      AttackBloc.of(context)
+          .add(InitAttackEvent(file: File(result.path)));
     } else {
       // User canceled the picker
     }

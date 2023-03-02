@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:gen_crm/models/index.dart';
 import 'package:gen_crm/screens/screens.dart';
 import 'package:gen_crm/src/src_index.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 import '../storages/share_local.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
@@ -29,7 +30,15 @@ class _ScreenMainState extends State<ScreenMain> {
 
   List<ButtonMenuModel> listMenu = [];
 
-
+List<Map> menuItems = [
+  {"icon":"assets/icons/addContent.png","name":"Thêm mua xe"},
+  {"icon":"assets/icons/addContent.png","name":"Thêm bán xe"},
+  {"icon":"assets/icons/addContent.png","name":"Thêm đặt lịch"},
+  {"icon":"assets/icons/addContent.png","name":"Thêm phiếu dịch vụ"},
+  {"icon":"assets/icons/add_clue.png","name":"Thêm khách hàng"},
+  {"icon":"assets/icons/addWork.png","name":"Thêm công việc"},
+  {"icon":"assets/icons/Support.png","name":"Thêm hỗ trợ"},
+];
 
   @override
   void initState() {
@@ -99,6 +108,97 @@ class _ScreenMainState extends State<ScreenMain> {
     return Scaffold(
       key: _drawerKey,
       drawer: MainDrawer(onPress: handleOnPressItemMenu),
+          floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xff1AA928),
+        onPressed: () {
+          showModalBottomSheet(
+              isDismissible: false,
+              enableDrag: false,
+              context: context,
+              shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              builder: (BuildContext context) {
+                return Container(
+                
+                  padding: EdgeInsets.symmetric(vertical: 25, horizontal: 30),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children:[ ...List<Widget>.generate(menuItems.length,(i){
+                      return GestureDetector(
+                        onTap: () { 
+                          Get.back();
+                          switch(i){
+                            case 0:{
+                              //AppNavigator.navigateAddBuyCar();
+                             break;
+                            }
+                            case 1:{
+                               //AppNavigator.navigateAddSellCar();
+ break;
+                            }
+                            case 2:{
+                               //AppNavigator.navigateAddBooking();
+                               break;
+                            }case 3:{
+                               //AppNavigator.navigateAddServiceCard();
+                               break;
+                            }case 4:{
+                              AppNavigator.navigateAddCustomer();
+                               break;
+                            }case 5:{
+                               AppNavigator.navigateFormAdd("Thêm công việc",14);
+                               break;
+                            }case 6:{
+                               AppNavigator.navigateFormAdd("Thêm công việc",15);
+                               break;
+                            }
+                            
+                            default:break; 
+                          }
+                         
+                         
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            AppValue.hSpaceLarge,
+                            Image.asset(menuItems[i]["icon"]),
+                            SizedBox(width: 10),
+                            Text(
+                              menuItems[i]["name"],
+                              style: AppStyle.DEFAULT_16_BOLD
+                                  .copyWith(color: Color(0xff006CB1)),
+                            )
+                          ],
+                        ),
+                      );
+                    }).toList(),    Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      InkWell(
+                                        onTap: () =>
+                                            Navigator.of(context).pop(),
+                                        child: Container(
+                                          width: AppValue.widths * 0.8,
+                                          height: AppValue.heights * 0.06,
+                                          decoration: BoxDecoration(
+                                            color: HexColor("#D0F1EB"),
+                                            borderRadius:
+                                                BorderRadius.circular(17.06),
+                                          ),
+                                          child: Center(
+                                            child: Text("Đóng"),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),],
+                  ),
+                );
+              });
+        },
+        child: Icon(Icons.add, size: 40),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
