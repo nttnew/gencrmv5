@@ -15,6 +15,7 @@ import 'package:gen_crm/screens/menu/home/customer/form_dropdown.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../../api_resfull/user_repository.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
 import '../../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
@@ -980,12 +981,13 @@ class _FormEditState extends State<FormEdit> {
 
   }
 
-  Future<void> onDinhKem() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-
+  Future<void> onDinhKem()  async{
+    ImagePicker picker = ImagePicker();
+    XFile? result =await picker.pickImage(source: ImageSource.gallery);
     if (result != null) {
-      fileUpload = File(result.files.single.path!);
-      AttackBloc.of(context).add(InitAttackEvent(file: File(result.files.single.path!)));
+      fileUpload = File(result.path);
+      AttackBloc.of(context)
+          .add(InitAttackEvent(file: File(result.path)));
     } else {
       // User canceled the picker
     }

@@ -20,6 +20,7 @@ import 'package:gen_crm/widgets/widget_input.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:nb_utils/nb_utils.dart';
 import '../../../../../../../src/models/model_generator/add_customer.dart';
@@ -815,13 +816,13 @@ class _EditContractState extends State<EditContract> {
     AddDataBloc.of(context).add(AddContractEvent(data, files: fileUpload));
   }
 
-  Future<void> onDinhKem() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-
+  Future<void> onDinhKem()  async{
+    ImagePicker picker = ImagePicker();
+    XFile? result =await picker.pickImage(source: ImageSource.gallery);
     if (result != null) {
-      fileUpload = File(result.files.single.path!);
+      fileUpload = File(result.path);
       AttackBloc.of(context)
-          .add(InitAttackEvent(file: File(result.files.single.path!)));
+          .add(InitAttackEvent(file: File(result.path)));
     } else {
       // User canceled the picker
     }

@@ -24,6 +24,7 @@ import 'package:gen_crm/widgets/widget_input.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -827,12 +828,13 @@ class _FormAddContractState extends State<FormAddContract> {
 
   }
 
-  Future<void> onDinhKem() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-
+  Future<void> onDinhKem()  async{
+    ImagePicker picker = ImagePicker();
+    XFile? result =await picker.pickImage(source: ImageSource.gallery);
     if (result != null) {
-     fileUpload = File(result.files.single.path!);
-     AttackBloc.of(context).add(InitAttackEvent(file: File(result.files.single.path!)));
+      fileUpload = File(result.path);
+      AttackBloc.of(context)
+          .add(InitAttackEvent(file: File(result.path)));
     } else {
       // User canceled the picker
     }
