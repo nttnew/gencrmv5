@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "794334677094",
+    "project_id": "gen-crm",
+    "storage_bucket": "gen-crm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794334677094:android:e9edd5fa8d6134f68085a7",
+        "android_client_info": {
+          "package_name": "vn.gen_crm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "794334677094-dlfae8aiv87515v93njtq5t7jlch9ume.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vn.gen_crm",
+            "certificate_hash": "9ec0e6d8eb03baca453f9804b7a03b75c7d413ae"
+          }
+        },
+        {
+          "client_id": "794334677094-srana5hooo1uq9obopuq82gnl2ah61o3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCg5yw_XF9MR8WCP9u9zjgdsZXVhjDne9g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "794334677094-srana5hooo1uq9obopuq82gnl2ah61o3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "794334677094-800vifglnecq1fnhkln72u2ek6qbatjh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gencrm"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
