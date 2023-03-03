@@ -25,6 +25,7 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:nb_utils/nb_utils.dart';
 import '../../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -63,21 +64,23 @@ class _FormAddContractState extends State<FormAddContract> {
   List data = [];
   List<ModelItemAdd> addData = [];
   late String id_user;
-  List<ProductModel> listProduct=[];
-  List<List<dynamic>> dauMoi=[];
+  List<ProductModel> listProduct = [];
+  List<List<dynamic>> dauMoi = [];
   File? fileUpload;
-  double total=0;
+  double total = 0;
+  TextEditingController value_contract_controller = TextEditingController();
 
   @override
   void initState() {
     loadUser();
     AttackBloc.of(context).add(LoadingAttackEvent());
-    if(Get.arguments[0]!=null)
-      FormAddBloc.of(context).add(InitFormAddContractEvent(id: Get.arguments[0]));
-    else if(Get.arguments[1]!=null){
-      FormAddBloc.of(context).add(InitFormAddContractCusEvent(Get.arguments[1]));
-    }
-    else{
+    if (Get.arguments[0] != null)
+      FormAddBloc.of(context)
+          .add(InitFormAddContractEvent(id: Get.arguments[0]));
+    else if (Get.arguments[1] != null) {
+      FormAddBloc.of(context)
+          .add(InitFormAddContractCusEvent(Get.arguments[1]));
+    } else {
       FormAddBloc.of(context).add(InitFormAddContractEvent());
     }
     super.initState();
@@ -92,32 +95,38 @@ class _FormAddContractState extends State<FormAddContract> {
     }
   }
 
-  addProduct(ProductModel data){
-    bool check=false;
-    for(int i=0;i<listProduct.length;i++){
-      if(data.id==listProduct[i].id){
-        check=true;
+  addProduct(ProductModel data) {
+    bool check = false;
+    for (int i = 0; i < listProduct.length; i++) {
+      if (data.id == listProduct[i].id) {
+        check = true;
         break;
       }
     }
-    if(check==false){
+    if (check == false) {
       listProduct.add(data);
     }
-
   }
 
-  reload(){
-    for(int i=0;i<listProduct.length;i++){
-      if(listProduct[i].soLuong==0){
+  reload() {
+    for (int i = 0; i < listProduct.length; i++) {
+      if (listProduct[i].soLuong == 0) {
         listProduct.removeAt(i);
         i--;
-      }
-      else{
-        if(listProduct[i].typeGiamGia=='%'){
-          total+=(double.parse(listProduct[i].item.sell_price??'0') * listProduct[i].soLuong)*((100-double.parse(listProduct[i].giamGia==""?"0":listProduct[i].giamGia))/100);
-        }
-        else{
-          total+=(double.parse(listProduct[i].item.sell_price??'0') * listProduct[i].soLuong)-double.parse(listProduct[i].giamGia==""?"0":listProduct[i].giamGia);
+      } else {
+        if (listProduct[i].typeGiamGia == '%') {
+          total += (double.parse(listProduct[i].item.sell_price ?? '0') *
+                  listProduct[i].soLuong) *
+              ((100 -
+                      double.parse(listProduct[i].giamGia == ""
+                          ? "0"
+                          : listProduct[i].giamGia)) /
+                  100);
+        } else {
+          total += (double.parse(listProduct[i].item.sell_price ?? '0') *
+                  listProduct[i].soLuong) -
+              double.parse(
+                  listProduct[i].giamGia == "" ? "0" : listProduct[i].giamGia);
         }
       }
     }
@@ -128,6 +137,7 @@ class _FormAddContractState extends State<FormAddContract> {
   void dispose() {
     data.clear();
     addData.clear();
+    value_contract_controller.dispose();
     super.dispose();
   }
 
@@ -165,7 +175,8 @@ class _FormAddContractState extends State<FormAddContract> {
                     onTap1: () {
                       Get.back();
                       Get.back();
-                      GetListCustomerBloc.of(context).add(InitGetListOrderEvent("", 1, ""));
+                      GetListCustomerBloc.of(context)
+                          .add(InitGetListOrderEvent("", 1, ""));
                     },
                   );
                 },
@@ -194,7 +205,8 @@ class _FormAddContractState extends State<FormAddContract> {
                     onTap1: () {
                       Get.back();
                       Get.back();
-                      ContractBloc.of(context).add(InitGetContractEvent(1, "", ""));
+                      ContractBloc.of(context)
+                          .add(InitGetContractEvent(1, "", ""));
                     },
                   );
                 },
@@ -221,268 +233,263 @@ class _FormAddContractState extends State<FormAddContract> {
             child: SingleChildScrollView(
               child: BlocBuilder<FormAddBloc, FormAddState>(
                   builder: (context, state) {
-                    if(state is LoadingFormAddCustomerOrState){
-                      addData=[];
-                      data=[];
-                      return Container();
+                if (state is LoadingFormAddCustomerOrState) {
+                  addData = [];
+                  data = [];
+                  return Container();
+                } else if (state is SuccessFormAddCustomerOrState) {
+                  for (int i = 0; i < state.listAddData.length; i++) {
+                    addData.add(ModelItemAdd(
+                        group_name: state.listAddData[i].group_name ?? '',
+                        data: []));
+                    for (int j = 0;
+                        j < state.listAddData[i].data!.length;
+                        j++) {
+                      // if(state.listAddData[i].data![j].field_type!="HIDDEN")
+                      addData[i].data.add(ModelDataAdd(
+                          label: state.listAddData[i].data![j].field_name,
+                          value: state.listAddData[i].data![j].field_set_value
+                              .toString(),
+                          required:
+                              state.listAddData[i].data![j].field_require));
                     }
-                    else if (state is SuccessFormAddCustomerOrState) {
-                        for (int i = 0; i < state.listAddData.length; i++) {
-                          addData.add(ModelItemAdd(
-                              group_name: state.listAddData[i].group_name ?? '',
-                              data: []));
-                          for (int j = 0;
-                          j < state.listAddData[i].data!.length;
-                          j++) {
-                            // if(state.listAddData[i].data![j].field_type!="HIDDEN")
-                            addData[i].data.add(ModelDataAdd(
-                                label: state.listAddData[i].data![j].field_name,
-                                value: state.listAddData[i].data![j].field_set_value.toString(),
-                                required: state.listAddData[i].data![j].field_require
-                            ));
-                          }
-                        }
-                      return Column(
+                  }
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: List.generate(
-                                state.listAddData.length,
-                                    (index) =>(state.listAddData[index].data!=null&&state.listAddData[index].data!.length>0)?
-                                Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: AppValue.heights * 0.01,
-                                    ),
-                                    state.listAddData[index].group_name !=
-                                        null
-                                        ?WidgetText(
-                                        title: state.listAddData[index]
-                                            .group_name ??
-                                            '',
-                                        style: AppStyle.DEFAULT_18_BOLD):Container(),
-                                    SizedBox(
-                                      height: AppValue.heights * 0.01,
-                                    ),
-                                    Column(
-                                      children: List.generate(
-                                          state.listAddData[index].data!
-                                              .length,
-                                              (index1) => (state
-                                              .listAddData[index]
-                                              .data![index1]
-                                              .field_special ==
-                                              "none-edit"&&state.listAddData[index].data![index1].field_id!='246')
-                                              ? (
-                                                  state.listAddData[index].data![index1].field_id=='774'?
-                                                  BlocBuilder<PhoneBloc, PhoneState>(
-                                                      builder: (context, stateA) {
-                                                        if (stateA is SuccessPhoneState){
-                                                          addData[index].data[index1].value=stateA.phone;
-                                                          return _fieldInputCustomer(state.listAddData[index].data![index1], index, index1,noEdit: true,value: stateA.phone);
-                                                        }
-                                                        else
-                                                          return Container();
-                                                      })
+                        children: List.generate(
+                            state.listAddData.length,
+                            (index) =>
+                                (state.listAddData[index].data != null &&
+                                        state.listAddData[index].data!.length >
+                                            0)
+                                    ? Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: AppValue.heights * 0.01,
+                                          ),
+                                          state.listAddData[index].group_name !=
+                                                  null
+                                              ? WidgetText(
+                                                  title: state
+                                                          .listAddData[index]
+                                                          .group_name ??
+                                                      '',
+                                                  style:
+                                                      AppStyle.DEFAULT_18_BOLD)
+                                              : Container(),
+                                          SizedBox(
+                                            height: AppValue.heights * 0.01,
+                                          ),
+                                          Column(
+                                            children: List.generate(
+                                                state.listAddData[index].data!
+                                                    .length,
+                                                (index1) =>
+                                                    (state.listAddData[index].data![index1].field_special ==
+                                                                "none-edit" &&
+                                                            state.listAddData[index].data![index1].field_id !=
+                                                                '246')
+                                                        ? (state.listAddData[index].data![index1].field_id ==
+                                                                '774'
+                                                            ? BlocBuilder<PhoneBloc, PhoneState>(
+                                                                builder:
+                                                                    (context,
+                                                                        stateA) {
+                                                                if (stateA
+                                                                    is SuccessPhoneState) {
+                                                                  addData[index]
+                                                                          .data[
+                                                                              index1]
+                                                                          .value =
+                                                                      stateA
+                                                                          .phone;
+                                                                  return _fieldInputCustomer(
+                                                                      state.listAddData[index].data![
+                                                                          index1],
+                                                                      index,
+                                                                      index1,
+                                                                      noEdit:
+                                                                          true,
+                                                                      value: stateA
+                                                                          .phone);
+                                                                } else
+                                                                  return Container();
+                                                              })
+                                                            : _fieldInputCustomer(
+                                                                state.listAddData[index].data![
+                                                                    index1],
+                                                                index,
+                                                                index1,
+                                                                noEdit: true))
+                                                        : state
+                                                                    .listAddData[index]
+                                                                    .data![index1]
+                                                                    .field_special ==
+                                                                "url"
+                                                            ? ProductContract(
+                                                                data:
+                                                                    listProduct,
+                                                                addProduct:
+                                                                    addProduct,
+                                                                reload: reload,
+                                                              )
+                                                            : state.listAddData[index].data![index1].field_type == "SELECT"
+                                                                ? (state.listAddData[index].data![index1].field_id == '256'
+                                                                    ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(builder: (context, stateA) {
+                                                                        if (stateA
+                                                                            is UpdateGetContacBytCustomerState)
+                                                                          return InputDropdown(
+                                                                              dropdownItemList: stateA.listContactByCustomer,
+                                                                              data: state.listAddData[index].data![index1],
+                                                                              onSuccess: (data) {
+                                                                                addData[index].data[index1].value = data;
+                                                                                PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
+                                                                              },
+                                                                              value: state.listAddData[index].data![index1].field_value ?? '');
+                                                                        else
+                                                                          return Container();
+                                                                      })
+                                                                    : InputDropdown(
+                                                                        dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
+                                                                        data: state.listAddData[index].data![index1],
+                                                                        onSuccess: (data) {
+                                                                          addData[index]
+                                                                              .data[index1]
+                                                                              .value = data;
+                                                                          if (state.listAddData[index].data![index1].field_id ==
+                                                                              '246') {
+                                                                            ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
+                                                                            PhoneBloc.of(context).add(InitPhoneEvent(data));
+                                                                          }
+                                                                        },
+                                                                        value: state.listAddData[index].data![index1].field_value ?? ''))
+                                                                : state.listAddData[index].data![index1].field_type == "TEXT_MULTI"
+                                                                    ? _fieldInputTextMulti(state.listAddData[index].data![index1].field_datasource!, state.listAddData[index].data![index1].field_label!, state.listAddData[index].data![index1].field_require!, index, index1, (state.listAddData[index].data![index1].field_set_value_datasource != "" && state.listAddData[index].data![index1].field_set_value_datasource != null) ? state.listAddData[index].data![index1].field_set_value_datasource![0][0].toString() : "", state.listAddData[index].data![index1].field_maxlength ?? '')
+                                                                    : state.listAddData[index].data![index1].field_type == "HIDDEN"
+                                                                        ? Container()
+                                                                        : state.listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"
+                                                                            ? WidgetInputMulti(
+                                                                                data: state.listAddData[index].data![index1],
+                                                                                onSelect: (data) {
+                                                                                  addData[index].data[index1].value = data.join(",");
+                                                                                },
+                                                                              )
+                                                                            : state.listAddData[index].data![index1].field_type == "DATE"
+                                                                                ? WidgetInputDate(
+                                                                                    data: state.listAddData[index].data![index1],
+                                                                                    onSelect: (date) {
+                                                                                      addData[index].data[index1].value = (date.microsecondsSinceEpoch / 1000000).floor();
+                                                                                    },
+                                                                                    onInit: () {
+                                                                                      DateTime date = DateTime.now();
+                                                                                      addData[index].data[index1].value = (date.microsecondsSinceEpoch / 1000000).floor();
+                                                                                    },
+                                                                                  )
+                                                                                : state.listAddData[index].data![index1].field_special == 'autosum'
+                                                                                    ? BlocBuilder<TotalBloc, TotalState>(builder: (context, stateA) {
+                                                                                        if (stateA is SuccessTotalState) {
+                                                                                          addData[index].data[index1].value = stateA.total.toString();
 
-                                                      :_fieldInputCustomer(state.listAddData[index].data![index1], index, index1,noEdit: true)
-                                              )
-                                              : state
-                                              .listAddData[index]
-                                              .data![index1]
-                                              .field_special ==
-                                              "url"
-                                              ?ProductContract(
-                                                data: listProduct,
-                                                addProduct: addProduct,
-                                                reload: reload,
-                                              ):
-                                              state
-                                              .listAddData[index]
-                                              .data![index1]
-                                              .field_type ==
-                                              "SELECT"
-                                              ? (
-                                                  state.listAddData[index].data![index1].field_id=='256'?
-                                                  BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(
-                                                      builder: (context, stateA) {
-                                                        if (stateA is UpdateGetContacBytCustomerState)
-                                                          return InputDropdown(
-                                                              dropdownItemList:stateA.listContactByCustomer,
-                                                              data: state.listAddData[index].data![index1],
-                                                              onSuccess:(data) {
-                                                                addData[index]
-                                                                    .data[index1]
-                                                                    .value = data;
-                                                                PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
-                                                              },
-                                                              value: state.listAddData[index].data![index1].field_value ??'');
-                                                        else
-                                                          return Container();
-                                                      })
-                                                      :
-                                                  InputDropdown(
-                                                      dropdownItemList:state.listAddData[index].data![index1].field_datasource ?? [],
-                                                      data: state.listAddData[index].data![index1],
-                                                      onSuccess:(data) {
-                                                        addData[index]
-                                                            .data[index1]
-                                                            .value = data;
-                                                        if(state.listAddData[index].data![index1].field_id=='246'){
-                                                          ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
-                                                          PhoneBloc.of(context).add(InitPhoneEvent(data));
-                                                        }
-                                                      },
-                                                      value: state.listAddData[index].data![index1].field_value ??'')
-                                              )
-                                              : state.listAddData[index].data![index1].field_type ==
-                                              "TEXT_MULTI"
-                                              ?_fieldInputTextMulti(
-                                              state
-                                                  .listAddData[
-                                              index]
-                                                  .data![index1]
-                                                  .field_datasource!,
-                                              state
-                                                  .listAddData[
-                                              index]
-                                                  .data![index1]
-                                                  .field_label!,
-                                              state
-                                                  .listAddData[index]
-                                                  .data![index1]
-                                                  .field_require!,
-                                              index,
-                                              index1,
-                                                  (state.listAddData[index].data![index1].field_set_value_datasource!=""&&state.listAddData[index].data![index1].field_set_value_datasource!=null) ?state.listAddData[index].data![index1].field_set_value_datasource![0][0].toString():"",
-                                              state.listAddData[index].data![index1].field_maxlength ?? '')
-                                              : state.listAddData[index].data![index1].field_type == "HIDDEN"
-                                              ? Container()
-                                              : state.listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"
-                                              ? WidgetInputMulti(
-                                            data: state
-                                                .listAddData[
-                                            index]
-                                                .data![index1],
-                                            onSelect:
-                                                (data) {
-                                              addData[index]
-                                                  .data[
-                                              index1]
-                                                  .value = data.join(",");
-                                            },
+                                                                                          if (state.listAddData[index].data![index1].field_id == '244') {
+                                                                                            double current = value_contract_controller.text.toDouble();
+                                                                                            current += stateA.total.toString().toDouble();
+                                                                                            value_contract_controller.text = current.toStringAsFixed(0);
+                                                                                            return _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, controller: value_contract_controller);
+                                                                                          }
+
+                                                                                          return WidgetTotalSum(label: state.listAddData[index].data![index1].field_label, value: stateA.total.toStringAsFixed(0));
+                                                                                        } else {
+                                                                                          if (state.listAddData[index].data![index1].field_id == '244') {
+                                                                                            return _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, controller: value_contract_controller);
+                                                                                          }
+                                                                                          return WidgetTotalSum(label: state.listAddData[index].data![index1].field_label, value: "");
+                                                                                        }
+                                                                                      })
+                                                                                    : state.listAddData[index].data![index1].field_type == "PERCENTAGE"
+                                                                                        ? FieldInputPercent(
+                                                                                            data: state.listAddData[index].data![index1],
+                                                                                            onChanged: (text) {
+                                                                                              addData[index].data[index1].value = text;
+                                                                                            },
+                                                                                          )
+                                                                                        : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, value: state.listAddData[index].data![index1].field_special == 'autosum' ? total.toString() : "")),
                                           )
-                                              : state.listAddData[index].data![index1].field_type == "DATE"
-                                              ? WidgetInputDate(
-                                            data: state
-                                                .listAddData[index]
-                                                .data![index1],
-                                            onSelect:
-                                                (date) {
-                                              addData[index]
-                                                  .data[index1]
-                                                  .value = (date.microsecondsSinceEpoch / 1000000).floor();
-                                            },
-                                            onInit:
-                                                () {
-                                              DateTime date=DateTime.now();
-                                              addData[index]
-                                                  .data[index1]
-                                                  .value = (date.microsecondsSinceEpoch / 1000000).floor();
-                                            },
-                                          )
-                                              :state.listAddData[index].data![index1].field_special=='autosum'?
-                                              BlocBuilder<TotalBloc, TotalState>(
-                                                  builder: (context, stateA) {
-                                                    if (stateA is SuccessTotalState){
-                                                      addData[index]
-                                                          .data[index1]
-                                                          .value =stateA.total.toString();
-                                                     return WidgetTotalSum(label: state.listAddData[index].data![index1].field_label, value: stateA.total.toStringAsFixed(0));
-                                                    }
-                                                    else
-                                                      return WidgetTotalSum(label: state.listAddData[index].data![index1].field_label, value: "");
-                                                  })
-                                              :state.listAddData[index].data![index1].field_type == "PERCENTAGE"?
-                                              FieldInputPercent(
-                                                data: state.listAddData[index].data![index1],
-                                                onChanged: (text){
-                                                  addData[index].data[index1].value = text;
-                                                },
-                                              ):_fieldInputCustomer(state.listAddData[index].data![index1], index, index1,value:state.listAddData[index].data![index1].field_special=='autosum'? total.toString():"")),
-                                    )
-                                  ],
-                                ):Container()
+                                        ],
+                                      )
+                                    : Container()),
+                      ),
+                      BlocBuilder<AttackBloc, AttackState>(
+                          builder: (context, state) {
+                        if (state is SuccessAttackState) if (state.file != null)
+                          return Container(
+                              margin: EdgeInsets.symmetric(vertical: 8),
+                              width: Get.width,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: WidgetText(
+                                      title: state.file!.path.split("/").last,
+                                      style: AppStyle.DEFAULT_14,
+                                      maxLine: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      fileUpload = null;
+                                      AttackBloc.of(context)
+                                          .add(InitAttackEvent());
+                                    },
+                                    child: WidgetContainerImage(
+                                      image: 'assets/icons/icon_delete.png',
+                                      width: 20,
+                                      height: 20,
+                                      fit: BoxFit.contain,
+                                    ),
+                                  )
+                                ],
+                              ));
+                        else
+                          return Container();
+                        else
+                          return Container();
+                      }),
+                      Row(
+                        children: [
+                          GestureDetector(
+                              onTap: this.onDinhKem,
+                              child:
+                                  SvgPicture.asset("assets/icons/attack.svg")),
+                          Spacer(),
+                          GestureDetector(
+                            onTap: this.onClickSave,
+                            child: Container(
+                              height: AppValue.widths * 0.1,
+                              width: AppValue.widths * 0.25,
+                              decoration: BoxDecoration(
+                                  color: HexColor("#F1A400"),
+                                  borderRadius: BorderRadius.circular(20.5)),
+                              child: Center(
+                                  child: Text(
+                                "Lưu",
+                                style: TextStyle(color: Colors.white),
+                              )),
                             ),
                           ),
-                          BlocBuilder<AttackBloc, AttackState>(
-                              builder: (context, state) {
-                                if (state is SuccessAttackState)
-                                  if(state.file!=null)
-                                    return Container(
-                                        margin: EdgeInsets.symmetric(vertical: 8),
-                                        width: Get.width,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              child: WidgetText(
-                                                title: state.file!.path.split("/").last,
-                                                style: AppStyle.DEFAULT_14,
-                                                maxLine: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: (){
-                                                fileUpload=null;
-                                                AttackBloc.of(context).add(InitAttackEvent());
-                                              },
-                                              child: WidgetContainerImage(
-                                                image: 'assets/icons/icon_delete.png',
-                                                width: 20,
-                                                height: 20,
-                                                fit: BoxFit.contain,
-                                              ),
-                                            )
-                                          ],
-                                        ));
-                                  else return Container();
-                                else
-                                  return Container();
-                              }),
-                          Row(
-                            children: [
-                              GestureDetector(
-                                onTap: this.onDinhKem,
-                                  child: SvgPicture.asset("assets/icons/attack.svg")
-                              ),
-                              Spacer(),
-                              GestureDetector(
-                                onTap: this.onClickSave,
-                                child: Container(
-                                  height: AppValue.widths * 0.1,
-                                  width: AppValue.widths * 0.25,
-                                  decoration: BoxDecoration(
-                                      color: HexColor("#F1A400"),
-                                      borderRadius: BorderRadius.circular(20.5)),
-                                  child: Center(
-                                      child: Text(
-                                        "Lưu",
-                                        style: TextStyle(color: Colors.white),
-                                      )),
-                                ),
-                              ),
-                            ],
-                          )
                         ],
-                      );
-                    } else
-                      return Container();
-                  }),
+                      )
+                    ],
+                  );
+                } else
+                  return Container();
+              }),
             ),
           ),
         ));
@@ -586,7 +593,7 @@ class _FormAddContractState extends State<FormAddContract> {
                       height: 50,
                       width: 50,
                       child:
-                      SvgPicture.asset("assets/icons/iconInputImg.svg"))),
+                          SvgPicture.asset("assets/icons/iconInputImg.svg"))),
             )
           ]),
         ),
@@ -595,74 +602,84 @@ class _FormAddContractState extends State<FormAddContract> {
   }
 
   Widget _fieldInputCustomer(
-      CustomerIndividualItemData data, int index, int index1,{bool noEdit=false,String value=""}) {
+      CustomerIndividualItemData data, int index, int index1,
+      {bool noEdit = false,
+      String value = "",
+      TextEditingController? controller}) {
     // if ((type == 21 && data.field_id == "12547")||(type == 31 && data.field_id == "12547")) {
     //   return Container();
     // } else
-      return Container(
-        margin: EdgeInsets.only(bottom: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            RichText(
-              text: TextSpan(
-                text: data.field_label ?? '',
-                style: titlestyle(),
-                children: <TextSpan>[
-                  data.field_require == 1
-                      ? TextSpan(
-                      text: '*',
-                      style: TextStyle(
-                          fontFamily: "Roboto",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.red))
-                      : TextSpan(),
-                ],
-              ),
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            text: TextSpan(
+              text: data.field_label ?? '',
+              style: titlestyle(),
+              children: <TextSpan>[
+                data.field_require == 1
+                    ? TextSpan(
+                        text: '*',
+                        style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red))
+                    : TextSpan(),
+              ],
             ),
-            SizedBox(
-              height: 8,
-            ),
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: noEdit==true?COLORS.LIGHT_GREY:Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: HexColor("#BEB4B4"))),
-              child: Padding(
-                padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
-                child: Container(
-                  child: TextFormField(
-                    // controller: data.field_type=="TEXT_NUMERIC"?_wholesalePriceEditController:null,
-                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
-                    keyboardType: data.field_type == "TEXT_NUMERIC"
-                        ? TextInputType.number
-                        : data.field_special == "default"
-                        ? TextInputType.text
-                        : (data.field_special == "numberic")
-                        ? TextInputType.number
-                        : data.field_special == "email-address"
-                        ? TextInputType.emailAddress
-                        : TextInputType.text,
-                    onChanged: (text) {
-                      addData[index].data[index1].value = text;
-                    },
-                    readOnly: noEdit,
-                    initialValue:value!=""?value: noEdit==true? data.field_value:data.field_set_value!=null?data.field_set_value.toString():null,
-                    decoration: InputDecoration(
-                        hintStyle: hintTextStyle(),
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                        isDense: true),
-                  ),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+                color: noEdit == true ? COLORS.LIGHT_GREY : Colors.white,
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: HexColor("#BEB4B4"))),
+            child: Padding(
+              padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
+              child: Container(
+                child: TextFormField(
+                  // controller: data.field_type=="TEXT_NUMERIC"?_wholesalePriceEditController:null,
+                  controller: controller,
+                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+                  keyboardType: data.field_type == "TEXT_NUMERIC"
+                      ? TextInputType.number
+                      : data.field_special == "default"
+                          ? TextInputType.text
+                          : (data.field_special == "numberic")
+                              ? TextInputType.number
+                              : data.field_special == "email-address"
+                                  ? TextInputType.emailAddress
+                                  : TextInputType.text,
+                  onChanged: (text) {
+                    addData[index].data[index1].value = text;
+                  },
+                  readOnly: noEdit,
+                  // initialValue: value != ""
+                  //     ? value
+                  //     : noEdit == true
+                  //         ? data.field_value
+                  //         : data.field_set_value != null
+                  //             ? data.field_set_value.toString()
+                  //             : null,
+                  decoration: InputDecoration(
+                      hintStyle: hintTextStyle(),
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      isDense: true),
                 ),
               ),
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _fieldInputTextMulti(
@@ -699,12 +716,12 @@ class _FormAddContractState extends State<FormAddContract> {
               children: <TextSpan>[
                 required == 1
                     ? TextSpan(
-                    text: '*',
-                    style: TextStyle(
-                        fontFamily: "Roboto",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.red))
+                        text: '*',
+                        style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red))
                     : TextSpan(),
               ],
             ),
@@ -780,21 +797,24 @@ class _FormAddContractState extends State<FormAddContract> {
 
   void onClickSave() {
     final Map<String, dynamic> data = {};
-    bool check=false;
+    bool check = false;
     for (int i = 0; i < addData.length; i++) {
       for (int j = 0; j < addData[i].data.length; j++) {
-        if((addData[i].data[j].value == null || addData[i].data[j].value == "null" || addData[i].data[j].value == "") && addData[i].data[j].required==1){
-          check=true;
+        if ((addData[i].data[j].value == null ||
+                addData[i].data[j].value == "null" ||
+                addData[i].data[j].value == "") &&
+            addData[i].data[j].required == 1) {
+          check = true;
           break;
-        }
-        else if (addData[i].data[j].value != null && addData[i].data[j].value != "null")
+        } else if (addData[i].data[j].value != null &&
+            addData[i].data[j].value != "null")
           data["${addData[i].data[j].label}"] = addData[i].data[j].value;
-        else{
-          data["${addData[i].data[j].label}"] ="";
+        else {
+          data["${addData[i].data[j].label}"] = "";
         }
       }
     }
-    if(check==true){
+    if (check == true) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -804,13 +824,12 @@ class _FormAddContractState extends State<FormAddContract> {
           );
         },
       );
-    }
-    else{
-      if(listProduct.length>0){
-        List product=[];
-        for(int i=0;i<listProduct.length;i++){
+    } else {
+      if (listProduct.length > 0) {
+        List product = [];
+        for (int i = 0; i < listProduct.length; i++) {
           product.add({
-            "id":listProduct[i].id,
+            "id": listProduct[i].id,
             "price": listProduct[i].item.sell_price,
             "quantity": listProduct[i].soLuong,
             "vat": listProduct[i].item.vat,
@@ -821,20 +840,18 @@ class _FormAddContractState extends State<FormAddContract> {
             }
           });
         }
-        data['products']=product;
+        data['products'] = product;
       }
-      AddDataBloc.of(context).add(AddContractEvent(data,files: fileUpload));
+      AddDataBloc.of(context).add(AddContractEvent(data, files: fileUpload));
     }
-
   }
 
-  Future<void> onDinhKem()  async{
+  Future<void> onDinhKem() async {
     ImagePicker picker = ImagePicker();
-    XFile? result =await picker.pickImage(source: ImageSource.gallery);
+    XFile? result = await picker.pickImage(source: ImageSource.gallery);
     if (result != null) {
       fileUpload = File(result.path);
-      AttackBloc.of(context)
-          .add(InitAttackEvent(file: File(result.path)));
+      AttackBloc.of(context).add(InitAttackEvent(file: File(result.path)));
     } else {
       // User canceled the picker
     }
