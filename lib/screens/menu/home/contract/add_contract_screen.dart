@@ -69,7 +69,6 @@ class _FormAddContractState extends State<FormAddContract> {
   File? fileUpload;
   double total = 0;
   TextEditingController value_contract_controller = TextEditingController();
-
   @override
   void initState() {
     loadUser();
@@ -106,6 +105,13 @@ class _FormAddContractState extends State<FormAddContract> {
     if (check == false) {
       listProduct.add(data);
     }
+  }
+
+ void removeProduct(ProductModel productModel) {
+    setState(() {
+          listProduct.remove(productModel);
+    });
+
   }
 
   reload() {
@@ -289,135 +295,127 @@ class _FormAddContractState extends State<FormAddContract> {
                                             children: List.generate(
                                                 state.listAddData[index].data!
                                                     .length,
-                                                (index1) =>
-                                                    (state.listAddData[index].data![index1].field_special ==
-                                                                "none-edit" &&
-                                                            state.listAddData[index].data![index1].field_id !=
-                                                                '246')
-                                                        ? (state.listAddData[index].data![index1].field_id ==
-                                                                '774'
-                                                            ? BlocBuilder<PhoneBloc, PhoneState>(
-                                                                builder:
-                                                                    (context,
-                                                                        stateA) {
-                                                                if (stateA
-                                                                    is SuccessPhoneState) {
-                                                                  addData[index]
+                                                (index1) => (state
+                                                                .listAddData[index]
+                                                                .data![index1]
+                                                                .field_special ==
+                                                            "none-edit" &&
+                                                        state.listAddData[index].data![index1].field_id != '246')
+                                                    ? (state.listAddData[index].data![index1].field_id == '774'
+                                                        ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
+                                                            if (stateA
+                                                                is SuccessPhoneState) {
+                                                              addData[index]
+                                                                      .data[index1]
+                                                                      .value =
+                                                                  stateA.phone;
+                                                              return _fieldInputCustomer(
+                                                                  state
+                                                                          .listAddData[
+                                                                              index]
+                                                                          .data![
+                                                                      index1],
+                                                                  index,
+                                                                  index1,
+                                                                  noEdit: true,
+                                                                  value: stateA
+                                                                      .phone);
+                                                            } else
+                                                              return Container();
+                                                          })
+                                                        : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, noEdit: true))
+                                                    : state.listAddData[index].data![index1].field_special == "url"
+                                                        ? ProductContract(
+                                                            data: listProduct,
+                                                            addProduct:
+                                                                addProduct,
+                                                            reload: reload,
+                                                            neverHidden: true,
+                                                            canDelete: true,
+                                                            onDelete: removeProduct,
+                                                          )
+                                                        : state.listAddData[index].data![index1].field_type == "SELECT"
+                                                            ? (state.listAddData[index].data![index1].field_id == '256'
+                                                                ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(builder: (context, stateA) {
+                                                                    if (stateA
+                                                                        is UpdateGetContacBytCustomerState)
+                                                                      return InputDropdown(
+                                                                          dropdownItemList: stateA
+                                                                              .listContactByCustomer,
+                                                                          data: state.listAddData[index].data![
+                                                                              index1],
+                                                                          onSuccess:
+                                                                              (data) {
+                                                                            addData[index].data[index1].value =
+                                                                                data;
+                                                                            PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
+                                                                          },
+                                                                          value:
+                                                                              state.listAddData[index].data![index1].field_value ?? '');
+                                                                    else
+                                                                      return Container();
+                                                                  })
+                                                                : InputDropdown(
+                                                                    dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
+                                                                    data: state.listAddData[index].data![index1],
+                                                                    onSuccess: (data) {
+                                                                      addData[index]
                                                                           .data[
                                                                               index1]
-                                                                          .value =
-                                                                      stateA
-                                                                          .phone;
-                                                                  return _fieldInputCustomer(
-                                                                      state.listAddData[index].data![
-                                                                          index1],
-                                                                      index,
-                                                                      index1,
-                                                                      noEdit:
-                                                                          true,
-                                                                      value: stateA
-                                                                          .phone);
-                                                                } else
-                                                                  return Container();
-                                                              })
-                                                            : _fieldInputCustomer(
-                                                                state.listAddData[index].data![
-                                                                    index1],
-                                                                index,
-                                                                index1,
-                                                                noEdit: true))
-                                                        : state
-                                                                    .listAddData[index]
-                                                                    .data![index1]
-                                                                    .field_special ==
-                                                                "url"
-                                                            ? ProductContract(
-                                                                data:
-                                                                    listProduct,
-                                                                addProduct:
-                                                                    addProduct,
-                                                                reload: reload,
-                                                              )
-                                                            : state.listAddData[index].data![index1].field_type == "SELECT"
-                                                                ? (state.listAddData[index].data![index1].field_id == '256'
-                                                                    ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(builder: (context, stateA) {
-                                                                        if (stateA
-                                                                            is UpdateGetContacBytCustomerState)
-                                                                          return InputDropdown(
-                                                                              dropdownItemList: stateA.listContactByCustomer,
-                                                                              data: state.listAddData[index].data![index1],
-                                                                              onSuccess: (data) {
-                                                                                addData[index].data[index1].value = data;
-                                                                                PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
-                                                                              },
-                                                                              value: state.listAddData[index].data![index1].field_value ?? '');
-                                                                        else
-                                                                          return Container();
-                                                                      })
-                                                                    : InputDropdown(
-                                                                        dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
-                                                                        data: state.listAddData[index].data![index1],
-                                                                        onSuccess: (data) {
-                                                                          addData[index]
-                                                                              .data[index1]
-                                                                              .value = data;
-                                                                          if (state.listAddData[index].data![index1].field_id ==
-                                                                              '246') {
-                                                                            ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
-                                                                            PhoneBloc.of(context).add(InitPhoneEvent(data));
-                                                                          }
-                                                                        },
-                                                                        value: state.listAddData[index].data![index1].field_value ?? ''))
-                                                                : state.listAddData[index].data![index1].field_type == "TEXT_MULTI"
-                                                                    ? _fieldInputTextMulti(state.listAddData[index].data![index1].field_datasource!, state.listAddData[index].data![index1].field_label!, state.listAddData[index].data![index1].field_require!, index, index1, (state.listAddData[index].data![index1].field_set_value_datasource != "" && state.listAddData[index].data![index1].field_set_value_datasource != null) ? state.listAddData[index].data![index1].field_set_value_datasource![0][0].toString() : "", state.listAddData[index].data![index1].field_maxlength ?? '')
-                                                                    : state.listAddData[index].data![index1].field_type == "HIDDEN"
-                                                                        ? Container()
-                                                                        : state.listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"
-                                                                            ? WidgetInputMulti(
+                                                                          .value = data;
+                                                                      if (state
+                                                                              .listAddData[index]
+                                                                              .data![index1]
+                                                                              .field_id ==
+                                                                          '246') {
+                                                                        ContactByCustomerBloc.of(context)
+                                                                            .add(InitGetContactByCustomerrEvent(data));
+                                                                        PhoneBloc.of(context)
+                                                                            .add(InitPhoneEvent(data));
+                                                                      }
+                                                                    },
+                                                                    value: state.listAddData[index].data![index1].field_value ?? ''))
+                                                            : state.listAddData[index].data![index1].field_type == "TEXT_MULTI"
+                                                                ? _fieldInputTextMulti(state.listAddData[index].data![index1].field_datasource!, state.listAddData[index].data![index1].field_label!, state.listAddData[index].data![index1].field_require!, index, index1, (state.listAddData[index].data![index1].field_set_value_datasource != "" && state.listAddData[index].data![index1].field_set_value_datasource != null) ? state.listAddData[index].data![index1].field_set_value_datasource![0][0].toString() : "", state.listAddData[index].data![index1].field_maxlength ?? '')
+                                                                : state.listAddData[index].data![index1].field_type == "HIDDEN"
+                                                                    ? Container()
+                                                                    : state.listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"
+                                                                        ? WidgetInputMulti(
+                                                                            data:
+                                                                                state.listAddData[index].data![index1],
+                                                                            onSelect:
+                                                                                (data) {
+                                                                              addData[index].data[index1].value = data.join(",");
+                                                                            },
+                                                                          )
+                                                                        : state.listAddData[index].data![index1].field_type == "DATE"
+                                                                            ? WidgetInputDate(
                                                                                 data: state.listAddData[index].data![index1],
-                                                                                onSelect: (data) {
-                                                                                  addData[index].data[index1].value = data.join(",");
+                                                                                onSelect: (date) {
+                                                                                  addData[index].data[index1].value = (date.microsecondsSinceEpoch / 1000000).floor();
+                                                                                },
+                                                                                onInit: () {
+                                                                                  DateTime date = DateTime.now();
+                                                                                  addData[index].data[index1].value = (date.microsecondsSinceEpoch / 1000000).floor();
                                                                                 },
                                                                               )
-                                                                            : state.listAddData[index].data![index1].field_type == "DATE"
-                                                                                ? WidgetInputDate(
-                                                                                    data: state.listAddData[index].data![index1],
-                                                                                    onSelect: (date) {
-                                                                                      addData[index].data[index1].value = (date.microsecondsSinceEpoch / 1000000).floor();
-                                                                                    },
-                                                                                    onInit: () {
-                                                                                      DateTime date = DateTime.now();
-                                                                                      addData[index].data[index1].value = (date.microsecondsSinceEpoch / 1000000).floor();
-                                                                                    },
-                                                                                  )
-                                                                                : state.listAddData[index].data![index1].field_special == 'autosum'
-                                                                                    ? BlocBuilder<TotalBloc, TotalState>(builder: (context, stateA) {
-                                                                                        if (stateA is SuccessTotalState) {
-                                                                                          addData[index].data[index1].value = stateA.total.toString();
-
-                                                                                          if (state.listAddData[index].data![index1].field_id == '244') {
-                                                                                            double current = value_contract_controller.text.toDouble();
-                                                                                            current += stateA.total.toString().toDouble();
-                                                                                            value_contract_controller.text = current.toStringAsFixed(0);
-                                                                                            return _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, controller: value_contract_controller);
-                                                                                          }
-
-                                                                                          return WidgetTotalSum(label: state.listAddData[index].data![index1].field_label, value: stateA.total.toStringAsFixed(0));
-                                                                                        } else {
-                                                                                          if (state.listAddData[index].data![index1].field_id == '244') {
-                                                                                            return _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, controller: value_contract_controller);
-                                                                                          }
-                                                                                          return WidgetTotalSum(label: state.listAddData[index].data![index1].field_label, value: "");
-                                                                                        }
-                                                                                      })
-                                                                                    : state.listAddData[index].data![index1].field_type == "PERCENTAGE"
-                                                                                        ? FieldInputPercent(
-                                                                                            data: state.listAddData[index].data![index1],
-                                                                                            onChanged: (text) {
-                                                                                              addData[index].data[index1].value = text;
-                                                                                            },
-                                                                                          )
-                                                                                        : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, value: state.listAddData[index].data![index1].field_special == 'autosum' ? total.toString() : "")),
+                                                                            : state.listAddData[index].data![index1].field_special == 'autosum'
+                                                                                ? BlocBuilder<TotalBloc, TotalState>(builder: (context, stateA) {
+                                                                                    if (stateA is SuccessTotalState) {
+                                                                                      addData[index].data[index1].value = stateA.total.toString();
+                                                                                      return WidgetTotalSum(label: state.listAddData[index].data![index1].field_label, value: stateA.total.toStringAsFixed(0));
+                                                                                    } else {
+                                                                                      return WidgetTotalSum(label: state.listAddData[index].data![index1].field_label, value: "");
+                                                                                    }
+                                                                                  })
+                                                                                : state.listAddData[index].data![index1].field_type == "PERCENTAGE"
+                                                                                    ? FieldInputPercent(
+                                                                                        data: state.listAddData[index].data![index1],
+                                                                                        onChanged: (text) {
+                                                                                          addData[index].data[index1].value = text;
+                                                                                        },
+                                                                                      )
+                                                                                    : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, value: state.listAddData[index].data![index1].field_special == 'autosum' ? total.toString() : "")),
                                           )
                                         ],
                                       )
@@ -602,10 +600,12 @@ class _FormAddContractState extends State<FormAddContract> {
   }
 
   Widget _fieldInputCustomer(
-      CustomerIndividualItemData data, int index, int index1,
-      {bool noEdit = false,
-      String value = "",
-      TextEditingController? controller}) {
+    CustomerIndividualItemData data,
+    int index,
+    int index1, {
+    bool noEdit = false,
+    String value = "",
+  }) {
     // if ((type == 21 && data.field_id == "12547")||(type == 31 && data.field_id == "12547")) {
     //   return Container();
     // } else
@@ -645,7 +645,6 @@ class _FormAddContractState extends State<FormAddContract> {
               child: Container(
                 child: TextFormField(
                   // controller: data.field_type=="TEXT_NUMERIC"?_wholesalePriceEditController:null,
-                  controller: controller,
                   style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
                   keyboardType: data.field_type == "TEXT_NUMERIC"
                       ? TextInputType.number
@@ -660,13 +659,13 @@ class _FormAddContractState extends State<FormAddContract> {
                     addData[index].data[index1].value = text;
                   },
                   readOnly: noEdit,
-                  // initialValue: value != ""
-                  //     ? value
-                  //     : noEdit == true
-                  //         ? data.field_value
-                  //         : data.field_set_value != null
-                  //             ? data.field_set_value.toString()
-                  //             : null,
+                  initialValue: value != ""
+                      ? value
+                      : noEdit == true
+                          ? data.field_value
+                          : data.field_set_value != null
+                              ? data.field_set_value.toString()
+                              : null,
                   decoration: InputDecoration(
                       hintStyle: hintTextStyle(),
                       focusedBorder: InputBorder.none,

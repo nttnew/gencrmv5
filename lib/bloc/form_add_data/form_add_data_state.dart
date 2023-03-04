@@ -5,19 +5,20 @@ abstract class FormAddState extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
 class InitFormAddState extends FormAddState {}
 
+class LoadingFormAddCustomerOrState extends FormAddState {}
 
-class LoadingFormAddCustomerOrState extends FormAddState {
-}
-class SuccessFormAddCustomerOrState extends FormAddState{
+class SuccessFormAddCustomerOrState extends FormAddState {
   // final ListCustomerData listCustomer;
   final List<AddCustomerIndividualData> listAddData;
   const SuccessFormAddCustomerOrState(this.listAddData);
   @override
   List<Object> get props => [listAddData];
 }
-class ErrorFormAddCustomerOrState extends FormAddState{
+
+class ErrorFormAddCustomerOrState extends FormAddState {
   final String msg;
 
   ErrorFormAddCustomerOrState(this.msg);
@@ -27,16 +28,17 @@ class ErrorFormAddCustomerOrState extends FormAddState{
 
 //form_add_contact_customer
 
-class LoadingFormAddContactCustomerState extends FormAddState {
-}
-class SuccessFormAddContactCustomerState extends FormAddState{
+class LoadingFormAddContactCustomerState extends FormAddState {}
+
+class SuccessFormAddContactCustomerState extends FormAddState {
   // final ListCustomerData listCustomer;
   final List<AddCustomerIndividualData> listAddData;
   const SuccessFormAddContactCustomerState(this.listAddData);
   @override
   List<Object> get props => [listAddData];
 }
-class ErrorFormAddContactCustomerState extends FormAddState{
+
+class ErrorFormAddContactCustomerState extends FormAddState {
   final String msg;
 
   ErrorFormAddContactCustomerState(this.msg);
