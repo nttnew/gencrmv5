@@ -107,12 +107,6 @@ class _FormAddContractState extends State<FormAddContract> {
     }
   }
 
- void removeProduct(ProductModel productModel) {
-    setState(() {
-          listProduct.remove(productModel);
-    });
-
-  }
 
   reload() {
     for (int i = 0; i < listProduct.length; i++) {
@@ -332,7 +326,7 @@ class _FormAddContractState extends State<FormAddContract> {
                                                             reload: reload,
                                                             neverHidden: true,
                                                             canDelete: true,
-                                                            onDelete: removeProduct,
+                                                            
                                                           )
                                                         : state.listAddData[index].data![index1].field_type == "SELECT"
                                                             ? (state.listAddData[index].data![index1].field_id == '256'

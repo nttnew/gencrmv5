@@ -8,21 +8,19 @@ import 'package:gen_crm/widgets/widgets.dart';
 import '../../../../models/product_model.dart';
 
 class ProductContract extends StatefulWidget {
-  ProductContract(
-      {Key? key,
-      required this.data,
-      required this.addProduct,
-      required this.reload,
-      this.neverHidden = false,
-      this.canDelete = false,
-      this.onDelete})
-      : super(key: key);
+  ProductContract({
+    Key? key,
+    required this.data,
+    required this.addProduct,
+    required this.reload,
+    this.neverHidden = false,
+    this.canDelete = false,
+  }) : super(key: key);
   List<ProductModel> data;
   Function addProduct;
   Function reload;
   bool neverHidden;
   bool canDelete;
-  Function(ProductModel productModel)? onDelete;
 
   @override
   State<ProductContract> createState() => _ProductContractState();
@@ -56,7 +54,15 @@ class _ProductContractState extends State<ProductContract> {
 
   reload() async {
     await widget.reload();
-    setState(() {});
+    setState(() {
+      //productData = List.from(productData);
+    });
+  }
+
+  void removeProduct(ProductModel productModel) {
+    setState(() {
+      productData.remove(productModel);
+    });
   }
 
   @override
@@ -69,7 +75,7 @@ class _ProductContractState extends State<ProductContract> {
                   children: List.generate(
                       productData.length,
                       (index) => ItemProduct(
-                            onDelete: widget.onDelete,
+                            onDelete: removeProduct,
                             canDelete: widget.canDelete,
                             neverHidden: widget.neverHidden,
                             data: productData[index].item,
@@ -105,6 +111,9 @@ class _ProductContractState extends State<ProductContract> {
                               productData[index].giamGia = so;
                               productData[index].typeGiamGia = type;
                               // }
+                            },
+                            onPrice: (price) {
+                              productData[index].item.sell_price = price;
                             },
                             model: productData[index],
                             listDvt: listDVT,

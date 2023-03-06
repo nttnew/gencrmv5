@@ -187,6 +187,9 @@ class _ListProductState extends State<ListProduct> {
                             listSelected[index].typeGiamGia = type;
                             // }
                           },
+                          onPrice: (price) {
+                            listSelected[index].item.sell_price = price;
+                          },
                           model: listSelected[index],
                         );
                       }),
@@ -269,6 +272,7 @@ class ItemProduct extends StatefulWidget {
     this.onDVT,
     this.onVAT,
     this.onGiamGia,
+    this.onPrice,
     this.model,
     this.canDelete = false,
     this.onDelete,
@@ -284,6 +288,7 @@ class ItemProduct extends StatefulWidget {
   Function? onDVT;
   Function? onVAT;
   Function? onGiamGia;
+  Function? onPrice;
   ProductModel? model;
   bool neverHidden;
   bool canDelete;
@@ -305,6 +310,21 @@ class _ItemProductState extends State<ItemProduct> {
   bool typeGiamGia = true;
 
   @override
+  void didUpdateWidget(covariant ItemProduct oldWidget) {
+    if (oldWidget != widget) {
+      setState(() {
+        Dvt = widget.model!.nameDvt;
+        Vat = widget.model!.nameVat;
+        giamGia = widget.model!.giamGia;
+        typeGiamGia = widget.model!.typeGiamGia == "%" ? false : true;
+        soLuong = widget.model!.soLuong.toString();
+        price = widget.model!.item.sell_price!;
+      });
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   void initState() {
     int index =
         widget.listDvt.indexWhere((element) => element[0] == widget.data.dvt);
@@ -318,6 +338,7 @@ class _ItemProductState extends State<ItemProduct> {
         giamGia = widget.model!.giamGia;
         typeGiamGia = widget.model!.typeGiamGia == "%" ? false : true;
         soLuong = widget.model!.soLuong.toString();
+        price = widget.model!.item.sell_price!;
       });
       widget.onDVT!(widget.model!.item.dvt, Dvt);
       widget.onVAT!(widget.model!.item.vat, Vat);
@@ -866,6 +887,7 @@ class _ItemProductState extends State<ItemProduct> {
                             setState(() {
                               price = _priceTextfieldController.text;
                             });
+                            widget.onPrice!(price);
                             Get.back();
                           },
                           child: Container(
