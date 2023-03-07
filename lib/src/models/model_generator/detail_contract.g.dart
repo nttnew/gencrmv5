@@ -70,18 +70,21 @@ Map<String, dynamic> _$DetailContractItemToJson(DetailContractItem instance) =>
 
 DetailContractData _$DetailContractDataFromJson(Map<String, dynamic> json) =>
     DetailContractData(
-      json['group_name'] as String?,
-      json['mup'] as int?,
-      (json['data'] as List<dynamic>?)
-          ?.map((e) => DetailContractItem.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
+        json['group_name'] as String?,
+        json['mup'] as int?,
+        (json['data'] as List<dynamic>?)
+            ?.map((e) => DetailContractItem.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        (json['list_file'] as List<dynamic>?)
+            ?.map((e) => AttachFile.fromJson(e))
+            .toList());
 
 Map<String, dynamic> _$DetailContractDataToJson(DetailContractData instance) =>
     <String, dynamic>{
       'group_name': instance.group_name,
       'mup': instance.mup,
       'data': instance.data,
+      'list_file': instance.listFile
     };
 
 DetailContractResponse _$DetailContractResponseFromJson(
