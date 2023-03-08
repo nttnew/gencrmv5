@@ -73,43 +73,33 @@ class _FormAddDataState extends State<FormAddData> {
       FormAddBloc.of(context).add(InitFormAddCusOrEvent());
     } else if (type == 11) {
       // print("id ${Get.arguments[2]}");
-      FormAddBloc.of(context)
-          .add(InitFormAddContactCusEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddContactCusEvent(Get.arguments[2].toString()));
     } else if (type == 12) {
-      FormAddBloc.of(context)
-          .add(InitFormAddOppCusEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddOppCusEvent(Get.arguments[2].toString()));
     } else if (type == 13) {
-      FormAddBloc.of(context)
-          .add(InitFormAddContractCusEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddContractCusEvent(Get.arguments[2].toString()));
     } else if (type == 14) {
-      FormAddBloc.of(context)
-          .add(InitFormAddJobCusEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddJobCusEvent(Get.arguments[2].toString()));
     } else if (type == 15) {
-      FormAddBloc.of(context)
-          .add(InitFormAddSupportCusEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddSupportCusEvent(Get.arguments[2].toString()));
     } else if (type == 2) {
       FormAddBloc.of(context).add(InitFormAddAgencyEvent());
     } else if (type == 3) {
       FormAddBloc.of(context).add(InitFormAddChanceEvent());
     } else if (type == 4) {
-      FormAddBloc.of(context)
-          .add(InitFormAddContractEvent(id: Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddContractEvent(id: Get.arguments[2].toString()));
     } else if (type == 5) {
       FormAddBloc.of(context).add(InitFormAddJobEvent());
     } else if (type == 6) {
       FormAddBloc.of(context).add(InitFormAddSupportEvent());
     } else if (type == 21) {
-      FormAddBloc.of(context)
-          .add(InitFormAddJobOppEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddJobOppEvent(Get.arguments[2].toString()));
     } else if (type == 31) {
-      FormAddBloc.of(context)
-          .add(InitFormAddJobChanceEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddJobChanceEvent(Get.arguments[2].toString()));
     } else if (type == 41) {
-      FormAddBloc.of(context)
-          .add(InitFormAddSupportContractEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddSupportContractEvent(Get.arguments[2].toString()));
     } else if (type == 42) {
-      FormAddBloc.of(context)
-          .add(InitFormAddJobContractEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddJobContractEvent(Get.arguments[2].toString()));
     }
     super.initState();
   }
@@ -136,13 +126,7 @@ class _FormAddDataState extends State<FormAddData> {
         appBar: AppBar(
           toolbarHeight: AppValue.heights * 0.1,
           backgroundColor: HexColor("#D0F1EB"),
-          title: WidgetText(
-              title: title,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16)),
+          title: WidgetText(title: title, style: TextStyle(color: Colors.black, fontFamily: "Montserrat", fontWeight: FontWeight.w700, fontSize: 16)),
           leading: _buildBack(),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -164,8 +148,7 @@ class _FormAddDataState extends State<FormAddData> {
                     onTap1: () {
                       Get.back();
                       Get.back();
-                      GetListCustomerBloc.of(context)
-                          .add(InitGetListOrderEvent("", 1, ""));
+                      GetListCustomerBloc.of(context).add(InitGetListOrderEvent("", 1, ""));
                     },
                   );
                 },
@@ -195,46 +178,33 @@ class _FormAddDataState extends State<FormAddData> {
                       Get.back();
                       Get.back();
                       if (type == 2)
-                        GetListClueBloc.of(context)
-                            .add(InitGetListClueEvent('', 1, ''));
+                        GetListClueBloc.of(context).add(InitGetListClueEvent('', 1, ''));
                       else if (type == 3) {
-                        GetListChanceBloc.of(context)
-                            .add(InitGetListOrderEventChance('', 1, ''));
+                        GetListChanceBloc.of(context).add(InitGetListOrderEventChance('', 1, ''));
                       } else if (type == 4) {
-                        ContractBloc.of(context)
-                            .add(InitGetContractEvent(1, "", ""));
+                        ContractBloc.of(context).add(InitGetContractEvent(1, "", ""));
                       } else if (type == 5) {
-                        WorkBloc.of(context)
-                            .add(InitGetListWorkEvent("1", "", ""));
+                        WorkBloc.of(context).add(InitGetListWorkEvent("1", "", ""));
                       } else if (type == 6) {
-                        SupportBloc.of(context)
-                            .add(InitGetSupportEvent(1, '', ''));
+                        SupportBloc.of(context).add(InitGetSupportEvent(1, '', ''));
                       } else if (type == 21) {
                         WorkClueBloc.of(context).add(GetWorkClue(id: id));
                       } else if (type == 31) {
-                        GetJobChanceBloc.of(context)
-                            .add(InitGetJobEventChance(int.parse(id)));
+                        GetJobChanceBloc.of(context).add(InitGetJobEventChance(int.parse(id)));
                       } else if (type == 41) {
-                        SupportContractBloc.of(context)
-                            .add(InitGetSupportContractEvent(int.parse(id)));
+                        SupportContractBloc.of(context).add(InitGetSupportContractEvent(int.parse(id)));
                       } else if (type == 42) {
-                        JobContractBloc.of(context)
-                            .add(InitGetJobContractEvent(int.parse(id)));
+                        JobContractBloc.of(context).add(InitGetJobContractEvent(int.parse(id)));
                       } else if (type == 11) {
-                        ClueCustomerBloc.of(context)
-                            .add(InitGetClueCustomerEvent(int.parse(id)));
+                        ClueCustomerBloc.of(context).add(InitGetClueCustomerEvent(int.parse(id)));
                       } else if (type == 12) {
-                        ChanceCustomerBloc.of(context)
-                            .add(InitGetChanceCustomerEvent(int.parse(id)));
+                        ChanceCustomerBloc.of(context).add(InitGetChanceCustomerEvent(int.parse(id)));
                       } else if (type == 13) {
-                        ContractCustomerBloc.of(context)
-                            .add(InitGetContractCustomerEvent(int.parse(id)));
+                        ContractCustomerBloc.of(context).add(InitGetContractCustomerEvent(int.parse(id)));
                       } else if (type == 14) {
-                        JobCustomerBloc.of(context)
-                            .add(InitGetJobCustomerEvent(int.parse(id)));
+                        JobCustomerBloc.of(context).add(InitGetJobCustomerEvent(int.parse(id)));
                       } else if (type == 15) {
-                        SupportCustomerBloc.of(context)
-                            .add(InitGetSupportCustomerEvent(int.parse(id)));
+                        SupportCustomerBloc.of(context).add(InitGetSupportCustomerEvent(int.parse(id)));
                       }
                     },
                   );
@@ -254,33 +224,20 @@ class _FormAddDataState extends State<FormAddData> {
             }
           },
           child: Container(
-            padding: EdgeInsets.only(
-                left: AppValue.widths * 0.05,
-                right: AppValue.widths * 0.05,
-                top: AppValue.heights * 0.02),
+            padding: EdgeInsets.only(left: AppValue.widths * 0.05, right: AppValue.widths * 0.05, top: AppValue.heights * 0.02),
             color: Colors.white,
             child: SingleChildScrollView(
-              child: BlocBuilder<FormAddBloc, FormAddState>(
-                  builder: (context, state) {
+              child: BlocBuilder<FormAddBloc, FormAddState>(builder: (context, state) {
                 if (state is LoadingFormAddCustomerOrState) {
                   addData = [];
                   data = [];
                   return Container();
                 } else if (state is SuccessFormAddCustomerOrState) {
                   for (int i = 0; i < state.listAddData.length; i++) {
-                    addData.add(ModelItemAdd(
-                        group_name: state.listAddData[i].group_name ?? '',
-                        data: []));
-                    for (int j = 0;
-                        j < state.listAddData[i].data!.length;
-                        j++) {
+                    addData.add(ModelItemAdd(group_name: state.listAddData[i].group_name ?? '', data: []));
+                    for (int j = 0; j < state.listAddData[i].data!.length; j++) {
                       // if(state.listAddData[i].data![j].field_type!="HIDDEN")
-                      addData[i].data.add(ModelDataAdd(
-                          label: state.listAddData[i].data![j].field_name,
-                          value: state.listAddData[i].data![j].field_set_value
-                              .toString(),
-                          required:
-                              state.listAddData[i].data![j].field_require));
+                      addData[i].data.add(ModelDataAdd(label: state.listAddData[i].data![j].field_name, value: state.listAddData[i].data![j].field_set_value.toString(), required: state.listAddData[i].data![j].field_require));
                     }
                   }
                   return Column(
@@ -290,181 +247,115 @@ class _FormAddDataState extends State<FormAddData> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: List.generate(
                             state.listAddData.length,
-                            (index) =>
-                                (state.listAddData[index].data != null &&
-                                        state.listAddData[index].data!.length >
-                                            0)
-                                    ? Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: AppValue.heights * 0.01,
-                                          ),
-                                          state.listAddData[index].group_name !=
-                                                  null
-                                              ? WidgetText(
-                                                  title: state
-                                                          .listAddData[index]
-                                                          .group_name ??
-                                                      '',
-                                                  style:
-                                                      AppStyle.DEFAULT_18_BOLD)
-                                              : Container(),
-                                          SizedBox(
-                                            height: AppValue.heights * 0.01,
-                                          ),
-                                          Column(
-                                            children: List.generate(
-                                                state.listAddData[index].data!
-                                                    .length,
-                                                (index1) =>
-                                                    state.listAddData[index].data![index1].field_special ==
-                                                            "none-edit"
-                                                        ? ((state.listAddData[index].data![index1].field_id ==
-                                                                "12547"||state.listAddData[index].data![index1].field_id ==
-                                                        "1472")
-                                                            ? BlocBuilder<PhoneBloc, PhoneState>(
-                                                                builder: (context,
-                                                                    stateA) {
-                                                                if (stateA
-                                                                    is SuccessPhoneState) {
-                                                                  return _fieldInputCustomer(
-                                                                      state.listAddData[index].data![
-                                                                          index1],
-                                                                      index,
-                                                                      index1,
-                                                                      noEdit:
-                                                                          true,
-                                                                      value: stateA
-                                                                          .phone);
-                                                                } else
-                                                                  return Container();
-                                                              })
-                                                            : _fieldInputCustomer(
-                                                                state.listAddData[index].data![index1], index, index1,
-                                                                noEdit: true))
-                                                        : state.listAddData[index].data![index1].field_type ==
-                                                                "SELECT"
-                                                            ? ((state.listAddData[index].data![index1].field_id == '115'||state.listAddData[index].data![index1].field_id == '135')
-                                                                ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(
-                                                                    builder: (context,stateA) {
-                                                                    if (stateA is UpdateGetContacBytCustomerState)
-                                                                      {
-                                                                        return InputDropdown(
-                                                                            dropdownItemList: stateA
-                                                                                .listContactByCustomer,
-                                                                            data: state.listAddData[index].data![
-                                                                            index1],
-                                                                            onSuccess:
-                                                                                (data) {
-                                                                              addData[index].data[index1].value =
-                                                                                  data;
-                                                                              if (state.listAddData[index].data![index1].field_id !=
-                                                                                  "107")
-                                                                                PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
-                                                                            },
-                                                                            value:
-                                                                            state.listAddData[index].data![index1].field_value ?? '');
-                                                                      }
-                                                                    else if(stateA is LoadingContactByCustomerState){
-                                                                      return Container();
-                                                                    }
-                                                                    else
-                                                                      {
-                                                                        return InputDropdown(
-                                                                            dropdownItemList: state.listAddData[index].data![index1].field_datasource ??
-                                                                                [],
-                                                                            data: state.listAddData[index].data![
-                                                                            index1],
-                                                                            onSuccess:
-                                                                                (data) {
-                                                                              addData[index].data[index1].value =
-                                                                                  data;
-                                                                              if (state.listAddData[index].data![index1].field_id !=
-                                                                                  "107")
-                                                                                PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
-                                                                            },
-                                                                            value:
-                                                                            state.listAddData[index].data![index1].field_value ?? '');
-                                                                      }
-                                                                  })
-                                                                : InputDropdown(
-                                                                    dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
+                            (index) => (state.listAddData[index].data != null && state.listAddData[index].data!.length > 0)
+                                ? Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: AppValue.heights * 0.01,
+                                      ),
+                                      state.listAddData[index].group_name != null ? WidgetText(title: state.listAddData[index].group_name ?? '', style: AppStyle.DEFAULT_18_BOLD) : Container(),
+                                      SizedBox(
+                                        height: AppValue.heights * 0.01,
+                                      ),
+                                      Column(
+                                        children: List.generate(
+                                            state.listAddData[index].data!.length,
+                                            (index1) => state.listAddData[index].data![index1].field_special == "none-edit"
+                                                ? ((state.listAddData[index].data![index1].field_id == "12547" || state.listAddData[index].data![index1].field_id == "1472")
+                                                    ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
+                                                        if (stateA is SuccessPhoneState) {
+                                                          return _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, noEdit: true, value: stateA.phone);
+                                                        } else
+                                                          return Container();
+                                                      })
+                                                    : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, noEdit: true))
+                                                : state.listAddData[index].data![index1].field_type == "SELECT"
+                                                    ? ((state.listAddData[index].data![index1].field_id == '115' || state.listAddData[index].data![index1].field_id == '135')
+                                                        ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(builder: (context, stateA) {
+                                                            if (stateA is UpdateGetContacBytCustomerState) {
+                                                              return InputDropdown(
+                                                                  dropdownItemList: stateA.listContactByCustomer,
+                                                                  data: state.listAddData[index].data![index1],
+                                                                  onSuccess: (data) {
+                                                                    addData[index].data[index1].value = data;
+                                                                    if (state.listAddData[index].data![index1].field_id != "107") PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
+                                                                  },
+                                                                  value: state.listAddData[index].data![index1].field_value ?? '');
+                                                            } else if (stateA is LoadingContactByCustomerState) {
+                                                              return Container();
+                                                            } else {
+                                                              return InputDropdown(
+                                                                  dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
+                                                                  data: state.listAddData[index].data![index1],
+                                                                  onSuccess: (data) {
+                                                                    addData[index].data[index1].value = data;
+                                                                    if (state.listAddData[index].data![index1].field_id != "107") PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
+                                                                  },
+                                                                  value: state.listAddData[index].data![index1].field_value ?? '');
+                                                            }
+                                                          })
+                                                        : InputDropdown(
+                                                            dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
+                                                            data: state.listAddData[index].data![index1],
+                                                            onSuccess: (data) {
+                                                              addData[index].data[index1].value = data;
+                                                              if (state.listAddData[index].data![index1].field_id == "107" || state.listAddData[index].data![index1].field_id == "128") {
+                                                                ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
+                                                                PhoneBloc.of(context).add(InitPhoneEvent(data));
+                                                              }
+                                                            },
+                                                            value: state.listAddData[index].data![index1].field_value ?? ''))
+                                                    : state.listAddData[index].data![index1].field_type == "TEXT_MULTI"
+                                                        ? _fieldInputTextMulti(state.listAddData[index].data![index1].field_datasource!, state.listAddData[index].data![index1].field_label!, state.listAddData[index].data![index1].field_require!, index, index1,
+                                                            (state.listAddData[index].data![index1].field_set_value_datasource != "" && state.listAddData[index].data![index1].field_set_value_datasource != null) ? state.listAddData[index].data![index1].field_set_value_datasource![0][0].toString() : "", state.listAddData[index].data![index1].field_maxlength ?? '')
+                                                        : state.listAddData[index].data![index1].field_type == "HIDDEN"
+                                                            ? Container()
+                                                            : state.listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"
+                                                                ? WidgetInputMulti(
                                                                     data: state.listAddData[index].data![index1],
-                                                                    onSuccess: (data) {
-                                                                      addData[index]
-                                                                          .data[
-                                                                              index1]
-                                                                          .value = data;
-                                                                      if (state.listAddData[index].data![index1].field_id =="107"||
-                                                                          state.listAddData[index].data![index1].field_id =="128")
-                                                                        {
-                                                                          ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
-                                                                          PhoneBloc.of(context)
-                                                                              .add(InitPhoneEvent(data));
-                                                                        }
+                                                                    onSelect: (data) {
+                                                                      addData[index].data[index1].value = data.join(",");
                                                                     },
-                                                                    value: state.listAddData[index].data![index1].field_value ?? ''))
-                                                            : state.listAddData[index].data![index1].field_type == "TEXT_MULTI"
-                                                                ? _fieldInputTextMulti(
-                                                        state.listAddData[index].data![index1].field_datasource!,
-                                                        state.listAddData[index].data![index1].field_label!,
-                                                        state.listAddData[index].data![index1].field_require!,
-                                                        index, index1,
-                                                        (state.listAddData[index].data![index1].field_set_value_datasource!=""&&state.listAddData[index].data![index1].field_set_value_datasource!=null) ?state.listAddData[index].data![index1].field_set_value_datasource![0][0].toString():"",
-                                                        state.listAddData[index].data![index1].field_maxlength ?? '')
-                                                                : state.listAddData[index].data![index1].field_type == "HIDDEN"
-                                                                    ? Container()
-                                                                    : state.listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"
-                                                                        ? WidgetInputMulti(
-                                                                            data:
-                                                                                state.listAddData[index].data![index1],
-                                                                            onSelect:
-                                                                                (data) {
-                                                                              addData[index].data[index1].value = data.join(",");
+                                                                  )
+                                                                : state.listAddData[index].data![index1].field_type == "DATE"
+                                                                    ? WidgetInputDate(
+                                                                        data: state.listAddData[index].data![index1],
+                                                                        onSelect: (date) {
+                                                                          addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                        },
+                                                                        onInit: () {
+                                                                          DateTime date = DateTime.now();
+                                                                          addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                        },
+                                                                      )
+                                                                    : state.listAddData[index].data![index1].field_type == "CHECK"
+                                                                        ? renderCheckBox(
+                                                                            onChange: (check) {
+                                                                              addData[index].data[index1].value = check ? 1 : 0;
                                                                             },
+                                                                            data: state.listAddData[index].data![index1],
                                                                           )
-                                                                        : state.listAddData[index].data![index1].field_type == "DATE"
-                                                                            ? WidgetInputDate(
+                                                                        : state.listAddData[index].data![index1].field_type == "PERCENTAGE"
+                                                                            ? FieldInputPercent(
                                                                                 data: state.listAddData[index].data![index1],
-                                                                                onSelect: (date) {
-                                                                                  addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
-                                                                                },
-                                                                                onInit: () {
-                                                                                  DateTime date = DateTime.now();
-                                                                                  addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                                onChanged: (text) {
+                                                                                  addData[index].data[index1].value = text;
                                                                                 },
                                                                               )
-                                                                            :state.listAddData[index].data![index1].field_type == "CHECK"?
-                                                              renderCheckBox(
-                                                                onChange: (check){
-                                                                  addData[index].data[index1].value =check?1:0;
-                                                                },
-                                                                data: state.listAddData[index].data![index1],
-                                                              )
-                                                        :state.listAddData[index].data![index1].field_type == "PERCENTAGE"?
-                                                        FieldInputPercent(
-                                                          data: state.listAddData[index].data![index1],
-                                                          onChanged: (text){
-                                                            addData[index].data[index1].value = text;
-                                                          },
-                                                        )
-                                                        : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1)),
-                                          )
-                                        ],
+                                                                            : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1)),
                                       )
-                                    : Container()),
+                                    ],
+                                  )
+                                : Container()),
                       ),
-                      BlocBuilder<AttackBloc, AttackState>(
-                          builder: (context, state) {
+                      BlocBuilder<AttackBloc, AttackState>(builder: (context, state) {
                         if (state is SuccessAttackState) if (state.file != null)
                           return Container(
                               margin: EdgeInsets.symmetric(vertical: 8),
                               width: Get.width,
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     child: WidgetText(
@@ -477,8 +368,7 @@ class _FormAddDataState extends State<FormAddData> {
                                   GestureDetector(
                                     onTap: () {
                                       fileUpload = null;
-                                      AttackBloc.of(context)
-                                          .add(InitAttackEvent());
+                                      AttackBloc.of(context).add(InitAttackEvent());
                                     },
                                     child: WidgetContainerImage(
                                       image: 'assets/icons/icon_delete.png',
@@ -496,19 +386,14 @@ class _FormAddDataState extends State<FormAddData> {
                       }),
                       Row(
                         children: [
-                          GestureDetector(
-                              onTap: this.onDinhKem,
-                              child:
-                                  SvgPicture.asset("assets/icons/attack.svg")),
+                          GestureDetector(onTap: this.onDinhKem, child: SvgPicture.asset("assets/icons/attack.svg")),
                           Spacer(),
                           GestureDetector(
                             onTap: this.onClickSave,
                             child: Container(
                               height: AppValue.widths * 0.1,
                               width: AppValue.widths * 0.25,
-                              decoration: BoxDecoration(
-                                  color: HexColor("#F1A400"),
-                                  borderRadius: BorderRadius.circular(20.5)),
+                              decoration: BoxDecoration(color: HexColor("#F1A400"), borderRadius: BorderRadius.circular(20.5)),
                               child: Center(
                                   child: Text(
                                 "Lưu",
@@ -556,9 +441,7 @@ class _FormAddDataState extends State<FormAddData> {
         Container(
           width: double.infinity,
           height: AppValue.heights * 0.05,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: HexColor("#BEB4B4"))),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: HexColor("#BEB4B4"))),
           child: Row(children: [
             SizedBox(
               width: 10,
@@ -580,12 +463,7 @@ class _FormAddDataState extends State<FormAddData> {
             ),
             Padding(
               padding: EdgeInsets.only(right: 15),
-              child: Center(
-                  child: Container(
-                      height: 50,
-                      width: 50,
-                      child:
-                          SvgPicture.asset("assets/icons/iconInputImg.svg"))),
+              child: Center(child: Container(height: 50, width: 50, child: SvgPicture.asset("assets/icons/iconInputImg.svg"))),
             )
           ]),
         ),
@@ -593,10 +471,8 @@ class _FormAddDataState extends State<FormAddData> {
     );
   }
 
-  Widget _fieldInputCustomerType(List<List<dynamic>> dropdownItemList,
-      CustomerIndividualItemData data, Function onSuccess, String value) {
-    if (data.field_id == "256" &&
-        (data.field_datasource == null || data.field_datasource!.length == 0)) {
+  Widget _fieldInputCustomerType(List<List<dynamic>> dropdownItemList, CustomerIndividualItemData data, Function onSuccess, String value) {
+    if (data.field_id == "256" && (data.field_datasource == null || data.field_datasource!.length == 0)) {
       return Container(
         margin: EdgeInsets.only(bottom: 16),
         child: Column(
@@ -611,15 +487,7 @@ class _FormAddDataState extends State<FormAddData> {
                 text: data.field_label ?? '',
                 style: titlestyle(),
                 children: <TextSpan>[
-                  data.field_require == 1
-                      ? TextSpan(
-                          text: '*',
-                          style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.red))
-                      : TextSpan(),
+                  data.field_require == 1 ? TextSpan(text: '*', style: TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: Colors.red)) : TextSpan(),
                 ],
               ),
             ),
@@ -637,13 +505,11 @@ class _FormAddDataState extends State<FormAddData> {
                     Get.back();
                     print("ID khách hàng ${id}");
                     // AppNavigator.navigateFormAdd('Thêm đầu mối',11,id: Get.arguments[2]);
-                    Get.toNamed(ROUTE_NAMES.FORM_ADD,
-                        arguments: ['Thêm đầu mối', 11, id]);
+                    Get.toNamed(ROUTE_NAMES.FORM_ADD, arguments: ['Thêm đầu mối', 11, id]);
                   },
                   child: WidgetText(
                     title: "Thêm đầu mối",
-                    style: AppStyle.DEFAULT_12_BOLD
-                        .copyWith(color: COLORS.TEXT_BLUE_BOLD),
+                    style: AppStyle.DEFAULT_12_BOLD.copyWith(color: COLORS.TEXT_BLUE_BOLD),
                   ),
                 ),
               ],
@@ -656,10 +522,7 @@ class _FormAddDataState extends State<FormAddData> {
       int defaultValue = -1;
       for (int i = 0; i < dropdownItemList.length; i++) {
         if (dropdownItemList[i][1] != null && dropdownItemList[i][0] != null) {
-          dropdow.add({
-            'label': dropdownItemList[i][1],
-            'value': dropdownItemList[i][0]
-          });
+          dropdow.add({'label': dropdownItemList[i][1], 'value': dropdownItemList[i][0]});
           if (value == dropdownItemList[i][1]) {
             defaultValue = i;
           }
@@ -679,15 +542,7 @@ class _FormAddDataState extends State<FormAddData> {
                 text: data.field_label ?? '',
                 style: titlestyle(),
                 children: <TextSpan>[
-                  data.field_require == 1
-                      ? TextSpan(
-                          text: '*',
-                          style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.red))
-                      : TextSpan(),
+                  data.field_require == 1 ? TextSpan(text: '*', style: TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: Colors.red)) : TextSpan(),
                 ],
               ),
             ),
@@ -700,12 +555,10 @@ class _FormAddDataState extends State<FormAddData> {
                     enableDrag: false,
                     isScrollControlled: true,
                     context: context,
-                    constraints: BoxConstraints(
-                        maxHeight: Get.height * 0.75, minWidth: Get.width),
+                    constraints: BoxConstraints(maxHeight: Get.height * 0.75, minWidth: Get.width),
                     builder: (BuildContext context) {
                       return Container(
-                        padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom),
+                        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                         child: DataDropDownItem(
                           data: dropdow,
                           onSuccess: (data) {
@@ -724,12 +577,9 @@ class _FormAddDataState extends State<FormAddData> {
                   //     border: Border.all(color: HexColor("#BEB4B4"))),
                   child: Container(
                     width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: HexColor("#BEB4B4"))),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: HexColor("#BEB4B4"))),
                     child: Padding(
-                      padding: EdgeInsets.only(
-                          left: 10, top: 10, bottom: 10, right: 10),
+                      padding: EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10),
                       child: Container(
                         child: Row(
                           children: [
@@ -737,11 +587,7 @@ class _FormAddDataState extends State<FormAddData> {
                               child: WidgetText(
                                 title: value,
                                 maxLine: 1,
-                                style: TextStyle(
-                                    fontSize: 11,
-                                    fontFamily: "Roboto",
-                                    fontWeight: FontWeight.w500,
-                                    color: HexColor("#838A91")),
+                                style: TextStyle(fontSize: 11, fontFamily: "Roboto", fontWeight: FontWeight.w500, color: HexColor("#838A91")),
                               ),
                             ),
                             Container(
@@ -796,11 +642,8 @@ class _FormAddDataState extends State<FormAddData> {
     }
   }
 
-  Widget _fieldInputCustomer(
-      CustomerIndividualItemData data, int index, int index1,
-      {bool noEdit = false, String value = ""}) {
-    if ((type == 21 && data.field_id == "12547") ||
-        (type == 31 && data.field_id == "12547")) {
+  Widget _fieldInputCustomer(CustomerIndividualItemData data, int index, int index1, {bool noEdit = false, String value = ""}) {
+    if ((type == 21 && data.field_id == "12547") || (type == 31 && data.field_id == "12547")) {
       return Container();
     } else {
       return Container(
@@ -813,15 +656,7 @@ class _FormAddDataState extends State<FormAddData> {
                 text: data.field_label ?? '',
                 style: titlestyle(),
                 children: <TextSpan>[
-                  data.field_require == 1
-                      ? TextSpan(
-                          text: '*',
-                          style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.red))
-                      : TextSpan(),
+                  data.field_require == 1 ? TextSpan(text: '*', style: TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: Colors.red)) : TextSpan(),
                 ],
               ),
             ),
@@ -830,10 +665,7 @@ class _FormAddDataState extends State<FormAddData> {
             ),
             Container(
               width: double.infinity,
-              decoration: BoxDecoration(
-                  color: noEdit == true ? COLORS.LIGHT_GREY : Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: HexColor("#BEB4B4"))),
+              decoration: BoxDecoration(color: noEdit == true ? COLORS.LIGHT_GREY : Colors.white, borderRadius: BorderRadius.circular(5), border: Border.all(color: HexColor("#BEB4B4"))),
               child: Padding(
                 padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
                 child: Container(
@@ -860,12 +692,7 @@ class _FormAddDataState extends State<FormAddData> {
                             : data.field_set_value != null
                                 ? data.field_set_value.toString()
                                 : null,
-                    decoration: InputDecoration(
-                        hintStyle: hintTextStyle(),
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                        isDense: true),
+                    decoration: InputDecoration(hintStyle: hintTextStyle(), focusedBorder: InputBorder.none, enabledBorder: InputBorder.none, disabledBorder: InputBorder.none, isDense: true),
                   ),
                 ),
               ),
@@ -876,19 +703,11 @@ class _FormAddDataState extends State<FormAddData> {
     }
   }
 
-  Widget _fieldInputTextMulti(
-      List<List<dynamic>> dropdownItemList,
-      String label,
-      int required,
-      int index,
-      int index1,
-      String value,
-      String maxLength) {
+  Widget _fieldInputTextMulti(List<List<dynamic>> dropdownItemList, String label, int required, int index, int index1, String value, String maxLength) {
     List<ModelDataAdd> dropdow = [];
     int indexDefault = -1;
     for (int i = 0; i < dropdownItemList.length; i++) {
-      dropdow.add(ModelDataAdd(
-          label: dropdownItemList[i][1], value: dropdownItemList[i][0]));
+      dropdow.add(ModelDataAdd(label: dropdownItemList[i][1], value: dropdownItemList[i][0]));
       if (dropdownItemList[i][0].toString() == value) {
         indexDefault = i;
       }
@@ -901,34 +720,19 @@ class _FormAddDataState extends State<FormAddData> {
           RichText(
             text: TextSpan(
               text: label,
-              style: TextStyle(
-                  fontFamily: "Roboto",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+              style: TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: HexColor("#697077")),
               children: <TextSpan>[
-                required == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red))
-                    : TextSpan(),
+                required == 1 ? TextSpan(text: '*', style: TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: Colors.red)) : TextSpan(),
               ],
             ),
           ),
           AppValue.vSpaceTiny,
           MultiSelectDialogField<ModelDataAdd>(
-              items: dropdow
-                  .map((e) => MultiSelectItem(e, e.label ?? ''))
-                  .toList(),
+              items: dropdow.map((e) => MultiSelectItem(e, e.label ?? '')).toList(),
               listType: MultiSelectListType.CHIP,
               onConfirm: (values) {
                 if (maxLength != '' && values.length > int.parse(maxLength)) {
-                  values.removeRange(
-                      int.parse(maxLength) - 1, values.length - 1);
+                  values.removeRange(int.parse(maxLength) - 1, values.length - 1);
                   showDialog(
                     context: context,
                     barrierDismissible: false,
@@ -949,8 +753,7 @@ class _FormAddDataState extends State<FormAddData> {
               },
               onSelectionChanged: (values) {
                 if (maxLength != "" && values.length > int.parse(maxLength)) {
-                  values.removeRange(
-                      int.parse(maxLength) - 1, values.length - 1);
+                  values.removeRange(int.parse(maxLength) - 1, values.length - 1);
                 }
               },
               searchable: true,
@@ -962,9 +765,7 @@ class _FormAddDataState extends State<FormAddData> {
                 label,
                 style: titlestyle(),
               ),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: HexColor("#BEB4B4"))),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: HexColor("#BEB4B4"))),
               buttonIcon: Icon(
                 Icons.arrow_drop_down,
                 size: 25,
@@ -1047,31 +848,19 @@ class _FormAddDataState extends State<FormAddData> {
   //   );
   // }
 
-  TextStyle hintTextStyle() => TextStyle(
-      fontFamily: "Roboto",
-      fontSize: 11,
-      fontWeight: FontWeight.w500,
-      color: HexColor("#838A91"));
+  TextStyle hintTextStyle() => TextStyle(fontFamily: "Roboto", fontSize: 11, fontWeight: FontWeight.w500, color: HexColor("#838A91"));
 
-  TextStyle titlestyle() => TextStyle(
-      fontFamily: "Roboto",
-      fontSize: 12,
-      fontWeight: FontWeight.w500,
-      color: HexColor("#697077"));
+  TextStyle titlestyle() => TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: HexColor("#697077"));
 
   void onClickSave() {
     final Map<String, dynamic> data = {};
     bool check = false;
     for (int i = 0; i < addData.length; i++) {
       for (int j = 0; j < addData[i].data.length; j++) {
-        if ((addData[i].data[j].value == null ||
-                addData[i].data[j].value == "null" ||
-                addData[i].data[j].value == "") &&
-            addData[i].data[j].required == 1) {
+        if ((addData[i].data[j].value == null || addData[i].data[j].value == "null" || addData[i].data[j].value == "") && addData[i].data[j].required == 1) {
           check = true;
           break;
-        } else if (addData[i].data[j].value != null &&
-            addData[i].data[j].value != "null")
+        } else if (addData[i].data[j].value != null && addData[i].data[j].value != "null")
           data["${addData[i].data[j].label}"] = addData[i].data[j].value;
         else {
           data["${addData[i].data[j].label}"] = "";
@@ -1090,16 +879,13 @@ class _FormAddDataState extends State<FormAddData> {
       );
     } else {
       if (type == 1) {
-        AddDataBloc.of(context)
-            .add(AddCustomerOrEvent(data, files: fileUpload));
+        AddDataBloc.of(context).add(AddCustomerOrEvent(data, files: fileUpload));
       } else if (type == 11) {
         data["customer_id"] = Get.arguments[2];
-        AddDataBloc.of(context)
-            .add(AddContactCustomerEvent(data, files: fileUpload));
+        AddDataBloc.of(context).add(AddContactCustomerEvent(data, files: fileUpload));
       } else if (type == 12) {
         data["customer_id"] = Get.arguments[2];
-        AddDataBloc.of(context)
-            .add(AddOpportunityEvent(data, files: fileUpload));
+        AddDataBloc.of(context).add(AddOpportunityEvent(data, files: fileUpload));
       } else if (type == 13) {
         data["customer_id"] = Get.arguments[2];
         AddDataBloc.of(context).add(AddContractEvent(data, files: fileUpload));
@@ -1111,11 +897,9 @@ class _FormAddDataState extends State<FormAddData> {
         data["nguoi_xu_lht"] = id_user;
         AddDataBloc.of(context).add(AddSupportEvent(data, files: fileUpload));
       } else if (type == 2) {
-        AddDataBloc.of(context)
-            .add(AddContactCustomerEvent(data, files: fileUpload));
+        AddDataBloc.of(context).add(AddContactCustomerEvent(data, files: fileUpload));
       } else if (type == 3) {
-        AddDataBloc.of(context)
-            .add(AddOpportunityEvent(data, files: fileUpload));
+        AddDataBloc.of(context).add(AddOpportunityEvent(data, files: fileUpload));
       } else if (type == 4) {
         data["customer_id"] = Get.arguments[2];
         AddDataBloc.of(context).add(AddContractEvent(data, files: fileUpload));
@@ -1142,13 +926,12 @@ class _FormAddDataState extends State<FormAddData> {
     }
   }
 
-  Future<void> onDinhKem()  async{
+  Future<void> onDinhKem() async {
     ImagePicker picker = ImagePicker();
-    XFile? result =await picker.pickImage(source: ImageSource.gallery);
+    XFile? result = await picker.pickImage(source: ImageSource.gallery, preferredCameraDevice: CameraDevice.rear);
     if (result != null) {
       fileUpload = File(result.path);
-      AttackBloc.of(context)
-          .add(InitAttackEvent(file: File(result.path)));
+      AttackBloc.of(context).add(InitAttackEvent(file: File(result.path)));
     } else {
       // User canceled the picker
     }
@@ -1156,8 +939,7 @@ class _FormAddDataState extends State<FormAddData> {
 }
 
 class WidgetInputMulti extends StatefulWidget {
-  WidgetInputMulti({Key? key, required this.data, required this.onSelect})
-      : super(key: key);
+  WidgetInputMulti({Key? key, required this.data, required this.onSelect}) : super(key: key);
 
   final CustomerIndividualItemData data;
   final Function onSelect;
@@ -1194,21 +976,9 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
           RichText(
             text: TextSpan(
               text: widget.data.field_label ?? '',
-              style: TextStyle(
-                  fontFamily: "Roboto",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+              style: TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: HexColor("#697077")),
               children: <TextSpan>[
-                widget.data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red))
-                    : TextSpan(),
+                widget.data.field_require == 1 ? TextSpan(text: '*', style: TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: Colors.red)) : TextSpan(),
               ],
             ),
           ),
@@ -1217,9 +987,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
           ),
           Container(
             width: double.infinity,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: HexColor("#BEB4B4"))),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: HexColor("#BEB4B4"))),
             child: Padding(
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Focus(
@@ -1261,18 +1029,10 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                   // maxLength:widget.data.field_maxlength!=null? int.parse(widget.data.field_maxlength!):null,
                   // maxLengthEnforcement: MaxLengthEnforcement.none,123123
                   inputFormatters: [
-                    LengthLimitingTextInputFormatter(
-                        widget.data.field_maxlength != null
-                            ? int.parse(widget.data.field_maxlength!)
-                            : null),
+                    LengthLimitingTextInputFormatter(widget.data.field_maxlength != null ? int.parse(widget.data.field_maxlength!) : null),
                   ],
-                  maxLengthEnforcement:
-                      MaxLengthEnforcement.truncateAfterCompositionEnds,
-                  decoration: InputDecoration(
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      isDense: true),
+                  maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
+                  decoration: InputDecoration(focusedBorder: InputBorder.none, enabledBorder: InputBorder.none, disabledBorder: InputBorder.none, isDense: true),
                 ),
               ),
             ),
@@ -1290,13 +1050,9 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                                 clipBehavior: Clip.none,
                                 children: [
                                   Container(
-                                      padding: EdgeInsets.only(
-                                          top: 3, bottom: 3, left: 8, right: 8),
+                                      padding: EdgeInsets.only(top: 3, bottom: 3, left: 8, right: 8),
                                       // margin: EdgeInsets.only(right: 8),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          color: COLORS.BACKGROUND),
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), color: COLORS.BACKGROUND),
                                       child: WidgetText(
                                         title: arr[index],
                                         style: AppStyle.DEFAULT_12,
@@ -1329,7 +1085,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
 }
 
 class renderCheckBox extends StatefulWidget {
-  renderCheckBox({Key? key,required this.onChange,required this.data}) : super(key: key);
+  renderCheckBox({Key? key, required this.onChange, required this.data}) : super(key: key);
 
   Function? onChange;
   final CustomerIndividualItemData data;
@@ -1339,7 +1095,7 @@ class renderCheckBox extends StatefulWidget {
 }
 
 class _renderCheckBoxState extends State<renderCheckBox> {
-  bool isCheck=false;
+  bool isCheck = false;
 
   @override
   Widget build(BuildContext context) {
@@ -1351,33 +1107,21 @@ class _renderCheckBoxState extends State<renderCheckBox> {
             width: 24,
             height: 24,
             child: Checkbox(
-                value: isCheck,
-                onChanged: (bool? value){
-                  widget.onChange!(value);
-                  setState((){
-                    isCheck=value!;
-                  });
-                },
+              value: isCheck,
+              onChanged: (bool? value) {
+                widget.onChange!(value);
+                setState(() {
+                  isCheck = value!;
+                });
+              },
             ),
           ),
           RichText(
             text: TextSpan(
               text: widget.data.field_label ?? '',
-              style: TextStyle(
-                  fontFamily: "Roboto",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+              style: TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: HexColor("#697077")),
               children: <TextSpan>[
-                widget.data.field_require == 1
-                    ? TextSpan(
-                    text: '*',
-                    style: TextStyle(
-                        fontFamily: "Roboto",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.red))
-                    : TextSpan(),
+                widget.data.field_require == 1 ? TextSpan(text: '*', style: TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: Colors.red)) : TextSpan(),
               ],
             ),
           ),
@@ -1386,4 +1130,3 @@ class _renderCheckBoxState extends State<renderCheckBox> {
     );
   }
 }
-
