@@ -22,6 +22,7 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:nb_utils/nb_utils.dart';
 import '../../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -65,6 +66,9 @@ class _FormAddDataState extends State<FormAddData> {
   late String id_user;
   File? fileUpload;
 
+  bool isMaxScroll = false;
+  ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
     loadUser();
@@ -101,7 +105,41 @@ class _FormAddDataState extends State<FormAddData> {
     } else if (type == 42) {
       FormAddBloc.of(context).add(InitFormAddJobContractEvent(Get.arguments[2].toString()));
     }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await Future.delayed(const Duration(seconds: 1));
+      print(AppValue.heights);
+      print("${scrollController.position.viewportDimension}");
+      print("${scrollController.position.maxScrollExtent}");
+
+      if (scrollController.position.maxScrollExtent > 7) {
+        scrollHandle();
+      } else {
+        setState(() {
+          isMaxScroll = true;
+        });
+        //scrollHandle();
+      }
+    });
+
     super.initState();
+  }
+
+  void scrollHandle() {
+    scrollController.addListener(() {
+      if (scrollController.offset >= scrollController.position.maxScrollExtent) {
+        if (isMaxScroll == false) {
+          setState(() {
+            isMaxScroll = true;
+          });
+        }
+      } else {
+        if (isMaxScroll == true) {
+          setState(() {
+            isMaxScroll = false;
+          });
+        }
+      }
+    });
   }
 
   loadUser() async {
@@ -117,300 +155,327 @@ class _FormAddDataState extends State<FormAddData> {
   void dispose() {
     data.clear();
     addData.clear();
+    scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: AppValue.heights * 0.1,
-          backgroundColor: HexColor("#D0F1EB"),
-          title: WidgetText(title: title, style: TextStyle(color: Colors.black, fontFamily: "Montserrat", fontWeight: FontWeight.w700, fontSize: 16)),
-          leading: _buildBack(),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(15),
+    return Stack(
+      children: [
+        Scaffold(
+            appBar: AppBar(
+              toolbarHeight: AppValue.heights * 0.1,
+              backgroundColor: HexColor("#D0F1EB"),
+              title: WidgetText(title: title, style: TextStyle(color: Colors.black, fontFamily: "Montserrat", fontWeight: FontWeight.w700, fontSize: 16)),
+              leading: _buildBack(),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(15),
+                ),
+              ),
             ),
-          ),
-        ),
-        body: BlocListener<AddDataBloc, AddDataState>(
-          listener: (context, state) async {
-            if (state is SuccessAddCustomerOrState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
-                    title: MESSAGES.NOTIFICATION,
-                    content: "Thêm mới dữ liệu thành công!",
-                    textButton1: "OK",
-                    backgroundButton1: COLORS.PRIMARY_COLOR,
-                    onTap1: () {
-                      Get.back();
-                      Get.back();
-                      GetListCustomerBloc.of(context).add(InitGetListOrderEvent("", 1, ""));
+            body: BlocListener<AddDataBloc, AddDataState>(
+              listener: (context, state) async {
+                if (state is SuccessAddCustomerOrState) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return WidgetDialog(
+                        title: MESSAGES.NOTIFICATION,
+                        content: "Thêm mới dữ liệu thành công!",
+                        textButton1: "OK",
+                        backgroundButton1: COLORS.PRIMARY_COLOR,
+                        onTap1: () {
+                          Get.back();
+                          Get.back();
+                          GetListCustomerBloc.of(context).add(InitGetListOrderEvent("", 1, ""));
+                        },
+                      );
                     },
                   );
-                },
-              );
-            }
-            if (state is ErrorAddCustomerOrState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
-                    title: MESSAGES.NOTIFICATION,
-                    content: state.msg,
+                }
+                if (state is ErrorAddCustomerOrState) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return WidgetDialog(
+                        title: MESSAGES.NOTIFICATION,
+                        content: state.msg,
+                      );
+                    },
                   );
-                },
-              );
-            }
-            if (state is SuccessAddContactCustomerState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
-                    title: MESSAGES.NOTIFICATION,
-                    content: "Thêm mới dữ liệu thành công!",
-                    textButton1: "OK",
-                    backgroundButton1: COLORS.PRIMARY_COLOR,
-                    onTap1: () {
-                      Get.back();
-                      Get.back();
-                      if (type == 2)
-                        GetListClueBloc.of(context).add(InitGetListClueEvent('', 1, ''));
-                      else if (type == 3) {
-                        GetListChanceBloc.of(context).add(InitGetListOrderEventChance('', 1, ''));
-                      } else if (type == 4) {
-                        ContractBloc.of(context).add(InitGetContractEvent(1, "", ""));
-                      } else if (type == 5) {
-                        WorkBloc.of(context).add(InitGetListWorkEvent("1", "", ""));
-                      } else if (type == 6) {
-                        SupportBloc.of(context).add(InitGetSupportEvent(1, '', ''));
-                      } else if (type == 21) {
-                        WorkClueBloc.of(context).add(GetWorkClue(id: id));
-                      } else if (type == 31) {
-                        GetJobChanceBloc.of(context).add(InitGetJobEventChance(int.parse(id)));
-                      } else if (type == 41) {
-                        SupportContractBloc.of(context).add(InitGetSupportContractEvent(int.parse(id)));
-                      } else if (type == 42) {
-                        JobContractBloc.of(context).add(InitGetJobContractEvent(int.parse(id)));
-                      } else if (type == 11) {
-                        ClueCustomerBloc.of(context).add(InitGetClueCustomerEvent(int.parse(id)));
-                      } else if (type == 12) {
-                        ChanceCustomerBloc.of(context).add(InitGetChanceCustomerEvent(int.parse(id)));
-                      } else if (type == 13) {
-                        ContractCustomerBloc.of(context).add(InitGetContractCustomerEvent(int.parse(id)));
-                      } else if (type == 14) {
-                        JobCustomerBloc.of(context).add(InitGetJobCustomerEvent(int.parse(id)));
-                      } else if (type == 15) {
-                        SupportCustomerBloc.of(context).add(InitGetSupportCustomerEvent(int.parse(id)));
+                }
+                if (state is SuccessAddContactCustomerState) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return WidgetDialog(
+                        title: MESSAGES.NOTIFICATION,
+                        content: "Thêm mới dữ liệu thành công!",
+                        textButton1: "OK",
+                        backgroundButton1: COLORS.PRIMARY_COLOR,
+                        onTap1: () {
+                          Get.back();
+                          Get.back();
+                          if (type == 2)
+                            GetListClueBloc.of(context).add(InitGetListClueEvent('', 1, ''));
+                          else if (type == 3) {
+                            GetListChanceBloc.of(context).add(InitGetListOrderEventChance('', 1, ''));
+                          } else if (type == 4) {
+                            ContractBloc.of(context).add(InitGetContractEvent(1, "", ""));
+                          } else if (type == 5) {
+                            WorkBloc.of(context).add(InitGetListWorkEvent("1", "", ""));
+                          } else if (type == 6) {
+                            SupportBloc.of(context).add(InitGetSupportEvent(1, '', ''));
+                          } else if (type == 21) {
+                            WorkClueBloc.of(context).add(GetWorkClue(id: id));
+                          } else if (type == 31) {
+                            GetJobChanceBloc.of(context).add(InitGetJobEventChance(int.parse(id)));
+                          } else if (type == 41) {
+                            SupportContractBloc.of(context).add(InitGetSupportContractEvent(int.parse(id)));
+                          } else if (type == 42) {
+                            JobContractBloc.of(context).add(InitGetJobContractEvent(int.parse(id)));
+                          } else if (type == 11) {
+                            ClueCustomerBloc.of(context).add(InitGetClueCustomerEvent(int.parse(id)));
+                          } else if (type == 12) {
+                            ChanceCustomerBloc.of(context).add(InitGetChanceCustomerEvent(int.parse(id)));
+                          } else if (type == 13) {
+                            ContractCustomerBloc.of(context).add(InitGetContractCustomerEvent(int.parse(id)));
+                          } else if (type == 14) {
+                            JobCustomerBloc.of(context).add(InitGetJobCustomerEvent(int.parse(id)));
+                          } else if (type == 15) {
+                            SupportCustomerBloc.of(context).add(InitGetSupportCustomerEvent(int.parse(id)));
+                          }
+                        },
+                      );
+                    },
+                  );
+                }
+                if (state is ErrorAddContactCustomerState) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return WidgetDialog(
+                        title: MESSAGES.NOTIFICATION,
+                        content: state.msg,
+                      );
+                    },
+                  );
+                }
+              },
+              child: Container(
+                padding: EdgeInsets.only(left: AppValue.widths * 0.05, right: AppValue.widths * 0.05, top: AppValue.heights * 0.02),
+                color: Colors.white,
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: BlocBuilder<FormAddBloc, FormAddState>(builder: (context, state) {
+                    if (state is LoadingFormAddCustomerOrState) {
+                      addData = [];
+                      data = [];
+                      return Container();
+                    } else if (state is SuccessFormAddCustomerOrState) {
+                      for (int i = 0; i < state.listAddData.length; i++) {
+                        addData.add(ModelItemAdd(group_name: state.listAddData[i].group_name ?? '', data: []));
+                        for (int j = 0; j < state.listAddData[i].data!.length; j++) {
+                          // if(state.listAddData[i].data![j].field_type!="HIDDEN")
+                          addData[i].data.add(ModelDataAdd(label: state.listAddData[i].data![j].field_name, value: state.listAddData[i].data![j].field_set_value.toString(), required: state.listAddData[i].data![j].field_require));
+                        }
                       }
-                    },
-                  );
-                },
-              );
-            }
-            if (state is ErrorAddContactCustomerState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
-                    title: MESSAGES.NOTIFICATION,
-                    content: state.msg,
-                  );
-                },
-              );
-            }
-          },
-          child: Container(
-            padding: EdgeInsets.only(left: AppValue.widths * 0.05, right: AppValue.widths * 0.05, top: AppValue.heights * 0.02),
-            color: Colors.white,
-            child: SingleChildScrollView(
-              child: BlocBuilder<FormAddBloc, FormAddState>(builder: (context, state) {
-                if (state is LoadingFormAddCustomerOrState) {
-                  addData = [];
-                  data = [];
-                  return Container();
-                } else if (state is SuccessFormAddCustomerOrState) {
-                  for (int i = 0; i < state.listAddData.length; i++) {
-                    addData.add(ModelItemAdd(group_name: state.listAddData[i].group_name ?? '', data: []));
-                    for (int j = 0; j < state.listAddData[i].data!.length; j++) {
-                      // if(state.listAddData[i].data![j].field_type!="HIDDEN")
-                      addData[i].data.add(ModelDataAdd(label: state.listAddData[i].data![j].field_name, value: state.listAddData[i].data![j].field_set_value.toString(), required: state.listAddData[i].data![j].field_require));
-                    }
-                  }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
+                      return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: List.generate(
-                            state.listAddData.length,
-                            (index) => (state.listAddData[index].data != null && state.listAddData[index].data!.length > 0)
-                                ? Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: AppValue.heights * 0.01,
-                                      ),
-                                      state.listAddData[index].group_name != null ? WidgetText(title: state.listAddData[index].group_name ?? '', style: AppStyle.DEFAULT_18_BOLD) : Container(),
-                                      SizedBox(
-                                        height: AppValue.heights * 0.01,
-                                      ),
-                                      Column(
-                                        children: List.generate(
-                                            state.listAddData[index].data!.length,
-                                            (index1) => state.listAddData[index].data![index1].field_special == "none-edit"
-                                                ? ((state.listAddData[index].data![index1].field_id == "12547" || state.listAddData[index].data![index1].field_id == "1472")
-                                                    ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
-                                                        if (stateA is SuccessPhoneState) {
-                                                          return _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, noEdit: true, value: stateA.phone);
-                                                        } else
-                                                          return Container();
-                                                      })
-                                                    : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, noEdit: true))
-                                                : state.listAddData[index].data![index1].field_type == "SELECT"
-                                                    ? ((state.listAddData[index].data![index1].field_id == '115' || state.listAddData[index].data![index1].field_id == '135')
-                                                        ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(builder: (context, stateA) {
-                                                            if (stateA is UpdateGetContacBytCustomerState) {
-                                                              return InputDropdown(
-                                                                  dropdownItemList: stateA.listContactByCustomer,
-                                                                  data: state.listAddData[index].data![index1],
-                                                                  onSuccess: (data) {
-                                                                    addData[index].data[index1].value = data;
-                                                                    if (state.listAddData[index].data![index1].field_id != "107") PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
-                                                                  },
-                                                                  value: state.listAddData[index].data![index1].field_value ?? '');
-                                                            } else if (stateA is LoadingContactByCustomerState) {
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: List.generate(
+                                state.listAddData.length,
+                                (index) => (state.listAddData[index].data != null && state.listAddData[index].data!.length > 0)
+                                    ? Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: AppValue.heights * 0.01,
+                                          ),
+                                          state.listAddData[index].group_name != null ? WidgetText(title: state.listAddData[index].group_name ?? '', style: AppStyle.DEFAULT_18_BOLD) : Container(),
+                                          SizedBox(
+                                            height: AppValue.heights * 0.01,
+                                          ),
+                                          Column(
+                                            children: List.generate(
+                                                state.listAddData[index].data!.length,
+                                                (index1) => state.listAddData[index].data![index1].field_special == "none-edit"
+                                                    ? ((state.listAddData[index].data![index1].field_id == "12547" || state.listAddData[index].data![index1].field_id == "1472")
+                                                        ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
+                                                            if (stateA is SuccessPhoneState) {
+                                                              return _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, noEdit: true, value: stateA.phone);
+                                                            } else
                                                               return Container();
-                                                            } else {
-                                                              return InputDropdown(
-                                                                  dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
-                                                                  data: state.listAddData[index].data![index1],
-                                                                  onSuccess: (data) {
-                                                                    addData[index].data[index1].value = data;
-                                                                    if (state.listAddData[index].data![index1].field_id != "107") PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
-                                                                  },
-                                                                  value: state.listAddData[index].data![index1].field_value ?? '');
-                                                            }
                                                           })
-                                                        : InputDropdown(
-                                                            dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
-                                                            data: state.listAddData[index].data![index1],
-                                                            onSuccess: (data) {
-                                                              addData[index].data[index1].value = data;
-                                                              if (state.listAddData[index].data![index1].field_id == "107" || state.listAddData[index].data![index1].field_id == "128") {
-                                                                ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
-                                                                PhoneBloc.of(context).add(InitPhoneEvent(data));
-                                                              }
-                                                            },
-                                                            value: state.listAddData[index].data![index1].field_value ?? ''))
-                                                    : state.listAddData[index].data![index1].field_type == "TEXT_MULTI"
-                                                        ? _fieldInputTextMulti(state.listAddData[index].data![index1].field_datasource!, state.listAddData[index].data![index1].field_label!, state.listAddData[index].data![index1].field_require!, index, index1,
-                                                            (state.listAddData[index].data![index1].field_set_value_datasource != "" && state.listAddData[index].data![index1].field_set_value_datasource != null) ? state.listAddData[index].data![index1].field_set_value_datasource![0][0].toString() : "", state.listAddData[index].data![index1].field_maxlength ?? '')
-                                                        : state.listAddData[index].data![index1].field_type == "HIDDEN"
-                                                            ? Container()
-                                                            : state.listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"
-                                                                ? WidgetInputMulti(
-                                                                    data: state.listAddData[index].data![index1],
-                                                                    onSelect: (data) {
-                                                                      addData[index].data[index1].value = data.join(",");
-                                                                    },
-                                                                  )
-                                                                : state.listAddData[index].data![index1].field_type == "DATE"
-                                                                    ? WidgetInputDate(
+                                                        : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, noEdit: true))
+                                                    : state.listAddData[index].data![index1].field_type == "SELECT"
+                                                        ? ((state.listAddData[index].data![index1].field_id == '115' || state.listAddData[index].data![index1].field_id == '135')
+                                                            ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(builder: (context, stateA) {
+                                                                if (stateA is UpdateGetContacBytCustomerState) {
+                                                                  return InputDropdown(
+                                                                      dropdownItemList: stateA.listContactByCustomer,
+                                                                      data: state.listAddData[index].data![index1],
+                                                                      onSuccess: (data) {
+                                                                        addData[index].data[index1].value = data;
+                                                                        if (state.listAddData[index].data![index1].field_id != "107") PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
+                                                                      },
+                                                                      value: state.listAddData[index].data![index1].field_value ?? '');
+                                                                } else if (stateA is LoadingContactByCustomerState) {
+                                                                  return Container();
+                                                                } else {
+                                                                  return InputDropdown(
+                                                                      dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
+                                                                      data: state.listAddData[index].data![index1],
+                                                                      onSuccess: (data) {
+                                                                        addData[index].data[index1].value = data;
+                                                                        if (state.listAddData[index].data![index1].field_id != "107") PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
+                                                                      },
+                                                                      value: state.listAddData[index].data![index1].field_value ?? '');
+                                                                }
+                                                              })
+                                                            : InputDropdown(
+                                                                dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
+                                                                data: state.listAddData[index].data![index1],
+                                                                onSuccess: (data) {
+                                                                  addData[index].data[index1].value = data;
+                                                                  if (state.listAddData[index].data![index1].field_id == "107" || state.listAddData[index].data![index1].field_id == "128") {
+                                                                    ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
+                                                                    PhoneBloc.of(context).add(InitPhoneEvent(data));
+                                                                  }
+                                                                },
+                                                                value: state.listAddData[index].data![index1].field_value ?? ''))
+                                                        : state.listAddData[index].data![index1].field_type == "TEXT_MULTI"
+                                                            ? _fieldInputTextMulti(state.listAddData[index].data![index1].field_datasource!, state.listAddData[index].data![index1].field_label!, state.listAddData[index].data![index1].field_require!, index, index1,
+                                                                (state.listAddData[index].data![index1].field_set_value_datasource != "" && state.listAddData[index].data![index1].field_set_value_datasource != null) ? state.listAddData[index].data![index1].field_set_value_datasource![0][0].toString() : "", state.listAddData[index].data![index1].field_maxlength ?? '')
+                                                            : state.listAddData[index].data![index1].field_type == "HIDDEN"
+                                                                ? Container()
+                                                                : state.listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"
+                                                                    ? WidgetInputMulti(
                                                                         data: state.listAddData[index].data![index1],
-                                                                        onSelect: (date) {
-                                                                          addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
-                                                                        },
-                                                                        onInit: () {
-                                                                          DateTime date = DateTime.now();
-                                                                          addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                        onSelect: (data) {
+                                                                          addData[index].data[index1].value = data.join(",");
                                                                         },
                                                                       )
-                                                                    : state.listAddData[index].data![index1].field_type == "CHECK"
-                                                                        ? renderCheckBox(
-                                                                            onChange: (check) {
-                                                                              addData[index].data[index1].value = check ? 1 : 0;
-                                                                            },
+                                                                    : state.listAddData[index].data![index1].field_type == "DATE"
+                                                                        ? WidgetInputDate(
                                                                             data: state.listAddData[index].data![index1],
+                                                                            onSelect: (date) {
+                                                                              addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                            },
+                                                                            onInit: () {
+                                                                              DateTime date = DateTime.now();
+                                                                              addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                            },
                                                                           )
-                                                                        : state.listAddData[index].data![index1].field_type == "PERCENTAGE"
-                                                                            ? FieldInputPercent(
-                                                                                data: state.listAddData[index].data![index1],
-                                                                                onChanged: (text) {
-                                                                                  addData[index].data[index1].value = text;
+                                                                        : state.listAddData[index].data![index1].field_type == "CHECK"
+                                                                            ? renderCheckBox(
+                                                                                onChange: (check) {
+                                                                                  addData[index].data[index1].value = check ? 1 : 0;
                                                                                 },
+                                                                                data: state.listAddData[index].data![index1],
                                                                               )
-                                                                            : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1)),
+                                                                            : state.listAddData[index].data![index1].field_type == "PERCENTAGE"
+                                                                                ? FieldInputPercent(
+                                                                                    data: state.listAddData[index].data![index1],
+                                                                                    onChanged: (text) {
+                                                                                      addData[index].data[index1].value = text;
+                                                                                    },
+                                                                                  )
+                                                                                : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1)),
+                                          )
+                                        ],
+                                      )
+                                    : Container()),
+                          ),
+                          BlocBuilder<AttackBloc, AttackState>(builder: (context, state) {
+                            if (state is SuccessAttackState) if (state.file != null) {
+                              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                                scrollController.jumpToBottom();
+                              });
+
+                              return Container(
+                                  margin: EdgeInsets.symmetric(vertical: 8),
+                                  width: Get.width,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: WidgetText(
+                                          title: state.file!.path.split("/").last,
+                                          style: AppStyle.DEFAULT_14,
+                                          maxLine: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          fileUpload = null;
+                                          AttackBloc.of(context).add(InitAttackEvent());
+                                        },
+                                        child: WidgetContainerImage(
+                                          image: 'assets/icons/icon_delete.png',
+                                          width: 20,
+                                          height: 20,
+                                          fit: BoxFit.contain,
+                                        ),
                                       )
                                     ],
-                                  )
-                                : Container()),
-                      ),
-                      BlocBuilder<AttackBloc, AttackState>(builder: (context, state) {
-                        if (state is SuccessAttackState) if (state.file != null)
-                          return Container(
-                              margin: EdgeInsets.symmetric(vertical: 8),
-                              width: Get.width,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: WidgetText(
-                                      title: state.file!.path.split("/").last,
-                                      style: AppStyle.DEFAULT_14,
-                                      maxLine: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      fileUpload = null;
-                                      AttackBloc.of(context).add(InitAttackEvent());
-                                    },
-                                    child: WidgetContainerImage(
-                                      image: 'assets/icons/icon_delete.png',
-                                      width: 20,
-                                      height: 20,
-                                      fit: BoxFit.contain,
-                                    ),
-                                  )
-                                ],
-                              ));
-                        else
-                          return Container();
-                        else
-                          return Container();
-                      }),
-                      Row(
-                        children: [
-                          GestureDetector(onTap: this.onDinhKem, child: SvgPicture.asset("assets/icons/attack.svg")),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: this.onClickSave,
-                            child: Container(
-                              height: AppValue.widths * 0.1,
-                              width: AppValue.widths * 0.25,
-                              decoration: BoxDecoration(color: HexColor("#F1A400"), borderRadius: BorderRadius.circular(20.5)),
-                              child: Center(
-                                  child: Text(
-                                "Lưu",
-                                style: TextStyle(color: Colors.white),
-                              )),
-                            ),
-                          ),
+                                  ));
+                            } else
+                              return Container();
+                            else
+                              return Container();
+                          }),
+                          SizedBox(
+                            height: AppValue.widths * 0.1 + 10,
+                          )
                         ],
-                      )
-                    ],
-                  );
-                } else
-                  return Container();
-              }),
+                      );
+                    } else
+                      return Container();
+                  }),
+                ),
+              ),
+            )),
+        Positioned(
+          left: 0,
+          bottom: 0,
+          child: Visibility(
+            visible: isMaxScroll,
+            child: Container(
+              height: AppValue.widths * 0.1 + 10,
+              width: AppValue.widths,
+              padding: EdgeInsets.only(left: AppValue.widths * 0.05, right: AppValue.widths * 0.05, bottom: 5),
+              child: Row(
+                children: [
+                  GestureDetector(onTap: this.onDinhKem, child: SvgPicture.asset("assets/icons/attack.svg")),
+                  Spacer(),
+                  GestureDetector(
+                    onTap: this.onClickSave,
+                    child: Material(
+                      child: Container(
+                        height: AppValue.widths * 0.1,
+                        width: AppValue.widths * 0.25,
+                        decoration: BoxDecoration(color: HexColor("#F1A400"), borderRadius: BorderRadius.circular(20.5)),
+                        child: Center(
+                            child: Text(
+                          "Lưu",
+                          style: TextStyle(color: Colors.white),
+                        )),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ));
+        )
+      ],
+    );
   }
 
   _buildBack() {

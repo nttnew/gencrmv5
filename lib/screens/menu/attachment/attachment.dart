@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/bloc/list_note/add_note_bloc.dart';
 import 'package:gen_crm/screens/menu/attachment/attachmentItem.dart';
 import 'package:gen_crm/screens/menu/home/customer/list_note.dart';
@@ -65,94 +66,130 @@ class _AttachmentState extends State<Attachment> {
     }
   }
 
-  uploadFile() {}
+  onClickSave() {
+    AppNavigator.navigateBack();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          if (filePicked.isNotEmpty) FloatingButton(widget: Icon(Icons.upload, size: 40), function: uploadFile),
-          FloatingButton(function: onDinhKem),
-        ],
-      ),
-      appBar: AppBar(
-        toolbarHeight: AppValue.heights * 0.1,
-        backgroundColor: HexColor("#D0F1EB"),
-        centerTitle: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [WidgetText(title: "Xem đính kèm", style: AppStyle.DEFAULT_16.copyWith(fontWeight: FontWeight.w700))],
-        ),
-        leading: Padding(padding: EdgeInsets.only(left: 30), child: InkWell(onTap: () => AppNavigator.navigateBack(), child: Icon(Icons.arrow_back, color: Colors.black))),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
+    return Stack(
+      children: [
+        Scaffold(
+          floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
+          // floatingActionButton: Column(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     if (filePicked.isNotEmpty) FloatingButton(widget: Icon(Icons.upload, size: 40), function: onClickSave),
+          //     FloatingButton(function: onDinhKem),
+          //   ],
+          // ),
+          appBar: AppBar(
+            toolbarHeight: AppValue.heights * 0.1,
+            backgroundColor: HexColor("#D0F1EB"),
+            centerTitle: false,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [WidgetText(title: "Xem đính kèm", style: AppStyle.DEFAULT_16.copyWith(fontWeight: FontWeight.w700))],
+            ),
+            leading: Padding(padding: EdgeInsets.only(left: 30), child: InkWell(onTap: () => AppNavigator.navigateBack(), child: Icon(Icons.arrow_back, color: Colors.black))),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(15),
+              ),
+            ),
           ),
+          body: filePicked.isNotEmpty || listFile.isNotEmpty
+              ? Container(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            if (listFile.isNotEmpty)
+                              Row(
+                                children: [
+                                  Padding(
+                                      padding: EdgeInsets.symmetric(vertical: 5),
+                                      child: WidgetText(
+                                        title: "Tệp đã chọn",
+                                        style: AppStyle.DEFAULT_16_BOLD,
+                                      )),
+                                ],
+                              ),
+                            if (listFile.isNotEmpty)
+                              ...List<Widget>.generate(
+                                  listFile.length,
+                                  (i) => AttachmentItem(
+                                        filePath: listFile[i].fileName.split('/').last,
+                                        onDelete: () {
+                                          setState(() {
+                                            listFile.removeAt(i);
+                                          });
+                                        },
+                                      )),
+                            if (filePicked.isNotEmpty)
+                              Row(
+                                children: [
+                                  Padding(
+                                      padding: EdgeInsets.only(bottom: 5, top: AppValue.FONT_SIZE_14),
+                                      child: WidgetText(
+                                        title: "Tệp vừa chọn",
+                                        style: AppStyle.DEFAULT_16_BOLD,
+                                      )),
+                                ],
+                              ),
+                            if (filePicked.isNotEmpty)
+                              ...List.generate(
+                                  filePicked.length,
+                                  (i) => AttachmentItem(
+                                        filePath: filePicked[i].path.split('/').last,
+                                        onDelete: () {
+                                          setState(() {
+                                            filePicked.removeAt(i);
+                                          });
+                                        },
+                                      )),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ))
+              : Center(
+                  child: Text("Không có dữ liệu"),
+                ),
         ),
-      ),
-      body: filePicked.isNotEmpty || listFile.isNotEmpty
-          ? Container(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        if (listFile.isNotEmpty)
-                          Row(
-                            children: [
-                              Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 5),
-                                  child: WidgetText(
-                                    title: "Tệp đã chọn",
-                                    style: AppStyle.DEFAULT_16_BOLD,
-                                  )),
-                            ],
-                          ),
-                        if (listFile.isNotEmpty)
-                          ...List<Widget>.generate(
-                              listFile.length,
-                              (i) => AttachmentItem(
-                                    filePath: listFile[i].fileName.split('/').last,
-                                    onDelete: () {
-                                      setState(() {
-                                        listFile.removeAt(i);
-                                      });
-                                    },
-                                  )),
-                        if (filePicked.isNotEmpty)
-                          Row(
-                            children: [
-                              Padding(
-                                  padding: EdgeInsets.only(bottom: 5, top: AppValue.FONT_SIZE_14),
-                                  child: WidgetText(
-                                    title: "Tệp vừa chọn",
-                                    style: AppStyle.DEFAULT_16_BOLD,
-                                  )),
-                            ],
-                          ),
-                        if (filePicked.isNotEmpty)
-                          ...List.generate(
-                              filePicked.length,
-                              (i) => AttachmentItem(
-                                    filePath: filePicked[i].path.split('/').last,
-                                    onDelete: () {
-                                      setState(() {
-                                        filePicked.removeAt(i);
-                                      });
-                                    },
-                                  )),
-                      ],
+        Positioned(
+          left: 0,
+          bottom: 0,
+          child: Container(
+            height: AppValue.widths * 0.1 + 10,
+            width: AppValue.widths,
+            padding: EdgeInsets.only(left: AppValue.widths * 0.05, right: AppValue.widths * 0.05, bottom: 5),
+            child: Row(
+              children: [
+                GestureDetector(onTap: this.onDinhKem, child: SvgPicture.asset("assets/icons/attack.svg")),
+                Spacer(),
+                GestureDetector(
+                  onTap: this.onClickSave,
+                  child: Material(
+                    child: Container(
+                      height: AppValue.widths * 0.1,
+                      width: AppValue.widths * 0.25,
+                      decoration: BoxDecoration(color: HexColor("#F1A400"), borderRadius: BorderRadius.circular(20.5)),
+                      child: Center(
+                          child: Text(
+                        "Lưu",
+                        style: TextStyle(color: Colors.white),
+                      )),
                     ),
                   ),
-                ],
-              ))
-          : Center(
-              child: Text("Không có dữ liệu"),
+                ),
+              ],
             ),
+          ),
+        )
+      ],
     );
   }
 }
