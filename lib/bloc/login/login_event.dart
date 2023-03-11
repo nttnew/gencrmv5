@@ -1,4 +1,5 @@
 part of 'login_bloc.dart';
+
 abstract class LoginEvent extends Equatable {
   const LoginEvent();
 
@@ -33,6 +34,13 @@ class FormSubmitted extends LoginEvent {
 
   final String device_token;
 
+  @override
+  List<Object> get props => [device_token];
+}
+
+class LoginWithFingerPrint extends LoginEvent {
+  const LoginWithFingerPrint({required this.device_token});
+  final String device_token;
   @override
   List<Object> get props => [device_token];
 }

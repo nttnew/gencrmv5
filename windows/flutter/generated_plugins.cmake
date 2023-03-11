@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
+  local_auth_windows
   nb_utils
   url_launcher_windows
 )

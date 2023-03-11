@@ -23,16 +23,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
   final EventRepositoryStorage localRepository;
 
-  LoginBloc({required this.userRepository, required this.localRepository})
-      : super(
-      LoginState(
-          email: UserName.pure(),
-          password: Password.pure(),
-          status: FormzStatus.invalid,
-          message: '',
-          user: LoginData(),
-          device_token: ''
-      ));
+  LoginBloc({required this.userRepository, required this.localRepository}) : super(LoginState(email: UserName.pure(), password: Password.pure(), status: FormzStatus.invalid, message: '', user: LoginData(), device_token: ''));
 
   @override
   void onTransition(Transition<LoginEvent, LoginState> transition) {
@@ -53,7 +44,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         password: password.valid ? password : Password.pure(event.password),
         status: Formz.validate([state.email, password]),
       );
-
     } else if (event is EmailUnfocused) {
       final email = UserName.dirty(state.email.value);
       yield state.copyWith(
@@ -67,10 +57,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         status: Formz.validate([state.email, password]),
       );
     } else if (event is FormSubmitted) {
-      try{
+      try {
         if (state.status.isValidated) {
           yield state.copyWith(status: FormzStatus.submissionInProgress);
-          var response = await userRepository.loginApp(email: state.email.value, password: state.password.value,platform: Platform.isIOS?'iOS':'Android',device_token: event.device_token);
+          var response = await userRepository.loginApp(email: state.email.value, password: state.password.value, platform: Platform.isIOS ? 'iOS' : 'Android', device_token: event.device_token);
           if (response.code == BASE_URL.SUCCESS) {
             await localRepository.saveUser(jsonEncode(response.data));
             await shareLocal.putString(PreferencesKey.SESS, response.data!.session_id!);
@@ -78,30 +68,63 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             await shareLocal.putString(PreferencesKey.MENU, jsonEncode(response.data!.menu!));
             await shareLocal.putBools(PreferencesKey.FIRST_TIME, true);
             await shareLocal.putString(dotenv.env[PreferencesKey.TOKEN]!, response.data!.token!);
-            await shareLocal.putString(PreferencesKey.USER_NAME,state.email.value);
-            await shareLocal.putString(PreferencesKey.USER_EMAIL,response.data!.info_user!.email ?? "");
-            await shareLocal.putString(PreferencesKey.USER_PHONE,response.data!.info_user!.phone ?? "" );
-            await shareLocal.putString(PreferencesKey.USER_ADDRESS,response.data!.info_user!.dia_chi ?? "" );
-            await shareLocal.putString(PreferencesKey.USER_FULLNAME,response.data!.info_user!.fullname ?? "" );
-            await shareLocal.putString(PreferencesKey.URL_AVATAR,response.data!.info_user!.avatar ?? "");
-            await shareLocal.putString(PreferencesKey.MONEY,response.data!.tien_te ?? "");
+            await shareLocal.putString(PreferencesKey.USER_NAME, state.email.value);
+            await shareLocal.putString(PreferencesKey.USER_EMAIL, response.data!.info_user!.email ?? "");
+            await shareLocal.putString(PreferencesKey.USER_PHONE, response.data!.info_user!.phone ?? "");
+            await shareLocal.putString(PreferencesKey.USER_ADDRESS, response.data!.info_user!.dia_chi ?? "");
+            await shareLocal.putString(PreferencesKey.USER_FULLNAME, response.data!.info_user!.fullname ?? "");
+            await shareLocal.putString(PreferencesKey.URL_AVATAR, response.data!.info_user!.avatar ?? "");
+            await shareLocal.putString(PreferencesKey.MONEY, response.data!.tien_te ?? "");
+            await shareLocal.putString(PreferencesKey.USER_PASSWORD, state.password.value);
 
-            DioProvider.instance(sess: response.data!.session_id!,token:response.data!.token );
-            yield state.copyWith(status: FormzStatus.submissionSuccess, message: response.msg??'', user: response.data!);
+            DioProvider.instance(sess: response.data!.session_id!, token: response.data!.token);
+            yield state.copyWith(status: FormzStatus.submissionSuccess, message: response.msg ?? '', user: response.data!);
             // Future.delayed(Duration(milliseconds: 500), () async* {
             //   yield SaveUserState(response.data!);
             // });
-
           } else {
-            yield state.copyWith(status: FormzStatus.submissionFailure, message: response.msg??'');
+            yield state.copyWith(status: FormzStatus.submissionFailure, message: response.msg ?? '');
           }
         }
-      }catch(e){
+      } catch (e) {
         yield state.copyWith(status: FormzStatus.submissionFailure, message: MESSAGES.CONNECT_ERROR);
         print('lỗi iii: $e');
         throw e;
       }
+    } else {
+      if (event is LoginWithFingerPrint) {
+        yield state.copyWith(status: FormzStatus.submissionInProgress);
+        try {
+          String userName = shareLocal.getString(PreferencesKey.USER_NAME) ?? "";
+          String password = shareLocal.getString(PreferencesKey.USER_PASSWORD) ?? "";
+          var response = await userRepository.loginApp(email: userName, password: password, platform: Platform.isIOS ? 'iOS' : 'Android', device_token: event.device_token);
+          if (response.code == BASE_URL.SUCCESS) {
+            await localRepository.saveUser(jsonEncode(response.data));
+            await shareLocal.putString(PreferencesKey.SESS, response.data!.session_id!);
+            await shareLocal.putString(PreferencesKey.TOKEN, response.data!.token!);
+            await shareLocal.putString(PreferencesKey.MENU, jsonEncode(response.data!.menu!));
+            await shareLocal.putBools(PreferencesKey.FIRST_TIME, true);
+            await shareLocal.putString(dotenv.env[PreferencesKey.TOKEN]!, response.data!.token!);
+            await shareLocal.putString(PreferencesKey.USER_EMAIL, response.data!.info_user!.email ?? "");
+            await shareLocal.putString(PreferencesKey.USER_PHONE, response.data!.info_user!.phone ?? "");
+            await shareLocal.putString(PreferencesKey.USER_ADDRESS, response.data!.info_user!.dia_chi ?? "");
+            await shareLocal.putString(PreferencesKey.USER_FULLNAME, response.data!.info_user!.fullname ?? "");
+            await shareLocal.putString(PreferencesKey.URL_AVATAR, response.data!.info_user!.avatar ?? "");
+            await shareLocal.putString(PreferencesKey.MONEY, response.data!.tien_te ?? "");
+
+            DioProvider.instance(sess: response.data!.session_id!, token: response.data!.token);
+            yield state.copyWith(status: FormzStatus.submissionSuccess, message: response.msg ?? '', user: response.data!);
+          } else {
+            yield state.copyWith(status: FormzStatus.submissionFailure, message: response.msg ?? '');
+          }
+        } catch (e) {
+          yield state.copyWith(status: FormzStatus.submissionFailure, message: MESSAGES.CONNECT_ERROR);
+          print('lỗi iii: $e');
+          throw e;
+        }
+      }
     }
   }
+
   static LoginBloc of(BuildContext context) => BlocProvider.of<LoginBloc>(context);
 }

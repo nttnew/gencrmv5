@@ -17,6 +17,7 @@ import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
+import 'package:local_auth/local_auth.dart';
 
 class WidgetLoginForm extends StatefulWidget {
   WidgetLoginForm({Key? key, required this.reload}) : super(key: key);
@@ -35,6 +36,12 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
   TextEditingController _unameController = TextEditingController();
   String baseUrl = "";
   String? tokenFirebase;
+
+  final LocalAuthentication auth = LocalAuthentication();
+  bool canAuthenticateWithBiometrics = false;
+  bool canAuthenticate = false;
+  List<BiometricType> availableBiometrics = [];
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +50,15 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
       FirebaseMessaging messaging = FirebaseMessaging.instance;
       tokenFirebase = await messaging.getToken();
       print("tokenFireBase: $tokenFirebase");
+
+      canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+      canAuthenticate = canAuthenticateWithBiometrics || await auth.isDeviceSupported();
+      availableBiometrics = await auth.getAvailableBiometrics();
+      setState(() {
+        canAuthenticateWithBiometrics = canAuthenticateWithBiometrics;
+        canAuthenticate = canAuthenticate;
+        availableBiometrics = availableBiometrics;
+      });
     });
     getUname();
     _emailFocusNode.addListener(() {
@@ -71,10 +87,8 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
   }
 
   getUname() async {
-    _unameController.text =
-        await shareLocal.getString(PreferencesKey.USER_NAME) ?? "";
-    if (_unameController.text != "")
-      LoginBloc.of(context).add(EmailChanged(email: _unameController.text));
+    _unameController.text = await shareLocal.getString(PreferencesKey.USER_NAME) ?? "";
+    if (_unameController.text != "") LoginBloc.of(context).add(EmailChanged(email: _unameController.text));
   }
 
   @override
@@ -115,7 +129,13 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
               AppValue.vSpaceMedium,
               _buildTextFieldPassword(bloc),
               AppValue.vSpaceSmall,
-              _buildForgotPassword(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildFingerPrintButton(),
+                  _buildForgotPassword(),
+                ],
+              ),
               AppValue.vSpaceSmall,
               _buildButtonLogin(bloc),
               AppValue.vSpaceSmall,
@@ -151,11 +171,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         },
         child: Text(
           "Đổi địa chỉ ứng dụng",
-          style: TextStyle(
-              fontFamily: "Quicksand",
-              color: HexColor("#006CB1"),
-              fontWeight: FontWeight.w500,
-              fontSize: 12),
+          style: TextStyle(fontFamily: "Quicksand", color: HexColor("#006CB1"), fontWeight: FontWeight.w500, fontSize: 12),
         ),
       ),
     );
@@ -168,10 +184,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         onTap: () => AppNavigator.navigateForgotPassword(),
         child: Text(
           MESSAGES.FORGOT_PASSWORD + "?",
-          style: TextStyle(
-              fontFamily: "Quicksand",
-              fontWeight: FontWeight.w500,
-              fontSize: 12),
+          style: TextStyle(fontFamily: "Quicksand", fontWeight: FontWeight.w500, fontSize: 12),
         ),
       ),
     );
@@ -202,8 +215,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
                 color: HexColor("#A6C1BC"),
               ),
               enable: state.status.isValidated,
-              textStyle:
-                  AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w600),
+              textStyle: AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w600),
               text: MESSAGES.LOGIN);
         });
   }
@@ -212,12 +224,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
     return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
       return WidgetInput(
         colorFix: Theme.of(context).scaffoldBackgroundColor,
-        Fix: WidgetText(
-            title: "Mật khẩu",
-            style: TextStyle(
-                fontFamily: "Quicksand",
-                fontWeight: FontWeight.w600,
-                fontSize: 14)),
+        Fix: WidgetText(title: "Mật khẩu", style: TextStyle(fontFamily: "Quicksand", fontWeight: FontWeight.w600, fontSize: 14)),
         onChanged: (value) => bloc.add(PasswordChanged(password: value)),
         errorText: state.password.invalid ? MESSAGES.PASSWORD_ERROR : null,
         obscureText: obscurePassword,
@@ -243,13 +250,43 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         ),
         inputController: _unameController,
         errorText: state.email.invalid ? MESSAGES.EMAIL_ERROR : null,
-        Fix: WidgetText(
-            title: "Tài khoản",
-            style: TextStyle(
-                fontFamily: "Quicksand",
-                fontWeight: FontWeight.w600,
-                fontSize: 14)),
+        Fix: WidgetText(title: "Tài khoản", style: TextStyle(fontFamily: "Quicksand", fontWeight: FontWeight.w600, fontSize: 14)),
       );
     });
+  }
+
+  _buildFingerPrintButton() {
+    return canAuthenticate && shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT) == "true" && shareLocal.getString(PreferencesKey.USER) != "" && shareLocal.getString(PreferencesKey.USER) != null
+        ? Align(
+            alignment: Alignment.centerLeft,
+            child: GestureDetector(
+              onTap: loginWithFingerPrint,
+              child: Row(
+                children: [
+                  Icon(Icons.fingerprint),
+                  WidgetText(
+                    title: "Vân tay",
+                    style: TextStyle(fontFamily: "Quicksand", fontWeight: FontWeight.w500, fontSize: 12),
+                  )
+                ],
+              ),
+            ),
+          )
+        : SizedBox();
+  }
+
+  loginWithFingerPrint() async {
+    final LocalAuthentication auth = LocalAuthentication();
+    try {
+      final didAuthenticate = await auth.authenticate(localizedReason: 'Đăng nhập bằng vân tay', options: const AuthenticationOptions(biometricOnly: true));
+      if (didAuthenticate) {
+        LoginBloc.of(context).add(LoginWithFingerPrint(device_token: tokenFirebase ?? ''));
+      } else {
+        return;
+      }
+    } catch (e) {
+      print(e);
+      return;
+    }
   }
 }
