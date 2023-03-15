@@ -109,6 +109,7 @@ class _InputDropdownState extends State<InputDropdown> {
             onTap: () {
               if (widget.data.field_special == "none-edit") {
               } else
+                FocusManager.instance.primaryFocus?.unfocus();
                 showModalBottomSheet(
                     enableDrag: false,
                     isScrollControlled: true,
