@@ -170,9 +170,12 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                WidgetText(
-                                  title: data[index]['label']??'',
-                                  style: AppStyle.DEFAULT_18.copyWith(color: COLORS.TEXT_BLUE_BOLD),
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: WidgetText(
+                                    title: data[index]['label']??'',
+                                    style: AppStyle.DEFAULT_18.copyWith(color: COLORS.TEXT_BLUE_BOLD),
+                                  ),
                                 ),
                                 SizedBox(height: 8,),
                                 LineHorizontal()
