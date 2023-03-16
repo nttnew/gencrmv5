@@ -142,7 +142,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                     Column(
                                       children: List.generate(
                                           state.listAddData[index].data!.length,
-                                          (index1) => state.listAddData[index].data![index1].field_type == "SELECT" || state.listAddData[index].data![index1].field_name=="nguoi_quan_ly"
+                                          (index1) => state.listAddData[index].data![index1].field_type == "SELECT" || state.listAddData[index].data![index1].field_label=="Người quản lý"
                                               ? InputDropdown(
                                                   dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
                                                   data: state.listAddData[index].data![index1],

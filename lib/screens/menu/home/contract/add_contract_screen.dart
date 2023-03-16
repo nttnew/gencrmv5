@@ -261,7 +261,8 @@ class _FormAddContractState extends State<FormAddContract> {
                                                         canDelete: true,
                                                       )
                                                     : state.listAddData[index].data![index1].field_type == "SELECT"
-                                                || state.listAddData[index].data![index1].field_name == "dia_chi_chung_text"
+                                                || state.listAddData[index].data![index1].field_label == "Quận huyện"
+                                                || state.listAddData[index].data![index1].field_label == "Người quản lý"
                                                         ? (state.listAddData[index].data![index1].field_id == '256'
                                                             ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(builder: (context, stateA) {
                                                                 if (stateA is UpdateGetContacBytCustomerState)
