@@ -361,7 +361,10 @@ class _ScreenMainState extends State<ScreenMain> {
               ),
             ),
             AppValue.vSpaceTiny,
-            Text(data.title, style: AppStyle.DEFAULT_14_BOLD.copyWith(fontFamily: 'Roboto',fontWeight: FontWeight.w500))
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(data.title, style: AppStyle.DEFAULT_14_BOLD.copyWith(fontFamily: 'Roboto',fontWeight: FontWeight.w500),textAlign: TextAlign.center,),
+            )
           ],
         ),
       ),
