@@ -166,7 +166,7 @@ class _InputDropdownState extends State<InputDropdown> {
                               title: textValue,
                               maxLine: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 11, fontFamily: "Roboto", fontWeight: FontWeight.w500, color: HexColor("#838A91")),
+                              style: TextStyle(fontSize: 14, fontFamily: "Roboto", fontWeight: FontWeight.w500, color: HexColor("#838A91")),
                             ),
                           ),
                           Container(

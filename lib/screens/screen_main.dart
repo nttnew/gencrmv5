@@ -56,16 +56,16 @@ class _ScreenMainState extends State<ScreenMain> {
         ButtonMenuModel(
             title: listM[i]['name'],
             image: listM[i]['id'] == 'opportunity'
-                ? ICONS.CHANCE
+                ? ICONS.CHANCE_3X
                 : listM[i]['id'] == 'job'
-                    ? ICONS.WORK
+                    ? ICONS.WORK_3X
                     : listM[i]['id'] == 'contract'
-                        ? ICONS.CONTRACT
+                        ? ICONS.CONTRACT_3X
                         : listM[i]['id'] == 'support'
-                            ? ICONS.SUPPORT
+                            ? ICONS.SUPPORT_3X
                             : listM[i]['id'] == 'customer'
-                                ? ICONS.CUSTUMER
-                                : ICONS.CLUE,
+                                ? ICONS.CUSTUMER_3X
+                                : ICONS.CLUE_3X,
             backgroundColor: listM[i]['id'] == 'opportunity'
                 ? Color(0xffFDC9D2)
                 : listM[i]['id'] == 'job'
@@ -307,15 +307,18 @@ class _ScreenMainState extends State<ScreenMain> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Colors.white),
+                        width: 90,
+                        height: 90,
+                        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
                         child: WidgetContainerImage(
-                          image: ICONS.WORK,
+                          image: ICONS.WORK_3X,
+                          fit:BoxFit.contain,
+                          width: 50,
+                          height: 50,
                         ),
                       ),
                       AppValue.vSpaceTiny,
-                      Text("Báo cáo", style: AppStyle.DEFAULT_12_BOLD.copyWith(fontFamily: 'Roboto'))
+                      Text("Báo cáo", style: AppStyle.DEFAULT_20_BOLD.copyWith(fontFamily: 'Roboto',color: Colors.white,fontWeight: FontWeight.w500))
                     ],
                   ),
                 ),
@@ -347,15 +350,18 @@ class _ScreenMainState extends State<ScreenMain> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Colors.white),
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
               child: WidgetContainerImage(
                 image: data.image,
+                fit:BoxFit.contain,
+                width: 40,
+                height: 40,
               ),
             ),
             AppValue.vSpaceTiny,
-            Text(data.title, style: AppStyle.DEFAULT_12_BOLD.copyWith(fontFamily: 'Roboto'))
+            Text(data.title, style: AppStyle.DEFAULT_14_BOLD.copyWith(fontFamily: 'Roboto',fontWeight: FontWeight.w500))
           ],
         ),
       ),

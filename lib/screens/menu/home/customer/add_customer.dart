@@ -411,7 +411,7 @@ class _AddCustomerState extends State<AddCustomer> {
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
                 child: TextField(
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                   keyboardType: data.field_special == "default"
                       ? TextInputType.text
                       : data.field_special == "numberic"
@@ -496,7 +496,7 @@ class _AddCustomerState extends State<AddCustomer> {
             ),
             buttonText: Text(
               label,
-              style: titlestyle(),
+              style: titlestyleNgTheoDoi(),
             ),
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: HexColor("#BEB4B4"))),
             buttonIcon: Icon(
@@ -514,6 +514,8 @@ class _AddCustomerState extends State<AddCustomer> {
   TextStyle hintTextStyle() => TextStyle(fontFamily: "Roboto", fontSize: 11, fontWeight: FontWeight.w500, color: HexColor("#838A91"));
 
   TextStyle titlestyle() => TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: HexColor("#697077"));
+
+  TextStyle titlestyleNgTheoDoi() => TextStyle(fontFamily: "Roboto", fontSize: 14, fontWeight: FontWeight.w500, color: HexColor("#697077"));
 
   void onClickSave() {
     final Map<String, dynamic> data = {};
@@ -637,7 +639,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                     _focusNode.unfocus();
                   },
                   focusNode: _focusNode,
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                   keyboardType: widget.data.field_special == "default"
                       ? TextInputType.text
                       : widget.data.field_special == "numberic"
