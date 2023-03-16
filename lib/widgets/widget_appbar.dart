@@ -64,6 +64,7 @@ class WidgetAppbar extends StatelessWidget {
                 Align(
                   alignment: isTitleCenter == true ? Alignment.center : Alignment.centerLeft,
                   child: Container(
+                    width: MediaQuery.of(context).size.width/1.5,
                     margin: EdgeInsets.only(left: isTitleCenter == true ? 0 : 80, right: 16),
                     child: widgetTitle ?? Text(
                       title ?? "",
