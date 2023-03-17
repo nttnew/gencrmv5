@@ -3,9 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-
-
-
 class WorkCardWidget extends StatelessWidget {
   final String? nameCustomer;
   final String? nameJob;
@@ -14,9 +11,13 @@ class WorkCardWidget extends StatelessWidget {
   final int? totalComment;
   final String? color;
 
-
   WorkCardWidget(
-  { this.color,this.nameCustomer, this.nameJob, this.statusJob, this.startDate, this.totalComment});
+      {this.color,
+      this.nameCustomer,
+      this.nameJob,
+      this.statusJob,
+      this.startDate,
+      this.totalComment});
 
   @override
   Widget build(BuildContext context) {
@@ -36,45 +37,47 @@ class WorkCardWidget extends StatelessWidget {
               Spacer(),
               Container(
                 decoration: BoxDecoration(
-                    color: color ==
-                        null
-                        ? COLORS.PRIMARY_COLOR
-                        : HexColor(color!)
-                    ,borderRadius: BorderRadius.circular(99)),
+                    color:
+                        color == null ? COLORS.PRIMARY_COLOR : HexColor(color!),
+                    borderRadius: BorderRadius.circular(99)),
                 width: AppValue.widths * 0.1,
                 height: AppValue.heights * 0.02,
               )
             ],
           ),
           SizedBox(height: AppValue.heights * 0.01),
-          Row(
-            children: [
-              SvgPicture.asset("assets/icons/avatar_customer.svg"),
-              Padding(
-                padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                child: Text(
-                  this.nameCustomer!,
-                  style: NameCustomerStyle(),
+          if (this.nameCustomer != '') ...[
+            Row(
+              children: [
+                SvgPicture.asset("assets/icons/avatar_customer.svg"),
+                Padding(
+                  padding: EdgeInsets.only(left: AppValue.widths * 0.03),
+                  child: Text(
+                    this.nameCustomer!,
+                    style: NameCustomerStyle(),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: AppValue.heights * 0.01),
-          Row(
-            children: [
-              SvgPicture.asset("assets/icons/icon3svg"),
-              Padding(
-                padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                child: SizedBox(
-                    width: AppValue.widths * 0.5,
-                    child: Text(
-                      this.statusJob!,
-                      style: OrtherInforCustomerStyle(),
-                    )),
-              ),
-            ],
-          ),
-          SizedBox(height: AppValue.heights * 0.01),
+              ],
+            ),
+            SizedBox(height: AppValue.heights * 0.01),
+          ],
+          if (this.statusJob != '') ...[
+            Row(
+              children: [
+                SvgPicture.asset("assets/icons/icon3svg"),
+                Padding(
+                  padding: EdgeInsets.only(left: AppValue.widths * 0.03),
+                  child: SizedBox(
+                      width: AppValue.widths * 0.5,
+                      child: Text(
+                        this.statusJob!,
+                        style: OrtherInforCustomerStyle(),
+                      )),
+                ),
+              ],
+            ),
+            SizedBox(height: AppValue.heights * 0.01),
+          ],
           Row(
             children: [
               SvgPicture.asset("assets/icons/icon4.svg"),
@@ -82,8 +85,8 @@ class WorkCardWidget extends StatelessWidget {
                 padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                 child: SizedBox(
                     width: AppValue.widths * 0.5,
-                    child:
-                    Text(this.startDate!, style: OrtherInforCustomerStyle())),
+                    child: Text(this.startDate!,
+                        style: OrtherInforCustomerStyle())),
               ),
               Spacer(),
               SvgPicture.asset("assets/icons/question_answer.svg"),

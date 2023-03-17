@@ -395,30 +395,32 @@ class _InfoCluePageState extends State<InfoCluePage> {
             Column(
               children: List.generate(
                   detailClue.data!.length,
-                  (index) => Container(
-                        margin: EdgeInsets.only(bottom: 8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              detailClue.data![index].label_field!,
-                              style: AppStyle.DEFAULT_12.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: COLORS.TEXT_GREY),
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Expanded(
-                              child: Text(
-                                  detailClue.data![index].value_field ?? "",
-                                  textAlign: TextAlign.right,
-                                  style: AppStyle.DEFAULT_12_BOLD
-                                      .copyWith(color: COLORS.TEXT_GREY_BOLD)),
-                            ),
-                          ],
-                        ),
-                      )),
+                  (index) => detailClue.data![index].value_field != ''
+                      ? Container(
+                          margin: EdgeInsets.only(bottom: 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                detailClue.data![index].label_field!,
+                                style: AppStyle.DEFAULT_12.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: COLORS.TEXT_GREY),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Expanded(
+                                child: Text(
+                                    detailClue.data![index].value_field ?? "",
+                                    textAlign: TextAlign.right,
+                                    style: AppStyle.DEFAULT_12_BOLD.copyWith(
+                                        color: COLORS.TEXT_GREY_BOLD)),
+                              ),
+                            ],
+                          ),
+                        )
+                      : SizedBox()),
             ),
             const SizedBox(
               height: 8,

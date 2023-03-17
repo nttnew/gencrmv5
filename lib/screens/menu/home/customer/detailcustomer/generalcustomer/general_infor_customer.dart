@@ -84,42 +84,47 @@ class _GeneralInforCustomerState extends State<GeneralInforCustomer> {
           Column(
             children: List.generate(
               data.data!.length,
-              (index) => Container(
-                margin: EdgeInsets.only(bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    WidgetText(
-                      title: data.data![index].label_field,
-                      style: AppStyle.DEFAULT_12.copyWith(
-                          fontWeight: FontWeight.w600, color: COLORS.TEXT_GREY),
-                    ),
-                    // Spacer(),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                          onTap: () {
-                            if (data.data![index].action == 2) {
-                              launchUrl(Uri(
-                                  scheme: "tel",
-                                  path: "${data.data![index].link}"));
-                            }
-                          },
-                          child: WidgetText(
-                            title: data.data![index].value_field,
-                            textAlign: TextAlign.right,
-                            style: AppStyle.DEFAULT_12_BOLD.copyWith(
-                                color: data.data![index].action != null
-                                    ? COLORS.TEXT_BLUE_BOLD
-                                    : COLORS.TEXT_GREY_BOLD),
-                          )),
-                    ),
-                  ],
-                ),
-              ),
+              (index) =>
+                  data.data?[index].value_field?.trim().isNotEmpty ?? false
+                      ? Container(
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              WidgetText(
+                                title: data.data![index].label_field,
+                                style: AppStyle.DEFAULT_12.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: COLORS.TEXT_GREY),
+                              ),
+                              // Spacer(),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Expanded(
+                                child: GestureDetector(
+                                    onTap: () {
+                                      if (data.data![index].action == 2) {
+                                        launchUrl(Uri(
+                                            scheme: "tel",
+                                            path: "${data.data![index].link}"));
+                                      }
+                                    },
+                                    child: WidgetText(
+                                      title: data.data![index].value_field,
+                                      textAlign: TextAlign.right,
+                                      style: AppStyle.DEFAULT_12_BOLD.copyWith(
+                                          color:
+                                              data.data![index].action != null
+                                                  ? COLORS.TEXT_BLUE_BOLD
+                                                  : COLORS.TEXT_GREY_BOLD),
+                                    )),
+                              ),
+                            ],
+                          ),
+                        )
+                      : SizedBox(),
             ),
           ),
           AppValue.vSpaceTiny,

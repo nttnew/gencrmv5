@@ -130,52 +130,60 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                                             children: List.generate(
                                                 state.dataDetailSupport[index]
                                                     .data!.length,
-                                                (index1) => Column(
-                                                      children: [
-                                                        SizedBox(
-                                                          height:
-                                                              AppValue.heights *
-                                                                  0.02,
-                                                        ),
-                                                        Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            WidgetText(
-                                                              title: state
-                                                                      .dataDetailSupport[
-                                                                          index]
-                                                                      .data![
-                                                                          index1]
-                                                                      .label_field ??
-                                                                  '',
-                                                              style:
-                                                                  LabelStyle(),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 8,
-                                                            ),
-                                                            Expanded(
-                                                              child: WidgetText(
+                                                (index1) => state
+                                                            .dataDetailSupport[
+                                                                index]
+                                                            .data![index1]
+                                                            .value_field !=
+                                                        ''
+                                                    ? Column(
+                                                        children: [
+                                                          SizedBox(
+                                                            height: AppValue
+                                                                    .heights *
+                                                                0.02,
+                                                          ),
+                                                          Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              WidgetText(
                                                                 title: state
                                                                         .dataDetailSupport[
                                                                             index]
                                                                         .data![
                                                                             index1]
-                                                                        .value_field ??
+                                                                        .label_field ??
                                                                     '',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .right,
                                                                 style:
-                                                                    ValueStyle(),
+                                                                    LabelStyle(),
                                                               ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    )),
+                                                              SizedBox(
+                                                                width: 8,
+                                                              ),
+                                                              Expanded(
+                                                                child:
+                                                                    WidgetText(
+                                                                  title: state
+                                                                          .dataDetailSupport[
+                                                                              index]
+                                                                          .data![
+                                                                              index1]
+                                                                          .value_field ??
+                                                                      '',
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .right,
+                                                                  style:
+                                                                      ValueStyle(),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      )
+                                                    : SizedBox()),
                                           ),
                                           SizedBox(
                                             height: AppValue.heights * 0.02,

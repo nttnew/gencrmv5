@@ -160,47 +160,47 @@ class _InfoChancePageState extends State<InfoChancePage> {
                                                       children: List.generate(
                                                         state.data[index].data!
                                                             .length,
-                                                        (index1) => Padding(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  vertical: 5),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Expanded(
-                                                                  flex: 1,
-                                                                  child:
-                                                                      WidgetText(
-                                                                    title: state
-                                                                            .data[index]
-                                                                            .data![index1]
-                                                                            .label_field ??
-                                                                        '',
-                                                                    style: AppStyle
-                                                                        .DEFAULT_14
-                                                                        .copyWith(
-                                                                            color:
-                                                                                Colors.grey),
-                                                                  )),
-                                                              Expanded(
-                                                                  flex: 2,
-                                                                  child: WidgetText(
-                                                                      title:
-                                                                          state.data[index].data![index1].value_field ??
-                                                                              '',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .right,
-                                                                      style: AppStyle
-                                                                          .DEFAULT_14))
-                                                            ],
-                                                          ),
-                                                        ),
+                                                        (index1) => state
+                                                                    .data[index]
+                                                                    .data![
+                                                                        index1]
+                                                                    .value_field !=
+                                                                ''
+                                                            ? Padding(
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                        vertical:
+                                                                            5),
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Expanded(
+                                                                        flex: 1,
+                                                                        child:
+                                                                            WidgetText(
+                                                                          title:
+                                                                              state.data[index].data![index1].label_field ?? '',
+                                                                          style: AppStyle
+                                                                              .DEFAULT_14
+                                                                              .copyWith(color: Colors.grey),
+                                                                        )),
+                                                                    Expanded(
+                                                                        flex: 2,
+                                                                        child: WidgetText(
+                                                                            title: state.data[index].data![index1].value_field ??
+                                                                                '',
+                                                                            textAlign:
+                                                                                TextAlign.right,
+                                                                            style: AppStyle.DEFAULT_14))
+                                                                  ],
+                                                                ),
+                                                              )
+                                                            : SizedBox(),
                                                       ),
                                                     ),
                                                     AppValue.vSpaceTiny,

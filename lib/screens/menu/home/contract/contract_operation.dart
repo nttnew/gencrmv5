@@ -94,29 +94,32 @@ class _ContractOperationState extends State<ContractOperation> {
                       margin: EdgeInsets.symmetric(vertical: 3),
                       child: LineHorizontal());
                 } else
-                  return Container(
-                    padding: EdgeInsets.only(top: 3, bottom: 3),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: WidgetText(
-                            title: data.data![index].label_field ?? "",
-                            style: AppStyle.DEFAULT_14
-                                .copyWith(color: Colors.grey),
+                  return data.data![index].value_field != ''
+                      ? Container(
+                          padding: EdgeInsets.only(top: 3, bottom: 3),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: WidgetText(
+                                  title: data.data![index].label_field ?? "",
+                                  style: AppStyle.DEFAULT_14
+                                      .copyWith(color: Colors.grey),
+                                ),
+                              ),
+                              Expanded(
+                                  flex: 2,
+                                  child: WidgetText(
+                                      title:
+                                          data.data![index].value_field ?? '',
+                                      textAlign: TextAlign.right,
+                                      style: AppStyle.DEFAULT_14))
+                            ],
                           ),
-                        ),
-                        Expanded(
-                            flex: 2,
-                            child: WidgetText(
-                                title: data.data![index].value_field ?? '',
-                                textAlign: TextAlign.right,
-                                style: AppStyle.DEFAULT_14))
-                      ],
-                    ),
-                  );
+                        )
+                      : SizedBox();
               },
             ),
           )

@@ -6,11 +6,13 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../src/models/model_generator/work.dart';
 
-
-
-
 class WorkCardWidget extends StatefulWidget {
-  WorkCardWidget({Key? key,required this.data_list,required this.index,required this.length}) : super(key: key);
+  WorkCardWidget(
+      {Key? key,
+      required this.data_list,
+      required this.index,
+      required this.length})
+      : super(key: key);
 
   final WorkItemData? data_list;
   final int? index;
@@ -24,7 +26,6 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       child: Column(
         children: [
           Row(
@@ -33,14 +34,16 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
               SizedBox(
                 width: AppValue.widths * 0.5,
                 child: WidgetText(
-                  title: widget.data_list!.name_job ??'',
+                  title: widget.data_list!.name_job ?? '',
                   style: NameCustomerStyle(),
                 ),
               ),
               Spacer(),
               Container(
                 decoration: BoxDecoration(
-                    color:widget.data_list!.status_color!=null? HexColor(widget.data_list!.status_color!): COLORS.PRIMARY_COLOR,
+                    color: widget.data_list!.status_color != null
+                        ? HexColor(widget.data_list!.status_color!)
+                        : COLORS.PRIMARY_COLOR,
                     borderRadius: BorderRadius.circular(99)),
                 width: AppValue.widths * 0.1,
                 height: AppValue.heights * 0.02,
@@ -48,35 +51,43 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
             ],
           ),
           SizedBox(height: AppValue.heights * 0.01),
-          Row(
-            children: [
-              SvgPicture.asset("assets/icons/avatar_customer.svg"),
-              Padding(
-                padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                child: WidgetText(
-                  title: widget.data_list!.user_work_name??'',
-                  style: NameCustomerStyle(),
+          if (widget.data_list!.user_work_name?.isNotEmpty ?? false) ...[
+            Row(
+              children: [
+                SvgPicture.asset("assets/icons/avatar_customer.svg"),
+                Padding(
+                  padding: EdgeInsets.only(left: AppValue.widths * 0.03),
+                  child: WidgetText(
+                    title: widget.data_list!.user_work_name ?? '',
+                    style: NameCustomerStyle(),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: AppValue.heights * 0.01),
-          Row(
-            children: [
-              SvgPicture.asset("assets/icons/icon3svg",color: widget.data_list!.status_color!=null? HexColor(widget.data_list!.status_color!): COLORS.PRIMARY_COLOR,),
-              Padding(
-                padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                child: SizedBox(
-                    width: AppValue.widths
-                        * 0.5,
-                    child: WidgetText(
-                      title: widget.data_list!.status_job??'',
-                      style: OrtherInforCustomerStyle(),
-                    )),
-              ),
-            ],
-          ),
-          SizedBox(height: AppValue.heights * 0.01),
+              ],
+            ),
+            SizedBox(height: AppValue.heights * 0.01),
+          ],
+          if (widget.data_list!.status_job?.isNotEmpty ?? false) ...[
+            Row(
+              children: [
+                SvgPicture.asset(
+                  "assets/icons/icon3svg",
+                  color: widget.data_list!.status_color != null
+                      ? HexColor(widget.data_list!.status_color!)
+                      : COLORS.PRIMARY_COLOR,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: AppValue.widths * 0.03),
+                  child: SizedBox(
+                      width: AppValue.widths * 0.5,
+                      child: WidgetText(
+                        title: widget.data_list!.status_job ?? '',
+                        style: OrtherInforCustomerStyle(),
+                      )),
+                ),
+              ],
+            ),
+            SizedBox(height: AppValue.heights * 0.01),
+          ],
           Row(
             children: [
               SvgPicture.asset("assets/icons/icon4.svg"),
@@ -84,8 +95,9 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
                 padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                 child: SizedBox(
                     width: AppValue.widths * 0.5,
-                    child:
-                    WidgetText(title: widget.data_list!.start_date??'', style: OrtherInforCustomerStyle())),
+                    child: WidgetText(
+                        title: widget.data_list!.start_date ?? '',
+                        style: OrtherInforCustomerStyle())),
               ),
               Spacer(),
               SvgPicture.asset("assets/icons/question_answer.svg"),
@@ -103,11 +115,10 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
         ],
       ),
       margin: EdgeInsets.only(
-        left: AppValue.widths * 0.05,
-        top: AppValue.heights * 0.01,
-        right: AppValue.widths * 0.05,
-        bottom: widget.index==(widget.length! - 1)?70:0
-      ),
+          left: AppValue.widths * 0.05,
+          top: AppValue.heights * 0.01,
+          right: AppValue.widths * 0.05,
+          bottom: widget.index == (widget.length! - 1) ? 70 : 0),
       padding: EdgeInsets.only(
           left: AppValue.widths * 0.05,
           top: AppValue.heights * 0.02,

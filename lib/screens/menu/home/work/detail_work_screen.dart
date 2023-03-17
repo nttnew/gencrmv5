@@ -135,63 +135,65 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                           children: List.generate(
                                               state.data_list[index].data!
                                                   .length,
-                                              (index1) => Column(
-                                                    children: [
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          WidgetText(
-                                                            title: state
-                                                                .data_list[
-                                                                    index]
-                                                                .data![index1]
-                                                                .label_field,
-                                                            style: LabelStyle(),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 8,
-                                                          ),
-                                                          Expanded(
-                                                            child: state
-                                                                        .data_list[
-                                                                            index]
-                                                                        .data![
-                                                                            index1]
-                                                                        .type !=
-                                                                    'text_area'
-                                                                ? WidgetText(
-                                                                    title: state
-                                                                        .data_list[
-                                                                            index]
-                                                                        .data![
-                                                                            index1]
-                                                                        .value_field,
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .right,
-                                                                    style:
-                                                                        ValueStyle(),
-                                                                  )
-                                                                : Html(
-                                                                    data: state
-                                                                        .data_list[
-                                                                            index]
-                                                                        .data![
-                                                                            index1]
-                                                                        .value_field,
-                                                                  ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height:
-                                                            AppValue.heights *
-                                                                0.02,
-                                                      ),
-                                                    ],
-                                                  )),
+                                              (index1) =>
+                                                  state
+                                                              .data_list[index]
+                                                              .data![index1]
+                                                              .value_field !=
+                                                          ''
+                                                      ? Column(
+                                                          children: [
+                                                            Row(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                WidgetText(
+                                                                  title: state
+                                                                      .data_list[
+                                                                          index]
+                                                                      .data![
+                                                                          index1]
+                                                                      .label_field,
+                                                                  style:
+                                                                      LabelStyle(),
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 8,
+                                                                ),
+                                                                Expanded(
+                                                                  child: state
+                                                                              .data_list[index]
+                                                                              .data![index1]
+                                                                              .type !=
+                                                                          'text_area'
+                                                                      ? WidgetText(
+                                                                          title: state
+                                                                              .data_list[index]
+                                                                              .data![index1]
+                                                                              .value_field,
+                                                                          textAlign:
+                                                                              TextAlign.right,
+                                                                          style:
+                                                                              ValueStyle(),
+                                                                        )
+                                                                      : Html(
+                                                                          data: state
+                                                                              .data_list[index]
+                                                                              .data![index1]
+                                                                              .value_field,
+                                                                        ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            SizedBox(
+                                                              height: AppValue
+                                                                      .heights *
+                                                                  0.02,
+                                                            ),
+                                                          ],
+                                                        )
+                                                      : SizedBox()),
                                         ),
                                         LineHorizontal(),
                                       ],
