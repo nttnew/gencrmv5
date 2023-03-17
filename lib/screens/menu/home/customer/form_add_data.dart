@@ -313,6 +313,8 @@ class _FormAddDataState extends State<FormAddData> {
                                                           })
                                                         : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, noEdit: true))
                                                     : state.listAddData[index].data![index1].field_type == "SELECT"
+                                                    || state.listAddData[index].data![index1].field_id == "12463"
+                                                    || state.listAddData[index].data![index1].field_id == "12464"
                                                         ? ((state.listAddData[index].data![index1].field_id == '115' || state.listAddData[index].data![index1].field_id == '135')
                                                             ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(builder: (context, stateA) {
                                                                 if (stateA is UpdateGetContacBytCustomerState) {
