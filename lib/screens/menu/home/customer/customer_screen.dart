@@ -581,6 +581,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
               return SafeArea(
                 child: Container(
                   padding: EdgeInsets.all(16),
+                  margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height/4),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -589,10 +590,11 @@ class _CustomerScreenState extends State<CustomerScreen> {
                         child: WidgetText(
                           title: 'Chọn kiểu khách hàng',
                           textAlign: TextAlign.center,
-                          style: AppStyle.DEFAULT_16_BOLD,
+                          style: AppStyle.DEFAULT_20_BOLD,
                         ),
                       ),
                       AppValue.vSpaceTiny,
+                      SizedBox(height: 20,),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -603,9 +605,10 @@ class _CustomerScreenState extends State<CustomerScreen> {
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(vertical: 5),
+                              margin: EdgeInsets.only(bottom: 10),
                               child: WidgetText(
                                 title: "Khách hàng cá nhân",
-                                style: AppStyle.DEFAULT_16,
+                                style: AppStyle.DEFAULT_18,
                               ),
                             ),
                           ),
@@ -618,7 +621,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                               padding: EdgeInsets.symmetric(vertical: 5),
                               child: WidgetText(
                                 title: "Khách hàng tổ chức",
-                                style: AppStyle.DEFAULT_16,
+                                style: AppStyle.DEFAULT_18,
                               ),
                             ),
                           )

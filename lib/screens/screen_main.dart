@@ -56,16 +56,16 @@ class _ScreenMainState extends State<ScreenMain> {
         ButtonMenuModel(
             title: listM[i]['name'],
             image: listM[i]['id'] == 'opportunity'
-                ? ICONS.CHANCE
+                ? ICONS.CHANCE_3X
                 : listM[i]['id'] == 'job'
-                    ? ICONS.WORK
+                    ? ICONS.WORK_3X
                     : listM[i]['id'] == 'contract'
-                        ? ICONS.CONTRACT
+                        ? ICONS.CONTRACT_3X
                         : listM[i]['id'] == 'support'
-                            ? ICONS.SUPPORT
+                            ? ICONS.SUPPORT_3X
                             : listM[i]['id'] == 'customer'
-                                ? ICONS.CUSTUMER
-                                : ICONS.CLUE,
+                                ? ICONS.CUSTUMER_3X
+                                : ICONS.CLUE_3X,
             backgroundColor: listM[i]['id'] == 'opportunity'
                 ? Color(0xffFDC9D2)
                 : listM[i]['id'] == 'job'
@@ -117,7 +117,8 @@ class _ScreenMainState extends State<ScreenMain> {
               isDismissible: false,
               enableDrag: false,
               context: context,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)),
               builder: (BuildContext context) {
                 return Container(
                   padding: EdgeInsets.symmetric(vertical: 25, horizontal: 30),
@@ -157,12 +158,14 @@ class _ScreenMainState extends State<ScreenMain> {
                                 }
                               case 5:
                                 {
-                                  AppNavigator.navigateFormAdd("Thêm công việc", 14);
+                                  AppNavigator.navigateFormAdd(
+                                      "Thêm công việc", 14);
                                   break;
                                 }
                               case 6:
                                 {
-                                  AppNavigator.navigateFormAdd("Thêm công việc", 15);
+                                  AppNavigator.navigateFormAdd(
+                                      "Thêm công việc", 15);
                                   break;
                                 }
 
@@ -178,7 +181,8 @@ class _ScreenMainState extends State<ScreenMain> {
                               SizedBox(width: 10),
                               Text(
                                 menuItems[i]["name"],
-                                style: AppStyle.DEFAULT_16_BOLD.copyWith(color: Color(0xff006CB1)),
+                                style: AppStyle.DEFAULT_16_BOLD
+                                    .copyWith(color: Color(0xff006CB1)),
                               )
                             ],
                           ),
@@ -221,28 +225,36 @@ class _ScreenMainState extends State<ScreenMain> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              BlocBuilder<GetInforAccBloc, GetInforAccState>(builder: (context, state) {
+              BlocBuilder<GetInforAccBloc, GetInforAccState>(
+                  builder: (context, state) {
                 if (state is UpdateGetInforAccState) {
                   return WidgetAppbar(
-                    title: state.inforAcc != null ? state.inforAcc.fullname : '',
+                    title:
+                        state.inforAcc != null ? state.inforAcc.fullname : '',
                     textColor: Colors.black,
                     right: GestureDetector(onTap: () {
                       return AppNavigator.navigateNotification();
-                    }, child: BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(builder: (context, state) {
+                    }, child: BlocBuilder<GetListUnReadNotifiBloc,
+                        UnReadListNotifiState>(builder: (context, state) {
                       if (state is NotificationNeedRead) {
-                        return SvgPicture.asset("assets/icons/notification.svg");
+                        return SvgPicture.asset(
+                            "assets/icons/notification.svg");
                       } else {
-                        return SvgPicture.asset("assets/icons/notification2.svg");
+                        return SvgPicture.asset(
+                            "assets/icons/notification2.svg");
                       }
                     })),
                     left: GestureDetector(
                       onTap: () {
-                        if (_drawerKey.currentContext != null && !_drawerKey.currentState!.isDrawerOpen) {
+                        if (_drawerKey.currentContext != null &&
+                            !_drawerKey.currentState!.isDrawerOpen) {
                           _drawerKey.currentState!.openDrawer();
                         }
                       },
                       child: WidgetNetworkImage(
-                        image: state.inforAcc != null ? state.inforAcc.avatar! : '',
+                        image: state.inforAcc != null
+                            ? state.inforAcc.avatar!
+                            : '',
                         width: 50,
                         height: 50,
                         borderRadius: 25,
@@ -255,16 +267,20 @@ class _ScreenMainState extends State<ScreenMain> {
                     textColor: Colors.black,
                     right: GestureDetector(onTap: () {
                       return AppNavigator.navigateNotification();
-                    }, child: BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(builder: (context, state) {
+                    }, child: BlocBuilder<GetListUnReadNotifiBloc,
+                        UnReadListNotifiState>(builder: (context, state) {
                       if (state is NotificationNeedRead) {
-                        return SvgPicture.asset("assets/icons/notification.svg");
+                        return SvgPicture.asset(
+                            "assets/icons/notification.svg");
                       } else {
-                        return SvgPicture.asset("assets/icons/notification2.svg");
+                        return SvgPicture.asset(
+                            "assets/icons/notification2.svg");
                       }
                     })),
                     left: GestureDetector(
                       onTap: () {
-                        if (_drawerKey.currentContext != null && !_drawerKey.currentState!.isDrawerOpen) {
+                        if (_drawerKey.currentContext != null &&
+                            !_drawerKey.currentState!.isDrawerOpen) {
                           _drawerKey.currentState!.openDrawer();
                         }
                       },
@@ -284,15 +300,20 @@ class _ScreenMainState extends State<ScreenMain> {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: listMenu.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 35, mainAxisSpacing: 25),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 25,
+                        mainAxisSpacing: 25),
                     itemBuilder: (context, index) {
                       // List<ButtonMenuModel> list = [];
-                      return _buildItemMenu(data: listMenu[index], index: index);
+                      return _buildItemMenu(
+                          data: listMenu[index], index: index);
                     }),
               ),
               GestureDetector(
                 onTap: () async {
-                  String? money = await shareLocal.getString(PreferencesKey.MONEY);
+                  String? money =
+                      await shareLocal.getString(PreferencesKey.MONEY);
                   AppNavigator.navigateReport(money ?? "đ");
                 },
                 child: Container(
@@ -307,15 +328,23 @@ class _ScreenMainState extends State<ScreenMain> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Colors.white),
+                        width: 90,
+                        height: 90,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.white),
                         child: WidgetContainerImage(
-                          image: ICONS.WORK,
+                          image: ICONS.WORK_3X,
+                          fit: BoxFit.contain,
+                          width: 50,
+                          height: 50,
                         ),
                       ),
                       AppValue.vSpaceTiny,
-                      Text("Báo cáo", style: AppStyle.DEFAULT_12_BOLD.copyWith(fontFamily: 'Roboto'))
+                      Text("Báo cáo",
+                          style: AppStyle.DEFAULT_20_BOLD.copyWith(
+                              fontFamily: 'Roboto',
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500))
                     ],
                   ),
                 ),
@@ -346,16 +375,35 @@ class _ScreenMainState extends State<ScreenMain> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Colors.white),
-              child: WidgetContainerImage(
-                image: data.image,
+            Expanded(
+              flex: 2,
+              child: Container(
+                width: 80,
+                height: 80,
+                decoration:
+                    BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+                child: WidgetContainerImage(
+                  image: data.image,
+                  fit: BoxFit.contain,
+                  width: 40,
+                  height: 40,
+                ),
               ),
             ),
-            AppValue.vSpaceTiny,
-            Text(data.title, style: AppStyle.DEFAULT_12_BOLD.copyWith(fontFamily: 'Roboto'))
+            Expanded(
+              child: Container(
+                // height: 50,
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  data.title,
+                  style: AppStyle.DEFAULT_12.copyWith(
+                      fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            )
           ],
         ),
       ),

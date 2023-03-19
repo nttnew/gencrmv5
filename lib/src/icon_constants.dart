@@ -42,4 +42,11 @@ class ICONS {
   static const String CONTRACT ='assets/icons/Contract.png';
   static const String WORK ='assets/icons/Work.png';
   static const String SUPPORT ='assets/icons/Support.png';
+
+  static const String CUSTUMER_3X ='assets/icons/Custumer_3x.png';
+  static const String CLUE_3X ='assets/icons/Clue_3x.png';
+  static const String CHANCE_3X ='assets/icons/Chance_3x.png';
+  static const String CONTRACT_3X ='assets/icons/Contract_3x.png';
+  static const String WORK_3X ='assets/icons/Work_3x.png';
+  static const String SUPPORT_3X ='assets/icons/Support_3x.png';
 }
