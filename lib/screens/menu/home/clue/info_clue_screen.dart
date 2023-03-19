@@ -33,6 +33,7 @@ class InfoCluePage extends StatefulWidget {
 class _InfoCluePageState extends State<InfoCluePage> {
   String id = Get.arguments[0];
   String name = Get.arguments[1];
+  String? customerId = Get.arguments[2];
 
   @override
   void initState() {
@@ -66,8 +67,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
                     Get.back();
                     Get.back();
                     Get.back();
-                    GetListClueBloc.of(context)
-                        .add(InitGetListClueEvent('', 1, ''));
+                    GetListClueBloc.of(context).add(InitGetListClueEvent('', 1, ''));
                   },
                 );
               },
@@ -156,14 +156,11 @@ class _InfoCluePageState extends State<InfoCluePage> {
                           SizedBox(width: 10),
                           InkWell(
                               onTap: () {
-                                AppNavigator.navigateFormAdd(
-                                    'Thêm công việc', 21,
-                                    id: int.parse(id));
+                                AppNavigator.navigateFormAdd('Thêm công việc', 21, id: int.parse(id));
                               },
                               child: Text(
                                 'Thêm công việc',
-                                style: AppStyle.DEFAULT_16_BOLD
-                                    .copyWith(color: Color(0xff006CB1)),
+                                style: AppStyle.DEFAULT_16_BOLD.copyWith(color: Color(0xff006CB1)),
                               ))
                         ],
                       ),
@@ -180,8 +177,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
                             SizedBox(width: 10),
                             Text(
                               'Thêm thảo luận',
-                              style: AppStyle.DEFAULT_16_BOLD
-                                  .copyWith(color: Color(0xff006CB1)),
+                              style: AppStyle.DEFAULT_16_BOLD.copyWith(color: Color(0xff006CB1)),
                             )
                           ],
                         ),
@@ -199,18 +195,14 @@ class _InfoCluePageState extends State<InfoCluePage> {
                             SizedBox(width: 10),
                             Text(
                               'Sửa',
-                              style: AppStyle.DEFAULT_16_BOLD
-                                  .copyWith(color: Color(0xff006CB1)),
+                              style: AppStyle.DEFAULT_16_BOLD.copyWith(color: Color(0xff006CB1)),
                             )
                           ],
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
-                          ShowDialogCustom.showDialogTwoButton(
-                              onTap2: () => GetDetailClueBloc.of(context)
-                                  .add(InitDeleteClueEvent(id)),
-                              content: "Bạn chắc chắn muốn xóa không ?");
+                          ShowDialogCustom.showDialogTwoButton(onTap2: () => GetDetailClueBloc.of(context).add(InitDeleteClueEvent(id)), content: "Bạn chắc chắn muốn xóa không ?");
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -220,8 +212,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
                             SizedBox(width: 10),
                             Text(
                               'Xóa',
-                              style: AppStyle.DEFAULT_16_BOLD
-                                  .copyWith(color: Color(0xff006CB1)),
+                              style: AppStyle.DEFAULT_16_BOLD.copyWith(color: Color(0xff006CB1)),
                             )
                           ],
                         ),
@@ -236,8 +227,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
                             color: COLORS.PRIMARY_COLOR,
                           ),
                           child: Center(
-                            child:
-                                Text('Đóng', style: AppStyle.DEFAULT_16_BOLD),
+                            child: Text('Đóng', style: AppStyle.DEFAULT_16_BOLD),
                           ),
                         ),
                       )
@@ -254,8 +244,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
     );
   }
 
-  BlocBuilder<WorkClueBloc, WorkClueState> buildListWorkClue(
-      BuildContext context) {
+  BlocBuilder<WorkClueBloc, WorkClueState> buildListWorkClue(BuildContext context) {
     return BlocBuilder<WorkClueBloc, WorkClueState>(builder: (context, state) {
       if (state is UpdateWorkClue) {
         List<WorkClueData> listWorkClue = state.data!;
@@ -292,12 +281,10 @@ class _InfoCluePageState extends State<InfoCluePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BlocBuilder<GetDetailClueBloc, DetailClueState>(
-                  builder: (context, state) {
+              BlocBuilder<GetDetailClueBloc, DetailClueState>(builder: (context, state) {
                 if (state is UpdateGetDetailClueState) {
                   return Column(
-                    children: List.generate(state.list.length,
-                        (index) => _buildContent(state.list[index])),
+                    children: List.generate(state.list.length, (index) => _buildContent(state.list[index])),
                   );
                   //   ListView.separated(
                   //   shrinkWrap: true,
@@ -346,9 +333,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
   }
 
   _buildContent(DetailClueGroupName detailClue) {
-    if (detailClue.group_name == null &&
-        detailClue.mup == null &&
-        detailClue.data == null) {
+    if (detailClue.group_name == null && detailClue.mup == null && detailClue.data == null) {
       return Container();
     } else {
       return Container(
@@ -402,20 +387,26 @@ class _InfoCluePageState extends State<InfoCluePage> {
                           children: [
                             Text(
                               detailClue.data![index].label_field!,
-                              style: AppStyle.DEFAULT_12.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: COLORS.TEXT_GREY),
+                              style: AppStyle.DEFAULT_12.copyWith(fontWeight: FontWeight.w600, color: COLORS.TEXT_GREY),
                             ),
                             SizedBox(
                               width: 8,
                             ),
-                            Expanded(
-                              child: Text(
-                                  detailClue.data![index].value_field ?? "",
-                                  textAlign: TextAlign.right,
-                                  style: AppStyle.DEFAULT_12_BOLD
-                                      .copyWith(color: COLORS.TEXT_GREY_BOLD)),
-                            ),
+                            customerId != null && customerId != "" && detailClue.data![index].id == "ho_ten_dm"
+                                ? GestureDetector(
+                                    onTap: () => AppNavigator.navigateDetailCustomer(customerId!, name),
+                                    child: Container(
+                                      padding: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(border: Border.all(width: 2, color: COLORS.PRIMARY_COLOR), borderRadius: BorderRadius.circular(8)),
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.arrow_forward),
+                                          Text(detailClue.data![index].value_field ?? "", textAlign: TextAlign.right, style: AppStyle.DEFAULT_12_BOLD.copyWith(color: COLORS.TEXT_GREY_BOLD)),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                : Expanded(child: Text(detailClue.data![index].value_field ?? "", textAlign: TextAlign.right, style: AppStyle.DEFAULT_12_BOLD.copyWith(color: COLORS.TEXT_GREY_BOLD))),
                           ],
                         ),
                       )),
@@ -444,10 +435,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
             Padding(
                 padding: EdgeInsets.only(bottom: AppValue.heights * 0),
                 child: WidgetNetworkImage(
-                  image: (listNoteClue[index].avatar == "" ||
-                          listNoteClue[index].avatar == null)
-                      ? 'https://via.placeholder.com/150'
-                      : listNoteClue[index].avatar!,
+                  image: (listNoteClue[index].avatar == "" || listNoteClue[index].avatar == null) ? 'https://via.placeholder.com/150' : listNoteClue[index].avatar!,
                   borderRadius: 30,
                   width: 50,
                   height: 50,
@@ -460,23 +448,18 @@ class _InfoCluePageState extends State<InfoCluePage> {
                 children: [
                   Text(
                     listNoteClue[index].uname!,
-                    style: AppStyle.DEFAULT_14
-                        .copyWith(fontWeight: FontWeight.w600),
+                    style: AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    listNoteClue[index].createdtime! +
-                        " " +
-                        listNoteClue[index].passedtime!,
-                    style:
-                        AppStyle.DEFAULT_12.copyWith(color: Color(0xff838A91)),
+                    listNoteClue[index].createdtime! + " " + listNoteClue[index].passedtime!,
+                    style: AppStyle.DEFAULT_12.copyWith(color: Color(0xff838A91)),
                   ),
                   SizedBox(
                     height: 4,
                   ),
                   Text(
                     listNoteClue[index].content!,
-                    style: AppStyle.DEFAULT_14
-                        .copyWith(fontWeight: FontWeight.w500),
+                    style: AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w500),
                   )
                 ],
               ),

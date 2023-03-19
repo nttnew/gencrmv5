@@ -427,28 +427,33 @@ class _InformationAccountState extends State<InformationAccount> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
+          textBaseline: TextBaseline.ideographic,
           children: [
             WidgetText(title: "Đăng nhập vân tay: ", style: AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY)),
-            !fingerPrintIsCheck ? WidgetText(title: "NO", style: AppStyle.DEFAULT_16.copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500)) : WidgetText(title: "YES", style: AppStyle.DEFAULT_16.copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500)),
+            // !fingerPrintIsCheck ? WidgetText(title: "NO", style: AppStyle.DEFAULT_16.copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500)) : WidgetText(title: "YES", style: AppStyle.DEFAULT_16.copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500)),
+            Container(
+              height: 40,
+              width: 50,
+              padding: EdgeInsets.only(top: 5, right: 5),
+              child: FittedBox(
+                fit: BoxFit.fill,
+                child: Switch(
+                    value: fingerPrintIsCheck,
+                    onChanged: (value) {
+                      setState(() {
+                        fingerPrintIsCheck = !fingerPrintIsCheck;
+                        if (fingerPrintIsCheck == true) {
+                          shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "true");
+                        } else {
+                          shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "false");
+                        }
+                      });
+                    }),
+              ),
+            ),
           ],
         ),
         AppValue.vSpaceSmall,
-        SizedBox(
-          width: 30,
-          height: 20,
-          child: Switch(
-              value: fingerPrintIsCheck,
-              onChanged: (value) {
-                setState(() {
-                  fingerPrintIsCheck = !fingerPrintIsCheck;
-                  if (fingerPrintIsCheck == true) {
-                    shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "true");
-                  } else {
-                    shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "false");
-                  }
-                });
-              }),
-        ),
       ],
     );
   }

@@ -17,24 +17,22 @@ import '../api_resfull/dio_provider.dart';
 class AnimatedLogo extends AnimatedWidget {
   static final _opacityTween = Tween<double>(begin: 0.1, end: 1);
   static final _sizeTween = Tween<double>(begin: 0, end: 300);
-  AnimatedLogo({Key? key, required Animation<double> animation})
-      : super(key: key, listenable: animation);
+  AnimatedLogo({Key? key, required Animation<double> animation}) : super(key: key, listenable: animation);
   Widget build(BuildContext context) {
     final animation = listenable as Animation<double>;
     return Container(
-      height: double.infinity,
+        height: double.infinity,
         width: double.infinity,
-        child: Center(child:Image.asset("assets/icons/logo.png")),
+        child: Center(child: Image.asset("assets/icons/logo.png")),
         decoration: BoxDecoration(
             gradient: LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [
-        HexColor("89F0DD"),
-        HexColor("C5EDFF"),
-      ],
-    ))
-    );
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            HexColor("89F0DD"),
+            HexColor("C5EDFF"),
+          ],
+        )));
   }
 }
 
@@ -44,21 +42,19 @@ class SplashPage extends StatefulWidget {
   _LogoAppState createState() => _LogoAppState();
 }
 
-class _LogoAppState extends State<SplashPage>
-    with SingleTickerProviderStateMixin {
+class _LogoAppState extends State<SplashPage> with SingleTickerProviderStateMixin {
   late Animation<double> animation;
   late AnimationController controller;
   late Timer _timer;
-  LoginData user=LoginData();
-  String? baseUrl="";
+  LoginData user = LoginData();
+  String? baseUrl = "";
   @override
   void initState() {
     super.initState();
     //GetLogoBloc.of(context)..add(InitGetLogoEvent());
     getBaseUrl();
     loadUser();
-    controller =
-        AnimationController(duration: const Duration(seconds: 2), vsync: this);
+    controller = AnimationController(duration: const Duration(seconds: 2), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.easeIn)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
@@ -70,26 +66,24 @@ class _LogoAppState extends State<SplashPage>
     controller.forward();
   }
 
-  loadUser()async{
+  loadUser() async {
     final response = await shareLocal.getString(PreferencesKey.USER);
-    if(response!=null)
-     {
-       setState(() {
-         user=LoginData.fromJson(jsonDecode(response));
-       });
-     }
-  }
-  getBaseUrl() async {
-    baseUrl=await shareLocal.getString("baseUrl");
-    String? sess=await shareLocal.getString(PreferencesKey.SESS);
-    String? token=await shareLocal.getString(PreferencesKey.TOKEN);
-    if(baseUrl!= dotenv.env[PreferencesKey.BASE_URL]){
-      dotenv.env[PreferencesKey.BASE_URL]=baseUrl??"";
-      DioProvider.instance(sess: sess??"",baseUrl: baseUrl,token: token??"");
+    if (response != null) {
+      setState(() {
+        user = LoginData.fromJson(jsonDecode(response));
+      });
     }
-
   }
 
+  getBaseUrl() async {
+    baseUrl = await shareLocal.getString("baseUrl");
+    String? sess = await shareLocal.getString(PreferencesKey.SESS);
+    String? token = await shareLocal.getString(PreferencesKey.TOKEN);
+    if (baseUrl != dotenv.env[PreferencesKey.BASE_URL]) {
+      dotenv.env[PreferencesKey.BASE_URL] = baseUrl ?? "";
+      DioProvider.instance(sess: sess ?? "", baseUrl: baseUrl, token: token ?? "");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
