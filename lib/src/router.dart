@@ -12,7 +12,8 @@ class ROUTE_NAMES {
   static const String FORGOT_PASSWORD_OTP = '/forgot_password_otp';
   static const String FORGOT_PASSWORD_RESET = '/forgot_password_reset';
   static const String CHANGE_PASSWORD = '/change_password';
-  static const String CHANGE_INFORMATION_ACCOUNT = '/change_information_account';
+  static const String CHANGE_INFORMATION_ACCOUNT =
+      '/change_information_account';
   static const String INFORMATION_ACCOUNT = '/information_account';
   static const String ABOUT_US = '/about_us';
   static const String POLICY = '/policy';

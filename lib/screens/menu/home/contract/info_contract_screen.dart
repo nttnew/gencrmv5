@@ -31,7 +31,6 @@ class InfoContractPage extends StatefulWidget {
 class _InfoContractPageState extends State<InfoContractPage> {
   String id = Get.arguments[0];
   String name = Get.arguments[1];
-  String idCustomer = Get.arguments[2];
   List<AttachFile> listFile = [];
 
   @override
@@ -126,7 +125,9 @@ class _InfoContractPageState extends State<InfoContractPage> {
                       body: TabBarView(
                         // physics: NeverScrollableScrollPhysics(),
                         children: [
-                          ContractOperation(id: id, customerId: idCustomer),
+                          ContractOperation(
+                            id: id,
+                          ),
                           ContractPayment(id: int.parse(id)),
                           ContractJob(id: int.parse(id)),
                           ContractSupport(id: id),

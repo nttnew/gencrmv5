@@ -7,9 +7,8 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../../../../bloc/contract_customer/contract_customer_bloc.dart';
 import '../../../../../../src/src_index.dart';
 import '../../../../../../widgets/widget_text.dart';
-
 class ConstractCustomer extends StatefulWidget {
-  ConstractCustomer({Key? key, required this.id}) : super(key: key);
+  ConstractCustomer({Key? key,required this.id}) : super(key: key);
 
   final String id;
 
@@ -18,6 +17,7 @@ class ConstractCustomer extends StatefulWidget {
 }
 
 class _ConstractCustomerState extends State<ConstractCustomer> {
+
   // @override
   // void initState() {
   //   Future.delayed(Duration(milliseconds: 100),(){
@@ -39,41 +39,36 @@ class _ConstractCustomerState extends State<ConstractCustomer> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Column(
-      children: [
-        SizedBox(
-          height: AppValue.heights * 0.02,
-        ),
-        BlocBuilder<ContractCustomerBloc, ContractCustomerState>(builder: (context, state) {
-          if (state is UpdateGetContractCustomerState) if (state.listContract.length > 0)
-            return Column(
-              children: List.generate(
-                  state.listContract.length,
-                  (index) => GestureDetector(
-                      onTap: () {
-                        AppNavigator.navigateInfoContract(state.listContract[index].id!, state.listContract[index].name!, customerId: widget.id);
-                      },
-                      child: ConstractCardWidget(
-                        data: state.listContract[index],
-                      ))),
-            );
-          else {
-            return Center(
-              child: WidgetText(
-                title: "Không có dữ liệu",
-                style: AppStyle.DEFAULT_16_BOLD,
-              ),
-            );
-          }
-          else
-            return Container();
-        }),
-        // ListView.separated(
-        //   shrinkWrap: true,
-        //   itemBuilder: (context,index)=> ConstractCardWidget(),
-        //   itemCount: 5,
-        //   physics: BouncingScrollPhysics(),
-        //   separatorBuilder: (BuildContext context, int index) => SizedBox(height: AppValue.heights*0.01,),)
-      ],
-    ));
+
+          children: [
+            SizedBox(height: AppValue.heights*0.02,),
+            BlocBuilder<ContractCustomerBloc, ContractCustomerState>(
+                builder: (context, state) {
+                  if (state is UpdateGetContractCustomerState)
+                    if(state.listContract.length>0)
+                    return Column(
+                      children: List.generate(state.listContract.length, (index) => GestureDetector(
+                        onTap: (){
+                          AppNavigator.navigateInfoContract(state.listContract[index].id!,state.listContract[index].name!);
+                        },
+                          child: ConstractCardWidget(data:state.listContract[index] ,))),
+                    );
+                  else{
+                    return Center(child: WidgetText(title: "Không có dữ liệu",style: AppStyle.DEFAULT_16_BOLD,),);
+                  }
+                  else
+                    return Container();
+                }),
+            // ListView.separated(
+            //   shrinkWrap: true,
+            //   itemBuilder: (context,index)=> ConstractCardWidget(),
+            //   itemCount: 5,
+            //   physics: BouncingScrollPhysics(),
+            //   separatorBuilder: (BuildContext context, int index) => SizedBox(height: AppValue.heights*0.01,),)
+          ],
+        )
+        );
   }
+
+
 }

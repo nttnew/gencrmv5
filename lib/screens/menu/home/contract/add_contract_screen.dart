@@ -613,7 +613,7 @@ class _FormAddContractState extends State<FormAddContract> {
               },
               onSelectionChanged: (values) {
                 if (maxLength != "" && values.length > int.parse(maxLength)) {
-                    values.removeRange(int.parse(maxLength) - 1, values.length - 1);
+                  values.removeRange(int.parse(maxLength) - 1, values.length - 1);
                 }
               },
               title: WidgetText(

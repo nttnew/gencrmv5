@@ -11,10 +11,9 @@ import '../../../../src/values.dart';
 import '../../../../widgets/widget_line.dart';
 
 class ContractOperation extends StatefulWidget {
-  ContractOperation({Key? key, required this.id, required this.customerId}) : super(key: key);
+  ContractOperation({Key? key, required this.id}) : super(key: key);
 
   final String id;
-  final String customerId;
 
   @override
   State<ContractOperation> createState() => _ContractOperationState();
@@ -36,14 +35,16 @@ class _ContractOperationState extends State<ContractOperation> {
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.only(bottom: 10),
-        child: BlocBuilder<DetailContractBloc, DetailContractState>(builder: (context, state) {
+        child: BlocBuilder<DetailContractBloc, DetailContractState>(
+            builder: (context, state) {
           if (state is SuccessDetailContractState)
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List.generate(state.listDetailContract.length, (index) {
+                  children:
+                      List.generate(state.listDetailContract.length, (index) {
                     if (state.listDetailContract[index].data != null) {
                       return _buildContent1(state.listDetailContract[index]);
                     } else
@@ -89,7 +90,9 @@ class _ContractOperationState extends State<ContractOperation> {
               data.data!.length,
               (index) {
                 if (data.data![index].field_type == "LINE") {
-                  return Container(margin: EdgeInsets.symmetric(vertical: 3), child: LineHorizontal());
+                  return Container(
+                      margin: EdgeInsets.symmetric(vertical: 3),
+                      child: LineHorizontal());
                 } else
                   return Container(
                     padding: EdgeInsets.only(top: 3, bottom: 3),
@@ -101,23 +104,16 @@ class _ContractOperationState extends State<ContractOperation> {
                           flex: 1,
                           child: WidgetText(
                             title: data.data![index].label_field ?? "",
-                            style: AppStyle.DEFAULT_14.copyWith(color: Colors.grey),
+                            style: AppStyle.DEFAULT_14
+                                .copyWith(color: Colors.grey),
                           ),
                         ),
-                        data.data![index].id == "col131"
-                            ? GestureDetector(
-                                onTap: () => AppNavigator.navigateDetailCustomer(widget.customerId, data.data![index].value_field!),
-                                child: Container(
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(border: Border.all(width: 2, color: COLORS.PRIMARY_COLOR), borderRadius: BorderRadius.circular(8)),
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.arrow_forward),
-                                        WidgetText(title: data.data![index].value_field ?? '', textAlign: TextAlign.right, style: AppStyle.DEFAULT_14),
-                                      ],
-                                    )),
-                              )
-                            : Expanded(flex: 2, child: WidgetText(title: data.data![index].value_field ?? '', textAlign: TextAlign.right, style: AppStyle.DEFAULT_14))
+                        Expanded(
+                            flex: 2,
+                            child: WidgetText(
+                                title: data.data![index].value_field ?? '',
+                                textAlign: TextAlign.right,
+                                style: AppStyle.DEFAULT_14))
                       ],
                     ),
                   );
@@ -190,18 +186,21 @@ class _ContractOperationState extends State<ContractOperation> {
                 children: [
                   Text(
                     'Nguyễn Hoàng Nam',
-                    style: AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w600),
+                    style: AppStyle.DEFAULT_14
+                        .copyWith(fontWeight: FontWeight.w600),
                   ),
                   Text(
                     '20/03/2022 lúc 05:15 PM',
-                    style: AppStyle.DEFAULT_12.copyWith(color: Color(0xff838A91)),
+                    style:
+                        AppStyle.DEFAULT_12.copyWith(color: Color(0xff838A91)),
                   ),
                   SizedBox(
                     height: 4,
                   ),
                   Text(
                     'Chị Thảo muốn nhận báo giá có ưu đãi. Nếu giá tốt sẽ bắt đầu triển khai ngay vào đầu tháng tới. Chú ý: gửi báo giá cả bản cứng và bản mềm cho chị.',
-                    style: AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w500),
+                    style: AppStyle.DEFAULT_14
+                        .copyWith(fontWeight: FontWeight.w500),
                   )
                 ],
               ),

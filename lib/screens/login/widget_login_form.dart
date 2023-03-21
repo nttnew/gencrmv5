@@ -19,8 +19,6 @@ import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 
-import '../../src/utils.dart';
-
 class WidgetLoginForm extends StatefulWidget {
   WidgetLoginForm({Key? key, required this.reload}) : super(key: key);
 
@@ -262,7 +260,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         ? Align(
             alignment: Alignment.centerLeft,
             child: GestureDetector(
-              onTap: () => Utils.loginWithFingerPrint(tokenFirebase),
+              onTap: loginWithFingerPrint,
               child: Row(
                 children: [
                   Icon(Icons.fingerprint),
@@ -275,5 +273,20 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
             ),
           )
         : SizedBox();
+  }
+
+  loginWithFingerPrint() async {
+    final LocalAuthentication auth = LocalAuthentication();
+    try {
+      final didAuthenticate = await auth.authenticate(localizedReason: 'Đăng nhập bằng vân tay', options: const AuthenticationOptions(biometricOnly: true));
+      if (didAuthenticate) {
+        LoginBloc.of(context).add(LoginWithFingerPrint(device_token: tokenFirebase ?? ''));
+      } else {
+        return;
+      }
+    } catch (e) {
+      print(e);
+      return;
+    }
   }
 }

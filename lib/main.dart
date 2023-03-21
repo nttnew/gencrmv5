@@ -41,7 +41,6 @@ import 'package:gen_crm/screens/menu/home/customer/form_add_data.dart';
 import 'package:gen_crm/screens/menu/home/customer/form_edit.dart';
 import 'package:gen_crm/screens/menu/home/notification/notification_screen.dart';
 import 'package:gen_crm/screens/menu/home/report/report_screen.dart';
-import 'package:gen_crm/src/device_size.dart';
 import 'package:gen_crm/test.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/screens/forgot_password/forgot_password_otp_screen.dart';
@@ -354,9 +353,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    App.init();
     return GetMaterialApp(
-      navigatorKey: App.navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'NunitoSans'),
       title: MESSAGES.APP_TITLE,

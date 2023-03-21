@@ -2,14 +2,10 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gen_crm/storages/share_local.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/screens/login/index.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
-import 'package:local_auth/local_auth.dart';
-import '../../bloc/login/login_bloc.dart';
-import '../../src/utils.dart';
 import '../../widgets/rounder_bootom_appbar.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
@@ -26,14 +22,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     // fireBase();
-
-    if (shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT) == "true") {
-      Future.delayed(Duration(seconds: 0), () async {
-        FirebaseMessaging messaging = FirebaseMessaging.instance;
-        tokenFirebase = await messaging.getToken();
-        Utils.loginWithFingerPrint(tokenFirebase);
-      });
-    }
     KeyboardVisibilityController().onChange.listen((visible) {
       if (visible) {
         scrollController.jumpTo(150);
@@ -65,7 +53,8 @@ class _LoginScreenState extends State<LoginScreen> {
           physics: ScrollPhysics(),
           controller: scrollController,
           child: Padding(
-            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Column(
               children: [
                 WidgetTouchHideKeyBoard(
@@ -82,7 +71,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 children: [
                                   Text(
                                     "Đăng nhập",
-                                    style: TextStyle(fontFamily: "Quicksand", fontWeight: FontWeight.bold, fontSize: 20),
+                                    style: TextStyle(
+                                        fontFamily: "Quicksand",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
                                   )
                                 ],
                               ),

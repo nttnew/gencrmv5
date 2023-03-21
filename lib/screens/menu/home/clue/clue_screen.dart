@@ -35,8 +35,11 @@ class _ClueScreenState extends State<ClueScreen> {
   void initState() {
     GetListClueBloc.of(context).add(InitGetListClueEvent('', 1, ''));
     _scrollController.addListener(() {
-      if (_scrollController.offset == _scrollController.position.maxScrollExtent && lenght < total) {
-        GetListClueBloc.of(context).add(InitGetListClueEvent('', page + 1, search));
+      if (_scrollController.offset ==
+              _scrollController.position.maxScrollExtent &&
+          lenght < total) {
+        GetListClueBloc.of(context)
+            .add(InitGetListClueEvent('', page + 1, search));
         page = page + 1;
       } else {}
     });
@@ -58,7 +61,8 @@ class _ClueScreenState extends State<ClueScreen> {
               padding: EdgeInsets.only(left: 20),
               child: GestureDetector(
                 onTap: () {
-                  if (_drawerKey.currentContext != null && !_drawerKey.currentState!.isDrawerOpen) {
+                  if (_drawerKey.currentContext != null &&
+                      !_drawerKey.currentState!.isDrawerOpen) {
                     _drawerKey.currentState!.openDrawer();
                   }
                 },
@@ -66,20 +70,23 @@ class _ClueScreenState extends State<ClueScreen> {
               ),
             ),
             right: GestureDetector(
-              onTap: () {
-                AppNavigator.navigateNotification();
-              },
-              child: BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(builder: (context, state) {
-                if (state is NotificationNeedRead) {
-                  return SvgPicture.asset("assets/icons/notification.svg");
-                } else {
-                  return SvgPicture.asset("assets/icons/notification2.svg");
-                }
-              }),
-            ),
+                onTap: () {AppNavigator.navigateNotification();},
+                child: BlocBuilder<GetListUnReadNotifiBloc,UnReadListNotifiState>(
+                    builder: (context,state){
+                      if(state is NotificationNeedRead){
+                        return SvgPicture.asset("assets/icons/notification.svg");
+                      }
+                      else{
+                        return SvgPicture.asset("assets/icons/notification2.svg");
+                      }
+                    }
+                ),
+          ),
           ),
           AppValue.vSpaceTiny,
-          Padding(padding: EdgeInsets.symmetric(horizontal: 25), child: _buildSearch()),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25),
+              child: _buildSearch()),
           BlocBuilder<GetListClueBloc, ClueState>(builder: (context, state) {
             if (state is UpdateGetListClueState) {
               listClue = state.listClue;
@@ -87,7 +94,7 @@ class _ClueScreenState extends State<ClueScreen> {
               total = int.parse(state.total);
               return Expanded(
                 child: RefreshIndicator(
-                  onRefresh: () => Future.delayed(Duration(microseconds: 300), () {
+                  onRefresh: ()=>Future.delayed(Duration(microseconds: 300),(){
                     GetListClueBloc.of(context).add(InitGetListClueEvent('', 1, ''));
                   }),
                   child: ListView.separated(
@@ -99,7 +106,8 @@ class _ClueScreenState extends State<ClueScreen> {
                     itemBuilder: (context, index) {
                       return _buildCustomer(listClue[index]);
                     },
-                    separatorBuilder: (BuildContext context, int index) => const SizedBox(),
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const SizedBox(),
                   ),
                 ),
               );
@@ -120,7 +128,7 @@ class _ClueScreenState extends State<ClueScreen> {
           backgroundColor: Color(0xff1AA928),
           onPressed: () {
             // AppNavigator.navigateAddClue();
-            AppNavigator.navigateFormAdd('Thêm ${Get.arguments}', 2);
+            AppNavigator.navigateFormAdd('Thêm ${Get.arguments}',2);
           },
           child: Icon(Icons.add, size: 40),
         ),
@@ -138,7 +146,8 @@ class _ClueScreenState extends State<ClueScreen> {
             ),
             borderRadius: BorderRadius.circular(10),
             color: COLORS.WHITE),
-        child: BlocBuilder<GetListClueBloc, ClueState>(builder: (context, state) {
+        child:
+            BlocBuilder<GetListClueBloc, ClueState>(builder: (context, state) {
           if (state is UpdateGetListClueState) {
             return Row(
               children: [
@@ -160,7 +169,8 @@ class _ClueScreenState extends State<ClueScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextFormField(
                       onEditingComplete: () {
-                        GetListClueBloc.of(context).add(InitGetListClueEvent('', 1, search));
+                        GetListClueBloc.of(context)
+                            .add(InitGetListClueEvent('', 1, search));
                       },
                       onChanged: (text) {
                         search = text;
@@ -170,7 +180,8 @@ class _ClueScreenState extends State<ClueScreen> {
                       textAlignVertical: TextAlignVertical.top,
                       decoration: InputDecoration(
                         hintText: MESSAGES.SEARCH_CLUE,
-                        hintStyle: AppStyle.DEFAULT_14.copyWith(color: Color(0xff707070)),
+                        hintStyle: AppStyle.DEFAULT_14
+                            .copyWith(color: Color(0xff707070)),
                         // errorText: errorText,
                         // errorStyle: AppStyle.DEFAULT_12.copyWith(color: COLORS.RED),
                         focusedBorder: InputBorder.none,
@@ -192,16 +203,14 @@ class _ClueScreenState extends State<ClueScreen> {
                     height: 20,
                     width: 20,
                     child: GestureDetector(
-                        onTap: () {
-                          showBotomSheet(state.listFilter);
-                        },
-                        child: SvgPicture.asset('assets/icons/Filter.svg')),
+                        onTap:(){ showBotomSheet(state.listFilter);},
+                        child: SvgPicture.asset('assets/icons/Filter.svg')
+                    ),
                   ),
                 ),
               ],
             );
-          }
-          return Center(
+          } return Center(
             child: WidgetText(
               title: 'Không có dữ liệu',
               style: AppStyle.DEFAULT_18_BOLD,
@@ -213,7 +222,7 @@ class _ClueScreenState extends State<ClueScreen> {
   _buildCustomer(ClueData cluedata) {
     return GestureDetector(
       onTap: () {
-        AppNavigator.navigateInfoClue(cluedata.id!, cluedata.name!, customerId: cluedata.customer!.id!);
+        AppNavigator.navigateInfoClue(cluedata.id!,cluedata.name!);
       },
       child: Container(
         margin: EdgeInsets.only(left: 25, right: 25, bottom: 20),
@@ -242,8 +251,9 @@ class _ClueScreenState extends State<ClueScreen> {
                 SizedBox(
                     width: AppValue.widths * 0.6,
                     child: Text(
-                      (cluedata.name == "" || cluedata.name == null) ? 'Chưa có' : cluedata.name!,
-                      style: AppStyle.DEFAULT_18_BOLD.copyWith(color: COLORS.TEXT_COLOR),
+                      (cluedata.name==""||cluedata.name==null)?'Chưa có':cluedata.name!,
+                      style: AppStyle.DEFAULT_18_BOLD
+                          .copyWith(color: COLORS.TEXT_COLOR),
                     )),
               ],
             ),
@@ -258,7 +268,7 @@ class _ClueScreenState extends State<ClueScreen> {
                 ),
                 Expanded(
                   child: Text(
-                    (cluedata.customer!.name == "" || cluedata.customer!.name == null) ? 'Chưa có' : cluedata.customer!.name!,
+                    (cluedata.customer!.name==""||cluedata.customer!.name==null)?'Chưa có':cluedata.customer!.name!,
                     style: AppStyle.DEFAULT_LABEL_PRODUCT,
                   ),
                 ),
@@ -277,9 +287,11 @@ class _ClueScreenState extends State<ClueScreen> {
                   width: 10,
                 ),
                 WidgetText(
-                  title: (cluedata.email!.val == null || cluedata.email!.val == "") ? "Chưa có" : cluedata.email!.val!,
-                  style: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(color: COLORS.GREY),
+                  title: (cluedata.email!.val==null||cluedata.email!.val=="") ? "Chưa có":cluedata.email!.val!,
+                  style: AppStyle.DEFAULT_LABEL_PRODUCT
+                      .copyWith(color: COLORS.GREY),
                 ),
+
               ],
             ),
             SizedBox(
@@ -291,7 +303,9 @@ class _ClueScreenState extends State<ClueScreen> {
                 SizedBox(
                   width: 10,
                 ),
-                Text((cluedata.phone!.val == null || cluedata.phone!.val == "") ? "Chưa có" : cluedata.phone!.val!, style: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(color: COLORS.TEXT_COLOR)),
+                Text((cluedata.phone!.val==null||cluedata.phone!.val=="") ? "Chưa có":cluedata.phone!.val!,
+                    style: AppStyle.DEFAULT_LABEL_PRODUCT
+                        .copyWith(color: COLORS.TEXT_COLOR)),
                 Spacer(),
                 SvgPicture.asset("assets/icons/question_answer.svg"),
                 SizedBox(
@@ -305,17 +319,18 @@ class _ClueScreenState extends State<ClueScreen> {
                 ),
               ],
             ),
+
             AppValue.hSpaceTiny,
           ],
         ),
       ),
     );
   }
-
   showBotomSheet(List<FilterData> data) {
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
         ),
         elevation: 2,
         context: context,
@@ -341,37 +356,41 @@ class _ClueScreenState extends State<ClueScreen> {
                       Column(
                         children: List.generate(
                             data.length,
-                            (index) => GestureDetector(
-                                  onTap: () {
-                                    Get.back();
-                                    GetListClueBloc.of(context).add(InitGetListClueEvent(data[index].id.toString(), 1, search));
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(vertical: 8),
-                                    decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: COLORS.LIGHT_GREY))),
-                                    child: Row(
-                                      // crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        SvgPicture.asset(
-                                          'assets/icons/Filter.svg',
-                                          width: 20,
-                                          height: 20,
-                                          fit: BoxFit.contain,
-                                        ),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        Expanded(
-                                            child: Container(
+                                (index) => GestureDetector(
+                              onTap: () {
+                                Get.back();
+                                GetListClueBloc.of(context).add(InitGetListClueEvent(data[index].id.toString(), 1, search));
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 8),
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            width: 1,
+                                            color: COLORS.LIGHT_GREY))),
+                                child: Row(
+                                  // crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/icons/Filter.svg',
+                                      width: 20,
+                                      height: 20,
+                                      fit: BoxFit.contain,
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Expanded(
+                                        child: Container(
                                           child: WidgetText(
                                             title: data[index].name ?? '',
                                             style: AppStyle.DEFAULT_16,
                                           ),
                                         )),
-                                      ],
-                                    ),
-                                  ),
-                                )),
+                                  ],
+                                ),
+                              ),
+                            )),
                       )
                     ],
                   ),
@@ -381,9 +400,8 @@ class _ClueScreenState extends State<ClueScreen> {
           );
         });
   }
-
   handleOnPressItemMenu(value) async {
-    switch (value['id']) {
+    switch (value['id']){
       case '1':
         _drawerKey.currentState!.openEndDrawer();
         AppNavigator.navigateMain();
