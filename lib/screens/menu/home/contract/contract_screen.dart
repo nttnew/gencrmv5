@@ -292,7 +292,7 @@ class _ContractScreenState extends State<ContractScreen> {
             SizedBox(
               height: 8,
             ),
-            if (data.customer?.name?.isNotEmpty ?? false) ...[
+            if (data.customer?.name?.trim().isNotEmpty ?? false) ...[
               Row(
                 children: [
                   SvgPicture.asset(
@@ -314,7 +314,7 @@ class _ContractScreenState extends State<ContractScreen> {
                 height: 8,
               ),
             ],
-            if (data.status?.isNotEmpty ?? false) ...[
+            if (data.status?.trim().isNotEmpty ?? false) ...[
               Row(
                 children: [
                   SvgPicture.asset(
