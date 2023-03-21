@@ -7,8 +7,9 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../../../src/src_index.dart';
 import '../../../../../../widgets/widget_text.dart';
+
 class ChanceCustomer extends StatefulWidget {
-  ChanceCustomer({Key? key,required this.id}) : super(key: key);
+  ChanceCustomer({Key? key, required this.id}) : super(key: key);
 
   final String id;
 
@@ -17,7 +18,6 @@ class ChanceCustomer extends StatefulWidget {
 }
 
 class _ChanceCustomerState extends State<ChanceCustomer> {
-
   @override
   void initState() {
     // Future.delayed(Duration(milliseconds: 100),(){
@@ -41,36 +41,40 @@ class _ChanceCustomerState extends State<ChanceCustomer> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: AppValue.heights*0.02,),
-          BlocBuilder<ChanceCustomerBloc, ChanceCustomerState>(
-              builder: (context, state) {
-                if (state is UpdateGetChanceCustomerState)
-                  if(state.listChance.length>0)
-                    return Column(
-                      children: List.generate(state.listChance.length, (index) => GestureDetector(
-                          onTap: (){
-                            AppNavigator.navigateInfoChance(state.listChance[index].id!,state.listChance[index].name!);
-                          },
-                          child: ChanceCardWidget(data: state.listChance[index]))),
-                    );
-                  else{
-                    return Center(child: WidgetText(title: "Không có dữ liệu",style: AppStyle.DEFAULT_16_BOLD,),);
-                  }
+          SizedBox(
+            height: AppValue.heights * 0.02,
+          ),
+          BlocBuilder<ChanceCustomerBloc, ChanceCustomerState>(builder: (context, state) {
+            if (state is UpdateGetChanceCustomerState) if (state.listChance.length > 0)
+              return Column(
+                children: List.generate(
+                    state.listChance.length,
+                    (index) => GestureDetector(
+                        onTap: () {
+                          AppNavigator.navigateInfoChance(state.listChance[index].id!, state.listChance[index].name!, customerId: widget.id);
+                        },
+                        child: ChanceCardWidget(data: state.listChance[index]))),
+              );
+            else {
+              return Center(
+                child: WidgetText(
+                  title: "Không có dữ liệu",
+                  style: AppStyle.DEFAULT_16_BOLD,
+                ),
+              );
+            }
 
-                    // ListView.separated(
-                    // shrinkWrap: true,
-                    // itemBuilder: (context,index)=> ChanceCardWidget(data: state.listChance[index]),
-                    // itemCount: state.listChance.length,
-                    // physics: BouncingScrollPhysics(),
-                    // separatorBuilder: (BuildContext context, int index) => SizedBox(height: AppValue.heights*0.01,),);
-                else
-                  return Container();
-              })
-
+            // ListView.separated(
+            // shrinkWrap: true,
+            // itemBuilder: (context,index)=> ChanceCardWidget(data: state.listChance[index]),
+            // itemCount: state.listChance.length,
+            // physics: BouncingScrollPhysics(),
+            // separatorBuilder: (BuildContext context, int index) => SizedBox(height: AppValue.heights*0.01,),);
+            else
+              return Container();
+          })
         ],
       ),
     );
   }
-
-
 }

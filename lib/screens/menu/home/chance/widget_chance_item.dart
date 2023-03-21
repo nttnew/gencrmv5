@@ -21,8 +21,7 @@ class WidgetItemChance extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AppNavigator.navigateInfoChance(
-            listChanceData.id!, listChanceData.name!);
+        AppNavigator.navigateInfoChance(listChanceData.id!, listChanceData.name!, customerId: listChanceData.customer!.id!);
         print({listChanceData.id});
       },
       child: Container(
@@ -53,14 +52,11 @@ class WidgetItemChance extends StatelessWidget {
                     width: AppValue.widths * 0.6,
                     child: WidgetText(
                       title: listChanceData.name,
-                      style: AppStyle.DEFAULT_TITLE_PRODUCT
-                          .copyWith(color: COLORS.TEXT_COLOR),
+                      style: AppStyle.DEFAULT_TITLE_PRODUCT.copyWith(color: COLORS.TEXT_COLOR),
                     )),
                 Spacer(),
                 Container(
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(99)),
+                  decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(99)),
                   width: AppValue.widths * 0.1,
                   height: AppValue.heights * 0.02,
                 )
@@ -69,56 +65,45 @@ class WidgetItemChance extends StatelessWidget {
             SizedBox(
               height: 15,
             ),
-            if ((listChanceData.customer?.name??'').trim() != '') ...[
-              Row(
-                children: [
-                  SvgPicture.asset('assets/icons/User.svg'),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  SizedBox(
-                    width: AppValue.widths * 0.7,
-                    child: WidgetText(
-                        title: '${listChanceData.customer!.danh_xung ?? ''} ' +
-                            '${listChanceData.customer!.name ?? ''}',
-                        style: AppStyle.DEFAULT_LABEL_PRODUCT),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-            ],
-            if (listChanceData.status != '') ...[
-              Row(
-                children: [
-                  SvgPicture.asset('assets/icons/dangxuly.svg'),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  WidgetText(
-                      title: listChanceData.status,
-                      style: AppStyle.DEFAULT_LABEL_PRODUCT
-                          .copyWith(color: Colors.red)),
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-            ],
+        if ((listChanceData.customer?.name??'').trim() != '') ...[
+
+    Row(
+              children: [
+                SvgPicture.asset('assets/icons/User.svg'),
+                SizedBox(
+                  width: 10,
+                ),
+                SizedBox(
+                  width: AppValue.widths * 0.7,
+                  child: WidgetText(title: '${listChanceData.customer!.danh_xung ?? ''}' + ' ' + '${listChanceData.customer!.name ?? ''}', style: AppStyle.DEFAULT_LABEL_PRODUCT),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 15,
+            ),            ],
+    if (listChanceData.status != '') ...[
+
+            Row(
+              children: [
+                SvgPicture.asset('assets/icons/dangxuly.svg'),
+                SizedBox(
+                  width: 10,
+                ),
+                WidgetText(title: listChanceData.status, style: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(color: Colors.red)),
+              ],
+            ),
+            SizedBox(
+              height: 15,
+            ),            ],
+
             Row(
               children: [
                 Image.asset('assets/icons/date.png'),
                 SizedBox(
                   width: 10,
                 ),
-                WidgetText(
-                    title: (listChanceData.dateNextCare == null ||
-                            listChanceData.dateNextCare == "")
-                        ? 'Chưa có'
-                        : listChanceData.dateNextCare,
-                    style: AppStyle.DEFAULT_LABEL_PRODUCT
-                        .copyWith(color: COLORS.TEXT_COLOR)),
+                WidgetText(title: (listChanceData.dateNextCare == null || listChanceData.dateNextCare == "") ? 'Chưa có' : listChanceData.dateNextCare, style: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(color: COLORS.TEXT_COLOR)),
                 Spacer(),
                 SvgPicture.asset('assets/icons/Mess.svg'),
               ],
