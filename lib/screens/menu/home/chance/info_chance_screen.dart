@@ -34,7 +34,8 @@ class _InfoChancePageState extends State<InfoChancePage> {
 
   @override
   void initState() {
-    GetListDetailChanceBloc.of(context).add(InitGetListDetailEvent(int.parse(id)));
+    GetListDetailChanceBloc.of(context)
+        .add(InitGetListDetailEvent(int.parse(id)));
     ListNoteBloc.of(context).add(InitNoteOppEvent(id, "1"));
     GetJobChanceBloc.of(context).add(InitGetJobEventChance(int.parse(id)));
     super.initState();
@@ -60,7 +61,8 @@ class _InfoChancePageState extends State<InfoChancePage> {
                     Get.back();
                     Get.back();
                     Get.back();
-                    GetListChanceBloc.of(context).add(InitGetListOrderEventChance('', 1, ''));
+                    GetListChanceBloc.of(context)
+                        .add(InitGetListOrderEventChance('', 1, ''));
                   },
                 );
               },
@@ -124,63 +126,87 @@ class _InfoChancePageState extends State<InfoChancePage> {
                                   WidgetLine(
                                     color: Colors.grey,
                                   ),
-                                  BlocBuilder<GetListDetailChanceBloc, DetailChanceState>(builder: (context, state) {
-                                    if (state is UpdateGetListDetailChanceState) {
+                                  BlocBuilder<GetListDetailChanceBloc,
+                                          DetailChanceState>(
+                                      builder: (context, state) {
+                                    if (state
+                                        is UpdateGetListDetailChanceState) {
                                       return ListView.separated(
                                           shrinkWrap: true,
-                                          physics: NeverScrollableScrollPhysics(),
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
                                           itemBuilder: (context, index) {
                                             if (state.data[index].data != null)
                                               return Container(
-                                                padding: EdgeInsets.only(bottom: 10),
+                                                padding:
+                                                    EdgeInsets.only(bottom: 10),
                                                 child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     AppValue.vSpaceTiny,
                                                     WidgetText(
-                                                      title: state.data[index].group_name ?? "",
-                                                      style: AppStyle.DEFAULT_16_BOLD,
+                                                      title: state.data[index]
+                                                              .group_name ??
+                                                          "",
+                                                      style: AppStyle
+                                                          .DEFAULT_16_BOLD,
                                                     ),
                                                     AppValue.vSpaceTiny,
                                                     Column(
                                                       children: List.generate(
-                                                        state.data[index].data!.length,
+                                                        state.data[index].data!
+                                                            .length,
                                                         (index1) =>state
                                                             .data[index]
                                                             .data![
                                                         index1]
                                                             .value_field !=
                                                             ''
-                                                            ? Padding(
-                                                          padding: EdgeInsets.symmetric(vertical: 5),
+                                                            ?  Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  vertical: 5),
                                                           child: Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                             children: [
                                                               Expanded(
                                                                   flex: 1,
-                                                                  child: WidgetText(
-                                                                    title: state.data[index].data![index1].label_field ?? '',
-                                                                    style: AppStyle.DEFAULT_14.copyWith(color: Colors.grey),
+                                                                  child:
+                                                                      WidgetText(
+                                                                    title: state
+                                                                            .data[index]
+                                                                            .data![index1]
+                                                                            .label_field ??
+                                                                        '',
+                                                                    style: AppStyle
+                                                                        .DEFAULT_14
+                                                                        .copyWith(
+                                                                            color:
+                                                                                Colors.grey),
                                                                   )),
-                                                              state.data[index].data![index1].id == "col121"
-                                                                  ? GestureDetector(
-                                                                      onTap: () => AppNavigator.navigateDetailCustomer(id, name),
-                                                                      child: Container(
-                                                                          padding: EdgeInsets.all(5),
-                                                                          decoration: BoxDecoration(border: Border.all(width: 2, color: COLORS.PRIMARY_COLOR), borderRadius: BorderRadius.circular(8)),
-                                                                          child: Row(
-                                                                            children: [
-                                                                              Icon(Icons.arrow_forward),
-                                                                              WidgetText(title: state.data[index].data![index1].value_field ?? '', textAlign: TextAlign.right, style: AppStyle.DEFAULT_14),
-                                                                            ],
-                                                                          )),
-                                                                    )
-                                                                  : Expanded(flex: 2, child: WidgetText(title: state.data[index].data![index1].value_field ?? '', textAlign: TextAlign.right, style: AppStyle.DEFAULT_14))
+                                                              Expanded(
+                                                                  flex: 2,
+                                                                  child: WidgetText(
+                                                                      title:
+                                                                          state.data[index].data![index1].value_field ??
+                                                                              '',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .right,
+                                                                      style: AppStyle
+                                                                          .DEFAULT_14))
                                                             ],
                                                           ),
-                                                        )    : SizedBox(),
+                                                        )   : SizedBox(),
                                                       ),
                                                     ),
                                                     AppValue.vSpaceTiny,
@@ -248,7 +274,8 @@ class _InfoChancePageState extends State<InfoChancePage> {
                               },
                               child: Text(
                                 'Thêm hợp đồng',
-                                style: AppStyle.DEFAULT_16_BOLD.copyWith(color: Color(0xff006CB1)),
+                                style: AppStyle.DEFAULT_16_BOLD
+                                    .copyWith(color: Color(0xff006CB1)),
                               ))
                         ],
                       ),
@@ -261,11 +288,14 @@ class _InfoChancePageState extends State<InfoChancePage> {
                           InkWell(
                               onTap: () {
                                 Get.back();
-                                AppNavigator.navigateFormAdd('Thêm công việc', 31, id: int.parse(id));
+                                AppNavigator.navigateFormAdd(
+                                    'Thêm công việc', 31,
+                                    id: int.parse(id));
                               },
                               child: Text(
                                 'Thêm công việc',
-                                style: AppStyle.DEFAULT_16_BOLD.copyWith(color: Color(0xff006CB1)),
+                                style: AppStyle.DEFAULT_16_BOLD
+                                    .copyWith(color: Color(0xff006CB1)),
                               ))
                         ],
                       ),
@@ -282,7 +312,8 @@ class _InfoChancePageState extends State<InfoChancePage> {
                             SizedBox(width: 10),
                             Text(
                               'Thêm thảo luận',
-                              style: AppStyle.DEFAULT_16_BOLD.copyWith(color: Color(0xff006CB1)),
+                              style: AppStyle.DEFAULT_16_BOLD
+                                  .copyWith(color: Color(0xff006CB1)),
                             )
                           ],
                         ),
@@ -300,14 +331,18 @@ class _InfoChancePageState extends State<InfoChancePage> {
                             SizedBox(width: 10),
                             Text(
                               'Sửa',
-                              style: AppStyle.DEFAULT_16_BOLD.copyWith(color: Color(0xff006CB1)),
+                              style: AppStyle.DEFAULT_16_BOLD
+                                  .copyWith(color: Color(0xff006CB1)),
                             )
                           ],
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
-                          ShowDialogCustom.showDialogTwoButton(onTap2: () => GetListDetailChanceBloc.of(context).add(InitDeleteChanceEvent(id)), content: "Bạn chắc chắn muốn xóa không ?");
+                          ShowDialogCustom.showDialogTwoButton(
+                              onTap2: () => GetListDetailChanceBloc.of(context)
+                                  .add(InitDeleteChanceEvent(id)),
+                              content: "Bạn chắc chắn muốn xóa không ?");
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -317,7 +352,8 @@ class _InfoChancePageState extends State<InfoChancePage> {
                             SizedBox(width: 10),
                             Text(
                               'Xóa',
-                              style: AppStyle.DEFAULT_16_BOLD.copyWith(color: Color(0xff006CB1)),
+                              style: AppStyle.DEFAULT_16_BOLD
+                                  .copyWith(color: Color(0xff006CB1)),
                             )
                           ],
                         ),
@@ -332,7 +368,8 @@ class _InfoChancePageState extends State<InfoChancePage> {
                             color: COLORS.PRIMARY_COLOR,
                           ),
                           child: Center(
-                            child: Text('Đóng', style: AppStyle.DEFAULT_16_BOLD),
+                            child:
+                                Text('Đóng', style: AppStyle.DEFAULT_16_BOLD),
                           ),
                         ),
                       )
@@ -364,7 +401,8 @@ class _InfoChancePageState extends State<InfoChancePage> {
   }
 
   _buildContent1(GetListDetailChanceBloc bloc) {
-    return BlocBuilder<GetListDetailChanceBloc, DetailChanceState>(builder: (context, state) {
+    return BlocBuilder<GetListDetailChanceBloc, DetailChanceState>(
+        builder: (context, state) {
       if (state is UpdateGetListDetailChanceState) {
         return Container(
           height: AppValue.heights * 0.22,
@@ -394,7 +432,8 @@ class _InfoChancePageState extends State<InfoChancePage> {
                     'Doanh số',
                     style: AppStyle.DEFAULT_14.copyWith(color: Colors.grey),
                   ),
-                  Text('123.456.789vnđ', style: AppStyle.DEFAULT_14.copyWith(color: Colors.red))
+                  Text('123.456.789vnđ',
+                      style: AppStyle.DEFAULT_14.copyWith(color: Colors.red))
                 ],
               ),
               WidgetLine(
@@ -472,18 +511,21 @@ class _InfoChancePageState extends State<InfoChancePage> {
                 children: [
                   Text(
                     'Nguyễn Hoàng Nam',
-                    style: AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w600),
+                    style: AppStyle.DEFAULT_14
+                        .copyWith(fontWeight: FontWeight.w600),
                   ),
                   Text(
                     '20/03/2022 lúc 05:15 PM',
-                    style: AppStyle.DEFAULT_12.copyWith(color: Color(0xff838A91)),
+                    style:
+                        AppStyle.DEFAULT_12.copyWith(color: Color(0xff838A91)),
                   ),
                   SizedBox(
                     height: 4,
                   ),
                   Text(
                     'Chị Thảo muốn nhận báo giá có ưu đãi. Nếu giá tốt sẽ bắt đầu triển khai ngay vào đầu tháng tới. Chú ý: gửi báo giá cả bản cứng và bản mềm cho chị.',
-                    style: AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w500),
+                    style: AppStyle.DEFAULT_14
+                        .copyWith(fontWeight: FontWeight.w500),
                   )
                 ],
               ),

@@ -7,9 +7,8 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../../../src/src_index.dart';
 import '../../../../../../widgets/widget_text.dart';
-
 class ClueCustomer extends StatefulWidget {
-  ClueCustomer({Key? key, required this.id}) : super(key: key);
+  ClueCustomer({Key? key,required this.id}) : super(key: key);
 
   String? id;
 
@@ -18,13 +17,14 @@ class ClueCustomer extends StatefulWidget {
 }
 
 class _ClueCustomerState extends State<ClueCustomer> {
-  int page = 1;
-  ScrollController _scrollController = ScrollController();
-  bool check = false;
+
+  int page=1;
+  ScrollController _scrollController=ScrollController();
+  bool check=false;
 
   @override
   void initState() {
-    check = true;
+    check=true;
     // ClueCustomerBloc.of(context).add(InitGetClueCustomerEvent(int.parse(widget.id!)));
     // Future.delayed(Duration(milliseconds: 500),(){
     //   ClueCustomerBloc.of(context).add(InitGetClueCustomerEvent(int.parse(widget.id!)));
@@ -38,7 +38,9 @@ class _ClueCustomerState extends State<ClueCustomer> {
     //   }
     // });
     super.initState();
+
   }
+
 
   // @override
   // void didUpdateWidget(ClueCustomer oldWidget) {
@@ -55,40 +57,39 @@ class _ClueCustomerState extends State<ClueCustomer> {
       controller: _scrollController,
       child: Column(
         children: [
-          SizedBox(
-            height: AppValue.heights * 0.02,
-          ),
-          BlocBuilder<ClueCustomerBloc, ClueCustomerState>(builder: (context, state) {
-            if (state is UpdateGetClueCustomerState) if (state.listClue.length > 0)
-              return Column(
-                children: List.generate(
-                    state.listClue.length,
-                    (index) => GestureDetector(
-                        onTap: () {
-                          AppNavigator.navigateInfoClue(state.listClue[index].id!, state.listClue[index].name!, customerId: widget.id);
-                        },
-                        child: ClueCardWidget(data: state.listClue[index]))),
-              );
-            else {
-              return Center(
-                child: WidgetText(
-                  title: "Không có dữ liệu",
-                  style: AppStyle.DEFAULT_16_BOLD,
-                ),
-              );
-            }
+          SizedBox(height: AppValue.heights*0.02,),
+          BlocBuilder<ClueCustomerBloc, ClueCustomerState>(
+              builder: (context, state) {
+                if (state is UpdateGetClueCustomerState)
+                  if(state.listClue.length>0)
+                    return Column(
+                      children: List.generate(state.listClue.length, (index) =>
+                          GestureDetector(
+                            onTap: (){
+                              AppNavigator.navigateInfoClue(state.listClue[index].id!,state.listClue[index].name!);
+                            },
+                              child: ClueCardWidget(data: state.listClue[index])
+                          )
+                      ),
+                    );
+                  else{
+                    return Center(child: WidgetText(title: "Không có dữ liệu",style: AppStyle.DEFAULT_16_BOLD,),);
+                  }
 
-            // ListView.separated(
-            // shrinkWrap: true,
-            // itemBuilder: (context,index)=> ClueCardWidget(data: state.listClue[index],),
-            // physics: BouncingScrollPhysics(),
-            // itemCount: state.listClue.length,
-            // separatorBuilder: (BuildContext context, int index) => SizedBox(height: AppValue.heights*0.01,),);
-            else
-              return Container();
-          })
+                    // ListView.separated(
+                    // shrinkWrap: true,
+                    // itemBuilder: (context,index)=> ClueCardWidget(data: state.listClue[index],),
+                    // physics: BouncingScrollPhysics(),
+                    // itemCount: state.listClue.length,
+                    // separatorBuilder: (BuildContext context, int index) => SizedBox(height: AppValue.heights*0.01,),);
+                else
+                  return Container();
+              })
+
         ],
       ),
     );
   }
+
+
 }
