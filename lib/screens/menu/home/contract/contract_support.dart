@@ -73,6 +73,7 @@ class _ContractSupportState extends State<ContractSupport> {
                                       ),
                                       width: AppValue.widths*0.7,
                                     ),
+                                    if(state.listSupportContract[index].khach_hang!='')
                                     Row(
                                       children: [
                                         SvgPicture.asset('assets/icons/User.svg',color: Color(0xffE75D18),),
@@ -80,7 +81,8 @@ class _ContractSupportState extends State<ContractSupport> {
                                         WidgetText(title: state.listSupportContract[index].khach_hang??'',style: AppStyle.DEFAULT_LABEL_PRODUCT),
                                       ],
                                     ),
-                                    Row(
+                                    if(state.listSupportContract[index].status!='')
+                                      Row(
                                       children: [
                                         SvgPicture.asset('assets/icons/dangxuly.svg',color: state.listSupportContract[index].color!=null?HexColor(state.listSupportContract[index].color!):COLORS.PRIMARY_COLOR,),
                                         AppValue.hSpaceTiny,

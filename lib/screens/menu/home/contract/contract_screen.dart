@@ -294,7 +294,8 @@ class _ContractScreenState extends State<ContractScreen> {
             SizedBox(
               height: 8,
             ),
-            Row(
+        if (data.customer?.name?.trim().isNotEmpty ?? false) ...[
+    Row(
               children: [
                 SvgPicture.asset(
                   'assets/icons/User.svg',
@@ -313,7 +314,9 @@ class _ContractScreenState extends State<ContractScreen> {
             ),
             SizedBox(
               height: 8,
-            ),
+            ),            ],
+            if (data.status?.trim().isNotEmpty ?? false) ...[
+
             Row(
               children: [
                 SvgPicture.asset(
@@ -336,7 +339,8 @@ class _ContractScreenState extends State<ContractScreen> {
             ),
             SizedBox(
               height: 8,
-            ),
+            ),            ],
+
             Row(
               children: [
                 SvgPicture.asset(

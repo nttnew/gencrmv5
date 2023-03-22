@@ -94,7 +94,8 @@ class _ContractOperationState extends State<ContractOperation> {
                       margin: EdgeInsets.symmetric(vertical: 3),
                       child: LineHorizontal());
                 } else
-                  return Container(
+                  return  data.data![index].value_field != ''
+                      ? Container(
                     padding: EdgeInsets.only(top: 3, bottom: 3),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,7 +117,7 @@ class _ContractOperationState extends State<ContractOperation> {
                                 style: AppStyle.DEFAULT_14))
                       ],
                     ),
-                  );
+                  )  : SizedBox();
               },
             ),
           )

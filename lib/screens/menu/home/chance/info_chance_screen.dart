@@ -160,7 +160,13 @@ class _InfoChancePageState extends State<InfoChancePage> {
                                                       children: List.generate(
                                                         state.data[index].data!
                                                             .length,
-                                                        (index1) => Padding(
+                                                        (index1) =>state
+                                                            .data[index]
+                                                            .data![
+                                                        index1]
+                                                            .value_field !=
+                                                            ''
+                                                            ?  Padding(
                                                           padding: EdgeInsets
                                                               .symmetric(
                                                                   vertical: 5),
@@ -200,7 +206,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                                                                           .DEFAULT_14))
                                                             ],
                                                           ),
-                                                        ),
+                                                        )   : SizedBox(),
                                                       ),
                                                     ),
                                                     AppValue.vSpaceTiny,

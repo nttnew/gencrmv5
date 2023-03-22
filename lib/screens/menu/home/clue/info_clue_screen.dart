@@ -395,7 +395,8 @@ class _InfoCluePageState extends State<InfoCluePage> {
             Column(
               children: List.generate(
                   detailClue.data!.length,
-                  (index) => Container(
+                  (index) => detailClue.data![index].value_field != ''
+                      ? Container(
                         margin: EdgeInsets.only(bottom: 8),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -418,7 +419,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
                             ),
                           ],
                         ),
-                      )),
+                      ): SizedBox()),
             ),
             const SizedBox(
               height: 8,
