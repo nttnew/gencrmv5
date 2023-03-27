@@ -45,6 +45,10 @@ class BASE_URL {
   static const LIST_CONTRACT = 'modules/genmobile2/contract/list';
   static const LIST_SUPPORT = 'modules/genmobile2/support/list';
   static const ADD_CUSTOMER_GET = 'modules/genmobile2/customer/edit';
+  static const ADD_SERVICE_VOUCHER = 'modules/genmobile2/quickCreate/contract';
+  static const POST_INFO_CAR = 'modules/sanphamkh/sanpham/getTTXE';
+  static const SAVE_SERVICE_VOUCHER = 'modules/genmobile2/quickCreate/save';
+  static const LIST_CAR_INFO = 'modules/genmobile2/product/versions';
   static const ADD_CUSTOMER_INDIVIDUAL_POST = 'modules/genmobile2/customer/saveIndividual';
   static const DETAIL_CONTRACT = 'modules/genmobile2/contract/detail';
   static const PAYMENT_CONTRACT = 'modules/genmobile2/contract/listPayment';

@@ -1,14 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:gen_crm/src/models/model_generator/add_data_response.dart';
+import 'package:gen_crm/src/models/model_generator/add_voucher_response.dart';
 import 'package:gen_crm/src/models/model_generator/get_phone_cus.dart';
 import 'package:gen_crm/src/models/model_generator/infor_acc.dart';
-import 'package:http_parser/http_parser.dart';
+import 'package:gen_crm/src/models/model_generator/post_info_car_response.dart';
+import 'package:gen_crm/src/models/request/voucher_service_request.dart';
 import 'package:dio/dio.dart';
 import 'package:gen_crm/src/models/model_generator/add_customer.dart';
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
 import 'package:gen_crm/src/models/model_generator/chance_customer.dart';
-import 'package:gen_crm/src/models/model_generator/change_infor_acc_request.dart';
 import 'package:gen_crm/src/models/model_generator/clue_customer.dart';
 import 'package:gen_crm/src/models/model_generator/contract.dart';
 import 'package:gen_crm/src/models/model_generator/contract_customer.dart';
@@ -22,8 +23,6 @@ import 'package:gen_crm/src/models/model_generator/note.dart';
 import 'package:gen_crm/src/models/model_generator/note_clue.dart';
 import 'package:gen_crm/src/models/model_generator/support.dart';
 import 'package:gen_crm/src/models/model_generator/param_del_notif.dart';
-import 'package:gen_crm/src/models/model_generator/param_read_notifi.dart';
-import 'package:gen_crm/src/models/model_generator/update_pass_request.dart';
 import 'package:gen_crm/src/models/model_generator/work_clue.dart';
 import 'package:gen_crm/src/models/model_generator/work.dart';
 
@@ -31,13 +30,13 @@ import 'package:retrofit/retrofit.dart';
 import 'package:gen_crm/src/base.dart';
 import 'package:gen_crm/src/models/index.dart';
 
-import '../models/model_generator/chance.dart';
 import '../models/model_generator/contact_by_customer.dart';
 import '../models/model_generator/detail_contract.dart';
 import '../models/model_generator/clue.dart';
 import '../models/model_generator/clue_detail.dart';
 import '../models/model_generator/job_chance.dart';
 import '../models/model_generator/job_customer.dart';
+import '../models/model_generator/list_car_response.dart';
 import '../models/model_generator/policy.dart';
 import '../models/model_generator/product_response.dart';
 import '../models/model_generator/report_contact.dart';
@@ -155,9 +154,22 @@ abstract class RestClient {
 
   @GET(BASE_URL.ADD_CUSTOMER_GET)
   Future<AddCustomerIndividual> getAddCustomer(
-      @Query('la_ca_nhan') int la_ca_nhan,
-      @Query('id') String? id
-      );
+      @Query('la_ca_nhan') int la_ca_nhan, @Query('id') String? id);
+
+  @POST(BASE_URL.ADD_SERVICE_VOUCHER)
+  Future<AddVoucherResponse> postAddServiceVoucher(
+      @Field('so_dien_thoai') String soDienThoai,
+      @Field('bien_so') String bienSo);
+
+  @POST(BASE_URL.POST_INFO_CAR)
+  Future<InfoCar> postInfoCar(@Part(name: "idxe") String idxe);
+
+  @POST(BASE_URL.SAVE_SERVICE_VOUCHER)
+  Future<dynamic> saveServiceVoucher(
+      @Body() VoucherServiceRequest voucherServiceRequest);
+
+  @POST(BASE_URL.LIST_CAR_INFO)
+  Future<ListCarInfo> getVersionInfoCar();
 
   @GET(BASE_URL.ADD_CUSTOMER_GET)
   Future<AddCustomerIndividual> getAddCustomerOr();
@@ -223,229 +235,153 @@ abstract class RestClient {
 
   //Dương
   @GET(BASE_URL.GET_UPDATE_CUSTOMER)
-  Future<AddCustomerIndividual> getUpdateCustomer(
-      @Query('id') String id
-      );
+  Future<AddCustomerIndividual> getUpdateCustomer(@Query('id') String id);
 
   @DELETE(BASE_URL.DELETE_CONTRACT)
   Future<BaseResponse> deleteContract(
       // @Query('id') int id
-      @Body() Map<String,dynamic> map
-      );
+      @Body() Map<String, dynamic> map);
 
   @DELETE(BASE_URL.DELETE_JOB)
   Future<BaseResponse> deleteJob(
       // @Query('id') int id
-      @Body() Map<String,dynamic> map
-      );
+      @Body() Map<String, dynamic> map);
 
   @GET(BASE_URL.DETAIL_JOB)
-  Future<DetailWorkResponse> detailJob(
-      @Query('id') int id
-      );
+  Future<DetailWorkResponse> detailJob(@Query('id') int id);
 
   @GET(BASE_URL.GET_FORM_ADD_CONTACT_CUS)
   Future<AddCustomerIndividual> getFormaddContactCus(
-      @Query('customer_id') String customer_id
-      );
+      @Query('customer_id') String customer_id);
 
   @GET(BASE_URL.GET_FORM_ADD_OPPORT_CUS)
   Future<AddCustomerIndividual> getFormAddOppCus(
-      @Query('customer_id') String customer_id
-      );
+      @Query('customer_id') String customer_id);
 
   @GET(BASE_URL.GET_FORM_ADD_CONTRACT_CUS)
   Future<AddCustomerIndividual> getFormAddContractCus(
-      @Query('customer_id') String customer_id
-      );
+      @Query('customer_id') String customer_id);
 
   @GET(BASE_URL.GET_FORM_ADD_JOB_CUS)
   Future<AddCustomerIndividual> getFormAddJobCus(
-      @Query('customer_id') String customer_id
-      );
+      @Query('customer_id') String customer_id);
 
   @GET(BASE_URL.GET_FORM_ADD_SUPPORT_CUS)
   Future<AddCustomerIndividual> getFormAddSupportCus(
-      @Query('customer_id') String customer_id
-      );
+      @Query('customer_id') String customer_id);
 
   @GET(BASE_URL.GET_FORM_ADD_AGENCY)
-  Future<AddCustomerIndividual> getFormAddAgency(
-      @Query('id') String? id
-      );
+  Future<AddCustomerIndividual> getFormAddAgency(@Query('id') String? id);
 
   @GET(BASE_URL.GET_FORM_ADD_CHANCE)
-  Future<AddCustomerIndividual> getFormAddChance(
-      @Query('id') String? id
-      );
+  Future<AddCustomerIndividual> getFormAddChance(@Query('id') String? id);
 
   @GET(BASE_URL.GET_FORM_ADD_CONTRACT)
-  Future<AddCustomerIndividual> getFormAddContract(
-      @Query('idch') String? id
-      );
+  Future<AddCustomerIndividual> getFormAddContract(@Query('idch') String? id);
 
   @GET(BASE_URL.GET_FORM_ADD_JOB)
-  Future<AddCustomerIndividual> getFormAddJob(
-      @Query('id') String? id
-      );
+  Future<AddCustomerIndividual> getFormAddJob(@Query('id') String? id);
 
   @GET(BASE_URL.GET_FORM_ADD_SUPPORT)
-  Future<AddCustomerIndividual> getFormAddSupport(
-      @Query('id') String? id
-      );
+  Future<AddCustomerIndividual> getFormAddSupport(@Query('id') String? id);
 
   @GET(BASE_URL.GET_FORM_ADD_JOB_OPP)
-  Future<AddCustomerIndividual> getFormAddJobOpp(
-      @Query('id') String? id
-      );
+  Future<AddCustomerIndividual> getFormAddJobOpp(@Query('id') String? id);
 
   @GET(BASE_URL.GET_FORM_ADD_JOB_CHANCE)
-  Future<AddCustomerIndividual> getFormAddJobChance(
-      @Query('id') String? id
-      );
+  Future<AddCustomerIndividual> getFormAddJobChance(@Query('id') String? id);
 
   @DELETE(BASE_URL.DELETE_CONTACT)
   Future<BaseResponse> deleteContact(
       // @Query('id') int id
-      @Body() Map<String,dynamic> map
-      );
+      @Body() Map<String, dynamic> map);
 
   @DELETE(BASE_URL.DELETE_CHANCE)
   Future<BaseResponse> deleteChance(
       // @Query('id') int id
-      @Body() Map<String,dynamic> map
-      );
+      @Body() Map<String, dynamic> map);
 
   @GET(BASE_URL.FORM_EDIT_CONTACT)
-  Future<AddCustomerIndividual> getFormEditContact(
-      @Query('id') String? id
-      );
+  Future<AddCustomerIndividual> getFormEditContact(@Query('id') String? id);
 
   @GET(BASE_URL.FORM_EDIT_SUPPORT)
-  Future<AddCustomerIndividual> getFormEditSupport(
-      @Query('id') String? id
-      );
+  Future<AddCustomerIndividual> getFormEditSupport(@Query('id') String? id);
 
   @GET(BASE_URL.GET_CUSTOMER_CONTRACT)
   Future<CustomerContractResponse> getCustomerContract(
-      @Query('page') String? page,
-      @Query('querySearch') String? querySearch
-      );
+      @Query('page') String? page, @Query('querySearch') String? querySearch);
 
   @DELETE(BASE_URL.DELETE_SUPPORT)
-  Future<BaseResponse> deleteSupport(
-      @Body() Map<String,dynamic> map
-      );
+  Future<BaseResponse> deleteSupport(@Body() Map<String, dynamic> map);
 
   @DELETE(BASE_URL.DELETE_NOTE_CUS)
-  Future<BaseResponse> deleteNoteCus(
-      @Body() Map<String,dynamic> map
-      );
+  Future<BaseResponse> deleteNoteCus(@Body() Map<String, dynamic> map);
 
   @DELETE(BASE_URL.DELETE_NOTE_CONTACT)
-  Future<BaseResponse> deleteNoteContact(
-      @Body() Map<String,dynamic> map
-      );
+  Future<BaseResponse> deleteNoteContact(@Body() Map<String, dynamic> map);
 
   @DELETE(BASE_URL.DELETE_NOTE_OOP)
-  Future<BaseResponse> deleteNoteOop(
-      @Body() Map<String,dynamic> map
-      );
+  Future<BaseResponse> deleteNoteOop(@Body() Map<String, dynamic> map);
 
   @DELETE(BASE_URL.DELETE_NOTE_CONTRACT)
-  Future<BaseResponse> deleteNoteContract(
-      @Body() Map<String,dynamic> map
-      );
+  Future<BaseResponse> deleteNoteContract(@Body() Map<String, dynamic> map);
 
   @DELETE(BASE_URL.DELETE_NOTE_JOB)
-  Future<BaseResponse> deleteNoteJob(
-      @Body() Map<String,dynamic> map
-      );
+  Future<BaseResponse> deleteNoteJob(@Body() Map<String, dynamic> map);
 
   @DELETE(BASE_URL.DELETE_NOTE_SUP)
-  Future<BaseResponse> deleteNoteSup(
-      @Body() Map<String,dynamic> map
-      );
+  Future<BaseResponse> deleteNoteSup(@Body() Map<String, dynamic> map);
 
   @GET(BASE_URL.GET_FORM_EDIT_CONTRACT)
-  Future<AddCustomerIndividual> getFormEditContract(
-      @Query('id') String? id
-      );
+  Future<AddCustomerIndividual> getFormEditContract(@Query('id') String? id);
 
   @GET(BASE_URL.GET_FORM_ADD_JOB_CONTRACT)
-  Future<AddCustomerIndividual> getFormAddJobContract(
-      @Query('id') String? id
-      );
+  Future<AddCustomerIndividual> getFormAddJobContract(@Query('id') String? id);
 
   @GET(BASE_URL.GET_FORM_ADD_SUPPORT_CONTRACT)
   Future<AddCustomerIndividual> getFormAddSupportContract(
-      @Query('id') String? id
-      );
+      @Query('id') String? id);
 
   @GET(BASE_URL.GET_CONTACT_BY_CUSTOMER)
   Future<ContactByCustomerResponse> getContactByCustomer(
-      @Query('customer_id') String? id
-      );
+      @Query('customer_id') String? id);
 
   @GET(BASE_URL.GET_NOTE_OPP)
   Future<NoteResponse> getNoteOpp(
-      @Query('id') String? id,
-      @Query('page') String? page
-      );
+      @Query('id') String? id, @Query('page') String? page);
 
   @GET(BASE_URL.GET_NOTE_CUS)
   Future<NoteResponse> getNoteCus(
-      @Query('id') String? id,
-      @Query('page') String? page
-      );
+      @Query('id') String? id, @Query('page') String? page);
 
   @GET(BASE_URL.GET_NOTE_CONTACT)
   Future<NoteResponse> getNoteContact(
-      @Query('id') String? id,
-      @Query('page') String? page
-      );
+      @Query('id') String? id, @Query('page') String? page);
 
   @GET(BASE_URL.GET_NOTE_CONTRACT)
   Future<NoteResponse> getNoteContract(
-      @Query('id') String? id,
-      @Query('page') String? page
-      );
-
+      @Query('id') String? id, @Query('page') String? page);
 
   @GET(BASE_URL.GET_NOTE_JOB)
   Future<NoteResponse> getNoteJob(
-      @Query('id') String? id,
-      @Query('page') String? page
-      );
-
+      @Query('id') String? id, @Query('page') String? page);
 
   @GET(BASE_URL.GET_NOTE_SUP)
   Future<NoteResponse> getNoteSup(
-      @Query('id') String? id,
-      @Query('page') String? page
-      );
-
+      @Query('id') String? id, @Query('page') String? page);
 
   @GET(BASE_URL.LIST_PRODUCT)
   Future<ProductResponse> getListProduct(
-      @Query('page') String? page,
-      @Query('querySearch') String? querySearch
-      );
+      @Query('page') String? page, @Query('querySearch') String? querySearch);
 
   @GET(BASE_URL.GET_PHONE_CUS)
-  Future<GetPhoneCusResponse> getPhoneCus(
-      @Query('id') String? id
-      );
+  Future<GetPhoneCusResponse> getPhoneCus(@Query('id') String? id);
 
   @GET(BASE_URL.GET_PHONE_CUS)
-  Future<GetPhoneCusResponse> getPhoneAgency(
-      @Query('daumoi_id') String? id
-      );
+  Future<GetPhoneCusResponse> getPhoneAgency(@Query('daumoi_id') String? id);
 
   @GET(BASE_URL.LOGOUT)
   Future<BaseResponse> logout();
-
-
 
   // =================================> POST <==================================
 
@@ -453,205 +389,190 @@ abstract class RestClient {
   Future<LoginResponse> loginApp(@Body() LoginAppRequest loginAppRequest);
 
   @POST(BASE_URL.REGISTER)
-  Future<ResponseStatus> registerApp(@Body() RegisterAppRequest registerAppRequest);
+  Future<ResponseStatus> registerApp(
+      @Body() RegisterAppRequest registerAppRequest);
 
   @POST(BASE_URL.CHANGE_PASSWORD)
-  Future<ResponseStatus> changePassword(@Body() ParamChangePassword paramChangePassword);
+  Future<ResponseStatus> changePassword(
+      @Body() ParamChangePassword paramChangePassword);
 
   @POST(BASE_URL.FORGOT_PASSWORD)
-  Future<ParamForgotPassword> forgotPassword(@Body() ParamRequestForgotPassword paramRequestForgotPassword);
+  Future<ParamForgotPassword> forgotPassword(
+      @Body() ParamRequestForgotPassword paramRequestForgotPassword);
 
   @POST(BASE_URL.FORGOT_PASSWORD_OTP)
-  Future<BaseResponse> forgotPasswordOtp(@Body() ParamRequestForgotPasswordOtp paramRequestForgotPasswordOtp);
+  Future<BaseResponse> forgotPasswordOtp(
+      @Body() ParamRequestForgotPasswordOtp paramRequestForgotPasswordOtp);
 
   @POST(BASE_URL.RESET_PASSWORD)
-  Future<BaseResponse> resetPassword(@Body() ParamResetPassword paramResetPassword);
+  Future<BaseResponse> resetPassword(
+      @Body() ParamResetPassword paramResetPassword);
 
   @POST(BASE_URL.EDIT_PROFILE)
-  Future<ResponseDataStatus> postUpdateProfile(@Body() ParamChangeInfo infoUser);
+  Future<ResponseDataStatus> postUpdateProfile(
+      @Body() ParamChangeInfo infoUser);
 
   @POST(BASE_URL.EDIT_PROFILE)
-  Future<ResponseDataStatus> postUpdateProfileNotImage(@Body() ParamChangeInfoNotImage infoUser);
+  Future<ResponseDataStatus> postUpdateProfileNotImage(
+      @Body() ParamChangeInfoNotImage infoUser);
 
   @POST(BASE_URL.ORDER_COURSE)
-  Future<ResponseDataStatus> orderCourse(@Body() ParamOrderCourse paramOrderCourse);
+  Future<ResponseDataStatus> orderCourse(
+      @Body() ParamOrderCourse paramOrderCourse);
 
   @POST(BASE_URL.REPORT_CONTACT)
-  Future<ContactReportResponse> reportContact(@Body() RequestBodyReport requestBodyReport);
+  Future<ContactReportResponse> reportContact(
+      @Body() RequestBodyReport requestBodyReport);
 
   @POST(BASE_URL.REPORT_GENERAL)
-  Future<DataGeneralResponse> reportGeneral(@Body() RequestBodyReport requestBodyReport);
+  Future<DataGeneralResponse> reportGeneral(
+      @Body() RequestBodyReport requestBodyReport);
 
   @POST(BASE_URL.REPORT_EMPLOYEE)
-  Future<DataEmployResponse> reportEmployee(@Body() RequestEmployReport requestEmployReport);
+  Future<DataEmployResponse> reportEmployee(
+      @Body() RequestEmployReport requestEmployReport);
 
   @POST(BASE_URL.REPORT_PRODUCT)
-  Future<ReportProductResponse> reportProduct(@Body() RequestBodyReportProduct requestBodyReportProduct);
+  Future<ReportProductResponse> reportProduct(
+      @Body() RequestBodyReportProduct requestBodyReportProduct);
 
   @POST(BASE_URL.PROFILE)
   Future<ResponseDataStatus> postImages(
       @Part() File image,
       @Query('code') String code,
       @Query('email') String email,
-      @Query('name') String name
-  );
+      @Query('name') String name);
   //Quân
   @POST(BASE_URL.UPDATE_PASS)
-  Future<BaseResponse> updatePass(@Body()  UpdatePassRequest);
+  Future<BaseResponse> updatePass(@Body() UpdatePassRequest);
   @POST(BASE_URL.READ_NOTIFICATION)
-  Future<BaseResponse> readNotification(@Body()  ReadNotifiParam);
+  Future<BaseResponse> readNotification(@Body() ReadNotifiParam);
 
   @POST(BASE_URL.CHANGE_INFOR_ACC)
   @MultiPart()
-  Future<BaseResponse> changeInforAccNoAvatar(@Part(name:"ho_va_ten") String fullName,@Part(name:"email") String email, @Part(name:"dien_thoai") String phone,@Part(name:"dia_chi") String address );
+  Future<BaseResponse> changeInforAccNoAvatar(
+      @Part(name: "ho_va_ten") String fullName,
+      @Part(name: "email") String email,
+      @Part(name: "dien_thoai") String phone,
+      @Part(name: "dia_chi") String address);
   @POST(BASE_URL.CHANGE_INFOR_ACC)
   @MultiPart()
-  Future<BaseResponse> changeInforAcc(@Part(name:"ho_va_ten") String fullName,@Part(name:"email") String email, @Part(name:"dien_thoai") String phone,@Part(name:"dia_chi") String address ,@Part(name:"avatar") File avatar);
+  Future<BaseResponse> changeInforAcc(
+      @Part(name: "ho_va_ten") String fullName,
+      @Part(name: "email") String email,
+      @Part(name: "dien_thoai") String phone,
+      @Part(name: "dia_chi") String address,
+      @Part(name: "avatar") File avatar);
   //Dương
   @POST(BASE_URL.ADD_CUSTOMER_INDIVIDUAL_POST)
   Future<AddDataResponse> addIndividualCustomer(
-      @Body() Map<String,dynamic> map
-      );
+      @Body() Map<String, dynamic> map);
 
   @POST(BASE_URL.ADD_CUSTOMER_OR)
   Future<AddDataResponse> addOrganizationCustomer(
-      @Body() Map<String,dynamic> map
-      );
+      @Body() Map<String, dynamic> map);
 
   @POST(BASE_URL.EDIT_CUSTOMER)
-  Future<EditCusResponse> editCustomer(
-      @Body() Map<String,dynamic> map
-      );
+  Future<EditCusResponse> editCustomer(@Body() Map<String, dynamic> map);
 
   @POST(BASE_URL.ADD_CONTACT_CUS)
-  Future<AddDataResponse> addContactCus(
-      @Body() Map<String,dynamic> map
-      );
+  Future<AddDataResponse> addContactCus(@Body() Map<String, dynamic> map);
 
   @POST(BASE_URL.ADD_OPPORTUNITY)
-  Future<AddDataResponse> addOpportunity(
-      @Body() Map<String,dynamic> map
-      );
+  Future<AddDataResponse> addOpportunity(@Body() Map<String, dynamic> map);
 
   @POST(BASE_URL.ADD_CONTRACT)
-  Future<AddDataResponse> addContract(
-      @Body() Map<String,dynamic> map
-      );
+  Future<AddDataResponse> addContract(@Body() Map<String, dynamic> map);
 
   @POST(BASE_URL.ADD_JOB)
-  Future<AddDataResponse> addJob(
-      @Body() Map<String,dynamic> map
-      );
+  Future<AddDataResponse> addJob(@Body() Map<String, dynamic> map);
 
   @POST(BASE_URL.ADD_SUPPORT)
-  Future<AddDataResponse> addSupport(
-      @Body() Map<String,dynamic> map
-      );
+  Future<AddDataResponse> addSupport(@Body() Map<String, dynamic> map);
 
   @POST(BASE_URL.SAVE_UPDATE_JOB)
-  Future<AddDataResponse> saveUpdateJob(
-      @Body() Map<String,dynamic> map
-      );
+  Future<AddDataResponse> saveUpdateJob(@Body() Map<String, dynamic> map);
 
   @POST(BASE_URL.ADD_NOTE_CUS)
   Future<BaseResponse> addNoteCus(
-      @Part(name: "id") String id,
-      @Part(name: "content") String content,
-      );
+    @Part(name: "id") String id,
+    @Part(name: "content") String content,
+  );
 
   @POST(BASE_URL.ADD_NOTE_CONTACT)
   Future<BaseResponse> addNoteContact(
-      @Part(name: "id") String id,
-      @Part(name: "content") String content,
-      );
+    @Part(name: "id") String id,
+    @Part(name: "content") String content,
+  );
 
   @POST(BASE_URL.ADD_NOTE_OOP)
   Future<BaseResponse> addNoteOpp(
-      @Part(name: "id") String id,
-      @Part(name: "content") String content,
-      );
+    @Part(name: "id") String id,
+    @Part(name: "content") String content,
+  );
 
   @POST(BASE_URL.ADD_NOTE_CONTRACT)
   Future<BaseResponse> addNoteContract(
-      @Part(name: "id") String id,
-      @Part(name: "content") String content,
-      );
+    @Part(name: "id") String id,
+    @Part(name: "content") String content,
+  );
 
   @POST(BASE_URL.ADD_NOTE_JOB)
   Future<BaseResponse> addNoteJob(
-      @Part(name: "id") String id,
-      @Part(name: "content") String content,
-      );
+    @Part(name: "id") String id,
+    @Part(name: "content") String content,
+  );
 
   @POST(BASE_URL.ADD_NOTE_SUP)
   Future<BaseResponse> addNoteSup(
-      @Part(name: "id") String id,
-      @Part(name: "content") String content,
-      );
+    @Part(name: "id") String id,
+    @Part(name: "content") String content,
+  );
 
   @POST(BASE_URL.EDIT_NOTE_CUS)
-  Future<BaseResponse> editNoteCus(
-      @Body() Map<String,dynamic> data
-      );
+  Future<BaseResponse> editNoteCus(@Body() Map<String, dynamic> data);
 
   @POST(BASE_URL.EDIT_NOTE_CONTACT)
-  Future<BaseResponse> editNoteContact(
-      @Body() Map<String,dynamic> data
-      );
+  Future<BaseResponse> editNoteContact(@Body() Map<String, dynamic> data);
 
   @POST(BASE_URL.EDIT_NOTE_OOP)
-  Future<BaseResponse> editNoteOop(
-      @Body() Map<String,dynamic> data
-      );
+  Future<BaseResponse> editNoteOop(@Body() Map<String, dynamic> data);
 
   @POST(BASE_URL.EDIT_NOTE_CONTRACT)
-  Future<BaseResponse> editNoteContract(
-      @Body() Map<String,dynamic> data
-      );
+  Future<BaseResponse> editNoteContract(@Body() Map<String, dynamic> data);
 
   @POST(BASE_URL.EDIT_NOTE_JOB)
-  Future<BaseResponse> editNoteJob(
-      @Body() Map<String,dynamic> data
-      );
+  Future<BaseResponse> editNoteJob(@Body() Map<String, dynamic> data);
 
   @POST(BASE_URL.EDIT_NOTE_SUP)
-  Future<BaseResponse> editNoteSup(
-      @Body() Map<String,dynamic> data
-      );
+  Future<BaseResponse> editNoteSup(@Body() Map<String, dynamic> data);
 
   @POST(BASE_URL.UPLOAD_FILE_CUS)
   Future<BaseResponse> uploadFileCus(
-      @Part(name: "main_id") String id,
-      @Part(name: "files") File file
-      );
+      @Part(name: "main_id") String id, @Part(name: "files") File file);
 
   @POST(BASE_URL.UPLOAD_FILE_CONTACT)
   Future<BaseResponse> uploadFileContact(
-      @Part(name: "main_id") String id,
-      @Part(name: "files") File file
-      );
+      @Part(name: "main_id") String id, @Part(name: "files") File file);
 
   @POST(BASE_URL.UPLOAD_FILE_CONTRACT)
   Future<BaseResponse> uploadFileContract(
-      @Part(name: "main_id") String id,
-      @Part(name: "files") File file
-      );
+      @Part(name: "main_id") String id, @Part(name: "files") File file);
 
   @POST(BASE_URL.UPLOAD_FILE_JOB)
   Future<BaseResponse> uploadFileJob(
-      @Part(name: "main_id") String id,
-      @Part(name: "files") File file
-      );
+      @Part(name: "main_id") String id, @Part(name: "files") File file);
 
   @POST(BASE_URL.UPLOAD_FILE_OPP)
   Future<BaseResponse> uploadFileOpp(
-      @Part(name: "main_id") String id,
-      @Part(name: "files") File file
-      );
+      @Part(name: "main_id") String id, @Part(name: "files") File file);
 
   @POST(BASE_URL.UPLOAD_FILE_SUPPORT)
   Future<BaseResponse> uploadFileSupport(
-      @Part(name: "main_id") String id,
-      @Part(name: "files") File file
-      );
+      @Part(name: "main_id") String id, @Part(name: "files") File file);
+
+  @POST(BASE_URL.UPLOAD_FILE_CONTRACT)
+  @MultiPart()
+  Future<BaseResponse> uploadMultiFileContract(
+      @Part(name: "main_id") String id, @Part(name: "files") List<File> files);
 }

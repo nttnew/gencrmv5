@@ -25,10 +25,12 @@ import 'package:gen_crm/src/models/model_generator/report_employee.dart';
 import 'package:gen_crm/src/models/model_generator/support.dart';
 import 'package:gen_crm/src/models/model_generator/work_clue.dart';
 import 'package:gen_crm/src/models/model_generator/work.dart';
+import 'package:gen_crm/src/models/request/voucher_service_request.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/share_local.dart';
 
 import '../src/models/model_generator/add_data_response.dart';
+import '../src/models/model_generator/add_voucher_response.dart';
 import '../src/models/model_generator/clue.dart';
 import '../src/models/model_generator/clue_detail.dart';
 import '../src/models/model_generator/add_customer.dart';
@@ -37,8 +39,10 @@ import '../src/models/model_generator/contract.dart';
 import '../src/models/model_generator/contract_customer.dart';
 import '../src/models/model_generator/get_infor.dart';
 import '../src/models/model_generator/get_phone_cus.dart';
+import '../src/models/model_generator/list_car_response.dart';
 import '../src/models/model_generator/param_del_notif.dart';
 import '../src/models/model_generator/param_read_notifi.dart';
+import '../src/models/model_generator/post_info_car_response.dart';
 import '../src/models/model_generator/report_contact.dart';
 import '../src/models/model_generator/report_general.dart';
 import '../src/models/model_generator/report_option.dart';
@@ -107,6 +111,14 @@ class UserRepository {
   Future<SupportResponse> getListSupport(int page,String search,String filter) async => await RestClient(dio, baseUrl: dio.options.baseUrl).getListSupport(page, search, filter);
 
   Future<AddCustomerIndividual> getAddCustomer(int isIndividual,{String? id}) async => await RestClient(dio, baseUrl: dio.options.baseUrl).getAddCustomer(isIndividual,id);
+
+  Future<AddVoucherResponse> postAddServiceVoucher(String soDienThoai,String bienSo) async => await RestClient(dio, baseUrl: dio.options.baseUrl).postAddServiceVoucher(soDienThoai,bienSo);
+
+  Future<InfoCar> postInfoCar(String idxe) async => await RestClient(dio, baseUrl: dio.options.baseUrl).postInfoCar(idxe);
+
+  Future<dynamic> saveServiceVoucher(VoucherServiceRequest voucherServiceRequest) async => await RestClient(dio, baseUrl: dio.options.baseUrl).saveServiceVoucher(voucherServiceRequest);
+
+  Future<ListCarInfo> getVersionInfoCar() async => await RestClient(dio, baseUrl: dio.options.baseUrl).getVersionInfoCar();
 
   Future<PaymentContractResponse> getPaymentContract(int id) async => await RestClient(dio, baseUrl: dio.options.baseUrl).getPaymentContract(id);
 
@@ -357,6 +369,9 @@ class UserRepository {
 
   Future<BaseResponse> uploadFileSupport({required String id,required File files}) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).uploadFileSupport(id, files);
+
+  Future<BaseResponse> uploadMultiFileContract({required String id,required List<File> files}) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).uploadMultiFileContract(id, files);
 
 
   Stream<AuthenticationStatus> get status async* {

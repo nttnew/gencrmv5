@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:gen_crm/bloc/add_job_chance/add_job_chance_bloc.dart';
+import 'package:gen_crm/bloc/add_service_voucher/add_service_bloc.dart';
 import 'package:gen_crm/bloc/chance_customer/chance_customer_bloc.dart';
 import 'package:gen_crm/bloc/clue_customer/clue_customer_bloc.dart';
 import 'package:gen_crm/bloc/contact_by_customer/contact_by_customer_bloc.dart';
@@ -32,6 +33,8 @@ import 'package:gen_crm/bloc/report/report_general/report_general_bloc.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'package:gen_crm/bloc/support/detail_support_bloc.dart';
 import 'package:gen_crm/bloc/support/support_bloc.dart';
+import 'package:gen_crm/screens/add_service_voucher/add_service_voucher_screen.dart';
+import 'package:gen_crm/screens/add_service_voucher/add_service_voucher_step2_screen.dart';
 import 'package:gen_crm/screens/menu/home/contract/list_product.dart';
 import 'package:gen_crm/screens/menu/home/contract/product_contract.dart';
 import 'package:gen_crm/screens/menu/home/contract/update_contract.dart';
@@ -95,10 +98,10 @@ Future main() async {
 
     initializationSettings = new InitializationSettings(android: initializationSettingsAndroid);
   } else {
-    var initializationSettingsIOS = new IOSInitializationSettings();
+    var initializationSettingsIOS = new DarwinInitializationSettings();
     initializationSettings = new InitializationSettings(iOS: initializationSettingsIOS);
   }
-  flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: (String? x) {});
+  flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
     RemoteNotification notification = message.notification!;
@@ -109,13 +112,13 @@ Future main() async {
         if (androidNotification != null) {
           var androidPlatformChannelSpecifics = const AndroidNotificationDetails('high_importance_channel', 'xxxx', importance: Importance.max, playSound: true, showProgress: true, priority: Priority.high, ticker: 'test ticker');
 
-          var iOSChannelSpecifics = const IOSNotificationDetails();
+          var iOSChannelSpecifics = const DarwinNotificationDetails();
           var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSChannelSpecifics);
           Vibration.vibrate(duration: 1000, amplitude: 128);
           await flutterLocalNotificationsPlugin.show(0, notification.title, notification.body, platformChannelSpecifics, payload: 'test');
         }
       } else if (Platform.isIOS) {
-        var iOSChannelSpecifics = const IOSNotificationDetails();
+        var iOSChannelSpecifics = const DarwinNotificationDetails();
         var platformChannelSpecifics = NotificationDetails(iOS: iOSChannelSpecifics);
         Vibration.vibrate(duration: 1000, amplitude: 128);
         await flutterLocalNotificationsPlugin.show(0, notification.title, notification.body, platformChannelSpecifics, payload: 'test');
@@ -340,6 +343,9 @@ Future main() async {
           ),
           BlocProvider<ReportGeneralBloc>(
             create: (context) => ReportGeneralBloc(userRepository: userRepository),
+          ),
+          BlocProvider<ServiceVoucherBloc>(
+            create: (context) => ServiceVoucherBloc(userRepository: userRepository),
           )
         ],
         child: const MyApp(),
@@ -479,6 +485,14 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: ROUTE_NAMES.ADDCUSTOMER,
           page: () => AddCustomer(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.ADDSERVICEVOUCHER,
+          page: () => AddServiceVoucherScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.ADDSERVICEVOUCHERSTEPTWO,
+          page: () => AddServiceVoucherStepTwoScreen(),
         ),
         GetPage(
           name: ROUTE_NAMES.NOTIFICATION,

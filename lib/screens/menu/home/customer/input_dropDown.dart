@@ -13,11 +13,14 @@ import '../../../../widgets/widget_text.dart';
 import 'data_dropdown_item.dart';
 
 class InputDropdown extends StatefulWidget {
-  InputDropdown({Key? key, required this.dropdownItemList, required this.data, required this.onSuccess, required this.value}) : super(key: key);
+  InputDropdown({Key? key, required this.dropdownItemList, required this.data, required this.onSuccess, required this.value, this.isUpdate=false,this.onUpdate}) : super(key: key);
   final List<List<dynamic>> dropdownItemList;
   final CustomerIndividualItemData data;
   final Function onSuccess;
   final String value;
+  final bool isUpdate;
+  final Function? onUpdate;
+
 
   @override
   State<InputDropdown> createState() => _InputDropdownState();
@@ -26,6 +29,16 @@ class InputDropdown extends StatefulWidget {
 class _InputDropdownState extends State<InputDropdown> {
   List dropdow = [];
   String textValue = "";
+
+  @override
+  void didUpdateWidget(covariant InputDropdown oldWidget) {
+    if (mounted&&widget.isUpdate) {
+        textValue = widget.value;
+        widget.onUpdate!(textValue);
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
 
   @override
   void initState() {

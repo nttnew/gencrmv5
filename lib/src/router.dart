@@ -21,6 +21,8 @@ class ROUTE_NAMES {
   static const String DETAILSUPPORT = "/detailsupport";
   static const String DETAILCUSTOMER = "/detailcustomer";
   static const String ADDCUSTOMER = "/addcustomer";
+  static const String ADDSERVICEVOUCHER = "/addservicevoucher";
+  static const String ADDSERVICEVOUCHERSTEPTWO = "/addservicevoichersteptwo";
   static const String ADDSUPPORT = "/addsupport";
   static const String ADDWORK = "/addwork";
   static const String INFO = '/info';

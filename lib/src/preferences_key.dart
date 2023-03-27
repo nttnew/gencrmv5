@@ -32,4 +32,5 @@ class PreferencesKey {
   static const String MENU = "MENU";
   static const String LOGIN_FINGER_PRINT = "LOGIN_FINGER_PRINT";
   static const String USER_PASSWORD = "USER_PASSWORD";
+  static const String INFO_VERSION = "INFO_VERSION";
 }

@@ -22,6 +22,10 @@ class AppNavigator {
 
   static navigateAddCustomer() async => await Get.toNamed(ROUTE_NAMES.ADDCUSTOMER);
 
+  static navigateAddServiceVoucher() async => await Get.toNamed(ROUTE_NAMES.ADDSERVICEVOUCHER);
+
+  static navigateAddServiceVoucherStepTwo() async => await Get.toNamed(ROUTE_NAMES.ADDSERVICEVOUCHERSTEPTWO);
+
   static navigateFormAdd(String title, int type, {int? id}) async => await Get.toNamed(ROUTE_NAMES.FORM_ADD, arguments: [title, type, id]);
 
   static navigateAddWork() async => await Get.toNamed(ROUTE_NAMES.ADDWORK);
