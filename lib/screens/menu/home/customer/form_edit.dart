@@ -16,6 +16,7 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rxdart/rxdart.dart';
 import '../../../../api_resfull/user_repository.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
 import '../../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
@@ -55,10 +56,12 @@ class _FormEditState extends State<FormEdit> {
   File? fileUpload;
   final UserRepository userRepository = UserRepository();
 
-  bool isMaxScroll = false;
+  late final BehaviorSubject<bool> isMaxScroll=BehaviorSubject();
   ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
+    isMaxScroll.add(false);
     AttackBloc.of(context).add(LoadingAttackEvent());
     if (type == 1)
       FormEditBloc.of(context).add(InitFormEditCusEvent(id));
@@ -83,9 +86,7 @@ class _FormEditState extends State<FormEdit> {
       if (scrollController.position.maxScrollExtent > 7) {
         scrollHandle();
       } else {
-        setState(() {
-          isMaxScroll = true;
-        });
+        isMaxScroll.add(true);
         //scrollHandle();
       }
     });
@@ -95,22 +96,19 @@ class _FormEditState extends State<FormEdit> {
   @override
   void dispose() {
     scrollController.dispose();
+    isMaxScroll.close();
     super.dispose();
   }
 
   void scrollHandle() {
     scrollController.addListener(() {
       if (scrollController.offset >= scrollController.position.maxScrollExtent) {
-        if (isMaxScroll == false) {
-          setState(() {
-            isMaxScroll = true;
-          });
+        if (!isMaxScroll.value) {
+          isMaxScroll.add(true);
         }
       } else {
-        if (isMaxScroll == true) {
-          setState(() {
-            isMaxScroll = false;
-          });
+        if (isMaxScroll.value) {
+          isMaxScroll.add(false);
         }
       }
     });
@@ -437,37 +435,42 @@ class _FormEditState extends State<FormEdit> {
         Positioned(
             left: 0,
             bottom: 0,
-            child: Visibility(
-              child: Container(
-                height: AppValue.widths * 0.1 + 10,
-                width: AppValue.widths,
-                padding: EdgeInsets.only(left: AppValue.widths * 0.05, right: AppValue.widths * 0.05, bottom: 5),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: this.onDinhKem,
-                      child: SvgPicture.asset("assets/icons/attack.svg"),
-                    ),
-                    Spacer(),
-                    GestureDetector(
-                      onTap: this.onClickSave,
-                      child: Material(
-                        child: Container(
-                          height: AppValue.widths * 0.1,
-                          width: AppValue.widths * 0.25,
-                          decoration: BoxDecoration(color: HexColor("#F1A400"), borderRadius: BorderRadius.circular(20.5)),
-                          child: Center(
-                              child: Text(
-                            "Lưu",
-                            style: TextStyle(color: Colors.white),
-                          )),
+            child: StreamBuilder<bool>(
+              stream: isMaxScroll,
+              builder: (context, snapshot) {
+                return Visibility(
+                  child: Container(
+                    height: AppValue.widths * 0.1 + 10,
+                    width: AppValue.widths,
+                    padding: EdgeInsets.only(left: AppValue.widths * 0.05, right: AppValue.widths * 0.05, bottom: 5),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: this.onDinhKem,
+                          child: SvgPicture.asset("assets/icons/attack.svg"),
                         ),
-                      ),
+                        Spacer(),
+                        GestureDetector(
+                          onTap: this.onClickSave,
+                          child: Material(
+                            child: Container(
+                              height: AppValue.widths * 0.1,
+                              width: AppValue.widths * 0.25,
+                              decoration: BoxDecoration(color: HexColor("#F1A400"), borderRadius: BorderRadius.circular(20.5)),
+                              child: Center(
+                                  child: Text(
+                                "Lưu",
+                                style: TextStyle(color: Colors.white),
+                              )),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              visible: isMaxScroll,
+                  ),
+                  visible: snapshot.data ?? false,
+                );
+              }
             ))
       ],
     );

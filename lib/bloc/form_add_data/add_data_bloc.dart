@@ -93,13 +93,20 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState>{
         {
           final responseUpload = await userRepository.uploadFileCus(id:response.idkh.toString() ,files: files);
           if((responseUpload.code == BASE_URL.SUCCESS)||(responseUpload.code == BASE_URL.SUCCESS_200))
-            yield SuccessEditCustomerState();
+            {
+              LoadingApi().popLoading();
+              yield SuccessEditCustomerState();
+            }
           else{
             LoadingApi().popLoading();
             yield ErrorEditCustomerState(responseUpload.msg ?? '');
           }
         }
-        else yield SuccessEditCustomerState();
+        else
+        {
+          LoadingApi().popLoading();
+          yield SuccessEditCustomerState();
+        }
       }
       else {
         yield ErrorEditCustomerState(response.msg ?? '');
