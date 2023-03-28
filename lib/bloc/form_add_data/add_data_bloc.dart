@@ -49,6 +49,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState>{
 
   Stream<AddDataState> _addCustomerOrganization(Map<String,dynamic> data,File? files) async* {
     LoadingApi().pushLoading();
+    yield LoadingAddCustomerOrState();
     try {
       final response = await userRepository.addOrganizationCustomer(data: data);
       if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
@@ -56,17 +57,25 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState>{
           {
             final responseUpload = await userRepository.uploadFileCus(id:response.data!.id.toString() ,files: files);
             if((responseUpload.code == BASE_URL.SUCCESS)||(responseUpload.code == BASE_URL.SUCCESS_200))
-              yield SuccessAddCustomerOrState();
-            else{
+             {
+               LoadingApi().popLoading();
+               yield SuccessAddCustomerOrState();
+             }
+        else{
               LoadingApi().popLoading();
               yield ErrorAddCustomerOrState(responseUpload.msg ?? '');
             }
           }
         else
+        {
+          LoadingApi().popLoading();
           yield SuccessAddCustomerOrState();
+        }
       }
-      else
+      else{
+        LoadingApi().popLoading();
         yield ErrorAddCustomerOrState(response.msg ?? '');
+      }
     } catch (e) {
       yield ErrorAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;

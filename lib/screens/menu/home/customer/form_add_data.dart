@@ -23,6 +23,7 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:rxdart/rxdart.dart';
 import '../../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -66,11 +67,13 @@ class _FormAddDataState extends State<FormAddData> {
   late String id_user;
   File? fileUpload;
 
-  bool isMaxScroll = false;
   ScrollController scrollController = ScrollController();
+  late final BehaviorSubject<bool> isMaxScroll;
+
 
   @override
   void initState() {
+    isMaxScroll=BehaviorSubject.seeded(false);
     loadUser();
     AttackBloc.of(context).add(LoadingAttackEvent());
     if (type == 1) {
@@ -114,9 +117,7 @@ class _FormAddDataState extends State<FormAddData> {
       if (scrollController.position.maxScrollExtent > 7) {
         scrollHandle();
       } else {
-        setState(() {
-          isMaxScroll = true;
-        });
+          isMaxScroll.add(true);
         //scrollHandle();
       }
     });
@@ -127,16 +128,14 @@ class _FormAddDataState extends State<FormAddData> {
   void scrollHandle() {
     scrollController.addListener(() {
       if (scrollController.offset >= scrollController.position.maxScrollExtent) {
-        if (isMaxScroll == false) {
-          setState(() {
-            isMaxScroll = true;
-          });
+        if (!isMaxScroll.value) {
+          isMaxScroll.add(true);
+          // });
         }
       } else {
-        if (isMaxScroll == true) {
-          setState(() {
-            isMaxScroll = false;
-          });
+        if (isMaxScroll.value) {
+          isMaxScroll.add(false);
+
         }
       }
     });
@@ -156,6 +155,7 @@ class _FormAddDataState extends State<FormAddData> {
     data.clear();
     addData.clear();
     scrollController.dispose();
+    isMaxScroll.close();
     super.dispose();
   }
 
@@ -446,34 +446,39 @@ class _FormAddDataState extends State<FormAddData> {
         Positioned(
           left: 0,
           bottom: 0,
-          child: Visibility(
-            visible: isMaxScroll,
-            child: Container(
-              height: AppValue.widths * 0.1 + 10,
-              width: AppValue.widths,
-              padding: EdgeInsets.only(left: AppValue.widths * 0.05, right: AppValue.widths * 0.05, bottom: 5),
-              child: Row(
-                children: [
-                  GestureDetector(onTap: this.onDinhKem, child: SvgPicture.asset("assets/icons/attack.svg")),
-                  Spacer(),
-                  GestureDetector(
-                    onTap: this.onClickSave,
-                    child: Material(
-                      child: Container(
-                        height: AppValue.widths * 0.1,
-                        width: AppValue.widths * 0.25,
-                        decoration: BoxDecoration(color: HexColor("#F1A400"), borderRadius: BorderRadius.circular(20.5)),
-                        child: Center(
-                            child: Text(
-                          "Lưu",
-                          style: TextStyle(color: Colors.white),
-                        )),
+          child: StreamBuilder<bool>(
+            stream: isMaxScroll,
+            builder: (context, snapshot) {
+              return Visibility(
+                visible: snapshot.data ?? false,
+                child: Container(
+                  height: AppValue.widths * 0.1 + 10,
+                  width: AppValue.widths,
+                  padding: EdgeInsets.only(left: AppValue.widths * 0.05, right: AppValue.widths * 0.05, bottom: 5),
+                  child: Row(
+                    children: [
+                      GestureDetector(onTap: this.onDinhKem, child: SvgPicture.asset("assets/icons/attack.svg")),
+                      Spacer(),
+                      GestureDetector(
+                        onTap: this.onClickSave,
+                        child: Material(
+                          child: Container(
+                            height: AppValue.widths * 0.1,
+                            width: AppValue.widths * 0.25,
+                            decoration: BoxDecoration(color: HexColor("#F1A400"), borderRadius: BorderRadius.circular(20.5)),
+                            child: Center(
+                                child: Text(
+                              "Lưu",
+                              style: TextStyle(color: Colors.white),
+                            )),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            }
           ),
         )
       ],

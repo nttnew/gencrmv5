@@ -80,6 +80,7 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState>{
   }
 
   Stream<CustomerState> _AddCustomerIndividual({required Map<String,dynamic> data,File? files}) async* {
+    yield LoadingListCustomerState();
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.addIndividualCustomer(data: data);
@@ -87,14 +88,18 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState>{
       if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
         if(files!=null){
           final responseUpload = await userRepository.uploadFileCus(id:response.data!.id.toString() ,files: files);
-          if((responseUpload.code == BASE_URL.SUCCESS)||(responseUpload.code == BASE_URL.SUCCESS_200))
+          if((responseUpload.code == BASE_URL.SUCCESS)||(responseUpload.code == BASE_URL.SUCCESS_200)){
+            LoadingApi().popLoading();
             yield SuccessAddCustomerIndividualState();
+          }
           else{
             LoadingApi().popLoading();
             yield ErrorAddCustomerIndividualState(responseUpload.msg ?? '');
           }
-        }else
+        }else{
+          LoadingApi().popLoading();
           yield SuccessAddCustomerIndividualState();
+        }
       }
       else if(response.code==999){
         Get.dialog(WidgetDialog(

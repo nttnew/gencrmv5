@@ -103,9 +103,7 @@ class _AddCustomerState extends State<AddCustomer> {
                     content: state.message,
                   );
                 },
-              ).whenComplete(() {
-                AddCustomerBloc.of(context).add(InitGetAddCustomerEvent(1));//todo
-              });
+              );
             }
           },
           child: Container(
