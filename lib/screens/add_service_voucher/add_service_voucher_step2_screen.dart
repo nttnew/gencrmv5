@@ -57,9 +57,7 @@ class _AddServiceVoucherStepTwoScreenState
     super.initState();
   }
 
-//col210 laf cg hdsan_pham_kh ???
   void checkData() {
-    // _bloc.addData = [];
     final addData = _bloc.addData;
     final listAddData = _bloc.listAddData;
     if (addData.isNotEmpty) {
@@ -72,7 +70,7 @@ class _AddServiceVoucherStepTwoScreenState
               label: listAddData[i].data![j].field_name,
               value: _bloc.getTextInit(listAddData[i].data![j].field_id) ??
                   listAddData[i].data![j].field_set_value_datasource?[0][1] ??
-                  listAddData[i].data![j].field_set_value ?? //todo
+                  listAddData[i].data![j].field_set_value ??
                   '',
               required: listAddData[i].data![j].field_require));
         }
@@ -117,7 +115,9 @@ class _AddServiceVoucherStepTwoScreenState
                     },
                   );
                 },
-              );
+              )..whenComplete(() {
+                Navigator.of(context)..pop()..pop();
+              });
             }
             if (state is ErrorGetServiceVoucherState) {
               showDialog(
@@ -143,7 +143,6 @@ class _AddServiceVoucherStepTwoScreenState
                 if (state is GetServiceVoucherState) {
                   _bloc.listAddData = state.listAddData;
                   checkData();
-
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -493,13 +492,14 @@ class _AddServiceVoucherStepTwoScreenState
                       borderRadius: BorderRadius.circular(30)),
                   builder: (BuildContext context) {
                     return SelectCar();
-                  });//todo
+                  });
             },
             child: StreamBuilder<String>(
                 stream: _bloc.loaiXe,
                 builder: (context, snapshot) {
                   if (_bloc.loaiXe.value.trim() != '') {
-                    _bloc.addData[index].data[index1].value = _bloc.loaiXe.value;
+                    _bloc.addData[index].data[index1].value =
+                        _bloc.loaiXe.value;
                   }
                   return Container(
                     width: double.infinity,
@@ -541,6 +541,9 @@ class _AddServiceVoucherStepTwoScreenState
     bool isEdit = data.field_id == '246' ||
         data.field_id == '774' ||
         data.field_id == '264';
+    controller.addListener(() {
+      _bloc.addData[index].data[index1].value = controller.text;
+    });
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Column(
@@ -610,7 +613,6 @@ class _AddServiceVoucherStepTwoScreenState
   Widget _check(CustomerIndividualItemData data, int index, int index1) {
     TextEditingController controller = TextEditingController();
     controller.text = (data.field_set_value ?? '').trim() ?? '';
-    // _checkboxStream.sink.add(false); //todo set
     return Container(
       margin: EdgeInsets.only(bottom: 24),
       child: Row(
@@ -672,7 +674,6 @@ class _AddServiceVoucherStepTwoScreenState
     String maxLength,
   ) {
     List<ModelDataAdd> dropdow = [];
-    // List valueDefault=value.split(",");
     int indexDefault = -1;
     for (int i = 0; i < dropdownItemList.length; i++) {
       if (dropdownItemList[i][1] != null && dropdownItemList[i][0] != null) {
@@ -816,19 +817,11 @@ class _AddServiceVoucherStepTwoScreenState
     } else {
       VoucherServiceRequest voucherServiceRequest =
           VoucherServiceRequest.fromJson(data);
-      print(data);
-      print(voucherServiceRequest);
       _bloc.add(SaveVoucherServiceEvent(voucherServiceRequest));
-
-      ///todo doanh
     }
   }
 
   Future<void> onDinhKem() async {
-    //todo
-
-    //todo
-
     if (await Permission.storage.request().isGranted) {
       openAppSettings();
     } else {

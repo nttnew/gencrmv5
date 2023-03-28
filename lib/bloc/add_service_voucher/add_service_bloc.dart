@@ -239,15 +239,15 @@ class ServiceVoucherBloc
               files: listFileAllStream.value ?? []);
           if ((responseUpload.code == BASE_URL.SUCCESS) ||
               (responseUpload.code == BASE_URL.SUCCESS_200)) {
-            yield SaveServiceVoucherState();
             LoadingApi().popLoading();
+            yield SaveServiceVoucherState();
           } else {
             LoadingApi().popLoading();
             yield ErrorGetServiceVoucherState(responseUpload.msg ?? '');
           }
         } else {
-          yield SaveServiceVoucherState();
           LoadingApi().popLoading();
+          yield SaveServiceVoucherState();
         }
       } else if (statusCode == 999) {
         Get.dialog(WidgetDialog(
@@ -355,9 +355,6 @@ class ServiceVoucherBloc
       hangXe: '',
     ));
     idCar.add('');
-    // checkboxStream.close();
-    // listFileAllStream.close();
-    // idCar.close();
-    // infoCar.close();
+    checkboxStream.add(false);
   }
 }

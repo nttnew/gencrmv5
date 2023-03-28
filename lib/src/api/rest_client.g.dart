@@ -3522,12 +3522,7 @@ class _RestClient implements RestClient {
       'main_id',
       id,
     ));
-    _data.files.addAll(files.map((i) => MapEntry(
-        'files',
-        MultipartFile.fromFileSync(
-          i.path,
-          filename: i.path.split(Platform.pathSeparator).last,
-        ))));
+    _data.files.addAll(files.map((i) => MapEntry('files[]', i)));
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
       method: 'POST',

@@ -574,5 +574,9 @@ abstract class RestClient {
   @POST(BASE_URL.UPLOAD_FILE_CONTRACT)
   @MultiPart()
   Future<BaseResponse> uploadMultiFileContract(
-      @Part(name: "main_id") String id, @Part(name: "files") List<File> files);
+      @Part(name: "main_id") String id,
+      // @Part(name: "files") List<MultipartFile> files,
+      // @MultiPart() FormData data,
+      @Part(name:'files[]') List<MultipartFile> files,
+      );
 }
