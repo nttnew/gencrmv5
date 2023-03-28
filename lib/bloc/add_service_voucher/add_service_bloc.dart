@@ -73,10 +73,9 @@ class ServiceVoucherBloc
   static const String KHONG_XAC_DINH = 'Không xác định';
   static const String THEM_MOI_XE = 'Thêm xe mới';
 
-
   List<List<dynamic>>? listThemXe(List<List<dynamic>>? list) {
     final listXe = list;
-    listXe?.add(["",THEM_MOI_XE, "", ""]);
+    listXe?.add(["", THEM_MOI_XE, "", ""]);
     return listXe ?? null;
   }
 
@@ -198,13 +197,14 @@ class ServiceVoucherBloc
         idbg: '',
         bienSo: '',
         hangXe: '',
+        mauXe: '',
       ));
     } else {
       userRepository.postInfoCar(id).then((value) => infoCar.add(value));
     }
   }
 
-  String? getTextInit(String? id) {
+  String? getTextInit({String? id, List<dynamic>? list}) {
     if (id == '13366') {
       return infoCar.value?.chiTietXe;
     } else if (id == '12914') {
@@ -214,8 +214,16 @@ class ServiceVoucherBloc
     } else if (id == '13314') {
       return infoCar.value?.soKilomet;
     } else if (id == '13559') {
-      //màu
-      return null;
+      if (list != null) {
+        for (final data in list) {
+          if (data.first == infoCar.value?.mauXe) {
+            return data[1];
+          }
+        }
+        return '';
+      } else {
+        return null;
+      }
     } else {
       return null;
     }
@@ -353,6 +361,7 @@ class ServiceVoucherBloc
       idbg: '',
       bienSo: '',
       hangXe: '',
+      mauXe: '',
     ));
     idCar.add('');
     checkboxStream.add(false);

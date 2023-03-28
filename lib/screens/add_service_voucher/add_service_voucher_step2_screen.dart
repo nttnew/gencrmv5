@@ -68,7 +68,7 @@ class _AddServiceVoucherStepTwoScreenState
         for (int j = 0; j < listAddData[i].data!.length; j++) {
           addData[i].data.add(ModelDataAdd(
               label: listAddData[i].data![j].field_name,
-              value: _bloc.getTextInit(listAddData[i].data![j].field_id) ??
+              value: _bloc.getTextInit(id: listAddData[i].data![j].field_id) ??
                   listAddData[i].data![j].field_set_value_datasource?[0][1] ??
                   listAddData[i].data![j].field_set_value ??
                   '',
@@ -116,8 +116,10 @@ class _AddServiceVoucherStepTwoScreenState
                   );
                 },
               )..whenComplete(() {
-                Navigator.of(context)..pop()..pop();
-              });
+                  Navigator.of(context)
+                    ..pop()
+                    ..pop();
+                });
             }
             if (state is ErrorGetServiceVoucherState) {
               showDialog(
@@ -196,12 +198,12 @@ class _AddServiceVoucherStepTwoScreenState
                                                                 .data[index1]
                                                                 .value = data;
                                                           },
-                                                          isUpdate: _bloc.getTextInit(listAddData[index].data![index1].field_id) !=
+                                                          isUpdate: _bloc.getTextInit(id: listAddData[index].data![index1].field_id,
+                                                              list: listAddData[index].data![index1].field_datasource)  !=
                                                               null,
-                                                          dropdownItemList: listAddData[index]
-                                                                  .data![index1]
-                                                                  .field_datasource ??
-                                                              [],
+                                                          dropdownItemList:
+                                                              listAddData[index].data![index1].field_datasource ??
+                                                                  [],
                                                           data: listAddData[index]
                                                               .data![index1],
                                                           onSuccess: (data) {
@@ -224,7 +226,8 @@ class _AddServiceVoucherStepTwoScreenState
                                                             }
                                                           },
                                                           value: _bloc.infoCar.value != null
-                                                              ? _bloc.getTextInit(listAddData[index].data![index1].field_id) ?? ''
+                                                              ? _bloc.getTextInit(id: listAddData[index].data![index1].field_id,
+                                                              list: listAddData[index].data![index1].field_datasource) ?? ''
                                                               : listAddData[index].data![index1].field_value ?? '')
                                                       : listAddData[index].data![index1].field_type == "TEXT_MULTI"
                                                           ? _fieldInputTextMulti(listAddData[index].data![index1].field_datasource!, listAddData[index].data![index1].field_label!, listAddData[index].data![index1].field_require!, index, index1, (listAddData[index].data![index1].field_set_value_datasource != '' && listAddData[index].data![index1].field_set_value_datasource != null) ? listAddData[index].data![index1].field_set_value_datasource![0][0].toString() : "", listAddData[index].data![index1].field_maxlength ?? '')
@@ -532,7 +535,7 @@ class _AddServiceVoucherStepTwoScreenState
     int index1,
   ) {
     TextEditingController controller = TextEditingController();
-    controller.text = _bloc.getTextInit(data.field_id) ??
+    controller.text = _bloc.getTextInit(id: data.field_id) ??
         ((data.field_set_value ?? '').trim() != ''
             ? data.field_set_value
             : data.field_set_value_datasource?[0][1]) ??

@@ -104,7 +104,7 @@ class Data2 {
     fieldSetValue = json['field_set_value'];
     fieldValue = json['field_value'];
     if (json['field_set_value_datasource'] != null) {
-      fieldSetValueDatasource = <List<dynamic>>[];
+      fieldSetValueDatasource = [];
       json['field_set_value_datasource'].forEach((v) {
         fieldSetValueDatasource!.add(v); //todo check doanh
       });
