@@ -67,12 +67,13 @@ class _FormAddDataState extends State<FormAddData> {
   late String id_user;
   File? fileUpload;
 
-  ScrollController scrollController = ScrollController();
+  late final ScrollController scrollController ;
   late final BehaviorSubject<bool> isMaxScroll;
 
 
   @override
   void initState() {
+    scrollController = ScrollController();
     isMaxScroll=BehaviorSubject.seeded(false);
     loadUser();
     AttackBloc.of(context).add(LoadingAttackEvent());
@@ -109,11 +110,10 @@ class _FormAddDataState extends State<FormAddData> {
       FormAddBloc.of(context).add(InitFormAddJobContractEvent(Get.arguments[2].toString()));
     }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Future.delayed(const Duration(seconds: 1));
-      print(AppValue.heights);
-      print("${scrollController.position.viewportDimension}");
-      print("${scrollController.position.maxScrollExtent}");
-
+      await Future.delayed( Duration(seconds: 1));
+      // print(AppValue.heights);
+      // print("${scrollController.position.viewportDimension}");
+      // print("${scrollController.position.maxScrollExtent}");
       if (scrollController.position.maxScrollExtent > 7) {
         scrollHandle();
       } else {
@@ -462,6 +462,7 @@ class _FormAddDataState extends State<FormAddData> {
                       GestureDetector(
                         onTap: this.onClickSave,
                         child: Material(
+                          color: Colors.white,
                           child: Container(
                             height: AppValue.widths * 0.1,
                             width: AppValue.widths * 0.25,

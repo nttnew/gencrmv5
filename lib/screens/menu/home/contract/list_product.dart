@@ -368,7 +368,7 @@ class _ItemProductState extends State<ItemProduct> {
                     decoration: BoxDecoration(border: Border.all(width: 1, color: COLORS.TEXT_GREY), borderRadius: BorderRadius.circular(7)),
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: WidgetText(
-                      title: "Giá: " + "${AppValue.format_money(double.parse(price))}" + "VNĐ",
+                      title: "Giá: " + "${AppValue.format_money(double.parse(price))}",
                       style: AppStyle.DEFAULT_14_BOLD.copyWith(color: COLORS.TEXT_GREY),
                     ),
                   ),

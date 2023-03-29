@@ -56,12 +56,13 @@ class _FormEditState extends State<FormEdit> {
   File? fileUpload;
   final UserRepository userRepository = UserRepository();
 
-  late final BehaviorSubject<bool> isMaxScroll=BehaviorSubject();
-  ScrollController scrollController = ScrollController();
+  late final BehaviorSubject<bool> isMaxScroll;
+  late final ScrollController scrollController ;
 
   @override
   void initState() {
-    isMaxScroll.add(false);
+    isMaxScroll = BehaviorSubject.seeded(false);
+    scrollController = ScrollController();
     AttackBloc.of(context).add(LoadingAttackEvent());
     if (type == 1)
       FormEditBloc.of(context).add(InitFormEditCusEvent(id));
@@ -79,10 +80,9 @@ class _FormEditState extends State<FormEdit> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Future.delayed(const Duration(seconds: 1));
-      print(AppValue.heights);
-      print("${scrollController.position.viewportDimension}");
-      print("${scrollController.position.maxScrollExtent}");
-
+      // print(AppValue.heights);
+      // print("${scrollController.position.viewportDimension}");
+      // print("${scrollController.position.maxScrollExtent}");
       if (scrollController.position.maxScrollExtent > 7) {
         scrollHandle();
       } else {
