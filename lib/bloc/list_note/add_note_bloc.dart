@@ -53,6 +53,7 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState>{
       else
         response = await userRepository.addNoteSup(id: id,content: content);
       if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+        LoadingApi().popLoading();
         yield SuccessAddNoteState();
       }
       else

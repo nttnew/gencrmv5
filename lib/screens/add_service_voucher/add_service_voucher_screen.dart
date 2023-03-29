@@ -52,7 +52,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
           toolbarHeight: AppValue.heights * 0.1,
           backgroundColor: HexColor("#D0F1EB"),
           title: WidgetText(
-              title: "Thêm {phiếu dịch vụ}",
+              title: "Thêm phiếu dịch vụ",
               style: TextStyle(
                   color: Colors.black,
                   fontFamily: "Montserrat",

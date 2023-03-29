@@ -130,21 +130,27 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState>{
       {
         final responseUpload = await userRepository.uploadFileContact(id:response.data!.id.toString() ,files: files);
         if((responseUpload.code == BASE_URL.SUCCESS)||(responseUpload.code == BASE_URL.SUCCESS_200))
-          yield SuccessAddContactCustomerState();
+          {
+            LoadingApi().popLoading();
+            yield SuccessAddContactCustomerState();
+          }
         else{
           LoadingApi().popLoading();
           yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
         }
       }
-        else yield SuccessAddContactCustomerState();
+        else {
+          LoadingApi().popLoading();
+          yield SuccessAddContactCustomerState();
+        }
       }
       else {
-        yield ErrorAddContactCustomerState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorAddContactCustomerState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -159,22 +165,28 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState>{
         if(files!=null){
           final responseUpload = await userRepository.uploadFileOpp(id:response.data!.id.toString() ,files: files);
           if((responseUpload.code == BASE_URL.SUCCESS)||(responseUpload.code == BASE_URL.SUCCESS_200))
-            yield SuccessAddContactCustomerState();
+            {
+              LoadingApi().popLoading();
+              yield SuccessAddContactCustomerState();
+            }
           else{
             LoadingApi().popLoading();
             yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
           }
         }
-        else
+        else{
+          LoadingApi().popLoading();
           yield SuccessAddContactCustomerState();
+        }
       }
-      else {
-        yield ErrorAddContactCustomerState(response.msg ?? '');
-        LoadingApi().popLoading();
+      else
+     {
+       LoadingApi().popLoading();
+       yield ErrorAddContactCustomerState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -188,25 +200,29 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState>{
       if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
         if(files!=null)
           {
-
             final responseUpload = await userRepository.uploadFileContract(id:response.data!.id.toString() ,files: files);
             if((responseUpload.code == BASE_URL.SUCCESS)||(responseUpload.code == BASE_URL.SUCCESS_200))
-              yield SuccessAddContactCustomerState();
+            {
+            LoadingApi().popLoading();
+            yield SuccessAddContactCustomerState();
+            }
             else{
               LoadingApi().popLoading();
               yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
             }
           }
-        else
+        else{
+          LoadingApi().popLoading();
           yield SuccessAddContactCustomerState();
+        }
       }
       else {
-        yield ErrorAddContactCustomerState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorAddContactCustomerState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -221,22 +237,28 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState>{
         if(files!=null){
           final responseUpload = await userRepository.uploadFileJob(id:response.data!.id.toString() ,files: files);
           if((responseUpload.code == BASE_URL.SUCCESS)||(responseUpload.code == BASE_URL.SUCCESS_200))
-            yield SuccessAddContactCustomerState();
+            {
+              LoadingApi().popLoading();
+              yield SuccessAddContactCustomerState();
+            }
           else{
             LoadingApi().popLoading();
             yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
           }
         }
         else
+        {
+        LoadingApi().popLoading();
         yield SuccessAddContactCustomerState();
+       }
       }
       else {
-        yield ErrorAddContactCustomerState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorAddContactCustomerState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -251,22 +273,28 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState>{
         if(files!=null){
           final responseUpload = await userRepository.uploadFileSupport(id:response.data!.id.toString() ,files: files);
           if((responseUpload.code == BASE_URL.SUCCESS)||(responseUpload.code == BASE_URL.SUCCESS_200))
-            yield SuccessAddContactCustomerState();
+         {
+           LoadingApi().popLoading();
+           yield SuccessAddContactCustomerState();
+         }
           else{
             LoadingApi().popLoading();
             yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
           }
         }
         else
-        yield SuccessAddContactCustomerState();
+        {
+          LoadingApi().popLoading();
+          yield SuccessAddContactCustomerState();
+        }
       }
       else {
-        yield ErrorAddContactCustomerState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorAddContactCustomerState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -281,22 +309,27 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState>{
         if(files!=null){
           final responseUpload = await userRepository.uploadFileJob(id:response.data!.id.toString() ,files: files);
           if((responseUpload.code == BASE_URL.SUCCESS)||(responseUpload.code == BASE_URL.SUCCESS_200))
-            yield SuccessAddContactCustomerState();
+         {
+           LoadingApi().popLoading();
+           yield SuccessAddContactCustomerState();
+         }
           else{
             LoadingApi().popLoading();
             yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
           }
         }
-        else
-        yield SuccessAddContactCustomerState();
+        else {
+          LoadingApi().popLoading();
+          yield SuccessAddContactCustomerState();
+        }
       }
       else {
-        yield ErrorAddContactCustomerState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorAddContactCustomerState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
