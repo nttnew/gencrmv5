@@ -439,7 +439,9 @@ class _FormEditState extends State<FormEdit> {
               stream: isMaxScroll,
               builder: (context, snapshot) {
                 return Visibility(
+                  visible: snapshot.data ?? false,
                   child: Container(
+                    color:Colors.white,
                     height: AppValue.widths * 0.1 + 10,
                     width: AppValue.widths,
                     padding: EdgeInsets.only(left: AppValue.widths * 0.05, right: AppValue.widths * 0.05, bottom: 5),
@@ -468,7 +470,6 @@ class _FormEditState extends State<FormEdit> {
                       ],
                     ),
                   ),
-                  visible: snapshot.data ?? false,
                 );
               }
             ))
