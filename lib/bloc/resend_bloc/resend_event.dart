@@ -21,7 +21,6 @@ class TimeInit extends ResendOTPEvent {
   }
 }
 
-
 class TimeChanged extends ResendOTPEvent {
   final int time;
 
@@ -36,7 +35,6 @@ class TimeChanged extends ResendOTPEvent {
   }
 }
 
-
 class ResendOTPSubmit extends ResendOTPEvent {
   final String username;
   final String email;
@@ -49,11 +47,10 @@ class ResendOTPSubmit extends ResendOTPEvent {
   });
 
   @override
-  List<Object> get props => [email,username,timestamp];
+  List<Object> get props => [email, username, timestamp];
 
   @override
   String toString() {
     return 'ResendOTPSubmit{email: $email}';
   }
 }
-

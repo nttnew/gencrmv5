@@ -23,7 +23,7 @@ class MyRadioListTile<T> extends StatelessWidget {
       child: Card(
         elevation: 2,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 16,vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 5),
           child: Row(
             children: [
               _customRadioButton,

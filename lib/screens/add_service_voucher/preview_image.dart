@@ -39,8 +39,7 @@ class _PreviewImageState extends State<PreviewImage> {
         child: Container(
           height: MediaQuery.of(context).size.height,
           color: Colors.grey,
-          child: PhotoView(
-              imageProvider: FileImage(widget.file)),
+          child: PhotoView(imageProvider: FileImage(widget.file)),
         ),
       ),
     );

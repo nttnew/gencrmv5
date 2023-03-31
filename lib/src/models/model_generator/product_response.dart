@@ -4,8 +4,13 @@ part 'product_response.g.dart';
 
 @JsonSerializable()
 class ProductItem {
-  String? product_id,product_code,product_edit,product_name,dvt,vat,sell_price;
-
+  String? product_id,
+      product_code,
+      product_edit,
+      product_name,
+      dvt,
+      vat,
+      sell_price;
 
   ProductItem(this.product_id, this.product_code, this.product_edit,
       this.product_name, this.dvt, this.vat, this.sell_price);
@@ -21,8 +26,7 @@ class ProductData {
   int? limit;
   int? total;
   List<ProductItem>? product;
-  List<List<dynamic>>? units,vats;
-
+  List<List<dynamic>>? units, vats;
 
   ProductData(
       this.page, this.limit, this.total, this.product, this.units, this.vats);
@@ -35,7 +39,6 @@ class ProductData {
 @JsonSerializable()
 class ProductResponse extends BaseResponse {
   ProductData? data;
-
 
   ProductResponse(this.data);
 

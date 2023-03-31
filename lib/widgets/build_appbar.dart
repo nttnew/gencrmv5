@@ -10,7 +10,13 @@ class WidgetHeaderBar extends StatelessWidget {
   final bool? isTitleCenter;
   final bool? isDivider;
 
-  WidgetHeaderBar({this.title, this.icon, this.right, this.backgroundColor, this.isTitleCenter, this.isDivider});
+  WidgetHeaderBar(
+      {this.title,
+      this.icon,
+      this.right,
+      this.backgroundColor,
+      this.isTitleCenter,
+      this.isDivider});
 
   @override
   Widget build(BuildContext context) {

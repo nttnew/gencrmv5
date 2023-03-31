@@ -6,7 +6,6 @@ abstract class ClueCustomerEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitGetClueCustomerEvent extends ClueCustomerEvent {
   final int id;
 

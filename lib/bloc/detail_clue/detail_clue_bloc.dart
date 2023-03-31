@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import '../../src/base.dart';
 import '../../src/color.dart';
 import '../../src/messages.dart';
-import '../../src/models/model_generator/note_clue.dart';
 import '../../src/navigator.dart';
 import '../../widgets/loading_api.dart';
 import '../../widgets/widget_dialog.dart';
@@ -26,7 +25,6 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
 
   @override
   Stream<DetailClueState> mapEventToState(GetDetailClueEvent event) async* {
-    // TODO: implement mapEventToState
     if (event is InitGetDetailClueEvent) {
       yield* _getDetailClue(event.id!);
     }
@@ -46,7 +44,6 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
       } else {
         yield ErrorGetDetailClueState(responseDetailClue.msg ?? '');
         LoadingApi().popLoading();
-        // yield ErrorGetDetailClueState("${responseDetailClue.msg ?? ''}"+" "+ "${responseListNoteClue.msg ?? ''}");
         yield ErrorGetDetailClueState("${responseDetailClue.msg ?? ''}");
       }
     } catch (e) {
@@ -70,7 +67,7 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
     LoadingApi().pushLoading();
     try {
       yield LoadingDetailClueState();
-      final responseDetailClue = await userRepository.deleteContact({"id":id});
+      final responseDetailClue = await userRepository.deleteContact({"id": id});
       if ((responseDetailClue.code == BASE_URL.SUCCESS) ||
           (responseDetailClue.code == BASE_URL.SUCCESS_200)) {
         yield SuccessDeleteClueState();

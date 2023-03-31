@@ -93,17 +93,17 @@ class Versions {
 
   Versions(
       {this.hangXe,
-        this.hangXeId,
-        this.dongXe,
-        this.dongXeId,
-        this.namSanXuat,
-        this.loaiXe,
-        this.loaiXeId,
-        this.kieuDang,
-        this.kieuDangId,
-        this.phienBan,
-        this.phienBanId,
-        this.soCho});
+      this.hangXeId,
+      this.dongXe,
+      this.dongXeId,
+      this.namSanXuat,
+      this.loaiXe,
+      this.loaiXeId,
+      this.kieuDang,
+      this.kieuDangId,
+      this.phienBan,
+      this.phienBanId,
+      this.soCho});
 
   Versions.fromJson(Map<String, dynamic> json) {
     hangXe = json['hang_xe'];

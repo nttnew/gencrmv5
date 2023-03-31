@@ -1,5 +1,4 @@
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
-import 'package:gen_crm/src/models/model_generator/customer.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'report_product.g.dart';
@@ -9,7 +8,6 @@ class ListReportProduct {
   final int id;
   final String? name;
   final String? doanh_so;
-
 
   ListReportProduct(this.name, this.id, this.doanh_so);
 
@@ -23,7 +21,6 @@ class ListReportProduct {
 class ReportProduct {
   final List<ListReportProduct> list;
 
-
   ReportProduct(this.list);
 
   factory ReportProduct.fromJson(Map<String, dynamic> json) =>
@@ -33,7 +30,7 @@ class ReportProduct {
 }
 
 @JsonSerializable()
-class ReportProductResponse extends BaseResponse{
+class ReportProductResponse extends BaseResponse {
   final ReportProduct? data;
 
   ReportProductResponse(this.data);
@@ -52,17 +49,14 @@ class RequestBodyReportProduct {
   final int? time;
   final int? cl;
 
+  RequestBodyReportProduct(
+      {required this.diem_ban,
+      required this.time,
+      required this.cl,
+      required this.timefrom,
+      required this.timeto});
 
-  RequestBodyReportProduct({required this.diem_ban,required this.time,required this.cl,required this.timefrom, required this.timeto});
-
-  factory RequestBodyReportProduct.fromJson(Map<String, dynamic> json) => _$RequestBodyReportProductFromJson(json);
+  factory RequestBodyReportProduct.fromJson(Map<String, dynamic> json) =>
+      _$RequestBodyReportProductFromJson(json);
   Map<String, dynamic> toJson() => _$RequestBodyReportProductToJson(this);
 }
-
-
-
-
-
-
-
-

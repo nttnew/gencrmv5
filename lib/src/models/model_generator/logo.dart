@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:gen_crm/src/models/index.dart';
 
 part 'logo.g.dart';
 
@@ -11,7 +10,8 @@ class LogoResponse {
 
   const LogoResponse({required this.code, this.message, required this.payload});
 
-  factory LogoResponse.fromJson(Map<String, dynamic> json) => _$LogoResponseFromJson(json);
+  factory LogoResponse.fromJson(Map<String, dynamic> json) =>
+      _$LogoResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$LogoResponseToJson(this);
 }
@@ -24,7 +24,8 @@ class LogoData {
 
   LogoData({required this.id, required this.imageLogo});
 
-  factory LogoData.fromJson(Map<String, dynamic> json) => _$LogoDataFromJson(json);
+  factory LogoData.fromJson(Map<String, dynamic> json) =>
+      _$LogoDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$LogoDataToJson(this);
 }

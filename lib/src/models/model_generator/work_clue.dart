@@ -4,13 +4,22 @@ import 'package:json_annotation/json_annotation.dart';
 part 'work_clue.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class WorkClueData{
-  String? id,id_customer,name_customer,name_job,status_job,start_date,content_job,user_work_id,user_work_name,user_work_avatar,color;
+class WorkClueData {
+  String? id,
+      id_customer,
+      name_customer,
+      name_job,
+      status_job,
+      start_date,
+      content_job,
+      user_work_id,
+      user_work_name,
+      user_work_avatar,
+      color;
   int? total_comment;
 
-
   WorkClueData(
-  {this.id,
+      {this.id,
       this.id_customer,
       this.name_customer,
       this.name_job,
@@ -21,15 +30,15 @@ class WorkClueData{
       this.user_work_name,
       this.user_work_avatar,
       this.total_comment,
-    this.color
-  });
+      this.color});
 
   factory WorkClueData.fromJson(Map<String, dynamic> json) =>
       _$WorkClueDataFromJson(json);
   Map<String, dynamic> toJson() => _$WorkClueDataToJson(this);
 }
+
 @JsonSerializable(explicitToJson: true)
-class WorkClueResponse extends BaseResponse{
+class WorkClueResponse extends BaseResponse {
   List<WorkClueData>? data;
 
   WorkClueResponse(this.data);

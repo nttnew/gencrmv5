@@ -7,43 +7,37 @@ abstract class ListNoteEvent extends Equatable {
 }
 
 class InitNoteOppEvent extends ListNoteEvent {
+  final String id, page;
 
-  final String id,page;
-
-  InitNoteOppEvent(this.id,this.page);
+  InitNoteOppEvent(this.id, this.page);
 }
 
 class InitNoteCusEvent extends ListNoteEvent {
+  final String id, page;
 
-  final String id,page;
-
-  InitNoteCusEvent(this.id,this.page);
+  InitNoteCusEvent(this.id, this.page);
 }
 
 class InitNoteContactEvent extends ListNoteEvent {
+  final String id, page;
 
-  final String id,page;
-
-  InitNoteContactEvent(this.id,this.page);
+  InitNoteContactEvent(this.id, this.page);
 }
 
 class InitNoteContractEvent extends ListNoteEvent {
+  final String id, page;
 
-  final String id,page;
-
-  InitNoteContractEvent(this.id,this.page);
+  InitNoteContractEvent(this.id, this.page);
 }
 
 class InitNoteJobEvent extends ListNoteEvent {
+  final String id, page;
 
-  final String id,page;
-
-  InitNoteJobEvent(this.id,this.page);
+  InitNoteJobEvent(this.id, this.page);
 }
 
 class InitNoteSupEvent extends ListNoteEvent {
+  final String id, page;
 
-  final String id,page;
-
-  InitNoteSupEvent(this.id,this.page);
+  InitNoteSupEvent(this.id, this.page);
 }

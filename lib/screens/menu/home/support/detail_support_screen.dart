@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/support/detail_support_bloc.dart';
-import 'package:gen_crm/screens/menu/home/customer/index.dart';
 import 'package:gen_crm/screens/menu/home/customer/list_note.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
@@ -165,41 +163,46 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                                                               Expanded(
                                                                 child:
                                                                     GestureDetector(
-                                                                      onTap: (){
-                                                                        if(state.dataDetailSupport[index].data![index1].label_field==BASE_URL.KHACH_HANG){
-                                                                          AppNavigator.navigateDetailCustomer(state.dataDetailSupport[index].data![index1].id!
-                                                                              ,state.dataDetailSupport[index].data![index1].value_field ?? '');
-                                                                        }
-                                                                      },
-                                                                      child: WidgetText(
-                                                                  title: state
+                                                                  onTap: () {
+                                                                    if (state
                                                                             .dataDetailSupport[
                                                                                 index]
                                                                             .data![
                                                                                 index1]
+                                                                            .label_field ==
+                                                                        BASE_URL
+                                                                            .KHACH_HANG) {
+                                                                      AppNavigator.navigateDetailCustomer(
+                                                                          state
+                                                                              .dataDetailSupport[index]
+                                                                              .data![index1]
+                                                                              .id!,
+                                                                          state.dataDetailSupport[index].data![index1].value_field ?? '');
+                                                                    }
+                                                                  },
+                                                                  child:
+                                                                      WidgetText(
+                                                                    title: state
+                                                                            .dataDetailSupport[index]
+                                                                            .data![index1]
                                                                             .value_field ??
                                                                         '',
-                                                                  textAlign:
+                                                                    textAlign:
                                                                         TextAlign
                                                                             .right,
-                                                                  style:
-                                                                        ValueStyle().copyWith(
-                                                                          decoration: state
-                                                                              .dataDetailSupport[
-                                                                          index]
-                                                                              .data![
-                                                                          index1]
-                                                                              .label_field==BASE_URL.KHACH_HANG?
-                                                                          TextDecoration.underline:null,
-                                                                          color:  state
-                                                                              .dataDetailSupport[
-                                                                          index]
-                                                                              .data![
-                                                                          index1].
-                                                                          label_field==BASE_URL.KHACH_HANG?Colors.blue:null,
-                                                                        ),
-                                                                ),
+                                                                    style: ValueStyle()
+                                                                        .copyWith(
+                                                                      decoration: state.dataDetailSupport[index].data![index1].label_field ==
+                                                                              BASE_URL.KHACH_HANG
+                                                                          ? TextDecoration.underline
+                                                                          : null,
+                                                                      color: state.dataDetailSupport[index].data![index1].label_field ==
+                                                                              BASE_URL.KHACH_HANG
+                                                                          ? Colors.blue
+                                                                          : null,
                                                                     ),
+                                                                  ),
+                                                                ),
                                                               ),
                                                             ],
                                                           ),

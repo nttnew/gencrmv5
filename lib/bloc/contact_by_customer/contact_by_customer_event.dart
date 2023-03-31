@@ -6,7 +6,6 @@ abstract class ContactByCustomerEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitGetContactByCustomerrEvent extends ContactByCustomerEvent {
   final String id;
 
@@ -14,8 +13,8 @@ class InitGetContactByCustomerrEvent extends ContactByCustomerEvent {
 }
 
 class InitGetCustomerContractEvent extends ContactByCustomerEvent {
-  final String page,search;
+  final String page, search;
   final Function success;
 
-  InitGetCustomerContractEvent(this.page,this.search,this.success);
+  InitGetCustomerContractEvent(this.page, this.search, this.success);
 }

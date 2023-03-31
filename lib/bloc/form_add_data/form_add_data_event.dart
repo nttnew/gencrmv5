@@ -6,9 +6,7 @@ abstract class FormAddEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitFormAddCusOrEvent extends FormAddEvent {
-
   InitFormAddCusOrEvent();
 }
 
@@ -123,4 +121,3 @@ class InitFormAddJobContractEvent extends FormAddEvent {
   @override
   List<Object?> get props => [id];
 }
-

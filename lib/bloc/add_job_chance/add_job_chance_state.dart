@@ -5,11 +5,11 @@ abstract class AddJobChanceState extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
 class InitGetAddJobChance extends AddJobChanceState {}
 
-class UpdateGetAddJobChanceState extends AddJobChanceState{
+class UpdateGetAddJobChanceState extends AddJobChanceState {
   final List<Field_General> data;
-
 
   const UpdateGetAddJobChanceState(this.data);
 
@@ -17,11 +17,9 @@ class UpdateGetAddJobChanceState extends AddJobChanceState{
   List<Object> get props => [data];
 }
 
-class LoadingAddJobChanceState extends AddJobChanceState {
-}
+class LoadingAddJobChanceState extends AddJobChanceState {}
 
-
-class ErrorGetAddJobChanceState extends AddJobChanceState{
+class ErrorGetAddJobChanceState extends AddJobChanceState {
   final String msg;
 
   ErrorGetAddJobChanceState(this.msg);

@@ -5,18 +5,20 @@ import 'package:flutter/material.dart';
 class WidgetItemListMenu extends StatelessWidget {
   final String? icon, title;
   bool? check;
-  WidgetItemListMenu({this.icon,this.check, this.title});
+  WidgetItemListMenu({this.icon, this.check, this.title});
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Row(
           children: [
-            icon != '' ? Image.asset(
-              icon!,
-              width: 20,
-              height: 20,
-            ) : Container(),
+            icon != ''
+                ? Image.asset(
+                    icon!,
+                    width: 20,
+                    height: 20,
+                  )
+                : Container(),
             AppValue.hSpaceTiny,
             Text(
               title!,

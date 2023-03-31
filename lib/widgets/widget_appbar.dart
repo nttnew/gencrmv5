@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:gen_crm/src/src_index.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class WidgetAppbar extends StatelessWidget {
@@ -34,10 +33,11 @@ class WidgetAppbar extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: COLORS.BLACK.withOpacity(0.3),
-            spreadRadius: 2                                                                                                       ,
+            spreadRadius: 2,
             blurRadius: 2,
             // offset: Offset(0, 3), // changes position of shadow
-        ),],
+          ),
+        ],
         borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(20),
         ),
@@ -46,30 +46,34 @@ class WidgetAppbar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            width: Get.width,padding: EdgeInsets.only(top: 30),
-            height: AppValue.heights*0.13,
+            width: Get.width,
+            padding: EdgeInsets.only(top: 30),
+            height: AppValue.heights * 0.13,
             child: Stack(
               children: [
                 left != null
                     ? Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                          padding: EdgeInsets.only(left: 16),
-                          child: left
-                        ),
-                    )
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                            padding: EdgeInsets.only(left: 16), child: left),
+                      )
                     : AppValue.kEmptyWidget,
                 // AppValue.hSpace(16),
                 //isTitleCenter == true ? Spacer() : AppValue.kEmptyWidget,
                 Align(
-                  alignment: isTitleCenter == true ? Alignment.center : Alignment.centerLeft,
+                  alignment: isTitleCenter == true
+                      ? Alignment.center
+                      : Alignment.centerLeft,
                   child: Container(
-                    width: MediaQuery.of(context).size.width/1.5,
-                    margin: EdgeInsets.only(left: isTitleCenter == true ? 0 : 80, right: 16),
-                    child: widgetTitle ?? Text(
-                      title ?? "",
-                      style: AppStyle.DEFAULT_18_BOLD.copyWith(color: Colors.black,fontFamily: 'Montserrat'),
-                    ),
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    margin: EdgeInsets.only(
+                        left: isTitleCenter == true ? 0 : 80, right: 16),
+                    child: widgetTitle ??
+                        Text(
+                          title ?? "",
+                          style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                              color: Colors.black, fontFamily: 'Montserrat'),
+                        ),
                   ),
                 ),
                 // Spacer(),
@@ -78,20 +82,19 @@ class WidgetAppbar extends StatelessWidget {
                     ? Align(
                         alignment: Alignment.centerRight,
                         child: Container(
-                          padding: EdgeInsets.only(right: 16),
-                          child: right
-                ),
-                    )
-                    :
-                AppValue.kEmptyWidget,
+                            padding: EdgeInsets.only(right: 16), child: right),
+                      )
+                    : AppValue.kEmptyWidget,
               ],
             ),
           ),
-          isDivider == true ? Divider(
-            color: COLORS.BACKGROUND,
-            thickness: 0.8,
-            height: 0,
-          ) : AppValue.kEmptyWidget,
+          isDivider == true
+              ? Divider(
+                  color: COLORS.BACKGROUND,
+                  thickness: 0.8,
+                  height: 0,
+                )
+              : AppValue.kEmptyWidget,
         ],
       ),
     );

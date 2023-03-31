@@ -1,10 +1,7 @@
-import 'dart:io';
-import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/clue_customer.dart';
-import 'package:gen_crm/src/models/model_generator/detail_customer.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:get/get.dart';
 
@@ -19,10 +16,12 @@ import '../../widgets/widget_dialog.dart';
 part 'clue_customer_event.dart';
 part 'clue_customer_state.dart';
 
-class ClueCustomerBloc extends Bloc<ClueCustomerEvent, ClueCustomerState>{
+class ClueCustomerBloc extends Bloc<ClueCustomerEvent, ClueCustomerState> {
   final UserRepository userRepository;
 
-  ClueCustomerBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitGetClueCustomer());
+  ClueCustomerBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitGetClueCustomer());
 
   @override
   Stream<ClueCustomerState> mapEventToState(ClueCustomerEvent event) async* {
@@ -37,10 +36,10 @@ class ClueCustomerBloc extends Bloc<ClueCustomerEvent, ClueCustomerState>{
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getClueCustomer(id);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
         yield UpdateGetClueCustomerState(response.data!);
-      }
-      else if(response.code==999){
+      } else if (response.code == 999) {
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -50,12 +49,10 @@ class ClueCustomerBloc extends Bloc<ClueCustomerEvent, ClueCustomerState>{
             AppNavigator.navigateLogout();
           },
         ));
-      }
-      else{
+      } else {
         yield ErrorGetClueCustomerState(response.msg ?? '');
         LoadingApi().popLoading();
       }
-
     } catch (e) {
       yield ErrorGetClueCustomerState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
@@ -73,6 +70,6 @@ class ClueCustomerBloc extends Bloc<ClueCustomerEvent, ClueCustomerState>{
     LoadingApi().popLoading();
   }
 
-
-  static ClueCustomerBloc of(BuildContext context) => BlocProvider.of<ClueCustomerBloc>(context);
+  static ClueCustomerBloc of(BuildContext context) =>
+      BlocProvider.of<ClueCustomerBloc>(context);
 }

@@ -8,7 +8,7 @@ class BaseResponse {
   String? msg;
   int? code;
 
-  BaseResponse({this.success, this.msg,this.code});
+  BaseResponse({this.success, this.msg, this.code});
 
   factory BaseResponse.fromJson(Map<String, dynamic> json) =>
       _$BaseResponseFromJson(json);

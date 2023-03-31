@@ -5,19 +5,19 @@ abstract class FormEditState extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
 class InitFormEditState extends FormEditState {}
 
+class LoadingFormEditState extends FormEditState {}
 
-class LoadingFormEditState extends FormEditState {
-}
-class SuccessFormEditState extends FormEditState{
-  // final ListCustomerData listCustomer;
+class SuccessFormEditState extends FormEditState {
   final List<AddCustomerIndividualData> listEditData;
   const SuccessFormEditState(this.listEditData);
   @override
   List<Object> get props => [listEditData];
 }
-class ErrorFormEditState extends FormEditState{
+
+class ErrorFormEditState extends FormEditState {
   final String msg;
 
   ErrorFormEditState(this.msg);
@@ -25,16 +25,16 @@ class ErrorFormEditState extends FormEditState{
   List<Object> get props => [msg];
 }
 
-class LoadingGetContactByCustomerState extends FormEditState {
-}
-class SuccessGetContactByCustomerState extends FormEditState{
-  // final ListCustomerData listCustomer;
+class LoadingGetContactByCustomerState extends FormEditState {}
+
+class SuccessGetContactByCustomerState extends FormEditState {
   final List<dynamic> listEditData;
   const SuccessGetContactByCustomerState(this.listEditData);
   @override
   List<Object> get props => [listEditData];
 }
-class ErrorGetContactByCustomerState extends FormEditState{
+
+class ErrorGetContactByCustomerState extends FormEditState {
   final String msg;
 
   ErrorGetContactByCustomerState(this.msg);

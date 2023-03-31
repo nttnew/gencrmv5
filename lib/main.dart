@@ -36,7 +36,6 @@ import 'package:gen_crm/bloc/support/support_bloc.dart';
 import 'package:gen_crm/screens/add_service_voucher/add_service_voucher_screen.dart';
 import 'package:gen_crm/screens/add_service_voucher/add_service_voucher_step2_screen.dart';
 import 'package:gen_crm/screens/menu/home/contract/list_product.dart';
-import 'package:gen_crm/screens/menu/home/contract/product_contract.dart';
 import 'package:gen_crm/screens/menu/home/contract/update_contract.dart';
 import 'package:gen_crm/screens/menu/home/customer/add_note.dart';
 
@@ -54,7 +53,6 @@ import 'package:vibration/vibration.dart';
 import 'api_resfull/api.dart';
 import 'bloc/add_customer/add_customer_bloc.dart';
 import 'bloc/blocs.dart';
-import 'bloc/contract/contract_bloc.dart';
 import 'bloc/clue/clue_bloc.dart';
 import 'bloc/contract/customer_contract_bloc.dart';
 import 'bloc/contract/phone_bloc.dart';
@@ -74,7 +72,6 @@ import 'bloc/work/detail_work_bloc.dart';
 import 'bloc/work/work_bloc.dart';
 import 'bloc/work_clue/work_clue_bloc.dart';
 import 'firebase_options.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 
 import 'screens/menu/attachment/attachment.dart';
 
@@ -89,17 +86,26 @@ Future main() async {
     name: "app",
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
   var initializationSettings;
   if (Platform.isAndroid) {
-    const AndroidNotificationChannel channel = AndroidNotificationChannel('high_importance_channel', 'xxxx', importance: Importance.max);
-    var initializationSettingsAndroid = new AndroidInitializationSettings("@mipmap/ic_launcher");
-    await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()!.createNotificationChannel(channel);
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+        'high_importance_channel', 'xxxx',
+        importance: Importance.max);
+    var initializationSettingsAndroid =
+        new AndroidInitializationSettings("@mipmap/ic_launcher");
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()!
+        .createNotificationChannel(channel);
 
-    initializationSettings = new InitializationSettings(android: initializationSettingsAndroid);
+    initializationSettings =
+        new InitializationSettings(android: initializationSettingsAndroid);
   } else {
     var initializationSettingsIOS = new DarwinInitializationSettings();
-    initializationSettings = new InitializationSettings(iOS: initializationSettingsIOS);
+    initializationSettings =
+        new InitializationSettings(iOS: initializationSettingsIOS);
   }
   flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
@@ -108,39 +114,37 @@ Future main() async {
 
     if (notification != null) {
       if (Platform.isAndroid) {
-        AndroidNotification androidNotification = message.notification!.android!;
+        AndroidNotification androidNotification =
+            message.notification!.android!;
         if (androidNotification != null) {
-          var androidPlatformChannelSpecifics = const AndroidNotificationDetails('high_importance_channel', 'xxxx', importance: Importance.max, playSound: true, showProgress: true, priority: Priority.high, ticker: 'test ticker');
+          var androidPlatformChannelSpecifics =
+              const AndroidNotificationDetails(
+                  'high_importance_channel', 'xxxx',
+                  importance: Importance.max,
+                  playSound: true,
+                  showProgress: true,
+                  priority: Priority.high,
+                  ticker: 'test ticker');
 
           var iOSChannelSpecifics = const DarwinNotificationDetails();
-          var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSChannelSpecifics);
+          var platformChannelSpecifics = NotificationDetails(
+              android: androidPlatformChannelSpecifics,
+              iOS: iOSChannelSpecifics);
           Vibration.vibrate(duration: 1000, amplitude: 128);
-          await flutterLocalNotificationsPlugin.show(0, notification.title, notification.body, platformChannelSpecifics, payload: 'test');
+          await flutterLocalNotificationsPlugin.show(0, notification.title,
+              notification.body, platformChannelSpecifics,
+              payload: 'test');
         }
       } else if (Platform.isIOS) {
         var iOSChannelSpecifics = const DarwinNotificationDetails();
-        var platformChannelSpecifics = NotificationDetails(iOS: iOSChannelSpecifics);
+        var platformChannelSpecifics =
+            NotificationDetails(iOS: iOSChannelSpecifics);
         Vibration.vibrate(duration: 1000, amplitude: 128);
-        await flutterLocalNotificationsPlugin.show(0, notification.title, notification.body, platformChannelSpecifics, payload: 'test');
+        await flutterLocalNotificationsPlugin.show(
+            0, notification.title, notification.body, platformChannelSpecifics,
+            payload: 'test');
       }
-      // var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
-      //     'channel_ID', 'channel name',
-      //     importance: Importance.max,
-      //     playSound: true,
-      //     showProgress: true,
-      //     priority: Priority.high,
-      //     ticker: 'test ticker');
-
-      // var iOSChannelSpecifics = const IOSNotificationDetails();
-      // var platformChannelSpecifics = NotificationDetails(
-      //     android: androidPlatformChannelSpecifics, iOS: iOSChannelSpecifics);
-      // Vibration.vibrate(duration: 1000, amplitude: 128);
-      // await flutterLocalNotificationsPlugin.show(
-      //     0, notification.title, notification.body, platformChannelSpecifics,
-      //     payload: 'test');
-    } else {
-      print('noooooo');
-    }
+    } else {}
   });
   if (defaultTargetPlatform == TargetPlatform.android) {}
   runApp(
@@ -192,61 +196,80 @@ Future main() async {
             ),
           ),
           BlocProvider<InfoUserBloc>(
-            create: (context) => InfoUserBloc(userRepository: userRepository, localRepository: const EventRepositoryStorage(), context: context),
+            create: (context) => InfoUserBloc(
+                userRepository: userRepository,
+                localRepository: const EventRepositoryStorage(),
+                context: context),
           ),
           BlocProvider<ProfileBloc>(
             create: (context) => ProfileBloc(userRepository: userRepository),
           ),
           BlocProvider<GetListCustomerBloc>(
-            create: (context) => GetListCustomerBloc(userRepository: userRepository),
+            create: (context) =>
+                GetListCustomerBloc(userRepository: userRepository),
           ),
           BlocProvider<GetListChanceBloc>(
-            create: (context) => GetListChanceBloc(userRepository: userRepository),
+            create: (context) =>
+                GetListChanceBloc(userRepository: userRepository),
           ),
           BlocProvider<ReportProductBloc>(
-            create: (context) => ReportProductBloc(userRepository: userRepository),
+            create: (context) =>
+                ReportProductBloc(userRepository: userRepository),
           ),
           BlocProvider<ReportSelectProductBloc>(
-            create: (context) => ReportSelectProductBloc(userRepository: userRepository),
+            create: (context) =>
+                ReportSelectProductBloc(userRepository: userRepository),
           ),
           BlocProvider<GetListDetailChanceBloc>(
-            create: (context) => GetListDetailChanceBloc(userRepository: userRepository),
+            create: (context) =>
+                GetListDetailChanceBloc(userRepository: userRepository),
           ),
           BlocProvider<GetJobChanceBloc>(
-            create: (context) => GetJobChanceBloc(userRepository: userRepository),
+            create: (context) =>
+                GetJobChanceBloc(userRepository: userRepository),
           ),
           BlocProvider<DetailCustomerBloc>(
-            create: (context) => DetailCustomerBloc(userRepository: userRepository),
+            create: (context) =>
+                DetailCustomerBloc(userRepository: userRepository),
           ),
           BlocProvider<ClueCustomerBloc>(
-            create: (context) => ClueCustomerBloc(userRepository: userRepository),
+            create: (context) =>
+                ClueCustomerBloc(userRepository: userRepository),
           ),
           BlocProvider<ChanceCustomerBloc>(
-            create: (context) => ChanceCustomerBloc(userRepository: userRepository),
+            create: (context) =>
+                ChanceCustomerBloc(userRepository: userRepository),
           ),
           BlocProvider<ContractCustomerBloc>(
-            create: (context) => ContractCustomerBloc(userRepository: userRepository),
+            create: (context) =>
+                ContractCustomerBloc(userRepository: userRepository),
           ),
           BlocProvider<JobCustomerBloc>(
-            create: (context) => JobCustomerBloc(userRepository: userRepository),
+            create: (context) =>
+                JobCustomerBloc(userRepository: userRepository),
           ),
           BlocProvider<AddJobChanceBloc>(
-            create: (context) => AddJobChanceBloc(userRepository: userRepository),
+            create: (context) =>
+                AddJobChanceBloc(userRepository: userRepository),
           ),
           BlocProvider<SupportCustomerBloc>(
-            create: (context) => SupportCustomerBloc(userRepository: userRepository),
+            create: (context) =>
+                SupportCustomerBloc(userRepository: userRepository),
           ),
           BlocProvider<ContractBloc>(
             create: (context) => ContractBloc(userRepository: userRepository),
           ),
           BlocProvider<AddCustomerBloc>(
-            create: (context) => AddCustomerBloc(userRepository: userRepository),
+            create: (context) =>
+                AddCustomerBloc(userRepository: userRepository),
           ),
           BlocProvider<GetListClueBloc>(
-            create: (context) => GetListClueBloc(userRepository: userRepository),
+            create: (context) =>
+                GetListClueBloc(userRepository: userRepository),
           ),
           BlocProvider<GetDetailClueBloc>(
-            create: (context) => GetDetailClueBloc(userRepository: userRepository),
+            create: (context) =>
+                GetDetailClueBloc(userRepository: userRepository),
           ),
           BlocProvider<WorkClueBloc>(
             create: (context) => WorkClueBloc(userRepository: userRepository),
@@ -254,7 +277,9 @@ Future main() async {
           BlocProvider<GetPolicyBloc>(
             create: (context) => GetPolicyBloc(userRepository: userRepository),
           ),
-          BlocProvider<GetInforBloc>(create: (context) => GetInforBloc(userRepository: userRepository)),
+          BlocProvider<GetInforBloc>(
+              create: (context) =>
+                  GetInforBloc(userRepository: userRepository)),
           //Dương
           BlocProvider<FormAddBloc>(
             create: (context) => FormAddBloc(userRepository: userRepository),
@@ -263,7 +288,8 @@ Future main() async {
             create: (context) => AddDataBloc(userRepository: userRepository),
           ),
           BlocProvider<DetailContractBloc>(
-            create: (context) => DetailContractBloc(userRepository: userRepository),
+            create: (context) =>
+                DetailContractBloc(userRepository: userRepository),
           ),
           BlocProvider<WorkBloc>(
             create: (context) => WorkBloc(userRepository: userRepository),
@@ -272,32 +298,38 @@ Future main() async {
             create: (context) => DetailWorkBloc(userRepository: userRepository),
           ),
           BlocProvider<GetNoteClueBloc>(
-            create: (context) => GetNoteClueBloc(userRepository: userRepository),
+            create: (context) =>
+                GetNoteClueBloc(userRepository: userRepository),
           ),
           BlocProvider<InforAccBloc>(
             create: (context) => InforAccBloc(userRepository: userRepository),
           ),
           BlocProvider<GetListUnReadNotifiBloc>(
-            create: (context) => GetListUnReadNotifiBloc(userRepository: userRepository),
+            create: (context) =>
+                GetListUnReadNotifiBloc(userRepository: userRepository),
           ),
           BlocProvider<GetListReadedNotifiBloc>(
-            create: (context) => GetListReadedNotifiBloc(userRepository: userRepository),
+            create: (context) =>
+                GetListReadedNotifiBloc(userRepository: userRepository),
           ),
           BlocProvider<GetInforAccBloc>(
-            create: (context) => GetInforAccBloc(userRepository: userRepository),
+            create: (context) =>
+                GetInforAccBloc(userRepository: userRepository),
           ),
 
           BlocProvider<SupportBloc>(
             create: (context) => SupportBloc(userRepository: userRepository),
           ),
           BlocProvider<DetailSupportBloc>(
-            create: (context) => DetailSupportBloc(userRepository: userRepository),
+            create: (context) =>
+                DetailSupportBloc(userRepository: userRepository),
           ),
           BlocProvider<FormEditBloc>(
             create: (context) => FormEditBloc(userRepository: userRepository),
           ),
           BlocProvider<CustomerContractBloc>(
-            create: (context) => CustomerContractBloc(userRepository: userRepository),
+            create: (context) =>
+                CustomerContractBloc(userRepository: userRepository),
           ),
           BlocProvider<ListNoteBloc>(
             create: (context) => ListNoteBloc(userRepository: userRepository),
@@ -309,7 +341,8 @@ Future main() async {
             create: (context) => ProductBloc(userRepository: userRepository),
           ),
           BlocProvider<ContactByCustomerBloc>(
-            create: (context) => ContactByCustomerBloc(userRepository: userRepository),
+            create: (context) =>
+                ContactByCustomerBloc(userRepository: userRepository),
           ),
           BlocProvider<TotalBloc>(
             create: (context) => TotalBloc(userRepository: userRepository),
@@ -321,31 +354,38 @@ Future main() async {
             create: (context) => PhoneBloc(userRepository: userRepository),
           ),
           BlocProvider<PaymentContractBloc>(
-            create: (context) => PaymentContractBloc(userRepository: userRepository),
+            create: (context) =>
+                PaymentContractBloc(userRepository: userRepository),
           ),
           BlocProvider<SupportContractBloc>(
-            create: (context) => SupportContractBloc(userRepository: userRepository),
+            create: (context) =>
+                SupportContractBloc(userRepository: userRepository),
           ),
           BlocProvider<OptionBloc>(
             create: (context) => OptionBloc(userRepository: userRepository),
           ),
           BlocProvider<JobContractBloc>(
-            create: (context) => JobContractBloc(userRepository: userRepository),
+            create: (context) =>
+                JobContractBloc(userRepository: userRepository),
           ),
           BlocProvider<ReportEmployeeBloc>(
-            create: (context) => ReportEmployeeBloc(userRepository: userRepository),
+            create: (context) =>
+                ReportEmployeeBloc(userRepository: userRepository),
           ),
           BlocProvider<ReportBloc>(
             create: (context) => ReportBloc(userRepository: userRepository),
           ),
           BlocProvider<ReportContactBloc>(
-            create: (context) => ReportContactBloc(userRepository: userRepository),
+            create: (context) =>
+                ReportContactBloc(userRepository: userRepository),
           ),
           BlocProvider<ReportGeneralBloc>(
-            create: (context) => ReportGeneralBloc(userRepository: userRepository),
+            create: (context) =>
+                ReportGeneralBloc(userRepository: userRepository),
           ),
           BlocProvider<ServiceVoucherBloc>(
-            create: (context) => ServiceVoucherBloc(userRepository: userRepository),
+            create: (context) =>
+                ServiceVoucherBloc(userRepository: userRepository),
           )
         ],
         child: const MyApp(),
@@ -429,18 +469,10 @@ class MyApp extends StatelessWidget {
           name: ROUTE_NAMES.DETAILWORK,
           page: () => DetailWorkScreen(),
         ),
-        // GetPage(
-        //   name: ROUTE_NAMES.ADDWORK,
-        //   page: () => AddWork(),
-        // ),
         GetPage(
           name: ROUTE_NAMES.DETAILSUPPORT,
           page: () => DetailSupportScreen(),
         ),
-        // GetPage(
-        //   name: ROUTE_NAMES.ADDSUPPORT,
-        //   page: () => AddSupport(),
-        // ),
         GetPage(
           name: ROUTE_NAMES.INFO_CONTRACT,
           page: () => InfoContractPage(),

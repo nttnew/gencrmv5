@@ -4,17 +4,27 @@ import 'dart:io' show File, Platform;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:gen_crm/src/messages.dart';
+
 class AppValue {
   AppValue._();
 
-  static final APP_MONEY_FORMAT = new NumberFormat.currency(locale: 'vi', symbol: MESSAGES.MONEY_UNIT); // ignore: non_constant_identifier_names
-  static final APP_DATE_FORMAT = DateFormat('kk:mm - dd/MM/yyyy'); // ignore: non_constant_identifier_names
-  static final DATE_FORMAT = DateFormat('dd/MM/yyyy'); // ignore: non_constant_identifier_names
-  static final SHORT_DATE_FORMAT = DateFormat('dd/MM/yy'); // ignore: non_constant_identifier_names
-  static final APP_DATE_FORMAT_ONLY_DATE = DateFormat('dd-MM-yyyy'); // ignore: non_constant_identifier_names
-  static final YEAR_MONTH_DAY = DateFormat('yyyy-MM-dd'); // ignore: non_constant_identifier_names
-  static final FORMAT_PRICE = new NumberFormat("#,##0.00", "en_US"); // ignore: non_constant_identifier_names
-  static final DATE_TIME_FORMAT = new DateFormat("dd-MM-yyyy kk:mm"); // ignore: non_constant_identifier_names
+  static final APP_MONEY_FORMAT = new NumberFormat.currency(
+      locale: 'vi',
+      symbol: MESSAGES.MONEY_UNIT); // ignore: non_constant_identifier_names
+  static final APP_DATE_FORMAT =
+      DateFormat('kk:mm - dd/MM/yyyy'); // ignore: non_constant_identifier_names
+  static final DATE_FORMAT =
+      DateFormat('dd/MM/yyyy'); // ignore: non_constant_identifier_names
+  static final SHORT_DATE_FORMAT =
+      DateFormat('dd/MM/yy'); // ignore: non_constant_identifier_names
+  static final APP_DATE_FORMAT_ONLY_DATE =
+      DateFormat('dd-MM-yyyy'); // ignore: non_constant_identifier_names
+  static final YEAR_MONTH_DAY =
+      DateFormat('yyyy-MM-dd'); // ignore: non_constant_identifier_names
+  static final FORMAT_PRICE = new NumberFormat(
+      "#,##0.00", "en_US"); // ignore: non_constant_identifier_names
+  static final DATE_TIME_FORMAT = new DateFormat(
+      "dd-MM-yyyy kk:mm"); // ignore: non_constant_identifier_names
 
   static const FONT_SIZE_10 = 10.0;
   static const FONT_SIZE_12 = 12.0;
@@ -44,7 +54,6 @@ class AppValue {
 
   static const BoxFit IMAGE_FIT_MODE = BoxFit.fill;
 
-
 //  RATIO
   static const double BANNER_RATIO =
       16 / 9; //not use this, get device width/height in runtime
@@ -61,7 +70,6 @@ class AppValue {
   static const double PRODUCT_FILTER_STEP_PRICE = 100000;
 
   static const APP_HORIZONTAL_PADDING = 10.0;
-
 
   static const Widget kEmptyWidget = SizedBox();
 
@@ -81,16 +89,20 @@ class AppValue {
   static double widths = MediaQueryData.fromWindow(window).size.width;
   static double heights = MediaQueryData.fromWindow(window).size.height;
 
-  static String formatStringDate(String dateString) => APP_DATE_FORMAT.format(DateTime.parse(dateString));
+  static String formatStringDate(String dateString) =>
+      APP_DATE_FORMAT.format(DateTime.parse(dateString));
 
-  static String formatStringDateTime(String dateString) => DATE_TIME_FORMAT.format(DateTime.parse(dateString));
+  static String formatStringDateTime(String dateString) =>
+      DATE_TIME_FORMAT.format(DateTime.parse(dateString));
 
-  static String formatDate(String dateString) => DATE_FORMAT.format(DateTime.parse(dateString));
+  static String formatDate(String dateString) =>
+      DATE_FORMAT.format(DateTime.parse(dateString));
 
-  static String formatShortDate(String dateString) => SHORT_DATE_FORMAT.format(DateTime.parse(dateString));
+  static String formatShortDate(String dateString) =>
+      SHORT_DATE_FORMAT.format(DateTime.parse(dateString));
 
-  static String formatDateMonthYear(String dateString) => YEAR_MONTH_DAY.format(DateTime.parse(dateString));
-
+  static String formatDateMonthYear(String dateString) =>
+      YEAR_MONTH_DAY.format(DateTime.parse(dateString));
 
   static bool isIOS() => Platform.isIOS;
 
@@ -105,7 +117,6 @@ class AppValue {
 
   static format_money(double money) {
     final currencyFormatter = NumberFormat('#,##0', 'ID');
-    return currencyFormatter.format(money)+' đ';
+    return currencyFormatter.format(money) + ' đ';
   }
-
 }

@@ -12,5 +12,4 @@ class ButtonMenuModel {
     required this.title,
     this.onTap,
   });
-
 }

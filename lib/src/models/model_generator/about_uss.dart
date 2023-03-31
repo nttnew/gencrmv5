@@ -4,12 +4,10 @@ import 'package:json_annotation/json_annotation.dart';
 part 'about_uss.g.dart';
 
 @JsonSerializable()
-class DataAboutUs{
+class DataAboutUs {
   final String? gioi_thieu;
 
-
-  DataAboutUs(
-      this.gioi_thieu);
+  DataAboutUs(this.gioi_thieu);
 
   factory DataAboutUs.fromJson(Map<String, dynamic> json) =>
       _$DataAboutUsFromJson(json);
@@ -18,12 +16,10 @@ class DataAboutUs{
 }
 
 @JsonSerializable()
-class AboutUsResponse extends BaseResponse{
+class AboutUsResponse extends BaseResponse {
   final DataAboutUs? data;
 
-
-  AboutUsResponse(
-      this.data);
+  AboutUsResponse(this.data);
 
   factory AboutUsResponse.fromJson(Map<String, dynamic> json) =>
       _$AboutUsResponseFromJson(json);

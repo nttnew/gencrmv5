@@ -6,12 +6,10 @@ abstract class AttackEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitAttackEvent extends AttackEvent {
   final File? file;
 
   InitAttackEvent({this.file});
 }
 
-class LoadingAttackEvent extends AttackEvent {
-}
+class LoadingAttackEvent extends AttackEvent {}

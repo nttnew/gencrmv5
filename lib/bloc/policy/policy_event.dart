@@ -6,9 +6,6 @@ abstract class GetPolicyEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitGetPolicyEvent extends GetPolicyEvent {
-
   InitGetPolicyEvent();
-
 }

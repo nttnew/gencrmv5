@@ -1,6 +1,5 @@
 // ignore: import_of_legacy_library_into_null_safe
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart'; // ignore: import_of_legacy_library_into_null_safe
@@ -11,9 +10,7 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/storages.dart';
 import 'package:get/get.dart';
 
-import '../../src/models/model_generator/login_response.dart';
 import '../../widgets/widget_dialog.dart';
-import '../customer/customer_bloc.dart';
 
 part 'authentication_event.dart';
 
@@ -31,13 +28,11 @@ class AuthenticationBloc
     _authenticationStatusSubscription = _userRepository.status.listen(
       (status) => add(AuthenticationStatusChanged(status)),
     );
-
   }
   final EventRepositoryStorage _localRepository;
   final UserRepository _userRepository;
   late StreamSubscription<AuthenticationStatus>
       _authenticationStatusSubscription;
-
 
   @override
   Stream<AuthenticationState> mapEventToState(
@@ -60,7 +55,7 @@ class AuthenticationBloc
       } else {
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
-          content: response.msg??"Có lỗi xảy ra!!!",
+          content: response.msg ?? "Có lỗi xảy ra!!!",
           textButton1: "OK",
           backgroundButton1: COLORS.PRIMARY_COLOR,
           onTap1: () {
@@ -68,7 +63,6 @@ class AuthenticationBloc
           },
         ));
       }
-
     }
   }
 
@@ -79,20 +73,21 @@ class AuthenticationBloc
     return super.close();
   }
 
-  Stream<AuthenticationState> _mapAuthenticationStatusInit() async*{
+  Stream<AuthenticationState> _mapAuthenticationStatusInit() async* {
     await _localRepository.loadUser();
   }
 
-  Stream<AuthenticationState> _mapAuthenticationStatusChangedToState(AuthenticationStatusChanged event) async* {
-    try{
+  Stream<AuthenticationState> _mapAuthenticationStatusChangedToState(
+      AuthenticationStatusChanged event) async* {
+    try {
       final response = await _localRepository.loadUser();
       if (response != dotenv.env[PreferencesKey.TOKEN]!) {
         try {
           final response = await _userRepository.getListCustomer(1, '', '');
-          if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+          if ((response.code == BASE_URL.SUCCESS) ||
+              (response.code == BASE_URL.SUCCESS_200)) {
             yield AuthenticationState.authenticated();
-          }
-          else
+          } else
             yield AuthenticationState.unauthenticated();
         } catch (e) {
           yield AuthenticationState.unauthenticated();
@@ -101,9 +96,11 @@ class AuthenticationBloc
       } else {
         yield AuthenticationState.unauthenticated();
       }
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
-  static AuthenticationBloc of(BuildContext context) => BlocProvider.of<AuthenticationBloc>(context);
+
+  static AuthenticationBloc of(BuildContext context) =>
+      BlocProvider.of<AuthenticationBloc>(context);
 }

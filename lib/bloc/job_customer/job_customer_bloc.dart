@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,10 +12,12 @@ import '../../src/models/model_generator/job_customer.dart';
 part 'job_customer_event.dart';
 part 'job_customer_state.dart';
 
-class JobCustomerBloc extends Bloc<JobCustomerEvent, JobCustomerState>{
+class JobCustomerBloc extends Bloc<JobCustomerEvent, JobCustomerState> {
   final UserRepository userRepository;
 
-  JobCustomerBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitGetJobCustomer());
+  JobCustomerBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitGetJobCustomer());
 
   @override
   Stream<JobCustomerState> mapEventToState(JobCustomerEvent event) async* {
@@ -31,14 +32,13 @@ class JobCustomerBloc extends Bloc<JobCustomerEvent, JobCustomerState>{
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getJobCustomer(id);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
         yield UpdateGetJobCustomerState(response.data!);
-      }
-      else{
+      } else {
         LoadingApi().popLoading();
         yield ErrorGetJobCustomerState(response.msg ?? '');
       }
-
     } catch (e) {
       LoadingApi().popLoading();
       yield ErrorGetJobCustomerState(MESSAGES.CONNECT_ERROR);
@@ -47,6 +47,6 @@ class JobCustomerBloc extends Bloc<JobCustomerEvent, JobCustomerState>{
     LoadingApi().popLoading();
   }
 
-
-  static JobCustomerBloc of(BuildContext context) => BlocProvider.of<JobCustomerBloc>(context);
+  static JobCustomerBloc of(BuildContext context) =>
+      BlocProvider.of<JobCustomerBloc>(context);
 }

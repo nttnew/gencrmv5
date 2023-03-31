@@ -5,10 +5,14 @@ abstract class InfoUserEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
-class LoadResponseToken extends InfoUserEvent{}
+
+class LoadResponseToken extends InfoUserEvent {}
+
 class InitDataEvent extends InfoUserEvent {}
+
 class AddDataEvent extends InfoUserEvent {}
-class UploadImagesEvent extends InfoUserEvent{
+
+class UploadImagesEvent extends InfoUserEvent {
   final File file;
   final ProfileBloc bloc;
   UploadImagesEvent({required this.file, required this.bloc});

@@ -1,7 +1,6 @@
 part of 'payment_contract_bloc.dart';
 
-abstract class PaymentContractEvent extends Equatable{
-
+abstract class PaymentContractEvent extends Equatable {
   @override
   List<Object?> get props => [];
 

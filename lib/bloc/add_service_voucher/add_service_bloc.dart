@@ -20,7 +20,6 @@ import '../../src/models/model_generator/customer.dart';
 import '../../src/models/model_generator/list_car_response.dart';
 import '../../storages/share_local.dart';
 import '../../widgets/widget_dialog.dart';
-import '../contract/total_bloc.dart';
 
 part 'add_service_event.dart';
 part 'add_service_state.dart';
@@ -382,7 +381,7 @@ class ServiceVoucherBloc
     ));
     idCar.add('');
     listProduct.clear();
-    total=0;
+    total = 0;
     checkboxStream.add(false);
   }
 }

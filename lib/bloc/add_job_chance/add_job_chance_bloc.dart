@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,10 +15,12 @@ import '../../widgets/widget_dialog.dart';
 part 'add_job_chance_event.dart';
 part 'add_job_chance_state.dart';
 
-class AddJobChanceBloc extends Bloc<AddJobChanceEvent, AddJobChanceState>{
+class AddJobChanceBloc extends Bloc<AddJobChanceEvent, AddJobChanceState> {
   final UserRepository userRepository;
 
-  AddJobChanceBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitGetAddJobChance());
+  AddJobChanceBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitGetAddJobChance());
 
   @override
   Stream<AddJobChanceState> mapEventToState(AddJobChanceEvent event) async* {
@@ -35,19 +35,10 @@ class AddJobChanceBloc extends Bloc<AddJobChanceEvent, AddJobChanceState>{
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getAddJobChance(id);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
-        // if(page==1){
-        //   listChance=response.data!.list;
-          yield UpdateGetAddJobChanceState(response.data!);
-        // }
-        // else
-        // {
-        //   listChance!.addAll(response.data!.list!);
-        //   print('aaaaa $listChance');
-        //   yield UpdateGetAddJobChanceState(listChance!,response.data!.total!,response.data!.filter!);
-        // }
-      }
-      else if(response.code==999){
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        yield UpdateGetAddJobChanceState(response.data!);
+      } else if (response.code == 999) {
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -57,8 +48,7 @@ class AddJobChanceBloc extends Bloc<AddJobChanceEvent, AddJobChanceState>{
             AppNavigator.navigateLogout();
           },
         ));
-      }
-      else
+      } else
         yield ErrorGetAddJobChanceState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
@@ -77,5 +67,6 @@ class AddJobChanceBloc extends Bloc<AddJobChanceEvent, AddJobChanceState>{
     LoadingApi().popLoading();
   }
 
-  static AddJobChanceBloc of(BuildContext context) => BlocProvider.of<AddJobChanceBloc>(context);
+  static AddJobChanceBloc of(BuildContext context) =>
+      BlocProvider.of<AddJobChanceBloc>(context);
 }

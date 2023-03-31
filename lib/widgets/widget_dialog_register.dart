@@ -5,7 +5,6 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 
 class WidgetDialogRegister extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return WidgetDialog(
@@ -13,10 +12,11 @@ class WidgetDialogRegister extends StatelessWidget {
       title: MESSAGES.NOTIFICATION,
       content: MESSAGES.REGISTER_NOTIFICATION,
       onTap1: () => _openUrl("https://zalo.me/0902183658"),
-      onTap2: ()=> AppNavigator.navigateBack(),
+      onTap2: () => AppNavigator.navigateBack(),
     );
   }
 }
+
 _openUrl(String url) async {
   if (await canLaunch(url)) {
     await launch(url);

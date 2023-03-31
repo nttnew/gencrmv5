@@ -1,9 +1,6 @@
-import 'dart:io';
-import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gen_crm/src/models/model_generator/note.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:get/get.dart';
 
@@ -18,17 +15,19 @@ import '../../widgets/widget_dialog.dart';
 part 'detail_chance_event.dart';
 part 'detail_chance_state.dart';
 
-class GetListDetailChanceBloc extends Bloc<DetailChanceEvent, DetailChanceState>{
+class GetListDetailChanceBloc
+    extends Bloc<DetailChanceEvent, DetailChanceState> {
   final UserRepository userRepository;
 
-  GetListDetailChanceBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitGetListDetailChance());
+  GetListDetailChanceBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitGetListDetailChance());
 
   @override
   Stream<DetailChanceState> mapEventToState(DetailChanceEvent event) async* {
     if (event is InitGetListDetailEvent) {
       yield* _getListChanceDetail(id: event.id);
-    }
-    else if (event is InitDeleteChanceEvent) {
+    } else if (event is InitDeleteChanceEvent) {
       yield* _deleteChance(id: event.id);
     }
   }
@@ -39,10 +38,10 @@ class GetListDetailChanceBloc extends Bloc<DetailChanceEvent, DetailChanceState>
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getListDetailChance(id);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
-          yield UpdateGetListDetailChanceState(response.data!);
-      }
-      else if(response.code==999){
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        yield UpdateGetListDetailChanceState(response.data!);
+      } else if (response.code == 999) {
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -52,12 +51,10 @@ class GetListDetailChanceBloc extends Bloc<DetailChanceEvent, DetailChanceState>
             AppNavigator.navigateLogout();
           },
         ));
+      } else {
+        yield ErrorGetListDetailChanceState(response.msg ?? '');
+        LoadingApi().popLoading();
       }
-      else
-        {
-          yield ErrorGetListDetailChanceState(response.msg ?? '');
-          LoadingApi().popLoading();
-        }
     } catch (e) {
       yield ErrorGetListDetailChanceState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
@@ -78,12 +75,11 @@ class GetListDetailChanceBloc extends Bloc<DetailChanceEvent, DetailChanceState>
   Stream<DetailChanceState> _deleteChance({required String id}) async* {
     LoadingApi().pushLoading();
     try {
-      final response = await userRepository.deleteChance({"id":id});
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+      final response = await userRepository.deleteChance({"id": id});
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessDeleteChanceState();
-      }
-      else
-      {
+      } else {
         yield ErrorDeleteChanceState(response.msg ?? '');
         LoadingApi().popLoading();
       }
@@ -104,5 +100,6 @@ class GetListDetailChanceBloc extends Bloc<DetailChanceEvent, DetailChanceState>
     LoadingApi().popLoading();
   }
 
-  static GetListDetailChanceBloc of(BuildContext context) => BlocProvider.of<GetListDetailChanceBloc>(context);
+  static GetListDetailChanceBloc of(BuildContext context) =>
+      BlocProvider.of<GetListDetailChanceBloc>(context);
 }

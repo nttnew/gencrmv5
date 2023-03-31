@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/line_horizontal_widget.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-import '../../../../src/messages.dart';
 import '../../../../src/src_index.dart';
 import 'index.dart';
 
@@ -58,7 +57,7 @@ class NotificationScreen extends StatelessWidget {
                         child: TabBarView(
                           children: [
                             UnReadList(),
-                           ReadedList(),
+                            ReadedList(),
                           ],
                         ),
                       ),

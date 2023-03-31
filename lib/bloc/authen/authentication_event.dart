@@ -16,5 +16,7 @@ class AuthenticationStatusChanged extends AuthenticationEvent {
 }
 
 class AuthenticationGetListCustomer extends AuthenticationEvent {}
+
 class AuthenticationStateInit extends AuthenticationEvent {}
+
 class AuthenticationLogoutRequested extends AuthenticationEvent {}

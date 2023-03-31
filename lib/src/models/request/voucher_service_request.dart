@@ -16,19 +16,19 @@ class VoucherServiceRequest {
 
   VoucherServiceRequest(
       {this.col131,
-        this.danhXung,
-        this.tenKhachHang,
-        this.diDong,
-        this.col121,
-        this.col112,
-        this.col132,
-        this.daThanhToan,
-        this.hdsanPhamKh,
-        this.chiTietXe,
-        this.bienSo,
-        this.soKilomet,
-        this.mauSac,
-        this.products});
+      this.danhXung,
+      this.tenKhachHang,
+      this.diDong,
+      this.col121,
+      this.col112,
+      this.col132,
+      this.daThanhToan,
+      this.hdsanPhamKh,
+      this.chiTietXe,
+      this.bienSo,
+      this.soKilomet,
+      this.mauSac,
+      this.products});
 
   VoucherServiceRequest.fromJson(Map<String, dynamic> json) {
     col131 = json['col131'];

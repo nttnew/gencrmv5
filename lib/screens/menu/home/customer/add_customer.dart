@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +19,6 @@ import '../../../../models/widget_input_date.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
 import '../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 import '../../../../widgets/widgetFieldInputPercent.dart';
 import '../../../../widgets/widget_dialog.dart';
@@ -43,13 +41,6 @@ class _AddCustomerState extends State<AddCustomer> {
   void initState() {
     AttackBloc.of(context).add(LoadingAttackEvent());
     AddCustomerBloc.of(context).add(InitGetAddCustomerEvent(1));
-    // var keyboardVisibilityController = KeyboardVisibilityController();
-    //
-    // // Subscribe
-    // keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) {
-    //   if(visible==true)
-    //
-    // });
     super.initState();
   }
 
@@ -66,7 +57,12 @@ class _AddCustomerState extends State<AddCustomer> {
         appBar: AppBar(
           toolbarHeight: AppValue.heights * 0.1,
           backgroundColor: HexColor("#D0F1EB"),
-          title: Text("Thêm khách hàng cá nhân", style: TextStyle(color: Colors.black, fontFamily: "Montserrat", fontWeight: FontWeight.w700, fontSize: 16)),
+          title: Text("Thêm khách hàng cá nhân",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: "Montserrat",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16)),
           leading: _buildBack(),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -88,7 +84,8 @@ class _AddCustomerState extends State<AddCustomer> {
                     onTap1: () {
                       Get.back();
                       Get.back();
-                      GetListCustomerBloc.of(context).add(InitGetListOrderEvent("", 1, ""));
+                      GetListCustomerBloc.of(context)
+                          .add(InitGetListOrderEvent("", 1, ""));
                     },
                   );
                 },
@@ -107,19 +104,31 @@ class _AddCustomerState extends State<AddCustomer> {
             }
           },
           child: Container(
-            margin: EdgeInsets.only(left: AppValue.widths * 0.05, right: AppValue.widths * 0.05, top: AppValue.heights * 0.02),
+            margin: EdgeInsets.only(
+                left: AppValue.widths * 0.05,
+                right: AppValue.widths * 0.05,
+                top: AppValue.heights * 0.02),
             child: SingleChildScrollView(
-              child: BlocBuilder<AddCustomerBloc, AddCustomerState>(builder: (context, state) {
+              child: BlocBuilder<AddCustomerBloc, AddCustomerState>(
+                  builder: (context, state) {
                 if (state is LoadingAddCustomerState) {
                   data = [];
                   addData = [];
                   return Container();
                 } else if (state is UpdateGetAddCustomerState) {
                   for (int i = 0; i < state.listAddData.length; i++) {
-                    addData.add(ModelItemAdd(group_name: state.listAddData[i].group_name ?? '', data: []));
-                    for (int j = 0; j < state.listAddData[i].data!.length; j++) {
-                      // if(state.listAddData[i].data![j].field_type!="HIDDEN")
-                      addData[i].data.add(ModelDataAdd(label: state.listAddData[i].data![j].field_name, value: state.listAddData[i].data![j].field_set_value.toString(), required: state.listAddData[i].data![j].field_require));
+                    addData.add(ModelItemAdd(
+                        group_name: state.listAddData[i].group_name ?? '',
+                        data: []));
+                    for (int j = 0;
+                        j < state.listAddData[i].data!.length;
+                        j++) {
+                      addData[i].data.add(ModelDataAdd(
+                          label: state.listAddData[i].data![j].field_name,
+                          value: state.listAddData[i].data![j].field_set_value
+                              .toString(),
+                          required:
+                              state.listAddData[i].data![j].field_require));
                     }
                   }
                   return Column(
@@ -135,7 +144,13 @@ class _AddCustomerState extends State<AddCustomer> {
                                     SizedBox(
                                       height: AppValue.heights * 0.01,
                                     ),
-                                    state.listAddData[index].group_name != null ? WidgetText(title: state.listAddData[index].group_name ?? '', style: AppStyle.DEFAULT_18_BOLD) : Container(),
+                                    state.listAddData[index].group_name != null
+                                        ? WidgetText(
+                                            title: state.listAddData[index]
+                                                    .group_name ??
+                                                '',
+                                            style: AppStyle.DEFAULT_18_BOLD)
+                                        : Container(),
                                     SizedBox(
                                       height: AppValue.heights * 0.01,
                                     ),
@@ -143,56 +158,95 @@ class _AddCustomerState extends State<AddCustomer> {
                                       children: List.generate(
                                           state.listAddData[index].data!.length,
                                           (index1) =>
-                                          state.listAddData[index].data![index1].field_hidden != "1"?
-                                          state.listAddData[index].data![index1].field_type == "SELECT" || state.listAddData[index].data![index1].field_id=="12466"
-                                              ? InputDropdown(
-                                                  dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
-                                                  data: state.listAddData[index].data![index1],
-                                                  onSuccess: (data) {
-                                                    addData[index].data[index1].value = data;
-                                                  },
-                                                  value: state.listAddData[index].data![index1].field_value ?? '')
-                                              : state.listAddData[index].data![index1].field_type == "TEXT_MULTI"
-                                                  ? _fieldInputTextMulti(state.listAddData[index].data![index1].field_datasource!, state.listAddData[index].data![index1].field_label!, state.listAddData[index].data![index1].field_require!, index, index1, (state.listAddData[index].data![index1].field_set_value_datasource != '' && state.listAddData[index].data![index1].field_set_value_datasource != null) ? state.listAddData[index].data![index1].field_set_value_datasource![0][0].toString() : "",
-                                                      state.listAddData[index].data![index1].field_maxlength ?? '')
-                                                  : state.listAddData[index].data![index1].field_type == "HIDDEN"
-                                                      ? Container()
-                                                      : state.listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"
-                                                          ? WidgetInputMulti(
-                                                              data: state.listAddData[index].data![index1],
-                                                              onSelect: (data) {
-                                                                addData[index].data[index1].value = data.join(",");
-                                                              })
-                                                          : state.listAddData[index].data![index1].field_type == "DATE"
-                                                              ? WidgetInputDate(
-                                                                  data: state.listAddData[index].data![index1],
-                                                                  onSelect: (date) {
-                                                                    addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
-                                                                  },
-                                                                  onInit: () {
-                                                                    DateTime date = DateTime.now();
-                                                                    addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
-                                                                  },
-                                                                )
-                                                              : state.listAddData[index].data![index1].field_type == "PERCENTAGE"
-                                                                  ? FieldInputPercent(
+                                              state
+                                                          .listAddData[index]
+                                                          .data![index1]
+                                                          .field_hidden !=
+                                                      "1"
+                                                  ? state.listAddData[index].data![index1].field_type ==
+                                                              "SELECT" ||
+                                                          state.listAddData[index].data![index1].field_id ==
+                                                              "12466"
+                                                      ? InputDropdown(
+                                                          dropdownItemList:
+                                                              state.listAddData[index].data![index1].field_datasource ??
+                                                                  [],
+                                                          data: state
+                                                              .listAddData[
+                                                                  index]
+                                                              .data![index1],
+                                                          onSuccess: (data) {
+                                                            addData[index]
+                                                                .data[index1]
+                                                                .value = data;
+                                                          },
+                                                          value:
+                                                              state.listAddData[index].data![index1].field_value ??
+                                                                  '')
+                                                      : state.listAddData[index].data![index1].field_type ==
+                                                              "TEXT_MULTI"
+                                                          ? _fieldInputTextMulti(
+                                                              state
+                                                                  .listAddData[index]
+                                                                  .data![index1]
+                                                                  .field_datasource!,
+                                                              state.listAddData[index].data![index1].field_label!,
+                                                              state.listAddData[index].data![index1].field_require!,
+                                                              index,
+                                                              index1,
+                                                              (state.listAddData[index].data![index1].field_set_value_datasource != '' && state.listAddData[index].data![index1].field_set_value_datasource != null) ? state.listAddData[index].data![index1].field_set_value_datasource![0][0].toString() : "",
+                                                              state.listAddData[index].data![index1].field_maxlength ?? '')
+                                                          : state.listAddData[index].data![index1].field_type == "HIDDEN"
+                                                              ? Container()
+                                                              : state.listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"
+                                                                  ? WidgetInputMulti(
                                                                       data: state.listAddData[index].data![index1],
-                                                                      onChanged: (text) {
-                                                                        addData[index].data[index1].value = text;
-                                                                      },
-                                                                    )
-                                                                  : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1):SizedBox()),
+                                                                      onSelect: (data) {
+                                                                        addData[index]
+                                                                            .data[index1]
+                                                                            .value = data.join(",");
+                                                                      })
+                                                                  : state.listAddData[index].data![index1].field_type == "DATE"
+                                                                      ? WidgetInputDate(
+                                                                          data: state
+                                                                              .listAddData[index]
+                                                                              .data![index1],
+                                                                          onSelect:
+                                                                              (date) {
+                                                                            addData[index].data[index1].value =
+                                                                                (date.millisecondsSinceEpoch / 1000).floor();
+                                                                          },
+                                                                          onInit:
+                                                                              () {
+                                                                            DateTime
+                                                                                date =
+                                                                                DateTime.now();
+                                                                            addData[index].data[index1].value =
+                                                                                (date.millisecondsSinceEpoch / 1000).floor();
+                                                                          },
+                                                                        )
+                                                                      : state.listAddData[index].data![index1].field_type == "PERCENTAGE"
+                                                                          ? FieldInputPercent(
+                                                                              data: state.listAddData[index].data![index1],
+                                                                              onChanged: (text) {
+                                                                                addData[index].data[index1].value = text;
+                                                                              },
+                                                                            )
+                                                                          : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1)
+                                                  : SizedBox()),
                                     )
                                   ],
                                 )),
                       ),
-                      BlocBuilder<AttackBloc, AttackState>(builder: (context, state) {
+                      BlocBuilder<AttackBloc, AttackState>(
+                          builder: (context, state) {
                         if (state is SuccessAttackState) if (state.file != null)
                           return Container(
                               margin: EdgeInsets.symmetric(vertical: 8),
                               width: Get.width,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     child: WidgetText(
@@ -205,7 +259,8 @@ class _AddCustomerState extends State<AddCustomer> {
                                   GestureDetector(
                                     onTap: () {
                                       fileUpload = null;
-                                      AttackBloc.of(context).add(InitAttackEvent());
+                                      AttackBloc.of(context)
+                                          .add(InitAttackEvent());
                                     },
                                     child: WidgetContainerImage(
                                       image: 'assets/icons/icon_delete.png',
@@ -223,14 +278,19 @@ class _AddCustomerState extends State<AddCustomer> {
                       }),
                       Row(
                         children: [
-                          GestureDetector(onTap: this.onDinhKem, child: SvgPicture.asset("assets/icons/attack.svg")),
+                          GestureDetector(
+                              onTap: this.onDinhKem,
+                              child:
+                                  SvgPicture.asset("assets/icons/attack.svg")),
                           Spacer(),
                           GestureDetector(
                             onTap: this.onClickSave,
                             child: Container(
                               height: AppValue.widths * 0.1,
                               width: AppValue.widths * 0.25,
-                              decoration: BoxDecoration(color: HexColor("#F1A400"), borderRadius: BorderRadius.circular(20.5)),
+                              decoration: BoxDecoration(
+                                  color: HexColor("#F1A400"),
+                                  borderRadius: BorderRadius.circular(20.5)),
                               child: Center(
                                   child: Text(
                                 "Lưu",
@@ -278,7 +338,9 @@ class _AddCustomerState extends State<AddCustomer> {
         Container(
           width: double.infinity,
           height: AppValue.heights * 0.05,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: HexColor("#BEB4B4"))),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: HexColor("#BEB4B4"))),
           child: Row(children: [
             SizedBox(
               width: 10,
@@ -300,7 +362,12 @@ class _AddCustomerState extends State<AddCustomer> {
             ),
             Padding(
               padding: EdgeInsets.only(right: 15),
-              child: Center(child: Container(height: 50, width: 50, child: SvgPicture.asset("assets/icons/iconInputImg.svg"))),
+              child: Center(
+                  child: Container(
+                      height: 50,
+                      width: 50,
+                      child:
+                          SvgPicture.asset("assets/icons/iconInputImg.svg"))),
             )
           ]),
         ),
@@ -308,87 +375,8 @@ class _AddCustomerState extends State<AddCustomer> {
     );
   }
 
-  Widget _fieldInputCustomerType(List<List<dynamic>> dropdownItemList, String label, Function onSuccess, String value, int index1) {
-    List dropdow = [];
-    int indexDefault = -1;
-    for (int i = 0; i < dropdownItemList.length; i++) {
-      if (dropdownItemList[i][1] != null && dropdownItemList[i][0] != null) {
-        dropdow.add({'label': dropdownItemList[i][1], 'value': dropdownItemList[i][0]});
-        if (dropdownItemList[i][1] == value) {
-          indexDefault = i;
-        }
-      }
-    }
-
-    return Container(
-      // key: Key(index1.toString()),
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          WidgetText(
-            title: label,
-            style: titlestyle(),
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          GestureDetector(
-            onTap: () {
-              showModalBottomSheet(
-                  enableDrag: false,
-                  isScrollControlled: true,
-                  context: context,
-                  constraints: BoxConstraints(maxHeight: Get.height * 0.75, minWidth: Get.width),
-                  builder: (BuildContext context) {
-                    return Container(
-                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                      child: DataDropDownItem(
-                        data: dropdow,
-                        onSuccess: onSuccess,
-                      ),
-                    );
-                  });
-            },
-            child: Container(
-                width: double.infinity,
-                // height: AppValue.heights * 0.05,
-                // decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(5),
-                //     border: Border.all(color: HexColor("#BEB4B4"))),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: HexColor("#BEB4B4"))),
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10),
-                    child: Container(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: WidgetText(
-                              title: value,
-                              maxLine: 1,
-                              style: TextStyle(fontSize: 11, fontFamily: "Roboto", fontWeight: FontWeight.w500, color: HexColor("#838A91")),
-                            ),
-                          ),
-                          Container(
-                            child: Icon(
-                              Icons.arrow_drop_down,
-                              size: 25,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                )),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _fieldInputCustomer(CustomerIndividualItemData data, int index, int index1) {
+  Widget _fieldInputCustomer(
+      CustomerIndividualItemData data, int index, int index1) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Column(
@@ -399,7 +387,15 @@ class _AddCustomerState extends State<AddCustomer> {
               text: data.field_label ?? '',
               style: titlestyle(),
               children: <TextSpan>[
-                data.field_require == 1 ? TextSpan(text: '*', style: TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: Colors.red)) : TextSpan(),
+                data.field_require == 1
+                    ? TextSpan(
+                        text: '*',
+                        style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red))
+                    : TextSpan(),
               ],
             ),
           ),
@@ -408,7 +404,9 @@ class _AddCustomerState extends State<AddCustomer> {
           ),
           Container(
             width: double.infinity,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: HexColor("#BEB4B4"))),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: HexColor("#BEB4B4"))),
             child: Padding(
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
@@ -424,7 +422,12 @@ class _AddCustomerState extends State<AddCustomer> {
                   onChanged: (text) {
                     addData[index].data[index1].value = text;
                   },
-                  decoration: InputDecoration(hintStyle: hintTextStyle(), focusedBorder: InputBorder.none, enabledBorder: InputBorder.none, disabledBorder: InputBorder.none, isDense: true),
+                  decoration: InputDecoration(
+                      hintStyle: hintTextStyle(),
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      isDense: true),
                 ),
               ),
             ),
@@ -434,14 +437,22 @@ class _AddCustomerState extends State<AddCustomer> {
     );
   }
 
-  Widget _fieldInputTextMulti(List<List<dynamic>> dropdownItemList, String label, int required, int index, int index1, String value, String maxLength) {
+  Widget _fieldInputTextMulti(
+      List<List<dynamic>> dropdownItemList,
+      String label,
+      int required,
+      int index,
+      int index1,
+      String value,
+      String maxLength) {
     List<ModelDataAdd> dropdow = [];
     // List valueDefault=value.split(",");
     int indexDefault = -1;
     for (int i = 0; i < dropdownItemList.length; i++) {
       if (dropdownItemList[i][1] != null && dropdownItemList[i][0] != null) {
         print("value=${value} data=${dropdownItemList[i][0]}");
-        dropdow.add(ModelDataAdd(label: dropdownItemList[i][1], value: dropdownItemList[i][0]));
+        dropdow.add(ModelDataAdd(
+            label: dropdownItemList[i][1], value: dropdownItemList[i][0]));
         if (dropdownItemList[i][0].toString() == value) {
           indexDefault = i;
         }
@@ -456,15 +467,28 @@ class _AddCustomerState extends State<AddCustomer> {
           RichText(
             text: TextSpan(
               text: label,
-              style: TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: HexColor("#697077")),
+              style: TextStyle(
+                  fontFamily: "Roboto",
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: HexColor("#697077")),
               children: <TextSpan>[
-                required == 1 ? TextSpan(text: '*', style: TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: Colors.red)) : TextSpan(),
+                required == 1
+                    ? TextSpan(
+                        text: '*',
+                        style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red))
+                    : TextSpan(),
               ],
             ),
           ),
           AppValue.vSpaceTiny,
           MultiSelectDialogField<ModelDataAdd>(
-            items: dropdow.map((e) => MultiSelectItem(e, e.label ?? '')).toList(),
+            items:
+                dropdow.map((e) => MultiSelectItem(e, e.label ?? '')).toList(),
             listType: MultiSelectListType.CHIP,
             onConfirm: (values) {
               if (maxLength != "" && values.length > int.parse(maxLength)) {
@@ -500,7 +524,9 @@ class _AddCustomerState extends State<AddCustomer> {
               label,
               style: titlestyleNgTheoDoi(),
             ),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: HexColor("#BEB4B4"))),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: HexColor("#BEB4B4"))),
             buttonIcon: Icon(
               Icons.arrow_drop_down,
               size: 25,
@@ -513,21 +539,37 @@ class _AddCustomerState extends State<AddCustomer> {
     ));
   }
 
-  TextStyle hintTextStyle() => TextStyle(fontFamily: "Roboto", fontSize: 11, fontWeight: FontWeight.w500, color: HexColor("#838A91"));
+  TextStyle hintTextStyle() => TextStyle(
+      fontFamily: "Roboto",
+      fontSize: 11,
+      fontWeight: FontWeight.w500,
+      color: HexColor("#838A91"));
 
-  TextStyle titlestyle() => TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: HexColor("#697077"));
+  TextStyle titlestyle() => TextStyle(
+      fontFamily: "Roboto",
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      color: HexColor("#697077"));
 
-  TextStyle titlestyleNgTheoDoi() => TextStyle(fontFamily: "Roboto", fontSize: 14, fontWeight: FontWeight.w500, color: HexColor("#697077"));
+  TextStyle titlestyleNgTheoDoi() => TextStyle(
+      fontFamily: "Roboto",
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      color: HexColor("#697077"));
 
   void onClickSave() {
     final Map<String, dynamic> data = {};
     bool check = false;
     for (int i = 0; i < addData.length; i++) {
       for (int j = 0; j < addData[i].data.length; j++) {
-        if ((addData[i].data[j].value == null || addData[i].data[j].value == "null" || addData[i].data[j].value == "") && addData[i].data[j].required == 1) {
+        if ((addData[i].data[j].value == null ||
+                addData[i].data[j].value == "null" ||
+                addData[i].data[j].value == "") &&
+            addData[i].data[j].required == 1) {
           check = true;
           break;
-        } else if (addData[i].data[j].value != null && addData[i].data[j].value != "null")
+        } else if (addData[i].data[j].value != null &&
+            addData[i].data[j].value != "null")
           data["${addData[i].data[j].label}"] = addData[i].data[j].value;
         else {
           data["${addData[i].data[j].label}"] = "";
@@ -545,13 +587,15 @@ class _AddCustomerState extends State<AddCustomer> {
         },
       );
     } else {
-      GetListCustomerBloc.of(context).add(AddCustomerIndividualEvent(data, files: fileUpload));
+      GetListCustomerBloc.of(context)
+          .add(AddCustomerIndividualEvent(data, files: fileUpload));
     }
   }
 
   Future<void> onDinhKem() async {
     ImagePicker picker = ImagePicker();
-    XFile? result = await picker.pickImage(source: ImageSource.gallery, preferredCameraDevice: CameraDevice.rear);
+    XFile? result = await picker.pickImage(
+        source: ImageSource.gallery, preferredCameraDevice: CameraDevice.rear);
     if (result != null) {
       fileUpload = File(result.path);
       AttackBloc.of(context).add(InitAttackEvent(file: File(result.path)));
@@ -562,7 +606,8 @@ class _AddCustomerState extends State<AddCustomer> {
 }
 
 class WidgetInputMulti extends StatefulWidget {
-  WidgetInputMulti({Key? key, required this.data, required this.onSelect}) : super(key: key);
+  WidgetInputMulti({Key? key, required this.data, required this.onSelect})
+      : super(key: key);
 
   final CustomerIndividualItemData data;
   Function onSelect;
@@ -599,9 +644,21 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
           RichText(
             text: TextSpan(
               text: widget.data.field_label ?? '',
-              style: TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: HexColor("#697077")),
+              style: TextStyle(
+                  fontFamily: "Roboto",
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: HexColor("#697077")),
               children: <TextSpan>[
-                widget.data.field_require == 1 ? TextSpan(text: '*', style: TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: Colors.red)) : TextSpan(),
+                widget.data.field_require == 1
+                    ? TextSpan(
+                        text: '*',
+                        style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red))
+                    : TextSpan(),
               ],
             ),
           ),
@@ -610,7 +667,9 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
           ),
           Container(
             width: double.infinity,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: HexColor("#BEB4B4"))),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: HexColor("#BEB4B4"))),
             child: Padding(
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Focus(
@@ -652,10 +711,18 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                   // maxLength:widget.data.field_maxlength!=null? int.parse(widget.data.field_maxlength!):null,
                   // maxLengthEnforcement: MaxLengthEnforcement.none,123123
                   inputFormatters: [
-                    LengthLimitingTextInputFormatter(widget.data.field_maxlength != null ? int.parse(widget.data.field_maxlength!) : null),
+                    LengthLimitingTextInputFormatter(
+                        widget.data.field_maxlength != null
+                            ? int.parse(widget.data.field_maxlength!)
+                            : null),
                   ],
-                  maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
-                  decoration: InputDecoration(focusedBorder: InputBorder.none, enabledBorder: InputBorder.none, disabledBorder: InputBorder.none, isDense: true),
+                  maxLengthEnforcement:
+                      MaxLengthEnforcement.truncateAfterCompositionEnds,
+                  decoration: InputDecoration(
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      isDense: true),
                 ),
               ),
             ),
@@ -672,9 +739,13 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                                 clipBehavior: Clip.none,
                                 children: [
                                   Container(
-                                      padding: EdgeInsets.only(top: 3, bottom: 3, left: 8, right: 8),
+                                      padding: EdgeInsets.only(
+                                          top: 3, bottom: 3, left: 8, right: 8),
                                       // margin: EdgeInsets.only(right: 8),
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), color: COLORS.BACKGROUND),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          color: COLORS.BACKGROUND),
                                       child: WidgetText(
                                         title: arr[index],
                                         style: AppStyle.DEFAULT_12,

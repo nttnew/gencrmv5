@@ -9,34 +9,35 @@ import '../../widgets/loading_api.dart';
 part 'work_clue_event.dart';
 part 'work_clue_state.dart';
 
-class WorkClueBloc extends Bloc<WorkClueEvent,WorkClueState>{
+class WorkClueBloc extends Bloc<WorkClueEvent, WorkClueState> {
   UserRepository userRepository;
-  WorkClueBloc({required this.userRepository}):super(InitGetWorkClue());
+  WorkClueBloc({required this.userRepository}) : super(InitGetWorkClue());
 
   @override
   Stream<WorkClueState> mapEventToState(WorkClueEvent event) async* {
-    if(event is GetWorkClue){
+    if (event is GetWorkClue) {
       yield* getListWorkClue(event.id!);
     }
   }
 
-  Stream<WorkClueState> getListWorkClue(String id) async*{
+  Stream<WorkClueState> getListWorkClue(String id) async* {
     LoadingApi().pushLoading();
-    try{
+    try {
       yield LoadingWorkClue();
       final response = await userRepository.getWorkClue(id);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
-
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
         yield UpdateWorkClue(response.data!);
-      }
-      else{
+      } else {
         yield ErrorWorkClue(response.msg);
       }
-    }catch(e){
+    } catch (e) {
       yield ErrorWorkClue(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
   }
-  static WorkClueBloc of(BuildContext context) => BlocProvider.of<WorkClueBloc>(context);
+
+  static WorkClueBloc of(BuildContext context) =>
+      BlocProvider.of<WorkClueBloc>(context);
 }

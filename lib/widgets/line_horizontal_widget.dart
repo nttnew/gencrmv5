@@ -7,9 +7,6 @@ class LineHorizontal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: double.maxFinite,
-        height: 1,
-        color:HexColor("#697077")
-    );
+        width: double.maxFinite, height: 1, color: HexColor("#697077"));
   }
 }

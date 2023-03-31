@@ -9,5 +9,6 @@ class ProductModel {
   String nameVat;
   String typeGiamGia;
 
-  ProductModel(this.id,this.soLuong, this.item,this.giamGia,this.nameDvt,this.nameVat,this.typeGiamGia);
+  ProductModel(this.id, this.soLuong, this.item, this.giamGia, this.nameDvt,
+      this.nameVat, this.typeGiamGia);
 }

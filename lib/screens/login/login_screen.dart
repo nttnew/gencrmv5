@@ -1,8 +1,5 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
 import 'package:gen_crm/screens/login/index.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
@@ -21,7 +18,6 @@ class _LoginScreenState extends State<LoginScreen> {
   ScrollController scrollController = ScrollController();
   @override
   void initState() {
-    // fireBase();
     KeyboardVisibilityController().onChange.listen((visible) {
       if (visible) {
         scrollController.jumpTo(150);

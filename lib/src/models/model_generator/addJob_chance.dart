@@ -5,12 +5,7 @@ part 'addJob_chance.g.dart';
 
 @JsonSerializable()
 class Field_Datasource {
-  // final String? a, b;
-
-  Field_Datasource(
-      // this.a,
-      // this.b
-      );
+  Field_Datasource();
 
   factory Field_Datasource.fromJson(Map<String, dynamic> json) =>
       _$Field_DatasourceFromJson(json);
@@ -21,13 +16,25 @@ class Field_Datasource {
 @JsonSerializable()
 class DataField {
   final String? field_id;
-  final String? field_label,field_type,field_require,field_validation,
-      field_validation_message,field_hidden,field_special;
+  final String? field_label,
+      field_type,
+      field_require,
+      field_validation,
+      field_validation_message,
+      field_hidden,
+      field_special;
   final List<Field_Datasource>? field_datasource;
 
-  DataField(this.field_id, this.field_label,this.field_type,
-      this.field_validation,this.field_datasource,this.field_hidden,this.field_require,
-      this.field_special,this.field_validation_message);
+  DataField(
+      this.field_id,
+      this.field_label,
+      this.field_type,
+      this.field_validation,
+      this.field_datasource,
+      this.field_hidden,
+      this.field_require,
+      this.field_special,
+      this.field_validation_message);
 
   factory DataField.fromJson(Map<String, dynamic> json) =>
       _$DataFieldFromJson(json);
@@ -41,8 +48,7 @@ class Field_General {
   final String? group_name;
   final List<DataField>? data;
 
-
-  Field_General(this.data, this.group_name,this.mup);
+  Field_General(this.data, this.group_name, this.mup);
 
   factory Field_General.fromJson(Map<String, dynamic> json) =>
       _$Field_GeneralFromJson(json);
@@ -51,11 +57,12 @@ class Field_General {
 }
 
 @JsonSerializable()
-class AddJobResponse extends BaseResponse{
+class AddJobResponse extends BaseResponse {
   final List<Field_General>? data;
 
-
-  AddJobResponse(this.data,);
+  AddJobResponse(
+    this.data,
+  );
 
   factory AddJobResponse.fromJson(Map<String, dynamic> json) =>
       _$AddJobResponseFromJson(json);

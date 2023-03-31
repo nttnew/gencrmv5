@@ -6,11 +6,10 @@ abstract class ContractEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitGetContractEvent extends ContractEvent {
-  final String search,filter;
+  final String search, filter;
   final int page;
   final bool? isLoadMore;
 
-  InitGetContractEvent(this.page,this.search,this.filter,{this.isLoadMore});
+  InitGetContractEvent(this.page, this.search, this.filter, {this.isLoadMore});
 }

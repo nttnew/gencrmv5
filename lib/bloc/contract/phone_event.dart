@@ -6,12 +6,12 @@ abstract class PhoneEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitPhoneEvent extends PhoneEvent {
   final String id;
 
   InitPhoneEvent(this.id);
 }
+
 class InitAgencyPhoneEvent extends PhoneEvent {
   final String id;
 

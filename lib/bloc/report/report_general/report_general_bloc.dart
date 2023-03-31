@@ -14,10 +14,12 @@ import '../../../widgets/widget_dialog.dart';
 part 'report_general_event.dart';
 part 'report_general_state.dart';
 
-class ReportGeneralBloc extends Bloc<ReportGeneralEvent, ReportGeneralState>{
+class ReportGeneralBloc extends Bloc<ReportGeneralEvent, ReportGeneralState> {
   final UserRepository userRepository;
 
-  ReportGeneralBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitReportGeneralState());
+  ReportGeneralBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitReportGeneralState());
 
   @override
   Stream<ReportGeneralState> mapEventToState(ReportGeneralEvent event) async* {
@@ -26,15 +28,16 @@ class ReportGeneralBloc extends Bloc<ReportGeneralEvent, ReportGeneralState>{
     }
   }
 
-  Stream<ReportGeneralState> _getReportContact(int? time, String? location, int? page) async* {
+  Stream<ReportGeneralState> _getReportContact(
+      int? time, String? location, int? page) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingReportGeneralState();
       final response = await userRepository.reportGeneral(time, location, page);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessReportGeneralState(response.data);
-      }
-      else if(response.code==999){
+      } else if (response.code == 999) {
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -44,8 +47,7 @@ class ReportGeneralBloc extends Bloc<ReportGeneralEvent, ReportGeneralState>{
             AppNavigator.navigateLogout();
           },
         ));
-      }
-      else
+      } else
         yield ErrorReportGeneralState(response.msg ?? '');
     } catch (e) {
       yield ErrorReportGeneralState(MESSAGES.CONNECT_ERROR);
@@ -64,6 +66,6 @@ class ReportGeneralBloc extends Bloc<ReportGeneralEvent, ReportGeneralState>{
     LoadingApi().popLoading();
   }
 
-
-  static ReportGeneralBloc of(BuildContext context) => BlocProvider.of<ReportGeneralBloc>(context);
+  static ReportGeneralBloc of(BuildContext context) =>
+      BlocProvider.of<ReportGeneralBloc>(context);
 }

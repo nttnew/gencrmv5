@@ -6,12 +6,11 @@ part 'support.g.dart';
 
 @JsonSerializable()
 class SupportItemData {
-  final String? id,ten_ho_tro,created_date,trang_thai,color,total_note;
+  final String? id, ten_ho_tro, created_date, trang_thai, color, total_note;
   final CustomerData? customer;
 
-
   SupportItemData(this.id, this.ten_ho_tro, this.created_date, this.trang_thai,
-      this.color, this.total_note,this.customer);
+      this.color, this.total_note, this.customer);
 
   factory SupportItemData.fromJson(Map<String, dynamic> json) =>
       _$SupportItemDataFromJson(json);
@@ -21,8 +20,7 @@ class SupportItemData {
 
 @JsonSerializable()
 class CustomerData {
-  final String? id,name;
-
+  final String? id, name;
 
   CustomerData(this.id, this.name);
 
@@ -34,11 +32,10 @@ class CustomerData {
 
 @JsonSerializable()
 class SupportData {
-  final String? page,total;
+  final String? page, total;
   final int? limit;
   final List<SupportItemData>? list;
   final List<FilterData>? filter;
-
 
   SupportData(this.page, this.total, this.limit, this.list, this.filter);
 
@@ -52,9 +49,7 @@ class SupportData {
 class SupportResponse extends BaseResponse {
   final SupportData data;
 
-
-  SupportResponse(
-      this.data);
+  SupportResponse(this.data);
 
   factory SupportResponse.fromJson(Map<String, dynamic> json) =>
       _$SupportResponseFromJson(json);

@@ -6,12 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../src/base.dart';
 import '../../src/messages.dart';
-import '../../src/models/model_generator/clue.dart';
 import '../../src/models/model_generator/list_notification.dart';
 import '../../src/preferences_key.dart';
 import '../../storages/share_local.dart';
 import '../../widgets/loading_api.dart';
-import '../../src/messages.dart';
 
 part 'unread_list_notifi_event.dart';
 part 'unread_list_notifi_state.dart';

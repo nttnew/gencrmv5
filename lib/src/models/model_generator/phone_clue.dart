@@ -8,7 +8,6 @@ class Phone {
 
   Phone(this.val, this.action);
 
-  factory Phone.fromJson(Map<String, dynamic> json) =>
-      _$PhoneFromJson(json);
+  factory Phone.fromJson(Map<String, dynamic> json) => _$PhoneFromJson(json);
   Map<String, dynamic> toJson() => _$PhoneToJson(this);
 }

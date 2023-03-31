@@ -15,28 +15,35 @@ import '../../../widgets/widget_dialog.dart';
 part 'report_employee_event.dart';
 part 'report_employee_state.dart';
 
-class ReportEmployeeBloc extends Bloc<ReportEmployeeEvent, ReportEmployeeState>{
+class ReportEmployeeBloc
+    extends Bloc<ReportEmployeeEvent, ReportEmployeeState> {
   final UserRepository userRepository;
 
-  ReportEmployeeBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitReportEmployeeState());
+  ReportEmployeeBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitReportEmployeeState());
 
   @override
-  Stream<ReportEmployeeState> mapEventToState(ReportEmployeeEvent event) async* {
+  Stream<ReportEmployeeState> mapEventToState(
+      ReportEmployeeEvent event) async* {
     if (event is InitReportEmployeeEvent) {
-      yield* _getReportContact(event.time, event.timeFrom, event.timeTo, event.diemBan);
+      yield* _getReportContact(
+          event.time, event.timeFrom, event.timeTo, event.diemBan);
     }
   }
 
   List<DataListContact>? list;
-  Stream<ReportEmployeeState> _getReportContact(int? time,String? timeFrom,String? timeTo,int? diemBan) async* {
+  Stream<ReportEmployeeState> _getReportContact(
+      int? time, String? timeFrom, String? timeTo, int? diemBan) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingReportEmployeeState();
-      final response = await userRepository.reportEmployee(time!, diemBan, timeFrom, timeTo);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+      final response =
+          await userRepository.reportEmployee(time!, diemBan, timeFrom, timeTo);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessReportEmployeeState(response.data!.list!);
-      }
-      else if(response.code==999){
+      } else if (response.code == 999) {
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -46,8 +53,7 @@ class ReportEmployeeBloc extends Bloc<ReportEmployeeEvent, ReportEmployeeState>{
             AppNavigator.navigateLogout();
           },
         ));
-      }
-      else
+      } else
         yield ErrorReportEmployeeState(response.msg ?? '');
     } catch (e) {
       yield ErrorReportEmployeeState(MESSAGES.CONNECT_ERROR);
@@ -66,6 +72,6 @@ class ReportEmployeeBloc extends Bloc<ReportEmployeeEvent, ReportEmployeeState>{
     LoadingApi().popLoading();
   }
 
-
-  static ReportEmployeeBloc of(BuildContext context) => BlocProvider.of<ReportEmployeeBloc>(context);
+  static ReportEmployeeBloc of(BuildContext context) =>
+      BlocProvider.of<ReportEmployeeBloc>(context);
 }

@@ -1,26 +1,16 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:dio/dio.dart' as Dio;
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/get_infor_acc/get_infor_acc_bloc.dart';
-import 'package:gen_crm/bloc/infor/infor_bloc.dart';
 import 'package:gen_crm/bloc/information_account/information_account_bloc.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as Path;
 import 'package:get/get.dart';
 import 'package:formz/formz.dart';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../src/models/model_generator/login_response.dart';
 import '../../../../src/src_index.dart';
 import '../../../../storages/share_local.dart';
 
@@ -46,7 +36,7 @@ class _InformationAccountState extends State<InformationAccount> {
 
       setState(() => this.image = imageTemp);
     } on PlatformException catch (e) {
-      print('Error: $e');
+      throw e;
     }
   }
 
@@ -55,19 +45,17 @@ class _InformationAccountState extends State<InformationAccount> {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
       if (image == null) return;
-      print("AnhThuVien${image.path}");
       final imageTemp = File(image.path);
 
       setState(() => this.image = imageTemp);
     } on PlatformException catch (e) {
-      print('Error: $e');
+      throw e;
     }
   }
 
   final _nameFocusNode = FocusNode();
   final _phoneFocusNode = FocusNode();
   final _emailFocusNode = FocusNode();
-  final _addressFocusNode = FocusNode();
   late String initEmail;
   late String initPhone;
   late String initFullName;
@@ -90,8 +78,11 @@ class _InformationAccountState extends State<InformationAccount> {
       }
     });
 
-    canLoginWithFingerPrint = shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT);
-    if (canLoginWithFingerPrint == null || canLoginWithFingerPrint == "" || canLoginWithFingerPrint == "false") {
+    canLoginWithFingerPrint =
+        shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT);
+    if (canLoginWithFingerPrint == null ||
+        canLoginWithFingerPrint == "" ||
+        canLoginWithFingerPrint == "false") {
       fingerPrintIsCheck = false;
     } else {
       if (canLoginWithFingerPrint == "true") {
@@ -165,7 +156,6 @@ class _InformationAccountState extends State<InformationAccount> {
                 );
               },
             );
-            //GetSnackBarUtils.createFailure(message: state.message);
           }
         },
         child: BlocBuilder<GetInforAccBloc, GetInforAccState>(
@@ -239,7 +229,10 @@ class _InformationAccountState extends State<InformationAccount> {
                                   ),
                                 ),
                         ),
-                        Positioned(left: AppValue.widths * 0.55, top: AppValue.heights * 0.1, child: Image.asset('assets/icons/mayanh.png'))
+                        Positioned(
+                            left: AppValue.widths * 0.55,
+                            top: AppValue.heights * 0.1,
+                            child: Image.asset('assets/icons/mayanh.png'))
                       ],
                     ),
                   ),
@@ -250,26 +243,33 @@ class _InformationAccountState extends State<InformationAccount> {
                       children: [
                         Text(
                           'Họ và tên',
-                          style: AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY),
+                          style:
+                              AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY),
                         ),
                         SizedBox(
                           height: 15,
                         ),
                         _buildFullNameField(bloc),
                         AppValue.vSpaceSmall,
-                        Text('Số điện thoại', style: AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY)),
+                        Text('Số điện thoại',
+                            style: AppStyle.DEFAULT_16
+                                .copyWith(color: COLORS.GREY)),
                         SizedBox(
                           height: 15,
                         ),
                         _buildPhoneField(bloc),
                         AppValue.vSpaceSmall,
-                        Text('Email', style: AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY)),
+                        Text('Email',
+                            style: AppStyle.DEFAULT_16
+                                .copyWith(color: COLORS.GREY)),
                         SizedBox(
                           height: 15,
                         ),
                         _buildEnailField(bloc),
                         AppValue.vSpaceSmall,
-                        Text('Địa chỉ', style: AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY)),
+                        Text('Địa chỉ',
+                            style: AppStyle.DEFAULT_16
+                                .copyWith(color: COLORS.GREY)),
                         SizedBox(
                           height: 15,
                         ),
@@ -283,14 +283,17 @@ class _InformationAccountState extends State<InformationAccount> {
                   ),
                   Align(
                       alignment: Alignment.bottomRight,
-                      child: BlocBuilder<InforAccBloc, InforAccState>(builder: (context, state) {
+                      child: BlocBuilder<InforAccBloc, InforAccState>(
+                          builder: (context, state) {
                         return WidgetButton(
                             onTap: () async {
                               if (state.status.isValidated) {
                                 if (image != null) {
-                                  bloc.add(FormInforAccSubmitted(image!, name, address));
+                                  bloc.add(FormInforAccSubmitted(
+                                      image!, name, address));
                                 } else {
-                                  bloc.add(FormInforAccNoAvatarSubmitted(name, address));
+                                  bloc.add(FormInforAccNoAvatarSubmitted(
+                                      name, address));
                                 }
                               } else {
                                 showDialog(
@@ -307,9 +310,14 @@ class _InformationAccountState extends State<InformationAccount> {
                             },
                             height: 35,
                             width: 120,
-                            padding: EdgeInsets.only(right: 20, bottom: 20, top: AppValue.heights * 0.1),
+                            padding: EdgeInsets.only(
+                                right: 20,
+                                bottom: 20,
+                                top: AppValue.heights * 0.1),
                             text: MESSAGES.SAVE,
-                            textStyle: AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w700, color: Colors.white),
+                            textStyle: AppStyle.DEFAULT_14.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white),
                             backgroundColor: Color(0xffF1A400));
                       }))
                 ],
@@ -357,7 +365,8 @@ class _InformationAccountState extends State<InformationAccount> {
             focusNode: _nameFocusNode,
             textInputAction: TextInputAction.next,
             initialValue: initFullName,
-            style: AppStyle.DEFAULT_16.copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+            style: AppStyle.DEFAULT_16
+                .copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
           ),
         ),
       );
@@ -373,11 +382,13 @@ class _InformationAccountState extends State<InformationAccount> {
           child: TextFormField(
             keyboardType: TextInputType.number,
             onChanged: (value) => bloc.add(PhoneChanged(value)),
-            decoration: InputDecoration(errorText: state.phone.invalid ? MESSAGES.PHONE_ERROR : null),
+            decoration: InputDecoration(
+                errorText: state.phone.invalid ? MESSAGES.PHONE_ERROR : null),
             focusNode: _phoneFocusNode,
             textInputAction: TextInputAction.next,
             initialValue: initPhone,
-            style: AppStyle.DEFAULT_16.copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+            style: AppStyle.DEFAULT_16
+                .copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
           ),
         ),
       );
@@ -398,7 +409,8 @@ class _InformationAccountState extends State<InformationAccount> {
             focusNode: _emailFocusNode,
             textInputAction: TextInputAction.next,
             initialValue: initEmail,
-            style: AppStyle.DEFAULT_16.copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+            style: AppStyle.DEFAULT_16
+                .copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
           ),
         ),
       );
@@ -416,7 +428,8 @@ class _InformationAccountState extends State<InformationAccount> {
           },
           textInputAction: TextInputAction.next,
           initialValue: initAddress,
-          style: AppStyle.DEFAULT_16.copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+          style: AppStyle.DEFAULT_16
+              .copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
         ),
       ),
     );
@@ -428,8 +441,18 @@ class _InformationAccountState extends State<InformationAccount> {
       children: [
         Row(
           children: [
-            WidgetText(title: "Đăng nhập vân tay: ", style: AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY)),
-            !fingerPrintIsCheck ? WidgetText(title: "NO", style: AppStyle.DEFAULT_16.copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500)) : WidgetText(title: "YES", style: AppStyle.DEFAULT_16.copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500)),
+            WidgetText(
+                title: "Đăng nhập vân tay: ",
+                style: AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY)),
+            !fingerPrintIsCheck
+                ? WidgetText(
+                    title: "NO",
+                    style: AppStyle.DEFAULT_16.copyWith(
+                        fontFamily: 'Roboto', fontWeight: FontWeight.w500))
+                : WidgetText(
+                    title: "YES",
+                    style: AppStyle.DEFAULT_16.copyWith(
+                        fontFamily: 'Roboto', fontWeight: FontWeight.w500)),
           ],
         ),
         AppValue.vSpaceSmall,
@@ -442,9 +465,11 @@ class _InformationAccountState extends State<InformationAccount> {
                 setState(() {
                   fingerPrintIsCheck = !fingerPrintIsCheck;
                   if (fingerPrintIsCheck == true) {
-                    shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "true");
+                    shareLocal.putString(
+                        PreferencesKey.LOGIN_FINGER_PRINT, "true");
                   } else {
-                    shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "false");
+                    shareLocal.putString(
+                        PreferencesKey.LOGIN_FINGER_PRINT, "false");
                   }
                 });
               }),

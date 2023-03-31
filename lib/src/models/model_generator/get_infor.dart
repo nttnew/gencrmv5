@@ -4,9 +4,8 @@ import 'package:json_annotation/json_annotation.dart';
 part 'get_infor.g.dart';
 
 @JsonSerializable()
-class InforData{
+class InforData {
   final String? gioi_thieu;
-
 
   InforData(this.gioi_thieu);
 
@@ -14,8 +13,9 @@ class InforData{
       _$InforDataFromJson(json);
   Map<String, dynamic> toJson() => _$InforDataToJson(this);
 }
+
 @JsonSerializable()
-class InforResponse extends BaseResponse{
+class InforResponse extends BaseResponse {
   InforData? data;
 
   InforResponse(this.data);

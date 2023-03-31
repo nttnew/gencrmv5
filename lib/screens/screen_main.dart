@@ -4,14 +4,11 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
-import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/widgets/widget_appbar.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/models/index.dart';
-import 'package:gen_crm/screens/screens.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -94,14 +91,7 @@ class _ScreenMainState extends State<ScreenMain> {
             }),
       );
     }
-    // listMenu=[
-    //   ButtonMenuModel(title: listM[0]['name'], image: ICONS.CUSTUMER,backgroundColor: Color(0xff369FFF),onTap: (){AppNavigator.navigateCustomer();}),
-    //   ButtonMenuModel(title: listM[1]['name'], image: ICONS.CLUE,backgroundColor: Color(0xffA5A6F6),onTap: (){AppNavigator.navigateClue();}),
-    //   ButtonMenuModel(title: listM[2]['name'], image: ICONS.CHANCE,backgroundColor: Color(0xffFDC9D2),onTap: (){AppNavigator.navigateChance();}),
-    //   ButtonMenuModel(title: listM[3]['name'], image: ICONS.CONTRACT,backgroundColor: Color(0xffFFC000),onTap: (){AppNavigator.navigateContract();}),
-    //   ButtonMenuModel(title: listM[4]['name'], image: ICONS.WORK,backgroundColor: Color(0xffFF993A),onTap: (){AppNavigator.navigateWork();}),
-    //   ButtonMenuModel(title: listM[5]['name'], image: ICONS.SUPPORT,backgroundColor: Color(0xff8AC53E),onTap: (){AppNavigator.navigateSupport();}),
-    // ];
+
     setState(() {});
   }
 
@@ -133,17 +123,14 @@ class _ScreenMainState extends State<ScreenMain> {
                             switch (i) {
                               case 0:
                                 {
-                                  //AppNavigator.navigateAddBuyCar();
                                   break;
                                 }
                               case 1:
                                 {
-                                  //AppNavigator.navigateAddSellCar();
                                   break;
                                 }
                               case 2:
                                 {
-                                  //AppNavigator.navigateAddBooking();
                                   break;
                                 }
                               case 3:
@@ -353,14 +340,6 @@ class _ScreenMainState extends State<ScreenMain> {
           ),
         ),
       ),
-      // floatingActionButton: Padding(
-      //   padding: EdgeInsets.only(bottom: 20),
-      //   child: FloatingActionButton(
-      //     backgroundColor: Color(0xff1AA928),
-      //     onPressed: () {},
-      //     child: Icon(Icons.add,size: 40),
-      //   ),
-      // ),
     );
   }
 

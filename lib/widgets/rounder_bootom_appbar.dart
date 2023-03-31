@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:retrofit/retrofit.dart';
 
 import '../src/src_index.dart';
+
 class RoundedAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
@@ -38,13 +38,17 @@ class RoundedAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(top: AppValue.heights*0.08),
-          child:Image.asset("assets/icons/logo.png",width: AppValue.widths*60/100,fit: BoxFit.contain,),
+          padding: EdgeInsets.only(top: AppValue.heights * 0.08),
+          child: Image.asset(
+            "assets/icons/logo.png",
+            width: AppValue.widths * 60 / 100,
+            fit: BoxFit.contain,
+          ),
         )
-
       ],
     );
   }
+
   @override
   Size get preferredSize => const Size.fromHeight(200.0);
 }

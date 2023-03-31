@@ -1,6 +1,5 @@
 import 'package:gen_crm/src/models/model_generator/attach_file.dart';
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
-import 'package:gen_crm/src/models/model_generator/customer.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'detail_contract.g.dart';

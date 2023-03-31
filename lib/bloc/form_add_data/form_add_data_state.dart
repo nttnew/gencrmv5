@@ -11,7 +11,6 @@ class InitFormAddState extends FormAddState {}
 class LoadingFormAddCustomerOrState extends FormAddState {}
 
 class SuccessFormAddCustomerOrState extends FormAddState {
-  // final ListCustomerData listCustomer;
   final List<AddCustomerIndividualData> listAddData;
   const SuccessFormAddCustomerOrState(this.listAddData);
   @override
@@ -31,7 +30,6 @@ class ErrorFormAddCustomerOrState extends FormAddState {
 class LoadingFormAddContactCustomerState extends FormAddState {}
 
 class SuccessFormAddContactCustomerState extends FormAddState {
-  // final ListCustomerData listCustomer;
   final List<AddCustomerIndividualData> listAddData;
   const SuccessFormAddContactCustomerState(this.listAddData);
   @override

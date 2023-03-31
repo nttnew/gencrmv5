@@ -7,7 +7,12 @@ class DetailContainer extends StatelessWidget {
   final String? icon, message;
   final GlobalKey<ScaffoldState>? drawerKey;
 
-  DetailContainer({required this.child, this.drawerKey, this.icon, this.bottom, this.message});
+  DetailContainer(
+      {required this.child,
+      this.drawerKey,
+      this.icon,
+      this.bottom,
+      this.message});
 
   @override
   Widget build(BuildContext context) {

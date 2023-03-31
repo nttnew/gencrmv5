@@ -57,7 +57,8 @@ abstract class RestClient {
   Future<ResponseDataStatus> getInfoUser();
 
   @GET(BASE_URL.OTP_RESET_PASSWORD)
-  Future<ResponseOtpForgotPassword> otpForgotPassword(@Query("email") String email, @Query("otp_code") String otpCode);
+  Future<ResponseOtpForgotPassword> otpForgotPassword(
+      @Query("email") String email, @Query("otp_code") String otpCode);
 
   @GET(BASE_URL.FIRST_INTRODUCE)
   Future<FirstIntroResponse> firstIntroduce();
@@ -66,7 +67,8 @@ abstract class RestClient {
   Future<LogoResponse> getLogo();
 
   @GET(BASE_URL.GET_LIST_NEW)
-  Future<ListNewsResponse> getListNews(@Query('pageSize') int pageSize, @Query('currentPage') int currentPage);
+  Future<ListNewsResponse> getListNews(
+      @Query('pageSize') int pageSize, @Query('currentPage') int currentPage);
 
   @GET(BASE_URL.GET_LIST_DOCUMENTS)
   Future<ListDocumentsResponse> getListDocuments();
@@ -81,32 +83,24 @@ abstract class RestClient {
   Future<DetailCoursesResponse> getDetailCourse(@Query('id') int id);
 
   @GET(BASE_URL.LIST_CUSTOMER)
-  Future<ListCustomerResponse> getListCustomer(
-      @Query('page') int page,
-      @Query('filter') String filter,
-      @Query('search') String search);
+  Future<ListCustomerResponse> getListCustomer(@Query('page') int page,
+      @Query('filter') String filter, @Query('search') String search);
 
   @GET(BASE_URL.LIST_CHANCE)
-  Future<ListChanceResponse> getListChance(
-      @Query('page') int page,
-      @Query('filter') String filter,
-      @Query('search') String search);
+  Future<ListChanceResponse> getListChance(@Query('page') int page,
+      @Query('filter') String filter, @Query('search') String search);
 
   @GET(BASE_URL.DETAIL_CUSTOMER)
-  Future<DetailCustomerResponse> getDetailCustomer(
-      @Query('id') int id);
+  Future<DetailCustomerResponse> getDetailCustomer(@Query('id') int id);
 
   @GET(BASE_URL.LIST_DETAIL_CHANCE)
-  Future<ListDetailChanceResponse> getListDetailChance(
-      @Query('id') int id);
+  Future<ListDetailChanceResponse> getListDetailChance(@Query('id') int id);
 
   @GET(BASE_URL.ADD_JOB_CHANCE)
-  Future<AddJobResponse> getAddJobChance(
-      @Query('id') int id);
+  Future<AddJobResponse> getAddJobChance(@Query('id') int id);
 
   @GET(BASE_URL.JOB_CHANCE)
-  Future<JobChance> getJobChance(
-      @Query('id') int id);
+  Future<JobChance> getJobChance(@Query('id') int id);
 
   @GET(BASE_URL.CLUE_CUSTOMER)
   Future<ClueCustomerResponse> getClueCustomer(
@@ -129,28 +123,25 @@ abstract class RestClient {
       @Query('customer_id') int customer_id);
 
   @GET(BASE_URL.DETAIL_SUPPORT)
-  Future<ListDetailChanceResponse> getDetailSupport(
-      @Query('id') String id);
+  Future<ListDetailChanceResponse> getDetailSupport(@Query('id') String id);
 
   @GET(BASE_URL.LIST_CONTRACT)
   Future<ContractResponse> getListContract(
-      @Query('page') int page,
-      @Query('search') String search,
-      @Query('filter') String filter,
-      );
+    @Query('page') int page,
+    @Query('search') String search,
+    @Query('filter') String filter,
+  );
 
   @GET(BASE_URL.LIST_SUPPORT)
   Future<SupportResponse> getListSupport(
-      @Query('page') int page,
-      @Query('search') String search,
-      @Query('filter') String filter,
-      );
+    @Query('page') int page,
+    @Query('search') String search,
+    @Query('filter') String filter,
+  );
 
   @GET(BASE_URL.LIST_CLUE)
-  Future<ListClueResponse> getListClue(
-      @Query('page') int page,
-      @Query('filter') String filter,
-      @Query('search') String search);
+  Future<ListClueResponse> getListClue(@Query('page') int page,
+      @Query('filter') String filter, @Query('search') String search);
 
   @GET(BASE_URL.ADD_CUSTOMER_GET)
   Future<AddCustomerIndividual> getAddCustomer(
@@ -175,55 +166,56 @@ abstract class RestClient {
   Future<AddCustomerIndividual> getAddCustomerOr();
 
   @GET(BASE_URL.PAYMENT_CONTRACT)
-  Future<PaymentContractResponse> getPaymentContract(
-      @Query('id') int id);
+  Future<PaymentContractResponse> getPaymentContract(@Query('id') int id);
 
   @GET(BASE_URL.JOB_CONTRACT)
-  Future<JobChance> getJobContract(
-      @Query('id') int id);
+  Future<JobChance> getJobContract(@Query('id') int id);
 
   @DELETE(BASE_URL.DELETE_CUSTOMER)
   Future<BaseResponse> deleteCustomer(
       // @Query('id') int id
-      @Body() Map<String,dynamic> map
-      );
+      @Body() Map<String, dynamic> map);
 
   @GET(BASE_URL.DETAIL_CONTRACT)
-  Future<DetailContractResponse> getDetailContract(
-      @Query('id') int id);
+  Future<DetailContractResponse> getDetailContract(@Query('id') int id);
 
   @GET(BASE_URL.SUPPORT_CONTRACT)
-  Future<SupportContractResponse> getSupportContract(
-      @Query('id') int id);
+  Future<SupportContractResponse> getSupportContract(@Query('id') int id);
 
   @GET(BASE_URL.DETAIL_CLUE)
-  Future<DetailClue> getDetailClue(@Query('id') String id ,);
+  Future<DetailClue> getDetailClue(
+    @Query('id') String id,
+  );
   @GET(BASE_URL.WORK_CLUE)
-  Future<WorkClueResponse> getWorkClue(@Query('id') String id ,);
+  Future<WorkClueResponse> getWorkClue(
+    @Query('id') String id,
+  );
   @GET(BASE_URL.NOTE_CLUE)
-  Future<ListNoteClueResponse> getNoteClue(@Query('id') String id ,);
+  Future<ListNoteClueResponse> getNoteClue(
+    @Query('id') String id,
+  );
   @GET(BASE_URL.POLICY)
   Future<PolicyResponse> getPolicy();
   @GET(BASE_URL.GET_INFOR)
   Future<InforResponse> getInfor();
   @GET(BASE_URL.LIST_UNREAD_NOTIFICATION)
   Future<ListNotificationResponse> getListUnReadNotification(
-      @Query('page') int page,
-      );
+    @Query('page') int page,
+  );
   @GET(BASE_URL.LIST_READED_NOTIFICATION)
   Future<ListNotificationResponse> getListReadedNotification(
-      @Query('page') int page,
-      );
+    @Query('page') int page,
+  );
   @DELETE(BASE_URL.DELETE_NOTIFICATION)
   Future<BaseResponse> deleteNotifi(
-      @Body() DelNotifiParam delnotifi,
-      );
+    @Body() DelNotifiParam delnotifi,
+  );
   @GET(BASE_URL.LIST_JOB)
   Future<WorkResponse> getListJob(
-      @Query('pageIndex') String pageIndex,
-      @Query('text') String text,
-      @Query('filter_id') String filter_id,
-      );
+    @Query('pageIndex') String pageIndex,
+    @Query('text') String text,
+    @Query('filter_id') String filter_id,
+  );
   @GET(BASE_URL.INFOR_ACC)
   Future<InforAccResponse> getInforAcc();
 
@@ -574,9 +566,7 @@ abstract class RestClient {
   @POST(BASE_URL.UPLOAD_FILE_CONTRACT)
   @MultiPart()
   Future<BaseResponse> uploadMultiFileContract(
-      @Part(name: "main_id") String id,
-      // @Part(name: "files") List<MultipartFile> files,
-      // @MultiPart() FormData data,
-      @Part(name:'files[]') List<MultipartFile> files,
-      );
+    @Part(name: "main_id") String id,
+    @Part(name: 'files[]') List<MultipartFile> files,
+  );
 }

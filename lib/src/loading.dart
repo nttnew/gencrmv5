@@ -4,7 +4,8 @@ import 'package:lottie/lottie.dart';
 class TrailLoading extends StatelessWidget {
   final double height;
   final double width;
-  const TrailLoading({Key? key, this.height = 70, this.width = 70}) : super(key: key);
+  const TrailLoading({Key? key, this.height = 70, this.width = 70})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -12,9 +13,7 @@ class TrailLoading extends StatelessWidget {
         height: height,
         width: width,
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10)
-        ),
+            color: Colors.white, borderRadius: BorderRadius.circular(10)),
         child: Lottie.asset(
           'assets/lottie/loading.json',
         ),
@@ -26,7 +25,8 @@ class TrailLoading extends StatelessWidget {
 class TrailError extends StatelessWidget {
   final double height;
   final double width;
-  const TrailError({Key? key, this.height = 50, this.width = 50}) : super(key: key);
+  const TrailError({Key? key, this.height = 50, this.width = 50})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Center(

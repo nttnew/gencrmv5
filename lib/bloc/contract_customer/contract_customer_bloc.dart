@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,13 +16,17 @@ import '../../widgets/widget_dialog.dart';
 part 'contract_customer_event.dart';
 part 'contract_customer_state.dart';
 
-class ContractCustomerBloc extends Bloc<ContractCustomerEvent, ContractCustomerState>{
+class ContractCustomerBloc
+    extends Bloc<ContractCustomerEvent, ContractCustomerState> {
   final UserRepository userRepository;
 
-  ContractCustomerBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitGetContractCustomer());
+  ContractCustomerBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitGetContractCustomer());
 
   @override
-  Stream<ContractCustomerState> mapEventToState(ContractCustomerEvent event) async* {
+  Stream<ContractCustomerState> mapEventToState(
+      ContractCustomerEvent event) async* {
     if (event is InitGetContractCustomerEvent) {
       yield* _getContractCustomer(id: event.id);
     }
@@ -36,10 +38,10 @@ class ContractCustomerBloc extends Bloc<ContractCustomerEvent, ContractCustomerS
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getContractCustomer(id);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
         yield UpdateGetContractCustomerState(response.data!);
-      }
-      else if(response.code==999){
+      } else if (response.code == 999) {
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -49,12 +51,10 @@ class ContractCustomerBloc extends Bloc<ContractCustomerEvent, ContractCustomerS
             AppNavigator.navigateLogout();
           },
         ));
-      }
-      else{
+      } else {
         LoadingApi().popLoading();
         yield ErrorGetContractCustomerState(response.msg ?? '');
       }
-
     } catch (e) {
       LoadingApi().popLoading();
       Get.dialog(WidgetDialog(
@@ -72,6 +72,6 @@ class ContractCustomerBloc extends Bloc<ContractCustomerEvent, ContractCustomerS
     LoadingApi().popLoading();
   }
 
-
-  static ContractCustomerBloc of(BuildContext context) => BlocProvider.of<ContractCustomerBloc>(context);
+  static ContractCustomerBloc of(BuildContext context) =>
+      BlocProvider.of<ContractCustomerBloc>(context);
 }

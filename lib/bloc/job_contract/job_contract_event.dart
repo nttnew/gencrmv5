@@ -1,7 +1,6 @@
 part of 'job_contract_bloc.dart';
 
-abstract class JobContractEvent extends Equatable{
-
+abstract class JobContractEvent extends Equatable {
   @override
   List<Object?> get props => [];
 

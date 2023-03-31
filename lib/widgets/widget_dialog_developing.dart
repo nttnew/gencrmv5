@@ -5,7 +5,6 @@ import 'package:gen_crm/widgets/widgets.dart';
 
 // ignore: use_key_in_widget_constructors
 class WidgetDialogDeveloping extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return WidgetDialog(

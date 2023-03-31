@@ -12,5 +12,6 @@ class InitGetListOrderEventChance extends GetListChanceEvent {
   final String search;
   final bool? isLoadMore;
 
-  InitGetListOrderEventChance(this.filter, this.page, this.search, {this.isLoadMore});
+  InitGetListOrderEventChance(this.filter, this.page, this.search,
+      {this.isLoadMore});
 }

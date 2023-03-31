@@ -14,7 +14,5 @@ class FloatingButton extends StatelessWidget {
         child: widget ?? Icon(Icons.add, size: 40),
       ),
     );
-    // TODO: implement build
-    throw UnimplementedError();
   }
 }

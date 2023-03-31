@@ -1,5 +1,4 @@
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
-import 'package:gen_crm/src/models/model_generator/customer.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'report_contact.g.dart';
@@ -8,7 +7,6 @@ part 'report_contact.g.dart';
 class CustomerContact {
   final String? id;
   final String? name;
-
 
   CustomerContact(this.id, this.name);
 
@@ -31,10 +29,17 @@ class DataListContact {
   final String? total_note;
   final String? conlai;
 
-
-  DataListContact(this.id, this.name, this.customer, this.status,
-      this.status_edit, this.status_color,
-      this.avatar, this.total_note, this.conlai, this.price);
+  DataListContact(
+      this.id,
+      this.name,
+      this.customer,
+      this.status,
+      this.status_edit,
+      this.status_color,
+      this.avatar,
+      this.total_note,
+      this.conlai,
+      this.price);
 
   factory DataListContact.fromJson(Map<String, dynamic> json) =>
       _$DataListContactFromJson(json);
@@ -73,28 +78,18 @@ class ContactReportResponse extends BaseResponse {
 @JsonSerializable()
 class RequestBodyReport {
   final int? id;
-  final String? diem_ban,gt;
+  final String? diem_ban, gt;
   final int? time;
   final int? page;
 
+  RequestBodyReport(
+      {required this.id,
+      required this.diem_ban,
+      required this.time,
+      required this.page,
+      this.gt});
 
-  RequestBodyReport({required this.id,required this.diem_ban,required this.time,required this.page,this.gt});
-
-  factory RequestBodyReport.fromJson(Map<String, dynamic> json) => _$RequestBodyReportFromJson(json);
+  factory RequestBodyReport.fromJson(Map<String, dynamic> json) =>
+      _$RequestBodyReportFromJson(json);
   Map<String, dynamic> toJson() => _$RequestBodyReportToJson(this);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

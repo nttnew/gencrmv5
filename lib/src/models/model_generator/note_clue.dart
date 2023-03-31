@@ -4,10 +4,9 @@ import 'package:json_annotation/json_annotation.dart';
 part 'note_clue.g.dart';
 
 @JsonSerializable()
-class NoteClueData{
+class NoteClueData {
   final int? uid;
-  final String? uname,noteid,avatar,content,createdtime,passedtime;
-
+  final String? uname, noteid, avatar, content, createdtime, passedtime;
 
   NoteClueData(this.uid, this.uname, this.noteid, this.avatar, this.content,
       this.createdtime, this.passedtime);
@@ -17,12 +16,12 @@ class NoteClueData{
 
   Map<String, dynamic> toJson() => _$NoteClueDataToJson(this);
 }
+
 @JsonSerializable()
-class ListNoteClue{
+class ListNoteClue {
   final List<NoteClueData>? notes;
   final String? id;
   final int? remaining;
-
 
   ListNoteClue(this.notes, this.id, this.remaining);
 
@@ -30,10 +29,10 @@ class ListNoteClue{
       _$ListNoteClueFromJson(json);
 
   Map<String, dynamic> toJson() => _$ListNoteClueToJson(this);
-
 }
+
 @JsonSerializable()
-class ListNoteClueResponse extends BaseResponse{
+class ListNoteClueResponse extends BaseResponse {
   ListNoteClue? data;
 
   ListNoteClueResponse(this.data);
@@ -42,5 +41,3 @@ class ListNoteClueResponse extends BaseResponse{
 
   Map<String, dynamic> toJson() => _$ListNoteClueResponseToJson(this);
 }
-
-

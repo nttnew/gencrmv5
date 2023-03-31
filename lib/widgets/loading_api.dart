@@ -13,7 +13,10 @@ class LoadingApi {
         color: Colors.transparent,
         child: GestureDetector(
           onTap: () {},
-          child: Center(child:CircularProgressIndicator(color: COLORS.PRIMARY_COLOR,)),
+          child: Center(
+              child: CircularProgressIndicator(
+            color: COLORS.PRIMARY_COLOR,
+          )),
         ),
       ));
     }
@@ -23,7 +26,7 @@ class LoadingApi {
     loading.value > 0 ? loading.value-- : loading.value = 0;
     if (!this.isLoading() && Get.isDialogOpen == true) {
       Get.back();
-      for(int i=0;i<loading.value;i++){
+      for (int i = 0; i < loading.value; i++) {
         Get.back();
       }
     }

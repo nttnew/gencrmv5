@@ -4,23 +4,27 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-import '../../../../api_resfull/user_repository.dart';
 import '../../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
-import '../../../../src/base.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
-import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/widget_text.dart';
 import 'data_dropdown_item.dart';
 
 class InputDropdown extends StatefulWidget {
-  InputDropdown({Key? key, required this.dropdownItemList, required this.data, required this.onSuccess, required this.value, this.isUpdate=false,this.onUpdate}) : super(key: key);
+  InputDropdown(
+      {Key? key,
+      required this.dropdownItemList,
+      required this.data,
+      required this.onSuccess,
+      required this.value,
+      this.isUpdate = false,
+      this.onUpdate})
+      : super(key: key);
   final List<List<dynamic>> dropdownItemList;
   final CustomerIndividualItemData data;
   final Function onSuccess;
   final String value;
   final bool isUpdate;
   final Function? onUpdate;
-
 
   @override
   State<InputDropdown> createState() => _InputDropdownState();
@@ -32,35 +36,42 @@ class _InputDropdownState extends State<InputDropdown> {
 
   @override
   void didUpdateWidget(covariant InputDropdown oldWidget) {
-    if (mounted&&widget.isUpdate) {
-        textValue = widget.value;
-        widget.onUpdate!(textValue);
+    if (mounted && widget.isUpdate) {
+      textValue = widget.value;
+      widget.onUpdate!(textValue);
     }
     super.didUpdateWidget(oldWidget);
   }
 
-
   @override
   void initState() {
-    if (widget.data.field_id == '246' || widget.data.field_id == '128' || widget.data.field_id == '107' || widget.data.field_id == '438') {
+    if (widget.data.field_id == '246' ||
+        widget.data.field_id == '128' ||
+        widget.data.field_id == '107' ||
+        widget.data.field_id == '438') {
       getCustomer(1);
-      if (widget.data.field_set_value != null && widget.data.field_set_value != "") {
+      if (widget.data.field_set_value != null &&
+          widget.data.field_set_value != "") {
         if (widget.data.field_id == '107') {
-          PhoneBloc.of(context).add(InitPhoneEvent(widget.data.field_set_value.toString()));
+          PhoneBloc.of(context)
+              .add(InitPhoneEvent(widget.data.field_set_value.toString()));
         } else if (widget.data.field_id == '246') {
-          PhoneBloc.of(context).add(InitPhoneEvent(widget.data.field_set_value.toString()));
-          ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(widget.data.field_set_value.toString()));
+          PhoneBloc.of(context)
+              .add(InitPhoneEvent(widget.data.field_set_value.toString()));
+          ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(
+              widget.data.field_set_value.toString()));
         } else
-          ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(widget.data.field_set_value.toString()));
+          ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(
+              widget.data.field_set_value.toString()));
       }
-    }
-    // else if(widget.data.field_id=="256"){
-    //   ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(widget.data.field_set_value.toString()));
-    // }
-    else {
+    } else {
       for (int i = 0; i < widget.dropdownItemList.length; i++) {
-        if (widget.dropdownItemList[i][1] != null && widget.dropdownItemList[i][0] != null) {
-          dropdow.add({'label': widget.dropdownItemList[i][1], 'value': widget.dropdownItemList[i][0]});
+        if (widget.dropdownItemList[i][1] != null &&
+            widget.dropdownItemList[i][0] != null) {
+          dropdow.add({
+            'label': widget.dropdownItemList[i][1],
+            'value': widget.dropdownItemList[i][0]
+          });
         }
       }
     }
@@ -79,12 +90,15 @@ class _InputDropdownState extends State<InputDropdown> {
     super.dispose();
   }
 
-  getCustomer(int page, {Function? reload, String search = "", bool isLoadMore = false}) async {
-    ContactByCustomerBloc.of(context).add(InitGetCustomerContractEvent(page.toString(), search, (response) {
+  getCustomer(int page,
+      {Function? reload, String search = "", bool isLoadMore = false}) async {
+    ContactByCustomerBloc.of(context)
+        .add(InitGetCustomerContractEvent(page.toString(), search, (response) {
       if (isLoadMore == false) dropdow = [];
       for (int i = 0; i < response.data!.length; i++) {
         if (response.data![i][1] != null && response.data![i][0] != null) {
-          dropdow.add({'label': response.data![i][1], 'value': response.data![i][0]});
+          dropdow.add(
+              {'label': response.data![i][1], 'value': response.data![i][0]});
         }
       }
       if (mounted) {
@@ -102,16 +116,20 @@ class _InputDropdownState extends State<InputDropdown> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // WidgetText(
-          //   title: label,
-          //   style: titlestyle(),
-          // ),
           RichText(
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: titlestyle(),
               children: <TextSpan>[
-                widget.data.field_require == 1 ? TextSpan(text: '*', style: TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: Colors.red)) : TextSpan(),
+                widget.data.field_require == 1
+                    ? TextSpan(
+                        text: '*',
+                        style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red))
+                    : TextSpan(),
               ],
             ),
           ),
@@ -123,54 +141,73 @@ class _InputDropdownState extends State<InputDropdown> {
               if (widget.data.field_special == "none-edit") {
               } else
                 FocusManager.instance.primaryFocus?.unfocus();
-                showModalBottomSheet(
-                    enableDrag: false,
-                    isScrollControlled: true,
-                    context: context,
-                    constraints: BoxConstraints(maxHeight: Get.height * 0.65, minWidth: Get.width),
-                    builder: (BuildContext context) {
-                      return StatefulBuilder(
-                        builder: (context, setState1) {
-                          return Container(
-                            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                            child: DataDropDownItem(
-                              data: dropdow,
-                              isSearch: (widget.data.field_id == '246' || widget.data.field_id == '128' || widget.data.field_id == '107' || widget.data.field_id == '184' || widget.data.field_id == '438') ? true : false,
-                              onSuccess: (data, label) {
-                                if (mounted) {
-                                  setState(() {
-                                    textValue = label;
-                                  });
-                                }
+              showModalBottomSheet(
+                  enableDrag: false,
+                  isScrollControlled: true,
+                  context: context,
+                  constraints: BoxConstraints(
+                      maxHeight: Get.height * 0.65, minWidth: Get.width),
+                  builder: (BuildContext context) {
+                    return StatefulBuilder(
+                      builder: (context, setState1) {
+                        return Container(
+                          padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                          child: DataDropDownItem(
+                            data: dropdow,
+                            isSearch: (widget.data.field_id == '246' ||
+                                    widget.data.field_id == '128' ||
+                                    widget.data.field_id == '107' ||
+                                    widget.data.field_id == '184' ||
+                                    widget.data.field_id == '438')
+                                ? true
+                                : false,
+                            onSuccess: (data, label) {
+                              if (mounted) {
+                                setState(() {
+                                  textValue = label;
+                                });
+                              }
 
-                                widget.onSuccess(data);
-                                Get.back();
-                              },
-                              onTabSearch: (search) {
-                                getCustomer(1, reload: () => setState1(() {}), search: search);
-                                FocusManager.instance.primaryFocus?.unfocus();
-                              },
-                              onLoadMore: (int pagee, String search) {
-                                if (widget.data.field_id == '246' || widget.data.field_id == '128' || widget.data.field_id == '107' || widget.data.field_id == '184' || widget.data.field_id == '438') getCustomer(pagee, reload: () => setState1(() {}), search: search, isLoadMore: true);
-                              },
-                            ),
-                          );
-                        },
-                      );
-                    });
+                              widget.onSuccess(data);
+                              Get.back();
+                            },
+                            onTabSearch: (search) {
+                              getCustomer(1,
+                                  reload: () => setState1(() {}),
+                                  search: search);
+                              FocusManager.instance.primaryFocus?.unfocus();
+                            },
+                            onLoadMore: (int pagee, String search) {
+                              if (widget.data.field_id == '246' ||
+                                  widget.data.field_id == '128' ||
+                                  widget.data.field_id == '107' ||
+                                  widget.data.field_id == '184' ||
+                                  widget.data.field_id == '438')
+                                getCustomer(pagee,
+                                    reload: () => setState1(() {}),
+                                    search: search,
+                                    isLoadMore: true);
+                            },
+                          ),
+                        );
+                      },
+                    );
+                  });
             },
             child: Container(
                 width: double.infinity,
-                // height: AppValue.heights * 0.05,
-                // decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(5),
-                //     border: Border.all(color: HexColor("#BEB4B4"))),
-                color: widget.data.field_special == "none-edit" ? COLORS.GREY_400 : COLORS.WHITE,
+                color: widget.data.field_special == "none-edit"
+                    ? COLORS.GREY_400
+                    : COLORS.WHITE,
                 child: Container(
                   width: double.infinity,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: HexColor("#BEB4B4"))),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: HexColor("#BEB4B4"))),
                   child: Padding(
-                    padding: EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10),
+                    padding: EdgeInsets.only(
+                        left: 10, top: 10, bottom: 10, right: 10),
                     child: Container(
                       child: Row(
                         children: [
@@ -179,7 +216,11 @@ class _InputDropdownState extends State<InputDropdown> {
                               title: textValue,
                               maxLine: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 14, fontFamily: "Roboto", fontWeight: FontWeight.w500, color: HexColor("#838A91")),
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: "Roboto",
+                                  fontWeight: FontWeight.w500,
+                                  color: HexColor("#838A91")),
                             ),
                           ),
                           Container(
@@ -199,5 +240,9 @@ class _InputDropdownState extends State<InputDropdown> {
     );
   }
 
-  TextStyle titlestyle() => TextStyle(fontFamily: "Roboto", fontSize: 12, fontWeight: FontWeight.w500, color: HexColor("#697077"));
+  TextStyle titlestyle() => TextStyle(
+      fontFamily: "Roboto",
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      color: HexColor("#697077"));
 }

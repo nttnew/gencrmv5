@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -7,17 +6,17 @@ import 'package:hexcolor/hexcolor.dart';
 import '../contract/customer_contract.dart';
 
 class FormDropDown extends StatefulWidget {
-  FormDropDown({
-    Key? key,
-    required this.dropdownItemList,
-    required this.label,
-    required this.onSuccess,
-    required this.set_value,
-    required this.value,
-    required this.require,
-    required this.field_id,
-    this.customer_id=""
-  }) : super(key: key);
+  FormDropDown(
+      {Key? key,
+      required this.dropdownItemList,
+      required this.label,
+      required this.onSuccess,
+      required this.set_value,
+      required this.value,
+      required this.require,
+      required this.field_id,
+      this.customer_id = ""})
+      : super(key: key);
 
   List<List<dynamic>> dropdownItemList;
   String label;
@@ -36,20 +35,20 @@ class _FormDropDownState extends State<FormDropDown> {
   int indexDefault = -1;
   List dropdow = [];
   String value = '';
-  String customer_id="";
+  String customer_id = "";
 
   @override
   void initState() {
     setState(() {
       value = widget.value;
-      customer_id=widget.customer_id;
+      customer_id = widget.customer_id;
     });
     super.initState();
   }
 
-  loadValue(data){
+  loadValue(data) {
     setState(() {
-      value=data;
+      value = data;
     });
   }
 
@@ -95,13 +94,12 @@ class _FormDropDownState extends State<FormDropDown> {
                   builder: (BuildContext context) {
                     return CustomerContractScreen(
                       contextFather: context,
-                      onClickItem: (id,value) {
+                      onClickItem: (id, value) {
                         Get.back();
                         widget.onSuccess(id.toString());
                         loadValue(value);
-                        // AppNavigator.navigateFormAdd("Thêm hợp đồng", 4,id: int.parse(id));
                       },
-                      type: widget.field_id=="246"?1:2,
+                      type: widget.field_id == "246" ? 1 : 2,
                       id: customer_id,
                     );
                   });

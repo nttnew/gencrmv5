@@ -5,20 +5,19 @@ abstract class AddCustomerState extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
 class InitGetAddCustomer extends AddCustomerState {}
 
-class UpdateGetAddCustomerState extends AddCustomerState{
+class UpdateGetAddCustomerState extends AddCustomerState {
   final List<AddCustomerIndividualData> listAddData;
   const UpdateGetAddCustomerState(this.listAddData);
   @override
   List<Object> get props => [listAddData];
 }
 
-class LoadingAddCustomerState extends AddCustomerState {
-}
+class LoadingAddCustomerState extends AddCustomerState {}
 
-
-class ErrorGetAddCustomerState extends AddCustomerState{
+class ErrorGetAddCustomerState extends AddCustomerState {
   final String msg;
 
   ErrorGetAddCustomerState(this.msg);
@@ -26,18 +25,16 @@ class ErrorGetAddCustomerState extends AddCustomerState{
   List<Object> get props => [msg];
 }
 
-class SuccessGetEditCustomerState extends AddCustomerState{
+class SuccessGetEditCustomerState extends AddCustomerState {
   final List<AddCustomerIndividualData> listEditData;
   const SuccessGetEditCustomerState(this.listEditData);
   @override
   List<Object> get props => [listEditData];
 }
 
-class LoadingGetEditCustomerState extends AddCustomerState {
-}
+class LoadingGetEditCustomerState extends AddCustomerState {}
 
-
-class ErrorGetEditCustomerState extends AddCustomerState{
+class ErrorGetEditCustomerState extends AddCustomerState {
   final String msg;
 
   ErrorGetEditCustomerState(this.msg);

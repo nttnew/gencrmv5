@@ -6,7 +6,6 @@ part 'customer_contract.g.dart';
 class CustomerContractResponse extends BaseResponse {
   final List<List<dynamic>>? data;
 
-
   CustomerContractResponse(this.data);
 
   factory CustomerContractResponse.fromJson(Map<String, dynamic> json) =>

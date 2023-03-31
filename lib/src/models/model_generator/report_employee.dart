@@ -1,5 +1,4 @@
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
-import 'package:gen_crm/src/models/model_generator/customer.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'report_employee.g.dart';
@@ -10,7 +9,6 @@ class DataEmployList {
   final String? name;
   final String? total_sales;
   final int? total_contract;
-
 
   DataEmployList(this.id, this.name, this.total_sales, this.total_contract);
 
@@ -51,19 +49,13 @@ class RequestEmployReport {
   final int? time;
   final int? diem_ban;
 
+  RequestEmployReport(
+      {required this.diem_ban,
+      required this.time,
+      required this.timefrom,
+      required this.timeto});
 
-  RequestEmployReport( {required this.diem_ban,required this.time,required this.timefrom,required this.timeto});
-
-  factory RequestEmployReport.fromJson(Map<String, dynamic> json) => _$RequestEmployReportFromJson(json);
+  factory RequestEmployReport.fromJson(Map<String, dynamic> json) =>
+      _$RequestEmployReportFromJson(json);
   Map<String, dynamic> toJson() => _$RequestEmployReportToJson(this);
 }
-
-
-
-
-
-
-
-
-
-

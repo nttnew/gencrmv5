@@ -87,18 +87,21 @@ class _AddServiceVoucherStepTwoScreenState
         i--;
       } else {
         if (_bloc.listProduct[i].typeGiamGia == '%') {
-          _bloc.total += (double.parse(_bloc.listProduct[i].item.sell_price ?? '0') *
-              _bloc.listProduct[i].soLuong) *
-              ((100 -
+          _bloc.total +=
+              (double.parse(_bloc.listProduct[i].item.sell_price ?? '0') *
+                      _bloc.listProduct[i].soLuong) *
+                  ((100 -
+                          double.parse(_bloc.listProduct[i].giamGia == ""
+                              ? "0"
+                              : _bloc.listProduct[i].giamGia)) /
+                      100);
+        } else {
+          _bloc.total +=
+              (double.parse(_bloc.listProduct[i].item.sell_price ?? '0') *
+                      _bloc.listProduct[i].soLuong) -
                   double.parse(_bloc.listProduct[i].giamGia == ""
                       ? "0"
-                      : _bloc.listProduct[i].giamGia)) /
-                  100);
-        } else {
-          _bloc.total += (double.parse(_bloc.listProduct[i].item.sell_price ?? '0') *
-              _bloc.listProduct[i].soLuong) -
-              double.parse(
-                  _bloc.listProduct[i].giamGia == "" ? "0" : _bloc.listProduct[i].giamGia);
+                      : _bloc.listProduct[i].giamGia);
         }
       }
     }

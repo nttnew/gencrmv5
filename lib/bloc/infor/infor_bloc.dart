@@ -8,10 +8,13 @@ import '../../widgets/loading_api.dart';
 
 part 'infor_state.dart';
 part 'infor_event.dart';
-class GetInforBloc extends Bloc<GetInforEvent, InforState>{
+
+class GetInforBloc extends Bloc<GetInforEvent, InforState> {
   final UserRepository userRepository;
 
-  GetInforBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitGetInforState());
+  GetInforBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitGetInforState());
 
   @override
   Stream<InforState> mapEventToState(GetInforEvent event) async* {
@@ -19,15 +22,15 @@ class GetInforBloc extends Bloc<GetInforEvent, InforState>{
       yield* _getInfor();
     }
   }
+
   Stream<InforState> _getInfor() async* {
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getInfor();
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
-
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
         yield UpdateGetInforState(response.data!.gioi_thieu);
-      }
-      else
+      } else
         yield ErrorGetInforState(response.msg ?? '');
     } catch (e) {
       yield ErrorGetInforState(MESSAGES.CONNECT_ERROR);
@@ -36,6 +39,6 @@ class GetInforBloc extends Bloc<GetInforEvent, InforState>{
     LoadingApi().popLoading();
   }
 
-
-  static GetInforBloc of(BuildContext context) => BlocProvider.of<GetInforBloc>(context);
+  static GetInforBloc of(BuildContext context) =>
+      BlocProvider.of<GetInforBloc>(context);
 }

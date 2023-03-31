@@ -1,15 +1,9 @@
 import 'dart:io';
 import 'dart:async';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:dio/dio.dart'
-    show
-        Dio,
-        FormData,
-        MultipartFile; // ignore: import_of_legacy_library_into_null_safe
+    show MultipartFile; // ignore: import_of_legacy_library_into_null_safe
 import 'package:gen_crm/api_resfull/dio_provider.dart';
 import 'package:gen_crm/src/models/model_generator/chance_customer.dart';
-import 'package:gen_crm/src/models/model_generator/change_infor_acc_request.dart';
 import 'package:gen_crm/src/models/model_generator/clue_customer.dart';
 import 'package:gen_crm/src/models/model_generator/contact_by_customer.dart';
 import 'package:gen_crm/src/models/model_generator/customer.dart';
@@ -68,13 +62,6 @@ class UserRepository {
           sess: shareLocal.getString(PreferencesKey.SESS));
     else
       DioProvider.instance();
-    // statusUser.listen((event) {
-    //   if(event.token == dotenv.env[PreferencesKey.TOKEN]!){
-    //     dio = DioProvider.instance();
-    //   }else{
-    //     dio = DioProvider.instance(token: shareLocal.getString(PreferencesKey.TOKEN));
-    //   }
-    // });
   }
 
   //==========================================> GET <=========================================
@@ -667,7 +654,6 @@ class UserRepository {
     // final _data = FormData();
     final multipartFiles = <MultipartFile>[];
     if (files.isNotEmpty) {
-
       for (final file in files) {
         final fileBytes = await file.readAsBytes();
         final multipartFile = MultipartFile.fromBytes(

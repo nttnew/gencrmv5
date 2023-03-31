@@ -6,20 +6,18 @@ abstract class GetListCustomerEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitGetListOrderEvent extends GetListCustomerEvent {
   final String filter;
   final int page;
   final String search;
   final bool? isLoadMore;
 
-  InitGetListOrderEvent(this.filter, this.page, this.search,{this.isLoadMore});
+  InitGetListOrderEvent(this.filter, this.page, this.search, {this.isLoadMore});
 }
 
 class AddCustomerIndividualEvent extends GetListCustomerEvent {
-  final Map<String,dynamic> data;
+  final Map<String, dynamic> data;
   final File? files;
 
-  AddCustomerIndividualEvent(this.data,{this.files});
-
+  AddCustomerIndividualEvent(this.data, {this.files});
 }

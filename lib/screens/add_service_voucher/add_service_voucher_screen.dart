@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../bloc/add_service_voucher/add_service_bloc.dart';
-import '../../src/models/model_generator/post_info_car_response.dart';
 
 class AddServiceVoucherScreen extends StatefulWidget {
   @override
@@ -16,7 +15,6 @@ class AddServiceVoucherScreen extends StatefulWidget {
 }
 
 class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
-  // late final ServiceVoucherBloc _bloc;
   String sdt = '';
   String bienSo = '';
 
@@ -117,8 +115,9 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
                             },
                           );
                         } else {
-                          ServiceVoucherBloc.of(context).add(PostServiceVoucherEvent(
-                              sdt.trim(), bienSo.trim()));
+                          ServiceVoucherBloc.of(context).add(
+                              PostServiceVoucherEvent(
+                                  sdt.trim(), bienSo.trim()));
                         }
                       },
                       boxDecoration: BoxDecoration(

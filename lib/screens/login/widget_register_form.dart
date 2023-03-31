@@ -1,8 +1,5 @@
 // ignore: import_of_legacy_library_into_null_safe
-import 'dart:io';
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:formz/formz.dart';
@@ -39,7 +36,6 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
         context.read<RegisterBloc>().add(PasswordRegisterUnfocused());
       }
     });
-
   }
 
   @override
@@ -64,7 +60,7 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
               return WidgetDialog(
                 title: MESSAGES.NOTIFICATION,
                 content: MESSAGES.SUCCESS,
-                onTap1: ()=> AppNavigator.navigateLogout(),
+                onTap1: () => AppNavigator.navigateLogout(),
               );
             },
           );
@@ -89,23 +85,30 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: COLORS.BACKGROUND,
-          borderRadius: BorderRadius.circular(10)
-        ),
+            color: COLORS.BACKGROUND, borderRadius: BorderRadius.circular(10)),
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Form(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(MESSAGES.FULL_NAME, style: AppStyle.DEFAULT_16_BOLD,),
+              Text(
+                MESSAGES.FULL_NAME,
+                style: AppStyle.DEFAULT_16_BOLD,
+              ),
               AppValue.vSpaceSmall,
               _buildTextFieldFullName(bloc),
               AppValue.vSpaceMedium,
-              Text(MESSAGES.EMAIL, style: AppStyle.DEFAULT_16_BOLD,),
+              Text(
+                MESSAGES.EMAIL,
+                style: AppStyle.DEFAULT_16_BOLD,
+              ),
               AppValue.vSpaceSmall,
               _buildTextFieldEmail(bloc),
               AppValue.vSpaceMedium,
-              Text(MESSAGES.PASSWORD, style: AppStyle.DEFAULT_16_BOLD,),
+              Text(
+                MESSAGES.PASSWORD,
+                style: AppStyle.DEFAULT_16_BOLD,
+              ),
               AppValue.vSpaceSmall,
               _buildTextFieldPassword(bloc),
               AppValue.vSpaceLarge,
@@ -122,7 +125,9 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
         buildWhen: (previous, current) => previous.status != current.status,
         builder: (context, state) {
           return WidgetButton(
-            onTap: () => state.status.isValidated ? bloc.add(RegisterFormSubmitted()) : null,
+            onTap: () => state.status.isValidated
+                ? bloc.add(RegisterFormSubmitted())
+                : null,
             // onTap: () {
             //   ShowDialogCustom.showLoading();
             // },
@@ -130,71 +135,60 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
             backgroundColor: COLORS.PRIMARY_COLOR,
             text: MESSAGES.REGISTER,
           );
-        }
-    );
+        });
   }
 
   _buildTextFieldPassword(RegisterBloc bloc) {
-    return BlocBuilder<RegisterBloc, RegisterState>(
-        builder: (context, state) {
-          return WidgetInput(
-            onChanged: (value) => bloc.add(PasswordRegisterChanged(password: value)),
-            errorText: state.password.invalid ? MESSAGES.PASSWORD_ERROR : null,
-            obscureText: obscurePassword,
-            focusNode: _passwordFocusNode,
-            boxDecoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                color: COLORS.WHITE
-            ),
-            hint: MESSAGES.PASSWORD_HINT,
-            endIcon: GestureDetector(
-              onTap: () => setState(() => obscurePassword = !obscurePassword),
-              child: Icon(
-                obscurePassword
-                    ? CommunityMaterialIcons.eye_outline
-                    : CommunityMaterialIcons.eye_off_outline,
-                color: COLORS.GREY,
-                size: 25,
-              ),
-            ),
-          );
-        }
-    );
+    return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
+      return WidgetInput(
+        onChanged: (value) =>
+            bloc.add(PasswordRegisterChanged(password: value)),
+        errorText: state.password.invalid ? MESSAGES.PASSWORD_ERROR : null,
+        obscureText: obscurePassword,
+        focusNode: _passwordFocusNode,
+        boxDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25), color: COLORS.WHITE),
+        hint: MESSAGES.PASSWORD_HINT,
+        endIcon: GestureDetector(
+          onTap: () => setState(() => obscurePassword = !obscurePassword),
+          child: Icon(
+            obscurePassword
+                ? CommunityMaterialIcons.eye_outline
+                : CommunityMaterialIcons.eye_off_outline,
+            color: COLORS.GREY,
+            size: 25,
+          ),
+        ),
+      );
+    });
   }
 
   _buildTextFieldEmail(RegisterBloc bloc) {
-    return BlocBuilder<RegisterBloc, RegisterState>(
-      builder: (context, state) {
-        return WidgetInput(
-          onChanged: (value) => bloc.add(EmailRegisterChanged(email: value)),
-          inputType: TextInputType.emailAddress,
-          focusNode: _emailFocusNode,
-          boxDecoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            color: COLORS.WHITE
-          ),
-          hint: MESSAGES.EMAIL_HINT,
-          errorText: state.email.invalid ? MESSAGES.EMAIL_ERROR : null,
-        );
-      }
-    );
+    return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
+      return WidgetInput(
+        onChanged: (value) => bloc.add(EmailRegisterChanged(email: value)),
+        inputType: TextInputType.emailAddress,
+        focusNode: _emailFocusNode,
+        boxDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25), color: COLORS.WHITE),
+        hint: MESSAGES.EMAIL_HINT,
+        errorText: state.email.invalid ? MESSAGES.EMAIL_ERROR : null,
+      );
+    });
   }
 
   _buildTextFieldFullName(RegisterBloc bloc) {
-    return BlocBuilder<RegisterBloc, RegisterState>(
-      builder: (context, state) {
-        return WidgetInput(
-          onChanged: (value) => bloc.add(FullNameRegisterChanged(fullName: value)),
-          inputType: TextInputType.text,
-          focusNode: _fullNameFocusNode,
-          boxDecoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            color: COLORS.WHITE
-          ),
-          hint: MESSAGES.FULL_NAME_HINT,
-          errorText: state.fullName.invalid ? MESSAGES.WARNING_FULL_NAME : null,
-        );
-      }
-    );
+    return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
+      return WidgetInput(
+        onChanged: (value) =>
+            bloc.add(FullNameRegisterChanged(fullName: value)),
+        inputType: TextInputType.text,
+        focusNode: _fullNameFocusNode,
+        boxDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25), color: COLORS.WHITE),
+        hint: MESSAGES.FULL_NAME_HINT,
+        errorText: state.fullName.invalid ? MESSAGES.WARNING_FULL_NAME : null,
+      );
+    });
   }
 }

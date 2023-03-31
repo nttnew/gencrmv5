@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,13 +12,17 @@ import '../../src/models/model_generator/support_customer.dart';
 part 'support_customer_event.dart';
 part 'support_customer_state.dart';
 
-class SupportCustomerBloc extends Bloc<SupportCustomerEvent, SupportCustomerState>{
+class SupportCustomerBloc
+    extends Bloc<SupportCustomerEvent, SupportCustomerState> {
   final UserRepository userRepository;
 
-  SupportCustomerBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitGetSupportCustomer());
+  SupportCustomerBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitGetSupportCustomer());
 
   @override
-  Stream<SupportCustomerState> mapEventToState(SupportCustomerEvent event) async* {
+  Stream<SupportCustomerState> mapEventToState(
+      SupportCustomerEvent event) async* {
     if (event is InitGetSupportCustomerEvent) {
       yield* _getSupportCustomer(id: event.id);
     }
@@ -31,16 +34,16 @@ class SupportCustomerBloc extends Bloc<SupportCustomerEvent, SupportCustomerStat
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getSupportCustomer(id);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
-        if(response.data==null)
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        if (response.data == null)
           yield UpdateGetSupportCustomerState([]);
-        else yield UpdateGetSupportCustomerState(response.data!);
-      }
-      else{
+        else
+          yield UpdateGetSupportCustomerState(response.data!);
+      } else {
         LoadingApi().popLoading();
         yield ErrorGetSupportCustomerState(response.msg ?? '');
       }
-
     } catch (e) {
       LoadingApi().popLoading();
       yield ErrorGetSupportCustomerState(MESSAGES.CONNECT_ERROR);
@@ -49,6 +52,6 @@ class SupportCustomerBloc extends Bloc<SupportCustomerEvent, SupportCustomerStat
     LoadingApi().popLoading();
   }
 
-
-  static SupportCustomerBloc of(BuildContext context) => BlocProvider.of<SupportCustomerBloc>(context);
+  static SupportCustomerBloc of(BuildContext context) =>
+      BlocProvider.of<SupportCustomerBloc>(context);
 }

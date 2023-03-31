@@ -8,16 +8,16 @@ class InfoCar {
   String? hangXe;
   String? mauXe;
 
-  InfoCar(
-      {this.soMay,
-      this.soKhung,
-      this.bienSo,
-      this.idbg,
-      this.chiTietXe,
-      this.soKilomet,
-      this.hangXe,
-      this.mauXe,
-      });
+  InfoCar({
+    this.soMay,
+    this.soKhung,
+    this.bienSo,
+    this.idbg,
+    this.chiTietXe,
+    this.soKilomet,
+    this.hangXe,
+    this.mauXe,
+  });
 
   InfoCar.fromJson(Map<String, dynamic> json) {
     soMay = json['so_may'];

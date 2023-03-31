@@ -40,7 +40,5 @@ class AttachmentItem extends StatelessWidget {
         ],
       ),
     );
-    // TODO: implement build
-    throw UnimplementedError();
   }
 }

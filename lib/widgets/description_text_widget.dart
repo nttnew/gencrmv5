@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+
 class DescriptionTextWidget extends StatefulWidget {
   final String text;
 
   DescriptionTextWidget({required this.text});
 
   @override
-  _DescriptionTextWidgetState createState() => new _DescriptionTextWidgetState();
+  _DescriptionTextWidgetState createState() =>
+      new _DescriptionTextWidgetState();
 }
 
 class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
@@ -33,27 +35,27 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
       child: secondHalf.isEmpty
           ? new Text(firstHalf)
           : new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Text(flag ? (firstHalf + "...") : (firstHalf + secondHalf)),
-          new InkWell(
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Text(
-                  flag ? "xem thêm" : "thu gọn",
-                  style: new TextStyle(color: Colors.blue),
+                new Text(flag ? (firstHalf + "...") : (firstHalf + secondHalf)),
+                new InkWell(
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      new Text(
+                        flag ? "xem thêm" : "thu gọn",
+                        style: new TextStyle(color: Colors.blue),
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    setState(() {
+                      flag = !flag;
+                    });
+                  },
                 ),
               ],
             ),
-            onTap: () {
-              setState(() {
-                flag = !flag;
-              });
-            },
-          ),
-        ],
-      ),
     );
   }
 }

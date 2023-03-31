@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -13,8 +12,7 @@ part 'register_state.dart';
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final UserRepository userRepository;
 
-  RegisterBloc({required this.userRepository})
-      : super(const RegisterState());
+  RegisterBloc({required this.userRepository}) : super(const RegisterState());
 
   @override
   void onTransition(Transition<RegisterEvent, RegisterState> transition) {
@@ -41,7 +39,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         fullName: fullName.valid ? fullName : NotNull.pure(event.fullName),
         status: Formz.validate([fullName, state.email, state.password]),
       );
-
     } else if (event is FullNameRegisterUnfocused) {
       final fullName = NotNull.dirty(state.fullName.value);
       yield state.copyWith(
@@ -60,26 +57,34 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         password: password,
         status: Formz.validate([state.fullName, state.email, password]),
       );
-    }
-    else if (event is RegisterFormSubmitted) {
-      try{
-
+    } else if (event is RegisterFormSubmitted) {
+      try {
         if (state.status.isValidated) {
           yield state.copyWith(status: FormzStatus.submissionInProgress);
-          var response = await userRepository.registerApp(fullName: state.fullName.value, email: state.email.value, password: state.password.value);
+          var response = await userRepository.registerApp(
+              fullName: state.fullName.value,
+              email: state.email.value,
+              password: state.password.value);
           if (response.code == BASE_URL.SUCCESS) {
             AppNavigator.navigateBack();
-            yield state.copyWith(status: FormzStatus.submissionSuccess, message: response.message);
+            yield state.copyWith(
+                status: FormzStatus.submissionSuccess,
+                message: response.message);
           } else {
-            print('lỗi: ${response.message}');
-            yield state.copyWith(status: FormzStatus.submissionFailure, message: response.message);
+            yield state.copyWith(
+                status: FormzStatus.submissionFailure,
+                message: response.message);
           }
         }
-      }catch(e){
-        yield state.copyWith(status: FormzStatus.submissionFailure, message: MESSAGES.CONNECT_ERROR);
+      } catch (e) {
+        yield state.copyWith(
+            status: FormzStatus.submissionFailure,
+            message: MESSAGES.CONNECT_ERROR);
         throw e;
       }
     }
   }
-  static RegisterBloc of(BuildContext context) => BlocProvider.of<RegisterBloc>(context);
+
+  static RegisterBloc of(BuildContext context) =>
+      BlocProvider.of<RegisterBloc>(context);
 }

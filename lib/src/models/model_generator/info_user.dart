@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:gen_crm/src/src_index.dart';
 
 part 'info_user.g.dart';
 
@@ -20,8 +19,8 @@ class InfoUser extends Equatable {
 
   static const empty = null;
 
-  InfoUser({
-      this.id,
+  InfoUser(
+      {this.id,
       this.userCode,
       this.fullName,
       this.avatar,
@@ -32,19 +31,22 @@ class InfoUser extends Equatable {
       this.role,
       this.token,
       this.otpCode,
-      this.deviceToken
-  });
+      this.deviceToken});
 
-  InfoUser copyWith(
-      {
-        String? userCode,
-        int? id,
-        String? fullName,
-        String? avatar,
-        String? phone, gender, address, email, role, token,
-        String? otpCode,
-        String? deviceToken,
-      }) {
+  InfoUser copyWith({
+    String? userCode,
+    int? id,
+    String? fullName,
+    String? avatar,
+    String? phone,
+    gender,
+    address,
+    email,
+    role,
+    token,
+    String? otpCode,
+    String? deviceToken,
+  }) {
     return InfoUser(
       id: id ?? this.id,
       userCode: userCode ?? this.userCode,
@@ -68,6 +70,17 @@ class InfoUser extends Equatable {
 
   @override
   List<Object> get props => [
-    id!, gender!, userCode!, avatar!, fullName!, role!, token!, otpCode!, phone!, deviceToken!, address!, email!
-  ];
+        id!,
+        gender!,
+        userCode!,
+        avatar!,
+        fullName!,
+        role!,
+        token!,
+        otpCode!,
+        phone!,
+        deviceToken!,
+        address!,
+        email!
+      ];
 }

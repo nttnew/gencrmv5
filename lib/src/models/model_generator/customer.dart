@@ -6,11 +6,17 @@ part 'customer.g.dart';
 @JsonSerializable()
 class CustomerData {
   final String? id;
-  final String? name,rank_type,danh_xung,color,cap_khach_hang,muc_do_tiem_nang,address,avatar;
+  final String? name,
+      rank_type,
+      danh_xung,
+      color,
+      cap_khach_hang,
+      muc_do_tiem_nang,
+      address,
+      avatar;
   final bool? is_company;
-  final int? rank_max_level,rank_value,total_comment,tong_so_hop_dong;
-  final ActionData? phone,email;
-
+  final int? rank_max_level, rank_value, total_comment, tong_so_hop_dong;
+  final ActionData? phone, email;
 
   CustomerData(
       this.id,
@@ -26,9 +32,9 @@ class CustomerData {
       this.is_company,
       this.rank_max_level,
       this.rank_value,
-      this.total_comment,this.email,
-      this.tong_so_hop_dong
-      );
+      this.total_comment,
+      this.email,
+      this.tong_so_hop_dong);
 
   factory CustomerData.fromJson(Map<String, dynamic> json) =>
       _$CustomerDataFromJson(json);
@@ -40,7 +46,6 @@ class CustomerData {
 class ActionData {
   final String? val;
   final int? action;
-
 
   ActionData(this.val, this.action);
 
@@ -55,7 +60,6 @@ class FilterData {
   final String? id;
   final String? name;
 
-
   FilterData(this.id, this.name);
 
   factory FilterData.fromJson(Map<String, dynamic> json) =>
@@ -67,13 +71,11 @@ class FilterData {
 @JsonSerializable()
 class ListCustomerData {
   final String? page;
-  final int? total,limit;
+  final int? total, limit;
   final List<CustomerData>? list;
   final List<FilterData>? filter;
 
-
-  ListCustomerData(
-      this.page, this.total, this.limit, this.list, this.filter);
+  ListCustomerData(this.page, this.total, this.limit, this.list, this.filter);
 
   factory ListCustomerData.fromJson(Map<String, dynamic> json) =>
       _$ListCustomerDataFromJson(json);
@@ -82,22 +84,13 @@ class ListCustomerData {
 }
 
 @JsonSerializable()
-  class ListCustomerResponse extends BaseResponse {
+class ListCustomerResponse extends BaseResponse {
   final ListCustomerData? data;
 
-
-  ListCustomerResponse(
-  this.data);
+  ListCustomerResponse(this.data);
 
   factory ListCustomerResponse.fromJson(Map<String, dynamic> json) =>
-  _$ListCustomerResponseFromJson(json);
+      _$ListCustomerResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ListCustomerResponseToJson(this);
 }
-
-
-
-
-
-
-

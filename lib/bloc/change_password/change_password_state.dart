@@ -1,13 +1,12 @@
 part of 'change_password_bloc.dart';
 
 class ChangePasswordState extends Equatable {
-  const ChangePasswordState({
-    this.oldPassword = const Password.pure(),
-    this.newPassword = const NewPassword.pure(),
-    this.repeatPassword = const ConfirmedPassword.pure(),
-    this.status = FormzStatus.pure,
-    this.message = ''
-  });
+  const ChangePasswordState(
+      {this.oldPassword = const Password.pure(),
+      this.newPassword = const NewPassword.pure(),
+      this.repeatPassword = const ConfirmedPassword.pure(),
+      this.status = FormzStatus.pure,
+      this.message = ''});
 
   final Password oldPassword;
   final NewPassword newPassword;
@@ -15,13 +14,12 @@ class ChangePasswordState extends Equatable {
   final FormzStatus status;
   final String message;
 
-  ChangePasswordState copyWith({
-    Password? oldPassword,
-    NewPassword? newPassword,
-    ConfirmedPassword? repeatPassword,
-    FormzStatus? status,
-    String? message
-  }) {
+  ChangePasswordState copyWith(
+      {Password? oldPassword,
+      NewPassword? newPassword,
+      ConfirmedPassword? repeatPassword,
+      FormzStatus? status,
+      String? message}) {
     return ChangePasswordState(
       oldPassword: oldPassword ?? this.oldPassword,
       newPassword: newPassword ?? this.newPassword,
@@ -32,5 +30,6 @@ class ChangePasswordState extends Equatable {
   }
 
   @override
-  List<Object> get props => [oldPassword, newPassword, repeatPassword, status, message];
+  List<Object> get props =>
+      [oldPassword, newPassword, repeatPassword, status, message];
 }

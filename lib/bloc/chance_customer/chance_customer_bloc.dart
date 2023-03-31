@@ -1,10 +1,6 @@
-import 'dart:io';
-import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gen_crm/src/models/model_generator/clue_customer.dart';
-import 'package:gen_crm/src/models/model_generator/detail_customer.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:get/get.dart';
 
@@ -20,13 +16,17 @@ import '../../widgets/widget_dialog.dart';
 part 'chance_customer_event.dart';
 part 'chance_customer_state.dart';
 
-class ChanceCustomerBloc extends Bloc<ChanceCustomerEvent, ChanceCustomerState>{
+class ChanceCustomerBloc
+    extends Bloc<ChanceCustomerEvent, ChanceCustomerState> {
   final UserRepository userRepository;
 
-  ChanceCustomerBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitGetChanceCustomer());
+  ChanceCustomerBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitGetChanceCustomer());
 
   @override
-  Stream<ChanceCustomerState> mapEventToState(ChanceCustomerEvent event) async* {
+  Stream<ChanceCustomerState> mapEventToState(
+      ChanceCustomerEvent event) async* {
     if (event is InitGetChanceCustomerEvent) {
       yield* _getChanceCustomer(id: event.id);
     }
@@ -38,10 +38,10 @@ class ChanceCustomerBloc extends Bloc<ChanceCustomerEvent, ChanceCustomerState>{
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getChanceCustomer(id);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
         yield UpdateGetChanceCustomerState(response.data!);
-      }
-      else if(response.code==999){
+      } else if (response.code == 999) {
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -51,12 +51,10 @@ class ChanceCustomerBloc extends Bloc<ChanceCustomerEvent, ChanceCustomerState>{
             AppNavigator.navigateLogout();
           },
         ));
-      }
-      else{
+      } else {
         yield ErrorGetChanceCustomerState(response.msg ?? '');
         LoadingApi().popLoading();
       }
-
     } catch (e) {
       LoadingApi().popLoading();
       Get.dialog(WidgetDialog(
@@ -74,6 +72,6 @@ class ChanceCustomerBloc extends Bloc<ChanceCustomerEvent, ChanceCustomerState>{
     LoadingApi().popLoading();
   }
 
-
-  static ChanceCustomerBloc of(BuildContext context) => BlocProvider.of<ChanceCustomerBloc>(context);
+  static ChanceCustomerBloc of(BuildContext context) =>
+      BlocProvider.of<ChanceCustomerBloc>(context);
 }

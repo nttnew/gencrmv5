@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -22,15 +20,14 @@ class _ChoiceSourceImageState extends State<ChoiceSourceImage> {
       builder: (BuildContext context) {
         return WidgetDialog(
           title: MESSAGES.NOTIFICATION,
-          content:
-          "Đi đến cài đặt",
+          content: "Đi đến cài đặt",
           textButton1: "Đi",
-          onTap1: (){
+          onTap1: () {
             openAppSettings();
             Get.back();
           },
           textButton2: "Huỷ",
-          onTap2: (){
+          onTap2: () {
             Get.back();
           },
         );
@@ -70,7 +67,7 @@ class _ChoiceSourceImageState extends State<ChoiceSourceImage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               buttonWidget(
-                content:'S.current.camera',
+                content: 'S.current.camera',
                 imageUrl: 'ImageAssets.img_camera',
                 onTap: () async {
                   final nav = Navigator.of(context);
@@ -88,7 +85,7 @@ class _ChoiceSourceImageState extends State<ChoiceSourceImage> {
                 onTap: () async {
                   final nav = Navigator.of(context);
                   final PermissionStatus permission;
-                    permission = await Permission.storage.request();
+                  permission = await Permission.storage.request();
                   if (permission == PermissionStatus.granted ||
                       permission == PermissionStatus.limited) {
                     nav.pop(false);

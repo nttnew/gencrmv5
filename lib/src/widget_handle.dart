@@ -3,11 +3,8 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gen_crm/src/color.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
-// import 'package:lhbase_v1/lhbase.dart';
-// import 'package:tiot_v1/res/colors.dart';
 
 class WidgetContainerImage extends StatelessWidget {
   final double? width, height, padding, margin;
@@ -67,7 +64,11 @@ class WidgetNetworkImage extends StatelessWidget {
   final GestureTapCallback? onTap;
 
   const WidgetNetworkImage(
-      {this.width, this.height, this.borderRadius, this.borderRadiusCustom, required this.image,
+      {this.width,
+      this.height,
+      this.borderRadius,
+      this.borderRadiusCustom,
+      required this.image,
       this.boxDecoration,
       this.onTap,
       this.fit = BoxFit.fill});
@@ -79,7 +80,9 @@ class WidgetNetworkImage extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: ClipRRect(
-          borderRadius: borderRadiusCustom == null ? BorderRadius.circular(borderRadius ?? 100) : borderRadiusCustom,
+          borderRadius: borderRadiusCustom == null
+              ? BorderRadius.circular(borderRadius ?? 100)
+              : borderRadiusCustom,
           child: Image.network(
             image,
             height: height,
@@ -116,10 +119,14 @@ class WidgetNetworkCacheImage extends StatelessWidget {
   final GestureTapCallback? onTap;
 
   const WidgetNetworkCacheImage(
-      {this.width, this.height, this.borderRadius, this.borderRadiusCustom, required this.image,
-        this.boxDecoration,
-        this.onTap,
-        this.fit = BoxFit.fill});
+      {this.width,
+      this.height,
+      this.borderRadius,
+      this.borderRadiusCustom,
+      required this.image,
+      this.boxDecoration,
+      this.onTap,
+      this.fit = BoxFit.fill});
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +135,9 @@ class WidgetNetworkCacheImage extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: ClipRRect(
-          borderRadius: borderRadiusCustom == null ? BorderRadius.circular(borderRadius ?? 100) : borderRadiusCustom,
+          borderRadius: borderRadiusCustom == null
+              ? BorderRadius.circular(borderRadius ?? 100)
+              : borderRadiusCustom,
           child: CachedNetworkImage(
             imageUrl: image,
             fit: fit,
@@ -277,11 +286,11 @@ class WidgetContainerCenter extends StatelessWidget {
   final Widget? child;
   final BoxDecoration? boxDecoration;
 
-  WidgetContainerCenter({this.width, this.height, this.child, this.boxDecoration});
+  WidgetContainerCenter(
+      {this.width, this.height, this.child, this.boxDecoration});
 
   @override
-  Widget build(BuildContext context) =>
-      Container(
+  Widget build(BuildContext context) => Container(
         width: width,
         height: height,
         decoration: boxDecoration,
@@ -298,7 +307,10 @@ class WidgetNoData extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(5),
       child: Center(
-        child: Text(text ?? 'no_data'.tr, style: AppStyle.DEFAULT_16,),
+        child: Text(
+          text ?? 'no_data'.tr,
+          style: AppStyle.DEFAULT_16,
+        ),
       ),
     );
   }
@@ -387,5 +399,3 @@ class _GradientPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => oldDelegate != this;
 }
-
-

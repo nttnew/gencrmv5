@@ -1,14 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:gen_crm/api_resfull/user_repository.dart';
-import 'package:gen_crm/bloc/add_customer/add_customer_bloc.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import 'package:gen_crm/bloc/contract/phone_bloc.dart';
@@ -19,32 +15,23 @@ import 'package:gen_crm/models/model_data_add.dart';
 import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/menu/home/contract/product_contract.dart';
 import 'package:gen_crm/screens/menu/home/contract/widget_total_sum.dart';
-import 'package:gen_crm/widgets/line_horizontal_widget.dart';
-import 'package:gen_crm/widgets/widget_input.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:nb_utils/nb_utils.dart';
 import '../../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import '../../../../../../../widgets/widget_dialog.dart';
 
-import '../../../../bloc/clue/clue_bloc.dart';
 import '../../../../bloc/contract/attack_bloc.dart';
 import '../../../../bloc/contract/contract_bloc.dart';
-import '../../../../bloc/contract/detail_contract_bloc.dart';
-import '../../../../bloc/support/support_bloc.dart';
-import '../../../../bloc/work/work_bloc.dart';
 import '../../../../models/product_model.dart';
 import '../../../../models/widget_input_date.dart';
-import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
 import '../../../../src/models/model_generator/login_response.dart';
 import '../../../../storages/share_local.dart';
-import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/widgetFieldInputPercent.dart';
 import '../customer/add_customer.dart';
 import '../customer/input_dropDown.dart';
@@ -57,9 +44,6 @@ class FormAddContract extends StatefulWidget {
 }
 
 class _FormAddContractState extends State<FormAddContract> {
-  // String title = Get.arguments[0];
-  // int type = Get.arguments[1];
-  // String id=Get.arguments[2]!=null? Get.arguments[2].toString():"";
 
   List data = [];
   List<ModelItemAdd> addData = [];
@@ -411,46 +395,6 @@ class _FormAddContractState extends State<FormAddContract> {
     );
   }
 
-  // Column fieldInputCustomerTypeOnetoMultiple(
-  //     List<dynamic> dropdownItemList, BuildContext context) {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         "Nhóm khách (chọn 1 nhiều)",
-  //         style: titlestyle(),
-  //       ),
-  //       SizedBox(
-  //         height: AppValue.heights * 0.005,
-  //       ),
-  //       Container(
-  //           width: double.infinity,
-  //           height: AppValue.heights * 0.05,
-  //           decoration: BoxDecoration(
-  //               borderRadius: BorderRadius.circular(5),
-  //               border: Border.all(color: HexColor("#BEB4B4"))),
-  //           child: CoolDropdown(
-  //               resultIconRotation: false,
-  //               resultWidth: AppValue.widths * 0.9,
-  //               resultIcon: Icon(Icons.search),
-  //               dropdownList: dropdownItemList,
-  //               onChange: (_) {},
-  //               resultTS: TextStyle(
-  //                 fontSize: 11,
-  //                 fontFamily: "Roboto",
-  //                 fontWeight: FontWeight.w500,
-  //                 color: HexColor("#838A91"),
-  //               ),
-  //               defaultValue: dropdownItemList[0],
-  //               resultBD: BoxDecoration(
-  //                 color: Theme.of(context).scaffoldBackgroundColor,
-  //                 borderRadius: BorderRadius.circular(5),
-  //               )
-  //             // placeholder: 'insert...',
-  //           )),
-  //     ],
-  //   );
-  // }
 
   Column fieldInputImage() {
     return Column(
@@ -503,9 +447,6 @@ class _FormAddContractState extends State<FormAddContract> {
     bool noEdit = false,
     String value = "",
   }) {
-    // if ((type == 21 && data.field_id == "12547")||(type == 31 && data.field_id == "12547")) {
-    //   return Container();
-    // } else
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Column(
@@ -530,7 +471,6 @@ class _FormAddContractState extends State<FormAddContract> {
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
                 child: TextFormField(
-                  // controller: data.field_type=="TEXT_NUMERIC"?_wholesalePriceEditController:null,
                   style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
                   keyboardType: data.field_type == "TEXT_NUMERIC"
                       ? TextInputType.number

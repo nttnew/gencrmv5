@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'get_phone_cus.g.dart';
 
 @JsonSerializable()
-class GetPhoneCusResponse extends BaseResponse{
+class GetPhoneCusResponse extends BaseResponse {
   String? data;
 
   GetPhoneCusResponse(this.data);

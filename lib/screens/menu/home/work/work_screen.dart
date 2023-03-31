@@ -24,23 +24,24 @@ class WorkScreen extends StatefulWidget {
 class _WorkScreenState extends State<WorkScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
-  ScrollController _scrollController=ScrollController();
-  int page=1;
-  int pageTotal=1;
-  String search="";
-  String filter_id="";
+  ScrollController _scrollController = ScrollController();
+  int page = 1;
+  int pageTotal = 1;
+  String search = "";
+  String filter_id = "";
 
   @override
   void initState() {
     GetListUnReadNotifiBloc.of(context).add(CheckNotification());
-    WorkBloc.of(context).add(InitGetListWorkEvent("1","",""));
+    WorkBloc.of(context).add(InitGetListWorkEvent("1", "", ""));
     _scrollController.addListener(() {
       if (_scrollController.offset ==
-          _scrollController.position.maxScrollExtent && page<pageTotal) {
-        WorkBloc.of(context).add(InitGetListWorkEvent((page+1).toString(),search,filter_id));
+              _scrollController.position.maxScrollExtent &&
+          page < pageTotal) {
+        WorkBloc.of(context).add(
+            InitGetListWorkEvent((page + 1).toString(), search, filter_id));
         page = page + 1;
-      } else {
-      }
+      } else {}
     });
     super.initState();
   }
@@ -53,7 +54,7 @@ class _WorkScreenState extends State<WorkScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff1AA928),
-        onPressed: () => AppNavigator.navigateFormAdd('Thêm công việc',5),
+        onPressed: () => AppNavigator.navigateFormAdd('Thêm công việc', 5),
         child: Icon(Icons.add, size: 40),
       ),
       appBar: AppBar(
@@ -85,86 +86,93 @@ class _WorkScreenState extends State<WorkScreen> {
           Padding(
               padding: EdgeInsets.only(right: 30),
               child: InkWell(
-                onTap: ()=>AppNavigator.navigateNotification(),
-                child: BlocBuilder<GetListUnReadNotifiBloc,UnReadListNotifiState>(
-                    builder: (context,state){
-                      if(state is NotificationNeedRead){
-                        return SvgPicture.asset("assets/icons/notification.svg");
-                      }
-                      else{
-                        return SvgPicture.asset("assets/icons/notification2.svg");
-                      }
-                    }
-                ),
-              )
-          )],
+                onTap: () => AppNavigator.navigateNotification(),
+                child:
+                    BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
+                        builder: (context, state) {
+                  if (state is NotificationNeedRead) {
+                    return SvgPicture.asset("assets/icons/notification.svg");
+                  } else {
+                    return SvgPicture.asset("assets/icons/notification2.svg");
+                  }
+                }),
+              ))
+        ],
       ),
       body: Container(
         // padding: EdgeInsets.only(bottom: 70),
         child: Column(
           children: [
-            BlocBuilder<WorkBloc, WorkState>(
-                builder: (context, state) {
-                  if (state is SuccessGetListWorkState)
-                    return Container(
-                      margin: EdgeInsets.symmetric(
-                          horizontal: AppValue.widths * 0.05,
-                          vertical: AppValue.heights * 0.02),
-                      width: double.infinity,
-                      height: AppValue.heights * 0.06,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: HexColor("#DBDBDB")),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: WidgetSearch(
-                        hintTextStyle: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: HexColor("#707070")),
-                        hint: "Tìm công việc",
-                        onChanged: (text){
-                          search=text;
-                        },
-                        onEditingComplete: (){
-                          WorkBloc.of(context).add(InitGetListWorkEvent("1",search,filter_id));
-                        },
-                        leadIcon: SvgPicture.asset("assets/icons/search_customer.svg"),
-                        endIcon: SvgPicture.asset("assets/icons/fill_customer.svg"),
-                        onClickRight: (){
-                          showBotomSheet(state.data_filter);
-                        },
-                      ),
-                    );
-                  else
-                    return Container();
-                }),
+            BlocBuilder<WorkBloc, WorkState>(builder: (context, state) {
+              if (state is SuccessGetListWorkState)
+                return Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: AppValue.widths * 0.05,
+                      vertical: AppValue.heights * 0.02),
+                  width: double.infinity,
+                  height: AppValue.heights * 0.06,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: HexColor("#DBDBDB")),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: WidgetSearch(
+                    hintTextStyle: TextStyle(
+                        fontFamily: "Roboto",
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: HexColor("#707070")),
+                    hint: "Tìm công việc",
+                    onChanged: (text) {
+                      search = text;
+                    },
+                    onEditingComplete: () {
+                      WorkBloc.of(context)
+                          .add(InitGetListWorkEvent("1", search, filter_id));
+                    },
+                    leadIcon:
+                        SvgPicture.asset("assets/icons/search_customer.svg"),
+                    endIcon: SvgPicture.asset("assets/icons/fill_customer.svg"),
+                    onClickRight: () {
+                      showBotomSheet(state.data_filter);
+                    },
+                  ),
+                );
+              else
+                return Container();
+            }),
             Expanded(child:
                 BlocBuilder<WorkBloc, WorkState>(builder: (context, state) {
-              if (state is SuccessGetListWorkState)
-                {
-                  pageTotal=state.pageCount;
-                  return Container(
-                    // margin: EdgeInsets.only(bottom: 70),
-                    child: RefreshIndicator(
-                      onRefresh: ()=>Future.delayed(Duration(milliseconds: 300),(){
-                        WorkBloc.of(context).add(InitGetListWorkEvent("1","",""));
-                      }),
-                      child: ListView.separated(
-                        controller: _scrollController,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) => InkWell(
-                            onTap: () => AppNavigator.navigateDeatailWork(int.parse(state.data_list[index].id!),state.data_list[index].name_job??''),
-                            child: WorkCardWidget(data_list: state.data_list[index],index: index,length:state.data_list.length ,)),
-                        itemCount: state.data_list.length,
-                        separatorBuilder: (BuildContext context, int index) => SizedBox(
-                          height: AppValue.heights * 0.01,
-                        ),
+              if (state is SuccessGetListWorkState) {
+                pageTotal = state.pageCount;
+                return Container(
+                  // margin: EdgeInsets.only(bottom: 70),
+                  child: RefreshIndicator(
+                    onRefresh: () =>
+                        Future.delayed(Duration(milliseconds: 300), () {
+                      WorkBloc.of(context)
+                          .add(InitGetListWorkEvent("1", "", ""));
+                    }),
+                    child: ListView.separated(
+                      controller: _scrollController,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) => InkWell(
+                          onTap: () => AppNavigator.navigateDeatailWork(
+                              int.parse(state.data_list[index].id!),
+                              state.data_list[index].name_job ?? ''),
+                          child: WorkCardWidget(
+                            data_list: state.data_list[index],
+                            index: index,
+                            length: state.data_list.length,
+                          )),
+                      itemCount: state.data_list.length,
+                      separatorBuilder: (BuildContext context, int index) =>
+                          SizedBox(
+                        height: AppValue.heights * 0.01,
                       ),
                     ),
-                  );
-                }
-              else
+                  ),
+                );
+              } else
                 return Container();
             }))
           ],
@@ -203,42 +211,44 @@ class _WorkScreenState extends State<WorkScreen> {
                       Column(
                         children: List.generate(
                             data.length,
-                                (index) => GestureDetector(
-                              onTap: () {
-                                Get.back();
-                                filter_id=data[index].id.toString();
-                                WorkBloc.of(context).add(InitGetListWorkEvent("1",search,data[index].id.toString()));
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 8),
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        bottom: BorderSide(
-                                            width: 1,
-                                            color: COLORS.LIGHT_GREY))),
-                                child: Row(
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/icons/Filter.svg',
-                                      width: 20,
-                                      height: 20,
-                                      fit: BoxFit.contain,
-                                    ),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Expanded(
-                                        child: Container(
+                            (index) => GestureDetector(
+                                  onTap: () {
+                                    Get.back();
+                                    filter_id = data[index].id.toString();
+                                    WorkBloc.of(context).add(
+                                        InitGetListWorkEvent("1", search,
+                                            data[index].id.toString()));
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 8),
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                width: 1,
+                                                color: COLORS.LIGHT_GREY))),
+                                    child: Row(
+                                      // crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SvgPicture.asset(
+                                          'assets/icons/Filter.svg',
+                                          width: 20,
+                                          height: 20,
+                                          fit: BoxFit.contain,
+                                        ),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        Expanded(
+                                            child: Container(
                                           child: WidgetText(
                                             title: data[index].name ?? '',
                                             style: AppStyle.DEFAULT_16,
                                           ),
                                         )),
-                                  ],
-                                ),
-                              ),
-                            )),
+                                      ],
+                                    ),
+                                  ),
+                                )),
                       )
                     ],
                   ),
@@ -250,7 +260,7 @@ class _WorkScreenState extends State<WorkScreen> {
   }
 
   handleOnPressItemMenu(value) async {
-    switch (value['id']){
+    switch (value['id']) {
       case '1':
         _drawerKey.currentState!.openEndDrawer();
         AppNavigator.navigateMain();

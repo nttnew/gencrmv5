@@ -5,23 +5,22 @@ abstract class ChanceState extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
 class InitGetListChance extends ChanceState {}
 
-class UpdateGetListChanceState extends ChanceState{
-  // final ListCustomerData listCustomer;
+class UpdateGetListChanceState extends ChanceState {
   final List<ListChanceData> listChanceData;
   final List<FilterChance> listFilter;
   final String total;
-  const UpdateGetListChanceState(this.listChanceData,this.total,this.listFilter);
+  const UpdateGetListChanceState(
+      this.listChanceData, this.total, this.listFilter);
   @override
-  List<Object> get props => [listChanceData,listFilter,total];
+  List<Object> get props => [listChanceData, listFilter, total];
 }
 
-class LoadingListChanceState extends ChanceState {
-}
+class LoadingListChanceState extends ChanceState {}
 
-
-class ErrorGetListChanceState extends ChanceState{
+class ErrorGetListChanceState extends ChanceState {
   final String msg;
 
   ErrorGetListChanceState(this.msg);

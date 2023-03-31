@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/work/detail_work_bloc.dart';
 import 'package:gen_crm/bloc/work/work_bloc.dart';
-import 'package:gen_crm/screens/menu/home/customer/index.dart';
 import 'package:gen_crm/screens/menu/home/customer/list_note.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
@@ -162,45 +160,33 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                                                   width: 8,
                                                                 ),
                                                                 Expanded(
-                                                                  child: GestureDetector(
-                                                                    onTap: (){
-                                                                      if(state.data_list[index].data![index1].label_field==BASE_URL.KHACH_HANG){
-                                                                        AppNavigator.navigateDetailCustomer(state.data_list[index].data![index1].id!
-                                                                            ,state.data_list[index].data![index1].value_field ?? '');
+                                                                  child:
+                                                                      GestureDetector(
+                                                                    onTap: () {
+                                                                      if (state
+                                                                              .data_list[index]
+                                                                              .data![index1]
+                                                                              .label_field ==
+                                                                          BASE_URL.KHACH_HANG) {
+                                                                        AppNavigator.navigateDetailCustomer(
+                                                                            state.data_list[index].data![index1].id!,
+                                                                            state.data_list[index].data![index1].value_field ?? '');
                                                                       }
                                                                     },
-                                                                    child: SizedBox(
-                                                                      child: state
-                                                                                  .data_list[index]
-                                                                                  .data![index1]
-                                                                                  .type !=
+                                                                    child:
+                                                                        SizedBox(
+                                                                      child: state.data_list[index].data![index1].type !=
                                                                               'text_area'
                                                                           ? WidgetText(
-                                                                              title: state
-                                                                                  .data_list[index]
-                                                                                  .data![index1]
-                                                                                  .value_field,
-                                                                              textAlign:
-                                                                                  TextAlign.right,
-                                                                              style:
-                                                                                  ValueStyle().copyWith(
-                                                                                    decoration: state
-                                                                                        .data_list[index]
-                                                                                        .data![index1]
-                                                                                      .label_field==BASE_URL.KHACH_HANG?
-                                                                                    TextDecoration.underline:null,
-                                                                                    color: state
-                                                                                        .data_list[index]
-                                                                                        .data![index1]
-                                                                                        .label_field==BASE_URL.KHACH_HANG?
-                                                                                        Colors.blue:null,
-                                                                                  ),
+                                                                              title: state.data_list[index].data![index1].value_field,
+                                                                              textAlign: TextAlign.right,
+                                                                              style: ValueStyle().copyWith(
+                                                                                decoration: state.data_list[index].data![index1].label_field == BASE_URL.KHACH_HANG ? TextDecoration.underline : null,
+                                                                                color: state.data_list[index].data![index1].label_field == BASE_URL.KHACH_HANG ? Colors.blue : null,
+                                                                              ),
                                                                             )
                                                                           : Html(
-                                                                              data: state
-                                                                                  .data_list[index]
-                                                                                  .data![index1]
-                                                                                  .value_field,
+                                                                              data: state.data_list[index].data![index1].value_field,
                                                                             ),
                                                                     ),
                                                                   ),
@@ -230,108 +216,6 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                     ListNote(type: 5, id: id.toString()),
                   ],
                 ),
-
-                // Expanded(
-                //     child: SingleChildScrollView(
-                //       child: Column(
-                //         children: [
-                //           Row(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: [
-                //               Column(
-                //                 children: [
-                //                   CircleAvatar(
-                //                     radius: 30.0,
-                //                     backgroundImage:
-                //                     NetworkImage('https://via.placeholder.com/150'),
-                //                   )
-                //                 ],
-                //               ),
-                //               SizedBox(
-                //                 width: AppValue.widths * 0.03,
-                //               ),
-                //               Expanded(
-                //                 child: Column(
-                //                   crossAxisAlignment: CrossAxisAlignment.start,
-                //                   children: [
-                //                     Text(
-                //                       "Nguyễn Hoàng Nam",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w600,
-                //                           fontSize: 14),
-                //                     ),
-                //                     Text(
-                //                       "20/03/2022 lúc 05:15 PM",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w400,
-                //                           fontSize: 12),
-                //                     ),
-                //                     Text(
-                //                       "Chị Thảo muốn nhận báo giá có ưu đãi. Nếu giá tốt sẽ bắt đầu triển khai ngay vào đầu tháng tới. Chú ý: gửi báo giá cả bản cứng và bản mềm cho chị.",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w400,
-                //                           fontSize: 12),
-                //                     )
-                //                   ],
-                //                 ),
-                //               )
-                //             ],
-                //           ),
-                //           SizedBox(
-                //             height: AppValue.heights * 0.02,
-                //           ),
-                //           Row(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: [
-                //               Column(
-                //                 children: [
-                //                   CircleAvatar(
-                //                     radius: 30.0,
-                //                     backgroundImage:
-                //                     NetworkImage('https://via.placeholder.com/150'),
-                //                   )
-                //                 ],
-                //               ),
-                //               SizedBox(
-                //                 width: AppValue.widths * 0.03,
-                //               ),
-                //               Expanded(
-                //                 child: Column(
-                //                   crossAxisAlignment: CrossAxisAlignment.start,
-                //                   children: [
-                //                     Text(
-                //                       "Nguyễn Hoàng Nam",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w600,
-                //                           fontSize: 14),
-                //                     ),
-                //                     Text(
-                //                       "20/03/2022 lúc 05:15 PM",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w400,
-                //                           fontSize: 12),
-                //                     ),
-                //                     Text(
-                //                       "Chị Thảo muốn nhận báo giá có ưu đãi. Nếu giá tốt sẽ bắt đầu triển khai ngay vào đầu tháng tới. Chú ý: gửi báo giá cả bản cứng và bản mềm cho chị.",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w400,
-                //                           fontSize: 12),
-                //                     )
-                //                   ],
-                //                 ),
-                //               )
-                //             ],
-                //           ),
-                //         ],
-                //       ),
-                //     )
-                // )
                 InkWell(
                   onTap: () {
                     showModalBottomSheet(
