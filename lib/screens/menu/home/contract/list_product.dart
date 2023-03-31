@@ -242,8 +242,7 @@ class ItemProduct extends StatefulWidget {
     this.model,
     this.canDelete = false,
     this.onDelete,
-  })  : assert((canDelete == true && onDelete != null) || (canDelete == false && onDelete == null)),
-        super(key: key);
+  })  : super(key: key);
 
   final ProductItem data;
   final List<List<dynamic>> listDvt;

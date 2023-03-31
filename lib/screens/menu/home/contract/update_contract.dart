@@ -323,8 +323,9 @@ class _EditContractState extends State<EditContract> {
                                                                                 if (stateA is SuccessTotalState) {
                                                                                   addData[index].data[index1].value = stateA.total.toString();
                                                                                   return WidgetTotalSum(label: state.listEditData[index].data![index1].field_label, value: AppValue.APP_MONEY_FORMAT.format(stateA.total));
-                                                                                } else
-                                                                                  return WidgetTotalSum(label: state.listEditData[index].data![index1].field_label, value: AppValue.APP_MONEY_FORMAT.format(state.listEditData[index].data![index1].field_value.toDouble()));
+                                                                                } else{
+                                                                                  return WidgetTotalSum(label: state.listEditData[index].data![index1].field_label, value: state.listEditData[index].data![index1].field_value);
+                                                                                }
                                                                               })
                                                                             : state.listEditData[index].data![index1].field_type == "PERCENTAGE"
                                                                                 ? FieldInputPercent(
