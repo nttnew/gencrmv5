@@ -16,6 +16,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../bloc/contract/total_bloc.dart';
 import '../../models/model_data_add.dart';
 import '../../models/widget_input_date.dart';
 import '../../src/models/model_generator/add_customer.dart';
@@ -23,6 +24,7 @@ import '../../src/src_index.dart';
 import '../../widgets/widgetFieldInputPercent.dart';
 import '../../widgets/widget_dialog.dart';
 import '../../widgets/widget_text.dart';
+import '../menu/home/contract/product_contract.dart';
 import '../menu/home/customer/input_dropDown.dart';
 
 class AddServiceVoucherStepTwoScreen extends StatefulWidget {
@@ -76,6 +78,31 @@ class _AddServiceVoucherStepTwoScreenState
         }
       }
     }
+  }
+
+  void reload() {
+    for (int i = 0; i < _bloc.listProduct.length; i++) {
+      if (_bloc.listProduct[i].soLuong == 0) {
+        _bloc.listProduct.removeAt(i);
+        i--;
+      } else {
+        if (_bloc.listProduct[i].typeGiamGia == '%') {
+          _bloc.total += (double.parse(_bloc.listProduct[i].item.sell_price ?? '0') *
+              _bloc.listProduct[i].soLuong) *
+              ((100 -
+                  double.parse(_bloc.listProduct[i].giamGia == ""
+                      ? "0"
+                      : _bloc.listProduct[i].giamGia)) /
+                  100);
+        } else {
+          _bloc.total += (double.parse(_bloc.listProduct[i].item.sell_price ?? '0') *
+              _bloc.listProduct[i].soLuong) -
+              double.parse(
+                  _bloc.listProduct[i].giamGia == "" ? "0" : _bloc.listProduct[i].giamGia);
+        }
+      }
+    }
+    TotalBloc.of(context).add(InitTotalEvent(_bloc.total));
   }
 
   @override
@@ -171,107 +198,107 @@ class _AddServiceVoucherStepTwoScreenState
                                     Column(
                                       children: List.generate(
                                           listAddData[index].data!.length,
-                                          (index1) =>
-                                          listAddData[index].data![index1].field_hidden != "1"?
-                                          listAddData[index].data![index1].field_id ==
-                                                  '13366'
-                                              ? _loaiCar(
-                                                  listAddData[index]
-                                                      .data![index1],
-                                                  index,
-                                                  index1)
-                                              : listAddData[index].data![index1].field_id == '246' &&
-                                                      listAddData[index]
-                                                              .data![index1]
-                                                              .field_set_value_datasource !=
-                                                          []
-                                                  ? _fieldInputCustomer(
-                                                      listAddData[index]
-                                                          .data![index1],
-                                                      index,
-                                                      index1)
+                                          (index1) => listAddData[index]
+                                                      .data![index1]
+                                                      .field_hidden !=
+                                                  "1"
+                                              ? state
+                                                          .listAddData[index]
+                                                          .data![index1]
+                                                          .field_special ==
+                                                      "url"
+                                                  ? ProductContract(
+                                                      data: _bloc.listProduct,
+                                                      addProduct:
+                                                          _bloc.addProduct,
+                                                      reload: reload,
+                                                      neverHidden: true,
+                                                      canDelete: true,
+                                                    )
                                                   : listAddData[index]
                                                               .data![index1]
-                                                              .field_type ==
-                                                          "SELECT"
-                                                      ? InputDropdown(
-                                                          onUpdate: (data) {
-                                                            addData[index]
-                                                                .data[index1]
-                                                                .value = data;
-                                                          },
-                                                          isUpdate: _bloc.getTextInit(id: listAddData[index].data![index1].field_id,
-                                                              list: listAddData[index].data![index1].field_datasource)  !=
-                                                              null,
-                                                          dropdownItemList:
-                                                              listAddData[index].data![index1].field_datasource ??
-                                                                  [],
-                                                          data: listAddData[index]
+                                                              .field_id ==
+                                                          '13366'
+                                                      ? _loaiCar(
+                                                          listAddData[index]
                                                               .data![index1],
-                                                          onSuccess: (data) {
-                                                            addData[index]
-                                                                .data[index1]
-                                                                .value = data;
-                                                            if (state
-                                                                    .listAddData[
-                                                                        index]
-                                                                    .data![
-                                                                        index1]
-                                                                    .field_id ==
-                                                                '12708') {
-                                                              if (data !=
-                                                                  ServiceVoucherBloc
-                                                                      .THEM_MOI_XE) {
-                                                                _bloc.idCar
-                                                                    .add(data);
-                                                              }
-                                                            }
-                                                          },
-                                                          value: _bloc.infoCar.value != null
-                                                              ? _bloc.getTextInit(id: listAddData[index].data![index1].field_id,
-                                                              list: listAddData[index].data![index1].field_datasource) ?? ''
-                                                              : listAddData[index].data![index1].field_value ?? '')
-                                                      : listAddData[index].data![index1].field_type == "TEXT_MULTI"
-                                                          ? _fieldInputTextMulti(listAddData[index].data![index1].field_datasource!, listAddData[index].data![index1].field_label!, listAddData[index].data![index1].field_require!, index, index1, (listAddData[index].data![index1].field_set_value_datasource != '' && listAddData[index].data![index1].field_set_value_datasource != null) ? listAddData[index].data![index1].field_set_value_datasource![0][0].toString() : "", listAddData[index].data![index1].field_maxlength ?? '')
-                                                          : listAddData[index].data![index1].field_type == "HIDDEN"
-                                                              ? Container()
-                                                              : listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"
-                                                                  ? WidgetInputMulti(
-                                                                      data: listAddData[index].data![index1],
-                                                                      onSelect: (data) {
-                                                                        addData[index]
-                                                                            .data[index1]
-                                                                            .value = data.join(",");
-                                                                      })
-                                                                  : listAddData[index].data![index1].field_type == "DATE"
-                                                                      ? WidgetInputDate(
-                                                                          data: state
-                                                                              .listAddData[index]
-                                                                              .data![index1],
-                                                                          onSelect:
-                                                                              (date) {
-                                                                            addData[index].data[index1].value =
-                                                                                (date.millisecondsSinceEpoch / 1000).floor();
-                                                                          },
-                                                                          onInit:
-                                                                              () {
-                                                                            DateTime
-                                                                                date =
-                                                                                DateTime.now();
-                                                                            addData[index].data[index1].value =
-                                                                                (date.millisecondsSinceEpoch / 1000).floor();
-                                                                          },
-                                                                        )
-                                                                      : listAddData[index].data![index1].field_type == "PERCENTAGE"
-                                                                          ? FieldInputPercent(
+                                                          index,
+                                                          index1)
+                                                      : listAddData[index].data![index1].field_id ==
+                                                                  '246' &&
+                                                              listAddData[index]
+                                                                      .data![
+                                                                          index1]
+                                                                      .field_set_value_datasource !=
+                                                                  []
+                                                          ? _fieldInputCustomer(
+                                                              listAddData[index]
+                                                                  .data![index1],
+                                                              index,
+                                                              index1)
+                                                          : listAddData[index].data![index1].field_type == "SELECT"
+                                                              ? InputDropdown(
+                                                                  onUpdate: (data) {
+                                                                    addData[index]
+                                                                        .data[
+                                                                            index1]
+                                                                        .value = data;
+                                                                  },
+                                                                  isUpdate: _bloc.getTextInit(id: listAddData[index].data![index1].field_id, list: listAddData[index].data![index1].field_datasource) != null,
+                                                                  dropdownItemList: listAddData[index].data![index1].field_datasource ?? [],
+                                                                  data: listAddData[index].data![index1],
+                                                                  onSuccess: (data) {
+                                                                    addData[index]
+                                                                        .data[
+                                                                            index1]
+                                                                        .value = data;
+                                                                    if (state
+                                                                            .listAddData[index]
+                                                                            .data![index1]
+                                                                            .field_id ==
+                                                                        '12708') {
+                                                                      if (data !=
+                                                                          ServiceVoucherBloc
+                                                                              .THEM_MOI_XE) {
+                                                                        _bloc
+                                                                            .idCar
+                                                                            .add(data);
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  value: _bloc.infoCar.value != null ? _bloc.getTextInit(id: listAddData[index].data![index1].field_id, list: listAddData[index].data![index1].field_datasource) ?? '' : listAddData[index].data![index1].field_value ?? '')
+                                                              : listAddData[index].data![index1].field_type == "TEXT_MULTI"
+                                                                  ? _fieldInputTextMulti(listAddData[index].data![index1].field_datasource!, listAddData[index].data![index1].field_label!, listAddData[index].data![index1].field_require!, index, index1, (listAddData[index].data![index1].field_set_value_datasource != '' && listAddData[index].data![index1].field_set_value_datasource != null) ? listAddData[index].data![index1].field_set_value_datasource![0][0].toString() : "", listAddData[index].data![index1].field_maxlength ?? '')
+                                                                  : listAddData[index].data![index1].field_type == "HIDDEN"
+                                                                      ? Container()
+                                                                      : listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"
+                                                                          ? WidgetInputMulti(
                                                                               data: listAddData[index].data![index1],
-                                                                              onChanged: (text) {
-                                                                                addData[index].data[index1].value = text;
-                                                                              },
-                                                                            )
-                                                                          : listAddData[index].data![index1].field_type == "CHECK"
-                                                                              ? _check(listAddData[index].data![index1], index, index1)
-                                                                              : _fieldInputCustomer(listAddData[index].data![index1], index, index1):SizedBox()),
+                                                                              onSelect: (data) {
+                                                                                addData[index].data[index1].value = data.join(",");
+                                                                              })
+                                                                          : listAddData[index].data![index1].field_type == "DATE"
+                                                                              ? WidgetInputDate(
+                                                                                  data: state.listAddData[index].data![index1],
+                                                                                  onSelect: (date) {
+                                                                                    addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                                  },
+                                                                                  onInit: () {
+                                                                                    DateTime date = DateTime.now();
+                                                                                    addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                                  },
+                                                                                )
+                                                                              : listAddData[index].data![index1].field_type == "PERCENTAGE"
+                                                                                  ? FieldInputPercent(
+                                                                                      data: listAddData[index].data![index1],
+                                                                                      onChanged: (text) {
+                                                                                        addData[index].data[index1].value = text;
+                                                                                      },
+                                                                                    )
+                                                                                  : listAddData[index].data![index1].field_type == "CHECK"
+                                                                                      ? _check(listAddData[index].data![index1], index, index1)
+                                                                                      : _fieldInputCustomer(listAddData[index].data![index1], index, index1)
+                                              : SizedBox()),
                                     )
                                   ],
                                 )),
@@ -820,9 +847,26 @@ class _AddServiceVoucherStepTwoScreenState
         },
       );
     } else {
-      VoucherServiceRequest voucherServiceRequest =
-          VoucherServiceRequest.fromJson(data);
-      _bloc.add(SaveVoucherServiceEvent(voucherServiceRequest));
+      if (_bloc.listProduct.length > 0) {
+        List product = [];
+        for (int i = 0; i < _bloc.listProduct.length; i++) {
+          product.add({
+            "id": _bloc.listProduct[i].id,
+            "price": _bloc.listProduct[i].item.sell_price,
+            "quantity": _bloc.listProduct[i].soLuong,
+            "vat": _bloc.listProduct[i].item.vat,
+            "unit": _bloc.listProduct[i].item.dvt,
+            "sale_off": {
+              "value": _bloc.listProduct[i].giamGia,
+              "type": _bloc.listProduct[i].typeGiamGia,
+            }
+          });
+        }
+        data['products'] = product;
+        VoucherServiceRequest voucherServiceRequest =
+            VoucherServiceRequest.fromJson(data);
+        _bloc.add(SaveVoucherServiceEvent(voucherServiceRequest));
+      }
     }
   }
 

@@ -30,14 +30,6 @@ class _SelectCarState extends State<SelectCar> {
         _bloc.dongXe != '' && _bloc.dongXe != ServiceVoucherBloc.KHONG_XAC_DINH;
     final bool isPhienBan = _bloc.phienBan != '' &&
         _bloc.phienBan != ServiceVoucherBloc.KHONG_XAC_DINH;
-    final bool isNamSanXuat = _bloc.namSanXuat != '' &&
-        _bloc.namSanXuat != ServiceVoucherBloc.KHONG_XAC_DINH;
-    final bool isCanXe =
-        _bloc.canXe != '' && _bloc.canXe != ServiceVoucherBloc.KHONG_XAC_DINH;
-    final bool isKieuDang = _bloc.kieuDang != '' &&
-        _bloc.kieuDang != ServiceVoucherBloc.KHONG_XAC_DINH;
-    final bool isSoCHo =
-        _bloc.soCho != '' && _bloc.soCho != ServiceVoucherBloc.KHONG_XAC_DINH;
     return Container(
         height: MediaQuery.of(context).size.height * 0.9,
         padding: EdgeInsets.symmetric(vertical: 25, horizontal: 16),
@@ -78,7 +70,8 @@ class _SelectCarState extends State<SelectCar> {
                                         decoration: BoxDecoration(
                                           color: _bloc.hangXe != e.name
                                               ? Colors.white
-                                              : HexColor("0079B5").withOpacity(0.2),
+                                              : HexColor("0079B5")
+                                                  .withOpacity(0.2),
                                           borderRadius:
                                               BorderRadius.circular(20),
                                           border: Border.all(
@@ -109,43 +102,38 @@ class _SelectCarState extends State<SelectCar> {
                     (v) {
                   _bloc.phienBan = v;
                   _bloc.namSanXuat = '';
+                  _bloc.canXe = '';
+                  _bloc.kieuDang = '';
+                  _bloc.soCho = '';
+
                   _bloc.getListNamSanXuat(v);
+                  _bloc.getListKieuDang(v);
+                  _bloc.getListCanXe(v);
+                  _bloc.getListSoCho(v);
+
                   setState(() {});
                 }),
-              if (isHang && isDong && isPhienBan)
+              if (isHang && isDong && isPhienBan) ...[
                 _baseSelect(
                     "Năm sản xuất", _bloc.namSanXuat, _bloc.listNamSanXuat,
                     (v) {
                   _bloc.namSanXuat = v;
-                  _bloc.canXe = '';
-                  _bloc.getListCanXe(v);
                   setState(() {});
                 }),
-              if (isHang && isDong && isPhienBan && isNamSanXuat)
                 _baseSelect("Hạng xe", _bloc.canXe, _bloc.listCanXe, (v) {
                   _bloc.canXe = v;
-                  _bloc.kieuDang = '';
-                  _bloc.getListKieuDang(v);
                   setState(() {});
                 }),
-              if (isHang && isDong && isPhienBan && isNamSanXuat && isCanXe)
                 _baseSelect("Kiểu dáng", _bloc.kieuDang, _bloc.listKieuDang,
                     (v) {
                   _bloc.kieuDang = v;
-                  _bloc.soCho = '';
-                  _bloc.getListSoCho(v);
                   setState(() {});
                 }),
-              if (isHang &&
-                  isDong &&
-                  isPhienBan &&
-                  isNamSanXuat &&
-                  isCanXe &&
-                  isKieuDang)
                 _baseSelect("Số chỗ", _bloc.soCho, _bloc.listSoCho, (v) {
                   _bloc.soCho = v;
                   setState(() {});
                 }),
+              ],
               SizedBox(
                 height: 32,
               ),
@@ -156,10 +144,11 @@ class _SelectCarState extends State<SelectCar> {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          _bloc.loaiXe.add('${_bloc.hangXe} ${_bloc.dongXe == ServiceVoucherBloc.KHONG_XAC_DINH ? '' : _bloc.dongXe} '
-                                  '${_bloc.phienBan == ServiceVoucherBloc.KHONG_XAC_DINH ? '' : _bloc.phienBan} '
-                                  '${_bloc.namSanXuat == ServiceVoucherBloc.KHONG_XAC_DINH ? '' : _bloc.namSanXuat} '
-                                  '${_bloc.kieuDang == ServiceVoucherBloc.KHONG_XAC_DINH ? '' : _bloc.kieuDang} '
+                          _bloc.loaiXe.add('${_bloc.hangXe} '
+                                  '${_bloc.dongXe == ServiceVoucherBloc.KHONG_XAC_DINH ? '' : _bloc.dongXe + ' '}'
+                                  '${_bloc.phienBan == ServiceVoucherBloc.KHONG_XAC_DINH ? '' : _bloc.phienBan + ' '}'
+                                  '${_bloc.namSanXuat == ServiceVoucherBloc.KHONG_XAC_DINH ? '' : _bloc.namSanXuat + ' '}'
+                                  '${_bloc.kieuDang == ServiceVoucherBloc.KHONG_XAC_DINH ? '' : _bloc.kieuDang + ' '}'
                                   '${_bloc.soCho == ServiceVoucherBloc.KHONG_XAC_DINH ? '' : _bloc.soCho}'
                               .trim());
                           Navigator.of(context).pop();

@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
+import 'package:gen_crm/models/product_model.dart';
 import 'package:gen_crm/src/models/model_generator/post_info_car_response.dart';
 import 'package:gen_crm/src/models/request/voucher_service_request.dart';
 import 'package:gen_crm/src/src_index.dart';
@@ -19,6 +20,7 @@ import '../../src/models/model_generator/customer.dart';
 import '../../src/models/model_generator/list_car_response.dart';
 import '../../storages/share_local.dart';
 import '../../widgets/widget_dialog.dart';
+import '../contract/total_bloc.dart';
 
 part 'add_service_event.dart';
 part 'add_service_state.dart';
@@ -72,6 +74,21 @@ class ServiceVoucherBloc
   String soCho = '';
   static const String KHONG_XAC_DINH = 'Không xác định';
   static const String THEM_MOI_XE = 'Thêm xe mới';
+  final List<ProductModel> listProduct = [];
+  double total = 0;
+
+  void addProduct(ProductModel data) {
+    bool check = false;
+    for (int i = 0; i < listProduct.length; i++) {
+      if (data.id == listProduct[i].id) {
+        check = true;
+        break;
+      }
+    }
+    if (check == false) {
+      listProduct.add(data);
+    }
+  }
 
   List<List<dynamic>>? listThemXe(List<List<dynamic>>? list) {
     final listXe = list;
@@ -120,7 +137,7 @@ class ServiceVoucherBloc
   void getListCanXe(String text) {
     final Set<String> list = {};
     for (final obj in listVersionCar) {
-      if (obj.namSanXuat == text) {
+      if (obj.phienBan == text) {
         if (obj.loaiXe?.trim().isNotEmpty ?? false) {
           list.add(obj.loaiXe.toString());
         }
@@ -134,7 +151,7 @@ class ServiceVoucherBloc
   void getListKieuDang(String text) {
     final Set<String> list = {};
     for (final obj in listVersionCar) {
-      if (obj.loaiXe == text) {
+      if (obj.phienBan == text) {
         if (obj.kieuDang?.trim().isNotEmpty ?? false) {
           list.add(obj.kieuDang.toString());
         }
@@ -148,7 +165,7 @@ class ServiceVoucherBloc
   void getListSoCho(String text) {
     final Set<String> list = {};
     for (final obj in listVersionCar) {
-      if (obj.kieuDang == text) {
+      if (obj.phienBan == text) {
         if (obj.soCho?.trim().isNotEmpty ?? false) {
           list.add(obj.soCho.toString());
         }
@@ -364,6 +381,8 @@ class ServiceVoucherBloc
       mauXe: '',
     ));
     idCar.add('');
+    listProduct.clear();
+    total=0;
     checkboxStream.add(false);
   }
 }

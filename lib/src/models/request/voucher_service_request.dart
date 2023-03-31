@@ -75,11 +75,11 @@ class VoucherServiceRequest {
 }
 
 class Products {
-  int? id;
-  int? price;
+  String? id;
+  String? price;
   int? quantity;
-  int? vat;
-  int? unit;
+  String? vat;
+  String? unit;
   SaleOff? saleOff;
 
   Products(
