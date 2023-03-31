@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/work_clue/work_clue_bloc.dart';
@@ -10,7 +9,7 @@ import '../../../../src/src_index.dart';
 import '../../../../widgets/widget_text.dart';
 
 class ListWorkClue extends StatefulWidget {
-  ListWorkClue({Key? key,required this.id}) : super(key: key);
+  ListWorkClue({Key? key, required this.id}) : super(key: key);
 
   final String id;
 
@@ -18,48 +17,40 @@ class ListWorkClue extends StatefulWidget {
   State<ListWorkClue> createState() => _ListWorkClueState();
 }
 
-class _ListWorkClueState extends State<ListWorkClue> {
-
-  @override
-  void initState() {
-    // Future.delayed(Duration(milliseconds: 100),(){
-    //   WorkClueBloc.of(context).add(GetWorkClue(id: widget.id));
-    // });
-
-    super.initState();
-  }
-
+class _ListWorkClueState extends State<ListWorkClue>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
-      child: BlocBuilder<WorkClueBloc, WorkClueState>(builder: (context, state) {
+      child:
+          BlocBuilder<WorkClueBloc, WorkClueState>(builder: (context, state) {
         if (state is UpdateWorkClue) {
-          if(state.data!.length>0){
+          if (state.data!.length > 0) {
             List<WorkClueData> listWorkClue = state.data!;
             return ListView.separated(
               shrinkWrap: true,
-              itemBuilder: (context, index) =>
-                  GestureDetector(
-                    onTap: (){
-                      AppNavigator.navigateDeatailWork(int.parse(listWorkClue[index].id!),listWorkClue[index].name_job??'');
-                    },
-                    child: WorkCardWidget(
-                      nameCustomer: listWorkClue[index].name_customer,
-                      nameJob: listWorkClue[index].name_job,
-                      startDate: listWorkClue[index].start_date,
-                      statusJob: listWorkClue[index].status_job,
-                      totalComment: listWorkClue[index].total_comment,
-                      color: listWorkClue[index].color,
-                    ),
-                  ),
+              itemBuilder: (context, index) => GestureDetector(
+                onTap: () {
+                  AppNavigator.navigateDeatailWork(
+                      int.parse(listWorkClue[index].id!),
+                      listWorkClue[index].name_job ?? '');
+                },
+                child: WorkCardWidget(
+                  nameCustomer: listWorkClue[index].name_customer,
+                  nameJob: listWorkClue[index].name_job,
+                  startDate: listWorkClue[index].start_date,
+                  statusJob: listWorkClue[index].status_job,
+                  totalComment: listWorkClue[index].total_comment,
+                  color: listWorkClue[index].color,
+                ),
+              ),
               itemCount: state.data!.length,
-              separatorBuilder: (BuildContext context, int index) =>
-                  SizedBox(
-                    height: AppValue.heights * 0.01,
-                  ),
+              separatorBuilder: (BuildContext context, int index) => SizedBox(
+                height: AppValue.heights * 0.01,
+              ),
             );
-          }
-          else {
+          } else {
             return Center(
               child: WidgetText(
                 title: 'Không có dữ liệu',
@@ -79,5 +70,6 @@ class _ListWorkClueState extends State<ListWorkClue> {
     );
   }
 
-
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -17,18 +17,11 @@ class JobListChance extends StatefulWidget {
   State<JobListChance> createState() => _JobListChanceState();
 }
 
-class _JobListChanceState extends State<JobListChance> {
-  @override
-  void initState() {
-    // Future.delayed(Duration(milliseconds: 100),(){
-    //   GetJobChanceBloc.of(context).add(InitGetJobEventChance(int.parse(widget.id!)));
-    // });
-    // GetJobChanceBloc.of(context).add(InitGetJobEventChance(16));
-    super.initState();
-  }
-
+class _JobListChanceState extends State<JobListChance>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocBuilder<GetJobChanceBloc, JobChanceState>(
         builder: (context, state) {
       if (state is UpdateGetJobChanceState) {
@@ -169,4 +162,7 @@ class _JobListChanceState extends State<JobListChance> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
