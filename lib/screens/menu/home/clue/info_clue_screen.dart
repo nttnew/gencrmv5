@@ -411,11 +411,24 @@ class _InfoCluePageState extends State<InfoCluePage> {
                               width: 8,
                             ),
                             Expanded(
-                              child: Text(
-                                  detailClue.data![index].value_field ?? "",
-                                  textAlign: TextAlign.right,
-                                  style: AppStyle.DEFAULT_12_BOLD
-                                      .copyWith(color: COLORS.TEXT_GREY_BOLD)),
+                              child: GestureDetector(
+                                onTap: (){
+                                  if(detailClue.data![index].label_field==BASE_URL.KHACH_HANG
+                                  ){
+                                    AppNavigator.navigateDetailCustomer(detailClue.data![index].id!
+                                        ,detailClue.data![index].value_field ?? '');
+                                  }
+                                },
+                                child: Text(
+                                    detailClue.data![index].value_field ?? "",
+                                    textAlign: TextAlign.right,
+                                    style: AppStyle.DEFAULT_12_BOLD
+                                        .copyWith(color: detailClue.data![index].label_field==BASE_URL.KHACH_HANG?
+                                    Colors.blue:COLORS.TEXT_GREY_BOLD,
+                                    decoration: detailClue.data![index].label_field==BASE_URL.KHACH_HANG?
+                                    TextDecoration.underline:null,
+                                    )),
+                              ),
                             ),
                           ],
                         ),

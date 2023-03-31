@@ -195,15 +195,31 @@ class _InfoChancePageState extends State<InfoChancePage> {
                                                                   )),
                                                               Expanded(
                                                                   flex: 2,
-                                                                  child: WidgetText(
-                                                                      title:
-                                                                          state.data[index].data![index1].value_field ??
-                                                                              '',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .right,
-                                                                      style: AppStyle
-                                                                          .DEFAULT_14))
+                                                                  child: GestureDetector(
+                                                                    onTap: (){
+                                                                      if(state.data[index].data![index1].label_field==BASE_URL.KHACH_HANG
+                                                                      ){
+                                                                        AppNavigator.navigateDetailCustomer(state.data[index].data![index1].id!
+                                                                            ,state.data[index].data![index1].value_field ?? '');
+                                                                      }
+                                                                    },
+                                                                    child: WidgetText(
+                                                                        title:
+                                                                            state.data[index].data![index1].value_field ??
+                                                                                '',
+                                                                        textAlign:
+                                                                            TextAlign
+                                                                                .right,
+                                                                        style: AppStyle
+                                                                            .DEFAULT_14.copyWith(
+                                                                          decoration: state.data[index].data![index1].
+                                                                          label_field==BASE_URL.KHACH_HANG?
+                                                                          TextDecoration.underline:null,
+                                                                          color:  state.data[index].data![index1].
+                                                                          label_field==BASE_URL.KHACH_HANG?Colors.blue:null,
+                                                                        )
+                                                                    ),
+                                                                  ))
                                                             ],
                                                           ),
                                                         )   : SizedBox(),

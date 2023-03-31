@@ -163,4 +163,6 @@ class BASE_URL {
 
   static const ACTIVE = 1;
   static const LOCK = 0;
+  static const KHACH_HANG = 'Khách hàng';
+  static const TEN_KHACH_HANG = 'Tên khách hàng';
 }

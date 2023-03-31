@@ -142,7 +142,9 @@ class _AddCustomerState extends State<AddCustomer> {
                                     Column(
                                       children: List.generate(
                                           state.listAddData[index].data!.length,
-                                          (index1) => state.listAddData[index].data![index1].field_type == "SELECT" || state.listAddData[index].data![index1].field_id=="12466"
+                                          (index1) =>
+                                          state.listAddData[index].data![index1].field_hidden != "1"?
+                                          state.listAddData[index].data![index1].field_type == "SELECT" || state.listAddData[index].data![index1].field_id=="12466"
                                               ? InputDropdown(
                                                   dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
                                                   data: state.listAddData[index].data![index1],
@@ -179,7 +181,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                                                         addData[index].data[index1].value = text;
                                                                       },
                                                                     )
-                                                                  : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1)),
+                                                                  : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1):SizedBox()),
                                     )
                                   ],
                                 )),

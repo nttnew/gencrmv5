@@ -251,90 +251,91 @@ class _EditContractState extends State<EditContract> {
                                       Column(
                                         children: List.generate(
                                             state.listEditData[index].data!.length,
-                                            (index1) => state.listEditData[index].data![index1].field_special == "none-edit"
+                                            (index1) =>state.listEditData[index].data![index1].field_hidden != "1"
+                                                ? state.listEditData[index].data![index1].field_special == "none-edit"
                                                 ? (state.listEditData[index].data![index1].field_id == '774'
-                                                    ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
-                                                        if (stateA is SuccessPhoneState) {
-                                                          addData[index].data[index1].value = stateA.phone;
-                                                          return _fieldInputCustomer(state.listEditData[index].data![index1], index, index1, noEdit: true, value: stateA.phone);
-                                                        } else
-                                                          return Container();
-                                                      })
-                                                    : _fieldInputCustomer(state.listEditData[index].data![index1], index, index1, noEdit: true, value: state.listEditData[index].data![index1].field_set_value ?? ''))
+                                                ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
+                                              if (stateA is SuccessPhoneState) {
+                                                addData[index].data[index1].value = stateA.phone;
+                                                return _fieldInputCustomer(state.listEditData[index].data![index1], index, index1, noEdit: true, value: stateA.phone);
+                                              } else
+                                                return Container();
+                                            })
+                                                : _fieldInputCustomer(state.listEditData[index].data![index1], index, index1, noEdit: true, value: state.listEditData[index].data![index1].field_set_value ?? ''))
                                                 : state.listEditData[index].data![index1].field_special == "url"
-                                                    ? ProductContract(
-                                                        data: listProduct,
-                                                        addProduct: addProduct,
-                                                        reload: reload,
-                                                      )
-                                                    : state.listEditData[index].data![index1].field_type == "SELECT"
-                                                        ? (state.listEditData[index].data![index1].field_id == '256'
-                                                            ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(builder: (context, stateA) {
-                                                                if (stateA is UpdateGetContacBytCustomerState)
-                                                                  return InputDropdown(
-                                                                      dropdownItemList: stateA.listContactByCustomer,
-                                                                      data: state.listEditData[index].data![index1],
-                                                                      onSuccess: (data) {
-                                                                        addData[index].data[index1].value = data;
-                                                                        PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
-                                                                      },
-                                                                      value: state.listEditData[index].data![index1].field_value ?? '');
-                                                                else
-                                                                  return Container();
-                                                              })
-                                                            : InputDropdown(
-                                                                dropdownItemList: state.listEditData[index].data![index1].field_datasource ?? [],
-                                                                data: state.listEditData[index].data![index1],
-                                                                onSuccess: (data) {
-                                                                  addData[index].data[index1].value = data;
-                                                                  if (state.listEditData[index].data![index1].field_id == '246') ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
-                                                                },
-                                                                value: state.listEditData[index].data![index1].field_value ?? ''))
-                                                        : state.listEditData[index].data![index1].field_type == "TEXT_MULTI"
-                                                            ? _fieldInputTextMulti(state.listEditData[index].data![index1].field_datasource!, state.listEditData[index].data![index1].field_label!, state.listEditData[index].data![index1].field_require!, index, index1,
-                                                                (state.listEditData[index].data![index1].field_set_value_datasource != "" && state.listEditData[index].data![index1].field_set_value_datasource != null) ? state.listEditData[index].data![index1].field_set_value_datasource![0][0].toString() : "", state.listEditData[index].data![index1].field_maxlength ?? '')
-                                                            : state.listEditData[index].data![index1].field_type == "HIDDEN"
-                                                                ? Container()
-                                                                : state.listEditData[index].data![index1].field_type == "TEXT_MULTI_NEW"
-                                                                    ? WidgetInputMulti(
-                                                                        data: state.listEditData[index].data![index1],
-                                                                        onSelect: (data) {
-                                                                          addData[index].data[index1].value = data.join(",");
-                                                                        },
-                                                                      )
-                                                                    : state.listEditData[index].data![index1].field_type == "DATE"
-                                                                        ? WidgetInputDate(
-                                                                            data: state.listEditData[index].data![index1],
-                                                                            onSelect: (date) {
-                                                                              addData[index].data[index1].value = (date.microsecondsSinceEpoch / 1000000).floor();
-                                                                            },
-                                                                            dateText: (state.listEditData[index].data![index1].field_set_value != "" && state.listEditData[index].data![index1].field_set_value != null) ? AppValue.formatDate(DateTime.fromMillisecondsSinceEpoch(state.listEditData[index].data![index1].field_set_value * 1000).toString()) : "",
-                                                                            onInit: () {
-                                                                              if (state.listEditData[index].data![index1].field_set_value != "" && state.listEditData[index].data![index1].field_set_value != null) {
-                                                                                addData[index].data[index1].value = state.listEditData[index].data![index1].field_set_value;
-                                                                              } else {
-                                                                                DateTime date = DateTime.now();
-                                                                                addData[index].data[index1].value = (date.microsecondsSinceEpoch / 1000000).floor();
-                                                                              }
-                                                                            },
-                                                                          )
-                                                                        : state.listEditData[index].data![index1].field_special == 'autosum'
-                                                                            ? BlocBuilder<TotalBloc, TotalState>(builder: (context, stateA) {
-                                                                                if (stateA is SuccessTotalState) {
-                                                                                  addData[index].data[index1].value = stateA.total.toString();
-                                                                                  return WidgetTotalSum(label: state.listEditData[index].data![index1].field_label, value: AppValue.APP_MONEY_FORMAT.format(stateA.total));
-                                                                                } else{
-                                                                                  return WidgetTotalSum(label: state.listEditData[index].data![index1].field_label, value: state.listEditData[index].data![index1].field_value);
-                                                                                }
-                                                                              })
-                                                                            : state.listEditData[index].data![index1].field_type == "PERCENTAGE"
-                                                                                ? FieldInputPercent(
-                                                                                    data: state.listEditData[index].data![index1],
-                                                                                    onChanged: (text) {
-                                                                                      addData[index].data[index1].value = text;
-                                                                                    },
-                                                                                  )
-                                                                                : _fieldInputCustomer(state.listEditData[index].data![index1], index, index1)),
+                                                ? ProductContract(
+                                              data: listProduct,
+                                              addProduct: addProduct,
+                                              reload: reload,
+                                            )
+                                                : state.listEditData[index].data![index1].field_type == "SELECT"
+                                                ? (state.listEditData[index].data![index1].field_id == '256'
+                                                ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(builder: (context, stateA) {
+                                              if (stateA is UpdateGetContacBytCustomerState)
+                                                return InputDropdown(
+                                                    dropdownItemList: stateA.listContactByCustomer,
+                                                    data: state.listEditData[index].data![index1],
+                                                    onSuccess: (data) {
+                                                      addData[index].data[index1].value = data;
+                                                      PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
+                                                    },
+                                                    value: state.listEditData[index].data![index1].field_value ?? '');
+                                              else
+                                                return Container();
+                                            })
+                                                : InputDropdown(
+                                                dropdownItemList: state.listEditData[index].data![index1].field_datasource ?? [],
+                                                data: state.listEditData[index].data![index1],
+                                                onSuccess: (data) {
+                                                  addData[index].data[index1].value = data;
+                                                  if (state.listEditData[index].data![index1].field_id == '246') ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
+                                                },
+                                                value: state.listEditData[index].data![index1].field_value ?? ''))
+                                                : state.listEditData[index].data![index1].field_type == "TEXT_MULTI"
+                                                ? _fieldInputTextMulti(state.listEditData[index].data![index1].field_datasource!, state.listEditData[index].data![index1].field_label!, state.listEditData[index].data![index1].field_require!, index, index1,
+                                                (state.listEditData[index].data![index1].field_set_value_datasource != "" && state.listEditData[index].data![index1].field_set_value_datasource != null) ? state.listEditData[index].data![index1].field_set_value_datasource![0][0].toString() : "", state.listEditData[index].data![index1].field_maxlength ?? '')
+                                                : state.listEditData[index].data![index1].field_type == "HIDDEN"
+                                                ? Container()
+                                                : state.listEditData[index].data![index1].field_type == "TEXT_MULTI_NEW"
+                                                ? WidgetInputMulti(
+                                              data: state.listEditData[index].data![index1],
+                                              onSelect: (data) {
+                                                addData[index].data[index1].value = data.join(",");
+                                              },
+                                            )
+                                                : state.listEditData[index].data![index1].field_type == "DATE"
+                                                ? WidgetInputDate(
+                                              data: state.listEditData[index].data![index1],
+                                              onSelect: (date) {
+                                                addData[index].data[index1].value = (date.microsecondsSinceEpoch / 1000000).floor();
+                                              },
+                                              dateText: (state.listEditData[index].data![index1].field_set_value != "" && state.listEditData[index].data![index1].field_set_value != null) ? AppValue.formatDate(DateTime.fromMillisecondsSinceEpoch(state.listEditData[index].data![index1].field_set_value * 1000).toString()) : "",
+                                              onInit: () {
+                                                if (state.listEditData[index].data![index1].field_set_value != "" && state.listEditData[index].data![index1].field_set_value != null) {
+                                                  addData[index].data[index1].value = state.listEditData[index].data![index1].field_set_value;
+                                                } else {
+                                                  DateTime date = DateTime.now();
+                                                  addData[index].data[index1].value = (date.microsecondsSinceEpoch / 1000000).floor();
+                                                }
+                                              },
+                                            )
+                                                : state.listEditData[index].data![index1].field_special == 'autosum'
+                                                ? BlocBuilder<TotalBloc, TotalState>(builder: (context, stateA) {
+                                              if (stateA is SuccessTotalState) {
+                                                addData[index].data[index1].value = stateA.total.toString();
+                                                return WidgetTotalSum(label: state.listEditData[index].data![index1].field_label, value: AppValue.APP_MONEY_FORMAT.format(stateA.total));
+                                              } else{
+                                                return WidgetTotalSum(label: state.listEditData[index].data![index1].field_label, value: state.listEditData[index].data![index1].field_value);
+                                              }
+                                            })
+                                                : state.listEditData[index].data![index1].field_type == "PERCENTAGE"
+                                                ? FieldInputPercent(
+                                              data: state.listEditData[index].data![index1],
+                                              onChanged: (text) {
+                                                addData[index].data[index1].value = text;
+                                              },
+                                            )
+                                                : _fieldInputCustomer(state.listEditData[index].data![index1], index, index1):SizedBox()),
                                       )
                                     ],
                                   )

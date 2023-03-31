@@ -264,7 +264,9 @@ class _FormEditState extends State<FormEdit> {
                                         Column(
                                           children: List.generate(state.listEditData[index].data!.length, (index1) {
                                             if (state.listEditData[index].data![index1].field_id == "246") customer_id = state.listEditData[index].data![index1].field_set_value.toString();
-                                            return state.listEditData[index].data![index1].field_special == "none-edit"
+                                            return
+                                              state.listEditData[index].data![index1].field_hidden != "1"?
+                                              state.listEditData[index].data![index1].field_special == "none-edit"
                                                 ? (state.listEditData[index].data![index1].field_id == "12547" || state.listEditData[index].data![index1].field_id == "1472"
                                                     ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
                                                         if (stateA is SuccessPhoneState) {
@@ -357,7 +359,7 @@ class _FormEditState extends State<FormEdit> {
                                                                                   addData[index].data[index1].value = text;
                                                                                 },
                                                                               )
-                                                                            : _fieldInputCustomer(state.listEditData[index].data![index1], index, index1, value: state.listEditData[index].data![index1].field_set_value.toString());
+                                                                            : _fieldInputCustomer(state.listEditData[index].data![index1], index, index1, value: state.listEditData[index].data![index1].field_set_value.toString()):SizedBox();
                                           }),
                                         )
                                       ],

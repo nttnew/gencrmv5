@@ -162,27 +162,48 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                                                   width: 8,
                                                                 ),
                                                                 Expanded(
-                                                                  child: state
-                                                                              .data_list[index]
-                                                                              .data![index1]
-                                                                              .type !=
-                                                                          'text_area'
-                                                                      ? WidgetText(
-                                                                          title: state
-                                                                              .data_list[index]
-                                                                              .data![index1]
-                                                                              .value_field,
-                                                                          textAlign:
-                                                                              TextAlign.right,
-                                                                          style:
-                                                                              ValueStyle(),
-                                                                        )
-                                                                      : Html(
-                                                                          data: state
-                                                                              .data_list[index]
-                                                                              .data![index1]
-                                                                              .value_field,
-                                                                        ),
+                                                                  child: GestureDetector(
+                                                                    onTap: (){
+                                                                      if(state.data_list[index].data![index1].label_field==BASE_URL.KHACH_HANG){
+                                                                        AppNavigator.navigateDetailCustomer(state.data_list[index].data![index1].id!
+                                                                            ,state.data_list[index].data![index1].value_field ?? '');
+                                                                      }
+                                                                    },
+                                                                    child: SizedBox(
+                                                                      child: state
+                                                                                  .data_list[index]
+                                                                                  .data![index1]
+                                                                                  .type !=
+                                                                              'text_area'
+                                                                          ? WidgetText(
+                                                                              title: state
+                                                                                  .data_list[index]
+                                                                                  .data![index1]
+                                                                                  .value_field,
+                                                                              textAlign:
+                                                                                  TextAlign.right,
+                                                                              style:
+                                                                                  ValueStyle().copyWith(
+                                                                                    decoration: state
+                                                                                        .data_list[index]
+                                                                                        .data![index1]
+                                                                                      .label_field==BASE_URL.KHACH_HANG?
+                                                                                    TextDecoration.underline:null,
+                                                                                    color: state
+                                                                                        .data_list[index]
+                                                                                        .data![index1]
+                                                                                        .label_field==BASE_URL.KHACH_HANG?
+                                                                                        Colors.blue:null,
+                                                                                  ),
+                                                                            )
+                                                                          : Html(
+                                                                              data: state
+                                                                                  .data_list[index]
+                                                                                  .data![index1]
+                                                                                  .value_field,
+                                                                            ),
+                                                                    ),
+                                                                  ),
                                                                 ),
                                                               ],
                                                             ),

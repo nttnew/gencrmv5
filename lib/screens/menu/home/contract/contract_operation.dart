@@ -111,10 +111,24 @@ class _ContractOperationState extends State<ContractOperation> {
                         ),
                         Expanded(
                             flex: 2,
-                            child: WidgetText(
-                                title: data.data![index].value_field ?? '',
-                                textAlign: TextAlign.right,
-                                style: AppStyle.DEFAULT_14))
+                            child: GestureDetector(
+                              onTap: (){
+                                if(data.data![index].label_field==BASE_URL.KHACH_HANG
+                                ){
+                                  AppNavigator.navigateDetailCustomer(data.data![index].id!,data.data![index].value_field ?? '');
+                                }
+                              },
+                              child: WidgetText(
+                                  title: data.data![index].value_field ?? '',
+                                  textAlign: TextAlign.right,
+                                  style: AppStyle.DEFAULT_14.copyWith(
+                                    decoration: data.data![index].label_field==BASE_URL.KHACH_HANG?
+                                    TextDecoration.underline:null,
+                                    color: data.data![index].label_field==BASE_URL.KHACH_HANG?
+                                        Colors.blue:null,
+                                  )
+                              ),
+                            ))
                       ],
                     ),
                   )  : SizedBox();

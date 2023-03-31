@@ -171,7 +171,9 @@ class _AddServiceVoucherStepTwoScreenState
                                     Column(
                                       children: List.generate(
                                           listAddData[index].data!.length,
-                                          (index1) => listAddData[index].data![index1].field_id ==
+                                          (index1) =>
+                                          listAddData[index].data![index1].field_hidden != "1"?
+                                          listAddData[index].data![index1].field_id ==
                                                   '13366'
                                               ? _loaiCar(
                                                   listAddData[index]
@@ -269,7 +271,7 @@ class _AddServiceVoucherStepTwoScreenState
                                                                             )
                                                                           : listAddData[index].data![index1].field_type == "CHECK"
                                                                               ? _check(listAddData[index].data![index1], index, index1)
-                                                                              : _fieldInputCustomer(listAddData[index].data![index1], index, index1)),
+                                                                              : _fieldInputCustomer(listAddData[index].data![index1], index, index1):SizedBox()),
                                     )
                                   ],
                                 )),

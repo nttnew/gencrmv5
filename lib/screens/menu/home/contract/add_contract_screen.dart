@@ -681,6 +681,7 @@ class _FormAddContractState extends State<FormAddContract> {
         }
         data['products'] = product;
       }
+      data['col311'] = data['col311']!=''?double.parse(data['col311']).toInt():'';
       AddDataBloc.of(context).add(AddContractEvent(data, files: fileUpload));
     }
   }
