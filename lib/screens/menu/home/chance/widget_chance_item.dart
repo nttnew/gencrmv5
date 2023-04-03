@@ -17,7 +17,6 @@ class WidgetItemChance extends StatelessWidget {
       onTap: () {
         AppNavigator.navigateInfoChance(
             listChanceData.id!, listChanceData.name!);
-        print({listChanceData.id});
       },
       child: Container(
         margin: EdgeInsets.only(left: 25, right: 25, bottom: 20),

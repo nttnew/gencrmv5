@@ -10,7 +10,6 @@ import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/contract/attack_bloc.dart';
 import 'package:gen_crm/models/model_data_add.dart';
 import 'package:gen_crm/models/model_item_add.dart';
-import 'package:gen_crm/screens/menu/home/customer/data_dropdown_item.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -446,11 +445,9 @@ class _AddCustomerState extends State<AddCustomer> {
       String value,
       String maxLength) {
     List<ModelDataAdd> dropdow = [];
-    // List valueDefault=value.split(",");
     int indexDefault = -1;
     for (int i = 0; i < dropdownItemList.length; i++) {
       if (dropdownItemList[i][1] != null && dropdownItemList[i][0] != null) {
-        print("value=${value} data=${dropdownItemList[i][0]}");
         dropdow.add(ModelDataAdd(
             label: dropdownItemList[i][1], value: dropdownItemList[i][0]));
         if (dropdownItemList[i][0].toString() == value) {

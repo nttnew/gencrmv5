@@ -61,7 +61,6 @@ class ForgotPasswordBloc
     } else if (event is FormForgotPasswordSubmitted) {
       try {
         if (state.status.isValidated) {
-          print("Time ${AppValue.DATE_TIME_FORMAT.format(DateTime.now())}");
           yield state.copyWith(status: FormzStatus.submissionInProgress);
           var response = await userRepository.forgotPassword(
               email: state.email.value,

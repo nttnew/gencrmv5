@@ -906,7 +906,6 @@ class _FormAddDataState extends State<FormAddData> {
         data["hopdong_id"] = Get.arguments[2].toString();
         AddDataBloc.of(context).add(AddJobEvent(data, files: fileUpload));
       }
-      // print("data ${data}");
     }
   }
 

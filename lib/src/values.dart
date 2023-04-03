@@ -111,7 +111,6 @@ class AppValue {
       return '';
     }
     List<int> imageBytes = file.readAsBytesSync();
-    print(imageBytes);
     return base64Encode(imageBytes);
   }
 

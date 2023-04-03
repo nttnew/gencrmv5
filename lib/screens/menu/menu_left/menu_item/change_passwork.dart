@@ -295,7 +295,6 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
               ? MESSAGES.CONFIRM_PASSWORD_ERROR
               : null,
           onChanged: (value) {
-            print(value);
             bloc.add(RepeatPasswordChanged(repeatPassword: value));
           },
           endIcon: GestureDetector(

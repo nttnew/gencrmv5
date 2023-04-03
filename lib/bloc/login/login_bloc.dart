@@ -116,7 +116,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         yield state.copyWith(
             status: FormzStatus.submissionFailure,
             message: MESSAGES.CONNECT_ERROR);
-        print('lỗi iii: $e');
         throw e;
       }
     } else {

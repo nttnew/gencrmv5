@@ -1286,7 +1286,6 @@ class _ReportScreenState extends State<ReportScreen> {
           ),
         );
       } else if (state is LoadingReportContactState) {
-        print("xxxyyy2");
         return SizedBox();
       } else
         return SizedBox();

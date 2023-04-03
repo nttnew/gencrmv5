@@ -32,7 +32,6 @@ class ResendOTPBloc extends Bloc<ResendOTPEvent, ResendOTPState> {
     _countDownTimer = new CountdownTimer(time, Duration(seconds: 1));
     _streamSubscription = _countDownTimer.listen(null);
     _streamSubscription.onData((duration) {
-      print('time: ${duration.remaining.inSeconds}');
       this.add(TimeChanged(time: duration.remaining.inSeconds));
     });
 

@@ -51,7 +51,6 @@ class GetListChanceBloc extends Bloc<GetListChanceEvent, ChanceState> {
               response.data!.total!, response.data!.filter!);
         } else {
           listChance!.addAll(response.data!.list!);
-          print('aaaaa $listChance');
           yield UpdateGetListChanceState(
               listChance!, response.data!.total!, response.data!.filter!);
         }

@@ -193,7 +193,6 @@ class _AddNoteState extends State<AddNote> {
 
   void onSend() {
     if (isEdit == false) {
-      // print("xxxEdit");
       AddNoteBloc.of(context)
           .add(InitAddNoteEvent(id, _editingController.text, type));
     } else {
