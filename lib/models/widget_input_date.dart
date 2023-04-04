@@ -92,7 +92,7 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
                       child: WidgetText(
                         title: dateText,
                         style: TextStyle(
-                            fontSize: 11, fontWeight: FontWeight.w500),
+                            fontSize: 14, fontWeight: FontWeight.w500),
                       ),
                     ),
                   ),

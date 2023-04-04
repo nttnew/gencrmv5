@@ -677,7 +677,7 @@ class _FormAddDataState extends State<FormAddData> {
                 padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
                 child: Container(
                   child: TextFormField(
-                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                     keyboardType: data.field_type == "TEXT_NUMERIC"
                         ? TextInputType.number
                         : data.field_special == "default"
@@ -822,10 +822,10 @@ class _FormAddDataState extends State<FormAddData> {
       color: HexColor("#838A91"));
 
   TextStyle titlestyle() => TextStyle(
+      fontSize: 14,
       fontFamily: "Roboto",
-      fontSize: 12,
       fontWeight: FontWeight.w500,
-      color: HexColor("#697077"));
+      color: HexColor("#838A91"));
 
   void onClickSave() {
     final Map<String, dynamic> data = {};
