@@ -118,95 +118,107 @@ class _ScreenMainState extends State<ScreenMain> {
     return Scaffold(
       key: _drawerKey,
       drawer: MainDrawer(onPress: handleOnPressItemMenu),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xff1AA928),
-        onPressed: () {
-          showModalBottomSheet(
-              isDismissible: false,
-              enableDrag: false,
-              context: context,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30)),
-              builder: (BuildContext context) {
-                return Container(
-                  padding: EdgeInsets.symmetric(vertical: 25, horizontal: 30),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ...List<Widget>.generate(
-                          LoginBloc.of(context).listMenu.length, (i) {
-                        return GestureDetector(
-                          onTap: () {
-                            Get.back();
+      floatingActionButton: listMenu.isNotEmpty
+          ? FloatingActionButton(
+              backgroundColor: Color(0xff1AA928),
+              onPressed: () {
+                showModalBottomSheet(
+                    isDismissible: false,
+                    enableDrag: false,
+                    context: context,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    builder: (BuildContext context) {
+                      return Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 25, horizontal: 30),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ...List<Widget>.generate(
+                                LoginBloc.of(context).listMenu.length, (i) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Get.back();
 
-                            String id =
-                                LoginBloc.of(context).listMenu[i].id.toString();
-                            String name = LoginBloc.of(context)
-                                .listMenu[i]
-                                .name
-                                .toString().toLowerCase();
-                            if (ModuleText.CUSTOMER == id) {
-                              AppNavigator.navigateAddCustomer();
-                            } else if (ModuleText.DAU_MOI == id) {
-                              AppNavigator.navigateFormAdd('Thêm ${name}', 2);
-                            } else if (ModuleText.LICH_HEN == id) {
-                              AppNavigator.navigateFormAdd('Thêm ${name}', 3);
-                            } else if (ModuleText.HOP_DONG == id) {
-                              AppNavigator.navigateAddServiceVoucher();
-                            } else if (ModuleText.CONG_VIEC == id) {
-                              AppNavigator.navigateFormAdd("Thêm ${name}", 14);
-                            } else if (ModuleText.CSKH == id) {
-                              AppNavigator.navigateFormAdd('Thêm ${name}', 6);
-                            }
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              AppValue.hSpaceLarge,
-                              Image.asset(getIconMenu(LoginBloc.of(context)
-                                  .listMenu[i]
-                                  .id
-                                  .toString())),
-                              SizedBox(width: 10),
-                              Text(
-                                LoginBloc.of(context)
-                                    .listMenu[i]
-                                    .name
-                                    .toString(),
-                                style: AppStyle.DEFAULT_16_BOLD
-                                    .copyWith(color: Color(0xff006CB1)),
-                              )
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: Container(
-                              width: AppValue.widths * 0.8,
-                              height: AppValue.heights * 0.06,
-                              decoration: BoxDecoration(
-                                color: HexColor("#D0F1EB"),
-                                borderRadius: BorderRadius.circular(17.06),
-                              ),
-                              child: Center(
-                                child: Text("Đóng"),
-                              ),
+                                  String id = LoginBloc.of(context)
+                                      .listMenu[i]
+                                      .id
+                                      .toString();
+                                  String name = LoginBloc.of(context)
+                                      .listMenu[i]
+                                      .name
+                                      .toString()
+                                      .toLowerCase();
+                                  if (ModuleText.CUSTOMER == id) {
+                                    AppNavigator.navigateAddCustomer();
+                                  } else if (ModuleText.DAU_MOI == id) {
+                                    AppNavigator.navigateFormAdd(
+                                        'Thêm ${name}', 2);
+                                  } else if (ModuleText.LICH_HEN == id) {
+                                    AppNavigator.navigateFormAdd(
+                                        'Thêm ${name}', 3);
+                                  } else if (ModuleText.HOP_DONG == id) {
+                                    AppNavigator.navigateAddServiceVoucher();
+                                  } else if (ModuleText.CONG_VIEC == id) {
+                                    AppNavigator.navigateFormAdd(
+                                        "Thêm ${name}", 14);
+                                  } else if (ModuleText.CSKH == id) {
+                                    AppNavigator.navigateFormAdd(
+                                        'Thêm ${name}', 6);
+                                  }
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    AppValue.hSpaceLarge,
+                                    Image.asset(getIconMenu(
+                                        LoginBloc.of(context)
+                                            .listMenu[i]
+                                            .id
+                                            .toString())),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      LoginBloc.of(context)
+                                          .listMenu[i]
+                                          .name
+                                          .toString(),
+                                      style: AppStyle.DEFAULT_16_BOLD
+                                          .copyWith(color: Color(0xff006CB1)),
+                                    )
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: () => Navigator.of(context).pop(),
+                                  child: Container(
+                                    width: AppValue.widths * 0.8,
+                                    height: AppValue.heights * 0.06,
+                                    decoration: BoxDecoration(
+                                      color: HexColor("#D0F1EB"),
+                                      borderRadius:
+                                          BorderRadius.circular(17.06),
+                                    ),
+                                    child: Center(
+                                      child: Text("Đóng"),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              });
-        },
-        child: Icon(Icons.add, size: 40),
-      ),
+                          ],
+                        ),
+                      );
+                    });
+              },
+              child: Icon(Icons.add, size: 40),
+            )
+          : SizedBox(),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
