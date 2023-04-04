@@ -26,6 +26,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
   String idFilter = "";
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   String search = '';
+  String title = '';
 
   ScrollController _scrollController = ScrollController();
 
@@ -43,6 +44,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
         page = page + 1;
       } else {}
     });
+    title=Get.arguments;
     super.initState();
   }
 
@@ -133,7 +135,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
               backgroundColor: Color(0xff1AA928),
               onPressed: () {
                 // AppNavigator.navigateAddChance(state.listChanceData.first.id!);
-                AppNavigator.navigateFormAdd('Thêm cơ hội', 3);
+                AppNavigator.navigateFormAdd('Thêm ${title.toLowerCase()}', 3);
               },
               child: Icon(Icons.add, size: 40),
             ),

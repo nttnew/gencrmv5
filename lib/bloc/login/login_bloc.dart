@@ -19,7 +19,7 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
   final EventRepositoryStorage localRepository;
-
+  late List<ItemMenu> listMenu = [];
   LoginBloc({required this.userRepository, required this.localRepository})
       : super(LoginState(
             email: UserName.pure(),
@@ -70,6 +70,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               platform: Platform.isIOS ? 'iOS' : 'Android',
               device_token: event.device_token);
           if (response.code == BASE_URL.SUCCESS) {
+            listMenu=[];
+            listMenu.addAll(response.data?.menu ?? []);
             await localRepository.saveUser(jsonEncode(response.data));
             await shareLocal.putString(
                 PreferencesKey.SESS, response.data!.session_id!);
@@ -132,6 +134,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               platform: Platform.isIOS ? 'iOS' : 'Android',
               device_token: event.device_token);
           if (response.code == BASE_URL.SUCCESS) {
+            listMenu = [];
+            listMenu.addAll(response.data?.menu ?? []);
             await localRepository.saveUser(jsonEncode(response.data));
             await shareLocal.putString(
                 PreferencesKey.SESS, response.data!.session_id!);

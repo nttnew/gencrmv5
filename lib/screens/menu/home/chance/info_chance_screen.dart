@@ -153,10 +153,10 @@ class _InfoChancePageState extends State<InfoChancePage> {
                           InkWell(
                               onTap: () {
                                 Get.back();
-                                AppNavigator.navigateAddContract(id: id);
+                                AppNavigator.navigateAddContract(id: id, title: name.toLowerCase());
                               },
                               child: Text(
-                                'Thêm hợp đồng',
+                                'Thêm ${name.toLowerCase()}',
                                 style: AppStyle.DEFAULT_16_BOLD
                                     .copyWith(color: Color(0xff006CB1)),
                               ))

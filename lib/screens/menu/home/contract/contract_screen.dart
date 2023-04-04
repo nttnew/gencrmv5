@@ -28,6 +28,7 @@ class _ContractScreenState extends State<ContractScreen> {
   String total = "0";
   int lenght = 0;
   String idFilter = "";
+  String title = "";
   String search = "";
   TextEditingController _editingController = TextEditingController();
   bool isCheck = true;
@@ -46,6 +47,7 @@ class _ContractScreenState extends State<ContractScreen> {
         page = page + 1;
       } else {}
     });
+    title=Get.arguments;
     super.initState();
   }
 
@@ -110,16 +112,7 @@ class _ContractScreenState extends State<ContractScreen> {
                         (index) => _buildCustomer(state.listContract[index])),
                   ),
                 ),
-              ))
-                  //
-                  //   ListView.builder(
-                  //   controller: _scrollController,
-                  //   itemCount: state.listContract.length,
-                  //   itemBuilder: (context, index){
-                  //     return _buildCustomer(state.listContract[index]);
-                  //   },
-                  // )
-                  ;
+              ));
             } else
               return Container();
           }),
@@ -130,7 +123,7 @@ class _ContractScreenState extends State<ContractScreen> {
         child: FloatingActionButton(
           backgroundColor: Color(0xff1AA928),
           onPressed: () {
-            AppNavigator.navigateAddContract();
+            AppNavigator.navigateAddContract(title: title.toLowerCase());
           },
           child: Icon(Icons.add, size: 40),
         ),

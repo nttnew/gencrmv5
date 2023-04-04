@@ -252,7 +252,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                           onTap: () {
                                             Get.back();
                                             AppNavigator.navigateAddContract(
-                                                customer_id: id);
+                                                customer_id: id, title: name.toLowerCase());
                                           },
                                           child: Row(
                                             mainAxisAlignment:

@@ -29,6 +29,7 @@ class _WorkScreenState extends State<WorkScreen> {
   int pageTotal = 1;
   String search = "";
   String filter_id = "";
+  String title = '';
 
   @override
   void initState() {
@@ -43,6 +44,7 @@ class _WorkScreenState extends State<WorkScreen> {
         page = page + 1;
       } else {}
     });
+    title=Get.arguments;
     super.initState();
   }
 
@@ -54,7 +56,7 @@ class _WorkScreenState extends State<WorkScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff1AA928),
-        onPressed: () => AppNavigator.navigateFormAdd('Thêm công việc', 5),
+        onPressed: () => AppNavigator.navigateFormAdd('Thêm ${title.toLowerCase()}', 5),
         child: Icon(Icons.add, size: 40),
       ),
       appBar: AppBar(

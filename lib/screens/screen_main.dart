@@ -12,6 +12,7 @@ import 'package:gen_crm/models/index.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import '../bloc/login/login_bloc.dart';
 import '../storages/share_local.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
 
@@ -25,15 +26,32 @@ class _ScreenMainState extends State<ScreenMain> {
 
   List<ButtonMenuModel> listMenu = [];
 
-  List<Map> menuItems = [
-    {"icon": "assets/icons/addContent.png", "name": "Thêm mua xe"},
-    {"icon": "assets/icons/addContent.png", "name": "Thêm bán xe"},
-    {"icon": "assets/icons/addContent.png", "name": "Thêm đặt lịch"},
-    {"icon": "assets/icons/addContent.png", "name": "Thêm phiếu dịch vụ"},
-    {"icon": "assets/icons/add_clue.png", "name": "Thêm khách hàng"},
-    {"icon": "assets/icons/addWork.png", "name": "Thêm công việc"},
-    {"icon": "assets/icons/Support.png", "name": "Thêm hỗ trợ"},
-  ];
+  // List<Map> menuItems = [
+  //   {"icon": "assets/icons/addContent.png", "name": "Thêm mua xe"},
+  //   {"icon": "assets/icons/addContent.png", "name": "Thêm bán xe"},
+  //   {"icon": "assets/icons/addContent.png", "name": "Thêm đặt lịch"},
+  //   {"icon": "assets/icons/addContent.png", "name": "Thêm phiếu dịch vụ"},
+  //   {"icon": "assets/icons/add_clue.png", "name": "Thêm khách hàng"},
+  //   {"icon": "assets/icons/addWork.png", "name": "Thêm công việc"},
+  //   {"icon": "assets/icons/Support.png", "name": "Thêm hỗ trợ"},
+  // ];
+
+  String getIconMenu(String id) {
+    if (ModuleText.CUSTOMER == id) {
+      return 'assets/icons/add_clue.png';
+    } else if (ModuleText.DAU_MOI == id) {
+      return 'assets/icons/addWork.png';
+    } else if (ModuleText.LICH_HEN == id) {
+      return 'assets/icons/addWork.png';
+    } else if (ModuleText.HOP_DONG == id) {
+      return 'assets/icons/addContent.png';
+    } else if (ModuleText.CONG_VIEC == id) {
+      return 'assets/icons/addWork.png';
+    } else if (ModuleText.CSKH == id) {
+      return 'assets/icons/Support.png';
+    }
+    return 'assets/icons/addWork.png';
+  }
 
   @override
   void initState() {
@@ -116,58 +134,46 @@ class _ScreenMainState extends State<ScreenMain> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ...List<Widget>.generate(menuItems.length, (i) {
+                      ...List<Widget>.generate(
+                          LoginBloc.of(context).listMenu.length, (i) {
                         return GestureDetector(
                           onTap: () {
                             Get.back();
-                            switch (i) {
-                              case 0:
-                                {
-                                  break;
-                                }
-                              case 1:
-                                {
-                                  break;
-                                }
-                              case 2:
-                                {
-                                  break;
-                                }
-                              case 3:
-                                {
-                                  AppNavigator.navigateAddServiceVoucher();
-                                  break;
-                                }
-                              case 4:
-                                {
-                                  AppNavigator.navigateAddCustomer();
-                                  break;
-                                }
-                              case 5:
-                                {
-                                  AppNavigator.navigateFormAdd(
-                                      "Thêm công việc", 14);
-                                  break;
-                                }
-                              case 6:
-                                {
-                                  AppNavigator.navigateFormAdd(
-                                      "Thêm công việc", 15);
-                                  break;
-                                }
 
-                              default:
-                                break;
+                            String id =
+                                LoginBloc.of(context).listMenu[i].id.toString();
+                            String name = LoginBloc.of(context)
+                                .listMenu[i]
+                                .name
+                                .toString().toLowerCase();
+                            if (ModuleText.CUSTOMER == id) {
+                              AppNavigator.navigateAddCustomer();
+                            } else if (ModuleText.DAU_MOI == id) {
+                              AppNavigator.navigateFormAdd('Thêm ${name}', 2);
+                            } else if (ModuleText.LICH_HEN == id) {
+                              AppNavigator.navigateFormAdd('Thêm ${name}', 3);
+                            } else if (ModuleText.HOP_DONG == id) {
+                              AppNavigator.navigateAddServiceVoucher();
+                            } else if (ModuleText.CONG_VIEC == id) {
+                              AppNavigator.navigateFormAdd("Thêm ${name}", 14);
+                            } else if (ModuleText.CSKH == id) {
+                              AppNavigator.navigateFormAdd('Thêm ${name}', 6);
                             }
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               AppValue.hSpaceLarge,
-                              Image.asset(menuItems[i]["icon"]),
+                              Image.asset(getIconMenu(LoginBloc.of(context)
+                                  .listMenu[i]
+                                  .id
+                                  .toString())),
                               SizedBox(width: 10),
                               Text(
-                                menuItems[i]["name"],
+                                LoginBloc.of(context)
+                                    .listMenu[i]
+                                    .name
+                                    .toString(),
                                 style: AppStyle.DEFAULT_16_BOLD
                                     .copyWith(color: Color(0xff006CB1)),
                               )

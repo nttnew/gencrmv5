@@ -84,8 +84,8 @@ class AppNavigator {
   static navigateContract(String name) async =>
       await Get.toNamed(ROUTE_NAMES.CONTRACT, arguments: name);
 
-  static navigateAddContract({String? id, String? customer_id}) async =>
-      await Get.toNamed(ROUTE_NAMES.ADD_CONTRACT, arguments: [id, customer_id]);
+  static navigateAddContract({String? id, String? customer_id,required String title}) async =>
+      await Get.toNamed(ROUTE_NAMES.ADD_CONTRACT, arguments: [id, customer_id,title]);
 
   static navigateInfoContract(String id, String name) async =>
       await Get.toNamed(ROUTE_NAMES.INFO_CONTRACT, arguments: [id, name]);

@@ -221,3 +221,14 @@ String getURLModule(String module) {
   }
   return '';
 }
+
+
+class ModuleText{
+  static const String CUSTOMER = 'customer';
+  static const String DAU_MOI = 'contact';
+  static const String LICH_HEN = 'opportunity';
+  static const String HOP_DONG = 'contract';
+  static const String CONG_VIEC = 'job';
+  static const String CSKH = 'support';
+
+}
