@@ -11,7 +11,10 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
+import '../../../../bloc/contract/detail_contract_bloc.dart';
+import '../../../../src/models/model_generator/file_response.dart';
 import '../../../../widgets/widget_dialog.dart';
+import '../../attachment/attachment.dart';
 
 class DetailWorkScreen extends StatefulWidget {
   const DetailWorkScreen({Key? key}) : super(key: key);
@@ -27,7 +30,12 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   @override
   void initState() {
     super.initState();
+    DetailContractBloc.of(context).getFile(id, Module.CONG_VIEC);
     DetailWorkBloc.of(context).add(InitGetDetailWorkEvent(id));
+  }
+
+  void callApiFile() {
+    DetailContractBloc.of(context).getFile(id, Module.CONG_VIEC);
   }
 
   @override
@@ -256,6 +264,45 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                           width: AppValue.widths * 0.1,
                                         ),
                                         Text("Thêm thảo luận",
+                                            style: styleTitleBottomSheet())
+                                      ],
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      final List<FileDataResponse> list = [];
+                                      for (final a
+                                          in DetailContractBloc.of(context)
+                                              .listFileResponse) {
+                                        list.add(a);
+                                      }
+                                      Get.back();
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (context) => Attachment(
+                                                    id: id.toString(),
+                                                    name: title, //todo
+                                                    listFileResponse: list,
+                                                    typeModule:
+                                                        Module.CONG_VIEC,
+                                                  )))
+                                          .whenComplete(() {
+                                        callApiFile();
+                                      });
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: AppValue.widths * 0.2,
+                                        ),
+                                        SvgPicture.asset(
+                                            'assets/icons/attack.svg'),
+                                        SizedBox(
+                                          width: AppValue.widths * 0.1,
+                                        ),
+                                        Text("Xem đính kèm",
                                             style: styleTitleBottomSheet())
                                       ],
                                     ),

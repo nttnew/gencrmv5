@@ -381,6 +381,8 @@ class _AddServiceVoucherStepTwoScreenState
                                                               file: _bloc
                                                                       .listImage[
                                                                   index],
+                                                              module: Module
+                                                                  .HOP_DONG,
                                                             )));
                                               },
                                               child: Container(
@@ -882,10 +884,7 @@ class _AddServiceVoucherStepTwoScreenState
         final filePicked = result.files.first;
         final fileExt =
             result.files.first.path?.split("/").last.split('.').last;
-        if (fileExt == 'jpg' ||
-            fileExt == 'jpeg' ||
-            fileExt == 'png' ||
-            fileExt == 'heic') {
+        if (AppValue.checkTypeImage(fileExt.toString())) {
           _bloc.listImage.add(File(filePicked.path!));
         } else {
           _bloc.listFile.add(File(filePicked.path!));

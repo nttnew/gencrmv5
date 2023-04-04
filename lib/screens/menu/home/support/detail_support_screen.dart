@@ -9,8 +9,11 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
+import '../../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../../bloc/support/support_bloc.dart';
+import '../../../../src/models/model_generator/file_response.dart';
 import '../../../../widgets/widget_dialog.dart';
+import '../../attachment/attachment.dart';
 
 class DetailSupportScreen extends StatefulWidget {
   const DetailSupportScreen({Key? key}) : super(key: key);
@@ -21,11 +24,17 @@ class DetailSupportScreen extends StatefulWidget {
 
 class _DetailSupportScreenState extends State<DetailSupportScreen> {
   String id = Get.arguments[0];
+  String title = Get.arguments[0];
 
   @override
   void initState() {
+    DetailContractBloc.of(context).getFile(int.parse(id), Module.HO_TRO);
     DetailSupportBloc.of(context).add(InitGetDetailSupportEvent(id));
     super.initState();
+  }
+
+  void callApiFile() {
+    DetailContractBloc.of(context).getFile(int.parse(id), Module.HO_TRO);
   }
 
   @override
@@ -35,7 +44,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
           toolbarHeight: AppValue.heights * 0.1,
           backgroundColor: HexColor("#D0F1EB"),
           title: WidgetText(
-            title: Get.arguments[1],
+            title: title,
             style: AppStyle.DEFAULT_18_BOLD,
             maxLine: 3,
           ),
@@ -217,18 +226,6 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                                         ],
                                       )),
                             ),
-
-                            // SizedBox(
-                            //   height: AppValue.heights * 0.02,
-                            // ),
-                            // WidgetText(
-                            //   title: "Thảo luận",
-                            //   style: TextStyle(
-                            //       fontFamily: "Quicksand",
-                            //       color: HexColor("#263238"),
-                            //       fontWeight: FontWeight.w700,
-                            //       fontSize: 14),
-                            // ),
                             SizedBox(
                               height: AppValue.heights * 0.02,
                             ),
@@ -278,6 +275,47 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                                               width: AppValue.widths * 0.1,
                                             ),
                                             Text("Thêm thảo luận",
+                                                style: styleTitleBottomSheet())
+                                          ],
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          final List<FileDataResponse> list =
+                                              [];
+                                          for (final a
+                                              in DetailContractBloc.of(context)
+                                                  .listFileResponse) {
+                                            list.add(a);
+                                          }
+                                          Get.back();
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Attachment(
+                                                        id: id,
+                                                        name: title,
+                                                        listFileResponse: list,
+                                                        typeModule:
+                                                            Module.HO_TRO,
+                                                      )))
+                                              .whenComplete(() {
+                                            callApiFile();
+                                          });
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              width: AppValue.widths * 0.2,
+                                            ),
+                                            SvgPicture.asset(
+                                                'assets/icons/attack.svg'),
+                                            SizedBox(
+                                              width: AppValue.widths * 0.1,
+                                            ),
+                                            Text("Xem đính kèm",
                                                 style: styleTitleBottomSheet())
                                           ],
                                         ),

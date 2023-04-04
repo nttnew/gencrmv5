@@ -260,7 +260,8 @@ class ServiceVoucherBloc
         if (listFileAllStream.value?.isNotEmpty ?? false) {
           final responseUpload = await userRepository.uploadMultiFileContract(
               id: data['recordId'].toString(),
-              files: listFileAllStream.value ?? []);
+              files: listFileAllStream.value ?? [],
+              module: getURLModule(Module.HOP_DONG));
           if ((responseUpload.code == BASE_URL.SUCCESS) ||
               (responseUpload.code == BASE_URL.SUCCESS_200)) {
             LoadingApi().popLoading();

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:dartx/dartx.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +13,7 @@ import '../../src/base.dart';
 import '../../src/color.dart';
 import '../../src/messages.dart';
 import '../../src/models/model_generator/contract.dart';
+import '../../src/models/model_generator/file_response.dart';
 import '../../src/navigator.dart';
 import '../../widgets/widget_dialog.dart';
 
@@ -33,6 +37,7 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
   }
 
   List<ContractItemData>? list;
+  List<FileDataResponse> listFileResponse = [];
 
   Stream<DetailContractState> _getDetailContract({required int id}) async* {
     LoadingApi().pushLoading();
@@ -96,6 +101,47 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       throw e;
     }
     LoadingApi().popLoading();
+  }
+
+  Future<void> getFile(int id,String module) async {
+    listFileResponse = [];
+    final response =
+        await userRepository.getFile(module: module, id: id);
+    if ((response.code == BASE_URL.SUCCESS) ||
+        (response.code == BASE_URL.SUCCESS_200)) {
+      if (response.data?.list?.isNotEmpty ?? false) {
+        listFileResponse.addAll(response.data?.list ?? []);
+      }
+    }
+  }
+
+  Future<bool?> deleteFile(List<FileDataResponse> list) async {
+    String id = '';
+    for (final value in list) {
+      id += (id != '' ? ',' : '') + value.id.toString();
+    }
+    final response = await userRepository.deleteFile(id: id);
+    final statusCode =
+        (response as Map<String, dynamic>).getOrElse('e', () => -1);
+    if (statusCode == 0) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool?> uploadFile(
+      String id, List<File> listFile, String module) async {
+    final responseUpload = await userRepository.uploadMultiFileContract(
+      id: id,
+      files: listFile,
+      module: module,
+    );
+    if ((responseUpload.code == BASE_URL.SUCCESS) ||
+        (responseUpload.code == BASE_URL.SUCCESS_200)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   static DetailContractBloc of(BuildContext context) =>

@@ -10,13 +10,16 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../../bloc/chance_customer/chance_customer_bloc.dart';
 import '../../../../../bloc/clue_customer/clue_customer_bloc.dart';
+import '../../../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../../../bloc/contract_customer/contract_customer_bloc.dart';
 import '../../../../../bloc/job_customer/job_customer_bloc.dart';
 import '../../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../../bloc/support_customer/support_customer_bloc.dart';
+import '../../../../../src/models/model_generator/file_response.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../../widgets/widget_dialog.dart';
+import '../../../attachment/attachment.dart';
 
 class DetailCustomerScreen extends StatefulWidget {
   const DetailCustomerScreen({Key? key}) : super(key: key);
@@ -37,6 +40,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
   void initState() {
     _tabController = TabController(length: 6, vsync: this);
     Future.delayed(Duration(seconds: 0), () {
+      DetailContractBloc.of(context).getFile(int.parse(id), Module.KHACH_HANG);
       DetailCustomerBloc.of(context)
           .add(InitGetDetailCustomerEvent(int.parse(id)));
       ListNoteBloc.of(context).add(InitNoteCusEvent(id, "1"));
@@ -50,6 +54,10 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
           .add(InitGetSupportCustomerEvent(int.parse(id)));
     });
     super.initState();
+  }
+
+  void callApiUploadFile() {
+    DetailContractBloc.of(context).getFile(int.parse(id), Module.KHACH_HANG);
   }
 
   @override
@@ -333,6 +341,49 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                                 width: AppValue.widths * 0.1,
                                               ),
                                               Text("Thêm thảo luận",
+                                                  style:
+                                                      styleTitleBottomSheet())
+                                            ],
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            final List<FileDataResponse> list =
+                                                [];
+                                            for (final a
+                                                in DetailContractBloc.of(
+                                                        context)
+                                                    .listFileResponse) {
+                                              list.add(a);
+                                            }
+                                            Get.back();
+                                            Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Attachment(
+                                                          id: id,
+                                                          name: name,
+                                                          listFileResponse:
+                                                              list,
+                                                          typeModule:
+                                                              Module.KHACH_HANG,
+                                                        )))
+                                                .whenComplete(
+                                                    () => callApiUploadFile());
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                width: AppValue.widths * 0.2,
+                                              ),
+                                              SvgPicture.asset(
+                                                  'assets/icons/attack.svg'),
+                                              SizedBox(
+                                                width: AppValue.widths * 0.1,
+                                              ),
+                                              Text("Xem đính kèm",
                                                   style:
                                                       styleTitleBottomSheet())
                                             ],

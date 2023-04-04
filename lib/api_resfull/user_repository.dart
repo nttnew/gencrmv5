@@ -10,6 +10,7 @@ import 'package:gen_crm/src/models/model_generator/customer.dart';
 import 'package:gen_crm/src/models/model_generator/customer_contract.dart';
 import 'package:gen_crm/src/models/model_generator/detail_contract.dart';
 import 'package:gen_crm/src/models/model_generator/detail_customer.dart';
+import 'package:gen_crm/src/models/model_generator/file_response.dart';
 import 'package:gen_crm/src/models/model_generator/infor_acc.dart';
 import 'package:gen_crm/src/models/model_generator/job_chance.dart';
 import 'package:gen_crm/src/models/model_generator/job_customer.dart';
@@ -650,8 +651,7 @@ class UserRepository {
           .uploadFileSupport(id, files);
 
   Future<BaseResponse> uploadMultiFileContract(
-      {required String id, required List<File> files}) async {
-    // final _data = FormData();
+      {required String id, required List<File> files,required String module}) async {
     final multipartFiles = <MultipartFile>[];
     if (files.isNotEmpty) {
       for (final file in files) {
@@ -664,8 +664,19 @@ class UserRepository {
       }
     }
     return await RestClient(dio, baseUrl: dio.options.baseUrl)
-        .uploadMultiFileContract(id, multipartFiles);
+        .uploadMultiFileContract(id, multipartFiles,module);
   }
+
+  Future<FileResponse> getFile({
+    required String module,
+    required int id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getFile(module, id);
+
+  Future<dynamic> deleteFile({
+    required String id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).deleteFile(id);
 
   Stream<AuthenticationStatus> get status async* {
     await Future<void>.delayed(const Duration(seconds: 1));

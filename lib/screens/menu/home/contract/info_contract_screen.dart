@@ -8,15 +8,16 @@ import 'package:gen_crm/screens/menu/home/contract/contract_job.dart';
 import 'package:gen_crm/screens/menu/home/contract/contract_operation.dart';
 import 'package:gen_crm/screens/menu/home/contract/contract_payment.dart';
 import 'package:gen_crm/screens/menu/home/contract/contract_support.dart';
-import 'package:gen_crm/src/models/model_generator/attach_file.dart';
 import 'package:gen_crm/widgets/widget_button.dart';
 import 'package:get/get.dart';
 
 import '../../../../bloc/job_contract/job_contract_bloc.dart';
 import '../../../../bloc/support_contract_bloc/support_contract_bloc.dart';
+import '../../../../src/models/model_generator/file_response.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/widget_appbar.dart';
 import '../../../../widgets/widget_dialog.dart';
+import '../../attachment/attachment.dart';
 
 class InfoContractPage extends StatefulWidget {
   const InfoContractPage({Key? key}) : super(key: key);
@@ -28,11 +29,10 @@ class InfoContractPage extends StatefulWidget {
 class _InfoContractPageState extends State<InfoContractPage> {
   String id = Get.arguments[0];
   String name = Get.arguments[1];
-  List<AttachFile> listFile = [];
-
   @override
   void initState() {
     Future.delayed(Duration(milliseconds: 100), () {
+      DetailContractBloc.of(context).getFile(int.parse(id), Module.HOP_DONG);
       DetailContractBloc.of(context)
           .add(InitGetDetailContractEvent(int.parse(id)));
       PaymentContractBloc.of(context)
@@ -42,6 +42,10 @@ class _InfoContractPageState extends State<InfoContractPage> {
           .add(InitGetSupportContractEvent(int.parse(id)));
     });
     super.initState();
+  }
+
+  void callApiUploadFile() {
+    DetailContractBloc.of(context).getFile(int.parse(id), Module.HOP_DONG);
   }
 
   @override
@@ -141,9 +145,6 @@ class _InfoContractPageState extends State<InfoContractPage> {
       ),
       bottomNavigationBar: BlocBuilder<DetailContractBloc, DetailContractState>(
         builder: (context, state) {
-          if (state is SuccessDetailContractState) {
-            listFile = state.listDetailContract[0].listFile ?? [];
-          }
           return WidgetButton(
             text: 'Thao Tác',
             onTap: () {
@@ -221,9 +222,23 @@ class _InfoContractPageState extends State<InfoContractPage> {
                           ),
                           GestureDetector(
                             onTap: () {
+                              final List<FileDataResponse> list = [];
+                              for (final a in DetailContractBloc.of(context)
+                                  .listFileResponse) {
+                                list.add(a);
+                              }
                               Get.back();
-                              AppNavigator.navigateAttachment(
-                                  id, name, listFile);
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (context) => Attachment(
+                                            id: id,
+                                            name: name,
+                                            listFileResponse: list,
+                                            typeModule: Module.HOP_DONG,
+                                          )))
+                                  .whenComplete(() {
+                                callApiUploadFile();
+                              });
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,

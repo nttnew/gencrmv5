@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:gen_crm/src/router.dart';
 
 import '../models/product_model.dart';
-import 'models/model_generator/attach_file.dart';
 
 class AppNavigator {
   AppNavigator._();
@@ -148,8 +147,8 @@ class AppNavigator {
       await Get.toNamed(ROUTE_NAMES.ADD_PRODUCT,
           arguments: [add, reload, data]);
 
-  static navigateAttachment(
-          String id, String name, List<AttachFile>? listFile) async =>
-      await Get.toNamed(ROUTE_NAMES.ATTACHMENT,
-          arguments: [id, name, listFile]);
+  // static navigateAttachment(
+  //         String id, String name, List<FileDataResponse> listFile) async =>
+  //     await Get.toNamed(ROUTE_NAMES.ATTACHMENT,
+  //         arguments: [id, name, listFile]);
 }

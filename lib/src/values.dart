@@ -118,4 +118,14 @@ class AppValue {
     final currencyFormatter = NumberFormat('#,##0', 'ID');
     return currencyFormatter.format(money) + ' đ';
   }
+
+  static bool checkTypeImage(String fileExt) {
+    if (fileExt == 'jpg' ||
+        fileExt == 'jpeg' ||
+        fileExt == 'png' ||
+        fileExt == 'heic') {
+      return true;
+    }
+    return false;
+  }
 }

@@ -1,13 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/list_note/list_note_bloc.dart';
 import 'package:gen_crm/widgets/widget_button.dart';
 import 'package:get/get.dart';
 
 import '../../../../bloc/blocs.dart';
+import '../../../../bloc/contract/detail_contract_bloc.dart';
+import '../../../../src/models/model_generator/file_response.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/widget_appbar.dart';
 import '../../../../widgets/widget_dialog.dart';
+import '../../attachment/attachment.dart';
 import 'chance_info.dart';
 import 'job_chance_item.dart';
 
@@ -25,11 +29,16 @@ class _InfoChancePageState extends State<InfoChancePage> {
 
   @override
   void initState() {
+    DetailContractBloc.of(context).getFile(int.parse(id), Module.CO_HOI_BH);
     GetListDetailChanceBloc.of(context)
         .add(InitGetListDetailEvent(int.parse(id)));
     ListNoteBloc.of(context).add(InitNoteOppEvent(id, "1"));
     GetJobChanceBloc.of(context).add(InitGetJobEventChance(int.parse(id)));
     super.initState();
+  }
+
+  void callApiUploadFile() {
+    DetailContractBloc.of(context).getFile(int.parse(id), Module.CO_HOI_BH);
   }
 
   @override
@@ -186,6 +195,38 @@ class _InfoChancePageState extends State<InfoChancePage> {
                             SizedBox(width: 10),
                             Text(
                               'Thêm thảo luận',
+                              style: AppStyle.DEFAULT_16_BOLD
+                                  .copyWith(color: Color(0xff006CB1)),
+                            )
+                          ],
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          final List<FileDataResponse> list = [];
+                          for (final a in DetailContractBloc.of(context)
+                              .listFileResponse) {
+                            list.add(a);
+                          }
+                          Get.back();
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(
+                                  builder: (context) => Attachment(
+                                        id: id,
+                                        name: name,
+                                        listFileResponse: list,
+                                        typeModule: Module.CO_HOI_BH,
+                                      )))
+                              .whenComplete(() => callApiUploadFile());
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            AppValue.hSpaceLarge,
+                            SvgPicture.asset('assets/icons/attack.svg'),
+                            SizedBox(width: 10),
+                            Text(
+                              'Xem đính kèm',
                               style: AppStyle.DEFAULT_16_BOLD
                                   .copyWith(color: Color(0xff006CB1)),
                             )

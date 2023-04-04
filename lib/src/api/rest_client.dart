@@ -34,6 +34,7 @@ import '../models/model_generator/contact_by_customer.dart';
 import '../models/model_generator/detail_contract.dart';
 import '../models/model_generator/clue.dart';
 import '../models/model_generator/clue_detail.dart';
+import '../models/model_generator/file_response.dart';
 import '../models/model_generator/job_chance.dart';
 import '../models/model_generator/job_customer.dart';
 import '../models/model_generator/list_car_response.dart';
@@ -563,10 +564,22 @@ abstract class RestClient {
   Future<BaseResponse> uploadFileSupport(
       @Part(name: "main_id") String id, @Part(name: "files") File file);
 
-  @POST(BASE_URL.UPLOAD_FILE_CONTRACT)
+  @POST('${BASE_URL.UPLOAD_FILE_START}{module}${BASE_URL.UPLOAD_FILE_END}')
   @MultiPart()
   Future<BaseResponse> uploadMultiFileContract(
     @Part(name: "main_id") String id,
     @Part(name: 'files[]') List<MultipartFile> files,
+    @Path('module') String module,
+  );
+
+  @GET(BASE_URL.GET_FILE)
+  Future<FileResponse> getFile(
+    @Query('module') String module,
+    @Query('id') int id,
+  );
+
+  @POST(BASE_URL.DELETE_FILE)
+  Future<dynamic> deleteFile(
+    @Part(name: 'id') String ids,
   );
 }

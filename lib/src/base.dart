@@ -135,10 +135,15 @@ class BASE_URL {
   static const UPLOAD_FILE_CUS = 'modules/genmobile2/customer/fileupload';
   static const UPLOAD_FILE_JOB = 'modules/genmobile2/job/fileupload';
   static const UPLOAD_FILE_CONTRACT = 'modules/genmobile2/contract/fileupload';
+  static const UPLOAD_FILE_START = 'modules/genmobile2/';
+  static const UPLOAD_FILE_END = '/fileupload';
+
   static const UPLOAD_FILE_CONTACT =
       'modules/genmobile2/agencycustomer/fileupload';
   static const UPLOAD_FILE_SUPPORT = 'modules/genmobile2/support/fileupload';
   static const UPLOAD_FILE_OPP = 'modules/genmobile2/opportunity/fileupload';
+  static const GET_FILE = 'modules/genmobile2/documents/list';
+  static const DELETE_FILE = 'modules/genmobile2/documents/delete';
 
   // Quân
   static const INFOR_ACC = 'modules/genmobile2/profile/info';
@@ -156,6 +161,8 @@ class BASE_URL {
       'modules/genmobile2/notification/listRead';
   static const DELETE_NOTIFICATION = 'modules/genmobile2/notification/delete';
   static const READ_NOTIFICATION = 'modules/genmobile2/notification/read';
+  static const DOWNLOAD_FILE =
+      'https://car.gencrm.com/modules/genmobile2/documents/download';
   // receiveTimeout
   static const int receiveTimeout = 15000;
 
@@ -184,4 +191,33 @@ class BASE_URL {
   static const LOCK = 0;
   static const KHACH_HANG = 'Khách hàng';
   static const TEN_KHACH_HANG = 'Tên khách hàng';
+}
+
+class Module {
+  static const String KHACH_HANG = 'khachhang';
+  static const String HOP_DONG = 'hopdong';
+  static const String HO_TRO = 'hotro';
+  static const String CONG_VIEC = 'congviec';
+  static const String CO_HOI_BH = 'cohoibh';
+  static const String SAN_PHAM = 'sanpham';
+  static const String SAN_PHAM_KH = 'sanphamkh';
+  static const String DAU_MOI = 'daumoi';
+}
+
+// job cv customer: khách hang support ho tro contact đầu mối
+String getURLModule(String module) {
+  if (module == Module.HOP_DONG) {
+    return 'contract';
+  } else if (module == Module.KHACH_HANG) {
+    return 'customer';
+  } else if (module == Module.DAU_MOI) {
+    return 'agencycustomer';
+  } else if (module == Module.CONG_VIEC) {
+    return 'job';
+  } else if (module == Module.HO_TRO) {
+    return 'support';
+  }else if (module == Module.CO_HOI_BH) {
+    return 'opportunity';
+  }
+  return '';
 }

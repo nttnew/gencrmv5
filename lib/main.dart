@@ -73,8 +73,6 @@ import 'bloc/work/work_bloc.dart';
 import 'bloc/work_clue/work_clue_bloc.dart';
 import 'firebase_options.dart';
 
-import 'screens/menu/attachment/attachment.dart';
-
 Future main() async {
   Bloc.observer = SimpleBlocObserver();
   await dotenv.load(fileName: BASE_URL.ENV);
@@ -554,10 +552,10 @@ class MyApp extends StatelessWidget {
           name: ROUTE_NAMES.EDIT_CONTRACT,
           page: () => EditContract(),
         ),
-        GetPage(
-          name: ROUTE_NAMES.ATTACHMENT,
-          page: () => Attachment(),
-        ),
+        // GetPage(
+        //   name: ROUTE_NAMES.ATTACHMENT,
+        //   page: () => Attachment(),
+        // ),
       ],
     );
   }

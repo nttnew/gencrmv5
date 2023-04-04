@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/detail_clue/detail_clue_bloc.dart';
 import 'package:gen_crm/bloc/work_clue/work_clue_bloc.dart';
 import 'package:gen_crm/screens/menu/home/clue/general_info.dart';
@@ -10,10 +11,13 @@ import 'package:gen_crm/widgets/widget_button.dart';
 import 'package:get/get.dart';
 
 import '../../../../bloc/clue/clue_bloc.dart';
+import '../../../../bloc/contract/detail_contract_bloc.dart';
+import '../../../../src/models/model_generator/file_response.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/widget_appbar.dart';
 import '../../../../widgets/widget_dialog.dart';
 import '../../../../widgets/widget_text.dart';
+import '../../attachment/attachment.dart';
 
 class InfoCluePage extends StatefulWidget {
   const InfoCluePage({Key? key}) : super(key: key);
@@ -29,10 +33,15 @@ class _InfoCluePageState extends State<InfoCluePage> {
   @override
   void initState() {
     Future.delayed(Duration(milliseconds: 100), () {
+      DetailContractBloc.of(context).getFile(int.parse(id), Module.DAU_MOI);
       GetDetailClueBloc.of(context).add(InitGetDetailClueEvent(id));
       WorkClueBloc.of(context).add(GetWorkClue(id: id));
     });
     super.initState();
+  }
+
+  void callApiUploadFile() {
+    DetailContractBloc.of(context).getFile(int.parse(id), Module.DAU_MOI);
   }
 
   @override
@@ -163,6 +172,38 @@ class _InfoCluePageState extends State<InfoCluePage> {
                             SizedBox(width: 10),
                             Text(
                               'Thêm thảo luận',
+                              style: AppStyle.DEFAULT_16_BOLD
+                                  .copyWith(color: Color(0xff006CB1)),
+                            )
+                          ],
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          final List<FileDataResponse> list = [];
+                          for (final a in DetailContractBloc.of(context)
+                              .listFileResponse) {
+                            list.add(a);
+                          }
+                          Get.back();
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(
+                                  builder: (context) => Attachment(
+                                        id: id,
+                                        name: name,
+                                        listFileResponse: list,
+                                        typeModule: Module.DAU_MOI,
+                                      )))
+                              .whenComplete(() => callApiUploadFile());
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            AppValue.hSpaceLarge,
+                            SvgPicture.asset('assets/icons/attack.svg'),
+                            SizedBox(width: 10),
+                            Text(
+                              'Xem đính kèm',
                               style: AppStyle.DEFAULT_16_BOLD
                                   .copyWith(color: Color(0xff006CB1)),
                             )
