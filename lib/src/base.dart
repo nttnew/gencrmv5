@@ -169,7 +169,7 @@ class BASE_URL {
   static const ENV = 'assets/.env';
 
   // connectTimeout
-  static const int connectionTimeout = 15000;
+  static const int connectionTimeout = 45000;//todo timeout them coong viec
 
   static const content_type = 'Content-Type';
   static const application_json = 'application/json';
