@@ -54,6 +54,9 @@ LoginData _$LoginDataFromJson(Map<String, dynamic> json) => LoginData(
       menu: (json['menu'] as List<dynamic>?)
           ?.map((e) => ItemMenu.fromJson(e as Map<String, dynamic>))
           .toList(),
+      quick: (json['quick'] as List<dynamic>?)
+          ?.map((e) => ItemMenu.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$LoginDataToJson(LoginData instance) => <String, dynamic>{
@@ -62,6 +65,7 @@ Map<String, dynamic> _$LoginDataToJson(LoginData instance) => <String, dynamic>{
       'token': instance.token,
       'session_id': instance.session_id,
       'menu': instance.menu,
+      'quick': instance.quick,
     };
 
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>

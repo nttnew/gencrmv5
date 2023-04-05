@@ -163,7 +163,7 @@ class _FormAddDataState extends State<FormAddData> {
               toolbarHeight: AppValue.heights * 0.1,
               backgroundColor: HexColor("#D0F1EB"),
               title: WidgetText(
-                  title: title,
+                  title: title.toUpperCase().capitalizeFirst,
                   style: TextStyle(
                       color: Colors.black,
                       fontFamily: "Montserrat",

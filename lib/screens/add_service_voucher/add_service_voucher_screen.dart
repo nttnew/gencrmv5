@@ -9,9 +9,12 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../bloc/add_service_voucher/add_service_bloc.dart';
 
 class AddServiceVoucherScreen extends StatefulWidget {
+  const AddServiceVoucherScreen({Key? key, required this.title}) : super(key: key);
+
   @override
   State<AddServiceVoucherScreen> createState() =>
       _AddServiceVoucherScreenState();
+  final String title;
 }
 
 class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
@@ -50,7 +53,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
           toolbarHeight: AppValue.heights * 0.1,
           backgroundColor: HexColor("#D0F1EB"),
           title: WidgetText(
-              title: "Thêm phiếu dịch vụ",
+              title:widget.title,
               style: TextStyle(
                   color: Colors.black,
                   fontFamily: "Montserrat",

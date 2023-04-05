@@ -43,9 +43,16 @@ class LoginData {
   final InfoUserLogin? info_user;
   final String? token, session_id;
   final List<ItemMenu>? menu;
+  final List<ItemMenu>? quick;
 
-  LoginData(
-      {this.tien_te, this.info_user, this.token, this.session_id, this.menu});
+  LoginData({
+    this.tien_te,
+    this.info_user,
+    this.token,
+    this.session_id,
+    this.menu,
+    this.quick,
+  });
 
   factory LoginData.fromJson(Map<String, dynamic> json) =>
       _$LoginDataFromJson(json);

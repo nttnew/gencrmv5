@@ -24,8 +24,8 @@ class AppNavigator {
   static navigateAddCustomer() async =>
       await Get.toNamed(ROUTE_NAMES.ADDCUSTOMER);
 
-  static navigateAddServiceVoucher() async =>
-      await Get.toNamed(ROUTE_NAMES.ADDSERVICEVOUCHER);
+  // static navigateAddServiceVoucher() async =>
+  //     await Get.toNamed(ROUTE_NAMES.ADDSERVICEVOUCHER);
 
   static navigateAddServiceVoucherStepTwo() async =>
       await Get.toNamed(ROUTE_NAMES.ADDSERVICEVOUCHERSTEPTWO);
@@ -133,8 +133,8 @@ class AppNavigator {
   static navigateEditDataScreen(String id, int type) async =>
       await Get.toNamed(ROUTE_NAMES.FORM_EDIT, arguments: [id, type]);
 
-  static navigateEditContractScreen(String id) async =>
-      await Get.toNamed(ROUTE_NAMES.EDIT_CONTRACT, arguments: id);
+  static navigateEditContractScreen(String id,String title) async =>
+      await Get.toNamed(ROUTE_NAMES.EDIT_CONTRACT, arguments: [id,title]);
 
   static navigateAddNoteScreen(int type, String id) async =>
       await Get.toNamed(ROUTE_NAMES.ADD_NOTE, arguments: [type, id]);

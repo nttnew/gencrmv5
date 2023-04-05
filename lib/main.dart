@@ -516,10 +516,10 @@ class MyApp extends StatelessWidget {
           name: ROUTE_NAMES.ADDCUSTOMER,
           page: () => AddCustomer(),
         ),
-        GetPage(
-          name: ROUTE_NAMES.ADDSERVICEVOUCHER,
-          page: () => AddServiceVoucherScreen(),
-        ),
+        // GetPage(
+        //   name: ROUTE_NAMES.ADDSERVICEVOUCHER,
+        //   page: () => AddServiceVoucherScreen(),
+        // ),
         GetPage(
           name: ROUTE_NAMES.ADDSERVICEVOUCHERSTEPTWO,
           page: () => AddServiceVoucherStepTwoScreen(),

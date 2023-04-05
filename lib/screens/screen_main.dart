@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
+import 'package:gen_crm/screens/add_service_voucher/add_service_voucher_screen.dart';
 import 'package:gen_crm/widgets/widget_appbar.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/models/index.dart';
@@ -137,36 +138,44 @@ class _ScreenMainState extends State<ScreenMain> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ...List<Widget>.generate(
-                                LoginBloc.of(context).listMenu.length, (i) {
+                                LoginBloc.of(context).listMenuFlash.length,
+                                (i) {
                               return GestureDetector(
                                 onTap: () {
                                   Get.back();
 
                                   String id = LoginBloc.of(context)
-                                      .listMenu[i]
+                                      .listMenuFlash[i]
                                       .id
                                       .toString();
                                   String name = LoginBloc.of(context)
-                                      .listMenu[i]
+                                      .listMenuFlash[i]
                                       .name
                                       .toString()
                                       .toLowerCase();
                                   if (ModuleText.CUSTOMER == id) {
                                     AppNavigator.navigateAddCustomer();
                                   } else if (ModuleText.DAU_MOI == id) {
-                                    AppNavigator.navigateFormAdd(
-                                        'Thêm ${name}', 2);
+                                    AppNavigator.navigateFormAdd(name, 2);
                                   } else if (ModuleText.LICH_HEN == id) {
-                                    AppNavigator.navigateFormAdd(
-                                        'Thêm ${name}', 3);
+                                    AppNavigator.navigateFormAdd(name, 3);
                                   } else if (ModuleText.HOP_DONG == id) {
-                                    AppNavigator.navigateAddServiceVoucher();
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AddServiceVoucherScreen(
+                                                    title: name
+                                                            .toUpperCase()
+                                                            .capitalizeFirst ??
+                                                        '')));
                                   } else if (ModuleText.CONG_VIEC == id) {
-                                    AppNavigator.navigateFormAdd(
-                                        "Thêm ${name}", 14);
+                                    AppNavigator.navigateFormAdd(name, 14);
                                   } else if (ModuleText.CSKH == id) {
-                                    AppNavigator.navigateFormAdd(
-                                        'Thêm ${name}', 6);
+                                    AppNavigator.navigateFormAdd(name, 6);
+                                  } else if (ModuleText.THEM_MUA_XE == id) {
+                                    //todo
+                                  } else if (ModuleText.THEM_BAN_XE == id) {
+                                    //todo
                                   }
                                 },
                                 child: Row(
@@ -175,7 +184,7 @@ class _ScreenMainState extends State<ScreenMain> {
                                     AppValue.hSpaceLarge,
                                     Image.asset(
                                       getIconMenu(LoginBloc.of(context)
-                                          .listMenu[i]
+                                          .listMenuFlash[i]
                                           .id
                                           .toString()),
                                       height: 26,
@@ -185,7 +194,7 @@ class _ScreenMainState extends State<ScreenMain> {
                                     SizedBox(width: 10),
                                     Text(
                                       LoginBloc.of(context)
-                                          .listMenu[i]
+                                          .listMenuFlash[i]
                                           .name
                                           .toString(),
                                       style: AppStyle.DEFAULT_16_BOLD

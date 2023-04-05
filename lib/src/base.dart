@@ -222,13 +222,14 @@ String getURLModule(String module) {
   return '';
 }
 
-
 class ModuleText{
-  static const String CUSTOMER = 'customer';
-  static const String DAU_MOI = 'contact';
-  static const String LICH_HEN = 'opportunity';
-  static const String HOP_DONG = 'contract';
-  static const String CONG_VIEC = 'job';
-  static const String CSKH = 'support';
+  static const String CUSTOMER = 'them_khach_hang';
+  static const String DAU_MOI = 'them_dau_moi';
+  static const String LICH_HEN = 'them_co_hoi';
+  static const String HOP_DONG = 'them_hop_dong';
+  static const String CONG_VIEC = 'them_cong_viec';
+  static const String CSKH = 'them_ho_tro';
+  static const String THEM_MUA_XE = 'them_mua_xe';
+  static const String THEM_BAN_XE = 'them_ban_xe';
 
 }
