@@ -1042,18 +1042,22 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                                         style: AppStyle.DEFAULT_12,
                                       )),
                                   Positioned(
-                                    top: -8,
-                                    right: -3,
-                                    child: GestureDetector(
+                                    top: -13,
+                                    right: -8,
+                                    child: InkWell(
                                         onTap: () {
                                           arr.removeAt(index);
                                           setState(() {
                                             check = !check;
                                           });
                                         },
-                                        child: WidgetText(
-                                          title: "x",
-                                          style: AppStyle.DEFAULT_16,
+                                        child: Container(
+                                          color: Colors.transparent,
+                                          padding: EdgeInsets.all(5),
+                                          child: WidgetText(
+                                            title: "x",
+                                            style: AppStyle.DEFAULT_16,
+                                          ),
                                         )),
                                   )
                                 ],

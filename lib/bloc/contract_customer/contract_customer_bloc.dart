@@ -20,6 +20,7 @@ class ContractCustomerBloc
     extends Bloc<ContractCustomerEvent, ContractCustomerState> {
   final UserRepository userRepository;
 
+  int id=0;
   ContractCustomerBloc({required UserRepository userRepository})
       : userRepository = userRepository,
         super(InitGetContractCustomer());

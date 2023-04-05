@@ -27,6 +27,7 @@ import '../../../../../../../widgets/widget_dialog.dart';
 
 import '../../../../bloc/contract/attack_bloc.dart';
 import '../../../../bloc/contract/contract_bloc.dart';
+import '../../../../bloc/contract_customer/contract_customer_bloc.dart';
 import '../../../../models/product_model.dart';
 import '../../../../models/widget_input_date.dart';
 
@@ -187,6 +188,9 @@ class _FormAddContractState extends State<FormAddContract> {
                     onTap1: () {
                       Get.back();
                       Get.back();
+                      ContractCustomerBloc.of(context).add(
+                          InitGetContractCustomerEvent(
+                              ContractCustomerBloc.of(context).id));
                       ContractBloc.of(context)
                           .add(InitGetContractEvent(1, "", ""));
                     },
@@ -300,7 +304,11 @@ class _FormAddContractState extends State<FormAddContract> {
                                                               return Container();
                                                           })
                                                         : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, noEdit: true))
-                                                    : state.listAddData[index].data![index1].field_special == "url"
+                                                    :
+                                                    // state.listAddData[index].data![index1].field_hidden == "1"
+                                                    //     ?
+                                                    // SizedBox() :
+                                                    state.listAddData[index].data![index1].field_special == "url"
                                                         ? ProductContract(
                                                             data: listProduct,
                                                             addProduct:

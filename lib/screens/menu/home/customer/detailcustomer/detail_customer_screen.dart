@@ -40,6 +40,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
   void initState() {
     _tabController = TabController(length: 6, vsync: this);
     Future.delayed(Duration(seconds: 0), () {
+      ContractCustomerBloc.of(context).id=int.parse(id);
       DetailContractBloc.of(context).getFile(int.parse(id), Module.KHACH_HANG);
       DetailCustomerBloc.of(context)
           .add(InitGetDetailCustomerEvent(int.parse(id)));
@@ -252,7 +253,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                           onTap: () {
                                             Get.back();
                                             AppNavigator.navigateAddContract(
-                                                customer_id: id, title: name.toLowerCase());
+                                                customer_id: id, title: 'hợp đồng');
                                           },
                                           child: Row(
                                             mainAxisAlignment:
