@@ -153,369 +153,366 @@ class _AttachmentState extends State<Attachment> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.startDocked,
-          appBar: AppBar(
-            toolbarHeight: AppValue.heights * 0.1,
-            backgroundColor: HexColor("#D0F1EB"),
-            centerTitle: false,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                WidgetText(
-                    title: "Xem đính kèm",
-                    style: AppStyle.DEFAULT_16
-                        .copyWith(fontWeight: FontWeight.w700))
-              ],
-            ),
-            leading: Padding(
-                padding: EdgeInsets.only(left: 30),
-                child: InkWell(
-                    onTap: () => AppNavigator.navigateBack(),
-                    child: Icon(Icons.arrow_back, color: Colors.black))),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(15),
-              ),
-            ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
+      appBar: AppBar(
+        toolbarHeight: AppValue.heights * 0.1,
+        backgroundColor: HexColor("#D0F1EB"),
+        centerTitle: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            WidgetText(
+                title: "Xem đính kèm",
+                style:
+                    AppStyle.DEFAULT_16.copyWith(fontWeight: FontWeight.w700))
+          ],
+        ),
+        leading: Padding(
+            padding: EdgeInsets.only(left: 30),
+            child: InkWell(
+                onTap: () => AppNavigator.navigateBack(),
+                child: Icon(Icons.arrow_back, color: Colors.black))),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(15),
           ),
-          body: listPickFile.isNotEmpty || listFileResponse.isNotEmpty
-              ? StreamBuilder<bool?>(
-                  stream: status,
-                  builder: (context, snapshot) {
-                    if (snapshot.data ?? false) {
-                      return Container(
-                          padding: EdgeInsets.all(16),
-                          child: SingleChildScrollView(
-                            child: Container(
-                              margin: EdgeInsets.only(bottom: 60),
-                              child: Column(
-                                children: [
-                                  if (listFileResponse.isNotEmpty) ...[
-                                    Row(
-                                      children: [
-                                        Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 5),
-                                            child: WidgetText(
-                                              title: "Tệp đã chọn",
-                                              style: AppStyle.DEFAULT_16_BOLD,
-                                            )),
-                                      ],
-                                    ),
-                                    Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 8),
-                                        width: Get.width,
-                                        child: Column(
-                                          children: [
-                                            ListView.builder(
-                                              physics:
-                                                  NeverScrollableScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemCount: checkListImageApi(
-                                                      false, listFileResponse)
-                                                  .length,
-                                              itemBuilder: (context, index) =>
-                                                  ItemFile(
-                                                key: ValueKey(checkListImageApi(
-                                                        false,
-                                                        listFileResponse)[index]
-                                                    .id),
-                                                file: checkListImageApi(false,
-                                                    listFileResponse)[index],
-                                                functionMy: () {
-                                                  removeFileResponse(
-                                                      checkListImageApi(false,
-                                                              listFileResponse)[
-                                                          index]);
-                                                },
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: listPickFile.isNotEmpty || listFileResponse.isNotEmpty
+                ? StreamBuilder<bool?>(
+                    stream: status,
+                    builder: (context, snapshot) {
+                      if (snapshot.data ?? false) {
+                        return Container(
+                            padding: EdgeInsets.all(16),
+                            child: SingleChildScrollView(
+                              child: Container(
+                                margin: EdgeInsets.only(bottom: 60),
+                                child: Column(
+                                  children: [
+                                    if (listFileResponse.isNotEmpty) ...[
+                                      Row(
+                                        children: [
+                                          Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 5),
+                                              child: WidgetText(
+                                                title: "Tệp đã chọn",
+                                                style: AppStyle.DEFAULT_16_BOLD,
+                                              )),
+                                        ],
+                                      ),
+                                      Container(
+                                          margin:
+                                              EdgeInsets.symmetric(vertical: 8),
+                                          width: Get.width,
+                                          child: Column(
+                                            children: [
+                                              ListView.builder(
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount: checkListImageApi(
+                                                        false, listFileResponse)
+                                                    .length,
+                                                itemBuilder: (context, index) =>
+                                                    ItemFile(
+                                                  file: checkListImageApi(false,
+                                                      listFileResponse)[index],
+                                                  functionMy: () {
+                                                    removeFileResponse(
+                                                        checkListImageApi(false,
+                                                                listFileResponse)[
+                                                            index]);
+                                                  },
+                                                ),
                                               ),
-                                            ),
-                                            GridView.builder(
-                                              physics:
-                                                  NeverScrollableScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemCount: checkListImageApi(
-                                                      true, listFileResponse)
-                                                  .length,
-                                              gridDelegate:
-                                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 2,
-                                                crossAxisSpacing: 25,
-                                                mainAxisSpacing: 25,
-                                                mainAxisExtent: 90,
-                                              ),
-                                              itemBuilder: (context, index) =>
-                                                  Stack(
-                                                clipBehavior: Clip.none,
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.of(context).push(
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  PreviewImage(
-                                                                    isNetwork:
-                                                                        true,
-                                                                    file: File(checkListImageApi(
-                                                                            true,
-                                                                            listFileResponse)[index]
-                                                                        .link
-                                                                        .toString()),
-                                                                    module: widget
-                                                                        .typeModule,
-                                                                  )));
-                                                    },
-                                                    child: Container(
-                                                      clipBehavior:
-                                                          Clip.hardEdge,
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width,
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width,
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.grey,
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          8))),
-                                                      child: Image.network(
-                                                        checkListImageApi(true,
-                                                                        listFileResponse)[
-                                                                    index]
-                                                                .link ??
-                                                            '',
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Positioned(
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        removeFileResponse(
-                                                            checkListImageApi(
-                                                                    true,
-                                                                    listFileResponse)[
-                                                                index]);
-                                                      },
-                                                      child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            shape:
-                                                                BoxShape.circle,
-                                                            color: Colors.white,
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .black,
-                                                                width: 0.1),
-                                                          ),
-                                                          height: 16,
-                                                          width: 16,
-                                                          child: Icon(
-                                                            Icons.close,
-                                                            size: 9,
-                                                          )),
-                                                    ),
-                                                    top: 0,
-                                                    right: 0,
-                                                  )
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        )),
-                                  ],
-                                  if (listPickFile.isNotEmpty) ...[
-                                    Row(
-                                      children: [
-                                        Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 5),
-                                            child: WidgetText(
-                                              title: "Tệp vừa chọn",
-                                              style: AppStyle.DEFAULT_16_BOLD,
-                                            )),
-                                      ],
-                                    ),
-                                    Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 8),
-                                        width: Get.width,
-                                        child: Column(
-                                          children: [
-                                            ListView.builder(
-                                              physics:
-                                                  NeverScrollableScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemCount: checkListImage(
-                                                      false, listPickFile)
-                                                  .length,
-                                              itemBuilder: (context, index) =>
-                                                  Container(
-                                                margin:
-                                                    EdgeInsets.only(bottom: 4),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                              GridView.builder(
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount: checkListImageApi(
+                                                        true, listFileResponse)
+                                                    .length,
+                                                gridDelegate:
+                                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: 2,
+                                                  crossAxisSpacing: 25,
+                                                  mainAxisSpacing: 25,
+                                                  mainAxisExtent: 90,
+                                                ),
+                                                itemBuilder: (context, index) =>
+                                                    Stack(
+                                                  clipBehavior: Clip.none,
                                                   children: [
-                                                    Expanded(
-                                                      child: WidgetText(
-                                                        title: checkListImage(
-                                                                    false,
-                                                                    listPickFile)[
-                                                                index]
-                                                            .path
-                                                            .split("/")
-                                                            .last,
-                                                        style:
-                                                            AppStyle.DEFAULT_14,
-                                                        maxLine: 1,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
-                                                    ),
                                                     GestureDetector(
                                                       onTap: () {
-                                                        removeFilePick(
-                                                            checkListImage(
-                                                                    false,
-                                                                    listPickFile)[
-                                                                index]);
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        PreviewImage(
+                                                                          isNetwork:
+                                                                              true,
+                                                                          file: File(checkListImageApi(true, listFileResponse)[index]
+                                                                              .link
+                                                                              .toString()),
+                                                                          module:
+                                                                              widget.typeModule,
+                                                                        )));
                                                       },
-                                                      child:
-                                                          WidgetContainerImage(
-                                                        image:
-                                                            'assets/icons/icon_delete.png',
-                                                        width: 20,
-                                                        height: 20,
-                                                        fit: BoxFit.contain,
+                                                      child: Container(
+                                                        clipBehavior:
+                                                            Clip.hardEdge,
+                                                        width: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .width,
+                                                        height: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .width,
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.grey,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            8))),
+                                                        child: Image.network(
+                                                          checkListImageApi(
+                                                                          true,
+                                                                          listFileResponse)[
+                                                                      index]
+                                                                  .link ??
+                                                              '',
+                                                          fit: BoxFit.cover,
+                                                        ),
                                                       ),
+                                                    ),
+                                                    Positioned(
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          removeFileResponse(
+                                                              checkListImageApi(
+                                                                      true,
+                                                                      listFileResponse)[
+                                                                  index]);
+                                                        },
+                                                        child: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              color:
+                                                                  Colors.white,
+                                                              border: Border.all(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  width: 0.1),
+                                                            ),
+                                                            height: 16,
+                                                            width: 16,
+                                                            child: Icon(
+                                                              Icons.close,
+                                                              size: 9,
+                                                            )),
+                                                      ),
+                                                      top: 0,
+                                                      right: 0,
                                                     )
                                                   ],
                                                 ),
-                                              ),
-                                            ),
-                                            GridView.builder(
-                                              physics:
-                                                  NeverScrollableScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemCount: checkListImage(
-                                                      true, listPickFile)
-                                                  .length,
-                                              gridDelegate:
-                                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 2,
-                                                crossAxisSpacing: 25,
-                                                mainAxisSpacing: 25,
-                                                mainAxisExtent: 90,
-                                              ),
-                                              itemBuilder: (context, index) =>
-                                                  Stack(
-                                                clipBehavior: Clip.none,
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.of(context).push(
-                                                          MaterialPageRoute(
-                                                              builder:
-                                                                  (context) =>
-                                                                      PreviewImage(
-                                                                        file: checkListImage(
-                                                                            true,
-                                                                            listPickFile)[index],
-                                                                        module:
-                                                                            widget.typeModule,
-                                                                      )));
-                                                    },
-                                                    child: Container(
-                                                      clipBehavior:
-                                                          Clip.hardEdge,
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width,
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width,
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.grey,
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          8))),
-                                                      child: Image.file(
-                                                        checkListImage(true,
-                                                                listPickFile)[
-                                                            index],
-                                                        fit: BoxFit.cover,
+                                              )
+                                            ],
+                                          )),
+                                    ],
+                                    if (listPickFile.isNotEmpty) ...[
+                                      Row(
+                                        children: [
+                                          Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 5),
+                                              child: WidgetText(
+                                                title: "Tệp vừa chọn",
+                                                style: AppStyle.DEFAULT_16_BOLD,
+                                              )),
+                                        ],
+                                      ),
+                                      Container(
+                                          margin:
+                                              EdgeInsets.symmetric(vertical: 8),
+                                          width: Get.width,
+                                          child: Column(
+                                            children: [
+                                              ListView.builder(
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount: checkListImage(
+                                                        false, listPickFile)
+                                                    .length,
+                                                itemBuilder: (context, index) =>
+                                                    Container(
+                                                  margin: EdgeInsets.only(
+                                                      bottom: 4),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Expanded(
+                                                        child: WidgetText(
+                                                          title: checkListImage(
+                                                                      false,
+                                                                      listPickFile)[
+                                                                  index]
+                                                              .path
+                                                              .split("/")
+                                                              .last,
+                                                          style: AppStyle
+                                                              .DEFAULT_14,
+                                                          maxLine: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
                                                       ),
-                                                    ),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          removeFilePick(
+                                                              checkListImage(
+                                                                      false,
+                                                                      listPickFile)[
+                                                                  index]);
+                                                        },
+                                                        child:
+                                                            WidgetContainerImage(
+                                                          image:
+                                                              'assets/icons/icon_delete.png',
+                                                          width: 20,
+                                                          height: 20,
+                                                          fit: BoxFit.contain,
+                                                        ),
+                                                      )
+                                                    ],
                                                   ),
-                                                  Positioned(
-                                                    child: GestureDetector(
+                                                ),
+                                              ),
+                                              GridView.builder(
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount: checkListImage(
+                                                        true, listPickFile)
+                                                    .length,
+                                                gridDelegate:
+                                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: 2,
+                                                  crossAxisSpacing: 25,
+                                                  mainAxisSpacing: 25,
+                                                  mainAxisExtent: 90,
+                                                ),
+                                                itemBuilder: (context, index) =>
+                                                    Stack(
+                                                  clipBehavior: Clip.none,
+                                                  children: [
+                                                    GestureDetector(
                                                       onTap: () {
-                                                        removeFilePick(
-                                                            checkListImage(true,
-                                                                    listPickFile)[
-                                                                index]);
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        PreviewImage(
+                                                                          file: checkListImage(
+                                                                              true,
+                                                                              listPickFile)[index],
+                                                                          module:
+                                                                              widget.typeModule,
+                                                                        )));
                                                       },
                                                       child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            shape:
-                                                                BoxShape.circle,
-                                                            color: Colors.white,
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .black,
-                                                                width: 0.1),
-                                                          ),
-                                                          height: 16,
-                                                          width: 16,
-                                                          child: Icon(
-                                                            Icons.close,
-                                                            size: 9,
-                                                          )),
+                                                        clipBehavior:
+                                                            Clip.hardEdge,
+                                                        width: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .width,
+                                                        height: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .width,
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.grey,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            8))),
+                                                        child: Image.file(
+                                                          checkListImage(true,
+                                                                  listPickFile)[
+                                                              index],
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
                                                     ),
-                                                    top: 0,
-                                                    right: 0,
-                                                  )
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        )),
+                                                    Positioned(
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          removeFilePick(
+                                                              checkListImage(
+                                                                      true,
+                                                                      listPickFile)[
+                                                                  index]);
+                                                        },
+                                                        child: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              color:
+                                                                  Colors.white,
+                                                              border: Border.all(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  width: 0.1),
+                                                            ),
+                                                            height: 16,
+                                                            width: 16,
+                                                            child: Icon(
+                                                              Icons.close,
+                                                              size: 9,
+                                                            )),
+                                                      ),
+                                                      top: 0,
+                                                      right: 0,
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          )),
+                                    ],
                                   ],
-                                ],
+                                ),
                               ),
-                            ),
-                          ));
-                    } else {
-                      return Container(
-                          color: Colors.grey,
-                          child: Center(child: CircularProgressIndicator()));
-                    }
-                  })
-              : Center(
-                  child: Text("Không có dữ liệu"),
-                ),
-        ),
-        Positioned(
-          left: 0,
-          bottom: 0,
-          child: StreamBuilder<bool?>(
+                            ));
+                      } else {
+                        return Container(
+                            color: Colors.grey,
+                            child: Center(child: CircularProgressIndicator()));
+                      }
+                    })
+                : Center(
+                    child: Text("Không có dữ liệu"),
+                  ),
+          ),
+          StreamBuilder<bool?>(
               stream: status,
               builder: (context, snapshot) {
                 return snapshot.data ?? false
@@ -536,20 +533,17 @@ class _AttachmentState extends State<Attachment> {
                             Spacer(),
                             GestureDetector(
                               onTap: () => onClickSave(),
-                              child: Material(
-                                child: Container(
-                                  height: AppValue.widths * 0.1,
-                                  width: AppValue.widths * 0.25,
-                                  decoration: BoxDecoration(
-                                      color: HexColor("#F1A400"),
-                                      borderRadius:
-                                          BorderRadius.circular(20.5)),
-                                  child: Center(
-                                      child: Text(
-                                    "Lưu",
-                                    style: TextStyle(color: Colors.white),
-                                  )),
-                                ),
+                              child: Container(
+                                height: AppValue.widths * 0.1,
+                                width: AppValue.widths * 0.25,
+                                decoration: BoxDecoration(
+                                    color: HexColor("#F1A400"),
+                                    borderRadius: BorderRadius.circular(20.5)),
+                                child: Center(
+                                    child: Text(
+                                  "Lưu",
+                                  style: TextStyle(color: Colors.white),
+                                )),
                               ),
                             ),
                           ],
@@ -557,8 +551,8 @@ class _AttachmentState extends State<Attachment> {
                       )
                     : SizedBox();
               }),
-        )
-      ],
+        ],
+      ),
     );
   }
 }

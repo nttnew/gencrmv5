@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../src/models/model_generator/file_response.dart';
 import '../src/src_index.dart';
@@ -18,12 +20,12 @@ class ItemFile extends StatefulWidget {
 
 class _ItemFileState extends State<ItemFile> {
   final String _localPath = '/storage/emulated/0/Download/';
-  late final String _status;
-  late final dio;
+  String _status = '';
+  late final _dio;
 
   @override
   void initState() {
-    dio = Dio();
+    _dio = Dio();
     _status = '0%';
     super.initState();
   }
@@ -44,10 +46,16 @@ class _ItemFileState extends State<ItemFile> {
             ),
           ),
           GestureDetector(
-            onTap: () {
-              String name = widget.file.link.toString().split('/').last;
-              String fullPath = _localPath + '/' + name;
-              download2(dio, widget.file.link.toString(), fullPath);
+            onTap: () async {
+              if(_status == '0%'){
+                var status = await Permission.storage.status;
+                if (!status.isGranted) {
+                  await Permission.storage.request();
+                }
+                String name = widget.file.link.toString().split('/').last;
+                String fullPath = _localPath + name;
+                download2(_dio, widget.file.link.toString(), fullPath);
+              }
             },
             child: _status == '0%'
                 ? Icon(
@@ -94,15 +102,29 @@ class _ItemFileState extends State<ItemFile> {
       var raf = file.openSync(mode: FileMode.write);
       raf.writeFromSync(response.data);
       await raf.close();
+      _status = '100%';
+      setState(() {});
     } catch (e) {
       print(e);
+      // _status = '100%';
+      // setState(() {});
+      // _launchUrl(url);
+    }
+  }
+
+  Future<void> _launchUrl(String url) async {
+    if (!await launchUrl(Uri.parse(url))) {
+      throw Exception('Could not launch $url');
     }
   }
 
   void showDownloadProgress(received, total) {
     if (total != -1) {
-      _status = ((received / total * 100).toStringAsFixed(0) + "%");
-      print(_status);
+      if ((received / total * 100) >= 100) {
+        _status = '100%';
+      } else {
+        _status = ((received / total * 100).toStringAsFixed(0) + '%');
+      }
       setState(() {});
     }
   }
