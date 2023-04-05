@@ -38,19 +38,19 @@ class _ScreenMainState extends State<ScreenMain> {
 
   String getIconMenu(String id) {
     if (ModuleText.CUSTOMER == id) {
-      return 'assets/icons/add_clue.png';
+      return ICONS.CUSTUMER_3X;
     } else if (ModuleText.DAU_MOI == id) {
-      return 'assets/icons/addWork.png';
+      return ICONS.CLUE_3X;
     } else if (ModuleText.LICH_HEN == id) {
-      return 'assets/icons/addWork.png';
+      return ICONS.CHANCE_3X;
     } else if (ModuleText.HOP_DONG == id) {
-      return 'assets/icons/addContent.png';
+      return ICONS.CONTRACT_3X;
     } else if (ModuleText.CONG_VIEC == id) {
-      return 'assets/icons/addWork.png';
+      return ICONS.WORK_3X;
     } else if (ModuleText.CSKH == id) {
-      return 'assets/icons/Support.png';
+      return ICONS.SUPPORT_3X;
     }
-    return 'assets/icons/addWork.png';
+    return ICONS.WORK_3X;
   }
 
   @override
@@ -173,11 +173,15 @@ class _ScreenMainState extends State<ScreenMain> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     AppValue.hSpaceLarge,
-                                    Image.asset(getIconMenu(
-                                        LoginBloc.of(context)
-                                            .listMenu[i]
-                                            .id
-                                            .toString())),
+                                    Image.asset(
+                                      getIconMenu(LoginBloc.of(context)
+                                          .listMenu[i]
+                                          .id
+                                          .toString()),
+                                      height: 26,
+                                      width: 26,
+                                      fit: BoxFit.contain,
+                                    ),
                                     SizedBox(width: 10),
                                     Text(
                                       LoginBloc.of(context)
