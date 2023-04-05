@@ -16,9 +16,14 @@ import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 
 class WidgetLoginForm extends StatefulWidget {
-  WidgetLoginForm({Key? key, required this.reload}) : super(key: key);
+  WidgetLoginForm({
+    Key? key,
+    required this.reload,
+    required this.isLogin,
+  }) : super(key: key);
 
   final Function reload;
+  final bool isLogin;
 
   @override
   _WidgetLoginFormState createState() => _WidgetLoginFormState();
@@ -41,7 +46,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
   @override
   void initState() {
     super.initState();
-    // fireBase();
+
     Future.delayed(Duration(seconds: 0), () async {
       FirebaseMessaging messaging = FirebaseMessaging.instance;
       tokenFirebase = await messaging.getToken();
@@ -67,6 +72,23 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         context.read<LoginBloc>().add(PasswordUnfocused());
       }
     });
+    if (canAuthenticate &&
+        shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT) == "true" &&
+        shareLocal.getString(PreferencesKey.USER) != "" &&
+        shareLocal.getString(PreferencesKey.USER) != null) {
+      loginWithFingerPrint();
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (widget.isLogin &&
+        shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT) == "true" &&
+        shareLocal.getString(PreferencesKey.USER) != "" &&
+        shareLocal.getString(PreferencesKey.USER) != null) {
+      loginWithFingerPrint();
+    }
+    super.didChangeDependencies();
   }
 
   @override

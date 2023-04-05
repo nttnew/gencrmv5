@@ -38,6 +38,7 @@ import '../src/models/model_generator/contract.dart';
 import '../src/models/model_generator/contract_customer.dart';
 import '../src/models/model_generator/get_infor.dart';
 import '../src/models/model_generator/get_phone_cus.dart';
+import '../src/models/model_generator/get_xe_response.dart';
 import '../src/models/model_generator/list_car_response.dart';
 import '../src/models/model_generator/param_del_notif.dart';
 import '../src/models/model_generator/param_read_notifi.dart';
@@ -677,6 +678,11 @@ class UserRepository {
     required String id,
   }) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).deleteFile(id);
+
+  Future<GetXeResponse> getXe({
+    required String id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getXe(id);
 
   Stream<AuthenticationStatus> get status async* {
     await Future<void>.delayed(const Duration(seconds: 1));

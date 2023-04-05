@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gen_crm/screens/login/index.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
+import 'package:get/get.dart';
 import '../../widgets/rounder_bootom_appbar.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
@@ -16,8 +17,10 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String? tokenFirebase;
   ScrollController scrollController = ScrollController();
+  late bool isLogin;
   @override
   void initState() {
+    isLogin = Get.arguments=='login';
     KeyboardVisibilityController().onChange.listen((visible) {
       if (visible) {
         scrollController.jumpTo(150);
@@ -75,7 +78,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ],
                               ),
                               AppValue.vSpaceMedium,
-                              WidgetLoginForm(reload: reload),
+                              WidgetLoginForm(
+                                reload: reload,
+                                isLogin: isLogin,
+                              ),
                             ],
                           ),
                         ),

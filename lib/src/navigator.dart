@@ -10,7 +10,7 @@ class AppNavigator {
 
   static navigateSplash() async => await Get.toNamed(ROUTE_NAMES.SPLASH);
 
-  static navigateLogin() async => await Get.toNamed(ROUTE_NAMES.LOGIN);
+  static navigateLogin() async => await Get.toNamed(ROUTE_NAMES.LOGIN,arguments: 'login');
 
   static navigateDetailWork() async =>
       await Get.toNamed(ROUTE_NAMES.DETAILWORK);
@@ -41,7 +41,7 @@ class AppNavigator {
   static navigateAddSupport() async =>
       await Get.toNamed(ROUTE_NAMES.ADDSUPPORT);
 
-  static navigateLogout() async => await Get.offAllNamed(ROUTE_NAMES.LOGIN);
+  static navigateLogout() async => await Get.offAllNamed(ROUTE_NAMES.LOGIN,arguments: 'logout');
 
   static navigateMain({dynamic data}) async =>
       await Get.offAllNamed(ROUTE_NAMES.MAIN, arguments: data);

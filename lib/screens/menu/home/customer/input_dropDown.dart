@@ -10,20 +10,22 @@ import '../../../../widgets/widget_text.dart';
 import 'data_dropdown_item.dart';
 
 class InputDropdown extends StatefulWidget {
-  InputDropdown(
-      {Key? key,
-      required this.dropdownItemList,
-      required this.data,
-      required this.onSuccess,
-      required this.value,
-      this.isUpdate = false,
-      this.onUpdate})
-      : super(key: key);
+  InputDropdown({
+    Key? key,
+    required this.dropdownItemList,
+    required this.data,
+    required this.onSuccess,
+    required this.value,
+    this.isUpdate = false,
+    this.onUpdate,
+    this.isUpdateList = false,
+  }) : super(key: key);
   final List<List<dynamic>> dropdownItemList;
   final CustomerIndividualItemData data;
   final Function onSuccess;
   final String value;
   final bool isUpdate;
+  final bool isUpdateList;
   final Function? onUpdate;
 
   @override
@@ -36,11 +38,27 @@ class _InputDropdownState extends State<InputDropdown> {
 
   @override
   void didUpdateWidget(covariant InputDropdown oldWidget) {
+    if (widget.isUpdateList) {
+      updateList();
+    }
     if (mounted && widget.isUpdate) {
       textValue = widget.value;
       widget.onUpdate!(textValue);
     }
     super.didUpdateWidget(oldWidget);
+  }
+
+  void updateList() {
+    dropdow=[];
+    for (int i = 0; i < widget.dropdownItemList.length; i++) {
+      if (widget.dropdownItemList[i][1] != null &&
+          widget.dropdownItemList[i][0] != null) {
+        dropdow.add({
+          'label': widget.dropdownItemList[i][1],
+          'value': widget.dropdownItemList[i][0]
+        });
+      }
+    }
   }
 
   @override

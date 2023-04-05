@@ -161,6 +161,7 @@ class BASE_URL {
       'modules/genmobile2/notification/listRead';
   static const DELETE_NOTIFICATION = 'modules/genmobile2/notification/delete';
   static const READ_NOTIFICATION = 'modules/genmobile2/notification/read';
+  static const GET_XE = 'modules/genmobile2/product/getsanphamkh';
   static const DOWNLOAD_FILE =
       'https://car.gencrm.com/modules/genmobile2/documents/download';
   // receiveTimeout

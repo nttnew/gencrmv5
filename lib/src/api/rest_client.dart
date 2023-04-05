@@ -35,6 +35,7 @@ import '../models/model_generator/detail_contract.dart';
 import '../models/model_generator/clue.dart';
 import '../models/model_generator/clue_detail.dart';
 import '../models/model_generator/file_response.dart';
+import '../models/model_generator/get_xe_response.dart';
 import '../models/model_generator/job_chance.dart';
 import '../models/model_generator/job_customer.dart';
 import '../models/model_generator/list_car_response.dart';
@@ -581,5 +582,10 @@ abstract class RestClient {
   @POST(BASE_URL.DELETE_FILE)
   Future<dynamic> deleteFile(
     @Part(name: 'id') String ids,
+  );
+
+  @POST(BASE_URL.GET_XE)
+  Future<GetXeResponse> getXe(
+    @Part(name: 'id') String id,
   );
 }

@@ -338,7 +338,36 @@ class _FormAddContractState extends State<FormAddContract> {
                                                                     else
                                                                       return Container();
                                                                   })
-                                                                : InputDropdown(
+                                                                :
+                                                    state.listAddData[index].data![index1].field_id == '12708'?
+                                                    StreamBuilder<List<List<dynamic>>>(
+                                                      stream: ContactByCustomerBloc.of(context).listXe,
+                                                      builder: (context, snapshot) {
+                                                        final list=snapshot.data ;
+                                                        return InputDropdown(
+                                                            isUpdateList: true,//todo
+                                                            dropdownItemList: list??state.listAddData[index].data![index1].field_datasource ?? [],
+                                                            data: state.listAddData[index].data![index1],
+                                                            onSuccess: (data) {
+                                                              addData[index]
+                                                                  .data[
+                                                              index1]
+                                                                  .value = data;
+                                                              if (state
+                                                                  .listAddData[index]
+                                                                  .data![index1]
+                                                                  .field_id ==
+                                                                  '246') {
+                                                                ContactByCustomerBloc.of(context)
+                                                                    .add(InitGetContactByCustomerrEvent(data));
+                                                                PhoneBloc.of(context)
+                                                                    .add(InitPhoneEvent(data));
+                                                              }
+                                                            },
+                                                            value: state.listAddData[index].data![index1].field_value ?? '');
+                                                      }
+                                                    ):
+                                                    InputDropdown(
                                                                     dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
                                                                     data: state.listAddData[index].data![index1],
                                                                     onSuccess: (data) {

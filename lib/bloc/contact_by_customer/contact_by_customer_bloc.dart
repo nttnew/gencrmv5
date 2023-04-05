@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../api_resfull/user_repository.dart';
 import '../../src/base.dart';
@@ -26,6 +27,7 @@ class ContactByCustomerBloc
   Stream<ContactByCustomerState> mapEventToState(
       ContactByCustomerEvent event) async* {
     if (event is InitGetContactByCustomerrEvent) {
+      await getXe(event.id);
       yield* _getContactByCustomer(customer_id: event.id);
     }
     if (event is InitGetCustomerContractEvent) {
@@ -35,6 +37,14 @@ class ContactByCustomerBloc
   }
 
   List<CustomerData>? listCus;
+  BehaviorSubject<List<List<dynamic>>> listXe = BehaviorSubject.seeded([]);
+
+  Future<void> getXe(String id) async {
+    final res = await userRepository.getXe(id: id);
+    if ((res.code == BASE_URL.SUCCESS) || (res.code == BASE_URL.SUCCESS_200)) {
+      listXe.add(res.data?.products ?? []);
+    }
+  }
 
   Stream<ContactByCustomerState> _getContactByCustomer(
       {required String customer_id}) async* {
