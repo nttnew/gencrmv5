@@ -425,9 +425,6 @@ class UserRepository {
               email: email,
               username: username));
 
-  // Future<ResponseOtpForgotPassword> otpForgotPassword({required String email, required String otpCode}) async =>
-  //     await RestClient(dio, baseUrl: dio.options.baseUrl).otpForgotPassword(email, otpCode);
-
   Future<ContactReportResponse> reportContact(
           int? id, int? time, String? location, int? page, String? gt) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).reportContact(
@@ -652,7 +649,9 @@ class UserRepository {
           .uploadFileSupport(id, files);
 
   Future<BaseResponse> uploadMultiFileContract(
-      {required String id, required List<File> files,required String module}) async {
+      {required String id,
+      required List<File> files,
+      required String module}) async {
     final multipartFiles = <MultipartFile>[];
     if (files.isNotEmpty) {
       for (final file in files) {
@@ -665,7 +664,7 @@ class UserRepository {
       }
     }
     return await RestClient(dio, baseUrl: dio.options.baseUrl)
-        .uploadMultiFileContract(id, multipartFiles,module);
+        .uploadMultiFileContract(id, multipartFiles, module);
   }
 
   Future<FileResponse> getFile({

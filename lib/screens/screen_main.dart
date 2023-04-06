@@ -61,6 +61,7 @@ class _ScreenMainState extends State<ScreenMain> {
       GetListUnReadNotifiBloc.of(context).add(CheckNotification());
     });
     getMenu();
+    LoginBloc.of(context).getListMenuFlash();
     super.initState();
   }
 

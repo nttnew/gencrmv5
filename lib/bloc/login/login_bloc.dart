@@ -34,6 +34,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     super.onTransition(transition);
   }
 
+  void getListMenuFlash() {
+    String data = shareLocal.getString(PreferencesKey.LIST_MENU_FLASH) ?? "";
+    if(data!=''){
+      final result = json.decode(data);
+      final resultHangXe = result.map((e) => ItemMenu.fromJson(e)).toList();
+      final Set<ItemMenu> list = {};
+      for (final obj in resultHangXe) {
+        list.add(obj);
+      }
+      listMenuFlash = list.toList();
+    }
+  }
+
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     if (event is EmailChanged) {
@@ -70,8 +83,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               platform: Platform.isIOS ? 'iOS' : 'Android',
               device_token: event.device_token);
           if (response.code == BASE_URL.SUCCESS) {
-            listMenuFlash=[];
+            listMenuFlash = [];
             listMenuFlash.addAll(response.data?.quick ?? []);
+            await shareLocal.putString(PreferencesKey.LIST_MENU_FLASH,
+                jsonEncode(response.data?.quick));
             await localRepository.saveUser(jsonEncode(response.data));
             await shareLocal.putString(
                 PreferencesKey.SESS, response.data!.session_id!);
@@ -136,6 +151,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           if (response.code == BASE_URL.SUCCESS) {
             listMenuFlash = [];
             listMenuFlash.addAll(response.data?.quick ?? []);
+            await shareLocal.putString(PreferencesKey.LIST_MENU_FLASH,
+                jsonEncode(response.data?.quick));
             await localRepository.saveUser(jsonEncode(response.data));
             await shareLocal.putString(
                 PreferencesKey.SESS, response.data!.session_id!);
