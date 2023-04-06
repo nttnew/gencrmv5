@@ -3,7 +3,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/models/model_generator/file_response.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
+
+import 'item_file.dart';
 
 class ItemDownload extends StatefulWidget {
   const ItemDownload({
@@ -20,27 +23,41 @@ class ItemDownload extends StatefulWidget {
 
 class _ItemDownloadState extends State<ItemDownload> {
   final String _localPath = '/storage/emulated/0/Download/';
-  late final BehaviorSubject<String> status;
+  late final BehaviorSubject<String> _status;
   late final dio;
 
   @override
   void initState() {
     super.initState();
     dio = Dio();
-    status = BehaviorSubject.seeded('0%');
+    _status = BehaviorSubject.seeded('0%');
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<String>(
-        stream: status,
+        stream: _status,
         builder: (context, snapshot) {
           final status = snapshot.data ?? '';
           return GestureDetector(
             onTap: () async {
-              String name = widget.file.link.toString().split('/').last;
-              String fullPath = _localPath + '/' + name;
-              download2(dio, widget.file.link.toString(), fullPath);
+              if (status == '0%') {
+                if (Platform.isAndroid) {
+                  String name = widget.file.link.toString().split('/').last;
+                  String localPath = '';
+                  if (Platform.isAndroid) {
+                    localPath = _localPath;
+                  } else {
+                    final tempDir = await getApplicationDocumentsDirectory();
+                    localPath = tempDir.path;
+                  }
+                  String fullPath = localPath + name;
+                  download2(dio, widget.file.link.toString(), fullPath);
+                } else {
+                  _status.add('100%');
+                  launchUrlBase(widget.file.link ?? "");
+                }
+              }
             },
             child: status == '0%'
                 ? Icon(
@@ -80,13 +97,13 @@ class _ItemDownloadState extends State<ItemDownload> {
 
   void showDownloadProgress(received, total) {
     if (total != -1) {
-      status.add((received / total * 100).toStringAsFixed(0) + "%");
+      _status.add((received / total * 100).toStringAsFixed(0) + "%");
     }
   }
 
   @override
   void dispose() {
-    status.close();
+    _status.close();
     super.dispose();
   }
 }

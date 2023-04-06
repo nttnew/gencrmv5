@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -47,14 +48,20 @@ class _ItemFileState extends State<ItemFile> {
           ),
           GestureDetector(
             onTap: () async {
-              if(_status == '0%'){
-                var status = await Permission.storage.status;
-                if (!status.isGranted) {
-                  await Permission.storage.request();
+              if (_status == '0%') {
+                if (Platform.isAndroid) {
+                  var status = await Permission.storage.status;
+                  if (!status.isGranted) {
+                    await Permission.storage.request();
+                  }
+                  String name = widget.file.link.toString().split('/').last;
+                  String fullPath = _localPath + name;
+                  download2(_dio, widget.file.link.toString(), fullPath);
+                } else {
+                  launchUrlBase(widget.file.link ?? "");
+                  _status = '100%';
+                  setState(() {});
                 }
-                String name = widget.file.link.toString().split('/').last;
-                String fullPath = _localPath + name;
-                download2(_dio, widget.file.link.toString(), fullPath);
               }
             },
             child: _status == '0%'
@@ -112,12 +119,6 @@ class _ItemFileState extends State<ItemFile> {
     }
   }
 
-  Future<void> _launchUrl(String url) async {
-    if (!await launchUrl(Uri.parse(url))) {
-      throw Exception('Could not launch $url');
-    }
-  }
-
   void showDownloadProgress(received, total) {
     if (total != -1) {
       if ((received / total * 100) >= 100) {
@@ -127,5 +128,11 @@ class _ItemFileState extends State<ItemFile> {
       }
       setState(() {});
     }
+  }
+}
+
+Future<void> launchUrlBase(String url) async {
+  if (!await launchUrl(Uri.parse(url))) {
+    throw Exception('Could not launch $url');
   }
 }

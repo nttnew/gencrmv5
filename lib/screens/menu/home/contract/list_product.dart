@@ -114,7 +114,7 @@ class _ListProductState extends State<ListProduct> {
                         child: TextField(
                           controller: _editingController,
                           decoration: InputDecoration(
-                            hintText: "Tìm kiếm",
+                            hintText: "Tìm sản phẩm",
                             border: InputBorder.none,
                             disabledBorder: InputBorder.none,
                             enabledBorder: InputBorder.none,
@@ -332,7 +332,7 @@ class _ItemProductState extends State<ItemProduct> {
       widget.onDVT!(widget.data.dvt, Dvt);
       widget.onVAT!(widget.data.vat, Vat);
     }
-
+    _priceTextfieldController.text = double.parse(widget.data.sell_price??'0').toInt().toString();
     super.initState();
   }
 
@@ -832,7 +832,7 @@ class _ItemProductState extends State<ItemProduct> {
                                 focusedBorder: InputBorder.none,
                                 errorBorder: InputBorder.none),
                             keyboardType:
-                                TextInputType.numberWithOptions(decimal: true),
+                                TextInputType.numberWithOptions(),
                           ),
                         )),
                         SizedBox(
@@ -840,10 +840,12 @@ class _ItemProductState extends State<ItemProduct> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            setState(() {
-                              price = _priceTextfieldController.text;
-                            });
-                            widget.onPrice!(price);
+                            if (_priceTextfieldController.text != '') {
+                              setState(() {
+                                price = _priceTextfieldController.text;
+                              });
+                              widget.onPrice!(price);
+                            }
                             Get.back();
                           },
                           child: Container(

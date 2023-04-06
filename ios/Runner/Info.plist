@@ -58,5 +58,7 @@
 	<false/>
 	<key>NSFaceIDUsageDescription</key>
     <string>using face id genCrm</string>
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <true/>
 </dict>
 </plist>

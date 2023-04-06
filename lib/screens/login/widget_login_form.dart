@@ -332,7 +332,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
       }
     } catch (e) {
       throw e;
-      return;
+      print(e);
     }
   }
 }

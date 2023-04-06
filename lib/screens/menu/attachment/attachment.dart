@@ -63,7 +63,33 @@ class _AttachmentState extends State<Attachment> {
 
   Future<void> onDinhKem() async {
     if (await Permission.storage.request().isGranted) {
-      openAppSettings();
+      if(Platform.isAndroid){
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return WidgetDialog(
+              title: MESSAGES.NOTIFICATION,
+              content: 'Bạn chưa cấp quyền truy cập vào ảnh?',
+              textButton2: 'Đi đến cài đặt',
+              textButton1: 'Ok',
+              onTap2: (){
+                openAppSettings();
+                Get.back();
+              },
+              onTap1: (){
+                Get.back();
+              },
+            );
+          },
+        );
+      }else{
+        FilePickerResult? result = await FilePicker.platform.pickFiles();
+        if (result != null && result.files.isNotEmpty) {
+          final filePicked = result.files.first;
+          listPickFile.add(File(filePicked.path!));
+          setState(() {});
+        }
+      }
     } else {
       FilePickerResult? result = await FilePicker.platform.pickFiles();
       if (result != null && result.files.isNotEmpty) {
