@@ -82,6 +82,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
 
   @override
   void didChangeDependencies() {
+    LoginBloc.of(context).add(PasswordChanged(password: ''));
     if (widget.isLogin &&
         shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT) == "true" &&
         shareLocal.getString(PreferencesKey.USER) != "" &&
@@ -332,7 +333,6 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
       }
     } catch (e) {
       throw e;
-      print(e);
     }
   }
 }
