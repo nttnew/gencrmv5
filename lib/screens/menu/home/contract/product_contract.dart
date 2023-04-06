@@ -99,7 +99,9 @@ class _ProductContractState extends State<ProductContract> {
                             },
                             model: productData[index],
                             listDvt: listDVT,
-                            listVat: listVAT,
+                            listVat: listVAT, onReload: () {
+                              reload();
+                      },
                           )),
                 )
               : Container(),

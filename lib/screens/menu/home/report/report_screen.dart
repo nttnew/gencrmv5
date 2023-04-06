@@ -45,11 +45,25 @@ class _ReportScreenState extends State<ReportScreen> {
   int? id;
   ScrollController _scrollController = ScrollController();
   ScrollController _scrollController1 = ScrollController();
-  int time_init = 0;
+  late int time_init;
   bool isFirst = false;
+  String? gt;
+  String select = typeReport[0]['name'];
+  String valueTime = "Lựa chọn";
+  String? valueLocation;
+  int step = 1;
+  late int time;
+  String location = "";
+  int indexProduct = -1;
+  int indexEmployee = -1;
+  String _range = '';
+  String? timeFrom;
+  String? timeTo;
 
   @override
   void initState() {
+    time_init = 0;
+    time = 0;
     GetListUnReadNotifiBloc.of(context).add(CheckNotification());
     ReportBloc.of(context).add(InitReportEvent());
     _scrollController.addListener(() async {
@@ -57,7 +71,7 @@ class _ReportScreenState extends State<ReportScreen> {
               _scrollController.position.maxScrollExtent &&
           lenght < int.parse(total)) {
         ReportContactBloc.of(context).add(InitReportContactEvent(
-            page: page + 1, location: location, time: time));
+            gt: gt, page: page + 1, location: location, time: time));
         page = page + 1;
       } else {}
     });
@@ -77,19 +91,6 @@ class _ReportScreenState extends State<ReportScreen> {
     _scrollController1.animateTo(0,
         duration: const Duration(milliseconds: 300), curve: Curves.ease);
   }
-
-  String select = typeReport[0]['name'];
-  String valueTime = "Lựa chọn";
-  String? valueLocation;
-  // int? clProduct;
-  int step = 1;
-  int time = 0;
-  String location = "";
-  int indexProduct = -1;
-  int indexEmployee = -1;
-  String _range = '';
-  String? timeFrom;
-  String? timeTo;
 
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
     setState(() {
@@ -189,17 +190,14 @@ class _ReportScreenState extends State<ReportScreen> {
                                     select1 = false;
                                     select2 = false;
                                     select3 = false;
-                                    // ReportGeneralBloc.of(context).add(SelectReportGeneralEvent(1, location,time_init));
                                     ReportBloc.of(context)
                                         .add(InitReportEvent());
                                   } else if (step == 2) {
                                     indexProduct = -1;
-                                    // ReportProductBloc.of(context).add(InitReportProductEvent(location: location,time: 0));
                                     OptionBloc.of(context)
                                         .add(InitOptionEvent(1));
                                   } else if (step == 3) {
                                     indexEmployee = -1;
-                                    // ReportEmployeeBloc.of(context).add(InitReportEmployeeEvent(time: 0));
                                     OptionBloc.of(context)
                                         .add(InitOptionEvent(2));
                                   }
@@ -217,7 +215,6 @@ class _ReportScreenState extends State<ReportScreen> {
                       ? BlocBuilder<ReportBloc, ReportState>(
                           builder: (context, state) {
                             if (state is SuccessReportWorkState) {
-                              // valueTime = state.dataTime[0][1];
                               for (int i = 0; i < state.dataTime.length; i++) {
                                 if (state.dataTime[i][0] ==
                                         state.thoi_gian_mac_dinh.toString() &&
@@ -295,7 +292,6 @@ class _ReportScreenState extends State<ReportScreen> {
                       : BlocBuilder<OptionBloc, OptionState>(
                           builder: (context, state) {
                             if (state is SuccessOptionState) {
-                              // valueTime = state.dataTime[0][1];
                               for (int i = 0; i < state.dataTime.length; i++) {
                                 if (state.dataTime[i][0] ==
                                         state.thoi_gian_mac_dinh.toString() &&
@@ -575,11 +571,13 @@ class _ReportScreenState extends State<ReportScreen> {
                     select3 = false;
                     page = 1;
                     if (select1 == true) {
+                      time = time_init;
+                      gt = 'doanh_so';
                       ReportContactBloc.of(context).add(InitReportContactEvent(
                           page: page,
                           location: location,
                           time: time_init,
-                          gt: 'doanh_so'));
+                          gt: gt));
                     }
                   });
                 },
@@ -609,11 +607,13 @@ class _ReportScreenState extends State<ReportScreen> {
                     select3 = false;
                     page = 1;
                     if (select2 == true) {
+                      time = time_init;
+                      gt = 'thuc_thu';
                       ReportContactBloc.of(context).add(InitReportContactEvent(
                           page: page,
                           location: location,
                           time: time_init,
-                          gt: 'thuc_thu'));
+                          gt: gt));
                     }
                   });
                 },
@@ -645,11 +645,13 @@ class _ReportScreenState extends State<ReportScreen> {
                     select1 = false;
                     page = 1;
                     if (select3 == true) {
+                      time = time_init;
+                      gt = 'so_hop_dong';
                       ReportContactBloc.of(context).add(InitReportContactEvent(
                           page: page,
                           location: location,
                           time: time_init,
-                          gt: 'so_hop_dong'));
+                          gt: gt));
                     }
                   });
                 },

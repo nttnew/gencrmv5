@@ -4,6 +4,7 @@ import 'package:gen_crm/bloc/product/product_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../../models/product_model.dart';
 import '../../../../src/src_index.dart';
@@ -174,6 +175,9 @@ class _ListProductState extends State<ListProduct> {
                             listSelected[index].item.sell_price = price;
                           },
                           model: listSelected[index],
+                          onReload: () {
+                            reload();
+                          },
                         );
                       }),
                     ),
@@ -259,6 +263,7 @@ class ItemProduct extends StatefulWidget {
     this.model,
     this.canDelete = false,
     this.onDelete,
+    required this.onReload,
   }) : super(key: key);
 
   final ProductItem data;
@@ -270,6 +275,7 @@ class ItemProduct extends StatefulWidget {
   Function? onVAT;
   Function? onGiamGia;
   Function? onPrice;
+  Function() onReload;
   ProductModel? model;
   bool neverHidden;
   bool canDelete;
@@ -281,7 +287,7 @@ class ItemProduct extends StatefulWidget {
 
 class _ItemProductState extends State<ItemProduct> {
   String price = "";
-  String soLuong = "0";
+  late final BehaviorSubject<String> soLuong;
   String Dvt = "";
   String Vat = "";
   String giamGia = "0";
@@ -298,7 +304,7 @@ class _ItemProductState extends State<ItemProduct> {
         Vat = widget.model!.nameVat;
         giamGia = widget.model!.giamGia;
         typeGiamGia = widget.model!.typeGiamGia == "%" ? false : true;
-        soLuong = widget.model!.soLuong.toString();
+        soLuong.add(widget.model!.soLuong.toString());
         price = widget.model!.item.sell_price!;
       });
     }
@@ -307,6 +313,7 @@ class _ItemProductState extends State<ItemProduct> {
 
   @override
   void initState() {
+    soLuong = BehaviorSubject.seeded("0");
     int index =
         widget.listDvt.indexWhere((element) => element[0] == widget.data.dvt);
     int indexVat =
@@ -318,7 +325,7 @@ class _ItemProductState extends State<ItemProduct> {
         Vat = widget.model!.nameVat;
         giamGia = widget.model!.giamGia;
         typeGiamGia = widget.model!.typeGiamGia == "%" ? false : true;
-        soLuong = widget.model!.soLuong.toString();
+        soLuong.add(widget.model!.soLuong.toString());
         price = widget.model!.item.sell_price!;
       });
       widget.onDVT!(widget.model!.item.dvt, Dvt);
@@ -327,12 +334,16 @@ class _ItemProductState extends State<ItemProduct> {
       setState(() {
         Dvt = index != -1 ? widget.listDvt[index][1] : "";
         Vat = indexVat != -1 ? widget.listVat[indexVat][1] : "0";
-        soLuong = "0";
+        soLuong.add("0");
       });
       widget.onDVT!(widget.data.dvt, Dvt);
       widget.onVAT!(widget.data.vat, Vat);
     }
-    _priceTextfieldController.text = double.parse(widget.data.sell_price??'0').toInt().toString();
+    _priceTextfieldController.text =
+        double.parse(widget.data.sell_price ?? '0').toInt().toString();
+    soLuong.listen((value) {
+        widget.onReload();
+    });
     super.initState();
   }
 
@@ -477,16 +488,16 @@ class _ItemProductState extends State<ItemProduct> {
             children: [
               GestureDetector(
                 onTap: () {
-                  if (int.parse(soLuong) > 0) {
+                  if (int.parse(soLuong.value) > 0) {
                     setState(() {
-                      soLuong = (int.parse(soLuong) - 1).toString();
+                      soLuong.add((int.parse(soLuong.value) - 1).toString());
                     });
                   } else {
                     setState(() {
-                      soLuong = "0";
+                      soLuong.add("0");
                     });
                   }
-                  widget.onMinus!(int.parse(soLuong));
+                  widget.onMinus!(int.parse(soLuong.value));
                 },
                 child: WidgetContainerImage(
                   image: 'assets/icons/minus.png',
@@ -501,7 +512,7 @@ class _ItemProductState extends State<ItemProduct> {
                 width: 5,
               ),
               WidgetText(
-                title: soLuong,
+                title: soLuong.value,
                 style: AppStyle.DEFAULT_14,
               ),
               SizedBox(
@@ -510,9 +521,9 @@ class _ItemProductState extends State<ItemProduct> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    soLuong = (int.parse(soLuong) + 1).toString();
+                    soLuong.add((int.parse(soLuong.value) + 1).toString());
                   });
-                  widget.onPlus!(int.parse(soLuong));
+                  widget.onPlus!(int.parse(soLuong.value));
                 },
                 child: WidgetContainerImage(
                   image: 'assets/icons/plus.png',
@@ -831,8 +842,7 @@ class _ItemProductState extends State<ItemProduct> {
                                 disabledBorder: InputBorder.none,
                                 focusedBorder: InputBorder.none,
                                 errorBorder: InputBorder.none),
-                            keyboardType:
-                                TextInputType.numberWithOptions(),
+                            keyboardType: TextInputType.numberWithOptions(),
                           ),
                         )),
                         SizedBox(

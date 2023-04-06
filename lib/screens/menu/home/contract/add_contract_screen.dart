@@ -92,6 +92,7 @@ class _FormAddContractState extends State<FormAddContract> {
   }
 
   reload() {
+    total = 0;
     for (int i = 0; i < listProduct.length; i++) {
       if (listProduct[i].soLuong == 0) {
         listProduct.removeAt(i);

@@ -85,6 +85,7 @@ class _EditContractState extends State<EditContract> {
   }
 
   reload() {
+    total=0;
     for (int i = 0; i < listProduct.length; i++) {
       if (listProduct[i].soLuong == 0) {
         listProduct.removeAt(i);
