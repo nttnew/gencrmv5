@@ -10,6 +10,8 @@ import 'package:gen_crm/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 import 'package:formz/formz.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../../src/src_index.dart';
 import '../../../../storages/share_local.dart';
@@ -62,9 +64,15 @@ class _InformationAccountState extends State<InformationAccount> {
   late String initAddress;
   late String urlAvatar;
   String? canLoginWithFingerPrint;
-  late bool fingerPrintIsCheck;
+  late final LocalAuthentication auth;
+  late final BehaviorSubject<bool> supportBiometric;
+  late final BehaviorSubject<bool> fingerPrintIsCheck;
+
   @override
   void initState() {
+    auth = LocalAuthentication();
+    fingerPrintIsCheck = BehaviorSubject();
+    supportBiometric = BehaviorSubject();
     GetInforAccBloc.of(context).add(InitGetInforAcc());
 
     _phoneFocusNode.addListener(() {
@@ -83,18 +91,16 @@ class _InformationAccountState extends State<InformationAccount> {
     if (canLoginWithFingerPrint == null ||
         canLoginWithFingerPrint == "" ||
         canLoginWithFingerPrint == "false") {
-      fingerPrintIsCheck = false;
+      fingerPrintIsCheck.add(false);
     } else {
       if (canLoginWithFingerPrint == "true") {
-        fingerPrintIsCheck = true;
+        fingerPrintIsCheck.add(true);
       }
     }
+    checkBiometricEnable();
 
     super.initState();
   }
-
-  @override
-  void didChangeDependencies() {}
 
   @override
   void dispose() {
@@ -122,63 +128,63 @@ class _InformationAccountState extends State<InformationAccount> {
       ),
       body: SingleChildScrollView(
           child: BlocListener<InforAccBloc, InforAccState>(
-            listener: (context, state) {
-              if (state.status.isSubmissionSuccess) {
-                GetSnackBarUtils.removeSnackBar();
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return WidgetDialog(
-                      onTap1: () {
-                        GetInforAccBloc.of(context).add(InitGetInforAcc());
-                        AppNavigator.navigateBack();
-                      },
-                      textButton1: "OK",
-                      title: MESSAGES.SUCCESS,
-                      content: state.message,
-                    );
+        listener: (context, state) {
+          if (state.status.isSubmissionSuccess) {
+            GetSnackBarUtils.removeSnackBar();
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return WidgetDialog(
+                  onTap1: () {
+                    GetInforAccBloc.of(context).add(InitGetInforAcc());
+                    AppNavigator.navigateBack();
                   },
+                  textButton1: "OK",
+                  title: MESSAGES.SUCCESS,
+                  content: state.message,
                 );
-              }
-              if (state.status.isSubmissionInProgress) {
-                GetSnackBarUtils.createProgress();
-              }
-              if (state.status.isSubmissionFailure) {
-                GetSnackBarUtils.removeSnackBar();
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return WidgetDialog(
-                      title: MESSAGES.NOTIFICATION,
-                      content: state.message,
-                    );
-                  },
+              },
+            );
+          }
+          if (state.status.isSubmissionInProgress) {
+            GetSnackBarUtils.createProgress();
+          }
+          if (state.status.isSubmissionFailure) {
+            GetSnackBarUtils.removeSnackBar();
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return WidgetDialog(
+                  title: MESSAGES.NOTIFICATION,
+                  content: state.message,
                 );
-              }
-            },
-            child: BlocBuilder<GetInforAccBloc, GetInforAccState>(
-              builder: (context, state) {
-                if (state is UpdateGetInforAccState) {
-                  final bloc = InforAccBloc.of(context);
-                  initEmail = state.inforAcc.email ?? "";
-                  initFullName = state.inforAcc.fullname ?? "";
-                  initAddress = state.inforAcc.address ?? "";
-                  initPhone = state.inforAcc.phone ?? "";
-                  urlAvatar = state.inforAcc.avatar ?? "";
-                  bloc.add(EmailChanged(initEmail));
-                  bloc.add(PhoneChanged(initPhone));
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      AppValue.vSpaceSmall,
-                      GestureDetector(
-                        onTap: () {
-                          showCupertinoModalPopup(
-                              context: Get.context!,
-                              builder: (context) => CupertinoActionSheet(
+              },
+            );
+          }
+        },
+        child: BlocBuilder<GetInforAccBloc, GetInforAccState>(
+          builder: (context, state) {
+            if (state is UpdateGetInforAccState) {
+              final bloc = InforAccBloc.of(context);
+              initEmail = state.inforAcc.email ?? "";
+              initFullName = state.inforAcc.fullname ?? "";
+              initAddress = state.inforAcc.address ?? "";
+              initPhone = state.inforAcc.phone ?? "";
+              urlAvatar = state.inforAcc.avatar ?? "";
+              bloc.add(EmailChanged(initEmail));
+              bloc.add(PhoneChanged(initPhone));
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  AppValue.vSpaceSmall,
+                  GestureDetector(
+                    onTap: () {
+                      showCupertinoModalPopup(
+                          context: Get.context!,
+                          builder: (context) => CupertinoActionSheet(
                                   title: Text('Ảnh đại diện'),
                                   cancelButton: CupertinoActionSheetAction(
                                     child: Text('Huỷ'),
@@ -202,141 +208,141 @@ class _InformationAccountState extends State<InformationAccount> {
                                       child: Text('Chụp ảnh mới'),
                                     )
                                   ]));
-                        },
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            AspectRatio(
-                              aspectRatio: 3.8,
-                              child: image != null
-                                  ? Center(
-                                child: ClipOval(
-                                  child: Image.file(
-                                    image!,
-                                    width: 100,
-                                    height: 100,
-                                    fit: BoxFit.cover,
+                    },
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        AspectRatio(
+                          aspectRatio: 3.8,
+                          child: image != null
+                              ? Center(
+                                  child: ClipOval(
+                                    child: Image.file(
+                                      image!,
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                              : Center(
+                                  child: ClipOval(
+                                    child: Image.network(
+                                      urlAvatar,
+                                      fit: BoxFit.cover,
+                                      width: 100,
+                                      height: 100,
+                                    ),
                                   ),
                                 ),
-                              )
-                                  : Center(
-                                child: ClipOval(
-                                  child: Image.network(
-                                    urlAvatar,
-                                    fit: BoxFit.cover,
-                                    width: 100,
-                                    height: 100,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                                left: AppValue.widths * 0.55,
-                                top: AppValue.heights * 0.1,
-                                child: Image.asset('assets/icons/mayanh.png'))
-                          ],
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Họ và tên',
-                              style:
-                              AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            _buildFullNameField(bloc),
-                            AppValue.vSpaceSmall,
-                            Text('Số điện thoại',
-                                style: AppStyle.DEFAULT_16
-                                    .copyWith(color: COLORS.GREY)),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            _buildPhoneField(bloc),
-                            AppValue.vSpaceSmall,
-                            Text('Email',
-                                style: AppStyle.DEFAULT_16
-                                    .copyWith(color: COLORS.GREY)),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            _buildEnailField(bloc),
-                            AppValue.vSpaceSmall,
-                            Text('Địa chỉ',
-                                style: AppStyle.DEFAULT_16
-                                    .copyWith(color: COLORS.GREY)),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            _buildAddressField(bloc),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            _buildFingerPrintSwitch()
-                          ],
-                        ),
-                      ),
-                      Align(
-                          alignment: Alignment.bottomRight,
-                          child: BlocBuilder<InforAccBloc, InforAccState>(
-                              builder: (context, state) {
-                                return WidgetButton(
-                                    onTap: () async {
-                                     print('$image!, $name, $address');
-                                      if (state.status.isValidated) {
-                                        if (image != null) {
-                                          bloc.add(FormInforAccSubmitted(
-                                              image!, name, address));
-                                        } else {
-                                          bloc.add(FormInforAccNoAvatarSubmitted(
-                                              name, address));
-                                        }
-                                      } else {
-                                        showDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          builder: (BuildContext context) {
-                                            return const WidgetDialog(
-                                              title: MESSAGES.NOTIFICATION,
-                                              content: 'Kiểm tra lại thông tin',
-                                            );
-                                          },
-                                        );
-                                      }
-                                    },
-                                    height: 35,
-                                    width: 120,
-                                    padding: EdgeInsets.only(
-                                        right: 20,
-                                        bottom: 20,
-                                        top: AppValue.heights * 0.1),
-                                    text: MESSAGES.SAVE,
-                                    textStyle: AppStyle.DEFAULT_14.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.white),
-                                    backgroundColor: Color(0xffF1A400));
-                              }))
-                    ],
-                  );
-                } else if (state is Error) {
-                  return Center(
-                    child: WidgetText(
-                      title: 'Lỗi kết nối ',
-                      style: AppStyle.DEFAULT_18_BOLD,
+                        Positioned(
+                            left: AppValue.widths * 0.55,
+                            top: AppValue.heights * 0.1,
+                            child: Image.asset('assets/icons/mayanh.png'))
+                      ],
                     ),
-                  );
-                } else {
-                  return Container();
-                }
-              },
-            ),
-          )),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Họ và tên',
+                          style:
+                              AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        _buildFullNameField(bloc),
+                        AppValue.vSpaceSmall,
+                        Text('Số điện thoại',
+                            style: AppStyle.DEFAULT_16
+                                .copyWith(color: COLORS.GREY)),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        _buildPhoneField(bloc),
+                        AppValue.vSpaceSmall,
+                        Text('Email',
+                            style: AppStyle.DEFAULT_16
+                                .copyWith(color: COLORS.GREY)),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        _buildEnailField(bloc),
+                        AppValue.vSpaceSmall,
+                        Text('Địa chỉ',
+                            style: AppStyle.DEFAULT_16
+                                .copyWith(color: COLORS.GREY)),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        _buildAddressField(bloc),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        _buildFingerPrintSwitch()
+                      ],
+                    ),
+                  ),
+                  Align(
+                      alignment: Alignment.bottomRight,
+                      child: BlocBuilder<InforAccBloc, InforAccState>(
+                          builder: (context, state) {
+                        return WidgetButton(
+                            onTap: () async {
+                              print('$image!, $name, $address');
+                              if (state.status.isValidated) {
+                                if (image != null) {
+                                  bloc.add(FormInforAccSubmitted(
+                                      image!, name, address));
+                                } else {
+                                  bloc.add(FormInforAccNoAvatarSubmitted(
+                                      name, address));
+                                }
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (BuildContext context) {
+                                    return const WidgetDialog(
+                                      title: MESSAGES.NOTIFICATION,
+                                      content: 'Kiểm tra lại thông tin',
+                                    );
+                                  },
+                                );
+                              }
+                            },
+                            height: 35,
+                            width: 120,
+                            padding: EdgeInsets.only(
+                                right: 20,
+                                bottom: 20,
+                                top: AppValue.heights * 0.1),
+                            text: MESSAGES.SAVE,
+                            textStyle: AppStyle.DEFAULT_14.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white),
+                            backgroundColor: Color(0xffF1A400));
+                      }))
+                ],
+              );
+            } else if (state is Error) {
+              return Center(
+                child: WidgetText(
+                  title: 'Lỗi kết nối ',
+                  style: AppStyle.DEFAULT_18_BOLD,
+                ),
+              );
+            } else {
+              return Container();
+            }
+          },
+        ),
+      )),
     );
   }
 
@@ -438,44 +444,107 @@ class _InformationAccountState extends State<InformationAccount> {
   }
 
   _buildFingerPrintSwitch() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            WidgetText(
-                title: "Đăng nhập vân tay: ",
-                style: AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY)),
-            !fingerPrintIsCheck
-                ? WidgetText(
-                title: "NO",
-                style: AppStyle.DEFAULT_16.copyWith(
-                    fontFamily: 'Roboto', fontWeight: FontWeight.w500))
-                : WidgetText(
-                title: "YES",
-                style: AppStyle.DEFAULT_16.copyWith(
-                    fontFamily: 'Roboto', fontWeight: FontWeight.w500)),
-          ],
-        ),
-        Container(
-          width: 30,
-          height: 20,
-          child: Switch(
-              value: fingerPrintIsCheck,
-              onChanged: (value) {
-                setState(() {
-                  fingerPrintIsCheck = !fingerPrintIsCheck;
-                  if (fingerPrintIsCheck == true) {
-                    shareLocal.putString(
-                        PreferencesKey.LOGIN_FINGER_PRINT, "true");
-                  } else {
-                    shareLocal.putString(
-                        PreferencesKey.LOGIN_FINGER_PRINT, "false");
-                  }
-                });
-              }),
-        ),
-      ],
+    return StreamBuilder<bool>(
+      stream: supportBiometric,
+      builder: (_, supportBiometric) {
+        return StreamBuilder<bool>(
+          stream: fingerPrintIsCheck,
+          builder: (context, snapshot) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    WidgetText(
+                        title: "Đăng nhập vân tay, khuôn mặt: ",
+                        style:
+                            AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY)),
+                    !(snapshot.data ?? false)
+                        ? WidgetText(
+                            title: "NO",
+                            style: AppStyle.DEFAULT_16.copyWith(
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w500))
+                        : WidgetText(
+                            title: "YES",
+                            style: AppStyle.DEFAULT_16.copyWith(
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w500)),
+                  ],
+                ),
+                Switch(
+                  value: snapshot.data ?? false,
+                  onChanged: (value) {
+                    if (!(supportBiometric.data ?? false)) {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return WidgetDialog(
+                            title: MESSAGES.NOTIFICATION,
+                            content:
+                                "Thiết bị chưa thiết lập vân tay, khuôn mặt",
+                          );
+                        },
+                      );
+                    } else {
+                      useBiometric(value: value);
+                    }
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
+  }
+
+  Future<void> checkBiometricEnable() async {
+    final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+    if (!canAuthenticateWithBiometrics) {
+      return;
+    }
+
+    final List<BiometricType> availableBiometrics =
+        await auth.getAvailableBiometrics();
+    if (availableBiometrics.isNotEmpty) {
+      supportBiometric.add(true);
+    }
+  }
+
+  Future<void> useBiometric({required bool value}) async {
+    if (!value) {
+      fingerPrintIsCheck.sink.add(false);
+      shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "false");
+      return;
+    }
+    try {
+      final String reason = "Đăng nhập vân tay, khuôn mặt";
+      final bool didAuthenticate = await auth.authenticate(
+        localizedReason: reason,
+        options: const AuthenticationOptions(
+          useErrorDialogs: false,
+          stickyAuth: true,
+        ),
+      );
+      if (didAuthenticate) {
+        fingerPrintIsCheck.add(true);
+        shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "true");
+      } else {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return WidgetDialog(
+              title: MESSAGES.NOTIFICATION,
+              content: "Đăng nhập thất bại bạn vui lòng thử lại",
+            );
+          },
+        );
+      }
+    } catch (e) {
+      return;
+    }
   }
 }

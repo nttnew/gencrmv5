@@ -384,6 +384,7 @@ class _ScreenMainState extends State<ScreenMain> {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               flex: 2,

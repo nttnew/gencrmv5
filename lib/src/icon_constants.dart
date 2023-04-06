@@ -1,5 +1,6 @@
 class ICONS {
   static const String ICON_BACK = 'assets/icons/back_icon.png';
+  static const String ICON_FACE = 'assets/icons/figerprint_faceid.png';
   static const String MENU_HOME = 'assets/icons/trangchu.png';
   static const String MENU_INTRODUCE = 'assets/icons/menu_introduce.png';
   static const String MENU_MAP = 'assets/icons/menu_map.png';

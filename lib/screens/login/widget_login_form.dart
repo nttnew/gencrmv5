@@ -297,9 +297,15 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
               onTap: loginWithFingerPrint,
               child: Row(
                 children: [
-                  Icon(Icons.fingerprint),
+                  Image.asset(
+                    ICONS.ICON_FACE,
+                    height: 24,
+                    width: 24,
+                    color: COLORS.BLACK,
+                  ),
+                  SizedBox(width: 8,),
                   WidgetText(
-                    title: "Vân tay",
+                    title: "Vân tay, khuôn mặt",
                     style: TextStyle(
                         fontFamily: "Quicksand",
                         fontWeight: FontWeight.w500,
@@ -316,7 +322,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
     final LocalAuthentication auth = LocalAuthentication();
     try {
       final didAuthenticate = await auth.authenticate(
-          localizedReason: 'Đăng nhập bằng vân tay',
+          localizedReason: 'Đăng nhập bằng vân tay, khuôn mặt',
           options: const AuthenticationOptions(biometricOnly: true));
       if (didAuthenticate) {
         LoginBloc.of(context)
