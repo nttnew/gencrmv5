@@ -377,53 +377,52 @@ class _ScreenMainState extends State<ScreenMain> {
   _buildItemMenu({required ButtonMenuModel data, required int index}) {
     return GestureDetector(
       onTap: data.onTap,
-      child: Stack(
-        children: [
-          Container(
-            height: double.maxFinite,
-            width: double.maxFinite,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: data.backgroundColor,
-            ),
-          ),
-          Positioned(
-            top: 16,
-            right: 0,
-            left: 0,
-            child: Container(
-              width: 80,
-              height: 80,
-              decoration:
-                  BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-              child: WidgetContainerImage(
-                image: data.image,
-                fit: BoxFit.contain,
-                width: 40,
-                height: 40,
-              ),
-            ),
-          ),
-          Positioned(
-              bottom: 16,
-              right: 0,
-              left: 0,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: data.backgroundColor,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 2,
               child: Container(
-                height: 40,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Text(
-                    data.title=='CSKH'?'loại xe biển số số km màu xe fd sf df df ':data.title,
-                    style: AppStyle.DEFAULT_12.copyWith(
-                        fontFamily: 'Roboto', fontWeight: FontWeight.w500),
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                child: Center(
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.white),
+                    child: WidgetContainerImage(
+                      image: data.image,
+                      fit: BoxFit.contain,
+                      width: 40,
+                      height: 40,
+                    ),
                   ),
                 ),
-              )),
-        ],
+              ),
+            ),
+            Expanded(
+              child: Container(
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Text(
+                      data.title,
+                      style: AppStyle.DEFAULT_12.copyWith(
+                          fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
