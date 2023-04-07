@@ -1,16 +1,12 @@
-
 part of 'information_account_bloc.dart';
 
-
-
 class InforAccState extends Equatable {
-   const InforAccState({
+  const InforAccState({
     this.phone = const Phone.pure(),
     this.email = const Email.pure(),
     this.status = FormzStatus.pure,
-    this.message ='',
+    this.message = '',
   });
-
 
   final Phone phone;
   final Email email;
@@ -32,5 +28,5 @@ class InforAccState extends Equatable {
   }
 
   @override
-  List<Object> get props => [phone,email,status];
+  List<Object> get props => [phone, email, status];
 }

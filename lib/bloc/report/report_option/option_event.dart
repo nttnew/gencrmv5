@@ -14,4 +14,3 @@ class InitOptionEvent extends OptionEvent {
   @override
   List<Object> get props => [type];
 }
-

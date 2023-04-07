@@ -28,4 +28,3 @@ class SelectReportGeneralEvent extends ReportGeneralEvent {
   @override
   List<Object> get props => [];
 }
-

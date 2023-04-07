@@ -55,7 +55,7 @@ class _SupportScreenState extends State<SupportScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff1AA928),
         onPressed: () =>
-            AppNavigator.navigateFormAdd('Thêm ${Get.arguments}', 6),
+            AppNavigator.navigateFormAdd('Thêm ${Get.arguments.toString().toLowerCase()}', 6),
         child: Icon(Icons.add, size: 40),
       ),
       appBar: AppBar(

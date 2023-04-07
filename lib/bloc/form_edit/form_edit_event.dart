@@ -61,4 +61,3 @@ class InitGetContactByCustomerEvent extends FormEditEvent {
   @override
   List<Object?> get props => [id];
 }
-

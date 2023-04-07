@@ -5,20 +5,19 @@ abstract class JobCustomerState extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
 class InitGetJobCustomer extends JobCustomerState {}
 
-class UpdateGetJobCustomerState extends JobCustomerState{
+class UpdateGetJobCustomerState extends JobCustomerState {
   final List<JobCustomerData> listJob;
   const UpdateGetJobCustomerState(this.listJob);
   @override
   List<Object> get props => [listJob];
 }
 
-class LoadingJobCustomerState extends JobCustomerState {
-}
+class LoadingJobCustomerState extends JobCustomerState {}
 
-
-class ErrorGetJobCustomerState extends JobCustomerState{
+class ErrorGetJobCustomerState extends JobCustomerState {
   final String msg;
 
   ErrorGetJobCustomerState(this.msg);

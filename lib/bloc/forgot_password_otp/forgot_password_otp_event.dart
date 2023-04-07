@@ -1,4 +1,5 @@
 part of 'forgot_password_otp_bloc.dart';
+
 abstract class ForgotPasswordOTPEvent extends Equatable {
   const ForgotPasswordOTPEvent();
 
@@ -16,7 +17,6 @@ class OtpCodeForgotPasswordOTPChanged extends ForgotPasswordOTPEvent {
 }
 
 class OtpCodeForgotPasswordOTPUnfocused extends ForgotPasswordOTPEvent {}
-
 
 class EmailForgotPasswordOTPChanged extends ForgotPasswordOTPEvent {
   const EmailForgotPasswordOTPChanged({required this.email});
@@ -51,6 +51,5 @@ class FormForgotPasswordOTPSubmitted extends ForgotPasswordOTPEvent {
   });
 
   @override
-  List<Object> get props => [email,username];
-
+  List<Object> get props => [email, username];
 }

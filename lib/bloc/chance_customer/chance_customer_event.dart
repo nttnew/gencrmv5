@@ -6,7 +6,6 @@ abstract class ChanceCustomerEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitGetChanceCustomerEvent extends ChanceCustomerEvent {
   final int id;
 

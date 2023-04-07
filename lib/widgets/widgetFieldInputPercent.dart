@@ -6,7 +6,8 @@ import 'package:hexcolor/hexcolor.dart';
 import '../src/models/model_generator/add_customer.dart';
 
 class FieldInputPercent extends StatefulWidget {
-  FieldInputPercent({Key? key,required this.data,required this.onChanged}) : super(key: key);
+  FieldInputPercent({Key? key, required this.data, required this.onChanged})
+      : super(key: key);
 
   CustomerIndividualItemData data;
   Function onChanged;
@@ -16,13 +17,12 @@ class FieldInputPercent extends StatefulWidget {
 }
 
 class _FieldInputPercentState extends State<FieldInputPercent> {
-
-  TextEditingController _editingController=TextEditingController();
-
+  TextEditingController _editingController = TextEditingController();
 
   @override
   void initState() {
-    _editingController.text=widget.data.field_value!=null?widget.data.field_value!:"";
+    _editingController.text =
+        widget.data.field_value != null ? widget.data.field_value! : "";
     super.initState();
   }
 
@@ -40,12 +40,12 @@ class _FieldInputPercentState extends State<FieldInputPercent> {
               children: <TextSpan>[
                 widget.data.field_require == 1
                     ? TextSpan(
-                    text: '*',
-                    style: TextStyle(
-                        fontFamily: "Roboto",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.red))
+                        text: '*',
+                        style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red))
                     : TextSpan(),
               ],
             ),
@@ -60,18 +60,19 @@ class _FieldInputPercentState extends State<FieldInputPercent> {
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: HexColor("#BEB4B4"))),
             child: Padding(
-              padding: EdgeInsets.only(left: 10, top: 5, bottom: 5,right: 16),
+              padding: EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 16),
               child: Row(
                 children: [
                   Expanded(
                     child: TextField(
                       // controller: data.field_type=="TEXT_NUMERIC"?_wholesalePriceEditController:null,
-                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+                      style:
+                          TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
                       keyboardType: TextInputType.number,
                       onChanged: (text) {
-                        if(int.parse(text)>=0&&int.parse(text)<=100)
+                        if (int.parse(text) >= 0 && int.parse(text) <= 100)
                           widget.onChanged(text);
-                        else{
+                        else {
                           // _editingController.text="";
                           _editingController.clear();
                         }
@@ -87,7 +88,8 @@ class _FieldInputPercentState extends State<FieldInputPercent> {
                   ),
                   WidgetText(
                     title: "%",
-                    style: AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w700),
+                    style: AppStyle.DEFAULT_14
+                        .copyWith(fontWeight: FontWeight.w700),
                   )
                 ],
               ),

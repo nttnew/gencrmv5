@@ -1,17 +1,11 @@
-import 'dart:io';
-import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gen_crm/src/models/model_generator/detail_customer.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:get/get.dart';
 
 import '../../api_resfull/user_repository.dart';
-import '../../src/base.dart';
-import '../../src/color.dart';
-import '../../src/messages.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/models/model_generator/customer.dart';
 import '../../widgets/widget_dialog.dart';
@@ -19,17 +13,19 @@ import '../../widgets/widget_dialog.dart';
 part 'add_customer_event.dart';
 part 'add_customer_state.dart';
 
-class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState>{
+class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState> {
   final UserRepository userRepository;
 
-  AddCustomerBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitGetAddCustomer());
+  AddCustomerBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitGetAddCustomer());
 
   @override
   Stream<AddCustomerState> mapEventToState(AddCustomerEvent event) async* {
     if (event is InitGetAddCustomerEvent) {
       yield* _getAddCustomer(isIndividual: event.id);
     }
-    if(event is InitGetEditCustomerEvent){
+    if (event is InitGetEditCustomerEvent) {
       yield* _getEditCustomer(id: event.id);
     }
   }
@@ -41,10 +37,10 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState>{
     try {
       yield LoadingAddCustomerState();
       final response = await userRepository.getAddCustomer(isIndividual);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
         yield UpdateGetAddCustomerState(response.data!);
-      }
-      else if(response.code==999){
+      } else if (response.code == 999) {
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -54,12 +50,10 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState>{
             AppNavigator.navigateLogout();
           },
         ));
-      }
-      else{
+      } else {
         yield ErrorGetAddCustomerState(response.msg ?? '');
         LoadingApi().popLoading();
       }
-
     } catch (e) {
       LoadingApi().popLoading();
       yield ErrorGetAddCustomerState(MESSAGES.CONNECT_ERROR);
@@ -73,10 +67,10 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState>{
     try {
       yield LoadingGetEditCustomerState();
       final response = await userRepository.getUpdateCustomer(id!);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessGetEditCustomerState(response.data!);
-      }
-      else if(response.code==999){
+      } else if (response.code == 999) {
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -86,12 +80,10 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState>{
             AppNavigator.navigateLogout();
           },
         ));
-      }
-      else{
+      } else {
         yield ErrorGetEditCustomerState(response.msg ?? '');
         LoadingApi().popLoading();
       }
-
     } catch (e) {
       LoadingApi().popLoading();
       Get.dialog(WidgetDialog(
@@ -109,6 +101,6 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState>{
     LoadingApi().popLoading();
   }
 
-
-  static AddCustomerBloc of(BuildContext context) => BlocProvider.of<AddCustomerBloc>(context);
+  static AddCustomerBloc of(BuildContext context) =>
+      BlocProvider.of<AddCustomerBloc>(context);
 }

@@ -6,13 +6,12 @@ part 'clue_customer.g.dart';
 
 @JsonSerializable()
 class ClueCustomerData {
-  final String? id,name,danh_xung,total_note;
+  final String? id, name, danh_xung, total_note;
   final Position? position;
   final ActionData? phone, email;
 
-
-  ClueCustomerData(
-      this.id, this.name, this.phone, this.danh_xung, this.position,this.email,this.total_note);
+  ClueCustomerData(this.id, this.name, this.phone, this.danh_xung,
+      this.position, this.email, this.total_note);
 
   factory ClueCustomerData.fromJson(Map<String, dynamic> json) =>
       _$ClueCustomerDataFromJson(json);
@@ -22,10 +21,9 @@ class ClueCustomerData {
 
 @JsonSerializable()
 class Position {
-  final String? id,name;
+  final String? id, name;
 
-
-  Position(this.id,this.name);
+  Position(this.id, this.name);
 
   factory Position.fromJson(Map<String, dynamic> json) =>
       _$PositionFromJson(json);
@@ -37,19 +35,10 @@ class Position {
 class ClueCustomerResponse extends BaseResponse {
   final List<ClueCustomerData>? data;
 
-
-  ClueCustomerResponse(
-      this.data);
+  ClueCustomerResponse(this.data);
 
   factory ClueCustomerResponse.fromJson(Map<String, dynamic> json) =>
       _$ClueCustomerResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ClueCustomerResponseToJson(this);
 }
-
-
-
-
-
-
-

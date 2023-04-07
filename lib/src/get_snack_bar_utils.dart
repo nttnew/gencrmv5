@@ -41,9 +41,8 @@ class GetSnackBarUtils {
     }
     Get.rawSnackbar(
         title: MESSAGES.LOADING,
-        message: message != null && message.isNotEmpty
-            ? message
-            : MESSAGES.SUCCESS,
+        message:
+            message != null && message.isNotEmpty ? message : MESSAGES.SUCCESS,
         icon: Center(
             child: Icon(
           Icons.check,
@@ -63,9 +62,8 @@ class GetSnackBarUtils {
     }
     Get.rawSnackbar(
         title: MESSAGES.FAIL,
-        message: message != null && message.isNotEmpty
-          ? message
-          : MESSAGES.FAIL,
+        message:
+            message != null && message.isNotEmpty ? message : MESSAGES.FAIL,
         icon: Center(
             child: Icon(
           Icons.error,
@@ -84,9 +82,8 @@ class GetSnackBarUtils {
     }
     Get.rawSnackbar(
         title: MESSAGES.NOTIFICATION,
-        message: message != null && message.isNotEmpty
-            ? message
-            : MESSAGES.FAIL,
+        message:
+            message != null && message.isNotEmpty ? message : MESSAGES.FAIL,
         icon: Center(
             child: Icon(
           Icons.error,
@@ -105,9 +102,8 @@ class GetSnackBarUtils {
     }
     Get.rawSnackbar(
         title: MESSAGES.WARNING,
-        message: message != null && message.isNotEmpty
-            ? message
-            : MESSAGES.WARNING,
+        message:
+            message != null && message.isNotEmpty ? message : MESSAGES.WARNING,
         icon: Center(
             child: Icon(
           Icons.warning,

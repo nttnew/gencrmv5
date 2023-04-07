@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gen_crm/bloc/contract/contract_bloc.dart';
-import 'package:gen_crm/bloc/contract/detail_contract_bloc.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -19,18 +17,11 @@ class ContractJob extends StatefulWidget {
   State<ContractJob> createState() => _ContractJobState();
 }
 
-class _ContractJobState extends State<ContractJob> {
-  @override
-  void initState() {
-    // Future.delayed(Duration(milliseconds: 100),(){
-    //   DetailContractBloc.of(context).add(InitGetJobContractEvent(widget.id));
-    // });
-
-    super.initState();
-  }
-
+class _ContractJobState extends State<ContractJob>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
         padding: EdgeInsets.only(bottom: 10),
         child: BlocBuilder<JobContractBloc, JobContractState>(
@@ -171,4 +162,7 @@ class _ContractJobState extends State<ContractJob> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

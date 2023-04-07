@@ -6,11 +6,10 @@ abstract class CustomerContractEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitGetContractCustomerEvent extends CustomerContractEvent {
-  final String page,querySearch;
+  final String page, querySearch;
 
-  InitGetContractCustomerEvent(this.page,this.querySearch);
+  InitGetContractCustomerEvent(this.page, this.querySearch);
 }
 
 class InitGetContactCusEvent extends CustomerContractEvent {

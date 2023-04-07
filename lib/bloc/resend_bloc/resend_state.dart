@@ -8,7 +8,13 @@ class ResendOTPState {
   final bool isFailure;
   final String message;
 
-  ResendOTPState({this.time = 0, this.isTimeValid = true, this.isSubmitting= true, this.isSuccess= true, this.isFailure= true, this.message = ''});
+  ResendOTPState(
+      {this.time = 0,
+      this.isTimeValid = true,
+      this.isSubmitting = true,
+      this.isSuccess = true,
+      this.isFailure = true,
+      this.message = ''});
 
   bool get isFormValid => isTimeValid && time == 0;
 

@@ -25,9 +25,9 @@ class WidgetButton extends StatelessWidget {
     this.width,
     this.enable = true,
     this.child,
-    this.boxDecoration, this.textStyle,
+    this.boxDecoration,
+    this.textStyle,
   }) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +38,17 @@ class WidgetButton extends StatelessWidget {
         child: WidgetContainerCenter(
             width: width ?? AppValue.widths,
             height: height ?? 35,
-            boxDecoration: boxDecoration ?? BoxDecoration(
-              color: backgroundColor ?? COLORS.PRIMARY_COLOR,
-              borderRadius: BorderRadius.circular(30)
-            ),
-            child: child ?? Text(text!, style: textStyle ?? AppStyle.DEFAULT_18.copyWith(color: textColor,fontWeight: FontWeight.w800),
-        )),
+            boxDecoration: boxDecoration ??
+                BoxDecoration(
+                    color: backgroundColor ?? COLORS.PRIMARY_COLOR,
+                    borderRadius: BorderRadius.circular(30)),
+            child: child ??
+                Text(
+                  text!,
+                  style: textStyle ??
+                      AppStyle.DEFAULT_18.copyWith(
+                          color: textColor, fontWeight: FontWeight.w800),
+                )),
       ),
     );
   }

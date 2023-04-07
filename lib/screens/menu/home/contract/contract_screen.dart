@@ -2,14 +2,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/bloc/contract/contract_bloc.dart';
-import 'package:gen_crm/screens/menu/home/contract/customer_contract.dart';
-import 'package:gen_crm/widgets/widget_input.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
-import '../../../../bloc/contract/customer_contract_bloc.dart';
 import '../../../../src/models/model_generator/contract.dart';
 import '../../../../src/models/model_generator/customer.dart';
 import '../../../../src/src_index.dart';
@@ -31,9 +28,10 @@ class _ContractScreenState extends State<ContractScreen> {
   String total = "0";
   int lenght = 0;
   String idFilter = "";
+  String title = "";
   String search = "";
   TextEditingController _editingController = TextEditingController();
-  bool isCheck=true;
+  bool isCheck = true;
 
   @override
   void initState() {
@@ -43,15 +41,13 @@ class _ContractScreenState extends State<ContractScreen> {
       if (_scrollController.offset ==
               _scrollController.position.maxScrollExtent &&
           lenght < int.parse(total)) {
-
         ContractBloc.of(context).add(InitGetContractEvent(
-            page+1, _editingController.text, idFilter,isLoadMore: true));
+            page + 1, _editingController.text, idFilter,
+            isLoadMore: true));
         page = page + 1;
-        // setState(() {
-        //   isCheck=!isCheck;
-        // });
       } else {}
     });
+    title=Get.arguments;
     super.initState();
   }
 
@@ -80,19 +76,17 @@ class _ContractScreenState extends State<ContractScreen> {
                 child: Image.asset('assets/icons/Menu.png'),
               ),
             ),
-            right: GestureDetector(
-              onTap: () {AppNavigator.navigateNotification();},
-              child: BlocBuilder<GetListUnReadNotifiBloc,UnReadListNotifiState>(
-                  builder: (context,state){
-                    if(state is NotificationNeedRead){
-                      return SvgPicture.asset("assets/icons/notification.svg");
-                    }
-                    else{
-                      return SvgPicture.asset("assets/icons/notification2.svg");
-                    }
-                  }
-              )
-            ),
+            right: GestureDetector(onTap: () {
+              AppNavigator.navigateNotification();
+            }, child:
+                BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
+                    builder: (context, state) {
+              if (state is NotificationNeedRead) {
+                return SvgPicture.asset("assets/icons/notification.svg");
+              } else {
+                return SvgPicture.asset("assets/icons/notification2.svg");
+              }
+            })),
           ),
           AppValue.vSpaceSmall,
           Padding(
@@ -100,34 +94,25 @@ class _ContractScreenState extends State<ContractScreen> {
             child: _buildSearch(),
           ),
           AppValue.vSpaceSmall,
-          BlocBuilder<ContractBloc, ContractState>(
-              builder: (context, state) {
-                  if (state is UpdateGetContractState) {
-                    total = state.total;
-                    lenght = state.listContract.length;
-                    return Expanded(
-                            child: RefreshIndicator(
-                              onRefresh: ()=>
-                                Future.delayed(Duration(milliseconds: 250),(){
-                                  ContractBloc.of(context).add(InitGetContractEvent(page, "", ""));
-                                }),
-                              child: SingleChildScrollView(
-                              controller: _scrollController,
-                              child: Column(
-                                children: List.generate(state.listContract.length,
-                                    (index) => _buildCustomer(state.listContract[index])),
-                              ),
-              ),
-                            ))
-                  //
-                  //   ListView.builder(
-                  //   controller: _scrollController,
-                  //   itemCount: state.listContract.length,
-                  //   itemBuilder: (context, index){
-                  //     return _buildCustomer(state.listContract[index]);
-                  //   },
-                  // )
-                  ;
+          BlocBuilder<ContractBloc, ContractState>(builder: (context, state) {
+            if (state is UpdateGetContractState) {
+              total = state.total;
+              lenght = state.listContract.length;
+              return Expanded(
+                      child: RefreshIndicator(
+                onRefresh: () =>
+                    Future.delayed(Duration(milliseconds: 250), () {
+                  ContractBloc.of(context)
+                      .add(InitGetContractEvent(page, "", ""));
+                }),
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Column(
+                    children: List.generate(state.listContract.length,
+                        (index) => _buildCustomer(state.listContract[index])),
+                  ),
+                ),
+              ));
             } else
               return Container();
           }),
@@ -138,23 +123,7 @@ class _ContractScreenState extends State<ContractScreen> {
         child: FloatingActionButton(
           backgroundColor: Color(0xff1AA928),
           onPressed: () {
-            // AppNavigator.navigateAddContract();
-            AppNavigator.navigateAddContract();
-            // showModalBottomSheet(
-            //     enableDrag: false,
-            //     isScrollControlled: true,
-            //     context: context,
-            //     constraints: BoxConstraints(maxHeight: Get.height * 0.6,minWidth: Get.width),
-            //     builder: (BuildContext context){
-            //       return CustomerContractScreen(
-            //         contextFather: context,
-            //         onClickItem: (id,value){
-            //           Get.back();
-            //           AppNavigator.navigateFormAdd("Thêm hợp đồng", 4,id: int.parse(id));
-            //         },
-            //       );
-            //     }
-            // );
+            AppNavigator.navigateAddContract(title: title.toLowerCase());
           },
           child: Icon(Icons.add, size: 40),
         ),
@@ -206,8 +175,6 @@ class _ContractScreenState extends State<ContractScreen> {
                       hintText: MESSAGES.SEARCH_CONTRACT,
                       hintStyle: AppStyle.DEFAULT_14
                           .copyWith(color: Color(0xff707070)),
-                      // errorText: errorText,
-                      // errorStyle: AppStyle.DEFAULT_12.copyWith(color: COLORS.RED),
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
@@ -222,7 +189,7 @@ class _ContractScreenState extends State<ContractScreen> {
                 color: COLORS.COLORS_BA,
               ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   this.onClickFilter(state.listFilter);
                 },
                 child: Padding(
@@ -245,7 +212,7 @@ class _ContractScreenState extends State<ContractScreen> {
   _buildCustomer(ContractItemData data) {
     return GestureDetector(
       onTap: () {
-        AppNavigator.navigateInfoContract(data.id!,data.name!);
+        AppNavigator.navigateInfoContract(data.id!, data.name!);
       },
       child: Container(
         margin: EdgeInsets.only(left: 16, right: 16, bottom: 20),
@@ -288,59 +255,58 @@ class _ContractScreenState extends State<ContractScreen> {
                   width: AppValue.widths * 0.08,
                   height: AppValue.heights * 0.02,
                 )
-                // SvgPicture.asset("assets/icons/icon3svg",color:data.status_color!="" ?HexColor(data.status_color!):COLORS.RED,),
               ],
             ),
             SizedBox(
               height: 8,
             ),
-        if (data.customer?.name?.trim().isNotEmpty ?? false) ...[
-    Row(
-              children: [
-                SvgPicture.asset(
-                  'assets/icons/User.svg',
-                  color: Color(0xffE75D18),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: WidgetText(
-                    title: data.customer!.name ?? '',
-                    style: AppStyle.DEFAULT_LABEL_PRODUCT,
+            if (data.customer?.name?.trim().isNotEmpty ?? false) ...[
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/icons/User.svg',
+                    color: Color(0xffE75D18),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 8,
-            ),            ],
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: WidgetText(
+                      title: data.customer!.name ?? '',
+                      style: AppStyle.DEFAULT_LABEL_PRODUCT,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+            ],
             if (data.status?.trim().isNotEmpty ?? false) ...[
-
-            Row(
-              children: [
-                SvgPicture.asset(
-                  'assets/icons/dangxuly.svg',
-                  color: data.status_color != ""
-                      ? HexColor(data.status_color!)
-                      : COLORS.RED,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                WidgetText(
-                    title: data.status ?? '',
-                    style: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
-                      color: data.status_color != ""
-                          ? HexColor(data.status_color!)
-                          : COLORS.RED,
-                    )),
-              ],
-            ),
-            SizedBox(
-              height: 8,
-            ),            ],
-
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/icons/dangxuly.svg',
+                    color: data.status_color != ""
+                        ? HexColor(data.status_color!)
+                        : COLORS.RED,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  WidgetText(
+                      title: data.status ?? '',
+                      style: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                        color: data.status_color != ""
+                            ? HexColor(data.status_color!)
+                            : COLORS.RED,
+                      )),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+            ],
             Row(
               children: [
                 SvgPicture.asset(
@@ -371,15 +337,6 @@ class _ContractScreenState extends State<ContractScreen> {
             SizedBox(
               height: 8,
             ),
-            // Row(
-            //   children: [
-            //     SvgPicture.asset('assets/icons/Call.svg'),
-            //     SizedBox(width: 10,),
-            //     WidgetText(title: 'Còn lại: 0đ',style:  AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(color: COLORS.GREY)),
-            //     Spacer(),
-            //     SvgPicture.asset('assets/icons/Mess.svg'),
-            //   ],
-            // ),
             AppValue.hSpaceTiny,
           ],
         ),
@@ -388,7 +345,7 @@ class _ContractScreenState extends State<ContractScreen> {
   }
 
   handleOnPressItemMenu(value) async {
-    switch (value['id']){
+    switch (value['id']) {
       case '1':
         _drawerKey.currentState!.openEndDrawer();
         AppNavigator.navigateMain();
@@ -474,42 +431,47 @@ class _ContractScreenState extends State<ContractScreen> {
                         Column(
                           children: List.generate(
                               data.length,
-                                  (index) => GestureDetector(
-                                onTap: () {
-                                  Get.back();
-                                  idFilter=data[index].id.toString();
-                                  ContractBloc.of(context).add(InitGetContractEvent(page, _editingController.text, data[index].id.toString()));
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 8),
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                          bottom: BorderSide(
-                                              width: 1,
-                                              color: COLORS.LIGHT_GREY))),
-                                  child: Row(
-                                    // crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SvgPicture.asset(
-                                        'assets/icons/Filter.svg',
-                                        width: 20,
-                                        height: 20,
-                                        fit: BoxFit.contain,
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Expanded(
-                                          child: Container(
+                              (index) => GestureDetector(
+                                    onTap: () {
+                                      Get.back();
+                                      idFilter = data[index].id.toString();
+                                      ContractBloc.of(context).add(
+                                          InitGetContractEvent(
+                                              page,
+                                              _editingController.text,
+                                              data[index].id.toString()));
+                                    },
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 8),
+                                      decoration: BoxDecoration(
+                                          border: Border(
+                                              bottom: BorderSide(
+                                                  width: 1,
+                                                  color: COLORS.LIGHT_GREY))),
+                                      child: Row(
+                                        // crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/icons/Filter.svg',
+                                            width: 20,
+                                            height: 20,
+                                            fit: BoxFit.contain,
+                                          ),
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Expanded(
+                                              child: Container(
                                             child: WidgetText(
                                               title: data[index].name ?? '',
                                               style: AppStyle.DEFAULT_16,
                                             ),
                                           )),
-                                    ],
-                                  ),
-                                ),
-                              )),
+                                        ],
+                                      ),
+                                    ),
+                                  )),
                         )
                       ],
                     ),

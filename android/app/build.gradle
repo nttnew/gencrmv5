@@ -60,8 +60,8 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "vn.gen_crm"
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 8
-        versionName "1.0.8"
+        versionCode 11
+        versionName "1.1.1"
         minSdkVersion 21
         multiDexEnabled true
     }

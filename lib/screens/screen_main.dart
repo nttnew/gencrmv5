@@ -4,17 +4,16 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
-import 'package:gen_crm/src/models/model_generator/login_response.dart';
+import 'package:gen_crm/screens/add_service_voucher/add_service_voucher_screen.dart';
 import 'package:gen_crm/widgets/widget_appbar.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/models/index.dart';
-import 'package:gen_crm/screens/screens.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import '../bloc/login/login_bloc.dart';
 import '../storages/share_local.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
 
@@ -28,15 +27,32 @@ class _ScreenMainState extends State<ScreenMain> {
 
   List<ButtonMenuModel> listMenu = [];
 
-  List<Map> menuItems = [
-    {"icon": "assets/icons/addContent.png", "name": "Thêm mua xe"},
-    {"icon": "assets/icons/addContent.png", "name": "Thêm bán xe"},
-    {"icon": "assets/icons/addContent.png", "name": "Thêm đặt lịch"},
-    {"icon": "assets/icons/addContent.png", "name": "Thêm phiếu dịch vụ"},
-    {"icon": "assets/icons/add_clue.png", "name": "Thêm khách hàng"},
-    {"icon": "assets/icons/addWork.png", "name": "Thêm công việc"},
-    {"icon": "assets/icons/Support.png", "name": "Thêm hỗ trợ"},
-  ];
+  // List<Map> menuItems = [
+  //   {"icon": "assets/icons/addContent.png", "name": "Thêm mua xe"},
+  //   {"icon": "assets/icons/addContent.png", "name": "Thêm bán xe"},
+  //   {"icon": "assets/icons/addContent.png", "name": "Thêm đặt lịch"},
+  //   {"icon": "assets/icons/addContent.png", "name": "Thêm phiếu dịch vụ"},
+  //   {"icon": "assets/icons/add_clue.png", "name": "Thêm khách hàng"},
+  //   {"icon": "assets/icons/addWork.png", "name": "Thêm công việc"},
+  //   {"icon": "assets/icons/Support.png", "name": "Thêm hỗ trợ"},
+  // ];
+
+  String getIconMenu(String id) {
+    if (ModuleText.CUSTOMER == id) {
+      return ICONS.CUSTUMER_3X;
+    } else if (ModuleText.DAU_MOI == id) {
+      return ICONS.CLUE_3X;
+    } else if (ModuleText.LICH_HEN == id) {
+      return ICONS.CHANCE_3X;
+    } else if (ModuleText.HOP_DONG == id) {
+      return ICONS.CONTRACT_3X;
+    } else if (ModuleText.CONG_VIEC == id) {
+      return ICONS.WORK_3X;
+    } else if (ModuleText.CSKH == id) {
+      return ICONS.SUPPORT_3X;
+    }
+    return ICONS.WORK_3X;
+  }
 
   @override
   void initState() {
@@ -45,6 +61,7 @@ class _ScreenMainState extends State<ScreenMain> {
       GetListUnReadNotifiBloc.of(context).add(CheckNotification());
     });
     getMenu();
+    LoginBloc.of(context).getListMenuFlash();
     super.initState();
   }
 
@@ -94,14 +111,7 @@ class _ScreenMainState extends State<ScreenMain> {
             }),
       );
     }
-    // listMenu=[
-    //   ButtonMenuModel(title: listM[0]['name'], image: ICONS.CUSTUMER,backgroundColor: Color(0xff369FFF),onTap: (){AppNavigator.navigateCustomer();}),
-    //   ButtonMenuModel(title: listM[1]['name'], image: ICONS.CLUE,backgroundColor: Color(0xffA5A6F6),onTap: (){AppNavigator.navigateClue();}),
-    //   ButtonMenuModel(title: listM[2]['name'], image: ICONS.CHANCE,backgroundColor: Color(0xffFDC9D2),onTap: (){AppNavigator.navigateChance();}),
-    //   ButtonMenuModel(title: listM[3]['name'], image: ICONS.CONTRACT,backgroundColor: Color(0xffFFC000),onTap: (){AppNavigator.navigateContract();}),
-    //   ButtonMenuModel(title: listM[4]['name'], image: ICONS.WORK,backgroundColor: Color(0xffFF993A),onTap: (){AppNavigator.navigateWork();}),
-    //   ButtonMenuModel(title: listM[5]['name'], image: ICONS.SUPPORT,backgroundColor: Color(0xff8AC53E),onTap: (){AppNavigator.navigateSupport();}),
-    // ];
+
     setState(() {});
   }
 
@@ -110,110 +120,119 @@ class _ScreenMainState extends State<ScreenMain> {
     return Scaffold(
       key: _drawerKey,
       drawer: MainDrawer(onPress: handleOnPressItemMenu),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xff1AA928),
-        onPressed: () {
-          showModalBottomSheet(
-              isDismissible: false,
-              enableDrag: false,
-              context: context,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30)),
-              builder: (BuildContext context) {
-                return Container(
-                  padding: EdgeInsets.symmetric(vertical: 25, horizontal: 30),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ...List<Widget>.generate(menuItems.length, (i) {
-                        return GestureDetector(
-                          onTap: () {
-                            Get.back();
-                            switch (i) {
-                              case 0:
-                                {
-                                  //AppNavigator.navigateAddBuyCar();
-                                  break;
-                                }
-                              case 1:
-                                {
-                                  //AppNavigator.navigateAddSellCar();
-                                  break;
-                                }
-                              case 2:
-                                {
-                                  //AppNavigator.navigateAddBooking();
-                                  break;
-                                }
-                              case 3:
-                                {
-                                  //AppNavigator.navigateAddServiceCard();
-                                  break;
-                                }
-                              case 4:
-                                {
-                                  AppNavigator.navigateAddCustomer();
-                                  break;
-                                }
-                              case 5:
-                                {
-                                  AppNavigator.navigateFormAdd(
-                                      "Thêm công việc", 14);
-                                  break;
-                                }
-                              case 6:
-                                {
-                                  AppNavigator.navigateFormAdd(
-                                      "Thêm công việc", 15);
-                                  break;
-                                }
+      floatingActionButton: listMenu.isNotEmpty
+          ? FloatingActionButton(
+              backgroundColor: Color(0xff1AA928),
+              onPressed: () {
+                showModalBottomSheet(
+                    isDismissible: false,
+                    enableDrag: false,
+                    context: context,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    builder: (BuildContext context) {
+                      return Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 25, horizontal: 30),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ...List<Widget>.generate(
+                                LoginBloc.of(context).listMenuFlash.length,
+                                (i) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Get.back();
 
-                              default:
-                                break;
-                            }
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              AppValue.hSpaceLarge,
-                              Image.asset(menuItems[i]["icon"]),
-                              SizedBox(width: 10),
-                              Text(
-                                menuItems[i]["name"],
-                                style: AppStyle.DEFAULT_16_BOLD
-                                    .copyWith(color: Color(0xff006CB1)),
-                              )
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: Container(
-                              width: AppValue.widths * 0.8,
-                              height: AppValue.heights * 0.06,
-                              decoration: BoxDecoration(
-                                color: HexColor("#D0F1EB"),
-                                borderRadius: BorderRadius.circular(17.06),
-                              ),
-                              child: Center(
-                                child: Text("Đóng"),
-                              ),
+                                  String id = LoginBloc.of(context)
+                                      .listMenuFlash[i]
+                                      .id
+                                      .toString();
+                                  String name = LoginBloc.of(context)
+                                      .listMenuFlash[i]
+                                      .name
+                                      .toString()
+                                      .toLowerCase();
+                                  if (ModuleText.CUSTOMER == id) {
+                                    AppNavigator.navigateAddCustomer();
+                                  } else if (ModuleText.DAU_MOI == id) {
+                                    AppNavigator.navigateFormAdd(name, 2);
+                                  } else if (ModuleText.LICH_HEN == id) {
+                                    AppNavigator.navigateFormAdd(name, 3);
+                                  } else if (ModuleText.HOP_DONG == id) {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AddServiceVoucherScreen(
+                                                    title: name
+                                                            .toUpperCase()
+                                                            .capitalizeFirst ??
+                                                        '')));
+                                  } else if (ModuleText.CONG_VIEC == id) {
+                                    AppNavigator.navigateFormAdd(name, 14);
+                                  } else if (ModuleText.CSKH == id) {
+                                    AppNavigator.navigateFormAdd(name, 6);
+                                  } else if (ModuleText.THEM_MUA_XE == id) {
+                                    //todo
+                                  } else if (ModuleText.THEM_BAN_XE == id) {
+                                    //todo
+                                  }
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    AppValue.hSpaceLarge,
+                                    Image.asset(
+                                      getIconMenu(LoginBloc.of(context)
+                                          .listMenuFlash[i]
+                                          .id
+                                          .toString()),
+                                      height: 26,
+                                      width: 26,
+                                      fit: BoxFit.contain,
+                                    ),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      LoginBloc.of(context)
+                                          .listMenuFlash[i]
+                                          .name
+                                          .toString(),
+                                      style: AppStyle.DEFAULT_16_BOLD
+                                          .copyWith(color: Color(0xff006CB1)),
+                                    )
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: () => Navigator.of(context).pop(),
+                                  child: Container(
+                                    width: AppValue.widths * 0.8,
+                                    height: AppValue.heights * 0.06,
+                                    decoration: BoxDecoration(
+                                      color: HexColor("#D0F1EB"),
+                                      borderRadius:
+                                          BorderRadius.circular(17.06),
+                                    ),
+                                    child: Center(
+                                      child: Text("Đóng"),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              });
-        },
-        child: Icon(Icons.add, size: 40),
-      ),
+                          ],
+                        ),
+                      );
+                    });
+              },
+              child: Icon(Icons.add, size: 40),
+            )
+          : SizedBox(),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
@@ -353,14 +372,6 @@ class _ScreenMainState extends State<ScreenMain> {
           ),
         ),
       ),
-      // floatingActionButton: Padding(
-      //   padding: EdgeInsets.only(bottom: 20),
-      //   child: FloatingActionButton(
-      //     backgroundColor: Color(0xff1AA928),
-      //     onPressed: () {},
-      //     child: Icon(Icons.add,size: 40),
-      //   ),
-      // ),
     );
   }
 
@@ -378,29 +389,36 @@ class _ScreenMainState extends State<ScreenMain> {
             Expanded(
               flex: 2,
               child: Container(
-                width: 80,
-                height: 80,
-                decoration:
-                    BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-                child: WidgetContainerImage(
-                  image: data.image,
-                  fit: BoxFit.contain,
-                  width: 40,
-                  height: 40,
+                child: Center(
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.white),
+                    child: WidgetContainerImage(
+                      image: data.image,
+                      fit: BoxFit.contain,
+                      width: 40,
+                      height: 40,
+                    ),
+                  ),
                 ),
               ),
             ),
             Expanded(
               child: Container(
-                // height: 50,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Text(
-                  data.title,
-                  style: AppStyle.DEFAULT_12.copyWith(
-                      fontFamily: 'Roboto', fontWeight: FontWeight.w500),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Text(
+                      data.title,
+                      style: AppStyle.DEFAULT_12.copyWith(
+                          fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ),
               ),
             )

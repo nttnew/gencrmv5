@@ -5,22 +5,21 @@ abstract class ContractState extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
 class InitGetContract extends ContractState {}
 
-class UpdateGetContractState extends ContractState{
+class UpdateGetContractState extends ContractState {
   final List<ContractItemData> listContract;
   final String total;
   final List<FilterData> listFilter;
-  const UpdateGetContractState(this.listContract,this.total,this.listFilter);
+  const UpdateGetContractState(this.listContract, this.total, this.listFilter);
   @override
-  List<Object> get props => [listContract,total,listFilter];
+  List<Object> get props => [listContract, total, listFilter];
 }
 
-class LoadingContractState extends ContractState {
-}
+class LoadingContractState extends ContractState {}
 
-
-class ErrorGetContractState extends ContractState{
+class ErrorGetContractState extends ContractState {
   final String msg;
 
   ErrorGetContractState(this.msg);

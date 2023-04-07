@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/api_resfull/api.dart';
-import 'package:gen_crm/screens/menu/home/contract/ItemProductAdd.dart';
 import 'package:gen_crm/screens/menu/home/contract/list_product.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
@@ -54,9 +53,7 @@ class _ProductContractState extends State<ProductContract> {
 
   reload() async {
     await widget.reload();
-    setState(() {
-      //productData = List.from(productData);
-    });
+    setState(() {});
   }
 
   void removeProduct(ProductModel productModel) {
@@ -80,44 +77,31 @@ class _ProductContractState extends State<ProductContract> {
                             neverHidden: widget.neverHidden,
                             data: productData[index].item,
                             onPlus: (soLuong) {
-                              // int indexSelect=listSelected.indexWhere((element) => element.id==state.listProduct[index].product_id!);
-                              // if(indexSelect!=-1){
                               productData[index].soLuong = soLuong;
-                              // }
                             },
                             onMinus: (soLuong) {
-                              // int indexSelect=listSelected.indexWhere((element) => element.id==state.listProduct[index].product_id!);
-                              // if(indexSelect!=-1){
                               productData[index].soLuong = soLuong;
-                              // }
                             },
                             onDVT: (id, name) {
-                              // int indexSelect=listSelected.indexWhere((element) => element.id==state.listProduct[index].product_id!);
-                              // if(indexSelect!=-1){
                               productData[index].nameDvt = name;
                               productData[index].item.dvt = id;
-                              // }
                             },
                             onVAT: (id, name) {
-                              // int indexSelect=listSelected.indexWhere((element) => element.id==state.listProduct[index].product_id!);
-                              // if(indexSelect!=-1){
                               productData[index].nameVat = name;
                               productData[index].item.vat = id;
-                              // }
                             },
                             onGiamGia: (so, type) {
-                              // int indexSelect=listSelected.indexWhere((element) => element.id==state.listProduct[index].product_id!);
-                              // if(indexSelect!=-1){
                               productData[index].giamGia = so;
                               productData[index].typeGiamGia = type;
-                              // }
                             },
                             onPrice: (price) {
                               productData[index].item.sell_price = price;
                             },
                             model: productData[index],
                             listDvt: listDVT,
-                            listVat: listVAT,
+                            listVat: listVAT, onReload: () {
+                              reload();
+                      },
                           )),
                 )
               : Container(),

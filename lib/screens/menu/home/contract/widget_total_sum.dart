@@ -5,11 +5,8 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../../src/color.dart';
 
 class WidgetTotalSum extends StatefulWidget {
-  WidgetTotalSum({
-    Key? key,
-    required this.label,
-    required this.value
-  }) : super(key: key);
+  WidgetTotalSum({Key? key, required this.label, required this.value})
+      : super(key: key);
 
   final String? label;
   final String? value;
@@ -48,7 +45,7 @@ class _WidgetTotalSumState extends State<WidgetTotalSum> {
               padding: EdgeInsets.only(left: 10, top: 14, bottom: 14),
               child: Container(
                 child: WidgetText(
-                  title:widget.value,
+                  title: widget.value,
                   style: hintTextStyle(),
                 ),
               ),
@@ -60,13 +57,11 @@ class _WidgetTotalSumState extends State<WidgetTotalSum> {
   }
 }
 
-TextStyle hintTextStyle() =>
-    TextStyle(
-        fontFamily: "Roboto",
-        fontSize: 11,
-        fontWeight: FontWeight.w500,
-        color: HexColor("#838A91"));
-
+TextStyle hintTextStyle() => TextStyle(
+    fontFamily: "Roboto",
+    fontSize: 11,
+    fontWeight: FontWeight.w500,
+    color: HexColor("#838A91"));
 
 TextStyle titlestyle() => TextStyle(
     fontFamily: "Roboto",

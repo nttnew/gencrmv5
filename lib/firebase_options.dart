@@ -70,8 +70,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '794334677094',
     projectId: 'gen-crm',
     storageBucket: 'gen-crm.appspot.com',
-    androidClientId: '794334677094-dlfae8aiv87515v93njtq5t7jlch9ume.apps.googleusercontent.com',
-    iosClientId: '794334677094-800vifglnecq1fnhkln72u2ek6qbatjh.apps.googleusercontent.com',
+    androidClientId:
+        '794334677094-dlfae8aiv87515v93njtq5t7jlch9ume.apps.googleusercontent.com',
+    iosClientId:
+        '794334677094-800vifglnecq1fnhkln72u2ek6qbatjh.apps.googleusercontent.com',
     iosBundleId: 'com.gencrm',
   );
 }

@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:gen_crm/src/models/index.dart';
 
 part 'news.g.dart';
 
@@ -9,9 +8,11 @@ class ListNewsResponse {
   final String? message;
   final List<NewsData> payload;
 
-  const ListNewsResponse({required this.code, this.message, required this.payload});
+  const ListNewsResponse(
+      {required this.code, this.message, required this.payload});
 
-  factory ListNewsResponse.fromJson(Map<String, dynamic> json) => _$ListNewsResponseFromJson(json);
+  factory ListNewsResponse.fromJson(Map<String, dynamic> json) =>
+      _$ListNewsResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ListNewsResponseToJson(this);
 }
@@ -26,9 +27,17 @@ class NewsData {
   @JsonKey(name: "created_date")
   final String createdDate;
 
-  NewsData({required this.id, required this.newCode, required this.image, required this.category, required this.title, required this.detail, required this.createdDate});
+  NewsData(
+      {required this.id,
+      required this.newCode,
+      required this.image,
+      required this.category,
+      required this.title,
+      required this.detail,
+      required this.createdDate});
 
-  factory NewsData.fromJson(Map<String, dynamic> json) => _$NewsDataFromJson(json);
+  factory NewsData.fromJson(Map<String, dynamic> json) =>
+      _$NewsDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$NewsDataToJson(this);
 }

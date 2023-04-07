@@ -6,19 +6,14 @@ abstract class DetailChanceEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitGetListDetailEvent extends DetailChanceEvent {
-
   final int id;
 
   InitGetListDetailEvent(this.id);
 }
 
 class InitDeleteChanceEvent extends DetailChanceEvent {
-
   final String id;
 
   InitDeleteChanceEvent(this.id);
 }
-
-

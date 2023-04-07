@@ -5,20 +5,19 @@ abstract class ChanceCustomerState extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
 class InitGetChanceCustomer extends ChanceCustomerState {}
 
-class UpdateGetChanceCustomerState extends ChanceCustomerState{
+class UpdateGetChanceCustomerState extends ChanceCustomerState {
   final List<ChanceCustomerData> listChance;
   const UpdateGetChanceCustomerState(this.listChance);
   @override
   List<Object> get props => [listChance];
 }
 
-class LoadingClueCustomerState extends ChanceCustomerState {
-}
+class LoadingClueCustomerState extends ChanceCustomerState {}
 
-
-class ErrorGetChanceCustomerState extends ChanceCustomerState{
+class ErrorGetChanceCustomerState extends ChanceCustomerState {
   final String msg;
 
   ErrorGetChanceCustomerState(this.msg);

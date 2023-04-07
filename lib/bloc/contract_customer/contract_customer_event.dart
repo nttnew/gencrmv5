@@ -6,7 +6,6 @@ abstract class ContractCustomerEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitGetContractCustomerEvent extends ContractCustomerEvent {
   final int id;
 

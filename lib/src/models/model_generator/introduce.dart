@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:gen_crm/src/models/index.dart';
 
 part 'introduce.g.dart';
 
@@ -9,9 +8,11 @@ class IntroduceResponse {
   final String? message;
   final IntroduceData payload;
 
-  const IntroduceResponse({required this.code, this.message, required this.payload});
+  const IntroduceResponse(
+      {required this.code, this.message, required this.payload});
 
-  factory IntroduceResponse.fromJson(Map<String, dynamic> json) => _$IntroduceResponseFromJson(json);
+  factory IntroduceResponse.fromJson(Map<String, dynamic> json) =>
+      _$IntroduceResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$IntroduceResponseToJson(this);
 }
@@ -23,7 +24,8 @@ class IntroduceData {
 
   IntroduceData({required this.id, required this.image, required this.detail});
 
-  factory IntroduceData.fromJson(Map<String, dynamic> json) => _$IntroduceDataFromJson(json);
+  factory IntroduceData.fromJson(Map<String, dynamic> json) =>
+      _$IntroduceDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$IntroduceDataToJson(this);
 }

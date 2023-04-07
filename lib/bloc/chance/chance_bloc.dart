@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,37 +15,46 @@ import '../../widgets/widget_dialog.dart';
 part 'chance_event.dart';
 part 'chance_state.dart';
 
-class GetListChanceBloc extends Bloc<GetListChanceEvent, ChanceState>{
+class GetListChanceBloc extends Bloc<GetListChanceEvent, ChanceState> {
   final UserRepository userRepository;
 
-  GetListChanceBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitGetListChance());
+  GetListChanceBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitGetListChance());
 
   @override
   Stream<ChanceState> mapEventToState(GetListChanceEvent event) async* {
     if (event is InitGetListOrderEventChance) {
-      yield* _getListChance(filter: event.filter, page: event.page, search: event.search,isLoadMore: event.isLoadMore);
+      yield* _getListChance(
+          filter: event.filter,
+          page: event.page,
+          search: event.search,
+          isLoadMore: event.isLoadMore);
     }
   }
 
   List<ListChanceData>? listChance;
 
-  Stream<ChanceState> _getListChance({required String filter, required int page, required String search,bool? isLoadMore=false}) async* {
+  Stream<ChanceState> _getListChance(
+      {required String filter,
+      required int page,
+      required String search,
+      bool? isLoadMore = false}) async* {
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getListChance(page, filter, search);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
-        if(page==1){
-          listChance=response.data!.list;
-          yield UpdateGetListChanceState(response.data!.list!,response.data!.total!,response.data!.filter!);
-        }
-        else
-        {
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        if (page == 1) {
+          listChance = response.data!.list;
+          yield UpdateGetListChanceState(response.data!.list!,
+              response.data!.total!, response.data!.filter!);
+        } else {
           listChance!.addAll(response.data!.list!);
-          print('aaaaa $listChance');
-          yield UpdateGetListChanceState(listChance!,response.data!.total!,response.data!.filter!);
+          yield UpdateGetListChanceState(
+              listChance!, response.data!.total!, response.data!.filter!);
         }
-      }
-      else if(response.code==999){
+      } else if (response.code == 999) {
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -57,8 +64,7 @@ class GetListChanceBloc extends Bloc<GetListChanceEvent, ChanceState>{
             AppNavigator.navigateLogout();
           },
         ));
-      }
-      else
+      } else
         yield ErrorGetListChanceState(response.msg ?? '');
     } catch (e) {
       yield ErrorGetListChanceState(MESSAGES.CONNECT_ERROR);
@@ -77,6 +83,6 @@ class GetListChanceBloc extends Bloc<GetListChanceEvent, ChanceState>{
     LoadingApi().popLoading();
   }
 
-
-  static GetListChanceBloc of(BuildContext context) => BlocProvider.of<GetListChanceBloc>(context);
+  static GetListChanceBloc of(BuildContext context) =>
+      BlocProvider.of<GetListChanceBloc>(context);
 }

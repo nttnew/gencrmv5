@@ -1,12 +1,12 @@
 part of 'register_bloc.dart';
+
 class RegisterState extends Equatable {
-  const RegisterState({
-    this.fullName = const NotNull.pure(),
-    this.email = const UserName.pure(),
-    this.password = const Password.pure(),
-    this.status = FormzStatus.pure,
-    this.message = ''
-  });
+  const RegisterState(
+      {this.fullName = const NotNull.pure(),
+      this.email = const UserName.pure(),
+      this.password = const Password.pure(),
+      this.status = FormzStatus.pure,
+      this.message = ''});
 
   final NotNull fullName;
   final UserName email;

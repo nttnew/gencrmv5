@@ -5,12 +5,11 @@ import 'package:gen_crm/src/preferences_key.dart';
 import 'package:gen_crm/storages/storages.dart';
 
 class EventRepositoryStorage implements EventRepository {
-
   const EventRepositoryStorage();
   @override
   Future<String> loadEvent() async {
     final response = await shareLocal.getString("DEV");
-    if (response!=null) {
+    if (response != null) {
       return response;
     } else {
       final response = await shareLocal.getString("DEV");
@@ -26,10 +25,11 @@ class EventRepositoryStorage implements EventRepository {
   @override
   Future<String> loadUser() async {
     final response = await shareLocal.getString(PreferencesKey.USER);
-    if (response!=null) {
+    if (response != null) {
       return response;
     } else {
-      await shareLocal.putString(PreferencesKey.USER, dotenv.env[PreferencesKey.TOKEN]!);
+      await shareLocal.putString(
+          PreferencesKey.USER, dotenv.env[PreferencesKey.TOKEN]!);
       return await shareLocal.getString(PreferencesKey.USER);
     }
   }
@@ -40,9 +40,9 @@ class EventRepositoryStorage implements EventRepository {
   }
 
   @override
-  Future<String> loadInforUser() async{
+  Future<String> loadInforUser() async {
     final response = await shareLocal.getString(PreferencesKey.INFOR_USER);
-    if (response!=null) {
+    if (response != null) {
       return response;
     } else {
       await shareLocal.putString(PreferencesKey.INFOR_USER, "");

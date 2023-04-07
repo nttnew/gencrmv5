@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/product/product_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
-import 'package:gen_crm/widgets/line_horizontal_widget.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../../models/product_model.dart';
 import '../../../../src/src_index.dart';
-import '../../../../widgets/widget_text.dart';
 import 'package:get/get.dart';
 
 class ListProduct extends StatefulWidget {
@@ -32,8 +31,11 @@ class _ListProductState extends State<ListProduct> {
   void initState() {
     ProductBloc.of(context).add(InitGetListProductEvent("1", ""));
     _scrollController.addListener(() {
-      if (_scrollController.offset == _scrollController.position.maxScrollExtent && length < total) {
-        ProductBloc.of(context).add(InitGetListProductEvent((page + 1).toString(), _editingController.text));
+      if (_scrollController.offset ==
+              _scrollController.position.maxScrollExtent &&
+          length < total) {
+        ProductBloc.of(context).add(InitGetListProductEvent(
+            (page + 1).toString(), _editingController.text));
         page = page + 1;
       } else {}
     });
@@ -51,7 +53,13 @@ class _ListProductState extends State<ListProduct> {
       appBar: AppBar(
         toolbarHeight: AppValue.heights * 0.1,
         backgroundColor: HexColor("#D0F1EB"),
-        title: WidgetText(title: "Chọn sản phẩm", style: TextStyle(color: Colors.black, fontFamily: "Montserrat", fontWeight: FontWeight.w700, fontSize: 16)),
+        title: WidgetText(
+            title: "Chọn sản phẩm",
+            style: TextStyle(
+                color: Colors.black,
+                fontFamily: "Montserrat",
+                fontWeight: FontWeight.w700,
+                fontSize: 16)),
         leading: _buildBack(),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
@@ -67,8 +75,24 @@ class _ListProductState extends State<ListProduct> {
           total = state.total;
           length = state.listProduct.length;
           for (int i = 0; i < state.listProduct.length; i++) {
-            int indexS = listSelected.indexWhere((element) => element.id == state.listProduct[i].product_id!);
-            if (indexS == -1) listSelected.add(ProductModel(state.listProduct[i].product_id!, 0, ProductItem(state.listProduct[i].product_id, state.listProduct[i].product_code, state.listProduct[i].product_edit, state.listProduct[i].product_name, state.listProduct[i].dvt, state.listProduct[i].vat, state.listProduct[i].sell_price), "0", "", "", ""));
+            int indexS = listSelected.indexWhere(
+                (element) => element.id == state.listProduct[i].product_id!);
+            if (indexS == -1)
+              listSelected.add(ProductModel(
+                  state.listProduct[i].product_id!,
+                  0,
+                  ProductItem(
+                      state.listProduct[i].product_id,
+                      state.listProduct[i].product_code,
+                      state.listProduct[i].product_edit,
+                      state.listProduct[i].product_name,
+                      state.listProduct[i].dvt,
+                      state.listProduct[i].vat,
+                      state.listProduct[i].sell_price),
+                  "0",
+                  "",
+                  "",
+                  ""));
           }
           return Container(
             margin: EdgeInsets.only(top: 8, bottom: 8),
@@ -82,13 +106,16 @@ class _ListProductState extends State<ListProduct> {
                     children: [
                       Expanded(
                           child: Container(
-                        decoration: BoxDecoration(border: Border.all(width: 1, color: COLORS.GREY_400), borderRadius: BorderRadius.circular(10)),
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(width: 1, color: COLORS.GREY_400),
+                            borderRadius: BorderRadius.circular(10)),
                         padding: EdgeInsets.symmetric(horizontal: 8),
                         margin: EdgeInsets.only(right: 8),
                         child: TextField(
                           controller: _editingController,
                           decoration: InputDecoration(
-                            hintText: "Tìm kiếm",
+                            hintText: "Tìm sản phẩm",
                             border: InputBorder.none,
                             disabledBorder: InputBorder.none,
                             enabledBorder: InputBorder.none,
@@ -100,8 +127,11 @@ class _ListProductState extends State<ListProduct> {
                       GestureDetector(
                         onTap: this.onClickSearch,
                         child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                          decoration: BoxDecoration(color: COLORS.PRIMARY_COLOR, borderRadius: BorderRadius.circular(20)),
+                          padding:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          decoration: BoxDecoration(
+                              color: COLORS.PRIMARY_COLOR,
+                              borderRadius: BorderRadius.circular(20)),
                           child: WidgetText(
                             title: "Tìm",
                             style: AppStyle.DEFAULT_16,
@@ -117,49 +147,37 @@ class _ListProductState extends State<ListProduct> {
                     controller: _scrollController,
                     child: Column(
                       children: List.generate(listSelected.length, (index) {
-                        // int indexS=listSelected.indexWhere((element) => element.id==state.listProduct[index].product_id!);
                         return ItemProduct(
                           neverHidden: false,
                           data: listSelected[index].item,
                           listDvt: state.listDvt,
                           listVat: state.listVat,
                           onPlus: (soLuong) {
-                            // int indexSelect=listSelected.indexWhere((element) => element.id==state.listProduct[index].product_id!);
-                            // if(indexSelect!=-1){
                             listSelected[index].soLuong = soLuong;
-                            // }
                           },
                           onMinus: (soLuong) {
-                            // int indexSelect=listSelected.indexWhere((element) => element.id==state.listProduct[index].product_id!);
-                            // if(indexSelect!=-1){
                             listSelected[index].soLuong = soLuong;
-                            // }
                           },
                           onDVT: (id, name) {
-                            // int indexSelect=listSelected.indexWhere((element) => element.id==state.listProduct[index].product_id!);
-                            // if(indexSelect!=-1){
                             listSelected[index].nameDvt = name;
                             listSelected[index].item.dvt = id;
-                            // }
                           },
                           onVAT: (id, name) {
-                            // int indexSelect=listSelected.indexWhere((element) => element.id==state.listProduct[index].product_id!);
-                            // if(indexSelect!=-1){
                             listSelected[index].nameVat = name;
                             listSelected[index].item.vat = id;
                             // }
                           },
                           onGiamGia: (so, type) {
-                            // int indexSelect=listSelected.indexWhere((element) => element.id==state.listProduct[index].product_id!);
-                            // if(indexSelect!=-1){
                             listSelected[index].giamGia = so;
                             listSelected[index].typeGiamGia = type;
-                            // }
                           },
                           onPrice: (price) {
                             listSelected[index].item.sell_price = price;
                           },
                           model: listSelected[index],
+                          onReload: () {
+                            reload();
+                          },
                         );
                       }),
                     ),
@@ -172,7 +190,9 @@ class _ListProductState extends State<ListProduct> {
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 8),
                       width: Get.width * 0.5,
-                      decoration: BoxDecoration(color: COLORS.PRIMARY_COLOR, borderRadius: BorderRadius.circular(20)),
+                      decoration: BoxDecoration(
+                          color: COLORS.PRIMARY_COLOR,
+                          borderRadius: BorderRadius.circular(20)),
                       child: WidgetText(
                         title: "Chọn",
                         style: AppStyle.DEFAULT_16,
@@ -222,7 +242,8 @@ class _ListProductState extends State<ListProduct> {
   }
 
   void onClickSearch() {
-    ProductBloc.of(context).add(InitGetListProductEvent("1", _editingController.text));
+    ProductBloc.of(context)
+        .add(InitGetListProductEvent("1", _editingController.text));
   }
 }
 
@@ -242,8 +263,8 @@ class ItemProduct extends StatefulWidget {
     this.model,
     this.canDelete = false,
     this.onDelete,
-  })  : assert((canDelete == true && onDelete != null) || (canDelete == false && onDelete == null)),
-        super(key: key);
+    required this.onReload,
+  }) : super(key: key);
 
   final ProductItem data;
   final List<List<dynamic>> listDvt;
@@ -254,6 +275,7 @@ class ItemProduct extends StatefulWidget {
   Function? onVAT;
   Function? onGiamGia;
   Function? onPrice;
+  Function() onReload;
   ProductModel? model;
   bool neverHidden;
   bool canDelete;
@@ -265,7 +287,7 @@ class ItemProduct extends StatefulWidget {
 
 class _ItemProductState extends State<ItemProduct> {
   String price = "";
-  String soLuong = "0";
+  late final BehaviorSubject<String> soLuong;
   String Dvt = "";
   String Vat = "";
   String giamGia = "0";
@@ -282,7 +304,7 @@ class _ItemProductState extends State<ItemProduct> {
         Vat = widget.model!.nameVat;
         giamGia = widget.model!.giamGia;
         typeGiamGia = widget.model!.typeGiamGia == "%" ? false : true;
-        soLuong = widget.model!.soLuong.toString();
+        soLuong.add(widget.model!.soLuong.toString());
         price = widget.model!.item.sell_price!;
       });
     }
@@ -291,8 +313,11 @@ class _ItemProductState extends State<ItemProduct> {
 
   @override
   void initState() {
-    int index = widget.listDvt.indexWhere((element) => element[0] == widget.data.dvt);
-    int indexVat = widget.listVat.indexWhere((element) => element[0] == widget.data.vat);
+    soLuong = BehaviorSubject.seeded("0");
+    int index =
+        widget.listDvt.indexWhere((element) => element[0] == widget.data.dvt);
+    int indexVat =
+        widget.listVat.indexWhere((element) => element[0] == widget.data.vat);
     price = widget.data.sell_price ?? "";
     if (widget.model != null && widget.model!.soLuong != 0) {
       setState(() {
@@ -300,7 +325,7 @@ class _ItemProductState extends State<ItemProduct> {
         Vat = widget.model!.nameVat;
         giamGia = widget.model!.giamGia;
         typeGiamGia = widget.model!.typeGiamGia == "%" ? false : true;
-        soLuong = widget.model!.soLuong.toString();
+        soLuong.add(widget.model!.soLuong.toString());
         price = widget.model!.item.sell_price!;
       });
       widget.onDVT!(widget.model!.item.dvt, Dvt);
@@ -309,19 +334,24 @@ class _ItemProductState extends State<ItemProduct> {
       setState(() {
         Dvt = index != -1 ? widget.listDvt[index][1] : "";
         Vat = indexVat != -1 ? widget.listVat[indexVat][1] : "0";
-        soLuong = "0";
+        soLuong.add("0");
       });
       widget.onDVT!(widget.data.dvt, Dvt);
       widget.onVAT!(widget.data.vat, Vat);
     }
-
+    _priceTextfieldController.text =
+        double.parse(widget.data.sell_price ?? '0').toInt().toString();
+    soLuong.listen((value) {
+        widget.onReload();
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: COLORS.GREY_400))),
+      decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(width: 1, color: COLORS.GREY_400))),
       margin: EdgeInsets.only(top: 8, left: 16, right: 16),
       padding: EdgeInsets.only(bottom: 16),
       child: Row(
@@ -350,14 +380,16 @@ class _ItemProductState extends State<ItemProduct> {
               children: [
                 WidgetText(
                   title: widget.data.product_name ?? '',
-                  style: AppStyle.DEFAULT_14_BOLD.copyWith(color: COLORS.TEXT_GREY),
+                  style: AppStyle.DEFAULT_14_BOLD
+                      .copyWith(color: COLORS.TEXT_GREY),
                 ),
                 SizedBox(
                   height: 3,
                 ),
                 WidgetText(
                   title: "Mã sản phẩm: " + "${widget.data.product_code ?? ''}",
-                  style: AppStyle.DEFAULT_14_BOLD.copyWith(color: COLORS.TEXT_GREY),
+                  style: AppStyle.DEFAULT_14_BOLD
+                      .copyWith(color: COLORS.TEXT_GREY),
                 ),
                 SizedBox(
                   height: 3,
@@ -365,11 +397,15 @@ class _ItemProductState extends State<ItemProduct> {
                 GestureDetector(
                   onTap: this.onClickPrice,
                   child: Container(
-                    decoration: BoxDecoration(border: Border.all(width: 1, color: COLORS.TEXT_GREY), borderRadius: BorderRadius.circular(7)),
+                    decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: COLORS.TEXT_GREY),
+                        borderRadius: BorderRadius.circular(7)),
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: WidgetText(
-                      title: "Giá: " + "${AppValue.format_money(double.parse(price))}" + "VNĐ",
-                      style: AppStyle.DEFAULT_14_BOLD.copyWith(color: COLORS.TEXT_GREY),
+                      title: "Giá: " +
+                          "${AppValue.format_money(double.parse(price))}",
+                      style: AppStyle.DEFAULT_14_BOLD
+                          .copyWith(color: COLORS.TEXT_GREY),
                     ),
                   ),
                 ),
@@ -385,11 +421,15 @@ class _ItemProductState extends State<ItemProduct> {
                               GestureDetector(
                                 onTap: this.onClickDvt,
                                 child: Container(
-                                  decoration: BoxDecoration(border: Border.all(width: 1, color: COLORS.ORANGE_IMAGE), borderRadius: BorderRadius.circular(7)),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 1, color: COLORS.ORANGE_IMAGE),
+                                      borderRadius: BorderRadius.circular(7)),
                                   padding: EdgeInsets.symmetric(horizontal: 10),
                                   child: WidgetText(
                                     title: "ĐVT: " + "${Dvt}",
-                                    style: AppStyle.DEFAULT_14.copyWith(color: COLORS.ORANGE_IMAGE),
+                                    style: AppStyle.DEFAULT_14
+                                        .copyWith(color: COLORS.ORANGE_IMAGE),
                                     maxLine: 4,
                                   ),
                                 ),
@@ -401,12 +441,17 @@ class _ItemProductState extends State<ItemProduct> {
                                 onTap: this.onClickVat,
                                 child: Container(
                                   //width: AppValue.widths * 0.3,
-                                  constraints: BoxConstraints(maxWidth: AppValue.widths * 0.28),
-                                  decoration: BoxDecoration(border: Border.all(width: 1, color: COLORS.ORANGE_IMAGE), borderRadius: BorderRadius.circular(7)),
+                                  constraints: BoxConstraints(
+                                      maxWidth: AppValue.widths * 0.28),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 1, color: COLORS.ORANGE_IMAGE),
+                                      borderRadius: BorderRadius.circular(7)),
                                   padding: EdgeInsets.symmetric(horizontal: 10),
                                   child: WidgetText(
                                     title: "VAT: " + "${Vat}",
-                                    style: AppStyle.DEFAULT_14.copyWith(color: COLORS.ORANGE_IMAGE),
+                                    style: AppStyle.DEFAULT_14
+                                        .copyWith(color: COLORS.ORANGE_IMAGE),
                                     maxLine: 4,
                                   ),
                                 ),
@@ -419,11 +464,17 @@ class _ItemProductState extends State<ItemProduct> {
                           GestureDetector(
                             onTap: this.onClickGiamGia,
                             child: Container(
-                              decoration: BoxDecoration(border: Border.all(width: 1, color: COLORS.BLUE), borderRadius: BorderRadius.circular(7)),
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(width: 1, color: COLORS.BLUE),
+                                  borderRadius: BorderRadius.circular(7)),
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               child: WidgetText(
-                                title: "Giảm giá: " + giamGia + "${typeGiamGia == true ? 'vnd' : '%'}",
-                                style: AppStyle.DEFAULT_14.copyWith(color: COLORS.BLUE),
+                                title: "Giảm giá: " +
+                                    giamGia +
+                                    "${typeGiamGia == true ? 'vnd' : '%'}",
+                                style: AppStyle.DEFAULT_14
+                                    .copyWith(color: COLORS.BLUE),
                               ),
                             ),
                           ),
@@ -437,16 +488,16 @@ class _ItemProductState extends State<ItemProduct> {
             children: [
               GestureDetector(
                 onTap: () {
-                  if (int.parse(soLuong) > 0) {
+                  if (int.parse(soLuong.value) > 0) {
                     setState(() {
-                      soLuong = (int.parse(soLuong) - 1).toString();
+                      soLuong.add((int.parse(soLuong.value) - 1).toString());
                     });
                   } else {
                     setState(() {
-                      soLuong = "0";
+                      soLuong.add("0");
                     });
                   }
-                  widget.onMinus!(int.parse(soLuong));
+                  widget.onMinus!(int.parse(soLuong.value));
                 },
                 child: WidgetContainerImage(
                   image: 'assets/icons/minus.png',
@@ -461,7 +512,7 @@ class _ItemProductState extends State<ItemProduct> {
                 width: 5,
               ),
               WidgetText(
-                title: soLuong,
+                title: soLuong.value,
                 style: AppStyle.DEFAULT_14,
               ),
               SizedBox(
@@ -470,9 +521,9 @@ class _ItemProductState extends State<ItemProduct> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    soLuong = (int.parse(soLuong) + 1).toString();
+                    soLuong.add((int.parse(soLuong.value) + 1).toString());
                   });
-                  widget.onPlus!(int.parse(soLuong));
+                  widget.onPlus!(int.parse(soLuong.value));
                 },
                 child: WidgetContainerImage(
                   image: 'assets/icons/plus.png',
@@ -495,7 +546,8 @@ class _ItemProductState extends State<ItemProduct> {
         enableDrag: false,
         isScrollControlled: true,
         context: context,
-        constraints: BoxConstraints(maxHeight: Get.height * 0.55, minWidth: Get.width),
+        constraints:
+            BoxConstraints(maxHeight: Get.height * 0.55, minWidth: Get.width),
         builder: (BuildContext context) {
           return Container(
             padding: EdgeInsets.all(16),
@@ -522,7 +574,8 @@ class _ItemProductState extends State<ItemProduct> {
                               setState(() {
                                 Dvt = widget.listDvt[index][1];
                               });
-                              widget.onDVT!(widget.listDvt[index][0], widget.listDvt[index][1]);
+                              widget.onDVT!(widget.listDvt[index][0],
+                                  widget.listDvt[index][1]);
                               Get.back();
                             },
                             child: _item(widget.listDvt[index][1]))),
@@ -538,7 +591,8 @@ class _ItemProductState extends State<ItemProduct> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8),
       width: Get.width,
-      decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: COLORS.GREY_400))),
+      decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(width: 1, color: COLORS.GREY_400))),
       child: WidgetText(
         title: data.toString(),
         style: AppStyle.DEFAULT_16.copyWith(color: COLORS.TEXT_BLUE_BOLD),
@@ -551,7 +605,8 @@ class _ItemProductState extends State<ItemProduct> {
         enableDrag: false,
         isScrollControlled: true,
         context: context,
-        constraints: BoxConstraints(maxHeight: Get.height * 0.55, minWidth: Get.width),
+        constraints:
+            BoxConstraints(maxHeight: Get.height * 0.55, minWidth: Get.width),
         builder: (BuildContext context) {
           return Container(
             padding: EdgeInsets.all(16),
@@ -578,7 +633,8 @@ class _ItemProductState extends State<ItemProduct> {
                               setState(() {
                                 Vat = widget.listVat[index][1];
                               });
-                              widget.onVAT!(widget.listVat[index][0], widget.listVat[index][1]);
+                              widget.onVAT!(widget.listVat[index][0],
+                                  widget.listVat[index][1]);
                               Get.back();
                             },
                             child: _item(widget.listVat[index][1]))),
@@ -600,7 +656,11 @@ class _ItemProductState extends State<ItemProduct> {
             builder: (context, setState1) {
               return Container(
                 width: Get.width,
-                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom + 16, top: 16, left: 16, right: 16),
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+                    top: 16,
+                    left: 16,
+                    right: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -620,11 +680,21 @@ class _ItemProductState extends State<ItemProduct> {
                       children: [
                         Expanded(
                             child: Container(
-                          decoration: BoxDecoration(border: Border.all(width: 1, color: COLORS.GREY_400), borderRadius: BorderRadius.circular(15)),
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(width: 1, color: COLORS.GREY_400),
+                              borderRadius: BorderRadius.circular(15)),
                           child: TextField(
                             controller: _editingController,
-                            decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 10), border: InputBorder.none, disabledBorder: InputBorder.none, focusedBorder: InputBorder.none, errorBorder: InputBorder.none),
-                            keyboardType: TextInputType.numberWithOptions(decimal: true),
+                            decoration: InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 10),
+                                border: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                errorBorder: InputBorder.none),
+                            keyboardType:
+                                TextInputType.numberWithOptions(decimal: true),
                           ),
                         )),
                         SizedBox(
@@ -637,8 +707,12 @@ class _ItemProductState extends State<ItemProduct> {
                             });
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-                            decoration: BoxDecoration(border: Border.all(width: 1, color: COLORS.ORANGE), borderRadius: BorderRadius.circular(10)),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 3),
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 1, color: COLORS.ORANGE),
+                                borderRadius: BorderRadius.circular(10)),
                             width: 45,
                             child: WidgetText(
                               textAlign: TextAlign.center,
@@ -652,14 +726,17 @@ class _ItemProductState extends State<ItemProduct> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            if (typeGiamGia == true && (double.parse(_editingController.text) > double.parse(widget.data.sell_price!))) {
+                            if (typeGiamGia == true &&
+                                (double.parse(_editingController.text) >
+                                    double.parse(widget.data.sell_price!))) {
                               _editingController.text = widget.data.sell_price!;
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return WidgetDialog(
                                     title: MESSAGES.NOTIFICATION,
-                                    content: "Bạn không được nhập giá giảm lớn hơn giá của sản phẩm",
+                                    content:
+                                        "Bạn không được nhập giá giảm lớn hơn giá của sản phẩm",
                                     textButton1: "OK",
                                     backgroundButton1: COLORS.PRIMARY_COLOR,
                                     onTap1: () {
@@ -668,7 +745,8 @@ class _ItemProductState extends State<ItemProduct> {
                                   );
                                 },
                               );
-                            } else if (typeGiamGia == false && (double.parse(_editingController.text) > 100)) {
+                            } else if (typeGiamGia == false &&
+                                (double.parse(_editingController.text) > 100)) {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -685,15 +763,22 @@ class _ItemProductState extends State<ItemProduct> {
                               );
                             } else {
                               setState(() {
-                                giamGia = typeGiamGia == true ? AppValue.APP_MONEY_FORMAT.format(double.parse(_editingController.text)) : _editingController.text;
+                                giamGia = typeGiamGia == true
+                                    ? AppValue.APP_MONEY_FORMAT.format(
+                                        double.parse(_editingController.text))
+                                    : _editingController.text;
                               });
-                              widget.onGiamGia!(_editingController.text, typeGiamGia == true ? "vnd" : "%");
+                              widget.onGiamGia!(_editingController.text,
+                                  typeGiamGia == true ? "vnd" : "%");
                               Get.back();
                             }
                           },
                           child: Container(
-                            decoration: BoxDecoration(color: COLORS.PRIMARY_COLOR, borderRadius: BorderRadius.circular(30)),
-                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            decoration: BoxDecoration(
+                                color: COLORS.PRIMARY_COLOR,
+                                borderRadius: BorderRadius.circular(30)),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
                             child: WidgetText(
                               title: "Nhập",
                               style: AppStyle.DEFAULT_16,
@@ -720,7 +805,11 @@ class _ItemProductState extends State<ItemProduct> {
             builder: (context, setState1) {
               return Container(
                 width: Get.width,
-                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom + 16, top: 16, left: 16, right: 16),
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+                    top: 16,
+                    left: 16,
+                    right: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -740,51 +829,43 @@ class _ItemProductState extends State<ItemProduct> {
                       children: [
                         Expanded(
                             child: Container(
-                          decoration: BoxDecoration(border: Border.all(width: 1, color: COLORS.GREY_400), borderRadius: BorderRadius.circular(15)),
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(width: 1, color: COLORS.GREY_400),
+                              borderRadius: BorderRadius.circular(15)),
                           child: TextField(
                             controller: _priceTextfieldController,
-                            decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 10), border: InputBorder.none, disabledBorder: InputBorder.none, focusedBorder: InputBorder.none, errorBorder: InputBorder.none),
-                            keyboardType: TextInputType.numberWithOptions(decimal: true),
+                            decoration: InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 10),
+                                border: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                errorBorder: InputBorder.none),
+                            keyboardType: TextInputType.numberWithOptions(),
                           ),
                         )),
-                        // SizedBox(
-                        //   width: 8,
-                        // ),
-                        // GestureDetector(
-                        //   onTap: () {
-                        //     setState1(() {
-                        //       typeGiamGia = !typeGiamGia;
-                        //     });
-                        //   },
-                        //   child: Container(
-                        //     padding: EdgeInsets.symmetric(
-                        //         horizontal: 5, vertical: 3),
-                        //     decoration: BoxDecoration(
-                        //         border:
-                        //             Border.all(width: 1, color: COLORS.ORANGE),
-                        //         borderRadius: BorderRadius.circular(10)),
-                        //     width: 45,
-                        //     child: WidgetText(
-                        //       textAlign: TextAlign.center,
-                        //       title: typeGiamGia == true ? "VNĐ" : "%",
-                        //       style: AppStyle.DEFAULT_14,
-                        //     ),
-                        //   ),
-                        // ),
                         SizedBox(
                           width: 8,
                         ),
                         GestureDetector(
                           onTap: () {
-                            setState(() {
-                              price = _priceTextfieldController.text;
-                            });
-                            widget.onPrice!(price);
+                            if (_priceTextfieldController.text != '') {
+                              setState(() {
+                                price = _priceTextfieldController.text;
+                              });
+                              widget.onPrice!(price);
+                            }else{
+                              _priceTextfieldController.text=price;
+                            }
                             Get.back();
                           },
                           child: Container(
-                            decoration: BoxDecoration(color: COLORS.PRIMARY_COLOR, borderRadius: BorderRadius.circular(30)),
-                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            decoration: BoxDecoration(
+                                color: COLORS.PRIMARY_COLOR,
+                                borderRadius: BorderRadius.circular(30)),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
                             child: WidgetText(
                               title: "Nhập",
                               style: AppStyle.DEFAULT_16,

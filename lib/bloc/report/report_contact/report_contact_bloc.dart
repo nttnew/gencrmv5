@@ -14,37 +14,42 @@ import '../../../widgets/widget_dialog.dart';
 part 'report_contact_event.dart';
 part 'report_contact_state.dart';
 
-class ReportContactBloc extends Bloc<ReportContactEvent, ReportContactState>{
+class ReportContactBloc extends Bloc<ReportContactEvent, ReportContactState> {
   final UserRepository userRepository;
 
-  ReportContactBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitReportContactState());
+  ReportContactBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitReportContactState());
 
   @override
   Stream<ReportContactState> mapEventToState(ReportContactEvent event) async* {
     if (event is InitReportContactEvent) {
-      yield* _getReportContact(event.id, event.time, event.location, event.page,event.gt);
-    }
-    else if(event is LoadingReportContactEvent){
+      yield* _getReportContact(
+          event.id, event.time, event.location, event.page, event.gt);
+    } else if (event is LoadingReportContactEvent) {
       yield LoadingReportContactState();
     }
   }
 
   List<DataListContact>? list;
-  Stream<ReportContactState> _getReportContact( int? id,  int? time,  String? location,  int? page,String? gt) async* {
+  Stream<ReportContactState> _getReportContact(
+      int? id, int? time, String? location, int? page, String? gt) async* {
     LoadingApi().pushLoading();
     try {
-      if(page==1) yield LoadingReportContactState();
-      final response = await userRepository.reportContact(id, time, location, page,gt);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
-        if(page==1){
-          list=response.data!.list!;
-          yield SuccessReportContactState(response.data!.list!,response.data!.total??"");
+      if (page == 1) yield LoadingReportContactState();
+      final response =
+          await userRepository.reportContact(id, time, location, page, gt);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        if (page == 1) {
+          list = response.data!.list!;
+          yield SuccessReportContactState(
+              response.data!.list!, response.data!.total ?? "");
         } else {
-          list=[...list!,...response.data!.list!];
-          yield SuccessReportContactState(list!,response.data!.total??"");
+          list = [...list!, ...response.data!.list!];
+          yield SuccessReportContactState(list!, response.data!.total ?? "");
         }
-      }
-      else if(response.code==999){
+      } else if (response.code == 999) {
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -54,8 +59,7 @@ class ReportContactBloc extends Bloc<ReportContactEvent, ReportContactState>{
             AppNavigator.navigateLogout();
           },
         ));
-      }
-      else
+      } else
         yield ErrorReportContactState(response.msg ?? '');
     } catch (e) {
       yield ErrorReportContactState(MESSAGES.CONNECT_ERROR);
@@ -74,6 +78,6 @@ class ReportContactBloc extends Bloc<ReportContactEvent, ReportContactState>{
     LoadingApi().popLoading();
   }
 
-
-  static ReportContactBloc of(BuildContext context) => BlocProvider.of<ReportContactBloc>(context);
+  static ReportContactBloc of(BuildContext context) =>
+      BlocProvider.of<ReportContactBloc>(context);
 }

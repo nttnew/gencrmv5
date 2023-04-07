@@ -6,9 +6,8 @@ abstract class ProductEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitGetListProductEvent extends ProductEvent {
-  String page,querySearch;
+  String page, querySearch;
 
-  InitGetListProductEvent(this.page,this.querySearch);
+  InitGetListProductEvent(this.page, this.querySearch);
 }

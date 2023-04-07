@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/src_index.dart';
 
-class MODEL{
+class MODEL {
   static Color _warningColor = Colors.yellow;
-  static Future<void> showMyDialog(BuildContext context, VoidCallback onPressed) async {
+  static Future<void> showMyDialog(
+      BuildContext context, VoidCallback onPressed) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!

@@ -5,11 +5,14 @@ abstract class DetailContractState extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
 class InitDetailContract extends DetailContractState {}
 
-class LoadingDeleteContractState extends DetailContractState{}
-class SuccessDeleteContractState extends DetailContractState{}
-class ErrorDeleteContractState extends DetailContractState{
+class LoadingDeleteContractState extends DetailContractState {}
+
+class SuccessDeleteContractState extends DetailContractState {}
+
+class ErrorDeleteContractState extends DetailContractState {
   final String msg;
 
   ErrorDeleteContractState(this.msg);
@@ -17,28 +20,20 @@ class ErrorDeleteContractState extends DetailContractState{
   List<Object> get props => [msg];
 }
 
-
-
-
-
 //detailContract
-class LoadingDetailContractState extends DetailContractState {
-}
+class LoadingDetailContractState extends DetailContractState {}
 
-class SuccessDetailContractState extends DetailContractState{
+class SuccessDetailContractState extends DetailContractState {
   final List<DetailContractData> listDetailContract;
   const SuccessDetailContractState(this.listDetailContract);
   @override
   List<Object> get props => [listDetailContract];
 }
 
-class ErrorDetailContractState extends DetailContractState{
+class ErrorDetailContractState extends DetailContractState {
   final String msg;
 
   ErrorDetailContractState(this.msg);
   @override
   List<Object> get props => [msg];
 }
-
-
-

@@ -6,12 +6,12 @@ abstract class DetailSupportEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitGetDetailSupportEvent extends DetailSupportEvent {
   final String id;
 
   InitGetDetailSupportEvent(this.id);
 }
+
 class DeleteSupportEvent extends DetailSupportEvent {
   final String id;
 

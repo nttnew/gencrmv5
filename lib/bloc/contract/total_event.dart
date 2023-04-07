@@ -6,7 +6,6 @@ abstract class TotalEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitTotalEvent extends TotalEvent {
   final double total;
 

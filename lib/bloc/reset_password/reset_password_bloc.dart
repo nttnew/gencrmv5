@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gen_crm/api_resfull/user_repository.dart';
-import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/src/src_index.dart';
 
 part 'reset_password_event.dart';
@@ -12,17 +11,20 @@ part 'reset_password_state.dart';
 class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
   final UserRepository userRepository;
 
-  ResetPasswordBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitReset());
+  ResetPasswordBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitReset());
 
   @override
-  void onTransition(Transition<ResetPasswordEvent, ResetPasswordState> transition) {
+  void onTransition(
+      Transition<ResetPasswordEvent, ResetPasswordState> transition) {
     super.onTransition(transition);
   }
 
   @override
   Stream<ResetPasswordState> mapEventToState(ResetPasswordEvent event) async* {
     if (event is FormResetPasswordSubmitted) {
-      try{
+      try {
         var response = await userRepository.resetPassword(
           username: event.username,
           newPass: event.newPass,
@@ -31,9 +33,7 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
         );
         if (response.code == BASE_URL.SUCCESS_200) {
           yield ResetPassSuccess();
-          // GetSnackBarUtils.removeSnackBar();
-          // AppNavigator.navigateForgotPasswordReset([state.email.value, response.payload]);
-        }   else
+        } else
           yield ErrorReset(response.msg ?? '');
       } catch (e) {
         yield ErrorReset(MESSAGES.CONNECT_ERROR);
@@ -41,5 +41,7 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
       }
     }
   }
-  static ResetPasswordBloc of(BuildContext context) => BlocProvider.of<ResetPasswordBloc>(context);
+
+  static ResetPasswordBloc of(BuildContext context) =>
+      BlocProvider.of<ResetPasswordBloc>(context);
 }

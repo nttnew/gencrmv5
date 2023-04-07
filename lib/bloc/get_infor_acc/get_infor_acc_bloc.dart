@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gen_crm/bloc/infor/infor_bloc.dart';
 import 'package:get/get.dart';
 
 import '../../api_resfull/user_repository.dart';
@@ -15,10 +14,13 @@ import '../../widgets/widget_dialog.dart';
 
 part 'get_infor_acc_event.dart';
 part 'get_infor_acc_state.dart';
-class GetInforAccBloc extends Bloc<GetInforAccEvent, GetInforAccState>{
+
+class GetInforAccBloc extends Bloc<GetInforAccEvent, GetInforAccState> {
   final UserRepository userRepository;
 
-  GetInforAccBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitGetInforAccState());
+  GetInforAccBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitGetInforAccState());
 
   @override
   Stream<GetInforAccState> mapEventToState(GetInforAccEvent event) async* {
@@ -32,15 +34,14 @@ class GetInforAccBloc extends Bloc<GetInforAccEvent, GetInforAccState>{
     try {
       yield LoadingInforAccState();
       final response = await userRepository.getInforAcc();
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
         yield UpdateGetInforAccState(response.data!);
         LoadingApi().popLoading();
-      }
-      else{
+      } else {
         yield ErrorGetInForAccState(response.msg ?? "");
         LoadingApi().popLoading();
       }
-
     } catch (e) {
       LoadingApi().popLoading();
       Get.dialog(WidgetDialog(
@@ -58,7 +59,6 @@ class GetInforAccBloc extends Bloc<GetInforAccEvent, GetInforAccState>{
     LoadingApi().popLoading();
   }
 
-
-
-  static GetInforAccBloc of(BuildContext context) => BlocProvider.of<GetInforAccBloc>(context);
+  static GetInforAccBloc of(BuildContext context) =>
+      BlocProvider.of<GetInforAccBloc>(context);
 }

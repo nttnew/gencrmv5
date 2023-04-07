@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gen_crm/src/models/model_generator/detail_contract.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:get/get.dart';
 
@@ -11,19 +8,18 @@ import '../../api_resfull/user_repository.dart';
 import '../../src/base.dart';
 import '../../src/color.dart';
 import '../../src/messages.dart';
-import '../../src/models/model_generator/contract.dart';
-import '../../src/models/model_generator/customer.dart';
-import '../../src/models/model_generator/job_chance.dart';
 import '../../src/navigator.dart';
 import '../../widgets/widget_dialog.dart';
 
 part 'phone_event.dart';
 part 'phone_state.dart';
 
-class PhoneBloc extends Bloc<PhoneEvent, PhoneState>{
+class PhoneBloc extends Bloc<PhoneEvent, PhoneState> {
   final UserRepository userRepository;
 
-  PhoneBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitPhoneState());
+  PhoneBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitPhoneState());
 
   @override
   Stream<PhoneState> mapEventToState(PhoneEvent event) async* {
@@ -35,23 +31,23 @@ class PhoneBloc extends Bloc<PhoneEvent, PhoneState>{
     }
   }
 
-  String phone="";
+  String phone = "";
 
   Stream<PhoneState> _getPhone(String id) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingPhoneState();
       final response = await userRepository.getPhoneCus(id);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
         // if(response.data!=""&&response.data!=null){
         //   phone=response.data!;
-          yield SuccessPhoneState(response.data!);
+        yield SuccessPhoneState(response.data!);
         // }
         // else{
         //   yield SuccessPhoneState(phone);
         // }
-      }
-      else if(response.code==999){
+      } else if (response.code == 999) {
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -61,8 +57,7 @@ class PhoneBloc extends Bloc<PhoneEvent, PhoneState>{
             AppNavigator.navigateLogout();
           },
         ));
-      }
-      else
+      } else
         yield ErrorPhoneState(response.msg ?? '');
     } catch (e) {
       yield ErrorPhoneState(MESSAGES.CONNECT_ERROR);
@@ -76,16 +71,15 @@ class PhoneBloc extends Bloc<PhoneEvent, PhoneState>{
     try {
       yield LoadingPhoneState();
       final response = await userRepository.getPhoneAgency(id);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
-        if(response.data!=""&&response.data!=null){
-          phone=response.data!;
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        if (response.data != "" && response.data != null) {
+          phone = response.data!;
           yield SuccessPhoneState(response.data!);
-        }
-        else{
+        } else {
           yield SuccessPhoneState(phone);
         }
-      }
-      else if(response.code==999){
+      } else if (response.code == 999) {
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -95,8 +89,7 @@ class PhoneBloc extends Bloc<PhoneEvent, PhoneState>{
             AppNavigator.navigateLogout();
           },
         ));
-      }
-      else
+      } else
         yield ErrorPhoneState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
@@ -115,5 +108,6 @@ class PhoneBloc extends Bloc<PhoneEvent, PhoneState>{
     LoadingApi().popLoading();
   }
 
-  static PhoneBloc of(BuildContext context) => BlocProvider.of<PhoneBloc>(context);
+  static PhoneBloc of(BuildContext context) =>
+      BlocProvider.of<PhoneBloc>(context);
 }

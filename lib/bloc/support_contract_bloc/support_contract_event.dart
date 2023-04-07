@@ -1,7 +1,6 @@
 part of 'support_contract_bloc.dart';
 
-abstract class SupportContractEvent extends Equatable{
-
+abstract class SupportContractEvent extends Equatable {
   @override
   List<Object?> get props => [];
 

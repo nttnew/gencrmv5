@@ -12,34 +12,41 @@ import 'package:gen_crm/storages/storages.dart';
 part 'info_user_event.dart';
 part 'info_user_state.dart';
 
-class InfoUserBloc extends Bloc<InfoUserEvent, InfoUserState>{
+class InfoUserBloc extends Bloc<InfoUserEvent, InfoUserState> {
   final EventRepositoryStorage _localRepository;
   final UserRepository userRepository;
   final BuildContext? context;
 
-  InfoUserBloc({required UserRepository userRepository, required EventRepositoryStorage localRepository, this.context})
-      : userRepository = userRepository, _localRepository = localRepository, super(const InitUserState.unknown());
+  InfoUserBloc(
+      {required UserRepository userRepository,
+      required EventRepositoryStorage localRepository,
+      this.context})
+      : userRepository = userRepository,
+        _localRepository = localRepository,
+        super(const InitUserState.unknown());
 
   @override
   Stream<InfoUserState> mapEventToState(InfoUserEvent event) async* {
-    if(event is LoadResponseToken){
+    if (event is LoadResponseToken) {
       yield* _mapResponseTokenToState();
     } else if (event is InitDataEvent) {
       yield* _mapInfoUserState();
     } else if (event is AddDataEvent) {
       yield* _mapAddDataInfoUserState();
-    } else if(event is UploadImagesEvent){
+    } else if (event is UploadImagesEvent) {
       yield* _mapUploadImagesState(event.file, event.bloc);
     }
   }
+
   Stream<InfoUserState> _mapResponseTokenToState() async* {
-    try{
+    try {
       // final loadUser  = await this._localRepository.loadUser();
       // yield UploadUserState(user: InfoUser.fromJson(json.decode(loadUser)));
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }
+
   Stream<InfoUserState> _mapInfoUserState() async* {
     try {
       final loadUser = await this._localRepository.loadUser();
@@ -48,27 +55,30 @@ class InfoUserBloc extends Bloc<InfoUserEvent, InfoUserState>{
       throw e;
     }
   }
+
   Stream<InfoUserState> _mapAddDataInfoUserState() async* {
     try {
       final infoUser = await this.userRepository.getInfoUser();
       await _localRepository.saveUserID(infoUser.payload!.id!.toString());
       yield UpdateInfoUserState(infoUser.payload!);
-      if(infoUser.payload!.fullName == null || infoUser.payload!.fullName == '') {
+      if (infoUser.payload!.fullName == null ||
+          infoUser.payload!.fullName == '') {
         AppNavigator.navigateEditInfo(infoUser.payload!);
       }
-
     } catch (e) {
       yield LoginExpiredState(message: MESSAGES.LOGIN_EXPIRED);
       throw e;
     }
   }
-  Stream<InfoUserState> _mapUploadImagesState(File file, ProfileBloc bloc) async* {
-    try {
 
-    } catch (e) {
+  Stream<InfoUserState> _mapUploadImagesState(
+      File file, ProfileBloc bloc) async* {
+    try {} catch (e) {
       await GetSnackBarUtils.createFailure(message: MESSAGES.CONNECT_ERROR);
       throw e;
     }
   }
-  static InfoUserBloc of(BuildContext context) => BlocProvider.of<InfoUserBloc>(context);
+
+  static InfoUserBloc of(BuildContext context) =>
+      BlocProvider.of<InfoUserBloc>(context);
 }

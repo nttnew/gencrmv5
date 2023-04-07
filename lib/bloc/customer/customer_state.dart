@@ -5,23 +5,22 @@ abstract class CustomerState extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
 class InitGetListCustomer extends CustomerState {}
 
-class UpdateGetListCustomerState extends CustomerState{
-  // final ListCustomerData listCustomer;
+class UpdateGetListCustomerState extends CustomerState {
   final List<CustomerData> listCustomer;
   final List<FilterData> listFilter;
   final int total;
-  const UpdateGetListCustomerState(this.listCustomer,this.listFilter,this.total);
+  const UpdateGetListCustomerState(
+      this.listCustomer, this.listFilter, this.total);
   @override
-  List<Object> get props => [listCustomer,listFilter,total];
+  List<Object> get props => [listCustomer, listFilter, total];
 }
 
-class LoadingListCustomerState extends CustomerState {
-}
+class LoadingListCustomerState extends CustomerState {}
 
-
-class ErrorGetListCustomerState extends CustomerState{
+class ErrorGetListCustomerState extends CustomerState {
   final String msg;
 
   ErrorGetListCustomerState(this.msg);
@@ -29,9 +28,7 @@ class ErrorGetListCustomerState extends CustomerState{
   List<Object> get props => [msg];
 }
 
-class SuccessAddCustomerIndividualState extends CustomerState {
-
-}
+class SuccessAddCustomerIndividualState extends CustomerState {}
 
 class ErrorAddCustomerIndividualState extends CustomerState {
   final String message;

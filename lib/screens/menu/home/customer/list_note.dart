@@ -48,7 +48,6 @@ class _ListNoteState extends State<ListNote> {
         ListNoteBloc.of(context).add(InitNoteSupEvent(widget.id, page));
       }
     });
-
     super.initState();
   }
 
@@ -88,11 +87,6 @@ class _ListNoteState extends State<ListNote> {
                 state.data.length,
                 (index) => Container(
                       padding: EdgeInsets.only(bottom: 8, top: 8),
-                      // decoration: BoxDecoration(
-                      //   border: Border(
-                      //     bottom: BorderSide(width: 1,color: COLORS.GREY_400)
-                      //   )
-                      // ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

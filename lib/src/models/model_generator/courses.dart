@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:gen_crm/src/models/index.dart';
 
 part 'courses.g.dart';
 
@@ -9,9 +8,11 @@ class CoursesResponse {
   final String? message;
   final List<CoursesData> payload;
 
-  const CoursesResponse({required this.code, this.message, required this.payload});
+  const CoursesResponse(
+      {required this.code, this.message, required this.payload});
 
-  factory CoursesResponse.fromJson(Map<String, dynamic> json) => _$CoursesResponseFromJson(json);
+  factory CoursesResponse.fromJson(Map<String, dynamic> json) =>
+      _$CoursesResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$CoursesResponseToJson(this);
 }
@@ -22,9 +23,11 @@ class DetailCoursesResponse {
   final String? message;
   final CoursesData payload;
 
-  const DetailCoursesResponse({required this.code, this.message, required this.payload});
+  const DetailCoursesResponse(
+      {required this.code, this.message, required this.payload});
 
-  factory DetailCoursesResponse.fromJson(Map<String, dynamic> json) => _$DetailCoursesResponseFromJson(json);
+  factory DetailCoursesResponse.fromJson(Map<String, dynamic> json) =>
+      _$DetailCoursesResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$DetailCoursesResponseToJson(this);
 }
@@ -43,15 +46,26 @@ class CoursesData {
   final int time;
   final String? image, fee, author, certificate, category, level, description;
 
-  CoursesData({required this.id, required this.courseCode, required this.courseName, required this.amountNew, required this.amountOld,
-    required this.time, required this.image, required this.fee, required this.author, required this.certificate,
-    required this.level, required this.category, required this.description});
+  CoursesData(
+      {required this.id,
+      required this.courseCode,
+      required this.courseName,
+      required this.amountNew,
+      required this.amountOld,
+      required this.time,
+      required this.image,
+      required this.fee,
+      required this.author,
+      required this.certificate,
+      required this.level,
+      required this.category,
+      required this.description});
 
-  factory CoursesData.fromJson(Map<String, dynamic> json) => _$CoursesDataFromJson(json);
+  factory CoursesData.fromJson(Map<String, dynamic> json) =>
+      _$CoursesDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$CoursesDataToJson(this);
 }
-
 
 @JsonSerializable()
 class ParamOrderCourse {
@@ -64,14 +78,14 @@ class ParamOrderCourse {
   @JsonKey(name: "note")
   String note;
 
-  ParamOrderCourse(
-      {
-        required this.fullName,
-        required this.phone,
-        required this.address,
-        required this.note,
-      });
+  ParamOrderCourse({
+    required this.fullName,
+    required this.phone,
+    required this.address,
+    required this.note,
+  });
 
-  factory ParamOrderCourse.fromJson(Map<String, dynamic> json) => _$ParamOrderCourseFromJson(json);
+  factory ParamOrderCourse.fromJson(Map<String, dynamic> json) =>
+      _$ParamOrderCourseFromJson(json);
   Map<String, dynamic> toJson() => _$ParamOrderCourseToJson(this);
 }

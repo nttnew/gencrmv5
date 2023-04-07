@@ -6,12 +6,10 @@ abstract class GetListClueEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitGetListClueEvent extends GetListClueEvent {
   final int page;
   final String search;
   final String filter;
 
-  InitGetListClueEvent( this.filter,this.page, this.search);
-
+  InitGetListClueEvent(this.filter, this.page, this.search);
 }

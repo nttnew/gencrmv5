@@ -6,9 +6,10 @@ abstract class AddJobChanceEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitGetAddJobEventChance extends AddJobChanceEvent {
   final int id;
 
-  InitGetAddJobEventChance(this.id,);
+  InitGetAddJobEventChance(
+    this.id,
+  );
 }

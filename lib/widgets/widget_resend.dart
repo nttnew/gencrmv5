@@ -11,9 +11,13 @@ class WidgetResend extends StatelessWidget {
   final int time;
   final bool isValid;
 
-  const WidgetResend({Key? key, required this.onTap, required this.time, required this.isValid}) : super(key: key);
+  const WidgetResend(
+      {Key? key,
+      required this.onTap,
+      required this.time,
+      required this.isValid})
+      : super(key: key);
 
-  
   @override
   Widget build(BuildContext context) {
     String tmpTime = '';
@@ -36,10 +40,15 @@ class WidgetResend extends StatelessWidget {
           WidgetLink(
             text: !isValid ? MESSAGES.RESEND + '($tmpTime)' : MESSAGES.RESEND,
             style: !isValid
-                ? AppStyle.DEFAULT_16_BOLD.copyWith(color: COLORS.GREY_400, decoration: TextDecoration.underline)
-                : AppStyle.DEFAULT_16_BOLD.copyWith(color: COLORS.BLACK, decoration: TextDecoration.underline),
-            onTap: (){
-              !isValid ? GetSnackBarUtils.createWarning(message: MESSAGES.TRY_AGAIN) : onTap();
+                ? AppStyle.DEFAULT_16_BOLD.copyWith(
+                    color: COLORS.GREY_400,
+                    decoration: TextDecoration.underline)
+                : AppStyle.DEFAULT_16_BOLD.copyWith(
+                    color: COLORS.BLACK, decoration: TextDecoration.underline),
+            onTap: () {
+              !isValid
+                  ? GetSnackBarUtils.createWarning(message: MESSAGES.TRY_AGAIN)
+                  : onTap();
             },
           )
         ],

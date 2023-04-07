@@ -17,7 +17,6 @@ class DioProvider {
           Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds
       ..options.headers = {
         BASE_URL.content_type: BASE_URL.application_json,
-        //BASE_URL.auth_type: "Bearer $token"
         BASE_URL.auth_type: sess != null ? "PHPSESSID=$sess" : '',
         "Authorization": token != null ? token : ""
       }
@@ -35,7 +34,7 @@ class DioProvider {
               },
             ));
           } catch (e) {
-            print("lỗi $e");
+            throw e;
           }
         }
         return status! < 503;
@@ -46,6 +45,5 @@ class DioProvider {
         requestBody: true,
         requestHeader: true,
       ));
-    // return dio;
   }
 }

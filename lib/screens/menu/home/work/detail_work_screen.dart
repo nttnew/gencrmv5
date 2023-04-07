@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/work/detail_work_bloc.dart';
 import 'package:gen_crm/bloc/work/work_bloc.dart';
-import 'package:gen_crm/screens/menu/home/customer/index.dart';
 import 'package:gen_crm/screens/menu/home/customer/list_note.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
@@ -13,7 +11,10 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
+import '../../../../bloc/contract/detail_contract_bloc.dart';
+import '../../../../src/models/model_generator/file_response.dart';
 import '../../../../widgets/widget_dialog.dart';
+import '../../attachment/attachment.dart';
 
 class DetailWorkScreen extends StatefulWidget {
   const DetailWorkScreen({Key? key}) : super(key: key);
@@ -29,7 +30,12 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   @override
   void initState() {
     super.initState();
+    DetailContractBloc.of(context).getFile(id, Module.CONG_VIEC);
     DetailWorkBloc.of(context).add(InitGetDetailWorkEvent(id));
+  }
+
+  void callApiFile() {
+    DetailContractBloc.of(context).getFile(id, Module.CONG_VIEC);
   }
 
   @override
@@ -162,27 +168,36 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                                                   width: 8,
                                                                 ),
                                                                 Expanded(
-                                                                  child: state
+                                                                  child:
+                                                                      GestureDetector(
+                                                                    onTap: () {
+                                                                      if (state
                                                                               .data_list[index]
                                                                               .data![index1]
-                                                                              .type !=
-                                                                          'text_area'
-                                                                      ? WidgetText(
-                                                                          title: state
-                                                                              .data_list[index]
-                                                                              .data![index1]
-                                                                              .value_field,
-                                                                          textAlign:
-                                                                              TextAlign.right,
-                                                                          style:
-                                                                              ValueStyle(),
-                                                                        )
-                                                                      : Html(
-                                                                          data: state
-                                                                              .data_list[index]
-                                                                              .data![index1]
-                                                                              .value_field,
-                                                                        ),
+                                                                              .label_field ==
+                                                                          BASE_URL.KHACH_HANG) {
+                                                                        AppNavigator.navigateDetailCustomer(
+                                                                            state.data_list[index].data![index1].id!,
+                                                                            state.data_list[index].data![index1].value_field ?? '');
+                                                                      }
+                                                                    },
+                                                                    child:
+                                                                        SizedBox(
+                                                                      child: state.data_list[index].data![index1].type !=
+                                                                              'text_area'
+                                                                          ? WidgetText(
+                                                                              title: state.data_list[index].data![index1].value_field,
+                                                                              textAlign: TextAlign.right,
+                                                                              style: ValueStyle().copyWith(
+                                                                                decoration: state.data_list[index].data![index1].label_field == BASE_URL.KHACH_HANG ? TextDecoration.underline : null,
+                                                                                color: state.data_list[index].data![index1].label_field == BASE_URL.KHACH_HANG ? Colors.blue : null,
+                                                                              ),
+                                                                            )
+                                                                          : Html(
+                                                                              data: state.data_list[index].data![index1].value_field,
+                                                                            ),
+                                                                    ),
+                                                                  ),
                                                                 ),
                                                               ],
                                                             ),
@@ -209,108 +224,6 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                     ListNote(type: 5, id: id.toString()),
                   ],
                 ),
-
-                // Expanded(
-                //     child: SingleChildScrollView(
-                //       child: Column(
-                //         children: [
-                //           Row(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: [
-                //               Column(
-                //                 children: [
-                //                   CircleAvatar(
-                //                     radius: 30.0,
-                //                     backgroundImage:
-                //                     NetworkImage('https://via.placeholder.com/150'),
-                //                   )
-                //                 ],
-                //               ),
-                //               SizedBox(
-                //                 width: AppValue.widths * 0.03,
-                //               ),
-                //               Expanded(
-                //                 child: Column(
-                //                   crossAxisAlignment: CrossAxisAlignment.start,
-                //                   children: [
-                //                     Text(
-                //                       "Nguyễn Hoàng Nam",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w600,
-                //                           fontSize: 14),
-                //                     ),
-                //                     Text(
-                //                       "20/03/2022 lúc 05:15 PM",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w400,
-                //                           fontSize: 12),
-                //                     ),
-                //                     Text(
-                //                       "Chị Thảo muốn nhận báo giá có ưu đãi. Nếu giá tốt sẽ bắt đầu triển khai ngay vào đầu tháng tới. Chú ý: gửi báo giá cả bản cứng và bản mềm cho chị.",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w400,
-                //                           fontSize: 12),
-                //                     )
-                //                   ],
-                //                 ),
-                //               )
-                //             ],
-                //           ),
-                //           SizedBox(
-                //             height: AppValue.heights * 0.02,
-                //           ),
-                //           Row(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: [
-                //               Column(
-                //                 children: [
-                //                   CircleAvatar(
-                //                     radius: 30.0,
-                //                     backgroundImage:
-                //                     NetworkImage('https://via.placeholder.com/150'),
-                //                   )
-                //                 ],
-                //               ),
-                //               SizedBox(
-                //                 width: AppValue.widths * 0.03,
-                //               ),
-                //               Expanded(
-                //                 child: Column(
-                //                   crossAxisAlignment: CrossAxisAlignment.start,
-                //                   children: [
-                //                     Text(
-                //                       "Nguyễn Hoàng Nam",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w600,
-                //                           fontSize: 14),
-                //                     ),
-                //                     Text(
-                //                       "20/03/2022 lúc 05:15 PM",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w400,
-                //                           fontSize: 12),
-                //                     ),
-                //                     Text(
-                //                       "Chị Thảo muốn nhận báo giá có ưu đãi. Nếu giá tốt sẽ bắt đầu triển khai ngay vào đầu tháng tới. Chú ý: gửi báo giá cả bản cứng và bản mềm cho chị.",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w400,
-                //                           fontSize: 12),
-                //                     )
-                //                   ],
-                //                 ),
-                //               )
-                //             ],
-                //           ),
-                //         ],
-                //       ),
-                //     )
-                // )
                 InkWell(
                   onTap: () {
                     showModalBottomSheet(
@@ -351,6 +264,45 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                           width: AppValue.widths * 0.1,
                                         ),
                                         Text("Thêm thảo luận",
+                                            style: styleTitleBottomSheet())
+                                      ],
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      final List<FileDataResponse> list = [];
+                                      for (final a
+                                          in DetailContractBloc.of(context)
+                                              .listFileResponse) {
+                                        list.add(a);
+                                      }
+                                      Get.back();
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (context) => Attachment(
+                                                    id: id.toString(),
+                                                    name: title, //todo
+                                                    listFileResponse: list,
+                                                    typeModule:
+                                                        Module.CONG_VIEC,
+                                                  )))
+                                          .whenComplete(() {
+                                        callApiFile();
+                                      });
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: AppValue.widths * 0.2,
+                                        ),
+                                        SvgPicture.asset(
+                                            'assets/icons/attack.svg'),
+                                        SizedBox(
+                                          width: AppValue.widths * 0.1,
+                                        ),
+                                        Text("Xem đính kèm",
                                             style: styleTitleBottomSheet())
                                       ],
                                     ),

@@ -14,33 +14,40 @@ import '../../widgets/widget_dialog.dart';
 part 'clue_state.dart';
 part 'clue_event.dart';
 
-class GetListClueBloc extends Bloc<GetListClueEvent, ClueState>{
+class GetListClueBloc extends Bloc<GetListClueEvent, ClueState> {
   final UserRepository userRepository;
 
-  GetListClueBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitGetListClue());
+  GetListClueBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitGetListClue());
 
   @override
   Stream<ClueState> mapEventToState(GetListClueEvent event) async* {
     if (event is InitGetListClueEvent) {
-      yield* _getListClue(filter: event.filter, page: event.page, search: event.search);
+      yield* _getListClue(
+          filter: event.filter, page: event.page, search: event.search);
     }
   }
+
   List<ClueData>? listClueData;
-  Stream<ClueState> _getListClue({required String filter, required int page, required String search }) async* {
+  Stream<ClueState> _getListClue(
+      {required String filter,
+      required int page,
+      required String search}) async* {
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getListClue(page, filter, search);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
-        if(page==1){
-          listClueData= response.data!.list!;
-        }
-        else{
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        if (page == 1) {
+          listClueData = response.data!.list!;
+        } else {
           listClueData!.addAll(response.data!.list!);
         }
 
-        yield UpdateGetListClueState(listClueData!,response.data!.filter!,response.data!.total!);
-      }
-      else if(response.code==999){
+        yield UpdateGetListClueState(
+            listClueData!, response.data!.filter!, response.data!.total!);
+      } else if (response.code == 999) {
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -50,8 +57,7 @@ class GetListClueBloc extends Bloc<GetListClueEvent, ClueState>{
             AppNavigator.navigateLogout();
           },
         ));
-      }
-      else
+      } else
         yield ErrorGetListClueState(response.msg ?? '');
     } catch (e) {
       yield ErrorGetListClueState(MESSAGES.CONNECT_ERROR);
@@ -70,6 +76,6 @@ class GetListClueBloc extends Bloc<GetListClueEvent, ClueState>{
     LoadingApi().popLoading();
   }
 
-
-  static GetListClueBloc of(BuildContext context) => BlocProvider.of<GetListClueBloc>(context);
+  static GetListClueBloc of(BuildContext context) =>
+      BlocProvider.of<GetListClueBloc>(context);
 }

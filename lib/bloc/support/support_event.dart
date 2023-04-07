@@ -6,10 +6,9 @@ abstract class SupportEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitGetSupportEvent extends SupportEvent {
-  final String search,filter;
+  final String search, filter;
   final int page;
 
-  InitGetSupportEvent(this.page,this.search,this.filter);
+  InitGetSupportEvent(this.page, this.search, this.filter);
 }

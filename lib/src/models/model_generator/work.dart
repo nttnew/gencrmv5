@@ -14,8 +14,10 @@ class WorkItemData {
       user_work_name,
       user_work_avatar,
       name_customer,
-      status_job,status_id,status_color,start_date;
-
+      status_job,
+      status_id,
+      status_color,
+      start_date;
 
   WorkItemData(
       this.id,
@@ -40,8 +42,7 @@ class WorkItemData {
 
 @JsonSerializable()
 class FilterData {
-  final String? id,name;
-
+  final String? id, name;
 
   FilterData(this.id, this.name);
 
@@ -57,8 +58,7 @@ class WorkData {
   final int? pageCount;
   final List<FilterData>? data_filter;
 
-
-  WorkData(this.data_list, this.pageCount,this.data_filter);
+  WorkData(this.data_list, this.pageCount, this.data_filter);
 
   factory WorkData.fromJson(Map<String, dynamic> json) =>
       _$WorkDataFromJson(json);
@@ -78,13 +78,11 @@ class WorkResponse extends BaseResponse {
   Map<String, dynamic> toJson() => _$WorkResponseToJson(this);
 }
 
-
 @JsonSerializable()
 class DetailWorkItemData {
-  final String? label_field,id,value_field,type;
+  final String? label_field, id, value_field, type;
 
-
-  DetailWorkItemData(this.label_field, this.id, this.value_field,this.type);
+  DetailWorkItemData(this.label_field, this.id, this.value_field, this.type);
 
   factory DetailWorkItemData.fromJson(Map<String, dynamic> json) =>
       _$DetailWorkItemDataFromJson(json);

@@ -21,17 +21,15 @@ class _AddNoteState extends State<AddNote> {
   String id = Get.arguments[1];
   int type = Get.arguments[0];
   TextEditingController _editingController = TextEditingController();
-  bool isEdit=false;
+  bool isEdit = false;
   late FocusNode _focusNode;
-  String noteId="";
-
+  String noteId = "";
 
   @override
   void initState() {
-    _focusNode=FocusNode();
+    _focusNode = FocusNode();
     super.initState();
   }
-
 
   @override
   void dispose() {
@@ -66,43 +64,22 @@ class _AddNoteState extends State<AddNote> {
           child: BlocListener<AddNoteBloc, AddNoteState>(
             listener: (context, state) async {
               if (state is SuccessAddNoteState) {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return WidgetDialog(
-                      title: MESSAGES.NOTIFICATION,
-                      content: "Thành công",
-                      textButton1: "OK",
-                      backgroundButton1: COLORS.PRIMARY_COLOR,
-                      onTap1: () {
-                        _editingController.text = "";
-                        isEdit=false;
-                        noteId="";
-                        Get.back();
-                        if (type == 1) {
-                          ListNoteBloc.of(context).add(InitNoteCusEvent(id,"1"));
-                        }
-                        else if(type==2){
-                          ListNoteBloc.of(context).add(InitNoteContactEvent(id,"1"));
-                        }
-                        else if(type==3){
-                          ListNoteBloc.of(context).add(InitNoteOppEvent(id,"1"));
-                        }
-                        else if(type==4){
-                          ListNoteBloc.of(context).add(InitNoteContractEvent(id,"1"));
-                        }
-                        else if(type==5){
-                          ListNoteBloc.of(context).add(InitNoteJobEvent(id,"1"));
-                        }
-                        else if(type==6){
-                          ListNoteBloc.of(context).add(InitNoteSupEvent(id,"1"));
-                        }
-                      },
-                    );
-                  },
-                );
-              }
-              else if (state is ErrorAddNoteState) {
+                _editingController.text='';
+                FocusManager.instance.primaryFocus?.unfocus();
+                if (type == 1) {
+                  ListNoteBloc.of(context).add(InitNoteCusEvent(id, "1"));
+                } else if (type == 2) {
+                  ListNoteBloc.of(context).add(InitNoteContactEvent(id, "1"));
+                } else if (type == 3) {
+                  ListNoteBloc.of(context).add(InitNoteOppEvent(id, "1"));
+                } else if (type == 4) {
+                  ListNoteBloc.of(context).add(InitNoteContractEvent(id, "1"));
+                } else if (type == 5) {
+                  ListNoteBloc.of(context).add(InitNoteJobEvent(id, "1"));
+                } else if (type == 6) {
+                  ListNoteBloc.of(context).add(InitNoteSupEvent(id, "1"));
+                }
+              } else if (state is ErrorAddNoteState) {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -116,8 +93,7 @@ class _AddNoteState extends State<AddNote> {
                     );
                   },
                 );
-              }
-              else if(state is ErrorDeleteNoteState){
+              } else if (state is ErrorDeleteNoteState) {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -142,13 +118,13 @@ class _AddNoteState extends State<AddNote> {
                   id: id,
                   size: 55,
                   isAdd: true,
-                  onEdit: (uid,content){
-                    _editingController.text=content;
-                    noteId=uid.toString();
+                  onEdit: (uid, content) {
+                    _editingController.text = content;
+                    noteId = uid.toString();
                     _focusNode.requestFocus();
-                    isEdit=true;
+                    isEdit = true;
                   },
-                  onDelete: (id){
+                  onDelete: (id) {
                     this.onDeleteNote(id);
                   },
                 ))),
@@ -161,6 +137,8 @@ class _AddNoteState extends State<AddNote> {
                     children: [
                       Expanded(
                         child: TextField(
+                          textCapitalization:TextCapitalization.sentences,
+                          textInputAction: TextInputAction.send,
                           controller: _editingController,
                           focusNode: _focusNode,
                           decoration: InputDecoration(
@@ -195,16 +173,16 @@ class _AddNoteState extends State<AddNote> {
   }
 
   void onSend() {
-    if(isEdit==false){
-      // print("xxxEdit");
-      AddNoteBloc.of(context).add(InitAddNoteEvent(id, _editingController.text,type));
-    }
-    else{
-      AddNoteBloc.of(context).add(InitEditNoteEvent(id, _editingController.text,noteId,type));
+    if (isEdit == false) {
+      AddNoteBloc.of(context)
+          .add(InitAddNoteEvent(id, _editingController.text, type));
+    } else {
+      AddNoteBloc.of(context)
+          .add(InitEditNoteEvent(id, _editingController.text, noteId, type));
     }
   }
 
   void onDeleteNote(nid) {
-    AddNoteBloc.of(context).add(InitDeleteNoteEvent(id, type,nid));
+    AddNoteBloc.of(context).add(InitDeleteNoteEvent(id, type, nid));
   }
 }

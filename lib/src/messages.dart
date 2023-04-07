@@ -8,7 +8,8 @@ class MESSAGES {
   static const String EMAIL_OR_PHONE = "Email hoặc số điện thoại";
   static const String EMAIL = "Email";
   static const String EMPTY_EMAIL = "Email không được để trống";
-  static const String CHECK_COMFIRM_PASS = "Mật khẩu trống hoặc không giống nhau";
+  static const String CHECK_COMFIRM_PASS =
+      "Mật khẩu trống hoặc không giống nhau";
   static const String PHONE = "Số điện thoại";
   static const String BIRTHDAY = "Ngày sinh";
   static const String PASSWORD = "Mật khẩu";
@@ -16,14 +17,17 @@ class MESSAGES {
   static const String PASSWORD_OLD = "Mật khẩu cũ";
   static const String PASSWORD_NEW = "Mật khẩu mới";
   static const String PASSWORD_NEW_AGAIN = "Nhập lại mật khẩu mới";
-  static const String CONFIRM_PASSWORD_NEW= "Bạn xác nhận đổi mật khẩu mới";
+  static const String CONFIRM_PASSWORD_NEW = "Bạn xác nhận đổi mật khẩu mới";
   static const String CONFIRM_PASSWORD = "Nhập lại mật khẩu";
   static const String REMEMBER_PASSWORD = "Nhớ mật khẩu";
   static const String FORGOT_PASSWORD = "Quên mật khẩu";
   static const String NEW_PASSWORD = "Tạo mật khẩu mới";
-  static const String TITLE_FORGOT_PASSWORD = "Nhập lại email đã đăng ký với chúng tôi, chúng tôi sẽ gửi một mã xác minh gồm 6 chữ số về email của bạn để xác nhận mật khẩu.";
-  static const String TITLE_OTP_FORGOT_PASSWORD = "Nhập mã 6 chữ số mà bạn nhận được trên email của mình để bạn có thể tiếp tục đặt lại mật khẩu tài khoản của mình.";
-  static const String TITLE_NEW_PASSWORD = "Đặt mật khẩu mới cho tài khoản của bạn để bạn có thể đăng nhập và truy cập tất cả các tính năng trong Ứng dụng viptam";
+  static const String TITLE_FORGOT_PASSWORD =
+      "Nhập lại email đã đăng ký với chúng tôi, chúng tôi sẽ gửi một mã xác minh gồm 6 chữ số về email của bạn để xác nhận mật khẩu.";
+  static const String TITLE_OTP_FORGOT_PASSWORD =
+      "Nhập mã 6 chữ số mà bạn nhận được trên email của mình để bạn có thể tiếp tục đặt lại mật khẩu tài khoản của mình.";
+  static const String TITLE_NEW_PASSWORD =
+      "Đặt mật khẩu mới cho tài khoản của bạn để bạn có thể đăng nhập và truy cập tất cả các tính năng trong Ứng dụng viptam";
   static const String OK = "Đồng ý";
   static const String FINISH = "Hoàn tất";
   static const String OR = "Hoặc";
@@ -33,7 +37,8 @@ class MESSAGES {
   static const String NO_HAVE_ACCOUNT = "Bạn chưa có tài khoản? ";
   static const String HAVE_ACCOUNT = "Bạn đã có tài khoản? ";
   static const String REGISTER = "Đăng ký";
-  static const String DIVIDER = "--  --  --  --  --  --  --  -- -- -- -- -- -- -- --";
+  static const String DIVIDER =
+      "--  --  --  --  --  --  --  -- -- -- -- -- -- -- --";
   static const String CONFIRMATION_EMAIL = "Xác nhận email";
   static const String CONFIRMATION_CODE_MESSAGE = "Mã OTP đã được gửi về email";
   static const String CONFIRMATION_CODE_EMAIL = "viet**********@gmail.com";
@@ -65,7 +70,8 @@ class MESSAGES {
   static const String EMAIL_ERROR = 'Tài khoản không hợp lệ';
   static const String PHONE_ERROR = 'Số điện thoại không hợp lệ';
   static const String PASSWORD_ERROR = 'Mật khẩu phải có ít nhất 6 ký tự';
-  static const String NEW_PASSWORD_ERROR = 'Mật khẩu mới không được trùng mật khẩu cũ !!!';
+  static const String NEW_PASSWORD_ERROR =
+      'Mật khẩu mới không được trùng mật khẩu cũ !!!';
   static const String LOGIN_SUCCESS = 'Đăng nhập thành công';
   static const String REGISTER_SUCCESS = 'Đăng ký thành công';
   static const String WARNING_USE_NAME = 'Tên hiển thị không được để trống !!!';
@@ -79,8 +85,10 @@ class MESSAGES {
   static const String LOGIN_EXPIRED = 'Đăng nhập đã hết hạn';
   static const String LOGIN_AGAIN = 'Vui lòng đăng nhập lại !!!';
   static const String BACK_TO_EXIT = 'Nhấn thêm lần nữa để thoát';
-  static const String DEVELOPING = 'Tính năng bị khóa. Vui lòng liên hệ Quản trị viên để nâng cấp tài khoản! Cảm ơn bạn.';
-  static const String REGISTER_NOTIFICATION = 'Để là thành viên của app và sử dụng các tính năng đầy đủ xin vui lòng liên hệ ban Quản Trị App.\nSĐT Hỗ trợ: (024)23.225.999 \n Zalo Hỗ trợ: 0902.183.658';
+  static const String DEVELOPING =
+      'Tính năng bị khóa. Vui lòng liên hệ Quản trị viên để nâng cấp tài khoản! Cảm ơn bạn.';
+  static const String REGISTER_NOTIFICATION =
+      'Để là thành viên của app và sử dụng các tính năng đầy đủ xin vui lòng liên hệ ban Quản Trị App.\nSĐT Hỗ trợ: (024)23.225.999 \n Zalo Hỗ trợ: 0902.183.658';
   static const String SEARCH = 'Tìm kiếm';
   static const String SEARCH_POST = 'Tìm kiếm bài viết';
   static const String TITLE = 'Tiêu đề';
@@ -100,12 +108,15 @@ class MESSAGES {
   static const String INVALID_PHONE = 'Sai định dạng số điện thoại';
   static const String INVALID_DATE = 'Sai định dạng ngày tháng';
   static const String SAVE = 'Lưu';
-  static const String TEXT = 'Chính sách là một hệ thống nguyên tắc có chủ ý hướng dẫn các quyết định và đạt được các kết quả hợp lý. Một chính sách là một tuyên bố về ý định, và được thực hiện như một thủ tục hoặc giao thức. Các chính sách thường được cơ quan quản trị thông qua trong một tổ chức. Chính sách có thể hỗ trợ cả việc đưa ra quyết định chủ quan và khách quan. Các chính sách hỗ trợ trong việc ra quyết định chủ quan thường hỗ trợ quản lý cấp cao với các quyết định phải dựa trên thành tích tương đối của một số yếu tố và do đó thường khó kiểm tra khách quan, ví dụ: chính sách cân bằng giữa công việc và cuộc sống. Các chính sách tương phản để hỗ trợ việc ra quyết định khách quan thường hoạt động trong tự nhiên và có thể được kiểm tra khách quan, ví dụ: chính sách mật khẩu.[1].';
+  static const String TEXT =
+      'Chính sách là một hệ thống nguyên tắc có chủ ý hướng dẫn các quyết định và đạt được các kết quả hợp lý. Một chính sách là một tuyên bố về ý định, và được thực hiện như một thủ tục hoặc giao thức. Các chính sách thường được cơ quan quản trị thông qua trong một tổ chức. Chính sách có thể hỗ trợ cả việc đưa ra quyết định chủ quan và khách quan. Các chính sách hỗ trợ trong việc ra quyết định chủ quan thường hỗ trợ quản lý cấp cao với các quyết định phải dựa trên thành tích tương đối của một số yếu tố và do đó thường khó kiểm tra khách quan, ví dụ: chính sách cân bằng giữa công việc và cuộc sống. Các chính sách tương phản để hỗ trợ việc ra quyết định khách quan thường hoạt động trong tự nhiên và có thể được kiểm tra khách quan, ví dụ: chính sách mật khẩu.[1].';
   static const String DETAIL_NOTIFICATION = 'Chi tiết thông báo';
   static const String ABOUT_US = 'Giới thiệu';
   static const String CONNECT_ERROR = 'Có lỗi xảy ra. Vui lòng thử lại!';
-  static const String DEVICE_ERROR = 'Bạn đã đăng kí sử dụng tài khoản này trên thiết bị ';
-  static const String DEVICE_ERROR_SUB = 'Vui lòng sử dụng thiết bị cũ hoặc liên hệ Ban quản trị App\nSĐT Hỗ trợ: (024)23.225.999 \n Zalo Hỗ trợ: 0902.183.658';
+  static const String DEVICE_ERROR =
+      'Bạn đã đăng kí sử dụng tài khoản này trên thiết bị ';
+  static const String DEVICE_ERROR_SUB =
+      'Vui lòng sử dụng thiết bị cũ hoặc liên hệ Ban quản trị App\nSĐT Hỗ trợ: (024)23.225.999 \n Zalo Hỗ trợ: 0902.183.658';
   static const String TRY_AGAIN = 'Vui lòng thử lại sau!';
   static const String TRY = 'Thử lại';
 
@@ -137,7 +148,6 @@ class MESSAGES {
   static const String SUPPORT = 'HỖ TRỢ';
   static const String CHANCE_TITLE = 'Bán gói phần mềm G3';
   static const String CONTRACT_TITLE = 'HD0001';
-  static const String CONFIRM_PASSWORD_ERROR="Mật khẩu không khớp";
-  static const String FULLNAME_ERROR="Họ và tên không hợp lệ";
-
+  static const String CONFIRM_PASSWORD_ERROR = "Mật khẩu không khớp";
+  static const String FULLNAME_ERROR = "Họ và tên không hợp lệ";
 }

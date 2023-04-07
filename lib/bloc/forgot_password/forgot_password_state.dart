@@ -1,29 +1,31 @@
 part of 'forgot_password_bloc.dart';
+
 class ForgotPasswordState extends Equatable {
-
-
   final UserName email;
   final NotNull username;
   final FormzStatus status;
   final String message;
   final String timestamp;
 
-  ForgotPasswordState({required this.email, required this.username, required this.status, required this.message, required this.timestamp});
+  ForgotPasswordState(
+      {required this.email,
+      required this.username,
+      required this.status,
+      required this.message,
+      required this.timestamp});
 
-  ForgotPasswordState copyWith({
-    UserName? email,
-    String? timestamp,
-    String? message,
-    FormzStatus? status,
-    NotNull? username
-  }) {
+  ForgotPasswordState copyWith(
+      {UserName? email,
+      String? timestamp,
+      String? message,
+      FormzStatus? status,
+      NotNull? username}) {
     return ForgotPasswordState(
         email: email ?? this.email,
         timestamp: timestamp ?? this.timestamp,
         status: status ?? this.status,
         message: message ?? this.message,
-        username: username ?? this.username
-    );
+        username: username ?? this.username);
   }
 
   @override

@@ -45,10 +45,10 @@ class WidgetSearch extends StatefulWidget {
       this.leadIcon,
       this.endIcon,
       this.enabled = true,
-      this.boxDecoration, this.hintTextStyle,
-        this.onClickRight,
-        this.onEditingComplete
-      })
+      this.boxDecoration,
+      this.hintTextStyle,
+      this.onClickRight,
+      this.onEditingComplete})
       : super(key: key);
 
   @override
@@ -64,10 +64,14 @@ class _WidgetSearchState extends State<WidgetSearch> {
       child: Row(
         crossAxisAlignment: widget.crossAxisAlignment!,
         children: [
-          widget.leadIcon != null ? Padding(
-            padding: EdgeInsets.only(left: 15),
-            child: Center(child: Container(height: 25, width: 25, child: widget.leadIcon)),
-          ) : Container(),
+          widget.leadIcon != null
+              ? Padding(
+                  padding: EdgeInsets.only(left: 15),
+                  child: Center(
+                      child: Container(
+                          height: 25, width: 25, child: widget.leadIcon)),
+                )
+              : Container(),
           Expanded(
             flex: 7,
             child: Padding(
@@ -76,7 +80,7 @@ class _WidgetSearchState extends State<WidgetSearch> {
                 key: widget.key,
                 controller: widget.inputController,
                 onChanged: (change) => widget.onChanged!(change),
-                onEditingComplete: (){
+                onEditingComplete: () {
                   widget.onEditingComplete!();
                 },
                 enabled: widget.enabled,
@@ -94,7 +98,8 @@ class _WidgetSearchState extends State<WidgetSearch> {
                 maxLength: widget.maxLength,
                 decoration: InputDecoration(
                   labelText: widget.labelText,
-                  labelStyle: AppStyle.DEFAULT_14.copyWith(color: COLORS.PRIMARY_COLOR),
+                  labelStyle:
+                      AppStyle.DEFAULT_14.copyWith(color: COLORS.PRIMARY_COLOR),
                   hintText: widget.hint,
                   hintStyle: widget.hintTextStyle,
                   errorText: widget.errorText,
@@ -106,23 +111,23 @@ class _WidgetSearchState extends State<WidgetSearch> {
               ),
             ),
           ),
-          widget.endIcon != null ? Container(
-            height: widget.height,
-            width: 1,
-             color: HexColor("#DBDBDB")
-          ):Container(),
-          widget.endIcon != null ?
-          GestureDetector(
-            onTap: ()=>widget.onClickRight!(),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: Center(child: Container(height: 20, width: 20, child: widget.endIcon)),
-            ),
-          )
-           : Container()
+          widget.endIcon != null
+              ? Container(
+                  height: widget.height, width: 1, color: HexColor("#DBDBDB"))
+              : Container(),
+          widget.endIcon != null
+              ? GestureDetector(
+                  onTap: () => widget.onClickRight!(),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    child: Center(
+                        child: Container(
+                            height: 20, width: 20, child: widget.endIcon)),
+                  ),
+                )
+              : Container()
         ],
       ),
     );
   }
 }
-

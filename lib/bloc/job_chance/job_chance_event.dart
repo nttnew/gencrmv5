@@ -6,7 +6,6 @@ abstract class GetJobChanceEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
 class InitGetJobEventChance extends GetJobChanceEvent {
   final int id;
 

@@ -1,4 +1,5 @@
 part of 'change_password_bloc.dart';
+
 abstract class ChangePasswordEvent extends Equatable {
   const ChangePasswordEvent();
 
@@ -37,8 +38,6 @@ class RepeatPasswordChanged extends ChangePasswordEvent {
   List<Object> get props => [repeatPassword];
 }
 
-class RepeatPasswordUnfocused extends ChangePasswordEvent {
-
-}
+class RepeatPasswordUnfocused extends ChangePasswordEvent {}
 
 class FormChangePasswordSubmitted extends ChangePasswordEvent {}

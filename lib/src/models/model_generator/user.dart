@@ -11,9 +11,10 @@ class UserResponse {
 
   const UserResponse({this.status, this.message, this.data});
 
-  static const empty =  UserResponse(status: true, data: null, message: '');
+  static const empty = UserResponse(status: true, data: null, message: '');
 
-  factory UserResponse.fromJson(Map<String, dynamic> json) => _$UserResponseFromJson(json);
+  factory UserResponse.fromJson(Map<String, dynamic> json) =>
+      _$UserResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserResponseToJson(this);
 }
@@ -25,9 +26,10 @@ class DataUser {
 
   const DataUser({this.token, this.user});
 
-  static const empty =  DataUser(user: null, token: '');
+  static const empty = DataUser(user: null, token: '');
 
-  factory DataUser.fromJson(Map<String, dynamic> json) => _$DataUserFromJson(json);
+  factory DataUser.fromJson(Map<String, dynamic> json) =>
+      _$DataUserFromJson(json);
 
   Map<String, dynamic> toJson() => _$DataUserToJson(this);
 }

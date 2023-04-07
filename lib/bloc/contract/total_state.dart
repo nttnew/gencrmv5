@@ -5,20 +5,19 @@ abstract class TotalState extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
 class InitGetTotalState extends TotalState {}
 
-class SuccessTotalState extends TotalState{
+class SuccessTotalState extends TotalState {
   final double total;
   const SuccessTotalState(this.total);
   @override
   List<Object> get props => [total];
 }
 
-class LoadingTotalState extends TotalState {
-}
+class LoadingTotalState extends TotalState {}
 
-
-class ErrorTotalState extends TotalState{
+class ErrorTotalState extends TotalState {
   final String msg;
 
   ErrorTotalState(this.msg);

@@ -1,26 +1,18 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:dio/dio.dart' as Dio;
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/get_infor_acc/get_infor_acc_bloc.dart';
-import 'package:gen_crm/bloc/infor/infor_bloc.dart';
 import 'package:gen_crm/bloc/information_account/information_account_bloc.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as Path;
 import 'package:get/get.dart';
 import 'package:formz/formz.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:rxdart/rxdart.dart';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../src/models/model_generator/login_response.dart';
 import '../../../../src/src_index.dart';
 import '../../../../storages/share_local.dart';
 
@@ -46,7 +38,7 @@ class _InformationAccountState extends State<InformationAccount> {
 
       setState(() => this.image = imageTemp);
     } on PlatformException catch (e) {
-      print('Error: $e');
+      throw e;
     }
   }
 
@@ -55,28 +47,32 @@ class _InformationAccountState extends State<InformationAccount> {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
       if (image == null) return;
-      print("AnhThuVien${image.path}");
       final imageTemp = File(image.path);
 
       setState(() => this.image = imageTemp);
     } on PlatformException catch (e) {
-      print('Error: $e');
+      throw e;
     }
   }
 
   final _nameFocusNode = FocusNode();
   final _phoneFocusNode = FocusNode();
   final _emailFocusNode = FocusNode();
-  final _addressFocusNode = FocusNode();
   late String initEmail;
   late String initPhone;
   late String initFullName;
   late String initAddress;
   late String urlAvatar;
   String? canLoginWithFingerPrint;
-  late bool fingerPrintIsCheck;
+  late final LocalAuthentication auth;
+  late final BehaviorSubject<bool> supportBiometric;
+  late final BehaviorSubject<bool> fingerPrintIsCheck;
+
   @override
   void initState() {
+    auth = LocalAuthentication();
+    fingerPrintIsCheck = BehaviorSubject();
+    supportBiometric = BehaviorSubject();
     GetInforAccBloc.of(context).add(InitGetInforAcc());
 
     _phoneFocusNode.addListener(() {
@@ -90,20 +86,21 @@ class _InformationAccountState extends State<InformationAccount> {
       }
     });
 
-    canLoginWithFingerPrint = shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT);
-    if (canLoginWithFingerPrint == null || canLoginWithFingerPrint == "" || canLoginWithFingerPrint == "false") {
-      fingerPrintIsCheck = false;
+    canLoginWithFingerPrint =
+        shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT);
+    if (canLoginWithFingerPrint == null ||
+        canLoginWithFingerPrint == "" ||
+        canLoginWithFingerPrint == "false") {
+      fingerPrintIsCheck.add(false);
     } else {
       if (canLoginWithFingerPrint == "true") {
-        fingerPrintIsCheck = true;
+        fingerPrintIsCheck.add(true);
       }
     }
+    checkBiometricEnable();
 
     super.initState();
   }
-
-  @override
-  void didChangeDependencies() {}
 
   @override
   void dispose() {
@@ -165,7 +162,6 @@ class _InformationAccountState extends State<InformationAccount> {
                 );
               },
             );
-            //GetSnackBarUtils.createFailure(message: state.message);
           }
         },
         child: BlocBuilder<GetInforAccBloc, GetInforAccState>(
@@ -181,6 +177,7 @@ class _InformationAccountState extends State<InformationAccount> {
               bloc.add(PhoneChanged(initPhone));
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
                 children: [
                   AppValue.vSpaceSmall,
                   GestureDetector(
@@ -239,7 +236,10 @@ class _InformationAccountState extends State<InformationAccount> {
                                   ),
                                 ),
                         ),
-                        Positioned(left: AppValue.widths * 0.55, top: AppValue.heights * 0.1, child: Image.asset('assets/icons/mayanh.png'))
+                        Positioned(
+                            left: AppValue.widths * 0.55,
+                            top: AppValue.heights * 0.1,
+                            child: Image.asset('assets/icons/mayanh.png'))
                       ],
                     ),
                   ),
@@ -250,26 +250,33 @@ class _InformationAccountState extends State<InformationAccount> {
                       children: [
                         Text(
                           'Họ và tên',
-                          style: AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY),
+                          style:
+                              AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY),
                         ),
                         SizedBox(
                           height: 15,
                         ),
                         _buildFullNameField(bloc),
                         AppValue.vSpaceSmall,
-                        Text('Số điện thoại', style: AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY)),
+                        Text('Số điện thoại',
+                            style: AppStyle.DEFAULT_16
+                                .copyWith(color: COLORS.GREY)),
                         SizedBox(
                           height: 15,
                         ),
                         _buildPhoneField(bloc),
                         AppValue.vSpaceSmall,
-                        Text('Email', style: AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY)),
+                        Text('Email',
+                            style: AppStyle.DEFAULT_16
+                                .copyWith(color: COLORS.GREY)),
                         SizedBox(
                           height: 15,
                         ),
                         _buildEnailField(bloc),
                         AppValue.vSpaceSmall,
-                        Text('Địa chỉ', style: AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY)),
+                        Text('Địa chỉ',
+                            style: AppStyle.DEFAULT_16
+                                .copyWith(color: COLORS.GREY)),
                         SizedBox(
                           height: 15,
                         ),
@@ -283,14 +290,18 @@ class _InformationAccountState extends State<InformationAccount> {
                   ),
                   Align(
                       alignment: Alignment.bottomRight,
-                      child: BlocBuilder<InforAccBloc, InforAccState>(builder: (context, state) {
+                      child: BlocBuilder<InforAccBloc, InforAccState>(
+                          builder: (context, state) {
                         return WidgetButton(
                             onTap: () async {
+                              print('$image!, $name, $address');
                               if (state.status.isValidated) {
                                 if (image != null) {
-                                  bloc.add(FormInforAccSubmitted(image!, name, address));
+                                  bloc.add(FormInforAccSubmitted(
+                                      image!, name, address));
                                 } else {
-                                  bloc.add(FormInforAccNoAvatarSubmitted(name, address));
+                                  bloc.add(FormInforAccNoAvatarSubmitted(
+                                      name, address));
                                 }
                               } else {
                                 showDialog(
@@ -307,9 +318,14 @@ class _InformationAccountState extends State<InformationAccount> {
                             },
                             height: 35,
                             width: 120,
-                            padding: EdgeInsets.only(right: 20, bottom: 20, top: AppValue.heights * 0.1),
+                            padding: EdgeInsets.only(
+                                right: 20,
+                                bottom: 20,
+                                top: AppValue.heights * 0.1),
                             text: MESSAGES.SAVE,
-                            textStyle: AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w700, color: Colors.white),
+                            textStyle: AppStyle.DEFAULT_14.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white),
                             backgroundColor: Color(0xffF1A400));
                       }))
                 ],
@@ -357,7 +373,8 @@ class _InformationAccountState extends State<InformationAccount> {
             focusNode: _nameFocusNode,
             textInputAction: TextInputAction.next,
             initialValue: initFullName,
-            style: AppStyle.DEFAULT_16.copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+            style: AppStyle.DEFAULT_16
+                .copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
           ),
         ),
       );
@@ -373,11 +390,13 @@ class _InformationAccountState extends State<InformationAccount> {
           child: TextFormField(
             keyboardType: TextInputType.number,
             onChanged: (value) => bloc.add(PhoneChanged(value)),
-            decoration: InputDecoration(errorText: state.phone.invalid ? MESSAGES.PHONE_ERROR : null),
+            decoration: InputDecoration(
+                errorText: state.phone.invalid ? MESSAGES.PHONE_ERROR : null),
             focusNode: _phoneFocusNode,
             textInputAction: TextInputAction.next,
             initialValue: initPhone,
-            style: AppStyle.DEFAULT_16.copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+            style: AppStyle.DEFAULT_16
+                .copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
           ),
         ),
       );
@@ -398,7 +417,8 @@ class _InformationAccountState extends State<InformationAccount> {
             focusNode: _emailFocusNode,
             textInputAction: TextInputAction.next,
             initialValue: initEmail,
-            style: AppStyle.DEFAULT_16.copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+            style: AppStyle.DEFAULT_16
+                .copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
           ),
         ),
       );
@@ -416,40 +436,115 @@ class _InformationAccountState extends State<InformationAccount> {
           },
           textInputAction: TextInputAction.next,
           initialValue: initAddress,
-          style: AppStyle.DEFAULT_16.copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+          style: AppStyle.DEFAULT_16
+              .copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
         ),
       ),
     );
   }
 
   _buildFingerPrintSwitch() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            WidgetText(title: "Đăng nhập vân tay: ", style: AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY)),
-            !fingerPrintIsCheck ? WidgetText(title: "NO", style: AppStyle.DEFAULT_16.copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500)) : WidgetText(title: "YES", style: AppStyle.DEFAULT_16.copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500)),
-          ],
-        ),
-        AppValue.vSpaceSmall,
-        SizedBox(
-          width: 30,
-          height: 20,
-          child: Switch(
-              value: fingerPrintIsCheck,
-              onChanged: (value) {
-                setState(() {
-                  fingerPrintIsCheck = !fingerPrintIsCheck;
-                  if (fingerPrintIsCheck == true) {
-                    shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "true");
-                  } else {
-                    shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "false");
-                  }
-                });
-              }),
-        ),
-      ],
+    return StreamBuilder<bool>(
+      stream: supportBiometric,
+      builder: (_, supportBiometric) {
+        return StreamBuilder<bool>(
+          stream: fingerPrintIsCheck,
+          builder: (context, snapshot) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    WidgetText(
+                        title: "Đăng nhập vân tay, khuôn mặt: ",
+                        style:
+                            AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY)),
+                    !(snapshot.data ?? false)
+                        ? WidgetText(
+                            title: "NO",
+                            style: AppStyle.DEFAULT_16.copyWith(
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w500))
+                        : WidgetText(
+                            title: "YES",
+                            style: AppStyle.DEFAULT_16.copyWith(
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w500)),
+                  ],
+                ),
+                Switch(
+                  value: snapshot.data ?? false,
+                  onChanged: (value) {
+                    if (!(supportBiometric.data ?? false)) {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return WidgetDialog(
+                            title: MESSAGES.NOTIFICATION,
+                            content:
+                                "Thiết bị chưa thiết lập vân tay, khuôn mặt",
+                          );
+                        },
+                      );
+                    } else {
+                      useBiometric(value: value);
+                    }
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
+  }
+
+  Future<void> checkBiometricEnable() async {
+    final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+    if (!canAuthenticateWithBiometrics) {
+      return;
+    }
+
+    final List<BiometricType> availableBiometrics =
+        await auth.getAvailableBiometrics();
+    if (availableBiometrics.isNotEmpty) {
+      supportBiometric.add(true);
+    }
+  }
+
+  Future<void> useBiometric({required bool value}) async {
+    if (!value) {
+      fingerPrintIsCheck.sink.add(false);
+      shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "false");
+      return;
+    }
+    try {
+      final String reason = "Đăng nhập vân tay, khuôn mặt";
+      final bool didAuthenticate = await auth.authenticate(
+        localizedReason: reason,
+        options: const AuthenticationOptions(
+          useErrorDialogs: false,
+          stickyAuth: true,
+        ),
+      );
+      if (didAuthenticate) {
+        fingerPrintIsCheck.add(true);
+        shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "true");
+      } else {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return WidgetDialog(
+              title: MESSAGES.NOTIFICATION,
+              content: "Đăng nhập thất bại bạn vui lòng thử lại",
+            );
+          },
+        );
+      }
+    } catch (e) {
+      return;
+    }
   }
 }

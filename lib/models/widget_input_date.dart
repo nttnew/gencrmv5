@@ -7,10 +7,16 @@ import '../src/src_index.dart';
 import '../widgets/widget_text.dart';
 
 class WidgetInputDate extends StatefulWidget {
-  WidgetInputDate({Key? key,required this.data,required this.onSelect,required this.onInit,this.dateText}) : super(key: key);
+  WidgetInputDate(
+      {Key? key,
+      required this.data,
+      required this.onSelect,
+      required this.onInit,
+      this.dateText})
+      : super(key: key);
 
   final CustomerIndividualItemData data;
-  final Function onSelect,onInit;
+  final Function onSelect, onInit;
   final String? dateText;
 
   @override
@@ -18,18 +24,16 @@ class WidgetInputDate extends StatefulWidget {
 }
 
 class _WidgetInputDateState extends State<WidgetInputDate> {
-  String dateText=AppValue.formatDate(DateTime.now().toString());
-
+  String dateText = AppValue.formatDate(DateTime.now().toString());
 
   @override
   void initState() {
     widget.onInit();
-    if(widget.dateText!=null)
-      {
-        setState(() {
-          dateText=widget.dateText!;
-        });
-      }
+    if (widget.dateText != null) {
+      setState(() {
+        dateText = widget.dateText!;
+      });
+    }
     super.initState();
   }
 
@@ -51,12 +55,12 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
               children: <TextSpan>[
                 widget.data.field_require == 1
                     ? TextSpan(
-                    text: '*',
-                    style: TextStyle(
-                        fontFamily: "Roboto",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.red))
+                        text: '*',
+                        style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red))
                     : TextSpan(),
               ],
             ),
@@ -65,16 +69,15 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
             height: 8,
           ),
           GestureDetector(
-            onTap: (){
-              DatePicker.showDatePicker(context,
-                  showTitleActions: true,
+            onTap: () {
+              DatePicker.showDatePicker(context, showTitleActions: true,
                   // minTime: DateTime.now(),
                   onConfirm: (date) {
-                    setState(() {
-                      dateText=AppValue.formatDate(date.toString());
-                    });
-                    widget.onSelect(date);
-                  }, currentTime: DateTime.now(), locale: LocaleType.vi);
+                setState(() {
+                  dateText = AppValue.formatDate(date.toString());
+                });
+                widget.onSelect(date);
+              }, currentTime: DateTime.now(), locale: LocaleType.vi);
             },
             child: Container(
               // width: Get.width,
@@ -86,7 +89,11 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
                   Expanded(
                     child: Container(
                       padding: EdgeInsets.only(left: 10, top: 15, bottom: 15),
-                      child: WidgetText(title: dateText,style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),),
+                      child: WidgetText(
+                        title: dateText,
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w500),
+                      ),
                     ),
                   ),
                   WidgetContainerImage(
@@ -96,7 +103,9 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
                     fit: BoxFit.contain,
                     borderRadius: BorderRadius.circular(0),
                   ),
-                  SizedBox(width: 16,)
+                  SizedBox(
+                    width: 16,
+                  )
                 ],
               ),
             ),
