@@ -855,6 +855,8 @@ class _ItemProductState extends State<ItemProduct> {
                                 price = _priceTextfieldController.text;
                               });
                               widget.onPrice!(price);
+                            }else{
+                              _priceTextfieldController.text=price;
                             }
                             Get.back();
                           },
