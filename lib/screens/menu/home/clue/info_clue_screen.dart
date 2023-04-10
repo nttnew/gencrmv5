@@ -100,25 +100,36 @@ class _InfoCluePageState extends State<InfoCluePage> {
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: DefaultTabController(
                     length: 2,
-                    child: Scaffold(
-                      appBar: TabBar(
-                        isScrollable: true,
-                        indicatorColor: COLORS.TEXT_COLOR,
-                        labelColor: COLORS.TEXT_COLOR,
-                        unselectedLabelColor: COLORS.GREY,
-                        labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
-                        tabs: [
-                          Tab(
-                            text: 'Thông tin chung',
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: TabBar(
+                            isScrollable: true,
+                            indicatorColor: COLORS.TEXT_COLOR,
+                            labelColor: COLORS.TEXT_COLOR,
+                            unselectedLabelColor: COLORS.GREY,
+                            labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
+                            tabs: [
+                              Tab(
+                                text: 'Thông tin chung',
+                              ),
+                              Tab(
+                                text: 'Công việc',
+                              )
+                            ],
                           ),
-                          Tab(
-                            text: 'Công việc',
-                          )
-                        ],
-                      ),
-                      body: TabBarView(
-                        children: [GeneralInfo(id: id), ListWorkClue(id: id)],
-                      ),
+                        ),
+                        Expanded(
+                          child: TabBarView(
+                            children: [
+                              GeneralInfo(id: id),
+                              ListWorkClue(id: id)
+                            ],
+                          ),
+                        ),
+                      ],
                     )),
               ),
             )

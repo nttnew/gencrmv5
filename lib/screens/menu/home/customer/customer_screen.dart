@@ -12,6 +12,7 @@ import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import '../../../../src/models/model_generator/customer.dart';
 import '../../../../src/src_index.dart';
 import '../../../../storages/share_local.dart';
+import '../../../../widgets/dialog_call.dart';
 import '../../../../widgets/widget_search.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 
@@ -367,10 +368,17 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                                                   .phone!
                                                                   .action !=
                                                               null) {
-                                                        launchUrl(Uri(
-                                                            scheme: "tel",
-                                                            path:
-                                                                "${state.listCustomer[index].phone!.val!}"));
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return DialogCall(
+                                                              sdt:
+                                                                  "${state.listCustomer[index].phone!.val!}",
+                                                            );
+                                                          },
+                                                        );
+
                                                       }
                                                     },
                                                     child: Row(

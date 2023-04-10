@@ -12,7 +12,9 @@ import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/event_repository_storage.dart';
 import 'package:gen_crm/storages/share_local.dart';
-
+import 'package:plugin_pitel/pitel_sdk/pitel_call.dart';
+import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
+import 'package:rxdart/rxdart.dart';
 part 'login_event.dart';
 part 'login_state.dart';
 
@@ -20,14 +22,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
   final EventRepositoryStorage localRepository;
   late List<ItemMenu> listMenuFlash = [];
-  LoginBloc({required this.userRepository, required this.localRepository})
-      : super(LoginState(
+  final PitelCall pitelCall;
+  LoginBloc({
+    required this.userRepository,
+    required this.localRepository,
+    required this.pitelCall,
+  }) : super(LoginState(
             email: UserName.pure(),
             password: Password.pure(),
             status: FormzStatus.invalid,
             message: '',
             user: LoginData(),
             device_token: ''));
+
+  static const String UNREGISTER = 'UNREGISTER';
+  static const String REGISTERED = 'REGISTERED';
+  final PitelClient pitelClient = PitelClient.getInstance();
+  late BehaviorSubject<String> receivedMsg = BehaviorSubject.seeded(UNREGISTER);
 
   @override
   void onTransition(Transition<LoginEvent, LoginState> transition) {
@@ -36,7 +47,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   void getListMenuFlash() {
     String data = shareLocal.getString(PreferencesKey.LIST_MENU_FLASH) ?? "";
-    if(data!=''){
+    if (data != '') {
       final result = json.decode(data);
       final resultHangXe = result.map((e) => ItemMenu.fromJson(e)).toList();
       final Set<ItemMenu> list = {};

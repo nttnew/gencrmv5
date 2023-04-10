@@ -48,6 +48,8 @@ import 'package:gen_crm/screens/forgot_password/forgot_password_otp_screen.dart'
 import 'package:gen_crm/screens/screens.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/storages.dart';
+import 'package:plugin_pitel/pitel_sdk/pitel_call.dart';
+import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:vibration/vibration.dart';
 import 'api_resfull/api.dart';
 import 'bloc/add_customer/add_customer_bloc.dart';
@@ -73,6 +75,9 @@ import 'bloc/work_clue/work_clue_bloc.dart';
 import 'firebase_options.dart';
 
 Future main() async {
+  //call
+  final PitelCall _pitelCall = PitelClient.getInstance().pitelCall;
+
   Bloc.observer = SimpleBlocObserver();
   await dotenv.load(fileName: BASE_URL.ENV);
   shareLocal = await ShareLocal.getInstance();
@@ -160,6 +165,7 @@ Future main() async {
             create: (context) => LoginBloc(
               userRepository: userRepository,
               localRepository: const EventRepositoryStorage(),
+              pitelCall: _pitelCall,
             ),
           ),
           BlocProvider<ChangePasswordBloc>(

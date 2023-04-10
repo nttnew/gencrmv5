@@ -12,9 +12,17 @@ import 'package:get/get.dart';
 import 'package:gen_crm/models/index.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:plugin_pitel/component/pitel_call_state.dart';
+import 'package:plugin_pitel/component/sip_pitel_helper_listener.dart';
+import 'package:plugin_pitel/pitel_sdk/pitel_call.dart';
+import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
+import 'package:plugin_pitel/services/pitel_service.dart';
+import 'package:plugin_pitel/services/sip_info_data.dart';
+import 'package:plugin_pitel/sip/src/sip_ua_helper.dart';
 
 import '../bloc/login/login_bloc.dart';
 import '../storages/share_local.dart';
+import 'call_video/call_screen.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
 
 class ScreenMain extends StatefulWidget {
@@ -22,20 +30,24 @@ class ScreenMain extends StatefulWidget {
   _ScreenMainState createState() => _ScreenMainState();
 }
 
-class _ScreenMainState extends State<ScreenMain> {
+class _ScreenMainState extends State<ScreenMain>
+    implements SipPitelHelperListener {
+  //call
+  static const String UNREGISTER = 'UNREGISTER';
+  static const String PASSWORD = 'GenCRM@2023##'; //
+  static const String DOMAIN = 'demo-gencrm.com';
+  static const String OUTBOUND_PROXY = 'pbx-mobile.tel4vn.com:50061';
+  static const String URL_WSS = 'wss://wss-mobile.tel4vn.com:7444';
+  static const String URL_API = 'https://pbx-mobile.tel4vn.com';
+  static const int UUSER = 101;
+  static const String USER_NAME = 'user1';
+  late final PitelCall pitelCall;
+  late final PitelClient pitelClient;
+  String state = '';
+  //
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
   List<ButtonMenuModel> listMenu = [];
-
-  // List<Map> menuItems = [
-  //   {"icon": "assets/icons/addContent.png", "name": "Thêm mua xe"},
-  //   {"icon": "assets/icons/addContent.png", "name": "Thêm bán xe"},
-  //   {"icon": "assets/icons/addContent.png", "name": "Thêm đặt lịch"},
-  //   {"icon": "assets/icons/addContent.png", "name": "Thêm phiếu dịch vụ"},
-  //   {"icon": "assets/icons/add_clue.png", "name": "Thêm khách hàng"},
-  //   {"icon": "assets/icons/addWork.png", "name": "Thêm công việc"},
-  //   {"icon": "assets/icons/Support.png", "name": "Thêm hỗ trợ"},
-  // ];
 
   String getIconMenu(String id) {
     if (ModuleText.CUSTOMER == id) {
@@ -56,6 +68,30 @@ class _ScreenMainState extends State<ScreenMain> {
 
   @override
   void initState() {
+    pitelClient = LoginBloc.of(context).pitelClient;
+    pitelCall = LoginBloc.of(context).pitelCall;
+    //call
+    state = pitelCall.getRegisterState();
+    LoginBloc.of(context).receivedMsg.add(UNREGISTER);
+    _bindEventListeners();
+    final sipInfo = SipInfoData.fromJson({
+      "authPass": PASSWORD,
+      "registerServer": DOMAIN,
+      "outboundServer": OUTBOUND_PROXY,
+      "userID": UUSER,
+      "authID": UUSER,
+      "accountName": "${UUSER}",
+      "displayName": "${UUSER}@${DOMAIN}",
+      "dialPlan": null,
+      "randomPort": null,
+      "voicemail": null,
+      "wssUrl": URL_WSS,
+      "userName": "${USER_NAME}@${DOMAIN}",
+      "apiDomain": URL_API
+    });
+    final pitelClientImpl = PitelServiceImpl();
+    pitelClientImpl.setExtensionInfo(sipInfo);
+    //
     Future.delayed(Duration(milliseconds: 300), () {
       GetInforAccBloc.of(context).add(InitGetInforAcc());
       GetListUnReadNotifiBloc.of(context).add(CheckNotification());
@@ -64,6 +100,21 @@ class _ScreenMainState extends State<ScreenMain> {
     LoginBloc.of(context).getListMenuFlash();
     super.initState();
   }
+
+  @override
+  void registrationStateChanged(PitelRegistrationState state) {
+    switch (state.state) {
+      case PitelRegistrationStateEnum.REGISTRATION_FAILED:
+        goBack();//todo failed
+        break;
+      case PitelRegistrationStateEnum.NONE:
+      case PitelRegistrationStateEnum.UNREGISTERED:
+      case PitelRegistrationStateEnum.REGISTERED:
+        LoginBloc.of(context).receivedMsg.add(LoginBloc.REGISTERED);
+        break;
+    }
+  }
+  //call
 
   getMenu() async {
     String menu = await shareLocal.getString(PreferencesKey.MENU);
@@ -320,9 +371,11 @@ class _ScreenMainState extends State<ScreenMain> {
                     shrinkWrap: true,
                     itemCount: listMenu.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 25,
-                        mainAxisSpacing: 25),
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 25,
+                      mainAxisSpacing: 25,
+                      // mainAxisExtent: 170
+                    ),
                     itemBuilder: (context, index) {
                       // List<ButtonMenuModel> list = [];
                       return _buildItemMenu(
@@ -338,7 +391,11 @@ class _ScreenMainState extends State<ScreenMain> {
                 child: Container(
                   width: AppValue.widths,
                   height: AppValue.heights * 0.18,
-                  margin: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                  margin: EdgeInsets.only(
+                    left: 30,
+                    bottom: 25,
+                    right: 30,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Color(0xff5D5FEF),
@@ -346,24 +403,28 @@ class _ScreenMainState extends State<ScreenMain> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        width: 90,
-                        height: 90,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
-                        child: WidgetContainerImage(
-                          image: ICONS.WORK_3X,
-                          fit: BoxFit.contain,
-                          width: 50,
-                          height: 50,
+                      // Container(
+                      //   width: 90,
+                      //   height: 90,
+                      //   decoration: BoxDecoration(
+                      //       shape: BoxShape.circle, color: Colors.white),
+                      //   child: WidgetContainerImage(
+                      //     image: ICONS.WORK_3X,
+                      //     fit: BoxFit.contain,
+                      //     width: 50,
+                      //     height: 50,
+                      //   ),
+                      // ),
+                      // AppValue.vSpaceTiny,
+                      Text(
+                        "Báo cáo",
+                        style: AppStyle.DEFAULT_24_BOLD.copyWith(
+                          fontFamily: 'Roboto',
+                          color: Colors.white,
+                          fontSize: 30,
+                          // fontWeight: FontWeight.w500,
                         ),
                       ),
-                      AppValue.vSpaceTiny,
-                      Text("Báo cáo",
-                          style: AppStyle.DEFAULT_20_BOLD.copyWith(
-                              fontFamily: 'Roboto',
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500))
                     ],
                   ),
                 ),
@@ -379,46 +440,43 @@ class _ScreenMainState extends State<ScreenMain> {
     return GestureDetector(
       onTap: data.onTap,
       child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: data.backgroundColor,
         ),
-        child: Column(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
+            // Container(
+            //   child: Center(
+            //     child: Container(
+            //       // width: 50,
+            //       // height: 50,
+            //       // decoration: BoxDecoration(
+            //       //     borderRadius: BorderRadius.circular(6),color: Colors.white),
+            //       child: WidgetContainerImage(
+            //         image: data.image,
+            //         fit: BoxFit.contain,
+            //         width: 30,
+            //         height: 30,
+            //         colorImage: Colors.black,
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(width: 8,),
             Expanded(
-              flex: 2,
               child: Container(
-                child: Center(
-                  child: Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.white),
-                    child: WidgetContainerImage(
-                      image: data.image,
-                      fit: BoxFit.contain,
-                      width: 40,
-                      height: 40,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                child: Center(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Text(
-                      data.title,
-                      style: AppStyle.DEFAULT_12.copyWith(
-                          fontFamily: 'Roboto', fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
+                child: Text(
+                  data.title,
+                  style:
+                      AppStyle.DEFAULT_24_BOLD.copyWith(fontFamily: 'Roboto'),
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
               ),
             )
@@ -482,5 +540,55 @@ class _ScreenMainState extends State<ScreenMain> {
       default:
         break;
     }
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    _removeEventListeners();
+  }
+
+  //call
+  void _bindEventListeners() {
+    pitelCall.addListener(this);
+  }
+
+  void _removeEventListeners() {
+    pitelCall.removeListener(this);
+  }
+
+  @override
+  void callStateChanged(String callId, PitelCallState state) {
+    // TODO: implement callStateChanged
+  }
+
+  @override
+  void onCallReceived(String callId) {
+    pitelCall.setCallCurrent(callId);
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => CallScreenWidget()));
+  }
+
+  @override
+  void onCallInitiated(String callId) {
+    print('fuck');
+    pitelCall.setCallCurrent(callId);
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => CallScreenWidget()));
+  }
+
+  void goBack() {
+    pitelClient.release();
+    Navigator.of(context).pop();
+  }
+
+  @override
+  void onNewMessage(PitelSIPMessageRequest msg) {
+    // TODO: implement onNewMessage
+  }
+
+  @override
+  void transportStateChanged(PitelTransportState state) {
+    // TODO: implement transportStateChanged
   }
 }

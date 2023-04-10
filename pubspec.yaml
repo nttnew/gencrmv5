@@ -90,6 +90,10 @@ dependencies:
   quiver: ^3.2.1
   photo_view: ^0.14.0
   dartx: ^1.1.0
+  plugin_pitel:
+    git:
+      url: https://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@github.com/tel4vn/flutter-pitel-voip.git
+      ref: main
 
 
 dependency_overrides:
