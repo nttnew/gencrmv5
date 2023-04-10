@@ -30,6 +30,7 @@ class _ContractSupportState extends State<ContractSupport>
                   .listSupportContract.length >
               0)
             return ListView.separated(
+                padding: EdgeInsets.zero,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
