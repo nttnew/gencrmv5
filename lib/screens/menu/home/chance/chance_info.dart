@@ -36,6 +36,7 @@ class _ChanceInfoState extends State<ChanceInfo>
                 builder: (context, state) {
               if (state is UpdateGetListDetailChanceState) {
                 return ListView.separated(
+                    padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {

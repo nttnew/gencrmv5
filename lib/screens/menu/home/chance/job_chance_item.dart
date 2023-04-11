@@ -31,6 +31,7 @@ class _JobListChanceState extends State<JobListChance>
             child: Container(
                 padding: EdgeInsets.only(bottom: 10),
                 child: ListView.separated(
+                    padding: EdgeInsets.zero,
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {

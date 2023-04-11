@@ -291,6 +291,15 @@ class ServiceVoucherBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
+      Get.dialog(WidgetDialog(
+        title: MESSAGES.NOTIFICATION,
+        content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
+        textButton1: "OK",
+        backgroundButton1: COLORS.PRIMARY_COLOR,
+        onTap1: () {
+          AppNavigator.navigateLogout();
+        },
+      ));
       yield ErrorGetServiceVoucherState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

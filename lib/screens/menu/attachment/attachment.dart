@@ -1,11 +1,14 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -63,7 +66,7 @@ class _AttachmentState extends State<Attachment> {
 
   Future<void> onDinhKem() async {
     if (await Permission.storage.request().isGranted) {
-      if(Platform.isAndroid){
+      if (Platform.isAndroid) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -72,31 +75,76 @@ class _AttachmentState extends State<Attachment> {
               content: 'Bạn chưa cấp quyền truy cập vào ảnh?',
               textButton2: 'Đi đến cài đặt',
               textButton1: 'Ok',
-              onTap2: (){
+              onTap2: () {
                 openAppSettings();
                 Get.back();
               },
-              onTap1: (){
+              onTap1: () {
                 Get.back();
               },
             );
           },
         );
-      }else{
-        FilePickerResult? result = await FilePicker.platform.pickFiles();
-        if (result != null && result.files.isNotEmpty) {
-          final filePicked = result.files.first;
-          listPickFile.add(File(filePicked.path!));
-          setState(() {});
-        }
+      } else {
+        pickIos();
       }
     } else {
-      FilePickerResult? result = await FilePicker.platform.pickFiles();
-      if (result != null && result.files.isNotEmpty) {
-        final filePicked = result.files.first;
-        listPickFile.add(File(filePicked.path!));
-        setState(() {});
+      if (Platform.isIOS) {
+        pickIos();
+      } else {
+        pickFile();
       }
+    }
+  }
+
+  void pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null && result.files.isNotEmpty) {
+      final filePicked = result.files.first;
+      listPickFile.add(File(filePicked.path!));
+      setState(() {});
+    }
+  }
+
+  void pickIos() {
+    showCupertinoModalPopup(
+        context: Get.context!,
+        builder: (context) => CupertinoActionSheet(
+                cancelButton: CupertinoActionSheetAction(
+                  child: Text('Huỷ'),
+                  onPressed: () {
+                    AppNavigator.navigateBack();
+                  },
+                ),
+                actions: [
+                  CupertinoActionSheetAction(
+                    onPressed: () async {
+                      Get.back();
+                      getImage();
+                    },
+                    child: Text('Chọn ảnh'),
+                  ),
+                  CupertinoActionSheetAction(
+                    onPressed: () async {
+                      Get.back();
+                      pickFile();
+                    },
+                    child: Text('Chọn file'),
+                  )
+                ]));
+  }
+
+  Future getImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (image == null) return;
+      final imageTemp = File(image.path);
+
+      listPickFile.add(imageTemp);
+      setState(() {});
+    } on PlatformException catch (e) {
+      throw e;
     }
   }
 

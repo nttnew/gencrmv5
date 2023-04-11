@@ -104,39 +104,45 @@ class _InfoContractPageState extends State<InfoContractPage> {
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: DefaultTabController(
                     length: 4,
-                    child: Scaffold(
-                      appBar: const TabBar(
-                        isScrollable: true,
-                        automaticIndicatorColorAdjustment: true,
-                        indicatorColor: COLORS.TEXT_COLOR,
-                        labelColor: COLORS.TEXT_COLOR,
-                        unselectedLabelColor: COLORS.GREY,
-                        labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
-                        tabs: [
-                          Tab(
-                            text: 'Thông tin chung',
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: const TabBar(
+                            isScrollable: true,
+                            automaticIndicatorColorAdjustment: true,
+                            indicatorColor: COLORS.TEXT_COLOR,
+                            labelColor: COLORS.TEXT_COLOR,
+                            unselectedLabelColor: COLORS.GREY,
+                            labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
+                            tabs: [
+                              Tab(
+                                text: 'Thông tin chung',
+                              ),
+                              Tab(
+                                text: 'Thanh toán',
+                              ),
+                              Tab(
+                                text: 'Công việc',
+                              ),
+                              Tab(
+                                text: 'Hỗ trợ',
+                              ),
+                            ],
                           ),
-                          Tab(
-                            text: 'Thanh toán',
+                        ),Expanded(
+                          child: TabBarView(
+                            children: [
+                              ContractOperation(
+                                id: id,
+                              ),
+                              ContractPayment(id: int.parse(id)),
+                              ContractJob(id: int.parse(id)),
+                              ContractSupport(id: id),
+                            ],
                           ),
-                          Tab(
-                            text: 'Công việc',
-                          ),
-                          Tab(
-                            text: 'Hỗ trợ',
-                          ),
-                        ],
-                      ),
-                      body: TabBarView(
-                        children: [
-                          ContractOperation(
-                            id: id,
-                          ),
-                          ContractPayment(id: int.parse(id)),
-                          ContractJob(id: int.parse(id)),
-                          ContractSupport(id: id),
-                        ],
-                      ),
+                        ),
+                      ],
                     )),
               ),
             )
