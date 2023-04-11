@@ -7,8 +7,8 @@ class InfoUserLogin {
   final String? user_id, department_id;
   final String? department_name, fullname, avatar, email, phone, dia_chi;
   final int? enable_callcenter;
-  final InfoSetupCallcenterRes info_setup_callcenter;
-  final String extension, password_extension, group;
+  final InfoSetupCallcenterRes? info_setup_callcenter;
+  final String? extension, password_extension, group;
 
   InfoUserLogin(
       this.user_id,
@@ -52,6 +52,7 @@ class LoginData {
   final List<ItemMenu>? quick;
   final String? outbound_mobile, port_mobile, transport_mobile;
   final int? systemversion;
+
   LoginData({
     this.tien_te,
     this.info_user,

@@ -92,6 +92,8 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
 
   @override
   void dispose() {
+    _disposeRenderers();
+    pitelCall.removeListener(this);
     super.dispose();
   }
 
@@ -430,11 +432,6 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
           ),
         ),
       ),
-      // appBar: AppBar(
-      //   automaticallyImplyLeading: false,
-      //   title: Text('[$direction] $_state'),
-      //   centerTitle: true,
-      // ),
       body: Container(
         child: pitelCall.isConnected && pitelCall.isHaveCall
             ? _buildContent()

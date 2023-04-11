@@ -34,6 +34,7 @@ import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.da
 import 'package:gen_crm/bloc/support/detail_support_bloc.dart';
 import 'package:gen_crm/bloc/support/support_bloc.dart';
 import 'package:gen_crm/screens/add_service_voucher/add_service_voucher_step2_screen.dart';
+import 'package:gen_crm/screens/call_video/home_call.dart';
 import 'package:gen_crm/screens/menu/home/contract/list_product.dart';
 import 'package:gen_crm/screens/menu/home/contract/update_contract.dart';
 import 'package:gen_crm/screens/menu/home/customer/add_note.dart';

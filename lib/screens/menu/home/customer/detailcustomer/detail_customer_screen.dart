@@ -7,6 +7,7 @@ import 'package:gen_crm/screens/menu/home/customer/index.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../bloc/chance_customer/chance_customer_bloc.dart';
 import '../../../../../bloc/clue_customer/clue_customer_bloc.dart';
@@ -40,7 +41,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
   void initState() {
     _tabController = TabController(length: 6, vsync: this);
     Future.delayed(Duration(seconds: 0), () {
-      ContractCustomerBloc.of(context).id=int.parse(id);
+      ContractCustomerBloc.of(context).id = int.parse(id);
       DetailContractBloc.of(context).getFile(int.parse(id), Module.KHACH_HANG);
       DetailCustomerBloc.of(context)
           .add(InitGetDetailCustomerEvent(int.parse(id)));
@@ -202,153 +203,84 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                         SizedBox(
                                           height: AppValue.heights * 0.02,
                                         ),
-                                        GestureDetector(
-                                          onTap: () {
+                                        if (DetailCustomerBloc.of(context)
+                                                .sdt !=
+                                            null)
+                                          itemIcon(
+                                            "Gọi điện",
+                                            "assets/icons/phone_customer.svg",
+                                            () {
+                                              Get.back();
+                                              launchUrl(Uri(
+                                                  scheme: "tel",
+                                                  path: DetailCustomerBloc.of(
+                                                          context)
+                                                      .sdt
+                                                      .toString()));
+                                            },
+                                          ),
+                                        itemIcon(
+                                          "Thêm đầu mối",
+                                          "assets/icons/addclue.svg",
+                                          () {
                                             Get.back();
                                             AppNavigator.navigateFormAdd(
                                                 'Thêm đầu mối', 11,
                                                 id: int.parse(id));
                                           },
-                                          child: Row(
-                                            children: [
-                                              SizedBox(
-                                                width: AppValue.widths * 0.2,
-                                              ),
-                                              SvgPicture.asset(
-                                                  "assets/icons/addclue.svg"),
-                                              SizedBox(
-                                                width: AppValue.widths * 0.1,
-                                              ),
-                                              Text(
-                                                "Thêm đầu mối",
-                                                style: styleTitleBottomSheet(),
-                                              ),
-                                            ],
-                                          ),
                                         ),
-                                        GestureDetector(
-                                          onTap: () {
+                                        itemIcon(
+                                          "Thêm cơ hội",
+                                          "assets/icons/addchance.svg",
+                                          () {
                                             Get.back();
                                             AppNavigator.navigateFormAdd(
                                                 'Thêm cơ hội', 12,
                                                 id: int.parse(id));
                                           },
-                                          child: Row(
-                                            children: [
-                                              SizedBox(
-                                                width: AppValue.widths * 0.2,
-                                              ),
-                                              SvgPicture.asset(
-                                                  "assets/icons/addchance.svg"),
-                                              SizedBox(
-                                                width: AppValue.widths * 0.1,
-                                              ),
-                                              Text("Thêm cơ hội",
-                                                  style:
-                                                      styleTitleBottomSheet())
-                                            ],
-                                          ),
                                         ),
-                                        GestureDetector(
-                                          onTap: () {
+                                        itemIcon(
+                                          "Thêm hợp đồng",
+                                          "assets/icons/addcontract.svg",
+                                          () {
                                             Get.back();
                                             AppNavigator.navigateAddContract(
-                                                customer_id: id, title: 'hợp đồng');
+                                                customer_id: id,
+                                                title: 'hợp đồng');
                                           },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                width: AppValue.widths * 0.2,
-                                              ),
-                                              SvgPicture.asset(
-                                                  "assets/icons/addcontract.svg"),
-                                              SizedBox(
-                                                width: AppValue.widths * 0.1,
-                                              ),
-                                              Text("Thêm hợp đồng",
-                                                  style:
-                                                      styleTitleBottomSheet())
-                                            ],
-                                          ),
                                         ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            Get.back();
+                                        itemIcon(
+                                          "Thêm công việc",
+                                          "assets/icons/addwork.svg",
+                                          () {
                                             AppNavigator.navigateFormAdd(
                                                 'Thêm công việc', 14,
                                                 id: int.parse(id));
                                           },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                width: AppValue.widths * 0.2,
-                                              ),
-                                              SvgPicture.asset(
-                                                  "assets/icons/addwork.svg"),
-                                              SizedBox(
-                                                width: AppValue.widths * 0.1,
-                                              ),
-                                              Text("Thêm công việc",
-                                                  style:
-                                                      styleTitleBottomSheet())
-                                            ],
-                                          ),
                                         ),
-                                        GestureDetector(
-                                          onTap: () {
+                                        itemIcon(
+                                          "Thêm hỗ trợ",
+                                          "assets/icons/addsupport.svg",
+                                          () {
                                             Get.back();
                                             AppNavigator.navigateFormAdd(
                                                 'Thêm hỗ trợ', 15,
                                                 id: int.parse(id));
                                           },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                width: AppValue.widths * 0.2,
-                                              ),
-                                              SvgPicture.asset(
-                                                  "assets/icons/addsupport.svg"),
-                                              SizedBox(
-                                                width: AppValue.widths * 0.1,
-                                              ),
-                                              Text("Thêm hỗ trợ",
-                                                  style:
-                                                      styleTitleBottomSheet())
-                                            ],
-                                          ),
                                         ),
-                                        GestureDetector(
-                                          onTap: () {
+                                        itemIcon(
+                                          "Thêm thảo luận",
+                                          "assets/icons/adddiscuss.svg",
+                                          () {
                                             Get.back();
                                             AppNavigator.navigateAddNoteScreen(
                                                 1, id);
                                           },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                width: AppValue.widths * 0.2,
-                                              ),
-                                              SvgPicture.asset(
-                                                  "assets/icons/adddiscuss.svg"),
-                                              SizedBox(
-                                                width: AppValue.widths * 0.1,
-                                              ),
-                                              Text("Thêm thảo luận",
-                                                  style:
-                                                      styleTitleBottomSheet())
-                                            ],
-                                          ),
                                         ),
-                                        GestureDetector(
-                                          onTap: () async {
+                                        itemIcon(
+                                          "Xem đính kèm",
+                                          "assets/icons/attack.svg",
+                                          () async {
                                             final List<FileDataResponse> list =
                                                 [];
                                             for (final a
@@ -372,50 +304,20 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                                 .whenComplete(
                                                     () => callApiUploadFile());
                                           },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                width: AppValue.widths * 0.2,
-                                              ),
-                                              SvgPicture.asset(
-                                                  'assets/icons/attack.svg'),
-                                              SizedBox(
-                                                width: AppValue.widths * 0.1,
-                                              ),
-                                              Text("Xem đính kèm",
-                                                  style:
-                                                      styleTitleBottomSheet())
-                                            ],
-                                          ),
                                         ),
-                                        GestureDetector(
-                                          onTap: () {
+                                        itemIcon(
+                                          "Sửa",
+                                          "assets/icons/edit.svg",
+                                          () {
                                             Get.back();
                                             AppNavigator.navigateEditDataScreen(
                                                 id, 1);
                                           },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                width: AppValue.widths * 0.2,
-                                              ),
-                                              SvgPicture.asset(
-                                                  "assets/icons/edit.svg"),
-                                              SizedBox(
-                                                width: AppValue.widths * 0.1,
-                                              ),
-                                              Text("Sửa",
-                                                  style:
-                                                      styleTitleBottomSheet())
-                                            ],
-                                          ),
                                         ),
-                                        GestureDetector(
-                                          onTap: () {
+                                        itemIcon(
+                                          "Xoá",
+                                          "assets/icons/delete.svg",
+                                          () {
                                             ShowDialogCustom.showDialogTwoButton(
                                                 onTap2: () => DetailCustomerBloc
                                                         .of(context)
@@ -424,24 +326,6 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                                 content:
                                                     "Bạn chắc chắn muốn xóa không ?");
                                           },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                width: AppValue.widths * 0.2,
-                                              ),
-                                              SvgPicture.asset(
-                                                  "assets/icons/delete.svg"),
-                                              SizedBox(
-                                                width: AppValue.widths * 0.1,
-                                              ),
-                                              WidgetText(
-                                                  title: "Xoá",
-                                                  style:
-                                                      styleTitleBottomSheet())
-                                            ],
-                                          ),
                                         ),
                                         Row(
                                           mainAxisAlignment:
@@ -497,6 +381,32 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
             ),
           ),
         ));
+  }
+
+  Widget itemIcon(String title, String icon, Function() click) {
+    return GestureDetector(
+      onTap: () => click(),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: AppValue.widths * 0.2,
+          ),
+          Container(
+            height: 24,
+            width: 24,
+            child: SvgPicture.asset(
+              icon,
+              fit: BoxFit.contain,
+            ),
+          ),
+          SizedBox(
+            width: AppValue.widths * 0.1,
+          ),
+          WidgetText(title: title, style: styleTitleBottomSheet())
+        ],
+      ),
+    );
   }
 
   TextStyle styleTitleBottomSheet() => TextStyle(

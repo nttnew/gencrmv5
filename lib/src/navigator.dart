@@ -10,7 +10,8 @@ class AppNavigator {
 
   static navigateSplash() async => await Get.toNamed(ROUTE_NAMES.SPLASH);
 
-  static navigateLogin() async => await Get.toNamed(ROUTE_NAMES.LOGIN,arguments: 'login');
+  static navigateLogin() async =>
+      await Get.toNamed(ROUTE_NAMES.LOGIN, arguments: 'login');
 
   static navigateDetailWork() async =>
       await Get.toNamed(ROUTE_NAMES.DETAILWORK);
@@ -41,7 +42,8 @@ class AppNavigator {
   static navigateAddSupport() async =>
       await Get.toNamed(ROUTE_NAMES.ADDSUPPORT);
 
-  static navigateLogout() async => await Get.offAllNamed(ROUTE_NAMES.LOGIN,arguments: 'logout');
+  static navigateLogout() async =>
+      await Get.offAllNamed(ROUTE_NAMES.LOGIN, arguments: 'logout');
 
   static navigateMain({dynamic data}) async =>
       await Get.offAllNamed(ROUTE_NAMES.MAIN, arguments: data);
@@ -84,8 +86,10 @@ class AppNavigator {
   static navigateContract(String name) async =>
       await Get.toNamed(ROUTE_NAMES.CONTRACT, arguments: name);
 
-  static navigateAddContract({String? id, String? customer_id,required String title}) async =>
-      await Get.toNamed(ROUTE_NAMES.ADD_CONTRACT, arguments: [id, customer_id,title]);
+  static navigateAddContract(
+          {String? id, String? customer_id, required String title}) async =>
+      await Get.toNamed(ROUTE_NAMES.ADD_CONTRACT,
+          arguments: [id, customer_id, title]);
 
   static navigateInfoContract(String id, String name) async =>
       await Get.toNamed(ROUTE_NAMES.INFO_CONTRACT, arguments: [id, name]);
