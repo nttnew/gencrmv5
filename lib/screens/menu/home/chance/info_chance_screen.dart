@@ -97,32 +97,40 @@ class _InfoChancePageState extends State<InfoChancePage> {
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: DefaultTabController(
                     length: 2,
-                    child: Scaffold(
-                      appBar: const TabBar(
-                        isScrollable: true,
-                        indicatorColor: COLORS.TEXT_COLOR,
-                        labelColor: COLORS.TEXT_COLOR,
-                        unselectedLabelColor: COLORS.GREY,
-                        labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
-                        tabs: [
-                          Tab(
-                            text: 'Thông tin chung',
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: const TabBar(
+                            isScrollable: true,
+                            indicatorColor: COLORS.TEXT_COLOR,
+                            labelColor: COLORS.TEXT_COLOR,
+                            unselectedLabelColor: COLORS.GREY,
+                            labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
+                            tabs: [
+                              Tab(
+                                text: 'Thông tin chung',
+                              ),
+                              Tab(
+                                text: 'Công việc',
+                              )
+                            ],
                           ),
-                          Tab(
-                            text: 'Công việc',
-                          )
-                        ],
-                      ),
-                      body: TabBarView(
-                        children: [
-                          ChanceInfo(
-                            id: id,
+                        ),
+                        Expanded(
+                          child: TabBarView(
+                            children: [
+                              ChanceInfo(
+                                id: id,
+                              ),
+                              JobListChance(
+                                id: id,
+                              )
+                            ],
                           ),
-                          JobListChance(
-                            id: id,
-                          )
-                        ],
-                      ),
+                        ),
+                      ],
+
                     )),
               ),
             )

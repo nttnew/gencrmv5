@@ -868,10 +868,10 @@ class _AddServiceVoucherStepTwoScreenState
           });
         }
         data['products'] = product;
-        VoucherServiceRequest voucherServiceRequest =
-            VoucherServiceRequest.fromJson(data);
-        _bloc.add(SaveVoucherServiceEvent(voucherServiceRequest));
       }
+      VoucherServiceRequest voucherServiceRequest =
+      VoucherServiceRequest.fromJson(data);
+      _bloc.add(SaveVoucherServiceEvent(voucherServiceRequest));
     }
   }
 

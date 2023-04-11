@@ -28,6 +28,7 @@ class _ContractJobState extends State<ContractJob>
             builder: (context, state) {
           if (state is SuccessJobContractState) if (state.listJob.length > 0)
             return ListView.separated(
+                padding: EdgeInsets.zero,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
