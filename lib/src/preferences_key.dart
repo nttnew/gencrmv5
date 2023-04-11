@@ -34,4 +34,5 @@ class PreferencesKey {
   static const String USER_PASSWORD = "USER_PASSWORD";
   static const String INFO_VERSION = "INFO_VERSION";
   static const String LIST_MENU_FLASH = "LIST_MENU_FLASH";
+  static const String DATA_CALL = "DATA_CALL";
 }

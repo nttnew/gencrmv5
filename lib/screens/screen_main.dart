@@ -68,6 +68,7 @@ class _ScreenMainState extends State<ScreenMain>
 
   @override
   void initState() {
+    LoginBloc.of(context).getDataCall();
     pitelClient = LoginBloc.of(context).pitelClient;
     pitelCall = LoginBloc.of(context).pitelCall;
     //call

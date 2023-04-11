@@ -7,6 +7,8 @@ class InfoUserLogin {
   final String? user_id, department_id;
   final String? department_name, fullname, avatar, email, phone, dia_chi;
   final int? enable_callcenter;
+  final InfoSetupCallcenterRes info_setup_callcenter;
+  final String extension, password_extension, group;
 
   InfoUserLogin(
       this.user_id,
@@ -17,7 +19,11 @@ class InfoUserLogin {
       this.email,
       this.phone,
       this.dia_chi,
-      this.enable_callcenter);
+      this.enable_callcenter,
+      this.info_setup_callcenter,
+      this.extension,
+      this.password_extension,
+      this.group);
 
   factory InfoUserLogin.fromJson(Map<String, dynamic> json) =>
       _$InfoUserLoginFromJson(json);
@@ -44,7 +50,8 @@ class LoginData {
   final String? token, session_id;
   final List<ItemMenu>? menu;
   final List<ItemMenu>? quick;
-
+  final String? outbound_mobile, port_mobile, transport_mobile;
+  final int? systemversion;
   LoginData({
     this.tien_te,
     this.info_user,
@@ -52,6 +59,10 @@ class LoginData {
     this.session_id,
     this.menu,
     this.quick,
+    this.systemversion,
+    this.outbound_mobile,
+    this.port_mobile,
+    this.transport_mobile,
   });
 
   factory LoginData.fromJson(Map<String, dynamic> json) =>
@@ -68,4 +79,25 @@ class LoginResponse extends BaseResponse {
   factory LoginResponse.fromJson(Map<String, dynamic> json) =>
       _$LoginResponseFromJson(json);
   Map<String, dynamic> toJson() => _$LoginResponseToJson(this);
+}
+
+@JsonSerializable()
+class InfoSetupCallcenterRes {
+  final String? outbound, port, port_app, domain, nth, ntd, zalo_call;
+  final int? type_call;
+
+  InfoSetupCallcenterRes({
+    this.outbound,
+    this.port,
+    this.port_app,
+    this.domain,
+    this.nth,
+    this.ntd,
+    this.zalo_call,
+    this.type_call,
+  });
+
+  factory InfoSetupCallcenterRes.fromJson(Map<String, dynamic> json) =>
+      _$InfoSetupCallcenterResFromJson(json);
+  Map<String, dynamic> toJson() => _$InfoSetupCallcenterResToJson(this);
 }

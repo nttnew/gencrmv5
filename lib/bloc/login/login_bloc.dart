@@ -58,6 +58,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
+  void getDataCall() {
+    String data = shareLocal.getString(PreferencesKey.DATA_CALL) ?? "";
+    if (data != '') {
+      final result = json.decode(data);
+      final resultCallData = LoginData.fromJson(result);
+      //todo data call
+    }
+  }
+
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     if (event is EmailChanged) {
@@ -98,6 +107,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             listMenuFlash.addAll(response.data?.quick ?? []);
             await shareLocal.putString(PreferencesKey.LIST_MENU_FLASH,
                 jsonEncode(response.data?.quick));
+            await shareLocal.putString(
+                PreferencesKey.DATA_CALL, jsonEncode(response.data));
             await localRepository.saveUser(jsonEncode(response.data));
             await shareLocal.putString(
                 PreferencesKey.SESS, response.data!.session_id!);
@@ -162,6 +173,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           if (response.code == BASE_URL.SUCCESS) {
             listMenuFlash = [];
             listMenuFlash.addAll(response.data?.quick ?? []);
+            await shareLocal.putString(
+                PreferencesKey.DATA_CALL, jsonEncode(response.data));
             await shareLocal.putString(PreferencesKey.LIST_MENU_FLASH,
                 jsonEncode(response.data?.quick));
             await localRepository.saveUser(jsonEncode(response.data));

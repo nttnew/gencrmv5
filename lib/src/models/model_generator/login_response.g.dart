@@ -17,6 +17,11 @@ InfoUserLogin _$InfoUserLoginFromJson(Map<String, dynamic> json) =>
       json['phone'] as String?,
       json['dia_chi'] as String?,
       json['enable_callcenter'] as int?,
+      InfoSetupCallcenterRes.fromJson(
+          json['info_setup_callcenter'] as Map<String, dynamic>),
+      json['extension'] as String,
+      json['password_extension'] as String,
+      json['group'] as String,
     );
 
 Map<String, dynamic> _$InfoUserLoginToJson(InfoUserLogin instance) =>
@@ -30,6 +35,10 @@ Map<String, dynamic> _$InfoUserLoginToJson(InfoUserLogin instance) =>
       'phone': instance.phone,
       'dia_chi': instance.dia_chi,
       'enable_callcenter': instance.enable_callcenter,
+      'info_setup_callcenter': instance.info_setup_callcenter,
+      'extension': instance.extension,
+      'password_extension': instance.password_extension,
+      'group': instance.group,
     };
 
 ItemMenu _$ItemMenuFromJson(Map<String, dynamic> json) => ItemMenu(
@@ -57,6 +66,10 @@ LoginData _$LoginDataFromJson(Map<String, dynamic> json) => LoginData(
       quick: (json['quick'] as List<dynamic>?)
           ?.map((e) => ItemMenu.fromJson(e as Map<String, dynamic>))
           .toList(),
+      systemversion: json['systemversion'] as int?,
+      outbound_mobile: json['outbound_mobile'] as String?,
+      port_mobile: json['port_mobile'] as String?,
+      transport_mobile: json['transport_mobile'] as String?,
     );
 
 Map<String, dynamic> _$LoginDataToJson(LoginData instance) => <String, dynamic>{
@@ -66,6 +79,10 @@ Map<String, dynamic> _$LoginDataToJson(LoginData instance) => <String, dynamic>{
       'session_id': instance.session_id,
       'menu': instance.menu,
       'quick': instance.quick,
+      'systemversion': instance.systemversion,
+      'outbound_mobile': instance.outbound_mobile,
+      'port_mobile': instance.port_mobile,
+      'transport_mobile': instance.transport_mobile,
     };
 
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
@@ -84,4 +101,30 @@ Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
       'msg': instance.msg,
       'code': instance.code,
       'data': instance.data,
+    };
+
+InfoSetupCallcenterRes _$InfoSetupCallcenterResFromJson(
+        Map<String, dynamic> json) =>
+    InfoSetupCallcenterRes(
+      outbound: json['outbound'] as String?,
+      port: json['port'] as String?,
+      port_app: json['port_app'] as String?,
+      domain: json['domain'] as String?,
+      nth: json['nth'] as String?,
+      ntd: json['ntd'] as String?,
+      zalo_call: json['zalo_call'] as String?,
+      type_call: json['type_call'] as int?,
+    );
+
+Map<String, dynamic> _$InfoSetupCallcenterResToJson(
+        InfoSetupCallcenterRes instance) =>
+    <String, dynamic>{
+      'outbound': instance.outbound,
+      'port': instance.port,
+      'port_app': instance.port_app,
+      'domain': instance.domain,
+      'nth': instance.nth,
+      'ntd': instance.ntd,
+      'zalo_call': instance.zalo_call,
+      'type_call': instance.type_call,
     };
