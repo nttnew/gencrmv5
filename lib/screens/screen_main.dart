@@ -106,7 +106,7 @@ class _ScreenMainState extends State<ScreenMain>
   void registrationStateChanged(PitelRegistrationState state) {
     switch (state.state) {
       case PitelRegistrationStateEnum.REGISTRATION_FAILED:
-        goBack();//todo failed
+        goBack(); //todo failed
         break;
       case PitelRegistrationStateEnum.NONE:
       case PitelRegistrationStateEnum.UNREGISTERED:
@@ -365,23 +365,28 @@ class _ScreenMainState extends State<ScreenMain>
                   );
                 }
               }),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                child: GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: listMenu.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 25,
-                      mainAxisSpacing: 25,
-                      // mainAxisExtent: 170
-                    ),
-                    itemBuilder: (context, index) {
-                      // List<ButtonMenuModel> list = [];
-                      return _buildItemMenu(
-                          data: listMenu[index], index: index);
-                    }),
+              SizedBox(
+                height: 25,
+              ),
+              GridView.builder(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 30,
+                  ),
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: listMenu.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 25,
+                    mainAxisSpacing: 25,
+                    // mainAxisExtent: 170
+                  ),
+                  itemBuilder: (context, index) {
+                    // List<ButtonMenuModel> list = [];
+                    return _buildItemMenu(data: listMenu[index], index: index);
+                  }),
+              SizedBox(
+                height: 25,
               ),
               GestureDetector(
                 onTap: () async {
@@ -393,6 +398,7 @@ class _ScreenMainState extends State<ScreenMain>
                   width: AppValue.widths,
                   height: AppValue.heights * 0.18,
                   margin: EdgeInsets.only(
+                    // top: 20,
                     left: 30,
                     bottom: 25,
                     right: 30,
@@ -404,19 +410,19 @@ class _ScreenMainState extends State<ScreenMain>
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Container(
-                      //   width: 90,
-                      //   height: 90,
-                      //   decoration: BoxDecoration(
-                      //       shape: BoxShape.circle, color: Colors.white),
-                      //   child: WidgetContainerImage(
-                      //     image: ICONS.WORK_3X,
-                      //     fit: BoxFit.contain,
-                      //     width: 50,
-                      //     height: 50,
-                      //   ),
-                      // ),
-                      // AppValue.vSpaceTiny,
+                      Container(
+                        width: 90,
+                        height: 90,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.white),
+                        child: WidgetContainerImage(
+                          image: ICONS.WORK_3X,
+                          fit: BoxFit.contain,
+                          width: 50,
+                          height: 50,
+                        ),
+                      ),
+                      AppValue.vSpaceTiny,
                       Text(
                         "Báo cáo",
                         style: AppStyle.DEFAULT_24_BOLD.copyWith(
@@ -441,43 +447,46 @@ class _ScreenMainState extends State<ScreenMain>
     return GestureDetector(
       onTap: data.onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: data.backgroundColor,
         ),
-        child: Row(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
           children: [
-            // Container(
-            //   child: Center(
-            //     child: Container(
-            //       // width: 50,
-            //       // height: 50,
-            //       // decoration: BoxDecoration(
-            //       //     borderRadius: BorderRadius.circular(6),color: Colors.white),
-            //       child: WidgetContainerImage(
-            //         image: data.image,
-            //         fit: BoxFit.contain,
-            //         width: 30,
-            //         height: 30,
-            //         colorImage: Colors.black,
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // SizedBox(width: 8,),
+            Expanded(
+              flex: 2,
+              child: Container(
+                child: Center(
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.white),
+                    child: WidgetContainerImage(
+                      image: data.image,
+                      fit: BoxFit.contain,
+                      width: 40,
+                      height: 40,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             Expanded(
               child: Container(
-                child: Text(
-                  data.title,
-                  style:
-                      AppStyle.DEFAULT_24_BOLD.copyWith(fontFamily: 'Roboto'),
-                  maxLines: 4,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Text(
+                      data.title,
+                      style: AppStyle.DEFAULT_12.copyWith(
+                          fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ),
               ),
             )
