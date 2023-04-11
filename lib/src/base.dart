@@ -2,6 +2,10 @@
 class BASE_URL {
   BASE_URL._();
 
+  static const DOMAIN_CALL = 'http://push.tel4vn.com/';
+  static const CALL_TOKEN = 'v1/pn/device/token';
+  static const CALL_DELETE_TOKEN = 'v1/pn/device/token';
+  static const CALL_NOTIFICATION = 'v1/pn/device/notification';
   static const GET_INFO_USER = 'api/user/profile';
   static const LOGIN = 'loginmobile.php';
   static const LOGOUT = 'lougoutmobile.php';

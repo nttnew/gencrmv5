@@ -428,7 +428,7 @@ class _ScreenMainState extends State<ScreenMain>
                         style: AppStyle.DEFAULT_24_BOLD.copyWith(
                           fontFamily: 'Roboto',
                           color: Colors.white,
-                          fontSize: 30,
+                          fontSize: 26,
                           // fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -581,7 +581,6 @@ class _ScreenMainState extends State<ScreenMain>
 
   @override
   void onCallInitiated(String callId) {
-    print('fuck');
     pitelCall.setCallCurrent(callId);
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => CallScreenWidget()));

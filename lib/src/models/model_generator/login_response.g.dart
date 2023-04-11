@@ -17,11 +17,13 @@ InfoUserLogin _$InfoUserLoginFromJson(Map<String, dynamic> json) =>
       json['phone'] as String?,
       json['dia_chi'] as String?,
       json['enable_callcenter'] as int?,
-      InfoSetupCallcenterRes.fromJson(
-          json['info_setup_callcenter'] as Map<String, dynamic>),
-      json['extension'] as String,
-      json['password_extension'] as String,
-      json['group'] as String,
+      json['info_setup_callcenter'] == null
+          ? null
+          : InfoSetupCallcenterRes.fromJson(
+              json['info_setup_callcenter'] as Map<String, dynamic>),
+      json['extension'] as String?,
+      json['password_extension'] as String?,
+      json['group'] as String?,
     );
 
 Map<String, dynamic> _$InfoUserLoginToJson(InfoUserLogin instance) =>
@@ -79,10 +81,10 @@ Map<String, dynamic> _$LoginDataToJson(LoginData instance) => <String, dynamic>{
       'session_id': instance.session_id,
       'menu': instance.menu,
       'quick': instance.quick,
-      'systemversion': instance.systemversion,
       'outbound_mobile': instance.outbound_mobile,
       'port_mobile': instance.port_mobile,
       'transport_mobile': instance.transport_mobile,
+      'systemversion': instance.systemversion,
     };
 
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
