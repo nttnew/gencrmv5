@@ -27,16 +27,6 @@ class _ScreenMainState extends State<ScreenMain> {
 
   List<ButtonMenuModel> listMenu = [];
 
-  // List<Map> menuItems = [
-  //   {"icon": "assets/icons/addContent.png", "name": "Thêm mua xe"},
-  //   {"icon": "assets/icons/addContent.png", "name": "Thêm bán xe"},
-  //   {"icon": "assets/icons/addContent.png", "name": "Thêm đặt lịch"},
-  //   {"icon": "assets/icons/addContent.png", "name": "Thêm phiếu dịch vụ"},
-  //   {"icon": "assets/icons/add_clue.png", "name": "Thêm khách hàng"},
-  //   {"icon": "assets/icons/addWork.png", "name": "Thêm công việc"},
-  //   {"icon": "assets/icons/Support.png", "name": "Thêm hỗ trợ"},
-  // ];
-
   String getIconMenu(String id) {
     if (ModuleText.CUSTOMER == id) {
       return ICONS.CUSTUMER_3X;

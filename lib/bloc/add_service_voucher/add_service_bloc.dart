@@ -257,7 +257,7 @@ class ServiceVoucherBloc
       final data = (response).getOrElse('data', () => -1);
       if ((statusCode == BASE_URL.SUCCESS) ||
           (statusCode == BASE_URL.SUCCESS_200)) {
-        if (listFileAllStream.value?.isNotEmpty ?? false) {
+        if (listFileAllStream.valueOrNull?.isNotEmpty ?? false) {
           final responseUpload = await userRepository.uploadMultiFileContract(
               id: data['recordId'].toString(),
               files: listFileAllStream.value ?? [],
