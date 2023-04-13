@@ -6,6 +6,7 @@ class BASE_URL {
   static const CALL_TOKEN = 'v1/pn/device/token';
   static const CALL_DELETE_TOKEN = 'v1/pn/device/token';
   static const CALL_NOTIFICATION = 'v1/pn/device/notification';
+  static const URL_DEMO = 'https://demo.gencrm.com/';
   static const GET_INFO_USER = 'api/user/profile';
   static const LOGIN = 'loginmobile.php';
   static const LOGOUT = 'lougoutmobile.php';
