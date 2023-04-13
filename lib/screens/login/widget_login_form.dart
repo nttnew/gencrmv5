@@ -50,7 +50,6 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
     Future.delayed(Duration(seconds: 0), () async {
       FirebaseMessaging messaging = FirebaseMessaging.instance;
       tokenFirebase = await messaging.getToken();
-      print("tokenFireBase: $tokenFirebase");
       canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
       canAuthenticate =
           canAuthenticateWithBiometrics || await auth.isDeviceSupported();
@@ -170,11 +169,11 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
             if (text != "") {
               if (text.split("/").length < 4) {
                 dotenv.env[PreferencesKey.BASE_URL] = text + '/';
-                shareLocal.putString("baseUrl", text + '/');
+                shareLocal.putString(PreferencesKey.URL_BASE, text + '/');
                 DioProvider.instance(baseUrl: text + '/');
               } else {
                 dotenv.env[PreferencesKey.BASE_URL] = text;
-                shareLocal.putString("baseUrl", text);
+                shareLocal.putString(PreferencesKey.URL_BASE, text);
                 DioProvider.instance(baseUrl: text);
               }
               Get.back();
@@ -216,8 +215,15 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         buildWhen: (previous, current) => previous.status != current.status,
         builder: (context, state) {
           return WidgetButton(
-              onTap: () {
-                // AppNavigator.navigateMain();
+              onTap: () async {
+                final baseUrl =
+                    await shareLocal.getString(PreferencesKey.URL_BASE);
+                if (baseUrl == null || baseUrl == '' || baseUrl == 'null') {
+                  dotenv.env[PreferencesKey.BASE_URL] = BASE_URL.URL_DEMO;
+                  shareLocal.putString(
+                      PreferencesKey.URL_BASE, BASE_URL.URL_DEMO);
+                  DioProvider.instance(baseUrl: BASE_URL.URL_DEMO);
+                }
                 state.status.isValidated
                     ? bloc.add(FormSubmitted(device_token: tokenFirebase ?? ''))
                     : showDialog(
@@ -304,7 +310,9 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
                     width: 24,
                     color: COLORS.BLACK,
                   ),
-                  SizedBox(width: 8,),
+                  SizedBox(
+                    width: 8,
+                  ),
                   WidgetText(
                     title: "Vân tay, khuôn mặt",
                     style: TextStyle(

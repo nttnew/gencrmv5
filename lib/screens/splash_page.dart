@@ -73,7 +73,7 @@ class _LogoAppState extends State<SplashPage>
   }
 
   getBaseUrl() async {
-    baseUrl = await shareLocal.getString("baseUrl");
+    baseUrl = await shareLocal.getString(PreferencesKey.URL_BASE);
     String? sess = await shareLocal.getString(PreferencesKey.SESS);
     String? token = await shareLocal.getString(PreferencesKey.TOKEN);
     if (baseUrl != dotenv.env[PreferencesKey.BASE_URL]) {
