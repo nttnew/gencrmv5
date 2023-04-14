@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:gen_crm/widgets/widget_text.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:plugin_pitel/component/pitel_call_state.dart';
 import 'package:plugin_pitel/component/pitel_rtc_video_view.dart';
@@ -10,29 +10,29 @@ import 'package:plugin_pitel/component/sip_pitel_helper_listener.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_call.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:plugin_pitel/sip/sip_ua.dart';
-import 'package:rxdart/rxdart.dart';
 
-import '../../src/src_index.dart';
 import '../../widgets/action_button.dart';
 
-class CallScreenWidget extends StatefulWidget {
+final checkIsPushNotif = StateProvider<bool>((ref) => false);
+
+class CallScreenWidget extends ConsumerStatefulWidget {
   CallScreenWidget({Key? key, this.receivedBackground = false})
       : super(key: key);
   final PitelCall _pitelCall = PitelClient.getInstance().pitelCall;
   final bool receivedBackground;
 
   @override
-  State<CallScreenWidget> createState() => _MyCallScreenWidget();
+  ConsumerState<CallScreenWidget> createState() => _MyCallScreenWidget();
 }
 
-class _MyCallScreenWidget extends State<CallScreenWidget>
+class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
     implements SipPitelHelperListener {
   PitelCall get pitelCall => widget._pitelCall;
+
   String _timeLabel = '00:00';
   late Timer _timer;
   bool _speakerOn = false;
-  BehaviorSubject<PitelCallStateEnum> _state =
-      BehaviorSubject.seeded(PitelCallStateEnum.NONE);
+  PitelCallStateEnum _state = PitelCallStateEnum.NONE;
   bool calling = false;
   bool _isBacked = false;
   String _callId = '';
@@ -90,18 +90,11 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
     pitelCall.disposeRemoteRenderer();
   }
 
-  @override
-  void dispose() {
-    _disposeRenderers();
-    pitelCall.removeListener(this);
-    super.dispose();
-  }
-
   // STATUS: Handle call state
   @override
   void callStateChanged(String callId, PitelCallState callState) {
     setState(() {
-      _state.add(callState.state);
+      _state = callState.state;
     });
     switch (callState.state) {
       case PitelCallStateEnum.HOLD:
@@ -117,6 +110,8 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
         setState(() {
           _callId = callId;
         });
+        //! Replace if you are using other State Managerment (Bloc, GetX,...)
+        ref.read(checkIsPushNotif.notifier).state = false;
         _backToDialPad();
         break;
       case PitelCallStateEnum.CONNECTING:
@@ -147,7 +142,8 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
   @override
   void onCallReceived(String callId) {
     pitelCall.setCallCurrent(callId);
-    setState(() {});
+    _handleAccept();
+    FlutterCallkitIncoming.endCall(callId);
   }
 
   @override
@@ -186,6 +182,8 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
     var hangupBtn = ActionButton(
       title: "hangup",
       onPressed: () {
+        //! Replace if you are using other State Managerment (Bloc, GetX,...)
+        ref.read(checkIsPushNotif.notifier).state = false;
         _handleHangup();
         _backToDialPad();
       },
@@ -201,8 +199,8 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
     );
 
     var basicActions = <Widget>[];
-    // var advanceActions = <Widget>[];
-    switch (_state.value) {
+    var advanceActions = <Widget>[];
+    switch (_state) {
       case PitelCallStateEnum.NONE:
       case PitelCallStateEnum.PROGRESS:
         if (direction == 'INCOMING') {
@@ -216,57 +214,24 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
             hangupBtn
           ];
         } else {
-          basicActions = [];
-          if (voiceonly)
-            basicActions.add(ActionButton(
-              iconColor: Colors.black.withOpacity(0.2),
-              title: _speakerOn ? 'speaker off' : 'speaker on',
-              icon: _speakerOn ? Icons.volume_off : Icons.volume_up,
-              fillColor: Colors.black.withOpacity(0.1),
-              checked: _speakerOn,
-              onPressed: () => {},
-            ));
-          basicActions.add(hangupBtn);
-          basicActions.add(ActionButton(
-            iconColor: Colors.black.withOpacity(0.2),
-            title: pitelCall.audioMuted ? 'unmute' : 'mute',
-            icon: pitelCall.audioMuted ? Icons.mic_off : Icons.mic,
-            checked: pitelCall.audioMuted,
-            fillColor: Colors.black.withOpacity(0.1),
-            onPressed: () => {},
-          ));
+          basicActions = [hangupBtn];
         }
         break;
       case PitelCallStateEnum.STREAM:
-        basicActions = [];
-        if (voiceonly)
-          basicActions.add(ActionButton(
-            iconColor: Colors.black.withOpacity(0.2),
-            title: _speakerOn ? 'speaker off' : 'speaker on',
-            icon: _speakerOn ? Icons.volume_off : Icons.volume_up,
-            fillColor: Colors.black.withOpacity(0.1),
-            checked: _speakerOn,
-            onPressed: () => {},
-          ));
-        basicActions.add(ActionButton(
-          title: "hangup",
-          onPressed: () {
-            _disposeRenderers();
-            context.pop();
-            pitelCall.removeListener(this);
-          },
-          icon: Icons.call_end,
-          fillColor: Colors.red,
-        ));
-        basicActions.add(ActionButton(
-          iconColor: Colors.black.withOpacity(0.2),
-          title: pitelCall.audioMuted ? 'unmute' : 'mute',
-          icon: pitelCall.audioMuted ? Icons.mic_off : Icons.mic,
-          checked: pitelCall.audioMuted,
-          fillColor: Colors.black.withOpacity(0.1),
-          onPressed: () => {},
-        ));
+        basicActions = [hangupBtn];
 
+        basicActions = [
+          ActionButton(
+            title: "hangup",
+            onPressed: () {
+              _disposeRenderers();
+              context.pop();
+              pitelCall.removeListener(this);
+            },
+            icon: Icons.call_end,
+            fillColor: Colors.red,
+          ),
+        ];
         break;
       case PitelCallStateEnum.CONNECTING:
         break;
@@ -275,23 +240,25 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
       case PitelCallStateEnum.ACCEPTED:
       case PitelCallStateEnum.CONFIRMED:
         {
+          advanceActions.add(ActionButton(
+            title: pitelCall.audioMuted ? 'unmute' : 'mute',
+            icon: pitelCall.audioMuted ? Icons.mic_off : Icons.mic,
+            checked: pitelCall.audioMuted,
+            fillColor: Colors.green,
+            onPressed: () => pitelCall.mute(callId: _callId),
+          ));
+
           if (voiceonly) {
-            basicActions.add(ActionButton(
+            advanceActions.add(ActionButton(
               title: _speakerOn ? 'speaker off' : 'speaker on',
               icon: _speakerOn ? Icons.volume_off : Icons.volume_up,
-              fillColor: Colors.black.withOpacity(0.1),
+              fillColor: Colors.green,
               checked: _speakerOn,
               onPressed: () => _toggleSpeaker(),
             ));
           }
+
           basicActions.add(hangupBtn);
-          basicActions.add(ActionButton(
-            title: pitelCall.audioMuted ? 'unmute' : 'mute',
-            icon: pitelCall.audioMuted ? Icons.mic_off : Icons.mic,
-            checked: pitelCall.audioMuted,
-            fillColor: Colors.black.withOpacity(0.1),
-            onPressed: () => pitelCall.mute(),
-          ));
         }
         break;
       case PitelCallStateEnum.FAILED:
@@ -304,10 +271,18 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
 
     var actionWidgets = <Widget>[];
 
+    if (advanceActions.isNotEmpty) {
+      actionWidgets.add(Padding(
+          padding: const EdgeInsets.all(3),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: advanceActions)));
+    }
+
     actionWidgets.add(Padding(
         padding: const EdgeInsets.all(3),
         child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: basicActions)));
 
     return Column(
@@ -352,32 +327,27 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            const Center(
+                child: Padding(
+                    padding: EdgeInsets.all(6),
+                    child: Text(
+                      'VOICE CALL',
+                      style: TextStyle(fontSize: 24, color: Colors.black54),
+                    ))),
             Center(
                 child: Padding(
-              padding: EdgeInsets.all(6),
-              child: WidgetText(
-                title: 'VOICE CALL',
-                style: AppStyle.DEFAULT_18_BOLD,
-              ),
-            )),
+                    padding: const EdgeInsets.all(6),
+                    child: Text(
+                      '${pitelCall.remoteIdentity}',
+                      style:
+                          const TextStyle(fontSize: 18, color: Colors.black54),
+                    ))),
             Center(
                 child: Padding(
-              padding: const EdgeInsets.all(6),
-              child: WidgetText(
-                  title: '${pitelCall.remoteIdentity}',
-                  style: AppStyle.DEFAULT_18_BOLD.copyWith(fontSize: 32)),
-            )),
-            Center(
-                child: Padding(
-              padding: const EdgeInsets.all(6),
-              child: StreamBuilder<PitelCallStateEnum>(
-                  stream: _state,
-                  builder: (context, snapshot) {
-                    return WidgetText(
-                        title: getTextTitle(_state.value),
-                        style: AppStyle.DEFAULT_18_BOLD);
-                  }),
-            ))
+                    padding: const EdgeInsets.all(6),
+                    child: Text(_timeLabel,
+                        style: const TextStyle(
+                            fontSize: 14, color: Colors.black54))))
           ],
         )),
       ),
@@ -388,49 +358,14 @@ class _MyCallScreenWidget extends State<CallScreenWidget>
     );
   }
 
-  String getTextTitle(PitelCallStateEnum _status) {
-    switch (_status) {
-      case PitelCallStateEnum.CONFIRMED:
-        return _timeLabel;
-      case PitelCallStateEnum.PROGRESS:
-        return 'Đang kết nối';
-      case PitelCallStateEnum.STREAM:
-        return 'Đang đổ chuông';
-      case PitelCallStateEnum.ENDED:
-        return 'Kết thúc cuộc gọi';
-      case PitelCallStateEnum.NONE:
-        return 'Đang gọi đến';
-      default:
-        return '';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: HexColor("#D0F1EB").withOpacity(0.9),
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        toolbarHeight: AppValue.heights * 0.1,
-        backgroundColor: HexColor("#D0F1EB"),
-        title: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            "Gọi điện tổng đài",
-            style: TextStyle(
-              color: Colors.black,
-              fontFamily: "Montserrat",
-              fontWeight: FontWeight.w700,
-              fontSize: 16,
-            ),
-            textAlign: TextAlign.left,
-          ),
-        ),
         automaticallyImplyLeading: false,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
-          ),
-        ),
+        title: Text('[$direction] $_state'),
+        centerTitle: true,
       ),
       body: Container(
         child: pitelCall.isConnected && pitelCall.isHaveCall

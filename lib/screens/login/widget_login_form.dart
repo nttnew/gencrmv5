@@ -50,6 +50,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
     Future.delayed(Duration(seconds: 0), () async {
       FirebaseMessaging messaging = FirebaseMessaging.instance;
       tokenFirebase = await messaging.getToken();
+      print('tokenfirebase$tokenFirebase');
       canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
       canAuthenticate =
           canAuthenticateWithBiometrics || await auth.isDeviceSupported();

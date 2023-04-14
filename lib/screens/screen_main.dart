@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
@@ -19,6 +21,8 @@ import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:plugin_pitel/services/pitel_service.dart';
 import 'package:plugin_pitel/services/sip_info_data.dart';
 import 'package:plugin_pitel/sip/src/sip_ua_helper.dart';
+import 'package:plugin_pitel/voip_push/push_notif.dart';
+import 'package:plugin_pitel/voip_push/voip_notif.dart';
 
 import '../bloc/login/login_bloc.dart';
 import '../storages/share_local.dart';
@@ -46,7 +50,7 @@ class _ScreenMainState extends State<ScreenMain>
   String state = '';
   //
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-
+  late final String deviceToken;
   List<ButtonMenuModel> listMenu = [];
 
   String getIconMenu(String id) {
@@ -66,9 +70,40 @@ class _ScreenMainState extends State<ScreenMain>
     return ICONS.WORK_3X;
   }
 
-  @override
-  void initState() {
+  void _getDeviceToken() async {
+    deviceToken = await PushVoipNotif.getDeviceToken();
+    print('deviceToken---$deviceToken');
+    await _registerDeviceToken();
+  }
+
+  Future<void> _removeDeviceToken() async {
+    final response = await pitelClient.removeDeviceToken(
+      deviceToken: deviceToken, // Device token
+      domain: 'mobile.tel4vn.com',
+      extension: '101',
+    );
+  }
+
+  void _logout() {
+    _removeDeviceToken(); // Remove device token
+    pitelCall.unregister(); // Disconnect SIP call when user logout
+  }
+
+  Future<void> _registerDeviceToken() async {
+    bool isAndroid = Platform.isAndroid;
+    final response = await pitelClient.registerDeviceToken(
+      deviceToken: deviceToken,
+      platform: isAndroid ? 'android' : 'ios',
+      bundleId: isAndroid ? 'vn.gen_crm' : 'com.gencrm', // BundleId/packageId
+      domain: DOMAIN,
+      extension: UUSER.toString(),
+    );
+    print('fuck$response');
+  }
+
+  void callInit() {
     LoginBloc.of(context).getDataCall();
+    _getDeviceToken();
     pitelClient = LoginBloc.of(context).pitelClient;
     pitelCall = LoginBloc.of(context).pitelCall;
     //call
@@ -90,9 +125,42 @@ class _ScreenMainState extends State<ScreenMain>
       "userName": "${USER_NAME}@${DOMAIN}",
       "apiDomain": URL_API
     });
+    VoipNotifService.listenerEvent(
+      callback: (event) {
+        var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+            'high_importance_channel', 'callback',
+            importance: Importance.max,
+            playSound: true,
+            showProgress: true,
+            priority: Priority.high,
+            ticker: 'test ticker');
+      },
+      onCallAccept: () {
+        var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+            'high_importance_channel', 'onCallAccept',
+            importance: Importance.max,
+            playSound: true,
+            showProgress: true,
+            priority: Priority.high,
+            ticker: 'test ticker');
+      },
+      onCallDecline: () {
+        var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+            'high_importance_channel', 'onCallDecline',
+            importance: Importance.max,
+            playSound: true,
+            showProgress: true,
+            priority: Priority.high,
+            ticker: 'test ticker');
+      },
+    );
     final pitelClientImpl = PitelServiceImpl();
     pitelClientImpl.setExtensionInfo(sipInfo);
-    //
+  }
+
+  @override
+  void initState() {
+    callInit();
     Future.delayed(Duration(milliseconds: 300), () {
       GetInforAccBloc.of(context).add(InitGetInforAcc());
       GetListUnReadNotifiBloc.of(context).add(CheckNotification());

@@ -2,10 +2,6 @@
 class BASE_URL {
   BASE_URL._();
 
-  static const DOMAIN_CALL = 'http://push.tel4vn.com/';
-  static const CALL_TOKEN = 'v1/pn/device/token';
-  static const CALL_DELETE_TOKEN = 'v1/pn/device/token';
-  static const CALL_NOTIFICATION = 'v1/pn/device/notification';
   static const URL_DEMO = 'https://demo.gencrm.com/';
   static const GET_INFO_USER = 'api/user/profile';
   static const LOGIN = 'loginmobile.php';
@@ -175,7 +171,7 @@ class BASE_URL {
   static const ENV = 'assets/.env';
 
   // connectTimeout
-  static const int connectionTimeout = 45000;//todo timeout them coong viec
+  static const int connectionTimeout = 45000; //todo timeout them coong viec
 
   static const content_type = 'Content-Type';
   static const application_json = 'application/json';
@@ -222,13 +218,13 @@ String getURLModule(String module) {
     return 'job';
   } else if (module == Module.HO_TRO) {
     return 'support';
-  }else if (module == Module.CO_HOI_BH) {
+  } else if (module == Module.CO_HOI_BH) {
     return 'opportunity';
   }
   return '';
 }
 
-class ModuleText{
+class ModuleText {
   static const String CUSTOMER = 'them_khach_hang';
   static const String DAU_MOI = 'them_dau_moi';
   static const String LICH_HEN = 'them_co_hoi';
@@ -237,5 +233,4 @@ class ModuleText{
   static const String CSKH = 'them_ho_tro';
   static const String THEM_MUA_XE = 'them_mua_xe';
   static const String THEM_BAN_XE = 'them_ban_xe';
-
 }

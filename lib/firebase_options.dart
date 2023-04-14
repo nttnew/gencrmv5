@@ -56,13 +56,13 @@ class DefaultFirebaseOptions {
     measurementId: 'G-CCJLK36YV8',
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCg5yw_XF9MR8WCP9u9zjgdsZXVhjDne9g',
-    appId: '1:794334677094:android:e9edd5fa8d6134f68085a7',
-    messagingSenderId: '794334677094',
-    projectId: 'gen-crm',
-    storageBucket: 'gen-crm.appspot.com',
-  );
+  // static const FirebaseOptions android = FirebaseOptions(
+  //   apiKey: 'AIzaSyCg5yw_XF9MR8WCP9u9zjgdsZXVhjDne9g',
+  //   appId: '1:794334677094:android:e9edd5fa8d6134f68085a7',
+  //   messagingSenderId: '794334677094',
+  //   projectId: 'gen-crm',//todo test notificaion
+  //   storageBucket: 'gen-crm.appspot.com',
+  // );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAYESvgps2kye_1Rj8cn_5TRuoexqdbFWM',
@@ -75,5 +75,14 @@ class DefaultFirebaseOptions {
     iosClientId:
         '794334677094-800vifglnecq1fnhkln72u2ek6qbatjh.apps.googleusercontent.com',
     iosBundleId: 'com.gencrm',
+  );
+
+  //! Replace information from your google_service.json
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyDjCCaEJo8wAhheok1nVuvqUQ-4P8udcfU',
+    appId: '1:493769130126:android:876b81661fcc6a8dbd09df',
+    messagingSenderId: '493769130126',
+    projectId: 'gen-crm-test',
+    storageBucket: 'gen-crm-test.appspot.com',
   );
 }
