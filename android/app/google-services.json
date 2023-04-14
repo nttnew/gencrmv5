@@ -7,6 +7,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:493769130126:android:07e110af846226a6bd09df",
+        "android_client_info": {
+          "package_name": "com.pitel.pitel_ui_kit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "493769130126-d087e3j6trb2151397c31q2llkpjh32d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjCCaEJo8wAhheok1nVuvqUQ-4P8udcfU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "493769130126-d087e3j6trb2151397c31q2llkpjh32d.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "493769130126-6f65cd627b28gusvir61kcho9kpruods.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gencrm"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:493769130126:android:876b81661fcc6a8dbd09df",
         "android_client_info": {
           "package_name": "vn.gen_crm"

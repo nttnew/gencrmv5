@@ -80,7 +80,7 @@ class DefaultFirebaseOptions {
   //! Replace information from your google_service.json
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDjCCaEJo8wAhheok1nVuvqUQ-4P8udcfU',
-    appId: '1:493769130126:android:876b81661fcc6a8dbd09df',
+    appId: '1:493769130126:android:07e110af846226a6bd09df',
     messagingSenderId: '493769130126',
     projectId: 'gen-crm-test',
     storageBucket: 'gen-crm-test.appspot.com',
