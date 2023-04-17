@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gen_crm/api_resfull/dio_provider.dart';
@@ -13,7 +12,6 @@ import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/event_repository_storage.dart';
 import 'package:gen_crm/storages/share_local.dart';
-import 'package:plugin_pitel/pitel_sdk/pitel_call.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:rxdart/rxdart.dart';
 part 'login_event.dart';
@@ -36,14 +34,29 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   static const String UNREGISTER = 'UNREGISTER';
   static const String REGISTERED = 'REGISTERED';
-  // final PitelClient pitelClient = PitelClient.getInstance();
   late BehaviorSubject<String> receivedMsg = BehaviorSubject.seeded(UNREGISTER);
-  // final checkIsPushNotif = StateProvider<bool>((ref) => false);
-
+  LoginData? loginData;
 
   @override
   void onTransition(Transition<LoginEvent, LoginState> transition) {
     super.onTransition(transition);
+  }
+
+  void logout() {
+    receivedMsg.add(LoginBloc.UNREGISTER);
+    _removeDeviceToken();
+    PitelClient.getInstance().pitelCall.unregister();
+  }
+
+  Future<void> _removeDeviceToken() async {
+    String deviceToken =
+        await shareLocal.getString(PreferencesKey.DEVICE_TOKEN) ?? "";
+    await PitelClient.getInstance().removeDeviceToken(
+      deviceToken: deviceToken, // Device token
+      domain: 'mobile.tel4vn.com', //todo
+      extension: '101',
+    );
+    await shareLocal.putString(PreferencesKey.DEVICE_TOKEN, '');
   }
 
   void getListMenuFlash() {
@@ -59,12 +72,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  void getDataCall() {
-    String data = shareLocal.getString(PreferencesKey.DATA_CALL) ?? "";
+  Future<void> getDataCall() async {
+    String data = await shareLocal.getString(PreferencesKey.DATA_CALL) ?? "";
     if (data != '') {
       final result = json.decode(data);
-      final resultCallData = LoginData.fromJson(result);
-      //todo data call
+      loginData = LoginData.fromJson(result);
     }
   }
 

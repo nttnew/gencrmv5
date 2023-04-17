@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/widgets/widget_button.dart';
 
 import '../../../../bloc/authen/authentication_bloc.dart';
@@ -229,7 +230,8 @@ class _MainDrawerState extends State<MainDrawer> {
           WidgetButton(
             onTap: () {
               ShowDialogCustom.showDialogTwoButton(onTap2: () {
-                AuthenticationBloc.of(context)
+               LoginBloc.of(context).logout();
+               AuthenticationBloc.of(context)
                     .add(AuthenticationLogoutRequested());
               });
             },

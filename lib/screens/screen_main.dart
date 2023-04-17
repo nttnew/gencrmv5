@@ -41,11 +41,10 @@ class ScreenMain extends ConsumerStatefulWidget {
 class _ScreenMainState extends ConsumerState<ScreenMain>
     implements SipPitelHelperListener {
   //DATA CALL
-  static const String UNREGISTER = 'UNREGISTER';
   static const String PASSWORD = 'GenCRM@2023##'; //
   static const String DOMAIN = 'demo-gencrm.com';
   static const String OUTBOUND_PROXY = 'pbx-mobile.tel4vn.com:50061';
-  static const String URL_WSS = 'wss://wss-mobile.tel4vn.com:7444';
+  static const String URL_WSS = 'wss://wss-mobile.tel4vn.com:7444'; //todo
   static const String URL_API = 'https://pbx-mobile.tel4vn.com';
   static const int UUSER = 101;
   static const String USER_NAME = 'user1';
@@ -251,27 +250,23 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
 
   Future<void> _getDeviceToken() async {
     deviceToken = await PushVoipNotif.getDeviceToken();
+    await shareLocal.putString(PreferencesKey.DEVICE_TOKEN, deviceToken);
     print('deviceToken---$deviceToken');
-    // await _registerDeviceToken();
-  }
-
-  Future<void> _removeDeviceToken() async {
-    final response = await pitelClient.removeDeviceToken(
-      deviceToken: deviceToken, // Device token
-      domain: 'mobile.tel4vn.com',
-      extension: '101',
-    );
-  }
-
-  void _logout() {
-    LoginBloc.of(context).receivedMsg.add(LoginBloc.UNREGISTER);
-    _removeDeviceToken();
-    pitelCall.unregister();
   }
 
   Future<void> _registerDeviceToken() async {
+    final String domain = shareLocal.getString(PreferencesKey.URL_BASE);
+    final String user =
+        LoginBloc.of(context).loginData?.info_user?.extension ?? '';
     bool isAndroid = Platform.isAndroid;
-    final response = await pitelClient.registerDeviceToken(
+    // await pitelClient.registerDeviceToken(
+    //   deviceToken: deviceToken,
+    //   platform: isAndroid ? 'android' : 'ios',
+    //   bundleId: isAndroid ? 'vn.gen_crm' : 'com.gencrm', // BundleId/packageId
+    //   domain: domain,
+    //   extension: user,
+    // );
+    await pitelClient.registerDeviceToken(
       deviceToken: deviceToken,
       platform: isAndroid ? 'android' : 'ios',
       bundleId: isAndroid ? 'vn.gen_crm' : 'com.gencrm', // BundleId/packageId
@@ -282,7 +277,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
 
   void callInit() async {
     state = pitelCall.getRegisterState();
-    LoginBloc.of(context).receivedMsg.add(UNREGISTER);
+    LoginBloc.of(context).receivedMsg.add(LoginBloc.UNREGISTER);
     await _getDeviceToken();
     _bindEventListeners();
     VoipNotifService.listenerEvent(
@@ -296,9 +291,42 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     registerCall();
   }
 
-  void registerCall() {
-    LoginBloc.of(context).getDataCall();
+  Future<void> registerCall() async {
+    await LoginBloc.of(context).getDataCall();
+
+    final String domain = shareLocal.getString(PreferencesKey.URL_BASE);
+    final int user =
+        int.parse(LoginBloc.of(context).loginData?.info_user?.extension ?? '0');
+    final String pass =
+        LoginBloc.of(context).loginData?.info_user?.password_extension ?? '';
+    final String outboundServer = LoginBloc.of(context)
+            .loginData
+            ?.info_user
+            ?.info_setup_callcenter
+            ?.outbound ??
+        '';
+    final String apiDomain = LoginBloc.of(context)
+            .loginData
+            ?.info_user
+            ?.info_setup_callcenter
+            ?.domain ??
+        '';
     //call
+    // final sipInfo = SipInfoData.fromJson({
+    //   "authPass": pass,
+    //   "registerServer": domain,
+    //   "outboundServer": outboundServer,
+    //   "userID": user,
+    //   "authID": user,
+    //   "accountName": "${user}",
+    //   "displayName": "${user}@${domain}",
+    //   "dialPlan": null,
+    //   "randomPort": null,
+    //   "voicemail": null,
+    //   "wssUrl": URL_WSS,
+    //   "userName": "${user}@${domain}",
+    //   "apiDomain": apiDomain
+    // });
     final sipInfo = SipInfoData.fromJson({
       "authPass": PASSWORD,
       "registerServer": DOMAIN,
@@ -389,24 +417,6 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     // TODO: implement transportStateChanged
   }
 
-  void _handleCall(BuildContext context, [bool voiceonly = false]) {
-    var dest = '0986839102';
-    if (dest.isEmpty) {
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return const AlertDialog(
-            title: Text('Target is empty.'),
-            content: Text('Please enter a SIP URI or username!'),
-          );
-        },
-      );
-    } else {
-      pitelClient.call(dest, voiceonly).then((value) => value.fold((succ) => {},
-          (err) => {LoginBloc.of(context).receivedMsg.add(err.toString())}));
-    }
-  }
   /////////////////END
 
   @override
