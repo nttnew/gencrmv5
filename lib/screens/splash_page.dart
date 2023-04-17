@@ -20,7 +20,7 @@ class AnimatedLogo extends AnimatedWidget {
         height: double.infinity,
         width: double.infinity,
         padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width / 6),
+            horizontal: MediaQuery.of(context).size.width / 4),
         child: Center(
             child: Image.asset(
           "assets/icons/logo.png",

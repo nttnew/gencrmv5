@@ -1,7 +1,7 @@
 {
   "file_generated_by": "FlutterFire CLI",
   "purpose": "FirebaseAppID & ProjectID for this Firebase app in this directory",
-  "GOOGLE_APP_ID": "1:794334677094:ios:171761c121eab7b18085a7",
-  "FIREBASE_PROJECT_ID": "gen-crm",
-  "GCM_SENDER_ID": "794334677094"
+  "GOOGLE_APP_ID": "1:476014117271:ios:8178c58c3187dd540e04d2",
+  "FIREBASE_PROJECT_ID": "carcrm-57969",
+  "GCM_SENDER_ID": "476014117271"
 }

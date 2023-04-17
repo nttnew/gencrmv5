@@ -47,13 +47,13 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBxgGLasJWKEZzeCvUnyOwd--LHK-L82YQ',
-    appId: '1:794334677094:web:0bdec15f9f9448f98085a7',
-    messagingSenderId: '794334677094',
-    projectId: 'gen-crm',
-    authDomain: 'gen-crm.firebaseapp.com',
-    storageBucket: 'gen-crm.appspot.com',
-    measurementId: 'G-CCJLK36YV8',
+      apiKey: "AIzaSyATRmsX6cH1X8DY8UkgghjwWcSl74xDQdc",
+      authDomain: "carcrm-57969.firebaseapp.com",
+      projectId: "carcrm-57969",
+      storageBucket: "carcrm-57969.appspot.com",
+      messagingSenderId: "476014117271",
+      appId: "1:476014117271:web:5cab04805ee0e4100e04d2",
+      measurementId: "G-ZVF5EC6W7W"
   );
 
   static const FirebaseOptions android = FirebaseOptions(
