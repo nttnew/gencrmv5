@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gen_crm/api_resfull/dio_provider.dart';
@@ -22,11 +23,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
   final EventRepositoryStorage localRepository;
   late List<ItemMenu> listMenuFlash = [];
-  final PitelCall pitelCall;
   LoginBloc({
     required this.userRepository,
     required this.localRepository,
-    required this.pitelCall,
   }) : super(LoginState(
             email: UserName.pure(),
             password: Password.pure(),
@@ -37,8 +36,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   static const String UNREGISTER = 'UNREGISTER';
   static const String REGISTERED = 'REGISTERED';
-  final PitelClient pitelClient = PitelClient.getInstance();
+  // final PitelClient pitelClient = PitelClient.getInstance();
   late BehaviorSubject<String> receivedMsg = BehaviorSubject.seeded(UNREGISTER);
+  // final checkIsPushNotif = StateProvider<bool>((ref) => false);
+
 
   @override
   void onTransition(Transition<LoginEvent, LoginState> transition) {

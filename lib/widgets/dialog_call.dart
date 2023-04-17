@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:plugin_pitel/component/pitel_call_state.dart';
 import 'package:plugin_pitel/component/sip_pitel_helper_listener.dart';
+import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:plugin_pitel/sip/src/sip_ua_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -25,8 +26,8 @@ class _DialogCallState extends State<DialogCall>
   late final pitelClient;
   @override
   void initState() {
-    pitelCall = LoginBloc.of(context).pitelCall;
-    pitelClient = LoginBloc.of(context).pitelClient;
+    pitelCall = PitelClient.getInstance().pitelCall;
+    pitelClient = PitelClient.getInstance();
     _bindEventListeners();
     super.initState();
   }
@@ -94,7 +95,8 @@ class _DialogCallState extends State<DialogCall>
   }
 
   void _handleCall(BuildContext context, [bool voiceonly = false]) {
-    var dest = '102';
+    var dest = '0986839102';
+
     if (dest.isEmpty) {
       showDialog(
         context: context,
@@ -171,7 +173,7 @@ class _DialogCallState extends State<DialogCall>
                 if (true) //todo check hide
                   GestureDetector(
                     onTap: () {
-                      _handleCall(context);
+                      _handleCall(context, true);
                     },
                     child: WidgetText(
                         title: 'Gọi qua tổng đài',

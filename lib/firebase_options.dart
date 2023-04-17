@@ -56,14 +56,6 @@ class DefaultFirebaseOptions {
     measurementId: 'G-CCJLK36YV8',
   );
 
-  // static const FirebaseOptions android = FirebaseOptions(
-  //   apiKey: 'AIzaSyCg5yw_XF9MR8WCP9u9zjgdsZXVhjDne9g',
-  //   appId: '1:794334677094:android:e9edd5fa8d6134f68085a7',
-  //   messagingSenderId: '794334677094',
-  //   projectId: 'gen-crm',//todo test notificaion
-  //   storageBucket: 'gen-crm.appspot.com',
-  // );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAYESvgps2kye_1Rj8cn_5TRuoexqdbFWM',
     appId: '1:794334677094:ios:171761c121eab7b18085a7',
@@ -80,7 +72,7 @@ class DefaultFirebaseOptions {
   //! Replace information from your google_service.json
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDjCCaEJo8wAhheok1nVuvqUQ-4P8udcfU',
-    appId: '1:493769130126:android:07e110af846226a6bd09df',
+    appId: '1:493769130126:android:64a27cd9889848d2bd09df',
     messagingSenderId: '493769130126',
     projectId: 'gen-crm-test',
     storageBucket: 'gen-crm-test.appspot.com',

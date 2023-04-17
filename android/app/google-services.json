@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:493769130126:android:07e110af846226a6bd09df",
+        "mobilesdk_app_id": "1:493769130126:android:64a27cd9889848d2bd09df",
         "android_client_info": {
-          "package_name": "com.pitel.pitel_ui_kit"
+          "package_name": "com.example.test_call"
         }
       },
       "oauth_client": [

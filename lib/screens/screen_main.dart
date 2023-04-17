@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
@@ -23,20 +23,24 @@ import 'package:plugin_pitel/services/sip_info_data.dart';
 import 'package:plugin_pitel/sip/src/sip_ua_helper.dart';
 import 'package:plugin_pitel/voip_push/push_notif.dart';
 import 'package:plugin_pitel/voip_push/voip_notif.dart';
+import 'package:plugin_pitel/sip/sip_ua.dart';
 
 import '../bloc/login/login_bloc.dart';
 import '../storages/share_local.dart';
 import 'call_video/call_screen.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
 
-class ScreenMain extends StatefulWidget {
+final checkIsPushNotif = StateProvider<bool>((ref) => false);
+
+class ScreenMain extends ConsumerStatefulWidget {
+  final PitelCall _pitelCall = PitelClient.getInstance().pitelCall;
   @override
   _ScreenMainState createState() => _ScreenMainState();
 }
 
-class _ScreenMainState extends State<ScreenMain>
+class _ScreenMainState extends ConsumerState<ScreenMain>
     implements SipPitelHelperListener {
-  //call
+  //DATA CALL
   static const String UNREGISTER = 'UNREGISTER';
   static const String PASSWORD = 'GenCRM@2023##'; //
   static const String DOMAIN = 'demo-gencrm.com';
@@ -45,14 +49,15 @@ class _ScreenMainState extends State<ScreenMain>
   static const String URL_API = 'https://pbx-mobile.tel4vn.com';
   static const int UUSER = 101;
   static const String USER_NAME = 'user1';
-  late final PitelCall pitelCall;
-  late final PitelClient pitelClient;
-  String state = '';
-  //
-  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  late final String deviceToken;
-  List<ButtonMenuModel> listMenu = [];
 
+  PitelCall get pitelCall => widget._pitelCall;
+  PitelClient pitelClient = PitelClient.getInstance();
+  String state = '';
+  late final String deviceToken;
+
+  ///////////////// UI
+  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  List<ButtonMenuModel> listMenu = [];
   String getIconMenu(String id) {
     if (ModuleText.CUSTOMER == id) {
       return ICONS.CUSTUMER_3X;
@@ -69,121 +74,6 @@ class _ScreenMainState extends State<ScreenMain>
     }
     return ICONS.WORK_3X;
   }
-
-  void _getDeviceToken() async {
-    deviceToken = await PushVoipNotif.getDeviceToken();
-    print('deviceToken---$deviceToken');
-    await _registerDeviceToken();
-  }
-
-  Future<void> _removeDeviceToken() async {
-    final response = await pitelClient.removeDeviceToken(
-      deviceToken: deviceToken, // Device token
-      domain: 'mobile.tel4vn.com',
-      extension: '101',
-    );
-  }
-
-  void _logout() {
-    _removeDeviceToken(); // Remove device token
-    pitelCall.unregister(); // Disconnect SIP call when user logout
-  }
-
-  Future<void> _registerDeviceToken() async {
-    bool isAndroid = Platform.isAndroid;
-    final response = await pitelClient.registerDeviceToken(
-      deviceToken: deviceToken,
-      platform: isAndroid ? 'android' : 'ios',
-      bundleId: isAndroid ? 'vn.gen_crm' : 'com.gencrm', // BundleId/packageId
-      domain: DOMAIN,
-      extension: UUSER.toString(),
-    );
-    print('fuck$response');
-  }
-
-  void callInit() {
-    LoginBloc.of(context).getDataCall();
-    _getDeviceToken();
-    pitelClient = LoginBloc.of(context).pitelClient;
-    pitelCall = LoginBloc.of(context).pitelCall;
-    //call
-    state = pitelCall.getRegisterState();
-    LoginBloc.of(context).receivedMsg.add(UNREGISTER);
-    _bindEventListeners();
-    final sipInfo = SipInfoData.fromJson({
-      "authPass": PASSWORD,
-      "registerServer": DOMAIN,
-      "outboundServer": OUTBOUND_PROXY,
-      "userID": UUSER,
-      "authID": UUSER,
-      "accountName": "${UUSER}",
-      "displayName": "${UUSER}@${DOMAIN}",
-      "dialPlan": null,
-      "randomPort": null,
-      "voicemail": null,
-      "wssUrl": URL_WSS,
-      "userName": "${USER_NAME}@${DOMAIN}",
-      "apiDomain": URL_API
-    });
-    VoipNotifService.listenerEvent(
-      callback: (event) {
-        var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
-            'high_importance_channel', 'callback',
-            importance: Importance.max,
-            playSound: true,
-            showProgress: true,
-            priority: Priority.high,
-            ticker: 'test ticker');
-      },
-      onCallAccept: () {
-        var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
-            'high_importance_channel', 'onCallAccept',
-            importance: Importance.max,
-            playSound: true,
-            showProgress: true,
-            priority: Priority.high,
-            ticker: 'test ticker');
-      },
-      onCallDecline: () {
-        var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
-            'high_importance_channel', 'onCallDecline',
-            importance: Importance.max,
-            playSound: true,
-            showProgress: true,
-            priority: Priority.high,
-            ticker: 'test ticker');
-      },
-    );
-    final pitelClientImpl = PitelServiceImpl();
-    pitelClientImpl.setExtensionInfo(sipInfo);
-  }
-
-  @override
-  void initState() {
-    callInit();
-    Future.delayed(Duration(milliseconds: 300), () {
-      GetInforAccBloc.of(context).add(InitGetInforAcc());
-      GetListUnReadNotifiBloc.of(context).add(CheckNotification());
-    });
-    getMenu();
-    LoginBloc.of(context).getListMenuFlash();
-    super.initState();
-  }
-
-  @override
-  void registrationStateChanged(PitelRegistrationState state) {
-    switch (state.state) {
-      case PitelRegistrationStateEnum.REGISTRATION_FAILED:
-        goBack(); //todo failed
-        break;
-      case PitelRegistrationStateEnum.NONE:
-      case PitelRegistrationStateEnum.UNREGISTERED:
-      case PitelRegistrationStateEnum.REGISTERED:
-        LoginBloc.of(context).receivedMsg.add(LoginBloc.REGISTERED);
-        break;
-    }
-  }
-  //call
 
   getMenu() async {
     String menu = await shareLocal.getString(PreferencesKey.MENU);
@@ -234,6 +124,290 @@ class _ScreenMainState extends State<ScreenMain>
 
     setState(() {});
   }
+
+  _buildItemMenu({required ButtonMenuModel data, required int index}) {
+    return GestureDetector(
+      onTap: data.onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: data.backgroundColor,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 2,
+              child: Container(
+                child: Center(
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.white),
+                    child: WidgetContainerImage(
+                      image: data.image,
+                      fit: BoxFit.contain,
+                      width: 40,
+                      height: 40,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Text(
+                      data.title,
+                      style: AppStyle.DEFAULT_12.copyWith(
+                          fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  handleOnPressItemMenu(value) async {
+    switch (value['id']) {
+      case '1':
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateMain();
+        break;
+      case 'opportunity':
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateChance(value['title']);
+        break;
+      case 'job':
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateWork(value['title']);
+        break;
+      case 'contract':
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateContract(value['title']);
+        break;
+      case 'support':
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateSupport(value['title']);
+        break;
+      case 'customer':
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateCustomer(value['title']);
+        break;
+      case 'contact':
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateClue(value['title']);
+        break;
+      case 'report':
+        _drawerKey.currentState!.openEndDrawer();
+        String? money = await shareLocal.getString(PreferencesKey.MONEY);
+        AppNavigator.navigateReport(money ?? "đ");
+        break;
+      case '2':
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateInformationAccount();
+        break;
+      case '3':
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateAboutUs();
+        break;
+      case '4':
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigatePolicy();
+        break;
+      case '5':
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateChangePassword();
+        break;
+      default:
+        break;
+    }
+  }
+  //////////////////////
+
+  @override
+  void initState() {
+    callInit();
+    Future.delayed(Duration(milliseconds: 300), () {
+      GetInforAccBloc.of(context).add(InitGetInforAcc());
+      GetListUnReadNotifiBloc.of(context).add(CheckNotification());
+    });
+    getMenu();
+    LoginBloc.of(context).getListMenuFlash();
+    super.initState();
+  }
+
+  //////////////////// HANDEL CALL
+
+  Future<void> _getDeviceToken() async {
+    deviceToken = await PushVoipNotif.getDeviceToken();
+    print('deviceToken---$deviceToken');
+    // await _registerDeviceToken();
+  }
+
+  Future<void> _removeDeviceToken() async {
+    final response = await pitelClient.removeDeviceToken(
+      deviceToken: deviceToken, // Device token
+      domain: 'mobile.tel4vn.com',
+      extension: '101',
+    );
+  }
+
+  void _logout() {
+    LoginBloc.of(context).receivedMsg.add(LoginBloc.UNREGISTER);
+    _removeDeviceToken();
+    pitelCall.unregister();
+  }
+
+  Future<void> _registerDeviceToken() async {
+    bool isAndroid = Platform.isAndroid;
+    final response = await pitelClient.registerDeviceToken(
+      deviceToken: deviceToken,
+      platform: isAndroid ? 'android' : 'ios',
+      bundleId: isAndroid ? 'vn.gen_crm' : 'com.gencrm', // BundleId/packageId
+      domain: DOMAIN,
+      extension: UUSER.toString(),
+    );
+  }
+
+  void callInit() async {
+    state = pitelCall.getRegisterState();
+    LoginBloc.of(context).receivedMsg.add(UNREGISTER);
+    await _getDeviceToken();
+    _bindEventListeners();
+    VoipNotifService.listenerEvent(
+      callback: (event) {},
+      onCallAccept: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => CallScreenWidget()));
+      },
+      onCallDecline: () {},
+    );
+    registerCall();
+  }
+
+  void registerCall() {
+    LoginBloc.of(context).getDataCall();
+    //call
+    final sipInfo = SipInfoData.fromJson({
+      "authPass": PASSWORD,
+      "registerServer": DOMAIN,
+      "outboundServer": OUTBOUND_PROXY,
+      "userID": UUSER,
+      "authID": UUSER,
+      "accountName": "${UUSER}",
+      "displayName": "${UUSER}@${DOMAIN}",
+      "dialPlan": null,
+      "randomPort": null,
+      "voicemail": null,
+      "wssUrl": URL_WSS,
+      "userName": "${USER_NAME}@${DOMAIN}",
+      "apiDomain": URL_API
+    });
+    final pitelClientImpl = PitelServiceImpl();
+    pitelClientImpl.setExtensionInfo(sipInfo);
+    _registerDeviceToken();
+  }
+
+  @override
+  void registrationStateChanged(PitelRegistrationState state) {
+    switch (state.state) {
+      case PitelRegistrationStateEnum.REGISTRATION_FAILED:
+        goBack(); //todo failed
+        break;
+      case PitelRegistrationStateEnum.NONE:
+      case PitelRegistrationStateEnum.UNREGISTERED:
+        LoginBloc.of(context).receivedMsg.add(LoginBloc.UNREGISTER);
+        break;
+      case PitelRegistrationStateEnum.REGISTERED:
+        LoginBloc.of(context).receivedMsg.add(LoginBloc.REGISTERED);
+        break;
+    }
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    _removeEventListeners();
+  }
+
+  //call
+  void _bindEventListeners() {
+    pitelCall.addListener(this);
+  }
+
+  void _removeEventListeners() {
+    pitelCall.removeListener(this);
+  }
+
+  @override
+  void callStateChanged(String callId, PitelCallState state) {
+    // TODO: implement callStateChanged
+  }
+
+  @override
+  void onCallReceived(String callId) {
+    pitelCall.setCallCurrent(callId);
+    //! Replace if you are using other State Managerment (Bloc, GetX,...)
+    final isPushNotif = ref.watch(checkIsPushNotif);
+    if (!isPushNotif) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => CallScreenWidget()));
+    }
+  }
+
+  @override
+  void onCallInitiated(String callId) {
+    pitelCall.setCallCurrent(callId);
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => CallScreenWidget()));
+  }
+
+  void goBack() {
+    pitelClient.release();
+    Navigator.of(context).pop();
+  }
+
+  @override
+  void onNewMessage(PitelSIPMessageRequest msg) {
+    var msgBody = msg.request.body as String;
+    LoginBloc.of(context).receivedMsg.add(msgBody);
+  }
+
+  @override
+  void transportStateChanged(PitelTransportState state) {
+    // TODO: implement transportStateChanged
+  }
+
+  void _handleCall(BuildContext context, [bool voiceonly = false]) {
+    var dest = '0986839102';
+    if (dest.isEmpty) {
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return const AlertDialog(
+            title: Text('Target is empty.'),
+            content: Text('Please enter a SIP URI or username!'),
+          );
+        },
+      );
+    } else {
+      pitelClient.call(dest, voiceonly).then((value) => value.fold((succ) => {},
+          (err) => {LoginBloc.of(context).receivedMsg.add(err.toString())}));
+    }
+  }
+  /////////////////END
 
   @override
   Widget build(BuildContext context) {
@@ -509,163 +683,5 @@ class _ScreenMainState extends State<ScreenMain>
         ),
       ),
     );
-  }
-
-  _buildItemMenu({required ButtonMenuModel data, required int index}) {
-    return GestureDetector(
-      onTap: data.onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: data.backgroundColor,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Container(
-                child: Center(
-                  child: Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.white),
-                    child: WidgetContainerImage(
-                      image: data.image,
-                      fit: BoxFit.contain,
-                      width: 40,
-                      height: 40,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                child: Center(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Text(
-                      data.title,
-                      style: AppStyle.DEFAULT_12.copyWith(
-                          fontFamily: 'Roboto', fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  handleOnPressItemMenu(value) async {
-    switch (value['id']) {
-      case '1':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateMain();
-        break;
-      case 'opportunity':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChance(value['title']);
-        break;
-      case 'job':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateWork(value['title']);
-        break;
-      case 'contract':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateContract(value['title']);
-        break;
-      case 'support':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateSupport(value['title']);
-        break;
-      case 'customer':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateCustomer(value['title']);
-        break;
-      case 'contact':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateClue(value['title']);
-        break;
-      case 'report':
-        _drawerKey.currentState!.openEndDrawer();
-        String? money = await shareLocal.getString(PreferencesKey.MONEY);
-        AppNavigator.navigateReport(money ?? "đ");
-        break;
-      case '2':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateInformationAccount();
-        break;
-      case '3':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateAboutUs();
-        break;
-      case '4':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigatePolicy();
-        break;
-      case '5':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChangePassword();
-        break;
-      default:
-        break;
-    }
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
-    _removeEventListeners();
-  }
-
-  //call
-  void _bindEventListeners() {
-    pitelCall.addListener(this);
-  }
-
-  void _removeEventListeners() {
-    pitelCall.removeListener(this);
-  }
-
-  @override
-  void callStateChanged(String callId, PitelCallState state) {
-    // TODO: implement callStateChanged
-  }
-
-  @override
-  void onCallReceived(String callId) {
-    pitelCall.setCallCurrent(callId);
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => CallScreenWidget()));
-  }
-
-  @override
-  void onCallInitiated(String callId) {
-    pitelCall.setCallCurrent(callId);
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => CallScreenWidget()));
-  }
-
-  void goBack() {
-    pitelClient.release();
-    Navigator.of(context).pop();
-  }
-
-  @override
-  void onNewMessage(PitelSIPMessageRequest msg) {
-    // TODO: implement onNewMessage
-  }
-
-  @override
-  void transportStateChanged(PitelTransportState state) {
-    // TODO: implement transportStateChanged
   }
 }

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nb_utils/nb_utils.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:plugin_pitel/component/pitel_call_state.dart';
 import 'package:plugin_pitel/component/pitel_rtc_video_view.dart';
 import 'package:plugin_pitel/component/sip_pitel_helper_listener.dart';
@@ -11,9 +11,10 @@ import 'package:plugin_pitel/pitel_sdk/pitel_call.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:plugin_pitel/sip/sip_ua.dart';
 
+import '../../src/src_index.dart';
 import '../../widgets/action_button.dart';
-
-final checkIsPushNotif = StateProvider<bool>((ref) => false);
+import '../../widgets/widget_text.dart';
+import '../screen_main.dart';
 
 class CallScreenWidget extends ConsumerStatefulWidget {
   CallScreenWidget({Key? key, this.receivedBackground = false})
@@ -153,7 +154,7 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
   void _backToDialPad() {
     if (mounted && !_isBacked) {
       _isBacked = true;
-      context.pop();
+      Navigator.of(context).pop();
     }
   }
 
@@ -199,7 +200,7 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
     );
 
     var basicActions = <Widget>[];
-    var advanceActions = <Widget>[];
+    // var advanceActions = <Widget>[];
     switch (_state) {
       case PitelCallStateEnum.NONE:
       case PitelCallStateEnum.PROGRESS:
@@ -225,7 +226,7 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
             title: "hangup",
             onPressed: () {
               _disposeRenderers();
-              context.pop();
+              Navigator.of(context).pop();
               pitelCall.removeListener(this);
             },
             icon: Icons.call_end,
@@ -240,25 +241,26 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
       case PitelCallStateEnum.ACCEPTED:
       case PitelCallStateEnum.CONFIRMED:
         {
-          advanceActions.add(ActionButton(
+          basicActions.add(ActionButton(
+            iconColor: Colors.black.withOpacity(0.6),
+            fillColor: Colors.black.withOpacity(0.1),
             title: pitelCall.audioMuted ? 'unmute' : 'mute',
             icon: pitelCall.audioMuted ? Icons.mic_off : Icons.mic,
             checked: pitelCall.audioMuted,
-            fillColor: Colors.green,
             onPressed: () => pitelCall.mute(callId: _callId),
           ));
+          basicActions.add(hangupBtn);
 
           if (voiceonly) {
-            advanceActions.add(ActionButton(
+            basicActions.add(ActionButton(
+              iconColor: Colors.black.withOpacity(0.6),
+              fillColor: Colors.black.withOpacity(0.1),
               title: _speakerOn ? 'speaker off' : 'speaker on',
               icon: _speakerOn ? Icons.volume_off : Icons.volume_up,
-              fillColor: Colors.green,
               checked: _speakerOn,
               onPressed: () => _toggleSpeaker(),
             ));
           }
-
-          basicActions.add(hangupBtn);
         }
         break;
       case PitelCallStateEnum.FAILED:
@@ -270,14 +272,6 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
     }
 
     var actionWidgets = <Widget>[];
-
-    if (advanceActions.isNotEmpty) {
-      actionWidgets.add(Padding(
-          padding: const EdgeInsets.all(3),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: advanceActions)));
-    }
 
     actionWidgets.add(Padding(
         padding: const EdgeInsets.all(3),
@@ -327,25 +321,26 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Center(
+            Center(
                 child: Padding(
                     padding: EdgeInsets.all(6),
-                    child: Text(
-                      'VOICE CALL',
-                      style: TextStyle(fontSize: 24, color: Colors.black54),
+                    child: WidgetText(
+                      title: 'VOICE CALL',
+                      style: AppStyle.DEFAULT_24,
                     ))),
             Center(
                 child: Padding(
                     padding: const EdgeInsets.all(6),
-                    child: Text(
-                      '${pitelCall.remoteIdentity}',
-                      style:
-                          const TextStyle(fontSize: 18, color: Colors.black54),
+                    child: WidgetText(
+                      title: '${pitelCall.remoteIdentity}',
+                      style: AppStyle.DEFAULT_24
+                          .copyWith(fontSize: 32, fontWeight: FontWeight.w600),
                     ))),
             Center(
                 child: Padding(
                     padding: const EdgeInsets.all(6),
-                    child: Text(_timeLabel,
+                    child: WidgetText(
+                        title: _timeLabel,
                         style: const TextStyle(
                             fontSize: 14, color: Colors.black54))))
           ],
@@ -361,11 +356,29 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: HexColor("#D0F1EB").withOpacity(0.9),
       appBar: AppBar(
+        toolbarHeight: AppValue.heights * 0.1,
+        backgroundColor: HexColor("#D0F1EB"),
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: WidgetText(
+            title: "Gọi điện tổng đài",
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: "Montserrat",
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.left,
+          ),
+        ),
         automaticallyImplyLeading: false,
-        title: Text('[$direction] $_state'),
-        centerTitle: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(15),
+          ),
+        ),
       ),
       body: Container(
         child: pitelCall.isConnected && pitelCall.isHaveCall
@@ -376,12 +389,10 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: pitelCall.isConnected && pitelCall.isHaveCall
-          ? Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 24.0),
-              child: SizedBox(
-                width: 320,
-                child: _buildActionButtons(),
-              ),
+          ? Container(
+              margin: EdgeInsets.only(bottom: 16),
+              width: MediaQuery.of(context).size.width - 60,
+              child: _buildActionButtons(),
             )
           : const SizedBox(),
     );

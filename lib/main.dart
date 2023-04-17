@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_crm/bloc/add_job_chance/add_job_chance_bloc.dart';
 import 'package:gen_crm/bloc/add_service_voucher/add_service_bloc.dart';
 import 'package:gen_crm/bloc/chance_customer/chance_customer_bloc.dart';
@@ -34,7 +35,6 @@ import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.da
 import 'package:gen_crm/bloc/support/detail_support_bloc.dart';
 import 'package:gen_crm/bloc/support/support_bloc.dart';
 import 'package:gen_crm/screens/add_service_voucher/add_service_voucher_step2_screen.dart';
-import 'package:gen_crm/screens/call_video/home_call.dart';
 import 'package:gen_crm/screens/menu/home/contract/list_product.dart';
 import 'package:gen_crm/screens/menu/home/contract/update_contract.dart';
 import 'package:gen_crm/screens/menu/home/customer/add_note.dart';
@@ -49,8 +49,7 @@ import 'package:gen_crm/screens/forgot_password/forgot_password_otp_screen.dart'
 import 'package:gen_crm/screens/screens.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/storages.dart';
-import 'package:plugin_pitel/pitel_sdk/pitel_call.dart';
-import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
+import 'package:plugin_pitel/voip_push/push_notif.dart';
 import 'package:vibration/vibration.dart';
 import 'api_resfull/api.dart';
 import 'bloc/add_customer/add_customer_bloc.dart';
@@ -76,15 +75,13 @@ import 'bloc/work_clue/work_clue_bloc.dart';
 import 'firebase_options.dart';
 
 Future main() async {
-  //call
-  final PitelCall _pitelCall = PitelClient.getInstance().pitelCall;
-
   Bloc.observer = SimpleBlocObserver();
   await dotenv.load(fileName: BASE_URL.ENV);
   shareLocal = await ShareLocal.getInstance();
   WidgetsFlutterBinding.ensureInitialized();
 
   UserRepository userRepository = UserRepository();
+  await PushNotifAndroid.initFirebase(DefaultFirebaseOptions.currentPlatform);
   await Firebase.initializeApp(
     name: "app",
     options: DefaultFirebaseOptions.currentPlatform,
@@ -166,7 +163,6 @@ Future main() async {
             create: (context) => LoginBloc(
               userRepository: userRepository,
               localRepository: const EventRepositoryStorage(),
-              pitelCall: _pitelCall,
             ),
           ),
           BlocProvider<ChangePasswordBloc>(
@@ -392,7 +388,7 @@ Future main() async {
                 ServiceVoucherBloc(userRepository: userRepository),
           )
         ],
-        child: const MyApp(),
+        child: ProviderScope(child: const MyApp()),
       ),
     ),
   );
