@@ -57,23 +57,23 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCg5yw_XF9MR8WCP9u9zjgdsZXVhjDne9g',
-    appId: '1:794334677094:android:e9edd5fa8d6134f68085a7',
-    messagingSenderId: '794334677094',
-    projectId: 'gen-crm',
-    storageBucket: 'gen-crm.appspot.com',
+    apiKey: 'AIzaSyAgOjAw2nFu0pwNO2zSjtr7QzTR2dTdJIg',
+    appId: '1:476014117271:android:cc7e37aac88f2a150e04d2',
+    messagingSenderId: '476014117271',
+    projectId: 'carcrm-57969',
+    storageBucket: 'carcrm-57969.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAYESvgps2kye_1Rj8cn_5TRuoexqdbFWM',
-    appId: '1:794334677094:ios:171761c121eab7b18085a7',
-    messagingSenderId: '794334677094',
-    projectId: 'gen-crm',
-    storageBucket: 'gen-crm.appspot.com',
+    apiKey: 'AIzaSyAMS_Nc3IuLqJ0AT3z60qShKbfcFWUOiwg',
+    appId: '1:476014117271:ios:8178c58c3187dd540e04d2',
+    messagingSenderId: '476014117271',
+    projectId: 'carcrm-57969',
+    storageBucket: 'carcrm-57969.appspot.com',
     androidClientId:
-        '794334677094-dlfae8aiv87515v93njtq5t7jlch9ume.apps.googleusercontent.com',
+        '476014117271-v8o8qmco4v0mb5doj6ao1luegu78v2sl.apps.googleusercontent.com',
     iosClientId:
-        '794334677094-800vifglnecq1fnhkln72u2ek6qbatjh.apps.googleusercontent.com',
-    iosBundleId: 'com.gencrm',
+        '476014117271-n4nt418nd9sjlv20706i7mbivtd3b90g.apps.googleusercontent.com',
+    iosBundleId: 'com.carcrm',
   );
 }

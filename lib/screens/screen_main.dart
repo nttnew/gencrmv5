@@ -313,21 +313,24 @@ class _ScreenMainState extends State<ScreenMain> {
                   );
                 }
               }),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                child: GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: listMenu.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 25,
-                        mainAxisSpacing: 25),
-                    itemBuilder: (context, index) {
-                      // List<ButtonMenuModel> list = [];
-                      return _buildItemMenu(
-                          data: listMenu[index], index: index);
-                    }),
+              SizedBox(
+                height: 25,
+              ),
+              GridView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: listMenu.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 25,
+                      mainAxisSpacing: 25),
+                  itemBuilder: (context, index) {
+                    // List<ButtonMenuModel> list = [];
+                    return _buildItemMenu(data: listMenu[index], index: index);
+                  }),
+              SizedBox(
+                height: 25,
               ),
               GestureDetector(
                 onTap: () async {
@@ -338,7 +341,7 @@ class _ScreenMainState extends State<ScreenMain> {
                 child: Container(
                   width: AppValue.widths,
                   height: AppValue.heights * 0.18,
-                  margin: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                  margin: EdgeInsets.symmetric(horizontal: 30),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Color(0xff5D5FEF),
