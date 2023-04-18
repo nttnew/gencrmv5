@@ -13,6 +13,7 @@ import 'package:plugin_pitel/sip/sip_ua.dart';
 
 import '../../src/src_index.dart';
 import '../../widgets/action_button.dart';
+import '../../widgets/ripple_button.dart';
 import '../../widgets/widget_text.dart';
 import '../screen_main.dart';
 
@@ -206,13 +207,23 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
       case PitelCallStateEnum.PROGRESS:
         if (direction == 'INCOMING') {
           basicActions = [
-            ActionButton(
-              title: "Accept",
-              fillColor: Colors.green,
-              icon: Icons.phone,
-              onPressed: () => _handleAccept(),
-            ),
-            hangupBtn
+            GestureDetector(
+                onTap: () {
+                  //! Replace if you are using other State Managerment (Bloc, GetX,...)
+                  ref.read(checkIsPushNotif.notifier).state = false;
+                  _handleHangup();
+                  _backToDialPad();
+                },
+                child: RippleButton(
+                  icon: Icons.call_end,
+                  color: Colors.red,
+                )),
+            GestureDetector(
+                onTap: () => _handleAccept(),
+                child: RippleButton(
+                  icon: Icons.phone,
+                  color: Colors.green,
+                )),
           ];
         } else {
           basicActions = [hangupBtn];
@@ -397,7 +408,7 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: pitelCall.isConnected && pitelCall.isHaveCall
           ? Container(
-              margin: EdgeInsets.only(bottom: 16),
+              margin: EdgeInsets.only(bottom: 36),
               width: MediaQuery.of(context).size.width -
                   MediaQuery.of(context).size.width / 3.3,
               child: _buildActionButtons(),
