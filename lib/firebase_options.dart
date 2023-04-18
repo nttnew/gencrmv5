@@ -57,15 +57,15 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAYESvgps2kye_1Rj8cn_5TRuoexqdbFWM',
-    appId: '1:794334677094:ios:171761c121eab7b18085a7',
-    messagingSenderId: '794334677094',
-    projectId: 'gen-crm',
-    storageBucket: 'gen-crm.appspot.com',
+    apiKey: 'AIzaSyC5kIvWJD26BGngdqDDFo8kdmPnjNKMBn0',
+    appId: '1:493769130126:ios:ee39263f921c7dd9bd09df',
+    messagingSenderId: '493769130126',
+    projectId: 'gen-crm-test',
+    storageBucket: 'gen-crm-test.appspot.com',
     androidClientId:
-        '794334677094-dlfae8aiv87515v93njtq5t7jlch9ume.apps.googleusercontent.com',
+        '493769130126-6f65cd627b28gusvir61kcho9kpruods.apps.googleusercontent.com',
     iosClientId:
-        '794334677094-800vifglnecq1fnhkln72u2ek6qbatjh.apps.googleusercontent.com',
+        'com.googleusercontent.apps.493769130126-6f65cd627b28gusvir61kcho9kpruods',
     iosBundleId: 'com.gencrm',
   );
 
