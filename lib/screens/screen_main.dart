@@ -425,7 +425,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     return Scaffold(
       key: _drawerKey,
       drawer: MainDrawer(onPress: handleOnPressItemMenu),
-      floatingActionButton: listMenu.isNotEmpty
+      floatingActionButton: LoginBloc.of(context).listMenuFlash.isNotEmpty
           ? FloatingActionButton(
               backgroundColor: Color(0xff1AA928),
               onPressed: () {
