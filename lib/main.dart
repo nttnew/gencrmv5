@@ -80,7 +80,7 @@ Future main() async {
 
   UserRepository userRepository = UserRepository();
   await Firebase.initializeApp(
-    name: "app",
+    name: "carCRM",
     options: DefaultFirebaseOptions.currentPlatform,
   );
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =

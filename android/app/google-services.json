@@ -29,6 +29,13 @@
             {
               "client_id": "476014117271-v8o8qmco4v0mb5doj6ao1luegu78v2sl.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "476014117271-n4nt418nd9sjlv20706i7mbivtd3b90g.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.carcrm"
+              }
             }
           ]
         }
