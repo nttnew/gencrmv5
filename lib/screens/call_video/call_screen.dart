@@ -271,18 +271,12 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
         break;
     }
 
-    var actionWidgets = <Widget>[];
-
-    actionWidgets.add(Padding(
-        padding: const EdgeInsets.all(3),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: basicActions)));
-
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: actionWidgets);
+    return Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: basicActions.length == 1
+            ? MainAxisAlignment.center
+            : MainAxisAlignment.spaceBetween,
+        children: basicActions);
   }
 
   Widget _buildContent() {
@@ -291,62 +285,75 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
     if (!voiceonly &&
         pitelCall.remoteStream != null &&
         pitelCall.remoteRenderer != null) {
-      stackWidgets.add(Center(
-        child: PitelRTCVideoView(pitelCall.remoteRenderer!),
-      ));
+      stackWidgets.add(
+        Center(
+          child: PitelRTCVideoView(pitelCall.remoteRenderer!),
+        ),
+      );
     }
 
     if (!voiceonly &&
         pitelCall.localStream != null &&
         pitelCall.localRenderer != null) {
-      stackWidgets.add(Container(
-        alignment: Alignment.topRight,
-        child: AnimatedContainer(
-          height: 0,
-          width: 0,
+      stackWidgets.add(
+        Container(
           alignment: Alignment.topRight,
-          duration: const Duration(milliseconds: 300),
-          child: PitelRTCVideoView(pitelCall.localRenderer!),
+          child: AnimatedContainer(
+            height: 0,
+            width: 0,
+            alignment: Alignment.topRight,
+            duration: const Duration(milliseconds: 300),
+            child: PitelRTCVideoView(pitelCall.localRenderer!),
+          ),
         ),
-      ));
+      );
     }
 
-    stackWidgets.addAll([
-      Positioned(
-        top: voiceonly ? 48 : 6,
-        left: 0,
-        right: 0,
-        child: Center(
+    stackWidgets.addAll(
+      [
+        Positioned(
+          top: voiceonly ? 48 : 6,
+          left: 0,
+          right: 0,
+          child: Center(
             child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Center(
-                child: Padding(
-                    padding: EdgeInsets.all(6),
-                    child: WidgetText(
-                      title: 'VOICE CALL',
-                      style: AppStyle.DEFAULT_24,
-                    ))),
-            Center(
-                child: Padding(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Center(
+                    child: Padding(
+                        padding: EdgeInsets.all(6),
+                        child: WidgetText(
+                          title: 'VOICE CALL',
+                          style: AppStyle.DEFAULT_24,
+                        ))),
+                Center(
+                  child: Padding(
                     padding: const EdgeInsets.all(6),
                     child: WidgetText(
-                      title: '${pitelCall.remoteIdentity}',
+                      title:
+                          '${(pitelCall.remoteIdentity?.length ?? 0) < 10 ? '0' + pitelCall.remoteIdentity.toString() : pitelCall.remoteIdentity}',
                       style: AppStyle.DEFAULT_24
                           .copyWith(fontSize: 32, fontWeight: FontWeight.w600),
-                    ))),
-            Center(
-                child: Padding(
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Padding(
                     padding: const EdgeInsets.all(6),
                     child: WidgetText(
-                        title: _timeLabel,
-                        style: const TextStyle(
-                            fontSize: 14, color: Colors.black54))))
-          ],
-        )),
-      ),
-    ]);
+                      title: _timeLabel,
+                      style:
+                          const TextStyle(fontSize: 14, color: Colors.black54),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
 
     return Stack(
       children: stackWidgets,
@@ -391,7 +398,8 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
       floatingActionButton: pitelCall.isConnected && pitelCall.isHaveCall
           ? Container(
               margin: EdgeInsets.only(bottom: 16),
-              width: MediaQuery.of(context).size.width - 60,
+              width: MediaQuery.of(context).size.width -
+                  MediaQuery.of(context).size.width / 3.3,
               child: _buildActionButtons(),
             )
           : const SizedBox(),
