@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>493769130126-6f65cd627b28gusvir61kcho9kpruods.apps.googleusercontent.com</string>
+	<string>476014117271-0piefng9814lm1bm76ghnst3aebi8s67.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.493769130126-6f65cd627b28gusvir61kcho9kpruods</string>
+	<string>com.googleusercontent.apps.476014117271-0piefng9814lm1bm76ghnst3aebi8s67</string>
 	<key>API_KEY</key>
-	<string>AIzaSyC5kIvWJD26BGngdqDDFo8kdmPnjNKMBn0</string>
+	<string>AIzaSyAMS_Nc3IuLqJ0AT3z60qShKbfcFWUOiwg</string>
 	<key>GCM_SENDER_ID</key>
-	<string>493769130126</string>
+	<string>476014117271</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.gencrm</string>
 	<key>PROJECT_ID</key>
-	<string>gen-crm-test</string>
+	<string>carcrm-57969</string>
 	<key>STORAGE_BUCKET</key>
-	<string>gen-crm-test.appspot.com</string>
+	<string>carcrm-57969.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:493769130126:ios:ee39263f921c7dd9bd09df</string>
+	<string>1:476014117271:ios:6c5f912a3172d49f0e04d2</string>
 </dict>
 </plist>

@@ -408,9 +408,7 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: pitelCall.isConnected && pitelCall.isHaveCall
           ? Container(
-              margin: EdgeInsets.only(bottom: 36),
-              width: MediaQuery.of(context).size.width -
-                  MediaQuery.of(context).size.width / 3.3,
+              margin: EdgeInsets.all(36),
               child: _buildActionButtons(),
             )
           : const SizedBox(),

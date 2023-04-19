@@ -2,7 +2,7 @@
 // ignore_for_file: lines_longer_than_80_chars, avoid_classes_with_only_static_members
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, kIsWeb, TargetPlatform;
+    show defaultTargetPlatform, TargetPlatform;
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -16,9 +16,6 @@ import 'package:flutter/foundation.dart'
 /// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
-    if (kIsWeb) {
-      return web;
-    }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
@@ -46,35 +43,24 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBxgGLasJWKEZzeCvUnyOwd--LHK-L82YQ',
-    appId: '1:794334677094:web:0bdec15f9f9448f98085a7',
-    messagingSenderId: '794334677094',
-    projectId: 'gen-crm',
-    authDomain: 'gen-crm.firebaseapp.com',
-    storageBucket: 'gen-crm.appspot.com',
-    measurementId: 'G-CCJLK36YV8',
-  );
-
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC5kIvWJD26BGngdqDDFo8kdmPnjNKMBn0',
-    appId: '1:493769130126:ios:ee39263f921c7dd9bd09df',
-    messagingSenderId: '493769130126',
-    projectId: 'gen-crm-test',
-    storageBucket: 'gen-crm-test.appspot.com',
+    apiKey: 'AIzaSyAMS_Nc3IuLqJ0AT3z60qShKbfcFWUOiwg',
+    appId: '1:476014117271:ios:6c5f912a3172d49f0e04d2',
+    messagingSenderId: '476014117271',
+    projectId: 'carcrm-57969',
+    storageBucket: 'carcrm-57969.appspot.com',
     androidClientId:
-        '493769130126-6f65cd627b28gusvir61kcho9kpruods.apps.googleusercontent.com',
+        '476014117271-0piefng9814lm1bm76ghnst3aebi8s67.apps.googleusercontent.com',
     iosClientId:
-        'com.googleusercontent.apps.493769130126-6f65cd627b28gusvir61kcho9kpruods',
+        'com.googleusercontent.apps.476014117271-0piefng9814lm1bm76ghnst3aebi8s67',
     iosBundleId: 'com.gencrm',
   );
 
-  //! Replace information from your google_service.json
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDjCCaEJo8wAhheok1nVuvqUQ-4P8udcfU',
-    appId: '1:493769130126:android:64a27cd9889848d2bd09df',
-    messagingSenderId: '493769130126',
-    projectId: 'gen-crm-test',
-    storageBucket: 'gen-crm-test.appspot.com',
+    apiKey: 'AIzaSyAgOjAw2nFu0pwNO2zSjtr7QzTR2dTdJIg',
+    appId: '1:476014117271:android:cc7e37aac88f2a150e04d2',
+    messagingSenderId: '476014117271',
+    projectId: 'carcrm-57969',
+    storageBucket: 'carcrm-57969.appspot.com',
   );
 }

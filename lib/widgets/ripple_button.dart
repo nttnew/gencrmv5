@@ -18,8 +18,8 @@ class _RippleButtonState extends State<RippleButton>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      lowerBound: 0.7,
-      duration: Duration(seconds: 2),
+      lowerBound: 0.6,
+      duration: Duration(seconds: 3),
     )..repeat();
   }
 
@@ -30,15 +30,17 @@ class _RippleButtonState extends State<RippleButton>
           CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn),
       builder: (context, child) {
         return Container(
-          height:  MediaQuery.of(context).size.width / 4,
-          width: MediaQuery.of(context).size.width / 4,
+          height: MediaQuery.of(context).size.width / 3.3,
+          width: MediaQuery.of(context).size.width / 3.3,
           child: Stack(
             clipBehavior: Clip.none,
             alignment: Alignment.center,
             children: <Widget>[
-              _buildContainer(100 * _controller.value),
-              // _buildContainer(115 * _controller.value),
-              _buildContainer(130 * _controller.value),
+              _buildContainer(30 * _controller.value),
+              _buildContainer(60 * _controller.value),
+              _buildContainer(90 * _controller.value),
+              _buildContainer(120 * _controller.value),
+              _buildContainer(150 * _controller.value),
               AnimatedIconExample(
                 icon: widget.icon,
                 color: widget.color,
@@ -56,7 +58,7 @@ class _RippleButtonState extends State<RippleButton>
       height: radius,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.black.withOpacity(0.06),
+        color: Colors.white.withOpacity(0.15),
       ),
     );
   }
@@ -82,7 +84,7 @@ class _AnimatedIconExampleState extends State<AnimatedIconExample>
     super.initState();
     controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 100),
+      duration: const Duration(milliseconds: 200),
     )
       ..forward()
       ..repeat(reverse: true);

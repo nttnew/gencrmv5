@@ -1,40 +1,40 @@
 {
   "project_info": {
-    "project_number": "493769130126",
-    "project_id": "gen-crm-test",
-    "storage_bucket": "gen-crm-test.appspot.com"
+    "project_number": "476014117271",
+    "project_id": "carcrm-57969",
+    "storage_bucket": "carcrm-57969.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:493769130126:android:64a27cd9889848d2bd09df",
+        "mobilesdk_app_id": "1:476014117271:android:cc7e37aac88f2a150e04d2",
         "android_client_info": {
-          "package_name": "com.example.test_call"
+          "package_name": "vn.car_crm"
         }
       },
       "oauth_client": [
         {
-          "client_id": "493769130126-d087e3j6trb2151397c31q2llkpjh32d.apps.googleusercontent.com",
+          "client_id": "476014117271-v8o8qmco4v0mb5doj6ao1luegu78v2sl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDjCCaEJo8wAhheok1nVuvqUQ-4P8udcfU"
+          "current_key": "AIzaSyAgOjAw2nFu0pwNO2zSjtr7QzTR2dTdJIg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "493769130126-d087e3j6trb2151397c31q2llkpjh32d.apps.googleusercontent.com",
+              "client_id": "476014117271-v8o8qmco4v0mb5doj6ao1luegu78v2sl.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "493769130126-6f65cd627b28gusvir61kcho9kpruods.apps.googleusercontent.com",
+              "client_id": "476014117271-n4nt418nd9sjlv20706i7mbivtd3b90g.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.gencrm"
+                "bundle_id": "com.carcrm"
               }
             }
           ]
@@ -43,34 +43,34 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:493769130126:android:876b81661fcc6a8dbd09df",
+        "mobilesdk_app_id": "1:476014117271:android:1102a1096d5a299a0e04d2",
         "android_client_info": {
           "package_name": "vn.gen_crm"
         }
       },
       "oauth_client": [
         {
-          "client_id": "493769130126-d087e3j6trb2151397c31q2llkpjh32d.apps.googleusercontent.com",
+          "client_id": "476014117271-v8o8qmco4v0mb5doj6ao1luegu78v2sl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDjCCaEJo8wAhheok1nVuvqUQ-4P8udcfU"
+          "current_key": "AIzaSyAgOjAw2nFu0pwNO2zSjtr7QzTR2dTdJIg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "493769130126-d087e3j6trb2151397c31q2llkpjh32d.apps.googleusercontent.com",
+              "client_id": "476014117271-v8o8qmco4v0mb5doj6ao1luegu78v2sl.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "493769130126-6f65cd627b28gusvir61kcho9kpruods.apps.googleusercontent.com",
+              "client_id": "476014117271-n4nt418nd9sjlv20706i7mbivtd3b90g.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.gencrm"
+                "bundle_id": "com.carcrm"
               }
             }
           ]
