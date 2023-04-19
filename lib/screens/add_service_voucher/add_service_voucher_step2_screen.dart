@@ -53,7 +53,7 @@ class _AddServiceVoucherStepTwoScreenState
     _bloc.infoCar.listen((value) {
       if (value != null) {
         _bloc.loaiXe.add(value.chiTietXe ?? '');
-        setState(() {});
+        _bloc.listAddData.add(_bloc.listAddData.value);
       }
     });
     super.initState();
@@ -61,7 +61,7 @@ class _AddServiceVoucherStepTwoScreenState
 
   void checkData() {
     final addData = _bloc.addData;
-    final listAddData = _bloc.listAddData;
+    final listAddData = _bloc.listAddData.value;
     if (addData.isNotEmpty) {
     } else {
       for (int i = 0; i < listAddData.length; i++) {
@@ -70,8 +70,15 @@ class _AddServiceVoucherStepTwoScreenState
         for (int j = 0; j < listAddData[i].data!.length; j++) {
           addData[i].data.add(ModelDataAdd(
               label: listAddData[i].data![j].field_name,
-              value: _bloc.getTextInit(id: listAddData[i].data![j].field_id) ??
-                  listAddData[i].data![j].field_set_value_datasource?[0][1] ??
+              value: listAddData[i].data![j].field_id == '12708'
+                  ? _bloc.getIdXe(
+                  listAddData[i].data![j].field_datasource ?? [],
+                  listAddData[i].data![j].field_value.toString(),
+                  i,
+                  j)
+                  : _bloc.getTextInit(id: listAddData[i].data![j].field_id) ??
+                  listAddData[i].data![j].field_set_value_datasource?[0]
+                  [1] ??
                   listAddData[i].data![j].field_set_value ??
                   '',
               required: listAddData[i].data![j].field_require));
@@ -89,16 +96,16 @@ class _AddServiceVoucherStepTwoScreenState
         if (_bloc.listProduct[i].typeGiamGia == '%') {
           _bloc.total +=
               (double.parse(_bloc.listProduct[i].item.sell_price ?? '0') *
-                      _bloc.listProduct[i].soLuong) *
+                  _bloc.listProduct[i].soLuong) *
                   ((100 -
-                          double.parse(_bloc.listProduct[i].giamGia == ""
-                              ? "0"
-                              : _bloc.listProduct[i].giamGia)) /
+                      double.parse(_bloc.listProduct[i].giamGia == ""
+                          ? "0"
+                          : _bloc.listProduct[i].giamGia)) /
                       100);
         } else {
           _bloc.total +=
               (double.parse(_bloc.listProduct[i].item.sell_price ?? '0') *
-                      _bloc.listProduct[i].soLuong) -
+                  _bloc.listProduct[i].soLuong) -
                   double.parse(_bloc.listProduct[i].giamGia == ""
                       ? "0"
                       : _bloc.listProduct[i].giamGia);
@@ -111,7 +118,6 @@ class _AddServiceVoucherStepTwoScreenState
   @override
   Widget build(BuildContext context) {
     final addData = _bloc.addData;
-    final listAddData = _bloc.listAddData;
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: AppValue.heights * 0.1,
@@ -146,10 +152,10 @@ class _AddServiceVoucherStepTwoScreenState
                   );
                 },
               )..whenComplete(() {
-                  Navigator.of(context)
-                    ..pop()
-                    ..pop();
-                });
+                Navigator.of(context)
+                  ..pop()
+                  ..pop();
+              });
             }
             if (state is ErrorGetServiceVoucherState) {
               showDialog(
@@ -172,303 +178,351 @@ class _AddServiceVoucherStepTwoScreenState
             child: SingleChildScrollView(
               child: BlocBuilder<ServiceVoucherBloc, ServiceVoucherState>(
                   builder: (context, state) {
-                if (state is GetServiceVoucherState) {
-                  _bloc.listAddData = state.listAddData;
-                  checkData();
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: List.generate(
-                            listAddData.length,
-                            (index) => Column(
+                    if (state is GetServiceVoucherState) {
+                      _bloc.listAddData.add(state.listAddData);
+                      checkData();
+                      return StreamBuilder<List<AddCustomerIndividualData>>(
+                          stream: _bloc.listAddData,
+                          builder: (context, snapshot) {
+                            final listAddData = snapshot.data ?? [];
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: AppValue.heights * 0.01,
-                                    ),
-                                    listAddData[index].group_name != null
-                                        ? WidgetText(
-                                            title:
-                                                listAddData[index].group_name ??
-                                                    '',
-                                            style: AppStyle.DEFAULT_18_BOLD)
-                                        : Container(),
-                                    SizedBox(
-                                      height: AppValue.heights * 0.01,
-                                    ),
-                                    Column(
-                                      children: List.generate(
-                                          listAddData[index].data!.length,
-                                          (index1) => listAddData[index]
-                                                      .data![index1]
-                                                      .field_hidden !=
-                                                  "1"
-                                              ? state
-                                                          .listAddData[index]
-                                                          .data![index1]
-                                                          .field_special ==
-                                                      "url"
-                                                  ? ProductContract(
-                                                      data: _bloc.listProduct,
-                                                      addProduct:
-                                                          _bloc.addProduct,
-                                                      reload: reload,
-                                                      neverHidden: true,
-                                                      canDelete: true,
-                                                    )
-                                                  : listAddData[index]
-                                                              .data![index1]
-                                                              .field_id ==
-                                                          '13366'
-                                                      ? _loaiCar(
-                                                          listAddData[index]
-                                                              .data![index1],
-                                                          index,
-                                                          index1)
-                                                      : listAddData[index].data![index1].field_id ==
-                                                                  '246' &&
-                                                              listAddData[index]
-                                                                      .data![
-                                                                          index1]
-                                                                      .field_set_value_datasource !=
-                                                                  []
-                                                          ? _fieldInputCustomer(
-                                                              listAddData[index]
-                                                                  .data![index1],
-                                                              index,
-                                                              index1)
-                                                          : listAddData[index].data![index1].field_type == "SELECT"
-                                                              ? InputDropdown(
-                                                                  onUpdate: (data) {
-                                                                    addData[index]
-                                                                        .data[
-                                                                            index1]
-                                                                        .value = data;
-                                                                  },
-                                                                  isUpdate: _bloc.getTextInit(id: listAddData[index].data![index1].field_id, list: listAddData[index].data![index1].field_datasource) != null,
-                                                                  dropdownItemList: listAddData[index].data![index1].field_datasource ?? [],
-                                                                  data: listAddData[index].data![index1],
-                                                                  onSuccess: (data) {
-                                                                    addData[index]
-                                                                        .data[
-                                                                            index1]
-                                                                        .value = data;
-                                                                    if (state
-                                                                            .listAddData[index]
-                                                                            .data![index1]
-                                                                            .field_id ==
-                                                                        '12708') {
-                                                                      if (data !=
-                                                                          ServiceVoucherBloc
-                                                                              .THEM_MOI_XE) {
-                                                                        _bloc
-                                                                            .idCar
-                                                                            .add(data);
-                                                                      }
-                                                                    }
-                                                                  },
-                                                                  value: _bloc.infoCar.value != null ? _bloc.getTextInit(id: listAddData[index].data![index1].field_id, list: listAddData[index].data![index1].field_datasource) ?? '' : listAddData[index].data![index1].field_value ?? '')
-                                                              : listAddData[index].data![index1].field_type == "TEXT_MULTI"
-                                                                  ? _fieldInputTextMulti(listAddData[index].data![index1].field_datasource!, listAddData[index].data![index1].field_label!, listAddData[index].data![index1].field_require!, index, index1, (listAddData[index].data![index1].field_set_value_datasource != '' && listAddData[index].data![index1].field_set_value_datasource != null) ? listAddData[index].data![index1].field_set_value_datasource![0][0].toString() : "", listAddData[index].data![index1].field_maxlength ?? '')
-                                                                  : listAddData[index].data![index1].field_type == "HIDDEN"
-                                                                      ? Container()
-                                                                      : listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"
-                                                                          ? WidgetInputMulti(
-                                                                              data: listAddData[index].data![index1],
-                                                                              onSelect: (data) {
-                                                                                addData[index].data[index1].value = data.join(",");
-                                                                              })
-                                                                          : listAddData[index].data![index1].field_type == "DATE"
-                                                                              ? WidgetInputDate(
-                                                                                  data: state.listAddData[index].data![index1],
-                                                                                  onSelect: (date) {
-                                                                                    addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
-                                                                                  },
-                                                                                  onInit: () {
-                                                                                    DateTime date = DateTime.now();
-                                                                                    addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
-                                                                                  },
-                                                                                )
-                                                                              : listAddData[index].data![index1].field_type == "PERCENTAGE"
-                                                                                  ? FieldInputPercent(
-                                                                                      data: listAddData[index].data![index1],
-                                                                                      onChanged: (text) {
-                                                                                        addData[index].data[index1].value = text;
-                                                                                      },
-                                                                                    )
-                                                                                  : listAddData[index].data![index1].field_type == "CHECK"
-                                                                                      ? _check(listAddData[index].data![index1], index, index1)
-                                                                                      : _fieldInputCustomer(listAddData[index].data![index1], index, index1)
-                                              : SizedBox()),
-                                    )
-                                  ],
-                                )),
-                      ),
-                      StreamBuilder(
-                          stream: _bloc.listFileAllStream,
-                          builder: (context, state) {
-                            return Container(
-                                margin: EdgeInsets.symmetric(vertical: 8),
-                                width: Get.width,
-                                child: Column(
-                                  children: [
-                                    ListView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: _bloc.listFile.length,
-                                      itemBuilder: (context, index) =>
-                                          Container(
-                                        margin: EdgeInsets.only(bottom: 4),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              child: WidgetText(
-                                                title: _bloc
-                                                    .listFile[index].path
-                                                    .split("/")
-                                                    .last,
-                                                style: AppStyle.DEFAULT_14,
-                                                maxLine: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                final List<File> list = [];
-                                                _bloc.listFile.removeAt(index);
-                                                list.addAll(_bloc.listFile);
-                                                list.addAll(_bloc.listImage);
-                                                _bloc.listFileAllStream
-                                                    .add(list);
-                                              },
-                                              child: WidgetContainerImage(
-                                                image:
-                                                    'assets/icons/icon_delete.png',
-                                                width: 20,
-                                                height: 20,
-                                                fit: BoxFit.contain,
-                                              ),
-                                            )
-                                          ],
+                                  children:
+                                  List.generate(listAddData.length, (index) {
+                                    final title =
+                                        listAddData[index].group_name ?? '';
+                                    return Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: AppValue.heights * 0.01,
                                         ),
+                                        title != ''
+                                            ? WidgetText(
+                                            title: title,
+                                            style: AppStyle.DEFAULT_18_BOLD)
+                                            : SizedBox(),
+                                        SizedBox(
+                                          height: AppValue.heights * 0.01,
+                                        ),
+                                        Column(
+                                          children: List.generate(
+                                              listAddData[index].data!.length,
+                                                  (index1) {
+                                                final isHidden = listAddData[index]
+                                                    .data?[index1]
+                                                    .field_hidden !=
+                                                    "1";
+                                                final isURL = (state
+                                                    .listAddData[index]
+                                                    .data?[index1]
+                                                    .field_special ??
+                                                    '') ==
+                                                    "url";
+                                                final fieldId = listAddData[index]
+                                                    .data?[index1]
+                                                    .field_id ??
+                                                    '';
+                                                final fieldType = listAddData[index]
+                                                    .data?[index1]
+                                                    .field_type;
+                                                final fieldData =
+                                                listAddData[index].data![index1];
+
+                                                return isHidden
+                                                    ? isURL
+                                                    ? ProductContract(
+                                                  data: _bloc.listProduct,
+                                                  addProduct:
+                                                  _bloc.addProduct,
+                                                  reload: reload,
+                                                  neverHidden: true,
+                                                  canDelete: true,
+                                                )
+                                                    : fieldId == '13366'
+                                                    ? _loaiCar(
+                                                    fieldData, index, index1)
+                                                    : fieldId == '246' &&
+                                                    fieldData.field_set_value_datasource !=
+                                                        []
+                                                    ? _fieldInputCustomer(
+                                                    fieldData, index, index1)
+                                                    : fieldType == "SELECT"
+                                                    ? InputDropdown(
+                                                    onUpdate:
+                                                        (data) {
+                                                      addData[index]
+                                                          .data[
+                                                      index1]
+                                                          .value = data;
+                                                    },
+                                                    isUpdate: _bloc.getTextInit(id: fieldId, list: fieldData.field_datasource) != null &&
+                                                        fieldId !=
+                                                            '12708',
+                                                    dropdownItemList:
+                                                    fieldData.field_datasource ??
+                                                        [],
+                                                    data: fieldData,
+                                                    onSuccess:
+                                                        (data) {
+                                                      addData[index]
+                                                          .data[
+                                                      index1]
+                                                          .value = data;
+                                                      if (fieldId ==
+                                                          '12708') {
+                                                        if (data !=
+                                                            ServiceVoucherBloc
+                                                                .THEM_MOI_XE) {
+                                                          _bloc
+                                                              .idCar
+                                                              .add(
+                                                              data);
+                                                        }
+                                                      }
+                                                    },
+                                                    value: _bloc.infoCar.value != null &&
+                                                        fieldId !=
+                                                            '12708'
+                                                        ? _bloc.getTextInit(id: fieldId, list: fieldData.field_datasource) ??
+                                                        ''
+                                                        : fieldData.field_value ??
+                                                        '')
+                                                    : fieldType ==
+                                                    "TEXT_MULTI"
+                                                    ? _fieldInputTextMulti(
+                                                    fieldData.field_datasource!,
+                                                    fieldData.field_label!,
+                                                    fieldData.field_require!,
+                                                    index,
+                                                    index1,
+                                                    (fieldData.field_set_value_datasource != '' && fieldData.field_set_value_datasource != null) ? fieldData.field_set_value_datasource![0][0].toString() : "",
+                                                    fieldData.field_maxlength ?? '')
+                                                    : fieldType == "HIDDEN"
+                                                    ? Container()
+                                                    : fieldType == "TEXT_MULTI_NEW"
+                                                    ? WidgetInputMulti(
+                                                    data: fieldData,
+                                                    onSelect: (data) {
+                                                      addData[index].data[index1].value = data.join(",");
+                                                    })
+                                                    : fieldType == "DATE"
+                                                    ? WidgetInputDate(
+                                                  data: fieldData,
+                                                  onSelect: (date) {
+                                                    addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                  },
+                                                  onInit: () {
+                                                    DateTime date = DateTime.now();
+                                                    addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                  },
+                                                )
+                                                    : fieldType == "PERCENTAGE"
+                                                    ? FieldInputPercent(
+                                                  data: fieldData,
+                                                  onChanged: (text) {
+                                                    addData[index].data[index1].value = text;
+                                                  },
+                                                )
+                                                    : fieldType == "CHECK"
+                                                    ? _check(fieldData, index, index1)
+                                                    : _fieldInputCustomer(fieldData, index, index1)
+                                                    : SizedBox();
+                                              }),
+                                        )
+                                      ],
+                                    );
+                                  }),
+                                ),
+                                StreamBuilder(
+                                    stream: _bloc.listFileAllStream,
+                                    builder: (context, state) {
+                                      return Container(
+                                          margin: EdgeInsets.symmetric(vertical: 8),
+                                          width: Get.width,
+                                          child: Column(
+                                            children: [
+                                              ListView.builder(
+                                                physics:
+                                                NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount: _bloc.listFile.length,
+                                                itemBuilder: (context, index) =>
+                                                    Container(
+                                                      margin:
+                                                      EdgeInsets.only(bottom: 4),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                        children: [
+                                                          Expanded(
+                                                            child: WidgetText(
+                                                              title: _bloc
+                                                                  .listFile[index].path
+                                                                  .split("/")
+                                                                  .last,
+                                                              style:
+                                                              AppStyle.DEFAULT_14,
+                                                              maxLine: 1,
+                                                              overflow:
+                                                              TextOverflow.ellipsis,
+                                                            ),
+                                                          ),
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              final List<File> list =
+                                                              [];
+                                                              _bloc.listFile
+                                                                  .removeAt(index);
+                                                              list.addAll(
+                                                                  _bloc.listFile);
+                                                              list.addAll(
+                                                                  _bloc.listImage);
+                                                              _bloc.listFileAllStream
+                                                                  .add(list);
+                                                            },
+                                                            child: WidgetContainerImage(
+                                                              image:
+                                                              'assets/icons/icon_delete.png',
+                                                              width: 20,
+                                                              height: 20,
+                                                              fit: BoxFit.contain,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                              ),
+                                              if (_bloc.listImage.isNotEmpty)
+                                                GridView.builder(
+                                                  physics:
+                                                  NeverScrollableScrollPhysics(),
+                                                  shrinkWrap: true,
+                                                  itemCount: _bloc.listImage.length,
+                                                  gridDelegate:
+                                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                                    crossAxisCount: 2,
+                                                    crossAxisSpacing: 25,
+                                                    mainAxisSpacing: 25,
+                                                    mainAxisExtent: 90,
+                                                  ),
+                                                  itemBuilder: (context, index) =>
+                                                      Stack(
+                                                        clipBehavior: Clip.none,
+                                                        children: [
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              Navigator.of(context).push(
+                                                                  MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                          PreviewImage(
+                                                                            file: _bloc
+                                                                                .listImage[index],
+                                                                            module:
+                                                                            Module.HOP_DONG,
+                                                                          )));
+                                                            },
+                                                            child: Container(
+                                                              clipBehavior:
+                                                              Clip.hardEdge,
+                                                              width:
+                                                              MediaQuery.of(context)
+                                                                  .size
+                                                                  .width,
+                                                              height:
+                                                              MediaQuery.of(context)
+                                                                  .size
+                                                                  .width,
+                                                              decoration: BoxDecoration(
+                                                                  color: Colors.grey,
+                                                                  borderRadius:
+                                                                  BorderRadius.all(
+                                                                      Radius
+                                                                          .circular(
+                                                                          8))),
+                                                              child: Image.file(
+                                                                _bloc.listImage[index],
+                                                                fit: BoxFit.cover,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Positioned(
+                                                            child: GestureDetector(
+                                                              onTap: () {
+                                                                final List<File> list =
+                                                                [];
+                                                                _bloc.listImage
+                                                                    .removeAt(index);
+                                                                list.addAll(
+                                                                    _bloc.listFile);
+                                                                list.addAll(
+                                                                    _bloc.listImage);
+                                                                _bloc.listFileAllStream
+                                                                    .add(list);
+                                                              },
+                                                              child: Container(
+                                                                  decoration:
+                                                                  BoxDecoration(
+                                                                    shape:
+                                                                    BoxShape.circle,
+                                                                    color: Colors.white,
+                                                                    border: Border.all(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        width: 0.1),
+                                                                  ),
+                                                                  height: 16,
+                                                                  width: 16,
+                                                                  child: Icon(
+                                                                    Icons.close,
+                                                                    size: 9,
+                                                                  )),
+                                                            ),
+                                                            top: 0,
+                                                            right: 0,
+                                                          )
+                                                        ],
+                                                      ),
+                                                )
+                                            ],
+                                          ));
+                                    }),
+                                Row(
+                                  children: [
+                                    GestureDetector(
+                                        onTap: this.onDinhKem,
+                                        child: SvgPicture.asset(
+                                            "assets/icons/attack.svg")),
+                                    Spacer(),
+                                    GestureDetector(
+                                      onTap: this.onClickSave,
+                                      child: Container(
+                                        height: AppValue.widths * 0.1,
+                                        width: AppValue.widths * 0.25,
+                                        decoration: BoxDecoration(
+                                            color: HexColor("#F1A400"),
+                                            borderRadius:
+                                            BorderRadius.circular(20.5)),
+                                        child: Center(
+                                            child: Text(
+                                              "Lưu",
+                                              style: TextStyle(color: Colors.white),
+                                            )),
                                       ),
                                     ),
-                                    if (_bloc.listImage.isNotEmpty)
-                                      GridView.builder(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemCount: _bloc.listImage.length,
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 25,
-                                          mainAxisSpacing: 25,
-                                          mainAxisExtent: 90,
-                                        ),
-                                        itemBuilder: (context, index) => Stack(
-                                          clipBehavior: Clip.none,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            PreviewImage(
-                                                              file: _bloc
-                                                                      .listImage[
-                                                                  index],
-                                                              module: Module
-                                                                  .HOP_DONG,
-                                                            )));
-                                              },
-                                              child: Container(
-                                                clipBehavior: Clip.hardEdge,
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                height: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.grey,
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                8))),
-                                                child: Image.file(
-                                                  _bloc.listImage[index],
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            ),
-                                            Positioned(
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  final List<File> list = [];
-                                                  _bloc.listImage
-                                                      .removeAt(index);
-                                                  list.addAll(_bloc.listFile);
-                                                  list.addAll(_bloc.listImage);
-                                                  _bloc.listFileAllStream
-                                                      .add(list);
-                                                },
-                                                child: Container(
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: Colors.white,
-                                                      border: Border.all(
-                                                          color: Colors.black,
-                                                          width: 0.1),
-                                                    ),
-                                                    height: 16,
-                                                    width: 16,
-                                                    child: Icon(
-                                                      Icons.close,
-                                                      size: 9,
-                                                    )),
-                                              ),
-                                              top: 0,
-                                              right: 0,
-                                            )
-                                          ],
-                                        ),
-                                      )
                                   ],
-                                ));
-                          }),
-                      Row(
-                        children: [
-                          GestureDetector(
-                              onTap: this.onDinhKem,
-                              child:
-                                  SvgPicture.asset("assets/icons/attack.svg")),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: this.onClickSave,
-                            child: Container(
-                              height: AppValue.widths * 0.1,
-                              width: AppValue.widths * 0.25,
-                              decoration: BoxDecoration(
-                                  color: HexColor("#F1A400"),
-                                  borderRadius: BorderRadius.circular(20.5)),
-                              child: Center(
-                                  child: Text(
-                                "Lưu",
-                                style: TextStyle(color: Colors.white),
-                              )),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  );
-                } else
-                  return Container();
-              }),
+                                )
+                              ],
+                            );
+                          });
+                    } else
+                      return Container();
+                  }),
             ),
           ),
         ));
@@ -489,10 +543,10 @@ class _AddServiceVoucherStepTwoScreenState
   }
 
   Widget _loaiCar(
-    CustomerIndividualItemData data,
-    int index,
-    int index1,
-  ) {
+      CustomerIndividualItemData data,
+      int index,
+      int index1,
+      ) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Column(
@@ -505,12 +559,12 @@ class _AddServiceVoucherStepTwoScreenState
               children: <TextSpan>[
                 data.field_require == 1
                     ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red))
+                    text: '*',
+                    style: TextStyle(
+                        fontFamily: "Roboto",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.red))
                     : TextSpan(),
               ],
             ),
@@ -564,23 +618,27 @@ class _AddServiceVoucherStepTwoScreenState
   }
 
   Widget _fieldInputCustomer(
-    CustomerIndividualItemData data,
-    int index,
-    int index1,
-  ) {
-    TextEditingController controller = TextEditingController();
-    controller.text = _bloc.getTextInit(id: data.field_id) ??
+      CustomerIndividualItemData data,
+      int index,
+      int index1,
+      ) {
+    final TextEditingController _controller = TextEditingController();
+    _controller.text = _bloc.getTextInit(id: data.field_id) ??
         ((data.field_set_value ?? '').trim() != ''
             ? data.field_set_value
             : data.field_set_value_datasource?[0][1]) ??
         _bloc.addData[index].data[index1].value ??
         '';
+    _bloc.addData[index].data[index1].value =
+        _bloc.getTextInit(id: data.field_id) ??
+            ((data.field_set_value ?? '').trim() != ''
+                ? data.field_set_value
+                : data.field_set_value_datasource?[0][1]) ??
+            _bloc.addData[index].data[index1].value ??
+            '';
     bool isEdit = data.field_id == '246' ||
-        data.field_id == '774' ||
+        // data.field_id == '1529' ||
         data.field_id == '264';
-    controller.addListener(() {
-      _bloc.addData[index].data[index1].value = controller.text;
-    });
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Column(
@@ -593,12 +651,12 @@ class _AddServiceVoucherStepTwoScreenState
               children: <TextSpan>[
                 data.field_require == 1
                     ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red))
+                    text: '*',
+                    style: TextStyle(
+                        fontFamily: "Roboto",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.red))
                     : TextSpan(),
               ],
             ),
@@ -609,7 +667,7 @@ class _AddServiceVoucherStepTwoScreenState
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-                color: isEdit && controller.text != ''
+                color: isEdit && _controller.text != ''
                     ? COLORS.LIGHT_GREY
                     : Colors.white,
                 borderRadius: BorderRadius.circular(5),
@@ -618,16 +676,16 @@ class _AddServiceVoucherStepTwoScreenState
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
                 child: TextField(
-                  controller: controller,
+                  controller: _controller,
                   enabled: !isEdit,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                   keyboardType: data.field_special == "default"
                       ? TextInputType.text
                       : data.field_special == "numberic"
-                          ? TextInputType.number
-                          : data.field_special == "email-address"
-                              ? TextInputType.emailAddress
-                              : TextInputType.text,
+                      ? TextInputType.number
+                      : data.field_special == "email-address"
+                      ? TextInputType.emailAddress
+                      : TextInputType.text,
                   onChanged: (text) {
                     _bloc.addData[index].data[index1].value = text;
                   },
@@ -663,12 +721,12 @@ class _AddServiceVoucherStepTwoScreenState
               children: <TextSpan>[
                 data.field_require == 1
                     ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red))
+                    text: '*',
+                    style: TextStyle(
+                        fontFamily: "Roboto",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.red))
                     : TextSpan(),
               ],
             ),
@@ -702,14 +760,14 @@ class _AddServiceVoucherStepTwoScreenState
   }
 
   Widget _fieldInputTextMulti(
-    List<List<dynamic>> dropdownItemList,
-    String label,
-    int required,
-    int index,
-    int index1,
-    String value,
-    String maxLength,
-  ) {
+      List<List<dynamic>> dropdownItemList,
+      String label,
+      int required,
+      int index,
+      int index1,
+      String value,
+      String maxLength,
+      ) {
     List<ModelDataAdd> dropdow = [];
     int indexDefault = -1;
     for (int i = 0; i < dropdownItemList.length; i++) {
@@ -738,12 +796,12 @@ class _AddServiceVoucherStepTwoScreenState
               children: <TextSpan>[
                 required == 1
                     ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red))
+                    text: '*',
+                    style: TextStyle(
+                        fontFamily: "Roboto",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.red))
                     : TextSpan(),
               ],
             ),
@@ -751,7 +809,7 @@ class _AddServiceVoucherStepTwoScreenState
           AppValue.vSpaceTiny,
           MultiSelectDialogField<ModelDataAdd>(
             items:
-                dropdow.map((e) => MultiSelectItem(e, e.label ?? '')).toList(),
+            dropdow.map((e) => MultiSelectItem(e, e.label ?? '')).toList(),
             listType: MultiSelectListType.CHIP,
             onConfirm: (values) {
               if (maxLength != "" && values.length > int.parse(maxLength)) {
@@ -827,8 +885,8 @@ class _AddServiceVoucherStepTwoScreenState
     for (int i = 0; i < addData.length; i++) {
       for (int j = 0; j < addData[i].data.length; j++) {
         if ((addData[i].data[j].value == null ||
-                addData[i].data[j].value == "null" ||
-                addData[i].data[j].value == "") &&
+            addData[i].data[j].value == "null" ||
+            addData[i].data[j].value == "") &&
             addData[i].data[j].required == 1) {
           check = true;
           break;
@@ -945,12 +1003,12 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
               children: <TextSpan>[
                 widget.data.field_require == 1
                     ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red))
+                    text: '*',
+                    style: TextStyle(
+                        fontFamily: "Roboto",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.red))
                     : TextSpan(),
               ],
             ),
@@ -997,10 +1055,10 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                   keyboardType: widget.data.field_special == "default"
                       ? TextInputType.text
                       : widget.data.field_special == "numberic"
-                          ? TextInputType.number
-                          : widget.data.field_special == "email-address"
-                              ? TextInputType.emailAddress
-                              : TextInputType.text,
+                      ? TextInputType.number
+                      : widget.data.field_special == "email-address"
+                      ? TextInputType.emailAddress
+                      : TextInputType.text,
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(
                         widget.data.field_maxlength != null
@@ -1008,7 +1066,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                             : null),
                   ],
                   maxLengthEnforcement:
-                      MaxLengthEnforcement.truncateAfterCompositionEnds,
+                  MaxLengthEnforcement.truncateAfterCompositionEnds,
                   decoration: InputDecoration(
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
@@ -1020,54 +1078,55 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
           ),
           arr.length > 0
               ? Container(
-                  margin: EdgeInsets.only(top: 8),
-                  child: Row(
-                    children: List.generate(
-                        arr.length,
-                        (index) => Container(
-                              margin: EdgeInsets.only(right: 8),
-                              child: Stack(
-                                clipBehavior: Clip.none,
-                                children: [
-                                  Container(
-                                      padding: EdgeInsets.only(
-                                          top: 3, bottom: 3, left: 8, right: 8),
-                                      // margin: EdgeInsets.only(right: 8),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          color: COLORS.BACKGROUND),
-                                      child: WidgetText(
-                                        title: arr[index],
-                                        style: AppStyle.DEFAULT_12,
-                                      )),
-                                  Positioned(
-                                    top: -13,
-                                    right: -8,
-                                    child: InkWell(
-                                        onTap: () {
-                                          arr.removeAt(index);
-                                          setState(() {
-                                            check = !check;
-                                          });
-                                        },
-                                        child: Container(
-                                          color: Colors.transparent,
-                                          padding: EdgeInsets.all(5),
-                                          child: WidgetText(
-                                            title: "x",
-                                            style: AppStyle.DEFAULT_16,
-                                          ),
-                                        )),
-                                  )
-                                ],
-                              ),
+            margin: EdgeInsets.only(top: 8),
+            child: Row(
+              children: List.generate(
+                  arr.length,
+                      (index) => Container(
+                    margin: EdgeInsets.only(right: 8),
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Container(
+                            padding: EdgeInsets.only(
+                                top: 3, bottom: 3, left: 8, right: 8),
+                            // margin: EdgeInsets.only(right: 8),
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.circular(100),
+                                color: COLORS.BACKGROUND),
+                            child: WidgetText(
+                              title: arr[index],
+                              style: AppStyle.DEFAULT_12,
                             )),
-                  ),
-                )
+                        Positioned(
+                          top: -13,
+                          right: -8,
+                          child: InkWell(
+                              onTap: () {
+                                arr.removeAt(index);
+                                setState(() {
+                                  check = !check;
+                                });
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                padding: EdgeInsets.all(5),
+                                child: WidgetText(
+                                  title: "x",
+                                  style: AppStyle.DEFAULT_16,
+                                ),
+                              )),
+                        )
+                      ],
+                    ),
+                  )),
+            ),
+          )
               : Container()
         ],
       ),
     );
   }
 }
+

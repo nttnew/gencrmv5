@@ -33,7 +33,8 @@ class ServiceVoucherBloc
   BehaviorSubject<String> idCar = BehaviorSubject.seeded('');
   BehaviorSubject<String> loaiXe = BehaviorSubject.seeded('');
   BehaviorSubject<List<File>?> listFileAllStream = BehaviorSubject();
-  List<AddCustomerIndividualData> listAddData = [];
+  BehaviorSubject<List<AddCustomerIndividualData>> listAddData =
+  BehaviorSubject.seeded([]);
   List<File> listFile = [];
   List<File> listImage = [];
 
@@ -89,10 +90,40 @@ class ServiceVoucherBloc
     }
   }
 
-  List<List<dynamic>>? listThemXe(List<List<dynamic>>? list) {
+  List<List<dynamic>>? listThemXe(List<List<dynamic>>? list, String bienSoXe) {
+    if (bienSoXe != '') {
+      for (final value in list ?? []) {
+        if (value[1].toLowerCase() == bienSoXe.toLowerCase()) {
+          getCar(value[0]);
+        }
+      }
+    }
     final listXe = list;
     listXe?.add(["", THEM_MOI_XE, "", ""]);
     return listXe ?? null;
+  }
+
+  String? checkXe(List<List<dynamic>>? list, String bienSoXe) {
+    if (bienSoXe != '') {
+      for (final value in list ?? []) {
+        if (value[1].toLowerCase() == bienSoXe.toLowerCase()) {
+          return bienSoXe;
+        }
+      }
+    }
+    return null;
+  }
+
+  String getIdXe(
+      List<List<dynamic>>? list, String bienSoXe, int index, int index1) {
+    if (bienSoXe != '') {
+      for (final value in list ?? []) {
+        if (value[1].toLowerCase() == bienSoXe.toLowerCase()) {
+          return value[0];
+        }
+      }
+    }
+    return '';
   }
 
   void resetDataCarVerison() {
@@ -251,13 +282,13 @@ class ServiceVoucherBloc
     try {
       yield LoadingServiceVoucherState();
       final response =
-          await userRepository.saveServiceVoucher(voucherServiceRequest);
+      await userRepository.saveServiceVoucher(voucherServiceRequest);
       final statusCode =
-          (response as Map<String, dynamic>).getOrElse('code', () => -1);
+      (response as Map<String, dynamic>).getOrElse('code', () => -1);
       final data = (response).getOrElse('data', () => -1);
       if ((statusCode == BASE_URL.SUCCESS) ||
           (statusCode == BASE_URL.SUCCESS_200)) {
-        if (listFileAllStream.value?.isNotEmpty ?? false) {
+        if (listFileAllStream.valueOrNull?.isNotEmpty ?? false) {
           final responseUpload = await userRepository.uploadMultiFileContract(
               id: data['recordId'].toString(),
               files: listFileAllStream.value ?? [],
@@ -312,39 +343,42 @@ class ServiceVoucherBloc
     try {
       yield LoadingServiceVoucherState();
       final response =
-          await userRepository.postAddServiceVoucher(sdt, bienSoXe);
+      await userRepository.postAddServiceVoucher(sdt, bienSoXe);
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         final List<AddCustomerIndividualData> list = response.data?.data
-                ?.map(
-                  (e) => AddCustomerIndividualData(
-                      e.data?.map((e) {
-                            return CustomerIndividualItemData(
-                                e.fieldId,
-                                e.fieldName,
-                                e.fieldLabel,
-                                e.fieldType,
-                                e.fieldValidation,
-                                e.fieldValidationMessage,
-                                e.fieldMaxlength,
-                                e.fieldHidden,
-                                e.fieldRequire,
-                                e.fieldSetValue,
-                                e.fieldId == '12708' //theem xe
-                                    ? listThemXe(e.fieldDatasource)
-                                    : e.fieldDatasource,
-                                e.fieldSpecial,
-                                e.fieldSetValueDatasource,
-                                e.fieldValue,
-                                null
-                                // e.fieldProducts
-                                );
-                          }).toList() ??
-                          [],
-                      e.groupName,
-                      null),
-                )
-                .toList() ??
+            ?.map(
+              (e) => AddCustomerIndividualData(
+              e.data?.map((f) {
+                return CustomerIndividualItemData(
+                    f.fieldId,
+                    f.fieldName,
+                    f.fieldLabel,
+                    f.fieldType,
+                    f.fieldValidation,
+                    f.fieldValidationMessage,
+                    f.fieldMaxlength,
+                    f.fieldHidden,
+                    f.fieldRequire,
+                    f.fieldSetValue,
+                    f.fieldId == '12708' //theem xe
+                        ? listThemXe(f.fieldDatasource, bienSoXe)
+                        : f.fieldDatasource,
+                    f.fieldSpecial,
+                    f.fieldSetValueDatasource,
+                    f.fieldId == '12708' &&
+                        bienSoXe != '' //theem xe
+                        ? checkXe(f.fieldDatasource, bienSoXe)
+                        : f.fieldValue,
+                    null
+                  // e.fieldProducts
+                );
+              }).toList() ??
+                  [],
+              e.groupName,
+              null),
+        )
+            .toList() ??
             [];
         yield GetServiceVoucherState(list);
       } else if (response.code == 999) {
@@ -373,6 +407,7 @@ class ServiceVoucherBloc
       BlocProvider.of<ServiceVoucherBloc>(context);
 
   void dispose() {
+    listAddData.add([]);
     addData = [];
     listFile = [];
     listImage = [];
@@ -395,3 +430,4 @@ class ServiceVoucherBloc
     checkboxStream.add(false);
   }
 }
+
