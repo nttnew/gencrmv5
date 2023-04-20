@@ -50,6 +50,13 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   static const int UUSER = 101;
   static const String USER_NAME = 'user1';
 
+  String getCheckHttp(String text) {
+    if (text.toLowerCase().contains('https://')) {
+      return text;
+    }
+    return 'https://' + text;
+  }
+
   PitelCall get pitelCall => widget._pitelCall;
   PitelClient pitelClient = PitelClient.getInstance();
   String state = '';
@@ -256,7 +263,9 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   }
 
   Future<void> _registerDeviceToken() async {
-    final String domain = shareLocal.getString(PreferencesKey.URL_BASE);
+    final String domainUrl = shareLocal.getString(PreferencesKey.URL_BASE);
+    final String domain = domainUrl.substring(
+        domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
     final String user =
         LoginBloc.of(context).loginData?.info_user?.extension ?? '';
     bool isAndroid = Platform.isAndroid;
@@ -295,7 +304,9 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   Future<void> registerCall() async {
     await LoginBloc.of(context).getDataCall();
 
-    final String domain = shareLocal.getString(PreferencesKey.URL_BASE);
+    final String domainUrl = shareLocal.getString(PreferencesKey.URL_BASE);
+    final String domain = domainUrl.substring(
+        domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
     final int user =
         int.parse(LoginBloc.of(context).loginData?.info_user?.extension ?? '0');
     final String pass =
@@ -326,7 +337,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     //   "voicemail": null,
     //   "wssUrl": URL_WSS,
     //   "userName": "${user}@${domain}",
-    //   "apiDomain": apiDomain
+    //   "apiDomain": getCheckHttp(apiDomain),
     // });
     final sipInfo = SipInfoData.fromJson({
       "authPass": PASSWORD,
