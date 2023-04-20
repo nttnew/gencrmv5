@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -82,7 +81,7 @@ class _ItemFileState extends State<ItemFile> {
           GestureDetector(
             onTap: () => widget.functionMy(),
             child: WidgetContainerImage(
-              image: 'assets/icons/icon_delete.png',
+              image: ICONS.IC_DELETE_PNG,
               width: 20,
               height: 20,
               fit: BoxFit.contain,

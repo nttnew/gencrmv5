@@ -54,7 +54,7 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
           if (widget.data_list!.user_work_name?.isNotEmpty ?? false) ...[
             Row(
               children: [
-                SvgPicture.asset("assets/icons/avatar_customer.svg"),
+                SvgPicture.asset(ICONS.IC_AVATAR_SVG),
                 Padding(
                   padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                   child: WidgetText(
@@ -70,7 +70,7 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
             Row(
               children: [
                 SvgPicture.asset(
-                  "assets/icons/icon3svg",
+                  ICONS.IC_ICON3_SVG,
                   color: widget.data_list!.status_color != null
                       ? HexColor(widget.data_list!.status_color!)
                       : COLORS.PRIMARY_COLOR,
@@ -90,7 +90,7 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
           ],
           Row(
             children: [
-              SvgPicture.asset("assets/icons/icon4.svg"),
+              SvgPicture.asset(ICONS.IC_ICON4_SVG),
               Padding(
                 padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                 child: SizedBox(
@@ -100,7 +100,7 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
                         style: OrtherInforCustomerStyle())),
               ),
               Spacer(),
-              SvgPicture.asset("assets/icons/question_answer.svg"),
+              SvgPicture.asset(ICONS.IC_QUESTION_SVG),
               SizedBox(
                 width: AppValue.widths * 0.01,
               ),

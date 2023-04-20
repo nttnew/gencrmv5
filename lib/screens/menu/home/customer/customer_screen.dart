@@ -85,7 +85,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     _drawerKey.currentState!.openDrawer();
                   }
                 },
-                child: SvgPicture.asset("assets/icons/menu.svg"))),
+                child: SvgPicture.asset(ICONS.IC_MENU_SVG))),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(15),
@@ -100,9 +100,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
                         builder: (context, state) {
                   if (state is NotificationNeedRead) {
-                    return SvgPicture.asset("assets/icons/notification.svg");
+                    return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
                   } else {
-                    return SvgPicture.asset("assets/icons/notification2.svg");
+                    return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
                   }
                 }),
               ))
@@ -131,8 +131,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
                       color: HexColor("#707070")),
                   hint: "Tìm khách hàng",
                   leadIcon:
-                      SvgPicture.asset("assets/icons/search_customer.svg"),
-                  endIcon: SvgPicture.asset("assets/icons/fill_customer.svg"),
+                      SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                  endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
                   onClickRight: () {
                     showBotomSheet(state.listFilter);
                   },
@@ -183,7 +183,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                                         .is_company ==
                                                     true
                                                 ? SvgPicture.asset(
-                                                    "assets/icons/building.svg",
+                                                    ICONS.IC_BUILD_SVG,
                                                     color: state
                                                                 .listCustomer[
                                                                     index]
@@ -193,7 +193,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                                         : COLORS.GREY,
                                                   )
                                                 : SvgPicture.asset(
-                                                    "assets/icons/avatar_customer.svg",
+                                                    ICONS.IC_AVATAR_SVG,
                                                     color: state
                                                                 .listCustomer[
                                                                     index]
@@ -247,7 +247,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                         Row(
                                           children: [
                                             SvgPicture.asset(
-                                                "assets/icons/location_customer.svg"),
+                                               ICONS.IC_LOCATION_PNG),
                                             Padding(
                                               padding: EdgeInsets.only(
                                                   left: AppValue.widths * 0.03),
@@ -307,7 +307,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                                 child: Row(
                                                   children: [
                                                     SvgPicture.asset(
-                                                      "assets/icons/mail_customer.svg",
+                                                      ICONS.IC_MAIL_CUSTOMER_SVG,
                                                       color: COLORS.GREY,
                                                     ),
                                                     Padding(
@@ -384,7 +384,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                                     child: Row(
                                                       children: [
                                                         SvgPicture.asset(
-                                                            "assets/icons/phone_customer.svg"),
+                                                            ICONS.IC_PHONE_CUSTOMER_SVG),
                                                         Padding(
                                                           padding: EdgeInsets.only(
                                                               left: AppValue
@@ -415,7 +415,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                                 : SizedBox(),
                                             Spacer(),
                                             SvgPicture.asset(
-                                                "assets/icons/question_answer.svg"),
+                                                ICONS.IC_QUESTION_SVG),
                                             SizedBox(
                                               width: AppValue.widths * 0.01,
                                             ),
@@ -588,7 +588,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                         // crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                            'assets/icons/Filter.svg',
+                                            ICONS.IC_FILTER_SVG,
                                             width: 20,
                                             height: 20,
                                             fit: BoxFit.contain,

@@ -94,7 +94,7 @@ class _CustomerContractScreenState extends State<CustomerContractScreen> {
                               color: HexColor("#707070")),
                           hint: "Tìm khách hàng",
                           leadIcon: SvgPicture.asset(
-                              "assets/icons/search_customer.svg"),
+                              ICONS.IC_SEARCH_SVG),
                           onChanged: (text) {
                             search = text;
                           },

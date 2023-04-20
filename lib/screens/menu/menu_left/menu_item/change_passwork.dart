@@ -86,7 +86,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
                   barrierDismissible: false,
                   builder: (BuildContext context) {
                     return WidgetDialog(
-                      textButton1: "OK",
+                      textButton1: MESSAGES.OKE,
                       onTap1: () => {AppNavigator.navigateLogin()},
                       title: MESSAGES.SUCCESS,
                       content: state.message,
@@ -157,7 +157,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
         AppNavigator.navigateBack();
       },
       icon: Image.asset(
-        ICONS.ICON_BACK,
+        ICONS.IC_BACK_PNG,
         height: 28,
         width: 28,
         color: COLORS.BLACK,
@@ -180,7 +180,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
           endIcon: GestureDetector(
             onTap: () => setState(() => obscurePassword = !obscurePassword),
             child: SvgPicture.asset(
-              obscurePassword ? ICONS.HINT_PASS : ICONS.HINT_ICON,
+              obscurePassword ? ICONS.IC_HINT_PASS_SVG : ICONS.IC_HINT_SVG,
               color: COLORS.GREY,
               height: 25,
               width: 25,
@@ -239,7 +239,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
             onTap: () =>
                 setState(() => obscureNewPassword = !obscureNewPassword),
             child: SvgPicture.asset(
-              obscureNewPassword ? ICONS.HINT_PASS : ICONS.HINT_ICON,
+              obscureNewPassword ? ICONS.IC_HINT_PASS_SVG : ICONS.IC_HINT_SVG,
               color: COLORS.GREY,
               height: 25,
               width: 25,
@@ -301,7 +301,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
             onTap: () => setState(
                 () => obscureConfirmPassword = !obscureConfirmPassword),
             child: SvgPicture.asset(
-              obscureConfirmPassword ? ICONS.HINT_PASS : ICONS.HINT_ICON,
+              obscureConfirmPassword ? ICONS.IC_HINT_PASS_SVG : ICONS.IC_HINT_SVG,
               color: COLORS.GREY,
               height: 25,
               width: 25,

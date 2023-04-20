@@ -7,13 +7,13 @@ import '../src/src_index.dart';
 import '../widgets/widget_text.dart';
 
 class WidgetInputDate extends StatefulWidget {
-  WidgetInputDate(
-      {Key? key,
-      required this.data,
-      required this.onSelect,
-      required this.onInit,
-      this.dateText})
-      : super(key: key);
+  WidgetInputDate({
+    Key? key,
+    required this.data,
+    required this.onSelect,
+    required this.onInit,
+    this.dateText,
+  }) : super(key: key);
 
   final CustomerIndividualItemData data;
   final Function onSelect, onInit;
@@ -97,7 +97,7 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
                     ),
                   ),
                   WidgetContainerImage(
-                    image: 'assets/icons/date.png',
+                    image: ICONS.IC_DATE_PNG,
                     width: 20,
                     height: 20,
                     fit: BoxFit.contain,

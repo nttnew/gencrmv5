@@ -1,16 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
-
 import '../../api_resfull/user_repository.dart';
+import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/color.dart';
 import '../../src/messages.dart';
 import '../../src/models/model_generator/infor_acc.dart';
-import '../../src/navigator.dart';
 import '../../widgets/loading_api.dart';
-import '../../widgets/widget_dialog.dart';
 
 part 'get_infor_acc_event.dart';
 part 'get_infor_acc_state.dart';
@@ -44,15 +40,7 @@ class GetInforAccBloc extends Bloc<GetInforAccEvent, GetInforAccState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      Get.dialog(WidgetDialog(
-        title: MESSAGES.NOTIFICATION,
-        content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-        textButton1: "OK",
-        backgroundButton1: COLORS.PRIMARY_COLOR,
-        onTap1: () {
-          AppNavigator.navigateLogout();
-        },
-      ));
+      loginSessionExpired();
       yield ErrorGetInForAccState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

@@ -78,7 +78,7 @@ class _WorkScreenState extends State<WorkScreen> {
                     _drawerKey.currentState!.openDrawer();
                   }
                 },
-                child: SvgPicture.asset("assets/icons/menu.svg"))),
+                child: SvgPicture.asset(ICONS.IC_MENU_SVG))),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(15),
@@ -93,9 +93,9 @@ class _WorkScreenState extends State<WorkScreen> {
                     BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
                         builder: (context, state) {
                   if (state is NotificationNeedRead) {
-                    return SvgPicture.asset("assets/icons/notification.svg");
+                    return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
                   } else {
-                    return SvgPicture.asset("assets/icons/notification2.svg");
+                    return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
                   }
                 }),
               ))
@@ -132,8 +132,8 @@ class _WorkScreenState extends State<WorkScreen> {
                           .add(InitGetListWorkEvent("1", search, filter_id));
                     },
                     leadIcon:
-                        SvgPicture.asset("assets/icons/search_customer.svg"),
-                    endIcon: SvgPicture.asset("assets/icons/fill_customer.svg"),
+                        SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                    endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
                     onClickRight: () {
                       showBotomSheet(state.data_filter);
                     },
@@ -232,7 +232,7 @@ class _WorkScreenState extends State<WorkScreen> {
                                       // crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         SvgPicture.asset(
-                                          'assets/icons/Filter.svg',
+                                          ICONS.IC_FILTER_SVG,
                                           width: 20,
                                           height: 20,
                                           fit: BoxFit.contain,

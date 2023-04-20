@@ -223,7 +223,7 @@ class _ListProductState extends State<ListProduct> {
         AppNavigator.navigateBack();
       },
       icon: Image.asset(
-        ICONS.ICON_BACK,
+        ICONS.IC_BACK_PNG,
         height: 28,
         width: 28,
         color: COLORS.BLACK,
@@ -358,7 +358,7 @@ class _ItemProductState extends State<ItemProduct> {
         children: [
           widget.canDelete == false
               ? WidgetContainerImage(
-                  image: 'assets/icons/iconCart.png',
+                  image: ICONS.IC_CART_PNG,
                   width: 25,
                   height: 25,
                   fit: BoxFit.contain,
@@ -500,7 +500,7 @@ class _ItemProductState extends State<ItemProduct> {
                   widget.onMinus!(int.parse(soLuong.value));
                 },
                 child: WidgetContainerImage(
-                  image: 'assets/icons/minus.png',
+                  image: ICONS.IC_MINUS_PNG,
                   width: 20,
                   height: 20,
                   fit: BoxFit.contain,
@@ -526,7 +526,7 @@ class _ItemProductState extends State<ItemProduct> {
                   widget.onPlus!(int.parse(soLuong.value));
                 },
                 child: WidgetContainerImage(
-                  image: 'assets/icons/plus.png',
+                  image: ICONS.IC_PLUS_PNG,
                   width: 20,
                   height: 20,
                   fit: BoxFit.contain,
@@ -737,7 +737,7 @@ class _ItemProductState extends State<ItemProduct> {
                                     title: MESSAGES.NOTIFICATION,
                                     content:
                                         "Bạn không được nhập giá giảm lớn hơn giá của sản phẩm",
-                                    textButton1: "OK",
+                                    textButton1: MESSAGES.OKE,
                                     backgroundButton1: COLORS.PRIMARY_COLOR,
                                     onTap1: () {
                                       Get.back();
@@ -753,7 +753,7 @@ class _ItemProductState extends State<ItemProduct> {
                                   return WidgetDialog(
                                     title: MESSAGES.NOTIFICATION,
                                     content: "Bạn không được nhập quá 100%",
-                                    textButton1: "OK",
+                                    textButton1: MESSAGES.OKE,
                                     backgroundButton1: COLORS.PRIMARY_COLOR,
                                     onTap1: () {
                                       Get.back();

@@ -73,7 +73,7 @@ class _PreviewImageState extends State<PreviewImage> {
         Navigator.of(context).pop();
       },
       icon: Image.asset(
-        ICONS.ICON_BACK,
+        ICONS.IC_BACK_PNG,
         height: 28,
         width: 28,
         color: COLORS.BLACK,

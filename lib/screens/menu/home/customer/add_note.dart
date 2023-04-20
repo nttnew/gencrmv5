@@ -155,7 +155,7 @@ class _AddNoteState extends State<AddNote> {
                         child: Container(
                           padding: EdgeInsets.all(8),
                           child: WidgetContainerImage(
-                            image: 'assets/icons/send.png',
+                            image: ICONS.IC_SEND_PNG,
                             width: 25,
                             height: 25,
                             fit: BoxFit.contain,

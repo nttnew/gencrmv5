@@ -150,4 +150,9 @@ class MESSAGES {
   static const String CONTRACT_TITLE = 'HD0001';
   static const String CONFIRM_PASSWORD_ERROR = "Mật khẩu không khớp";
   static const String FULLNAME_ERROR = "Họ và tên không hợp lệ";
+  static const String PHIEN_DANG_NHAP_HET =
+      "Phiên đăng nhập hết hạn, hãy đăng nhập lại!";
+  static const String OKE = "OK";
+  static const String THONG_BAO_LOI = "Thông báo lỗi";
+  static const String MOT_SO_LOI_KHONG_XAC_DINH = "Một số lỗi không xác định.";
 }

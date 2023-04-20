@@ -467,7 +467,7 @@ class _AttachmentState extends State<Attachment> {
                                                         child:
                                                             WidgetContainerImage(
                                                           image:
-                                                              'assets/icons/icon_delete.png',
+                                                              ICONS.IC_DELETE_PNG,
                                                           width: 20,
                                                           height: 20,
                                                           fit: BoxFit.contain,
@@ -603,7 +603,7 @@ class _AttachmentState extends State<Attachment> {
                             GestureDetector(
                                 onTap: this.onDinhKem,
                                 child: SvgPicture.asset(
-                                    "assets/icons/attack.svg")),
+                                    ICONS.IC_ATTACK_SVG,)),
                             Spacer(),
                             GestureDetector(
                               onTap: () => onClickSave(),

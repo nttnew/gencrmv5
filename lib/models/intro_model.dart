@@ -3,6 +3,9 @@ class IntroModel {
   final String subTitle;
   final String title;
 
-  IntroModel(
-      {required this.title, required this.image, required this.subTitle});
+  IntroModel({
+    required this.title,
+    required this.image,
+    required this.subTitle,
+  });
 }

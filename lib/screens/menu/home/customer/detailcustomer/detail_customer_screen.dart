@@ -92,7 +92,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                   return WidgetDialog(
                     title: MESSAGES.NOTIFICATION,
                     content: "Thành công",
-                    textButton1: "OK",
+                    textButton1: MESSAGES.OKE,
                     backgroundButton1: COLORS.PRIMARY_COLOR,
                     onTap1: () {
                       Get.back();
@@ -208,7 +208,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                             null)
                                           itemIcon(
                                             "Gọi điện",
-                                            "assets/icons/phone_customer.svg",
+                                            ICONS.IC_PHONE_CUSTOMER_SVG,
                                             () {
                                               Get.back();
                                               launchUrl(Uri(
@@ -221,7 +221,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                           ),
                                         itemIcon(
                                           "Thêm đầu mối",
-                                          "assets/icons/addclue.svg",
+                                          ICONS.IC_ADDCLUE_SVG,
                                           () {
                                             Get.back();
                                             AppNavigator.navigateFormAdd(
@@ -231,7 +231,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                         ),
                                         itemIcon(
                                           "Thêm cơ hội",
-                                          "assets/icons/addchance.svg",
+                                          ICONS.IC_ADD_CHANCE_SVG,
                                           () {
                                             Get.back();
                                             AppNavigator.navigateFormAdd(
@@ -241,7 +241,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                         ),
                                         itemIcon(
                                           "Thêm hợp đồng",
-                                          "assets/icons/addcontract.svg",
+                                          ICONS.IC_ADD_CONTRACT_SVG,
                                           () {
                                             Get.back();
                                             AppNavigator.navigateAddContract(
@@ -251,7 +251,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                         ),
                                         itemIcon(
                                           "Thêm công việc",
-                                          "assets/icons/addwork.svg",
+                                          ICONS.IC_ADD_WORD_SVG,
                                           () {
                                             AppNavigator.navigateFormAdd(
                                                 'Thêm công việc', 14,
@@ -260,7 +260,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                         ),
                                         itemIcon(
                                           "Thêm hỗ trợ",
-                                          "assets/icons/addsupport.svg",
+                                          ICONS.IC_ADD_SUPPORT_SVG,
                                           () {
                                             Get.back();
                                             AppNavigator.navigateFormAdd(
@@ -270,7 +270,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                         ),
                                         itemIcon(
                                           "Thêm thảo luận",
-                                          "assets/icons/adddiscuss.svg",
+                                          ICONS.IC_ADD_DISCUSS_SVG,
                                           () {
                                             Get.back();
                                             AppNavigator.navigateAddNoteScreen(
@@ -279,7 +279,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                         ),
                                         itemIcon(
                                           "Xem đính kèm",
-                                          "assets/icons/attack.svg",
+                                          ICONS.IC_ATTACK_SVG,
                                           () async {
                                             final List<FileDataResponse> list =
                                                 [];
@@ -307,7 +307,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                         ),
                                         itemIcon(
                                           "Sửa",
-                                          "assets/icons/edit.svg",
+                                         ICONS.IC_EDIT_SVG,
                                           () {
                                             Get.back();
                                             AppNavigator.navigateEditDataScreen(
@@ -316,7 +316,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                         ),
                                         itemIcon(
                                           "Xoá",
-                                          "assets/icons/delete.svg",
+                                          ICONS.IC_DELETE_SVG,
                                           () {
                                             ShowDialogCustom.showDialogTwoButton(
                                                 onTap2: () => DetailCustomerBloc

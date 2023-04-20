@@ -73,7 +73,7 @@ class _ContractScreenState extends State<ContractScreen> {
                     _drawerKey.currentState!.openDrawer();
                   }
                 },
-                child: Image.asset('assets/icons/Menu.png'),
+                child: Image.asset(ICONS.IC_MENU_PNG),
               ),
             ),
             right: GestureDetector(onTap: () {
@@ -82,9 +82,9 @@ class _ContractScreenState extends State<ContractScreen> {
                 BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
                     builder: (context, state) {
               if (state is NotificationNeedRead) {
-                return SvgPicture.asset("assets/icons/notification.svg");
+                return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
               } else {
-                return SvgPicture.asset("assets/icons/notification2.svg");
+                return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
               }
             })),
           ),
@@ -153,7 +153,7 @@ class _ContractScreenState extends State<ContractScreen> {
                   height: 25,
                   width: 25,
                   child: SvgPicture.asset(
-                    'assets/icons/Search.svg',
+                    ICONS.IC_SEARCH2_SVG,
                     color: COLORS.GREY.withOpacity(0.5),
                   ),
                 )),
@@ -197,7 +197,7 @@ class _ContractScreenState extends State<ContractScreen> {
                   child: Container(
                     height: 20,
                     width: 20,
-                    child: SvgPicture.asset('assets/icons/Filter.svg'),
+                    child: SvgPicture.asset(ICONS.IC_FILTER_SVG),
                   ),
                 ),
               ),
@@ -234,7 +234,7 @@ class _ContractScreenState extends State<ContractScreen> {
           children: [
             Row(
               children: [
-                Image.asset('assets/icons/Contract.png'),
+                Image.asset(ICONS.IC_CONTRACT_PNG),
                 SizedBox(
                   width: 10,
                 ),
@@ -264,7 +264,7 @@ class _ContractScreenState extends State<ContractScreen> {
               Row(
                 children: [
                   SvgPicture.asset(
-                    'assets/icons/User.svg',
+                    ICONS.IC_USER2_SVG,
                     color: Color(0xffE75D18),
                   ),
                   SizedBox(
@@ -286,7 +286,7 @@ class _ContractScreenState extends State<ContractScreen> {
               Row(
                 children: [
                   SvgPicture.asset(
-                    'assets/icons/dangxuly.svg',
+                    ICONS.IC_DANG_XU_LY_SVG,
                     color: data.status_color != ""
                         ? HexColor(data.status_color!)
                         : COLORS.RED,
@@ -310,7 +310,7 @@ class _ContractScreenState extends State<ContractScreen> {
             Row(
               children: [
                 SvgPicture.asset(
-                  'assets/icons/mail.svg',
+                  ICONS.IC_MAIL_SVG,
                   color: Colors.grey,
                 ),
                 SizedBox(
@@ -322,7 +322,7 @@ class _ContractScreenState extends State<ContractScreen> {
                       .copyWith(color: COLORS.GREY),
                 ),
                 Spacer(),
-                SvgPicture.asset("assets/icons/question_answer.svg"),
+                SvgPicture.asset(ICONS.IC_QUESTION_SVG),
                 SizedBox(
                   width: AppValue.widths * 0.01,
                 ),
@@ -453,7 +453,7 @@ class _ContractScreenState extends State<ContractScreen> {
                                         // crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                            'assets/icons/Filter.svg',
+                                            ICONS.IC_FILTER_SVG,
                                             width: 20,
                                             height: 20,
                                             fit: BoxFit.contain,

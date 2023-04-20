@@ -144,7 +144,7 @@ class _AddServiceVoucherStepTwoScreenState
                   return WidgetDialog(
                     title: MESSAGES.NOTIFICATION,
                     content: "Thêm mới phiếu dịch vụ thành công!",
-                    textButton1: "OK",
+                    textButton1: MESSAGES.OKE,
                     backgroundButton1: COLORS.PRIMARY_COLOR,
                     onTap1: () {
                       Get.back();
@@ -386,8 +386,7 @@ class _AddServiceVoucherStepTwoScreenState
                                                           .add(list);
                                                     },
                                                     child: WidgetContainerImage(
-                                                      image:
-                                                          'assets/icons/icon_delete.png',
+                                                      image: ICONS.IC_DELETE_PNG,
                                                       width: 20,
                                                       height: 20,
                                                       fit: BoxFit.contain,
@@ -497,7 +496,8 @@ class _AddServiceVoucherStepTwoScreenState
                                 GestureDetector(
                                     onTap: this.onDinhKem,
                                     child: SvgPicture.asset(
-                                        "assets/icons/attack.svg")),
+                                      ICONS.IC_ATTACK_SVG,
+                                    )),
                                 Spacer(),
                                 GestureDetector(
                                   onTap: this.onClickSave,
@@ -534,7 +534,7 @@ class _AddServiceVoucherStepTwoScreenState
         AppNavigator.navigateBack();
       },
       icon: Image.asset(
-        ICONS.ICON_BACK,
+        ICONS.IC_BACK_PNG,
         height: 28,
         width: 28,
         color: COLORS.BLACK,

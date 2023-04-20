@@ -133,7 +133,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       _drawerKey.currentState!.openDrawer();
                     }
                   },
-                  child: SvgPicture.asset("assets/icons/menu.svg"))),
+                  child: SvgPicture.asset(ICONS.IC_MENU_SVG))),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               bottom: Radius.circular(15),
@@ -147,9 +147,9 @@ class _ReportScreenState extends State<ReportScreen> {
                   child: BlocBuilder<GetListUnReadNotifiBloc,
                       UnReadListNotifiState>(builder: (context, state) {
                     if (state is NotificationNeedRead) {
-                      return SvgPicture.asset("assets/icons/notification.svg");
+                      return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
                     } else {
-                      return SvgPicture.asset("assets/icons/notification2.svg");
+                      return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
                     }
                   }),
                 ))
@@ -751,7 +751,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                 children: [
                                   Row(
                                     children: [
-                                      Image.asset('assets/icons/Contract.png'),
+                                      Image.asset(ICONS.IC_CONTRACT_PNG),
                                       SizedBox(
                                         width: 10,
                                       ),
@@ -778,7 +778,6 @@ class _ReportScreenState extends State<ReportScreen> {
                                         width: AppValue.widths * 0.08,
                                         height: AppValue.heights * 0.02,
                                       )
-                                      // SvgPicture.asset("assets/icons/icon3svg",color:data.status_color!="" ?HexColor(data.status_color!):COLORS.RED,),
                                     ],
                                   ),
                                   SizedBox(
@@ -787,7 +786,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                   Row(
                                     children: [
                                       SvgPicture.asset(
-                                        'assets/icons/User.svg',
+                                        ICONS.IC_USER2_SVG,
                                         color: Color(0xffE75D18),
                                       ),
                                       SizedBox(
@@ -809,7 +808,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                   Row(
                                     children: [
                                       SvgPicture.asset(
-                                        'assets/icons/dangxuly.svg',
+                                        ICONS.IC_DANG_XU_LY_SVG,
                                         color: state.data[index].status_color !=
                                                 ""
                                             ? HexColor(
@@ -838,7 +837,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                   Row(
                                     children: [
                                       SvgPicture.asset(
-                                        'assets/icons/mail.svg',
+                                        ICONS.IC_MAIL_SVG,
                                         color: Colors.grey,
                                       ),
                                       SizedBox(
@@ -1172,7 +1171,7 @@ class _ReportScreenState extends State<ReportScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    Image.asset('assets/icons/Contract.png'),
+                                    Image.asset(ICONS.IC_CONTRACT_PNG),
                                     SizedBox(
                                       width: 10,
                                     ),
@@ -1199,7 +1198,6 @@ class _ReportScreenState extends State<ReportScreen> {
                                       width: AppValue.widths * 0.08,
                                       height: AppValue.heights * 0.02,
                                     )
-                                    // SvgPicture.asset("assets/icons/icon3svg",color:data.status_color!="" ?HexColor(data.status_color!):COLORS.RED,),
                                   ],
                                 ),
                                 SizedBox(
@@ -1208,7 +1206,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                 Row(
                                   children: [
                                     SvgPicture.asset(
-                                      'assets/icons/User.svg',
+                                      ICONS.IC_USER2_SVG,
                                       color: Color(0xffE75D18),
                                     ),
                                     SizedBox(
@@ -1230,7 +1228,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                 Row(
                                   children: [
                                     SvgPicture.asset(
-                                      'assets/icons/dangxuly.svg',
+                                      ICONS.IC_DANG_XU_LY_SVG,
                                       color: state.data[index].status_color !=
                                               ""
                                           ? HexColor(
@@ -1259,7 +1257,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                 Row(
                                   children: [
                                     SvgPicture.asset(
-                                      'assets/icons/mail.svg',
+                                      ICONS.IC_MAIL_SVG,
                                       color: Colors.grey,
                                     ),
                                     SizedBox(

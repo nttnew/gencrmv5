@@ -140,7 +140,7 @@ class _InformationAccountState extends State<InformationAccount> {
                     GetInforAccBloc.of(context).add(InitGetInforAcc());
                     AppNavigator.navigateBack();
                   },
-                  textButton1: "OK",
+                  textButton1: MESSAGES.OKE,
                   title: MESSAGES.SUCCESS,
                   content: state.message,
                 );
@@ -239,7 +239,7 @@ class _InformationAccountState extends State<InformationAccount> {
                         Positioned(
                             left: AppValue.widths * 0.55,
                             top: AppValue.heights * 0.1,
-                            child: Image.asset('assets/icons/mayanh.png'))
+                            child: Image.asset(ICONS.IC_MAY_ANH_PNG))
                       ],
                     ),
                   ),
@@ -352,7 +352,7 @@ class _InformationAccountState extends State<InformationAccount> {
         AppNavigator.navigateBack();
       },
       icon: Image.asset(
-        ICONS.ICON_BACK,
+        ICONS.IC_BACK_PNG,
         height: 28,
         width: 28,
         color: COLORS.BLACK,

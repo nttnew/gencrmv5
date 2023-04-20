@@ -306,7 +306,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
               child: Row(
                 children: [
                   Image.asset(
-                    ICONS.ICON_FACE,
+                    ICONS.IC_FACE_PNG,
                     height: 24,
                     width: 24,
                     color: COLORS.BLACK,

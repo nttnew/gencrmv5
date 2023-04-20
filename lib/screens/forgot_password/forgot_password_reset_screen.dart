@@ -55,7 +55,7 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
                 onTap1: () {
                   AppNavigator.navigateLogin();
                 },
-                textButton1: "OK",
+                textButton1: MESSAGES.OKE,
                 backgroundButton1: COLORS.PRIMARY_COLOR,
               );
             },

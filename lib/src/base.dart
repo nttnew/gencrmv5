@@ -175,6 +175,8 @@ class BASE_URL {
 
   static const content_type = 'Content-Type';
   static const application_json = 'application/json';
+  static const PHPSESSID = 'PHPSESSID';
+  static const AUTHORIZATION = 'Authorization';
   ////////////////////////////////////////////////////////
   static const multipart_form_data = 'multipart/form-data';
 
@@ -193,7 +195,11 @@ class BASE_URL {
   static const LOCK = 0;
   static const KHACH_HANG = 'Khách hàng';
   static const TEN_KHACH_HANG = 'Tên khách hàng';
+  static const NOTE_ID = 'noteid';
+  static const ID = 'id';
+  static const CONTENT = 'content';
 }
+
 
 class Module {
   static const String KHACH_HANG = 'khachhang';

@@ -1,9 +1,7 @@
-// ignore: import_of_legacy_library_into_null_safe
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart'; // ignore: import_of_legacy_library_into_null_safe
-import 'package:bloc/bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gen_crm/api_resfull/user_repository.dart';
 import 'package:gen_crm/src/src_index.dart';
@@ -56,7 +54,7 @@ class AuthenticationBloc
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: response.msg ?? "Có lỗi xảy ra!!!",
-          textButton1: "OK",
+          textButton1: MESSAGES.OKE,
           backgroundButton1: COLORS.PRIMARY_COLOR,
           onTap1: () {
             AppNavigator.navigateLogout();

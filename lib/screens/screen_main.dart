@@ -27,7 +27,6 @@ import 'package:plugin_pitel/sip/sip_ua.dart';
 
 import '../bloc/login/login_bloc.dart';
 import '../storages/share_local.dart';
-import '../widgets/ripple_button.dart';
 import 'call_video/call_screen.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
 
@@ -67,19 +66,19 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   List<ButtonMenuModel> listMenu = [];
   String getIconMenu(String id) {
     if (ModuleText.CUSTOMER == id) {
-      return ICONS.CUSTUMER_3X;
+      return ICONS.IC_CUSTOMER_3X_PNG;
     } else if (ModuleText.DAU_MOI == id) {
-      return ICONS.CLUE_3X;
+      return ICONS.IC_CLUE_3X_PNG;
     } else if (ModuleText.LICH_HEN == id) {
-      return ICONS.CHANCE_3X;
+      return ICONS.IC_CHANCE_3X_PNG;
     } else if (ModuleText.HOP_DONG == id) {
-      return ICONS.CONTRACT_3X;
+      return ICONS.IC_CONTRACT_3X_PNG;
     } else if (ModuleText.CONG_VIEC == id) {
-      return ICONS.WORK_3X;
+      return ICONS.IC_WORK_3X_PNG;
     } else if (ModuleText.CSKH == id) {
-      return ICONS.SUPPORT_3X;
+      return ICONS.IC_SUPPORT_3X_PNG;
     }
-    return ICONS.WORK_3X;
+    return ICONS.IC_WORK_3X_PNG;
   }
 
   getMenu() async {
@@ -90,16 +89,16 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
         ButtonMenuModel(
             title: listM[i]['name'],
             image: listM[i]['id'] == 'opportunity'
-                ? ICONS.CHANCE_3X
+                ? ICONS.IC_CHANCE_3X_PNG
                 : listM[i]['id'] == 'job'
-                    ? ICONS.WORK_3X
+                    ? ICONS.IC_WORK_3X_PNG
                     : listM[i]['id'] == 'contract'
-                        ? ICONS.CONTRACT_3X
+                        ? ICONS.IC_CONTRACT_3X_PNG
                         : listM[i]['id'] == 'support'
-                            ? ICONS.SUPPORT_3X
+                            ? ICONS.IC_SUPPORT_3X_PNG
                             : listM[i]['id'] == 'customer'
-                                ? ICONS.CUSTUMER_3X
-                                : ICONS.CLUE_3X,
+                                ? ICONS.IC_CUSTOMER_3X_PNG
+                                : ICONS.IC_CLUE_3X_PNG,
             backgroundColor: listM[i]['id'] == 'opportunity'
                 ? Color(0xffFDC9D2)
                 : listM[i]['id'] == 'job'
@@ -573,10 +572,10 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                         UnReadListNotifiState>(builder: (context, state) {
                       if (state is NotificationNeedRead) {
                         return SvgPicture.asset(
-                            "assets/icons/notification.svg");
+                            ICONS.IC_NOTIFICATION_SVG);
                       } else {
                         return SvgPicture.asset(
-                            "assets/icons/notification2.svg");
+                            ICONS.IC_NOTIFICATION2_SVG);
                       }
                     })),
                     left: GestureDetector(
@@ -606,10 +605,10 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                         UnReadListNotifiState>(builder: (context, state) {
                       if (state is NotificationNeedRead) {
                         return SvgPicture.asset(
-                            "assets/icons/notification.svg");
+                            ICONS.IC_NOTIFICATION_SVG);
                       } else {
                         return SvgPicture.asset(
-                            "assets/icons/notification2.svg");
+                            ICONS.IC_NOTIFICATION2_SVG);
                       }
                     })),
                     left: GestureDetector(
@@ -680,7 +679,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                         decoration: BoxDecoration(
                             shape: BoxShape.circle, color: Colors.white),
                         child: WidgetContainerImage(
-                          image: ICONS.WORK_3X,
+                          image: ICONS.IC_WORK_3X_PNG,
                           fit: BoxFit.contain,
                           width: 50,
                           height: 50,

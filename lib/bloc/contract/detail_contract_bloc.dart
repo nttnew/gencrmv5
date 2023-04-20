@@ -6,22 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/detail_contract.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
-import 'package:get/get.dart';
-
 import '../../api_resfull/user_repository.dart';
+import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/color.dart';
 import '../../src/messages.dart';
 import '../../src/models/model_generator/contract.dart';
 import '../../src/models/model_generator/file_response.dart';
-import '../../src/navigator.dart';
-import '../../widgets/widget_dialog.dart';
 
 part 'detail_contract_event.dart';
 part 'detail_contract_state.dart';
 
 class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
   final UserRepository userRepository;
+  List<ContractItemData>? list;
+  List<FileDataResponse> listFileResponse = [];
 
   DetailContractBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -36,9 +34,6 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
     }
   }
 
-  List<ContractItemData>? list;
-  List<FileDataResponse> listFileResponse = [];
-
   Stream<DetailContractState> _getDetailContract({required int id}) async* {
     LoadingApi().pushLoading();
     try {
@@ -48,15 +43,7 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessDetailContractState(response.data!);
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else
         yield ErrorDetailContractState(response.msg ?? '');
     } catch (e) {
@@ -75,38 +62,21 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessDeleteContractState();
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else
         yield ErrorDeleteContractState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      Get.dialog(WidgetDialog(
-        title: MESSAGES.NOTIFICATION,
-        content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-        textButton1: "OK",
-        backgroundButton1: COLORS.PRIMARY_COLOR,
-        onTap1: () {
-          AppNavigator.navigateLogout();
-        },
-      ));
+      loginSessionExpired();
       yield ErrorDeleteContractState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
   }
 
-  Future<void> getFile(int id,String module) async {
+  Future<void> getFile(int id, String module) async {
     listFileResponse = [];
-    final response =
-        await userRepository.getFile(module: module, id: id);
+    final response = await userRepository.getFile(module: module, id: id);
     if ((response.code == BASE_URL.SUCCESS) ||
         (response.code == BASE_URL.SUCCESS_200)) {
       if (response.data?.list?.isNotEmpty ?? false) {

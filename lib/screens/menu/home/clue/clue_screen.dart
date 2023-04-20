@@ -65,7 +65,7 @@ class _ClueScreenState extends State<ClueScreen> {
                     _drawerKey.currentState!.openDrawer();
                   }
                 },
-                child: SvgPicture.asset("assets/icons/menu.svg"),
+                child: SvgPicture.asset(ICONS.IC_MENU_SVG),
               ),
             ),
             right: GestureDetector(
@@ -76,9 +76,9 @@ class _ClueScreenState extends State<ClueScreen> {
                   BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
                       builder: (context, state) {
                 if (state is NotificationNeedRead) {
-                  return SvgPicture.asset("assets/icons/notification.svg");
+                  return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
                 } else {
-                  return SvgPicture.asset("assets/icons/notification2.svg");
+                  return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
                 }
               }),
             ),
@@ -160,7 +160,7 @@ class _ClueScreenState extends State<ClueScreen> {
                     height: 25,
                     width: 25,
                     child: SvgPicture.asset(
-                      'assets/icons/Search.svg',
+                      ICONS.IC_SEARCH2_SVG,
                       color: COLORS.GREY.withOpacity(0.5),
                     ),
                   )),
@@ -208,7 +208,7 @@ class _ClueScreenState extends State<ClueScreen> {
                         onTap: () {
                           showBotomSheet(state.listFilter);
                         },
-                        child: SvgPicture.asset('assets/icons/Filter.svg')),
+                        child: SvgPicture.asset(ICONS.IC_FILTER_SVG)),
                   ),
                 ),
               ],
@@ -248,7 +248,7 @@ class _ClueScreenState extends State<ClueScreen> {
           children: [
             Row(
               children: [
-                Image.asset('assets/icons/Chance.png'),
+                Image.asset(ICONS.IC_CHANCE_PNG),
                 SizedBox(
                   width: 10,
                 ),
@@ -268,7 +268,7 @@ class _ClueScreenState extends State<ClueScreen> {
             ),
             Row(
               children: [
-                SvgPicture.asset('assets/icons/User.svg'),
+                SvgPicture.asset(ICONS.IC_USER2_SVG),
                 SizedBox(
                   width: 10,
                 ),
@@ -289,7 +289,7 @@ class _ClueScreenState extends State<ClueScreen> {
             Row(
               children: [
                 SvgPicture.asset(
-                  'assets/icons/mail.svg',
+                  ICONS.IC_MAIL_SVG,
                   color: Colors.grey,
                 ),
                 SizedBox(
@@ -310,7 +310,7 @@ class _ClueScreenState extends State<ClueScreen> {
             ),
             Row(
               children: [
-                SvgPicture.asset('assets/icons/Call.svg'),
+                SvgPicture.asset(ICONS.IC_CALL_SVG),
                 SizedBox(
                   width: 10,
                 ),
@@ -321,7 +321,7 @@ class _ClueScreenState extends State<ClueScreen> {
                     style: AppStyle.DEFAULT_LABEL_PRODUCT
                         .copyWith(color: COLORS.TEXT_COLOR)),
                 Spacer(),
-                SvgPicture.asset("assets/icons/question_answer.svg"),
+                SvgPicture.asset(ICONS.IC_QUESTION_SVG),
                 SizedBox(
                   width: AppValue.widths * 0.01,
                 ),
@@ -390,7 +390,7 @@ class _ClueScreenState extends State<ClueScreen> {
                                       // crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         SvgPicture.asset(
-                                          'assets/icons/Filter.svg',
+                                          ICONS.IC_FILTER_SVG,
                                           width: 20,
                                           height: 20,
                                           fit: BoxFit.contain,

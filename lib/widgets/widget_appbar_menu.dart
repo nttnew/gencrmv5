@@ -19,7 +19,7 @@ class WidgetAppbarMenu extends StatelessWidget {
             child: FractionallySizedBox(
               widthFactor: 0.6,
               heightFactor:
-                  Handle.isEqualString(isIcon, ICONS.ICON_BACK) ? 0.6 : 0.4,
+                  Handle.isEqualString(isIcon, ICONS.IC_BACK_PNG) ? 0.6 : 0.4,
               child: Container(
                 height: double.infinity,
                 child: icon,

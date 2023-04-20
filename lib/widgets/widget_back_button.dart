@@ -20,7 +20,7 @@ class WidgetBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return WidgetContainerImage(
       boxDecoration: BoxDecoration(shape: BoxShape.circle, color: bgColors),
-      image: ICONS.ICON_BACK,
+      image: ICONS.IC_BACK_PNG,
       onTap: () => AppNavigator.navigateBack(),
     );
   }

@@ -136,7 +136,7 @@ class _ListNoteState extends State<ListNote> {
                                             state.data[index].content);
                                       },
                                       child: WidgetContainerImage(
-                                        image: 'assets/icons/icon_edit.png',
+                                        image: ICONS.IC_EDIT_PNG,
                                         width: 25,
                                         height: 25,
                                         fit: BoxFit.contain,
@@ -152,7 +152,7 @@ class _ListNoteState extends State<ListNote> {
                                             state.data[index].noteid);
                                       },
                                       child: WidgetContainerImage(
-                                        image: 'assets/icons/icon_delete.png',
+                                        image: ICONS.IC_DELETE_PNG,
                                         width: 25,
                                         height: 25,
                                         fit: BoxFit.contain,

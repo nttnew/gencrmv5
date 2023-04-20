@@ -19,7 +19,7 @@ class AnimatedLogo extends AnimatedWidget {
     return Container(
         height: double.infinity,
         width: double.infinity,
-        child: Center(child: Image.asset("assets/icons/logo.png")),
+        child: Center(child: Image.asset(ICONS.IC_LOGO_PNG)),
         decoration: BoxDecoration(
             gradient: LinearGradient(
           begin: Alignment.topCenter,

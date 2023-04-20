@@ -150,7 +150,7 @@ class _FormEditState extends State<FormEdit> {
                       return WidgetDialog(
                         title: MESSAGES.NOTIFICATION,
                         content: "Update dữ liệu thành công!",
-                        textButton1: "OK",
+                        textButton1: MESSAGES.OKE,
                         backgroundButton1: COLORS.PRIMARY_COLOR,
                         onTap1: () {
                           if (type == 1)
@@ -186,7 +186,7 @@ class _FormEditState extends State<FormEdit> {
                       return WidgetDialog(
                         title: MESSAGES.NOTIFICATION,
                         content: "Update dữ liệu thành công!",
-                        textButton1: "OK",
+                        textButton1: MESSAGES.OKE,
                         backgroundButton1: COLORS.PRIMARY_COLOR,
                         onTap1: () {
                           Get.back();
@@ -547,7 +547,7 @@ class _FormEditState extends State<FormEdit> {
                                               .add(InitAttackEvent());
                                         },
                                         child: WidgetContainerImage(
-                                          image: 'assets/icons/icon_delete.png',
+                                          image: ICONS.IC_DELETE_PNG,
                                           width: 20,
                                           height: 20,
                                           fit: BoxFit.contain,
@@ -595,7 +595,7 @@ class _FormEditState extends State<FormEdit> {
                         children: [
                           GestureDetector(
                             onTap: this.onDinhKem,
-                            child: SvgPicture.asset("assets/icons/attack.svg"),
+                            child: SvgPicture.asset(ICONS.IC_ATTACK_SVG,),
                           ),
                           Spacer(),
                           GestureDetector(
@@ -630,7 +630,7 @@ class _FormEditState extends State<FormEdit> {
         AppNavigator.navigateBack();
       },
       icon: Image.asset(
-        ICONS.ICON_BACK,
+        ICONS.IC_BACK_PNG,
         height: 28,
         width: 28,
         color: COLORS.BLACK,
@@ -681,7 +681,7 @@ class _FormEditState extends State<FormEdit> {
                       height: 50,
                       width: 50,
                       child:
-                          SvgPicture.asset("assets/icons/iconInputImg.svg"))),
+                          SvgPicture.asset(ICONS.IC_INPUT_SVG))),
             )
           ]),
         ),

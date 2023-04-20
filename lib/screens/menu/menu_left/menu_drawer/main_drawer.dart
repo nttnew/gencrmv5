@@ -35,7 +35,7 @@ class _MainDrawerState extends State<MainDrawer> {
     _elements.add({
       'id': '1',
       'title': MESSAGES.MAIN,
-      'image': ICONS.MENU_HOME,
+      'image': ICONS.IC_MENU_HOME_PNG,
       'group': '1',
       'isAdmin': false,
     });
@@ -46,16 +46,16 @@ class _MainDrawerState extends State<MainDrawer> {
         'id': listM[i]['id'],
         'title': listM[i]['name'],
         'image': listM[i]['id'] == 'opportunity'
-            ? ICONS.CHANCE
+            ? ICONS.IC_CHANCE_PNG
             : listM[i]['id'] == 'job'
-                ? ICONS.WORK
+                ? ICONS.IC_WORK2_PNG
                 : listM[i]['id'] == 'contract'
-                    ? ICONS.CONTRACT
+                    ? ICONS.IC_CONTRACT_PNG
                     : listM[i]['id'] == 'support'
-                        ? ICONS.SUPPORT
+                        ? ICONS.IC_SUPPORT_PNG
                         : listM[i]['id'] == 'customer'
-                            ? ICONS.CUSTUMER
-                            : ICONS.CLUE,
+                            ? ICONS.IC_CUSTOMER_PNG
+                            : ICONS.IC_CLUE_PNG,
         'group': '1',
         'isAdmin': false,
       });
@@ -66,35 +66,35 @@ class _MainDrawerState extends State<MainDrawer> {
         {
           'id': 'report',
           'title': 'Báo cáo',
-          'image': ICONS.WORK,
+          'image': ICONS.IC_WORK2_PNG,
           'group': '1',
           'isAdmin': false
         },
         {
           'id': '2',
           'title': MESSAGES.INFORMATION_ACCOUNT,
-          'image': ICONS.ICON_USER,
+          'image': ICONS.IC_USER_PNG,
           'group': '1',
           'isAdmin': false
         },
         {
           'id': '3',
           'title': MESSAGES.MENU_INTRODUCE,
-          'image': ICONS.ICONS_ABOUT_US,
+          'image': ICONS.IC_ABOUT_US_PNG,
           'group': '1',
           'isAdmin': false,
         },
         {
           'id': '4',
           'title': MESSAGES.POLICY,
-          'image': ICONS.ICON_POLICY,
+          'image': ICONS.IC_POLICY_PNG,
           'group': '1',
           'isAdmin': false,
         },
         {
           'id': '5',
           'title': MESSAGES.CHANGE_PASSWORD,
-          'image': ICONS.ICON_CHANGEPASSWORK,
+          'image': ICONS.IC_CHANGE_PASS_WORK_PNG,
           'group': '1',
           'isAdmin': false,
         },

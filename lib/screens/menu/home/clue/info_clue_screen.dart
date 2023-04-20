@@ -56,7 +56,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
                 return WidgetDialog(
                   title: MESSAGES.NOTIFICATION,
                   content: "Thành công",
-                  textButton1: "OK",
+                  textButton1: MESSAGES.OKE,
                   backgroundButton1: COLORS.PRIMARY_COLOR,
                   onTap1: () {
                     Get.back();
@@ -155,7 +155,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           AppValue.hSpaceLarge,
-                          Image.asset('assets/icons/addWork.png'),
+                          Image.asset(ICONS.IC_WORK_PNG),
                           SizedBox(width: 10),
                           InkWell(
                               onTap: () {
@@ -179,7 +179,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             AppValue.hSpaceLarge,
-                            Image.asset('assets/icons/addContent.png'),
+                            Image.asset(ICONS.IC_CONTENT_PNG),
                             SizedBox(width: 10),
                             Text(
                               'Thêm thảo luận',
@@ -211,7 +211,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             AppValue.hSpaceLarge,
-                            SvgPicture.asset('assets/icons/attack.svg'),
+                            SvgPicture.asset(ICONS.IC_INPUT_SVG),
                             SizedBox(width: 10),
                             Text(
                               'Xem đính kèm',
@@ -230,7 +230,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             AppValue.hSpaceLarge,
-                            Image.asset('assets/icons/edit.png'),
+                            Image.asset('ICONS.ICON_EDIT2'),
                             SizedBox(width: 10),
                             Text(
                               'Sửa',
@@ -251,7 +251,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             AppValue.hSpaceLarge,
-                            Image.asset('assets/icons/remove.png'),
+                            Image.asset(ICONS.IC_REMOVE_PNG),
                             SizedBox(width: 10),
                             Text(
                               'Xóa',
@@ -326,7 +326,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
         AppNavigator.navigateBack();
       },
       icon: Image.asset(
-        ICONS.ICON_BACK,
+        ICONS.IC_BACK_PNG,
         height: 28,
         width: 28,
         color: COLORS.BLACK,

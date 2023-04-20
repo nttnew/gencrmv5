@@ -47,7 +47,7 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
             Row(
               children: [
                 SvgPicture.asset(
-                  "assets/icons/avatar_customer.svg",
+                  ICONS.IC_AVATAR_SVG,
                   color: COLORS.ORANGE_IMAGE,
                 ),
                 Padding(
@@ -65,7 +65,7 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
             Row(
               children: [
                 SvgPicture.asset(
-                  "assets/icons/icon3svg",
+                  ICONS.IC_ICON3_SVG,
                   color: widget.data!.color != ""
                       ? HexColor(widget.data!.color!)
                       : COLORS.PRIMARY_COLOR,
@@ -88,7 +88,7 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
           ],
           Row(
             children: [
-              SvgPicture.asset("assets/icons/icon4.svg"),
+              SvgPicture.asset(ICONS.IC_ICON4_SVG),
               Padding(
                 padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                 child: SizedBox(
@@ -98,7 +98,7 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
                         style: OrtherInforCustomerStyle())),
               ),
               Spacer(),
-              SvgPicture.asset("assets/icons/question_answer.svg"),
+              SvgPicture.asset(ICONS.IC_QUESTION_SVG),
               SizedBox(
                 width: AppValue.widths * 0.01,
               ),

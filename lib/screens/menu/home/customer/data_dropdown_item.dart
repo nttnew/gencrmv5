@@ -101,7 +101,7 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                           hint: "Tìm kiếm",
                           height: 48,
                           leadIcon: SvgPicture.asset(
-                              "assets/icons/search_customer.svg"),
+                              ICONS.IC_SEARCH_SVG),
                           onEditingComplete: () {
                             FocusManager.instance.primaryFocus?.unfocus();
                           },

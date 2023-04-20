@@ -38,7 +38,7 @@ class WidgetItemChance extends StatelessWidget {
           children: [
             Row(
               children: [
-                Image.asset('assets/icons/Chance.png'),
+                Image.asset(ICONS.IC_CHANCE_PNG),
                 SizedBox(
                   width: 10,
                 ),
@@ -65,7 +65,7 @@ class WidgetItemChance extends StatelessWidget {
             if ((listChanceData.customer?.name ?? '').trim() != '') ...[
               Row(
                 children: [
-                  SvgPicture.asset('assets/icons/User.svg'),
+                  SvgPicture.asset(ICONS.IC_USER2_SVG),
                   SizedBox(
                     width: 10,
                   ),
@@ -86,7 +86,7 @@ class WidgetItemChance extends StatelessWidget {
             if (listChanceData.status != '') ...[
               Row(
                 children: [
-                  SvgPicture.asset('assets/icons/dangxuly.svg'),
+                  SvgPicture.asset(ICONS.IC_DANG_XU_LY_SVG),
                   SizedBox(
                     width: 10,
                   ),
@@ -102,7 +102,7 @@ class WidgetItemChance extends StatelessWidget {
             ],
             Row(
               children: [
-                Image.asset('assets/icons/date.png'),
+                Image.asset(ICONS.IC_DATE_PNG),
                 SizedBox(
                   width: 10,
                 ),
@@ -114,7 +114,7 @@ class WidgetItemChance extends StatelessWidget {
                     style: AppStyle.DEFAULT_LABEL_PRODUCT
                         .copyWith(color: COLORS.TEXT_COLOR)),
                 Spacer(),
-                SvgPicture.asset('assets/icons/Mess.svg'),
+                SvgPicture.asset(ICONS.IC_MESS),
               ],
             ),
             AppValue.hSpaceTiny,

@@ -23,7 +23,7 @@ class _ConstractCardWidgetState extends State<ConstractCardWidget> {
         children: [
           Row(
             children: [
-              SvgPicture.asset("assets/icons/cart.svg"),
+              SvgPicture.asset(ICONS.IC_CART_SVG),
               Padding(
                 padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                 child: WidgetText(
@@ -48,7 +48,7 @@ class _ConstractCardWidgetState extends State<ConstractCardWidget> {
             Row(
               children: [
                 SvgPicture.asset(
-                  "assets/icons/avatar_customer.svg",
+                  ICONS.IC_AVATAR_SVG,
                   color: COLORS.ORANGE_IMAGE,
                 ),
                 Padding(
@@ -66,7 +66,7 @@ class _ConstractCardWidgetState extends State<ConstractCardWidget> {
             Row(
               children: [
                 SvgPicture.asset(
-                  "assets/icons/icon3svg",
+                  ICONS.IC_ICON3_SVG,
                   color: widget.data!.color != null
                       ? HexColor(widget.data!.color!)
                       : COLORS.PRIMARY_COLOR,
@@ -86,35 +86,10 @@ class _ConstractCardWidgetState extends State<ConstractCardWidget> {
               ],
             ),
           ],
-          // SizedBox(height: AppValue.heights*0.01),
-          // Row(
-          //   children: [
-          //     SvgPicture.asset("assets/icons/mail_customer.svg"),
-          //     Padding(
-          //       padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-          //       child: SizedBox(
-          //           width: AppValue.widths * 0.5,
-          //           child: Text(
-          //             "Tổng tiền: 124.456.789đ"
-          //             ,
-          //             style: OrtherInforCustomerStyle(),)),
-          //     ),
-          //   ],
-          // ),
           SizedBox(height: AppValue.heights * 0.01),
           Row(
             children: [
-              // SvgPicture.asset("assets/icons/phone_customer.svg"),
-              // Padding(
-              //   padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-              //   child: SizedBox(
-              //       width: AppValue.widths * 0.5,
-              //       child: Text(
-              //         "Còn lại: 0đ"
-              //         ,
-              //         style: OrtherInforCustomerStyle(),)),
-              // ),
-              SvgPicture.asset("assets/icons/mail_customer.svg"),
+              SvgPicture.asset(ICONS.IC_MAIL_CUSTOMER_SVG),
               Padding(
                 padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                 child: SizedBox(
@@ -127,7 +102,7 @@ class _ConstractCardWidgetState extends State<ConstractCardWidget> {
                     )),
               ),
               Spacer(),
-              SvgPicture.asset("assets/icons/question_answer.svg"),
+              SvgPicture.asset(ICONS.IC_QUESTION_SVG),
               SizedBox(
                 width: AppValue.widths * 0.01,
               ),

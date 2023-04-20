@@ -24,7 +24,7 @@ class AppBarWidget extends StatelessWidget {
           padding: EdgeInsets.only(left: 30),
           child: InkWell(
               onTap: () => AppNavigator.navigateBack(),
-              child: SvgPicture.asset("assets/icons/menu.svg"))),
+              child: SvgPicture.asset(ICONS.IC_MENU_SVG))),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(15),
@@ -33,7 +33,7 @@ class AppBarWidget extends StatelessWidget {
       actions: [
         Padding(
             padding: EdgeInsets.only(right: 30),
-            child: SvgPicture.asset("assets/icons/notification.svg"))
+            child: SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG))
       ],
     );
   }

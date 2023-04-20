@@ -77,7 +77,7 @@ class _SupportScreenState extends State<SupportScreen> {
                     _drawerKey.currentState!.openDrawer();
                   }
                 },
-                child: SvgPicture.asset("assets/icons/menu.svg"))),
+                child: SvgPicture.asset(ICONS.IC_MENU_SVG))),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(15),
@@ -92,9 +92,9 @@ class _SupportScreenState extends State<SupportScreen> {
                     BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
                         builder: (context, state) {
                   if (state is NotificationNeedRead) {
-                    return SvgPicture.asset("assets/icons/notification.svg");
+                    return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
                   } else {
-                    return SvgPicture.asset("assets/icons/notification2.svg");
+                    return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
                   }
                 }),
               ))
@@ -130,8 +130,8 @@ class _SupportScreenState extends State<SupportScreen> {
                     search = text;
                   },
                   leadIcon:
-                      SvgPicture.asset("assets/icons/search_customer.svg"),
-                  endIcon: SvgPicture.asset("assets/icons/fill_customer.svg"),
+                      SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                  endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
                   onClickRight: () {
                     showBotomSheet(state.listFilter);
                   },
@@ -201,7 +201,7 @@ class _SupportScreenState extends State<SupportScreen> {
           if (data.customer?.name?.isNotEmpty ?? false) ...[
             Row(
               children: [
-                SvgPicture.asset("assets/icons/avatar_customer.svg"),
+                SvgPicture.asset(ICONS.IC_AVATAR_SVG),
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(left: AppValue.widths * 0.03),
@@ -223,7 +223,7 @@ class _SupportScreenState extends State<SupportScreen> {
             Row(
               children: [
                 SvgPicture.asset(
-                  "assets/icons/icon3svg",
+                  ICONS.IC_ICON3_SVG,
                   color: data.color != ""
                       ? HexColor(data.color!)
                       : COLORS.PRIMARY_COLOR,
@@ -246,7 +246,7 @@ class _SupportScreenState extends State<SupportScreen> {
           ],
           Row(
             children: [
-              SvgPicture.asset("assets/icons/icon4.svg"),
+              SvgPicture.asset(ICONS.IC_ICON4_SVG),
               Padding(
                 padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                 child: SizedBox(
@@ -260,7 +260,7 @@ class _SupportScreenState extends State<SupportScreen> {
                             fontSize: 14))),
               ),
               Spacer(),
-              SvgPicture.asset("assets/icons/question_answer.svg"),
+              SvgPicture.asset(ICONS.IC_QUESTION_SVG),
               SizedBox(
                 width: AppValue.widths * 0.01,
               ),
@@ -351,7 +351,7 @@ class _SupportScreenState extends State<SupportScreen> {
                                         // crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                            'assets/icons/Filter.svg',
+                                            ICONS.IC_FILTER_SVG,
                                             width: 20,
                                             height: 20,
                                             fit: BoxFit.contain,

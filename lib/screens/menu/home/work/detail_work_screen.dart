@@ -68,7 +68,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                 return WidgetDialog(
                   title: MESSAGES.NOTIFICATION,
                   content: "Thành công",
-                  textButton1: "OK",
+                  textButton1: MESSAGES.OKE,
                   backgroundButton1: COLORS.PRIMARY_COLOR,
                   onTap1: () {
                     Get.back();
@@ -259,7 +259,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                           width: AppValue.widths * 0.2,
                                         ),
                                         SvgPicture.asset(
-                                            "assets/icons/adddiscuss.svg"),
+                                            ICONS.IC_ADD_DISCUSS_SVG),
                                         SizedBox(
                                           width: AppValue.widths * 0.1,
                                         ),
@@ -298,7 +298,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                           width: AppValue.widths * 0.2,
                                         ),
                                         SvgPicture.asset(
-                                            'assets/icons/attack.svg'),
+                                            ICONS.IC_INPUT_SVG),
                                         SizedBox(
                                           width: AppValue.widths * 0.1,
                                         ),
@@ -321,7 +321,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                           width: AppValue.widths * 0.2,
                                         ),
                                         SvgPicture.asset(
-                                            "assets/icons/edit.svg"),
+                                            ICONS.IC_EDIT_SVG),
                                         SizedBox(
                                           width: AppValue.widths * 0.1,
                                         ),
@@ -347,7 +347,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                           width: AppValue.widths * 0.2,
                                         ),
                                         SvgPicture.asset(
-                                            "assets/icons/delete.svg"),
+                                            ICONS.IC_DELETE_SVG),
                                         SizedBox(
                                           width: AppValue.widths * 0.1,
                                         ),

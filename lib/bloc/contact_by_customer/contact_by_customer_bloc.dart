@@ -1,16 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../api_resfull/user_repository.dart';
+import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/color.dart';
 import '../../src/messages.dart';
 import '../../src/models/model_generator/customer.dart';
-import '../../src/navigator.dart';
-import '../../widgets/widget_dialog.dart';
 
 part 'contact_by_customer_event.dart';
 part 'contact_by_customer_state.dart';
@@ -18,6 +15,8 @@ part 'contact_by_customer_state.dart';
 class ContactByCustomerBloc
     extends Bloc<ContactByCustomerEvent, ContactByCustomerState> {
   final UserRepository userRepository;
+  List<CustomerData>? listCus;
+  BehaviorSubject<List<List<dynamic>>> listXe = BehaviorSubject.seeded([]);
 
   ContactByCustomerBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -36,9 +35,6 @@ class ContactByCustomerBloc
     }
   }
 
-  List<CustomerData>? listCus;
-  BehaviorSubject<List<List<dynamic>>> listXe = BehaviorSubject.seeded([]);
-
   Future<void> getXe(String id) async {
     final res = await userRepository.getXe(id: id);
     if ((res.code == BASE_URL.SUCCESS) || (res.code == BASE_URL.SUCCESS_200)) {
@@ -55,15 +51,7 @@ class ContactByCustomerBloc
           (response.code == BASE_URL.SUCCESS_200)) {
         yield UpdateGetContacBytCustomerState(response.data!);
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else
         yield ErrorGetContactByCustomerState(response.msg ?? '');
     } catch (e) {
@@ -83,15 +71,7 @@ class ContactByCustomerBloc
           (response.code == BASE_URL.SUCCESS_200)) {
         success(response);
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else
         yield ErrorGetContactByCustomerState(response.msg ?? '');
     } catch (e) {

@@ -24,7 +24,7 @@ class _ClueCardWidgetState extends State<ClueCardWidget> {
         children: [
           Row(
             children: [
-              SvgPicture.asset("assets/icons/avatar_customer.svg"),
+              SvgPicture.asset(ICONS.IC_AVATAR_SVG),
               Padding(
                 padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                 child: WidgetText(
@@ -50,7 +50,7 @@ class _ClueCardWidgetState extends State<ClueCardWidget> {
               },
               child: Row(
                 children: [
-                  SvgPicture.asset("assets/icons/mail_customer.svg"),
+                  SvgPicture.asset(ICONS.IC_MAIL_CUSTOMER_SVG),
                   Padding(
                     padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                     child: SizedBox(
@@ -81,7 +81,7 @@ class _ClueCardWidgetState extends State<ClueCardWidget> {
                   },
                   child: Row(
                     children: [
-                      SvgPicture.asset("assets/icons/phone_customer.svg"),
+                      SvgPicture.asset(ICONS.IC_PHONE_CUSTOMER_SVG),
                       Padding(
                         padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                         child: SizedBox(
@@ -95,7 +95,7 @@ class _ClueCardWidgetState extends State<ClueCardWidget> {
                   ),
                 ),
                 Spacer(),
-                SvgPicture.asset("assets/icons/question_answer.svg"),
+                SvgPicture.asset(ICONS.IC_QUESTION_SVG),
                 SizedBox(
                   width: AppValue.widths * 0.01,
                 ),

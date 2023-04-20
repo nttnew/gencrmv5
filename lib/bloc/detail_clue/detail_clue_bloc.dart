@@ -3,14 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/api_resfull/api.dart';
 import 'package:gen_crm/src/models/model_generator/clue_detail.dart';
-import 'package:get/get.dart';
-
+import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/color.dart';
 import '../../src/messages.dart';
-import '../../src/navigator.dart';
 import '../../widgets/loading_api.dart';
-import '../../widgets/widget_dialog.dart';
 
 part 'detail_clue_event.dart';
 
@@ -49,15 +45,7 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
     } catch (e) {
       yield ErrorGetDetailClueState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      Get.dialog(WidgetDialog(
-        title: MESSAGES.NOTIFICATION,
-        content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-        textButton1: "OK",
-        backgroundButton1: COLORS.PRIMARY_COLOR,
-        onTap1: () {
-          AppNavigator.navigateLogout();
-        },
-      ));
+      loginSessionExpired();
       throw (e);
     }
     LoadingApi().popLoading();
@@ -74,21 +62,12 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
       } else {
         yield ErrorDeleteClueState(responseDetailClue.msg ?? '');
         LoadingApi().popLoading();
-        // yield ErrorGetDetailClueState("${responseDetailClue.msg ?? ''}"+" "+ "${responseListNoteClue.msg ?? ''}");
         yield ErrorDeleteClueState("${responseDetailClue.msg ?? ''}");
       }
     } catch (e) {
       yield ErrorDeleteClueState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      Get.dialog(WidgetDialog(
-        title: MESSAGES.NOTIFICATION,
-        content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-        textButton1: "OK",
-        backgroundButton1: COLORS.PRIMARY_COLOR,
-        onTap1: () {
-          AppNavigator.navigateLogout();
-        },
-      ));
+      loginSessionExpired();
       throw (e);
     }
     LoadingApi().popLoading();

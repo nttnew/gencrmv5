@@ -2,22 +2,19 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
-import 'package:get/get.dart';
-
 import '../../api_resfull/user_repository.dart';
+import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/color.dart';
 import '../../src/messages.dart';
 import '../../src/models/model_generator/contract.dart';
 import '../../src/models/model_generator/customer.dart';
-import '../../src/navigator.dart';
-import '../../widgets/widget_dialog.dart';
 
 part 'contract_event.dart';
 part 'contract_state.dart';
 
 class ContractBloc extends Bloc<ContractEvent, ContractState> {
   final UserRepository userRepository;
+  List<ContractItemData>? list;
 
   ContractBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -33,8 +30,6 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
           isLoadMore: event.isLoadMore);
     }
   }
-
-  List<ContractItemData>? list;
 
   Stream<ContractState> _getListContract(
       {required String filter,
@@ -58,28 +53,12 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
               list!, response.data.total!, response.data.filter!);
         }
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else
         yield ErrorGetContractState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      Get.dialog(WidgetDialog(
-        title: MESSAGES.NOTIFICATION,
-        content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-        textButton1: "OK",
-        backgroundButton1: COLORS.PRIMARY_COLOR,
-        onTap1: () {
-          AppNavigator.navigateLogout();
-        },
-      ));
+      loginSessionExpired();
       yield ErrorGetContractState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

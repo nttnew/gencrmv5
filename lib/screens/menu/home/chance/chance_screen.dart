@@ -68,7 +68,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
                     _drawerKey.currentState!.openDrawer();
                   }
                 },
-                child: Image.asset('assets/icons/Menu.png'),
+                child: Image.asset(ICONS.IC_MENU_PNG),
               ),
             ),
             right: GestureDetector(onTap: () {
@@ -77,9 +77,9 @@ class _ChanceScreenState extends State<ChanceScreen> {
                 BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
                     builder: (context, state) {
               if (state is NotificationNeedRead) {
-                return SvgPicture.asset("assets/icons/notification.svg");
+                return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
               } else {
-                return SvgPicture.asset("assets/icons/notification2.svg");
+                return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
               }
             })),
           ),
@@ -168,7 +168,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
                   height: 25,
                   width: 25,
                   child: SvgPicture.asset(
-                    'assets/icons/Search.svg',
+                    ICONS.IC_SEARCH2_SVG,
                     color: COLORS.GREY.withOpacity(0.5),
                   ),
                 )),
@@ -214,7 +214,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
                   child: Container(
                     height: 20,
                     width: 20,
-                    child: SvgPicture.asset('assets/icons/Filter.svg'),
+                    child: SvgPicture.asset(ICONS.IC_FILTER_SVG),
                   ),
                 ),
               ),
@@ -333,7 +333,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
                                       // crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         SvgPicture.asset(
-                                          'assets/icons/Filter.svg',
+                                          ICONS.IC_FILTER_SVG,
                                           width: 20,
                                           height: 20,
                                           fit: BoxFit.contain,

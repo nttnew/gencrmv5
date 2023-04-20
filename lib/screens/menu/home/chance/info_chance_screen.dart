@@ -53,7 +53,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                 return WidgetDialog(
                   title: MESSAGES.NOTIFICATION,
                   content: "Thành công",
-                  textButton1: "OK",
+                  textButton1: MESSAGES.OKE,
                   backgroundButton1: COLORS.PRIMARY_COLOR,
                   onTap1: () {
                     Get.back();
@@ -156,7 +156,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           AppValue.hSpaceLarge,
-                          Image.asset('assets/icons/hopdong.png'),
+                          Image.asset(ICONS.IC_HOP_DONG_PNG),
                           SizedBox(width: 10),
                           InkWell(
                               onTap: () {
@@ -175,7 +175,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           AppValue.hSpaceLarge,
-                          Image.asset('assets/icons/addWork.png'),
+                          Image.asset(ICONS.IC_WORK_PNG),
                           SizedBox(width: 10),
                           InkWell(
                               onTap: () {
@@ -200,7 +200,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             AppValue.hSpaceLarge,
-                            Image.asset('assets/icons/addContent.png'),
+                            Image.asset(ICONS.IC_CONTENT_PNG),
                             SizedBox(width: 10),
                             Text(
                               'Thêm thảo luận',
@@ -232,7 +232,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             AppValue.hSpaceLarge,
-                            SvgPicture.asset('assets/icons/attack.svg'),
+                            SvgPicture.asset(ICONS.IC_ATTACK_SVG),
                             SizedBox(width: 10),
                             Text(
                               'Xem đính kèm',
@@ -251,7 +251,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             AppValue.hSpaceLarge,
-                            Image.asset('assets/icons/edit.png'),
+                            Image.asset('ICONS.ICON_EDIT2'),
                             SizedBox(width: 10),
                             Text(
                               'Sửa',
@@ -272,7 +272,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             AppValue.hSpaceLarge,
-                            Image.asset('assets/icons/remove.png'),
+                            Image.asset(ICONS.IC_REMOVE_PNG),
                             SizedBox(width: 10),
                             Text(
                               'Xóa',
@@ -316,7 +316,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
         AppNavigator.navigateBack();
       },
       icon: Image.asset(
-        ICONS.ICON_BACK,
+        ICONS.IC_BACK_PNG,
         height: 28,
         width: 28,
         color: COLORS.BLACK,

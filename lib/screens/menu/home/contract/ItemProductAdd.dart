@@ -29,7 +29,7 @@ class _ItemProductAddState extends State<ItemProductAdd> {
       child: Row(
         children: [
           WidgetContainerImage(
-            image: 'assets/icons/iconCart.png',
+            image: ICONS.IC_CART_PNG,
             width: 25,
             height: 25,
             fit: BoxFit.contain,
