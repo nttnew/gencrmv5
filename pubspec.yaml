@@ -94,7 +94,7 @@ dependencies:
     git:
       url: https://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@github.com/tel4vn/flutter-pitel-voip.git
       ref: main
-  flutter_callkit_incoming: ^1.0.3+3
+#  flutter_callkit_incoming: ^1.0.3+3
   flutter_riverpod: ^2.3.4
 
 

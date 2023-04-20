@@ -14,6 +14,7 @@ import 'package:plugin_pitel/sip/sip_ua.dart';
 import '../../src/src_index.dart';
 import '../../widgets/action_button.dart';
 import '../../widgets/ripple_button.dart';
+import '../../widgets/ripple_logo.dart';
 import '../../widgets/widget_text.dart';
 import '../screen_main.dart';
 
@@ -251,6 +252,7 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
       case PitelCallStateEnum.UNMUTED:
       case PitelCallStateEnum.ACCEPTED:
       case PitelCallStateEnum.CONFIRMED:
+        calling = true;
         {
           basicActions.add(ActionButton(
             iconColor: Colors.black.withOpacity(0.6),
@@ -323,49 +325,17 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
     stackWidgets.addAll(
       [
         Positioned(
-          top: voiceonly ? 48 : 6,
+          top: voiceonly ? -48 : -6,
           left: 0,
           right: 0,
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Center(
-                    child: Padding(
-                        padding: EdgeInsets.all(6),
-                        child: WidgetText(
-                          title: 'VOICE CALL',
-                          style: AppStyle.DEFAULT_24,
-                        ))),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(6),
-                    child: WidgetText(
-                      title:
-                          '${(pitelCall.remoteIdentity?.length ?? 0) < 10 ? '0' + pitelCall.remoteIdentity.toString() : pitelCall.remoteIdentity}',
-                      style: AppStyle.DEFAULT_24
-                          .copyWith(fontSize: 32, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(6),
-                    child: WidgetText(
-                      title: _timeLabel,
-                      style:
-                          const TextStyle(fontSize: 14, color: Colors.black54),
-                    ),
-                  ),
-                )
-              ],
-            ),
+          child: RippleLogo(
+            pitelCall: pitelCall,
+            timeLabel: _timeLabel,
+            isCall: calling,
           ),
         ),
       ],
     );
-
     return Stack(
       children: stackWidgets,
     );
@@ -408,7 +378,7 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: pitelCall.isConnected && pitelCall.isHaveCall
           ? Container(
-              margin: EdgeInsets.all(36),
+              margin: EdgeInsets.all(40),
               child: _buildActionButtons(),
             )
           : const SizedBox(),

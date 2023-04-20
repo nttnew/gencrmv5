@@ -27,6 +27,7 @@ import 'package:plugin_pitel/sip/sip_ua.dart';
 
 import '../bloc/login/login_bloc.dart';
 import '../storages/share_local.dart';
+import '../widgets/ripple_logo.dart';
 import 'call_video/call_screen.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
 
@@ -571,11 +572,9 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                     }, child: BlocBuilder<GetListUnReadNotifiBloc,
                         UnReadListNotifiState>(builder: (context, state) {
                       if (state is NotificationNeedRead) {
-                        return SvgPicture.asset(
-                            ICONS.IC_NOTIFICATION_SVG);
+                        return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
                       } else {
-                        return SvgPicture.asset(
-                            ICONS.IC_NOTIFICATION2_SVG);
+                        return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
                       }
                     })),
                     left: GestureDetector(
@@ -604,11 +603,9 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                     }, child: BlocBuilder<GetListUnReadNotifiBloc,
                         UnReadListNotifiState>(builder: (context, state) {
                       if (state is NotificationNeedRead) {
-                        return SvgPicture.asset(
-                            ICONS.IC_NOTIFICATION_SVG);
+                        return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
                       } else {
-                        return SvgPicture.asset(
-                            ICONS.IC_NOTIFICATION2_SVG);
+                        return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
                       }
                     })),
                     left: GestureDetector(
@@ -645,7 +642,6 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                     // mainAxisExtent: 170
                   ),
                   itemBuilder: (context, index) {
-                    // List<ButtonMenuModel> list = [];
                     return _buildItemMenu(data: listMenu[index], index: index);
                   }),
               SizedBox(
