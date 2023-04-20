@@ -27,7 +27,6 @@ import 'package:plugin_pitel/sip/sip_ua.dart';
 
 import '../bloc/login/login_bloc.dart';
 import '../storages/share_local.dart';
-import '../widgets/ripple_logo.dart';
 import 'call_video/call_screen.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
 
@@ -639,7 +638,6 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                     crossAxisCount: 2,
                     crossAxisSpacing: 25,
                     mainAxisSpacing: 25,
-                    // mainAxisExtent: 170
                   ),
                   itemBuilder: (context, index) {
                     return _buildItemMenu(data: listMenu[index], index: index);
