@@ -86,27 +86,40 @@ class _AttachmentState extends State<Attachment> {
           },
         );
       } else {
-        pickIos();
+        pickFileDialog();
       }
     } else {
-      if (Platform.isIOS) {
-        pickIos();
-      } else {
-        pickFile();
-      }
+      pickFileDialog();
     }
   }
 
   void pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null && result.files.isNotEmpty) {
-      final filePicked = result.files.first;
-      listPickFile.add(File(filePicked.path!));
+      List<File> listFilePiker = handelListFile(result.files);
+      listPickFile.addAll(listFilePiker);
       setState(() {});
     }
   }
 
-  void pickIos() {
+  List<File> handelListFile(List<PlatformFile> files) {
+    final List<File> list = [];
+    for (final value in files) {
+      list.add(File(value.path!));
+    }
+    return list;
+  }
+
+  List<File> handelListImage(List<XFile> files) {
+    final List<File> list = [];
+    for (final value in files) {
+      list.add(File(value.path));
+    }
+    return list;
+  }
+
+  void pickFileDialog() {
     showCupertinoModalPopup(
         context: Get.context!,
         builder: (context) => CupertinoActionSheet(
@@ -120,9 +133,16 @@ class _AttachmentState extends State<Attachment> {
                   CupertinoActionSheetAction(
                     onPressed: () async {
                       Get.back();
-                      getImage();
+                      getImageCamera();
                     },
-                    child: Text('Chọn ảnh'),
+                    child: Text('Chụp ảnh mới'),
+                  ),
+                  CupertinoActionSheetAction(
+                    onPressed: () async {
+                      Get.back();
+                      getImageVideo();
+                    },
+                    child: Text('Quay video mới'),
                   ),
                   CupertinoActionSheetAction(
                     onPressed: () async {
@@ -130,19 +150,51 @@ class _AttachmentState extends State<Attachment> {
                       pickFile();
                     },
                     child: Text('Chọn file'),
-                  )
+                  ),
+                  CupertinoActionSheetAction(
+                    onPressed: () async {
+                      Get.back();
+                      getImage();
+                    },
+                    child: Text('Chọn ảnh có sẵn'),
+                  ),
                 ]));
   }
 
   Future getImage() async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final result = await ImagePicker().pickMultiImage();
+      if (result.isNotEmpty) {
+        List<File> listFilePiker = handelListImage(result);
+        listPickFile.addAll(listFilePiker);
+        setState(() {});
+      }
+    } on PlatformException catch (e) {
+      throw e;
+    }
+  }
 
-      if (image == null) return;
-      final imageTemp = File(image.path);
+  Future getImageCamera() async {
+    try {
+      final XFile? cameraVideo =
+          await ImagePicker().pickImage(source: ImageSource.camera);
+      if (cameraVideo != null) {
+        listPickFile.add(File(cameraVideo.path));
+        setState(() {});
+      }
+    } on PlatformException catch (e) {
+      throw e;
+    }
+  }
 
-      listPickFile.add(imageTemp);
-      setState(() {});
+  Future getImageVideo() async {
+    try {
+      final XFile? cameraVideo =
+          await ImagePicker().pickVideo(source: ImageSource.camera);
+      if (cameraVideo != null) {
+        listPickFile.add(File(cameraVideo.path));
+        setState(() {});
+      }
     } on PlatformException catch (e) {
       throw e;
     }
