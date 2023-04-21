@@ -153,6 +153,13 @@ class MESSAGES {
   static const String PHIEN_DANG_NHAP_HET =
       "Phiên đăng nhập hết hạn, hãy đăng nhập lại!";
   static const String OKE = "OK";
+  static const String HUY = "Huỷ";
+  static const String CHUP_ANH_MOI = "Chụp ảnh mới";
+  static const String QUAY_VIDEO_MOI = "Quay video mới";
+  static const String CHON_FILE = "Chọn file";
+  static const String CHON_ANH_CO_SAN = "Chọn ảnh có sẵn";
+  static const String DI_DEN_CAI_DAT = "Đi đến cài đặt";
+  static const String BAN_CHUA_CAP_QUYEN = "Bạn chưa cấp quyền truy cập vào ảnh?";
   static const String THONG_BAO_LOI = "Thông báo lỗi";
   static const String MOT_SO_LOI_KHONG_XAC_DINH = "Một số lỗi không xác định.";
 }

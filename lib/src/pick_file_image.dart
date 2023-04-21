@@ -61,7 +61,7 @@ Widget FileDinhKemUiBase(
                                     ));
                                   },
                                   child: WidgetContainerImage(
-                                    image: 'assets/icons/icon_delete.png',
+                                    image: ICONS.IC_DELETE_PNG,
                                     width: 20,
                                     height: 20,
                                     fit: BoxFit.contain,
@@ -161,7 +161,7 @@ Widget FileLuuBase(BuildContext context, Function() onTap) => Row(
                 }
               });
             },
-            child: SvgPicture.asset("assets/icons/attack.svg")),
+            child: SvgPicture.asset(ICONS.IC_ATTACK_SVG)),
         Spacer(),
         GestureDetector(
           onTap: () => onTap(),
@@ -174,9 +174,9 @@ Widget FileLuuBase(BuildContext context, Function() onTap) => Row(
                   borderRadius: BorderRadius.circular(20.5)),
               child: Center(
                   child: Text(
-                    "Lưu",
-                    style: TextStyle(color: Colors.white),
-                  )),
+                "Lưu",
+                style: TextStyle(color: Colors.white),
+              )),
             ),
           ),
         ),
@@ -191,9 +191,9 @@ Future<List<File>> onDinhKemBase(BuildContext context) async {
         builder: (BuildContext context) {
           return WidgetDialog(
             title: MESSAGES.NOTIFICATION,
-            content: 'Bạn chưa cấp quyền truy cập vào ảnh?',
-            textButton2: 'Đi đến cài đặt',
-            textButton1: 'Ok',
+            content: MESSAGES.BAN_CHUA_CAP_QUYEN,
+            textButton2: MESSAGES.DI_DEN_CAI_DAT,
+            textButton1: MESSAGES.OKE,
             onTap2: () {
               openAppSettings();
               Get.back();
@@ -231,7 +231,7 @@ Future<List<File>> pickFileDialog() async {
                     if (file != null) listFile.add(file);
                     Get.back();
                   },
-                  child: Text('Chụp ảnh mới'),
+                  child: Text(MESSAGES.CHUP_ANH_MOI),
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
@@ -239,7 +239,7 @@ Future<List<File>> pickFileDialog() async {
                     if (file != null) listFile.add(file);
                     Get.back();
                   },
-                  child: Text('Quay video mới'),
+                  child: Text(MESSAGES.QUAY_VIDEO_MOI),
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
@@ -247,7 +247,7 @@ Future<List<File>> pickFileDialog() async {
                     if (files != null) listFile.addAll(files);
                     Get.back();
                   },
-                  child: Text('Chọn file'),
+                  child: Text(MESSAGES.CHON_FILE),
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
@@ -255,7 +255,7 @@ Future<List<File>> pickFileDialog() async {
                     if (files != null) listFile.addAll(files);
                     Get.back();
                   },
-                  child: Text('Chọn ảnh có sẵn'),
+                  child: Text(MESSAGES.CHON_ANH_CO_SAN),
                 ),
               ]));
   return listFile;
