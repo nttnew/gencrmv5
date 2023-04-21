@@ -13,11 +13,9 @@ class PreviewImage extends StatefulWidget {
     Key? key,
     required this.file,
     this.isNetwork = false,
-    required this.module,
   }) : super(key: key);
   final File file;
   final bool isNetwork;
-  final String module;
 
   @override
   State<PreviewImage> createState() => _PreviewImageState();

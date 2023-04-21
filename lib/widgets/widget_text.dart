@@ -9,13 +9,18 @@ class WidgetText extends StatelessWidget {
   final int? maxLine;
   final TextOverflow? overflow;
 
-  WidgetText(
-      {this.title, this.style, this.textAlign, this.maxLine, this.overflow});
+  WidgetText({
+    this.title,
+    this.style,
+    this.textAlign,
+    this.maxLine,
+    this.overflow,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      title!,
+      title ?? '',
       textAlign: textAlign ?? textAlign,
       style: style ??
           AppStyle.DEFAULT_16.copyWith(

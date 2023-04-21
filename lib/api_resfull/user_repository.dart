@@ -618,37 +618,7 @@ class UserRepository {
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .editNoteSup({"id": id, "content": content, "noteid": noteId});
 
-  Future<BaseResponse> uploadFileCus(
-          {required String id, required File files}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .uploadFileCus(id, files);
-
-  Future<BaseResponse> uploadFileContact(
-          {required String id, required File files}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .uploadFileContact(id, files);
-
-  Future<BaseResponse> uploadFileOpp(
-          {required String id, required File files}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .uploadFileOpp(id, files);
-
-  Future<BaseResponse> uploadFileContract(
-          {required String id, required File files}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .uploadFileContract(id, files);
-
-  Future<BaseResponse> uploadFileJob(
-          {required String id, required File files}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .uploadFileJob(id, files);
-
-  Future<BaseResponse> uploadFileSupport(
-          {required String id, required File files}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .uploadFileSupport(id, files);
-
-  Future<BaseResponse> uploadMultiFileContract(
+  Future<BaseResponse> uploadMultiFileBase(
       {required String id,
       required List<File> files,
       required String module}) async {

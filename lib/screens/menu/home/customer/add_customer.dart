@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,12 +12,11 @@ import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:image_picker/image_picker.dart';
 import '../../../../models/widget_input_date.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
+import '../../../../src/pick_file_image.dart';
 import '../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-
 import '../../../../widgets/widgetFieldInputPercent.dart';
 import '../../../../widgets/widget_dialog.dart';
 import 'input_dropDown.dart';
@@ -34,13 +32,18 @@ class _AddCustomerState extends State<AddCustomer> {
   List data = [];
   List<ModelItemAdd> addData = [];
   late StreamSubscription<bool> keyboardSubscription;
-  File? fileUpload;
 
   @override
   void initState() {
     AttackBloc.of(context).add(LoadingAttackEvent());
     AddCustomerBloc.of(context).add(InitGetAddCustomerEvent(1));
     super.initState();
+  }
+
+  @override
+  void deactivate() {
+    AttackBloc.of(context).add(RemoveAllAttackEvent());
+    super.deactivate();
   }
 
   @override
@@ -237,68 +240,10 @@ class _AddCustomerState extends State<AddCustomer> {
                                   ],
                                 )),
                       ),
-                      BlocBuilder<AttackBloc, AttackState>(
-                          builder: (context, state) {
-                        if (state is SuccessAttackState) if (state.file != null)
-                          return Container(
-                              margin: EdgeInsets.symmetric(vertical: 8),
-                              width: Get.width,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: WidgetText(
-                                      title: state.file!.path.split("/").last,
-                                      style: AppStyle.DEFAULT_14,
-                                      maxLine: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      fileUpload = null;
-                                      AttackBloc.of(context)
-                                          .add(InitAttackEvent());
-                                    },
-                                    child: WidgetContainerImage(
-                                      image: 'assets/icons/icon_delete.png',
-                                      width: 20,
-                                      height: 20,
-                                      fit: BoxFit.contain,
-                                    ),
-                                  )
-                                ],
-                              ));
-                        else
-                          return Container();
-                        else
-                          return Container();
-                      }),
-                      Row(
-                        children: [
-                          GestureDetector(
-                              onTap: this.onDinhKem,
-                              child:
-                                  SvgPicture.asset("assets/icons/attack.svg")),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: this.onClickSave,
-                            child: Container(
-                              height: AppValue.widths * 0.1,
-                              width: AppValue.widths * 0.25,
-                              decoration: BoxDecoration(
-                                  color: HexColor("#F1A400"),
-                                  borderRadius: BorderRadius.circular(20.5)),
-                              child: Center(
-                                  child: Text(
-                                "Lưu",
-                                style: TextStyle(color: Colors.white),
-                              )),
-                            ),
-                          ),
-                        ],
-                      )
+                      FileDinhKemUiBase(
+                        context: context,
+                        onTap: () => onClickSave(),
+                      ),
                     ],
                   );
                 } else
@@ -584,20 +529,8 @@ class _AddCustomerState extends State<AddCustomer> {
         },
       );
     } else {
-      GetListCustomerBloc.of(context)
-          .add(AddCustomerIndividualEvent(data, files: fileUpload));
-    }
-  }
-
-  Future<void> onDinhKem() async {
-    ImagePicker picker = ImagePicker();
-    XFile? result = await picker.pickImage(
-        source: ImageSource.gallery, preferredCameraDevice: CameraDevice.rear);
-    if (result != null) {
-      fileUpload = File(result.path);
-      AttackBloc.of(context).add(InitAttackEvent(file: File(result.path)));
-    } else {
-      // User canceled the picker
+      GetListCustomerBloc.of(context).add(AddCustomerIndividualEvent(data,
+          files: AttackBloc.of(context).listFile));
     }
   }
 }

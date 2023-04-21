@@ -41,7 +41,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
   }
 
   Stream<AddDataState> _addCustomerOrganization(
-      Map<String, dynamic> data, File? files) async* {
+      Map<String, dynamic> data, List<File>? files) async* {
     LoadingApi().pushLoading();
     yield LoadingAddCustomerOrState();
     try {
@@ -49,8 +49,10 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         if (files != null) {
-          final responseUpload = await userRepository.uploadFileCus(
-              id: response.data!.id.toString(), files: files);
+          final responseUpload = await userRepository.uploadMultiFileBase(
+              id: response.data!.id.toString(),
+              files: files,
+              module: getURLModule(Module.KHACH_HANG));
           if ((responseUpload.code == BASE_URL.SUCCESS) ||
               (responseUpload.code == BASE_URL.SUCCESS_200)) {
             LoadingApi().popLoading();
@@ -75,7 +77,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
   }
 
   Stream<AddDataState> _editCustomer(
-      Map<String, dynamic> data, File? files) async* {
+      Map<String, dynamic> data, List<File>? files) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingEditCustomerState();
@@ -83,8 +85,10 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         if (files != null) {
-          final responseUpload = await userRepository.uploadFileCus(
-              id: response.idkh.toString(), files: files);
+          final responseUpload = await userRepository.uploadMultiFileBase(
+              id: response.idkh.toString(),
+              files: files,
+              module: getURLModule(Module.KHACH_HANG));
           if ((responseUpload.code == BASE_URL.SUCCESS) ||
               (responseUpload.code == BASE_URL.SUCCESS_200)) {
             LoadingApi().popLoading();
@@ -110,7 +114,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
   }
 
   Stream<AddDataState> _addContactCus(
-      Map<String, dynamic> data, File? files) async* {
+      Map<String, dynamic> data, List<File>? files) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingAddContactCustomerState();
@@ -118,8 +122,10 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         if (files != null) {
-          final responseUpload = await userRepository.uploadFileContact(
-              id: response.data!.id.toString(), files: files);
+          final responseUpload = await userRepository.uploadMultiFileBase(
+              id: response.data!.id.toString(),
+              files: files,
+              module: getURLModule(Module.DAU_MOI));
           if ((responseUpload.code == BASE_URL.SUCCESS) ||
               (responseUpload.code == BASE_URL.SUCCESS_200)) {
             LoadingApi().popLoading();
@@ -145,7 +151,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
   }
 
   Stream<AddDataState> _addOpportunity(
-      Map<String, dynamic> data, File? files) async* {
+      Map<String, dynamic> data, List<File>? files) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingAddContactCustomerState();
@@ -153,8 +159,10 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         if (files != null) {
-          final responseUpload = await userRepository.uploadFileOpp(
-              id: response.data!.id.toString(), files: files);
+          final responseUpload = await userRepository.uploadMultiFileBase(
+              id: response.data!.id.toString(),
+              files: files,
+              module: getURLModule(Module.CO_HOI_BH));
           if ((responseUpload.code == BASE_URL.SUCCESS) ||
               (responseUpload.code == BASE_URL.SUCCESS_200)) {
             LoadingApi().popLoading();
@@ -180,7 +188,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
   }
 
   Stream<AddDataState> _addContract(
-      Map<String, dynamic> data, File? files) async* {
+      Map<String, dynamic> data, List<File>? files) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingAddContactCustomerState();
@@ -188,8 +196,10 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         if (files != null) {
-          final responseUpload = await userRepository.uploadFileContract(
-              id: response.data!.id.toString(), files: files);
+          final responseUpload = await userRepository.uploadMultiFileBase(
+              id: response.data!.id.toString(),
+              files: files,
+              module: getURLModule(Module.HOP_DONG));
           if ((responseUpload.code == BASE_URL.SUCCESS) ||
               (responseUpload.code == BASE_URL.SUCCESS_200)) {
             LoadingApi().popLoading();
@@ -214,7 +224,8 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     LoadingApi().popLoading();
   }
 
-  Stream<AddDataState> _addJob(Map<String, dynamic> data, File? files) async* {
+  Stream<AddDataState> _addJob(
+      Map<String, dynamic> data, List<File>? files) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingAddContactCustomerState();
@@ -222,8 +233,11 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         if (files != null) {
-          final responseUpload = await userRepository.uploadFileJob(
-              id: response.data!.id.toString(), files: files);
+          final responseUpload = await userRepository.uploadMultiFileBase(
+            id: response.data!.id.toString(),
+            files: files,
+            module: getURLModule(Module.CONG_VIEC),
+          );
           if ((responseUpload.code == BASE_URL.SUCCESS) ||
               (responseUpload.code == BASE_URL.SUCCESS_200)) {
             LoadingApi().popLoading();
@@ -249,7 +263,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
   }
 
   Stream<AddDataState> _addSupport(
-      Map<String, dynamic> data, File? files) async* {
+      Map<String, dynamic> data, List<File>? files) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingAddContactCustomerState();
@@ -257,8 +271,10 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         if (files != null) {
-          final responseUpload = await userRepository.uploadFileSupport(
-              id: response.data!.id.toString(), files: files);
+          final responseUpload = await userRepository.uploadMultiFileBase(
+              id: response.data!.id.toString(),
+              files: files,
+              module: getURLModule(Module.HO_TRO));
           if ((responseUpload.code == BASE_URL.SUCCESS) ||
               (responseUpload.code == BASE_URL.SUCCESS_200)) {
             LoadingApi().popLoading();
@@ -283,7 +299,8 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     LoadingApi().popLoading();
   }
 
-  Stream<AddDataState> _editJob(Map<String, dynamic> data, File? files) async* {
+  Stream<AddDataState> _editJob(
+      Map<String, dynamic> data, List<File>? files) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingAddContactCustomerState();
@@ -291,8 +308,10 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         if (files != null) {
-          final responseUpload = await userRepository.uploadFileJob(
-              id: response.data!.id.toString(), files: files);
+          final responseUpload = await userRepository.uploadMultiFileBase(
+              id: response.data!.id.toString(),
+              files: files,
+              module: getURLModule(Module.CONG_VIEC));
           if ((responseUpload.code == BASE_URL.SUCCESS) ||
               (responseUpload.code == BASE_URL.SUCCESS_200)) {
             LoadingApi().popLoading();

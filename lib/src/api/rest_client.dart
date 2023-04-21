@@ -541,31 +541,7 @@ abstract class RestClient {
   @POST(BASE_URL.EDIT_NOTE_SUP)
   Future<BaseResponse> editNoteSup(@Body() Map<String, dynamic> data);
 
-  @POST(BASE_URL.UPLOAD_FILE_CUS)
-  Future<BaseResponse> uploadFileCus(
-      @Part(name: "main_id") String id, @Part(name: "files") File file);
-
-  @POST(BASE_URL.UPLOAD_FILE_CONTACT)
-  Future<BaseResponse> uploadFileContact(
-      @Part(name: "main_id") String id, @Part(name: "files") File file);
-
-  @POST(BASE_URL.UPLOAD_FILE_CONTRACT)
-  Future<BaseResponse> uploadFileContract(
-      @Part(name: "main_id") String id, @Part(name: "files") File file);
-
-  @POST(BASE_URL.UPLOAD_FILE_JOB)
-  Future<BaseResponse> uploadFileJob(
-      @Part(name: "main_id") String id, @Part(name: "files") File file);
-
-  @POST(BASE_URL.UPLOAD_FILE_OPP)
-  Future<BaseResponse> uploadFileOpp(
-      @Part(name: "main_id") String id, @Part(name: "files") File file);
-
-  @POST(BASE_URL.UPLOAD_FILE_SUPPORT)
-  Future<BaseResponse> uploadFileSupport(
-      @Part(name: "main_id") String id, @Part(name: "files") File file);
-
-  @POST('${BASE_URL.UPLOAD_FILE_START}{module}${BASE_URL.UPLOAD_FILE_END}')
+  @POST(BASE_URL.UPLOAD_FILE)
   @MultiPart()
   Future<BaseResponse> uploadMultiFileContract(
     @Part(name: "main_id") String id,

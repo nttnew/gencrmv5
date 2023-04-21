@@ -7,9 +7,17 @@ abstract class AttackEvent extends Equatable {
 }
 
 class InitAttackEvent extends AttackEvent {
-  final File? file;
+  final List<File>? files;
 
-  InitAttackEvent({this.file});
+  InitAttackEvent({this.files});
 }
+
+class RemoveAttackEvent extends AttackEvent {
+  final File file;
+
+  RemoveAttackEvent({required this.file});
+}
+
+class RemoveAllAttackEvent extends AttackEvent {}
 
 class LoadingAttackEvent extends AttackEvent {}

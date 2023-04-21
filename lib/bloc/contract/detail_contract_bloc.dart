@@ -131,7 +131,7 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
 
   Future<bool?> uploadFile(
       String id, List<File> listFile, String module) async {
-    final responseUpload = await userRepository.uploadMultiFileContract(
+    final responseUpload = await userRepository.uploadMultiFileBase(
       id: id,
       files: listFile,
       module: module,

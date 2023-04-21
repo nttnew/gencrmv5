@@ -9,15 +9,12 @@ import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/contract/phone_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
-import 'package:gen_crm/models/model_data_add.dart';
 import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/menu/home/customer/input_dropDown.dart';
 import 'package:gen_crm/widgets/widgetFieldInputPercent.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../../src/src_index.dart';
@@ -39,9 +36,11 @@ import '../../../../bloc/support_contract_bloc/support_contract_bloc.dart';
 import '../../../../bloc/support_customer/support_customer_bloc.dart';
 import '../../../../bloc/work/work_bloc.dart';
 import '../../../../bloc/work_clue/work_clue_bloc.dart';
+import '../../../../models/model_data_add.dart';
 import '../../../../models/widget_input_date.dart';
 
 import '../../../../src/models/model_generator/login_response.dart';
+import '../../../../src/pick_file_image.dart';
 import '../../../../storages/share_local.dart';
 
 class FormAddData extends StatefulWidget {
@@ -152,6 +151,12 @@ class _FormAddDataState extends State<FormAddData> {
     scrollController.dispose();
     isMaxScroll.close();
     super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    AttackBloc.of(context).add(RemoveAllAttackEvent());
+    super.deactivate();
   }
 
   @override
@@ -464,51 +469,8 @@ class _FormAddDataState extends State<FormAddData> {
                                           )
                                         : Container()),
                           ),
-                          BlocBuilder<AttackBloc, AttackState>(
-                              builder: (context, state) {
-                            if (state is SuccessAttackState) if (state.file !=
-                                null) {
-                              WidgetsBinding.instance
-                                  .addPostFrameCallback((timeStamp) {
-                                scrollController.jumpToBottom();
-                              });
-
-                              return Container(
-                                  margin: EdgeInsets.symmetric(vertical: 8),
-                                  width: Get.width,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: WidgetText(
-                                          title:
-                                              state.file!.path.split("/").last,
-                                          style: AppStyle.DEFAULT_14,
-                                          maxLine: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          fileUpload = null;
-                                          AttackBloc.of(context)
-                                              .add(InitAttackEvent());
-                                        },
-                                        child: WidgetContainerImage(
-                                          image: 'assets/icons/icon_delete.png',
-                                          width: 20,
-                                          height: 20,
-                                          fit: BoxFit.contain,
-                                        ),
-                                      )
-                                    ],
-                                  ));
-                            } else
-                              return Container();
-                            else
-                              return Container();
-                          }),
+                          FileDinhKemUiBase(
+                              context: context, onTap: () {}, isSave: false),
                           SizedBox(
                             height: AppValue.widths * 0.1 + 10,
                           )
@@ -536,32 +498,7 @@ class _FormAddDataState extends State<FormAddData> {
                         left: AppValue.widths * 0.05,
                         right: AppValue.widths * 0.05,
                         bottom: 5),
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                            onTap: this.onDinhKem,
-                            child: SvgPicture.asset("assets/icons/attack.svg")),
-                        Spacer(),
-                        GestureDetector(
-                          onTap: this.onClickSave,
-                          child: Material(
-                            color: Colors.white,
-                            child: Container(
-                              height: AppValue.widths * 0.1,
-                              width: AppValue.widths * 0.25,
-                              decoration: BoxDecoration(
-                                  color: HexColor("#F1A400"),
-                                  borderRadius: BorderRadius.circular(20.5)),
-                              child: Center(
-                                  child: Text(
-                                "Lưu",
-                                style: TextStyle(color: Colors.white),
-                              )),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    child:FileLuuBase(context, () => onClickSave()),
                   ),
                 );
               }),
@@ -858,66 +795,64 @@ class _FormAddDataState extends State<FormAddData> {
       );
     } else {
       if (type == 1) {
-        AddDataBloc.of(context)
-            .add(AddCustomerOrEvent(data, files: fileUpload));
+        AddDataBloc.of(context).add(
+            AddCustomerOrEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 11) {
         data["customer_id"] = Get.arguments[2];
-        AddDataBloc.of(context)
-            .add(AddContactCustomerEvent(data, files: fileUpload));
+        AddDataBloc.of(context).add(AddContactCustomerEvent(data,
+            files: AttackBloc.of(context).listFile));
       } else if (type == 12) {
         data["customer_id"] = Get.arguments[2];
-        AddDataBloc.of(context)
-            .add(AddOpportunityEvent(data, files: fileUpload));
+        AddDataBloc.of(context).add(
+            AddOpportunityEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 13) {
         data["customer_id"] = Get.arguments[2];
-        AddDataBloc.of(context).add(AddContractEvent(data, files: fileUpload));
+        AddDataBloc.of(context).add(
+            AddContractEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 14) {
         data["customer_id"] = Get.arguments[2];
-        AddDataBloc.of(context).add(AddJobEvent(data, files: fileUpload));
+        AddDataBloc.of(context)
+            .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 15) {
         data["customer_id"] = Get.arguments[2];
         data["nguoi_xu_lht"] = id_user;
-        AddDataBloc.of(context).add(AddSupportEvent(data, files: fileUpload));
+        AddDataBloc.of(context)
+            .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 2) {
-        AddDataBloc.of(context)
-            .add(AddContactCustomerEvent(data, files: fileUpload));
+        AddDataBloc.of(context).add(AddContactCustomerEvent(data,
+            files: AttackBloc.of(context).listFile));
       } else if (type == 3) {
-        AddDataBloc.of(context)
-            .add(AddOpportunityEvent(data, files: fileUpload));
+        AddDataBloc.of(context).add(
+            AddOpportunityEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 4) {
         data["customer_id"] = Get.arguments[2];
-        AddDataBloc.of(context).add(AddContractEvent(data, files: fileUpload));
+        AddDataBloc.of(context).add(
+            AddContractEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 5) {
-        AddDataBloc.of(context).add(AddJobEvent(data, files: fileUpload));
+        AddDataBloc.of(context)
+            .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 6) {
         data["nguoi_xu_lht"] = id_user;
-        AddDataBloc.of(context).add(AddSupportEvent(data, files: fileUpload));
+        AddDataBloc.of(context)
+            .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 21) {
         data["daumoi_id"] = Get.arguments[2].toString();
-        AddDataBloc.of(context).add(AddJobEvent(data, files: fileUpload));
+        AddDataBloc.of(context)
+            .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 31) {
         data["cohoi_id"] = Get.arguments[2].toString();
-        AddDataBloc.of(context).add(AddJobEvent(data, files: fileUpload));
+        AddDataBloc.of(context)
+            .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 41) {
         data["hopdong_id"] = Get.arguments[2].toString();
         data["nguoi_xu_lht"] = id_user;
-        AddDataBloc.of(context).add(AddSupportEvent(data, files: fileUpload));
+        AddDataBloc.of(context)
+            .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 42) {
         data["hopdong_id"] = Get.arguments[2].toString();
-        AddDataBloc.of(context).add(AddJobEvent(data, files: fileUpload));
+        AddDataBloc.of(context)
+            .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
       }
-    }
-  }
-
-  Future<void> onDinhKem() async {
-    ImagePicker picker = ImagePicker();
-    XFile? result = await picker.pickImage(
-        source: ImageSource.gallery, preferredCameraDevice: CameraDevice.rear);
-    if (result != null) {
-      fileUpload = File(result.path);
-      AttackBloc.of(context).add(InitAttackEvent(file: File(result.path)));
-    } else {
-      // User canceled the picker
     }
   }
 }

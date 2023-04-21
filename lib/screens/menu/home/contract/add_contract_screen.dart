@@ -1,10 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import 'package:gen_crm/bloc/contract/phone_bloc.dart';
@@ -18,20 +15,17 @@ import 'package:gen_crm/screens/menu/home/contract/widget_total_sum.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:image_picker/image_picker.dart';
 import '../../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-
 import '../../../../../../../widgets/widget_dialog.dart';
-
 import '../../../../bloc/contract/attack_bloc.dart';
 import '../../../../bloc/contract/contract_bloc.dart';
 import '../../../../bloc/contract_customer/contract_customer_bloc.dart';
 import '../../../../models/product_model.dart';
 import '../../../../models/widget_input_date.dart';
-
 import '../../../../src/models/model_generator/login_response.dart';
+import '../../../../src/pick_file_image.dart';
 import '../../../../storages/share_local.dart';
 import '../../../../widgets/widgetFieldInputPercent.dart';
 import '../customer/add_customer.dart';
@@ -50,9 +44,9 @@ class _FormAddContractState extends State<FormAddContract> {
   late String id_user;
   List<ProductModel> listProduct = [];
   List<List<dynamic>> dauMoi = [];
-  File? fileUpload;
   double total = 0;
   TextEditingController value_contract_controller = TextEditingController();
+
   @override
   void initState() {
     loadUser();
@@ -72,9 +66,7 @@ class _FormAddContractState extends State<FormAddContract> {
   loadUser() async {
     final response = await shareLocal.getString(PreferencesKey.USER);
     if (response != null) {
-      // setState(() {
       id_user = LoginData.fromJson(jsonDecode(response)).info_user!.user_id!;
-      // });
     }
   }
 
@@ -123,6 +115,12 @@ class _FormAddContractState extends State<FormAddContract> {
     addData.clear();
     value_contract_controller.dispose();
     super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    AttackBloc.of(context).add(RemoveAllAttackEvent());
+    super.deactivate();
   }
 
   @override
@@ -232,7 +230,6 @@ class _FormAddContractState extends State<FormAddContract> {
                     for (int j = 0;
                         j < state.listAddData[i].data!.length;
                         j++) {
-                      // if(state.listAddData[i].data![j].field_type!="HIDDEN")
                       addData[i].data.add(ModelDataAdd(
                           label: state.listAddData[i].data![j].field_name,
                           value: state.listAddData[i].data![j].field_set_value
@@ -277,11 +274,13 @@ class _FormAddContractState extends State<FormAddContract> {
                                                 state.listAddData[index].data!
                                                     .length,
                                                 (index1) => (state
-                                                                .listAddData[index]
+                                                                .listAddData[
+                                                                    index]
                                                                 .data![index1]
                                                                 .field_special ==
                                                             "none-edit" &&
-                                                        state.listAddData[index].data![index1].field_id != '246')
+                                                        state.listAddData[index].data![index1].field_id !=
+                                                            '246')
                                                     ? (state.listAddData[index].data![index1].field_id == '774'
                                                         ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
                                                             if (stateA
@@ -305,11 +304,7 @@ class _FormAddContractState extends State<FormAddContract> {
                                                               return Container();
                                                           })
                                                         : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, noEdit: true))
-                                                    :
-                                                    // state.listAddData[index].data![index1].field_hidden == "1"
-                                                    //     ?
-                                                    // SizedBox() :
-                                                    state.listAddData[index].data![index1].field_special == "url"
+                                                    : state.listAddData[index].data![index1].field_special == "url"
                                                         ? ProductContract(
                                                             data: listProduct,
                                                             addProduct:
@@ -339,55 +334,39 @@ class _FormAddContractState extends State<FormAddContract> {
                                                                     else
                                                                       return Container();
                                                                   })
-                                                                :
-                                                    state.listAddData[index].data![index1].field_id == '12708'?
-                                                    StreamBuilder<List<List<dynamic>>>(
-                                                      stream: ContactByCustomerBloc.of(context).listXe,
-                                                      builder: (context, snapshot) {
-                                                        final list=snapshot.data ;
-                                                        return InputDropdown(
-                                                            isUpdateList: true,//todo
-                                                            dropdownItemList: list??state.listAddData[index].data![index1].field_datasource ?? [],
-                                                            data: state.listAddData[index].data![index1],
-                                                            onSuccess: (data) {
-                                                              addData[index]
-                                                                  .data[
-                                                              index1]
-                                                                  .value = data;
-                                                              if (state
-                                                                  .listAddData[index]
-                                                                  .data![index1]
-                                                                  .field_id ==
-                                                                  '246') {
-                                                                ContactByCustomerBloc.of(context)
-                                                                    .add(InitGetContactByCustomerrEvent(data));
-                                                                PhoneBloc.of(context)
-                                                                    .add(InitPhoneEvent(data));
-                                                              }
-                                                            },
-                                                            value: state.listAddData[index].data![index1].field_value ?? '');
-                                                      }
-                                                    ):
-                                                    InputDropdown(
-                                                                    dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
-                                                                    data: state.listAddData[index].data![index1],
-                                                                    onSuccess: (data) {
-                                                                      addData[index]
-                                                                          .data[
-                                                                              index1]
-                                                                          .value = data;
-                                                                      if (state
-                                                                              .listAddData[index]
-                                                                              .data![index1]
-                                                                              .field_id ==
-                                                                          '246') {
-                                                                        ContactByCustomerBloc.of(context)
-                                                                            .add(InitGetContactByCustomerrEvent(data));
-                                                                        PhoneBloc.of(context)
-                                                                            .add(InitPhoneEvent(data));
-                                                                      }
-                                                                    },
-                                                                    value: state.listAddData[index].data![index1].field_value ?? ''))
+                                                                : state.listAddData[index].data![index1].field_id == '12708'
+                                                                    ? StreamBuilder<List<List<dynamic>>>(
+                                                                        stream: ContactByCustomerBloc.of(context).listXe,
+                                                                        builder: (context, snapshot) {
+                                                                          final list =
+                                                                              snapshot.data;
+                                                                          return InputDropdown(
+                                                                              isUpdateList: true,
+                                                                              dropdownItemList: list ?? state.listAddData[index].data![index1].field_datasource ?? [],
+                                                                              data: state.listAddData[index].data![index1],
+                                                                              onSuccess: (data) {
+                                                                                addData[index].data[index1].value = data;
+                                                                                if (state.listAddData[index].data![index1].field_id == '246') {
+                                                                                  ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
+                                                                                  PhoneBloc.of(context).add(InitPhoneEvent(data));
+                                                                                }
+                                                                              },
+                                                                              value: state.listAddData[index].data![index1].field_value ?? '');
+                                                                        })
+                                                                    : InputDropdown(
+                                                                        dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
+                                                                        data: state.listAddData[index].data![index1],
+                                                                        onSuccess: (data) {
+                                                                          addData[index]
+                                                                              .data[index1]
+                                                                              .value = data;
+                                                                          if (state.listAddData[index].data![index1].field_id ==
+                                                                              '246') {
+                                                                            ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
+                                                                            PhoneBloc.of(context).add(InitPhoneEvent(data));
+                                                                          }
+                                                                        },
+                                                                        value: state.listAddData[index].data![index1].field_value ?? ''))
                                                             : state.listAddData[index].data![index1].field_type == "TEXT_MULTI"
                                                                 ? _fieldInputTextMulti(state.listAddData[index].data![index1].field_datasource!, state.listAddData[index].data![index1].field_label!, state.listAddData[index].data![index1].field_require!, index, index1, (state.listAddData[index].data![index1].field_set_value_datasource != "" && state.listAddData[index].data![index1].field_set_value_datasource != null) ? state.listAddData[index].data![index1].field_set_value_datasource![0][0].toString() : "", state.listAddData[index].data![index1].field_maxlength ?? '')
                                                                 : state.listAddData[index].data![index1].field_type == "HIDDEN"
@@ -434,68 +413,10 @@ class _FormAddContractState extends State<FormAddContract> {
                                       )
                                     : Container()),
                       ),
-                      BlocBuilder<AttackBloc, AttackState>(
-                          builder: (context, state) {
-                        if (state is SuccessAttackState) if (state.file != null)
-                          return Container(
-                              margin: EdgeInsets.symmetric(vertical: 8),
-                              width: Get.width,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: WidgetText(
-                                      title: state.file!.path.split("/").last,
-                                      style: AppStyle.DEFAULT_14,
-                                      maxLine: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      fileUpload = null;
-                                      AttackBloc.of(context)
-                                          .add(InitAttackEvent());
-                                    },
-                                    child: WidgetContainerImage(
-                                      image: 'assets/icons/icon_delete.png',
-                                      width: 20,
-                                      height: 20,
-                                      fit: BoxFit.contain,
-                                    ),
-                                  )
-                                ],
-                              ));
-                        else
-                          return Container();
-                        else
-                          return Container();
-                      }),
-                      Row(
-                        children: [
-                          GestureDetector(
-                              onTap: this.onDinhKem,
-                              child:
-                                  SvgPicture.asset("assets/icons/attack.svg")),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: this.onClickSave,
-                            child: Container(
-                              height: AppValue.widths * 0.1,
-                              width: AppValue.widths * 0.25,
-                              decoration: BoxDecoration(
-                                  color: HexColor("#F1A400"),
-                                  borderRadius: BorderRadius.circular(20.5)),
-                              child: Center(
-                                  child: Text(
-                                "Lưu",
-                                style: TextStyle(color: Colors.white),
-                              )),
-                            ),
-                          ),
-                        ],
-                      )
+                      FileDinhKemUiBase(
+                        context: context,
+                        onTap: () => onClickSave(),
+                      ),
                     ],
                   );
                 } else
@@ -815,19 +736,8 @@ class _FormAddContractState extends State<FormAddContract> {
       }
       data['col311'] =
           data['col311'] != '' ? double.parse(data['col311']).toInt() : '';
-      AddDataBloc.of(context).add(AddContractEvent(data, files: fileUpload));
-    }
-  }
-
-  Future<void> onDinhKem() async {
-    ImagePicker picker = ImagePicker();
-    XFile? result = await picker.pickImage(
-        source: ImageSource.gallery, preferredCameraDevice: CameraDevice.rear);
-    if (result != null) {
-      fileUpload = File(result.path);
-      AttackBloc.of(context).add(InitAttackEvent(file: File(result.path)));
-    } else {
-      // User canceled the picker
+      AddDataBloc.of(context)
+          .add(AddContractEvent(data, files: AttackBloc.of(context).listFile));
     }
   }
 }
