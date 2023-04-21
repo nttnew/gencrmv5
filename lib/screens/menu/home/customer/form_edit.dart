@@ -13,7 +13,6 @@ import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../api_resfull/user_repository.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
@@ -27,6 +26,7 @@ import '../../../../bloc/work/detail_work_bloc.dart';
 import '../../../../bloc/work/work_bloc.dart';
 import '../../../../models/widget_input_date.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
+import '../../../../src/pick_file_image.dart';
 import '../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
@@ -90,6 +90,12 @@ class _FormEditState extends State<FormEdit> {
     scrollController.dispose();
     isMaxScroll.close();
     super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    AttackBloc.of(context).add(RemoveAllAttackEvent());
+    super.deactivate();
   }
 
   void scrollHandle() {
@@ -500,7 +506,7 @@ class _FormEditState extends State<FormEdit> {
                                                                             },
                                                                           )
                                                                         : state.listEditData[index].data![index1].field_type == "CHECK"
-                                                                            ? renderCheckBox(
+                                                                            ? RenderCheckBox(
                                                                                 onChange: (check) {
                                                                                   addData[index].data[index1].value = check ? 1 : 0;
                                                                                 },
@@ -520,46 +526,8 @@ class _FormEditState extends State<FormEdit> {
                                       ],
                                     )),
                           ),
-                          BlocBuilder<AttackBloc, AttackState>(
-                              builder: (context, state) {
-                            if (state is SuccessAttackState) if (state.file !=
-                                null)
-                              return Container(
-                                  margin: EdgeInsets.symmetric(vertical: 8),
-                                  width: Get.width,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: WidgetText(
-                                          title:
-                                              state.file!.path.split("/").last,
-                                          style: AppStyle.DEFAULT_14,
-                                          maxLine: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          fileUpload = null;
-                                          AttackBloc.of(context)
-                                              .add(InitAttackEvent());
-                                        },
-                                        child: WidgetContainerImage(
-                                          image: ICONS.IC_DELETE_PNG,
-                                          width: 20,
-                                          height: 20,
-                                          fit: BoxFit.contain,
-                                        ),
-                                      )
-                                    ],
-                                  ));
-                            else
-                              return Container();
-                            else
-                              return Container();
-                          }),
+                          FileDinhKemUiBase(
+                              context: context, onTap: () {}, isSave: false),
                           SizedBox(
                             height: AppValue.widths * 0.1 + 10,
                           )
@@ -591,32 +559,7 @@ class _FormEditState extends State<FormEdit> {
                           left: AppValue.widths * 0.05,
                           right: AppValue.widths * 0.05,
                           bottom: 5),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: this.onDinhKem,
-                            child: SvgPicture.asset(ICONS.IC_ATTACK_SVG,),
-                          ),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: this.onClickSave,
-                            child: Material(
-                              child: Container(
-                                height: AppValue.widths * 0.1,
-                                width: AppValue.widths * 0.25,
-                                decoration: BoxDecoration(
-                                    color: HexColor("#F1A400"),
-                                    borderRadius: BorderRadius.circular(20.5)),
-                                child: Center(
-                                    child: Text(
-                                  "Lưu",
-                                  style: TextStyle(color: Colors.white),
-                                )),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: FileLuuBase(context, () => onClickSave()),
                     ),
                   );
                 }))
@@ -896,32 +839,24 @@ class _FormEditState extends State<FormEdit> {
     } else {
       data["id"] = id;
       if (type == 1) {
-        AddDataBloc.of(context).add(EditCustomerEvent(data, files: fileUpload));
+        AddDataBloc.of(context).add(
+            EditCustomerEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 2) {
-        AddDataBloc.of(context)
-            .add(AddContactCustomerEvent(data, files: fileUpload));
+        AddDataBloc.of(context).add(AddContactCustomerEvent(data,
+            files: AttackBloc.of(context).listFile));
       } else if (type == 3) {
-        AddDataBloc.of(context)
-            .add(AddOpportunityEvent(data, files: fileUpload));
+        AddDataBloc.of(context).add(
+            AddOpportunityEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 4) {
-        AddDataBloc.of(context).add(AddContractEvent(data, files: fileUpload));
+        AddDataBloc.of(context).add(
+            AddContractEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 5) {
-        AddDataBloc.of(context).add(EditJobEvent(data, files: fileUpload));
+        AddDataBloc.of(context)
+            .add(EditJobEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 6) {
-        AddDataBloc.of(context).add(AddSupportEvent(data, files: fileUpload));
+        AddDataBloc.of(context)
+            .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
       }
-    }
-  }
-
-  Future<void> onDinhKem() async {
-    ImagePicker picker = ImagePicker();
-    XFile? result = await picker.pickImage(
-        source: ImageSource.gallery, preferredCameraDevice: CameraDevice.rear);
-    if (result != null) {
-      fileUpload = File(result.path);
-      AttackBloc.of(context).add(InitAttackEvent(file: File(result.path)));
-    } else {
-      // User canceled the picker
     }
   }
 }
@@ -1107,18 +1042,18 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
   }
 }
 
-class renderCheckBox extends StatefulWidget {
-  renderCheckBox({Key? key, required this.onChange, required this.data})
+class RenderCheckBox extends StatefulWidget {
+  RenderCheckBox({Key? key, required this.onChange, required this.data})
       : super(key: key);
 
   Function? onChange;
   final CustomerIndividualItemData data;
 
   @override
-  State<renderCheckBox> createState() => _renderCheckBoxState();
+  State<RenderCheckBox> createState() => _RenderCheckBoxState();
 }
 
-class _renderCheckBoxState extends State<renderCheckBox> {
+class _RenderCheckBoxState extends State<RenderCheckBox> {
   bool isCheck = false;
 
   @override

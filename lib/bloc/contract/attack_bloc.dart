@@ -16,25 +16,36 @@ class AttackBloc extends Bloc<AttackEvent, AttackState> {
       : userRepository = userRepository,
         super(InitAttackState());
 
+  List<File> listFile = [];
+
   @override
   Stream<AttackState> mapEventToState(AttackEvent event) async* {
     if (event is InitAttackEvent) {
-      if (event.file != null)
-        yield* _getAttack(file: event.file);
-      else
+      if (event.files?.isNotEmpty ?? false) {
+        listFile.addAll(event.files ?? []);
+        yield* _getAttack(files: listFile);
+      } else
         yield* _getAttack();
+    }
+    if (event is RemoveAttackEvent) {
+      listFile.remove(event.file);
+      yield* _getAttack(files: listFile);
+    }
+    if (event is RemoveAllAttackEvent) {
+      listFile = [];
+      yield* _getAttack(files: []);
     }
     if (event is LoadingAttackEvent) {
       yield LoadingAttackState();
     }
   }
 
-  Stream<AttackState> _getAttack({File? file}) async* {
+  Stream<AttackState> _getAttack({List<File>? files}) async* {
     yield LoadingAttackState();
-    if (file == null) {
+    if (files == null) {
       yield SuccessAttackState();
     } else
-      yield SuccessAttackState(file: file);
+      yield SuccessAttackState(files: files);
   }
 
   static AttackBloc of(BuildContext context) =>

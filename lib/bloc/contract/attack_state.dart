@@ -9,10 +9,10 @@ abstract class AttackState extends Equatable {
 class InitAttackState extends AttackState {}
 
 class SuccessAttackState extends AttackState {
-  final File? file;
-  const SuccessAttackState({this.file});
+  final List<File>? files;
+  const SuccessAttackState({this.files});
   @override
-  List<Object> get props => [file!];
+  List<Object> get props => [files!];
 }
 
 class LoadingAttackState extends AttackState {}

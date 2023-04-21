@@ -133,16 +133,7 @@ class BASE_URL {
   static const DELETE_NOTE_SUP = 'modules/genmobile2/support/deleteNote';
   static const LIST_PRODUCT = 'modules/genmobile2/product/list_all';
   static const GET_PHONE_CUS = 'modules/genmobile2/customer/getPhone';
-  static const UPLOAD_FILE_CUS = 'modules/genmobile2/customer/fileupload';
-  static const UPLOAD_FILE_JOB = 'modules/genmobile2/job/fileupload';
-  static const UPLOAD_FILE_CONTRACT = 'modules/genmobile2/contract/fileupload';
-  static const UPLOAD_FILE_START = 'modules/genmobile2/';
-  static const UPLOAD_FILE_END = '/fileupload';
-
-  static const UPLOAD_FILE_CONTACT =
-      'modules/genmobile2/agencycustomer/fileupload';
-  static const UPLOAD_FILE_SUPPORT = 'modules/genmobile2/support/fileupload';
-  static const UPLOAD_FILE_OPP = 'modules/genmobile2/opportunity/fileupload';
+  static const UPLOAD_FILE= 'modules/genmobile2/{module}/fileupload';
   static const GET_FILE = 'modules/genmobile2/documents/list';
   static const DELETE_FILE = 'modules/genmobile2/documents/delete';
 

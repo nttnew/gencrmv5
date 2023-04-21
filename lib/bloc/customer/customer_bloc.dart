@@ -68,7 +68,7 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
   }
 
   Stream<CustomerState> _AddCustomerIndividual(
-      {required Map<String, dynamic> data, File? files}) async* {
+      {required Map<String, dynamic> data, List<File>? files}) async* {
     yield LoadingListCustomerState();
     LoadingApi().pushLoading();
     try {
@@ -77,8 +77,11 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         if (files != null) {
-          final responseUpload = await userRepository.uploadFileCus(
-              id: response.data!.id.toString(), files: files);
+          final responseUpload = await userRepository.uploadMultiFileBase(
+              id: response.data!.id.toString(),
+              files: files,
+              module: getURLModule(Module.KHACH_HANG)
+          );
           if ((responseUpload.code == BASE_URL.SUCCESS) ||
               (responseUpload.code == BASE_URL.SUCCESS_200)) {
             LoadingApi().popLoading();

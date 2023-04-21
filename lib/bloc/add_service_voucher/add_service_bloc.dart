@@ -285,7 +285,7 @@ class ServiceVoucherBloc
       if ((statusCode == BASE_URL.SUCCESS) ||
           (statusCode == BASE_URL.SUCCESS_200)) {
         if (listFileAllStream.valueOrNull?.isNotEmpty ?? false) {
-          final responseUpload = await userRepository.uploadMultiFileContract(
+          final responseUpload = await userRepository.uploadMultiFileBase(
               id: data['recordId'].toString(),
               files: listFileAllStream.value ?? [],
               module: getURLModule(Module.HOP_DONG));

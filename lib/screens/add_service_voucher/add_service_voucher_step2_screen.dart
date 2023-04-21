@@ -422,8 +422,6 @@ class _AddServiceVoucherStepTwoScreenState
                                                                       PreviewImage(
                                                                         file: _bloc
                                                                             .listImage[index],
-                                                                        module:
-                                                                            Module.HOP_DONG,
                                                                       )));
                                                     },
                                                     child: Container(
