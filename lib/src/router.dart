@@ -1,7 +1,6 @@
 // ignore: camel_case_types
 class ROUTE_NAMES {
   static const String SPLASH = '/splash';
-  static const String test = '/test';
   static const String LOGIN = '/login';
   static const String INTRO = '/intro';
 
@@ -40,6 +39,7 @@ class ROUTE_NAMES {
   static const String ADD_CLUE = '/add_clue';
   static const String CHANCE = '/chance';
   static const String REPORT = '/report';
+  static const String PRODUCT = '/product';
   static const String ADD_CHANCE = '/add_chance';
   static const String INFO_CHANCE = '/info_chance';
   static const String WORK = '/work';

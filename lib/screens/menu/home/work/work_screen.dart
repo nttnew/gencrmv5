@@ -11,6 +11,7 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import '../../../../src/app_const.dart';
 import '../../../../storages/share_local.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 
@@ -52,7 +53,7 @@ class _WorkScreenState extends State<WorkScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
-      drawer: MainDrawer(onPress: handleOnPressItemMenu),
+      drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff1AA928),
@@ -123,7 +124,7 @@ class _WorkScreenState extends State<WorkScreen> {
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                         color: HexColor("#707070")),
-                    hint: "Tìm công việc",
+                    hint: "Tìm ${title.toLowerCase()}",
                     onChanged: (text) {
                       search = text;
                     },
@@ -261,59 +262,5 @@ class _WorkScreenState extends State<WorkScreen> {
         });
   }
 
-  handleOnPressItemMenu(value) async {
-    switch (value['id']) {
-      case '1':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateMain();
-        break;
-      case 'opportunity':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChance(value['title']);
-        break;
-      case 'job':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateWork(value['title']);
-        break;
-      case 'contract':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateContract(value['title']);
-        break;
-      case 'support':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateSupport(value['title']);
-        break;
-      case 'customer':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateCustomer(value['title']);
-        break;
-      case 'contact':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateClue(value['title']);
-        break;
-      case 'report':
-        _drawerKey.currentState!.openEndDrawer();
-        String? money = await shareLocal.getString(PreferencesKey.MONEY);
-        AppNavigator.navigateReport(money ?? "đ");
-        break;
-      case '2':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateInformationAccount();
-        break;
-      case '3':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateAboutUs();
-        break;
-      case '4':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigatePolicy();
-        break;
-      case '5':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChangePassword();
-        break;
-      default:
-        break;
-    }
-  }
+
 }

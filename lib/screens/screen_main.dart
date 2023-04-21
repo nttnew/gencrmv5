@@ -26,7 +26,9 @@ import 'package:plugin_pitel/voip_push/voip_notif.dart';
 import 'package:plugin_pitel/sip/sip_ua.dart';
 
 import '../bloc/login/login_bloc.dart';
+import '../src/app_const.dart';
 import '../storages/share_local.dart';
+import '../widgets/item_menu.dart';
 import 'call_video/call_screen.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
 
@@ -127,118 +129,36 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
             }),
       );
     }
-
+    listMenu.add(
+      ButtonMenuModel(
+          title: 'Báo cáo',
+          image: ICONS.IC_WORK_3X_PNG,
+          backgroundColor: Color(0xff5D5FEF),
+          onTap: () async {
+            String? money = await shareLocal.getString(PreferencesKey.MONEY);
+            AppNavigator.navigateReport(money ?? "đ");
+          }),
+    );
+    listMenu.add(
+      ButtonMenuModel(
+          title: 'Sản phẩm',
+          image: ICONS.IC_WORK_3X_PNG,
+          backgroundColor: Color(0xff946b4c),
+          onTap: () {
+            AppNavigator.navigateProduct();
+          }),
+    );
     setState(() {});
   }
 
   _buildItemMenu({required ButtonMenuModel data, required int index}) {
     return GestureDetector(
       onTap: data.onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: data.backgroundColor,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Container(
-                child: Center(
-                  child: Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.white),
-                    child: WidgetContainerImage(
-                      image: data.image,
-                      fit: BoxFit.contain,
-                      width: 40,
-                      height: 40,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                child: Center(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Text(
-                      data.title,
-                      style: AppStyle.DEFAULT_12.copyWith(
-                          fontFamily: 'Roboto', fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
+      child: ItemMenu(data: data),
     );
   }
 
-  handleOnPressItemMenu(value) async {
-    switch (value['id']) {
-      case '1':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateMain();
-        break;
-      case 'opportunity':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChance(value['title']);
-        break;
-      case 'job':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateWork(value['title']);
-        break;
-      case 'contract':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateContract(value['title']);
-        break;
-      case 'support':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateSupport(value['title']);
-        break;
-      case 'customer':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateCustomer(value['title']);
-        break;
-      case 'contact':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateClue(value['title']);
-        break;
-      case 'report':
-        _drawerKey.currentState!.openEndDrawer();
-        String? money = await shareLocal.getString(PreferencesKey.MONEY);
-        AppNavigator.navigateReport(money ?? "đ");
-        break;
-      case '2':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateInformationAccount();
-        break;
-      case '3':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateAboutUs();
-        break;
-      case '4':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigatePolicy();
-        break;
-      case '5':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChangePassword();
-        break;
-      default:
-        break;
-    }
-  }
+
   //////////////////////
 
   @override
@@ -434,7 +354,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
-      drawer: MainDrawer(onPress: handleOnPressItemMenu),
+      drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
       floatingActionButton: LoginBloc.of(context).listMenuFlash.isNotEmpty
           ? FloatingActionButton(
               backgroundColor: Color(0xff1AA928),
@@ -645,54 +565,6 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
               SizedBox(
                 height: 25,
               ),
-              GestureDetector(
-                onTap: () async {
-                  String? money =
-                      await shareLocal.getString(PreferencesKey.MONEY);
-                  AppNavigator.navigateReport(money ?? "đ");
-                },
-                child: Container(
-                  width: AppValue.widths,
-                  height: AppValue.heights * 0.18,
-                  margin: EdgeInsets.only(
-                    // top: 20,
-                    left: 30,
-                    bottom: 25,
-                    right: 30,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Color(0xff5D5FEF),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 90,
-                        height: 90,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
-                        child: WidgetContainerImage(
-                          image: ICONS.IC_WORK_3X_PNG,
-                          fit: BoxFit.contain,
-                          width: 50,
-                          height: 50,
-                        ),
-                      ),
-                      AppValue.vSpaceTiny,
-                      Text(
-                        "Báo cáo",
-                        style: AppStyle.DEFAULT_24_BOLD.copyWith(
-                          fontFamily: 'Roboto',
-                          color: Colors.white,
-                          fontSize: 26,
-                          // fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              )
             ],
           ),
         ),

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,9 +8,9 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/customer.dart';
 import '../../../../src/src_index.dart';
-import '../../../../storages/share_local.dart';
 import '../../../../widgets/dialog_call.dart';
 import '../../../../widgets/widget_search.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
@@ -56,7 +55,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
-      drawer: MainDrawer(onPress: handleOnPressItemMenu),
+      drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff1AA928),
@@ -94,7 +93,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
         actions: [
           Padding(
               padding: EdgeInsets.only(right: 30),
-              child: InkWell(
+              child: GestureDetector(
                 onTap: () => AppNavigator.navigateNotification(),
                 child:
                     BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
@@ -130,8 +129,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                       fontWeight: FontWeight.w400,
                       color: HexColor("#707070")),
                   hint: "Tìm khách hàng",
-                  leadIcon:
-                      SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                  leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                   endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
                   onClickRight: () {
                     showBotomSheet(state.listFilter);
@@ -247,7 +245,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                         Row(
                                           children: [
                                             SvgPicture.asset(
-                                               ICONS.IC_LOCATION_PNG),
+                                                ICONS.IC_LOCATION_PNG),
                                             Padding(
                                               padding: EdgeInsets.only(
                                                   left: AppValue.widths * 0.03),
@@ -307,7 +305,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                                 child: Row(
                                                   children: [
                                                     SvgPicture.asset(
-                                                      ICONS.IC_MAIL_CUSTOMER_SVG,
+                                                      ICONS
+                                                          .IC_MAIL_CUSTOMER_SVG,
                                                       color: COLORS.GREY,
                                                     ),
                                                     Padding(
@@ -378,13 +377,12 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                                             );
                                                           },
                                                         );
-
                                                       }
                                                     },
                                                     child: Row(
                                                       children: [
-                                                        SvgPicture.asset(
-                                                            ICONS.IC_PHONE_CUSTOMER_SVG),
+                                                        SvgPicture.asset(ICONS
+                                                            .IC_PHONE_CUSTOMER_SVG),
                                                         Padding(
                                                           padding: EdgeInsets.only(
                                                               left: AppValue
@@ -477,62 +475,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
         ],
       ),
     );
-  }
-
-  handleOnPressItemMenu(value) async {
-    switch (value['id']) {
-      case '1':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateMain();
-        break;
-      case 'opportunity':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChance(value['title']);
-        break;
-      case 'job':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateWork(value['title']);
-        break;
-      case 'contract':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateContract(value['title']);
-        break;
-      case 'support':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateSupport(value['title']);
-        break;
-      case 'customer':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateCustomer(value['title']);
-        break;
-      case 'contact':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateClue(value['title']);
-        break;
-      case 'report':
-        _drawerKey.currentState!.openEndDrawer();
-        String? money = await shareLocal.getString(PreferencesKey.MONEY);
-        AppNavigator.navigateReport(money ?? "đ");
-        break;
-      case '2':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateInformationAccount();
-        break;
-      case '3':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateAboutUs();
-        break;
-      case '4':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigatePolicy();
-        break;
-      case '5':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChangePassword();
-        break;
-      default:
-        break;
-    }
   }
 
   showBotomSheet(List<FilterData> data) {

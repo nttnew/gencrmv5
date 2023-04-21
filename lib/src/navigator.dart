@@ -50,8 +50,6 @@ class AppNavigator {
 
   static navigateIntro() async => await Get.offAllNamed(ROUTE_NAMES.INTRO);
 
-  static navigateTest() async => await Get.toNamed(ROUTE_NAMES.test);
-
   static navigateForgotPassword() async =>
       await Get.toNamed(ROUTE_NAMES.FORGOT_PASSWORD);
 
@@ -151,6 +149,8 @@ class AppNavigator {
       await Get.toNamed(ROUTE_NAMES.ADD_PRODUCT,
           arguments: [add, reload, data]);
 
+  static navigateProduct() async =>
+      await Get.toNamed(ROUTE_NAMES.PRODUCT);
   // static navigateAttachment(
   //         String id, String name, List<FileDataResponse> listFile) async =>
   //     await Get.toNamed(ROUTE_NAMES.ATTACHMENT,

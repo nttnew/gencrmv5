@@ -7,6 +7,7 @@ import 'package:gen_crm/src/models/model_generator/support.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/customer.dart';
 import '../../../../src/src_index.dart';
 import '../../../../storages/share_local.dart';
@@ -50,12 +51,12 @@ class _SupportScreenState extends State<SupportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
-      drawer: MainDrawer(onPress: handleOnPressItemMenu),
+      drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff1AA928),
-        onPressed: () =>
-            AppNavigator.navigateFormAdd('Thêm ${Get.arguments.toString().toLowerCase()}', 6),
+        onPressed: () => AppNavigator.navigateFormAdd(
+            'Thêm ${Get.arguments.toString().toLowerCase()}', 6),
         child: Icon(Icons.add, size: 40),
       ),
       appBar: AppBar(
@@ -121,7 +122,8 @@ class _SupportScreenState extends State<SupportScreen> {
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       color: HexColor("#707070")),
-                  hint: "Tìm hỗ trợ",
+                  hint:
+                      "Tìm ${Get.arguments == 'CSKH' ? Get.arguments : Get.arguments.toString().toLowerCase()}",
                   onEditingComplete: () {
                     SupportBloc.of(context)
                         .add(InitGetSupportEvent(1, search, id_filter));
@@ -129,8 +131,7 @@ class _SupportScreenState extends State<SupportScreen> {
                   onChanged: (text) {
                     search = text;
                   },
-                  leadIcon:
-                      SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                  leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                   endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
                   onClickRight: () {
                     showBotomSheet(state.listFilter);
@@ -379,61 +380,5 @@ class _SupportScreenState extends State<SupportScreen> {
             },
           );
         });
-  }
-
-  handleOnPressItemMenu(value) async {
-    switch (value['id']) {
-      case '1':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateMain();
-        break;
-      case 'opportunity':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChance(value['title']);
-        break;
-      case 'job':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateWork(value['title']);
-        break;
-      case 'contract':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateContract(value['title']);
-        break;
-      case 'support':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateSupport(value['title']);
-        break;
-      case 'customer':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateCustomer(value['title']);
-        break;
-      case 'contact':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateClue(value['title']);
-        break;
-      case 'report':
-        _drawerKey.currentState!.openEndDrawer();
-        String? money = await shareLocal.getString(PreferencesKey.MONEY);
-        AppNavigator.navigateReport(money ?? "đ");
-        break;
-      case '2':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateInformationAccount();
-        break;
-      case '3':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateAboutUs();
-        break;
-      case '4':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigatePolicy();
-        break;
-      case '5':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChangePassword();
-        break;
-      default:
-        break;
-    }
   }
 }

@@ -14,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../../../bloc/report/report_employee/report_employee_bloc.dart';
 import '../../../../bloc/report/report_option/report_bloc.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../storages/share_local.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
@@ -109,24 +110,20 @@ class _ReportScreenState extends State<ReportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _drawerKey,
-        drawer: MainDrawer(onPress: handleOnPressItemMenu),
+        drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
         appBar: AppBar(
           centerTitle: false,
           toolbarHeight: AppValue.heights * 0.1,
           backgroundColor: HexColor("#D0F1EB"),
-          title: InkWell(
-              onTap: () {
-                AppNavigator.navigateTest();
-              },
-              child: Text("Báo cáo",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: "Montserrat",
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16))),
+          title: Text("Báo cáo",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: "Montserrat",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16)),
           leading: Padding(
               padding: EdgeInsets.only(left: 40),
-              child: InkWell(
+              child: GestureDetector(
                   onTap: () {
                     if (_drawerKey.currentContext != null &&
                         !_drawerKey.currentState!.isDrawerOpen) {
@@ -142,7 +139,7 @@ class _ReportScreenState extends State<ReportScreen> {
           actions: [
             Padding(
                 padding: EdgeInsets.only(right: 30),
-                child: InkWell(
+                child: GestureDetector(
                   onTap: () => AppNavigator.navigateNotification(),
                   child: BlocBuilder<GetListUnReadNotifiBloc,
                       UnReadListNotifiState>(builder: (context, state) {
@@ -1338,59 +1335,5 @@ class _ReportScreenState extends State<ReportScreen> {
     );
   }
 
-  handleOnPressItemMenu(value) async {
-    switch (value['id']) {
-      case '1':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateMain();
-        break;
-      case 'opportunity':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChance(value['title']);
-        break;
-      case 'job':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateWork(value['title']);
-        break;
-      case 'contract':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateContract(value['title']);
-        break;
-      case 'support':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateSupport(value['title']);
-        break;
-      case 'customer':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateCustomer(value['title']);
-        break;
-      case 'contact':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateClue(value['title']);
-        break;
-      case 'report':
-        _drawerKey.currentState!.openEndDrawer();
-        String? money = await shareLocal.getString(PreferencesKey.MONEY);
-        AppNavigator.navigateReport(money ?? "đ");
-        break;
-      case '2':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateInformationAccount();
-        break;
-      case '3':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateAboutUs();
-        break;
-      case '4':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigatePolicy();
-        break;
-      case '5':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChangePassword();
-        break;
-      default:
-        break;
-    }
-  }
+
 }

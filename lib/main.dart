@@ -42,8 +42,8 @@ import 'package:gen_crm/screens/menu/home/customer/add_note.dart';
 import 'package:gen_crm/screens/menu/home/customer/form_add_data.dart';
 import 'package:gen_crm/screens/menu/home/customer/form_edit.dart';
 import 'package:gen_crm/screens/menu/home/notification/notification_screen.dart';
+import 'package:gen_crm/screens/menu/home/product/product.dart';
 import 'package:gen_crm/screens/menu/home/report/report_screen.dart';
-import 'package:gen_crm/test.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/screens/forgot_password/forgot_password_otp_screen.dart';
 import 'package:gen_crm/screens/screens.dart';
@@ -410,10 +410,6 @@ class MyApp extends StatelessWidget {
           page: () => ScreenMain(),
         ),
         GetPage(
-          name: ROUTE_NAMES.test,
-          page: () => Test(),
-        ),
-        GetPage(
           name: ROUTE_NAMES.SPLASH,
           page: () => SplashPage(),
         ),
@@ -444,6 +440,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: ROUTE_NAMES.REPORT,
           page: () => ReportScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.PRODUCT,
+          page: () => ProductScreen(),
         ),
         GetPage(
           name: ROUTE_NAMES.CLUE,
