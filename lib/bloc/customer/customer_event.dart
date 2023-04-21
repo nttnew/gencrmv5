@@ -17,7 +17,7 @@ class InitGetListOrderEvent extends GetListCustomerEvent {
 
 class AddCustomerIndividualEvent extends GetListCustomerEvent {
   final Map<String, dynamic> data;
-  final File? files;
+  final List<File>? files;
 
   AddCustomerIndividualEvent(this.data, {this.files});
 }

@@ -388,8 +388,6 @@ class _AttachmentState extends State<Attachment> {
                                                                           file: File(checkListImageApi(true, listFileResponse)[index]
                                                                               .link
                                                                               .toString()),
-                                                                          module:
-                                                                              widget.typeModule,
                                                                         )));
                                                       },
                                                       child: Container(
@@ -557,8 +555,6 @@ class _AttachmentState extends State<Attachment> {
                                                                           file: checkListImage(
                                                                               true,
                                                                               listPickFile)[index],
-                                                                          module:
-                                                                              widget.typeModule,
                                                                         )));
                                                       },
                                                       child: Container(
