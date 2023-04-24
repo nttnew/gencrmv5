@@ -52,6 +52,7 @@ import 'package:gen_crm/storages/storages.dart';
 import 'package:plugin_pitel/voip_push/push_notif.dart';
 import 'package:vibration/vibration.dart';
 import 'api_resfull/api.dart';
+import 'app_call.dart';
 import 'bloc/add_customer/add_customer_bloc.dart';
 import 'bloc/blocs.dart';
 import 'bloc/clue/clue_bloc.dart';
@@ -79,7 +80,6 @@ Future main() async {
   await dotenv.load(fileName: BASE_URL.ENV);
   shareLocal = await ShareLocal.getInstance();
   WidgetsFlutterBinding.ensureInitialized();
-
   UserRepository userRepository = UserRepository();
   await PushNotifAndroid.initFirebase(DefaultFirebaseOptions.currentPlatform);
   await Firebase.initializeApp(
@@ -407,7 +407,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(
           name: ROUTE_NAMES.MAIN,
-          page: () => ScreenMain(),
+          page: () => MyAppCall(),
         ),
         GetPage(
           name: ROUTE_NAMES.SPLASH,

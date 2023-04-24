@@ -94,9 +94,11 @@ dependencies:
     git:
       url: https://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@github.com/tel4vn/flutter-pitel-voip.git
       ref: main
-#  flutter_callkit_incoming: ^1.0.3+3
   flutter_riverpod: ^2.3.4
   qr_code_scanner: ^1.0.1
+  is_lock_screen: ^2.0.0
+  flutter_callkit_incoming: ^1.0.3+3
+
 
 dependency_overrides:
   firebase_core_platform_interface: 4.5.2

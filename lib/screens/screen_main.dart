@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/get_infor_acc/get_infor_acc_bloc.dart';
@@ -14,22 +16,19 @@ import 'package:get/get.dart';
 import 'package:gen_crm/models/index.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:is_lock_screen/is_lock_screen.dart';
 import 'package:plugin_pitel/component/pitel_call_state.dart';
 import 'package:plugin_pitel/component/sip_pitel_helper_listener.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_call.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
-import 'package:plugin_pitel/services/pitel_service.dart';
-import 'package:plugin_pitel/services/sip_info_data.dart';
 import 'package:plugin_pitel/sip/src/sip_ua_helper.dart';
 import 'package:plugin_pitel/voip_push/push_notif.dart';
-import 'package:plugin_pitel/voip_push/voip_notif.dart';
 import 'package:plugin_pitel/sip/sip_ua.dart';
-
 import '../bloc/login/login_bloc.dart';
 import '../src/app_const.dart';
 import '../storages/share_local.dart';
 import '../widgets/item_menu.dart';
-import 'call_video/call_screen.dart';
+import 'call/call_screen.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
 
 final checkIsPushNotif = StateProvider<bool>((ref) => false);
@@ -41,26 +40,12 @@ class ScreenMain extends ConsumerStatefulWidget {
 }
 
 class _ScreenMainState extends ConsumerState<ScreenMain>
+    with WidgetsBindingObserver
     implements SipPitelHelperListener {
-  //DATA CALL
-  static const String PASSWORD = 'GenCRM@2023##'; //
-  static const String DOMAIN = 'demo-gencrm.com';
-  static const String OUTBOUND_PROXY = 'pbx-mobile.tel4vn.com:50061';
-  static const String URL_WSS = 'wss://wss-mobile.tel4vn.com:7444'; //todo
-  static const String URL_API = 'https://pbx-mobile.tel4vn.com';
-  static const int UUSER = 101;
-  static const String USER_NAME = 'user1';
-
-  String getCheckHttp(String text) {
-    if (text.toLowerCase().contains('https://')) {
-      return text;
-    }
-    return 'https://' + text;
-  }
-
   PitelCall get pitelCall => widget._pitelCall;
   PitelClient pitelClient = PitelClient.getInstance();
   String state = '';
+  bool lockScreen = false;
   late final String deviceToken;
 
   ///////////////// UI
@@ -158,7 +143,6 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     );
   }
 
-
   //////////////////////
 
   @override
@@ -175,10 +159,13 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
 
   //////////////////// HANDEL CALL
 
-  Future<void> _getDeviceToken() async {
-    deviceToken = await PushVoipNotif.getDeviceToken();
-    await shareLocal.putString(PreferencesKey.DEVICE_TOKEN, deviceToken);
-    print('deviceToken---$deviceToken');
+  void callInit() async {
+    state = pitelCall.getRegisterState();
+    LoginBloc.of(context).receivedMsg.add(LoginBloc.UNREGISTER);
+    _bindEventListeners();
+    await _getDeviceToken();
+    await _registerDeviceToken();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   Future<void> _registerDeviceToken() async {
@@ -199,90 +186,40 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
       deviceToken: deviceToken,
       platform: isAndroid ? 'android' : 'ios',
       bundleId: isAndroid ? 'vn.gen_crm' : 'com.gencrm', // BundleId/packageId
-      domain: DOMAIN,
-      extension: UUSER.toString(),
+      domain: 'demo-gencrm.com',
+      extension: '101',
+      appMode: kReleaseMode ? 'production' : 'dev',
     );
   }
 
-  void callInit() async {
-    state = pitelCall.getRegisterState();
-    LoginBloc.of(context).receivedMsg.add(LoginBloc.UNREGISTER);
-    await _getDeviceToken();
-    _bindEventListeners();
-    VoipNotifService.listenerEvent(
-      callback: (event) {},
-      onCallAccept: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => CallScreenWidget()));
-      },
-      onCallDecline: () {},
-    );
-    registerCall();
+  Future<void> _getDeviceToken() async {
+    deviceToken = await PushVoipNotif.getDeviceToken();
+    await shareLocal.putString(PreferencesKey.DEVICE_TOKEN, deviceToken);
+    print('deviceToken---$deviceToken');
   }
 
-  Future<void> registerCall() async {
-    await LoginBloc.of(context).getDataCall();
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
-    final String domainUrl = shareLocal.getString(PreferencesKey.URL_BASE);
-    final String domain = domainUrl.substring(
-        domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
-    final int user =
-        int.parse(LoginBloc.of(context).loginData?.info_user?.extension ?? '0');
-    final String pass =
-        LoginBloc.of(context).loginData?.info_user?.password_extension ?? '';
-    final String outboundServer = LoginBloc.of(context)
-            .loginData
-            ?.info_user
-            ?.info_setup_callcenter
-            ?.outbound ??
-        '';
-    final String apiDomain = LoginBloc.of(context)
-            .loginData
-            ?.info_user
-            ?.info_setup_callcenter
-            ?.domain ??
-        '';
-    //call
-    // final sipInfo = SipInfoData.fromJson({
-    //   "authPass": pass,
-    //   "registerServer": domain,
-    //   "outboundServer": outboundServer,
-    //   "userID": user,
-    //   "authID": user,
-    //   "accountName": "${user}",
-    //   "displayName": "${user}@${domain}",
-    //   "dialPlan": null,
-    //   "randomPort": null,
-    //   "voicemail": null,
-    //   "wssUrl": URL_WSS,
-    //   "userName": "${user}@${domain}",
-    //   "apiDomain": getCheckHttp(apiDomain),
-    // });
-    final sipInfo = SipInfoData.fromJson({
-      "authPass": PASSWORD,
-      "registerServer": DOMAIN,
-      "outboundServer": OUTBOUND_PROXY,
-      "userID": UUSER,
-      "authID": UUSER,
-      "accountName": "${UUSER}",
-      "displayName": "${UUSER}@${DOMAIN}",
-      "dialPlan": null,
-      "randomPort": null,
-      "voicemail": null,
-      "wssUrl": URL_WSS,
-      "userName": "${USER_NAME}@${DOMAIN}",
-      "apiDomain": URL_API
-    });
-    final pitelClientImpl = PitelServiceImpl();
-    pitelClientImpl.setExtensionInfo(sipInfo);
-    _registerDeviceToken();
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.inactive) {
+      final isLock = await isLockScreen();
+      setState(() {
+        lockScreen = isLock ?? false;
+      });
+    }
   }
 
   @override
   void registrationStateChanged(PitelRegistrationState state) {
     switch (state.state) {
       case PitelRegistrationStateEnum.REGISTRATION_FAILED:
-        goBack(); //todo failed
+        goBack();
         break;
       case PitelRegistrationStateEnum.NONE:
       case PitelRegistrationStateEnum.UNREGISTERED:
@@ -311,15 +248,22 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
 
   @override
   void callStateChanged(String callId, PitelCallState state) {
-    // TODO: implement callStateChanged
+    if (state.state == PitelCallStateEnum.ENDED && lockScreen) {
+      FlutterCallkitIncoming.endAllCalls();
+    }
   }
 
   @override
   void onCallReceived(String callId) {
     pitelCall.setCallCurrent(callId);
-    //! Replace if you are using other State Managerment (Bloc, GetX,...)
-    final isPushNotif = ref.watch(checkIsPushNotif);
-    if (!isPushNotif) {
+    if (Platform.isIOS) {
+      pitelCall.answer();
+    }
+    if (Platform.isAndroid) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => CallScreenWidget()));
+    }
+    if (!lockScreen) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => CallScreenWidget()));
     }
@@ -344,9 +288,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   }
 
   @override
-  void transportStateChanged(PitelTransportState state) {
-    // TODO: implement transportStateChanged
-  }
+  void transportStateChanged(PitelTransportState state) {}
 
   /////////////////END
 

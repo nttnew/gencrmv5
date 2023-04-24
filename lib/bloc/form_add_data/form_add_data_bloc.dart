@@ -23,34 +23,41 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     if (event is InitFormAddCusOrEvent) {
       yield* _getFormAddCustomerOrganization();
     } else if (event is InitFormAddContactCusEvent) {
-      yield* _getFormAddContactCustomer(event.id!);
+      yield* _getFormAddContactCustomer(checkId(event.id ?? ''));
     } else if (event is InitFormAddOppCusEvent) {
-      yield* _getFormAddOppCus(event.id!);
+      yield* _getFormAddOppCus(checkId(event.id ?? ''));
     } else if (event is InitFormAddContractCusEvent) {
-      yield* _getFormAddContractCus(event.id!);
+      yield* _getFormAddContractCus(checkId(event.id ?? ''));
     } else if (event is InitFormAddJobCusEvent) {
-      yield* _getFormAddJobCus(event.id!);
+      yield* _getFormAddJobCus(checkId(event.id ?? ''));
     } else if (event is InitFormAddSupportCusEvent) {
-      yield* _getFormAddSupportCus(event.id!);
+      yield* _getFormAddSupportCus(checkId(event.id ?? ''));
     } else if (event is InitFormAddAgencyEvent) {
-      yield* _getFormAddAgency(event.id ?? '');
+      yield* _getFormAddAgency(checkId(event.id ?? ''));
     } else if (event is InitFormAddChanceEvent) {
-      yield* _getFormAddChance(event.id ?? '');
+      yield* _getFormAddChance(checkId(event.id ?? ''));
     } else if (event is InitFormAddContractEvent) {
-      yield* _getFormAddContract(event.id ?? '');
+      yield* _getFormAddContract(checkId(event.id ?? ''));
     } else if (event is InitFormAddJobEvent) {
-      yield* _getFormAddJob(event.id ?? '');
+      yield* _getFormAddJob(checkId(event.id ?? ''));
     } else if (event is InitFormAddSupportEvent) {
-      yield* _getFormAddSupport(event.id ?? '');
+      yield* _getFormAddSupport(checkId(event.id ?? ''));
     } else if (event is InitFormAddJobOppEvent) {
-      yield* _getFormAddJobOpp(event.id ?? '');
+      yield* _getFormAddJobOpp(checkId(event.id ?? ''));
     } else if (event is InitFormAddJobChanceEvent) {
-      yield* _getFormAddJobChance(event.id ?? '');
+      yield* _getFormAddJobChance(checkId(event.id ?? ''));
     } else if (event is InitFormAddSupportContractEvent) {
-      yield* _getFormAddSupportContract(event.id ?? '');
+      yield* _getFormAddSupportContract(checkId(event.id ?? ''));
     } else if (event is InitFormAddJobContractEvent) {
-      yield* _getFormAddJobContract(event.id ?? '');
+      yield* _getFormAddJobContract(checkId(event.id ?? ''));
     }
+  }
+
+  String checkId(String id) {
+    if (id != null && id != '' && id != 'null') {
+      return id;
+    }
+    return '';
   }
 
   Stream<FormAddState> _getFormAddCustomerOrganization() async* {

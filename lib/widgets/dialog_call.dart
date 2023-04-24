@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../bloc/login/login_bloc.dart';
-import '../screens/call_video/call_screen.dart';
+import '../screens/call/call_screen.dart';
 import '../src/src_index.dart';
 
 class DialogCall extends StatefulWidget {
@@ -37,7 +37,7 @@ class _DialogCallState extends State<DialogCall>
   void registrationStateChanged(PitelRegistrationState state) {
     switch (state.state) {
       case PitelRegistrationStateEnum.REGISTRATION_FAILED:
-        // goBack(); //todo thaats baij
+        goBack(); //todo thaats baij
         break;
       case PitelRegistrationStateEnum.NONE:
       case PitelRegistrationStateEnum.UNREGISTERED:
@@ -95,7 +95,7 @@ class _DialogCallState extends State<DialogCall>
   }
 
   void _handleCall(BuildContext context, [bool voiceonly = false]) {
-    var dest = '0986839102';
+    var dest = '0963094221';
 
     if (dest.isEmpty) {
       showDialog(

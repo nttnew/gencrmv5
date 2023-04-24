@@ -1,7 +1,7 @@
 // ignore: camel_case_types
 class BASE_URL {
   BASE_URL._();
-
+  static const URL_WSS = 'wss://wss-mobile.tel4vn.com:7444'; //todo
   static const URL_DEMO = 'https://demo.gencrm.com/';
   static const GET_INFO_USER = 'api/user/profile';
   static const LOGIN = 'loginmobile.php';

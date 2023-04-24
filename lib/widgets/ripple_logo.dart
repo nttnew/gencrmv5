@@ -35,6 +35,12 @@ class _RippleLogoState extends State<RippleLogo>
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation:
