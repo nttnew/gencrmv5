@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gen_crm/screens/screen_main.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/base.dart';
 import 'package:gen_crm/src/preferences_key.dart';
 import 'package:gen_crm/storages/share_local.dart';
@@ -24,20 +25,6 @@ class MyAppCall extends StatefulWidget {
 class _MyAppCallState extends State<MyAppCall> with WidgetsBindingObserver {
   final pitelService = PitelServiceImpl();
   final PitelCall pitelCall = PitelClient.getInstance().pitelCall;
-  //DATA CALL
-  static const String PASSWORD = 'GenCRM@2023##'; //
-  static const String DOMAIN = 'demo-gencrm.com';
-  static const String OUTBOUND_PROXY = 'pbx-mobile.tel4vn.com:50061';
-  static const String URL_API = 'https://pbx-mobile.tel4vn.com';
-  static const int UUSER = 101;
-  static const String USER_NAME = 'user1';
-
-  String getCheckHttp(String text) {
-    if (text.toLowerCase().contains('https://')) {
-      return text;
-    }
-    return 'https://' + text;
-  }
 
   late final sipInfo;
 
@@ -74,7 +61,8 @@ class _MyAppCallState extends State<MyAppCall> with WidgetsBindingObserver {
 
   Future<void> handleRegister() async {
     await LoginBloc.of(context).getDataCall();
-    final String domainUrl = shareLocal.getString(PreferencesKey.URL_BASE);
+    final String domainUrl = 'https://demo-gencrm.com/';
+    //shareLocal.getString(PreferencesKey.URL_BASE);
     final String domain = domainUrl.substring(
         domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
     final int user =
@@ -93,37 +81,22 @@ class _MyAppCallState extends State<MyAppCall> with WidgetsBindingObserver {
             ?.info_setup_callcenter
             ?.domain ??
         '';
-    // final sipInfo = SipInfoData.fromJson({
-    //   "authPass": pass,
-    //   "registerServer": domain,
-    //   "outboundServer": outboundServer,
-    //   "userID": user,
-    //   "authID": user,
-    //   "accountName": "${user}",
-    //   "displayName": "${user}@${domain}",
-    //   "dialPlan": null,
-    //   "randomPort": null,
-    //   "voicemail": null,
-    //   "wssUrl": URL_WSS,
-    //   "userName": "${user}@${domain}",
-    //   "apiDomain": getCheckHttp(apiDomain),
-    // });
-    sipInfo = SipInfoData.fromJson({
-      "authPass": PASSWORD,
-      "registerServer": DOMAIN,
-      "outboundServer": OUTBOUND_PROXY,
-      "userID": UUSER,
-      "authID": UUSER,
-      "accountName": "${UUSER}",
-      "displayName": "${UUSER}@${DOMAIN}",
+    final sipInfo = SipInfoData.fromJson({
+      "authPass": pass,
+      "registerServer": domain,
+      "outboundServer": outboundServer,
+      "userID": user,
+      "authID": user,
+      "accountName": "${user}",
+      "displayName": "${user}@${domain}",
       "dialPlan": null,
       "randomPort": null,
       "voicemail": null,
       "wssUrl": BASE_URL.URL_WSS,
-      "userName": "${USER_NAME}@${DOMAIN}",
-      "apiDomain": URL_API
+      "userName": "${user}@${domain}",
+      "apiDomain": getCheckHttp(apiDomain),
     });
-    pitelService.setExtensionInfo(sipInfo);
+    pitelService.setExtensionInfo(sipInfoData);
   }
 
   @override

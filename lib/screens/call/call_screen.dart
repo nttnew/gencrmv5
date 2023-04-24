@@ -18,11 +18,12 @@ import '../../widgets/ripple_logo.dart';
 import '../../widgets/widget_text.dart';
 
 class CallScreenWidget extends ConsumerStatefulWidget {
-  CallScreenWidget({Key? key, this.receivedBackground = false})
+  CallScreenWidget(
+      {Key? key, this.receivedBackground = false, this.modelScreen})
       : super(key: key);
   final PitelCall _pitelCall = PitelClient.getInstance().pitelCall;
   final bool receivedBackground;
-
+  final String? modelScreen;
   @override
   ConsumerState<CallScreenWidget> createState() => _MyCallScreenWidget();
 }
@@ -69,8 +70,8 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
     if (state == AppLifecycleState.resumed) {
       if (!pitelCall.isConnected || !pitelCall.isHaveCall) {
         // Navigate to your first screen
-        Navigator.of(context)
-            .popUntil(ModalRoute.withName(ROUTE_NAMES.CUSTOMER));
+        Navigator.of(context).popUntil(
+            ModalRoute.withName(widget.modelScreen ?? ROUTE_NAMES.MAIN));
       }
     }
   }
@@ -179,7 +180,8 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
         FlutterCallkitIncoming.endAllCalls();
       }
       _isBacked = true;
-      Navigator.of(context).popUntil(ModalRoute.withName(ROUTE_NAMES.CUSTOMER));
+      Navigator.of(context).popUntil(
+          ModalRoute.withName(widget.modelScreen ?? ROUTE_NAMES.MAIN));
     }
   }
 
@@ -203,8 +205,6 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
     var hangupBtn = ActionButton(
       title: "hangup",
       onPressed: () {
-        //! Replace if you are using other State Managerment (Bloc, GetX,...)
-        // ref.read(checkIsPushNotif.notifier).state = false;
         _handleHangup();
         _backToDialPad();
       },
@@ -236,8 +236,8 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
             title: "hangup",
             onPressed: () {
               _disposeRenderers();
-              Navigator.of(context)
-                  .popUntil(ModalRoute.withName(ROUTE_NAMES.CUSTOMER));
+              Navigator.of(context).popUntil(
+                  ModalRoute.withName(widget.modelScreen ?? ROUTE_NAMES.MAIN));
               pitelCall.removeListener(this);
             },
             icon: Icons.call_end,
@@ -253,16 +253,6 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
       case PitelCallStateEnum.CONFIRMED:
         calling = true;
         {
-          basicActions.add(ActionButton(
-            iconColor: Colors.black.withOpacity(0.6),
-            fillColor: Colors.black.withOpacity(0.1),
-            title: pitelCall.audioMuted ? 'unmute' : 'mute',
-            icon: pitelCall.audioMuted ? Icons.mic_off : Icons.mic,
-            checked: pitelCall.audioMuted,
-            onPressed: () => pitelCall.mute(callId: _callId),
-          ));
-          basicActions.add(hangupBtn);
-
           if (voiceonly) {
             basicActions.add(ActionButton(
               iconColor: Colors.black.withOpacity(0.6),
@@ -273,6 +263,15 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
               onPressed: () => _toggleSpeaker(),
             ));
           }
+          basicActions.add(hangupBtn);
+          basicActions.add(ActionButton(
+            iconColor: Colors.black.withOpacity(0.6),
+            fillColor: Colors.black.withOpacity(0.1),
+            title: pitelCall.audioMuted ? 'unmute' : 'mute',
+            icon: pitelCall.audioMuted ? Icons.mic_off : Icons.mic,
+            checked: pitelCall.audioMuted,
+            onPressed: () => pitelCall.mute(callId: _callId),
+          ));
         }
         break;
       case PitelCallStateEnum.FAILED:

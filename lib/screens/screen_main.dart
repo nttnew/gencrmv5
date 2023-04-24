@@ -21,6 +21,8 @@ import 'package:plugin_pitel/component/pitel_call_state.dart';
 import 'package:plugin_pitel/component/sip_pitel_helper_listener.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_call.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
+import 'package:plugin_pitel/services/pitel_service.dart';
+import 'package:plugin_pitel/services/sip_info_data.dart';
 import 'package:plugin_pitel/sip/src/sip_ua_helper.dart';
 import 'package:plugin_pitel/voip_push/push_notif.dart';
 import 'package:plugin_pitel/sip/sip_ua.dart';
@@ -44,6 +46,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     implements SipPitelHelperListener {
   PitelCall get pitelCall => widget._pitelCall;
   PitelClient pitelClient = PitelClient.getInstance();
+  final pitelService = PitelServiceImpl();
   String state = '';
   bool lockScreen = false;
   late final String deviceToken;
@@ -164,12 +167,54 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     LoginBloc.of(context).receivedMsg.add(LoginBloc.UNREGISTER);
     _bindEventListeners();
     await _getDeviceToken();
-    await _registerDeviceToken();
+    await handleRegister();
     WidgetsBinding.instance.addObserver(this);
   }
 
+  Future<void> handleRegister() async {
+    await LoginBloc.of(context).getDataCall();
+    final String domainUrl = 'https://demo-gencrm.com/';
+    //shareLocal.getString(PreferencesKey.URL_BASE);
+    final String domain = domainUrl.substring(
+        domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
+    final int user =
+        int.parse(LoginBloc.of(context).loginData?.info_user?.extension ?? '0');
+    final String pass =
+        LoginBloc.of(context).loginData?.info_user?.password_extension ?? '';
+    final String outboundServer = LoginBloc.of(context)
+            .loginData
+            ?.info_user
+            ?.info_setup_callcenter
+            ?.outbound ??
+        '';
+    final String apiDomain = LoginBloc.of(context)
+            .loginData
+            ?.info_user
+            ?.info_setup_callcenter
+            ?.domain ??
+        '';
+    final sipInfo = SipInfoData.fromJson({
+      "authPass": pass,
+      "registerServer": domain,
+      "outboundServer": outboundServer,
+      "userID": user,
+      "authID": user,
+      "accountName": "${user}",
+      "displayName": "${user}@${domain}",
+      "dialPlan": null,
+      "randomPort": null,
+      "voicemail": null,
+      "wssUrl": BASE_URL.URL_WSS,
+      "userName": "${user}@${domain}",
+      "apiDomain": getCheckHttp(apiDomain),
+    });
+    await pitelService.setExtensionInfo(sipInfoData);
+    await _registerDeviceToken();
+  }
+
   Future<void> _registerDeviceToken() async {
-    final String domainUrl = shareLocal.getString(PreferencesKey.URL_BASE);
+    final String domainUrl = 'https://demo-gencrm.com/';
+    // shareLocal.getString(PreferencesKey.URL_BASE);
     final String domain = domainUrl.substring(
         domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
     final String user =
@@ -181,21 +226,22 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     //   bundleId: isAndroid ? 'vn.gen_crm' : 'com.gencrm', // BundleId/packageId
     //   domain: domain,
     //   extension: user,
+    //   appMode: kReleaseMode ? 'production' : 'dev',
     // );
-    await pitelClient.registerDeviceToken(
+    final response = await pitelClient.registerDeviceToken(
       deviceToken: deviceToken,
-      platform: isAndroid ? 'android' : 'ios',
-      bundleId: isAndroid ? 'vn.gen_crm' : 'com.gencrm', // BundleId/packageId
+      platform: 'android',
+      bundleId: 'vn.gen_crm',
       domain: 'demo-gencrm.com',
-      extension: '101',
-      appMode: kReleaseMode ? 'production' : 'dev',
+      extension: '102',
+      // appMode: kReleaseMode ? 'production' : 'dev',
+      appMode: 'dev',
     );
   }
 
   Future<void> _getDeviceToken() async {
     deviceToken = await PushVoipNotif.getDeviceToken();
     await shareLocal.putString(PreferencesKey.DEVICE_TOKEN, deviceToken);
-    print('deviceToken---$deviceToken');
   }
 
   @override
