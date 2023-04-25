@@ -66,8 +66,7 @@ class _RippleLogoState extends State<RippleLogo>
                     Padding(
                       padding: const EdgeInsets.all(6),
                       child: WidgetText(
-                        title:
-                            '${(widget.pitelCall.remoteIdentity?.length ?? 0) < 10 ? '0' + widget.pitelCall.remoteIdentity.toString() : widget.pitelCall.remoteIdentity}',
+                        title: getText(),
                         style: AppStyle.DEFAULT_24.copyWith(
                             fontSize: 32, fontWeight: FontWeight.w600),
                       ),
@@ -94,6 +93,15 @@ class _RippleLogoState extends State<RippleLogo>
         );
       },
     );
+  }
+
+  String getText() {
+    String txt =
+        '${(widget.pitelCall.remoteIdentity?.length ?? 0) < 10 ? '0' + widget.pitelCall.remoteIdentity.toString() : widget.pitelCall.remoteIdentity}';
+    if (txt == "0null") {
+      return "Cuộc gọi đã kết thúc";
+    }
+    return txt;
   }
 
   Widget _buildContainer(double radius) {

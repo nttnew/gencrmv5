@@ -7,6 +7,7 @@ import 'package:plugin_pitel/component/app_life_cycle/app_life_cycle.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_call.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:plugin_pitel/services/pitel_service.dart';
+import 'package:plugin_pitel/services/sip_info_data.dart';
 import 'package:plugin_pitel/voip_push/voip_notif.dart';
 
 class MyAppCall extends StatefulWidget {
@@ -27,7 +28,7 @@ class _MyAppCallState extends State<MyAppCall> with WidgetsBindingObserver {
     VoipNotifService.listenerEvent(
       callback: (event) {},
       onCallAccept: () {
-        pitelService.setExtensionInfo(sipInfo);
+        handleRegisterBase(context, pitelService);
       },
       onCallDecline: () {},
       onCallEnd: () {
