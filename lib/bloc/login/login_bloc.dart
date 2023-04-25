@@ -49,12 +49,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Future<void> _removeDeviceToken() async {
+    final String domainUrl = 'https://demo-gencrm.com/';
+    // shareLocal.getString(PreferencesKey.URL_BASE);
+    final String domain = domainUrl.substring(
+        domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
     String deviceToken =
         await shareLocal.getString(PreferencesKey.DEVICE_TOKEN) ?? "";
     await PitelClient.getInstance().removeDeviceToken(
       deviceToken: deviceToken, // Device token
-      domain: 'mobile.tel4vn.com', //todo
-      extension: '101',
+      domain:domain, //todo
+      extension: '102',
     );
     await shareLocal.putString(PreferencesKey.DEVICE_TOKEN, '');
   }

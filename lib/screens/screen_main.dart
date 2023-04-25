@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
@@ -22,7 +21,6 @@ import 'package:plugin_pitel/component/sip_pitel_helper_listener.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_call.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:plugin_pitel/services/pitel_service.dart';
-import 'package:plugin_pitel/services/sip_info_data.dart';
 import 'package:plugin_pitel/sip/src/sip_ua_helper.dart';
 import 'package:plugin_pitel/voip_push/push_notif.dart';
 import 'package:plugin_pitel/sip/sip_ua.dart';
@@ -167,48 +165,12 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     LoginBloc.of(context).receivedMsg.add(LoginBloc.UNREGISTER);
     _bindEventListeners();
     await _getDeviceToken();
-    await handleRegister();
+    await handleRegister(context);
     WidgetsBinding.instance.addObserver(this);
   }
 
-  Future<void> handleRegister() async {
-    await LoginBloc.of(context).getDataCall();
-    final String domainUrl = 'https://demo-gencrm.com/';
-    //shareLocal.getString(PreferencesKey.URL_BASE);
-    final String domain = domainUrl.substring(
-        domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
-    final int user =
-        int.parse(LoginBloc.of(context).loginData?.info_user?.extension ?? '0');
-    final String pass =
-        LoginBloc.of(context).loginData?.info_user?.password_extension ?? '';
-    final String outboundServer = LoginBloc.of(context)
-            .loginData
-            ?.info_user
-            ?.info_setup_callcenter
-            ?.outbound ??
-        '';
-    final String apiDomain = LoginBloc.of(context)
-            .loginData
-            ?.info_user
-            ?.info_setup_callcenter
-            ?.domain ??
-        '';
-    final sipInfo = SipInfoData.fromJson({
-      "authPass": pass,
-      "registerServer": domain,
-      "outboundServer": outboundServer,
-      "userID": user,
-      "authID": user,
-      "accountName": "${user}",
-      "displayName": "${user}@${domain}",
-      "dialPlan": null,
-      "randomPort": null,
-      "voicemail": null,
-      "wssUrl": BASE_URL.URL_WSS,
-      "userName": "${user}@${domain}",
-      "apiDomain": getCheckHttp(apiDomain),
-    });
-    await pitelService.setExtensionInfo(sipInfoData);
+  Future<void> handleRegister(BuildContext context) async {
+    await handleRegisterBase(context, pitelService);
     await _registerDeviceToken();
   }
 

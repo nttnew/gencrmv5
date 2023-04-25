@@ -10,7 +10,7 @@ import 'package:gen_crm/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 import 'package:formz/formz.dart';
-import 'package:local_auth/local_auth.dart';
+// import 'package:local_auth/local_auth.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../src/src_index.dart';
@@ -64,13 +64,13 @@ class _InformationAccountState extends State<InformationAccount> {
   late String initAddress;
   late String urlAvatar;
   String? canLoginWithFingerPrint;
-  late final LocalAuthentication auth;
+  // late final LocalAuthentication auth;
   late final BehaviorSubject<bool> supportBiometric;
   late final BehaviorSubject<bool> fingerPrintIsCheck;
 
   @override
   void initState() {
-    auth = LocalAuthentication();
+    // auth = LocalAuthentication();
     fingerPrintIsCheck = BehaviorSubject();
     supportBiometric = BehaviorSubject();
     GetInforAccBloc.of(context).add(InitGetInforAcc());
@@ -97,7 +97,7 @@ class _InformationAccountState extends State<InformationAccount> {
         fingerPrintIsCheck.add(true);
       }
     }
-    checkBiometricEnable();
+    // checkBiometricEnable();
 
     super.initState();
   }
@@ -488,7 +488,7 @@ class _InformationAccountState extends State<InformationAccount> {
                         },
                       );
                     } else {
-                      useBiometric(value: value);
+                      // useBiometric(value: value);
                     }
                   },
                 ),
@@ -500,51 +500,51 @@ class _InformationAccountState extends State<InformationAccount> {
     );
   }
 
-  Future<void> checkBiometricEnable() async {
-    final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
-    if (!canAuthenticateWithBiometrics) {
-      return;
-    }
-
-    final List<BiometricType> availableBiometrics =
-        await auth.getAvailableBiometrics();
-    if (availableBiometrics.isNotEmpty) {
-      supportBiometric.add(true);
-    }
-  }
-
-  Future<void> useBiometric({required bool value}) async {
-    if (!value) {
-      fingerPrintIsCheck.sink.add(false);
-      shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "false");
-      return;
-    }
-    try {
-      final String reason = "Đăng nhập vân tay, khuôn mặt";
-      final bool didAuthenticate = await auth.authenticate(
-        localizedReason: reason,
-        options: const AuthenticationOptions(
-          useErrorDialogs: false,
-          stickyAuth: true,
-        ),
-      );
-      if (didAuthenticate) {
-        fingerPrintIsCheck.add(true);
-        shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "true");
-      } else {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return WidgetDialog(
-              title: MESSAGES.NOTIFICATION,
-              content: "Đăng nhập thất bại bạn vui lòng thử lại",
-            );
-          },
-        );
-      }
-    } catch (e) {
-      return;
-    }
-  }
+  // Future<void> checkBiometricEnable() async {
+  //   final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+  //   if (!canAuthenticateWithBiometrics) {
+  //     return;
+  //   }
+  //
+  //   final List<BiometricType> availableBiometrics =
+  //       await auth.getAvailableBiometrics();
+  //   if (availableBiometrics.isNotEmpty) {
+  //     supportBiometric.add(true);
+  //   }
+  // }
+  //
+  // Future<void> useBiometric({required bool value}) async {
+  //   if (!value) {
+  //     fingerPrintIsCheck.sink.add(false);
+  //     shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "false");
+  //     return;
+  //   }
+  //   try {
+  //     final String reason = "Đăng nhập vân tay, khuôn mặt";
+  //     final bool didAuthenticate = await auth.authenticate(
+  //       localizedReason: reason,
+  //       options: const AuthenticationOptions(
+  //         useErrorDialogs: false,
+  //         stickyAuth: true,
+  //       ),
+  //     );
+  //     if (didAuthenticate) {
+  //       fingerPrintIsCheck.add(true);
+  //       shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "true");
+  //     } else {
+  //       showDialog(
+  //         context: context,
+  //         barrierDismissible: false,
+  //         builder: (BuildContext context) {
+  //           return WidgetDialog(
+  //             title: MESSAGES.NOTIFICATION,
+  //             content: "Đăng nhập thất bại bạn vui lòng thử lại",
+  //           );
+  //         },
+  //       );
+  //     }
+  //   } catch (e) {
+  //     return;
+  //   }
+  // }
 }

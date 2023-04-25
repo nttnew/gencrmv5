@@ -1,9 +1,15 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:gen_crm/src/preferences_key.dart';
 import 'package:get/get.dart';
+import 'package:plugin_pitel/services/pitel_service.dart';
 import 'package:plugin_pitel/services/sip_info_data.dart';
 
+import '../bloc/login/login_bloc.dart';
 import '../storages/share_local.dart';
 import '../widgets/widget_dialog.dart';
+import 'base.dart';
 import 'color.dart';
 import 'messages.dart';
 import 'navigator.dart';
@@ -27,21 +33,21 @@ import 'navigator.dart';
 //   appMode: 'dev',
 // );
 
-final sipInfoData = SipInfoData.fromJson({
-  "authPass": "GenCRM@2023##",
-  "registerServer": "demo-gencrm.com",
-  "outboundServer": "pbx-mobile.tel4vn.com:50061",
-  "userID": 102, // Example 101
-  "authID": 102, // Example 101
-  "accountName": "102", // Example 101
-  "displayName": "102@demo-gencrm.com",
-  "dialPlan": null,
-  "randomPort": null,
-  "voicemail": null,
-  "wssUrl": "wss://wss-mobile.tel4vn.com:7444",
-  "userName": "user1@demo-gencrm.com",
-  "apiDomain": "https://api-mobile.tel4vn.com"
-});
+// final sipInfoData = SipInfoData.fromJson({
+//   "authPass": "GenCRM@2023##",
+//   "registerServer": "demo-gencrm.com",
+//   "outboundServer": "pbx-mobile.tel4vn.com:50061",
+//   "userID": 102, // Example 101
+//   "authID": 102, // Example 101
+//   "accountName": "102", // Example 101
+//   "displayName": "102@demo-gencrm.com",
+//   "dialPlan": null,
+//   "randomPort": null,
+//   "voicemail": null,
+//   "wssUrl": "wss://wss-mobile.tel4vn.com:7444",
+//   "userName": "user1@demo-gencrm.com",
+//   "apiDomain": "https://api-mobile.tel4vn.com"
+// });
 
 void loginSessionExpired() {
   Get.dialog(WidgetDialog(
@@ -53,6 +59,49 @@ void loginSessionExpired() {
       AppNavigator.navigateLogout();
     },
   ));
+}
+
+Future<void> handleRegisterBase(
+    BuildContext context, PitelServiceImpl pitelService) async {
+  await LoginBloc.of(context).getDataCall();
+  final String domainUrl = 'https://demo-gencrm.com/';
+  //shareLocal.getString(PreferencesKey.URL_BASE);
+  final String domain = domainUrl.substring(
+      domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
+  final int user =
+      int.parse(LoginBloc.of(context).loginData?.info_user?.extension ?? '0');
+  Codec<String, String> stringToBase64 = utf8.fuse(base64);
+  final String pass = stringToBase64.decode(
+      LoginBloc.of(context).loginData?.info_user?.password_extension ?? '');
+
+  final String outboundServer = LoginBloc.of(context)
+          .loginData
+          ?.info_user
+          ?.info_setup_callcenter
+          ?.outbound ??
+      '';
+  final String apiDomain = LoginBloc.of(context)
+          .loginData
+          ?.info_user
+          ?.info_setup_callcenter
+          ?.domain ??
+      '';
+  final sipInfo = SipInfoData.fromJson({
+    "authPass": pass,
+    "registerServer": domain,
+    "outboundServer": outboundServer,
+    "userID": user,
+    "authID": user,
+    "accountName": "${user}",
+    "displayName": "${user}@${domain}",
+    "dialPlan": null,
+    "randomPort": null,
+    "voicemail": null,
+    "wssUrl": BASE_URL.URL_WSS,
+    "userName": "${user}@${domain}",
+    "apiDomain": getCheckHttp(apiDomain),
+  });
+  pitelService.setExtensionInfo(sipInfo);
 }
 
 handleOnPressItemMenu(_drawerKey, value) async {

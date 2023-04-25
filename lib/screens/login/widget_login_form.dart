@@ -13,7 +13,7 @@ import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
-import 'package:local_auth/local_auth.dart';
+// import 'package:local_auth/local_auth.dart';
 
 class WidgetLoginForm extends StatefulWidget {
   WidgetLoginForm({
@@ -38,10 +38,10 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
   String baseUrl = "";
   String? tokenFirebase;
 
-  final LocalAuthentication auth = LocalAuthentication();
+  // final LocalAuthentication auth = LocalAuthentication();
   bool canAuthenticateWithBiometrics = false;
   bool canAuthenticate = false;
-  List<BiometricType> availableBiometrics = [];
+  // List<BiometricType> availableBiometrics = [];
 
   @override
   void initState() {
@@ -51,15 +51,15 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
       FirebaseMessaging messaging = FirebaseMessaging.instance;
       tokenFirebase = await messaging.getToken();
       print('tokenfirebase$tokenFirebase');
-      canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
-      canAuthenticate =
-          canAuthenticateWithBiometrics || await auth.isDeviceSupported();
-      availableBiometrics = await auth.getAvailableBiometrics();
-      setState(() {
-        canAuthenticateWithBiometrics = canAuthenticateWithBiometrics;
-        canAuthenticate = canAuthenticate;
-        availableBiometrics = availableBiometrics;
-      });
+      // canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+      // canAuthenticate =
+      //     canAuthenticateWithBiometrics || await auth.isDeviceSupported();
+      // availableBiometrics = await auth.getAvailableBiometrics();
+      // setState(() {
+      //   canAuthenticateWithBiometrics = canAuthenticateWithBiometrics;
+      //   canAuthenticate = canAuthenticate;
+      //   availableBiometrics = availableBiometrics;
+      // });
     });
     getUname();
     _emailFocusNode.addListener(() {
@@ -76,7 +76,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT) == "true" &&
         shareLocal.getString(PreferencesKey.USER) != "" &&
         shareLocal.getString(PreferencesKey.USER) != null) {
-      loginWithFingerPrint();
+      // loginWithFingerPrint();
     }
   }
 
@@ -87,7 +87,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT) == "true" &&
         shareLocal.getString(PreferencesKey.USER) != "" &&
         shareLocal.getString(PreferencesKey.USER) != null) {
-      loginWithFingerPrint();
+      // loginWithFingerPrint();
     }
     super.didChangeDependencies();
   }
@@ -302,7 +302,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         ? Align(
             alignment: Alignment.centerLeft,
             child: GestureDetector(
-              onTap: loginWithFingerPrint,
+              // onTap: loginWithFingerPrint,
               child: Row(
                 children: [
                   Image.asset(
@@ -328,20 +328,20 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         : SizedBox();
   }
 
-  loginWithFingerPrint() async {
-    final LocalAuthentication auth = LocalAuthentication();
-    try {
-      final didAuthenticate = await auth.authenticate(
-          localizedReason: 'Đăng nhập bằng vân tay, khuôn mặt',
-          options: const AuthenticationOptions(biometricOnly: true));
-      if (didAuthenticate) {
-        LoginBloc.of(context)
-            .add(LoginWithFingerPrint(device_token: tokenFirebase ?? ''));
-      } else {
-        return;
-      }
-    } catch (e) {
-      throw e;
-    }
-  }
+  // loginWithFingerPrint() async {
+  //   final LocalAuthentication auth = LocalAuthentication();
+  //   try {
+  //     final didAuthenticate = await auth.authenticate(
+  //         localizedReason: 'Đăng nhập bằng vân tay, khuôn mặt',
+  //         options: const AuthenticationOptions(biometricOnly: true));
+  //     if (didAuthenticate) {
+  //       LoginBloc.of(context)
+  //           .add(LoginWithFingerPrint(device_token: tokenFirebase ?? ''));
+  //     } else {
+  //       return;
+  //     }
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
 }
