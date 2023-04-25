@@ -125,15 +125,6 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
             AppNavigator.navigateReport(money ?? "đ");
           }),
     );
-    listMenu.add(
-      ButtonMenuModel(
-          title: 'Sản phẩm',
-          image: ICONS.IC_WORK_3X_PNG,
-          backgroundColor: Color(0xff946b4c),
-          onTap: () {
-            AppNavigator.navigateProduct();
-          }),
-    );
     setState(() {});
   }
 
