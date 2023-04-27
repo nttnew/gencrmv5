@@ -61,47 +61,61 @@ void loginSessionExpired() {
   ));
 }
 
-Future<void> handleRegisterBase(
-    BuildContext context, PitelServiceImpl pitelService) async {
-  await LoginBloc.of(context).getDataCall();
-  final String domainUrl = 'https://demo-gencrm.com/';
-  //shareLocal.getString(PreferencesKey.URL_BASE);
-  final String domain = domainUrl.substring(
-      domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
-  final int user =
-      int.parse(LoginBloc.of(context).loginData?.info_user?.extension ?? '0');
-  Codec<String, String> stringToBase64 = utf8.fuse(base64);
-  final String pass = stringToBase64.decode(
-      LoginBloc.of(context).loginData?.info_user?.password_extension ?? '');
+void handleRegisterBase(BuildContext context, PitelServiceImpl pitelService) {
+  // final String domainUrl = 'https://demo-gencrm.com/';
+  // //shareLocal.getString(PreferencesKey.URL_BASE);
+  // final String domain = domainUrl.substring(
+  //     domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
+  // final int user =
+  //     int.parse(LoginBloc.of(context).loginData?.info_user?.extension ?? '0');
+  // Codec<String, String> stringToBase64 = utf8.fuse(base64);
+  // final String pass = stringToBase64.decode(
+  //     LoginBloc.of(context).loginData?.info_user?.password_extension ?? '');
+  //
+  // final String outboundServer = LoginBloc.of(context)
+  //         .loginData
+  //         ?.info_user
+  //         ?.info_setup_callcenter
+  //         ?.outbound ??
+  //     '';
+  // final String apiDomain = LoginBloc.of(context)
+  //         .loginData
+  //         ?.info_user
+  //         ?.info_setup_callcenter
+  //         ?.domain ??
+  //     '';
+  // final sipInfo = SipInfoData.fromJson({
+  //   "authPass": pass,
+  //   "registerServer": domain,
+  //   "outboundServer": outboundServer,
+  //   "userID": user,
+  //   "authID": user,
+  //   "accountName": "${user}",
+  //   "displayName": "${user}@${domain}",
+  //   "dialPlan": null,
+  //   "randomPort": null,
+  //   "voicemail": null,
+  //   "wssUrl": BASE_URL.URL_WSS,
+  //   "userName": "${user}@${domain}",
+  //   "apiDomain": getCheckHttp(apiDomain),
+  // });
 
-  final String outboundServer = LoginBloc.of(context)
-          .loginData
-          ?.info_user
-          ?.info_setup_callcenter
-          ?.outbound ??
-      '';
-  final String apiDomain = LoginBloc.of(context)
-          .loginData
-          ?.info_user
-          ?.info_setup_callcenter
-          ?.domain ??
-      '';
-  final sipInfo = SipInfoData.fromJson({
-    "authPass": pass,
-    "registerServer": domain,
-    "outboundServer": outboundServer,
-    "userID": user,
-    "authID": user,
-    "accountName": "${user}",
-    "displayName": "${user}@${domain}",
-    "dialPlan": null,
-    "randomPort": null,
-    "voicemail": null,
-    "wssUrl": BASE_URL.URL_WSS,
-    "userName": "${user}@${domain}",
-    "apiDomain": getCheckHttp(apiDomain),
-  });
-  pitelService.setExtensionInfo(sipInfo);
+  // final sipInfoData = SipInfoData.fromJson({
+  //   "authPass": "GenCRM@2023##",
+  //   "registerServer": "demo-gencrm.com",
+  //   "outboundServer": "pbx-mobile.tel4vn.com:50061",
+  //   "userID": 102, // Example 101
+  //   "authID": 102, // Example 101
+  //   "accountName": "102", // Example 101
+  //   "displayName": "102@demo-gencrm.com",
+  //   "dialPlan": null,
+  //   "randomPort": null,
+  //   "voicemail": null,
+  //   "wssUrl": "wss://wss-mobile.tel4vn.com:7444",
+  //   "userName": "user1@demo-gencrm.com",
+  //   "apiDomain": "https://api-mobile.tel4vn.com"
+  // });
+  // pitelService.setExtensionInfo(sipInfoData);
 }
 
 handleOnPressItemMenu(_drawerKey, value) async {
@@ -166,3 +180,9 @@ String getCheckHttp(String text) {
   }
   return 'https://' + text;
 }
+
+const int IS_AFTER = 1;
+const int IS_BEFORE = 0;
+const String BUNDLE_ID = 'com.gencrm';
+const String PACKAGE_ID = 'vn.gen_crm';
+const String TEAM_ID = 'AEY48KNZRS';

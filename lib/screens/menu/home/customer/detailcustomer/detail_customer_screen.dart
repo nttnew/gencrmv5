@@ -42,7 +42,6 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     _tabController = TabController(length: 6, vsync: this);
     Future.delayed(Duration(seconds: 0), () {
       ContractCustomerBloc.of(context).id = int.parse(id);
-      DetailContractBloc.of(context).getFile(int.parse(id), Module.KHACH_HANG);
       DetailCustomerBloc.of(context)
           .add(InitGetDetailCustomerEvent(int.parse(id)));
       ListNoteBloc.of(context).add(InitNoteCusEvent(id, "1"));
@@ -58,9 +57,6 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     super.initState();
   }
 
-  void callApiUploadFile() {
-    DetailContractBloc.of(context).getFile(int.parse(id), Module.KHACH_HANG);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -281,28 +277,15 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                           "Xem đính kèm",
                                           ICONS.IC_ATTACK_SVG,
                                           () async {
-                                            final List<FileDataResponse> list =
-                                                [];
-                                            for (final a
-                                                in DetailContractBloc.of(
-                                                        context)
-                                                    .listFileResponse) {
-                                              list.add(a);
-                                            }
                                             Get.back();
                                             Navigator.of(context)
                                                 .push(MaterialPageRoute(
                                                     builder: (context) =>
                                                         Attachment(
                                                           id: id,
-                                                          name: name,
-                                                          listFileResponse:
-                                                              list,
                                                           typeModule:
                                                               Module.KHACH_HANG,
-                                                        )))
-                                                .whenComplete(
-                                                    () => callApiUploadFile());
+                                                        )));
                                           },
                                         ),
                                         itemIcon(

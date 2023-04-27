@@ -35,6 +35,7 @@ import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.da
 import 'package:gen_crm/bloc/support/detail_support_bloc.dart';
 import 'package:gen_crm/bloc/support/support_bloc.dart';
 import 'package:gen_crm/screens/add_service_voucher/add_service_voucher_step2_screen.dart';
+import 'package:gen_crm/screens/call/app.dart';
 import 'package:gen_crm/screens/menu/home/contract/list_product.dart';
 import 'package:gen_crm/screens/menu/home/contract/update_contract.dart';
 import 'package:gen_crm/screens/menu/home/customer/add_note.dart';
@@ -62,6 +63,7 @@ import 'bloc/contract_customer/contract_customer_bloc.dart';
 import 'bloc/detail_clue/detail_clue_bloc.dart';
 import 'bloc/job_contract/job_contract_bloc.dart';
 import 'bloc/list_note/list_note_bloc.dart';
+import 'bloc/product_module/product_module_bloc.dart';
 import 'bloc/readed_list_notification/readed_list_notifi_bloc.dart';
 import 'bloc/report/report_contact/report_contact_bloc.dart';
 import 'bloc/report/report_employee/report_employee_bloc.dart';
@@ -386,6 +388,10 @@ Future main() async {
           BlocProvider<ServiceVoucherBloc>(
             create: (context) =>
                 ServiceVoucherBloc(userRepository: userRepository),
+          ),
+          BlocProvider<ProductModuleBloc>(
+            create: (context) =>
+                ProductModuleBloc(userRepository: userRepository),
           )
         ],
         child: ProviderScope(child: const MyApp()),
@@ -407,7 +413,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(
           name: ROUTE_NAMES.MAIN,
-          page: () => MyAppCall(),
+          page: () => MyAppCallTest(),
         ),
         GetPage(
           name: ROUTE_NAMES.SPLASH,

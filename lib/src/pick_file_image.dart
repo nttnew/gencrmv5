@@ -110,7 +110,7 @@ Widget FileDinhKemUiBase(
                                 ),
                               ),
                               Positioned(
-                                child: GestureDetector(
+                                child: InkWell(
                                   onTap: () {
                                     AttackBloc.of(context)
                                         .add(RemoveAttackEvent(
@@ -125,15 +125,15 @@ Widget FileDinhKemUiBase(
                                         border: Border.all(
                                             color: Colors.black, width: 0.1),
                                       ),
-                                      height: 16,
-                                      width: 16,
+                                      height: 24,
+                                      width: 24,
                                       child: Icon(
                                         Icons.close,
-                                        size: 9,
+                                        size: 16,
                                       )),
                                 ),
-                                top: 0,
-                                right: 0,
+                                top: -1,
+                                right: -1,
                               )
                             ],
                           ),

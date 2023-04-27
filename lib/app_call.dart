@@ -10,6 +10,8 @@ import 'package:plugin_pitel/services/pitel_service.dart';
 import 'package:plugin_pitel/services/sip_info_data.dart';
 import 'package:plugin_pitel/voip_push/voip_notif.dart';
 
+import 'bloc/login/login_bloc.dart';
+
 class MyAppCall extends StatefulWidget {
   const MyAppCall({Key? key}) : super(key: key);
 
@@ -21,10 +23,9 @@ class _MyAppCallState extends State<MyAppCall> with WidgetsBindingObserver {
   final pitelService = PitelServiceImpl();
   final PitelCall pitelCall = PitelClient.getInstance().pitelCall;
 
-  late final sipInfo;
-
   @override
   void initState() {
+    LoginBloc.of(context).getDataCall();
     VoipNotifService.listenerEvent(
       callback: (event) {},
       onCallAccept: () {
@@ -46,11 +47,11 @@ class _MyAppCallState extends State<MyAppCall> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
       //! Re-Register when resumed/open app in IOS
       handleRegisterBase(context, pitelService);
     }
+    super.didChangeAppLifecycleState(state);
   }
 
   @override

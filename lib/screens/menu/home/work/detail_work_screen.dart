@@ -30,12 +30,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   @override
   void initState() {
     super.initState();
-    DetailContractBloc.of(context).getFile(id, Module.CONG_VIEC);
     DetailWorkBloc.of(context).add(InitGetDetailWorkEvent(id));
-  }
-
-  void callApiFile() {
-    DetailContractBloc.of(context).getFile(id, Module.CONG_VIEC);
   }
 
   @override
@@ -270,25 +265,14 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      final List<FileDataResponse> list = [];
-                                      for (final a
-                                          in DetailContractBloc.of(context)
-                                              .listFileResponse) {
-                                        list.add(a);
-                                      }
                                       Get.back();
                                       Navigator.of(context)
                                           .push(MaterialPageRoute(
                                               builder: (context) => Attachment(
                                                     id: id.toString(),
-                                                    name: title, //todo
-                                                    listFileResponse: list,
                                                     typeModule:
                                                         Module.CONG_VIEC,
-                                                  )))
-                                          .whenComplete(() {
-                                        callApiFile();
-                                      });
+                                                  )));
                                     },
                                     child: Row(
                                       mainAxisAlignment:
@@ -297,8 +281,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                         SizedBox(
                                           width: AppValue.widths * 0.2,
                                         ),
-                                        SvgPicture.asset(
-                                            ICONS.IC_INPUT_SVG),
+                                        SvgPicture.asset(ICONS.IC_INPUT_SVG),
                                         SizedBox(
                                           width: AppValue.widths * 0.1,
                                         ),
@@ -320,8 +303,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                         SizedBox(
                                           width: AppValue.widths * 0.2,
                                         ),
-                                        SvgPicture.asset(
-                                            ICONS.IC_EDIT_SVG),
+                                        SvgPicture.asset(ICONS.IC_EDIT_SVG),
                                         SizedBox(
                                           width: AppValue.widths * 0.1,
                                         ),
@@ -346,8 +328,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                         SizedBox(
                                           width: AppValue.widths * 0.2,
                                         ),
-                                        SvgPicture.asset(
-                                            ICONS.IC_DELETE_SVG),
+                                        SvgPicture.asset(ICONS.IC_DELETE_SVG),
                                         SizedBox(
                                           width: AppValue.widths * 0.1,
                                         ),

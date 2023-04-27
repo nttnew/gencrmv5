@@ -57,7 +57,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         await shareLocal.getString(PreferencesKey.DEVICE_TOKEN) ?? "";
     await PitelClient.getInstance().removeDeviceToken(
       deviceToken: deviceToken, // Device token
-      domain:domain, //todo
+      domain: domain, //todo
       extension: '102',
     );
     await shareLocal.putString(PreferencesKey.DEVICE_TOKEN, '');
@@ -76,8 +76,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  Future<void> getDataCall() async {
-    String data = await shareLocal.getString(PreferencesKey.DATA_CALL) ?? "";
+  void getDataCall() {
+    String data = shareLocal.getString(PreferencesKey.DATA_CALL) ?? "";
     if (data != '') {
       final result = json.decode(data);
       loginData = LoginData.fromJson(result);

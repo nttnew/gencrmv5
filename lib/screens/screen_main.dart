@@ -9,12 +9,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
-import 'package:gen_crm/screens/add_service_voucher/add_service_voucher_screen.dart';
 import 'package:gen_crm/widgets/widget_appbar.dart';
-import 'package:get/get.dart';
 import 'package:gen_crm/models/index.dart';
 import 'package:gen_crm/src/src_index.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:is_lock_screen/is_lock_screen.dart';
 import 'package:plugin_pitel/component/pitel_call_state.dart';
 import 'package:plugin_pitel/component/sip_pitel_helper_listener.dart';
@@ -29,6 +26,7 @@ import '../src/app_const.dart';
 import '../storages/share_local.dart';
 import '../widgets/item_menu.dart';
 import 'call/call_screen.dart';
+import 'menu/home/menu_flash.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
 
 final checkIsPushNotif = StateProvider<bool>((ref) => false);
@@ -47,70 +45,37 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   final pitelService = PitelServiceImpl();
   String state = '';
   bool lockScreen = false;
-  late final String deviceToken;
 
   ///////////////// UI
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   List<ButtonMenuModel> listMenu = [];
-  String getIconMenu(String id) {
-    if (ModuleText.CUSTOMER == id) {
-      return ICONS.IC_CUSTOMER_3X_PNG;
-    } else if (ModuleText.DAU_MOI == id) {
-      return ICONS.IC_CLUE_3X_PNG;
-    } else if (ModuleText.LICH_HEN == id) {
-      return ICONS.IC_CHANCE_3X_PNG;
-    } else if (ModuleText.HOP_DONG == id) {
-      return ICONS.IC_CONTRACT_3X_PNG;
-    } else if (ModuleText.CONG_VIEC == id) {
-      return ICONS.IC_WORK_3X_PNG;
-    } else if (ModuleText.CSKH == id) {
-      return ICONS.IC_SUPPORT_3X_PNG;
-    }
-    return ICONS.IC_WORK_3X_PNG;
-  }
 
-  getMenu() async {
+  void getMenu() async {
     String menu = await shareLocal.getString(PreferencesKey.MENU);
     List listM = jsonDecode(menu);
-    for (int i = 0; i < listM.length; i++) {
+    for (final value in listM) {
+      String id = value['id'];
+      String name = value['name'];
       listMenu.add(
         ButtonMenuModel(
-            title: listM[i]['name'],
-            image: listM[i]['id'] == 'opportunity'
-                ? ICONS.IC_CHANCE_3X_PNG
-                : listM[i]['id'] == 'job'
-                    ? ICONS.IC_WORK_3X_PNG
-                    : listM[i]['id'] == 'contract'
-                        ? ICONS.IC_CONTRACT_3X_PNG
-                        : listM[i]['id'] == 'support'
-                            ? ICONS.IC_SUPPORT_3X_PNG
-                            : listM[i]['id'] == 'customer'
-                                ? ICONS.IC_CUSTOMER_3X_PNG
-                                : ICONS.IC_CLUE_3X_PNG,
-            backgroundColor: listM[i]['id'] == 'opportunity'
-                ? Color(0xffFDC9D2)
-                : listM[i]['id'] == 'job'
-                    ? Color(0xffFF993A)
-                    : listM[i]['id'] == 'contract'
-                        ? Color(0xffFFC000)
-                        : listM[i]['id'] == 'support'
-                            ? Color(0xff8AC53E)
-                            : listM[i]['id'] == 'customer'
-                                ? Color(0xff369FFF)
-                                : Color(0xffA5A6F6),
+            title: name,
+            image: ModuleMy.getIcon(id),
+            backgroundColor: ModuleMy.getColor(id),
             onTap: () {
-              if (listM[i]['id'] == 'opportunity') {
-                AppNavigator.navigateChance(listM[i]['name']);
-              } else if (listM[i]['id'] == 'job') {
-                AppNavigator.navigateWork(listM[i]['name']);
-              } else if (listM[i]['id'] == 'contract') {
-                AppNavigator.navigateContract(listM[i]['name']);
-              } else if (listM[i]['id'] == 'support') {
-                AppNavigator.navigateSupport(listM[i]['name']);
-              } else if (listM[i]['id'] == 'customer') {
-                AppNavigator.navigateCustomer(listM[i]['name']);
-              } else {
-                AppNavigator.navigateClue(listM[i]['name']);
+              if (id == ModuleMy.LICH_HEN) {
+                AppNavigator.navigateChance(name);
+              } else if (id == ModuleMy.CONG_VIEC) {
+                AppNavigator.navigateWork(name);
+              } else if (id == ModuleMy.HOP_DONG) {
+                AppNavigator.navigateContract(name);
+              } else if (id == ModuleMy.CSKH) {
+                AppNavigator.navigateSupport(name);
+              } else if (id == ModuleMy.CUSTOMER) {
+                AppNavigator.navigateCustomer(name);
+              } else if (id == ModuleMy.DAU_MOI) {
+                AppNavigator.navigateClue(name);
+              } else if (id == ModuleMy.SAN_PHAM) {
+                AppNavigator.navigateProduct(name);
               }
             }),
       );
@@ -127,14 +92,6 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     );
     setState(() {});
   }
-
-  _buildItemMenu({required ButtonMenuModel data, required int index}) {
-    return GestureDetector(
-      onTap: data.onTap,
-      child: ItemMenu(data: data),
-    );
-  }
-
   //////////////////////
 
   @override
@@ -156,16 +113,10 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     LoginBloc.of(context).receivedMsg.add(LoginBloc.UNREGISTER);
     _bindEventListeners();
     await _getDeviceToken();
-    await handleRegister(context);
     WidgetsBinding.instance.addObserver(this);
   }
 
-  Future<void> handleRegister(BuildContext context) async {
-    await handleRegisterBase(context, pitelService);
-    await _registerDeviceToken();
-  }
-
-  Future<void> _registerDeviceToken() async {
+  Future<void> _registerDeviceToken(String deviceToken) async {
     final String domainUrl = 'https://demo-gencrm.com/';
     // shareLocal.getString(PreferencesKey.URL_BASE);
     final String domain = domainUrl.substring(
@@ -193,7 +144,9 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   }
 
   Future<void> _getDeviceToken() async {
-    deviceToken = await PushVoipNotif.getDeviceToken();
+    final deviceToken = await PushVoipNotif.getDeviceToken();
+    handleRegisterBase(context, pitelService);
+    _registerDeviceToken(deviceToken);
     await shareLocal.putString(PreferencesKey.DEVICE_TOKEN, deviceToken);
   }
 
@@ -208,9 +161,9 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.inactive) {
       final isLock = await isLockScreen();
-      setState(() {
-        lockScreen = isLock ?? false;
-      });
+      // setState(() {
+      lockScreen = isLock ?? false;
+      // });
     }
   }
 
@@ -236,7 +189,6 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     _removeEventListeners();
   }
 
-  //call
   void _bindEventListeners() {
     pitelCall.addListener(this);
   }
@@ -247,7 +199,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
 
   @override
   void callStateChanged(String callId, PitelCallState state) {
-    if (state.state == PitelCallStateEnum.ENDED && lockScreen) {
+    if (state.state == PitelCallStateEnum.ENDED) {
       FlutterCallkitIncoming.endAllCalls();
     }
   }
@@ -307,103 +259,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
                     builder: (BuildContext context) {
-                      return Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 25, horizontal: 30),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ...List<Widget>.generate(
-                                LoginBloc.of(context).listMenuFlash.length,
-                                (i) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Get.back();
-
-                                  String id = LoginBloc.of(context)
-                                      .listMenuFlash[i]
-                                      .id
-                                      .toString();
-                                  String name = LoginBloc.of(context)
-                                      .listMenuFlash[i]
-                                      .name
-                                      .toString()
-                                      .toLowerCase();
-                                  if (ModuleText.CUSTOMER == id) {
-                                    AppNavigator.navigateAddCustomer();
-                                  } else if (ModuleText.DAU_MOI == id) {
-                                    AppNavigator.navigateFormAdd(name, 2);
-                                  } else if (ModuleText.LICH_HEN == id) {
-                                    AppNavigator.navigateFormAdd(name, 3);
-                                  } else if (ModuleText.HOP_DONG == id) {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                AddServiceVoucherScreen(
-                                                    title: name
-                                                            .toUpperCase()
-                                                            .capitalizeFirst ??
-                                                        '')));
-                                  } else if (ModuleText.CONG_VIEC == id) {
-                                    AppNavigator.navigateFormAdd(name, 14);
-                                  } else if (ModuleText.CSKH == id) {
-                                    AppNavigator.navigateFormAdd(name, 6);
-                                  } else if (ModuleText.THEM_MUA_XE == id) {
-                                    //todo
-                                  } else if (ModuleText.THEM_BAN_XE == id) {
-                                    //todo
-                                  }
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    AppValue.hSpaceLarge,
-                                    Image.asset(
-                                      getIconMenu(LoginBloc.of(context)
-                                          .listMenuFlash[i]
-                                          .id
-                                          .toString()),
-                                      height: 26,
-                                      width: 26,
-                                      fit: BoxFit.contain,
-                                    ),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      LoginBloc.of(context)
-                                          .listMenuFlash[i]
-                                          .name
-                                          .toString(),
-                                      style: AppStyle.DEFAULT_16_BOLD
-                                          .copyWith(color: Color(0xff006CB1)),
-                                    )
-                                  ],
-                                ),
-                              );
-                            }).toList(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                InkWell(
-                                  onTap: () => Navigator.of(context).pop(),
-                                  child: Container(
-                                    width: AppValue.widths * 0.8,
-                                    height: AppValue.heights * 0.06,
-                                    decoration: BoxDecoration(
-                                      color: HexColor("#D0F1EB"),
-                                      borderRadius:
-                                          BorderRadius.circular(17.06),
-                                    ),
-                                    child: Center(
-                                      child: Text("Đóng"),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
+                      return MenuFlash();
                     });
               },
               child: Icon(Icons.add, size: 40),
@@ -501,7 +357,10 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                     mainAxisSpacing: 25,
                   ),
                   itemBuilder: (context, index) {
-                    return _buildItemMenu(data: listMenu[index], index: index);
+                    return GestureDetector(
+                      onTap: listMenu[index].onTap,
+                      child: ItemMenu(data: listMenu[index]),
+                    );
                   }),
               SizedBox(
                 height: 25,

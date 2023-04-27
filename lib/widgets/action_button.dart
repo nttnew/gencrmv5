@@ -11,24 +11,22 @@ class ActionButton extends StatelessWidget {
   final bool checked;
   final bool number;
   final Color? fillColor;
-  final Color? iconColor;
   final Function() onPressed;
   Function()? onLongPress;
 
   ActionButton(
       {Key? key,
-      this.title = '',
-      this.subTitle = '',
-      this.fontWeight = FontWeight.w400,
-      this.titleStyle = const TextStyle(),
-      this.subTitleStyle = const TextStyle(),
-      this.icon,
-      required this.onPressed,
-      this.onLongPress,
-      this.checked = false,
-      this.number = false,
-      this.fillColor,
-      this.iconColor})
+        this.title = '',
+        this.subTitle = '',
+        this.fontWeight = FontWeight.w400,
+        this.titleStyle = const TextStyle(),
+        this.subTitleStyle = const TextStyle(),
+        this.icon,
+        required this.onPressed,
+        this.onLongPress,
+        this.checked = false,
+        this.number = false,
+        this.fillColor})
       : super(key: key);
 
   @override
@@ -41,59 +39,53 @@ class ActionButton extends StatelessWidget {
         GestureDetector(
             onLongPress: onLongPress,
             onTap: onPressed,
-            child: GestureDetector(
-              onTap: onPressed,
-              // onPressed: onPressed,
-              // splashColor: fillColor ?? (checked ? Colors.white : Colors.blue),
-              // fillColor: fillColor ?? (checked ? Colors.blue : Colors.white),
+            child: RawMaterialButton(
+              onPressed: onPressed,
+              splashColor: fillColor ?? (checked ? Colors.white : Colors.blue),
+              fillColor: fillColor ?? (checked ? Colors.blue : Colors.white),
               // elevation: 10.0,
-              // shape: const CircleBorder(),
-              child: Container(
-                padding: const EdgeInsets.all(20.0),
-                decoration: BoxDecoration(
-                  color: fillColor ?? (checked ? Colors.blue : Colors.white),
-                  shape: BoxShape.circle,
-                ),
+              shape: const CircleBorder(),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
                 child: number
                     ? Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                            Text(
-                              title,
-                              style: titleStyle,
-                            ),
-                            Text(
-                              subTitle.toUpperCase(),
-                              style: subTitleStyle,
-                            )
-                          ])
-                    : Icon(
-                        icon,
-                        size: 34.0,
-                        color: iconColor ??
-                            (fillColor != null
-                                ? Colors.white
-                                : (checked ? Colors.white : Colors.green)),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        title,
+                        style: titleStyle,
                       ),
+                      Text(
+                        subTitle.toUpperCase(),
+                        style: subTitleStyle,
+                      )
+                    ])
+                    : Icon(
+                  icon,
+                  size: 30.0,
+                  color: fillColor != null
+                      ? Colors.white
+                      : (checked ? Colors.white : Colors.green),
+                ),
               ),
             )),
         number
             ? Container(
-                margin:
-                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0))
+            margin:
+            const EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0))
             : Container(
-                margin:
-                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                child: (number || title != '')
-                    ? null
-                    : Text(
-                        title,
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          color: fillColor ?? Colors.grey[500],
-                        ),
-                      ),
-              )
+          margin:
+          const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+          child: (number || title != '')
+              ? null
+              : Text(
+            title,
+            style: TextStyle(
+              fontSize: 15.0,
+              color: fillColor ?? Colors.grey[500],
+            ),
+          ),
+        )
       ],
     );
   }

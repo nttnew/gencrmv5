@@ -29,16 +29,11 @@ class _InfoChancePageState extends State<InfoChancePage> {
 
   @override
   void initState() {
-    DetailContractBloc.of(context).getFile(int.parse(id), Module.CO_HOI_BH);
     GetListDetailChanceBloc.of(context)
         .add(InitGetListDetailEvent(int.parse(id)));
     ListNoteBloc.of(context).add(InitNoteOppEvent(id, "1"));
     GetJobChanceBloc.of(context).add(InitGetJobEventChance(int.parse(id)));
     super.initState();
-  }
-
-  void callApiUploadFile() {
-    DetailContractBloc.of(context).getFile(int.parse(id), Module.CO_HOI_BH);
   }
 
   @override
@@ -212,21 +207,13 @@ class _InfoChancePageState extends State<InfoChancePage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          final List<FileDataResponse> list = [];
-                          for (final a in DetailContractBloc.of(context)
-                              .listFileResponse) {
-                            list.add(a);
-                          }
                           Get.back();
                           Navigator.of(context)
                               .push(MaterialPageRoute(
                                   builder: (context) => Attachment(
                                         id: id,
-                                        name: name,
-                                        listFileResponse: list,
                                         typeModule: Module.CO_HOI_BH,
-                                      )))
-                              .whenComplete(() => callApiUploadFile());
+                                      )));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -251,7 +238,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             AppValue.hSpaceLarge,
-                            Image.asset('ICONS.ICON_EDIT2'),
+                            Image.asset(ICONS.IC_EDIT_2_PNG),
                             SizedBox(width: 10),
                             Text(
                               'Sửa',

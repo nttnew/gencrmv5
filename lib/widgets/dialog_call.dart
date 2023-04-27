@@ -80,7 +80,7 @@ class _DialogCallState extends State<DialogCall>
     pitelCall.setCallCurrent(callId);
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => CallScreenWidget(
-              modelScreen: ROUTE_NAMES.CUSTOMER,
+              // modelScreen: ROUTE_NAMES.CUSTOMER,
             )));
   }
 
@@ -89,7 +89,7 @@ class _DialogCallState extends State<DialogCall>
     pitelCall.setCallCurrent(callId);
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => CallScreenWidget(
-              modelScreen: ROUTE_NAMES.CUSTOMER,
+              // modelScreen: ROUTE_NAMES.CUSTOMER,
             )));
   }
 

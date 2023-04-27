@@ -35,10 +35,13 @@ import '../src/models/model_generator/add_customer.dart';
 import '../src/models/model_generator/base_response.dart';
 import '../src/models/model_generator/contract.dart';
 import '../src/models/model_generator/contract_customer.dart';
+import '../src/models/model_generator/detail_product_module_response.dart';
 import '../src/models/model_generator/get_infor.dart';
 import '../src/models/model_generator/get_phone_cus.dart';
 import '../src/models/model_generator/get_xe_response.dart';
+import '../src/models/model_generator/group_product_response.dart';
 import '../src/models/model_generator/list_car_response.dart';
+import '../src/models/model_generator/list_product_response.dart';
 import '../src/models/model_generator/param_del_notif.dart';
 import '../src/models/model_generator/param_read_notifi.dart';
 import '../src/models/model_generator/post_info_car_response.dart';
@@ -644,10 +647,12 @@ class UserRepository {
         BASE_URL.NOTE_ID: noteId
       });
 
-  Future<BaseResponse> uploadMultiFileBase(
-      {required String id,
-      required List<File> files,
-      required String module}) async {
+  Future<BaseResponse> uploadMultiFileBase({
+    required String id,
+    required List<File> files,
+    required String module,
+    bool? isAfter,
+  }) async {
     final multipartFiles = <MultipartFile>[];
     if (files.isNotEmpty) {
       for (final file in files) {
@@ -660,8 +665,17 @@ class UserRepository {
       }
     }
     return await RestClient(dio, baseUrl: dio.options.baseUrl)
-        .uploadMultiFileContract(id, multipartFiles, module);
+        .uploadMultiFile(id, multipartFiles, module, isAfter);
   }
+
+  Future<BaseResponse> uploadFile({
+    required String id,
+    required File files,
+    required bool isAfter,
+    required String module,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .uploadFile(id, files, isAfter, module);
 
   Future<FileResponse> getFile({
     required String module,
@@ -678,6 +692,35 @@ class UserRepository {
     required String id,
   }) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getXe(id);
+
+  Future<GroupProductResponse> getGroupProduct() async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getGroupProduct();
+
+  Future<ListProductResponse> getListProductModule({
+     String? typeProduct,
+     String? txt,
+    required String page,
+     String? filter,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getListProductModule(
+        typeProduct,
+        txt,
+        page,
+        filter,
+      );
+
+  Future<DetailProductResponse> getDetailProduct({
+    required String id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getDetailProduct(id);
+
+  Future<AddCustomerIndividualData> getFormAddProduct() async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getFormAddProduct();
+
+  Future<AddCustomerIndividualData> getEditProduct({
+    required String id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getEditProduct(id);
 
   Stream<AuthenticationStatus> get status async* {
     await Future<void>.delayed(const Duration(seconds: 1));

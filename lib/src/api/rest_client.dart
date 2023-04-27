@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:gen_crm/src/models/model_generator/add_data_response.dart';
 import 'package:gen_crm/src/models/model_generator/add_voucher_response.dart';
+import 'package:gen_crm/src/models/model_generator/detail_product_module_response.dart';
 import 'package:gen_crm/src/models/model_generator/get_phone_cus.dart';
 import 'package:gen_crm/src/models/model_generator/infor_acc.dart';
 import 'package:gen_crm/src/models/model_generator/post_info_car_response.dart';
@@ -36,9 +37,11 @@ import '../models/model_generator/clue.dart';
 import '../models/model_generator/clue_detail.dart';
 import '../models/model_generator/file_response.dart';
 import '../models/model_generator/get_xe_response.dart';
+import '../models/model_generator/group_product_response.dart';
 import '../models/model_generator/job_chance.dart';
 import '../models/model_generator/job_customer.dart';
 import '../models/model_generator/list_car_response.dart';
+import '../models/model_generator/list_product_response.dart';
 import '../models/model_generator/policy.dart';
 import '../models/model_generator/product_response.dart';
 import '../models/model_generator/report_contact.dart';
@@ -218,7 +221,7 @@ abstract class RestClient {
     @Query('text') String text,
     @Query('filter_id') String filter_id,
   );
-  @GET(BASE_URL.INFOR_ACC)
+  @GET(BASE_URL.INFO_ACC)
   Future<InforAccResponse> getInforAcc();
 
   @GET(BASE_URL.REPORT_OPTIONS)
@@ -543,9 +546,19 @@ abstract class RestClient {
 
   @POST(BASE_URL.UPLOAD_FILE)
   @MultiPart()
-  Future<BaseResponse> uploadMultiFileContract(
+  Future<BaseResponse> uploadMultiFile(
     @Part(name: "main_id") String id,
     @Part(name: 'files[]') List<MultipartFile> files,
+    @Path('module') String module,
+    @Part(name: 'is_after') bool? isAfter,
+  );
+
+  @POST(BASE_URL.UPLOAD_FILE)
+  @MultiPart()
+  Future<BaseResponse> uploadFile(
+    @Part(name: "main_id") String id,
+    @Part(name: "files") File file,
+    @Part(name: 'is_after') bool isAfter,
     @Path('module') String module,
   );
 
@@ -563,5 +576,29 @@ abstract class RestClient {
   @POST(BASE_URL.GET_XE)
   Future<GetXeResponse> getXe(
     @Part(name: 'id') String id,
+  );
+
+  @GET(BASE_URL.GROUP_PRODUCT)
+  Future<GroupProductResponse> getGroupProduct();
+
+  @POST(BASE_URL.PRODUCT)
+  Future<ListProductResponse> getListProductModule(
+    @Part(name: "chung_loai_san_pham") String? typeProduct,
+    @Part(name: "txt") String? txt,
+    @Part(name: "page") String page,
+    @Part(name: "filter") String? filter,
+  );
+
+  @GET(BASE_URL.DETAIL_PRODUCT)
+  Future<DetailProductResponse> getDetailProduct(
+    @Query('id') String id,
+  );
+
+  @GET(BASE_URL.ADD_PRODUCT)
+  Future<AddCustomerIndividualData> getFormAddProduct();
+
+  @POST(BASE_URL.EDIT_PRODUCT)
+  Future<AddCustomerIndividualData> getEditProduct(
+    @Field('id') String id,
   );
 }

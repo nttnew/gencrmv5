@@ -149,10 +149,6 @@ class AppNavigator {
       await Get.toNamed(ROUTE_NAMES.ADD_PRODUCT,
           arguments: [add, reload, data]);
 
-  static navigateProduct() async =>
-      await Get.toNamed(ROUTE_NAMES.PRODUCT);
-  // static navigateAttachment(
-  //         String id, String name, List<FileDataResponse> listFile) async =>
-  //     await Get.toNamed(ROUTE_NAMES.ATTACHMENT,
-  //         arguments: [id, name, listFile]);
+  static navigateProduct(String title) async =>
+      await Get.toNamed(ROUTE_NAMES.PRODUCT, arguments: title);
 }

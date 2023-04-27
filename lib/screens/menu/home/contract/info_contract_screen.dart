@@ -32,7 +32,6 @@ class _InfoContractPageState extends State<InfoContractPage> {
   @override
   void initState() {
     Future.delayed(Duration(milliseconds: 100), () {
-      DetailContractBloc.of(context).getFile(int.parse(id), Module.HOP_DONG);
       DetailContractBloc.of(context)
           .add(InitGetDetailContractEvent(int.parse(id)));
       PaymentContractBloc.of(context)
@@ -42,10 +41,6 @@ class _InfoContractPageState extends State<InfoContractPage> {
           .add(InitGetSupportContractEvent(int.parse(id)));
     });
     super.initState();
-  }
-
-  void callApiUploadFile() {
-    DetailContractBloc.of(context).getFile(int.parse(id), Module.HOP_DONG);
   }
 
   @override
@@ -130,7 +125,8 @@ class _InfoContractPageState extends State<InfoContractPage> {
                               ),
                             ],
                           ),
-                        ),Expanded(
+                        ),
+                        Expanded(
                           child: TabBarView(
                             children: [
                               ContractOperation(
@@ -228,29 +224,18 @@ class _InfoContractPageState extends State<InfoContractPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              final List<FileDataResponse> list = [];
-                              for (final a in DetailContractBloc.of(context)
-                                  .listFileResponse) {
-                                list.add(a);
-                              }
                               Get.back();
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(
-                                      builder: (context) => Attachment(
-                                            id: id,
-                                            name: name,
-                                            listFileResponse: list,
-                                            typeModule: Module.HOP_DONG,
-                                          )))
-                                  .whenComplete(() {
-                                callApiUploadFile();
-                              });
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => Attachment(
+                                        id: id,
+                                        typeModule: Module.HOP_DONG,
+                                      )));
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 AppValue.hSpaceLarge,
-                                SvgPicture.asset(ICONS.IC_INPUT_SVG),
+                                SvgPicture.asset(ICONS.IC_ATTACK_SVG),
                                 SizedBox(width: 10),
                                 Text(
                                   'Xem đính kèm',
@@ -269,7 +254,7 @@ class _InfoContractPageState extends State<InfoContractPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 AppValue.hSpaceLarge,
-                                Image.asset('ICONS.ICON_EDIT2'),
+                                Image.asset(ICONS.IC_EDIT_2_PNG),
                                 SizedBox(width: 10),
                                 Text(
                                   'Sửa',
