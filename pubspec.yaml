@@ -101,6 +101,12 @@ dependencies:
 
 
 dependency_overrides:
+  url_launcher_android: 6.0.27
+  device_info_plus: 8.2.0
+  path_provider_android: 2.0.25
+  shared_preferences_android: 2.1.2
+  image_picker_android: 0.8.6+7
+  flutter_plugin_android_lifecycle: 2.0.9
   local_auth_android: 1.0.21
   firebase_core_platform_interface: 4.5.2
 

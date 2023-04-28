@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gen_crm/screens/call/home_screen.dart';
 import 'package:plugin_pitel/component/app_life_cycle/app_life_cycle.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_call.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
@@ -9,8 +10,6 @@ import 'package:plugin_pitel/services/pitel_service.dart';
 import 'package:plugin_pitel/services/sip_info_data.dart';
 import 'package:plugin_pitel/voip_push/push_notif.dart';
 import 'package:plugin_pitel/voip_push/voip_notif.dart';
-
-import 'home_screen.dart';
 
 final sipInfoData = SipInfoData.fromJson({
   "authPass": "GenCRM@2023##",
@@ -32,15 +31,14 @@ const String BUNDLE_ID = 'com.gencrm';
 const String PACKAGE_ID = 'vn.gen_crm';
 const String TEAM_ID = 'AEY48KNZRS';
 
-class MyAppCallTest extends StatefulWidget {
-  const MyAppCallTest({Key? key}) : super(key: key);
+class InitCallApp extends StatefulWidget {
+  const InitCallApp({Key? key}) : super(key: key);
 
   @override
-  State<MyAppCallTest> createState() => _MyAppCallTestState();
+  State<InitCallApp> createState() => _InitCallAppState();
 }
 
-class _MyAppCallTestState extends State<MyAppCallTest>
-    with WidgetsBindingObserver {
+class _InitCallAppState extends State<InitCallApp> with WidgetsBindingObserver {
   final pitelService = PitelServiceImpl();
   final PitelCall pitelCall = PitelClient.getInstance().pitelCall;
 
