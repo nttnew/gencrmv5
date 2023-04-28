@@ -80,7 +80,7 @@ class _DialogCallState extends State<DialogCall>
     pitelCall.setCallCurrent(callId);
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => CallScreenWidget(
-              // modelScreen: ROUTE_NAMES.CUSTOMER,
+              modelScreen: ROUTE_NAMES.CUSTOMER,
             )));
   }
 
@@ -89,7 +89,7 @@ class _DialogCallState extends State<DialogCall>
     pitelCall.setCallCurrent(callId);
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => CallScreenWidget(
-              // modelScreen: ROUTE_NAMES.CUSTOMER,
+              modelScreen: ROUTE_NAMES.CUSTOMER,
             )));
   }
 
@@ -99,7 +99,7 @@ class _DialogCallState extends State<DialogCall>
   }
 
   void _handleCall(BuildContext context, [bool voiceonly = false]) {
-    var dest = '0963094221'; //todo harcode
+    var dest = '0986839102'; //todo harcode
     if (dest.isEmpty) {
       showDialog(
         context: context,

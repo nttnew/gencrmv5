@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:gen_crm/src/preferences_key.dart';
 import 'package:get/get.dart';
+import 'package:plugin_pitel/services/models/pn_push_params.dart';
 import 'package:plugin_pitel/services/pitel_service.dart';
 import 'package:plugin_pitel/services/sip_info_data.dart';
-
 import '../bloc/login/login_bloc.dart';
 import '../storages/share_local.dart';
 import '../widgets/widget_dialog.dart';
@@ -14,40 +15,11 @@ import 'color.dart';
 import 'messages.dart';
 import 'navigator.dart';
 
-//todo data hard code
-//DATA CALL
-// static const String PASSWORD = 'GenCRM@2023##'; //
-// static const String DOMAIN = 'demo-gencrm.com';
-// static const String OUTBOUND_PROXY = 'pbx-mobile.tel4vn.com:50061';
-// static const String URL_API = 'https://pbx-mobile.tel4vn.com';
-// static const int UUSER = 102;
-// static const String USER_NAME = 'user2';
-
-// final response = await pitelClient.registerDeviceToken(
-//   deviceToken: deviceToken,
-//   platform: 'android',
-//   bundleId: 'vn.gen_crm',
-//   domain: 'demo-gencrm.com',
-//   extension: '102',
-//   // appMode: kReleaseMode ? 'production' : 'dev',
-//   appMode: 'dev',
-// );
-
-// final sipInfoData = SipInfoData.fromJson({
-//   "authPass": "GenCRM@2023##",
-//   "registerServer": "demo-gencrm.com",
-//   "outboundServer": "pbx-mobile.tel4vn.com:50061",
-//   "userID": 102, // Example 101
-//   "authID": 102, // Example 101
-//   "accountName": "102", // Example 101
-//   "displayName": "102@demo-gencrm.com",
-//   "dialPlan": null,
-//   "randomPort": null,
-//   "voicemail": null,
-//   "wssUrl": "wss://wss-mobile.tel4vn.com:7444",
-//   "userName": "user1@demo-gencrm.com",
-//   "apiDomain": "https://api-mobile.tel4vn.com"
-// });
+const int IS_AFTER = 1;
+const int IS_BEFORE = 0;
+const String BUNDLE_ID = 'com.gencrm';
+const String PACKAGE_ID = 'vn.gen_crm';
+const String TEAM_ID = 'AEY48KNZRS';
 
 void loginSessionExpired() {
   Get.dialog(WidgetDialog(
@@ -61,61 +33,53 @@ void loginSessionExpired() {
   ));
 }
 
-void handleRegisterBase(BuildContext context, PitelServiceImpl pitelService) {
-  // final String domainUrl = 'https://demo-gencrm.com/';
-  // //shareLocal.getString(PreferencesKey.URL_BASE);
-  // final String domain = domainUrl.substring(
-  //     domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
-  // final int user =
-  //     int.parse(LoginBloc.of(context).loginData?.info_user?.extension ?? '0');
-  // Codec<String, String> stringToBase64 = utf8.fuse(base64);
-  // final String pass = stringToBase64.decode(
-  //     LoginBloc.of(context).loginData?.info_user?.password_extension ?? '');
-  //
-  // final String outboundServer = LoginBloc.of(context)
-  //         .loginData
-  //         ?.info_user
-  //         ?.info_setup_callcenter
-  //         ?.outbound ??
-  //     '';
-  // final String apiDomain = LoginBloc.of(context)
-  //         .loginData
-  //         ?.info_user
-  //         ?.info_setup_callcenter
-  //         ?.domain ??
-  //     '';
-  // final sipInfo = SipInfoData.fromJson({
-  //   "authPass": pass,
-  //   "registerServer": domain,
-  //   "outboundServer": outboundServer,
-  //   "userID": user,
-  //   "authID": user,
-  //   "accountName": "${user}",
-  //   "displayName": "${user}@${domain}",
-  //   "dialPlan": null,
-  //   "randomPort": null,
-  //   "voicemail": null,
-  //   "wssUrl": BASE_URL.URL_WSS,
-  //   "userName": "${user}@${domain}",
-  //   "apiDomain": getCheckHttp(apiDomain),
-  // });
+void handleRegisterBase(
+    BuildContext context, PitelServiceImpl pitelService, String deviceToken) {
+  final String domainUrl = 'https://demo-gencrm.com/';
+  //shareLocal.getString(PreferencesKey.URL_BASE);
+  final String domain = domainUrl.substring(
+      domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
+  final int user =
+      int.parse(LoginBloc.of(context).loginData?.info_user?.extension ?? '0');
+  Codec<String, String> stringToBase64 = utf8.fuse(base64);
+  final String pass = stringToBase64.decode(
+      LoginBloc.of(context).loginData?.info_user?.password_extension ?? '');
 
-  // final sipInfoData = SipInfoData.fromJson({
-  //   "authPass": "GenCRM@2023##",
-  //   "registerServer": "demo-gencrm.com",
-  //   "outboundServer": "pbx-mobile.tel4vn.com:50061",
-  //   "userID": 102, // Example 101
-  //   "authID": 102, // Example 101
-  //   "accountName": "102", // Example 101
-  //   "displayName": "102@demo-gencrm.com",
-  //   "dialPlan": null,
-  //   "randomPort": null,
-  //   "voicemail": null,
-  //   "wssUrl": "wss://wss-mobile.tel4vn.com:7444",
-  //   "userName": "user1@demo-gencrm.com",
-  //   "apiDomain": "https://api-mobile.tel4vn.com"
-  // });
-  // pitelService.setExtensionInfo(sipInfoData);
+  final String outboundServer = LoginBloc.of(context)
+          .loginData
+          ?.info_user
+          ?.info_setup_callcenter
+          ?.outbound ??
+      '';
+  final String apiDomain = LoginBloc.of(context)
+          .loginData
+          ?.info_user
+          ?.info_setup_callcenter
+          ?.domain ??
+      '';
+  final sipInfo = SipInfoData.fromJson({
+    "authPass": pass,
+    "registerServer": domain,
+    "outboundServer": outboundServer,
+    "userID": user,
+    "authID": user,
+    "accountName": "${user}",
+    "displayName": "${user}@${domain}",
+    "dialPlan": null,
+    "randomPort": null,
+    "voicemail": null,
+    "wssUrl": BASE_URL.URL_WSS,
+    "userName": "${user}@${domain}",
+    "apiDomain": getCheckHttp(apiDomain),
+  });
+  final pnPushParams = PnPushParams(
+    pnProvider: Platform.isAndroid ? 'fcm' : 'apns',
+    pnParam: Platform.isAndroid
+        ? PACKAGE_ID // Example com.company.app
+        : '${TEAM_ID}.${BUNDLE_ID}.voip', // Example com.company.app
+    pnPrid: '${deviceToken}',
+  );
+  pitelService.setExtensionInfo(sipInfo, pnPushParams);
 }
 
 handleOnPressItemMenu(_drawerKey, value) async {
@@ -180,9 +144,3 @@ String getCheckHttp(String text) {
   }
   return 'https://' + text;
 }
-
-const int IS_AFTER = 1;
-const int IS_BEFORE = 0;
-const String BUNDLE_ID = 'com.gencrm';
-const String PACKAGE_ID = 'vn.gen_crm';
-const String TEAM_ID = 'AEY48KNZRS';

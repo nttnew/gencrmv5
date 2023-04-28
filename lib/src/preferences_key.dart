@@ -1,5 +1,6 @@
 class PreferencesKey {
   static const String TOKEN = "TOKEN";
+  static const String REGISTER_CALL = "REGISTER_CALL";
   static const String SESS = "SESS";
   static const String USER = "USER";
   static const String INFOR_USER = "INFOR_USER";

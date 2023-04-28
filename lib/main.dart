@@ -62,7 +62,6 @@ import 'bloc/work/detail_work_bloc.dart';
 import 'bloc/work/work_bloc.dart';
 import 'bloc/work_clue/work_clue_bloc.dart';
 import 'firebase_options.dart';
-import 'init_app_call.dart';
 
 Future main() async {
   Bloc.observer = SimpleBlocObserver();

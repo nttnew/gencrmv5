@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
@@ -45,11 +46,11 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   final pitelService = PitelServiceImpl();
   String state = '';
   bool lockScreen = false;
+  late final bool isRegister;
 
   ///////////////// UI
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   List<ButtonMenuModel> listMenu = [];
-
   void getMenu() async {
     String menu = await shareLocal.getString(PreferencesKey.MENU);
     List listM = jsonDecode(menu);
@@ -97,10 +98,8 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   @override
   void initState() {
     callInit();
-    Future.delayed(Duration(milliseconds: 300), () {
-      GetInforAccBloc.of(context).add(InitGetInforAcc());
-      GetListUnReadNotifiBloc.of(context).add(CheckNotification());
-    });
+    GetInforAccBloc.of(context).add(InitGetInforAcc());
+    GetListUnReadNotifiBloc.of(context).add(CheckNotification());
     getMenu();
     LoginBloc.of(context).getListMenuFlash();
     super.initState();
@@ -108,46 +107,18 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
 
   //////////////////// HANDEL CALL
 
-  void callInit() async {
+  void callInit() {
+    isRegister =
+        (shareLocal.getString(PreferencesKey.REGISTER_CALL) ?? "true") ==
+            "true";
     state = pitelCall.getRegisterState();
     LoginBloc.of(context).receivedMsg.add(LoginBloc.UNREGISTER);
     _bindEventListeners();
-    await _getDeviceToken();
+    if (isRegister) {
+      shareLocal.putString(PreferencesKey.REGISTER_CALL, 'false');
+      _getDeviceToken();
+    }
     WidgetsBinding.instance.addObserver(this);
-  }
-
-  Future<void> _registerDeviceToken(String deviceToken) async {
-    final String domainUrl = 'https://demo-gencrm.com/';
-    // shareLocal.getString(PreferencesKey.URL_BASE);
-    final String domain = domainUrl.substring(
-        domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
-    final String user =
-        LoginBloc.of(context).loginData?.info_user?.extension ?? '';
-    bool isAndroid = Platform.isAndroid;
-    // await pitelClient.registerDeviceToken(
-    //   deviceToken: deviceToken,
-    //   platform: isAndroid ? 'android' : 'ios',
-    //   bundleId: isAndroid ? 'vn.gen_crm' : 'com.gencrm', // BundleId/packageId
-    //   domain: domain,
-    //   extension: user,
-    //   appMode: kReleaseMode ? 'production' : 'dev',
-    // );
-    final response = await pitelClient.registerDeviceToken(
-      deviceToken: deviceToken,
-      platform: 'android',
-      bundleId: 'vn.gen_crm',
-      domain: 'demo-gencrm.com',
-      extension: '102',
-      // appMode: kReleaseMode ? 'production' : 'dev',
-      appMode: 'dev',
-    );
-  }
-
-  Future<void> _getDeviceToken() async {
-    final deviceToken = await PushVoipNotif.getDeviceToken();
-    handleRegisterBase(context, pitelService);
-    _registerDeviceToken(deviceToken);
-    await shareLocal.putString(PreferencesKey.DEVICE_TOKEN, deviceToken);
   }
 
   @override
@@ -161,10 +132,35 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.inactive) {
       final isLock = await isLockScreen();
-      // setState(() {
-      lockScreen = isLock ?? false;
-      // });
+      setState(() {
+        lockScreen = isLock ?? false;
+      });
     }
+  }
+
+  Future<void> _getDeviceToken() async {
+    final deviceToken = await PushVoipNotif.getDeviceToken();
+    shareLocal.putString(PreferencesKey.DEVICE_TOKEN, deviceToken);
+    handleRegisterBase(context, pitelService, deviceToken);
+    _registerDeviceToken(deviceToken);
+  }
+
+  Future<void> _registerDeviceToken(String deviceToken) async {
+    final String domainUrl = 'https://demo-gencrm.com/';
+    // shareLocal.getString(PreferencesKey.URL_BASE);
+    final String domain = domainUrl.substring(
+        domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
+    final String user =
+        LoginBloc.of(context).loginData?.info_user?.extension ?? '';
+    bool isAndroid = Platform.isAndroid;
+    await pitelClient.registerDeviceToken(
+      deviceToken: deviceToken,
+      platform: isAndroid ? 'android' : 'ios',
+      bundleId: isAndroid ? PACKAGE_ID : BUNDLE_ID, // BundleId/packageId
+      domain: domain,
+      extension: user,
+      appMode: kReleaseMode ? 'production' : 'dev',
+    );
   }
 
   @override

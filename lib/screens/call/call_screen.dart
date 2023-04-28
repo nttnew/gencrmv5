@@ -13,16 +13,19 @@ import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:plugin_pitel/sip/sip_ua.dart';
 
 import '../../src/src_index.dart';
-import '../../widgets/ripple_logo.dart';
+import 'ripple_logo.dart';
 import '../../widgets/widget_text.dart';
 import 'action_button.dart';
-import 'home_screen.dart';
 
 class CallScreenWidget extends ConsumerStatefulWidget {
-  CallScreenWidget({Key? key, this.receivedBackground = false})
-      : super(key: key);
+  CallScreenWidget({
+    Key? key,
+    this.receivedBackground = false,
+    this.modelScreen,
+  }) : super(key: key);
   final PitelCall _pitelCall = PitelClient.getInstance().pitelCall;
   final bool receivedBackground;
+  final String? modelScreen;
 
   @override
   ConsumerState<CallScreenWidget> createState() => _MyCallScreenWidget();
@@ -69,14 +72,12 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
       if (!pitelCall.isConnected || !pitelCall.isHaveCall) {
-        // Navigate to your first screen
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+        Navigator.pushReplacementNamed(
+            context, widget.modelScreen ?? ROUTE_NAMES.MAIN);
       }
       if (pitelCall.direction == null && _state == PitelCallStateEnum.NONE) {
-        // Navigate to your first screen
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+        Navigator.pushReplacementNamed(
+            context, widget.modelScreen ?? ROUTE_NAMES.MAIN);
       }
     }
   }
@@ -84,7 +85,6 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
   void handleCall() {
     if (Platform.isAndroid) {
       if (direction != 'OUTGOING') {
-        //! Answer when incoming call
         pitelCall.answer();
       }
     }
@@ -185,8 +185,8 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
         FlutterCallkitIncoming.endAllCalls();
       }
       _isBacked = true;
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+      Navigator.pushReplacementNamed(
+          context, widget.modelScreen ?? ROUTE_NAMES.MAIN);
     }
   }
 
@@ -219,7 +219,10 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
 
     var hangupBtnInactive = ActionButton(
       title: "hangup",
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushReplacementNamed(
+            context, widget.modelScreen ?? ROUTE_NAMES.MAIN);
+      },
       icon: Icons.call_end,
       fillColor: Colors.grey,
     );

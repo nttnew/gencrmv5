@@ -43,6 +43,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   void logout() {
+    shareLocal.putString(PreferencesKey.REGISTER_CALL, 'true');
     receivedMsg.add(LoginBloc.UNREGISTER);
     _removeDeviceToken();
     PitelClient.getInstance().pitelCall.unregister();

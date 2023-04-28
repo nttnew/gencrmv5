@@ -230,9 +230,9 @@ class _MainDrawerState extends State<MainDrawer> {
           WidgetButton(
             onTap: () {
               ShowDialogCustom.showDialogTwoButton(onTap2: () {
-               LoginBloc.of(context).logout();
                AuthenticationBloc.of(context)
                     .add(AuthenticationLogoutRequested());
+               LoginBloc.of(context).logout();
               });
             },
             height: 40,
