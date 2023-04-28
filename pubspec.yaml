@@ -101,6 +101,8 @@ dependencies:
 
 
 dependency_overrides:
+  connectivity_plus: 3.0.4
+  sqflite: 2.2.7
   url_launcher_android: 6.0.27
   device_info_plus: 8.2.0
   path_provider_android: 2.0.25
