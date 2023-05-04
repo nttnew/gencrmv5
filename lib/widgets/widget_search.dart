@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class WidgetSearch extends StatefulWidget {
+class WidgetSearch extends StatelessWidget {
   final TextEditingController? inputController;
-  final ValueChanged<String>? onChanged;
+  // final ValueChanged<String>? onChanged;
   final FormFieldValidator<String>? validator;
   final String? hint, errorText, labelText, initialValue;
   final int? maxLine;
@@ -23,53 +23,47 @@ class WidgetSearch extends StatefulWidget {
   final BoxDecoration? boxDecoration;
   final TextStyle? hintTextStyle;
   final Function? onClickRight;
-  final Function? onEditingComplete;
-  const WidgetSearch(
-      {Key? key,
-      this.focusNode,
-      this.inputController,
-      this.onChanged,
-      this.validator,
-      this.hint,
-      this.errorText,
-      this.labelText,
-      this.initialValue,
-      this.maxLine = 1,
-      this.minLine = 1,
-      this.maxLength,
-      this.height = 55,
-      this.obscureText = false,
-      this.inputType = TextInputType.text,
-      this.crossAxisAlignment = CrossAxisAlignment.center,
-      this.textInputAction = TextInputAction.go,
-      this.leadIcon,
-      this.endIcon,
-      this.enabled = true,
-      this.boxDecoration,
-      this.hintTextStyle,
-      this.onClickRight,
-      this.onEditingComplete})
-      : super(key: key);
+  final Function(String) onSubmit;
+  const WidgetSearch({
+    Key? key,
+    this.focusNode,
+    this.inputController,
+    // this.onChanged,
+    this.validator,
+    this.hint,
+    this.errorText,
+    this.labelText,
+    this.initialValue,
+    this.maxLine = 1,
+    this.minLine = 1,
+    this.maxLength,
+    this.height = 55,
+    this.obscureText = false,
+    this.inputType = TextInputType.text,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.textInputAction = TextInputAction.go,
+    this.leadIcon,
+    this.endIcon,
+    this.enabled = true,
+    this.boxDecoration,
+    this.hintTextStyle,
+    this.onClickRight,
+    required this.onSubmit,
+  }) : super(key: key);
 
-  @override
-  _WidgetSearchState createState() => _WidgetSearchState();
-}
-
-class _WidgetSearchState extends State<WidgetSearch> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widget.height,
-      decoration: widget.boxDecoration,
+      height: height,
+      decoration: boxDecoration,
       child: Row(
-        crossAxisAlignment: widget.crossAxisAlignment!,
+        crossAxisAlignment: crossAxisAlignment!,
         children: [
-          widget.leadIcon != null
+          leadIcon != null
               ? Padding(
                   padding: EdgeInsets.only(left: 15),
                   child: Center(
-                      child: Container(
-                          height: 25, width: 25, child: widget.leadIcon)),
+                      child: Container(height: 25, width: 25, child: leadIcon)),
                 )
               : Container(),
           Expanded(
@@ -77,32 +71,31 @@ class _WidgetSearchState extends State<WidgetSearch> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextFormField(
-                key: widget.key,
-                controller: widget.inputController,
-                onChanged: (change) => widget.onChanged!(change),
-                onEditingComplete: () {
-                  widget.onEditingComplete!();
+                controller: inputController,
+                // onChanged: (change) => onChanged!(change),
+                onFieldSubmitted: (v) {
+                  onSubmit(v);
                 },
-                enabled: widget.enabled,
-                validator: widget.validator,
+                enabled: enabled,
+                validator: validator,
                 style: AppStyle.DEFAULT_14,
-                maxLines: widget.maxLine,
-                minLines: widget.minLine,
-                keyboardType: widget.inputType,
+                maxLines: maxLine,
+                minLines: minLine,
+                keyboardType: inputType,
                 textAlign: TextAlign.left,
-                obscureText: widget.obscureText!,
-                initialValue: widget.initialValue,
-                focusNode: widget.focusNode,
+                obscureText: obscureText!,
+                initialValue: initialValue,
+                focusNode: focusNode,
                 textAlignVertical: TextAlignVertical.top,
-                textInputAction: widget.textInputAction,
-                maxLength: widget.maxLength,
+                textInputAction: textInputAction,
+                maxLength: maxLength,
                 decoration: InputDecoration(
-                  labelText: widget.labelText,
+                  labelText: labelText,
                   labelStyle:
                       AppStyle.DEFAULT_14.copyWith(color: COLORS.PRIMARY_COLOR),
-                  hintText: widget.hint,
-                  hintStyle: widget.hintTextStyle,
-                  errorText: widget.errorText,
+                  hintText: hint,
+                  hintStyle: hintTextStyle,
+                  errorText: errorText,
                   errorStyle: AppStyle.DEFAULT_12.copyWith(color: COLORS.RED),
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
@@ -111,18 +104,17 @@ class _WidgetSearchState extends State<WidgetSearch> {
               ),
             ),
           ),
-          widget.endIcon != null
-              ? Container(
-                  height: widget.height, width: 1, color: HexColor("#DBDBDB"))
+          endIcon != null
+              ? Container(height: height, width: 1, color: HexColor("#DBDBDB"))
               : Container(),
-          widget.endIcon != null
+          endIcon != null
               ? GestureDetector(
-                  onTap: () => widget.onClickRight!(),
+                  onTap: () => onClickRight!(),
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Center(
-                        child: Container(
-                            height: 20, width: 20, child: widget.endIcon)),
+                        child:
+                            Container(height: 20, width: 20, child: endIcon)),
                   ),
                 )
               : Container()

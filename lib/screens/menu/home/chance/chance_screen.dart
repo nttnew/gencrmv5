@@ -169,12 +169,10 @@ class _ChanceScreenState extends State<ChanceScreen> {
             onClickRight: () {
               showBotomSheet(state.listFilter);
             },
-            onChanged: (text) {
-              search = text;
-            },
-            onEditingComplete: () {
+            onSubmit: (v) {
+              search = v;
               GetListChanceBloc.of(context)
-                  .add(InitGetListOrderEventChance(idFilter, 1, search));
+                  .add(InitGetListOrderEventChance(idFilter, 1, v));
             },
           ),
         );

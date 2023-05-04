@@ -93,14 +93,11 @@ class _CustomerContractScreenState extends State<CustomerContractScreen> {
                               fontWeight: FontWeight.w400,
                               color: HexColor("#707070")),
                           hint: "Tìm khách hàng",
-                          leadIcon: SvgPicture.asset(
-                              ICONS.IC_SEARCH_SVG),
-                          onChanged: (text) {
-                            search = text;
-                          },
-                          onEditingComplete: () {
+                          leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                          onSubmit: (v) {
+                            search = v;
                             CustomerContractBloc.of(context)
-                                .add(InitGetContractCustomerEvent("1", search));
+                                .add(InitGetContractCustomerEvent("1", v));
                           },
                         ),
                       ),

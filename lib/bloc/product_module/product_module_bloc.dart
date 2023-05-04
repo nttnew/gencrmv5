@@ -93,16 +93,16 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
   }
 
   void dispose() {
+    listType.add([]);
+    typeStream.add(null);
     isLength = true;
     page = BASE_URL.PAGE_DEFAULT;
     dataList = null;
     querySearch = null;
     filter = null;
     type = null;
-    listType.add([]);
-    listType.close();
-    typeStream.add(null);
-    typeStream.close();
+    // listType.close();
+    // typeStream.close();
     SuccessGetListProductModuleState([]);
   }
 

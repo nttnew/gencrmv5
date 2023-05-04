@@ -134,12 +134,10 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   onClickRight: () {
                     showBotomSheet(state.listFilter);
                   },
-                  onChanged: (text) {
-                    search = text;
-                  },
-                  onEditingComplete: () {
+                  onSubmit: (v) {
+                    search = v;
                     GetListCustomerBloc.of(context)
-                        .add(InitGetListOrderEvent(idFilter, 1, search));
+                        .add(InitGetListOrderEvent(idFilter, 1, v));
                   },
                 );
               else

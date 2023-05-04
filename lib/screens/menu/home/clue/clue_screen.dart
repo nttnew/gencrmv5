@@ -164,12 +164,9 @@ class _ClueScreenState extends State<ClueScreen> {
               onClickRight: () {
                 showBotomSheet(state.listFilter);
               },
-              onChanged: (text) {
-                search = text;
-              },
-              onEditingComplete: () {
-                GetListClueBloc.of(context)
-                    .add(InitGetListClueEvent('', 1, search));
+              onSubmit: (v) {
+                search = v;
+                GetListClueBloc.of(context).add(InitGetListClueEvent('', 1, v));
               },
             );
           }

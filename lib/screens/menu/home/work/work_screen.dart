@@ -45,7 +45,7 @@ class _WorkScreenState extends State<WorkScreen> {
         page = page + 1;
       } else {}
     });
-    title=Get.arguments;
+    title = Get.arguments;
     super.initState();
   }
 
@@ -57,7 +57,8 @@ class _WorkScreenState extends State<WorkScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff1AA928),
-        onPressed: () => AppNavigator.navigateFormAdd('Thêm ${title.toLowerCase()}', 5),
+        onPressed: () =>
+            AppNavigator.navigateFormAdd('Thêm ${title.toLowerCase()}', 5),
         child: Icon(Icons.add, size: 40),
       ),
       appBar: AppBar(
@@ -125,15 +126,12 @@ class _WorkScreenState extends State<WorkScreen> {
                         fontWeight: FontWeight.w400,
                         color: HexColor("#707070")),
                     hint: "Tìm ${title.toLowerCase()}",
-                    onChanged: (text) {
-                      search = text;
-                    },
-                    onEditingComplete: () {
+                    onSubmit: (v) {
+                      search = v;
                       WorkBloc.of(context)
-                          .add(InitGetListWorkEvent("1", search, filter_id));
+                          .add(InitGetListWorkEvent("1", v, filter_id));
                     },
-                    leadIcon:
-                        SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                    leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                     endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
                     onClickRight: () {
                       showBotomSheet(state.data_filter);
@@ -261,6 +259,4 @@ class _WorkScreenState extends State<WorkScreen> {
           );
         });
   }
-
-
 }

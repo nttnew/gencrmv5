@@ -155,12 +155,10 @@ class _ContractScreenState extends State<ContractScreen> {
             onClickRight: () {
               this.onClickFilter(state.listFilter);
             },
-            onChanged: (text) {
-              search = text;
-            },
-            onEditingComplete: () {
-              ContractBloc.of(context).add(InitGetContractEvent(
-                  page, _editingController.text, idFilter));
+            onSubmit: (v) {
+              search = v;
+              ContractBloc.of(context)
+                  .add(InitGetContractEvent(page, v, idFilter));
             },
           ),
         );

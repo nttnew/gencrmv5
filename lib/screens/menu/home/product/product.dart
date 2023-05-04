@@ -162,6 +162,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           .then((value) {
                         if (value != '') {
                           _controllerText.text = value;
+                          search();
                         }
                       });
                     },
@@ -170,13 +171,11 @@ class _ProductScreenState extends State<ProductScreen> {
                       size: 20,
                     ),
                   ),
-                  onClickRight: () {
+                  onClickRight: () {},
+                  onSubmit: (v) {
+                    _bloc.querySearch = v;
                     search();
                   },
-                  onChanged: (text) {
-                    _bloc.querySearch = text;
-                  },
-                  onEditingComplete: () {},
                 ),
               ),
               Padding(

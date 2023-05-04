@@ -124,12 +124,10 @@ class _SupportScreenState extends State<SupportScreen> {
                       color: HexColor("#707070")),
                   hint:
                       "Tìm ${Get.arguments == 'CSKH' ? Get.arguments : Get.arguments.toString().toLowerCase()}",
-                  onEditingComplete: () {
+                  onSubmit: (v) {
+                    search = v;
                     SupportBloc.of(context)
                         .add(InitGetSupportEvent(1, search, id_filter));
-                  },
-                  onChanged: (text) {
-                    search = text;
                   },
                   leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                   endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),

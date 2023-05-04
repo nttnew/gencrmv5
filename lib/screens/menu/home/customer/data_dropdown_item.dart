@@ -100,19 +100,15 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                               color: HexColor("#707070")),
                           hint: "Tìm kiếm",
                           height: 48,
-                          leadIcon: SvgPicture.asset(
-                              ICONS.IC_SEARCH_SVG),
-                          onEditingComplete: () {
-                            FocusManager.instance.primaryFocus?.unfocus();
-                          },
-                          onChanged: (text) {
-                            search = text;
+                          leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                          onSubmit: (v) {
+                            search = v;
                             if (widget.isSearch == false) {
                               data = listData.where((i) {
                                 String value =
                                     TiengViet.parse(i['label']).toLowerCase();
                                 String search1 =
-                                    TiengViet.parse(text).toLowerCase();
+                                    TiengViet.parse(v).toLowerCase();
                                 if (value.contains(search1))
                                   return true;
                                 else
@@ -122,6 +118,7 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                                 check = !check;
                               });
                             }
+                            FocusManager.instance.primaryFocus?.unfocus();
                           },
                         ),
                       ),
