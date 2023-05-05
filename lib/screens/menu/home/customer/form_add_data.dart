@@ -9,6 +9,7 @@ import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/contract/phone_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
+import 'package:gen_crm/bloc/product_module/product_module_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/menu/home/customer/input_dropDown.dart';
 import 'package:gen_crm/src/app_const.dart';
@@ -267,8 +268,8 @@ class _FormAddDataState extends State<FormAddData> {
                             SupportCustomerBloc.of(context).add(
                                 InitGetSupportCustomerEvent(int.parse(id)));
                           } else if (type == PRODUCT_TYPE) {
-                            DetailProductBloc.of(context)
-                                .add(InitGetDetailProductEvent(id));
+                            ProductModuleBloc.of(context)
+                                .add(InitGetListProductModuleEvent());
                           }
                         },
                       );
