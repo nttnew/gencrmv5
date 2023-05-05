@@ -81,10 +81,9 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
   }
 
   void back() {
-    Navigator.pushNamedAndRemoveUntil(
+    Navigator.pushReplacementNamed(
       context,
       widget.modelScreen ?? ROUTE_NAMES.MAIN,
-      ModalRoute.withName('/'),
     );
   }
 
@@ -248,7 +247,7 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
             title: "hangup",
             onPressed: () {
               _disposeRenderers();
-              Navigator.of(context).pop();
+              back();
               pitelCall.removeListener(this);
             },
             icon: Icons.call_end,
