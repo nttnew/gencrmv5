@@ -49,6 +49,7 @@ import '../src/models/model_generator/report_contact.dart';
 import '../src/models/model_generator/report_general.dart';
 import '../src/models/model_generator/report_option.dart';
 import '../src/models/model_generator/report_product.dart';
+import '../src/models/model_generator/response_save_product.dart';
 import '../src/models/model_generator/support_customer.dart';
 import '../src/models/model_generator/update_pass_request.dart';
 
@@ -697,10 +698,10 @@ class UserRepository {
       await RestClient(dio, baseUrl: dio.options.baseUrl).getGroupProduct();
 
   Future<ListProductResponse> getListProductModule({
-     String? typeProduct,
-     String? txt,
+    String? typeProduct,
+    String? txt,
     required String page,
-     String? filter,
+    String? filter,
   }) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getListProductModule(
         typeProduct,
@@ -714,13 +715,28 @@ class UserRepository {
   }) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getDetailProduct(id);
 
-  Future<AddCustomerIndividualData> getFormAddProduct() async =>
+  Future<AddCustomerIndividual> getFormAddProduct() async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getFormAddProduct();
 
-  Future<AddCustomerIndividualData> getEditProduct({
+  Future<AddCustomerIndividual> getEditProduct({
     required String id,
   }) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getEditProduct(id);
+
+  Future<ResponseSaveProduct> addProduct(
+          {required Map<String, dynamic> data}) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).addProduct(data);
+
+  Future<ResponseSaveProduct> editProduct(
+          {required Map<String, dynamic> data, required int id}) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).editProduct(data, id);
+
+  Future<dynamic> deleteProduct({
+    required String id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).deleteProduct(id);
+
+  //////////////////////
 
   Stream<AuthenticationStatus> get status async* {
     await Future<void>.delayed(const Duration(seconds: 1));

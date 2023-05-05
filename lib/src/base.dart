@@ -84,7 +84,7 @@ class BASE_URL {
   static const ADD_JOB = 'modules/genmobile2/job/save';
   static const GET_FORM_ADD_SUPPORT_CUS =
       'modules/genmobile2/customer/addSupport';
-  static const ADD_SUPPORT = '/modules/genmobile2/support/save';
+  static const ADD_SUPPORT = 'modules/genmobile2/support/save';
   static const GET_FORM_ADD_AGENCY = 'modules/genmobile2/agencycustomer/edit';
   static const GET_FORM_ADD_CHANCE = 'modules/genmobile2/opportunity/edit';
   static const GET_FORM_ADD_CONTRACT = 'modules/genmobile2/contract/add';
@@ -159,6 +159,8 @@ class BASE_URL {
   static const DETAIL_PRODUCT = 'modules/genmobile2/product/view';
   static const ADD_PRODUCT = 'modules/genmobile2/product/form';
   static const EDIT_PRODUCT = 'modules/genmobile2/product/form';
+  static const ADD_PRODUCT_MODULE = 'modules/genmobile2/product/save';
+  static const DELETE_PRODUCT = 'modules/genmobile2/product/delete';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';
@@ -197,6 +199,7 @@ class Module {
   static const String SAN_PHAM = 'sanpham';
   static const String SAN_PHAM_KH = 'sanphamkh';
   static const String DAU_MOI = 'daumoi';
+  static const String PRODUCT = 'sanpham';
 }
 
 // job cv customer: khách hang support ho tro contact đầu mối
@@ -213,6 +216,8 @@ String getURLModule(String module) {
     return 'support';
   } else if (module == Module.CO_HOI_BH) {
     return 'opportunity';
+  } else if (module == Module.PRODUCT) {
+    return 'product';
   }
   return '';
 }

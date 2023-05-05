@@ -47,6 +47,7 @@ import 'bloc/contract/customer_contract_bloc.dart';
 import 'bloc/contract/phone_bloc.dart';
 import 'bloc/contract_customer/contract_customer_bloc.dart';
 import 'bloc/detail_clue/detail_clue_bloc.dart';
+import 'bloc/detail_product/detail_product_bloc.dart';
 import 'bloc/job_contract/job_contract_bloc.dart';
 import 'bloc/list_note/list_note_bloc.dart';
 import 'bloc/product_module/product_module_bloc.dart';
@@ -219,6 +220,10 @@ Future main() async {
           BlocProvider<DetailCustomerBloc>(
             create: (context) =>
                 DetailCustomerBloc(userRepository: userRepository),
+          ),
+          BlocProvider<DetailProductBloc>(
+            create: (context) =>
+                DetailProductBloc(userRepository: userRepository),
           ),
           BlocProvider<ClueCustomerBloc>(
             create: (context) =>

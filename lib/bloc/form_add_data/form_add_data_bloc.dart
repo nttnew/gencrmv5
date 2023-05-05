@@ -50,6 +50,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       yield* _getFormAddSupportContract(checkId(event.id ?? ''));
     } else if (event is InitFormAddJobContractEvent) {
       yield* _getFormAddJobContract(checkId(event.id ?? ''));
+    } else if (event is InitFormAddProductEvent) {
+      yield* _getFormAddProduct();
     }
   }
 
@@ -348,6 +350,26 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(response.data!);
+      } else {
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
+        LoadingApi().popLoading();
+      }
+    } catch (e) {
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      LoadingApi().popLoading();
+      throw e;
+    }
+    LoadingApi().popLoading();
+  }
+
+  Stream<FormAddState> _getFormAddProduct() async* {
+    LoadingApi().pushLoading();
+    try {
+      yield LoadingFormAddCustomerOrState();
+      final response = await userRepository.getFormAddProduct();
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        yield SuccessFormAddCustomerOrState(response.data ?? []);
       } else {
         yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();

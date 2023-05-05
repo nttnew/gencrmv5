@@ -26,17 +26,17 @@ class GetInforAccBloc extends Bloc<GetInforAccEvent, GetInforAccState> {
   }
 
   Stream<GetInforAccState> _getInfoAcc() async* {
-    LoadingApi().pushLoading();
+    // LoadingApi().pushLoading();
     try {
       yield LoadingInforAccState();
       final response = await userRepository.getInforAcc();
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
+        LoadingApi().popLoading();
         yield UpdateGetInforAccState(response.data!);
-        LoadingApi().popLoading();
       } else {
-        yield ErrorGetInForAccState(response.msg ?? "");
         LoadingApi().popLoading();
+        yield ErrorGetInForAccState(response.msg ?? "");
       }
     } catch (e) {
       LoadingApi().popLoading();

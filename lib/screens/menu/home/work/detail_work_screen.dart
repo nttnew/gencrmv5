@@ -11,8 +11,6 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
-import '../../../../bloc/contract/detail_contract_bloc.dart';
-import '../../../../src/models/model_generator/file_response.dart';
 import '../../../../widgets/widget_dialog.dart';
 import '../../attachment/attachment.dart';
 
@@ -107,7 +105,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                         builder: (context, state) {
                       if (state is SuccessDetailWorkState)
                         return Container(
-                          // height: AppValue.heights * 0.7,
+                          height: AppValue.heights * 0.7,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: List.generate(
@@ -281,7 +279,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                         SizedBox(
                                           width: AppValue.widths * 0.2,
                                         ),
-                                        SvgPicture.asset(ICONS.IC_INPUT_SVG),
+                                        SvgPicture.asset(ICONS.IC_ATTACK_SVG),
                                         SizedBox(
                                           width: AppValue.widths * 0.1,
                                         ),

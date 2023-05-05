@@ -16,14 +16,13 @@ class ROUTE_NAMES {
   static const String INFORMATION_ACCOUNT = '/information_account';
   static const String ABOUT_US = '/about_us';
   static const String POLICY = '/policy';
-  static const String DETAILWORK = "/detailwork";
-  static const String DETAILSUPPORT = "/detailsupport";
-  static const String DETAILCUSTOMER = "/detailcustomer";
-  static const String ADDCUSTOMER = "/addcustomer";
-  // static const String ADDSERVICEVOUCHER = "/addservicevoucher";
-  static const String ADDSERVICEVOUCHERSTEPTWO = "/addservicevoichersteptwo";
-  static const String ADDSUPPORT = "/addsupport";
-  static const String ADDWORK = "/addwork";
+  static const String DETAIL_WORK = "/detailwork";
+  static const String DETAIL_SUPPORT = "/detailsupport";
+  static const String DETAIL_CUSTOMER = "/detailcustomer";
+  static const String ADD_CUSTOMER = "/addcustomer";
+  static const String ADD_SERVICE_VOUCHER_STEP_TWO = "/addservicevoichersteptwo";
+  static const String ADD_SUPPORT = "/addsupport";
+  static const String ADD_WORK = "/addwork";
   static const String INFO = '/info';
   static const String TERM = '/term';
   static const String DETAIL_NEW = '/detail_new';
@@ -32,7 +31,6 @@ class ROUTE_NAMES {
   static const String SEARCH_SCREEN = '/search_screen';
   static const String COURSE_DETAIL_SCREEN = '/course_detail_screen';
   static const String BUY_COURSE = '/buy_course';
-
   static const String CUSTOMER = '/customer';
   static const String CLUE = '/clue';
   static const String INFO_CLUE = '/info_clue';
@@ -48,12 +46,11 @@ class ROUTE_NAMES {
   static const String ADD_CONTRACT = '/add_contract';
   static const String INFO_CONTRACT = '/info_contract';
   static const String NOTIFICATION = '/notification';
-  //Dương
   static const String FORM_ADD = '/form_add';
   static const String FORM_EDIT = '/form_edit';
   static const String ADD_NOTE = '/add_note';
   static const String ADD_PRODUCT = '/add_product';
   static const String EDIT_CONTRACT = '/edit_contract';
-  //Phi
+  static const String DETAIL_PRODUCT = '/detail_product';
   static const String ATTACHMENT = '/attachment';
 }

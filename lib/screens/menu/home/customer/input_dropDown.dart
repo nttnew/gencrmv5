@@ -135,6 +135,7 @@ class _InputDropdownState extends State<InputDropdown> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: titlestyle(),

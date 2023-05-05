@@ -72,14 +72,20 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
       if (!pitelCall.isConnected || !pitelCall.isHaveCall) {
-        Navigator.pushReplacementNamed(
-            context, widget.modelScreen ?? ROUTE_NAMES.MAIN);
+        back();
       }
       if (pitelCall.direction == null && _state == PitelCallStateEnum.NONE) {
-        Navigator.pushReplacementNamed(
-            context, widget.modelScreen ?? ROUTE_NAMES.MAIN);
+        back();
       }
     }
+  }
+
+  void back() {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      widget.modelScreen ?? ROUTE_NAMES.MAIN,
+      ModalRoute.withName('/'),
+    );
   }
 
   void handleCall() {
@@ -185,8 +191,7 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
         FlutterCallkitIncoming.endAllCalls();
       }
       _isBacked = true;
-      Navigator.pushReplacementNamed(
-          context, widget.modelScreen ?? ROUTE_NAMES.MAIN);
+      back();
     }
   }
 
@@ -220,8 +225,7 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
     var hangupBtnInactive = ActionButton(
       title: "hangup",
       onPressed: () {
-        Navigator.pushReplacementNamed(
-            context, widget.modelScreen ?? ROUTE_NAMES.MAIN);
+        back();
       },
       icon: Icons.call_end,
       fillColor: Colors.grey,

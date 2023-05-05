@@ -2906,7 +2906,7 @@ class _RestClient implements RestClient {
     )
             .compose(
               _dio.options,
-              '/modules/genmobile2/support/save',
+              'modules/genmobile2/support/save',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -3552,13 +3552,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AddCustomerIndividualData> getFormAddProduct() async {
+  Future<AddCustomerIndividual> getFormAddProduct() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AddCustomerIndividualData>(Options(
+        _setStreamType<AddCustomerIndividual>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -3570,19 +3570,19 @@ class _RestClient implements RestClient {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = AddCustomerIndividualData.fromJson(_result.data!);
+    final value = AddCustomerIndividual.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AddCustomerIndividualData> getEditProduct(id) async {
+  Future<AddCustomerIndividual> getEditProduct(id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {'id': id};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AddCustomerIndividualData>(Options(
-      method: 'POST',
+        _setStreamType<AddCustomerIndividual>(Options(
+      method: 'GET',
       headers: _headers,
       extra: _extra,
     )
@@ -3593,7 +3593,84 @@ class _RestClient implements RestClient {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = AddCustomerIndividualData.fromJson(_result.data!);
+    final value = AddCustomerIndividual.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ResponseSaveProduct> addProduct(map) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(map);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ResponseSaveProduct>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/product/save',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ResponseSaveProduct.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<dynamic> deleteProduct(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'id',
+      id,
+    ));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'modules/genmobile2/product/delete',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<ResponseSaveProduct> editProduct(
+    map,
+    id,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'id': id};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(map);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ResponseSaveProduct>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/product/save',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ResponseSaveProduct.fromJson(_result.data!);
     return value;
   }
 

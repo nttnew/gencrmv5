@@ -121,3 +121,7 @@ class InitFormAddJobContractEvent extends FormAddEvent {
   @override
   List<Object?> get props => [id];
 }
+
+class InitFormAddProductEvent extends FormAddEvent {
+  InitFormAddProductEvent();
+}

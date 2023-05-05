@@ -9,9 +9,7 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
-import '../../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../../bloc/support/support_bloc.dart';
-import '../../../../src/models/model_generator/file_response.dart';
 import '../../../../widgets/widget_dialog.dart';
 import '../../attachment/attachment.dart';
 
@@ -294,7 +292,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                                               width: AppValue.widths * 0.2,
                                             ),
                                             SvgPicture.asset(
-                                                ICONS.IC_INPUT_SVG),
+                                                ICONS.IC_ATTACK_SVG),
                                             SizedBox(
                                               width: AppValue.widths * 0.1,
                                             ),

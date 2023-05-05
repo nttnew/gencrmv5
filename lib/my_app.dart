@@ -7,6 +7,7 @@ import 'package:gen_crm/screens/menu/home/customer/add_note.dart';
 import 'package:gen_crm/screens/menu/home/customer/form_add_data.dart';
 import 'package:gen_crm/screens/menu/home/customer/form_edit.dart';
 import 'package:gen_crm/screens/menu/home/notification/notification_screen.dart';
+import 'package:gen_crm/screens/menu/home/product/detail_product.dart';
 import 'package:gen_crm/screens/menu/home/product/product.dart';
 import 'package:gen_crm/screens/menu/home/report/report_screen.dart';
 import 'package:get/get.dart';
@@ -78,11 +79,11 @@ class MyApp extends StatelessWidget {
           page: () => ContractScreen(),
         ),
         GetPage(
-          name: ROUTE_NAMES.DETAILWORK,
+          name: ROUTE_NAMES.DETAIL_WORK,
           page: () => DetailWorkScreen(),
         ),
         GetPage(
-          name: ROUTE_NAMES.DETAILSUPPORT,
+          name: ROUTE_NAMES.DETAIL_SUPPORT,
           page: () => DetailSupportScreen(),
         ),
         GetPage(
@@ -122,15 +123,15 @@ class MyApp extends StatelessWidget {
           page: () => ForgotPasswordResetScreen(),
         ),
         GetPage(
-          name: ROUTE_NAMES.DETAILCUSTOMER,
+          name: ROUTE_NAMES.DETAIL_CUSTOMER,
           page: () => DetailCustomerScreen(),
         ),
         GetPage(
-          name: ROUTE_NAMES.ADDCUSTOMER,
+          name: ROUTE_NAMES.ADD_CUSTOMER,
           page: () => AddCustomer(),
         ),
         GetPage(
-          name: ROUTE_NAMES.ADDSERVICEVOUCHERSTEPTWO,
+          name: ROUTE_NAMES.ADD_SERVICE_VOUCHER_STEP_TWO,
           page: () => AddServiceVoucherStepTwoScreen(),
         ),
         GetPage(
@@ -156,6 +157,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: ROUTE_NAMES.EDIT_CONTRACT,
           page: () => EditContract(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.DETAIL_PRODUCT,
+          page: () => DetailProductScreen(),
         ),
       ],
     );

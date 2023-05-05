@@ -6,10 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/contract/phone_bloc.dart';
+import 'package:gen_crm/bloc/detail_product/detail_product_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
 import 'package:gen_crm/bloc/form_edit/form_edit_bloc.dart';
 import 'package:gen_crm/models/model_data_add.dart';
 import 'package:gen_crm/models/model_item_add.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -72,6 +74,8 @@ class _FormEditState extends State<FormEdit> {
       FormEditBloc.of(context).add(InitFormEditJobEvent(id));
     } else if (type == 6) {
       FormEditBloc.of(context).add(InitFormEditSupportEvent(id));
+    } else if (type == PRODUCT_TYPE) {
+      FormEditBloc.of(context).add(InitFormEditProductEvent(id));
     }
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -223,6 +227,10 @@ class _FormEditState extends State<FormEdit> {
                                 .add(InitGetDetailSupportEvent(id));
                             SupportBloc.of(context)
                                 .add(InitGetSupportEvent(1, '', ''));
+                          }
+                          if (type == PRODUCT_TYPE) {
+                            DetailProductBloc.of(context)
+                                .add(InitGetDetailProductEvent(id));
                           }
                         },
                       );
@@ -623,8 +631,7 @@ class _FormEditState extends State<FormEdit> {
                   child: Container(
                       height: 50,
                       width: 50,
-                      child:
-                          SvgPicture.asset(ICONS.IC_INPUT_SVG))),
+                      child: SvgPicture.asset(ICONS.IC_INPUT_SVG))),
             )
           ]),
         ),
@@ -856,6 +863,9 @@ class _FormEditState extends State<FormEdit> {
       } else if (type == 6) {
         AddDataBloc.of(context)
             .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
+      } else if (type == PRODUCT_TYPE) {
+        AddDataBloc.of(context).add(EditProductEvent(data, int.parse(id),
+            files: AttackBloc.of(context).listFile));
       }
     }
   }

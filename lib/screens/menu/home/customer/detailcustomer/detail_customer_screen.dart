@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/detail_customer/detail_customer_bloc.dart';
 import 'package:gen_crm/screens/menu/home/customer/index.dart';
@@ -8,15 +7,13 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../../../../bloc/chance_customer/chance_customer_bloc.dart';
 import '../../../../../bloc/clue_customer/clue_customer_bloc.dart';
-import '../../../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../../../bloc/contract_customer/contract_customer_bloc.dart';
 import '../../../../../bloc/job_customer/job_customer_bloc.dart';
 import '../../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../../bloc/support_customer/support_customer_bloc.dart';
-import '../../../../../src/models/model_generator/file_response.dart';
+import '../../../../../src/app_const.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../../widgets/widget_dialog.dart';
@@ -56,7 +53,6 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     });
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -278,8 +274,8 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                           ICONS.IC_ATTACK_SVG,
                                           () async {
                                             Get.back();
-                                            Navigator.of(context)
-                                                .push(MaterialPageRoute(
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
                                                     builder: (context) =>
                                                         Attachment(
                                                           id: id,
@@ -290,7 +286,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                         ),
                                         itemIcon(
                                           "Sửa",
-                                         ICONS.IC_EDIT_SVG,
+                                          ICONS.IC_EDIT_SVG,
                                           () {
                                             Get.back();
                                             AppNavigator.navigateEditDataScreen(
@@ -365,36 +361,4 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
           ),
         ));
   }
-
-  Widget itemIcon(String title, String icon, Function() click) {
-    return GestureDetector(
-      onTap: () => click(),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: AppValue.widths * 0.2,
-          ),
-          Container(
-            height: 24,
-            width: 24,
-            child: SvgPicture.asset(
-              icon,
-              fit: BoxFit.contain,
-            ),
-          ),
-          SizedBox(
-            width: AppValue.widths * 0.1,
-          ),
-          WidgetText(title: title, style: styleTitleBottomSheet())
-        ],
-      ),
-    );
-  }
-
-  TextStyle styleTitleBottomSheet() => TextStyle(
-      color: HexColor("#0069CD"),
-      fontFamily: "Quicksand",
-      fontWeight: FontWeight.w700,
-      fontSize: 20);
 }

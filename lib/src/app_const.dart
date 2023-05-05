@@ -2,24 +2,24 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:gen_crm/src/preferences_key.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:gen_crm/src/src_index.dart';
 import 'package:get/get.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:plugin_pitel/services/models/pn_push_params.dart';
 import 'package:plugin_pitel/services/pitel_service.dart';
 import 'package:plugin_pitel/services/sip_info_data.dart';
 import '../bloc/login/login_bloc.dart';
 import '../storages/share_local.dart';
 import '../widgets/widget_dialog.dart';
-import 'base.dart';
-import 'color.dart';
-import 'messages.dart';
-import 'navigator.dart';
+import '../widgets/widget_text.dart';
 
 const int IS_AFTER = 1;
 const int IS_BEFORE = 0;
 const String BUNDLE_ID = 'com.gencrm';
 const String PACKAGE_ID = 'vn.gen_crm';
 const String TEAM_ID = 'AEY48KNZRS';
+const int PRODUCT_TYPE = 99;
 
 void loginSessionExpired() {
   Get.dialog(WidgetDialog(
@@ -82,6 +82,38 @@ void handleRegisterBase(
   pitelService.setExtensionInfo(sipInfo, pnPushParams);
 }
 
+Widget itemIcon(String title, String icon, Function() click) {
+  return GestureDetector(
+    onTap: () => click(),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: AppValue.widths * 0.2,
+        ),
+        Container(
+          height: 24,
+          width: 24,
+          child: SvgPicture.asset(
+            icon,
+            fit: BoxFit.contain,
+          ),
+        ),
+        SizedBox(
+          width: AppValue.widths * 0.1,
+        ),
+        WidgetText(title: title, style: styleTitleBottomSheet())
+      ],
+    ),
+  );
+}
+
+TextStyle styleTitleBottomSheet() => TextStyle(
+    color: HexColor("#0069CD"),
+    fontFamily: "Quicksand",
+    fontWeight: FontWeight.w700,
+    fontSize: 20);
+
 handleOnPressItemMenu(_drawerKey, value) async {
   switch (value['id']) {
     case '1':
@@ -116,6 +148,10 @@ handleOnPressItemMenu(_drawerKey, value) async {
       _drawerKey.currentState!.openEndDrawer();
       String? money = await shareLocal.getString(PreferencesKey.MONEY);
       AppNavigator.navigateReport(money ?? "đ");
+      break;
+    case 'product':
+      _drawerKey.currentState!.openEndDrawer();
+      AppNavigator.navigateProduct(value['title']);
       break;
     case '2':
       _drawerKey.currentState!.openEndDrawer();

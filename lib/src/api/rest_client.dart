@@ -49,6 +49,7 @@ import '../models/model_generator/report_employee.dart';
 import '../models/model_generator/report_general.dart';
 import '../models/model_generator/report_option.dart';
 import '../models/model_generator/report_product.dart';
+import '../models/model_generator/response_save_product.dart';
 import '../models/model_generator/support_customer.dart';
 
 part 'rest_client.g.dart';
@@ -230,19 +231,14 @@ abstract class RestClient {
   @GET(BASE_URL.REPORT_OPTIONS_2)
   Future<FilterResponse> getReportOption2();
 
-  //Dương
   @GET(BASE_URL.GET_UPDATE_CUSTOMER)
   Future<AddCustomerIndividual> getUpdateCustomer(@Query('id') String id);
 
   @DELETE(BASE_URL.DELETE_CONTRACT)
-  Future<BaseResponse> deleteContract(
-      // @Query('id') int id
-      @Body() Map<String, dynamic> map);
+  Future<BaseResponse> deleteContract(@Body() Map<String, dynamic> map);
 
   @DELETE(BASE_URL.DELETE_JOB)
-  Future<BaseResponse> deleteJob(
-      // @Query('id') int id
-      @Body() Map<String, dynamic> map);
+  Future<BaseResponse> deleteJob(@Body() Map<String, dynamic> map);
 
   @GET(BASE_URL.DETAIL_JOB)
   Future<DetailWorkResponse> detailJob(@Query('id') int id);
@@ -595,10 +591,22 @@ abstract class RestClient {
   );
 
   @GET(BASE_URL.ADD_PRODUCT)
-  Future<AddCustomerIndividualData> getFormAddProduct();
+  Future<AddCustomerIndividual> getFormAddProduct();
 
-  @POST(BASE_URL.EDIT_PRODUCT)
-  Future<AddCustomerIndividualData> getEditProduct(
+  @GET(BASE_URL.EDIT_PRODUCT)
+  Future<AddCustomerIndividual> getEditProduct(
     @Field('id') String id,
   );
+
+  @POST(BASE_URL.ADD_PRODUCT_MODULE)
+  Future<ResponseSaveProduct> addProduct(@Body() Map<String, dynamic> map);
+
+  @POST(BASE_URL.DELETE_PRODUCT)
+  Future<dynamic> deleteProduct(
+    @Part(name: 'id') String id,
+  );
+
+  @POST(BASE_URL.ADD_PRODUCT_MODULE)
+  Future<ResponseSaveProduct> editProduct(
+      @Body() Map<String, dynamic> map, @Query('id') int id);
 }

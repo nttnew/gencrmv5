@@ -43,7 +43,7 @@ class ICONS {
   //////////////===============SVG===============//////////////
   static const String IC_MAIL_CUSTOMER_SVG = 'assets/icons/mail_customer.svg';
   static const String IC_ADDCLUE_SVG = 'assets/icons/addclue.svg';
-  static const String IC_ICON3_SVG = 'assets/icons/icon3svg';
+  static const String IC_ICON3_SVG = 'assets/icons/icon3.svg';
   static const String IC_ADD_CHANCE_SVG = 'assets/icons/addchance.svg';
   static const String IC_ADD_CONTRACT_SVG = 'assets/icons/addcontract.svg';
   static const String IC_ADD_WORD_SVG = 'assets/icons/addwork.svg';

@@ -11,6 +11,7 @@ import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/menu/home/customer/input_dropDown.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/widgetFieldInputPercent.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
@@ -19,9 +20,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-
 import '../../../../../../../widgets/widget_dialog.dart';
-
 import '../../../../bloc/chance_customer/chance_customer_bloc.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
 import '../../../../bloc/clue_customer/clue_customer_bloc.dart';
@@ -29,6 +28,7 @@ import '../../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import '../../../../bloc/contract/attack_bloc.dart';
 import '../../../../bloc/contract/contract_bloc.dart';
 import '../../../../bloc/contract_customer/contract_customer_bloc.dart';
+import '../../../../bloc/detail_product/detail_product_bloc.dart';
 import '../../../../bloc/job_contract/job_contract_bloc.dart';
 import '../../../../bloc/job_customer/job_customer_bloc.dart';
 import '../../../../bloc/support/support_bloc.dart';
@@ -38,7 +38,6 @@ import '../../../../bloc/work/work_bloc.dart';
 import '../../../../bloc/work_clue/work_clue_bloc.dart';
 import '../../../../models/model_data_add.dart';
 import '../../../../models/widget_input_date.dart';
-
 import '../../../../src/models/model_generator/login_response.dart';
 import '../../../../src/pick_file_image.dart';
 import '../../../../storages/share_local.dart';
@@ -109,6 +108,8 @@ class _FormAddDataState extends State<FormAddData> {
     } else if (type == 42) {
       FormAddBloc.of(context)
           .add(InitFormAddJobContractEvent(Get.arguments[2].toString()));
+    } else if (type == PRODUCT_TYPE) {
+      FormAddBloc.of(context).add(InitFormAddProductEvent());
     }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Future.delayed(Duration(seconds: 1));
@@ -118,7 +119,6 @@ class _FormAddDataState extends State<FormAddData> {
         isMaxScroll.add(true);
       }
     });
-
     super.initState();
   }
 
@@ -146,8 +146,6 @@ class _FormAddDataState extends State<FormAddData> {
 
   @override
   void dispose() {
-    data.clear();
-    addData.clear();
     scrollController.dispose();
     isMaxScroll.close();
     super.dispose();
@@ -155,6 +153,8 @@ class _FormAddDataState extends State<FormAddData> {
 
   @override
   void deactivate() {
+    data.clear();
+    addData.clear();
     AttackBloc.of(context).add(RemoveAllAttackEvent());
     super.deactivate();
   }
@@ -266,6 +266,9 @@ class _FormAddDataState extends State<FormAddData> {
                           } else if (type == 15) {
                             SupportCustomerBloc.of(context).add(
                                 InitGetSupportCustomerEvent(int.parse(id)));
+                          } else if (type == PRODUCT_TYPE) {
+                            DetailProductBloc.of(context)
+                                .add(InitGetDetailProductEvent(id));
                           }
                         },
                       );
@@ -285,6 +288,7 @@ class _FormAddDataState extends State<FormAddData> {
                 }
               },
               child: Container(
+                height: MediaQuery.of(context).size.height,
                 padding: EdgeInsets.only(
                     left: AppValue.widths * 0.05,
                     right: AppValue.widths * 0.05,
@@ -300,20 +304,22 @@ class _FormAddDataState extends State<FormAddData> {
                       return Container();
                     } else if (state is SuccessFormAddCustomerOrState) {
                       for (int i = 0; i < state.listAddData.length; i++) {
-                        addData.add(ModelItemAdd(
-                            group_name: state.listAddData[i].group_name ?? '',
-                            data: []));
-                        for (int j = 0;
-                            j < state.listAddData[i].data!.length;
-                            j++) {
-                          // if(state.listAddData[i].data![j].field_type!="HIDDEN")
-                          addData[i].data.add(ModelDataAdd(
-                              label: state.listAddData[i].data![j].field_name,
-                              value: state
-                                  .listAddData[i].data![j].field_set_value
-                                  .toString(),
-                              required:
-                                  state.listAddData[i].data![j].field_require));
+                        if (addData.isNotEmpty) {
+                        } else {
+                          addData.add(ModelItemAdd(
+                              group_name: state.listAddData[i].group_name ?? '',
+                              data: []));
+                          for (int j = 0;
+                              j < state.listAddData[i].data!.length;
+                              j++) {
+                            addData[i].data.add(ModelDataAdd(
+                                label: state.listAddData[i].data![j].field_name,
+                                value: state
+                                    .listAddData[i].data![j].field_set_value
+                                    .toString(),
+                                required: state
+                                    .listAddData[i].data![j].field_require));
+                          }
                         }
                       }
                       return Column(
@@ -498,7 +504,7 @@ class _FormAddDataState extends State<FormAddData> {
                         left: AppValue.widths * 0.05,
                         right: AppValue.widths * 0.05,
                         bottom: 5),
-                    child:FileLuuBase(context, () => onClickSave()),
+                    child: FileLuuBase(context, () => onClickSave()),
                   ),
                 );
               }),
@@ -563,8 +569,7 @@ class _FormAddDataState extends State<FormAddData> {
                   child: Container(
                       height: 50,
                       width: 50,
-                      child:
-                          SvgPicture.asset(ICONS.IC_INPUT_SVG))),
+                      child: SvgPicture.asset(ICONS.IC_INPUT_SVG))),
             )
           ]),
         ),
@@ -585,6 +590,7 @@ class _FormAddDataState extends State<FormAddData> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RichText(
+              textScaleFactor: MediaQuery.of(context).textScaleFactor,
               text: TextSpan(
                 text: data.field_label ?? '',
                 style: titlestyle(),
@@ -674,6 +680,7 @@ class _FormAddDataState extends State<FormAddData> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: label,
               style: TextStyle(
@@ -852,6 +859,9 @@ class _FormAddDataState extends State<FormAddData> {
         data["hopdong_id"] = Get.arguments[2].toString();
         AddDataBloc.of(context)
             .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
+      } else if (type == PRODUCT_TYPE) {
+        AddDataBloc.of(context)
+            .add(AddProductEvent(data, files: AttackBloc.of(context).listFile));
       }
     }
   }
@@ -894,6 +904,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: TextStyle(
@@ -960,8 +971,6 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                           : widget.data.field_special == "email-address"
                               ? TextInputType.emailAddress
                               : TextInputType.text,
-                  // maxLength:widget.data.field_maxlength!=null? int.parse(widget.data.field_maxlength!):null,
-                  // maxLengthEnforcement: MaxLengthEnforcement.none,123123
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(
                         widget.data.field_maxlength != null
@@ -1068,6 +1077,7 @@ class _renderCheckBoxState extends State<renderCheckBox> {
             ),
           ),
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: TextStyle(

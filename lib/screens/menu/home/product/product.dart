@@ -129,6 +129,13 @@ class _ProductScreenState extends State<ProductScreen> {
                 ))
           ],
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Color(0xff1AA928),
+          onPressed: () =>
+              AppNavigator.navigateFormAdd('Thêm $title', PRODUCT_TYPE),
+          child: Icon(Icons.add, size: 40),
+        ),
         body: Container(
           child: Column(
             children: [
@@ -282,8 +289,14 @@ class _ProductScreenState extends State<ProductScreen> {
                             controller: _scrollController,
                             physics: AlwaysScrollableScrollPhysics(),
                             itemCount: list.length,
-                            itemBuilder: (context, i) => ItemProductModule(
-                                  productModule: list[i],
+                            itemBuilder: (context, i) => GestureDetector(
+                                  onTap: () {
+                                    AppNavigator.navigateDetailProduct(
+                                        title, list[i].id ?? '');
+                                  },
+                                  child: ItemProductModule(
+                                    productModule: list[i],
+                                  ),
                                 )),
                       ),
                     );
