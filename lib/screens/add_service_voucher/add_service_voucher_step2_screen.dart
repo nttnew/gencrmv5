@@ -122,7 +122,7 @@ class _AddServiceVoucherStepTwoScreenState
         appBar: AppBar(
           toolbarHeight: AppValue.heights * 0.1,
           backgroundColor: HexColor("#D0F1EB"),
-          title: Text("Thêm phiếu dịch vụ",
+          title: Text("${Get.arguments}",
               style: TextStyle(
                   color: Colors.black,
                   fontFamily: "Montserrat",

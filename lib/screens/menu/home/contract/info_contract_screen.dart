@@ -10,11 +10,10 @@ import 'package:gen_crm/screens/menu/home/contract/contract_payment.dart';
 import 'package:gen_crm/screens/menu/home/contract/contract_support.dart';
 import 'package:gen_crm/widgets/widget_button.dart';
 import 'package:get/get.dart';
-
 import '../../../../bloc/job_contract/job_contract_bloc.dart';
 import '../../../../bloc/support_contract_bloc/support_contract_bloc.dart';
-import '../../../../src/models/model_generator/file_response.dart';
 import '../../../../src/src_index.dart';
+import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/widget_appbar.dart';
 import '../../../../widgets/widget_dialog.dart';
 import '../../attachment/attachment.dart';
@@ -48,6 +47,7 @@ class _InfoContractPageState extends State<InfoContractPage> {
     return Scaffold(
       body: BlocListener<DetailContractBloc, DetailContractState>(
         listener: (context, state) async {
+          LoadingApi().popLoading();
           if (state is SuccessDeleteContractState) {
             showDialog(
               context: context,

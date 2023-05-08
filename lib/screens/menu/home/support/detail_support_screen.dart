@@ -10,6 +10,7 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../bloc/support/support_bloc.dart';
+import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/widget_dialog.dart';
 import '../../attachment/attachment.dart';
 
@@ -57,6 +58,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
           if (state is SuccessGetDetailSupportState)
             return BlocListener<DetailSupportBloc, DetailSupportState>(
               listener: (context, state) async {
+                LoadingApi().popLoading();
                 if (state is SuccessDeleteSupportState) {
                   showDialog(
                     context: context,

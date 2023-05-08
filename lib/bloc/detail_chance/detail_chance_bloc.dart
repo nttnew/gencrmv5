@@ -54,17 +54,15 @@ class GetListDetailChanceBloc
   Stream<DetailChanceState> _deleteChance({required String id}) async* {
     LoadingApi().pushLoading();
     try {
-      final response = await userRepository.deleteChance({"id": id});
+      final response = await userRepository.deleteChance({BASE_URL.ID: id});
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessDeleteChanceState();
       } else {
         yield ErrorDeleteChanceState(response.msg ?? '');
-        LoadingApi().popLoading();
       }
     } catch (e) {
       yield ErrorDeleteChanceState(MESSAGES.CONNECT_ERROR);
-      LoadingApi().popLoading();
       loginSessionExpired();
       throw e;
     }

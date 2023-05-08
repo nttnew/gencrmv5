@@ -71,7 +71,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
           listener: (context, state) {
             if (state is GetServiceVoucherState) {
               LoadingApi().popLoading();
-              AppNavigator.navigateAddServiceVoucherStepTwo();
+              AppNavigator.navigateAddServiceVoucherStepTwo(widget.title);
             }
           },
           child: Container(

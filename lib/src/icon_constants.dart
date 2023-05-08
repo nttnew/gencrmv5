@@ -32,6 +32,7 @@ class ICONS {
   static const String IC_WORK2_PNG = 'assets/icons/Work.png';
   static const String IC_SUPPORT_PNG = 'assets/icons/Support.png';
   static const String IC_FAVICON_PNG = 'assets/icons/favicon.png';
+  static const String IC_LICENSE_PLATE_PNG = 'assets/icons/license-plate.png';
 
   static const String IC_CUSTOMER_3X_PNG = 'assets/icons/Custumer_3x.png';
   static const String IC_CLUE_3X_PNG = 'assets/icons/Clue_3x.png';

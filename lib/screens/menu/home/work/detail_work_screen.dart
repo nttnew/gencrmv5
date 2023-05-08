@@ -11,6 +11,7 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
+import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/widget_dialog.dart';
 import '../../attachment/attachment.dart';
 
@@ -53,7 +54,8 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
         ),
       ),
       body: BlocListener<DetailWorkBloc, DetailWorkState>(
-        listener: (context, state) async {
+        listener: (context, state)  {
+          LoadingApi().popLoading();
           if (state is SuccessDeleteWorkState) {
             showDialog(
               context: context,

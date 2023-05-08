@@ -57,6 +57,10 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     for (final value in listM) {
       String id = value['id'];
       String name = value['name'];
+      if (id == ModuleMy.HOP_DONG) {
+        String titleReport = name + ' đang làm';
+        shareLocal.putString(PreferencesKey.NAME_REPORT, titleReport);
+      }
       listMenu.add(
         ButtonMenuModel(
             title: name,

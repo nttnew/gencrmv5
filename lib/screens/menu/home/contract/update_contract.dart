@@ -126,7 +126,7 @@ class _EditContractState extends State<EditContract> {
           toolbarHeight: AppValue.heights * 0.1,
           backgroundColor: HexColor("#D0F1EB"),
           title: WidgetText(
-              title: "Sửa hợp đồng",
+              title: "Sửa thông tin",
               style: TextStyle(
                   color: Colors.black,
                   fontFamily: "Montserrat",

@@ -16,6 +16,7 @@ import '../../../../../bloc/support_customer/support_customer_bloc.dart';
 import '../../../../../src/app_const.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
+import '../../../../../widgets/loading_api.dart';
 import '../../../../../widgets/widget_dialog.dart';
 import '../../../attachment/attachment.dart';
 
@@ -78,6 +79,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
         body: BlocListener<DetailCustomerBloc, DetailCustomerState>(
           listener: (context, state) async {
             if (state is SuccessDeleteCustomerState) {
+              LoadingApi().popLoading();
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -98,6 +100,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                 },
               );
             } else if (state is ErrorDeleteCustomerState) {
+              LoadingApi().popLoading();
               showDialog(
                 context: context,
                 builder: (BuildContext context) {

@@ -9,6 +9,7 @@ import '../../../../bloc/blocs.dart';
 import '../../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../../src/models/model_generator/file_response.dart';
 import '../../../../src/src_index.dart';
+import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/widget_appbar.dart';
 import '../../../../widgets/widget_dialog.dart';
 import '../../attachment/attachment.dart';
@@ -42,6 +43,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
       body: BlocListener<GetListDetailChanceBloc, DetailChanceState>(
         listener: (context, state) async {
           if (state is SuccessDeleteChanceState) {
+            LoadingApi().popLoading();
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -62,6 +64,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
               },
             );
           } else if (state is ErrorDeleteChanceState) {
+            LoadingApi().popLoading();
             showDialog(
               context: context,
               builder: (BuildContext context) {

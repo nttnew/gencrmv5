@@ -14,6 +14,7 @@ import '../../../../bloc/clue/clue_bloc.dart';
 import '../../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../../src/models/model_generator/file_response.dart';
 import '../../../../src/src_index.dart';
+import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/widget_appbar.dart';
 import '../../../../widgets/widget_dialog.dart';
 import '../../../../widgets/widget_text.dart';
@@ -45,6 +46,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
       body: BlocListener<GetDetailClueBloc, DetailClueState>(
         listener: (context, state) async {
           if (state is SuccessDeleteClueState) {
+            LoadingApi().popLoading();
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -65,6 +67,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
               },
             );
           } else if (state is ErrorDeleteClueState) {
+            LoadingApi().popLoading();
             showDialog(
               context: context,
               builder: (BuildContext context) {

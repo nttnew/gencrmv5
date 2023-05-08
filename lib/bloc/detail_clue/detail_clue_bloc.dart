@@ -55,14 +55,13 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
     LoadingApi().pushLoading();
     try {
       yield LoadingDetailClueState();
-      final responseDetailClue = await userRepository.deleteContact({"id": id});
+      final responseDetailClue =
+          await userRepository.deleteContact({BASE_URL.ID: id});
       if ((responseDetailClue.code == BASE_URL.SUCCESS) ||
           (responseDetailClue.code == BASE_URL.SUCCESS_200)) {
         yield SuccessDeleteClueState();
       } else {
         yield ErrorDeleteClueState(responseDetailClue.msg ?? '');
-        LoadingApi().popLoading();
-        yield ErrorDeleteClueState("${responseDetailClue.msg ?? ''}");
       }
     } catch (e) {
       yield ErrorDeleteClueState(MESSAGES.CONNECT_ERROR);

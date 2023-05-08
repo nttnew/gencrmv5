@@ -35,7 +35,7 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
         yield SuccessReportWorkState(response.data!.thoi_gian!,
             response.data!.diem_ban!, response.data!.thoi_gian_mac_dinh!);
         ReportGeneralBloc.of(Get.context!).add(SelectReportGeneralEvent(
-            1, "", response.data!.thoi_gian_mac_dinh!));
+            1, null, response.data!.thoi_gian_mac_dinh!));
       } else if (response.code == 999) {
         loginSessionExpired();
       } else

@@ -10,6 +10,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_crm/bloc/add_job_chance/add_job_chance_bloc.dart';
 import 'package:gen_crm/bloc/add_service_voucher/add_service_bloc.dart';
+import 'package:gen_crm/bloc/car_report/car_report_bloc.dart';
 import 'package:gen_crm/bloc/chance_customer/chance_customer_bloc.dart';
 import 'package:gen_crm/bloc/clue_customer/clue_customer_bloc.dart';
 import 'package:gen_crm/bloc/contact_by_customer/contact_by_customer_bloc.dart';
@@ -42,6 +43,7 @@ import 'package:vibration/vibration.dart';
 import 'api_resfull/api.dart';
 import 'bloc/add_customer/add_customer_bloc.dart';
 import 'bloc/blocs.dart';
+import 'bloc/car_list_report/car_list_report_bloc.dart';
 import 'bloc/clue/clue_bloc.dart';
 import 'bloc/contract/customer_contract_bloc.dart';
 import 'bloc/contract/phone_bloc.dart';
@@ -383,7 +385,14 @@ Future main() async {
           BlocProvider<ProductModuleBloc>(
             create: (context) =>
                 ProductModuleBloc(userRepository: userRepository),
-          )
+          ),
+          BlocProvider<CarReportBloc>(
+            create: (context) => CarReportBloc(userRepository: userRepository),
+          ),
+          BlocProvider<CarListReportBloc>(
+            create: (context) =>
+                CarListReportBloc(userRepository: userRepository),
+          ),
         ],
         child: ProviderScope(child: const MyApp()),
       ),

@@ -49,6 +49,8 @@ import '../models/model_generator/report_employee.dart';
 import '../models/model_generator/report_general.dart';
 import '../models/model_generator/report_option.dart';
 import '../models/model_generator/report_product.dart';
+import '../models/model_generator/response_bao_cao.dart';
+import '../models/model_generator/response_car_dashboard.dart';
 import '../models/model_generator/response_save_product.dart';
 import '../models/model_generator/support_customer.dart';
 
@@ -286,12 +288,10 @@ abstract class RestClient {
 
   @DELETE(BASE_URL.DELETE_CONTACT)
   Future<BaseResponse> deleteContact(
-      // @Query('id') int id
       @Body() Map<String, dynamic> map);
 
   @DELETE(BASE_URL.DELETE_CHANCE)
   Future<BaseResponse> deleteChance(
-      // @Query('id') int id
       @Body() Map<String, dynamic> map);
 
   @GET(BASE_URL.FORM_EDIT_CONTACT)
@@ -373,8 +373,8 @@ abstract class RestClient {
   @GET(BASE_URL.GET_PHONE_CUS)
   Future<GetPhoneCusResponse> getPhoneAgency(@Query('daumoi_id') String? id);
 
-  @GET(BASE_URL.LOGOUT)
-  Future<BaseResponse> logout();
+  @POST(BASE_URL.LOGOUT)
+  Future<BaseResponse> logout(@Body() Map<String, dynamic> map);
 
   // =================================> POST <==================================
 
@@ -609,4 +609,22 @@ abstract class RestClient {
   @POST(BASE_URL.ADD_PRODUCT_MODULE)
   Future<ResponseSaveProduct> editProduct(
       @Body() Map<String, dynamic> map, @Query('id') int id);
+
+  @POST(BASE_URL.GET_LIST_BAO_CAO)
+  Future<ResponseBaoCao> getListBaoCao(
+    @Part(name: 'page') String page,
+    @Part(name: 'time') String? time,
+    @Part(name: 'timefrom') String? timeFrom,
+    @Part(name: 'timeto') String? timeTo,
+    @Part(name: 'diem_ban') String? diemBan,
+    @Part(name: 'trang_thai') String? trangThai,
+  );
+
+  @POST(BASE_URL.HOME_BAO_CAO)
+  Future<ResponseCarDashboard> getHomeBaoCao(
+    @Part(name: 'time') String? time,
+    @Part(name: 'timefrom') String? timeFrom,
+    @Part(name: 'timeto') String? timeTo,
+    @Part(name: 'diem_ban') String? diemBan,
+  );
 }

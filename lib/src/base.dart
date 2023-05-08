@@ -161,6 +161,8 @@ class BASE_URL {
   static const EDIT_PRODUCT = 'modules/genmobile2/product/form';
   static const ADD_PRODUCT_MODULE = 'modules/genmobile2/product/save';
   static const DELETE_PRODUCT = 'modules/genmobile2/product/delete';
+  static const GET_LIST_BAO_CAO = 'modules/genmobile2/dashboard/list';
+  static const HOME_BAO_CAO = 'modules/genmobile2/dashboard/xetrongxuong';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';
@@ -188,6 +190,7 @@ class BASE_URL {
   static const NOTE_ID = 'noteid';
   static const ID = 'id';
   static const CONTENT = 'content';
+  static const DEVICE_TOKEN = 'device_token';
 }
 
 class Module {
@@ -245,7 +248,7 @@ class ModuleMy {
     } else if (ModuleMy.CSKH == id) {
       return ICONS.IC_SUPPORT_3X_PNG;
     } else if (ModuleMy.SAN_PHAM == id) {
-      return ICONS.IC_SUPPORT_3X_PNG;
+      return ICONS.IC_CONTRACT_3X_PNG;
     }
     return ICONS.IC_WORK_3X_PNG;
   }

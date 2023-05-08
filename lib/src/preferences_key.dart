@@ -38,4 +38,5 @@ class PreferencesKey {
   static const String LIST_MENU_FLASH = "LIST_MENU_FLASH";
   static const String DATA_CALL = "DATA_CALL";
   static const String DEVICE_TOKEN = "deviceToken";
+  static const String NAME_REPORT = "nameReport";
 }

@@ -50,9 +50,9 @@ class DefaultFirebaseOptions {
     projectId: 'carcrm-57969',
     storageBucket: 'carcrm-57969.appspot.com',
     androidClientId:
-        '476014117271-0piefng9814lm1bm76ghnst3aebi8s67.apps.googleusercontent.com',
-    iosClientId:
         'com.googleusercontent.apps.476014117271-0piefng9814lm1bm76ghnst3aebi8s67',
+    iosClientId:
+        '476014117271-0piefng9814lm1bm76ghnst3aebi8s67.apps.googleusercontent.com',
     iosBundleId: 'com.gencrm',
   );
 

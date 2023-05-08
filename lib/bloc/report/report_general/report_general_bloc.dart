@@ -30,7 +30,8 @@ class ReportGeneralBloc extends Bloc<ReportGeneralEvent, ReportGeneralState> {
     LoadingApi().pushLoading();
     try {
       yield LoadingReportGeneralState();
-      final response = await userRepository.reportGeneral(time, location, page);
+      final response = await userRepository.reportGeneral(
+          time, location == '' ? null : location, page);
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessReportGeneralState(response.data);

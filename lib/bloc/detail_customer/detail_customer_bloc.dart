@@ -74,7 +74,6 @@ class DetailCustomerBloc
         loginSessionExpired();
       } else {
         yield ErrorDeleteCustomerState(response.msg ?? '');
-        LoadingApi().popLoading();
       }
     } catch (e) {
       yield ErrorDeleteCustomerState(MESSAGES.CONNECT_ERROR);

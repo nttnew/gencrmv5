@@ -41,7 +41,8 @@ class AuthenticationBloc
     } else if (event is AuthenticationStatusChanged) {
       yield* _mapAuthenticationStatusChangedToState(event);
     } else if (event is AuthenticationLogoutRequested) {
-      var response = await userRepository.logout();
+      final deviceToken = await shareLocal.getString(PreferencesKey.DEVICE_TOKEN);
+      var response = await userRepository.logout(device_token: deviceToken);
       if (response.code == 888) {
         AppNavigator.navigateLogout();
         await _localRepository.saveUser(dotenv.env[PreferencesKey.TOKEN]!);

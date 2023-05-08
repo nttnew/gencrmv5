@@ -53,7 +53,6 @@ class DetailWorkBloc extends Bloc<DetailWorkEvent, DetailWorkState> {
         yield SuccessDeleteWorkState();
       } else {
         yield ErrorDeleteWorkState(response.msg ?? '');
-        LoadingApi().popLoading();
       }
     } catch (e) {
       yield ErrorDeleteWorkState(MESSAGES.CONNECT_ERROR);

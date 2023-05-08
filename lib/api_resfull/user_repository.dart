@@ -49,6 +49,8 @@ import '../src/models/model_generator/report_contact.dart';
 import '../src/models/model_generator/report_general.dart';
 import '../src/models/model_generator/report_option.dart';
 import '../src/models/model_generator/report_product.dart';
+import '../src/models/model_generator/response_bao_cao.dart';
+import '../src/models/model_generator/response_car_dashboard.dart';
 import '../src/models/model_generator/response_save_product.dart';
 import '../src/models/model_generator/support_customer.dart';
 import '../src/models/model_generator/update_pass_request.dart';
@@ -386,8 +388,11 @@ class UserRepository {
   Future<GetPhoneCusResponse> getPhoneAgency(String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getPhoneAgency(id);
 
-  Future<BaseResponse> logout() async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).logout();
+  Future<BaseResponse> logout({
+    required String device_token,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .logout({BASE_URL.DEVICE_TOKEN: device_token});
 
   Future<LoginResponse> loginApp(
           {required String email,
@@ -730,6 +735,32 @@ class UserRepository {
   Future<ResponseSaveProduct> editProduct(
           {required Map<String, dynamic> data, required int id}) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).editProduct(data, id);
+
+  Future<ResponseBaoCao> getListBaoCao({
+    required String page,
+    String? time,
+    timeFrom,
+    timeTo,
+    diemBan,
+    trangThai,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getListBaoCao(
+        page,
+        time,
+        timeFrom,
+        timeTo,
+        diemBan,
+        trangThai,
+      );
+
+  Future<ResponseCarDashboard> getHomeBaoCao({
+    String? time,
+    String? timeFrom,
+    String? timeTo,
+    String? diemBan,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getHomeBaoCao(time, timeFrom, timeTo, diemBan);
 
   Future<dynamic> deleteProduct({
     required String id,

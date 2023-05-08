@@ -2206,14 +2206,15 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<BaseResponse> logout() async {
+  Future<BaseResponse> logout(map) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
+    _data.addAll(map);
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'GET',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
@@ -3671,6 +3672,124 @@ class _RestClient implements RestClient {
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ResponseSaveProduct.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ResponseBaoCao> getListBaoCao(
+    page,
+    time,
+    timeFrom,
+    timeTo,
+    diemBan,
+    trangThai,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'page',
+      page,
+    ));
+    if (time != null) {
+      _data.fields.add(MapEntry(
+        'time',
+        time,
+      ));
+    }
+    if (timeFrom != null) {
+      _data.fields.add(MapEntry(
+        'timefrom',
+        timeFrom,
+      ));
+    }
+    if (timeTo != null) {
+      _data.fields.add(MapEntry(
+        'timeto',
+        timeTo,
+      ));
+    }
+    if (diemBan != null) {
+      _data.fields.add(MapEntry(
+        'diem_ban',
+        diemBan,
+      ));
+    }
+    if (trangThai != null) {
+      _data.fields.add(MapEntry(
+        'trang_thai',
+        trangThai,
+      ));
+    }
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ResponseBaoCao>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/dashboard/list',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ResponseBaoCao.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ResponseCarDashboard> getHomeBaoCao(
+    time,
+    timeFrom,
+    timeTo,
+    diemBan,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    if (time != null) {
+      _data.fields.add(MapEntry(
+        'time',
+        time,
+      ));
+    }
+    if (timeFrom != null) {
+      _data.fields.add(MapEntry(
+        'timefrom',
+        timeFrom,
+      ));
+    }
+    if (timeTo != null) {
+      _data.fields.add(MapEntry(
+        'timeto',
+        timeTo,
+      ));
+    }
+    if (diemBan != null) {
+      _data.fields.add(MapEntry(
+        'diem_ban',
+        diemBan,
+      ));
+    }
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ResponseCarDashboard>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/dashboard/xetrongxuong',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ResponseCarDashboard.fromJson(_result.data!);
     return value;
   }
 
