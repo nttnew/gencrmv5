@@ -53,9 +53,8 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
       ),
       body: BlocListener<DetailProductBloc, DetailProductState>(
         listener: (context, state) async {
-          LoadingApi().popLoading();
-
           if (state is SuccessDeleteProductState) {
+            LoadingApi().popLoading();
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -73,6 +72,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
               },
             );
           } else if (state is ErrorDeleteProductState) {
+            LoadingApi().popLoading();
             showDialog(
               context: context,
               builder: (BuildContext context) {

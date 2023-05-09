@@ -244,10 +244,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           OptionBloc.of(context).add(InitOptionEvent(2));
                         } else if (step == 4) {
                           indexEmployee = -1;
-                          CarReportBloc.of(context).add(GetDashboardCar(
-                            time: time_init.toString(),
-                            diemBan: location,
-                          ));
+                          CarReportBloc.of(context).add(GetDashboardCar());
                           OptionBloc.of(context).add(InitOptionEvent(2));
                         }
                       });
@@ -494,7 +491,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                             pageContact = 1;
                                             CarReportBloc.of(context)
                                                 .add(GetDashboardCar(
-                                              time: time_init.toString(),
+                                              time: time.toString(),
                                               diemBan: location,
                                             ));
                                           }

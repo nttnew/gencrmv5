@@ -58,8 +58,8 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
           if (state is SuccessGetDetailSupportState)
             return BlocListener<DetailSupportBloc, DetailSupportState>(
               listener: (context, state) async {
-                LoadingApi().popLoading();
                 if (state is SuccessDeleteSupportState) {
+                  LoadingApi().popLoading();
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -80,6 +80,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                     },
                   );
                 } else if (state is ErrorDeleteSupportState) {
+                  LoadingApi().popLoading();
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {

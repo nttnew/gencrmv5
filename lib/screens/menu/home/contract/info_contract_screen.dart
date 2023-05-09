@@ -47,8 +47,8 @@ class _InfoContractPageState extends State<InfoContractPage> {
     return Scaffold(
       body: BlocListener<DetailContractBloc, DetailContractState>(
         listener: (context, state) async {
-          LoadingApi().popLoading();
           if (state is SuccessDeleteContractState) {
+            LoadingApi().popLoading();
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -69,6 +69,7 @@ class _InfoContractPageState extends State<InfoContractPage> {
               },
             );
           } else if (state is ErrorDeleteContractState) {
+            LoadingApi().popLoading();
             showDialog(
               context: context,
               builder: (BuildContext context) {
