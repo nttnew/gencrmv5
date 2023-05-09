@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gen_crm/bloc/car_report/car_report_bloc.dart';
 import 'package:get/get.dart';
 import '../../../api_resfull/user_repository.dart';
 import '../../../src/app_const.dart';
@@ -38,9 +39,12 @@ class OptionBloc extends Bloc<OptionEvent, OptionState> {
         if (type == 1)
           ReportProductBloc.of(Get.context!).add(InitReportProductEvent(
               location: "", time: response.data!.thoi_gian_mac_dinh!));
-        else
+        else if (type == 2)
           ReportEmployeeBloc.of(Get.context!).add(InitReportEmployeeEvent(
               time: response.data!.thoi_gian_mac_dinh!));
+        else if (type == 4)
+          CarReportBloc.of(Get.context!).add(GetDashboardCar(
+              time: response.data!.thoi_gian_mac_dinh.toString()));
       } else if (response.code == 999) {
         loginSessionExpired();
       } else

@@ -244,8 +244,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           OptionBloc.of(context).add(InitOptionEvent(2));
                         } else if (step == 4) {
                           indexEmployee = -1;
-                          CarReportBloc.of(context).add(GetDashboardCar());
-                          OptionBloc.of(context).add(InitOptionEvent(2));
+                          OptionBloc.of(context).add(InitOptionEvent(4));
                         }
                       });
                     },
