@@ -189,7 +189,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
               fontFamily: "Quicksand",
               color: HexColor("#006CB1"),
               fontWeight: FontWeight.w500,
-              fontSize: 12),
+              fontSize: 14),
         ),
       ),
     );
@@ -205,7 +205,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
           style: TextStyle(
               fontFamily: "Quicksand",
               fontWeight: FontWeight.w500,
-              fontSize: 12),
+              fontSize: 14),
         ),
       ),
     );
@@ -319,7 +319,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
                     style: TextStyle(
                         fontFamily: "Quicksand",
                         fontWeight: FontWeight.w500,
-                        fontSize: 12),
+                        fontSize: 14),
                   )
                 ],
               ),

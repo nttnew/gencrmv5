@@ -32,8 +32,10 @@ class AppNavigator {
       await Get.toNamed(ROUTE_NAMES.ADD_SERVICE_VOUCHER_STEP_TWO,
           arguments: title);
 
-  static navigateFormAdd(String title, int type, {int? id}) async =>
-      await Get.toNamed(ROUTE_NAMES.FORM_ADD, arguments: [title, type, id]);
+  static navigateFormAdd(String title, int type,
+          {int? id, bool isCheckIn = false}) async =>
+      await Get.toNamed(ROUTE_NAMES.FORM_ADD,
+          arguments: [title, type, id, isCheckIn]);
 
   static navigateAddWork() async => await Get.toNamed(ROUTE_NAMES.ADD_WORK);
 
@@ -155,4 +157,7 @@ class AppNavigator {
 
   static navigateDetailProduct(String title, String id) async =>
       await Get.toNamed(ROUTE_NAMES.DETAIL_PRODUCT, arguments: [title, id]);
+
+  static navigateCheckIn() async =>
+      await Get.toNamed(ROUTE_NAMES.CHECK_IN);
 }

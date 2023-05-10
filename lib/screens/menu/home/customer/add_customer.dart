@@ -337,7 +337,7 @@ class _AddCustomerState extends State<AddCustomer> {
                         text: '*',
                         style: TextStyle(
                             fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -413,7 +413,7 @@ class _AddCustomerState extends State<AddCustomer> {
               text: label,
               style: TextStyle(
                   fontFamily: "Roboto",
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: HexColor("#697077")),
               children: <TextSpan>[
@@ -422,7 +422,7 @@ class _AddCustomerState extends State<AddCustomer> {
                         text: '*',
                         style: TextStyle(
                             fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -485,13 +485,13 @@ class _AddCustomerState extends State<AddCustomer> {
 
   TextStyle hintTextStyle() => TextStyle(
       fontFamily: "Roboto",
-      fontSize: 11,
+      fontSize: 14,
       fontWeight: FontWeight.w500,
       color: HexColor("#838A91"));
 
   TextStyle titlestyle() => TextStyle(
       fontFamily: "Roboto",
-      fontSize: 12,
+      fontSize: 14,
       fontWeight: FontWeight.w500,
       color: HexColor("#697077"));
 
@@ -579,7 +579,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
               text: widget.data.field_label ?? '',
               style: TextStyle(
                   fontFamily: "Roboto",
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: HexColor("#697077")),
               children: <TextSpan>[
@@ -588,7 +588,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                         text: '*',
                         style: TextStyle(
                             fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),

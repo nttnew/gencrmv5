@@ -20,6 +20,7 @@ const String BUNDLE_ID = 'com.gencrm';
 const String PACKAGE_ID = 'vn.gen_crm';
 const String TEAM_ID = 'AEY48KNZRS';
 const int PRODUCT_TYPE = 99;
+const LOADING = 'loading';
 
 void loginSessionExpired() {
   Get.dialog(WidgetDialog(
@@ -82,7 +83,8 @@ void handleRegisterBase(
   pitelService.setExtensionInfo(sipInfo, pnPushParams);
 }
 
-Widget itemIcon(String title, String icon, Function() click) {
+Widget itemIcon(String title, String icon, Function() click,
+    {Widget? iconWidget}) {
   return GestureDetector(
     onTap: () => click(),
     child: Row(
@@ -94,10 +96,11 @@ Widget itemIcon(String title, String icon, Function() click) {
         Container(
           height: 24,
           width: 24,
-          child: SvgPicture.asset(
-            icon,
-            fit: BoxFit.contain,
-          ),
+          child: iconWidget ??
+              SvgPicture.asset(
+                icon,
+                fit: BoxFit.contain,
+              ),
         ),
         SizedBox(
           width: AppValue.widths * 0.1,

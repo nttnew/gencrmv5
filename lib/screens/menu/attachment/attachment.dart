@@ -62,6 +62,7 @@ class _AttachmentState extends State<Attachment> {
           context: context,
           builder: (BuildContext context) {
             return WidgetDialog(
+              twoButton: true,
               title: MESSAGES.NOTIFICATION,
               content: 'Bạn chưa cấp quyền truy cập vào ảnh?',
               textButton2: 'Đi đến cài đặt',

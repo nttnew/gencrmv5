@@ -95,7 +95,7 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
                                 style: TextStyle(
                                     fontFamily: "Quicksand",
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 12),
+                                    fontSize: 14),
                               ),
                               AppValue.vSpaceMedium,
                             ],

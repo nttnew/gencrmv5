@@ -648,6 +648,7 @@ class _FormEditState extends State<FormEdit> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
               style: titlestyle(),
@@ -657,7 +658,7 @@ class _FormEditState extends State<FormEdit> {
                         text: '*',
                         style: TextStyle(
                             fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -677,7 +678,7 @@ class _FormEditState extends State<FormEdit> {
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
                 child: TextFormField(
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                   keyboardType: data.field_special == "default"
                       ? TextInputType.text
                       : data.field_special == "numberic"
@@ -731,11 +732,12 @@ class _FormEditState extends State<FormEdit> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: label,
               style: TextStyle(
                   fontFamily: "Roboto",
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: HexColor("#697077")),
               children: <TextSpan>[
@@ -744,7 +746,7 @@ class _FormEditState extends State<FormEdit> {
                         text: '*',
                         style: TextStyle(
                             fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -805,13 +807,13 @@ class _FormEditState extends State<FormEdit> {
 
   TextStyle hintTextStyle() => TextStyle(
       fontFamily: "Roboto",
-      fontSize: 11,
+      fontSize: 14,
       fontWeight: FontWeight.w500,
       color: HexColor("#838A91"));
 
   TextStyle titlestyle() => TextStyle(
       fontFamily: "Roboto",
-      fontSize: 12,
+      fontSize: 14,
       fontWeight: FontWeight.w500,
       color: HexColor("#697077"));
 
@@ -916,11 +918,12 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: TextStyle(
                   fontFamily: "Roboto",
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: HexColor("#697077")),
               children: <TextSpan>[
@@ -929,7 +932,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                         text: '*',
                         style: TextStyle(
                             fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -974,7 +977,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                     _focusNode.unfocus();
                   },
                   focusNode: _focusNode,
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                   keyboardType: widget.data.field_special == "default"
                       ? TextInputType.text
                       : widget.data.field_special == "numberic"
@@ -1095,11 +1098,12 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
             ),
           ),
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: TextStyle(
                   fontFamily: "Roboto",
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: HexColor("#697077")),
               children: <TextSpan>[
@@ -1108,7 +1112,7 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
                         text: '*',
                         style: TextStyle(
                             fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),

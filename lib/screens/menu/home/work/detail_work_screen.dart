@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/work/detail_work_bloc.dart';
 import 'package:gen_crm/bloc/work/work_bloc.dart';
 import 'package:gen_crm/screens/menu/home/customer/list_note.dart';
@@ -11,6 +10,7 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
+import '../../../../src/app_const.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/widget_dialog.dart';
 import '../../attachment/attachment.dart';
@@ -54,7 +54,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
         ),
       ),
       body: BlocListener<DetailWorkBloc, DetailWorkState>(
-        listener: (context, state)  {
+        listener: (context, state) {
           LoadingApi().popLoading();
           if (state is SuccessDeleteWorkState) {
             showDialog(
@@ -240,31 +240,29 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                   SizedBox(
                                     height: AppValue.heights * 0.03,
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
+                                  itemIcon("Thêm thảo luận",
+                                      ICONS.IC_ADD_DISCUSS_SVG, () {
+                                    Get.back();
+                                    AppNavigator.navigateAddNoteScreen(
+                                        5, id.toString());
+                                  }),
+                                  itemIcon(
+                                    "Thêm checkin",
+                                    '',
+                                    () {
                                       Get.back();
-                                      AppNavigator.navigateAddNoteScreen(
-                                          5, id.toString());
+                                      AppNavigator.navigateCheckIn();
                                     },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: AppValue.widths * 0.2,
-                                        ),
-                                        SvgPicture.asset(
-                                            ICONS.IC_ADD_DISCUSS_SVG),
-                                        SizedBox(
-                                          width: AppValue.widths * 0.1,
-                                        ),
-                                        Text("Thêm thảo luận",
-                                            style: styleTitleBottomSheet())
-                                      ],
+                                    iconWidget: Icon(
+                                      Icons.add_location_alt_outlined,
+                                      color: HexColor("#697077"),
+                                      size: 24,
                                     ),
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
+                                  itemIcon(
+                                    "Xem đính kèm",
+                                    ICONS.IC_ATTACK_SVG,
+                                    () {
                                       Get.back();
                                       Navigator.of(context)
                                           .push(MaterialPageRoute(
@@ -274,46 +272,20 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                                         Module.CONG_VIEC,
                                                   )));
                                     },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: AppValue.widths * 0.2,
-                                        ),
-                                        SvgPicture.asset(ICONS.IC_ATTACK_SVG),
-                                        SizedBox(
-                                          width: AppValue.widths * 0.1,
-                                        ),
-                                        Text("Xem đính kèm",
-                                            style: styleTitleBottomSheet())
-                                      ],
-                                    ),
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
+                                  itemIcon(
+                                    "Sửa",
+                                    ICONS.IC_EDIT_SVG,
+                                    () {
                                       Get.back();
                                       AppNavigator.navigateEditDataScreen(
                                           id.toString(), 5);
                                     },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: AppValue.widths * 0.2,
-                                        ),
-                                        SvgPicture.asset(ICONS.IC_EDIT_SVG),
-                                        SizedBox(
-                                          width: AppValue.widths * 0.1,
-                                        ),
-                                        Text("Sửa",
-                                            style: styleTitleBottomSheet())
-                                      ],
-                                    ),
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
+                                  itemIcon(
+                                    "Xoá",
+                                    ICONS.IC_DELETE_SVG,
+                                    () {
                                       ShowDialogCustom.showDialogTwoButton(
                                           onTap2: () =>
                                               DetailWorkBloc.of(context)
@@ -321,21 +293,6 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                           content:
                                               "Bạn chắc chắn muốn xóa không ?");
                                     },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: AppValue.widths * 0.2,
-                                        ),
-                                        SvgPicture.asset(ICONS.IC_DELETE_SVG),
-                                        SizedBox(
-                                          width: AppValue.widths * 0.1,
-                                        ),
-                                        Text("Xoá",
-                                            style: styleTitleBottomSheet())
-                                      ],
-                                    ),
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -399,11 +356,11 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       fontFamily: "Quicksand",
       color: color == null ? HexColor("#263238") : HexColor(color),
       fontWeight: FontWeight.w700,
-      fontSize: 12);
+      fontSize: 14);
 
   TextStyle LabelStyle() => TextStyle(
       fontFamily: "Quicksand",
       color: HexColor("#697077"),
       fontWeight: FontWeight.w600,
-      fontSize: 12);
+      fontSize: 14);
 }

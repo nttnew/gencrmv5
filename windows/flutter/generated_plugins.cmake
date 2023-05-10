@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
   flutter_webrtc
+  geolocator_windows
   local_auth_windows
   nb_utils
   permission_handler_windows

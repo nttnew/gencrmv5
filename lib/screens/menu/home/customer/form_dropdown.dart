@@ -60,11 +60,12 @@ class _FormDropDownState extends State<FormDropDown> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: widget.label,
               style: TextStyle(
                   fontFamily: "Roboto",
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: HexColor("#697077")),
               children: <TextSpan>[
@@ -73,7 +74,7 @@ class _FormDropDownState extends State<FormDropDown> {
                         text: '*',
                         style: TextStyle(
                             fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -120,7 +121,7 @@ class _FormDropDownState extends State<FormDropDown> {
                           title: value,
                           maxLine: 1,
                           style: TextStyle(
-                              fontSize: 11,
+                              fontSize: 14,
                               fontFamily: "Roboto",
                               fontWeight: FontWeight.w500,
                               color: HexColor("#838A91")),

@@ -524,6 +524,7 @@ class _EditContractState extends State<EditContract> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
               style: titlestyle(),
@@ -533,7 +534,7 @@ class _EditContractState extends State<EditContract> {
                         text: '*',
                         style: TextStyle(
                             fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -553,7 +554,7 @@ class _EditContractState extends State<EditContract> {
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
                 child: TextFormField(
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                   keyboardType: data.field_type == "TEXT_NUMERIC"
                       ? TextInputType.number
                       : data.field_special == "default"
@@ -619,11 +620,12 @@ class _EditContractState extends State<EditContract> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: label,
               style: TextStyle(
                   fontFamily: "Roboto",
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: HexColor("#697077")),
               children: <TextSpan>[
@@ -632,7 +634,7 @@ class _EditContractState extends State<EditContract> {
                         text: '*',
                         style: TextStyle(
                             fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -698,13 +700,13 @@ class _EditContractState extends State<EditContract> {
 
   TextStyle hintTextStyle() => TextStyle(
       fontFamily: "Roboto",
-      fontSize: 11,
+      fontSize: 14,
       fontWeight: FontWeight.w500,
       color: HexColor("#838A91"));
 
   TextStyle titlestyle() => TextStyle(
       fontFamily: "Roboto",
-      fontSize: 12,
+      fontSize: 14,
       fontWeight: FontWeight.w500,
       color: HexColor("#697077"));
 

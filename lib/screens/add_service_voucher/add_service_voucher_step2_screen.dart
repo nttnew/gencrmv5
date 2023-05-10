@@ -551,6 +551,7 @@ class _AddServiceVoucherStepTwoScreenState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
               style: titlestyle(),
@@ -560,7 +561,7 @@ class _AddServiceVoucherStepTwoScreenState
                         text: '*',
                         style: TextStyle(
                             fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -643,6 +644,7 @@ class _AddServiceVoucherStepTwoScreenState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
               style: titlestyle(),
@@ -652,7 +654,7 @@ class _AddServiceVoucherStepTwoScreenState
                         text: '*',
                         style: TextStyle(
                             fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -713,6 +715,7 @@ class _AddServiceVoucherStepTwoScreenState
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
               style: titlestyle(),
@@ -722,7 +725,7 @@ class _AddServiceVoucherStepTwoScreenState
                         text: '*',
                         style: TextStyle(
                             fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -784,11 +787,12 @@ class _AddServiceVoucherStepTwoScreenState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: label,
               style: TextStyle(
                   fontFamily: "Roboto",
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: HexColor("#697077")),
               children: <TextSpan>[
@@ -797,7 +801,7 @@ class _AddServiceVoucherStepTwoScreenState
                         text: '*',
                         style: TextStyle(
                             fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -860,13 +864,13 @@ class _AddServiceVoucherStepTwoScreenState
 
   TextStyle hintTextStyle() => TextStyle(
       fontFamily: "Roboto",
-      fontSize: 11,
+      fontSize: 14,
       fontWeight: FontWeight.w500,
       color: HexColor("#838A91"));
 
   TextStyle titlestyle() => TextStyle(
       fontFamily: "Roboto",
-      fontSize: 12,
+      fontSize: 14,
       fontWeight: FontWeight.w500,
       color: HexColor("#697077"));
 
@@ -991,11 +995,12 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: TextStyle(
                   fontFamily: "Roboto",
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: HexColor("#697077")),
               children: <TextSpan>[
@@ -1004,7 +1009,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                         text: '*',
                         style: TextStyle(
                             fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),

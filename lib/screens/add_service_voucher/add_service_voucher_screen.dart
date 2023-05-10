@@ -147,6 +147,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: label,
               style: titlestyle(),

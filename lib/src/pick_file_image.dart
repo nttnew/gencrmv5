@@ -190,6 +190,7 @@ Future<List<File>> onDinhKemBase(BuildContext context) async {
         context: context,
         builder: (BuildContext context) {
           return WidgetDialog(
+            twoButton: true,
             title: MESSAGES.NOTIFICATION,
             content: MESSAGES.BAN_CHUA_CAP_QUYEN,
             textButton2: MESSAGES.DI_DEN_CAI_DAT,

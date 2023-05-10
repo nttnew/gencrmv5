@@ -12,7 +12,6 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../src/app_const.dart';
-import '../../../../storages/share_local.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 
 class WorkScreen extends StatefulWidget {
@@ -57,8 +56,7 @@ class _WorkScreenState extends State<WorkScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff1AA928),
-        onPressed: () =>
-            AppNavigator.navigateFormAdd('Thêm ${title.toLowerCase()}', 5),
+        onPressed: () => showBotomSheet2(),
         child: Icon(Icons.add, size: 40),
       ),
       appBar: AppBar(
@@ -250,6 +248,83 @@ class _WorkScreenState extends State<WorkScreen> {
                                     ),
                                   ),
                                 )),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        });
+  }
+
+  showBotomSheet2() {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+        ),
+        elevation: 2,
+        context: context,
+        isScrollControlled: true,
+        constraints: BoxConstraints(maxHeight: Get.height * 0.7),
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return SafeArea(
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  margin: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.height / 4),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: WidgetText(
+                          title: 'Chọn kiểu $title',
+                          textAlign: TextAlign.center,
+                          style: AppStyle.DEFAULT_20_BOLD,
+                        ),
+                      ),
+                      AppValue.vSpaceTiny,
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Get.back();
+                              AppNavigator.navigateFormAdd(
+                                  'Thêm ${title.toLowerCase()}', 5);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              margin: EdgeInsets.only(bottom: 10),
+                              child: WidgetText(
+                                title: "Thêm ${title.toLowerCase()}",
+                                style: AppStyle.DEFAULT_18,
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Get.back();
+                              AppNavigator.navigateFormAdd(
+                                  'Thêm ${title.toLowerCase()}', 5,
+                                  isCheckIn: true);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              child: WidgetText(
+                                title: "Thêm checkin",
+                                style: AppStyle.DEFAULT_18,
+                              ),
+                            ),
+                          )
+                        ],
                       )
                     ],
                   ),

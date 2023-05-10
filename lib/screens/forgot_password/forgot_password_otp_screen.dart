@@ -97,7 +97,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
                                 style: TextStyle(
                                     fontFamily: "Quicksand",
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 12),
+                                    fontSize: 14),
                               ),
                               SizedBox(
                                 height: 5,
@@ -107,7 +107,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
                                 style: TextStyle(
                                     fontFamily: "Quicksand",
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 12,
+                                    fontSize: 14,
                                     color: HexColor("#006CB1")),
                               ),
                               AppValue.vSpaceMedium,
@@ -135,12 +135,13 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
   _buildSendAgain(ForgotPasswordBloc bloc) {
     return Align(
       child: RichText(
+        textScaleFactor: MediaQuery.of(context).textScaleFactor,
         text: TextSpan(
           text: 'Chưa nhận được mã?',
           style: TextStyle(
               fontFamily: "Quicksand",
               fontWeight: FontWeight.w500,
-              fontSize: 12,
+              fontSize: 14,
               color: Colors.black),
           children: <TextSpan>[
             TextSpan(
@@ -152,7 +153,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
               style: TextStyle(
                   fontFamily: "Quicksand",
                   fontWeight: FontWeight.w500,
-                  fontSize: 12,
+                  fontSize: 14,
                   color: HexColor("#006CB1")),
             ),
           ],

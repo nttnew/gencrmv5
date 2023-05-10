@@ -81,52 +81,57 @@ class WidgetDialog extends StatelessWidget {
                           ),
                         ),
                       )
-                    : Row(
-                        children: [
-                          Expanded(
-                            child: InkWell(
-                              onTap:
-                                  onTap2 ?? () => AppNavigator.navigateBack(),
-                              child: Container(
-                                padding:
-                                    EdgeInsets.only(top: 15.0, bottom: 15.0),
-                                decoration: BoxDecoration(
-                                  color: backgroundButton2,
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(10.0),
-                                      bottomRight: Radius.circular(10.0)),
-                                ),
-                                child: Text(
-                                  textButton2!,
-                                  style: AppStyle.DEFAULT_16_BOLD
-                                      .copyWith(color: textColorButton2!),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              onTap:
-                                  onTap1 ?? () => AppNavigator.navigateBack(),
-                              child: Container(
-                                padding:
-                                    EdgeInsets.only(top: 15.0, bottom: 15.0),
-                                decoration: BoxDecoration(
-                                  color: backgroundButton1,
-                                  borderRadius: BorderRadius.only(
-                                      bottomRight: Radius.circular(10.0)),
-                                ),
-                                child: Text(
-                                  textButton1!,
-                                  style: AppStyle.DEFAULT_16_BOLD
-                                      .copyWith(color: textColorButton1!),
-                                  textAlign: TextAlign.center,
+                    : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: InkWell(
+                                onTap:
+                                    onTap1 ?? () => AppNavigator.navigateBack(),
+                                child: Container(
+                                  padding:
+                                      EdgeInsets.only(top: 15.0, bottom: 15.0),
+                                  decoration: BoxDecoration(
+                                    color: backgroundButton1,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                  child: Text(
+                                    textButton1!,
+                                    style: AppStyle.DEFAULT_16_BOLD
+                                        .copyWith(color: textColorButton1!),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                               ),
                             ),
-                          )
-                        ],
+                            SizedBox(
+                              width: 16,
+                            ),
+                            Expanded(
+                              child: InkWell(
+                                onTap:
+                                    onTap2 ?? () => AppNavigator.navigateBack(),
+                                child: Container(
+                                  padding:
+                                      EdgeInsets.only(top: 15.0, bottom: 15.0),
+                                  decoration: BoxDecoration(
+                                    color: backgroundButton2,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                  child: Text(
+                                    textButton2!,
+                                    style: AppStyle.DEFAULT_16_BOLD
+                                        .copyWith(color: textColorButton2!),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
               ],
             ),

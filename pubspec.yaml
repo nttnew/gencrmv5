@@ -98,6 +98,8 @@ dependencies:
   qr_code_scanner: ^1.0.1
   is_lock_screen: ^2.0.0
   flutter_callkit_incoming: ^1.0.3+3
+  geolocator: 9.0.2
+  geocoding: 2.1.0
 
 
 dependency_overrides:

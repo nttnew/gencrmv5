@@ -124,7 +124,7 @@ class _GeneralInforCustomerState extends State<GeneralInforCustomer>
       fontFamily: "Quicksand",
       color: color == null ? HexColor("#263238") : HexColor(color),
       fontWeight: FontWeight.w700,
-      fontSize: 12);
+      fontSize: 14);
 
   @override
   bool get wantKeepAlive => true;

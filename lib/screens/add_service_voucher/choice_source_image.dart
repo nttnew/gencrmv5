@@ -19,6 +19,7 @@ class _ChoiceSourceImageState extends State<ChoiceSourceImage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return WidgetDialog(
+          twoButton: true,
           title: MESSAGES.NOTIFICATION,
           content: "Đi đến cài đặt",
           textButton1: "Đi",

@@ -43,7 +43,7 @@ class _FieldInputPercentState extends State<FieldInputPercent> {
                         text: '*',
                         style: TextStyle(
                             fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -67,7 +67,7 @@ class _FieldInputPercentState extends State<FieldInputPercent> {
                     child: TextField(
                       // controller: data.field_type=="TEXT_NUMERIC"?_wholesalePriceEditController:null,
                       style:
-                          TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                       keyboardType: TextInputType.number,
                       onChanged: (text) {
                         if (int.parse(text) >= 0 && int.parse(text) <= 100)
@@ -102,13 +102,13 @@ class _FieldInputPercentState extends State<FieldInputPercent> {
 
   TextStyle titlestyle() => TextStyle(
       fontFamily: "Roboto",
-      fontSize: 12,
+      fontSize: 14,
       fontWeight: FontWeight.w500,
       color: HexColor("#697077"));
 
   TextStyle hintTextStyle() => TextStyle(
       fontFamily: "Roboto",
-      fontSize: 11,
+      fontSize: 14,
       fontWeight: FontWeight.w500,
       color: HexColor("#838A91"));
 }

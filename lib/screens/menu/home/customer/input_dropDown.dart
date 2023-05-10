@@ -49,7 +49,7 @@ class _InputDropdownState extends State<InputDropdown> {
   }
 
   void updateList() {
-    dropdow=[];
+    dropdow = [];
     for (int i = 0; i < widget.dropdownItemList.length; i++) {
       if (widget.dropdownItemList[i][1] != null &&
           widget.dropdownItemList[i][0] != null) {
@@ -145,7 +145,7 @@ class _InputDropdownState extends State<InputDropdown> {
                         text: '*',
                         style: TextStyle(
                             fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -261,7 +261,7 @@ class _InputDropdownState extends State<InputDropdown> {
 
   TextStyle titlestyle() => TextStyle(
       fontFamily: "Roboto",
-      fontSize: 12,
+      fontSize: 14,
       fontWeight: FontWeight.w500,
       color: HexColor("#697077"));
 }

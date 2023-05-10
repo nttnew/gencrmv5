@@ -346,11 +346,11 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
       fontFamily: "Quicksand",
       color: color == null ? HexColor("#263238") : HexColor(color),
       fontWeight: FontWeight.w700,
-      fontSize: 12);
+      fontSize: 14);
 
   TextStyle LabelStyle() => TextStyle(
       fontFamily: "Quicksand",
       color: HexColor("#697077"),
       fontWeight: FontWeight.w600,
-      fontSize: 12);
+      fontSize: 14);
 }
