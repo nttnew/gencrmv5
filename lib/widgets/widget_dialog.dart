@@ -58,6 +58,7 @@ class WidgetDialog extends StatelessWidget {
                   ),
                 ),
                 AppValue.vSpaceSmall,
+                if(twoButton == false)
                 Divider(
                   height: 1,
                   color: COLORS.GREY,
