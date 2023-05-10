@@ -214,7 +214,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => CallScreenWidget()));
     }
-    if (!lockScreen) {
+    if (!lockScreen && Platform.isIOS) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => CallScreenWidget()));
     }

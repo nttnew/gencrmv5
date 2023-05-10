@@ -67,6 +67,12 @@ class _InitCallAppState extends State<InitCallApp> with WidgetsBindingObserver {
           if (Platform.isAndroid && state == AppState.opened) {
             handleRegister();
           }
+          if (Platform.isAndroid && state == AppState.resumed) {
+            handleRegister();
+          }
+          if (Platform.isIOS && state == AppState.resumed) {
+            handleRegister();
+          }
         },
         child: ScreenMain(),
       );
