@@ -1,5 +1,5 @@
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:flutter_dotenv/flutter_dotenv.dart'; // ignore: import_of_legacy_library_into_null_safe
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:core';
 import 'package:gen_crm/src/preferences_key.dart';
 import 'package:gen_crm/storages/storages.dart';

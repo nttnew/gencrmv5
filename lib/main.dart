@@ -102,12 +102,12 @@ Future main() async {
   flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-    RemoteNotification notification = message.notification!;
+    RemoteNotification? notification = message.notification;
 
     if (notification != null) {
       if (Platform.isAndroid) {
-        AndroidNotification androidNotification =
-            message.notification!.android!;
+        AndroidNotification? androidNotification =
+            message.notification?.android;
         if (androidNotification != null) {
           var androidPlatformChannelSpecifics =
               const AndroidNotificationDetails(

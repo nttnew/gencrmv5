@@ -56,7 +56,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
   }
 
   String checkId(String id) {
-    if (id != null && id != '' && id != 'null') {
+    if (id != '' && id != '' && id != 'null') {
       return id;
     }
     return '';

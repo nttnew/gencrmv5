@@ -280,8 +280,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                   builder: (context, state) {
                 if (state is UpdateGetInforAccState) {
                   return WidgetAppbar(
-                    title:
-                        state.inforAcc != null ? state.inforAcc.fullname : '',
+                    title: state.inforAcc.fullname,
                     textColor: Colors.black,
                     right: GestureDetector(onTap: () {
                       return AppNavigator.navigateNotification();

@@ -15,6 +15,7 @@ class AboutUsScreen extends StatefulWidget {
 class _AboutUsScreenState extends State<AboutUsScreen> {
   @override
   void initState() {
+    super.initState();
     GetInforBloc.of(context).add(InitGetInforEvent());
   }
 

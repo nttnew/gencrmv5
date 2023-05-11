@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/models/model_generator/list_product_response.dart';
-import 'package:gen_crm/widgets/widget_text.dart';
-
 import '../../../../src/src_index.dart';
 
 class ItemProductModule extends StatefulWidget {

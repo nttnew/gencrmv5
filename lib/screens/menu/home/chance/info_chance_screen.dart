@@ -6,8 +6,6 @@ import 'package:gen_crm/widgets/widget_button.dart';
 import 'package:get/get.dart';
 
 import '../../../../bloc/blocs.dart';
-import '../../../../bloc/contract/detail_contract_bloc.dart';
-import '../../../../src/models/model_generator/file_response.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/widget_appbar.dart';

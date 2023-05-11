@@ -9,7 +9,6 @@ import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/clue.dart';
 import '../../../../src/src_index.dart';
-import '../../../../storages/share_local.dart';
 import '../../../../widgets/widget_appbar.dart';
 import '../../../../widgets/widget_search.dart';
 import '../../../../widgets/widget_text.dart';
