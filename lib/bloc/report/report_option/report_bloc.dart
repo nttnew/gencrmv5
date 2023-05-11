@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:rxdart/rxdart.dart';
 import '../../../api_resfull/user_repository.dart';
 import '../../../src/app_const.dart';
 import '../../../src/base.dart';
@@ -14,6 +15,7 @@ part 'report_event.dart';
 
 class ReportBloc extends Bloc<ReportEvent, ReportState> {
   final UserRepository userRepository;
+  BehaviorSubject<String> selectReport = BehaviorSubject.seeded('');
 
   ReportBloc({required UserRepository userRepository})
       : userRepository = userRepository,

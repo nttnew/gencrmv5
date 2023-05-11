@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/response_car_dashboard.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
-import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
@@ -15,7 +14,6 @@ part 'car_report_state.dart';
 
 class CarReportBloc extends Bloc<CarReportEvent, CarReportState> {
   final UserRepository userRepository;
-  final BehaviorSubject<String?> statusCar = BehaviorSubject();
 
   CarReportBloc({required UserRepository userRepository})
       : userRepository = userRepository,
