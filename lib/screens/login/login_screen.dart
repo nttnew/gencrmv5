@@ -16,11 +16,12 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   String? tokenFirebase;
-  ScrollController scrollController = ScrollController();
+  late final ScrollController scrollController;
   late bool isLogin;
   @override
   void initState() {
-    isLogin = Get.arguments=='login';
+    scrollController = ScrollController();
+    isLogin = Get.arguments == 'login';
     KeyboardVisibilityController().onChange.listen((visible) {
       if (visible) {
         scrollController.jumpTo(150);
