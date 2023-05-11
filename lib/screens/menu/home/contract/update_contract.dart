@@ -33,7 +33,7 @@ import '../../../../models/widget_input_date.dart';
 import '../../../../src/models/model_generator/login_response.dart';
 import '../../../../src/pick_file_image.dart';
 import '../../../../storages/share_local.dart';
-import '../../../../widgets/widgetFieldInputPercent.dart';
+import '../../../../widgets/widget_field_input_percent.dart';
 import '../customer/add_customer.dart';
 import '../customer/input_dropDown.dart';
 

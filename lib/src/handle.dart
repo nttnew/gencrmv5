@@ -36,8 +36,4 @@ class Handle<T> {
 
   static handleParseImage(Map<String, String> env, String avatar) =>
       env[PreferencesKey.BASE_URL].toString() + avatar;
-
-  static bool firstNonNull<T>(List<T> items) => items != null ? true : false;
-
-  static bool firstNonNullString(String str) => str != null ? true : false;
 }

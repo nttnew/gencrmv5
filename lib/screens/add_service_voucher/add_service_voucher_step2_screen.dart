@@ -21,7 +21,7 @@ import '../../models/model_data_add.dart';
 import '../../models/widget_input_date.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/src_index.dart';
-import '../../widgets/widgetFieldInputPercent.dart';
+import '../../widgets/widget_field_input_percent.dart';
 import '../../widgets/widget_dialog.dart';
 import '../../widgets/widget_text.dart';
 import '../menu/home/contract/product_contract.dart';

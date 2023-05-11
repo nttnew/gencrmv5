@@ -13,7 +13,7 @@ import 'package:gen_crm/bloc/product_module/product_module_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/menu/home/customer/input_dropDown.dart';
 import 'package:gen_crm/src/app_const.dart';
-import 'package:gen_crm/widgets/widgetFieldInputPercent.dart';
+import 'package:gen_crm/widgets/widget_field_input_percent.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';

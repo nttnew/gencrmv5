@@ -32,7 +32,7 @@ import '../../../../src/pick_file_image.dart';
 import '../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
-import '../../../../widgets/widgetFieldInputPercent.dart';
+import '../../../../widgets/widget_field_input_percent.dart';
 import '../../../../widgets/widget_dialog.dart';
 import 'input_dropDown.dart';
 
