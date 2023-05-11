@@ -36,7 +36,7 @@ class _WorkCustomerState extends State<WorkCustomer>
                     state.listJob.length,
                     (index) => GestureDetector(
                         onTap: () {
-                          AppNavigator.navigateDeatailWork(
+                          AppNavigator.navigateDetailWork(
                               int.parse(state.listJob[index].id!),
                               state.listJob[index].name ?? '');
                         },

@@ -36,7 +36,7 @@ class _SupportCustomerState extends State<SupportCustomer>
                     state.listSupport.length,
                     (index) => GestureDetector(
                         onTap: () {
-                          AppNavigator.navigateDeatailSupport(
+                          AppNavigator.navigateDetailSupport(
                               state.listSupport[index].id.toString(),
                               state.listSupport[index].name ?? '');
                         },

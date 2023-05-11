@@ -163,6 +163,7 @@ class BASE_URL {
   static const DELETE_PRODUCT = 'modules/genmobile2/product/delete';
   static const GET_LIST_BAO_CAO = 'modules/genmobile2/dashboard/list';
   static const HOME_BAO_CAO = 'modules/genmobile2/dashboard/xetrongxuong';
+  static const SAVE_CHECK_IN = 'modules/genmobile2/job/checkIn';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';

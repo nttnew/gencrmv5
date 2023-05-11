@@ -177,6 +177,50 @@ handleOnPressItemMenu(_drawerKey, value) async {
   }
 }
 
+Widget itemTextIcon({
+  Color? colorText,
+  Color? colorIcon,
+  TextStyle? styleText,
+  required String status,
+  required icon,
+  bool isSVG = true,
+}) {
+  return status == ''
+      ? SizedBox()
+      : Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 20,
+                height: 20,
+                child: icon.runtimeType == Icon
+                    ? icon
+                    : isSVG
+                        ? SvgPicture.asset(
+                            icon,
+                            color: colorIcon != null ? colorIcon : null,
+                            fit: BoxFit.contain,
+                          )
+                        : Image.asset(
+                            icon,
+                            color: colorIcon != null ? colorIcon : null,
+                            fit: BoxFit.contain,
+                          ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              WidgetText(
+                  title: status,
+                  style: styleText ??
+                      AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                          color: colorText != null ? colorText : null)),
+            ],
+          ),
+        );
+}
+
 String getCheckHttp(String text) {
   if (text.toLowerCase().contains('https://')) {
     return text;

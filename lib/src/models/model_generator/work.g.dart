@@ -20,6 +20,7 @@ WorkItemData _$WorkItemDataFromJson(Map<String, dynamic> json) => WorkItemData(
       json['status_id'] as String?,
       json['status_color'] as String?,
       json['start_date'] as String?,
+      json['location'] as String?,
     );
 
 Map<String, dynamic> _$WorkItemDataToJson(WorkItemData instance) =>
@@ -37,6 +38,7 @@ Map<String, dynamic> _$WorkItemDataToJson(WorkItemData instance) =>
       'status_id': instance.status_id,
       'status_color': instance.status_color,
       'start_date': instance.start_date,
+      'location': instance.location,
     };
 
 FilterData _$FilterDataFromJson(Map<String, dynamic> json) => FilterData(
@@ -120,6 +122,7 @@ DetailWorkResponse _$DetailWorkResponseFromJson(Map<String, dynamic> json) =>
       (json['data'] as List<dynamic>?)
           ?.map((e) => DetailWorkData.fromJson(e as Map<String, dynamic>))
           .toList(),
+      json['location'] as int?,
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
@@ -131,4 +134,5 @@ Map<String, dynamic> _$DetailWorkResponseToJson(DetailWorkResponse instance) =>
       'msg': instance.msg,
       'code': instance.code,
       'data': instance.data,
+      'location': instance.location,
     };

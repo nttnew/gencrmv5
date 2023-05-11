@@ -34,7 +34,7 @@ class _ContractSupportState extends State<ContractSupport>
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      AppNavigator.navigateDeatailSupport(
+                      AppNavigator.navigateDetailSupport(
                           state.listSupportContract[index].id.toString(),
                           state.listSupportContract[index].name ?? '');
                     },

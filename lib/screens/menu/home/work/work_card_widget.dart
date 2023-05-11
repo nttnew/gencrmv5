@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -30,7 +31,22 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              if (widget.data_list?.location != null) ...[
+                Container(
+                  height: 16,
+                  width: 16,
+                  child: SvgPicture.asset(
+                    ICONS.IC_LOCATION_SVG,
+                    fit: BoxFit.contain,
+                    color: COLORS.GREY,
+                  ),
+                ),
+                SizedBox(
+                  width: 12,
+                ),
+              ],
               SizedBox(
                 width: AppValue.widths * 0.5,
                 child: WidgetText(

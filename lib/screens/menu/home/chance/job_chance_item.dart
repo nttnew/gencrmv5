@@ -35,9 +35,10 @@ class _JobListChanceState extends State<JobListChance>
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          AppNavigator.navigateDeatailWork(
+                          AppNavigator.navigateDetailWork(
                               int.parse(state.data[index].id!),
-                              state.data[index].name_job ?? '');
+                              state.data[index].name_job ?? '',
+                          );
                         },
                         child: _tabBarWork(state.data[index]),
                       );

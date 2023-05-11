@@ -13,20 +13,17 @@ class AppNavigator {
   static navigateLogin() async =>
       await Get.toNamed(ROUTE_NAMES.LOGIN, arguments: 'login');
 
-  static navigateDetailWork() async =>
-      await Get.toNamed(ROUTE_NAMES.DETAIL_WORK);
-
-  static navigateDeatailSupport(String id, String title) async =>
+  static navigateDetailSupport(String id, String title) async =>
       await Get.toNamed(ROUTE_NAMES.DETAIL_SUPPORT, arguments: [id, title]);
 
-  static navigateDeatailWork(int id, String title) async =>
+  static navigateDetailWork(
+    int id,
+    String title,
+  ) async =>
       await Get.toNamed(ROUTE_NAMES.DETAIL_WORK, arguments: [id, title]);
 
   static navigateAddCustomer() async =>
       await Get.toNamed(ROUTE_NAMES.ADD_CUSTOMER);
-
-  // static navigateAddServiceVoucher() async =>
-  //     await Get.toNamed(ROUTE_NAMES.ADDSERVICEVOUCHER);
 
   static navigateAddServiceVoucherStepTwo(String title) async =>
       await Get.toNamed(ROUTE_NAMES.ADD_SERVICE_VOUCHER_STEP_TWO,
@@ -158,6 +155,6 @@ class AppNavigator {
   static navigateDetailProduct(String title, String id) async =>
       await Get.toNamed(ROUTE_NAMES.DETAIL_PRODUCT, arguments: [title, id]);
 
-  static navigateCheckIn() async =>
-      await Get.toNamed(ROUTE_NAMES.CHECK_IN);
+  static navigateCheckIn(String id) async =>
+      await Get.toNamed(ROUTE_NAMES.CHECK_IN, arguments: id);
 }

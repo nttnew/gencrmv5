@@ -25,7 +25,7 @@ class DetailWorkScreen extends StatefulWidget {
 class _DetailWorkScreenState extends State<DetailWorkScreen> {
   int id = Get.arguments[0];
   String title = Get.arguments[1];
-
+  int? location;
   @override
   void initState() {
     super.initState();
@@ -105,7 +105,8 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                   children: [
                     BlocBuilder<DetailWorkBloc, DetailWorkState>(
                         builder: (context, state) {
-                      if (state is SuccessDetailWorkState)
+                      if (state is SuccessDetailWorkState) {
+                        location = state.location;
                         return Container(
                           height: AppValue.heights * 0.7,
                           child: Column(
@@ -210,7 +211,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                     )),
                           ),
                         );
-                      else
+                      } else
                         return Container();
                     }),
                     SizedBox(
@@ -246,19 +247,21 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                     AppNavigator.navigateAddNoteScreen(
                                         5, id.toString());
                                   }),
-                                  itemIcon(
-                                    "Thêm checkin",
-                                    '',
-                                    () {
-                                      Get.back();
-                                      AppNavigator.navigateCheckIn();
-                                    },
-                                    iconWidget: Icon(
-                                      Icons.add_location_alt_outlined,
-                                      color: HexColor("#697077"),
-                                      size: 24,
+                                  if (location != 1) //1 là có rồi
+                                    itemIcon(
+                                      "Thêm check in",
+                                      '',
+                                      () {
+                                        Get.back();
+                                        AppNavigator.navigateCheckIn(
+                                            id.toString());
+                                      },
+                                      iconWidget: Icon(
+                                        Icons.add_location_alt_outlined,
+                                        color: HexColor("#697077"),
+                                        size: 24,
+                                      ),
                                     ),
-                                  ),
                                   itemIcon(
                                     "Xem đính kèm",
                                     ICONS.IC_ATTACK_SVG,

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/contract/phone_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
@@ -209,10 +210,14 @@ class _FormAddDataState extends State<FormAddData> {
                     ),
                     Row(
                       children: [
-                        Icon(
-                          Icons.location_on_rounded,
-                          color: HexColor("#697077"),
-                          size: 24,
+                        Container(
+                          height: 16,
+                          width: 16,
+                          child: SvgPicture.asset(
+                            ICONS.IC_LOCATION_SVG,
+                            fit: BoxFit.contain,
+                            color: COLORS.GREY,
+                          ),
                         ),
                         SizedBox(
                           width: 4,
@@ -253,7 +258,7 @@ class _FormAddDataState extends State<FormAddData> {
                               color: COLORS.TEXT_COLOR,
                             )),
                         child: WidgetText(
-                            title: 'Checkin',
+                            title: 'Check in',
                             style: TextStyle(
                                 fontFamily: "Roboto",
                                 fontSize: 14,
@@ -279,7 +284,7 @@ class _FormAddDataState extends State<FormAddData> {
                                   color: COLORS.TEXT_COLOR,
                                 )),
                             child: WidgetText(
-                                title: 'Checkin lại',
+                                title: 'Check in lại',
                                 style: TextStyle(
                                   fontFamily: "Roboto",
                                   fontSize: 14,

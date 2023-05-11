@@ -1509,44 +1509,4 @@ class _ReportScreenState extends State<ReportScreen> {
       ),
     );
   }
-
-  Widget itemTextIcon({
-    Color? colorText,
-    Color? colorIcon,
-    required String status,
-    required icon,
-    bool isSVG = true,
-  }) {
-    return status == ''
-        ? SizedBox()
-        : Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: isSVG
-                      ? SvgPicture.asset(
-                          icon,
-                          color: colorIcon != null ? colorIcon : null,
-                          fit: BoxFit.contain,
-                        )
-                      : Image.asset(
-                          icon,
-                          color: colorIcon != null ? colorIcon : null,
-                          fit: BoxFit.contain,
-                        ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                WidgetText(
-                    title: status,
-                    style: AppStyle.DEFAULT_LABEL_PRODUCT
-                        .copyWith(color: colorText != null ? colorText : null)),
-              ],
-            ),
-          );
-  }
 }

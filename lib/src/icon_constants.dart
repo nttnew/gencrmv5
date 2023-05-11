@@ -75,4 +75,5 @@ class ICONS {
   static const String IC_CART_SVG = 'assets/icons/cart.svg';
   static const String IC_LOCATION_PNG = 'assets/icons/location_customer.svg';
   static const String IC_ICON1_SVG = 'assets/icons/icon1.svg';
+  static const String IC_LOCATION_SVG = 'assets/icons/location_pin.svg';
 }

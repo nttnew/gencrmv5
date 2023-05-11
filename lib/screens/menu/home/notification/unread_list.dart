@@ -80,12 +80,12 @@ class _UnReadListState extends State<UnReadList> {
           } else if (item.module == 'opportunity') {
             AppNavigator.navigateInfoChance(item.record_id!, 'Chi tiết');
           } else if (item.module == 'job') {
-            AppNavigator.navigateDeatailWork(
+            AppNavigator.navigateDetailWork(
                 int.parse(item.record_id!), 'Chi tiết');
           } else if (item.module == 'contract') {
             AppNavigator.navigateInfoContract(item.record_id!, 'Chi tiết');
           } else if (item.module == 'support') {
-            AppNavigator.navigateDeatailSupport(item.record_id!, 'Chi tiết');
+            AppNavigator.navigateDetailSupport(item.record_id!, 'Chi tiết');
           } else {
             AppNavigator.navigateInfoClue(item.record_id!, 'Chi tiết');
           }

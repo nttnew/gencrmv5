@@ -32,7 +32,7 @@ class _ContractJobState extends State<ContractJob>
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      AppNavigator.navigateDeatailWork(
+                      AppNavigator.navigateDetailWork(
                           int.parse(state.listJob[index].id!),
                           state.listJob[index].name_job ?? '');
                     },

@@ -44,6 +44,7 @@ import 'api_resfull/api.dart';
 import 'bloc/add_customer/add_customer_bloc.dart';
 import 'bloc/blocs.dart';
 import 'bloc/car_list_report/car_list_report_bloc.dart';
+import 'bloc/checkin_bloc/checkin_bloc.dart';
 import 'bloc/clue/clue_bloc.dart';
 import 'bloc/contract/customer_contract_bloc.dart';
 import 'bloc/contract/phone_bloc.dart';
@@ -392,6 +393,9 @@ Future main() async {
           BlocProvider<CarListReportBloc>(
             create: (context) =>
                 CarListReportBloc(userRepository: userRepository),
+          ),  BlocProvider<CheckInBloc>(
+            create: (context) =>
+                CheckInBloc(userRepository: userRepository),
           ),
         ],
         child: ProviderScope(child: const MyApp()),

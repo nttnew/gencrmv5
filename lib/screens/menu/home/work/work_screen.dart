@@ -155,9 +155,10 @@ class _WorkScreenState extends State<WorkScreen> {
                       controller: _scrollController,
                       shrinkWrap: true,
                       itemBuilder: (context, index) => InkWell(
-                          onTap: () => AppNavigator.navigateDeatailWork(
-                              int.parse(state.data_list[index].id!),
-                              state.data_list[index].name_job ?? ''),
+                          onTap: () => AppNavigator.navigateDetailWork(
+                                int.parse(state.data_list[index].id!),
+                                state.data_list[index].name_job ?? '',
+                              ),
                           child: WorkCardWidget(
                             data_list: state.data_list[index],
                             index: index,
@@ -319,7 +320,7 @@ class _WorkScreenState extends State<WorkScreen> {
                             child: Container(
                               padding: EdgeInsets.symmetric(vertical: 5),
                               child: WidgetText(
-                                title: "Thêm checkin",
+                                title: "Thêm check in",
                                 style: AppStyle.DEFAULT_18,
                               ),
                             ),

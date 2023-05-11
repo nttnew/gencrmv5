@@ -52,6 +52,7 @@ import '../src/models/model_generator/report_product.dart';
 import '../src/models/model_generator/response_bao_cao.dart';
 import '../src/models/model_generator/response_car_dashboard.dart';
 import '../src/models/model_generator/response_save_product.dart';
+import '../src/models/model_generator/save_checkin_response.dart';
 import '../src/models/model_generator/support_customer.dart';
 import '../src/models/model_generator/update_pass_request.dart';
 
@@ -761,6 +762,15 @@ class UserRepository {
   }) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .getHomeBaoCao(time, timeFrom, timeTo, diemBan);
+
+  Future<CheckInResponse> saveCheckIn({
+    required String id,
+    required String latitude,
+    required String longitude,
+    required String location,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .saveCheckIn(id, latitude, longitude, location);
 
   Future<dynamic> deleteProduct({
     required String id,

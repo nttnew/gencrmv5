@@ -52,6 +52,7 @@ import '../models/model_generator/report_product.dart';
 import '../models/model_generator/response_bao_cao.dart';
 import '../models/model_generator/response_car_dashboard.dart';
 import '../models/model_generator/response_save_product.dart';
+import '../models/model_generator/save_checkin_response.dart';
 import '../models/model_generator/support_customer.dart';
 
 part 'rest_client.g.dart';
@@ -626,5 +627,13 @@ abstract class RestClient {
     @Part(name: 'timefrom') String? timeFrom,
     @Part(name: 'timeto') String? timeTo,
     @Part(name: 'diem_ban') String? diemBan,
+  );
+
+  @POST(BASE_URL.SAVE_CHECK_IN)
+  Future<CheckInResponse> saveCheckIn(
+    @Part(name: 'id') String id,
+    @Part(name: 'latitude') String latitude,
+    @Part(name: 'longitude') String longitude,
+    @Part(name: 'note_location') String location,
   );
 }

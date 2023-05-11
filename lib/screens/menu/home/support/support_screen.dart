@@ -146,7 +146,7 @@ class _SupportScreenState extends State<SupportScreen> {
                   shrinkWrap: true,
                   controller: _scrollController,
                   itemBuilder: (context, index) => InkWell(
-                      onTap: () => AppNavigator.navigateDeatailSupport(
+                      onTap: () => AppNavigator.navigateDetailSupport(
                           state.listSupport[index].id.toString(),
                           state.listSupport[index].ten_ho_tro ?? ''),
                       child: ItemSupport(state.listSupport[index], index,
