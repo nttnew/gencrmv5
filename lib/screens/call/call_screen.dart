@@ -16,6 +16,7 @@ import '../../src/src_index.dart';
 import 'ripple_logo.dart';
 import '../../widgets/widget_text.dart';
 import 'action_button.dart';
+import 'package:wakelock/wakelock.dart';
 
 class CallScreenWidget extends ConsumerStatefulWidget {
   CallScreenWidget({
@@ -91,6 +92,7 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
     if (Platform.isAndroid) {
       if (direction != 'OUTGOING') {
         pitelCall.answer();
+        Wakelock.enable();
       }
     }
   }
@@ -196,6 +198,9 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
 
   // Handle hangup and reset timer
   void _handleHangup() {
+    if (Platform.isAndroid) {
+      Wakelock.disable();
+    }
     pitelCall.hangup(callId: _callId);
     if (_timer.isActive) {
       _timer.cancel();
