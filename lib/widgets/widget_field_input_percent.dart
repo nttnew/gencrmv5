@@ -42,7 +42,7 @@ class _FieldInputPercentState extends State<FieldInputPercent> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
+                            fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
@@ -101,14 +101,14 @@ class _FieldInputPercentState extends State<FieldInputPercent> {
   }
 
   TextStyle titlestyle() => TextStyle(
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontSize: 14,
       fontWeight: FontWeight.w500,
-      color: HexColor("#697077"));
+      color: COLORS.BLACK);
 
   TextStyle hintTextStyle() => TextStyle(
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontSize: 14,
       fontWeight: FontWeight.w500,
-      color: HexColor("#838A91"));
+      color: COLORS.BLACK);
 }

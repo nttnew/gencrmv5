@@ -171,13 +171,12 @@ class _FormAddDataState extends State<FormAddData> {
     super.deactivate();
   }
 
-  getNameLocation() async{
+  getNameLocation() async {
     position = await determinePosition(context);
     if (position != null) {
       nameLocation.add(LOADING);
       final location = await getLocationName(
-          position?.latitude ?? 0,
-          position?.longitude ?? 0);
+          position?.latitude ?? 0, position?.longitude ?? 0);
       nameLocation.add(location);
     }
   }
@@ -216,7 +215,6 @@ class _FormAddDataState extends State<FormAddData> {
                           child: SvgPicture.asset(
                             ICONS.IC_LOCATION_SVG,
                             fit: BoxFit.contain,
-                            color: COLORS.GREY,
                           ),
                         ),
                         SizedBox(
@@ -227,10 +225,10 @@ class _FormAddDataState extends State<FormAddData> {
                                 child: WidgetText(
                                     title: location,
                                     style: TextStyle(
-                                        fontFamily: "Roboto",
+                                        fontFamily: "Quicksand",
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
-                                        color: HexColor("#697077"))))
+                                        color: COLORS.BLACK)))
                             : SizedBox(
                                 height: 12,
                                 width: 12,
@@ -260,7 +258,7 @@ class _FormAddDataState extends State<FormAddData> {
                         child: WidgetText(
                             title: 'Check in',
                             style: TextStyle(
-                                fontFamily: "Roboto",
+                                fontFamily: "Quicksand",
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.white)),
@@ -272,7 +270,7 @@ class _FormAddDataState extends State<FormAddData> {
                       children: [
                         GestureDetector(
                           onTap: () async {
-                           await getNameLocation();
+                            await getNameLocation();
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
@@ -286,7 +284,7 @@ class _FormAddDataState extends State<FormAddData> {
                             child: WidgetText(
                                 title: 'Check in lại',
                                 style: TextStyle(
-                                  fontFamily: "Roboto",
+                                  fontFamily: "Quicksand",
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                   color: COLORS.TEXT_COLOR,
@@ -312,7 +310,7 @@ class _FormAddDataState extends State<FormAddData> {
                             child: WidgetText(
                                 title: 'Xoá',
                                 style: TextStyle(
-                                    fontFamily: "Roboto",
+                                    fontFamily: "Quicksand",
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.red)),
@@ -326,13 +324,22 @@ class _FormAddDataState extends State<FormAddData> {
                   if (location != '') ...[
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: WidgetText(
-                          title: 'Ghi chú',
-                          style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: HexColor("#697077"))),
+                      child: RichText(
+                        textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                        text: TextSpan(
+                          text: 'Vị trí',
+                          style: titlestyle(),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: '*',
+                                style: TextStyle(
+                                    fontFamily: "Quicksand",
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.red))
+                          ],
+                        ),
+                      ),
                     ),
                     SizedBox(
                       height: 8,
@@ -349,7 +356,6 @@ class _FormAddDataState extends State<FormAddData> {
                             controller: controllerNote,
                             style: TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w500),
-                            onChanged: (text) {},
                             decoration: InputDecoration(
                                 focusedBorder: InputBorder.none,
                                 enabledBorder: InputBorder.none,
@@ -766,7 +772,7 @@ class _FormAddDataState extends State<FormAddData> {
                       ? TextSpan(
                           text: '*',
                           style: TextStyle(
-                              fontFamily: "Roboto",
+                              fontFamily: "Quicksand",
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                               color: Colors.red))
@@ -851,16 +857,16 @@ class _FormAddDataState extends State<FormAddData> {
             text: TextSpan(
               text: label,
               style: TextStyle(
-                  fontFamily: "Roboto",
+                  fontFamily: "Quicksand",
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+                  color: COLORS.BLACK),
               children: <TextSpan>[
                 required == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
+                            fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
@@ -927,16 +933,16 @@ class _FormAddDataState extends State<FormAddData> {
   }
 
   TextStyle hintTextStyle() => TextStyle(
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontSize: 14,
       fontWeight: FontWeight.w500,
-      color: HexColor("#838A91"));
+      color: COLORS.BLACK);
 
   TextStyle titlestyle() => TextStyle(
       fontSize: 14,
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontWeight: FontWeight.w500,
-      color: HexColor("#838A91"));
+      color: COLORS.BLACK);
 
   void onClickSave() {
     final Map<String, dynamic> data = {};
@@ -959,12 +965,10 @@ class _FormAddDataState extends State<FormAddData> {
     }
     //CHECKIN
     if (isCheckIn) {
-      if (nameLocation.value != '') {
+      if (controllerNote.text != '') {
         data['longitude'] = position?.longitude.toString();
         data['latitude'] = position?.latitude.toString();
-        data['note_location'] = controllerNote.text != ''
-            ? controllerNote.text
-            : nameLocation.value;
+        data['note_location'] = controllerNote.text;
       } else {
         check = true;
       }
@@ -1088,16 +1092,16 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: TextStyle(
-                  fontFamily: "Roboto",
+                  fontFamily: "Quicksand",
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+                  color: COLORS.BLACK),
               children: <TextSpan>[
                 widget.data.field_require == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
+                            fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
@@ -1261,16 +1265,16 @@ class _renderCheckBoxState extends State<renderCheckBox> {
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: TextStyle(
-                  fontFamily: "Roboto",
+                  fontFamily: "Quicksand",
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+                  color: COLORS.BLACK),
               children: <TextSpan>[
                 widget.data.field_require == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
+                            fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))

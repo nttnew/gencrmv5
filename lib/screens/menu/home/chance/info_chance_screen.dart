@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/list_note/list_note_bloc.dart';
+import 'package:gen_crm/widgets/image_default.dart';
 import 'package:gen_crm/widgets/widget_button.dart';
 import 'package:get/get.dart';
 
@@ -171,7 +172,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           AppValue.hSpaceLarge,
-                          Image.asset(ICONS.IC_WORK_PNG),
+                          ImageBaseDefault(icon: ICONS.IC_WORK_3X_PNG),
                           SizedBox(width: 10),
                           InkWell(
                               onTap: () {

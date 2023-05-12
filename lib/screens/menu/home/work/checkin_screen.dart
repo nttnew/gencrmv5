@@ -14,6 +14,7 @@ import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/location_base.dart';
 import '../../../../widgets/widget_dialog.dart';
 import '../../../../widgets/widget_text.dart';
+import '../contract/widget_total_sum.dart';
 
 class CheckInScreen extends StatefulWidget {
   const CheckInScreen({Key? key}) : super(key: key);
@@ -91,7 +92,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: GestureDetector(
           onTap: () {
-            if (nameLocation.value == '') {
+            if (controllerNote.text.trim() == '') {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -105,9 +106,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
               CheckInBloc.of(context).add(SaveCheckIn(
                 '${position?.longitude ?? ''}',
                 '${position?.latitude ?? ''}',
-                controllerNote.text != ''
-                    ? controllerNote.text
-                    : nameLocation.value,
+                controllerNote.text,
                 id,
               ));
             }
@@ -129,15 +128,9 @@ class _CheckInScreenState extends State<CheckInScreen> {
           toolbarHeight: AppValue.heights * 0.1,
           backgroundColor: HexColor("#D0F1EB"),
           centerTitle: false,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              WidgetText(
-                  title: "Checkin",
-                  style:
-                      AppStyle.DEFAULT_16.copyWith(fontWeight: FontWeight.w700))
-            ],
-          ),
+          title: WidgetText(
+              title: "Checkin",
+              style: AppStyle.DEFAULT_16.copyWith(fontWeight: FontWeight.w700)),
           leading: Padding(
               padding: EdgeInsets.only(left: 30),
               child: InkWell(
@@ -183,7 +176,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
                               child: SvgPicture.asset(
                                 ICONS.IC_LOCATION_SVG,
                                 fit: BoxFit.contain,
-                                color: COLORS.GREY,
                               ),
                             ),
                             SizedBox(
@@ -194,10 +186,10 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                     child: WidgetText(
                                         title: location,
                                         style: TextStyle(
-                                            fontFamily: "Roboto",
+                                            fontFamily: "Quicksand",
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500,
-                                            color: HexColor("#697077"))))
+                                            color: COLORS.BLACK)))
                                 : SizedBox(
                                     height: 12,
                                     width: 12,
@@ -294,13 +286,23 @@ class _CheckInScreenState extends State<CheckInScreen> {
                       if (location != '') ...[
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: WidgetText(
-                              title: 'Ghi chú',
-                              style: TextStyle(
-                                  fontFamily: "Roboto",
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: HexColor("#697077"))),
+                          child: RichText(
+                            textScaleFactor:
+                                MediaQuery.of(context).textScaleFactor,
+                            text: TextSpan(
+                              text: 'Vị trí',
+                              style: titlestyle(),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: '*',
+                                    style: TextStyle(
+                                        fontFamily: "Quicksand",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.red))
+                              ],
+                            ),
+                          ),
                         ),
                         SizedBox(
                           height: 8,

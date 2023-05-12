@@ -11,6 +11,7 @@ import 'package:gen_crm/widgets/widget_button.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
 import '../../../../src/src_index.dart';
+import '../../../../widgets/image_default.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/widget_appbar.dart';
 import '../../../../widgets/widget_dialog.dart';
@@ -150,7 +151,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           AppValue.hSpaceLarge,
-                          Image.asset(ICONS.IC_WORK_PNG),
+                          ImageBaseDefault(icon: ICONS.IC_WORK_3X_PNG),
                           SizedBox(width: 10),
                           InkWell(
                               onTap: () {

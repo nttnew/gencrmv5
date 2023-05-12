@@ -424,7 +424,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
 
   TextStyle LabelStyle() => TextStyle(
       fontFamily: "Quicksand",
-      color: HexColor("#697077"),
+      color: COLORS.BLACK,
       fontWeight: FontWeight.w600,
       fontSize: 14);
 }

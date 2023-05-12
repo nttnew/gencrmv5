@@ -110,9 +110,9 @@ class _ChanceCardWidgetState extends State<ChanceCardWidget> {
     );
   }
 
-  TextStyle OrtherInforCustomerStyle() => TextStyle(color: HexColor("#0052B4"),fontFamily: "Roboto",fontWeight: FontWeight.w400,fontSize: 14);
+  TextStyle OrtherInforCustomerStyle() => TextStyle(color: HexColor("#0052B4"),fontFamily: "Quicksand",fontWeight: FontWeight.w400,fontSize: 14);
 
-  TextStyle LocationCustomerStyle() => TextStyle(color: Colors.black,fontFamily: "Roboto",fontWeight: FontWeight.w400,fontSize: 14);
+  TextStyle LocationCustomerStyle() => TextStyle(color: Colors.black,fontFamily: "Quicksand",fontWeight: FontWeight.w400,fontSize: 14);
 
   TextStyle NameCustomerStyle() => TextStyle(color: HexColor("#006CB1"),fontFamily: "Quicksand",fontWeight: FontWeight.w700,fontSize: 18);
 }

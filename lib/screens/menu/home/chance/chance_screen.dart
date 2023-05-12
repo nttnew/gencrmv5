@@ -44,7 +44,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
         page = page + 1;
       } else {}
     });
-    title = Get.arguments;
+    title = Get.arguments ?? '';
     super.initState();
   }
 
@@ -53,11 +53,11 @@ class _ChanceScreenState extends State<ChanceScreen> {
     return Scaffold(
       key: _drawerKey,
       drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: Column(
         children: [
           WidgetAppbar(
-            title: Get.arguments,
+            title: Get.arguments??'',
             textColor: Colors.black,
             left: Padding(
               padding: EdgeInsets.only(left: 20),
@@ -159,7 +159,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
           ),
           child: WidgetSearch(
             hintTextStyle: TextStyle(
-                fontFamily: "Roboto",
+                fontFamily: "Quicksand",
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
                 color: HexColor("#707070")),

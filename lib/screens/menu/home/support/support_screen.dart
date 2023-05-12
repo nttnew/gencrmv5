@@ -50,7 +50,7 @@ class _SupportScreenState extends State<SupportScreen> {
     return Scaffold(
       key: _drawerKey,
       drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff1AA928),
         onPressed: () => AppNavigator.navigateFormAdd(
@@ -61,7 +61,7 @@ class _SupportScreenState extends State<SupportScreen> {
         centerTitle: false,
         toolbarHeight: AppValue.heights * 0.1,
         backgroundColor: HexColor("#D0F1EB"),
-        title: Text(Get.arguments,
+        title: Text(Get.arguments ?? '',
             style: TextStyle(
                 color: Colors.black,
                 fontFamily: "Montserrat",
@@ -116,7 +116,7 @@ class _SupportScreenState extends State<SupportScreen> {
                 ),
                 child: WidgetSearch(
                   hintTextStyle: TextStyle(
-                      fontFamily: "Roboto",
+                      fontFamily: "Quicksand",
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       color: HexColor("#707070")),
@@ -165,14 +165,13 @@ class _SupportScreenState extends State<SupportScreen> {
   }
 
   Widget ItemSupport(SupportItemData data, int index, int length) {
-    return (Container(
+    return Container(
       child: Column(
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: AppValue.widths * 0.5,
+              Expanded(
                 child: WidgetText(
                   title: data.ten_ho_tro ?? '',
                   style: TextStyle(
@@ -182,7 +181,9 @@ class _SupportScreenState extends State<SupportScreen> {
                       fontSize: 18),
                 ),
               ),
-              Spacer(),
+              SizedBox(
+                width: 8,
+              ),
               Container(
                 decoration: BoxDecoration(
                     color: data.color != ""
@@ -194,97 +195,57 @@ class _SupportScreenState extends State<SupportScreen> {
               )
             ],
           ),
-          SizedBox(height: AppValue.heights * 0.01),
-          if (data.customer?.name?.isNotEmpty ?? false) ...[
-            Row(
+          itemTextIcon(
+              text: data.customer?.name ?? '',
+              icon: ICONS.IC_AVATAR_SVG),
+          itemTextIcon(
+              text: data.trang_thai ?? '',
+              styleText: AppStyle.DEFAULT_14.copyWith(
+                  color: data.color != ""
+                      ? HexColor(data.color!)
+                      : COLORS.PRIMARY_COLOR),
+              colorIcon: data.color != ""
+                  ? HexColor(data.color!)
+                  : COLORS.PRIMARY_COLOR,
+              icon: ICONS.IC_ICON3_SVG),
+          Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: Row(
               children: [
-                SvgPicture.asset(ICONS.IC_AVATAR_SVG),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                    child: WidgetText(
-                      title: data.customer!.name ?? '',
-                      style: TextStyle(
-                          color: HexColor("#006CB1"),
-                          fontFamily: "Quicksand",
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18),
-                    ),
+                itemTextIcon(
+                    paddingTop: 0,
+                    text: data.created_date ?? '',
+                    styleText: TextStyle(
+                        color: HexColor("#263238"),
+                        fontFamily: "Quicksand",
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14),
+                    icon: ICONS.IC_ICON4_SVG),
+                Spacer(),
+                SvgPicture.asset(ICONS.IC_QUESTION_SVG),
+                SizedBox(
+                  width: AppValue.widths * 0.01,
+                ),
+                WidgetText(
+                  title: data.total_note ?? '',
+                  style: TextStyle(
+                    color: HexColor("#0052B4"),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: AppValue.heights * 0.01),
-          ],
-          if (data.trang_thai != '') ...[
-            Row(
-              children: [
-                SvgPicture.asset(
-                  ICONS.IC_ICON3_SVG,
-                  color: data.color != ""
-                      ? HexColor(data.color!)
-                      : COLORS.PRIMARY_COLOR,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                  child: SizedBox(
-                      width: AppValue.widths * 0.5,
-                      child: WidgetText(
-                        title: data.trang_thai ?? '',
-                        style: AppStyle.DEFAULT_14.copyWith(
-                            color: data.color != ""
-                                ? HexColor(data.color!)
-                                : COLORS.PRIMARY_COLOR),
-                      )),
-                ),
-              ],
-            ),
-            SizedBox(height: AppValue.heights * 0.01),
-          ],
-          Row(
-            children: [
-              SvgPicture.asset(ICONS.IC_ICON4_SVG),
-              Padding(
-                padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                child: SizedBox(
-                    width: AppValue.widths * 0.5,
-                    child: WidgetText(
-                        title: data.created_date ?? "",
-                        style: TextStyle(
-                            color: HexColor("#263238"),
-                            fontFamily: "Roboto",
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14))),
-              ),
-              Spacer(),
-              SvgPicture.asset(ICONS.IC_QUESTION_SVG),
-              SizedBox(
-                width: AppValue.widths * 0.01,
-              ),
-              WidgetText(
-                title: data.total_note ?? '',
-                style: TextStyle(
-                  color: HexColor("#0052B4"),
-                ),
-              ),
-            ],
           ),
         ],
       ),
       margin: EdgeInsets.only(
-          left: 16, top: 16, right: 16, bottom: index == (length - 1) ? 75 : 0),
-      padding: EdgeInsets.only(
-          left: AppValue.widths * 0.05,
-          top: AppValue.heights * 0.02,
-          right: AppValue.widths * 0.05,
-          bottom: AppValue.widths * 0.05),
+        left: 25,
+        right: 25,
+        bottom: 20,
+      ),
+      padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10)),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.3),
@@ -294,7 +255,7 @@ class _SupportScreenState extends State<SupportScreen> {
           ),
         ],
       ),
-    ));
+    );
   }
 
   showBotomSheet(List<FilterData> data) {

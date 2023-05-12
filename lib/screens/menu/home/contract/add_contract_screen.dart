@@ -514,7 +514,7 @@ class _FormAddContractState extends State<FormAddContract> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
+                            fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
@@ -599,16 +599,16 @@ class _FormAddContractState extends State<FormAddContract> {
             text: TextSpan(
               text: label,
               style: TextStyle(
-                  fontFamily: "Roboto",
+                  fontFamily: "Quicksand",
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+                  color: COLORS.BLACK),
               children: <TextSpan>[
                 required == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
+                            fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
@@ -658,9 +658,9 @@ class _FormAddContractState extends State<FormAddContract> {
                 label,
                 style: TextStyle(
                     fontSize: 14,
-                    fontFamily: "Roboto",
+                    fontFamily: "Quicksand",
                     fontWeight: FontWeight.w500,
-                    color: HexColor("#838A91")),
+                    color: COLORS.BLACK),
               ),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
@@ -678,16 +678,16 @@ class _FormAddContractState extends State<FormAddContract> {
   }
 
   TextStyle hintTextStyle() => TextStyle(
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontSize: 14,
       fontWeight: FontWeight.w500,
-      color: HexColor("#838A91"));
+      color: COLORS.BLACK);
 
   TextStyle titlestyle() => TextStyle(
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontSize: 14,
       fontWeight: FontWeight.w500,
-      color: HexColor("#697077"));
+      color: COLORS.BLACK);
 
   void onClickSave() {
     final Map<String, dynamic> data = {};

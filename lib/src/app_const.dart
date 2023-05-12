@@ -181,42 +181,59 @@ Widget itemTextIcon({
   Color? colorText,
   Color? colorIcon,
   TextStyle? styleText,
-  required String status,
+  required String text,
   required icon,
   bool isSVG = true,
+  Widget? widgetRight,
+  Function? onTap,
+  double? paddingTop,
 }) {
-  return status == ''
+  return text == ''
       ? SizedBox()
-      : Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 20,
-                height: 20,
-                child: icon.runtimeType == Icon
-                    ? icon
-                    : isSVG
-                        ? SvgPicture.asset(
-                            icon,
-                            color: colorIcon != null ? colorIcon : null,
-                            fit: BoxFit.contain,
-                          )
-                        : Image.asset(
-                            icon,
-                            color: colorIcon != null ? colorIcon : null,
-                            fit: BoxFit.contain,
+      : GestureDetector(
+          onTap: () {
+            onTap != null ? onTap() : null;
+          },
+          child: Padding(
+            padding: EdgeInsets.only(top: paddingTop ?? 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 16,
+                      height: 16,
+                      child: icon.runtimeType == Icon
+                          ? icon
+                          : isSVG
+                              ? SvgPicture.asset(
+                                  icon,
+                                  color: colorIcon != null ? colorIcon : null,
+                                  fit: BoxFit.contain,
+                                )
+                              : Image.asset(
+                                  icon,
+                                  color: colorIcon != null ? colorIcon : null,
+                                  fit: BoxFit.contain,
+                                ),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    WidgetText(
+                      title: text,
+                      style: styleText ??
+                          AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                            color: colorText != null ? colorText : COLORS.BLACK,
+                            fontSize: 14,
                           ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              WidgetText(
-                  title: status,
-                  style: styleText ??
-                      AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
-                          color: colorText != null ? colorText : null)),
-            ],
+                    ),
+                  ],
+                ),
+                widgetRight != null ? widgetRight : SizedBox()
+              ],
+            ),
           ),
         );
 }

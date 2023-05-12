@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -25,6 +26,20 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: 20, left: 25, right: 25),
+      padding: EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 3,
+            blurRadius: 5,
+            offset: Offset(0, 0), // changes position of shadow
+          ),
+        ],
+      ),
       child: Column(
         children: [
           Row(
@@ -38,21 +53,18 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
                   child: SvgPicture.asset(
                     ICONS.IC_LOCATION_SVG,
                     fit: BoxFit.contain,
-                    color: COLORS.GREY,
                   ),
                 ),
                 SizedBox(
-                  width: 12,
+                  width: 8,
                 ),
               ],
-              SizedBox(
-                width: AppValue.widths * 0.5,
+              Expanded(
                 child: WidgetText(
-                  title: widget.data_list!.name_job ?? '',
+                  title: widget.data_list?.name_job ?? '',
                   style: NameCustomerStyle(),
                 ),
               ),
-              Spacer(),
               Container(
                 decoration: BoxDecoration(
                     color: widget.data_list!.status_color != null
@@ -64,93 +76,39 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
               )
             ],
           ),
-          SizedBox(height: AppValue.heights * 0.01),
-          if (widget.data_list!.user_work_name?.isNotEmpty ?? false) ...[
-            Row(
+          itemTextIcon(
+            text: widget.data_list?.user_work_name ?? '',
+            icon: ICONS.IC_AVATAR_SVG,
+          ),
+          itemTextIcon(
+            text: widget.data_list?.status_job ?? '',
+            icon: ICONS.IC_ICON3_SVG,
+            colorIcon: widget.data_list!.status_color != null
+                ? HexColor(widget.data_list!.status_color!)
+                : COLORS.PRIMARY_COLOR,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: Row(
               children: [
-                SvgPicture.asset(ICONS.IC_AVATAR_SVG),
-                Padding(
-                  padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                  child: WidgetText(
-                    title: widget.data_list!.user_work_name ?? '',
-                    style: NameCustomerStyle(),
+                itemTextIcon(
+                  paddingTop: 0,
+                  text: widget.data_list?.start_date ?? '',
+                  icon: ICONS.IC_ICON4_SVG,
+                ),
+                Spacer(),
+                SvgPicture.asset(ICONS.IC_QUESTION_SVG),
+                SizedBox(
+                  width: AppValue.widths * 0.01,
+                ),
+                WidgetText(
+                  title: widget.data_list!.total_comment.toString(),
+                  style: TextStyle(
+                    color: HexColor("#0052B4"),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: AppValue.heights * 0.01),
-          ],
-          if (widget.data_list!.status_job?.isNotEmpty ?? false) ...[
-            Row(
-              children: [
-                SvgPicture.asset(
-                  ICONS.IC_ICON3_SVG,
-                  color: widget.data_list!.status_color != null
-                      ? HexColor(widget.data_list!.status_color!)
-                      : COLORS.PRIMARY_COLOR,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                  child: SizedBox(
-                      width: AppValue.widths * 0.5,
-                      child: WidgetText(
-                        title: widget.data_list!.status_job ?? '',
-                        style: OrtherInforCustomerStyle(),
-                      )),
-                ),
-              ],
-            ),
-            SizedBox(height: AppValue.heights * 0.01),
-          ],
-          Row(
-            children: [
-              SvgPicture.asset(ICONS.IC_ICON4_SVG),
-              Padding(
-                padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                child: SizedBox(
-                    width: AppValue.widths * 0.5,
-                    child: WidgetText(
-                        title: widget.data_list!.start_date ?? '',
-                        style: OrtherInforCustomerStyle())),
-              ),
-              Spacer(),
-              SvgPicture.asset(ICONS.IC_QUESTION_SVG),
-              SizedBox(
-                width: AppValue.widths * 0.01,
-              ),
-              WidgetText(
-                title: widget.data_list!.total_comment.toString(),
-                style: TextStyle(
-                  color: HexColor("#0052B4"),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-      margin: EdgeInsets.only(
-          left: AppValue.widths * 0.05,
-          top: AppValue.heights * 0.01,
-          right: AppValue.widths * 0.05,
-          bottom: widget.index == (widget.length! - 1) ? 70 : 0),
-      padding: EdgeInsets.only(
-          left: AppValue.widths * 0.05,
-          top: AppValue.heights * 0.02,
-          right: AppValue.widths * 0.05,
-          bottom: AppValue.widths * 0.05),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 3,
-            blurRadius: 5,
-            offset: Offset(0, 0), // changes position of shadow
           ),
         ],
       ),
@@ -159,13 +117,13 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
 
   TextStyle OrtherInforCustomerStyle() => TextStyle(
       color: HexColor("#263238"),
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontWeight: FontWeight.w400,
       fontSize: 14);
 
   TextStyle LocationCustomerStyle() => TextStyle(
       color: Colors.black,
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontWeight: FontWeight.w400,
       fontSize: 14);
 

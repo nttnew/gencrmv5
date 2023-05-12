@@ -88,7 +88,7 @@ class _CustomerContractScreenState extends State<CustomerContractScreen> {
                         margin: EdgeInsets.only(top: 8, bottom: 4),
                         child: WidgetSearch(
                           hintTextStyle: TextStyle(
-                              fontFamily: "Roboto",
+                              fontFamily: "Quicksand",
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                               color: HexColor("#707070")),

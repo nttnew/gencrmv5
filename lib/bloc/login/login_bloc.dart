@@ -160,9 +160,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 status: FormzStatus.submissionSuccess,
                 message: response.msg ?? '',
                 user: response.data!);
-            // Future.delayed(Duration(milliseconds: 500), () async* {
-            //   yield SaveUserState(response.data!);
-            // });
           } else {
             yield state.copyWith(
                 status: FormzStatus.submissionFailure,

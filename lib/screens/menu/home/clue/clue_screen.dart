@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
-
 import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
@@ -51,11 +50,22 @@ class _ClueScreenState extends State<ClueScreen> {
     return Scaffold(
       key: _drawerKey,
       drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 20),
+        child: FloatingActionButton(
+          backgroundColor: Color(0xff1AA928),
+          onPressed: () {
+            // AppNavigator.navigateAddClue();
+            AppNavigator.navigateFormAdd('Thêm ${Get.arguments}', 2);
+          },
+          child: Icon(Icons.add, size: 40),
+        ),
+      ),
       body: Column(
         children: [
           WidgetAppbar(
-            title: Get.arguments,
+            title: Get.arguments ?? '',
             textColor: Colors.black,
             left: Padding(
               padding: EdgeInsets.only(left: 20),
@@ -123,17 +133,6 @@ class _ClueScreenState extends State<ClueScreen> {
           }),
         ],
       ),
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 20),
-        child: FloatingActionButton(
-          backgroundColor: Color(0xff1AA928),
-          onPressed: () {
-            // AppNavigator.navigateAddClue();
-            AppNavigator.navigateFormAdd('Thêm ${Get.arguments}', 2);
-          },
-          child: Icon(Icons.add, size: 40),
-        ),
-      ),
     );
   }
 
@@ -153,7 +152,7 @@ class _ClueScreenState extends State<ClueScreen> {
           if (state is UpdateGetListClueState) {
             return WidgetSearch(
               hintTextStyle: TextStyle(
-                  fontFamily: "Roboto",
+                  fontFamily: "Quicksand",
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                   color: HexColor("#707070")),
@@ -178,14 +177,14 @@ class _ClueScreenState extends State<ClueScreen> {
         }));
   }
 
-  _buildCustomer(ClueData cluedata) {
+  _buildCustomer(ClueData clueData) {
     return GestureDetector(
       onTap: () {
-        AppNavigator.navigateInfoClue(cluedata.id!, cluedata.name!);
+        AppNavigator.navigateInfoClue(clueData.id ?? '', clueData.name ?? '');
       },
       child: Container(
         margin: EdgeInsets.only(left: 25, right: 25, bottom: 20),
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+        padding: EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: COLORS.WHITE,
           borderRadius: BorderRadius.circular(20),
@@ -201,92 +200,48 @@ class _ClueScreenState extends State<ClueScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Image.asset(ICONS.IC_CHANCE_PNG),
-                SizedBox(
-                  width: 10,
-                ),
-                SizedBox(
-                    width: AppValue.widths * 0.6,
-                    child: Text(
-                      (cluedata.name == "" || cluedata.name == null)
-                          ? 'Chưa có'
-                          : cluedata.name!,
-                      style: AppStyle.DEFAULT_18_BOLD
-                          .copyWith(color: COLORS.TEXT_COLOR),
-                    )),
-              ],
+            itemTextIcon(
+              paddingTop: 0,
+              text: clueData.name ?? 'Chưa có',
+              icon: ICONS.IC_CHANCE_3X_PNG,
+              isSVG: false,
+              styleText:
+                  AppStyle.DEFAULT_18_BOLD.copyWith(color: COLORS.TEXT_COLOR),
             ),
-            SizedBox(
-              height: 8,
+            itemTextIcon(
+              text: clueData.customer?.name ?? 'Chưa có',
+              icon: ICONS.IC_USER2_SVG,
+              colorIcon: COLORS.GREY,
             ),
-            Row(
-              children: [
-                SvgPicture.asset(ICONS.IC_USER2_SVG),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: Text(
-                    (cluedata.customer!.name == "" ||
-                            cluedata.customer!.name == null)
-                        ? 'Chưa có'
-                        : cluedata.customer!.name!,
-                    style: AppStyle.DEFAULT_LABEL_PRODUCT,
+            itemTextIcon(
+              text: clueData.email?.val ?? 'Chưa có',
+              icon: ICONS.IC_MAIL_SVG,
+              colorIcon: COLORS.GREY,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Row(
+                children: [
+                  itemTextIcon(
+                    paddingTop: 0,
+                    text: clueData.phone?.val ?? 'Chưa có',
+                    icon: ICONS.IC_CALL_SVG,
+                    styleText: AppStyle.DEFAULT_LABEL_PRODUCT
+                        .copyWith(color: COLORS.TEXT_COLOR),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Row(
-              children: [
-                SvgPicture.asset(
-                  ICONS.IC_MAIL_SVG,
-                  color: Colors.grey,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                WidgetText(
-                  title:
-                      (cluedata.email!.val == null || cluedata.email!.val == "")
-                          ? "Chưa có"
-                          : cluedata.email!.val!,
-                  style: AppStyle.DEFAULT_LABEL_PRODUCT
-                      .copyWith(color: COLORS.GREY),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Row(
-              children: [
-                SvgPicture.asset(ICONS.IC_CALL_SVG),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                    (cluedata.phone!.val == null || cluedata.phone!.val == "")
-                        ? "Chưa có"
-                        : cluedata.phone!.val!,
-                    style: AppStyle.DEFAULT_LABEL_PRODUCT
-                        .copyWith(color: COLORS.TEXT_COLOR)),
-                Spacer(),
-                SvgPicture.asset(ICONS.IC_QUESTION_SVG),
-                SizedBox(
-                  width: AppValue.widths * 0.01,
-                ),
-                WidgetText(
-                  title: cluedata.total_note ?? "Chưa có",
-                  style: TextStyle(
-                    color: HexColor("#0052B4"),
+                  Spacer(),
+                  SvgPicture.asset(ICONS.IC_QUESTION_SVG),
+                  SizedBox(
+                    width: AppValue.widths * 0.01,
                   ),
-                ),
-              ],
+                  WidgetText(
+                    title: clueData.total_note ?? 'Chưa có',
+                    style: TextStyle(
+                      color: HexColor("#0052B4"),
+                    ),
+                  ),
+                ],
+              ),
             ),
             AppValue.hSpaceTiny,
           ],

@@ -43,17 +43,7 @@ class _MainDrawerState extends State<MainDrawer> {
       _elements.add({
         'id': listM[i]['id'],
         'title': listM[i]['name'],
-        'image': listM[i]['id'] == 'opportunity'
-            ? ICONS.IC_CHANCE_PNG
-            : listM[i]['id'] == 'job'
-                ? ICONS.IC_WORK2_PNG
-                : listM[i]['id'] == 'contract'
-                    ? ICONS.IC_CONTRACT_PNG
-                    : listM[i]['id'] == 'support'
-                        ? ICONS.IC_SUPPORT_PNG
-                        : listM[i]['id'] == 'customer'
-                            ? ICONS.IC_CUSTOMER_PNG
-                            : ICONS.IC_CLUE_PNG,
+        'image': ModuleMy.getIcon(listM[i]['id']),
         'group': '1',
         'isAdmin': false,
       });
@@ -64,7 +54,7 @@ class _MainDrawerState extends State<MainDrawer> {
         {
           'id': 'report',
           'title': 'Báo cáo',
-          'image': ICONS.IC_WORK2_PNG,
+          'image': ICONS.IC_REPORT_PNG,
           'group': '1',
           'isAdmin': false
         },
@@ -228,9 +218,9 @@ class _MainDrawerState extends State<MainDrawer> {
           WidgetButton(
             onTap: () {
               ShowDialogCustom.showDialogTwoButton(onTap2: () {
-               AuthenticationBloc.of(context)
+                AuthenticationBloc.of(context)
                     .add(AuthenticationLogoutRequested());
-               LoginBloc.of(context).logout();
+                LoginBloc.of(context).logout();
               });
             },
             height: 40,

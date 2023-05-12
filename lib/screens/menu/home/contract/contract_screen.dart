@@ -5,7 +5,6 @@ import 'package:gen_crm/bloc/contract/contract_bloc.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/contract.dart';
@@ -48,7 +47,7 @@ class _ContractScreenState extends State<ContractScreen> {
         page = page + 1;
       } else {}
     });
-    title = Get.arguments;
+    title = Get.arguments ?? '';
     super.initState();
   }
 
@@ -59,11 +58,11 @@ class _ContractScreenState extends State<ContractScreen> {
     return Scaffold(
       key: _drawerKey,
       drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: Column(
         children: [
           WidgetAppbar(
-            title: Get.arguments,
+            title: Get.arguments ?? '',
             textColor: Colors.black,
             left: Padding(
               padding: EdgeInsets.only(left: 20),
@@ -91,7 +90,6 @@ class _ContractScreenState extends State<ContractScreen> {
           ),
           AppValue.vSpaceSmall,
           _buildSearch(),
-          AppValue.vSpaceSmall,
           BlocBuilder<ContractBloc, ContractState>(builder: (context, state) {
             if (state is UpdateGetContractState) {
               total = state.total;
@@ -105,9 +103,12 @@ class _ContractScreenState extends State<ContractScreen> {
                 }),
                 child: SingleChildScrollView(
                   controller: _scrollController,
-                  child: Column(
-                    children: List.generate(state.listContract.length,
-                        (index) => _buildCustomer(state.listContract[index])),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Column(
+                      children: List.generate(state.listContract.length,
+                          (index) => _buildCustomer(state.listContract[index])),
+                    ),
                   ),
                 ),
               ));
@@ -145,7 +146,7 @@ class _ContractScreenState extends State<ContractScreen> {
           child: WidgetSearch(
             inputController: _editingController,
             hintTextStyle: TextStyle(
-                fontFamily: "Roboto",
+                fontFamily: "Quicksand",
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
                 color: HexColor("#707070")),
@@ -173,8 +174,8 @@ class _ContractScreenState extends State<ContractScreen> {
         AppNavigator.navigateInfoContract(data.id!, data.name!);
       },
       child: Container(
-        margin: EdgeInsets.only(left: 16, right: 16, bottom: 20),
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+        margin: EdgeInsets.only(left: 25, right: 25, bottom: 20),
+        padding: EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: COLORS.WHITE,
           borderRadius: BorderRadius.circular(20),
@@ -192,17 +193,13 @@ class _ContractScreenState extends State<ContractScreen> {
           children: [
             Row(
               children: [
-                Image.asset(ICONS.IC_CONTRACT_PNG),
-                SizedBox(
-                  width: 10,
-                ),
-                SizedBox(
-                    width: AppValue.widths * 0.5,
-                    child: WidgetText(
-                      title: data.name ?? '',
-                      style: AppStyle.DEFAULT_TITLE_PRODUCT
-                          .copyWith(color: COLORS.TEXT_COLOR),
-                    )),
+                itemTextIcon(
+                    paddingTop: 0,
+                    text: data.name ?? 'Chưa có',
+                    icon: ICONS.IC_CONTRACT_3X_PNG,
+                    styleText: AppStyle.DEFAULT_TITLE_PRODUCT
+                        .copyWith(color: COLORS.TEXT_COLOR),
+                    isSVG: false),
                 Spacer(),
                 Container(
                   decoration: BoxDecoration(
@@ -215,87 +212,52 @@ class _ContractScreenState extends State<ContractScreen> {
                 )
               ],
             ),
-            SizedBox(
-              height: 8,
+            itemTextIcon(
+              text: data.customer?.name?.trim() ?? 'Chưa có',
+              icon: ICONS.IC_USER2_SVG,
+              colorIcon: Color(0xffE75D18),
             ),
-            if (data.customer?.name?.trim().isNotEmpty ?? false) ...[
-              Row(
+            itemTextIcon(
+              text: data.status ?? '',
+              icon: ICONS.IC_DANG_XU_LY_SVG,
+              colorText: data.status_color != ''
+                  ? HexColor(data.status_color!)
+                  : COLORS.RED,
+              styleText: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                color: data.status_color != ""
+                    ? HexColor(data.status_color!)
+                    : COLORS.RED,
+              ),
+              colorIcon: data.status_color != ''
+                  ? HexColor(data.status_color!)
+                  : COLORS.RED,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Row(
                 children: [
-                  SvgPicture.asset(
-                    ICONS.IC_USER2_SVG,
-                    color: Color(0xffE75D18),
+                  itemTextIcon(
+                    colorIcon: COLORS.GREY,
+                    paddingTop: 0,
+                    text: 'Tổng tiền: ' + '${data.price.toString()}' + 'đ',
+                    icon: ICONS.IC_MAIL_SVG,
+                    styleText: AppStyle.DEFAULT_LABEL_PRODUCT
+                        .copyWith(color: COLORS.GREY),
                   ),
+                  Spacer(),
+                  SvgPicture.asset(ICONS.IC_QUESTION_SVG),
                   SizedBox(
-                    width: 10,
+                    width: 4,
                   ),
-                  Expanded(
-                    child: WidgetText(
-                      title: data.customer!.name ?? '',
-                      style: AppStyle.DEFAULT_LABEL_PRODUCT,
+                  WidgetText(
+                    title: data.total_note.toString(),
+                    style: TextStyle(
+                      color: HexColor("#0052B4"),
                     ),
                   ),
                 ],
               ),
-              SizedBox(
-                height: 8,
-              ),
-            ],
-            if (data.status?.trim().isNotEmpty ?? false) ...[
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    ICONS.IC_DANG_XU_LY_SVG,
-                    color: data.status_color != ""
-                        ? HexColor(data.status_color!)
-                        : COLORS.RED,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  WidgetText(
-                      title: data.status ?? '',
-                      style: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
-                        color: data.status_color != ""
-                            ? HexColor(data.status_color!)
-                            : COLORS.RED,
-                      )),
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-            ],
-            Row(
-              children: [
-                SvgPicture.asset(
-                  ICONS.IC_MAIL_SVG,
-                  color: Colors.grey,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                WidgetText(
-                  title: 'Tổng tiền: ' + '${data.price.toString()}' + 'đ',
-                  style: AppStyle.DEFAULT_LABEL_PRODUCT
-                      .copyWith(color: COLORS.GREY),
-                ),
-                Spacer(),
-                SvgPicture.asset(ICONS.IC_QUESTION_SVG),
-                SizedBox(
-                  width: AppValue.widths * 0.01,
-                ),
-                WidgetText(
-                  title: data.total_note.toString(),
-                  style: TextStyle(
-                    color: HexColor("#0052B4"),
-                  ),
-                ),
-              ],
             ),
-            SizedBox(
-              height: 8,
-            ),
-            AppValue.hSpaceTiny,
           ],
         ),
       ),

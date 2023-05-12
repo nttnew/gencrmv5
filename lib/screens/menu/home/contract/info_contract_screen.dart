@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import '../../../../bloc/job_contract/job_contract_bloc.dart';
 import '../../../../bloc/support_contract_bloc/support_contract_bloc.dart';
 import '../../../../src/src_index.dart';
+import '../../../../widgets/image_default.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/widget_appbar.dart';
 import '../../../../widgets/widget_dialog.dart';
@@ -168,7 +169,7 @@ class _InfoContractPageState extends State<InfoContractPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               AppValue.hSpaceLarge,
-                              Image.asset(ICONS.IC_SUPPORT_PNG),
+                              ImageBaseDefault(icon: ICONS.IC_SUPPORT_3X_PNG),
                               SizedBox(width: 10),
                               InkWell(
                                   onTap: () {
@@ -188,7 +189,7 @@ class _InfoContractPageState extends State<InfoContractPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               AppValue.hSpaceLarge,
-                              Image.asset(ICONS.IC_WORK_PNG),
+                              ImageBaseDefault(icon: ICONS.IC_WORK_3X_PNG),
                               SizedBox(width: 10),
                               InkWell(
                                   onTap: () {

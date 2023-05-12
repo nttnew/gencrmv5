@@ -135,13 +135,13 @@ class _ClueCardWidgetState extends State<ClueCardWidget> {
 
   TextStyle OrtherInforCustomerStyle() => TextStyle(
       color: HexColor("#0052B4"),
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontWeight: FontWeight.w400,
       fontSize: 14);
 
   TextStyle LocationCustomerStyle() => TextStyle(
       color: Colors.black,
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontWeight: FontWeight.w400,
       fontSize: 14);
 

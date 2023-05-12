@@ -533,7 +533,7 @@ class _EditContractState extends State<EditContract> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
+                            fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
@@ -624,16 +624,16 @@ class _EditContractState extends State<EditContract> {
             text: TextSpan(
               text: label,
               style: TextStyle(
-                  fontFamily: "Roboto",
+                  fontFamily: "Quicksand",
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+                  color:COLORS.BLACK),
               children: <TextSpan>[
                 required == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
+                            fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
@@ -699,16 +699,16 @@ class _EditContractState extends State<EditContract> {
   }
 
   TextStyle hintTextStyle() => TextStyle(
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontSize: 14,
       fontWeight: FontWeight.w500,
-      color: HexColor("#838A91"));
+      color: COLORS.BLACK);
 
   TextStyle titlestyle() => TextStyle(
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontSize: 14,
       fontWeight: FontWeight.w500,
-      color: HexColor("#697077"));
+      color: COLORS.BLACK);
 
   void onClickSave() {
     final Map<String, dynamic> data = {};

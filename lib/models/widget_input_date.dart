@@ -49,16 +49,16 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: TextStyle(
-                  fontFamily: "Roboto",
+                  fontFamily: "Quicksand",
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+                  color: COLORS.BLACK),
               children: <TextSpan>[
                 widget.data.field_require == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
+                            fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))

@@ -144,7 +144,7 @@ class _InputDropdownState extends State<InputDropdown> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
+                            fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
@@ -236,10 +236,11 @@ class _InputDropdownState extends State<InputDropdown> {
                               maxLine: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: "Roboto",
-                                  fontWeight: FontWeight.w500,
-                                  color: HexColor("#838A91")),
+                                fontSize: 14,
+                                fontFamily: "Quicksand",
+                                fontWeight: FontWeight.w500,
+                                color: COLORS.BLACK,
+                              ),
                             ),
                           ),
                           Container(
@@ -260,8 +261,8 @@ class _InputDropdownState extends State<InputDropdown> {
   }
 
   TextStyle titlestyle() => TextStyle(
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontSize: 14,
       fontWeight: FontWeight.w500,
-      color: HexColor("#697077"));
+      color: COLORS.BLACK);
 }

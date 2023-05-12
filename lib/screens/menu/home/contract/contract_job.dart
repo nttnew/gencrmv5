@@ -136,7 +136,7 @@ class _ContractJobState extends State<ContractJob>
             children: [
               Row(
                 children: [
-                  Image.asset(ICONS.IC_DATE_PNG),
+                  Image.asset(ICONS.IC_DATE_PNG,height: 20,width: 20,),
                   AppValue.hSpaceTiny,
                   WidgetText(
                       title: data.start_date ?? "",

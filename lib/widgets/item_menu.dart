@@ -7,8 +7,11 @@ class ItemMenu extends StatelessWidget {
   const ItemMenu({
     Key? key,
     required this.data,
+    this.isLast = false,
   }) : super(key: key);
   final ButtonMenuModel data;
+  final bool isLast;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,15 +27,15 @@ class ItemMenu extends StatelessWidget {
             child: Container(
               child: Center(
                 child: Container(
-                  width: 80,
-                  height: 80,
+                  width: isLast ? 90 : 80,
+                  height: isLast ? 90 : 80,
                   decoration: BoxDecoration(
                       shape: BoxShape.circle, color: Colors.white),
                   child: WidgetContainerImage(
                     image: data.image,
                     fit: BoxFit.contain,
-                    width: 40,
-                    height: 40,
+                    width: isLast ? 45 : 40,
+                    height: isLast ? 45 : 40,
                   ),
                 ),
               ),
@@ -45,8 +48,14 @@ class ItemMenu extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
                     data.title,
-                    style: AppStyle.DEFAULT_12.copyWith(
-                        fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+                    style: isLast
+                        ? AppStyle.DEFAULT_12.copyWith(
+                            fontSize: 24,
+                            color: Colors.white,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w500)
+                        : AppStyle.DEFAULT_12.copyWith(
+                            fontFamily: 'Roboto', fontWeight: FontWeight.w500),
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,

@@ -216,7 +216,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                                           ),
                                         itemIcon(
                                           "Thêm đầu mối",
-                                          ICONS.IC_ADDCLUE_SVG,
+                                          ICONS.IC_ADD_CLUE_SVG,
                                           () {
                                             Get.back();
                                             AppNavigator.navigateFormAdd(

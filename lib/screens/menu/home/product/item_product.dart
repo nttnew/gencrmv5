@@ -16,9 +16,9 @@ class _ItemProductModuleState extends State<ItemProductModule> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-        left: AppValue.widths * 0.05,
-        right: AppValue.widths * 0.05,
-        bottom: 16,
+        left:25,
+        right:25,
+        bottom: 20,
       ),
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -68,12 +68,12 @@ class _ItemProductModuleState extends State<ItemProductModule> {
                   text: TextSpan(children: [
                     TextSpan(
                       text: widget.productModule.tenSanPham,
-                      style: AppStyle.DEFAULT_20_BOLD,
+                      style: AppStyle.DEFAULT_18_BOLD,
                     ),
                     TextSpan(
                       text: ' (${widget.productModule.maSanPham})',
                       style:
-                          AppStyle.DEFAULT_18_BOLD.copyWith(color: Colors.grey),
+                          AppStyle.DEFAULT_16_BOLD.copyWith(color: Colors.grey),
                     ),
                   ]),
                 ),
@@ -88,12 +88,12 @@ class _ItemProductModuleState extends State<ItemProductModule> {
                     TextSpan(
                       text:
                           '${widget.productModule.phienBan ?? 0} phiên bản | có thể ',
-                      style: AppStyle.DEFAULT_18_BOLD,
+                      style: AppStyle.DEFAULT_14,
                     ),
                     TextSpan(
                       text: widget.productModule.coTheBan ?? '0',
-                      style:
-                          AppStyle.DEFAULT_18_BOLD.copyWith(color: COLORS.TEXT_COLOR),
+                      style: AppStyle.DEFAULT_14
+                          .copyWith(color: COLORS.TEXT_COLOR),
                     ),
                   ]),
                 ),

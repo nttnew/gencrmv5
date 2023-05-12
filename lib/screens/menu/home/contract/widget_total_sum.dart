@@ -59,13 +59,13 @@ class _WidgetTotalSumState extends State<WidgetTotalSum> {
 }
 
 TextStyle hintTextStyle() => TextStyle(
-    fontFamily: "Roboto",
+    fontFamily: "Quicksand",
     fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: HexColor("#838A91"));
+    color:COLORS.BLACK);
 
 TextStyle titlestyle() => TextStyle(
-    fontFamily: "Roboto",
+    fontFamily: "Quicksand",
     fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: HexColor("#697077"));
+    color: COLORS.BLACK);

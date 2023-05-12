@@ -12,7 +12,8 @@ Future<Position?> determinePosition(BuildContext context) async {
 
   serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
-    return Future.error('Location services are disabled.');
+    showDialogPermissionLocation(context, isDevice: true);
+    return null;
   }
 
   permission = await Geolocator.checkPermission();
@@ -32,7 +33,9 @@ Future<Position?> determinePosition(BuildContext context) async {
   );
 }
 
-void showDialogPermissionLocation(BuildContext context) => showDialog(
+void showDialogPermissionLocation(BuildContext context,
+        {bool isDevice = false}) =>
+    showDialog(
       context: context,
       builder: (BuildContext context) {
         return WidgetDialog(
@@ -42,7 +45,11 @@ void showDialogPermissionLocation(BuildContext context) => showDialog(
           textButton2: 'Đi đến cài đặt',
           textButton1: 'Ok',
           onTap2: () async {
-            await Geolocator.openAppSettings();
+            if (isDevice) {
+              await Geolocator.openLocationSettings();
+            } else {
+              await Geolocator.openAppSettings();
+            }
             Get.back();
           },
           onTap1: () {

@@ -3,6 +3,7 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import '../../../../src/color.dart';
 import '../contract/customer_contract.dart';
 
 class FormDropDown extends StatefulWidget {
@@ -64,16 +65,16 @@ class _FormDropDownState extends State<FormDropDown> {
             text: TextSpan(
               text: widget.label,
               style: TextStyle(
-                  fontFamily: "Roboto",
+                  fontFamily: "Quicksand",
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+                  color: COLORS.BLACK),
               children: <TextSpan>[
                 widget.require == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
+                            fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
@@ -122,9 +123,9 @@ class _FormDropDownState extends State<FormDropDown> {
                           maxLine: 1,
                           style: TextStyle(
                               fontSize: 14,
-                              fontFamily: "Roboto",
+                              fontFamily: "Quicksand",
                               fontWeight: FontWeight.w500,
-                              color: HexColor("#838A91")),
+                              color: COLORS.BLACK),
                         ),
                       ),
                       Container(

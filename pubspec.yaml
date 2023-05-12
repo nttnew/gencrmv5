@@ -69,6 +69,7 @@ dependencies:
   geolocator: 9.0.2
   geocoding: 2.1.0
   wakelock: ^0.6.2
+  flutter_expandable_fab: 1.7.1
 
 
 dependency_overrides:
@@ -81,27 +82,27 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   fonts:
-    - family: NunitoSans
-      fonts:
-        - asset: assets/fonts/NunitoSans/NunitoSans-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/NunitoSans/NunitoSans-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/NunitoSans/NunitoSans-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/NunitoSans/NunitoSans-Italic.ttf
-          style: italic
-
-    - family: Roboto
-      fonts:
-        - asset: assets/fonts/Roboto/Roboto-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/Roboto/Roboto-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Roboto/Roboto-Medium.ttf
-          weight: 600
-        - asset: assets/fonts/Roboto/Roboto-Italic.ttf
-          style: italic
+#    - family: NunitoSans
+#      fonts:
+#        - asset: assets/fonts/NunitoSans/NunitoSans-Regular.ttf
+#          weight: 400
+#        - asset: assets/fonts/NunitoSans/NunitoSans-Bold.ttf
+#          weight: 700
+#        - asset: assets/fonts/NunitoSans/NunitoSans-SemiBold.ttf
+#          weight: 600
+#        - asset: assets/fonts/NunitoSans/NunitoSans-Italic.ttf
+#          style: italic
+#
+#    - family: Roboto
+#      fonts:
+#        - asset: assets/fonts/Roboto/Roboto-Regular.ttf
+#          weight: 400
+#        - asset: assets/fonts/Roboto/Roboto-Bold.ttf
+#          weight: 700
+#        - asset: assets/fonts/Roboto/Roboto-Medium.ttf
+#          weight: 600
+#        - asset: assets/fonts/Roboto/Roboto-Italic.ttf
+#          style: italic
 
     - family: Quicksand
       fonts:

@@ -34,7 +34,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   void initState() {
-    title = Get.arguments;
+    title = Get.arguments??'';
     _scrollController = ScrollController();
     _bloc = ProductModuleBloc.of(context);
     _controllerText = TextEditingController();
@@ -129,7 +129,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 ))
           ],
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
           backgroundColor: Color(0xff1AA928),
           onPressed: () =>

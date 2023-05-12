@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'package:gen_crm/bloc/work/work_bloc.dart';
@@ -30,6 +31,15 @@ class _WorkScreenState extends State<WorkScreen> {
   String search = "";
   String filter_id = "";
   String title = '';
+  List<String> listAdd = [
+    'Thêm check in',
+    'Thêm ${(Get.arguments ?? '').toLowerCase()}'
+  ];
+  final _key = GlobalKey<ExpandableFabState>();
+
+  _handleRouter(String value) {
+    AppNavigator.navigateFormAdd(value, 5, isCheckIn: listAdd.first == value);
+  }
 
   @override
   void initState() {
@@ -44,7 +54,7 @@ class _WorkScreenState extends State<WorkScreen> {
         page = page + 1;
       } else {}
     });
-    title = Get.arguments;
+    title = Get.arguments ?? '';
     super.initState();
   }
 
@@ -53,17 +63,86 @@ class _WorkScreenState extends State<WorkScreen> {
     return Scaffold(
       key: _drawerKey,
       drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xff1AA928),
-        onPressed: () => showBotomSheet2(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: ExpandableFab(
+        key: _key,
+        distance: 65,
+        type: ExpandableFabType.up,
         child: Icon(Icons.add, size: 40),
+        closeButtonStyle: const ExpandableFabCloseButtonStyle(
+          child: Icon(Icons.close),
+          foregroundColor: Colors.white,
+          backgroundColor: Color(0xff1AA928),
+        ),
+        backgroundColor: Color(0xff1AA928),
+        overlayStyle: ExpandableFabOverlayStyle(
+          blur: 5,
+        ),
+        children: listAdd
+            .map(
+              (e) => InkWell(
+                onTap: () async {
+                  final state = _key.currentState;
+                  if (state != null) {
+                    if (state.isOpen) {
+                      await _handleRouter(e);
+                      state.toggle();
+                    }
+                  }
+                },
+                child: Row(
+                  children: [
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: COLORS.BLACK.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                          )
+                        ],
+                      ),
+                      child: WidgetText(
+                        title: e,
+                        style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(
+                        left: 8,
+                        right: 8,
+                      ),
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: Image.asset(
+                          ICONS.IC_WORK_3X_PNG,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+            .toList(),
       ),
       appBar: AppBar(
         toolbarHeight: AppValue.heights * 0.1,
         backgroundColor: HexColor("#D0F1EB"),
         centerTitle: false,
-        title: Text(Get.arguments,
+        title: Text(Get.arguments ?? '',
             style: TextStyle(
                 color: Colors.black,
                 fontFamily: "Montserrat",
@@ -119,7 +198,7 @@ class _WorkScreenState extends State<WorkScreen> {
                   ),
                   child: WidgetSearch(
                     hintTextStyle: TextStyle(
-                        fontFamily: "Roboto",
+                        fontFamily: "Quicksand",
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                         color: HexColor("#707070")),
@@ -143,32 +222,30 @@ class _WorkScreenState extends State<WorkScreen> {
                 BlocBuilder<WorkBloc, WorkState>(builder: (context, state) {
               if (state is SuccessGetListWorkState) {
                 pageTotal = state.pageCount;
-                return Container(
-                  // margin: EdgeInsets.only(bottom: 70),
-                  child: RefreshIndicator(
-                    onRefresh: () =>
-                        Future.delayed(Duration(milliseconds: 300), () {
-                      WorkBloc.of(context)
-                          .add(InitGetListWorkEvent("1", "", ""));
-                    }),
-                    child: ListView.separated(
-                      controller: _scrollController,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) => InkWell(
-                          onTap: () => AppNavigator.navigateDetailWork(
-                                int.parse(state.data_list[index].id!),
-                                state.data_list[index].name_job ?? '',
-                              ),
-                          child: WorkCardWidget(
-                            data_list: state.data_list[index],
-                            index: index,
-                            length: state.data_list.length,
-                          )),
-                      itemCount: state.data_list.length,
-                      separatorBuilder: (BuildContext context, int index) =>
-                          SizedBox(
-                        height: AppValue.heights * 0.01,
-                      ),
+                return RefreshIndicator(
+                  onRefresh: () =>
+                      Future.delayed(Duration(milliseconds: 300), () {
+                    WorkBloc.of(context)
+                        .add(InitGetListWorkEvent("1", "", ""));
+                  }),
+                  child: ListView.separated(
+                    padding: EdgeInsets.only(top: 8),
+                    controller: _scrollController,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => InkWell(
+                        onTap: () => AppNavigator.navigateDetailWork(
+                              int.parse(state.data_list[index].id!),
+                              state.data_list[index].name_job ?? '',
+                            ),
+                        child: WorkCardWidget(
+                          data_list: state.data_list[index],
+                          index: index,
+                          length: state.data_list.length,
+                        )),
+                    itemCount: state.data_list.length,
+                    separatorBuilder: (BuildContext context, int index) =>
+                        SizedBox(
+                      height: AppValue.heights * 0.01,
                     ),
                   ),
                 );
@@ -249,83 +326,6 @@ class _WorkScreenState extends State<WorkScreen> {
                                     ),
                                   ),
                                 )),
-                      )
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        });
-  }
-
-  showBotomSheet2() {
-    showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-        ),
-        elevation: 2,
-        context: context,
-        isScrollControlled: true,
-        constraints: BoxConstraints(maxHeight: Get.height * 0.7),
-        builder: (context) {
-          return StatefulBuilder(
-            builder: (context, setState) {
-              return SafeArea(
-                child: Container(
-                  padding: EdgeInsets.all(16),
-                  margin: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.height / 4),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: WidgetText(
-                          title: 'Chọn kiểu $title',
-                          textAlign: TextAlign.center,
-                          style: AppStyle.DEFAULT_20_BOLD,
-                        ),
-                      ),
-                      AppValue.vSpaceTiny,
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Get.back();
-                              AppNavigator.navigateFormAdd(
-                                  'Thêm ${title.toLowerCase()}', 5);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              margin: EdgeInsets.only(bottom: 10),
-                              child: WidgetText(
-                                title: "Thêm ${title.toLowerCase()}",
-                                style: AppStyle.DEFAULT_18,
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Get.back();
-                              AppNavigator.navigateFormAdd(
-                                  'Thêm ${title.toLowerCase()}', 5,
-                                  isCheckIn: true);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              child: WidgetText(
-                                title: "Thêm check in",
-                                style: AppStyle.DEFAULT_18,
-                              ),
-                            ),
-                          )
-                        ],
                       )
                     ],
                   ),

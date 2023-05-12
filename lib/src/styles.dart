@@ -8,7 +8,7 @@ class AppStyle {
   static const DEFAULT_TITLE_APPBAR = TextStyle(
       fontFamily: 'Montserrat',
       fontSize: AppValue.FONT_SIZE_18,
-      color: Colors.black,
+      color: COLORS.BLACK,
       fontWeight: FontWeight.w700,
       height: 1.4);
   static const DEFAULT_TITLE_PRODUCT = TextStyle(
@@ -18,15 +18,15 @@ class AppStyle {
       fontWeight: FontWeight.w700,
       height: 1.4);
   static const DEFAULT_LABEL_PRODUCT = TextStyle(
-      fontFamily: 'Roboto',
+      fontFamily: 'Quicksand',
       fontSize: AppValue.FONT_SIZE_14,
-      color: Colors.black,
+      color: COLORS.BLACK,
       fontWeight: FontWeight.w400,
       height: 1.4);
   static const DEFAULT_LABEL_TARBAR = TextStyle(
       fontFamily: 'Quicksand',
       fontSize: AppValue.FONT_SIZE_16,
-      color: Colors.black,
+      color: COLORS.BLACK,
       fontWeight: FontWeight.w700,
       height: 1.4);
 

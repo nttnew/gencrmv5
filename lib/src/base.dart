@@ -234,6 +234,7 @@ class ModuleMy {
   static const String CONG_VIEC = 'job';
   static const String CSKH = 'support';
   static const String SAN_PHAM = 'product';
+  static const String SAN_PHAM_KH = 'sanphamkh';
 
   static String getIcon(String id) {
     if (ModuleMy.CUSTOMER == id) {
@@ -250,6 +251,8 @@ class ModuleMy {
       return ICONS.IC_SUPPORT_3X_PNG;
     } else if (ModuleMy.SAN_PHAM == id) {
       return ICONS.IC_CONTRACT_3X_PNG;
+    } else if (ModuleMy.SAN_PHAM_KH == id) {
+      return ICONS.IC_CHANCE_3X_PNG;
     }
     return ICONS.IC_WORK_3X_PNG;
   }
@@ -269,6 +272,8 @@ class ModuleMy {
       return Color(0xff8AC53E);
     } else if (ModuleMy.SAN_PHAM == id) {
       return Color(0xff22b290);
+    } else if (ModuleMy.SAN_PHAM_KH == id) {
+      return Color(0xff9c4bbb);
     }
     return Color(0xffFF993A);
   }
@@ -283,6 +288,7 @@ class ModuleText {
   static const String CSKH = 'them_ho_tro';
   static const String THEM_MUA_XE = 'them_mua_xe';
   static const String THEM_BAN_XE = 'them_ban_xe';
+  static const String THEM_SAN_PHAM_KH = 'them_sanphamkh';
 
   static String getIconMenu(String id) {
     if (ModuleText.CUSTOMER == id) {
@@ -297,6 +303,8 @@ class ModuleText {
       return ICONS.IC_WORK_3X_PNG;
     } else if (ModuleText.CSKH == id) {
       return ICONS.IC_SUPPORT_3X_PNG;
+    } else if (ModuleText.THEM_SAN_PHAM_KH == id) {
+      return ICONS.IC_CHANCE_3X_PNG;
     }
     return ICONS.IC_WORK_3X_PNG;
   }

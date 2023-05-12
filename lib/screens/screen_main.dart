@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/get_infor_acc/get_infor_acc_bloc.dart';
@@ -13,6 +14,8 @@ import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.da
 import 'package:gen_crm/widgets/widget_appbar.dart';
 import 'package:gen_crm/models/index.dart';
 import 'package:gen_crm/src/src_index.dart';
+import 'package:gen_crm/widgets/widget_text.dart';
+import 'package:get/get.dart';
 import 'package:is_lock_screen/is_lock_screen.dart';
 import 'package:plugin_pitel/component/pitel_call_state.dart';
 import 'package:plugin_pitel/component/sip_pitel_helper_listener.dart';
@@ -26,8 +29,8 @@ import '../bloc/login/login_bloc.dart';
 import '../src/app_const.dart';
 import '../storages/share_local.dart';
 import '../widgets/item_menu.dart';
+import 'add_service_voucher/add_service_voucher_screen.dart';
 import 'call/call_screen.dart';
-import 'menu/home/menu_flash.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
 
 final checkIsPushNotif = StateProvider<bool>((ref) => false);
@@ -49,6 +52,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   late final bool isRegister;
 
   ///////////////// UI
+  final _key = GlobalKey<ExpandableFabState>();
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   List<ButtonMenuModel> listMenu = [];
   void getMenu() async {
@@ -81,6 +85,8 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                 AppNavigator.navigateClue(name);
               } else if (id == ModuleMy.SAN_PHAM) {
                 AppNavigator.navigateProduct(name);
+              } else if (id == ModuleMy.SAN_PHAM_KH) {
+                //todo
               }
             }),
       );
@@ -88,7 +94,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     listMenu.add(
       ButtonMenuModel(
           title: 'Báo cáo',
-          image: ICONS.IC_WORK_3X_PNG,
+          image: ICONS.IC_REPORT_PNG,
           backgroundColor: Color(0xff5D5FEF),
           onTap: () async {
             String? money = await shareLocal.getString(PreferencesKey.MONEY);
@@ -96,6 +102,28 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
           }),
     );
     setState(() {});
+  }
+
+  _handelRouterMenuPlus(String id, String name) {
+    if (ModuleText.CUSTOMER == id) {
+      AppNavigator.navigateAddCustomer();
+    } else if (ModuleText.DAU_MOI == id) {
+      AppNavigator.navigateFormAdd(name, 2);
+    } else if (ModuleText.LICH_HEN == id) {
+      AppNavigator.navigateFormAdd(name, 3);
+    } else if (ModuleText.HOP_DONG == id) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => AddServiceVoucherScreen(
+              title: name.toUpperCase().capitalizeFirst ?? '')));
+    } else if (ModuleText.CONG_VIEC == id) {
+      AppNavigator.navigateFormAdd(name, 14);
+    } else if (ModuleText.CSKH == id) {
+      AppNavigator.navigateFormAdd(name, 6);
+    } else if (ModuleText.THEM_MUA_XE == id) {
+      //todo
+    } else if (ModuleText.THEM_BAN_XE == id) {
+      //todo
+    }
   }
   //////////////////////
 
@@ -248,24 +276,86 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     return Scaffold(
       key: _drawerKey,
       drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
+      floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: LoginBloc.of(context).listMenuFlash.isNotEmpty
-          ? FloatingActionButton(
-              backgroundColor: Color(0xff1AA928),
-              onPressed: () {
-                showModalBottomSheet(
-                    isDismissible: false,
-                    enableDrag: false,
-                    context: context,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30)),
-                    builder: (BuildContext context) {
-                      return MenuFlash();
-                    });
-              },
+          ? ExpandableFab(
+              key: _key,
+              distance: 65,
+              type: ExpandableFabType.up,
               child: Icon(Icons.add, size: 40),
+              closeButtonStyle: const ExpandableFabCloseButtonStyle(
+                child: Icon(Icons.close),
+                foregroundColor: Colors.white,
+                backgroundColor: Color(0xff1AA928),
+              ),
+              backgroundColor: Color(0xff1AA928),
+              overlayStyle: ExpandableFabOverlayStyle(
+                blur: 5,
+              ),
+              children: LoginBloc.of(context)
+                  .listMenuFlash.reversed
+                  .map(
+                    (e) => GestureDetector(
+                      onTap: () async {
+                        final state = _key.currentState;
+                        if (state != null) {
+                          if (state.isOpen) {
+                            final id = e.id ?? '';
+                            final name = e.name ?? '';
+                            await _handelRouterMenuPlus(id, name);
+                            state.toggle();
+                          }
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: COLORS.BLACK.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                )
+                              ],
+                            ),
+                            child: WidgetText(
+                              title: e.name ?? '',
+                              style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(
+                              left: 8,
+                              right: 8,
+                            ),
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                            ),
+                            child: SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: Image.asset(
+                                ModuleText.getIconMenu(e.id.toString()),
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
             )
           : SizedBox(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
           content: Text(
@@ -273,97 +363,118 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
             style: AppStyle.DEFAULT_16.copyWith(color: COLORS.WHITE),
           ),
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              BlocBuilder<GetInforAccBloc, GetInforAccState>(
-                  builder: (context, state) {
-                if (state is UpdateGetInforAccState) {
-                  return WidgetAppbar(
-                    title: state.inforAcc.fullname,
-                    textColor: Colors.black,
-                    right: GestureDetector(onTap: () {
-                      return AppNavigator.navigateNotification();
-                    }, child: BlocBuilder<GetListUnReadNotifiBloc,
-                        UnReadListNotifiState>(builder: (context, state) {
-                      if (state is NotificationNeedRead) {
-                        return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
-                      } else {
-                        return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
+        child: Column(
+          children: [
+            BlocBuilder<GetInforAccBloc, GetInforAccState>(
+                builder: (context, state) {
+              if (state is UpdateGetInforAccState) {
+                return WidgetAppbar(
+                  title: state.inforAcc.fullname,
+                  textColor: Colors.black,
+                  right: GestureDetector(onTap: () {
+                    return AppNavigator.navigateNotification();
+                  }, child: BlocBuilder<GetListUnReadNotifiBloc,
+                      UnReadListNotifiState>(builder: (context, state) {
+                    if (state is NotificationNeedRead) {
+                      return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
+                    } else {
+                      return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
+                    }
+                  })),
+                  left: GestureDetector(
+                    onTap: () {
+                      if (_drawerKey.currentContext != null &&
+                          !_drawerKey.currentState!.isDrawerOpen) {
+                        _drawerKey.currentState!.openDrawer();
                       }
-                    })),
-                    left: GestureDetector(
-                      onTap: () {
-                        if (_drawerKey.currentContext != null &&
-                            !_drawerKey.currentState!.isDrawerOpen) {
-                          _drawerKey.currentState!.openDrawer();
-                        }
-                      },
-                      child: WidgetNetworkImage(
-                        image: state.inforAcc.avatar ?? '',
-                        width: 50,
-                        height: 50,
-                        borderRadius: 25,
-                      ),
+                    },
+                    child: WidgetNetworkImage(
+                      image: state.inforAcc.avatar ?? '',
+                      width: 50,
+                      height: 50,
+                      borderRadius: 25,
                     ),
-                  );
-                } else {
-                  return WidgetAppbar(
-                    title: '',
-                    textColor: Colors.black,
-                    right: GestureDetector(onTap: () {
-                      return AppNavigator.navigateNotification();
-                    }, child: BlocBuilder<GetListUnReadNotifiBloc,
-                        UnReadListNotifiState>(builder: (context, state) {
-                      if (state is NotificationNeedRead) {
-                        return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
-                      } else {
-                        return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
+                  ),
+                );
+              } else {
+                return WidgetAppbar(
+                  title: '',
+                  textColor: Colors.black,
+                  right: GestureDetector(onTap: () {
+                    return AppNavigator.navigateNotification();
+                  }, child: BlocBuilder<GetListUnReadNotifiBloc,
+                      UnReadListNotifiState>(builder: (context, state) {
+                    if (state is NotificationNeedRead) {
+                      return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
+                    } else {
+                      return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
+                    }
+                  })),
+                  left: GestureDetector(
+                    onTap: () {
+                      if (_drawerKey.currentContext != null &&
+                          !_drawerKey.currentState!.isDrawerOpen) {
+                        _drawerKey.currentState!.openDrawer();
                       }
-                    })),
-                    left: GestureDetector(
-                      onTap: () {
-                        if (_drawerKey.currentContext != null &&
-                            !_drawerKey.currentState!.isDrawerOpen) {
-                          _drawerKey.currentState!.openDrawer();
-                        }
-                      },
-                      child: WidgetNetworkImage(
-                        image: '',
-                        width: 50,
-                        height: 50,
-                        borderRadius: 25,
-                      ),
+                    },
+                    child: WidgetNetworkImage(
+                      image: '',
+                      width: 50,
+                      height: 50,
+                      borderRadius: 25,
                     ),
-                  );
-                }
-              }),
-              SizedBox(
-                height: 25,
-              ),
-              GridView.builder(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 30,
                   ),
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: listMenu.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 25,
-                    mainAxisSpacing: 25,
-                  ),
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: listMenu[index].onTap,
-                      child: ItemMenu(data: listMenu[index]),
-                    );
-                  }),
-              SizedBox(
-                height: 25,
+                );
+              }
+            }),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 25,
+                    ),
+                    GridView.builder(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 30,
+                        ),
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: listMenu.length % 2 != 0
+                            ? listMenu.length - 1
+                            : listMenu.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 25,
+                          mainAxisSpacing: 25,
+                        ),
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: listMenu[index].onTap,
+                            child: ItemMenu(data: listMenu[index]),
+                          );
+                        }),
+                    if (listMenu.length % 2 != 0)
+                      GestureDetector(
+                        onTap: listMenu.last.onTap,
+                        child: Container(
+                            margin: EdgeInsets.only(top: 25),
+                            width: (MediaQuery.of(context).size.width - 60),
+                            height:
+                                (MediaQuery.of(context).size.width - 85) / 2,
+                            child: ItemMenu(
+                              data: listMenu.last,
+                              isLast: true,
+                            )),
+                      ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );

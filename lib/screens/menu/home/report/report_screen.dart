@@ -651,7 +651,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                       children: [
                                         Row(
                                           children: [
-                                            Image.asset(ICONS.IC_CONTRACT_PNG),
+                                            ImageBaseDefault(icon: ICONS.IC_CONTRACT_3X_PNG),
                                             SizedBox(
                                               width: 10,
                                             ),
@@ -1061,7 +1061,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                     children: [
                                       Row(
                                         children: [
-                                          Image.asset(ICONS.IC_CONTRACT_PNG),
+                                          ImageBaseDefault(icon: ICONS.IC_CONTRACT_3X_PNG),
                                           SizedBox(
                                             width: 10,
                                           ),
@@ -1480,23 +1480,23 @@ class _ReportScreenState extends State<ReportScreen> {
               ],
             ),
             itemTextIcon(
-              status: data.customer?.name?.trim() ?? '',
+              text: data.customer?.name?.trim() ?? '',
               icon: ICONS.IC_USER2_SVG,
               colorIcon: HexColor('E75D18'),
             ),
             itemTextIcon(
               isSVG: false,
-              status: data.bienSo?.trim() ?? '',
+              text: data.bienSo?.trim() ?? '',
               icon: ICONS.IC_LICENSE_PLATE_PNG,
             ),
             itemTextIcon(
-              status: data.status?.trim() ?? '',
+              text: data.status?.trim() ?? '',
               icon: ICONS.IC_DANG_XU_LY_SVG,
               colorIcon: data.color != "" ? HexColor(data.color!) : COLORS.RED,
               colorText: data.color != "" ? HexColor(data.color!) : COLORS.RED,
             ),
             itemTextIcon(
-                status: 'Tổng tiền: ' + '${data.giaTriHopDong ?? 0}' + 'đ',
+                text: 'Tổng tiền: ' + '${data.giaTriHopDong ?? 0}' + 'đ',
                 icon: ICONS.IC_MAIL_SVG,
                 colorIcon: Colors.grey,
                 colorText: Colors.grey),

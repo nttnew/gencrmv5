@@ -130,7 +130,7 @@ class _ContractSupportState extends State<ContractSupport>
                                   ),
                                 Row(
                                   children: [
-                                    Image.asset(ICONS.IC_DATE_PNG),
+                                    Image.asset(ICONS.IC_DATE_PNG,height: 20,width: 20,),
                                     AppValue.hSpaceTiny,
                                     WidgetText(
                                         title: state.listSupportContract[index]

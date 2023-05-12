@@ -374,7 +374,7 @@ class _InformationAccountState extends State<InformationAccount> {
             textInputAction: TextInputAction.next,
             initialValue: initFullName,
             style: AppStyle.DEFAULT_16
-                .copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+                .copyWith(fontFamily: 'Quicksand', fontWeight: FontWeight.w500),
           ),
         ),
       );

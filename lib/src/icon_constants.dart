@@ -13,7 +13,6 @@ class ICONS {
   static const String IC_DELETE_PNG = 'assets/icons/icon_delete.png';
   static const String IC_ATTACK_SVG = 'assets/icons/attack.svg';
   static const String IC_HOP_DONG_PNG = 'assets/icons/hopdong.png';
-  static const String IC_WORK_PNG = 'assets/icons/addWork.png';
   static const String IC_CONTENT_PNG = 'assets/icons/addContent.png';
   static const String IC_EDIT_2_PNG = 'assets/icons/edit.png';
   static const String IC_REMOVE_PNG = 'assets/icons/remove.png';
@@ -25,12 +24,7 @@ class ICONS {
   static const String IC_SEND_PNG = 'assets/icons/send.png';
   static const String IC_EDIT_PNG = 'assets/icons/icon_edit.png';
   static const String IC_MAY_ANH_PNG = 'assets/icons/mayanh.png';
-  static const String IC_CUSTOMER_PNG = 'assets/icons/Custumer.png';
-  static const String IC_CLUE_PNG = 'assets/icons/Clue.png';
-  static const String IC_CHANCE_PNG = 'assets/icons/Chance.png';
-  static const String IC_CONTRACT_PNG = 'assets/icons/Contract.png';
   static const String IC_WORK2_PNG = 'assets/icons/Work.png';
-  static const String IC_SUPPORT_PNG = 'assets/icons/Support.png';
   static const String IC_FAVICON_PNG = 'assets/icons/favicon.png';
   static const String IC_LICENSE_PLATE_PNG = 'assets/icons/license-plate.png';
 
@@ -40,10 +34,11 @@ class ICONS {
   static const String IC_CONTRACT_3X_PNG = 'assets/icons/Contract_3x.png';
   static const String IC_WORK_3X_PNG = 'assets/icons/Work_3x.png';
   static const String IC_SUPPORT_3X_PNG = 'assets/icons/Support_3x.png';
+  static const String IC_REPORT_PNG = 'assets/icons/insights.png';
 
   //////////////===============SVG===============//////////////
   static const String IC_MAIL_CUSTOMER_SVG = 'assets/icons/mail_customer.svg';
-  static const String IC_ADDCLUE_SVG = 'assets/icons/addclue.svg';
+  static const String IC_ADD_CLUE_SVG = 'assets/icons/addclue.svg';
   static const String IC_ICON3_SVG = 'assets/icons/icon3.svg';
   static const String IC_ADD_CHANCE_SVG = 'assets/icons/addchance.svg';
   static const String IC_ADD_CONTRACT_SVG = 'assets/icons/addcontract.svg';
