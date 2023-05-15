@@ -187,11 +187,12 @@ class _CustomerScreenState extends State<CustomerScreen> {
       body: Column(
         children: [
           Container(
-            margin: EdgeInsets.symmetric(
-                horizontal: AppValue.widths * 0.05,
-                vertical: AppValue.heights * 0.02),
-            width: double.infinity,
-            height: AppValue.heights * 0.06,
+            margin: EdgeInsets.only(
+              top: 20,
+              left: 25,
+              right: 25,
+              bottom: 10,
+            ),
             decoration: BoxDecoration(
               border: Border.all(color: HexColor("#DBDBDB")),
               borderRadius: BorderRadius.circular(10),
@@ -237,7 +238,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   child: SingleChildScrollView(
                     controller: _scrollController,
                     child: Padding(
-                      padding: EdgeInsets.only(bottom: 10),
+                      padding: EdgeInsets.only(top: 10),
                       child: Column(
                         children: List.generate(
                             state.listCustomer.length,

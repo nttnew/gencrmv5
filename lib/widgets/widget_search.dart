@@ -96,7 +96,7 @@ class WidgetSearch extends StatelessWidget {
                   hintText: hint,
                   hintStyle: hintTextStyle,
                   errorText: errorText,
-                  errorStyle: AppStyle.DEFAULT_12.copyWith(color: COLORS.RED),
+                  errorStyle: AppStyle.DEFAULT_14.copyWith(color: COLORS.RED),
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   disabledBorder: InputBorder.none,

@@ -155,7 +155,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 child: WidgetSearch(
                   inputController: _controllerText,
                   hintTextStyle: TextStyle(
-                      fontFamily: "Roboto",
+                      fontFamily: "Quicksand",
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       color: HexColor("#707070")),

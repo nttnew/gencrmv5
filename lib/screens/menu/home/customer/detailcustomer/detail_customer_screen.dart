@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/detail_customer/detail_customer_bloc.dart';
 import 'package:gen_crm/screens/menu/home/customer/index.dart';
+import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -13,10 +14,10 @@ import '../../../../../bloc/contract_customer/contract_customer_bloc.dart';
 import '../../../../../bloc/job_customer/job_customer_bloc.dart';
 import '../../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../../bloc/support_customer/support_customer_bloc.dart';
-import '../../../../../src/app_const.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../../widgets/loading_api.dart';
+import '../../../../../widgets/show_thao_tac.dart';
 import '../../../../../widgets/widget_dialog.dart';
 import '../../../attachment/attachment.dart';
 
@@ -34,9 +35,11 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
   late TabController _tabController;
   int page = 0;
   bool drag = false;
+  final List<ModuleThaoTac> list = [];
 
   @override
   void initState() {
+    getThaoTac();
     _tabController = TabController(length: 6, vsync: this);
     Future.delayed(Duration(seconds: 0), () {
       ContractCustomerBloc.of(context).id = int.parse(id);
@@ -53,6 +56,111 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
           .add(InitGetSupportCustomerEvent(int.parse(id)));
     });
     super.initState();
+  }
+
+  getThaoTac() {
+    if (DetailCustomerBloc.of(context).sdt != null)
+      list.add(
+        ModuleThaoTac(
+          title: "Gọi điện",
+          icon: ICONS.IC_PHONE_CUSTOMER_SVG,
+          onThaoTac: () {
+            Get.back();
+            launchUrl(Uri(
+                scheme: "tel",
+                path: DetailCustomerBloc.of(context).sdt.toString()));
+          },
+        ),
+      );
+
+    list.add(
+      ModuleThaoTac(
+        title: "Thêm đầu mối",
+        icon: ICONS.IC_ADD_CLUE_SVG,
+        onThaoTac: () {
+          Get.back();
+          AppNavigator.navigateFormAdd('Thêm đầu mối', 11, id: int.parse(id));
+        },
+      ),
+    );
+
+    list.add(ModuleThaoTac(
+      title: "Thêm cơ hội",
+      icon: ICONS.IC_ADD_CHANCE_SVG,
+      onThaoTac: () {
+        Get.back();
+        AppNavigator.navigateFormAdd('Thêm cơ hội', 12, id: int.parse(id));
+      },
+    ));
+
+    list.add(ModuleThaoTac(
+      title: "Thêm hợp đồng",
+      icon: ICONS.IC_ADD_CONTRACT_SVG,
+      onThaoTac: () {
+        Get.back();
+        AppNavigator.navigateAddContract(customer_id: id, title: 'hợp đồng');
+      },
+    ));
+
+    list.add(ModuleThaoTac(
+      title: "Thêm công việc",
+      icon: ICONS.IC_ADD_WORD_SVG,
+      onThaoTac: () {
+        Get.back();
+        AppNavigator.navigateFormAdd('Thêm công việc', 14, id: int.parse(id));
+      },
+    ));
+
+    list.add(ModuleThaoTac(
+      title: "Thêm hỗ trợ",
+      icon: ICONS.IC_ADD_SUPPORT_SVG,
+      onThaoTac: () {
+        Get.back();
+        AppNavigator.navigateFormAdd('Thêm hỗ trợ', 15, id: int.parse(id));
+      },
+    ));
+
+    list.add(ModuleThaoTac(
+      title: "Thêm thảo luận",
+      icon: ICONS.IC_ADD_DISCUSS_SVG,
+      onThaoTac: () {
+        Get.back();
+        AppNavigator.navigateAddNoteScreen(1, id);
+      },
+    ));
+
+    list.add(ModuleThaoTac(
+      title: "Xem đính kèm",
+      icon: ICONS.IC_ATTACK_SVG,
+      onThaoTac: () async {
+        Get.back();
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => Attachment(
+                  id: id,
+                  typeModule: Module.KHACH_HANG,
+                )));
+      },
+    ));
+
+    list.add(ModuleThaoTac(
+      title: "Sửa",
+      icon: ICONS.IC_EDIT_SVG,
+      onThaoTac: () {
+        Get.back();
+        AppNavigator.navigateEditDataScreen(id, 1);
+      },
+    ));
+
+    list.add(ModuleThaoTac(
+      title: "Xoá",
+      icon: ICONS.IC_DELETE_SVG,
+      onThaoTac: () {
+        ShowDialogCustom.showDialogTwoButton(
+            onTap2: () => DetailCustomerBloc.of(context)
+                .add(DeleteCustomerEvent(int.parse(id))),
+            content: "Bạn chắc chắn muốn xóa không ?");
+      },
+    ));
   }
 
   @override
@@ -176,186 +284,9 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                       SizedBox(
                         height: AppValue.heights * 0.02,
                       ),
-                      InkWell(
-                        onTap: () {
-                          showModalBottomSheet(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(30)),
-                              ),
-                              context: context,
-                              builder: (context) {
-                                return SafeArea(
-                                  child: Container(
-                                    height: AppValue.heights * 0.8,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        SizedBox(
-                                          height: AppValue.heights * 0.02,
-                                        ),
-                                        if (DetailCustomerBloc.of(context)
-                                                .sdt !=
-                                            null)
-                                          itemIcon(
-                                            "Gọi điện",
-                                            ICONS.IC_PHONE_CUSTOMER_SVG,
-                                            () {
-                                              Get.back();
-                                              launchUrl(Uri(
-                                                  scheme: "tel",
-                                                  path: DetailCustomerBloc.of(
-                                                          context)
-                                                      .sdt
-                                                      .toString()));
-                                            },
-                                          ),
-                                        itemIcon(
-                                          "Thêm đầu mối",
-                                          ICONS.IC_ADD_CLUE_SVG,
-                                          () {
-                                            Get.back();
-                                            AppNavigator.navigateFormAdd(
-                                                'Thêm đầu mối', 11,
-                                                id: int.parse(id));
-                                          },
-                                        ),
-                                        itemIcon(
-                                          "Thêm cơ hội",
-                                          ICONS.IC_ADD_CHANCE_SVG,
-                                          () {
-                                            Get.back();
-                                            AppNavigator.navigateFormAdd(
-                                                'Thêm cơ hội', 12,
-                                                id: int.parse(id));
-                                          },
-                                        ),
-                                        itemIcon(
-                                          "Thêm hợp đồng",
-                                          ICONS.IC_ADD_CONTRACT_SVG,
-                                          () {
-                                            Get.back();
-                                            AppNavigator.navigateAddContract(
-                                                customer_id: id,
-                                                title: 'hợp đồng');
-                                          },
-                                        ),
-                                        itemIcon(
-                                          "Thêm công việc",
-                                          ICONS.IC_ADD_WORD_SVG,
-                                          () {
-                                            AppNavigator.navigateFormAdd(
-                                                'Thêm công việc', 14,
-                                                id: int.parse(id));
-                                          },
-                                        ),
-                                        itemIcon(
-                                          "Thêm hỗ trợ",
-                                          ICONS.IC_ADD_SUPPORT_SVG,
-                                          () {
-                                            Get.back();
-                                            AppNavigator.navigateFormAdd(
-                                                'Thêm hỗ trợ', 15,
-                                                id: int.parse(id));
-                                          },
-                                        ),
-                                        itemIcon(
-                                          "Thêm thảo luận",
-                                          ICONS.IC_ADD_DISCUSS_SVG,
-                                          () {
-                                            Get.back();
-                                            AppNavigator.navigateAddNoteScreen(
-                                                1, id);
-                                          },
-                                        ),
-                                        itemIcon(
-                                          "Xem đính kèm",
-                                          ICONS.IC_ATTACK_SVG,
-                                          () async {
-                                            Get.back();
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Attachment(
-                                                          id: id,
-                                                          typeModule:
-                                                              Module.KHACH_HANG,
-                                                        )));
-                                          },
-                                        ),
-                                        itemIcon(
-                                          "Sửa",
-                                          ICONS.IC_EDIT_SVG,
-                                          () {
-                                            Get.back();
-                                            AppNavigator.navigateEditDataScreen(
-                                                id, 1);
-                                          },
-                                        ),
-                                        itemIcon(
-                                          "Xoá",
-                                          ICONS.IC_DELETE_SVG,
-                                          () {
-                                            ShowDialogCustom.showDialogTwoButton(
-                                                onTap2: () => DetailCustomerBloc
-                                                        .of(context)
-                                                    .add(DeleteCustomerEvent(
-                                                        int.parse(id))),
-                                                content:
-                                                    "Bạn chắc chắn muốn xóa không ?");
-                                          },
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            InkWell(
-                                              onTap: () =>
-                                                  Navigator.of(context).pop(),
-                                              child: Container(
-                                                width: AppValue.widths * 0.8,
-                                                height: AppValue.heights * 0.06,
-                                                decoration: BoxDecoration(
-                                                  color: HexColor("#D0F1EB"),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          17.06),
-                                                ),
-                                                child: Center(
-                                                  child: Text("Đóng"),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              });
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          // height: AppValue.heights*0.06,
-                          padding: EdgeInsets.symmetric(vertical: 8),
-                          margin: EdgeInsets.only(bottom: 8),
-                          decoration: BoxDecoration(
-                            color: HexColor("#D0F1EB"),
-                            borderRadius: BorderRadius.circular(17.06),
-                          ),
-                          child: Center(
-                            child: Text("THAO TÁC",
-                                style: TextStyle(
-                                    fontFamily: "Quicksand",
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 16)),
-                          ),
-                        ),
-                      )
+                      ButtonThaoTac(onTap: () {
+                        showThaoTac(context, list);
+                      }),
                     ],
                   ),
                 ),

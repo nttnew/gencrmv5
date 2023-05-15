@@ -49,13 +49,14 @@ class ItemMenu extends StatelessWidget {
                   child: Text(
                     data.title,
                     style: isLast
-                        ? AppStyle.DEFAULT_12.copyWith(
+                        ? AppStyle.DEFAULT_14.copyWith(
                             fontSize: 24,
                             color: Colors.white,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500)
-                        : AppStyle.DEFAULT_12.copyWith(
-                            fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+                            fontFamily: 'Quicksand',
+                            fontWeight: FontWeight.w700)
+                        : AppStyle.DEFAULT_14.copyWith(
+                            fontFamily: 'Quicksand',
+                            fontWeight: FontWeight.w700),
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,

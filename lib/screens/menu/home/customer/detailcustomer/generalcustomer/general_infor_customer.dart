@@ -78,9 +78,10 @@ class _GeneralInforCustomerState extends State<GeneralInforCustomer>
                             children: [
                               WidgetText(
                                 title: data.data![index].label_field,
-                                style: AppStyle.DEFAULT_12.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: COLORS.TEXT_GREY),
+                                style: AppStyle.DEFAULT_14.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: COLORS.TEXT_GREY,
+                                ),
                               ),
                               SizedBox(
                                 width: 8,
@@ -97,7 +98,7 @@ class _GeneralInforCustomerState extends State<GeneralInforCustomer>
                                     child: WidgetText(
                                       title: data.data![index].value_field,
                                       textAlign: TextAlign.right,
-                                      style: AppStyle.DEFAULT_12_BOLD.copyWith(
+                                      style: AppStyle.DEFAULT_14_BOLD.copyWith(
                                           color:
                                               data.data![index].action != null
                                                   ? COLORS.TEXT_BLUE_BOLD
@@ -121,10 +122,11 @@ class _GeneralInforCustomerState extends State<GeneralInforCustomer>
   }
 
   TextStyle ValueStyle([String? color]) => TextStyle(
-      fontFamily: "Quicksand",
-      color: color == null ? HexColor("#263238") : HexColor(color),
-      fontWeight: FontWeight.w700,
-      fontSize: 14);
+        fontFamily: "Quicksand",
+        color: color == null ? HexColor("#263238") : HexColor(color),
+        fontWeight: FontWeight.w700,
+        fontSize: 14,
+      );
 
   @override
   bool get wantKeepAlive => true;

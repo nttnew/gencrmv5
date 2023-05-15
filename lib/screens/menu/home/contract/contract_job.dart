@@ -152,7 +152,7 @@ class _ContractJobState extends State<ContractJob>
                   ),
                   WidgetText(
                     title: data.total_comment.toString(),
-                    style: AppStyle.DEFAULT_12
+                    style: AppStyle.DEFAULT_14
                         .copyWith(color: COLORS.TEXT_BLUE_BOLD),
                   )
                 ],

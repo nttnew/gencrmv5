@@ -112,7 +112,7 @@ class _ListNoteState extends State<ListNote> {
                                   ),
                                   WidgetText(
                                     title: state.data[index].passedtime ?? '',
-                                    style: AppStyle.DEFAULT_12
+                                    style: AppStyle.DEFAULT_14
                                         .copyWith(color: Color(0xff838A91)),
                                   ),
                                   SizedBox(

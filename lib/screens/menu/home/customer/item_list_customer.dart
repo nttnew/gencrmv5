@@ -127,7 +127,7 @@ class ItemCustomer extends StatelessWidget {
             ),
           ],
         ),
-        margin: EdgeInsets.only(left: 25, right: 25, top: 25),
+        margin: EdgeInsets.only(left: 25, right: 25, bottom: 20),
         padding: EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: Colors.white,

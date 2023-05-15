@@ -691,8 +691,8 @@ class _EditContractState extends State<EditContract> {
                 size: 25,
               ),
               initialValue: indexDefault != -1 ? [dropdow[indexDefault]] : [],
-              selectedItemsTextStyle: AppStyle.DEFAULT_12,
-              itemsTextStyle: AppStyle.DEFAULT_12),
+              selectedItemsTextStyle: AppStyle.DEFAULT_14,
+              itemsTextStyle: AppStyle.DEFAULT_14),
         ],
       ),
     ));

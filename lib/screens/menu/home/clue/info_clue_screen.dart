@@ -1,18 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/detail_clue/detail_clue_bloc.dart';
 import 'package:gen_crm/bloc/work_clue/work_clue_bloc.dart';
 import 'package:gen_crm/screens/menu/home/clue/general_info.dart';
 import 'package:gen_crm/screens/menu/home/clue/list_work_clue.dart';
 import 'package:gen_crm/screens/menu/home/clue/work_card_widget.dart';
 import 'package:gen_crm/src/models/model_generator/work_clue.dart';
-import 'package:gen_crm/widgets/widget_button.dart';
+import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
 import '../../../../src/src_index.dart';
-import '../../../../widgets/image_default.dart';
 import '../../../../widgets/loading_api.dart';
+import '../../../../widgets/show_thao_tac.dart';
 import '../../../../widgets/widget_appbar.dart';
 import '../../../../widgets/widget_dialog.dart';
 import '../../../../widgets/widget_text.dart';
@@ -28,14 +27,61 @@ class InfoCluePage extends StatefulWidget {
 class _InfoCluePageState extends State<InfoCluePage> {
   String id = Get.arguments[0];
   String name = Get.arguments[1];
+  List<ModuleThaoTac> list = [];
 
   @override
   void initState() {
+    getThaoTac();
     Future.delayed(Duration(milliseconds: 100), () {
       GetDetailClueBloc.of(context).add(InitGetDetailClueEvent(id));
       WorkClueBloc.of(context).add(GetWorkClue(id: id));
     });
     super.initState();
+  }
+
+  getThaoTac() {
+    list.add(ModuleThaoTac(
+      title: "Thêm công việc",
+      icon: ICONS.IC_ADD_WORD_SVG,
+      onThaoTac: () {
+        AppNavigator.navigateFormAdd('Thêm công việc', 21, id: int.parse(id));
+      },
+    ));
+    list.add(ModuleThaoTac(
+        title: 'Thêm thảo luận',
+        icon: ICONS.IC_ADD_DISCUSS_SVG,
+        onThaoTac: () {
+          Get.back();
+          AppNavigator.navigateAddNoteScreen(2, id);
+        }));
+    list.add(ModuleThaoTac(
+      title: 'Xem đính kèm',
+      icon: ICONS.IC_ATTACK_SVG,
+      onThaoTac: () {
+        Get.back();
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => Attachment(
+                  id: id,
+                  typeModule: Module.DAU_MOI,
+                )));
+      },
+    ));
+    list.add(ModuleThaoTac(
+        title: 'Sửa',
+        icon: ICONS.IC_EDIT_SVG,
+        onThaoTac: () {
+          Get.back();
+          AppNavigator.navigateEditDataScreen(id, 2);
+        }));
+    list.add(ModuleThaoTac(
+        title: 'Xóa',
+        icon: ICONS.IC_DELETE_SVG,
+        onThaoTac: () {
+          ShowDialogCustom.showDialogTwoButton(
+              onTap2: () =>
+                  GetDetailClueBloc.of(context).add(InitDeleteClueEvent(id)),
+              content: "Bạn chắc chắn muốn xóa không ?");
+        }));
   }
 
   @override
@@ -128,151 +174,17 @@ class _InfoCluePageState extends State<InfoCluePage> {
                       ],
                     )),
               ),
-            )
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: ButtonThaoTac(
+                onTap: () {
+                  showThaoTac(context, list);
+                },
+              ),
+            ),
           ],
         ),
-      ),
-      bottomNavigationBar: WidgetButton(
-        text: 'Thao Tác',
-        onTap: () {
-          showModalBottomSheet(
-              // isDismissible: false,
-              enableDrag: false,
-              context: context,
-              builder: (BuildContext context) {
-                return Container(
-                  height: AppValue.heights * 0.35,
-                  padding: EdgeInsets.symmetric(vertical: 25, horizontal: 30),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          AppValue.hSpaceLarge,
-                          ImageBaseDefault(icon: ICONS.IC_WORK_3X_PNG),
-                          SizedBox(width: 10),
-                          InkWell(
-                              onTap: () {
-                                AppNavigator.navigateFormAdd(
-                                    'Thêm công việc', 21,
-                                    id: int.parse(id));
-                              },
-                              child: Text(
-                                'Thêm công việc',
-                                style: AppStyle.DEFAULT_16_BOLD
-                                    .copyWith(color: Color(0xff006CB1)),
-                              ))
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.back();
-                          AppNavigator.navigateAddNoteScreen(2, id);
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            AppValue.hSpaceLarge,
-                            Image.asset(ICONS.IC_CONTENT_PNG),
-                            SizedBox(width: 10),
-                            Text(
-                              'Thêm thảo luận',
-                              style: AppStyle.DEFAULT_16_BOLD
-                                  .copyWith(color: Color(0xff006CB1)),
-                            )
-                          ],
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.back();
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(
-                                  builder: (context) => Attachment(
-                                        id: id,
-                                        typeModule: Module.DAU_MOI,
-                                      )));
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            AppValue.hSpaceLarge,
-                            SvgPicture.asset(ICONS.IC_ATTACK_SVG),
-                            SizedBox(width: 10),
-                            Text(
-                              'Xem đính kèm',
-                              style: AppStyle.DEFAULT_16_BOLD
-                                  .copyWith(color: Color(0xff006CB1)),
-                            )
-                          ],
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.back();
-                          AppNavigator.navigateEditDataScreen(id, 2);
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            AppValue.hSpaceLarge,
-                            Image.asset(ICONS.IC_EDIT_2_PNG),
-                            SizedBox(width: 10),
-                            Text(
-                              'Sửa',
-                              style: AppStyle.DEFAULT_16_BOLD
-                                  .copyWith(color: Color(0xff006CB1)),
-                            )
-                          ],
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          ShowDialogCustom.showDialogTwoButton(
-                              onTap2: () => GetDetailClueBloc.of(context)
-                                  .add(InitDeleteClueEvent(id)),
-                              content: "Bạn chắc chắn muốn xóa không ?");
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            AppValue.hSpaceLarge,
-                            Image.asset(ICONS.IC_REMOVE_PNG),
-                            SizedBox(width: 10),
-                            Text(
-                              'Xóa',
-                              style: AppStyle.DEFAULT_16_BOLD
-                                  .copyWith(color: Color(0xff006CB1)),
-                            )
-                          ],
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () => AppNavigator.navigateBack(),
-                        child: Container(
-                          width: AppValue.widths,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: COLORS.PRIMARY_COLOR,
-                          ),
-                          child: Center(
-                            child:
-                                Text('Đóng', style: AppStyle.DEFAULT_16_BOLD),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                );
-              });
-        },
-        textColor: Colors.black,
-        backgroundColor: COLORS.PRIMARY_COLOR,
-        height: 40,
-        padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
       ),
     );
   }

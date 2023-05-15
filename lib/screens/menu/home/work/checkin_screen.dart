@@ -220,7 +220,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                             child: WidgetText(
                                 title: 'Check in',
                                 style: TextStyle(
-                                    fontFamily: "Roboto",
+                                    fontFamily: "Quicksand",
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.white)),
@@ -246,7 +246,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                 child: WidgetText(
                                     title: 'Check in lại',
                                     style: TextStyle(
-                                      fontFamily: "Roboto",
+                                      fontFamily: "Quicksand",
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                       color: COLORS.TEXT_COLOR,
@@ -272,7 +272,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                 child: WidgetText(
                                     title: 'Xoá',
                                     style: TextStyle(
-                                        fontFamily: "Roboto",
+                                        fontFamily: "Quicksand",
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.red)),

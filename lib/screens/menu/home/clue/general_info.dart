@@ -88,7 +88,7 @@ class _GeneralInfoState extends State<GeneralInfo>
                             children: [
                               Text(
                                 detailClue.data![index].label_field!,
-                                style: AppStyle.DEFAULT_12.copyWith(
+                                style: AppStyle.DEFAULT_14.copyWith(
                                     fontWeight: FontWeight.w600,
                                     color: COLORS.TEXT_GREY),
                               ),
@@ -109,7 +109,7 @@ class _GeneralInfoState extends State<GeneralInfo>
                                   child: Text(
                                       detailClue.data![index].value_field ?? "",
                                       textAlign: TextAlign.right,
-                                      style: AppStyle.DEFAULT_12_BOLD.copyWith(
+                                      style: AppStyle.DEFAULT_14_BOLD.copyWith(
                                         color: detailClue
                                                     .data![index].label_field ==
                                                 BASE_URL.KHACH_HANG

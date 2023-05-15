@@ -855,7 +855,7 @@ class _AddServiceVoucherStepTwoScreenState
               size: 25,
             ),
             initialValue: indexDefault != -1 ? [dropdow[indexDefault]] : [],
-            selectedItemsTextStyle: AppStyle.DEFAULT_12,
+            selectedItemsTextStyle: AppStyle.DEFAULT_14,
           )
         ],
       ),
@@ -1100,7 +1100,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                                           color: COLORS.BACKGROUND),
                                       child: WidgetText(
                                         title: arr[index],
-                                        style: AppStyle.DEFAULT_12,
+                                        style: AppStyle.DEFAULT_14,
                                       )),
                                   Positioned(
                                     top: -13,

@@ -26,8 +26,8 @@ class AppValue {
   static final DATE_TIME_FORMAT = new DateFormat(
       "dd-MM-yyyy kk:mm"); // ignore: non_constant_identifier_names
 
-  static const FONT_SIZE_10 = 10.0;
-  static const FONT_SIZE_12 = 12.0;
+  // static const FONT_SIZE_10 = 10.0;
+  // static const FONT_SIZE_12 = 12.0;
   static const FONT_SIZE_14 = 14.0;
   static const FONT_SIZE_16 = 16.0;
   static const FONT_SIZE_18 = 18.0;

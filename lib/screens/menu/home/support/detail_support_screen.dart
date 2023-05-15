@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/support/detail_support_bloc.dart';
 import 'package:gen_crm/screens/menu/home/customer/list_note.dart';
+import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../bloc/support/support_bloc.dart';
 import '../../../../widgets/loading_api.dart';
+import '../../../../widgets/show_thao_tac.dart';
 import '../../../../widgets/widget_dialog.dart';
 import '../../attachment/attachment.dart';
 
@@ -24,11 +24,57 @@ class DetailSupportScreen extends StatefulWidget {
 class _DetailSupportScreenState extends State<DetailSupportScreen> {
   String id = Get.arguments[0];
   String title = Get.arguments[0];
+  List<ModuleThaoTac> list = [];
 
   @override
   void initState() {
+    getThaoTac();
     DetailSupportBloc.of(context).add(InitGetDetailSupportEvent(id));
     super.initState();
+  }
+
+  getThaoTac() {
+    list.add(ModuleThaoTac(
+      title: "Thêm thảo luận",
+      icon: ICONS.IC_ADD_DISCUSS_SVG,
+      onThaoTac: () {
+        Get.back();
+        AppNavigator.navigateAddNoteScreen(6, id);
+      },
+    ));
+
+    list.add(ModuleThaoTac(
+      title: "Xem đính kèm",
+      icon: ICONS.IC_ATTACK_SVG,
+      onThaoTac: () async {
+        Get.back();
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => Attachment(
+                  id: id,
+                  typeModule: Module.HO_TRO,
+                )));
+      },
+    ));
+
+    list.add(ModuleThaoTac(
+      title: "Sửa",
+      icon: ICONS.IC_EDIT_SVG,
+      onThaoTac: () {
+        Get.back();
+        AppNavigator.navigateEditDataScreen(id, 6);
+      },
+    ));
+
+    list.add(ModuleThaoTac(
+      title: "Xoá",
+      icon: ICONS.IC_DELETE_SVG,
+      onThaoTac: () {
+        ShowDialogCustom.showDialogTwoButton(
+            onTap2: () =>
+                DetailSupportBloc.of(context).add(DeleteSupportEvent(id)),
+            content: "Bạn chắc chắn muốn xóa không ?");
+      },
+    ));
   }
 
   @override
@@ -230,177 +276,9 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                         ),
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        showModalBottomSheet(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(30)),
-                            ),
-                            context: context,
-                            builder: (context) {
-                              return SafeArea(
-                                child: Container(
-                                  height: AppValue.heights * 0.3,
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      SizedBox(
-                                        height: AppValue.heights * 0.03,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Get.back();
-                                          AppNavigator.navigateAddNoteScreen(
-                                              6, id);
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              width: AppValue.widths * 0.2,
-                                            ),
-                                            SvgPicture.asset(
-                                                ICONS.IC_ADD_DISCUSS_SVG),
-                                            SizedBox(
-                                              width: AppValue.widths * 0.1,
-                                            ),
-                                            Text("Thêm thảo luận",
-                                                style: styleTitleBottomSheet())
-                                          ],
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Get.back();
-                                          Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Attachment(
-                                                        id: id,
-                                                        typeModule:
-                                                            Module.HO_TRO,
-                                                      )));
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              width: AppValue.widths * 0.2,
-                                            ),
-                                            SvgPicture.asset(
-                                                ICONS.IC_ATTACK_SVG),
-                                            SizedBox(
-                                              width: AppValue.widths * 0.1,
-                                            ),
-                                            Text("Xem đính kèm",
-                                                style: styleTitleBottomSheet())
-                                          ],
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Get.back();
-                                          AppNavigator.navigateEditDataScreen(
-                                              id, 6);
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              width: AppValue.widths * 0.2,
-                                            ),
-                                            SvgPicture.asset(
-                                                ICONS.IC_EDIT_SVG),
-                                            SizedBox(
-                                              width: AppValue.widths * 0.1,
-                                            ),
-                                            Text("Sửa",
-                                                style: styleTitleBottomSheet())
-                                          ],
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          ShowDialogCustom.showDialogTwoButton(
-                                              onTap2: () => DetailSupportBloc
-                                                      .of(context)
-                                                  .add(DeleteSupportEvent(id)),
-                                              content:
-                                                  "Bạn chắc chắn muốn xóa không ?");
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              width: AppValue.widths * 0.2,
-                                            ),
-                                            SvgPicture.asset(
-                                                ICONS.IC_DELETE_SVG),
-                                            SizedBox(
-                                              width: AppValue.widths * 0.1,
-                                            ),
-                                            Text("Xoá",
-                                                style: styleTitleBottomSheet())
-                                          ],
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          InkWell(
-                                            onTap: () =>
-                                                Navigator.of(context).pop(),
-                                            child: Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 10),
-                                              width: AppValue.widths * 0.8,
-                                              height: AppValue.heights * 0.06,
-                                              decoration: BoxDecoration(
-                                                color: HexColor("#D0F1EB"),
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        17.06),
-                                              ),
-                                              child: Center(
-                                                child: Text("Đóng"),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            });
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        height: AppValue.heights * 0.06,
-                        margin: EdgeInsets.symmetric(vertical: 20),
-                        decoration: BoxDecoration(
-                          color: HexColor("#D0F1EB"),
-                          borderRadius: BorderRadius.circular(17.06),
-                        ),
-                        child: Center(
-                          child: Text("THAO TÁC",
-                              style: TextStyle(
-                                  fontFamily: "Quicksand",
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16)),
-                        ),
-                      ),
-                    )
+                    ButtonThaoTac(onTap: () {
+                      showThaoTac(context, list);
+                    }),
                   ],
                 ),
               ),
@@ -424,7 +302,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
 
   TextStyle LabelStyle() => TextStyle(
       fontFamily: "Quicksand",
-      color: COLORS.BLACK,
+      color: COLORS.GREY,
       fontWeight: FontWeight.w600,
       fontSize: 14);
 }

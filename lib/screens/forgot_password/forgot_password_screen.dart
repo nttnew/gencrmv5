@@ -93,7 +93,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 WidgetText(
                                   title:
                                       "Vui lòng nhập email đăng ký tài khoản",
-                                  style: AppStyle.DEFAULT_12,
+                                  style: AppStyle.DEFAULT_14,
                                 ),
                                 AppValue.vSpaceMedium,
                               ],

@@ -16,8 +16,8 @@ class _ItemProductModuleState extends State<ItemProductModule> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-        left:25,
-        right:25,
+        left: 25,
+        right: 25,
         bottom: 20,
       ),
       padding: EdgeInsets.all(8),
@@ -72,8 +72,7 @@ class _ItemProductModuleState extends State<ItemProductModule> {
                     ),
                     TextSpan(
                       text: ' (${widget.productModule.maSanPham})',
-                      style:
-                          AppStyle.DEFAULT_16_BOLD.copyWith(color: Colors.grey),
+                      style: AppStyle.DEFAULT_16_BOLD.copyWith(color: Colors.grey),
                     ),
                   ]),
                 ),
@@ -86,14 +85,16 @@ class _ItemProductModuleState extends State<ItemProductModule> {
                   textScaleFactor: MediaQuery.of(context).textScaleFactor,
                   text: TextSpan(children: [
                     TextSpan(
-                      text:
-                          '${widget.productModule.phienBan ?? 0} phiên bản | có thể ',
-                      style: AppStyle.DEFAULT_14,
-                    ),
+                        text:
+                            '${widget.productModule.phienBan ?? 0} phiên bản | có thể ',
+                        style: AppStyle.DEFAULT_14
+                            .copyWith(fontWeight: FontWeight.w400)),
                     TextSpan(
                       text: widget.productModule.coTheBan ?? '0',
-                      style: AppStyle.DEFAULT_14
-                          .copyWith(color: COLORS.TEXT_COLOR),
+                      style: AppStyle.DEFAULT_14.copyWith(
+                        color: COLORS.TEXT_COLOR,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ]),
                 ),

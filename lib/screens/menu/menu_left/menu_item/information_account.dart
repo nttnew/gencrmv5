@@ -396,7 +396,7 @@ class _InformationAccountState extends State<InformationAccount> {
             textInputAction: TextInputAction.next,
             initialValue: initPhone,
             style: AppStyle.DEFAULT_16
-                .copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+                .copyWith(fontFamily: 'Quicksand', fontWeight: FontWeight.w500),
           ),
         ),
       );
@@ -418,7 +418,7 @@ class _InformationAccountState extends State<InformationAccount> {
             textInputAction: TextInputAction.next,
             initialValue: initEmail,
             style: AppStyle.DEFAULT_16
-                .copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+                .copyWith(fontFamily: 'Quicksand', fontWeight: FontWeight.w500),
           ),
         ),
       );
@@ -437,7 +437,7 @@ class _InformationAccountState extends State<InformationAccount> {
           textInputAction: TextInputAction.next,
           initialValue: initAddress,
           style: AppStyle.DEFAULT_16
-              .copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+              .copyWith(fontFamily: 'Quicksand', fontWeight: FontWeight.w500),
         ),
       ),
     );
@@ -463,12 +463,12 @@ class _InformationAccountState extends State<InformationAccount> {
                         ? WidgetText(
                             title: "NO",
                             style: AppStyle.DEFAULT_16.copyWith(
-                                fontFamily: 'Roboto',
+                                fontFamily: 'Quicksand',
                                 fontWeight: FontWeight.w500))
                         : WidgetText(
                             title: "YES",
                             style: AppStyle.DEFAULT_16.copyWith(
-                                fontFamily: 'Roboto',
+                                fontFamily: 'Quicksand',
                                 fontWeight: FontWeight.w500)),
                   ],
                 ),
