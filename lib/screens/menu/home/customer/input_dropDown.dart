@@ -43,7 +43,13 @@ class _InputDropdownState extends State<InputDropdown> {
     }
     if (mounted && widget.isUpdate) {
       textValue = widget.value;
-      widget.onUpdate!(textValue);
+      String data = '';
+      for (final value in widget.dropdownItemList) {
+        if (value[1] == widget.value) {
+          data = value[0];
+        }
+      }
+      widget.onUpdate!(data);
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -146,7 +152,7 @@ class _InputDropdownState extends State<InputDropdown> {
                         style: TextStyle(
                             fontFamily: "Quicksand",
                             fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             color: Colors.red))
                     : TextSpan(),
               ],
@@ -238,7 +244,7 @@ class _InputDropdownState extends State<InputDropdown> {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontFamily: "Quicksand",
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.w600,
                                 color: COLORS.BLACK,
                               ),
                             ),
@@ -263,6 +269,6 @@ class _InputDropdownState extends State<InputDropdown> {
   TextStyle titlestyle() => TextStyle(
       fontFamily: "Quicksand",
       fontSize: 14,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       color: COLORS.BLACK);
 }

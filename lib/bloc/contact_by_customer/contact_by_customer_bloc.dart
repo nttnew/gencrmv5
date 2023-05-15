@@ -17,6 +17,7 @@ class ContactByCustomerBloc
   final UserRepository userRepository;
   List<CustomerData>? listCus;
   BehaviorSubject<List<List<dynamic>>> listXe = BehaviorSubject.seeded([]);
+  BehaviorSubject<String> chiTietXe = BehaviorSubject.seeded('');
 
   ContactByCustomerBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -32,6 +33,27 @@ class ContactByCustomerBloc
     if (event is InitGetCustomerContractEvent) {
       yield* _getCustomerContract(
           page: event.page, search: event.search, success: event.success);
+    }
+  }
+
+  bool checkXeKhach(String id, List<List<dynamic>>? list) {
+    if (list != null) {
+      for (final value in listXe.value) {
+        if (value[0] == id) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  void getCar(String id) {
+    if (id.trim() == '') {
+      chiTietXe.add('');
+    } else {
+      userRepository.postInfoCar(id).then((value) {
+        chiTietXe.add(value.chiTietXe ?? '');
+      });
     }
   }
 

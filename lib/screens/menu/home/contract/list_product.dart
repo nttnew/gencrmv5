@@ -300,12 +300,12 @@ class _ItemProductState extends State<ItemProduct> {
   void didUpdateWidget(covariant ItemProduct oldWidget) {
     if (oldWidget != widget) {
       setState(() {
-        Dvt = widget.model!.nameDvt;
-        Vat = widget.model!.nameVat;
-        giamGia = widget.model!.giamGia;
-        typeGiamGia = widget.model!.typeGiamGia == "%" ? false : true;
-        soLuong.add(widget.model!.soLuong.toString());
-        price = widget.model!.item.sell_price!;
+        Dvt = widget.model?.nameDvt ?? '';
+        Vat = widget.model?.nameVat ?? '';
+        giamGia = widget.model?.giamGia ?? '';
+        typeGiamGia = widget.model?.typeGiamGia == "%" ? false : true;
+        soLuong.add((widget.model?.soLuong ?? 0).toString());
+        price = widget.model?.item.sell_price ?? '';
       });
     }
     super.didUpdateWidget(oldWidget);
@@ -342,7 +342,7 @@ class _ItemProductState extends State<ItemProduct> {
     _priceTextfieldController.text =
         double.parse(widget.data.sell_price ?? '0').toInt().toString();
     soLuong.listen((value) {
-        widget.onReload();
+      widget.onReload();
     });
     super.initState();
   }
@@ -403,7 +403,7 @@ class _ItemProductState extends State<ItemProduct> {
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: WidgetText(
                       title: "Giá: " +
-                          "${AppValue.format_money(double.parse(price))}",
+                          "${AppValue.format_money(double.parse(price != '' ? price : '0'))}",
                       style: AppStyle.DEFAULT_14_BOLD
                           .copyWith(color: COLORS.TEXT_GREY),
                     ),
@@ -855,8 +855,8 @@ class _ItemProductState extends State<ItemProduct> {
                                 price = _priceTextfieldController.text;
                               });
                               widget.onPrice!(price);
-                            }else{
-                              _priceTextfieldController.text=price;
+                            } else {
+                              _priceTextfieldController.text = price;
                             }
                             Get.back();
                           },

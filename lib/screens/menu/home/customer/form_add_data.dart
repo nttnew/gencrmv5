@@ -859,7 +859,7 @@ class _FormAddDataState extends State<FormAddData> {
               style: TextStyle(
                   fontFamily: "Quicksand",
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   color: COLORS.BLACK),
               children: <TextSpan>[
                 required == 1
@@ -941,7 +941,7 @@ class _FormAddDataState extends State<FormAddData> {
   TextStyle titlestyle() => TextStyle(
       fontSize: 14,
       fontFamily: "Quicksand",
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       color: COLORS.BLACK);
 
   void onClickSave() {
@@ -1094,7 +1094,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
               style: TextStyle(
                   fontFamily: "Quicksand",
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   color: COLORS.BLACK),
               children: <TextSpan>[
                 widget.data.field_require == 1
@@ -1103,7 +1103,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                         style: TextStyle(
                             fontFamily: "Quicksand",
                             fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             color: Colors.red))
                     : TextSpan(),
               ],
@@ -1267,7 +1267,7 @@ class _renderCheckBoxState extends State<renderCheckBox> {
               style: TextStyle(
                   fontFamily: "Quicksand",
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   color: COLORS.BLACK),
               children: <TextSpan>[
                 widget.data.field_require == 1
@@ -1276,7 +1276,7 @@ class _renderCheckBoxState extends State<renderCheckBox> {
                         style: TextStyle(
                             fontFamily: "Quicksand",
                             fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             color: Colors.red))
                     : TextSpan(),
               ],

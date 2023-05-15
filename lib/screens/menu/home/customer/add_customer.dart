@@ -414,7 +414,7 @@ class _AddCustomerState extends State<AddCustomer> {
               style: TextStyle(
                   fontFamily: "Quicksand",
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   color: COLORS.BLACK),
               children: <TextSpan>[
                 required == 1
@@ -492,13 +492,13 @@ class _AddCustomerState extends State<AddCustomer> {
   TextStyle titlestyle() => TextStyle(
       fontFamily: "Quicksand",
       fontSize: 14,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       color: COLORS.BLACK);
 
   TextStyle titlestyleNgTheoDoi() => TextStyle(
       fontFamily: "Quicksand",
       fontSize: 14,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       color: COLORS.BLACK);
 
   void onClickSave() {
@@ -580,7 +580,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
               style: TextStyle(
                   fontFamily: "Quicksand",
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   color: COLORS.BLACK),
               children: <TextSpan>[
                 widget.data.field_require == 1

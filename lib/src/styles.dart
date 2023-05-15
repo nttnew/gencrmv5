@@ -11,18 +11,21 @@ class AppStyle {
       color: COLORS.BLACK,
       fontWeight: FontWeight.w700,
       height: 1.4);
+
   static const DEFAULT_TITLE_PRODUCT = TextStyle(
       fontFamily: 'Quicksand',
       fontSize: AppValue.FONT_SIZE_18,
       color: Color(0xff006CB1),
       fontWeight: FontWeight.w700,
       height: 1.4);
+
   static const DEFAULT_LABEL_PRODUCT = TextStyle(
       fontFamily: 'Quicksand',
       fontSize: AppValue.FONT_SIZE_14,
       color: COLORS.BLACK,
       fontWeight: FontWeight.w400,
       height: 1.4);
+
   static const DEFAULT_LABEL_TARBAR = TextStyle(
       fontFamily: 'Quicksand',
       fontSize: AppValue.FONT_SIZE_16,
@@ -31,17 +34,12 @@ class AppStyle {
       height: 1.4);
 
   static const DEFAULT_16_T = TextStyle(
-      fontFamily: 'Quicksand',
-      fontSize: AppValue.FONT_SIZE_16,
-      color: COLORS.BLACK,
-      fontWeight: FontWeight.w600,
-      height: 1.4);
-
-  // static const DEFAULT_14 = TextStyle(
-  //     fontFamily: 'Quicksand',
-  //     fontSize: AppValue.FONT_SIZE_12,
-  //     color: COLORS.BLACK,
-  //     height: 1.4);
+    fontFamily: 'Quicksand',
+    fontSize: AppValue.FONT_SIZE_16,
+    color: COLORS.BLACK,
+    fontWeight: FontWeight.w600,
+    height: 1.4,
+  );
 
   static const DEFAULT_14 = TextStyle(
     fontFamily: 'Quicksand',

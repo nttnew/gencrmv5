@@ -51,7 +51,7 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
               style: TextStyle(
                   fontFamily: "Quicksand",
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   color: COLORS.BLACK),
               children: <TextSpan>[
                 widget.data.field_require == 1
@@ -92,8 +92,7 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
                       padding: EdgeInsets.only(left: 10, top: 15, bottom: 15),
                       child: WidgetText(
                         title: dateText,
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500),
+                        style: AppStyle.DEFAULT_14,
                       ),
                     ),
                   ),

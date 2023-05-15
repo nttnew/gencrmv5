@@ -436,9 +436,10 @@ abstract class RestClient {
       @Query('code') String code,
       @Query('email') String email,
       @Query('name') String name);
-  //Quân
+
   @POST(BASE_URL.UPDATE_PASS)
   Future<BaseResponse> updatePass(@Body() UpdatePassRequest);
+
   @POST(BASE_URL.READ_NOTIFICATION)
   Future<BaseResponse> readNotification(@Body() ReadNotifiParam);
 
@@ -449,6 +450,7 @@ abstract class RestClient {
       @Part(name: "email") String email,
       @Part(name: "dien_thoai") String phone,
       @Part(name: "dia_chi") String address);
+
   @POST(BASE_URL.CHANGE_INFOR_ACC)
   @MultiPart()
   Future<BaseResponse> changeInforAcc(
@@ -457,7 +459,7 @@ abstract class RestClient {
       @Part(name: "dien_thoai") String phone,
       @Part(name: "dia_chi") String address,
       @Part(name: "avatar") File avatar);
-  //Dương
+
   @POST(BASE_URL.ADD_CUSTOMER_INDIVIDUAL_POST)
   Future<AddDataResponse> addIndividualCustomer(
       @Body() Map<String, dynamic> map);

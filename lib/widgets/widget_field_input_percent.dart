@@ -103,7 +103,7 @@ class _FieldInputPercentState extends State<FieldInputPercent> {
   TextStyle titlestyle() => TextStyle(
       fontFamily: "Quicksand",
       fontSize: 14,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       color: COLORS.BLACK);
 
   TextStyle hintTextStyle() => TextStyle(

@@ -120,6 +120,8 @@ class _FormAddContractState extends State<FormAddContract> {
   @override
   void deactivate() {
     AttackBloc.of(context).add(RemoveAllAttackEvent());
+    ContactByCustomerBloc.of(context).chiTietXe.add('');
+    ContactByCustomerBloc.of(context).listXe.add([]);
     super.deactivate();
   }
 
@@ -279,7 +281,10 @@ class _FormAddContractState extends State<FormAddContract> {
                                                                 .data![index1]
                                                                 .field_special ==
                                                             "none-edit" &&
-                                                        state.listAddData[index].data![index1].field_id !=
+                                                        state
+                                                                .listAddData[index]
+                                                                .data![index1]
+                                                                .field_id !=
                                                             '246')
                                                     ? (state.listAddData[index].data![index1].field_id == '774'
                                                         ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
@@ -303,7 +308,25 @@ class _FormAddContractState extends State<FormAddContract> {
                                                             } else
                                                               return Container();
                                                           })
-                                                        : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, noEdit: true))
+                                                        : state.listAddData[index].data![index1].field_id == '13502'
+                                                            ? StreamBuilder<String>(
+                                                                stream: ContactByCustomerBloc.of(context).chiTietXe,
+                                                                builder: (context, snapshot) {
+                                                                  final chiTietXe =
+                                                                      snapshot.data ??
+                                                                          '';
+                                                                  return _fieldChiTietXe(
+                                                                    state
+                                                                        .listAddData[
+                                                                            index]
+                                                                        .data![index1],
+                                                                    index,
+                                                                    index1,
+                                                                    value:
+                                                                        chiTietXe,
+                                                                  );
+                                                                })
+                                                            : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, noEdit: true))
                                                     : state.listAddData[index].data![index1].field_special == "url"
                                                         ? ProductContract(
                                                             data: listProduct,
@@ -341,17 +364,19 @@ class _FormAddContractState extends State<FormAddContract> {
                                                                           final list =
                                                                               snapshot.data;
                                                                           return InputDropdown(
+                                                                              isUpdate: true,
                                                                               isUpdateList: true,
                                                                               dropdownItemList: list ?? state.listAddData[index].data![index1].field_datasource ?? [],
                                                                               data: state.listAddData[index].data![index1],
                                                                               onSuccess: (data) {
                                                                                 addData[index].data[index1].value = data;
-                                                                                if (state.listAddData[index].data![index1].field_id == '246') {
-                                                                                  ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
-                                                                                  PhoneBloc.of(context).add(InitPhoneEvent(data));
-                                                                                }
+                                                                                ContactByCustomerBloc.of(context).getCar(data);
                                                                               },
-                                                                              value: state.listAddData[index].data![index1].field_value ?? '');
+                                                                              onUpdate: (data) {
+                                                                                addData[index].data[index1].value = data;
+                                                                                ContactByCustomerBloc.of(context).getCar(data);
+                                                                              },
+                                                                              value: list?.isEmpty ?? false ? '' : state.listAddData[index].data![index1].field_value ?? '');
                                                                         })
                                                                     : InputDropdown(
                                                                         dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
@@ -362,6 +387,8 @@ class _FormAddContractState extends State<FormAddContract> {
                                                                               .value = data;
                                                                           if (state.listAddData[index].data![index1].field_id ==
                                                                               '246') {
+                                                                            ContactByCustomerBloc.of(context).chiTietXe.add('');
+                                                                            ContactByCustomerBloc.of(context).listXe.add([]);
                                                                             ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
                                                                             PhoneBloc.of(context).add(InitPhoneEvent(data));
                                                                           }
@@ -441,6 +468,55 @@ class _FormAddContractState extends State<FormAddContract> {
     );
   }
 
+  Widget _fieldChiTietXe(CustomerIndividualItemData data, int index, int index1,
+      {String value = ""}) {
+    addData[index].data[index1].value = value;
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+            text: TextSpan(
+              text: data.field_label ?? '',
+              style: titlestyle(),
+              children: <TextSpan>[
+                data.field_require == 1
+                    ? TextSpan(
+                        text: '*',
+                        style: TextStyle(
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red))
+                    : TextSpan(),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+                color: COLORS.LIGHT_GREY,
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: HexColor("#BEB4B4"))),
+            child: Padding(
+              padding: EdgeInsets.all(15),
+              child: Container(
+                  child: WidgetText(
+                title: '$value',
+                style: AppStyle.DEFAULT_14,
+              )),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Column fieldInputImage() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -483,8 +559,7 @@ class _FormAddContractState extends State<FormAddContract> {
                   child: Container(
                       height: 50,
                       width: 50,
-                      child:
-                          SvgPicture.asset(ICONS.IC_INPUT_SVG))),
+                      child: SvgPicture.asset(ICONS.IC_INPUT_SVG))),
             )
           ]),
         ),
@@ -535,7 +610,7 @@ class _FormAddContractState extends State<FormAddContract> {
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
                 child: TextFormField(
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                   keyboardType: data.field_type == "TEXT_NUMERIC"
                       ? TextInputType.number
                       : data.field_special == "default"
@@ -601,7 +676,7 @@ class _FormAddContractState extends State<FormAddContract> {
               style: TextStyle(
                   fontFamily: "Quicksand",
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   color: COLORS.BLACK),
               children: <TextSpan>[
                 required == 1
@@ -686,7 +761,7 @@ class _FormAddContractState extends State<FormAddContract> {
   TextStyle titlestyle() => TextStyle(
       fontFamily: "Quicksand",
       fontSize: 14,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       color: COLORS.BLACK);
 
   void onClickSave() {
