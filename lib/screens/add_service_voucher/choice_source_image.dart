@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import '../../src/messages.dart';
-import '../../widgets/widget_dialog.dart';
+import '../../src/show_dialog.dart';
 
 class ChoiceSourceImage extends StatefulWidget {
   const ChoiceSourceImage({Key? key}) : super(key: key);
@@ -18,8 +17,7 @@ class _ChoiceSourceImageState extends State<ChoiceSourceImage> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return WidgetDialog(
-          twoButton: true,
+        return ShowDialogCustom.showDialogBase(
           title: MESSAGES.NOTIFICATION,
           content: "Đi đến cài đặt",
           textButton1: "Đi",

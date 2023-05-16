@@ -6,13 +6,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:rxdart/rxdart.dart';
-
 import '../../../../bloc/work/detail_work_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/location_base.dart';
-import '../../../../widgets/widget_dialog.dart';
 import '../../../../widgets/widget_text.dart';
 import '../contract/widget_total_sum.dart';
 
@@ -56,33 +54,21 @@ class _CheckInScreenState extends State<CheckInScreen> {
       listener: (BuildContext context, state) {
         if (state is SuccessCheckInState) {
           LoadingApi().popLoading();
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return WidgetDialog(
-                title: MESSAGES.NOTIFICATION,
-                content: "Thêm mới check in thành công",
-                textButton1: MESSAGES.OKE,
-                backgroundButton1: COLORS.PRIMARY_COLOR,
-                onTap1: () {
-                  Get.back();
-                  DetailWorkBloc.of(context)
-                      .add(InitGetDetailWorkEvent(int.parse(id)));
-                  Navigator.pop(context);
-                },
-              );
+          ShowDialogCustom.showDialogBase(
+            title: MESSAGES.NOTIFICATION,
+            content: "Thêm mới check in thành công",
+            onTap1: () {
+              Get.back();
+              DetailWorkBloc.of(context)
+                  .add(InitGetDetailWorkEvent(int.parse(id)));
+              Navigator.pop(context);
             },
           );
         } else if (state is ErrorCheckInState) {
           LoadingApi().popLoading();
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return WidgetDialog(
-                title: MESSAGES.NOTIFICATION,
-                content: state.msg,
-              );
-            },
+          ShowDialogCustom.showDialogBase(
+            title: MESSAGES.NOTIFICATION,
+            content: state.msg,
           );
           Get.back();
         }
@@ -93,14 +79,9 @@ class _CheckInScreenState extends State<CheckInScreen> {
         floatingActionButton: GestureDetector(
           onTap: () {
             if (controllerNote.text.trim() == '') {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
-                    title: MESSAGES.NOTIFICATION,
-                    content: "Hãy nhập đủ các trường bắt buộc (*)",
-                  );
-                },
+              ShowDialogCustom.showDialogBase(
+                title: MESSAGES.NOTIFICATION,
+                content: "Hãy nhập đủ các trường bắt buộc (*)",
               );
             } else {
               CheckInBloc.of(context).add(SaveCheckIn(

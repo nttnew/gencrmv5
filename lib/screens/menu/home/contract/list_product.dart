@@ -731,35 +731,21 @@ class _ItemProductState extends State<ItemProduct> {
                                 (double.parse(_editingController.text) >
                                     double.parse(widget.data.sell_price!))) {
                               _editingController.text = widget.data.sell_price!;
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return WidgetDialog(
-                                    title: MESSAGES.NOTIFICATION,
-                                    content:
-                                        "Bạn không được nhập giá giảm lớn hơn giá của sản phẩm",
-                                    textButton1: MESSAGES.OKE,
-                                    backgroundButton1: COLORS.PRIMARY_COLOR,
-                                    onTap1: () {
-                                      Get.back();
-                                    },
-                                  );
+                              ShowDialogCustom.showDialogBase(
+                                title: MESSAGES.NOTIFICATION,
+                                content:
+                                    "Bạn không được nhập giá giảm lớn hơn giá của sản phẩm",
+                                onTap1: () {
+                                  Get.back();
                                 },
                               );
                             } else if (typeGiamGia == false &&
                                 (double.parse(_editingController.text) > 100)) {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return WidgetDialog(
-                                    title: MESSAGES.NOTIFICATION,
-                                    content: "Bạn không được nhập quá 100%",
-                                    textButton1: MESSAGES.OKE,
-                                    backgroundButton1: COLORS.PRIMARY_COLOR,
-                                    onTap1: () {
-                                      Get.back();
-                                    },
-                                  );
+                              ShowDialogCustom.showDialogBase(
+                                title: MESSAGES.NOTIFICATION,
+                                content: "Bạn không được nhập quá 100%",
+                                onTap1: () {
+                                  Get.back();
                                 },
                               );
                             } else {

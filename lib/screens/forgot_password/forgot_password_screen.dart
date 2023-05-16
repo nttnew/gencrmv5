@@ -54,15 +54,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           }
           if (state.status.isSubmissionFailure) {
             GetSnackBarUtils.removeSnackBar();
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return WidgetDialog(
+            ShowDialogCustom.showDialogBase(
                   title: MESSAGES.NOTIFICATION,
                   content: state.message,
-                );
-              },
+
             );
           }
         },

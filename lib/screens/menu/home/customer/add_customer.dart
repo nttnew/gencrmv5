@@ -18,7 +18,6 @@ import '../../../../src/pick_file_image.dart';
 import '../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../../../widgets/widget_field_input_percent.dart';
-import '../../../../widgets/widget_dialog.dart';
 import 'input_dropDown.dart';
 
 class AddCustomer extends StatefulWidget {
@@ -75,33 +74,21 @@ class _AddCustomerState extends State<AddCustomer> {
         body: BlocListener<GetListCustomerBloc, CustomerState>(
           listener: (context, state) async {
             if (state is SuccessAddCustomerIndividualState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
-                    title: MESSAGES.NOTIFICATION,
-                    content: "Thêm mới dữ liệu thành công!",
-                    textButton1: MESSAGES.OKE,
-                    backgroundButton1: COLORS.PRIMARY_COLOR,
-                    onTap1: () {
-                      Get.back();
-                      Get.back();
-                      GetListCustomerBloc.of(context)
-                          .add(InitGetListOrderEvent("", 1, ""));
-                    },
-                  );
+              ShowDialogCustom.showDialogBase(
+                title: MESSAGES.NOTIFICATION,
+                content: "Thêm mới dữ liệu thành công!",
+                onTap1: () {
+                  Get.back();
+                  Get.back();
+                  GetListCustomerBloc.of(context)
+                      .add(InitGetListOrderEvent("", 1, ""));
                 },
               );
             }
             if (state is ErrorAddCustomerIndividualState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
-                    title: MESSAGES.NOTIFICATION,
-                    content: state.message,
-                  );
-                },
+              ShowDialogCustom.showDialogBase(
+                title: MESSAGES.NOTIFICATION,
+                content: state.message,
               );
             }
           },
@@ -310,8 +297,7 @@ class _AddCustomerState extends State<AddCustomer> {
                   child: Container(
                       height: 50,
                       width: 50,
-                      child:
-                          SvgPicture.asset(ICONS.IC_INPUT_SVG))),
+                      child: SvgPicture.asset(ICONS.IC_INPUT_SVG))),
             )
           ]),
         ),
@@ -437,15 +423,9 @@ class _AddCustomerState extends State<AddCustomer> {
             onConfirm: (values) {
               if (maxLength != "" && values.length > int.parse(maxLength)) {
                 values.removeRange(int.parse(maxLength) - 1, values.length - 1);
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return WidgetDialog(
-                      title: MESSAGES.NOTIFICATION,
-                      content: "Bạn chỉ được chọn ${maxLength} giá trị",
-                    );
-                  },
+                ShowDialogCustom.showDialogBase(
+                  title: MESSAGES.NOTIFICATION,
+                  content: "Bạn chỉ được chọn ${maxLength} giá trị",
                 );
               } else {
                 List<dynamic> res = [];
@@ -521,14 +501,9 @@ class _AddCustomerState extends State<AddCustomer> {
       }
     }
     if (check == true) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return WidgetDialog(
-            title: MESSAGES.NOTIFICATION,
-            content: "Hãy nhập đủ các trường bắt buộc (*)",
-          );
-        },
+      ShowDialogCustom.showDialogBase(
+        title: MESSAGES.NOTIFICATION,
+        content: "Hãy nhập đủ các trường bắt buộc (*)",
       );
     } else {
       GetListCustomerBloc.of(context).add(AddCustomerIndividualEvent(data,

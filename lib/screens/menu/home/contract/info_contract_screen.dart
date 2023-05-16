@@ -15,7 +15,6 @@ import '../../../../src/src_index.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../../../widgets/widget_appbar.dart';
-import '../../../../widgets/widget_dialog.dart';
 import '../../attachment/attachment.dart';
 
 class InfoContractPage extends StatefulWidget {
@@ -99,7 +98,7 @@ class _InfoContractPageState extends State<InfoContractPage> {
       title: "Xoá",
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
-        ShowDialogCustom.showDialogTwoButton(
+        ShowDialogCustom.showDialogBase(
             onTap2: () => DetailContractBloc.of(context)
                 .add(InitDeleteContractEvent(int.parse(id))),
             content: "Bạn chắc chắn muốn xóa không ?");
@@ -114,41 +113,28 @@ class _InfoContractPageState extends State<InfoContractPage> {
         listener: (context, state) async {
           if (state is SuccessDeleteContractState) {
             LoadingApi().popLoading();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return WidgetDialog(
-                  title: MESSAGES.NOTIFICATION,
-                  content: "Thành công",
-                  textButton1: MESSAGES.OKE,
-                  backgroundButton1: COLORS.PRIMARY_COLOR,
-                  onTap1: () {
-                    Get.back();
-                    Get.back();
-                    Get.back();
-                    Get.back();
-                    ContractBloc.of(context)
-                        .add(InitGetContractEvent(1, "", ""));
-                  },
-                );
+            ShowDialogCustom.showDialogBase(
+              title: MESSAGES.NOTIFICATION,
+              content: "Thành công",
+              onTap1: () {
+                Get.back();
+                Get.back();
+                Get.back();
+                Get.back();
+                ContractBloc.of(context).add(InitGetContractEvent(1, "", ""));
               },
             );
           } else if (state is ErrorDeleteContractState) {
             LoadingApi().popLoading();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return WidgetDialog(
-                  title: MESSAGES.NOTIFICATION,
-                  content: state.msg,
-                  textButton1: "Quay lại",
-                  onTap1: () {
-                    Get.back();
-                    Get.back();
-                    Get.back();
-                    Get.back();
-                  },
-                );
+            ShowDialogCustom.showDialogBase(
+              title: MESSAGES.NOTIFICATION,
+              content: state.msg,
+              textButton1: "Quay lại",
+              onTap1: () {
+                Get.back();
+                Get.back();
+                Get.back();
+                Get.back();
               },
             );
           }

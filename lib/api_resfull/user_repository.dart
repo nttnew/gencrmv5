@@ -55,6 +55,7 @@ import '../src/models/model_generator/report_option.dart';
 import '../src/models/model_generator/report_product.dart';
 import '../src/models/model_generator/response_bao_cao.dart';
 import '../src/models/model_generator/response_car_dashboard.dart';
+import '../src/models/model_generator/response_edit_product.dart';
 import '../src/models/model_generator/response_save_product.dart';
 import '../src/models/model_generator/save_checkin_response.dart';
 import '../src/models/model_generator/support_customer.dart';
@@ -737,7 +738,7 @@ class UserRepository {
           {required Map<String, dynamic> data}) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).addProduct(data);
 
-  Future<ResponseSaveProduct> editProduct(
+  Future<ResponseEditProduct> editProduct(
           {required Map<String, dynamic> data, required int id}) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).editProduct(data, id);
 

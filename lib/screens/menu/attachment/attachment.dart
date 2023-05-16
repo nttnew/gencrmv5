@@ -58,23 +58,13 @@ class _AttachmentState extends State<Attachment> {
   Future<void> _onDinhKem({bool? isAfter}) async {
     if (await Permission.storage.request().isGranted) {
       if (Platform.isAndroid) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return WidgetDialog(
-              twoButton: true,
-              title: MESSAGES.NOTIFICATION,
-              content: 'Bạn chưa cấp quyền truy cập vào ảnh?',
-              textButton2: 'Đi đến cài đặt',
-              textButton1: 'Ok',
-              onTap2: () {
-                openAppSettings();
-                Get.back();
-              },
-              onTap1: () {
-                Get.back();
-              },
-            );
+        ShowDialogCustom.showDialogBase(
+          title: MESSAGES.NOTIFICATION,
+          content: 'Bạn chưa cấp quyền truy cập vào ảnh?',
+          textButton2: 'Đi đến cài đặt',
+          onTap2: () {
+            openAppSettings();
+            Get.back();
           },
         );
       } else {

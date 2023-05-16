@@ -10,7 +10,7 @@ import 'package:gen_crm/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 import 'package:formz/formz.dart';
- import 'package:local_auth/local_auth.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../src/src_index.dart';
@@ -64,13 +64,13 @@ class _InformationAccountState extends State<InformationAccount> {
   late String initAddress;
   late String urlAvatar;
   String? canLoginWithFingerPrint;
-   late final LocalAuthentication auth;
+  late final LocalAuthentication auth;
   late final BehaviorSubject<bool> supportBiometric;
   late final BehaviorSubject<bool> fingerPrintIsCheck;
 
   @override
   void initState() {
-     auth = LocalAuthentication();
+    auth = LocalAuthentication();
     fingerPrintIsCheck = BehaviorSubject();
     supportBiometric = BehaviorSubject();
     GetInforAccBloc.of(context).add(InitGetInforAcc());
@@ -97,7 +97,7 @@ class _InformationAccountState extends State<InformationAccount> {
         fingerPrintIsCheck.add(true);
       }
     }
-     checkBiometricEnable();
+    checkBiometricEnable();
 
     super.initState();
   }
@@ -131,20 +131,13 @@ class _InformationAccountState extends State<InformationAccount> {
         listener: (context, state) {
           if (state.status.isSubmissionSuccess) {
             GetSnackBarUtils.removeSnackBar();
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return WidgetDialog(
-                  onTap1: () {
-                    GetInforAccBloc.of(context).add(InitGetInforAcc());
-                    AppNavigator.navigateBack();
-                  },
-                  textButton1: MESSAGES.OKE,
-                  title: MESSAGES.SUCCESS,
-                  content: state.message,
-                );
+            ShowDialogCustom.showDialogBase(
+              onTap1: () {
+                GetInforAccBloc.of(context).add(InitGetInforAcc());
+                AppNavigator.navigateBack();
               },
+              title: MESSAGES.SUCCESS,
+              content: state.message,
             );
           }
           if (state.status.isSubmissionInProgress) {
@@ -152,15 +145,9 @@ class _InformationAccountState extends State<InformationAccount> {
           }
           if (state.status.isSubmissionFailure) {
             GetSnackBarUtils.removeSnackBar();
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return WidgetDialog(
-                  title: MESSAGES.NOTIFICATION,
-                  content: state.message,
-                );
-              },
+            ShowDialogCustom.showDialogBase(
+              title: MESSAGES.NOTIFICATION,
+              content: state.message,
             );
           }
         },
@@ -304,15 +291,9 @@ class _InformationAccountState extends State<InformationAccount> {
                                       name, address));
                                 }
                               } else {
-                                showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (BuildContext context) {
-                                    return const WidgetDialog(
-                                      title: MESSAGES.NOTIFICATION,
-                                      content: 'Kiểm tra lại thông tin',
-                                    );
-                                  },
+                                ShowDialogCustom.showDialogBase(
+                                  title: MESSAGES.NOTIFICATION,
+                                  content: 'Kiểm tra lại thông tin',
                                 );
                               }
                             },
@@ -476,19 +457,12 @@ class _InformationAccountState extends State<InformationAccount> {
                   value: snapshot.data ?? false,
                   onChanged: (value) {
                     if (!(supportBiometric.data ?? false)) {
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) {
-                          return WidgetDialog(
-                            title: MESSAGES.NOTIFICATION,
-                            content:
-                                "Thiết bị chưa thiết lập vân tay, khuôn mặt",
-                          );
-                        },
+                      ShowDialogCustom.showDialogBase(
+                        title: MESSAGES.NOTIFICATION,
+                        content: "Thiết bị chưa thiết lập vân tay, khuôn mặt",
                       );
                     } else {
-                       useBiometric(value: value);
+                      useBiometric(value: value);
                     }
                   },
                 ),
@@ -500,51 +474,45 @@ class _InformationAccountState extends State<InformationAccount> {
     );
   }
 
-   Future<void> checkBiometricEnable() async {
-     final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
-     if (!canAuthenticateWithBiometrics) {
-       return;
-     }
+  Future<void> checkBiometricEnable() async {
+    final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+    if (!canAuthenticateWithBiometrics) {
+      return;
+    }
 
-     final List<BiometricType> availableBiometrics =
-         await auth.getAvailableBiometrics();
-     if (availableBiometrics.isNotEmpty) {
-       supportBiometric.add(true);
-     }
-   }
+    final List<BiometricType> availableBiometrics =
+        await auth.getAvailableBiometrics();
+    if (availableBiometrics.isNotEmpty) {
+      supportBiometric.add(true);
+    }
+  }
 
-   Future<void> useBiometric({required bool value}) async {
-     if (!value) {
-       fingerPrintIsCheck.sink.add(false);
-       shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "false");
-       return;
-     }
-     try {
-       final String reason = "Đăng nhập vân tay, khuôn mặt";
-       final bool didAuthenticate = await auth.authenticate(
-         localizedReason: reason,
-         options: const AuthenticationOptions(
-           useErrorDialogs: false,
-           stickyAuth: true,
-         ),
-       );
-       if (didAuthenticate) {
-         fingerPrintIsCheck.add(true);
-         shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "true");
-       } else {
-         showDialog(
-           context: context,
-           barrierDismissible: false,
-           builder: (BuildContext context) {
-             return WidgetDialog(
-               title: MESSAGES.NOTIFICATION,
-               content: "Đăng nhập thất bại bạn vui lòng thử lại",
-             );
-           },
-         );
-       }
-     } catch (e) {
-       return;
-     }
-   }
+  Future<void> useBiometric({required bool value}) async {
+    if (!value) {
+      fingerPrintIsCheck.sink.add(false);
+      shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "false");
+      return;
+    }
+    try {
+      final String reason = "Đăng nhập vân tay, khuôn mặt";
+      final bool didAuthenticate = await auth.authenticate(
+        localizedReason: reason,
+        options: const AuthenticationOptions(
+          useErrorDialogs: false,
+          stickyAuth: true,
+        ),
+      );
+      if (didAuthenticate) {
+        fingerPrintIsCheck.add(true);
+        shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "true");
+      } else {
+        ShowDialogCustom.showDialogBase(
+          title: MESSAGES.NOTIFICATION,
+          content: "Đăng nhập thất bại bạn vui lòng thử lại",
+        );
+      }
+    } catch (e) {
+      return;
+    }
+  }
 }

@@ -22,7 +22,6 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-import '../../../../../../../widgets/widget_dialog.dart';
 import '../../../../bloc/chance_customer/chance_customer_bloc.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
 import '../../../../bloc/clue_customer/clue_customer_bloc.dart';
@@ -403,109 +402,85 @@ class _FormAddDataState extends State<FormAddData> {
             body: BlocListener<AddDataBloc, AddDataState>(
               listener: (context, state) async {
                 if (state is SuccessAddCustomerOrState) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return WidgetDialog(
-                        title: MESSAGES.NOTIFICATION,
-                        content: "Thêm mới dữ liệu thành công!",
-                        textButton1: "OK",
-                        backgroundButton1: COLORS.PRIMARY_COLOR,
-                        onTap1: () {
-                          Get.back();
-                          Get.back();
-                          GetListCustomerBloc.of(context)
-                              .add(InitGetListOrderEvent("", 1, ""));
-                        },
-                      );
+                  ShowDialogCustom.showDialogBase(
+                    title: MESSAGES.NOTIFICATION,
+                    content: "Thêm mới dữ liệu thành công!",
+                    onTap1: () {
+                      Get.back();
+                      Get.back();
+                      GetListCustomerBloc.of(context)
+                          .add(InitGetListOrderEvent("", 1, ""));
                     },
                   );
                 }
                 if (state is ErrorAddCustomerOrState) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return WidgetDialog(
-                        title: MESSAGES.NOTIFICATION,
-                        content: state.msg,
-                      );
-                    },
+                  ShowDialogCustom.showDialogBase(
+                    title: MESSAGES.NOTIFICATION,
+                    content: state.msg,
                   );
                 }
                 if (state is SuccessAddContactCustomerState) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return WidgetDialog(
-                        title: MESSAGES.NOTIFICATION,
-                        content: "Thêm mới dữ liệu thành công!",
-                        textButton1: MESSAGES.OKE,
-                        backgroundButton1: COLORS.PRIMARY_COLOR,
-                        onTap1: () {
-                          Get.back();
-                          Get.back();
-                          if (type == 2)
-                            GetListClueBloc.of(context)
-                                .add(InitGetListClueEvent('', 1, ''));
-                          else if (type == 3) {
-                            GetListChanceBloc.of(context)
-                                .add(InitGetListOrderEventChance('', 1, ''));
-                          } else if (type == 4) {
-                            ContractBloc.of(context)
-                                .add(InitGetContractEvent(1, "", ""));
-                          } else if (type == 5) {
-                            WorkBloc.of(context)
-                                .add(InitGetListWorkEvent("1", "", ""));
-                          } else if (type == 6) {
-                            SupportBloc.of(context)
-                                .add(InitGetSupportEvent(1, '', ''));
-                          } else if (type == 21) {
-                            WorkClueBloc.of(context).add(GetWorkClue(id: id));
-                          } else if (type == 31) {
-                            GetJobChanceBloc.of(context)
-                                .add(InitGetJobEventChance(int.parse(id)));
-                          } else if (type == 41) {
-                            SupportContractBloc.of(context).add(
-                                InitGetSupportContractEvent(int.parse(id)));
-                          } else if (type == 42) {
-                            JobContractBloc.of(context)
-                                .add(InitGetJobContractEvent(int.parse(id)));
-                          } else if (type == 11) {
-                            ClueCustomerBloc.of(context)
-                                .add(InitGetClueCustomerEvent(int.parse(id)));
-                          } else if (type == 12) {
-                            ChanceCustomerBloc.of(context)
-                                .add(InitGetChanceCustomerEvent(int.parse(id)));
-                          } else if (type == 13) {
-                            ContractCustomerBloc.of(context).add(
-                                InitGetContractCustomerEvent(int.parse(id)));
-                          } else if (type == 14) {
-                            JobCustomerBloc.of(context)
-                                .add(InitGetJobCustomerEvent(int.parse(id)));
-                          } else if (type == 15) {
-                            SupportCustomerBloc.of(context).add(
-                                InitGetSupportCustomerEvent(int.parse(id)));
-                          } else if (type == PRODUCT_TYPE) {
-                            ProductModuleBloc.of(context)
-                                .add(InitGetListProductModuleEvent());
-                          } else if (type == PRODUCT_CUSTOMER_TYPE) {
-                            ProductCustomerModuleBloc.of(context)
-                                .add(GetProductCustomerModuleEvent());
-                          }
-                        },
-                      );
+                  ShowDialogCustom.showDialogBase(
+                    title: MESSAGES.NOTIFICATION,
+                    content: "Thêm mới dữ liệu thành công!",
+                    onTap1: () {
+                      Get.back();
+                      Get.back();
+                      if (type == 2)
+                        GetListClueBloc.of(context)
+                            .add(InitGetListClueEvent('', 1, ''));
+                      else if (type == 3) {
+                        GetListChanceBloc.of(context)
+                            .add(InitGetListOrderEventChance('', 1, ''));
+                      } else if (type == 4) {
+                        ContractBloc.of(context)
+                            .add(InitGetContractEvent(1, "", ""));
+                      } else if (type == 5) {
+                        WorkBloc.of(context)
+                            .add(InitGetListWorkEvent("1", "", ""));
+                      } else if (type == 6) {
+                        SupportBloc.of(context)
+                            .add(InitGetSupportEvent(1, '', ''));
+                      } else if (type == 21) {
+                        WorkClueBloc.of(context).add(GetWorkClue(id: id));
+                      } else if (type == 31) {
+                        GetJobChanceBloc.of(context)
+                            .add(InitGetJobEventChance(int.parse(id)));
+                      } else if (type == 41) {
+                        SupportContractBloc.of(context)
+                            .add(InitGetSupportContractEvent(int.parse(id)));
+                      } else if (type == 42) {
+                        JobContractBloc.of(context)
+                            .add(InitGetJobContractEvent(int.parse(id)));
+                      } else if (type == 11) {
+                        ClueCustomerBloc.of(context)
+                            .add(InitGetClueCustomerEvent(int.parse(id)));
+                      } else if (type == 12) {
+                        ChanceCustomerBloc.of(context)
+                            .add(InitGetChanceCustomerEvent(int.parse(id)));
+                      } else if (type == 13) {
+                        ContractCustomerBloc.of(context)
+                            .add(InitGetContractCustomerEvent(int.parse(id)));
+                      } else if (type == 14) {
+                        JobCustomerBloc.of(context)
+                            .add(InitGetJobCustomerEvent(int.parse(id)));
+                      } else if (type == 15) {
+                        SupportCustomerBloc.of(context)
+                            .add(InitGetSupportCustomerEvent(int.parse(id)));
+                      } else if (type == PRODUCT_TYPE) {
+                        ProductModuleBloc.of(context)
+                            .add(InitGetListProductModuleEvent());
+                      } else if (type == PRODUCT_CUSTOMER_TYPE) {
+                        ProductCustomerModuleBloc.of(context)
+                            .add(GetProductCustomerModuleEvent());
+                      }
                     },
                   );
                 }
                 if (state is ErrorAddContactCustomerState) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return WidgetDialog(
-                        title: MESSAGES.NOTIFICATION,
-                        content: state.msg,
-                      );
-                    },
+                  ShowDialogCustom.showDialogBase(
+                    title: MESSAGES.NOTIFICATION,
+                    content: state.msg,
                   );
                 }
               },
@@ -890,15 +865,9 @@ class _FormAddDataState extends State<FormAddData> {
                 if (maxLength != '' && values.length > int.parse(maxLength)) {
                   values.removeRange(
                       int.parse(maxLength) - 1, values.length - 1);
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return WidgetDialog(
-                        title: MESSAGES.NOTIFICATION,
-                        content: "Bạn chỉ được chọn ${maxLength} giá trị",
-                      );
-                    },
+                  ShowDialogCustom.showDialogBase(
+                    title: MESSAGES.NOTIFICATION,
+                    content: "Bạn chỉ được chọn ${maxLength} giá trị",
                   );
                 } else {
                   List<String> res = [];
@@ -981,14 +950,9 @@ class _FormAddDataState extends State<FormAddData> {
     }
     //
     if (check == true) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return WidgetDialog(
-            title: MESSAGES.NOTIFICATION,
-            content: "Hãy nhập đủ các trường bắt buộc (*)",
-          );
-        },
+      ShowDialogCustom.showDialogBase(
+        title: MESSAGES.NOTIFICATION,
+        content: "Hãy nhập đủ các trường bắt buộc (*)",
       );
     } else {
       if (type == 1) {
@@ -1052,9 +1016,9 @@ class _FormAddDataState extends State<FormAddData> {
       } else if (type == PRODUCT_TYPE) {
         AddDataBloc.of(context)
             .add(AddProductEvent(data, files: AttackBloc.of(context).listFile));
-      }else if (type == PRODUCT_CUSTOMER_TYPE) {
-        AddDataBloc.of(context)
-            .add(AddProductCustomerEvent(data, files: AttackBloc.of(context).listFile));
+      } else if (type == PRODUCT_CUSTOMER_TYPE) {
+        AddDataBloc.of(context).add(AddProductCustomerEvent(data,
+            files: AttackBloc.of(context).listFile));
       }
     }
   }

@@ -10,7 +10,6 @@ import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../src/app_const.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
-import '../../../../widgets/widget_dialog.dart';
 import '../../attachment/attachment.dart';
 
 class DetailProductCustomerScreen extends StatefulWidget {
@@ -63,7 +62,7 @@ class _DetailProductCustomerScreenState
       title: "Xoá",
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
-        ShowDialogCustom.showDialogTwoButton(
+        ShowDialogCustom.showDialogBase(
             onTap2: () async {
               DetailProductCustomerBloc.of(context).add(DeleteProductEvent(id));
             },
@@ -97,39 +96,27 @@ class _DetailProductCustomerScreenState
         listener: (context, state) async {
           if (state is SuccessDeleteProductState) {
             LoadingApi().popLoading();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return WidgetDialog(
-                  title: MESSAGES.NOTIFICATION,
-                  content: "Xoá thành công",
-                  textButton1: MESSAGES.OKE,
-                  backgroundButton1: COLORS.PRIMARY_COLOR,
-                  onTap1: () {
-                    Navigator.pushNamedAndRemoveUntil(context,
-                        ROUTE_NAMES.PRODUCT_CUSTOMER, ModalRoute.withName('/'),
-                        arguments: title);
-                  },
-                );
+            ShowDialogCustom.showDialogBase(
+              title: MESSAGES.NOTIFICATION,
+              content: "Xoá thành công",
+              onTap1: () {
+                Navigator.pushNamedAndRemoveUntil(context,
+                    ROUTE_NAMES.PRODUCT_CUSTOMER, ModalRoute.withName('/'),
+                    arguments: title);
               },
             );
           } else if (state is ErrorDeleteProductState) {
             LoadingApi().popLoading();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return WidgetDialog(
-                  title: MESSAGES.NOTIFICATION,
-                  content: state.msg,
-                  textButton1: "Quay lại",
-                  onTap1: () {
-                    Get.back();
-                    Get.back();
-                    Get.back();
-                    DetailProductCustomerBloc.of(context)
-                        .add(InitGetDetailProductCustomerEvent(id));
-                  },
-                );
+            ShowDialogCustom.showDialogBase(
+              title: MESSAGES.NOTIFICATION,
+              content: state.msg,
+              textButton1: "Quay lại",
+              onTap1: () {
+                Get.back();
+                Get.back();
+                Get.back();
+                DetailProductCustomerBloc.of(context)
+                    .add(InitGetDetailProductCustomerEvent(id));
               },
             );
           }

@@ -18,7 +18,6 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-import '../../../../../../../widgets/widget_dialog.dart';
 import '../../../../bloc/contract/attack_bloc.dart';
 import '../../../../bloc/contract/contract_bloc.dart';
 import '../../../../bloc/contract_customer/contract_customer_bloc.dart';
@@ -148,44 +147,29 @@ class _FormAddContractState extends State<FormAddContract> {
         body: BlocListener<AddDataBloc, AddDataState>(
           listener: (context, state) async {
             if (state is SuccessAddCustomerOrState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
+              ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: "Thêm mới dữ liệu thành công!",
-                    textButton1: MESSAGES.OKE,
-                    backgroundButton1: COLORS.PRIMARY_COLOR,
                     onTap1: () {
                       Get.back();
                       Get.back();
                       GetListCustomerBloc.of(context)
                           .add(InitGetListOrderEvent("", 1, ""));
                     },
-                  );
-                },
+
               );
             }
             if (state is ErrorAddCustomerOrState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
+              ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: state.msg,
-                  );
-                },
+
               );
             }
             if (state is SuccessAddContactCustomerState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
+    ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: "Thêm mới dữ liệu thành công!",
-                    textButton1: MESSAGES.OKE,
-                    backgroundButton1: COLORS.PRIMARY_COLOR,
                     onTap1: () {
                       Get.back();
                       Get.back();
@@ -194,20 +178,14 @@ class _FormAddContractState extends State<FormAddContract> {
                               ContractCustomerBloc.of(context).id));
                       ContractBloc.of(context)
                           .add(InitGetContractEvent(1, "", ""));
-                    },
-                  );
+
                 },
               );
             }
             if (state is ErrorAddContactCustomerState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
+              ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: state.msg,
-                  );
-                },
               );
             }
           },
@@ -701,15 +679,10 @@ class _FormAddContractState extends State<FormAddContract> {
                 if (maxLength != '' && values.length > int.parse(maxLength)) {
                   values.removeRange(
                       int.parse(maxLength) - 1, values.length - 1);
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return WidgetDialog(
+    ShowDialogCustom.showDialogBase(
                         title: MESSAGES.NOTIFICATION,
                         content: "Bạn chỉ được chọn ${maxLength} giá trị",
-                      );
-                    },
+
                   );
                 } else {
                   List<String> res = [];
@@ -784,14 +757,10 @@ class _FormAddContractState extends State<FormAddContract> {
       }
     }
     if (check == true) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return WidgetDialog(
+        ShowDialogCustom.showDialogBase(
             title: MESSAGES.NOTIFICATION,
             content: "Hãy nhập đủ các trường bắt buộc (*)",
-          );
-        },
+
       );
     } else {
       if (listProduct.length > 0) {

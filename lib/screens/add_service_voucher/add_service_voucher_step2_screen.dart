@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,14 +14,12 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import '../../bloc/contract/total_bloc.dart';
 import '../../models/model_data_add.dart';
 import '../../models/widget_input_date.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/src_index.dart';
 import '../../widgets/widget_field_input_percent.dart';
-import '../../widgets/widget_dialog.dart';
 import '../../widgets/widget_text.dart';
 import '../menu/home/contract/product_contract.dart';
 import '../menu/home/customer/input_dropDown.dart';
@@ -141,14 +138,9 @@ class _AddServiceVoucherStepTwoScreenState
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return WidgetDialog(
+                  return ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: "Thêm mới phiếu dịch vụ thành công!",
-                    textButton1: MESSAGES.OKE,
-                    backgroundButton1: COLORS.PRIMARY_COLOR,
-                    onTap1: () {
-                      Get.back();
-                    },
                   );
                 },
               )..whenComplete(() {
@@ -161,7 +153,7 @@ class _AddServiceVoucherStepTwoScreenState
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return WidgetDialog(
+                  return ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: state.msg,
                   );
@@ -820,7 +812,7 @@ class _AddServiceVoucherStepTwoScreenState
                   context: context,
                   barrierDismissible: false,
                   builder: (BuildContext context) {
-                    return WidgetDialog(
+                    return ShowDialogCustom.showDialogBase(
                       title: MESSAGES.NOTIFICATION,
                       content: "Bạn chỉ được chọn ${maxLength} giá trị",
                     );
@@ -905,7 +897,7 @@ class _AddServiceVoucherStepTwoScreenState
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return WidgetDialog(
+          return ShowDialogCustom.showDialogBase(
             title: MESSAGES.NOTIFICATION,
             content: "Hãy nhập đủ các trường bắt buộc (*)",
           );

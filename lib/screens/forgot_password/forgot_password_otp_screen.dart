@@ -56,7 +56,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
             context: context,
             barrierDismissible: false,
             builder: (BuildContext context) {
-              return WidgetDialog(
+              return ShowDialogCustom.showDialogBase(
                 title: MESSAGES.NOTIFICATION,
                 content: state.msg,
               );

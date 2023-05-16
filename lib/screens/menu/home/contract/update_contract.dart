@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,13 +14,9 @@ import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import '../../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-
-import '../../../../../../../widgets/widget_dialog.dart';
-
 import '../../../../bloc/contract/attack_bloc.dart';
 import '../../../../bloc/contract/contract_bloc.dart';
 import '../../../../bloc/contract/detail_contract_bloc.dart';
@@ -29,7 +24,6 @@ import '../../../../bloc/contract/phone_bloc.dart';
 import '../../../../bloc/contract/total_bloc.dart';
 import '../../../../models/product_model.dart';
 import '../../../../models/widget_input_date.dart';
-
 import '../../../../src/models/model_generator/login_response.dart';
 import '../../../../src/pick_file_image.dart';
 import '../../../../storages/share_local.dart';
@@ -144,45 +138,31 @@ class _EditContractState extends State<EditContract> {
         body: BlocListener<AddDataBloc, AddDataState>(
           listener: (context, state) async {
             if (state is SuccessAddCustomerOrState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
+              ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: "Update dữ liệu thành công!",
-                    textButton1: MESSAGES.OKE,
-                    backgroundButton1: COLORS.PRIMARY_COLOR,
                     onTap1: () {
                       Get.back();
                       Get.back();
 
                       GetListCustomerBloc.of(context)
                           .add(InitGetListOrderEvent("", 1, ""));
-                    },
-                  );
+
                 },
               );
             }
             if (state is ErrorAddCustomerOrState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
+              ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: state.msg,
-                  );
-                },
+
               );
             }
             if (state is SuccessAddContactCustomerState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
+    ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: "Update dữ liệu thành công!",
-                    textButton1: MESSAGES.OKE,
-                    backgroundButton1: COLORS.PRIMARY_COLOR,
+
                     onTap1: () {
                       Get.back();
                       Get.back();
@@ -190,20 +170,15 @@ class _EditContractState extends State<EditContract> {
                           .add(InitGetDetailContractEvent(int.parse(id)));
                       ContractBloc.of(context)
                           .add(InitGetContractEvent(1, "", ""));
-                    },
-                  );
+
                 },
               );
             }
             if (state is ErrorAddContactCustomerState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
+              ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: state.msg,
-                  );
-                },
+
               );
             }
           },
@@ -747,15 +722,10 @@ class _EditContractState extends State<EditContract> {
                 if (maxLength != '' && values.length > int.parse(maxLength)) {
                   values.removeRange(
                       int.parse(maxLength) - 1, values.length - 1);
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return WidgetDialog(
+    ShowDialogCustom.showDialogBase(
                         title: MESSAGES.NOTIFICATION,
                         content: "Bạn chỉ được chọn ${maxLength} giá trị",
-                      );
-                    },
+
                   );
                 } else {
                   List<String> res = [];

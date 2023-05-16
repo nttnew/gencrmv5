@@ -13,7 +13,6 @@ import '../../../../src/src_index.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../../../widgets/widget_appbar.dart';
-import '../../../../widgets/widget_dialog.dart';
 import '../../../../widgets/widget_text.dart';
 import '../../attachment/attachment.dart';
 
@@ -77,7 +76,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
         title: 'Xóa',
         icon: ICONS.IC_DELETE_SVG,
         onThaoTac: () {
-          ShowDialogCustom.showDialogTwoButton(
+          ShowDialogCustom.showDialogBase(
               onTap2: () =>
                   GetDetailClueBloc.of(context).add(InitDeleteClueEvent(id)),
               content: "Bạn chắc chắn muốn xóa không ?");
@@ -91,41 +90,29 @@ class _InfoCluePageState extends State<InfoCluePage> {
         listener: (context, state) async {
           if (state is SuccessDeleteClueState) {
             LoadingApi().popLoading();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return WidgetDialog(
-                  title: MESSAGES.NOTIFICATION,
-                  content: "Thành công",
-                  textButton1: MESSAGES.OKE,
-                  backgroundButton1: COLORS.PRIMARY_COLOR,
-                  onTap1: () {
-                    Get.back();
-                    Get.back();
-                    Get.back();
-                    Get.back();
-                    GetListClueBloc.of(context)
-                        .add(InitGetListClueEvent('', 1, ''));
-                  },
-                );
+            ShowDialogCustom.showDialogBase(
+              title: MESSAGES.NOTIFICATION,
+              content: "Thành công",
+              onTap1: () {
+                Get.back();
+                Get.back();
+                Get.back();
+                Get.back();
+                GetListClueBloc.of(context)
+                    .add(InitGetListClueEvent('', 1, ''));
               },
             );
           } else if (state is ErrorDeleteClueState) {
             LoadingApi().popLoading();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return WidgetDialog(
-                  title: MESSAGES.NOTIFICATION,
-                  content: state.msg,
-                  textButton1: "Quay lại",
-                  onTap1: () {
-                    Get.back();
-                    Get.back();
-                    Get.back();
-                    Get.back();
-                  },
-                );
+            ShowDialogCustom.showDialogBase(
+              title: MESSAGES.NOTIFICATION,
+              content: state.msg,
+              textButton1: "Quay lại",
+              onTap1: () {
+                Get.back();
+                Get.back();
+                Get.back();
+                Get.back();
               },
             );
           }

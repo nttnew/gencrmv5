@@ -11,7 +11,6 @@ import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../bloc/support/support_bloc.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
-import '../../../../widgets/widget_dialog.dart';
 import '../../attachment/attachment.dart';
 
 class DetailSupportScreen extends StatefulWidget {
@@ -69,7 +68,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
       title: "Xoá",
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
-        ShowDialogCustom.showDialogTwoButton(
+        ShowDialogCustom.showDialogBase(
             onTap2: () =>
                 DetailSupportBloc.of(context).add(DeleteSupportEvent(id)),
             content: "Bạn chắc chắn muốn xóa không ?");
@@ -106,14 +105,9 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
               listener: (context, state) async {
                 if (state is SuccessDeleteSupportState) {
                   LoadingApi().popLoading();
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return WidgetDialog(
+                  ShowDialogCustom.showDialogBase(
                         title: MESSAGES.NOTIFICATION,
                         content: "Thành công",
-                        textButton1: MESSAGES.OKE,
-                        backgroundButton1: COLORS.PRIMARY_COLOR,
                         onTap1: () {
                           Get.back();
                           Get.back();
@@ -122,15 +116,10 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                           SupportBloc.of(context)
                               .add(InitGetSupportEvent(1, '', ''));
                         },
-                      );
-                    },
                   );
                 } else if (state is ErrorDeleteSupportState) {
                   LoadingApi().popLoading();
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return WidgetDialog(
+                  ShowDialogCustom.showDialogBase(
                         title: MESSAGES.NOTIFICATION,
                         content: state.msg,
                         textButton1: "Quay lại",
@@ -139,8 +128,6 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                           Get.back();
                           Get.back();
                           Get.back();
-                        },
-                      );
                     },
                   );
                 }

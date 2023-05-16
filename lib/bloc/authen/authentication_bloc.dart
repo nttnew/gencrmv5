@@ -6,9 +6,6 @@ import 'package:equatable/equatable.dart';
 import 'package:gen_crm/api_resfull/user_repository.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/storages.dart';
-import 'package:get/get.dart';
-
-import '../../widgets/widget_dialog.dart';
 
 part 'authentication_event.dart';
 
@@ -52,15 +49,14 @@ class AuthenticationBloc
         await _localRepository.saveUserID("");
         _userRepository.logOut();
       } else {
-        Get.dialog(WidgetDialog(
+        ShowDialogCustom.showDialogBase(
           title: MESSAGES.NOTIFICATION,
           content: response.msg ?? "Có lỗi xảy ra!!!",
           textButton1: MESSAGES.OKE,
-          backgroundButton1: COLORS.PRIMARY_COLOR,
           onTap1: () {
             AppNavigator.navigateLogout();
           },
-        ));
+        );
       }
     }
   }

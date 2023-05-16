@@ -437,7 +437,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                     ),
                     GridView.builder(
                         padding: EdgeInsets.symmetric(
-                          horizontal: 30,
+                          horizontal: 25,
                         ),
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,

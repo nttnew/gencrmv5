@@ -4,11 +4,9 @@ import 'package:formz/formz.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/widgets/widget_button.dart';
 import 'package:gen_crm/widgets/widget_input.dart';
-
 import '../../../../src/src_index.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../widgets/widget_dialog.dart';
 
 class ChangePassWordPage extends StatefulWidget {
   const ChangePassWordPage({Key? key}) : super(key: key);
@@ -81,17 +79,10 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
             listener: (context, state) {
               if (state.status.isSubmissionSuccess) {
                 GetSnackBarUtils.removeSnackBar();
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return WidgetDialog(
-                      textButton1: MESSAGES.OKE,
-                      onTap1: () => {AppNavigator.navigateLogin()},
-                      title: MESSAGES.SUCCESS,
-                      content: state.message,
-                    );
-                  },
+                ShowDialogCustom.showDialogBase(
+                  onTap1: () => {AppNavigator.navigateLogin()},
+                  title: MESSAGES.SUCCESS,
+                  content: state.message,
                 );
               }
               if (state.status.isSubmissionInProgress) {
@@ -99,15 +90,9 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
               }
               if (state.status.isSubmissionFailure) {
                 GetSnackBarUtils.removeSnackBar();
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return WidgetDialog(
-                      title: MESSAGES.NOTIFICATION,
-                      content: state.message,
-                    );
-                  },
+                ShowDialogCustom.showDialogBase(
+                  title: MESSAGES.NOTIFICATION,
+                  content: state.message,
                 );
               }
             },
@@ -126,15 +111,10 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
                     onTap: () {
                       state.status.isValidated
                           ? bloc.add(FormChangePasswordSubmitted())
-                          : showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (BuildContext context) {
-                                return const WidgetDialog(
+                          : ShowDialogCustom.showDialogBase(
                                   title: MESSAGES.NOTIFICATION,
                                   content: 'Kiểm tra lại thông tin',
-                                );
-                              });
+                               );
                     },
                     height: 45,
                     padding: EdgeInsets.all(0),
@@ -301,7 +281,9 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
             onTap: () => setState(
                 () => obscureConfirmPassword = !obscureConfirmPassword),
             child: SvgPicture.asset(
-              obscureConfirmPassword ? ICONS.IC_HINT_PASS_SVG : ICONS.IC_HINT_SVG,
+              obscureConfirmPassword
+                  ? ICONS.IC_HINT_PASS_SVG
+                  : ICONS.IC_HINT_SVG,
               color: COLORS.GREY,
               height: 25,
               width: 25,

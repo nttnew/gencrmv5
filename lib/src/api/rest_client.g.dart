@@ -3578,9 +3578,9 @@ class _RestClient implements RestClient {
   @override
   Future<AddCustomerIndividual> getEditProduct(id) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'id': id};
     final _headers = <String, dynamic>{};
-    final _data = {'id': id};
+    final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<AddCustomerIndividual>(Options(
       method: 'GET',
@@ -3649,7 +3649,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ResponseSaveProduct> editProduct(
+  Future<ResponseEditProduct> editProduct(
     map,
     id,
   ) async {
@@ -3659,7 +3659,7 @@ class _RestClient implements RestClient {
     final _data = <String, dynamic>{};
     _data.addAll(map);
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ResponseSaveProduct>(Options(
+        _setStreamType<ResponseEditProduct>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -3671,7 +3671,7 @@ class _RestClient implements RestClient {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ResponseSaveProduct.fromJson(_result.data!);
+    final value = ResponseEditProduct.fromJson(_result.data!);
     return value;
   }
 

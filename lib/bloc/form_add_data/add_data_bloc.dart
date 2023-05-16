@@ -428,7 +428,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         if (files != null) {
           final responseUpload = await userRepository.uploadMultiFileBase(
-              id: response.id.toString(),
+              id: response.data?.id.toString() ?? '',
               files: files,
               module: getURLModule(Module.PRODUCT));
           if ((responseUpload.code == BASE_URL.SUCCESS) ||
@@ -460,8 +460,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     LoadingApi().pushLoading();
     try {
       yield LoadingAddContactCustomerState();
-      final response =
-          await userRepository.saveEditProductCustomer(data: data);
+      final response = await userRepository.saveEditProductCustomer(data: data);
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         if (files != null) {

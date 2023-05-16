@@ -10,7 +10,6 @@ import '../../../../bloc/detail_product/detail_product_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
-import '../../../../widgets/widget_dialog.dart';
 import '../../attachment/attachment.dart';
 
 class DetailProductScreen extends StatefulWidget {
@@ -59,7 +58,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
       title: "Xoá",
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
-        ShowDialogCustom.showDialogTwoButton(
+        ShowDialogCustom.showDialogBase(
             onTap2: () async {
               DetailProductBloc.of(context).add(DeleteProductEvent(id));
             },
@@ -93,28 +92,18 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
         listener: (context, state) async {
           if (state is SuccessDeleteProductState) {
             LoadingApi().popLoading();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return WidgetDialog(
+           ShowDialogCustom.showDialogBase(
                   title: MESSAGES.NOTIFICATION,
                   content: "Xoá thành công",
-                  textButton1: MESSAGES.OKE,
-                  backgroundButton1: COLORS.PRIMARY_COLOR,
                   onTap1: () {
                     Navigator.pushNamedAndRemoveUntil(
                         context, ROUTE_NAMES.PRODUCT, ModalRoute.withName('/'),
                         arguments: title);
-                  },
-                );
               },
             );
           } else if (state is ErrorDeleteProductState) {
             LoadingApi().popLoading();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return WidgetDialog(
+           ShowDialogCustom.showDialogBase(
                   title: MESSAGES.NOTIFICATION,
                   content: state.msg,
                   textButton1: "Quay lại",
@@ -122,9 +111,9 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                     Get.back();
                     Get.back();
                     Get.back();
-                    DetailProductBloc.of(context).add(InitGetDetailProductEvent(id));
-                  },
-                );
+                    DetailProductBloc.of(context)
+                        .add(InitGetDetailProductEvent(id));
+
               },
             );
           }
@@ -132,6 +121,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 25),
           height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
           child: Stack(
             children: [
               Positioned(

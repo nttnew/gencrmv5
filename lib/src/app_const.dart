@@ -1,17 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/src/src_index.dart';
-import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:plugin_pitel/services/models/pn_push_params.dart';
 import 'package:plugin_pitel/services/pitel_service.dart';
 import 'package:plugin_pitel/services/sip_info_data.dart';
 import '../bloc/login/login_bloc.dart';
 import '../storages/share_local.dart';
-import '../widgets/widget_dialog.dart';
 import '../widgets/widget_text.dart';
 
 const int IS_AFTER = 1;
@@ -24,15 +21,13 @@ const int PRODUCT_CUSTOMER_TYPE = 98;
 const LOADING = 'loading';
 
 void loginSessionExpired() {
-  Get.dialog(WidgetDialog(
+  ShowDialogCustom.showDialogBase(
     title: MESSAGES.NOTIFICATION,
     content: MESSAGES.PHIEN_DANG_NHAP_HET,
-    textButton1: MESSAGES.OKE,
-    backgroundButton1: COLORS.PRIMARY_COLOR,
     onTap1: () {
       AppNavigator.navigateLogout();
     },
-  ));
+  );
 }
 
 void handleRegisterBase(
@@ -194,50 +189,89 @@ Widget itemTextIcon({
 }) {
   return text == ''
       ? SizedBox()
-      : GestureDetector(
-          onTap: () {
-            onTap != null ? onTap() : null;
-          },
-          child: Padding(
-            padding: EdgeInsets.only(
-              top: paddingTop ?? 15,
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 16,
-                  height: 16,
-                  child: icon.runtimeType == Icon
-                      ? icon
-                      : isSVG
-                          ? SvgPicture.asset(
-                              icon,
-                              color: colorIcon != null ? colorIcon : null,
-                              fit: BoxFit.contain,
-                            )
-                          : Image.asset(
-                              icon,
-                              color: colorIcon != null ? colorIcon : null,
-                              fit: BoxFit.contain,
+      : onTap != null
+          ? GestureDetector(
+              onTap: () => onTap(),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: paddingTop ?? 15,
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 16,
+                      height: 16,
+                      child: icon.runtimeType == Icon
+                          ? icon
+                          : isSVG
+                              ? SvgPicture.asset(
+                                  icon,
+                                  color: colorIcon != null ? colorIcon : null,
+                                  fit: BoxFit.contain,
+                                )
+                              : Image.asset(
+                                  icon,
+                                  color: colorIcon != null ? colorIcon : null,
+                                  fit: BoxFit.contain,
+                                ),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Expanded(
+                      child: WidgetText(
+                        title: text,
+                        style: styleText ??
+                            AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                              color:
+                                  colorText != null ? colorText : COLORS.BLACK,
+                              fontSize: 14,
                             ),
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  width: 8,
-                ),
-                Expanded(
-                  child: WidgetText(
-                    title: text,
-                    style: styleText ??
-                        AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
-                          color: colorText != null ? colorText : COLORS.BLACK,
-                          fontSize: 14,
-                        ),
+              ),
+            )
+          : Padding(
+              padding: EdgeInsets.only(
+                top: paddingTop ?? 15,
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 16,
+                    height: 16,
+                    child: icon.runtimeType == Icon
+                        ? icon
+                        : isSVG
+                            ? SvgPicture.asset(
+                                icon,
+                                color: colorIcon != null ? colorIcon : null,
+                                fit: BoxFit.contain,
+                              )
+                            : Image.asset(
+                                icon,
+                                color: colorIcon != null ? colorIcon : null,
+                                fit: BoxFit.contain,
+                              ),
                   ),
-                ),
-              ],
-            ),
-          ),
-        );
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: WidgetText(
+                      title: text,
+                      style: styleText ??
+                          AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                            color: colorText != null ? colorText : COLORS.BLACK,
+                            fontSize: 14,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+            );
 }
 
 String getCheckHttp(String text) {

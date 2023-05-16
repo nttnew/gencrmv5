@@ -110,7 +110,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
                             context: context,
                             barrierDismissible: false,
                             builder: (BuildContext context) {
-                              return WidgetDialog(
+                              return ShowDialogCustom.showDialogBase(
                                 title: MESSAGES.NOTIFICATION,
                                 content:
                                     "Bạn phải nhập số điện thoại hoặc biển số",

@@ -55,6 +55,7 @@ import '../models/model_generator/report_option.dart';
 import '../models/model_generator/report_product.dart';
 import '../models/model_generator/response_bao_cao.dart';
 import '../models/model_generator/response_car_dashboard.dart';
+import '../models/model_generator/response_edit_product.dart';
 import '../models/model_generator/response_save_product.dart';
 import '../models/model_generator/save_checkin_response.dart';
 import '../models/model_generator/support_customer.dart';
@@ -600,7 +601,7 @@ abstract class RestClient {
 
   @GET(BASE_URL.EDIT_PRODUCT)
   Future<AddCustomerIndividual> getEditProduct(
-    @Field('id') String id,
+    @Query('id') String id,
   );
 
   @POST(BASE_URL.ADD_PRODUCT_MODULE)
@@ -612,7 +613,7 @@ abstract class RestClient {
   );
 
   @POST(BASE_URL.ADD_PRODUCT_MODULE)
-  Future<ResponseSaveProduct> editProduct(
+  Future<ResponseEditProduct> editProduct(
       @Body() Map<String, dynamic> map, @Query('id') int id);
 
   @POST(BASE_URL.GET_LIST_BAO_CAO)

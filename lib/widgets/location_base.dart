@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gen_crm/widgets/widget_dialog.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-
 import '../src/messages.dart';
+import '../src/show_dialog.dart';
 
 Future<Position?> determinePosition(BuildContext context) async {
   bool serviceEnabled;
@@ -38,21 +37,16 @@ void showDialogPermissionLocation(BuildContext context,
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return WidgetDialog(
-          twoButton: true,
+        return ShowDialogCustom.showDialogBase(
           title: MESSAGES.NOTIFICATION,
           content: 'Bạn chưa cấp quyền truy cập vào vị trí?',
           textButton2: 'Đi đến cài đặt',
-          textButton1: 'Ok',
           onTap2: () async {
             if (isDevice) {
               await Geolocator.openLocationSettings();
             } else {
               await Geolocator.openAppSettings();
             }
-            Get.back();
-          },
-          onTap1: () {
             Get.back();
           },
         );

@@ -72,7 +72,8 @@ class _ItemProductModuleState extends State<ItemProductModule> {
                     ),
                     TextSpan(
                       text: ' (${widget.productModule.maSanPham})',
-                      style: AppStyle.DEFAULT_16_BOLD.copyWith(color: Colors.grey),
+                      style:
+                          AppStyle.DEFAULT_16_BOLD.copyWith(color: Colors.grey),
                     ),
                   ]),
                 ),
@@ -85,12 +86,18 @@ class _ItemProductModuleState extends State<ItemProductModule> {
                   textScaleFactor: MediaQuery.of(context).textScaleFactor,
                   text: TextSpan(children: [
                     TextSpan(
-                        text:
-                            '${widget.productModule.phienBan ?? 0} phiên bản | có thể ',
+                        text: widget.productModule.phienBan ?? '',
                         style: AppStyle.DEFAULT_14
                             .copyWith(fontWeight: FontWeight.w400)),
                     TextSpan(
-                      text: widget.productModule.coTheBan ?? '0',
+                        text: widget.productModule.phienBan != null &&
+                                widget.productModule.phienBan != ''
+                            ? ' | '
+                            : '',
+                        style: AppStyle.DEFAULT_14
+                            .copyWith(fontWeight: FontWeight.w400)),
+                    TextSpan(
+                      text: widget.productModule.coTheBan ?? '',
                       style: AppStyle.DEFAULT_14.copyWith(
                         color: COLORS.TEXT_COLOR,
                         fontWeight: FontWeight.w400,

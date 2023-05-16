@@ -186,23 +186,13 @@ Future<List<File>> onDinhKemBase(BuildContext context) async {
   List<File> listPickFile = [];
   if (await Permission.storage.request().isGranted) {
     if (Platform.isAndroid) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return WidgetDialog(
-            twoButton: true,
-            title: MESSAGES.NOTIFICATION,
-            content: MESSAGES.BAN_CHUA_CAP_QUYEN,
-            textButton2: MESSAGES.DI_DEN_CAI_DAT,
-            textButton1: MESSAGES.OKE,
-            onTap2: () {
-              openAppSettings();
-              Get.back();
-            },
-            onTap1: () {
-              Get.back();
-            },
-          );
+      ShowDialogCustom.showDialogBase(
+        title: MESSAGES.NOTIFICATION,
+        content: MESSAGES.BAN_CHUA_CAP_QUYEN,
+        textButton2: MESSAGES.DI_DEN_CAI_DAT,
+        onTap2: () {
+          openAppSettings();
+          Get.back();
         },
       );
     } else {

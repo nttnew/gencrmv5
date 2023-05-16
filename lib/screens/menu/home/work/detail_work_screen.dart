@@ -12,7 +12,6 @@ import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../widgets/btn_thao_tac.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
-import '../../../../widgets/widget_dialog.dart';
 import '../../attachment/attachment.dart';
 
 class DetailWorkScreen extends StatefulWidget {
@@ -81,7 +80,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       title: "Xoá",
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
-        ShowDialogCustom.showDialogTwoButton(
+        ShowDialogCustom.showDialogBase(
             onTap2: () =>
                 DetailWorkBloc.of(context).add(InitDeleteWorkEvent(id)),
             content: "Bạn chắc chắn muốn xóa không ?");
@@ -114,30 +113,20 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
         listener: (context, state) {
           if (state is SuccessDeleteWorkState) {
             LoadingApi().popLoading();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return WidgetDialog(
+           ShowDialogCustom.showDialogBase(
                   title: MESSAGES.NOTIFICATION,
                   content: "Thành công",
-                  textButton1: MESSAGES.OKE,
-                  backgroundButton1: COLORS.PRIMARY_COLOR,
                   onTap1: () {
                     Get.back();
                     Get.back();
                     Get.back();
                     Get.back();
                     WorkBloc.of(context).add(InitGetListWorkEvent("1", "", ""));
-                  },
-                );
               },
             );
           } else if (state is ErrorDeleteWorkState) {
             LoadingApi().popLoading();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return WidgetDialog(
+           ShowDialogCustom.showDialogBase(
                   title: MESSAGES.NOTIFICATION,
                   content: state.msg,
                   textButton1: "Quay lại",
@@ -147,8 +136,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                     Get.back();
                     Get.back();
                   },
-                );
-              },
+
             );
           }
         },
