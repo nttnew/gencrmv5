@@ -134,6 +134,7 @@ class _FormEditState extends State<FormEdit> {
     return Stack(
       children: [
         Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(
               toolbarHeight: AppValue.heights * 0.1,
               backgroundColor: HexColor("#D0F1EB"),
