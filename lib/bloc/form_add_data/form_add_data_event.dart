@@ -125,3 +125,7 @@ class InitFormAddJobContractEvent extends FormAddEvent {
 class InitFormAddProductEvent extends FormAddEvent {
   InitFormAddProductEvent();
 }
+
+class InitFormAddProductCustomerEvent extends FormAddEvent {
+  InitFormAddProductCustomerEvent();
+}

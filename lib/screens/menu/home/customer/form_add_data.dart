@@ -9,6 +9,7 @@ import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/contract/phone_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
+import 'package:gen_crm/bloc/product_customer_module/product_customer_module_bloc.dart';
 import 'package:gen_crm/bloc/product_module/product_module_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/menu/home/customer/input_dropDown.dart';
@@ -121,6 +122,8 @@ class _FormAddDataState extends State<FormAddData> {
           .add(InitFormAddJobContractEvent(Get.arguments[2].toString()));
     } else if (type == PRODUCT_TYPE) {
       FormAddBloc.of(context).add(InitFormAddProductEvent());
+    } else if (type == PRODUCT_CUSTOMER_TYPE) {
+      FormAddBloc.of(context).add(InitFormAddProductCustomerEvent());
     }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Future.delayed(Duration(seconds: 1));
@@ -485,6 +488,9 @@ class _FormAddDataState extends State<FormAddData> {
                           } else if (type == PRODUCT_TYPE) {
                             ProductModuleBloc.of(context)
                                 .add(InitGetListProductModuleEvent());
+                          } else if (type == PRODUCT_CUSTOMER_TYPE) {
+                            ProductCustomerModuleBloc.of(context)
+                                .add(GetProductCustomerModuleEvent());
                           }
                         },
                       );
@@ -1046,6 +1052,9 @@ class _FormAddDataState extends State<FormAddData> {
       } else if (type == PRODUCT_TYPE) {
         AddDataBloc.of(context)
             .add(AddProductEvent(data, files: AttackBloc.of(context).listFile));
+      }else if (type == PRODUCT_CUSTOMER_TYPE) {
+        AddDataBloc.of(context)
+            .add(AddProductCustomerEvent(data, files: AttackBloc.of(context).listFile));
       }
     }
   }

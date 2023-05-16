@@ -32,15 +32,15 @@ class _ClueScreenState extends State<ClueScreen> {
   ScrollController _scrollController = ScrollController();
   @override
   void initState() {
-    GetListClueBloc.of(context).add(InitGetListClueEvent('', 1, ''));
+    GetListClueBloc.of(context)
+        .add(InitGetListClueEvent('', BASE_URL.PAGE_DEFAULT, ''));
     _scrollController.addListener(() {
       if (_scrollController.offset ==
               _scrollController.position.maxScrollExtent &&
           lenght < total) {
-        GetListClueBloc.of(context)
-            .add(InitGetListClueEvent('', page + 1, search));
         page = page + 1;
-      } else {}
+        GetListClueBloc.of(context).add(InitGetListClueEvent('', page, search));
+      }
     });
     super.initState();
   }
@@ -56,7 +56,6 @@ class _ClueScreenState extends State<ClueScreen> {
         child: FloatingActionButton(
           backgroundColor: Color(0xff1AA928),
           onPressed: () {
-            // AppNavigator.navigateAddClue();
             AppNavigator.navigateFormAdd('Thêm ${Get.arguments}', 2);
           },
           child: Icon(Icons.add, size: 40),
@@ -105,8 +104,10 @@ class _ClueScreenState extends State<ClueScreen> {
                 child: RefreshIndicator(
                   onRefresh: () =>
                       Future.delayed(Duration(microseconds: 300), () {
+                    page = BASE_URL.PAGE_DEFAULT;
+
                     GetListClueBloc.of(context)
-                        .add(InitGetListClueEvent('', 1, ''));
+                        .add(InitGetListClueEvent('', page, ''));
                   }),
                   child: ListView.separated(
                     padding: EdgeInsets.only(top: 16),
@@ -138,11 +139,7 @@ class _ClueScreenState extends State<ClueScreen> {
 
   _buildSearch() {
     return Container(
-        margin: EdgeInsets.symmetric(
-            horizontal: AppValue.widths * 0.05,
-            vertical: AppValue.heights * 0.02),
-        width: double.infinity,
-        height: AppValue.heights * 0.06,
+        margin: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
         decoration: BoxDecoration(
           border: Border.all(color: HexColor("#DBDBDB")),
           borderRadius: BorderRadius.circular(10),
@@ -164,7 +161,9 @@ class _ClueScreenState extends State<ClueScreen> {
               },
               onSubmit: (v) {
                 search = v;
-                GetListClueBloc.of(context).add(InitGetListClueEvent('', 1, v));
+                page = BASE_URL.PAGE_DEFAULT;
+                GetListClueBloc.of(context)
+                    .add(InitGetListClueEvent('', page, v));
               },
             );
           }
@@ -222,17 +221,21 @@ class _ClueScreenState extends State<ClueScreen> {
               padding: const EdgeInsets.only(top: 15),
               child: Row(
                 children: [
-                  itemTextIcon(
-                    paddingTop: 0,
-                    text: clueData.phone?.val ?? 'Chưa có',
-                    icon: ICONS.IC_CALL_SVG,
-                    styleText: AppStyle.DEFAULT_LABEL_PRODUCT
-                        .copyWith(color: COLORS.TEXT_COLOR),
+                  Expanded(
+                    child: itemTextIcon(
+                      paddingTop: 0,
+                      text: clueData.phone?.val ?? 'Chưa có',
+                      icon: ICONS.IC_CALL_SVG,
+                      styleText: AppStyle.DEFAULT_LABEL_PRODUCT
+                          .copyWith(color: COLORS.TEXT_COLOR),
+                    ),
                   ),
-                  Spacer(),
+                  SizedBox(
+                    width: 8,
+                  ),
                   SvgPicture.asset(ICONS.IC_QUESTION_SVG),
                   SizedBox(
-                    width: AppValue.widths * 0.01,
+                    width: 4,
                   ),
                   WidgetText(
                     title: clueData.total_note ?? 'Chưa có',
@@ -283,10 +286,11 @@ class _ClueScreenState extends State<ClueScreen> {
                             (index) => GestureDetector(
                                   onTap: () {
                                     Get.back();
+                                    page = BASE_URL.PAGE_DEFAULT;
                                     GetListClueBloc.of(context).add(
                                         InitGetListClueEvent(
                                             data[index].id.toString(),
-                                            1,
+                                            page,
                                             search));
                                   },
                                   child: Container(

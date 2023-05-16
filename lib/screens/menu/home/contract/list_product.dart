@@ -340,7 +340,9 @@ class _ItemProductState extends State<ItemProduct> {
       widget.onVAT!(widget.data.vat, Vat);
     }
     _priceTextfieldController.text =
-        double.parse(widget.data.sell_price ?? '0').toInt().toString();
+        widget.data.sell_price != '' && widget.data.sell_price != null
+            ? double.parse(widget.data.sell_price ?? '0').toInt().toString()
+            : '';
     soLuong.listen((value) {
       widget.onReload();
     });
@@ -402,8 +404,7 @@ class _ItemProductState extends State<ItemProduct> {
                         borderRadius: BorderRadius.circular(7)),
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: WidgetText(
-                      title: "Giá: " +
-                          "${AppValue.format_money(double.parse(price != '' ? price : '0'))}",
+                      title: "Giá: " + "${AppValue.format_money(price)}",
                       style: AppStyle.DEFAULT_14_BOLD
                           .copyWith(color: COLORS.TEXT_GREY),
                     ),

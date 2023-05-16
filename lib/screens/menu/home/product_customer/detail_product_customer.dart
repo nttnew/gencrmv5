@@ -1,34 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gen_crm/bloc/detail_product_customer/detail_product_customer_bloc.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
-import '../../../../bloc/detail_product/detail_product_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../../../widgets/widget_dialog.dart';
 import '../../attachment/attachment.dart';
 
-class DetailProductScreen extends StatefulWidget {
-  const DetailProductScreen({Key? key}) : super(key: key);
+class DetailProductCustomerScreen extends StatefulWidget {
+  const DetailProductCustomerScreen({Key? key}) : super(key: key);
 
   @override
-  State<DetailProductScreen> createState() => _DetailProductScreenState();
+  State<DetailProductCustomerScreen> createState() =>
+      _DetailProductCustomerScreenState();
 }
 
-class _DetailProductScreenState extends State<DetailProductScreen> {
-  String id = Get.arguments[1];
+class _DetailProductCustomerScreenState
+    extends State<DetailProductCustomerScreen> {
   String title = Get.arguments[0];
+  String id = Get.arguments[1];
+
   List<ModuleThaoTac> list = [];
 
   @override
   void initState() {
     getThaoTac();
-    DetailProductBloc.of(context).add(InitGetDetailProductEvent(id));
+    DetailProductCustomerBloc.of(context)
+        .add(InitGetDetailProductCustomerEvent(id));
     super.initState();
   }
 
@@ -41,7 +45,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => Attachment(
                   id: id,
-                  typeModule: Module.PRODUCT,
+                  typeModule: Module.SAN_PHAM_KH,
                 )));
       },
     ));
@@ -51,7 +55,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditDataScreen(id, PRODUCT_TYPE);
+        AppNavigator.navigateEditDataScreen(id, PRODUCT_CUSTOMER_TYPE);
       },
     ));
 
@@ -61,7 +65,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
       onThaoTac: () {
         ShowDialogCustom.showDialogTwoButton(
             onTap2: () async {
-              DetailProductBloc.of(context).add(DeleteProductEvent(id));
+              DetailProductCustomerBloc.of(context).add(DeleteProductEvent(id));
             },
             content: "Bạn chắc chắn muốn xóa không ?");
       },
@@ -80,7 +84,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
         ),
         leading: Padding(
             padding: EdgeInsets.only(left: 30),
-            child: InkWell(
+            child: GestureDetector(
                 onTap: () => AppNavigator.navigateBack(),
                 child: Icon(Icons.arrow_back, color: Colors.black))),
         shape: RoundedRectangleBorder(
@@ -89,7 +93,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
           ),
         ),
       ),
-      body: BlocListener<DetailProductBloc, DetailProductState>(
+      body: BlocListener<DetailProductCustomerBloc, DetailProductCustomerState>(
         listener: (context, state) async {
           if (state is SuccessDeleteProductState) {
             LoadingApi().popLoading();
@@ -102,8 +106,8 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                   textButton1: MESSAGES.OKE,
                   backgroundButton1: COLORS.PRIMARY_COLOR,
                   onTap1: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, ROUTE_NAMES.PRODUCT, ModalRoute.withName('/'),
+                    Navigator.pushNamedAndRemoveUntil(context,
+                        ROUTE_NAMES.PRODUCT_CUSTOMER, ModalRoute.withName('/'),
                         arguments: title);
                   },
                 );
@@ -122,7 +126,8 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                     Get.back();
                     Get.back();
                     Get.back();
-                    DetailProductBloc.of(context).add(InitGetDetailProductEvent(id));
+                    DetailProductCustomerBloc.of(context)
+                        .add(InitGetDetailProductCustomerEvent(id));
                   },
                 );
               },
@@ -132,6 +137,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 25),
           height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
           child: Stack(
             children: [
               Positioned(
@@ -142,9 +148,9 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                   showThaoTac(context, list);
                 }),
               ),
-              BlocBuilder<DetailProductBloc, DetailProductState>(
-                  builder: (context, state) {
-                if (state is UpdateGetDetailProductState)
+              BlocBuilder<DetailProductCustomerBloc,
+                  DetailProductCustomerState>(builder: (context, state) {
+                if (state is UpdateGetDetailProductCustomerState)
                   return SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -219,7 +225,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                                                                     BASE_URL
                                                                         .KHACH_HANG) {
                                                                   AppNavigator.navigateDetailCustomer(
-                                                                      state.productInfo.data?[index].data?[index1].id ??
+                                                                      state.productInfo.data?[index].data?[index1].link ??
                                                                           '',
                                                                       state
                                                                               .productInfo

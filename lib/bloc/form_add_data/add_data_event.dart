@@ -80,3 +80,17 @@ class EditProductEvent extends AddDataEvent {
 
   EditProductEvent(this.data, this.id, {this.files});
 }
+
+class AddProductCustomerEvent extends AddDataEvent {
+  final Map<String, dynamic> data;
+  final List<File>? files;
+
+  AddProductCustomerEvent(this.data, {this.files});
+}
+
+class EditProductCustomerEvent extends AddDataEvent {
+  final Map<String, dynamic> data;
+  final List<File>? files;
+
+  EditProductCustomerEvent(this.data, {this.files});
+}

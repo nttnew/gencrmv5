@@ -54,4 +54,6 @@ class ROUTE_NAMES {
   static const String DETAIL_PRODUCT = '/detail_product';
   static const String ATTACHMENT = '/attachment';
   static const String CHECK_IN = '/CHECKIN';
+  static const String PRODUCT_CUSTOMER = '/PRODUCT_CUSTOMER';
+  static const String DETAIL_PRODUCT_CUSTOMER = '/DETAIL_PRODUCT_CUSTOMER';
 }

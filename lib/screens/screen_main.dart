@@ -86,7 +86,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
               } else if (id == ModuleMy.SAN_PHAM) {
                 AppNavigator.navigateProduct(name);
               } else if (id == ModuleMy.SAN_PHAM_KH) {
-                //todo
+                AppNavigator.navigateProductCustomer(name);
               }
             }),
       );
@@ -293,7 +293,8 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                 blur: 5,
               ),
               children: LoginBloc.of(context)
-                  .listMenuFlash.reversed
+                  .listMenuFlash
+                  .reversed
                   .map(
                     (e) => GestureDetector(
                       onTap: () async {

@@ -164,6 +164,20 @@ class BASE_URL {
   static const GET_LIST_BAO_CAO = 'modules/genmobile2/dashboard/list';
   static const HOME_BAO_CAO = 'modules/genmobile2/dashboard/xetrongxuong';
   static const SAVE_CHECK_IN = 'modules/genmobile2/job/checkIn';
+  static const LIST_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/list';
+  static const PRODUCT_CUSTOMER_DETAIL =
+      'modules/genmobile2/productCustomer/detail';
+  static const GET_FORM_ADD_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/form';
+  static const SAVE_FROM_PRODUCT_CUSTOMER_ADD =
+      'modules/genmobile2/productCustomer/save';
+  static const GET_FORM_EDIT_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/form';
+  static const SAVE_FROM_PRODUCT_CUSTOMER_EDIT =
+      'modules/genmobile2/productCustomer/save';
+  static const PRODUCT_CUSTOMER_DELETE =
+      'modules/genmobile2/productCustomer/delete';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';
@@ -200,7 +214,6 @@ class Module {
   static const String HO_TRO = 'hotro';
   static const String CONG_VIEC = 'congviec';
   static const String CO_HOI_BH = 'cohoibh';
-  static const String SAN_PHAM = 'sanpham';
   static const String SAN_PHAM_KH = 'sanphamkh';
   static const String DAU_MOI = 'daumoi';
   static const String PRODUCT = 'sanpham';
@@ -222,6 +235,8 @@ String getURLModule(String module) {
     return 'opportunity';
   } else if (module == Module.PRODUCT) {
     return 'product';
+  } else if (module == Module.SAN_PHAM_KH) {
+    return 'productCustomer';
   }
   return '';
 }

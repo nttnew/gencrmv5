@@ -91,15 +91,18 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
             padding: const EdgeInsets.only(top: 15),
             child: Row(
               children: [
-                itemTextIcon(
-                  paddingTop: 0,
-                  text: widget.data_list?.start_date ?? '',
-                  icon: ICONS.IC_ICON4_SVG,
+                Expanded(
+                  child: itemTextIcon(
+                    paddingTop: 0,
+                    text: widget.data_list?.start_date ?? '',
+                    icon: ICONS.IC_ICON4_SVG,
+                  ),
+                ),   SizedBox(
+                  width: 8,
                 ),
-                Spacer(),
                 SvgPicture.asset(ICONS.IC_QUESTION_SVG),
                 SizedBox(
-                  width: AppValue.widths * 0.01,
+                  width: 4,
                 ),
                 WidgetText(
                   title: widget.data_list!.total_comment.toString(),

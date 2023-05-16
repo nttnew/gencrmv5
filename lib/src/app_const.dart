@@ -20,6 +20,7 @@ const String BUNDLE_ID = 'com.gencrm';
 const String PACKAGE_ID = 'vn.gen_crm';
 const String TEAM_ID = 'AEY48KNZRS';
 const int PRODUCT_TYPE = 99;
+const int PRODUCT_CUSTOMER_TYPE = 98;
 const LOADING = 'loading';
 
 void loginSessionExpired() {
@@ -156,6 +157,10 @@ handleOnPressItemMenu(_drawerKey, value) async {
       _drawerKey.currentState!.openEndDrawer();
       AppNavigator.navigateProduct(value['title']);
       break;
+    case 'sanphamkh':
+      _drawerKey.currentState!.openEndDrawer();
+      AppNavigator.navigateProductCustomer(value['title']);
+      break;
     case '2':
       _drawerKey.currentState!.openEndDrawer();
       AppNavigator.navigateInformationAccount();
@@ -184,7 +189,6 @@ Widget itemTextIcon({
   required String text,
   required icon,
   bool isSVG = true,
-  Widget? widgetRight,
   Function? onTap,
   double? paddingTop,
 }) {
@@ -195,43 +199,41 @@ Widget itemTextIcon({
             onTap != null ? onTap() : null;
           },
           child: Padding(
-            padding: EdgeInsets.only(top: paddingTop ?? 15),
+            padding: EdgeInsets.only(
+              top: paddingTop ?? 15,
+            ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 16,
-                      height: 16,
-                      child: icon.runtimeType == Icon
-                          ? icon
-                          : isSVG
-                              ? SvgPicture.asset(
-                                  icon,
-                                  color: colorIcon != null ? colorIcon : null,
-                                  fit: BoxFit.contain,
-                                )
-                              : Image.asset(
-                                  icon,
-                                  color: colorIcon != null ? colorIcon : null,
-                                  fit: BoxFit.contain,
-                                ),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    WidgetText(
-                      title: text,
-                      style: styleText ??
-                          AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
-                            color: colorText != null ? colorText : COLORS.BLACK,
-                            fontSize: 14,
-                          ),
-                    ),
-                  ],
+                Container(
+                  width: 16,
+                  height: 16,
+                  child: icon.runtimeType == Icon
+                      ? icon
+                      : isSVG
+                          ? SvgPicture.asset(
+                              icon,
+                              color: colorIcon != null ? colorIcon : null,
+                              fit: BoxFit.contain,
+                            )
+                          : Image.asset(
+                              icon,
+                              color: colorIcon != null ? colorIcon : null,
+                              fit: BoxFit.contain,
+                            ),
                 ),
-                widgetRight != null ? widgetRight : SizedBox()
+                SizedBox(
+                  width: 8,
+                ),
+                Expanded(
+                  child: WidgetText(
+                    title: text,
+                    style: styleText ??
+                        AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                          color: colorText != null ? colorText : COLORS.BLACK,
+                          fontSize: 14,
+                        ),
+                  ),
+                ),
               ],
             ),
           ),

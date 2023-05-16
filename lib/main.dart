@@ -51,8 +51,10 @@ import 'bloc/contract/phone_bloc.dart';
 import 'bloc/contract_customer/contract_customer_bloc.dart';
 import 'bloc/detail_clue/detail_clue_bloc.dart';
 import 'bloc/detail_product/detail_product_bloc.dart';
+import 'bloc/detail_product_customer/detail_product_customer_bloc.dart';
 import 'bloc/job_contract/job_contract_bloc.dart';
 import 'bloc/list_note/list_note_bloc.dart';
+import 'bloc/product_customer_module/product_customer_module_bloc.dart';
 import 'bloc/product_module/product_module_bloc.dart';
 import 'bloc/readed_list_notification/readed_list_notifi_bloc.dart';
 import 'bloc/report/report_contact/report_contact_bloc.dart';
@@ -393,9 +395,17 @@ Future main() async {
           BlocProvider<CarListReportBloc>(
             create: (context) =>
                 CarListReportBloc(userRepository: userRepository),
-          ),  BlocProvider<CheckInBloc>(
+          ),
+          BlocProvider<CheckInBloc>(
+            create: (context) => CheckInBloc(userRepository: userRepository),
+          ),
+          BlocProvider<ProductCustomerModuleBloc>(
             create: (context) =>
-                CheckInBloc(userRepository: userRepository),
+                ProductCustomerModuleBloc(userRepository: userRepository),
+          ),
+          BlocProvider<DetailProductCustomerBloc>(
+            create: (context) =>
+                DetailProductCustomerBloc(userRepository: userRepository),
           ),
         ],
         child: ProviderScope(child: const MyApp()),

@@ -149,10 +149,8 @@ class _ChanceScreenState extends State<ChanceScreen> {
       if (state is UpdateGetListChanceState)
         return Container(
           margin: EdgeInsets.symmetric(
-              horizontal: AppValue.widths * 0.05,
-              vertical: AppValue.heights * 0.02),
-          width: double.infinity,
-          height: AppValue.heights * 0.06,
+              horizontal: 25,
+              vertical: 8),
           decoration: BoxDecoration(
             border: Border.all(color: HexColor("#DBDBDB")),
             borderRadius: BorderRadius.circular(10),

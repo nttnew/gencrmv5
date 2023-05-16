@@ -14,6 +14,7 @@ import 'package:gen_crm/src/models/model_generator/infor_acc.dart';
 import 'package:gen_crm/src/models/model_generator/job_chance.dart';
 import 'package:gen_crm/src/models/model_generator/job_customer.dart';
 import 'package:gen_crm/src/models/model_generator/list_notification.dart';
+import 'package:gen_crm/src/models/model_generator/list_product_customer_response.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/models/model_generator/note.dart';
 import 'package:gen_crm/src/models/model_generator/note_clue.dart';
@@ -35,6 +36,7 @@ import '../src/models/model_generator/add_customer.dart';
 import '../src/models/model_generator/base_response.dart';
 import '../src/models/model_generator/contract.dart';
 import '../src/models/model_generator/contract_customer.dart';
+import '../src/models/model_generator/detail_product_customer_response.dart';
 import '../src/models/model_generator/detail_product_module_response.dart';
 import '../src/models/model_generator/get_infor.dart';
 import '../src/models/model_generator/get_phone_cus.dart';
@@ -45,6 +47,8 @@ import '../src/models/model_generator/list_product_response.dart';
 import '../src/models/model_generator/param_del_notif.dart';
 import '../src/models/model_generator/param_read_notifi.dart';
 import '../src/models/model_generator/post_info_car_response.dart';
+import '../src/models/model_generator/product_customer_edit_response.dart';
+import '../src/models/model_generator/product_customer_save_response.dart';
 import '../src/models/model_generator/report_contact.dart';
 import '../src/models/model_generator/report_general.dart';
 import '../src/models/model_generator/report_option.dart';
@@ -776,6 +780,48 @@ class UserRepository {
     required String id,
   }) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).deleteProduct(id);
+
+  Future<ListProductCustomerResponse> getListProductCustomer({
+    required String page,
+    String? txt,
+    String? filter,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getListProductCustomer(page, txt, filter);
+
+  Future<DetailProductCustomerResponse> getDetailProductCustomer({
+    required String id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getDetailProductCustomer(id);
+
+  Future<AddCustomerIndividual> getFormAddProductCustomer() async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getFormAddProductCustomer();
+
+  Future<AddCustomerIndividual> getFormEditProductCustomer({
+    required String id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getFormEditProductCustomer(id);
+
+  Future<ResponseSaveProductCustomer> saveAddProductCustomer({
+    required Map<String, dynamic> data,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .saveAddProductCustomer(data);
+
+  Future<ResponseEditProductCustomer> saveEditProductCustomer({
+    required Map<String, dynamic> data,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .saveEditProductCustomer(data);
+
+  Future<dynamic> deleteProductCustomer({
+    required String id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .deleteProductCustomer(id);
 
   //////////////////////
 

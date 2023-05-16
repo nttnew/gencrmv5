@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/contract/phone_bloc.dart';
 import 'package:gen_crm/bloc/detail_product/detail_product_bloc.dart';
+import 'package:gen_crm/bloc/detail_product_customer/detail_product_customer_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
 import 'package:gen_crm/bloc/form_edit/form_edit_bloc.dart';
 import 'package:gen_crm/models/model_data_add.dart';
@@ -76,6 +77,8 @@ class _FormEditState extends State<FormEdit> {
       FormEditBloc.of(context).add(InitFormEditSupportEvent(id));
     } else if (type == PRODUCT_TYPE) {
       FormEditBloc.of(context).add(InitFormEditProductEvent(id));
+    } else if (type == PRODUCT_CUSTOMER_TYPE) {
+      FormEditBloc.of(context).add(InitFormEditProductCustomerEvent(id));
     }
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -231,6 +234,10 @@ class _FormEditState extends State<FormEdit> {
                           if (type == PRODUCT_TYPE) {
                             DetailProductBloc.of(context)
                                 .add(InitGetDetailProductEvent(id));
+                          }
+                          if (type == PRODUCT_CUSTOMER_TYPE) {
+                            DetailProductCustomerBloc.of(context)
+                                .add(InitGetDetailProductCustomerEvent(id));
                           }
                         },
                       );
@@ -867,6 +874,10 @@ class _FormEditState extends State<FormEdit> {
             .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == PRODUCT_TYPE) {
         AddDataBloc.of(context).add(EditProductEvent(data, int.parse(id),
+            files: AttackBloc.of(context).listFile));
+      } else if (type == PRODUCT_CUSTOMER_TYPE) {
+        data["id"] = id;
+        AddDataBloc.of(context).add(EditProductCustomerEvent(data,
             files: AttackBloc.of(context).listFile));
       }
     }

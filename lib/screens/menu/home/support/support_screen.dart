@@ -105,11 +105,9 @@ class _SupportScreenState extends State<SupportScreen> {
           total = int.parse(state.total);
           return Column(
             children: [
+              AppValue.vSpaceTiny,
               Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: AppValue.widths * 0.05, vertical: 16),
-                width: double.infinity,
-                height: AppValue.heights * 0.06,
+                margin: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
                 decoration: BoxDecoration(
                   border: Border.all(color: HexColor("#DBDBDB")),
                   borderRadius: BorderRadius.circular(10),
@@ -140,19 +138,20 @@ class _SupportScreenState extends State<SupportScreen> {
                     Future.delayed(Duration(milliseconds: 300), () {
                   SupportBloc.of(context).add(InitGetSupportEvent(1, '', ''));
                 }),
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  controller: _scrollController,
-                  itemBuilder: (context, index) => InkWell(
-                      onTap: () => AppNavigator.navigateDetailSupport(
-                          state.listSupport[index].id.toString(),
-                          state.listSupport[index].ten_ho_tro ?? ''),
-                      child: ItemSupport(state.listSupport[index], index,
-                          state.listSupport.length)),
-                  itemCount: state.listSupport.length,
-                  separatorBuilder: (BuildContext context, int index) =>
-                      SizedBox(
-                    height: AppValue.heights * 0.01,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 8),
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    controller: _scrollController,
+                    itemBuilder: (context, index) => InkWell(
+                        onTap: () => AppNavigator.navigateDetailSupport(
+                            state.listSupport[index].id.toString(),
+                            state.listSupport[index].ten_ho_tro ?? ''),
+                        child: ItemSupport(state.listSupport[index], index,
+                            state.listSupport.length)),
+                    itemCount: state.listSupport.length,
+                    separatorBuilder: (BuildContext context, int index) =>
+                        SizedBox(),
                   ),
                 ),
               ))
@@ -196,8 +195,7 @@ class _SupportScreenState extends State<SupportScreen> {
             ],
           ),
           itemTextIcon(
-              text: data.customer?.name ?? '',
-              icon: ICONS.IC_AVATAR_SVG),
+              text: data.customer?.name ?? '', icon: ICONS.IC_AVATAR_SVG),
           itemTextIcon(
               text: data.trang_thai ?? '',
               styleText: AppStyle.DEFAULT_14.copyWith(
@@ -212,19 +210,23 @@ class _SupportScreenState extends State<SupportScreen> {
             padding: const EdgeInsets.only(top: 15),
             child: Row(
               children: [
-                itemTextIcon(
-                    paddingTop: 0,
-                    text: data.created_date ?? '',
-                    styleText: TextStyle(
-                        color: HexColor("#263238"),
-                        fontFamily: "Quicksand",
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14),
-                    icon: ICONS.IC_ICON4_SVG),
-                Spacer(),
+                Expanded(
+                  child: itemTextIcon(
+                      paddingTop: 0,
+                      text: data.created_date ?? '',
+                      styleText: TextStyle(
+                          color: HexColor("#263238"),
+                          fontFamily: "Quicksand",
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14),
+                      icon: ICONS.IC_ICON4_SVG),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
                 SvgPicture.asset(ICONS.IC_QUESTION_SVG),
                 SizedBox(
-                  width: AppValue.widths * 0.01,
+                  width: 4,
                 ),
                 WidgetText(
                   title: data.total_note ?? '',
@@ -240,7 +242,8 @@ class _SupportScreenState extends State<SupportScreen> {
       margin: EdgeInsets.only(
         left: 25,
         right: 25,
-        bottom: 20,
+        bottom: 10,
+        top: 10,
       ),
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(

@@ -88,7 +88,7 @@ class _ContractScreenState extends State<ContractScreen> {
               }
             })),
           ),
-          AppValue.vSpaceSmall,
+          AppValue.vSpaceTiny,
           _buildSearch(),
           BlocBuilder<ContractBloc, ContractState>(builder: (context, state) {
             if (state is UpdateGetContractState) {
@@ -134,11 +134,7 @@ class _ContractScreenState extends State<ContractScreen> {
     return BlocBuilder<ContractBloc, ContractState>(builder: (context, state) {
       if (state is UpdateGetContractState)
         return Container(
-          margin: EdgeInsets.symmetric(
-              horizontal: AppValue.widths * 0.05,
-              vertical: AppValue.heights * 0.02),
-          width: double.infinity,
-          height: AppValue.heights * 0.06,
+          margin: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
           decoration: BoxDecoration(
             border: Border.all(color: HexColor("#DBDBDB")),
             borderRadius: BorderRadius.circular(10),
@@ -193,14 +189,15 @@ class _ContractScreenState extends State<ContractScreen> {
           children: [
             Row(
               children: [
-                itemTextIcon(
-                    paddingTop: 0,
-                    text: data.name ?? 'Chưa có',
-                    icon: ICONS.IC_CONTRACT_3X_PNG,
-                    styleText: AppStyle.DEFAULT_TITLE_PRODUCT
-                        .copyWith(color: COLORS.TEXT_COLOR),
-                    isSVG: false),
-                Spacer(),
+                Expanded(
+                  child: itemTextIcon(
+                      paddingTop: 0,
+                      text: data.name ?? 'Chưa có',
+                      icon: ICONS.IC_CONTRACT_3X_PNG,
+                      styleText: AppStyle.DEFAULT_TITLE_PRODUCT
+                          .copyWith(color: COLORS.TEXT_COLOR),
+                      isSVG: false),
+                ),
                 Container(
                   decoration: BoxDecoration(
                       color: data.status_color != ""
@@ -236,15 +233,19 @@ class _ContractScreenState extends State<ContractScreen> {
               padding: const EdgeInsets.only(top: 15),
               child: Row(
                 children: [
-                  itemTextIcon(
-                    colorIcon: COLORS.GREY,
-                    paddingTop: 0,
-                    text: 'Tổng tiền: ' + '${data.price.toString()}' + 'đ',
-                    icon: ICONS.IC_MAIL_SVG,
-                    styleText: AppStyle.DEFAULT_LABEL_PRODUCT
-                        .copyWith(color: COLORS.GREY),
+                  Expanded(
+                    child: itemTextIcon(
+                      colorIcon: COLORS.GREY,
+                      paddingTop: 0,
+                      text: 'Tổng tiền: ' + '${data.price.toString()}' + 'đ',
+                      icon: ICONS.IC_MAIL_SVG,
+                      styleText: AppStyle.DEFAULT_LABEL_PRODUCT
+                          .copyWith(color: COLORS.GREY),
+                    ),
                   ),
-                  Spacer(),
+                  SizedBox(
+                    width: 8,
+                  ),
                   SvgPicture.asset(ICONS.IC_QUESTION_SVG),
                   SizedBox(
                     width: 4,

@@ -69,3 +69,11 @@ class InitFormEditProductEvent extends FormEditEvent {
   @override
   List<Object?> get props => [id];
 }
+
+class InitFormEditProductCustomerEvent extends FormEditEvent {
+  final String? id;
+
+  InitFormEditProductCustomerEvent(this.id);
+  @override
+  List<Object?> get props => [id];
+}

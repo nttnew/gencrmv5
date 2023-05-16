@@ -13,6 +13,7 @@ part 'clue_event.dart';
 
 class GetListClueBloc extends Bloc<GetListClueEvent, ClueState> {
   final UserRepository userRepository;
+  List<ClueData>? listClueData;
 
   GetListClueBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -26,7 +27,6 @@ class GetListClueBloc extends Bloc<GetListClueEvent, ClueState> {
     }
   }
 
-  List<ClueData>? listClueData;
   Stream<ClueState> _getListClue(
       {required String filter,
       required int page,
@@ -37,13 +37,15 @@ class GetListClueBloc extends Bloc<GetListClueEvent, ClueState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         if (page == 1) {
-          listClueData = response.data!.list!;
-        } else {
-          listClueData!.addAll(response.data!.list!);
+          listClueData=[];
+          yield UpdateGetListClueState(response.data!.list!,
+              response.data!.filter!, response.data!.total!);
         }
-
         yield UpdateGetListClueState(
-            listClueData!, response.data!.filter!, response.data!.total!);
+            [...listClueData!, ...response.data!.list!],
+            response.data!.filter!,
+            response.data!.total!);
+        listClueData?.addAll(response.data?.list ?? []);
       } else if (response.code == 999) {
         loginSessionExpired();
       } else

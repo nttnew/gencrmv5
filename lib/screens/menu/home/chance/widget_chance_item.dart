@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/src/app_const.dart';
-import 'package:gen_crm/widgets/widgets.dart';
-
 import '../../../../src/src_index.dart';
-import '../../../../widgets/image_default.dart';
 
 class WidgetItemChance extends StatelessWidget {
   final ListChanceData listChanceData;
@@ -40,15 +37,17 @@ class WidgetItemChance extends StatelessWidget {
           children: [
             Row(
               children: [
-                itemTextIcon(
-                  paddingTop: 0,
-                  text: listChanceData.name ?? 'Chưa có',
-                  icon: ICONS.IC_CHANCE_3X_PNG,
-                  isSVG: false,
-                  styleText: AppStyle.DEFAULT_TITLE_PRODUCT
-                      .copyWith(color: COLORS.TEXT_COLOR),
+                Expanded(
+                  child: itemTextIcon(
+                    paddingTop: 0,
+                    text: listChanceData.name ?? 'Chưa có',
+                    icon: ICONS.IC_CHANCE_3X_PNG,
+                    isSVG: false,
+                    styleText: AppStyle.DEFAULT_TITLE_PRODUCT
+                        .copyWith(color: COLORS.TEXT_COLOR),
+                  ),
                 ),
-                Spacer(),
+                SizedBox(width: 8,),
                 Container(
                   decoration: BoxDecoration(
                       color: Colors.red,
@@ -75,13 +74,16 @@ class WidgetItemChance extends StatelessWidget {
               padding: const EdgeInsets.only(top: 15),
               child: Row(
                 children: [
-                  itemTextIcon(
-                    isSVG: false,
-                    paddingTop: 0,
-                    text: listChanceData.dateNextCare ?? 'Chưa có',
-                    icon: ICONS.IC_DATE_PNG,
+                  Expanded(
+                    child: itemTextIcon(
+                      isSVG: false,
+                      paddingTop: 0,
+                      text: listChanceData.dateNextCare ?? 'Chưa có',
+                      icon: ICONS.IC_DATE_PNG,
+                    ),
                   ),
-                  Spacer(),
+                  SizedBox(width: 8,),
+
                   SvgPicture.asset(ICONS.IC_MESS),
                 ],
               ),

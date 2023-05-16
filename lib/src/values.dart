@@ -114,9 +114,12 @@ class AppValue {
     return base64Encode(imageBytes);
   }
 
-  static format_money(double money) {
+  static format_money(String money) {
+    if (money == '') {
+      return '';
+    }
     final currencyFormatter = NumberFormat('#,##0', 'ID');
-    return currencyFormatter.format(money) + ' đ';
+    return currencyFormatter.format(double.parse(money)) + ' đ';
   }
 
   static bool checkTypeImage(String fileExt) {

@@ -184,14 +184,13 @@ class _WorkScreenState extends State<WorkScreen> {
         // padding: EdgeInsets.only(bottom: 70),
         child: Column(
           children: [
+            AppValue.vSpaceTiny,
             BlocBuilder<WorkBloc, WorkState>(builder: (context, state) {
               if (state is SuccessGetListWorkState)
                 return Container(
                   margin: EdgeInsets.symmetric(
-                      horizontal: AppValue.widths * 0.05,
-                      vertical: AppValue.heights * 0.02),
-                  width: double.infinity,
-                  height: AppValue.heights * 0.06,
+                      horizontal: 25,
+                      vertical: 8,),
                   decoration: BoxDecoration(
                     border: Border.all(color: HexColor("#DBDBDB")),
                     borderRadius: BorderRadius.circular(10),

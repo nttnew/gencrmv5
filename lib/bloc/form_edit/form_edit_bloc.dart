@@ -44,6 +44,9 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
     if (event is InitFormEditProductEvent) {
       yield* _getFormEditProduct(event.id!);
     }
+    if (event is InitFormEditProductCustomerEvent) {
+      yield* _getFormEditProductCustomer(event.id!);
+    }
   }
 
   Stream<FormEditState> _getFormEditCus(String id) async* {
@@ -171,6 +174,26 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
     try {
       yield LoadingFormEditState();
       final response = await userRepository.getEditProduct(id: id);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        yield SuccessFormEditState(response.data!);
+      } else {
+        yield ErrorFormEditState(response.msg ?? '');
+        LoadingApi().popLoading();
+      }
+    } catch (e) {
+      yield ErrorFormEditState(MESSAGES.CONNECT_ERROR);
+      LoadingApi().popLoading();
+      throw e;
+    }
+    LoadingApi().popLoading();
+  }
+
+  Stream<FormEditState> _getFormEditProductCustomer(String id) async* {
+    LoadingApi().pushLoading();
+    try {
+      yield LoadingFormEditState();
+      final response = await userRepository.getFormEditProductCustomer(id: id);
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormEditState(response.data!);

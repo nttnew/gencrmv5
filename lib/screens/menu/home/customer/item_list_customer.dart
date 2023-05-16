@@ -13,6 +13,7 @@ class ItemCustomer extends StatelessWidget {
       : super(key: key);
   final CustomerData data;
   final Function() onTap;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -46,8 +47,6 @@ class ItemCustomer extends StatelessWidget {
                 ),
                 Expanded(
                   child: WidgetText(
-                    maxLine: 1,
-                    overflow: TextOverflow.ellipsis,
                     title: (('${data.danh_xung ?? ''}' +
                                     ' ' +
                                     '${data.name ?? ''}')
@@ -61,7 +60,7 @@ class ItemCustomer extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 5,
+                  width: 15,
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -93,29 +92,34 @@ class ItemCustomer extends StatelessWidget {
             ),
             Row(
               children: [
-                itemTextIcon(
-                  onTap: () {
-                    if ((data.phone?.val != null && data.phone?.val != "") &&
-                        data.phone?.action != null) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return DialogCall(
-                            sdt: "${data.phone?.val}",
-                          );
-                        },
-                      );
-                    }
-                  },
-                  text: data.phone?.val ?? 'Chưa có',
-                  styleText: AppStyle.DEFAULT_14.copyWith(
-                      fontWeight: FontWeight.w400, color: HexColor("#0052B4")),
-                  icon: ICONS.IC_PHONE_CUSTOMER_SVG,
+                Expanded(
+                  child: itemTextIcon(
+                    onTap: () {
+                      if ((data.phone?.val != null && data.phone?.val != "") &&
+                          data.phone?.action != null) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return DialogCall(
+                              sdt: "${data.phone?.val}",
+                            );
+                          },
+                        );
+                      }
+                    },
+                    text: data.phone?.val ?? 'Chưa có',
+                    styleText: AppStyle.DEFAULT_14.copyWith(
+                        fontWeight: FontWeight.w400,
+                        color: HexColor("#0052B4")),
+                    icon: ICONS.IC_PHONE_CUSTOMER_SVG,
+                  ),
                 ),
-                Spacer(),
+                SizedBox(
+                  width: 8,
+                ),
                 SvgPicture.asset(ICONS.IC_QUESTION_SVG),
                 SizedBox(
-                  width: AppValue.widths * 0.01,
+                  width: 4,
                 ),
                 Text(
                   data.total_comment.toString(),

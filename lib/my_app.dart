@@ -9,6 +9,8 @@ import 'package:gen_crm/screens/menu/home/customer/form_edit.dart';
 import 'package:gen_crm/screens/menu/home/notification/notification_screen.dart';
 import 'package:gen_crm/screens/menu/home/product/detail_product.dart';
 import 'package:gen_crm/screens/menu/home/product/product.dart';
+import 'package:gen_crm/screens/menu/home/product_customer/detail_product_customer.dart';
+import 'package:gen_crm/screens/menu/home/product_customer/product_customer.dart';
 import 'package:gen_crm/screens/menu/home/report/report_screen.dart';
 import 'package:gen_crm/screens/menu/home/work/checkin_screen.dart';
 import 'package:get/get.dart';
@@ -162,9 +164,17 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: ROUTE_NAMES.DETAIL_PRODUCT,
           page: () => DetailProductScreen(),
-        ),GetPage(
+        ),
+        GetPage(
           name: ROUTE_NAMES.CHECK_IN,
           page: () => CheckInScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.PRODUCT_CUSTOMER,
+          page: () => ProductCustomerScreen(),
+        ),GetPage(
+          name: ROUTE_NAMES.DETAIL_PRODUCT_CUSTOMER,
+          page: () => DetailProductCustomerScreen(),
         ),
       ],
     );
