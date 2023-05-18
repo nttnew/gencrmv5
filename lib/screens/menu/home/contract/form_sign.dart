@@ -39,13 +39,14 @@ class _FormAddSignState extends State<FormAddSign> {
   late final BehaviorSubject<bool> isMaxScroll;
   static const String HD_YEU_CAU_XUAT = 'hd_yeu_cau_xuat';
   static const String DA_THU_TIEN = 'da_thu_tien';
-  BehaviorSubject<int> starStream = BehaviorSubject.seeded(-1);
+  late final BehaviorSubject<int> starStream;
   bool daThuTien = false;
   bool ycXuatHoaDon = false;
   double soTien = 0;
 
   @override
   void initState() {
+    starStream = BehaviorSubject.seeded(-1);
     scrollController = ScrollController();
     isMaxScroll = BehaviorSubject.seeded(false);
     FormAddBloc.of(context).add(InitFormAddSignEvent(id));
@@ -79,6 +80,7 @@ class _FormAddSignState extends State<FormAddSign> {
   void dispose() {
     scrollController.dispose();
     isMaxScroll.close();
+    starStream.close();
     super.dispose();
   }
 
@@ -295,8 +297,14 @@ class _FormAddSignState extends State<FormAddSign> {
                                 addData[indexParent].data[indexChild].value =
                                     data;
                               },
-                              value: dataFiled.field_set_value_datasource?[0][1] ??
-                                  '')
+                              value: (dataFiled.field_set_value_datasource
+                                          ?.isNotEmpty ??
+                                      false)
+                                  ? (dataFiled.field_set_value_datasource?[0]
+                                          [1] ??
+                                      '')
+                                  : '',
+                            )
                           : dataFiled.field_type == "TEXT_MULTI"
                               ? _fieldInputTextMulti(
                                   dataFiled.field_datasource ?? [],
@@ -304,8 +312,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                   dataFiled.field_require ?? 0,
                                   indexParent,
                                   indexChild,
-                                  dataFiled.field_set_value_datasource?[0][0]
-                                          .toString() ??
+                                  dataFiled.field_set_value_datasource?[0][0].toString() ??
                                       '',
                                   dataFiled.field_maxlength ?? '')
                               : dataFiled.field_type == "HIDDEN"
@@ -412,13 +419,16 @@ class _FormAddSignState extends State<FormAddSign> {
                                                                       ? ((dataFiled.field_set_value ?? '') !=
                                                                           '')
                                                                       : false,
-                                                                  value: dataFiled.field_set_value ??
-                                                                      '')
+                                                                  value:
+                                                                      dataFiled.field_set_value ??
+                                                                          '')
                                                               : _fieldInputCustomer(
                                                                   dataFiled,
                                                                   indexParent,
                                                                   indexChild,
-                                                                  value: dataFiled.field_id == '13620' ? soTien.toInt().toString() : '')
+                                                                  value: dataFiled.field_id == '13620'
+                                                                      ? soTien.toInt().toString()
+                                                                      : '')
                   : SizedBox()
               : SizedBox();
         });
@@ -766,9 +776,9 @@ class _FormAddSignState extends State<FormAddSign> {
   Widget _rateWidget(
       CustomerIndividualItemData data, int indexParent, int indexChild,
       {bool noEdit = false, int value = 0}) {
-    if (starStream.value == -1) {
-      addData[indexParent].data[indexChild].value = starStream.value;
+    if (starStream.value == -1 || noEdit) {
       starStream.add(value);
+      addData[indexParent].data[indexChild].value = starStream.value;
     }
     return Container(
       margin: EdgeInsets.only(bottom: 16),
@@ -998,8 +1008,8 @@ class _FormAddSignState extends State<FormAddSign> {
             chukys.add(map);
           }
         } else {
-          check = true;
-          break;
+          // check = true;
+          // break;
         }
       }
       data['chuky'] = chukys;
