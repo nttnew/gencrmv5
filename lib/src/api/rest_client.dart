@@ -674,4 +674,13 @@ abstract class RestClient {
   Future<dynamic> deleteProductCustomer(
     @Part(name: 'id') String id,
   );
+
+  @GET(BASE_URL.GET_FORM_SIGN)
+  Future<AddCustomerIndividual> getFormSign(
+    @Query('id') String id,
+  );
+
+  @POST(BASE_URL.SAVE_SIGN)
+  Future<ResponseSaveProductCustomer> saveSignature(
+      @Body() Map<String, dynamic> map);
 }

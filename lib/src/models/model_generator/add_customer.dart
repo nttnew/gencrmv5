@@ -12,7 +12,8 @@ class CustomerIndividualItemData {
       field_validation,
       field_validation_message,
       field_maxlength,
-      field_hidden;
+      field_hidden,
+      parent;
   final int? field_require;
   final dynamic field_set_value;
   final List<List<dynamic>>? field_datasource;
@@ -29,6 +30,7 @@ class CustomerIndividualItemData {
       this.field_validation_message,
       this.field_maxlength,
       this.field_hidden,
+      this.parent,
       this.field_require,
       this.field_set_value,
       this.field_datasource,
@@ -41,6 +43,40 @@ class CustomerIndividualItemData {
       _$CustomerIndividualItemDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$CustomerIndividualItemDataToJson(this);
+}
+
+@JsonSerializable()
+class ChuKyResponse {
+  final String? group_name;
+  final List<ChuKyModelResponse>? data;
+  ChuKyResponse(this.group_name, this.data);
+
+  factory ChuKyResponse.fromJson(Map<String, dynamic> json) =>
+      _$ChuKyResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ChuKyResponseToJson(this);
+}
+
+@JsonSerializable()
+class ChuKyModelResponse {
+  final String? doituongky;
+  final String? nhanhienthi;
+  final String? giatrimacdinh;
+  final String? chuky;
+  final String? id;
+
+  ChuKyModelResponse(
+    this.doituongky,
+    this.nhanhienthi,
+    this.giatrimacdinh,
+    this.chuky,
+    this.id,
+  );
+
+  factory ChuKyModelResponse.fromJson(Map<String, dynamic> json) =>
+      _$ChuKyModelResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ChuKyModelResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -96,8 +132,14 @@ class SaleOff {
 @JsonSerializable()
 class AddCustomerIndividual extends BaseResponse {
   final List<AddCustomerIndividualData>? data;
+  final List<ChuKyResponse>? chu_ky;
+  final double? chuathanhtoan;
 
-  AddCustomerIndividual(this.data);
+  AddCustomerIndividual(
+    this.data,
+    this.chu_ky,
+    this.chuathanhtoan,
+  );
 
   factory AddCustomerIndividual.fromJson(Map<String, dynamic> json) =>
       _$AddCustomerIndividualFromJson(json);

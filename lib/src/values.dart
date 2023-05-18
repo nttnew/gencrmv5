@@ -119,7 +119,7 @@ class AppValue {
       return '';
     }
     final currencyFormatter = NumberFormat('#,##0', 'ID');
-    return currencyFormatter.format(double.parse(money)) + ' đ';
+    return currencyFormatter.format(double.parse(money)) + 'đ';
   }
 
   static bool checkTypeImage(String fileExt) {

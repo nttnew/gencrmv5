@@ -12,9 +12,15 @@ class LoadingFormAddCustomerOrState extends FormAddState {}
 
 class SuccessFormAddCustomerOrState extends FormAddState {
   final List<AddCustomerIndividualData> listAddData;
-  const SuccessFormAddCustomerOrState(this.listAddData);
+  final List<ChuKyResponse>? chuKyResponse;
+  final double? soTien;
+  const SuccessFormAddCustomerOrState(
+    this.listAddData, {
+    this.chuKyResponse,
+    this.soTien,
+  });
   @override
-  List<Object> get props => [listAddData];
+  List<Object> get props => [listAddData, chuKyResponse!, soTien!];
 }
 
 class ErrorFormAddCustomerOrState extends FormAddState {

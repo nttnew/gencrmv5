@@ -339,6 +339,7 @@ class ServiceVoucherBloc
                                 f.fieldValidationMessage,
                                 f.fieldMaxlength,
                                 f.fieldHidden,
+                                null,
                                 f.fieldRequire,
                                 f.fieldSetValue,
                                 f.fieldId == '12708' //theem xe
@@ -356,7 +357,8 @@ class ServiceVoucherBloc
                           }).toList() ??
                           [],
                       e.groupName,
-                      null),
+                      null,
+                  ),
                 )
                 .toList() ??
             [];

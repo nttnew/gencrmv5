@@ -45,6 +45,8 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       yield* _addProductCustomer(event.data, event.files);
     } else if (event is EditProductCustomerEvent) {
       yield* _editProductCustomer(event.data, event.files);
+    } else if (event is SignEvent) {
+      yield* _signature(event.data);
     }
   }
 
@@ -480,6 +482,27 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
           LoadingApi().popLoading();
           yield SuccessAddContactCustomerState();
         }
+      } else {
+        LoadingApi().popLoading();
+        yield ErrorAddContactCustomerState(response.msg ?? '');
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      throw e;
+    }
+    LoadingApi().popLoading();
+  }
+
+  Stream<AddDataState> _signature(Map<String, dynamic> data) async* {
+    LoadingApi().pushLoading();
+    try {
+      yield LoadingAddContactCustomerState();
+      final response = await userRepository.saveSignature(data: data);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        LoadingApi().popLoading();
+        yield SuccessAddContactCustomerState();
       } else {
         LoadingApi().popLoading();
         yield ErrorAddContactCustomerState(response.msg ?? '');

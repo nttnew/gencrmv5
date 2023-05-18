@@ -178,6 +178,10 @@ class BASE_URL {
       'modules/genmobile2/productCustomer/save';
   static const PRODUCT_CUSTOMER_DELETE =
       'modules/genmobile2/productCustomer/delete';
+  static const GET_FORM_SIGN =
+      'modules/genmobile2/contract/formKn';
+  static const SAVE_SIGN =
+      'modules/genmobile2/contract/saveKn';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';

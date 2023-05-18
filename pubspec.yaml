@@ -70,6 +70,7 @@ dependencies:
   geocoding: 2.1.0
   wakelock: ^0.6.2
   flutter_expandable_fab: 1.7.1
+  signature: 5.3.2
 
 
 dependency_overrides:

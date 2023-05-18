@@ -7,11 +7,13 @@ class ModuleThaoTac {
   String title;
   String icon;
   Function() onThaoTac;
+  bool isSvg;
 
   ModuleThaoTac({
     required this.title,
     required this.icon,
     required this.onThaoTac,
+    this.isSvg = true,
   });
 }
 
@@ -44,6 +46,7 @@ Future showThaoTac(
                         e.title,
                         e.icon,
                         e.onThaoTac,
+                        isSvg: e.isSvg,
                       ),
                     ),
                   )
@@ -61,3 +64,5 @@ Future showThaoTac(
         );
       });
 }
+
+

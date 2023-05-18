@@ -164,4 +164,10 @@ class AppNavigator {
   static navigateDetailProductCustomer(String title, String id) async =>
       await Get.toNamed(ROUTE_NAMES.DETAIL_PRODUCT_CUSTOMER,
           arguments: [title, id]);
+
+  static navigateFormSign(
+    String title,
+    String id,
+  ) async =>
+      await Get.toNamed(ROUTE_NAMES.FORM_SIGN, arguments: [title, id]);
 }

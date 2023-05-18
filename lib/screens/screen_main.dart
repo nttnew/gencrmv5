@@ -460,9 +460,9 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                         onTap: listMenu.last.onTap,
                         child: Container(
                             margin: EdgeInsets.only(top: 25),
-                            width: (MediaQuery.of(context).size.width - 60),
+                            width: (MediaQuery.of(context).size.width - 50),
                             height:
-                                (MediaQuery.of(context).size.width - 85) / 2,
+                                (MediaQuery.of(context).size.width - 75) / 2,
                             child: ItemMenu(
                               data: listMenu.last,
                               isLast: true,

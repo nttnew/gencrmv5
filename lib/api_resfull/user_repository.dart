@@ -824,6 +824,14 @@ class UserRepository {
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .deleteProductCustomer(id);
 
+  Future<AddCustomerIndividual> getFormAddSign({required String id}) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getFormSign(id);
+
+  Future<ResponseSaveProductCustomer> saveSignature({
+    required Map<String, dynamic> data,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).saveSignature(data);
+
   //////////////////////
 
   Stream<AuthenticationStatus> get status async* {

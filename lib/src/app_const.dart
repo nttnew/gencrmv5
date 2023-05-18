@@ -80,7 +80,7 @@ void handleRegisterBase(
 }
 
 Widget itemIcon(String title, String icon, Function() click,
-    {Widget? iconWidget}) {
+    {Widget? iconWidget, bool isSvg = true}) {
   return GestureDetector(
     onTap: () => click(),
     child: Row(
@@ -93,10 +93,15 @@ Widget itemIcon(String title, String icon, Function() click,
           height: 24,
           width: 24,
           child: iconWidget ??
-              SvgPicture.asset(
-                icon,
-                fit: BoxFit.contain,
-              ),
+              (isSvg
+                  ? SvgPicture.asset(
+                      icon,
+                      fit: BoxFit.contain,
+                    )
+                  : Image.asset(
+                      icon,
+                      fit: BoxFit.contain,
+                    )),
         ),
         SizedBox(
           width: AppValue.widths * 0.1,

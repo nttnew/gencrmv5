@@ -133,6 +133,34 @@ class ShowDialogCustom {
     );
   }
 
+  static showDialogScreenBase({required Widget child}) async {
+    final data = await showDialog<dynamic>(
+      context: Get.context!,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SafeArea(
+            child: BackdropFilter(
+              filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10)),
+                  padding: EdgeInsets.all(15),
+                  margin: EdgeInsets.all(25),
+                  child: child,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+    return data;
+  }
+
   static showDialogTwoButtonAddress(
       {String? title,
       String? content,

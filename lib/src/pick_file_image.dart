@@ -151,17 +151,21 @@ Widget FileDinhKemUiBase(
       ],
     );
 
-Widget FileLuuBase(BuildContext context, Function() onTap) => Row(
+Widget FileLuuBase(BuildContext context, Function() onTap,
+        {bool isAttack = true}) =>
+    Row(
       children: [
-        GestureDetector(
-            onTap: () async {
-              await onDinhKemBase(context).then((listFile) {
-                if (listFile != []) {
-                  AttackBloc.of(context).add(InitAttackEvent(files: listFile));
-                }
-              });
-            },
-            child: SvgPicture.asset(ICONS.IC_ATTACK_SVG)),
+        if (isAttack)
+          GestureDetector(
+              onTap: () async {
+                await onDinhKemBase(context).then((listFile) {
+                  if (listFile != []) {
+                    AttackBloc.of(context)
+                        .add(InitAttackEvent(files: listFile));
+                  }
+                });
+              },
+              child: SvgPicture.asset(ICONS.IC_ATTACK_SVG)),
         Spacer(),
         GestureDetector(
           onTap: () => onTap(),

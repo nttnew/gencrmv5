@@ -94,3 +94,11 @@ class EditProductCustomerEvent extends AddDataEvent {
 
   EditProductCustomerEvent(this.data, {this.files});
 }
+
+class SignEvent extends AddDataEvent {
+  final Map<String, dynamic> data;
+
+  SignEvent(
+    this.data,
+  );
+}

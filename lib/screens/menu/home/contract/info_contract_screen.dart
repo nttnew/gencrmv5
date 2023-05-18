@@ -46,6 +46,16 @@ class _InfoContractPageState extends State<InfoContractPage> {
 
   getThaoTac() {
     list.add(ModuleThaoTac(
+      title: "Ký nhận",
+      icon: ICONS.IC_ELECTRIC_SIGN_PNG,
+      isSvg: false,
+      onThaoTac: () {
+        Get.back();
+        AppNavigator.navigateFormSign('Ký nhận',id);
+      },
+    ));
+
+    list.add(ModuleThaoTac(
       title: "Thêm công việc",
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {

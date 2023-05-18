@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/screens/call/init_app_call.dart';
 import 'package:gen_crm/screens/add_service_voucher/add_service_voucher_step2_screen.dart';
+import 'package:gen_crm/screens/menu/home/contract/form_sign.dart';
 import 'package:gen_crm/screens/menu/home/contract/list_product.dart';
 import 'package:gen_crm/screens/menu/home/contract/update_contract.dart';
 import 'package:gen_crm/screens/menu/home/customer/add_note.dart';
@@ -172,10 +173,12 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: ROUTE_NAMES.PRODUCT_CUSTOMER,
           page: () => ProductCustomerScreen(),
-        ),GetPage(
+        ),
+        GetPage(
           name: ROUTE_NAMES.DETAIL_PRODUCT_CUSTOMER,
           page: () => DetailProductCustomerScreen(),
         ),
+        GetPage(name: ROUTE_NAMES.FORM_SIGN, page: () => FormAddSign()),
       ],
     );
   }
