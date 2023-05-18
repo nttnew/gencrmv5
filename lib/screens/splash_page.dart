@@ -9,6 +9,7 @@ import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/storages.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../api_resfull/dio_provider.dart';
 
@@ -45,8 +46,10 @@ class _LogoAppState extends State<SplashPage>
   late Timer _timer;
   LoginData user = LoginData();
   String? baseUrl = "";
+
   @override
   void initState() {
+    requestPermission();
     super.initState();
     getBaseUrl();
     loadUser();
@@ -61,6 +64,19 @@ class _LogoAppState extends State<SplashPage>
         }
       });
     controller.forward();
+  }
+
+  requestPermission()async{
+    if (await Permission.contacts.request().isGranted) {
+    // Either the permission was already granted before or the user just granted it.
+    }
+
+// You can request multiple permissions at once.
+    Map<Permission, PermissionStatus> statuses = await [
+    Permission.location,
+    Permission.storage,
+    ].request(); //todo doanh delete
+    print(statuses[Permission.location]);
   }
 
   loadUser() async {

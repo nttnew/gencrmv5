@@ -28,6 +28,8 @@ class ICONS {
   static const String IC_FAVICON_PNG = 'assets/icons/favicon.png';
   static const String IC_LICENSE_PLATE_PNG = 'assets/icons/license-plate.png';
   static const String IC_ELECTRIC_SIGN_PNG = 'assets/icons/sign.png';
+  static const String IC_STAR_PNG = 'assets/icons/star.png';
+  static const String IC_STAR_BOLD_PNG = 'assets/icons/star_bold.png';
 
   static const String IC_CUSTOMER_3X_PNG = 'assets/icons/Custumer_3x.png';
   static const String IC_CLUE_3X_PNG = 'assets/icons/Clue_3x.png';

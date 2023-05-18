@@ -39,6 +39,7 @@ class _FormAddSignState extends State<FormAddSign> {
   late final BehaviorSubject<bool> isMaxScroll;
   static const String HD_YEU_CAU_XUAT = 'hd_yeu_cau_xuat';
   static const String DA_THU_TIEN = 'da_thu_tien';
+  BehaviorSubject<int> starStream = BehaviorSubject.seeded(-1);
   bool daThuTien = false;
   bool ycXuatHoaDon = false;
   double soTien = 0;
@@ -160,9 +161,8 @@ class _FormAddSignState extends State<FormAddSign> {
                           return Container();
                         } else if (state is SuccessFormAddCustomerOrState) {
                           soTien = state.soTien ?? 0;
-                          for (int i = 0; i < state.listAddData.length; i++) {
-                            if (addData.isNotEmpty) {
-                            } else {
+                          if (addData.isEmpty) {
+                            for (int i = 0; i < state.listAddData.length; i++) {
                               addData.add(ModelItemAdd(
                                   group_name:
                                       state.listAddData[i].group_name ?? '',
@@ -171,15 +171,16 @@ class _FormAddSignState extends State<FormAddSign> {
                                   j < (state.listAddData[i].data?.length ?? 0);
                                   j++) {
                                 addData[i].data.add(ModelDataAdd(
-                                    parent:
-                                        state.listAddData[i].data?[j].parent,
-                                    label: state
-                                        .listAddData[i].data?[j].field_name,
-                                    value: state
-                                        .listAddData[i].data?[j].field_set_value
-                                        .toString(),
-                                    required: state.listAddData[i].data?[j]
-                                        .field_require));
+                                      parent:
+                                          state.listAddData[i].data?[j].parent,
+                                      label: state
+                                          .listAddData[i].data?[j].field_name,
+                                      value: state.listAddData[i].data?[j]
+                                          .field_set_value
+                                          .toString(),
+                                      required: state.listAddData[i].data?[j]
+                                          .field_require,
+                                    ));
                               }
 
                               if (state.chuKyResponse != null &&
@@ -195,133 +196,39 @@ class _FormAddSignState extends State<FormAddSign> {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: List.generate(
-                                    state.listAddData.length,
-                                    (index) => (state.listAddData[index].data !=
-                                                null &&
-                                            (state.listAddData[index].data
-                                                        ?.length ??
-                                                    0) >
-                                                0)
-                                        ? Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                height: AppValue.heights * 0.01,
-                                              ),
-                                              state.listAddData[index]
-                                                          .group_name !=
-                                                      null
-                                                  ? WidgetText(
-                                                      title: state
-                                                              .listAddData[
-                                                                  index]
-                                                              .group_name ??
-                                                          '',
-                                                      style: AppStyle
-                                                          .DEFAULT_18_BOLD)
-                                                  : Container(),
-                                              SizedBox(
-                                                height: AppValue.heights * 0.01,
-                                              ),
-                                              Column(
-                                                children: List.generate(
-                                                    state.listAddData[index]
-                                                            .data?.length ??
-                                                        0,
-                                                    (index1) => state
-                                                                .listAddData[
-                                                                    index]
-                                                                .data![index1]
-                                                                .field_hidden !=
-                                                            "1"
-                                                        ? _checkHide(state
-                                                                .listAddData[
-                                                                    index]
-                                                                .data?[index1]
-                                                                .parent)
-                                                            ? (state.listAddData[index].data?[index1].field_special ??
-                                                                        '') ==
-                                                                    "none-edit"
-                                                                ? _fieldInputCustomer(
-                                                                    state.listAddData[index].data![
-                                                                        index1],
-                                                                    index,
-                                                                    index1,
-                                                                    noEdit:
-                                                                        true)
-                                                                : state.listAddData[index].data![index1]
-                                                                            .field_type ==
-                                                                        "SELECT"
-                                                                    ? InputDropdown(
-                                                                        dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
-                                                                        data: state.listAddData[index].data![index1],
-                                                                        onSuccess: (data) {
-                                                                          addData[index]
-                                                                              .data[index1]
-                                                                              .value = data;
-                                                                        },
-                                                                        value: state.listAddData[index].data![index1].field_set_value_datasource?[0][1] ?? '')
-                                                                    : state.listAddData[index].data![index1].field_type == "TEXT_MULTI"
-                                                                        ? _fieldInputTextMulti(state.listAddData[index].data![index1].field_datasource!, state.listAddData[index].data![index1].field_label!, state.listAddData[index].data![index1].field_require!, index, index1, (state.listAddData[index].data![index1].field_set_value_datasource != "" && state.listAddData[index].data![index1].field_set_value_datasource != null) ? state.listAddData[index].data![index1].field_set_value_datasource![0][0].toString() : "", state.listAddData[index].data![index1].field_maxlength ?? '')
-                                                                        : state.listAddData[index].data![index1].field_type == "HIDDEN"
-                                                                            ? Container()
-                                                                            : state.listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"
-                                                                                ? WidgetInputMulti(
-                                                                                    data: state.listAddData[index].data![index1],
-                                                                                    onSelect: (data) {
-                                                                                      addData[index].data[index1].value = data.join(",");
-                                                                                    },
-                                                                                  )
-                                                                                : state.listAddData[index].data![index1].field_type == "DATE"
-                                                                                    ? WidgetInputDate(
-                                                                                        data: state.listAddData[index].data![index1],
-                                                                                        onSelect: (date) {
-                                                                                          addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
-                                                                                        },
-                                                                                        onInit: () {
-                                                                                          DateTime date = DateTime.now();
-                                                                                          addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
-                                                                                        },
-                                                                                      )
-                                                                                    : state.listAddData[index].data![index1].field_type == "CHECK"
-                                                                                        ? RenderCheckBox(
-                                                                                            onChange: (check) {
-                                                                                              addData[index].data[index1].value = check ? 1 : 0;
-                                                                                            },
-                                                                                            data: state.listAddData[index].data![index1],
-                                                                                          )
-                                                                                        : state.listAddData[index].data![index1].field_type == "PERCENTAGE"
-                                                                                            ? FieldInputPercent(
-                                                                                                data: state.listAddData[index].data![index1],
-                                                                                                onChanged: (text) {
-                                                                                                  addData[index].data[index1].value = text;
-                                                                                                },
-                                                                                              )
-                                                                                            : state.listAddData[index].data![index1].field_type == "SWITCH"
-                                                                                                ? SwitchBase(
-                                                                                                    isHide: soTien == 0 && state.listAddData[index].data![index1].field_id == '13588',
-                                                                                                    onChange: (check) {
-                                                                                                      if (state.listAddData[index].data![index1].field_id == '13588') {
-                                                                                                        daThuTien = check;
-                                                                                                      } else if (state.listAddData[index].data![index1].field_id == '13590') {
-                                                                                                        ycXuatHoaDon = check;
-                                                                                                      }
-                                                                                                      setState(() {});
-                                                                                                      addData[index].data[index1].value = check;
-                                                                                                    },
-                                                                                                    data: state.listAddData[index].data![index1],
-                                                                                                  )
-                                                                                                : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, value: state.listAddData[index].data![index1].field_id == '13620' ? soTien.toInt().toString() : '')
-                                                            : SizedBox()
-                                                        : SizedBox()),
-                                              )
-                                            ],
-                                          )
-                                        : Container()),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.zero,
+                                itemCount: state.listAddData.length,
+                                itemBuilder: (context, indexParent) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: AppValue.heights * 0.01,
+                                      ),
+                                      if (state.listAddData[indexParent]
+                                              .group_name !=
+                                          null)
+                                        WidgetText(
+                                          title: state.listAddData[indexParent]
+                                                  .group_name ??
+                                              '',
+                                          style: AppStyle.DEFAULT_18_BOLD,
+                                        ),
+                                      SizedBox(
+                                        height: AppValue.heights * 0.01,
+                                      ),
+                                      _itemField(
+                                        state.listAddData[indexParent].data ??
+                                            [],
+                                        indexParent,
+                                      ),
+                                    ],
+                                  );
+                                },
                               ),
                               _signatureUi(state.chuKyResponse),
                               SizedBox(
@@ -364,6 +271,157 @@ class _FormAddSignState extends State<FormAddSign> {
         )
       ],
     );
+  }
+
+  Widget _itemField(List<CustomerIndividualItemData> list, int indexParent) {
+    return ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.zero,
+        itemCount: list.length,
+        itemBuilder: (context, indexChild) {
+          final dataFiled = list[indexChild];
+          return dataFiled.field_hidden != "1"
+              ? _checkHide(dataFiled.parent)
+                  ? (dataFiled.field_special ?? '') == "none-edit"
+                      ? _fieldInputCustomer(dataFiled, indexParent, indexChild,
+                          noEdit: true)
+                      : dataFiled.field_type == "SELECT"
+                          ? InputDropdown(
+                              dropdownItemList:
+                                  dataFiled.field_datasource ?? [],
+                              data: dataFiled,
+                              onSuccess: (data) {
+                                addData[indexParent].data[indexChild].value =
+                                    data;
+                              },
+                              value: dataFiled.field_set_value_datasource?[0][1] ??
+                                  '')
+                          : dataFiled.field_type == "TEXT_MULTI"
+                              ? _fieldInputTextMulti(
+                                  dataFiled.field_datasource ?? [],
+                                  dataFiled.field_label ?? '',
+                                  dataFiled.field_require ?? 0,
+                                  indexParent,
+                                  indexChild,
+                                  dataFiled.field_set_value_datasource?[0][0]
+                                          .toString() ??
+                                      '',
+                                  dataFiled.field_maxlength ?? '')
+                              : dataFiled.field_type == "HIDDEN"
+                                  ? Container()
+                                  : dataFiled.field_type == "TEXT_MULTI_NEW"
+                                      ? WidgetInputMulti(
+                                          data: dataFiled,
+                                          onSelect: (data) {
+                                            addData[indexParent]
+                                                .data[indexChild]
+                                                .value = data.join(",");
+                                          },
+                                        )
+                                      : dataFiled.field_type == "DATE"
+                                          ? WidgetInputDate(
+                                              data: dataFiled,
+                                              onSelect: (date) {
+                                                addData[indexParent]
+                                                        .data[indexChild]
+                                                        .value =
+                                                    (date.millisecondsSinceEpoch /
+                                                            1000)
+                                                        .floor();
+                                              },
+                                              onInit: () {
+                                                DateTime date = DateTime.now();
+                                                addData[indexParent]
+                                                        .data[indexChild]
+                                                        .value =
+                                                    (date.millisecondsSinceEpoch /
+                                                            1000)
+                                                        .floor();
+                                              },
+                                            )
+                                          : dataFiled.field_type == "CHECK"
+                                              ? RenderCheckBox(
+                                                  onChange: (check) {
+                                                    addData[indexParent]
+                                                        .data[indexChild]
+                                                        .value = check ? 1 : 0;
+                                                  },
+                                                  data: dataFiled,
+                                                )
+                                              : dataFiled.field_type ==
+                                                      "PERCENTAGE"
+                                                  ? FieldInputPercent(
+                                                      data: dataFiled,
+                                                      onChanged: (text) {
+                                                        addData[indexParent]
+                                                            .data[indexChild]
+                                                            .value = text;
+                                                      },
+                                                    )
+                                                  : dataFiled.field_type ==
+                                                          "SWITCH"
+                                                      ? SwitchBase(
+                                                          isHide: soTien == 0 &&
+                                                              dataFiled
+                                                                      .field_id ==
+                                                                  '13588',
+                                                          onChange: (check) {
+                                                            if (dataFiled
+                                                                    .field_id ==
+                                                                '13588') {
+                                                              daThuTien = check;
+                                                            } else if (dataFiled
+                                                                    .field_id ==
+                                                                '13590') {
+                                                              ycXuatHoaDon =
+                                                                  check;
+                                                            }
+                                                            setState(() {});
+                                                            addData[indexParent]
+                                                                .data[
+                                                                    indexChild]
+                                                                .value = check;
+                                                          },
+                                                          data: dataFiled,
+                                                        )
+                                                      : dataFiled.field_type ==
+                                                              "RATE"
+                                                          ? _rateWidget(
+                                                              dataFiled,
+                                                              indexParent,
+                                                              indexChild,
+                                                              value: int.parse(
+                                                                  dataFiled
+                                                                          .field_set_value ??
+                                                                      '0'),
+                                                              noEdit: dataFiled
+                                                                          .field_set_value !=
+                                                                      null &&
+                                                                  dataFiled
+                                                                          .field_set_value !=
+                                                                      "0",
+                                                            )
+                                                          : dataFiled.field_type ==
+                                                                  "TEXTAREA"
+                                                              ? _fieldInputTextarea(
+                                                                  dataFiled,
+                                                                  indexParent,
+                                                                  indexChild,
+                                                                  noEdit: dataFiled.field_id == '13623'
+                                                                      ? ((dataFiled.field_set_value ?? '') !=
+                                                                          '')
+                                                                      : false,
+                                                                  value: dataFiled.field_set_value ??
+                                                                      '')
+                                                              : _fieldInputCustomer(
+                                                                  dataFiled,
+                                                                  indexParent,
+                                                                  indexChild,
+                                                                  value: dataFiled.field_id == '13620' ? soTien.toInt().toString() : '')
+                  : SizedBox()
+              : SizedBox();
+        });
   }
 
   bool _checkHide(String? parent) {
@@ -418,13 +476,13 @@ class _FormAddSignState extends State<FormAddSign> {
                           )
                         : Container(),
                     SizedBox(
-                      height: AppValue.heights * 0.01,
+                      height: AppValue.heights * 0.02,
                     ),
                     ListView.builder(
                         shrinkWrap: true,
                         padding: EdgeInsets.zero,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: e.data?.length,
+                        itemCount: e.data?.length ?? 0,
                         itemBuilder: (context, index) =>
                             _signature(e.data?[index], (v) {
                               chuKyModelResponse[index] = v;
@@ -470,7 +528,7 @@ class _FormAddSignState extends State<FormAddSign> {
                 return Container(
                   decoration: BoxDecoration(
                       color: Colors.grey.withOpacity(0.2),
-                      border: Border.all(color: COLORS.TEXT_COLOR),
+                      border: Border.all(color: HexColor("#BEB4B4")),
                       borderRadius: BorderRadius.all(Radius.circular(6))),
                   height: 300,
                   padding: EdgeInsets.all(15),
@@ -524,12 +582,13 @@ class _FormAddSignState extends State<FormAddSign> {
   }
 
   Widget _fieldInputCustomer(
-      CustomerIndividualItemData data, int index, int index1,
+      CustomerIndividualItemData data, int indexParent, int indexChild,
       {bool noEdit = false, String value = ""}) {
-    if (data.field_id == '13620' && addData[index].data[index1].value == null ||
-        addData[index].data[index1].value == '' ||
-        addData[index].data[index1].value == 'null') {
-      addData[index].data[index1].value = value;
+    if (data.field_id == '13620' &&
+            addData[indexParent].data[indexChild].value == null ||
+        addData[indexParent].data[indexChild].value == '' ||
+        addData[indexParent].data[indexChild].value == 'null') {
+      addData[indexParent].data[indexChild].value = value;
     }
     return Container(
       margin: EdgeInsets.only(bottom: 16),
@@ -578,7 +637,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                   ? TextInputType.emailAddress
                                   : TextInputType.text,
                   onChanged: (text) {
-                    addData[index].data[index1].value = text;
+                    addData[indexParent].data[indexChild].value = text;
                   },
                   readOnly: noEdit,
                   initialValue: value != ""
@@ -625,12 +684,172 @@ class _FormAddSignState extends State<FormAddSign> {
     );
   }
 
+  Widget _fieldInputTextarea(
+      CustomerIndividualItemData data, int indexParent, int indexChild,
+      {bool noEdit = false, String value = ""}) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // RichText(
+          //   textScaleFactor: MediaQuery.of(context).textScaleFactor,
+          //   text: TextSpan(
+          //     text: data.field_label ?? '',
+          //     style: titlestyle(),
+          //     children: <TextSpan>[
+          //       data.field_require == 1
+          //           ? TextSpan(
+          //               text: '*',
+          //               style: TextStyle(
+          //                   fontFamily: "Quicksand",
+          //                   fontSize: 14,
+          //                   fontWeight: FontWeight.w500,
+          //                   color: Colors.red))
+          //           : TextSpan(),
+          //     ],
+          //   ),
+          // ),
+          // SizedBox(
+          //   height: 8,
+          // ),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+                color: noEdit == true ? COLORS.LIGHT_GREY : Colors.white,
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: HexColor("#BEB4B4"))),
+            child: Padding(
+              padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
+              child: Container(
+                child: TextFormField(
+                  minLines: 2,
+                  maxLines: 99,
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  keyboardType: data.field_type == "TEXT_NUMERIC"
+                      ? TextInputType.number
+                      : data.field_special == "default"
+                          ? TextInputType.text
+                          : (data.field_special == "numberic")
+                              ? TextInputType.number
+                              : data.field_special == "email-address"
+                                  ? TextInputType.emailAddress
+                                  : TextInputType.text,
+                  onChanged: (text) {
+                    addData[indexParent].data[indexChild].value = text;
+                  },
+                  readOnly: noEdit,
+                  initialValue: value != ""
+                      ? value
+                      : noEdit == true
+                          ? data.field_value
+                          : data.field_set_value != null
+                              ? data.field_set_value.toString()
+                              : null,
+                  decoration: InputDecoration(
+                    hintText: data.field_label,
+                    hintStyle: hintTextStyle(),
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    isDense: true,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _rateWidget(
+      CustomerIndividualItemData data, int indexParent, int indexChild,
+      {bool noEdit = false, int value = 0}) {
+    if (starStream.value == -1) {
+      addData[indexParent].data[indexChild].value = starStream.value;
+      starStream.add(value);
+    }
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+            text: TextSpan(
+              text: data.field_label ?? '',
+              style: titlestyle(),
+              children: <TextSpan>[
+                data.field_require == 1
+                    ? TextSpan(
+                        text: '*',
+                        style: TextStyle(
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red))
+                    : TextSpan(),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          StreamBuilder<int>(
+              stream: starStream,
+              builder: (context, snapshot) {
+                return Container(
+                  height: MediaQuery.of(context).size.width / 10,
+                  child: Center(
+                    child: ListView.builder(
+                      padding: EdgeInsets.only(top: 15),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 5,
+                      itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {
+                          if (!noEdit) {
+                            starStream.add(index + 1);
+                            addData[indexParent].data[indexChild].value =
+                                index + 1;
+                          }
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width / 13,
+                          height: MediaQuery.of(context).size.width / 13,
+                          margin: EdgeInsets.symmetric(
+                              horizontal:
+                                  MediaQuery.of(context).size.width / 26),
+                          child: Image.asset(
+                            (snapshot.data ?? 0) > index
+                                ? ICONS.IC_STAR_BOLD_PNG
+                                : ICONS.IC_STAR_PNG,
+                            fit: BoxFit.contain,
+                            color: (snapshot.data ?? 0) > index
+                                ? null
+                                : (!noEdit)
+                                    ? COLORS.TEXT_COLOR
+                                    : COLORS.GREY,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }),
+        ],
+      ),
+    );
+  }
+
   Widget _fieldInputTextMulti(
       List<List<dynamic>> dropdownItemList,
       String label,
       int required,
-      int index,
-      int index1,
+      int indexParent,
+      int indexChild,
       String value,
       String maxLength) {
     List<ModelDataAdd> dropdow = [];
@@ -688,7 +907,7 @@ class _FormAddSignState extends State<FormAddSign> {
                   for (int i = 0; i < values.length; i++) {
                     res.add(values[i].value!.toString());
                   }
-                  addData[index].data[index1].value = res.join(",");
+                  addData[indexParent].data[indexChild].value = res.join(",");
                 }
               },
               onSelectionChanged: (values) {
