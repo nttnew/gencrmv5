@@ -20,7 +20,7 @@ class SuccessFormAddCustomerOrState extends FormAddState {
     this.soTien,
   });
   @override
-  List<Object> get props => [listAddData, chuKyResponse!, soTien!];
+  List<Object?> get props => [listAddData, chuKyResponse, soTien];
 }
 
 class ErrorFormAddCustomerOrState extends FormAddState {

@@ -138,3 +138,7 @@ class InitFormAddSignEvent extends FormAddEvent {
   @override
   List<Object?> get props => [id];
 }
+
+class ResetDataEvent extends FormAddEvent {
+  ResetDataEvent();
+}

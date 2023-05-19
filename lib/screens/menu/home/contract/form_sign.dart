@@ -42,6 +42,7 @@ class _FormAddSignState extends State<FormAddSign> {
   late final BehaviorSubject<int> starStream;
   bool daThuTien = false;
   bool ycXuatHoaDon = false;
+  bool editStar = false;
   double soTien = 0;
 
   @override
@@ -74,6 +75,13 @@ class _FormAddSignState extends State<FormAddSign> {
         }
       }
     });
+  }
+
+  @override
+  void deactivate() {
+    starStream.add(-1);
+    FormAddBloc.of(context).add(ResetDataEvent());
+    super.deactivate();
   }
 
   @override
@@ -416,12 +424,11 @@ class _FormAddSignState extends State<FormAddSign> {
                                                                   indexParent,
                                                                   indexChild,
                                                                   noEdit: dataFiled.field_id == '13623'
-                                                                      ? ((dataFiled.field_set_value ?? '') !=
-                                                                          '')
+                                                                      ? (((dataFiled.field_set_value ?? '') != '') ||
+                                                                          editStar)
                                                                       : false,
-                                                                  value:
-                                                                      dataFiled.field_set_value ??
-                                                                          '')
+                                                                  value: dataFiled.field_set_value ??
+                                                                      '')
                                                               : _fieldInputCustomer(
                                                                   dataFiled,
                                                                   indexParent,
@@ -537,7 +544,7 @@ class _FormAddSignState extends State<FormAddSign> {
                 final data = snapshot.data ?? '';
                 return Container(
                   decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.2),
+                      // color: Colors.grey.withOpacity(0.2),
                       border: Border.all(color: HexColor("#BEB4B4")),
                       borderRadius: BorderRadius.all(Radius.circular(6))),
                   height: 300,
@@ -757,7 +764,8 @@ class _FormAddSignState extends State<FormAddSign> {
                               ? data.field_set_value.toString()
                               : null,
                   decoration: InputDecoration(
-                    hintText: data.field_label,
+                    hintText:// noEdit ? null :
+                    data.field_label,
                     hintStyle: hintTextStyle(),
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
@@ -777,6 +785,7 @@ class _FormAddSignState extends State<FormAddSign> {
       CustomerIndividualItemData data, int indexParent, int indexChild,
       {bool noEdit = false, int value = 0}) {
     if (starStream.value == -1 || noEdit) {
+      editStar = noEdit;
       starStream.add(value);
       addData[indexParent].data[indexChild].value = starStream.value;
     }
@@ -992,6 +1001,13 @@ class _FormAddSignState extends State<FormAddSign> {
       check = true;
     }
 
+    final isCheckRate =
+        data["kh_danh_gia_nd"] != '' && data["kh_danh_gia_diem"] == '0';
+
+    if (isCheckRate) {
+      check = true;
+    }
+
     if (chuKyModelResponse.isNotEmpty) {
       final chukys = [];
       for (final value in chuKyModelResponse) {
@@ -1023,7 +1039,9 @@ class _FormAddSignState extends State<FormAddSign> {
         title: MESSAGES.NOTIFICATION,
         content: isCheckMoney
             ? "Số tiền không được lớn hơn số tiền chưa thanh toán"
-            : "Hãy nhập đủ các trường bắt buộc (*)",
+            : isCheckRate
+                ? "Vui lòng đánh giá số sao"
+                : "Hãy nhập đủ các trường bắt buộc (*)",
       );
     } else {
       AddDataBloc.of(context).add(SignEvent(data));

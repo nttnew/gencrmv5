@@ -56,6 +56,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       yield* _getFormAddProductCustomer();
     } else if (event is InitFormAddSignEvent) {
       yield* _getFormAddSign(id: event.id ?? '');
+    } else if (event is InitFormAddSignEvent) {
+      yield* _getFormAddSign(id: event.id ?? '');
+    }else if (event is ResetDataEvent) {
+        yield SuccessFormAddCustomerOrState(
+         [],
+      );
     }
   }
 
