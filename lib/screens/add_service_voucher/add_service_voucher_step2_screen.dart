@@ -17,6 +17,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../bloc/contract/total_bloc.dart';
 import '../../models/model_data_add.dart';
 import '../../models/widget_input_date.dart';
+import '../../src/app_const.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/src_index.dart';
 import '../../widgets/widget_field_input_percent.dart';
@@ -136,20 +137,20 @@ class _AddServiceVoucherStepTwoScreenState
           listener: (context, state) async {
             if (state is SaveServiceVoucherState) {
               ShowDialogCustom.showDialogBase(
-                title: MESSAGES.NOTIFICATION,
-                content: "Thêm mới phiếu dịch vụ thành công!",
-              ).whenComplete(() {
-                Navigator.of(context)
-                  ..pop()
-                  ..pop();
-              });
+                  title: MESSAGES.NOTIFICATION,
+                  content: "Thêm mới phiếu dịch vụ thành công!",
+                  onTap1: () {
+                    Navigator.of(context)
+                      ..pop()
+                      ..pop()
+                      ..pop();
+                  });
             }
             if (state is ErrorGetServiceVoucherState) {
               ShowDialogCustom.showDialogBase(
                 title: MESSAGES.NOTIFICATION,
                 content: state.msg,
               );
-              Get.back();
             }
           },
           child: Container(
@@ -230,8 +231,10 @@ class _AddServiceVoucherStepTwoScreenState
                                                     : fieldId == '246' &&
                                                             fieldData.field_set_value_datasource !=
                                                                 []
-                                                        ? _fieldInputCustomer(
-                                                            fieldData, index, index1)
+                                                        ? fieldInputCustomer(
+                                                            data: fieldData,
+                                                            index: index,
+                                                            index1: index1)
                                                         : fieldType == "SELECT"
                                                             ? InputDropdown(
                                                                 onUpdate:
@@ -241,7 +244,8 @@ class _AddServiceVoucherStepTwoScreenState
                                                                           index1]
                                                                       .value = data;
                                                                 },
-                                                                isUpdate: _bloc.getTextInit(id: fieldId, list: fieldData.field_datasource) != null &&
+                                                                isUpdate: _bloc.getTextInit(id: fieldId, list: fieldData.field_datasource) !=
+                                                                        null &&
                                                                     fieldId !=
                                                                         '12708',
                                                                 dropdownItemList:
@@ -311,7 +315,7 @@ class _AddServiceVoucherStepTwoScreenState
                                                                                   )
                                                                                 : fieldType == "CHECK"
                                                                                     ? _check(fieldData, index, index1)
-                                                                                    : _fieldInputCustomer(fieldData, index, index1)
+                                                                                    : fieldInputCustomer(data: fieldData, index: index, index1: index1)
                                             : SizedBox();
                                       }),
                                     )
@@ -599,95 +603,6 @@ class _AddServiceVoucherStepTwoScreenState
     );
   }
 
-  Widget _fieldInputCustomer(
-    CustomerIndividualItemData data,
-    int index,
-    int index1,
-  ) {
-    final TextEditingController _controller = TextEditingController();
-    _controller.text = _bloc.getTextInit(id: data.field_id) ??
-        ((data.field_set_value ?? '').trim() != ''
-            ? data.field_set_value
-            : data.field_set_value_datasource?[0][1]) ??
-        _bloc.addData[index].data[index1].value ??
-        '';
-    _bloc.addData[index].data[index1].value =
-        _bloc.getTextInit(id: data.field_id) ??
-            ((data.field_set_value ?? '').trim() != ''
-                ? data.field_set_value
-                : data.field_set_value_datasource?[0][1]) ??
-            _bloc.addData[index].data[index1].value ??
-            '';
-    bool isEdit = data.field_id == '246' ||
-        // data.field_id == '1529' ||
-        data.field_id == '264';
-    return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: data.field_label ?? '',
-              style: titlestyle(),
-              children: <TextSpan>[
-                data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Quicksand",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red))
-                    : TextSpan(),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-                color: isEdit && _controller.text != ''
-                    ? COLORS.LIGHT_GREY
-                    : Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: HexColor("#BEB4B4"))),
-            child: Padding(
-              padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
-              child: Container(
-                child: TextField(
-                  controller: _controller,
-                  enabled: !isEdit,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                  keyboardType: data.field_special == "default"
-                      ? TextInputType.text
-                      : data.field_special == "numberic"
-                          ? TextInputType.number
-                          : data.field_special == "email-address"
-                              ? TextInputType.emailAddress
-                              : TextInputType.text,
-                  onChanged: (text) {
-                    _bloc.addData[index].data[index1].value = text;
-                  },
-                  decoration: InputDecoration(
-                    hintStyle: hintTextStyle(),
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    isDense: true,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _check(CustomerIndividualItemData data, int index, int index1) {
     TextEditingController controller = TextEditingController();
     controller.text = (data.field_set_value ?? '').trim() ?? '';
@@ -776,7 +691,7 @@ class _AddServiceVoucherStepTwoScreenState
               style: TextStyle(
                   fontFamily: "Quicksand",
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   color: COLORS.BLACK),
               children: <TextSpan>[
                 required == 1
@@ -785,7 +700,7 @@ class _AddServiceVoucherStepTwoScreenState
                         style: TextStyle(
                             fontFamily: "Quicksand",
                             fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             color: Colors.red))
                     : TextSpan(),
               ],
@@ -838,24 +753,6 @@ class _AddServiceVoucherStepTwoScreenState
       ),
     ));
   }
-
-  TextStyle hintTextStyle() => TextStyle(
-      fontFamily: "Quicksand",
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-      color: COLORS.BLACK);
-
-  TextStyle titlestyle() => TextStyle(
-      fontFamily: "Quicksand",
-      fontSize: 14,
-      fontWeight: FontWeight.w600,
-      color: COLORS.BLACK);
-
-  TextStyle titlestyleNgTheoDoi() => TextStyle(
-      fontFamily: "Quicksand",
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-      color: COLORS.BLACK);
 
   void onClickSave() {
     final addData = _bloc.addData;
@@ -973,7 +870,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
               style: TextStyle(
                   fontFamily: "Quicksand",
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   color: COLORS.BLACK),
               children: <TextSpan>[
                 widget.data.field_require == 1
@@ -982,7 +879,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                         style: TextStyle(
                             fontFamily: "Quicksand",
                             fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             color: Colors.red))
                     : TextSpan(),
               ],
@@ -1099,6 +996,137 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                   ),
                 )
               : Container()
+        ],
+      ),
+    );
+  }
+}
+
+class fieldInputCustomer extends StatefulWidget {
+  const fieldInputCustomer({
+    Key? key,
+    required this.data,
+    required this.index,
+    required this.index1,
+  }) : super(key: key);
+  final CustomerIndividualItemData data;
+  final int index;
+  final int index1;
+  @override
+  State<fieldInputCustomer> createState() => _fieldInputCustomerState();
+}
+
+class _fieldInputCustomerState extends State<fieldInputCustomer> {
+  late final ServiceVoucherBloc _bloc;
+  late final data;
+  late final int index1;
+  late final int index;
+  late final bool isEdit;
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    _bloc = ServiceVoucherBloc.of(context);
+    index = widget.index;
+    index1 = widget.index1;
+    data = widget.data;
+    _controller = TextEditingController();
+    _controller.text = _bloc.getTextInit(id: data.field_id) ??
+        ((data.field_set_value ?? '').trim() != ''
+            ? data.field_set_value
+            : data.field_set_value_datasource?[0][1]) ??
+        _bloc.addData[index].data[index1].value ??
+        '';
+    _bloc.addData[index].data[index1].value =
+        _bloc.getTextInit(id: data.field_id) ??
+            ((data.field_set_value ?? '').trim() != ''
+                ? data.field_set_value
+                : data.field_set_value_datasource?[0][1]) ??
+            _bloc.addData[index].data[index1].value ??
+            '';
+    isEdit = data.field_id == '246' || data.field_id == '264';
+    _bloc.infoCar.listen((value) {
+      _controller.text = _bloc.getTextInit(id: data.field_id) ??
+          ((data.field_set_value ?? '').trim() != ''
+              ? data.field_set_value
+              : data.field_set_value_datasource?[0][1]) ??
+          _bloc.addData[index].data[index1].value ??
+          '';
+      _bloc.addData[index].data[index1].value =
+          _bloc.getTextInit(id: data.field_id) ??
+              ((data.field_set_value ?? '').trim() != ''
+                  ? data.field_set_value
+                  : data.field_set_value_datasource?[0][1]) ??
+              _bloc.addData[index].data[index1].value ??
+              '';
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+            text: TextSpan(
+              text: data.field_label ?? '',
+              style: titlestyle(),
+              children: <TextSpan>[
+                data.field_require == 1
+                    ? TextSpan(
+                        text: '*',
+                        style: TextStyle(
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red))
+                    : TextSpan(),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+                color: isEdit && _controller.text != ''
+                    ? COLORS.LIGHT_GREY
+                    : Colors.white,
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: HexColor("#BEB4B4"))),
+            child: Padding(
+              padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
+              child: Container(
+                child: TextField(
+                  controller: _controller,
+                  enabled: !isEdit,
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  keyboardType: data.field_special == "default"
+                      ? TextInputType.text
+                      : data.field_special == "numberic"
+                          ? TextInputType.number
+                          : data.field_special == "email-address"
+                              ? TextInputType.emailAddress
+                              : TextInputType.text,
+                  onChanged: (text) {
+                    _bloc.addData[index].data[index1].value = text;
+                  },
+                  decoration: InputDecoration(
+                    hintStyle: hintTextStyle(),
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    isDense: true,
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

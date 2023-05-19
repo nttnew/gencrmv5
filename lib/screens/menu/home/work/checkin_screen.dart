@@ -12,7 +12,6 @@ import '../../../../src/src_index.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/location_base.dart';
 import '../../../../widgets/widget_text.dart';
-import '../contract/widget_total_sum.dart';
 
 class CheckInScreen extends StatefulWidget {
   const CheckInScreen({Key? key}) : super(key: key);

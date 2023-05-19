@@ -20,6 +20,24 @@ const int PRODUCT_TYPE = 99;
 const int PRODUCT_CUSTOMER_TYPE = 98;
 const LOADING = 'loading';
 
+TextStyle hintTextStyle() => TextStyle(
+    fontFamily: "Quicksand",
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: COLORS.BLACK);
+
+TextStyle titlestyle() => TextStyle(
+    fontFamily: "Quicksand",
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: COLORS.BLACK);
+
+TextStyle titlestyleNgTheoDoi() => TextStyle(
+    fontFamily: "Quicksand",
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: COLORS.BLACK);
+
 void loginSessionExpired() {
   ShowDialogCustom.showDialogBase(
     title: MESSAGES.NOTIFICATION,
