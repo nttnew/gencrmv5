@@ -13,11 +13,7 @@ class ChoiceSourceImage extends StatefulWidget {
 
 class _ChoiceSourceImageState extends State<ChoiceSourceImage> {
   void showSettingDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return ShowDialogCustom.showDialogBase(
+     ShowDialogCustom.showDialogBase(
           title: MESSAGES.NOTIFICATION,
           content: "Đi đến cài đặt",
           textButton1: "Đi",
@@ -30,8 +26,6 @@ class _ChoiceSourceImageState extends State<ChoiceSourceImage> {
             Get.back();
           },
         );
-      },
-    );
   }
 
   @override

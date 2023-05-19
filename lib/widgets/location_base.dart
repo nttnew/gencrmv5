@@ -2,17 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:location/location.dart' as myLocation;
 import '../src/messages.dart';
 import '../src/show_dialog.dart';
 
 Future<Position?> determinePosition(BuildContext context) async {
-  bool serviceEnabled;
   LocationPermission permission;
+  myLocation.Location location = new myLocation.Location();
+  bool _serviceEnabled;
 
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    showDialogPermissionLocation(context, isDevice: true);
-    return null;
+  _serviceEnabled = await location.serviceEnabled();
+  if (!_serviceEnabled) {
+    _serviceEnabled = await location.requestService();
+    if (!_serviceEnabled) {
+      return null;
+    }
   }
 
   permission = await Geolocator.checkPermission();
@@ -34,22 +38,17 @@ Future<Position?> determinePosition(BuildContext context) async {
 
 void showDialogPermissionLocation(BuildContext context,
         {bool isDevice = false}) =>
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return ShowDialogCustom.showDialogBase(
-          title: MESSAGES.NOTIFICATION,
-          content: 'Bạn chưa cấp quyền truy cập vào vị trí?',
-          textButton2: 'Đi đến cài đặt',
-          onTap2: () async {
-            if (isDevice) {
-              await Geolocator.openLocationSettings();
-            } else {
-              await Geolocator.openAppSettings();
-            }
-            Get.back();
-          },
-        );
+    ShowDialogCustom.showDialogBase(
+      title: MESSAGES.NOTIFICATION,
+      content: 'Bạn chưa cấp quyền truy cập vào vị trí?',
+      textButton2: 'Đi đến cài đặt',
+      onTap2: () async {
+        if (isDevice) {
+          await Geolocator.openLocationSettings();
+        } else {
+          await Geolocator.openAppSettings();
+        }
+        Get.back();
       },
     );
 Future<String> getLocationName(double latitude, double longitude) async {

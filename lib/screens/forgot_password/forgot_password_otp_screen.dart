@@ -52,16 +52,10 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
         }
         if (state is ErrorForgotOtp) {
           GetSnackBarUtils.removeSnackBar();
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return ShowDialogCustom.showDialogBase(
+          ShowDialogCustom.showDialogBase(
                 title: MESSAGES.NOTIFICATION,
                 content: state.msg,
               );
-            },
-          );
         }
       },
       child: Scaffold(

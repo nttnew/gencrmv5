@@ -340,6 +340,13 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                             decoration: BoxDecoration(
                               color: Colors.white,
                               shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: COLORS.BLACK.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                )
+                              ],
                             ),
                             child: SizedBox(
                               height: 20,

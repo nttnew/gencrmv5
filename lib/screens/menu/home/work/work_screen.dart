@@ -120,6 +120,13 @@ class _WorkScreenState extends State<WorkScreen> {
                       ),
                       padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: COLORS.BLACK.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                          )
+                        ],
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),

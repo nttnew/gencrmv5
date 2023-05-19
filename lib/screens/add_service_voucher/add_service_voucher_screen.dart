@@ -106,17 +106,11 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
                       onTap: () {
                         FocusManager.instance.primaryFocus?.unfocus();
                         if (sdt.trim() == '' && bienSo.trim() == '') {
-                          showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (BuildContext context) {
-                              return ShowDialogCustom.showDialogBase(
+                        ShowDialogCustom.showDialogBase(
                                 title: MESSAGES.NOTIFICATION,
                                 content:
                                     "Bạn phải nhập số điện thoại hoặc biển số",
                               );
-                            },
-                          );
                         } else {
                           ServiceVoucherBloc.of(context).add(
                               PostServiceVoucherEvent(

@@ -135,29 +135,19 @@ class _AddServiceVoucherStepTwoScreenState
         body: BlocListener<ServiceVoucherBloc, ServiceVoucherState>(
           listener: (context, state) async {
             if (state is SaveServiceVoucherState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
-                    content: "Thêm mới phiếu dịch vụ thành công!",
-                  );
-                },
-              )..whenComplete(() {
-                  Navigator.of(context)
-                    ..pop()
-                    ..pop();
-                });
+              ShowDialogCustom.showDialogBase(
+                title: MESSAGES.NOTIFICATION,
+                content: "Thêm mới phiếu dịch vụ thành công!",
+              ).whenComplete(() {
+                Navigator.of(context)
+                  ..pop()
+                  ..pop();
+              });
             }
             if (state is ErrorGetServiceVoucherState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
-                    content: state.msg,
-                  );
-                },
+              ShowDialogCustom.showDialogBase(
+                title: MESSAGES.NOTIFICATION,
+                content: state.msg,
               );
               Get.back();
             }
@@ -378,7 +368,8 @@ class _AddServiceVoucherStepTwoScreenState
                                                           .add(list);
                                                     },
                                                     child: WidgetContainerImage(
-                                                      image: ICONS.IC_DELETE_PNG,
+                                                      image:
+                                                          ICONS.IC_DELETE_PNG,
                                                       width: 20,
                                                       height: 20,
                                                       fit: BoxFit.contain,
@@ -786,7 +777,7 @@ class _AddServiceVoucherStepTwoScreenState
                   fontFamily: "Quicksand",
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color:COLORS.BLACK),
+                  color: COLORS.BLACK),
               children: <TextSpan>[
                 required == 1
                     ? TextSpan(
@@ -808,15 +799,9 @@ class _AddServiceVoucherStepTwoScreenState
             onConfirm: (values) {
               if (maxLength != "" && values.length > int.parse(maxLength)) {
                 values.removeRange(int.parse(maxLength) - 1, values.length - 1);
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return ShowDialogCustom.showDialogBase(
-                      title: MESSAGES.NOTIFICATION,
-                      content: "Bạn chỉ được chọn ${maxLength} giá trị",
-                    );
-                  },
+                ShowDialogCustom.showDialogBase(
+                  title: MESSAGES.NOTIFICATION,
+                  content: "Bạn chỉ được chọn ${maxLength} giá trị",
                 );
               } else {
                 List<dynamic> res = [];
@@ -894,14 +879,9 @@ class _AddServiceVoucherStepTwoScreenState
       }
     }
     if (check == true) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return ShowDialogCustom.showDialogBase(
-            title: MESSAGES.NOTIFICATION,
-            content: "Hãy nhập đủ các trường bắt buộc (*)",
-          );
-        },
+      ShowDialogCustom.showDialogBase(
+        title: MESSAGES.NOTIFICATION,
+        content: "Hãy nhập đủ các trường bắt buộc (*)",
       );
     } else {
       if (_bloc.listProduct.length > 0) {
