@@ -2,13 +2,12 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:rxdart/rxdart.dart';
 import '../../../api_resfull/user_repository.dart';
+import '../../../src/app_const.dart';
 import '../../../src/base.dart';
-import '../../../src/color.dart';
 import '../../../src/messages.dart';
-import '../../../src/navigator.dart';
 import '../../../widgets/loading_api.dart';
-import '../../../widgets/widget_dialog.dart';
 import '../report_general/report_general_bloc.dart';
 
 part 'report_state.dart';
@@ -16,6 +15,7 @@ part 'report_event.dart';
 
 class ReportBloc extends Bloc<ReportEvent, ReportState> {
   final UserRepository userRepository;
+  BehaviorSubject<String> selectReport = BehaviorSubject.seeded('');
 
   ReportBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -37,31 +37,15 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
         yield SuccessReportWorkState(response.data!.thoi_gian!,
             response.data!.diem_ban!, response.data!.thoi_gian_mac_dinh!);
         ReportGeneralBloc.of(Get.context!).add(SelectReportGeneralEvent(
-            1, "", response.data!.thoi_gian_mac_dinh!));
+            1, null, response.data!.thoi_gian_mac_dinh!));
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else
         yield ErrorReportWorkState(response.msg ?? '');
     } catch (e) {
       yield ErrorReportWorkState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      Get.dialog(WidgetDialog(
-        title: MESSAGES.NOTIFICATION,
-        content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-        textButton1: "OK",
-        backgroundButton1: COLORS.PRIMARY_COLOR,
-        onTap1: () {
-          AppNavigator.navigateLogout();
-        },
-      ));
+      loginSessionExpired();
       throw e;
     }
     LoadingApi().popLoading();

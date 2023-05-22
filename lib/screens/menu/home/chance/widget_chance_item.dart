@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gen_crm/widgets/widgets.dart';
-
+import 'package:gen_crm/src/app_const.dart';
 import '../../../../src/src_index.dart';
 
 class WidgetItemChance extends StatelessWidget {
@@ -20,7 +19,7 @@ class WidgetItemChance extends StatelessWidget {
       },
       child: Container(
         margin: EdgeInsets.only(left: 25, right: 25, bottom: 20),
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+        padding: EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: COLORS.WHITE,
           borderRadius: BorderRadius.circular(20),
@@ -38,18 +37,17 @@ class WidgetItemChance extends StatelessWidget {
           children: [
             Row(
               children: [
-                Image.asset('assets/icons/Chance.png'),
-                SizedBox(
-                  width: 10,
+                Expanded(
+                  child: itemTextIcon(
+                    paddingTop: 0,
+                    text: listChanceData.name ?? 'Chưa có',
+                    icon: ICONS.IC_CHANCE_3X_PNG,
+                    isSVG: false,
+                    styleText: AppStyle.DEFAULT_TITLE_PRODUCT
+                        .copyWith(color: COLORS.TEXT_COLOR),
+                  ),
                 ),
-                SizedBox(
-                    width: AppValue.widths * 0.6,
-                    child: WidgetText(
-                      title: listChanceData.name,
-                      style: AppStyle.DEFAULT_TITLE_PRODUCT
-                          .copyWith(color: COLORS.TEXT_COLOR),
-                    )),
-                Spacer(),
+                SizedBox(width: 8,),
                 Container(
                   decoration: BoxDecoration(
                       color: Colors.red,
@@ -59,63 +57,36 @@ class WidgetItemChance extends StatelessWidget {
                 )
               ],
             ),
-            SizedBox(
-              height: 15,
+            itemTextIcon(
+              text: ('${listChanceData.customer!.danh_xung ?? ''}' +
+                      ' ' +
+                      '${listChanceData.customer!.name ?? ''}')
+                  .trim(),
+              icon: ICONS.IC_USER2_SVG,
             ),
-            if ((listChanceData.customer?.name ?? '').trim() != '') ...[
-              Row(
+            itemTextIcon(
+              text: listChanceData.status ?? '',
+              icon: ICONS.IC_DANG_XU_LY_SVG,
+              styleText:
+                  AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(color: Colors.red),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Row(
                 children: [
-                  SvgPicture.asset('assets/icons/User.svg'),
-                  SizedBox(
-                    width: 10,
+                  Expanded(
+                    child: itemTextIcon(
+                      isSVG: false,
+                      paddingTop: 0,
+                      text: listChanceData.dateNextCare ?? 'Chưa có',
+                      icon: ICONS.IC_DATE_PNG,
+                    ),
                   ),
-                  SizedBox(
-                    width: AppValue.widths * 0.7,
-                    child: WidgetText(
-                        title: '${listChanceData.customer!.danh_xung ?? ''}' +
-                            ' ' +
-                            '${listChanceData.customer!.name ?? ''}',
-                        style: AppStyle.DEFAULT_LABEL_PRODUCT),
-                  ),
+                  SizedBox(width: 8,),
+
+                  SvgPicture.asset(ICONS.IC_MESS),
                 ],
               ),
-              SizedBox(
-                height: 15,
-              ),
-            ],
-            if (listChanceData.status != '') ...[
-              Row(
-                children: [
-                  SvgPicture.asset('assets/icons/dangxuly.svg'),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  WidgetText(
-                      title: listChanceData.status,
-                      style: AppStyle.DEFAULT_LABEL_PRODUCT
-                          .copyWith(color: Colors.red)),
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-            ],
-            Row(
-              children: [
-                Image.asset('assets/icons/date.png'),
-                SizedBox(
-                  width: 10,
-                ),
-                WidgetText(
-                    title: (listChanceData.dateNextCare == null ||
-                            listChanceData.dateNextCare == "")
-                        ? 'Chưa có'
-                        : listChanceData.dateNextCare,
-                    style: AppStyle.DEFAULT_LABEL_PRODUCT
-                        .copyWith(color: COLORS.TEXT_COLOR)),
-                Spacer(),
-                SvgPicture.asset('assets/icons/Mess.svg'),
-              ],
             ),
             AppValue.hSpaceTiny,
           ],

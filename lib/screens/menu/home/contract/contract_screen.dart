@@ -5,13 +5,13 @@ import 'package:gen_crm/bloc/contract/contract_bloc.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/contract.dart';
 import '../../../../src/models/model_generator/customer.dart';
 import '../../../../src/src_index.dart';
-import '../../../../storages/share_local.dart';
 import '../../../../widgets/widget_appbar.dart';
+import '../../../../widgets/widget_search.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 
 class ContractScreen extends StatefulWidget {
@@ -47,7 +47,7 @@ class _ContractScreenState extends State<ContractScreen> {
         page = page + 1;
       } else {}
     });
-    title=Get.arguments;
+    title = Get.arguments ?? '';
     super.initState();
   }
 
@@ -57,12 +57,12 @@ class _ContractScreenState extends State<ContractScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
-      drawer: MainDrawer(onPress: handleOnPressItemMenu),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
+      drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: Column(
         children: [
           WidgetAppbar(
-            title: Get.arguments,
+            title: Get.arguments ?? '',
             textColor: Colors.black,
             left: Padding(
               padding: EdgeInsets.only(left: 20),
@@ -73,7 +73,7 @@ class _ContractScreenState extends State<ContractScreen> {
                     _drawerKey.currentState!.openDrawer();
                   }
                 },
-                child: Image.asset('assets/icons/Menu.png'),
+                child: Image.asset(ICONS.IC_MENU_PNG),
               ),
             ),
             right: GestureDetector(onTap: () {
@@ -82,24 +82,20 @@ class _ContractScreenState extends State<ContractScreen> {
                 BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
                     builder: (context, state) {
               if (state is NotificationNeedRead) {
-                return SvgPicture.asset("assets/icons/notification.svg");
+                return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
               } else {
-                return SvgPicture.asset("assets/icons/notification2.svg");
+                return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
               }
             })),
           ),
-          AppValue.vSpaceSmall,
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: _buildSearch(),
-          ),
-          AppValue.vSpaceSmall,
+          AppValue.vSpaceTiny,
+          _buildSearch(),
           BlocBuilder<ContractBloc, ContractState>(builder: (context, state) {
             if (state is UpdateGetContractState) {
               total = state.total;
               lenght = state.listContract.length;
               return Expanded(
-                      child: RefreshIndicator(
+                  child: RefreshIndicator(
                 onRefresh: () =>
                     Future.delayed(Duration(milliseconds: 250), () {
                   ContractBloc.of(context)
@@ -107,9 +103,12 @@ class _ContractScreenState extends State<ContractScreen> {
                 }),
                 child: SingleChildScrollView(
                   controller: _scrollController,
-                  child: Column(
-                    children: List.generate(state.listContract.length,
-                        (index) => _buildCustomer(state.listContract[index])),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Column(
+                      children: List.generate(state.listContract.length,
+                          (index) => _buildCustomer(state.listContract[index])),
+                    ),
                   ),
                 ),
               ));
@@ -135,73 +134,29 @@ class _ContractScreenState extends State<ContractScreen> {
     return BlocBuilder<ContractBloc, ContractState>(builder: (context, state) {
       if (state is UpdateGetContractState)
         return Container(
-          height: 50,
+          margin: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
           decoration: BoxDecoration(
-              border: Border.all(
-                color: COLORS.COLORS_BA,
-                //                   <--- border color
-                width: 1.0,
-              ),
-              borderRadius: BorderRadius.circular(10),
-              color: COLORS.WHITE),
-          child: Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 5),
-                child: Center(
-                    child: Container(
-                  height: 25,
-                  width: 25,
-                  child: SvgPicture.asset(
-                    'assets/icons/Search.svg',
-                    color: COLORS.GREY.withOpacity(0.5),
-                  ),
-                )),
-              ),
-              Expanded(
-                flex: 7,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: TextFormField(
-                    controller: _editingController,
-                    style: AppStyle.DEFAULT_14,
-                    textAlign: TextAlign.left,
-                    textAlignVertical: TextAlignVertical.top,
-                    onEditingComplete: () {
-                      ContractBloc.of(context).add(InitGetContractEvent(
-                          page, _editingController.text, idFilter));
-                    },
-                    decoration: InputDecoration(
-                      hintText: MESSAGES.SEARCH_CONTRACT,
-                      hintStyle: AppStyle.DEFAULT_14
-                          .copyWith(color: Color(0xff707070)),
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                width: 1,
-                height: 50,
-                margin: EdgeInsets.only(right: 15),
-                color: COLORS.COLORS_BA,
-              ),
-              GestureDetector(
-                onTap: () {
-                  this.onClickFilter(state.listFilter);
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(right: 15),
-                  child: Container(
-                    height: 20,
-                    width: 20,
-                    child: SvgPicture.asset('assets/icons/Filter.svg'),
-                  ),
-                ),
-              ),
-            ],
+            border: Border.all(color: HexColor("#DBDBDB")),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: WidgetSearch(
+            inputController: _editingController,
+            hintTextStyle: TextStyle(
+                fontFamily: "Quicksand",
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: HexColor("#707070")),
+            hint: "Tìm ${title.toLowerCase()}",
+            leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+            endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
+            onClickRight: () {
+              this.onClickFilter(state.listFilter);
+            },
+            onSubmit: (v) {
+              search = v;
+              ContractBloc.of(context)
+                  .add(InitGetContractEvent(page, v, idFilter));
+            },
           ),
         );
       else
@@ -215,8 +170,8 @@ class _ContractScreenState extends State<ContractScreen> {
         AppNavigator.navigateInfoContract(data.id!, data.name!);
       },
       child: Container(
-        margin: EdgeInsets.only(left: 16, right: 16, bottom: 20),
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+        margin: EdgeInsets.only(left: 25, right: 25, bottom: 20),
+        padding: EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: COLORS.WHITE,
           borderRadius: BorderRadius.circular(20),
@@ -234,18 +189,15 @@ class _ContractScreenState extends State<ContractScreen> {
           children: [
             Row(
               children: [
-                Image.asset('assets/icons/Contract.png'),
-                SizedBox(
-                  width: 10,
-                ),
-                SizedBox(
-                    width: AppValue.widths * 0.5,
-                    child: WidgetText(
-                      title: data.name ?? '',
-                      style: AppStyle.DEFAULT_TITLE_PRODUCT
+                Expanded(
+                  child: itemTextIcon(
+                      paddingTop: 0,
+                      text: data.name ?? 'Chưa có',
+                      icon: ICONS.IC_CONTRACT_3X_PNG,
+                      styleText: AppStyle.DEFAULT_TITLE_PRODUCT
                           .copyWith(color: COLORS.TEXT_COLOR),
-                    )),
-                Spacer(),
+                      isSVG: false),
+                ),
                 Container(
                   decoration: BoxDecoration(
                       color: data.status_color != ""
@@ -257,147 +209,60 @@ class _ContractScreenState extends State<ContractScreen> {
                 )
               ],
             ),
-            SizedBox(
-              height: 8,
+            itemTextIcon(
+              text: data.customer?.name?.trim() ?? 'Chưa có',
+              icon: ICONS.IC_USER2_SVG,
+              colorIcon: Color(0xffE75D18),
             ),
-            if (data.customer?.name?.trim().isNotEmpty ?? false) ...[
-              Row(
+            itemTextIcon(
+              text: data.status ?? '',
+              icon: ICONS.IC_DANG_XU_LY_SVG,
+              colorText: data.status_color != ''
+                  ? HexColor(data.status_color!)
+                  : COLORS.RED,
+              styleText: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                color: data.status_color != ""
+                    ? HexColor(data.status_color!)
+                    : COLORS.RED,
+              ),
+              colorIcon: data.status_color != ''
+                  ? HexColor(data.status_color!)
+                  : COLORS.RED,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Row(
                 children: [
-                  SvgPicture.asset(
-                    'assets/icons/User.svg',
-                    color: Color(0xffE75D18),
+                  Expanded(
+                    child: itemTextIcon(
+                      colorIcon: COLORS.GREY,
+                      paddingTop: 0,
+                      text: 'Tổng tiền: ' + '${data.price.toString()}' + 'đ',
+                      icon: ICONS.IC_MAIL_SVG,
+                      styleText: AppStyle.DEFAULT_LABEL_PRODUCT
+                          .copyWith(color: COLORS.GREY),
+                    ),
                   ),
                   SizedBox(
-                    width: 10,
+                    width: 8,
                   ),
-                  Expanded(
-                    child: WidgetText(
-                      title: data.customer!.name ?? '',
-                      style: AppStyle.DEFAULT_LABEL_PRODUCT,
+                  SvgPicture.asset(ICONS.IC_QUESTION_SVG),
+                  SizedBox(
+                    width: 4,
+                  ),
+                  WidgetText(
+                    title: data.total_note.toString(),
+                    style: TextStyle(
+                      color: HexColor("#0052B4"),
                     ),
                   ),
                 ],
               ),
-              SizedBox(
-                height: 8,
-              ),
-            ],
-            if (data.status?.trim().isNotEmpty ?? false) ...[
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    'assets/icons/dangxuly.svg',
-                    color: data.status_color != ""
-                        ? HexColor(data.status_color!)
-                        : COLORS.RED,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  WidgetText(
-                      title: data.status ?? '',
-                      style: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
-                        color: data.status_color != ""
-                            ? HexColor(data.status_color!)
-                            : COLORS.RED,
-                      )),
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-            ],
-            Row(
-              children: [
-                SvgPicture.asset(
-                  'assets/icons/mail.svg',
-                  color: Colors.grey,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                WidgetText(
-                  title: 'Tổng tiền: ' + '${data.price.toString()}' + 'đ',
-                  style: AppStyle.DEFAULT_LABEL_PRODUCT
-                      .copyWith(color: COLORS.GREY),
-                ),
-                Spacer(),
-                SvgPicture.asset("assets/icons/question_answer.svg"),
-                SizedBox(
-                  width: AppValue.widths * 0.01,
-                ),
-                WidgetText(
-                  title: data.total_note.toString(),
-                  style: TextStyle(
-                    color: HexColor("#0052B4"),
-                  ),
-                ),
-              ],
             ),
-            SizedBox(
-              height: 8,
-            ),
-            AppValue.hSpaceTiny,
           ],
         ),
       ),
     );
-  }
-
-  handleOnPressItemMenu(value) async {
-    switch (value['id']) {
-      case '1':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateMain();
-        break;
-      case 'opportunity':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChance(value['title']);
-        break;
-      case 'job':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateWork(value['title']);
-        break;
-      case 'contract':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateContract(value['title']);
-        break;
-      case 'support':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateSupport(value['title']);
-        break;
-      case 'customer':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateCustomer(value['title']);
-        break;
-      case 'contact':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateClue(value['title']);
-        break;
-      case 'report':
-        _drawerKey.currentState!.openEndDrawer();
-        String? money = await shareLocal.getString(PreferencesKey.MONEY);
-        AppNavigator.navigateReport(money ?? "đ");
-        break;
-      case '2':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateInformationAccount();
-        break;
-      case '3':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateAboutUs();
-        break;
-      case '4':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigatePolicy();
-        break;
-      case '5':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChangePassword();
-        break;
-      default:
-        break;
-    }
   }
 
   void onClickFilter(List<FilterData> data) {
@@ -453,7 +318,7 @@ class _ContractScreenState extends State<ContractScreen> {
                                         // crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                            'assets/icons/Filter.svg',
+                                            ICONS.IC_FILTER_SVG,
                                             width: 20,
                                             height: 20,
                                             fit: BoxFit.contain,

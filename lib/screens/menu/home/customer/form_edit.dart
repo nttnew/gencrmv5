@@ -1,15 +1,17 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/contract/phone_bloc.dart';
+import 'package:gen_crm/bloc/detail_product/detail_product_bloc.dart';
+import 'package:gen_crm/bloc/detail_product_customer/detail_product_customer_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
 import 'package:gen_crm/bloc/form_edit/form_edit_bloc.dart';
 import 'package:gen_crm/models/model_data_add.dart';
 import 'package:gen_crm/models/model_item_add.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -29,9 +31,7 @@ import '../../../../src/models/model_generator/add_customer.dart';
 import '../../../../src/pick_file_image.dart';
 import '../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-
-import '../../../../widgets/widgetFieldInputPercent.dart';
-import '../../../../widgets/widget_dialog.dart';
+import '../../../../widgets/widget_field_input_percent.dart';
 import 'input_dropDown.dart';
 
 class FormEdit extends StatefulWidget {
@@ -72,6 +72,10 @@ class _FormEditState extends State<FormEdit> {
       FormEditBloc.of(context).add(InitFormEditJobEvent(id));
     } else if (type == 6) {
       FormEditBloc.of(context).add(InitFormEditSupportEvent(id));
+    } else if (type == PRODUCT_TYPE) {
+      FormEditBloc.of(context).add(InitFormEditProductEvent(id));
+    } else if (type == PRODUCT_CUSTOMER_TYPE) {
+      FormEditBloc.of(context).add(InitFormEditProductCustomerEvent(id));
     }
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -114,7 +118,7 @@ class _FormEditState extends State<FormEdit> {
   }
 
   showLog(String mess) {
-    Get.dialog(WidgetDialog(
+    ShowDialogCustom.showDialogBase(
       title: MESSAGES.NOTIFICATION,
       content: mess,
       textButton1: "Quay lại",
@@ -122,7 +126,7 @@ class _FormEditState extends State<FormEdit> {
         Get.back();
         Get.back();
       },
-    ));
+    );
   }
 
   @override
@@ -130,6 +134,7 @@ class _FormEditState extends State<FormEdit> {
     return Stack(
       children: [
         Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(
               toolbarHeight: AppValue.heights * 0.1,
               backgroundColor: HexColor("#D0F1EB"),
@@ -150,97 +155,75 @@ class _FormEditState extends State<FormEdit> {
             body: BlocListener<AddDataBloc, AddDataState>(
               listener: (context, state) async {
                 if (state is SuccessEditCustomerState) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return WidgetDialog(
-                        title: MESSAGES.NOTIFICATION,
-                        content: "Update dữ liệu thành công!",
-                        textButton1: "OK",
-                        backgroundButton1: COLORS.PRIMARY_COLOR,
-                        onTap1: () {
-                          if (type == 1)
-                            GetListCustomerBloc.of(context)
-                                .add(InitGetListOrderEvent("", 1, ""));
+                  ShowDialogCustom.showDialogBase(
+                    title: MESSAGES.NOTIFICATION,
+                    content: "Update dữ liệu thành công!",
+                    onTap1: () {
+                      if (type == 1)
+                        GetListCustomerBloc.of(context)
+                            .add(InitGetListOrderEvent("", 1, ""));
 
-                          Get.back();
-                          Get.back();
-                          Get.back();
-                        },
-                      );
+                      Get.back();
+                      Get.back();
+                      Get.back();
                     },
                   );
                 }
                 if (state is ErrorEditCustomerState) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return WidgetDialog(
-                        title: MESSAGES.NOTIFICATION,
-                        content: state.msg,
-                        onTap1: () {
-                          Get.back();
-                        },
-                      );
-                    },
+                  ShowDialogCustom.showDialogBase(
+                    title: MESSAGES.NOTIFICATION,
+                    content: state.msg,
                   );
                 }
                 if (state is SuccessAddContactCustomerState) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return WidgetDialog(
-                        title: MESSAGES.NOTIFICATION,
-                        content: "Update dữ liệu thành công!",
-                        textButton1: "OK",
-                        backgroundButton1: COLORS.PRIMARY_COLOR,
-                        onTap1: () {
-                          Get.back();
-                          Get.back();
-                          if (type == 2) {
-                            GetDetailClueBloc.of(context)
-                                .add(InitGetDetailClueEvent(id));
-                            GetListClueBloc.of(context)
-                                .add(InitGetListClueEvent('', 1, ''));
-                          }
-                          if (type == 3) {
-                            GetListDetailChanceBloc.of(context)
-                                .add(InitGetListDetailEvent(int.parse(id)));
-                            GetListChanceBloc.of(context)
-                                .add(InitGetListOrderEventChance('', 1, ''));
-                          }
-                          if (type == 5) {
-                            DetailWorkBloc.of(context)
-                                .add(InitGetDetailWorkEvent(int.parse(id)));
-                            WorkBloc.of(context)
-                                .add(InitGetListWorkEvent("1", "", ""));
-                          }
-                          if (type == 4)
-                            DetailContractBloc.of(context)
-                                .add(InitGetDetailContractEvent(int.parse(id)));
-                          if (type == 6) {
-                            DetailSupportBloc.of(context)
-                                .add(InitGetDetailSupportEvent(id));
-                            SupportBloc.of(context)
-                                .add(InitGetSupportEvent(1, '', ''));
-                          }
-                        },
-                      );
+                  ShowDialogCustom.showDialogBase(
+                    title: MESSAGES.NOTIFICATION,
+                    content: "Update dữ liệu thành công!",
+                    onTap1: () {
+                      Get.back();
+                      Get.back();
+                      if (type == 2) {
+                        GetDetailClueBloc.of(context)
+                            .add(InitGetDetailClueEvent(id));
+                        GetListClueBloc.of(context)
+                            .add(InitGetListClueEvent('', 1, ''));
+                      }
+                      if (type == 3) {
+                        GetListDetailChanceBloc.of(context)
+                            .add(InitGetListDetailEvent(int.parse(id)));
+                        GetListChanceBloc.of(context)
+                            .add(InitGetListOrderEventChance('', 1, ''));
+                      }
+                      if (type == 5) {
+                        DetailWorkBloc.of(context)
+                            .add(InitGetDetailWorkEvent(int.parse(id)));
+                        WorkBloc.of(context)
+                            .add(InitGetListWorkEvent("1", "", ""));
+                      }
+                      if (type == 4)
+                        DetailContractBloc.of(context)
+                            .add(InitGetDetailContractEvent(int.parse(id)));
+                      if (type == 6) {
+                        DetailSupportBloc.of(context)
+                            .add(InitGetDetailSupportEvent(id));
+                        SupportBloc.of(context)
+                            .add(InitGetSupportEvent(1, '', ''));
+                      }
+                      if (type == PRODUCT_TYPE) {
+                        DetailProductBloc.of(context)
+                            .add(InitGetDetailProductEvent(id));
+                      }
+                      if (type == PRODUCT_CUSTOMER_TYPE) {
+                        DetailProductCustomerBloc.of(context)
+                            .add(InitGetDetailProductCustomerEvent(id));
+                      }
                     },
                   );
                 }
                 if (state is ErrorAddContactCustomerState) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return WidgetDialog(
-                        title: MESSAGES.NOTIFICATION,
-                        content: state.msg,
-                        onTap1: () {
-                          Get.back();
-                        },
-                      );
-                    },
+                  ShowDialogCustom.showDialogBase(
+                    title: MESSAGES.NOTIFICATION,
+                    content: state.msg,
                   );
                 }
               },
@@ -573,7 +556,7 @@ class _FormEditState extends State<FormEdit> {
         AppNavigator.navigateBack();
       },
       icon: Image.asset(
-        ICONS.ICON_BACK,
+        ICONS.IC_BACK_PNG,
         height: 28,
         width: 28,
         color: COLORS.BLACK,
@@ -623,8 +606,7 @@ class _FormEditState extends State<FormEdit> {
                   child: Container(
                       height: 50,
                       width: 50,
-                      child:
-                          SvgPicture.asset("assets/icons/iconInputImg.svg"))),
+                      child: SvgPicture.asset(ICONS.IC_INPUT_SVG))),
             )
           ]),
         ),
@@ -641,6 +623,7 @@ class _FormEditState extends State<FormEdit> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
               style: titlestyle(),
@@ -649,8 +632,8 @@ class _FormEditState extends State<FormEdit> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -670,7 +653,7 @@ class _FormEditState extends State<FormEdit> {
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
                 child: TextFormField(
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                   keyboardType: data.field_special == "default"
                       ? TextInputType.text
                       : data.field_special == "numberic"
@@ -724,21 +707,22 @@ class _FormEditState extends State<FormEdit> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: label,
               style: TextStyle(
-                  fontFamily: "Roboto",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+                  fontFamily: "Quicksand",
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: COLORS.BLACK),
               children: <TextSpan>[
                 required == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
                             color: Colors.red))
                     : TextSpan(),
               ],
@@ -754,15 +738,9 @@ class _FormEditState extends State<FormEdit> {
                 // _selectedAnimals = values;
                 if (maxLength != "" && values.length > int.parse(maxLength)) {
                   values.removeRange(int.parse(maxLength), values.length);
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return WidgetDialog(
-                        title: MESSAGES.NOTIFICATION,
-                        content: "Bạn chỉ được chọn ${maxLength} giá trị",
-                      );
-                    },
+                  ShowDialogCustom.showDialogBase(
+                    title: MESSAGES.NOTIFICATION,
+                    content: "Bạn chỉ được chọn ${maxLength} giá trị",
                   );
                 } else {
                   List<String> res = [];
@@ -789,24 +767,24 @@ class _FormEditState extends State<FormEdit> {
                 size: 25,
               ),
               initialValue: indexDefault != -1 ? [dropdow[indexDefault]] : [],
-              selectedItemsTextStyle: AppStyle.DEFAULT_12,
-              itemsTextStyle: AppStyle.DEFAULT_12),
+              selectedItemsTextStyle: AppStyle.DEFAULT_14,
+              itemsTextStyle: AppStyle.DEFAULT_14),
         ],
       ),
     ));
   }
 
   TextStyle hintTextStyle() => TextStyle(
-      fontFamily: "Roboto",
-      fontSize: 11,
+      fontFamily: "Quicksand",
+      fontSize: 14,
       fontWeight: FontWeight.w500,
-      color: HexColor("#838A91"));
+      color: COLORS.BLACK);
 
   TextStyle titlestyle() => TextStyle(
-      fontFamily: "Roboto",
-      fontSize: 12,
-      fontWeight: FontWeight.w500,
-      color: HexColor("#697077"));
+      fontFamily: "Quicksand",
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      color: COLORS.BLACK);
 
   void onClickSave() {
     final Map<String, dynamic> data = {};
@@ -827,14 +805,9 @@ class _FormEditState extends State<FormEdit> {
       }
     }
     if (check == true) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return WidgetDialog(
-            title: MESSAGES.NOTIFICATION,
-            content: "Hãy nhập đủ các trường bắt buộc (*)",
-          );
-        },
+      ShowDialogCustom.showDialogBase(
+        title: MESSAGES.NOTIFICATION,
+        content: "Hãy nhập đủ các trường bắt buộc (*)",
       );
     } else {
       data["id"] = id;
@@ -856,6 +829,13 @@ class _FormEditState extends State<FormEdit> {
       } else if (type == 6) {
         AddDataBloc.of(context)
             .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
+      } else if (type == PRODUCT_TYPE) {
+        AddDataBloc.of(context).add(EditProductEvent(data, int.parse(id),
+            files: AttackBloc.of(context).listFile));
+      } else if (type == PRODUCT_CUSTOMER_TYPE) {
+        data["id"] = id;
+        AddDataBloc.of(context).add(EditProductCustomerEvent(data,
+            files: AttackBloc.of(context).listFile));
       }
     }
   }
@@ -906,20 +886,21 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: TextStyle(
-                  fontFamily: "Roboto",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+                  fontFamily: "Quicksand",
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: COLORS.BLACK),
               children: <TextSpan>[
                 widget.data.field_require == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -964,7 +945,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                     _focusNode.unfocus();
                   },
                   focusNode: _focusNode,
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                   keyboardType: widget.data.field_special == "default"
                       ? TextInputType.text
                       : widget.data.field_special == "numberic"
@@ -1009,7 +990,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                                           color: COLORS.BACKGROUND),
                                       child: WidgetText(
                                         title: arr[index],
-                                        style: AppStyle.DEFAULT_12,
+                                        style: AppStyle.DEFAULT_14,
                                       )),
                                   Positioned(
                                     top: -13,
@@ -1085,20 +1066,21 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
             ),
           ),
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: TextStyle(
-                  fontFamily: "Roboto",
-                  fontSize: 12,
+                  fontFamily: "Quicksand",
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+                  color: COLORS.BLACK),
               children: <TextSpan>[
                 widget.data.field_require == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),

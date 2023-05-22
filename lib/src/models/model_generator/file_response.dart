@@ -58,14 +58,17 @@ class FileDataResponse {
   String? ngayTao;
   String? loaiFile;
   String? link;
+  int? is_after;
 
-  FileDataResponse(
-      {this.id,
-      this.name,
-      this.dungLuong,
-      this.ngayTao,
-      this.loaiFile,
-      this.link});
+  FileDataResponse({
+    this.id,
+    this.name,
+    this.dungLuong,
+    this.ngayTao,
+    this.loaiFile,
+    this.link,
+    this.is_after,
+  });
 
   FileDataResponse.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -74,6 +77,7 @@ class FileDataResponse {
     ngayTao = json['ngay_tao'];
     loaiFile = json['loai_file'];
     link = json['link'];
+    is_after = json['is_after'];
   }
 
   Map<String, dynamic> toJson() {
@@ -84,6 +88,7 @@ class FileDataResponse {
     data['ngay_tao'] = this.ngayTao;
     data['loai_file'] = this.loaiFile;
     data['link'] = this.link;
+    data['link'] = this.is_after;
     return data;
   }
 }

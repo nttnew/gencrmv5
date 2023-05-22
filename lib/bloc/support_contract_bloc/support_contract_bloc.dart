@@ -2,15 +2,11 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/api_resfull/api.dart';
-import 'package:get/get.dart';
-
+import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/color.dart';
 import '../../src/messages.dart';
 import '../../src/models/model_generator/detail_contract.dart';
-import '../../src/navigator.dart';
 import '../../widgets/loading_api.dart';
-import '../../widgets/widget_dialog.dart';
 
 part 'support_contract_event.dart';
 part 'support_contract_state.dart';
@@ -24,7 +20,6 @@ class SupportContractBloc
   @override
   Stream<SupportContractState> mapEventToState(
       SupportContractEvent event) async* {
-    // TODO: implement mapEventToState
     if (event is InitGetSupportContractEvent) {
       yield* _getSupportContract(id: event.id);
     }
@@ -39,15 +34,7 @@ class SupportContractBloc
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessSupportContractState(response.data!);
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else
         yield ErrorSupportContractState(response.msg ?? '');
     } catch (e) {

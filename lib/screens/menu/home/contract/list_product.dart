@@ -223,7 +223,7 @@ class _ListProductState extends State<ListProduct> {
         AppNavigator.navigateBack();
       },
       icon: Image.asset(
-        ICONS.ICON_BACK,
+        ICONS.IC_BACK_PNG,
         height: 28,
         width: 28,
         color: COLORS.BLACK,
@@ -300,12 +300,12 @@ class _ItemProductState extends State<ItemProduct> {
   void didUpdateWidget(covariant ItemProduct oldWidget) {
     if (oldWidget != widget) {
       setState(() {
-        Dvt = widget.model!.nameDvt;
-        Vat = widget.model!.nameVat;
-        giamGia = widget.model!.giamGia;
-        typeGiamGia = widget.model!.typeGiamGia == "%" ? false : true;
-        soLuong.add(widget.model!.soLuong.toString());
-        price = widget.model!.item.sell_price!;
+        Dvt = widget.model?.nameDvt ?? '';
+        Vat = widget.model?.nameVat ?? '';
+        giamGia = widget.model?.giamGia ?? '';
+        typeGiamGia = widget.model?.typeGiamGia == "%" ? false : true;
+        soLuong.add((widget.model?.soLuong ?? 0).toString());
+        price = widget.model?.item.sell_price ?? '';
       });
     }
     super.didUpdateWidget(oldWidget);
@@ -340,9 +340,11 @@ class _ItemProductState extends State<ItemProduct> {
       widget.onVAT!(widget.data.vat, Vat);
     }
     _priceTextfieldController.text =
-        double.parse(widget.data.sell_price ?? '0').toInt().toString();
+        widget.data.sell_price != '' && widget.data.sell_price != null
+            ? double.parse(widget.data.sell_price ?? '0').toInt().toString()
+            : '';
     soLuong.listen((value) {
-        widget.onReload();
+      widget.onReload();
     });
     super.initState();
   }
@@ -358,7 +360,7 @@ class _ItemProductState extends State<ItemProduct> {
         children: [
           widget.canDelete == false
               ? WidgetContainerImage(
-                  image: 'assets/icons/iconCart.png',
+                  image: ICONS.IC_CART_PNG,
                   width: 25,
                   height: 25,
                   fit: BoxFit.contain,
@@ -402,8 +404,7 @@ class _ItemProductState extends State<ItemProduct> {
                         borderRadius: BorderRadius.circular(7)),
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: WidgetText(
-                      title: "Giá: " +
-                          "${AppValue.format_money(double.parse(price))}",
+                      title: "Giá: " + "${AppValue.format_money(price)}",
                       style: AppStyle.DEFAULT_14_BOLD
                           .copyWith(color: COLORS.TEXT_GREY),
                     ),
@@ -500,7 +501,7 @@ class _ItemProductState extends State<ItemProduct> {
                   widget.onMinus!(int.parse(soLuong.value));
                 },
                 child: WidgetContainerImage(
-                  image: 'assets/icons/minus.png',
+                  image: ICONS.IC_MINUS_PNG,
                   width: 20,
                   height: 20,
                   fit: BoxFit.contain,
@@ -526,7 +527,7 @@ class _ItemProductState extends State<ItemProduct> {
                   widget.onPlus!(int.parse(soLuong.value));
                 },
                 child: WidgetContainerImage(
-                  image: 'assets/icons/plus.png',
+                  image: ICONS.IC_PLUS_PNG,
                   width: 20,
                   height: 20,
                   fit: BoxFit.contain,
@@ -730,35 +731,21 @@ class _ItemProductState extends State<ItemProduct> {
                                 (double.parse(_editingController.text) >
                                     double.parse(widget.data.sell_price!))) {
                               _editingController.text = widget.data.sell_price!;
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return WidgetDialog(
-                                    title: MESSAGES.NOTIFICATION,
-                                    content:
-                                        "Bạn không được nhập giá giảm lớn hơn giá của sản phẩm",
-                                    textButton1: "OK",
-                                    backgroundButton1: COLORS.PRIMARY_COLOR,
-                                    onTap1: () {
-                                      Get.back();
-                                    },
-                                  );
+                              ShowDialogCustom.showDialogBase(
+                                title: MESSAGES.NOTIFICATION,
+                                content:
+                                    "Bạn không được nhập giá giảm lớn hơn giá của sản phẩm",
+                                onTap1: () {
+                                  Get.back();
                                 },
                               );
                             } else if (typeGiamGia == false &&
                                 (double.parse(_editingController.text) > 100)) {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return WidgetDialog(
-                                    title: MESSAGES.NOTIFICATION,
-                                    content: "Bạn không được nhập quá 100%",
-                                    textButton1: "OK",
-                                    backgroundButton1: COLORS.PRIMARY_COLOR,
-                                    onTap1: () {
-                                      Get.back();
-                                    },
-                                  );
+                              ShowDialogCustom.showDialogBase(
+                                title: MESSAGES.NOTIFICATION,
+                                content: "Bạn không được nhập quá 100%",
+                                onTap1: () {
+                                  Get.back();
                                 },
                               );
                             } else {
@@ -855,8 +842,8 @@ class _ItemProductState extends State<ItemProduct> {
                                 price = _priceTextfieldController.text;
                               });
                               widget.onPrice!(price);
-                            }else{
-                              _priceTextfieldController.text=price;
+                            } else {
+                              _priceTextfieldController.text = price;
                             }
                             Get.back();
                           },

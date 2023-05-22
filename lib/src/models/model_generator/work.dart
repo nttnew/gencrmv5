@@ -17,22 +17,25 @@ class WorkItemData {
       status_job,
       status_id,
       status_color,
-      start_date;
+      start_date,
+      location;
 
   WorkItemData(
-      this.id,
-      this.total_comment,
-      this.id_customer,
-      this.name_job,
-      this.content_job,
-      this.user_work_id,
-      this.user_work_name,
-      this.user_work_avatar,
-      this.name_customer,
-      this.status_job,
-      this.status_id,
-      this.status_color,
-      this.start_date);
+    this.id,
+    this.total_comment,
+    this.id_customer,
+    this.name_job,
+    this.content_job,
+    this.user_work_id,
+    this.user_work_name,
+    this.user_work_avatar,
+    this.name_customer,
+    this.status_job,
+    this.status_id,
+    this.status_color,
+    this.start_date,
+    this.location,
+  );
 
   factory WorkItemData.fromJson(Map<String, dynamic> json) =>
       _$WorkItemDataFromJson(json);
@@ -107,8 +110,9 @@ class DetailWorkData {
 @JsonSerializable()
 class DetailWorkResponse extends BaseResponse {
   final List<DetailWorkData>? data;
+  final int? location;
 
-  DetailWorkResponse(this.data);
+  DetailWorkResponse(this.data,this.location);
 
   factory DetailWorkResponse.fromJson(Map<String, dynamic> json) =>
       _$DetailWorkResponseFromJson(json);

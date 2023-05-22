@@ -12,7 +12,8 @@ import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/event_repository_storage.dart';
 import 'package:gen_crm/storages/share_local.dart';
-
+import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
+import 'package:rxdart/rxdart.dart';
 part 'login_event.dart';
 part 'login_state.dart';
 
@@ -20,8 +21,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
   final EventRepositoryStorage localRepository;
   late List<ItemMenu> listMenuFlash = [];
-  LoginBloc({required this.userRepository, required this.localRepository})
-      : super(LoginState(
+  LoginBloc({
+    required this.userRepository,
+    required this.localRepository,
+  }) : super(LoginState(
             email: UserName.pure(),
             password: Password.pure(),
             status: FormzStatus.invalid,
@@ -29,14 +32,46 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             user: LoginData(),
             device_token: ''));
 
+  static const String UNREGISTER = 'UNREGISTER';
+  static const String REGISTERED = 'REGISTERED';
+  late BehaviorSubject<String> receivedMsg = BehaviorSubject.seeded(UNREGISTER);
+  LoginData? loginData;
+
   @override
   void onTransition(Transition<LoginEvent, LoginState> transition) {
     super.onTransition(transition);
   }
 
+  bool checkRegisterSuccess() {
+    return receivedMsg.value == REGISTERED;
+  }
+
+  void logout(BuildContext context) {
+    shareLocal.putString(PreferencesKey.REGISTER_CALL, 'true');
+    receivedMsg.add(LoginBloc.UNREGISTER);
+    _removeDeviceToken(context);
+    PitelClient.getInstance().pitelCall.unregister();
+  }
+
+  Future<void> _removeDeviceToken(BuildContext context) async {
+    final String domainUrl = shareLocal.getString(PreferencesKey.URL_BASE);
+    final String domain = domainUrl.substring(
+        domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
+    final String user =
+        LoginBloc.of(context).loginData?.info_user?.extension ?? '0';
+    String deviceToken =
+        await shareLocal.getString(PreferencesKey.DEVICE_TOKEN) ?? "";
+    await PitelClient.getInstance().removeDeviceToken(
+      deviceToken: deviceToken, // Device token
+      domain: domain,
+      extension: user,
+    );
+    await shareLocal.putString(PreferencesKey.DEVICE_TOKEN, '');
+  }
+
   void getListMenuFlash() {
     String data = shareLocal.getString(PreferencesKey.LIST_MENU_FLASH) ?? "";
-    if(data!=''){
+    if (data != '') {
       final result = json.decode(data);
       final resultHangXe = result.map((e) => ItemMenu.fromJson(e)).toList();
       final Set<ItemMenu> list = {};
@@ -44,6 +79,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         list.add(obj);
       }
       listMenuFlash = list.toList();
+    }
+  }
+
+  void getDataCall() {
+    String data = shareLocal.getString(PreferencesKey.DATA_CALL) ?? "";
+    if (data != '') {
+      final result = json.decode(data);
+      loginData = LoginData.fromJson(result);
     }
   }
 
@@ -87,6 +130,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             listMenuFlash.addAll(response.data?.quick ?? []);
             await shareLocal.putString(PreferencesKey.LIST_MENU_FLASH,
                 jsonEncode(response.data?.quick));
+            await shareLocal.putString(
+                PreferencesKey.DATA_CALL, jsonEncode(response.data));
             await localRepository.saveUser(jsonEncode(response.data));
             await shareLocal.putString(
                 PreferencesKey.SESS, response.data!.session_id!);
@@ -120,9 +165,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 status: FormzStatus.submissionSuccess,
                 message: response.msg ?? '',
                 user: response.data!);
-            // Future.delayed(Duration(milliseconds: 500), () async* {
-            //   yield SaveUserState(response.data!);
-            // });
           } else {
             yield state.copyWith(
                 status: FormzStatus.submissionFailure,
@@ -151,6 +193,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           if (response.code == BASE_URL.SUCCESS) {
             listMenuFlash = [];
             listMenuFlash.addAll(response.data?.quick ?? []);
+            await shareLocal.putString(
+                PreferencesKey.DATA_CALL, jsonEncode(response.data));
             await shareLocal.putString(PreferencesKey.LIST_MENU_FLASH,
                 jsonEncode(response.data?.quick));
             await localRepository.saveUser(jsonEncode(response.data));

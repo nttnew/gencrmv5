@@ -35,9 +35,10 @@ class _JobListChanceState extends State<JobListChance>
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          AppNavigator.navigateDeatailWork(
+                          AppNavigator.navigateDetailWork(
                               int.parse(state.data[index].id!),
-                              state.data[index].name_job ?? '');
+                              state.data[index].name_job ?? '',
+                          );
                         },
                         child: _tabBarWork(state.data[index]),
                       );
@@ -105,7 +106,7 @@ class _JobListChanceState extends State<JobListChance>
                   Row(
                     children: [
                       SvgPicture.asset(
-                        'assets/icons/User.svg',
+                        ICONS.IC_USER2_SVG,
                         color: Color(0xffE75D18),
                       ),
                       AppValue.hSpaceTiny,
@@ -117,7 +118,7 @@ class _JobListChanceState extends State<JobListChance>
                 if (data.status_job != '')
                   Row(
                     children: [
-                      SvgPicture.asset('assets/icons/dangxuly.svg'),
+                      SvgPicture.asset(ICONS.IC_DANG_XU_LY_SVG),
                       AppValue.hSpaceTiny,
                       WidgetText(
                         title: data.status_job ?? '',
@@ -128,7 +129,7 @@ class _JobListChanceState extends State<JobListChance>
                   ),
                 Row(
                   children: [
-                    Image.asset('assets/icons/date.png'),
+                    Image.asset(ICONS.IC_DATE_PNG,height: 20,width: 20,),
                     AppValue.hSpaceTiny,
                     WidgetText(
                         title: data.start_date,
@@ -143,9 +144,9 @@ class _JobListChanceState extends State<JobListChance>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.asset('assets/icons/red.png'),
+                  Image.asset(ICONS.IC_RED_PNG),
                   Row(children: [
-                    SvgPicture.asset('assets/icons/Mess.svg'),
+                    SvgPicture.asset(ICONS.IC_MESS),
                     SizedBox(
                       width: 3,
                     ),

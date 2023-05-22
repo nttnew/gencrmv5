@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:gen_crm/src/messages.dart';
 
 class ErrorPage extends StatelessWidget {
   final String? message;
 
-  const ErrorPage({Key? key, this.message = "Một số lỗi không xác định."})
+  const ErrorPage({Key? key, this.message = MESSAGES.MOT_SO_LOI_KHONG_XAC_DINH})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Thông báo lỗi'),
+        title: Text(MESSAGES.THONG_BAO_LOI),
         elevation: 0,
       ),
       body: Container(

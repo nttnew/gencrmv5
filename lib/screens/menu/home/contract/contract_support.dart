@@ -34,7 +34,7 @@ class _ContractSupportState extends State<ContractSupport>
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      AppNavigator.navigateDeatailSupport(
+                      AppNavigator.navigateDetailSupport(
                           state.listSupportContract[index].id.toString(),
                           state.listSupportContract[index].name ?? '');
                     },
@@ -81,7 +81,7 @@ class _ContractSupportState extends State<ContractSupport>
                                   Row(
                                     children: [
                                       SvgPicture.asset(
-                                        'assets/icons/User.svg',
+                                        ICONS.IC_USER2_SVG,
                                         color: Color(0xffE75D18),
                                       ),
                                       AppValue.hSpaceTiny,
@@ -99,7 +99,7 @@ class _ContractSupportState extends State<ContractSupport>
                                   Row(
                                     children: [
                                       SvgPicture.asset(
-                                        'assets/icons/dangxuly.svg',
+                                        ICONS.IC_DANG_XU_LY_SVG,
                                         color: state.listSupportContract[index]
                                                     .color !=
                                                 null
@@ -130,7 +130,7 @@ class _ContractSupportState extends State<ContractSupport>
                                   ),
                                 Row(
                                   children: [
-                                    Image.asset('assets/icons/date.png'),
+                                    Image.asset(ICONS.IC_DATE_PNG,height: 20,width: 20,),
                                     AppValue.hSpaceTiny,
                                     WidgetText(
                                         title: state.listSupportContract[index]
@@ -146,7 +146,7 @@ class _ContractSupportState extends State<ContractSupport>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Image.asset(
-                                  'assets/icons/red.png',
+                                  ICONS.IC_RED_PNG,
                                   color:
                                       state.listSupportContract[index].color !=
                                               null
@@ -157,7 +157,7 @@ class _ContractSupportState extends State<ContractSupport>
                                 ),
                                 Row(
                                   children: [
-                                    SvgPicture.asset('assets/icons/Mess.svg'),
+                                    SvgPicture.asset(ICONS.IC_MESS),
                                     SizedBox(
                                       width: 5,
                                     ),

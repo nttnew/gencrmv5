@@ -13,7 +13,6 @@ class ResendOTPBloc extends Bloc<ResendOTPEvent, ResendOTPState> {
 
   ResendOTPBloc({required this.userRepository}) : super(ResendOTPState.empty());
 
-  @override
   ResendOTPState get initialState => ResendOTPState.empty();
 
   @override

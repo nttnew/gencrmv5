@@ -131,20 +131,13 @@ class _InformationAccountState extends State<InformationAccount> {
         listener: (context, state) {
           if (state.status.isSubmissionSuccess) {
             GetSnackBarUtils.removeSnackBar();
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return WidgetDialog(
-                  onTap1: () {
-                    GetInforAccBloc.of(context).add(InitGetInforAcc());
-                    AppNavigator.navigateBack();
-                  },
-                  textButton1: "OK",
-                  title: MESSAGES.SUCCESS,
-                  content: state.message,
-                );
+            ShowDialogCustom.showDialogBase(
+              onTap1: () {
+                GetInforAccBloc.of(context).add(InitGetInforAcc());
+                AppNavigator.navigateBack();
               },
+              title: MESSAGES.SUCCESS,
+              content: state.message,
             );
           }
           if (state.status.isSubmissionInProgress) {
@@ -152,15 +145,9 @@ class _InformationAccountState extends State<InformationAccount> {
           }
           if (state.status.isSubmissionFailure) {
             GetSnackBarUtils.removeSnackBar();
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return WidgetDialog(
-                  title: MESSAGES.NOTIFICATION,
-                  content: state.message,
-                );
-              },
+            ShowDialogCustom.showDialogBase(
+              title: MESSAGES.NOTIFICATION,
+              content: state.message,
             );
           }
         },
@@ -239,7 +226,7 @@ class _InformationAccountState extends State<InformationAccount> {
                         Positioned(
                             left: AppValue.widths * 0.55,
                             top: AppValue.heights * 0.1,
-                            child: Image.asset('assets/icons/mayanh.png'))
+                            child: Image.asset(ICONS.IC_MAY_ANH_PNG))
                       ],
                     ),
                   ),
@@ -304,15 +291,9 @@ class _InformationAccountState extends State<InformationAccount> {
                                       name, address));
                                 }
                               } else {
-                                showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (BuildContext context) {
-                                    return const WidgetDialog(
-                                      title: MESSAGES.NOTIFICATION,
-                                      content: 'Kiểm tra lại thông tin',
-                                    );
-                                  },
+                                ShowDialogCustom.showDialogBase(
+                                  title: MESSAGES.NOTIFICATION,
+                                  content: 'Kiểm tra lại thông tin',
                                 );
                               }
                             },
@@ -352,7 +333,7 @@ class _InformationAccountState extends State<InformationAccount> {
         AppNavigator.navigateBack();
       },
       icon: Image.asset(
-        ICONS.ICON_BACK,
+        ICONS.IC_BACK_PNG,
         height: 28,
         width: 28,
         color: COLORS.BLACK,
@@ -374,7 +355,7 @@ class _InformationAccountState extends State<InformationAccount> {
             textInputAction: TextInputAction.next,
             initialValue: initFullName,
             style: AppStyle.DEFAULT_16
-                .copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+                .copyWith(fontFamily: 'Quicksand', fontWeight: FontWeight.w500),
           ),
         ),
       );
@@ -396,7 +377,7 @@ class _InformationAccountState extends State<InformationAccount> {
             textInputAction: TextInputAction.next,
             initialValue: initPhone,
             style: AppStyle.DEFAULT_16
-                .copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+                .copyWith(fontFamily: 'Quicksand', fontWeight: FontWeight.w500),
           ),
         ),
       );
@@ -418,7 +399,7 @@ class _InformationAccountState extends State<InformationAccount> {
             textInputAction: TextInputAction.next,
             initialValue: initEmail,
             style: AppStyle.DEFAULT_16
-                .copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+                .copyWith(fontFamily: 'Quicksand', fontWeight: FontWeight.w500),
           ),
         ),
       );
@@ -437,7 +418,7 @@ class _InformationAccountState extends State<InformationAccount> {
           textInputAction: TextInputAction.next,
           initialValue: initAddress,
           style: AppStyle.DEFAULT_16
-              .copyWith(fontFamily: 'Roboto', fontWeight: FontWeight.w500),
+              .copyWith(fontFamily: 'Quicksand', fontWeight: FontWeight.w500),
         ),
       ),
     );
@@ -463,12 +444,12 @@ class _InformationAccountState extends State<InformationAccount> {
                         ? WidgetText(
                             title: "NO",
                             style: AppStyle.DEFAULT_16.copyWith(
-                                fontFamily: 'Roboto',
+                                fontFamily: 'Quicksand',
                                 fontWeight: FontWeight.w500))
                         : WidgetText(
                             title: "YES",
                             style: AppStyle.DEFAULT_16.copyWith(
-                                fontFamily: 'Roboto',
+                                fontFamily: 'Quicksand',
                                 fontWeight: FontWeight.w500)),
                   ],
                 ),
@@ -476,16 +457,9 @@ class _InformationAccountState extends State<InformationAccount> {
                   value: snapshot.data ?? false,
                   onChanged: (value) {
                     if (!(supportBiometric.data ?? false)) {
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) {
-                          return WidgetDialog(
-                            title: MESSAGES.NOTIFICATION,
-                            content:
-                                "Thiết bị chưa thiết lập vân tay, khuôn mặt",
-                          );
-                        },
+                      ShowDialogCustom.showDialogBase(
+                        title: MESSAGES.NOTIFICATION,
+                        content: "Thiết bị chưa thiết lập vân tay, khuôn mặt",
                       );
                     } else {
                       useBiometric(value: value);
@@ -532,15 +506,9 @@ class _InformationAccountState extends State<InformationAccount> {
         fingerPrintIsCheck.add(true);
         shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "true");
       } else {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return WidgetDialog(
-              title: MESSAGES.NOTIFICATION,
-              content: "Đăng nhập thất bại bạn vui lòng thử lại",
-            );
-          },
+        ShowDialogCustom.showDialogBase(
+          title: MESSAGES.NOTIFICATION,
+          content: "Đăng nhập thất bại bạn vui lòng thử lại",
         );
       }
     } catch (e) {

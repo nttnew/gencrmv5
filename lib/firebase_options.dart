@@ -2,7 +2,7 @@
 // ignore_for_file: lines_longer_than_80_chars, avoid_classes_with_only_static_members
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, kIsWeb, TargetPlatform;
+    show defaultTargetPlatform, TargetPlatform;
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -16,9 +16,6 @@ import 'package:flutter/foundation.dart'
 /// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
-    if (kIsWeb) {
-      return web;
-    }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
@@ -46,34 +43,24 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBxgGLasJWKEZzeCvUnyOwd--LHK-L82YQ',
-    appId: '1:794334677094:web:0bdec15f9f9448f98085a7',
-    messagingSenderId: '794334677094',
-    projectId: 'gen-crm',
-    authDomain: 'gen-crm.firebaseapp.com',
-    storageBucket: 'gen-crm.appspot.com',
-    measurementId: 'G-CCJLK36YV8',
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyAMS_Nc3IuLqJ0AT3z60qShKbfcFWUOiwg',
+    appId: '1:476014117271:ios:6c5f912a3172d49f0e04d2',
+    messagingSenderId: '476014117271',
+    projectId: 'carcrm-57969',
+    storageBucket: 'carcrm-57969.appspot.com',
+    androidClientId:
+        'com.googleusercontent.apps.476014117271-0piefng9814lm1bm76ghnst3aebi8s67',
+    iosClientId:
+        '476014117271-0piefng9814lm1bm76ghnst3aebi8s67.apps.googleusercontent.com',
+    iosBundleId: 'com.gencrm',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCg5yw_XF9MR8WCP9u9zjgdsZXVhjDne9g',
-    appId: '1:794334677094:android:e9edd5fa8d6134f68085a7',
-    messagingSenderId: '794334677094',
-    projectId: 'gen-crm',
-    storageBucket: 'gen-crm.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAYESvgps2kye_1Rj8cn_5TRuoexqdbFWM',
-    appId: '1:794334677094:ios:171761c121eab7b18085a7',
-    messagingSenderId: '794334677094',
-    projectId: 'gen-crm',
-    storageBucket: 'gen-crm.appspot.com',
-    androidClientId:
-        '794334677094-dlfae8aiv87515v93njtq5t7jlch9ume.apps.googleusercontent.com',
-    iosClientId:
-        '794334677094-800vifglnecq1fnhkln72u2ek6qbatjh.apps.googleusercontent.com',
-    iosBundleId: 'com.gencrm',
+    apiKey: 'AIzaSyAgOjAw2nFu0pwNO2zSjtr7QzTR2dTdJIg',
+    appId: '1:476014117271:android:cc7e37aac88f2a150e04d2',
+    messagingSenderId: '476014117271',
+    projectId: 'carcrm-57969',
+    storageBucket: 'carcrm-57969.appspot.com',
   );
 }

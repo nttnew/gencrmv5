@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/widgets/widget_button.dart';
-
-import '../../../../bloc/authen/authentication_bloc.dart';
 import '../../../../bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import '../../../../models/button_menu_model.dart';
 import '../../../../src/src_index.dart';
@@ -34,7 +33,7 @@ class _MainDrawerState extends State<MainDrawer> {
     _elements.add({
       'id': '1',
       'title': MESSAGES.MAIN,
-      'image': ICONS.MENU_HOME,
+      'image': ICONS.IC_MENU_HOME_PNG,
       'group': '1',
       'isAdmin': false,
     });
@@ -44,17 +43,7 @@ class _MainDrawerState extends State<MainDrawer> {
       _elements.add({
         'id': listM[i]['id'],
         'title': listM[i]['name'],
-        'image': listM[i]['id'] == 'opportunity'
-            ? ICONS.CHANCE
-            : listM[i]['id'] == 'job'
-                ? ICONS.WORK
-                : listM[i]['id'] == 'contract'
-                    ? ICONS.CONTRACT
-                    : listM[i]['id'] == 'support'
-                        ? ICONS.SUPPORT
-                        : listM[i]['id'] == 'customer'
-                            ? ICONS.CUSTUMER
-                            : ICONS.CLUE,
+        'image': ModuleMy.getIcon(listM[i]['id']),
         'group': '1',
         'isAdmin': false,
       });
@@ -65,35 +54,35 @@ class _MainDrawerState extends State<MainDrawer> {
         {
           'id': 'report',
           'title': 'Báo cáo',
-          'image': ICONS.WORK,
+          'image': ICONS.IC_REPORT_PNG,
           'group': '1',
           'isAdmin': false
         },
         {
           'id': '2',
           'title': MESSAGES.INFORMATION_ACCOUNT,
-          'image': ICONS.ICON_USER,
+          'image': ICONS.IC_USER_PNG,
           'group': '1',
           'isAdmin': false
         },
         {
           'id': '3',
           'title': MESSAGES.MENU_INTRODUCE,
-          'image': ICONS.ICONS_ABOUT_US,
+          'image': ICONS.IC_ABOUT_US_PNG,
           'group': '1',
           'isAdmin': false,
         },
         {
           'id': '4',
           'title': MESSAGES.POLICY,
-          'image': ICONS.ICON_POLICY,
+          'image': ICONS.IC_POLICY_PNG,
           'group': '1',
           'isAdmin': false,
         },
         {
           'id': '5',
           'title': MESSAGES.CHANGE_PASSWORD,
-          'image': ICONS.ICON_CHANGEPASSWORK,
+          'image': ICONS.IC_CHANGE_PASS_WORK_PNG,
           'group': '1',
           'isAdmin': false,
         },
@@ -228,9 +217,11 @@ class _MainDrawerState extends State<MainDrawer> {
                   : SizedBox()),
           WidgetButton(
             onTap: () {
-              ShowDialogCustom.showDialogTwoButton(onTap2: () {
+              ShowDialogCustom.showDialogBase(
+                  onTap2: () {
                 AuthenticationBloc.of(context)
                     .add(AuthenticationLogoutRequested());
+                LoginBloc.of(context).logout(context);
               });
             },
             height: 40,

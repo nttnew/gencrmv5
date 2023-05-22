@@ -11,9 +11,10 @@ class InitGetDetailWorkState extends DetailWorkState {}
 
 class SuccessDetailWorkState extends DetailWorkState {
   List<DetailWorkData> data_list;
-  SuccessDetailWorkState(this.data_list);
+  int? location;
+  SuccessDetailWorkState(this.data_list, this.location);
   @override
-  List<Object> get props => [data_list];
+  List<Object> get props => [data_list, location!];
 }
 
 class LoadingDetailWorkState extends DetailWorkState {}

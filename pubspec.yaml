@@ -1,20 +1,6 @@
 name: gen_crm
 description: A new Flutter application.
-
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+publish_to: 'none'
 version: 1.0.11+1
 
 environment:
@@ -24,33 +10,18 @@ dependencies:
   flutter:
     sdk: flutter
 
-
-  cupertino_icons: ^1.0.2
   flutter_dotenv: ^5.0.2
   flutter_bloc: ^7.0.0
   keyboard_dismisser: ^2.0.0
   community_material_icon: ^5.9.55
   cached_network_image: ^3.2.0
-  carousel_slider: ^4.0.0
   formz: ^0.4.1
   equatable: ^2.0.3
   intl: ^0.17.0
-  toggle_switch: ^1.3.0
-  font_awesome_flutter: ^9.2.0
   double_back_to_close_app: ^2.1.0
-  pull_to_refresh: ^2.0.0
   url_launcher: ^6.0.17
-  bubble_tab_indicator: ^0.1.6
-  change_app_package_name: ^1.0.0
-  titled_navigation_bar: ^4.1.0
-  card_swiper: ^1.0.4
-  page_indicator: ^0.4.1
-  smooth_page_indicator: ^1.0.0+2
-  flutter_mobx: ^2.0.3+2
   nb_utils: ^4.4.10
   get: ^4.6.1
-  pin_code_fields: ^7.3.0
-#  android_intent: ^2.0.2
   get_it: ^7.2.0
   logger: ^1.1.0
   flash: ^2.0.3+1
@@ -64,36 +35,47 @@ dependencies:
   retrofit_generator:  4.2.0
   http: ^0.13.4
   meta: ^1.7.0
-  shimmer: ^2.0.0
   flutter_html: ^3.0.0-alpha.6
   flutter_svg: ^2.0.4
-  grouped_list: ^4.2.0
   hexcolor: ^2.0.6
   image_picker: ^0.8.5
   path_provider: ^2.0.9
   multi_select_flutter: ^4.1.2
-  flutter_masked_text2: ^0.9.1
   flutter_keyboard_visibility: ^5.4.0
   tiengviet: ^0.5.0
   file_picker: ^5.2.6
   dropdown_button2: 1.7.2
   syncfusion_flutter_datepicker: ^20.2.49
-  firebase_messaging: ^11.4.4
-  firebase_core: ^1.21.0
-  flutter_local_notifications: ^13.0.0 #IOS
-  firebase_analytics: ^9.3.6
+  firebase_messaging: ^14.4.0
+  firebase_core: ^2.9.0
+  flutter_local_notifications: ^13.0.0
+  firebase_analytics: ^10.2.0
   vibration: ^1.7.6
   flutter_datetime_picker: ^1.5.1
-  local_auth: ^2.1.6
+  local_auth: 2.1.6
   permission_handler: ^10.2.0
   rxdart: ^0.27.7
   quiver: ^3.2.1
   photo_view: ^0.14.0
   dartx: ^1.1.0
+  plugin_pitel:
+    git:
+      url: https://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@github.com/tel4vn/flutter-pitel-voip.git
+      ref: main
+  flutter_riverpod: ^2.3.4
+  qr_code_scanner: ^1.0.1
+  is_lock_screen: ^2.0.0
+  flutter_callkit_incoming: ^1.0.3+3
+  geolocator: 9.0.2
+  geocoding: 2.1.0
+  wakelock: ^0.6.2
+  flutter_expandable_fab: 1.7.1
+  signature: 5.3.2
+  location: 4.4.0
 
 
 dependency_overrides:
-  firebase_core_platform_interface: 4.5.1
+  firebase_core_platform_interface: 4.5.2
 
 dev_dependencies:
   flutter_test:
@@ -102,27 +84,27 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   fonts:
-    - family: NunitoSans
-      fonts:
-        - asset: assets/fonts/NunitoSans/NunitoSans-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/NunitoSans/NunitoSans-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/NunitoSans/NunitoSans-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/NunitoSans/NunitoSans-Italic.ttf
-          style: italic
-
-    - family: Roboto
-      fonts:
-        - asset: assets/fonts/Roboto/Roboto-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/Roboto/Roboto-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Roboto/Roboto-Medium.ttf
-          weight: 600
-        - asset: assets/fonts/Roboto/Roboto-Italic.ttf
-          style: italic
+#    - family: NunitoSans
+#      fonts:
+#        - asset: assets/fonts/NunitoSans/NunitoSans-Regular.ttf
+#          weight: 400
+#        - asset: assets/fonts/NunitoSans/NunitoSans-Bold.ttf
+#          weight: 700
+#        - asset: assets/fonts/NunitoSans/NunitoSans-SemiBold.ttf
+#          weight: 600
+#        - asset: assets/fonts/NunitoSans/NunitoSans-Italic.ttf
+#          style: italic
+#
+#    - family: Roboto
+#      fonts:
+#        - asset: assets/fonts/Roboto/Roboto-Regular.ttf
+#          weight: 400
+#        - asset: assets/fonts/Roboto/Roboto-Bold.ttf
+#          weight: 700
+#        - asset: assets/fonts/Roboto/Roboto-Medium.ttf
+#          weight: 600
+#        - asset: assets/fonts/Roboto/Roboto-Italic.ttf
+#          style: italic
 
     - family: Quicksand
       fonts:

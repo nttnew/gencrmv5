@@ -1,5 +1,6 @@
 class PreferencesKey {
   static const String TOKEN = "TOKEN";
+  static const String REGISTER_CALL = "REGISTER_CALL";
   static const String SESS = "SESS";
   static const String USER = "USER";
   static const String INFOR_USER = "INFOR_USER";
@@ -35,4 +36,7 @@ class PreferencesKey {
   static const String USER_PASSWORD = "USER_PASSWORD";
   static const String INFO_VERSION = "INFO_VERSION";
   static const String LIST_MENU_FLASH = "LIST_MENU_FLASH";
+  static const String DATA_CALL = "DATA_CALL";
+  static const String DEVICE_TOKEN = "deviceToken";
+  static const String NAME_REPORT = "nameReport";
 }

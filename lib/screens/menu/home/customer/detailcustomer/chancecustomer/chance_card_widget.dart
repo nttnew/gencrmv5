@@ -22,7 +22,7 @@ class _ChanceCardWidgetState extends State<ChanceCardWidget> {
         children: [
           Row(
             children: [
-              SvgPicture.asset("assets/icons/icon1.svg"),
+              SvgPicture.asset(ICONS.IC_ICON1_SVG),
               Padding(
                 padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                 child: WidgetText(title: widget.data!.name??'Chưa có',style: AppStyle.DEFAULT_18_BOLD.copyWith(color: COLORS.TEXT_COLOR),),
@@ -40,7 +40,7 @@ class _ChanceCardWidgetState extends State<ChanceCardWidget> {
           SizedBox(height: AppValue.heights*0.01),
           Row(
             children: [
-              SvgPicture.asset("assets/icons/avatar_customer.svg",color: COLORS.GRAY_IMAGE,),
+              SvgPicture.asset(ICONS.IC_AVATAR_SVG,color: COLORS.GRAY_IMAGE,),
               Padding(
                 padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                 child: WidgetText(title: (widget.data!.customer_name==""||widget.data!.customer_name==null)?'Chưa có':widget.data!.customer_name,style: AppStyle.DEFAULT_18_BOLD.copyWith(color: COLORS.TEXT_COLOR),),
@@ -51,7 +51,7 @@ class _ChanceCardWidgetState extends State<ChanceCardWidget> {
           SizedBox(height: AppValue.heights*0.01),
           Row(
             children: [
-              SvgPicture.asset("assets/icons/icon3svg"),
+              SvgPicture.asset(ICONS.IC_ICON3_SVG),
               Padding(
                 padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                 child: SizedBox(
@@ -64,7 +64,7 @@ class _ChanceCardWidgetState extends State<ChanceCardWidget> {
           SizedBox(height: AppValue.heights*0.01),
           Row(
             children: [
-              SvgPicture.asset("assets/icons/icon4.svg"),
+              SvgPicture.asset(ICONS.IC_ICON4_SVG),
               Padding(
                 padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                 child: SizedBox(
@@ -73,7 +73,7 @@ class _ChanceCardWidgetState extends State<ChanceCardWidget> {
                        title: widget.data!.date??'Chưa có',style: AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w400,color: COLORS.TEXT_COLOR))),
               ),
               Spacer(),
-              SvgPicture.asset("assets/icons/question_answer.svg"),
+              SvgPicture.asset(ICONS.IC_QUESTION_SVG),
               SizedBox(width: AppValue.widths*0.01,),
               WidgetText(title: widget.data!.total_note,style: AppStyle.DEFAULT_14.copyWith(color: COLORS.TEXT_COLOR)),
             ],
@@ -110,9 +110,9 @@ class _ChanceCardWidgetState extends State<ChanceCardWidget> {
     );
   }
 
-  TextStyle OrtherInforCustomerStyle() => TextStyle(color: HexColor("#0052B4"),fontFamily: "Roboto",fontWeight: FontWeight.w400,fontSize: 14);
+  TextStyle OrtherInforCustomerStyle() => TextStyle(color: HexColor("#0052B4"),fontFamily: "Quicksand",fontWeight: FontWeight.w400,fontSize: 14);
 
-  TextStyle LocationCustomerStyle() => TextStyle(color: Colors.black,fontFamily: "Roboto",fontWeight: FontWeight.w400,fontSize: 14);
+  TextStyle LocationCustomerStyle() => TextStyle(color: Colors.black,fontFamily: "Quicksand",fontWeight: FontWeight.w400,fontSize: 14);
 
   TextStyle NameCustomerStyle() => TextStyle(color: HexColor("#006CB1"),fontFamily: "Quicksand",fontWeight: FontWeight.w700,fontSize: 18);
 }

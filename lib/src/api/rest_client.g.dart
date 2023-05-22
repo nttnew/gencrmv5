@@ -2206,14 +2206,15 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<BaseResponse> logout() async {
+  Future<BaseResponse> logout(map) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
+    _data.addAll(map);
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'GET',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
@@ -2906,7 +2907,7 @@ class _RestClient implements RestClient {
     )
             .compose(
               _dio.options,
-              '/modules/genmobile2/support/save',
+              'modules/genmobile2/support/save',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -3288,231 +3289,51 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<BaseResponse> uploadFileCus(
-    id,
-    file,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'main_id',
-      id,
-    ));
-    _data.files.add(MapEntry(
-      'files',
-      MultipartFile.fromFileSync(
-        file.path,
-        filename: file.path.split(Platform.pathSeparator).last,
-      ),
-    ));
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/customer/fileupload',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> uploadFileContact(
-    id,
-    file,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'main_id',
-      id,
-    ));
-    _data.files.add(MapEntry(
-      'files',
-      MultipartFile.fromFileSync(
-        file.path,
-        filename: file.path.split(Platform.pathSeparator).last,
-      ),
-    ));
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/agencycustomer/fileupload',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> uploadFileContract(
-    id,
-    file,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'main_id',
-      id,
-    ));
-    _data.files.add(MapEntry(
-      'files',
-      MultipartFile.fromFileSync(
-        file.path,
-        filename: file.path.split(Platform.pathSeparator).last,
-      ),
-    ));
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/contract/fileupload',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> uploadFileJob(
-    id,
-    file,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'main_id',
-      id,
-    ));
-    _data.files.add(MapEntry(
-      'files',
-      MultipartFile.fromFileSync(
-        file.path,
-        filename: file.path.split(Platform.pathSeparator).last,
-      ),
-    ));
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/job/fileupload',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> uploadFileOpp(
-    id,
-    file,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'main_id',
-      id,
-    ));
-    _data.files.add(MapEntry(
-      'files',
-      MultipartFile.fromFileSync(
-        file.path,
-        filename: file.path.split(Platform.pathSeparator).last,
-      ),
-    ));
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/opportunity/fileupload',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> uploadFileSupport(
-    id,
-    file,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'main_id',
-      id,
-    ));
-    _data.files.add(MapEntry(
-      'files',
-      MultipartFile.fromFileSync(
-        file.path,
-        filename: file.path.split(Platform.pathSeparator).last,
-      ),
-    ));
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/support/fileupload',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> uploadMultiFileContract(
+  Future<BaseResponse> uploadMultiFile(
     id,
     files,
+    module,
+    isAfter,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'main_id',
+      id,
+    ));
+    _data.files.addAll(files.map((i) => MapEntry('files[]', i)));
+    if (isAfter != null) {
+      _data.fields.add(MapEntry(
+        'is_after',
+        isAfter.toString(),
+      ));
+    }
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'multipart/form-data',
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/${module}/fileupload',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse> uploadFile(
+    id,
+    file,
+    isAfter,
     module,
   ) async {
     const _extra = <String, dynamic>{};
@@ -3523,7 +3344,17 @@ class _RestClient implements RestClient {
       'main_id',
       id,
     ));
-    _data.files.addAll(files.map((i) => MapEntry('files[]', i)));
+    _data.files.add(MapEntry(
+      'files',
+      MultipartFile.fromFileSync(
+        file.path,
+        filename: file.path.split(Platform.pathSeparator).last,
+      ),
+    ));
+    _data.fields.add(MapEntry(
+      'is_after',
+      isAfter.toString(),
+    ));
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
       method: 'POST',
@@ -3621,6 +3452,622 @@ class _RestClient implements RestClient {
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = GetXeResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<GroupProductResponse> getGroupProduct() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<GroupProductResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/product/getCats',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = GroupProductResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ListProductResponse> getListProductModule(
+    typeProduct,
+    txt,
+    page,
+    filter,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    if (typeProduct != null) {
+      _data.fields.add(MapEntry(
+        'chung_loai_san_pham',
+        typeProduct,
+      ));
+    }
+    if (txt != null) {
+      _data.fields.add(MapEntry(
+        'txt',
+        txt,
+      ));
+    }
+    _data.fields.add(MapEntry(
+      'page',
+      page,
+    ));
+    if (filter != null) {
+      _data.fields.add(MapEntry(
+        'filter',
+        filter,
+      ));
+    }
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ListProductResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/product/list',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ListProductResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<DetailProductResponse> getDetailProduct(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'id': id};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<DetailProductResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/product/view',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DetailProductResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AddCustomerIndividual> getFormAddProduct() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AddCustomerIndividual>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/product/form',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AddCustomerIndividual.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AddCustomerIndividual> getEditProduct(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'id': id};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AddCustomerIndividual>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/product/form',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AddCustomerIndividual.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ResponseSaveProduct> addProduct(map) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(map);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ResponseSaveProduct>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/product/save',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ResponseSaveProduct.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<dynamic> deleteProduct(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'id',
+      id,
+    ));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'modules/genmobile2/product/delete',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<ResponseEditProduct> editProduct(
+    map,
+    id,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'id': id};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(map);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ResponseEditProduct>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/product/save',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ResponseEditProduct.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ResponseBaoCao> getListBaoCao(
+    page,
+    time,
+    timeFrom,
+    timeTo,
+    diemBan,
+    trangThai,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'page',
+      page,
+    ));
+    if (time != null) {
+      _data.fields.add(MapEntry(
+        'time',
+        time,
+      ));
+    }
+    if (timeFrom != null) {
+      _data.fields.add(MapEntry(
+        'timefrom',
+        timeFrom,
+      ));
+    }
+    if (timeTo != null) {
+      _data.fields.add(MapEntry(
+        'timeto',
+        timeTo,
+      ));
+    }
+    if (diemBan != null) {
+      _data.fields.add(MapEntry(
+        'diem_ban',
+        diemBan,
+      ));
+    }
+    if (trangThai != null) {
+      _data.fields.add(MapEntry(
+        'trang_thai',
+        trangThai,
+      ));
+    }
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ResponseBaoCao>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/dashboard/list',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ResponseBaoCao.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ResponseCarDashboard> getHomeBaoCao(
+    time,
+    timeFrom,
+    timeTo,
+    diemBan,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    if (time != null) {
+      _data.fields.add(MapEntry(
+        'time',
+        time,
+      ));
+    }
+    if (timeFrom != null) {
+      _data.fields.add(MapEntry(
+        'timefrom',
+        timeFrom,
+      ));
+    }
+    if (timeTo != null) {
+      _data.fields.add(MapEntry(
+        'timeto',
+        timeTo,
+      ));
+    }
+    if (diemBan != null) {
+      _data.fields.add(MapEntry(
+        'diem_ban',
+        diemBan,
+      ));
+    }
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ResponseCarDashboard>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/dashboard/xetrongxuong',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ResponseCarDashboard.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<CheckInResponse> saveCheckIn(
+    id,
+    latitude,
+    longitude,
+    location,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'id',
+      id,
+    ));
+    _data.fields.add(MapEntry(
+      'latitude',
+      latitude,
+    ));
+    _data.fields.add(MapEntry(
+      'longitude',
+      longitude,
+    ));
+    _data.fields.add(MapEntry(
+      'note_location',
+      location,
+    ));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<CheckInResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/job/checkIn',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = CheckInResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ListProductCustomerResponse> getListProductCustomer(
+    page,
+    txt,
+    filter,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'page',
+      page,
+    ));
+    if (txt != null) {
+      _data.fields.add(MapEntry(
+        'txt',
+        txt,
+      ));
+    }
+    if (filter != null) {
+      _data.fields.add(MapEntry(
+        'filter',
+        filter,
+      ));
+    }
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ListProductCustomerResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/productCustomer/list',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ListProductCustomerResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<DetailProductCustomerResponse> getDetailProductCustomer(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'id': id};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<DetailProductCustomerResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/productCustomer/detail',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DetailProductCustomerResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AddCustomerIndividual> getFormAddProductCustomer() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AddCustomerIndividual>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/productCustomer/form',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AddCustomerIndividual.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AddCustomerIndividual> getFormEditProductCustomer(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'id': id};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AddCustomerIndividual>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/productCustomer/form',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AddCustomerIndividual.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ResponseSaveProductCustomer> saveAddProductCustomer(map) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(map);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ResponseSaveProductCustomer>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/productCustomer/save',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ResponseSaveProductCustomer.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ResponseEditProductCustomer> saveEditProductCustomer(map) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(map);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ResponseEditProductCustomer>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/productCustomer/save',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ResponseEditProductCustomer.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<dynamic> deleteProductCustomer(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'id',
+      id,
+    ));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'modules/genmobile2/productCustomer/delete',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<AddCustomerIndividual> getFormSign(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'id': id};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AddCustomerIndividual>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/contract/formKn',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AddCustomerIndividual.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ResponseSaveProductCustomer> saveSignature(map) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(map);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ResponseSaveProductCustomer>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/contract/saveKn',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ResponseSaveProductCustomer.fromJson(_result.data!);
     return value;
   }
 

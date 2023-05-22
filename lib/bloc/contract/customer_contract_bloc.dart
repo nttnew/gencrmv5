@@ -2,14 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
-import 'package:get/get.dart';
-
 import '../../api_resfull/user_repository.dart';
+import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/color.dart';
 import '../../src/messages.dart';
-import '../../src/navigator.dart';
-import '../../widgets/widget_dialog.dart';
 
 part 'customer_contract_event.dart';
 part 'customer_contract_state.dart';
@@ -17,6 +13,7 @@ part 'customer_contract_state.dart';
 class CustomerContractBloc
     extends Bloc<CustomerContractEvent, CustomerContractState> {
   final UserRepository userRepository;
+  List<List<dynamic>>? list;
 
   CustomerContractBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -32,8 +29,6 @@ class CustomerContractBloc
       yield* _getListContactCus(id: event.id);
     }
   }
-
-  List<List<dynamic>>? list;
 
   Stream<CustomerContractState> _getListContractCustomer(
       {required String page, required String search}) async* {
@@ -53,15 +48,7 @@ class CustomerContractBloc
           }
         }
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else
         yield ErrorGetContractCustomerState(response.msg ?? '');
     } catch (e) {
@@ -81,28 +68,12 @@ class CustomerContractBloc
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessGetContractCustomerState(response.data!);
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else
         yield ErrorGetContractCustomerState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      Get.dialog(WidgetDialog(
-        title: MESSAGES.NOTIFICATION,
-        content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-        textButton1: "OK",
-        backgroundButton1: COLORS.PRIMARY_COLOR,
-        onTap1: () {
-          AppNavigator.navigateLogout();
-        },
-      ));
+      loginSessionExpired();
       yield ErrorGetContractCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

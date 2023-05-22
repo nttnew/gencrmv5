@@ -37,7 +37,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
         AppNavigator.navigateBack();
       },
       icon: Image.asset(
-        ICONS.ICON_BACK,
+        ICONS.IC_BACK_PNG,
         height: 28,
         width: 28,
         color: COLORS.BLACK,
@@ -71,7 +71,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
           listener: (context, state) {
             if (state is GetServiceVoucherState) {
               LoadingApi().popLoading();
-              AppNavigator.navigateAddServiceVoucherStepTwo();
+              AppNavigator.navigateAddServiceVoucherStepTwo(widget.title);
             }
           },
           child: Container(
@@ -106,17 +106,11 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
                       onTap: () {
                         FocusManager.instance.primaryFocus?.unfocus();
                         if (sdt.trim() == '' && bienSo.trim() == '') {
-                          showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (BuildContext context) {
-                              return WidgetDialog(
+                        ShowDialogCustom.showDialogBase(
                                 title: MESSAGES.NOTIFICATION,
                                 content:
                                     "Bạn phải nhập số điện thoại hoặc biển số",
                               );
-                            },
-                          );
                         } else {
                           ServiceVoucherBloc.of(context).add(
                               PostServiceVoucherEvent(
@@ -147,6 +141,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: label,
               style: titlestyle(),

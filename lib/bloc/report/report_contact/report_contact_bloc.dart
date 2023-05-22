@@ -1,15 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import '../../../api_resfull/user_repository.dart';
+import '../../../src/app_const.dart';
 import '../../../src/base.dart';
-import '../../../src/color.dart';
 import '../../../src/messages.dart';
 import '../../../src/models/model_generator/report_contact.dart';
-import '../../../src/navigator.dart';
 import '../../../widgets/loading_api.dart';
-import '../../../widgets/widget_dialog.dart';
 
 part 'report_contact_event.dart';
 part 'report_contact_state.dart';
@@ -50,29 +47,13 @@ class ReportContactBloc extends Bloc<ReportContactEvent, ReportContactState> {
           yield SuccessReportContactState(list!, response.data!.total ?? "");
         }
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else
         yield ErrorReportContactState(response.msg ?? '');
     } catch (e) {
       yield ErrorReportContactState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      Get.dialog(WidgetDialog(
-        title: MESSAGES.NOTIFICATION,
-        content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-        textButton1: "OK",
-        backgroundButton1: COLORS.PRIMARY_COLOR,
-        onTap1: () {
-          AppNavigator.navigateLogout();
-        },
-      ));
+      loginSessionExpired();
       throw e;
     }
     LoadingApi().popLoading();

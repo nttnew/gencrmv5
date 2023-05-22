@@ -10,45 +10,45 @@ class AppNavigator {
 
   static navigateSplash() async => await Get.toNamed(ROUTE_NAMES.SPLASH);
 
-  static navigateLogin() async => await Get.toNamed(ROUTE_NAMES.LOGIN,arguments: 'login');
+  static navigateLogin() async =>
+      await Get.toNamed(ROUTE_NAMES.LOGIN, arguments: 'login');
 
-  static navigateDetailWork() async =>
-      await Get.toNamed(ROUTE_NAMES.DETAILWORK);
+  static navigateDetailSupport(String id, String title) async =>
+      await Get.toNamed(ROUTE_NAMES.DETAIL_SUPPORT, arguments: [id, title]);
 
-  static navigateDeatailSupport(String id, String title) async =>
-      await Get.toNamed(ROUTE_NAMES.DETAILSUPPORT, arguments: [id, title]);
-
-  static navigateDeatailWork(int id, String title) async =>
-      await Get.toNamed(ROUTE_NAMES.DETAILWORK, arguments: [id, title]);
+  static navigateDetailWork(
+    int id,
+    String title,
+  ) async =>
+      await Get.toNamed(ROUTE_NAMES.DETAIL_WORK, arguments: [id, title]);
 
   static navigateAddCustomer() async =>
-      await Get.toNamed(ROUTE_NAMES.ADDCUSTOMER);
+      await Get.toNamed(ROUTE_NAMES.ADD_CUSTOMER);
 
-  // static navigateAddServiceVoucher() async =>
-  //     await Get.toNamed(ROUTE_NAMES.ADDSERVICEVOUCHER);
+  static navigateAddServiceVoucherStepTwo(String title) async =>
+      await Get.toNamed(ROUTE_NAMES.ADD_SERVICE_VOUCHER_STEP_TWO,
+          arguments: title);
 
-  static navigateAddServiceVoucherStepTwo() async =>
-      await Get.toNamed(ROUTE_NAMES.ADDSERVICEVOUCHERSTEPTWO);
+  static navigateFormAdd(String title, int type,
+          {int? id, bool isCheckIn = false}) async =>
+      await Get.toNamed(ROUTE_NAMES.FORM_ADD,
+          arguments: [title, type, id, isCheckIn]);
 
-  static navigateFormAdd(String title, int type, {int? id}) async =>
-      await Get.toNamed(ROUTE_NAMES.FORM_ADD, arguments: [title, type, id]);
-
-  static navigateAddWork() async => await Get.toNamed(ROUTE_NAMES.ADDWORK);
+  static navigateAddWork() async => await Get.toNamed(ROUTE_NAMES.ADD_WORK);
 
   static navigateDetailCustomer(String id, String name) async =>
-      await Get.toNamed(ROUTE_NAMES.DETAILCUSTOMER, arguments: [id, name]);
+      await Get.toNamed(ROUTE_NAMES.DETAIL_CUSTOMER, arguments: [id, name]);
 
   static navigateAddSupport() async =>
-      await Get.toNamed(ROUTE_NAMES.ADDSUPPORT);
+      await Get.toNamed(ROUTE_NAMES.ADD_SUPPORT);
 
-  static navigateLogout() async => await Get.offAllNamed(ROUTE_NAMES.LOGIN,arguments: 'logout');
+  static navigateLogout() async =>
+      await Get.offAllNamed(ROUTE_NAMES.LOGIN, arguments: 'logout');
 
   static navigateMain({dynamic data}) async =>
       await Get.offAllNamed(ROUTE_NAMES.MAIN, arguments: data);
 
   static navigateIntro() async => await Get.offAllNamed(ROUTE_NAMES.INTRO);
-
-  static navigateTest() async => await Get.toNamed(ROUTE_NAMES.test);
 
   static navigateForgotPassword() async =>
       await Get.toNamed(ROUTE_NAMES.FORGOT_PASSWORD);
@@ -84,8 +84,10 @@ class AppNavigator {
   static navigateContract(String name) async =>
       await Get.toNamed(ROUTE_NAMES.CONTRACT, arguments: name);
 
-  static navigateAddContract({String? id, String? customer_id,required String title}) async =>
-      await Get.toNamed(ROUTE_NAMES.ADD_CONTRACT, arguments: [id, customer_id,title]);
+  static navigateAddContract(
+          {String? id, String? customer_id, required String title}) async =>
+      await Get.toNamed(ROUTE_NAMES.ADD_CONTRACT,
+          arguments: [id, customer_id, title]);
 
   static navigateInfoContract(String id, String name) async =>
       await Get.toNamed(ROUTE_NAMES.INFO_CONTRACT, arguments: [id, name]);
@@ -147,8 +149,25 @@ class AppNavigator {
       await Get.toNamed(ROUTE_NAMES.ADD_PRODUCT,
           arguments: [add, reload, data]);
 
-  // static navigateAttachment(
-  //         String id, String name, List<FileDataResponse> listFile) async =>
-  //     await Get.toNamed(ROUTE_NAMES.ATTACHMENT,
-  //         arguments: [id, name, listFile]);
+  static navigateProduct(String title) async =>
+      await Get.toNamed(ROUTE_NAMES.PRODUCT, arguments: title);
+
+  static navigateDetailProduct(String title, String id) async =>
+      await Get.toNamed(ROUTE_NAMES.DETAIL_PRODUCT, arguments: [title, id]);
+
+  static navigateCheckIn(String id) async =>
+      await Get.toNamed(ROUTE_NAMES.CHECK_IN, arguments: id);
+
+  static navigateProductCustomer(String title) async =>
+      await Get.toNamed(ROUTE_NAMES.PRODUCT_CUSTOMER, arguments: title);
+
+  static navigateDetailProductCustomer(String title, String id) async =>
+      await Get.toNamed(ROUTE_NAMES.DETAIL_PRODUCT_CUSTOMER,
+          arguments: [title, id]);
+
+  static navigateFormSign(
+    String title,
+    String id,
+  ) async =>
+      await Get.toNamed(ROUTE_NAMES.FORM_SIGN, arguments: [title, id]);
 }

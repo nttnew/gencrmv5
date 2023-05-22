@@ -11,33 +11,20 @@ import 'package:gen_crm/src/models/model_generator/post_info_car_response.dart';
 import 'package:gen_crm/src/models/request/voucher_service_request.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
-import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../api_resfull/user_repository.dart';
+import '../../src/app_const.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/models/model_generator/customer.dart';
 import '../../src/models/model_generator/list_car_response.dart';
 import '../../storages/share_local.dart';
-import '../../widgets/widget_dialog.dart';
 
 part 'add_service_event.dart';
 part 'add_service_state.dart';
 
 class ServiceVoucherBloc
     extends Bloc<AddServiceVoucherEvent, ServiceVoucherState> {
-  final UserRepository userRepository;
-
-  List<ModelItemAdd> addData = [];
-  BehaviorSubject<bool> checkboxStream = BehaviorSubject.seeded(false);
-  BehaviorSubject<String> idCar = BehaviorSubject.seeded('');
-  BehaviorSubject<String> loaiXe = BehaviorSubject.seeded('');
-  BehaviorSubject<List<File>?> listFileAllStream = BehaviorSubject();
-  BehaviorSubject<List<AddCustomerIndividualData>> listAddData =
-      BehaviorSubject.seeded([]);
-  List<File> listFile = [];
-  List<File> listImage = [];
-
   ServiceVoucherBloc({required UserRepository userRepository})
       : userRepository = userRepository,
         super(InitGetServiceVoucher()) {
@@ -54,6 +41,16 @@ class ServiceVoucherBloc
     }
   }
 
+  final UserRepository userRepository;
+  List<ModelItemAdd> addData = [];
+  BehaviorSubject<bool> checkboxStream = BehaviorSubject.seeded(false);
+  BehaviorSubject<String> idCar = BehaviorSubject.seeded('');
+  BehaviorSubject<String> loaiXe = BehaviorSubject.seeded('');
+  BehaviorSubject<List<File>?> listFileAllStream = BehaviorSubject();
+  BehaviorSubject<List<AddCustomerIndividualData>> listAddData =
+      BehaviorSubject.seeded([]);
+  List<File> listFile = [];
+  List<File> listImage = [];
   List<Versions> listVersionCar = [];
   BehaviorSubject<Set<HangXe>> listHangXe = BehaviorSubject.seeded({});
   BehaviorSubject<Set<String>> listDongXe = BehaviorSubject.seeded({});
@@ -64,7 +61,6 @@ class ServiceVoucherBloc
   BehaviorSubject<Set<String>> listSoCho = BehaviorSubject.seeded({});
   List<CustomerData>? listCus;
   BehaviorSubject<InfoCar?> infoCar = BehaviorSubject.seeded(InfoCar());
-
   String hangXe = '';
   String dongXe = '';
   String phienBan = '';
@@ -306,15 +302,7 @@ class ServiceVoucherBloc
           yield SaveServiceVoucherState();
         }
       } else if (statusCode == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else {
         yield ErrorGetServiceVoucherState(
             (response).getOrElse('msg', () => -1) ?? '');
@@ -322,15 +310,7 @@ class ServiceVoucherBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      Get.dialog(WidgetDialog(
-        title: MESSAGES.NOTIFICATION,
-        content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-        textButton1: "OK",
-        backgroundButton1: COLORS.PRIMARY_COLOR,
-        onTap1: () {
-          AppNavigator.navigateLogout();
-        },
-      ));
+      loginSessionExpired();
       yield ErrorGetServiceVoucherState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
@@ -359,6 +339,7 @@ class ServiceVoucherBloc
                                 f.fieldValidationMessage,
                                 f.fieldMaxlength,
                                 f.fieldHidden,
+                                null,
                                 f.fieldRequire,
                                 f.fieldSetValue,
                                 f.fieldId == '12708' //theem xe
@@ -376,21 +357,14 @@ class ServiceVoucherBloc
                           }).toList() ??
                           [],
                       e.groupName,
-                      null),
+                      null,
+                  ),
                 )
                 .toList() ??
             [];
         yield GetServiceVoucherState(list);
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else {
         yield ErrorGetServiceVoucherState(response.msg ?? '');
         LoadingApi().popLoading();
@@ -402,9 +376,6 @@ class ServiceVoucherBloc
     }
     LoadingApi().popLoading();
   }
-
-  static ServiceVoucherBloc of(BuildContext context) =>
-      BlocProvider.of<ServiceVoucherBloc>(context);
 
   void dispose() {
     listAddData.add([]);
@@ -429,4 +400,7 @@ class ServiceVoucherBloc
     total = 0;
     checkboxStream.add(false);
   }
+
+  static ServiceVoucherBloc of(BuildContext context) =>
+      BlocProvider.of<ServiceVoucherBloc>(context);
 }

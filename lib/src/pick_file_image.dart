@@ -61,7 +61,7 @@ Widget FileDinhKemUiBase(
                                     ));
                                   },
                                   child: WidgetContainerImage(
-                                    image: 'assets/icons/icon_delete.png',
+                                    image: ICONS.IC_DELETE_PNG,
                                     width: 20,
                                     height: 20,
                                     fit: BoxFit.contain,
@@ -110,7 +110,7 @@ Widget FileDinhKemUiBase(
                                 ),
                               ),
                               Positioned(
-                                child: GestureDetector(
+                                child: InkWell(
                                   onTap: () {
                                     AttackBloc.of(context)
                                         .add(RemoveAttackEvent(
@@ -125,15 +125,15 @@ Widget FileDinhKemUiBase(
                                         border: Border.all(
                                             color: Colors.black, width: 0.1),
                                       ),
-                                      height: 16,
-                                      width: 16,
+                                      height: 24,
+                                      width: 24,
                                       child: Icon(
                                         Icons.close,
-                                        size: 9,
+                                        size: 16,
                                       )),
                                 ),
-                                top: 0,
-                                right: 0,
+                                top: -1,
+                                right: -1,
                               )
                             ],
                           ),
@@ -151,17 +151,21 @@ Widget FileDinhKemUiBase(
       ],
     );
 
-Widget FileLuuBase(BuildContext context, Function() onTap) => Row(
+Widget FileLuuBase(BuildContext context, Function() onTap,
+        {bool isAttack = true}) =>
+    Row(
       children: [
-        GestureDetector(
-            onTap: () async {
-              await onDinhKemBase(context).then((listFile) {
-                if (listFile != []) {
-                  AttackBloc.of(context).add(InitAttackEvent(files: listFile));
-                }
-              });
-            },
-            child: SvgPicture.asset("assets/icons/attack.svg")),
+        if (isAttack)
+          GestureDetector(
+              onTap: () async {
+                await onDinhKemBase(context).then((listFile) {
+                  if (listFile != []) {
+                    AttackBloc.of(context)
+                        .add(InitAttackEvent(files: listFile));
+                  }
+                });
+              },
+              child: SvgPicture.asset(ICONS.IC_ATTACK_SVG)),
         Spacer(),
         GestureDetector(
           onTap: () => onTap(),
@@ -174,9 +178,9 @@ Widget FileLuuBase(BuildContext context, Function() onTap) => Row(
                   borderRadius: BorderRadius.circular(20.5)),
               child: Center(
                   child: Text(
-                    "Lưu",
-                    style: TextStyle(color: Colors.white),
-                  )),
+                "Lưu",
+                style: TextStyle(color: Colors.white),
+              )),
             ),
           ),
         ),
@@ -186,22 +190,13 @@ Future<List<File>> onDinhKemBase(BuildContext context) async {
   List<File> listPickFile = [];
   if (await Permission.storage.request().isGranted) {
     if (Platform.isAndroid) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return WidgetDialog(
-            title: MESSAGES.NOTIFICATION,
-            content: 'Bạn chưa cấp quyền truy cập vào ảnh?',
-            textButton2: 'Đi đến cài đặt',
-            textButton1: 'Ok',
-            onTap2: () {
-              openAppSettings();
-              Get.back();
-            },
-            onTap1: () {
-              Get.back();
-            },
-          );
+      ShowDialogCustom.showDialogBase(
+        title: MESSAGES.NOTIFICATION,
+        content: MESSAGES.BAN_CHUA_CAP_QUYEN,
+        textButton2: MESSAGES.DI_DEN_CAI_DAT,
+        onTap2: () {
+          openAppSettings();
+          Get.back();
         },
       );
     } else {
@@ -231,7 +226,7 @@ Future<List<File>> pickFileDialog() async {
                     if (file != null) listFile.add(file);
                     Get.back();
                   },
-                  child: Text('Chụp ảnh mới'),
+                  child: Text(MESSAGES.CHUP_ANH_MOI),
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
@@ -239,7 +234,7 @@ Future<List<File>> pickFileDialog() async {
                     if (file != null) listFile.add(file);
                     Get.back();
                   },
-                  child: Text('Quay video mới'),
+                  child: Text(MESSAGES.QUAY_VIDEO_MOI),
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
@@ -247,7 +242,7 @@ Future<List<File>> pickFileDialog() async {
                     if (files != null) listFile.addAll(files);
                     Get.back();
                   },
-                  child: Text('Chọn file'),
+                  child: Text(MESSAGES.CHON_FILE),
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
@@ -255,7 +250,7 @@ Future<List<File>> pickFileDialog() async {
                     if (files != null) listFile.addAll(files);
                     Get.back();
                   },
-                  child: Text('Chọn ảnh có sẵn'),
+                  child: Text(MESSAGES.CHON_ANH_CO_SAN),
                 ),
               ]));
   return listFile;

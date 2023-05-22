@@ -106,7 +106,7 @@ class Data2 {
     if (json['field_set_value_datasource'] != null) {
       fieldSetValueDatasource = [];
       json['field_set_value_datasource'].forEach((v) {
-        fieldSetValueDatasource!.add(v); //todo check doanh
+        fieldSetValueDatasource!.add(v);
       });
     }
     fieldValidation = json['field_validation'];

@@ -37,6 +37,16 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       yield* _addSupport(event.data, event.files);
     } else if (event is EditJobEvent) {
       yield* _editJob(event.data, event.files);
+    } else if (event is AddProductEvent) {
+      yield* _addProduct(event.data, event.files);
+    } else if (event is EditProductEvent) {
+      yield* _editProduct(event.data, event.files, event.id);
+    } else if (event is AddProductCustomerEvent) {
+      yield* _addProductCustomer(event.data, event.files);
+    } else if (event is EditProductCustomerEvent) {
+      yield* _editProductCustomer(event.data, event.files);
+    } else if (event is SignEvent) {
+      yield* _signature(event.data);
     }
   }
 
@@ -324,6 +334,175 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
           LoadingApi().popLoading();
           yield SuccessAddContactCustomerState();
         }
+      } else {
+        LoadingApi().popLoading();
+        yield ErrorAddContactCustomerState(response.msg ?? '');
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      throw e;
+    }
+    LoadingApi().popLoading();
+  }
+
+  Stream<AddDataState> _addProduct(
+      Map<String, dynamic> data, List<File>? files) async* {
+    LoadingApi().pushLoading();
+    try {
+      yield LoadingAddContactCustomerState();
+      final response = await userRepository.addProduct(data: data);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        if (files != null) {
+          final responseUpload = await userRepository.uploadMultiFileBase(
+              id: response.id.toString(),
+              files: files,
+              module: getURLModule(Module.PRODUCT));
+          if ((responseUpload.code == BASE_URL.SUCCESS) ||
+              (responseUpload.code == BASE_URL.SUCCESS_200)) {
+            LoadingApi().popLoading();
+            yield SuccessAddContactCustomerState();
+          } else {
+            LoadingApi().popLoading();
+            yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
+          }
+        } else {
+          LoadingApi().popLoading();
+          yield SuccessAddContactCustomerState();
+        }
+      } else {
+        LoadingApi().popLoading();
+        yield ErrorAddContactCustomerState(response.msg ?? '');
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      throw e;
+    }
+    LoadingApi().popLoading();
+  }
+
+  Stream<AddDataState> _addProductCustomer(
+      Map<String, dynamic> data, List<File>? files) async* {
+    LoadingApi().pushLoading();
+    try {
+      yield LoadingAddContactCustomerState();
+      final response = await userRepository.saveAddProductCustomer(data: data);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        if (files != null) {
+          final responseUpload = await userRepository.uploadMultiFileBase(
+              id: response.id.toString(),
+              files: files,
+              module: getURLModule(Module.SAN_PHAM_KH));
+          if ((responseUpload.code == BASE_URL.SUCCESS) ||
+              (responseUpload.code == BASE_URL.SUCCESS_200)) {
+            LoadingApi().popLoading();
+            yield SuccessAddContactCustomerState();
+          } else {
+            LoadingApi().popLoading();
+            yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
+          }
+        } else {
+          LoadingApi().popLoading();
+          yield SuccessAddContactCustomerState();
+        }
+      } else {
+        LoadingApi().popLoading();
+        yield ErrorAddContactCustomerState(response.msg ?? '');
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      throw e;
+    }
+    LoadingApi().popLoading();
+  }
+
+  Stream<AddDataState> _editProduct(
+      Map<String, dynamic> data, List<File>? files, int id) async* {
+    LoadingApi().pushLoading();
+    try {
+      yield LoadingAddContactCustomerState();
+      final response = await userRepository.editProduct(data: data, id: id);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        if (files != null) {
+          final responseUpload = await userRepository.uploadMultiFileBase(
+              id: response.data?.id.toString() ?? '',
+              files: files,
+              module: getURLModule(Module.PRODUCT));
+          if ((responseUpload.code == BASE_URL.SUCCESS) ||
+              (responseUpload.code == BASE_URL.SUCCESS_200)) {
+            LoadingApi().popLoading();
+            yield SuccessAddContactCustomerState();
+          } else {
+            LoadingApi().popLoading();
+            yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
+          }
+        } else {
+          LoadingApi().popLoading();
+          yield SuccessAddContactCustomerState();
+        }
+      } else {
+        LoadingApi().popLoading();
+        yield ErrorAddContactCustomerState(response.msg ?? '');
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      throw e;
+    }
+    LoadingApi().popLoading();
+  }
+
+  Stream<AddDataState> _editProductCustomer(
+      Map<String, dynamic> data, List<File>? files) async* {
+    LoadingApi().pushLoading();
+    try {
+      yield LoadingAddContactCustomerState();
+      final response = await userRepository.saveEditProductCustomer(data: data);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        if (files != null) {
+          final responseUpload = await userRepository.uploadMultiFileBase(
+              id: response.data?.id.toString() ?? '',
+              files: files,
+              module: getURLModule(Module.SAN_PHAM_KH));
+          if ((responseUpload.code == BASE_URL.SUCCESS) ||
+              (responseUpload.code == BASE_URL.SUCCESS_200)) {
+            LoadingApi().popLoading();
+            yield SuccessAddContactCustomerState();
+          } else {
+            LoadingApi().popLoading();
+            yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
+          }
+        } else {
+          LoadingApi().popLoading();
+          yield SuccessAddContactCustomerState();
+        }
+      } else {
+        LoadingApi().popLoading();
+        yield ErrorAddContactCustomerState(response.msg ?? '');
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      throw e;
+    }
+    LoadingApi().popLoading();
+  }
+
+  Stream<AddDataState> _signature(Map<String, dynamic> data) async* {
+    LoadingApi().pushLoading();
+    try {
+      yield LoadingAddContactCustomerState();
+      final response = await userRepository.saveSignature(data: data);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        LoadingApi().popLoading();
+        yield SuccessAddContactCustomerState();
       } else {
         LoadingApi().popLoading();
         yield ErrorAddContactCustomerState(response.msg ?? '');

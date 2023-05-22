@@ -1,16 +1,11 @@
-// ignore: import_of_legacy_library_into_null_safe
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart'; // ignore: import_of_legacy_library_into_null_safe
-import 'package:bloc/bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gen_crm/api_resfull/user_repository.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/storages.dart';
-import 'package:get/get.dart';
-
-import '../../widgets/widget_dialog.dart';
 
 part 'authentication_event.dart';
 
@@ -43,7 +38,8 @@ class AuthenticationBloc
     } else if (event is AuthenticationStatusChanged) {
       yield* _mapAuthenticationStatusChangedToState(event);
     } else if (event is AuthenticationLogoutRequested) {
-      var response = await userRepository.logout();
+      final deviceToken = await shareLocal.getString(PreferencesKey.DEVICE_TOKEN);
+      var response = await userRepository.logout(device_token: deviceToken);
       if (response.code == 888) {
         AppNavigator.navigateLogout();
         await _localRepository.saveUser(dotenv.env[PreferencesKey.TOKEN]!);
@@ -53,15 +49,14 @@ class AuthenticationBloc
         await _localRepository.saveUserID("");
         _userRepository.logOut();
       } else {
-        Get.dialog(WidgetDialog(
+        ShowDialogCustom.showDialogBase(
           title: MESSAGES.NOTIFICATION,
           content: response.msg ?? "Có lỗi xảy ra!!!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
+          textButton1: MESSAGES.OKE,
           onTap1: () {
             AppNavigator.navigateLogout();
           },
-        ));
+        );
       }
     }
   }

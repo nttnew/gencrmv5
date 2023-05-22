@@ -18,7 +18,6 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-import '../../../../../../../widgets/widget_dialog.dart';
 import '../../../../bloc/contract/attack_bloc.dart';
 import '../../../../bloc/contract/contract_bloc.dart';
 import '../../../../bloc/contract_customer/contract_customer_bloc.dart';
@@ -27,7 +26,7 @@ import '../../../../models/widget_input_date.dart';
 import '../../../../src/models/model_generator/login_response.dart';
 import '../../../../src/pick_file_image.dart';
 import '../../../../storages/share_local.dart';
-import '../../../../widgets/widgetFieldInputPercent.dart';
+import '../../../../widgets/widget_field_input_percent.dart';
 import '../customer/add_customer.dart';
 import '../customer/input_dropDown.dart';
 
@@ -120,6 +119,8 @@ class _FormAddContractState extends State<FormAddContract> {
   @override
   void deactivate() {
     AttackBloc.of(context).add(RemoveAllAttackEvent());
+    ContactByCustomerBloc.of(context).chiTietXe.add('');
+    ContactByCustomerBloc.of(context).listXe.add([]);
     super.deactivate();
   }
 
@@ -146,44 +147,29 @@ class _FormAddContractState extends State<FormAddContract> {
         body: BlocListener<AddDataBloc, AddDataState>(
           listener: (context, state) async {
             if (state is SuccessAddCustomerOrState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
+              ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: "Thêm mới dữ liệu thành công!",
-                    textButton1: "OK",
-                    backgroundButton1: COLORS.PRIMARY_COLOR,
                     onTap1: () {
                       Get.back();
                       Get.back();
                       GetListCustomerBloc.of(context)
                           .add(InitGetListOrderEvent("", 1, ""));
                     },
-                  );
-                },
+
               );
             }
             if (state is ErrorAddCustomerOrState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
+              ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: state.msg,
-                  );
-                },
+
               );
             }
             if (state is SuccessAddContactCustomerState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
+    ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: "Thêm mới dữ liệu thành công!",
-                    textButton1: "OK",
-                    backgroundButton1: COLORS.PRIMARY_COLOR,
                     onTap1: () {
                       Get.back();
                       Get.back();
@@ -192,20 +178,14 @@ class _FormAddContractState extends State<FormAddContract> {
                               ContractCustomerBloc.of(context).id));
                       ContractBloc.of(context)
                           .add(InitGetContractEvent(1, "", ""));
-                    },
-                  );
+
                 },
               );
             }
             if (state is ErrorAddContactCustomerState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
+              ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: state.msg,
-                  );
-                },
               );
             }
           },
@@ -279,7 +259,10 @@ class _FormAddContractState extends State<FormAddContract> {
                                                                 .data![index1]
                                                                 .field_special ==
                                                             "none-edit" &&
-                                                        state.listAddData[index].data![index1].field_id !=
+                                                        state
+                                                                .listAddData[index]
+                                                                .data![index1]
+                                                                .field_id !=
                                                             '246')
                                                     ? (state.listAddData[index].data![index1].field_id == '774'
                                                         ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
@@ -303,7 +286,25 @@ class _FormAddContractState extends State<FormAddContract> {
                                                             } else
                                                               return Container();
                                                           })
-                                                        : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, noEdit: true))
+                                                        : state.listAddData[index].data![index1].field_id == '13502'
+                                                            ? StreamBuilder<String>(
+                                                                stream: ContactByCustomerBloc.of(context).chiTietXe,
+                                                                builder: (context, snapshot) {
+                                                                  final chiTietXe =
+                                                                      snapshot.data ??
+                                                                          '';
+                                                                  return _fieldChiTietXe(
+                                                                    state
+                                                                        .listAddData[
+                                                                            index]
+                                                                        .data![index1],
+                                                                    index,
+                                                                    index1,
+                                                                    value:
+                                                                        chiTietXe,
+                                                                  );
+                                                                })
+                                                            : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, noEdit: true))
                                                     : state.listAddData[index].data![index1].field_special == "url"
                                                         ? ProductContract(
                                                             data: listProduct,
@@ -341,17 +342,19 @@ class _FormAddContractState extends State<FormAddContract> {
                                                                           final list =
                                                                               snapshot.data;
                                                                           return InputDropdown(
+                                                                              isUpdate: true,
                                                                               isUpdateList: true,
                                                                               dropdownItemList: list ?? state.listAddData[index].data![index1].field_datasource ?? [],
                                                                               data: state.listAddData[index].data![index1],
                                                                               onSuccess: (data) {
                                                                                 addData[index].data[index1].value = data;
-                                                                                if (state.listAddData[index].data![index1].field_id == '246') {
-                                                                                  ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
-                                                                                  PhoneBloc.of(context).add(InitPhoneEvent(data));
-                                                                                }
+                                                                                ContactByCustomerBloc.of(context).getCar(data);
                                                                               },
-                                                                              value: state.listAddData[index].data![index1].field_value ?? '');
+                                                                              onUpdate: (data) {
+                                                                                addData[index].data[index1].value = data;
+                                                                                ContactByCustomerBloc.of(context).getCar(data);
+                                                                              },
+                                                                              value: list?.isEmpty ?? false ? '' : state.listAddData[index].data![index1].field_value ?? '');
                                                                         })
                                                                     : InputDropdown(
                                                                         dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
@@ -362,6 +365,8 @@ class _FormAddContractState extends State<FormAddContract> {
                                                                               .value = data;
                                                                           if (state.listAddData[index].data![index1].field_id ==
                                                                               '246') {
+                                                                            ContactByCustomerBloc.of(context).chiTietXe.add('');
+                                                                            ContactByCustomerBloc.of(context).listXe.add([]);
                                                                             ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
                                                                             PhoneBloc.of(context).add(InitPhoneEvent(data));
                                                                           }
@@ -433,10 +438,59 @@ class _FormAddContractState extends State<FormAddContract> {
         AppNavigator.navigateBack();
       },
       icon: Image.asset(
-        ICONS.ICON_BACK,
+        ICONS.IC_BACK_PNG,
         height: 28,
         width: 28,
         color: COLORS.BLACK,
+      ),
+    );
+  }
+
+  Widget _fieldChiTietXe(CustomerIndividualItemData data, int index, int index1,
+      {String value = ""}) {
+    addData[index].data[index1].value = value;
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+            text: TextSpan(
+              text: data.field_label ?? '',
+              style: titlestyle(),
+              children: <TextSpan>[
+                data.field_require == 1
+                    ? TextSpan(
+                        text: '*',
+                        style: TextStyle(
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red))
+                    : TextSpan(),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+                color: COLORS.LIGHT_GREY,
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: HexColor("#BEB4B4"))),
+            child: Padding(
+              padding: EdgeInsets.all(15),
+              child: Container(
+                  child: WidgetText(
+                title: '$value',
+                style: AppStyle.DEFAULT_14,
+              )),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -483,8 +537,7 @@ class _FormAddContractState extends State<FormAddContract> {
                   child: Container(
                       height: 50,
                       width: 50,
-                      child:
-                          SvgPicture.asset("assets/icons/iconInputImg.svg"))),
+                      child: SvgPicture.asset(ICONS.IC_INPUT_SVG))),
             )
           ]),
         ),
@@ -505,6 +558,7 @@ class _FormAddContractState extends State<FormAddContract> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
               style: titlestyle(),
@@ -513,8 +567,8 @@ class _FormAddContractState extends State<FormAddContract> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -534,7 +588,7 @@ class _FormAddContractState extends State<FormAddContract> {
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
                 child: TextFormField(
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                   keyboardType: data.field_type == "TEXT_NUMERIC"
                       ? TextInputType.number
                       : data.field_special == "default"
@@ -594,20 +648,21 @@ class _FormAddContractState extends State<FormAddContract> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: label,
               style: TextStyle(
-                  fontFamily: "Roboto",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+                  fontFamily: "Quicksand",
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: COLORS.BLACK),
               children: <TextSpan>[
                 required == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -624,15 +679,10 @@ class _FormAddContractState extends State<FormAddContract> {
                 if (maxLength != '' && values.length > int.parse(maxLength)) {
                   values.removeRange(
                       int.parse(maxLength) - 1, values.length - 1);
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return WidgetDialog(
+    ShowDialogCustom.showDialogBase(
                         title: MESSAGES.NOTIFICATION,
                         content: "Bạn chỉ được chọn ${maxLength} giá trị",
-                      );
-                    },
+
                   );
                 } else {
                   List<String> res = [];
@@ -656,9 +706,9 @@ class _FormAddContractState extends State<FormAddContract> {
                 label,
                 style: TextStyle(
                     fontSize: 14,
-                    fontFamily: "Roboto",
+                    fontFamily: "Quicksand",
                     fontWeight: FontWeight.w500,
-                    color: HexColor("#838A91")),
+                    color: COLORS.BLACK),
               ),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
@@ -668,24 +718,24 @@ class _FormAddContractState extends State<FormAddContract> {
                 size: 25,
               ),
               initialValue: indexDefault != -1 ? [dropdow[indexDefault]] : [],
-              selectedItemsTextStyle: AppStyle.DEFAULT_12,
-              itemsTextStyle: AppStyle.DEFAULT_12),
+              selectedItemsTextStyle: AppStyle.DEFAULT_14,
+              itemsTextStyle: AppStyle.DEFAULT_14),
         ],
       ),
     ));
   }
 
   TextStyle hintTextStyle() => TextStyle(
-      fontFamily: "Roboto",
-      fontSize: 11,
+      fontFamily: "Quicksand",
+      fontSize: 14,
       fontWeight: FontWeight.w500,
-      color: HexColor("#838A91"));
+      color: COLORS.BLACK);
 
   TextStyle titlestyle() => TextStyle(
-      fontFamily: "Roboto",
-      fontSize: 12,
-      fontWeight: FontWeight.w500,
-      color: HexColor("#697077"));
+      fontFamily: "Quicksand",
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      color: COLORS.BLACK);
 
   void onClickSave() {
     final Map<String, dynamic> data = {};
@@ -707,14 +757,10 @@ class _FormAddContractState extends State<FormAddContract> {
       }
     }
     if (check == true) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return WidgetDialog(
+        ShowDialogCustom.showDialogBase(
             title: MESSAGES.NOTIFICATION,
             content: "Hãy nhập đủ các trường bắt buộc (*)",
-          );
-        },
+
       );
     } else {
       if (listProduct.length > 0) {

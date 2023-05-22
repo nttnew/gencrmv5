@@ -1,7 +1,11 @@
-// ignore: camel_case_types
+import 'dart:ui';
+import 'icon_constants.dart';
+
 class BASE_URL {
   BASE_URL._();
-
+  static const int SIZE_DEFAULT = 10; //todo
+  static const int PAGE_DEFAULT = 1; //todo
+  static const URL_WSS = 'wss://wss-mobile.tel4vn.com:7444'; //todo
   static const URL_DEMO = 'https://demo.gencrm.com/';
   static const GET_INFO_USER = 'api/user/profile';
   static const LOGIN = 'loginmobile.php';
@@ -19,7 +23,6 @@ class BASE_URL {
   static const GET_LIST_COURSE = 'api/user/list-course';
   static const DETAIL_COURSE = 'api/user/detail-course';
   static const ORDER_COURSE = 'api/user/order';
-  //Hiệp
   static const ABOUT_US = 'modules/genmobile2/app/getinfo';
   static const REPORT_EMPLOYEE =
       'modules/genmobile2/dashboard/baocaodoanhsoNhanvien';
@@ -38,7 +41,6 @@ class BASE_URL {
   static const REPORT_CONTACT = 'modules/genmobile2/dashboard/hopdongnv';
   static const REPORT_GENERAL =
       'modules/genmobile2/dashboard/baocaoDoanhsoChung';
-  //Dương
   static const LIST_CUSTOMER = 'modules/genmobile2/customer/list';
   static const DETAIL_CUSTOMER = 'modules/genmobile2/customer/detail';
   static const CLUE_CUSTOMER = 'modules/genmobile2/customer/listContacts';
@@ -82,7 +84,7 @@ class BASE_URL {
   static const ADD_JOB = 'modules/genmobile2/job/save';
   static const GET_FORM_ADD_SUPPORT_CUS =
       'modules/genmobile2/customer/addSupport';
-  static const ADD_SUPPORT = '/modules/genmobile2/support/save';
+  static const ADD_SUPPORT = 'modules/genmobile2/support/save';
   static const GET_FORM_ADD_AGENCY = 'modules/genmobile2/agencycustomer/edit';
   static const GET_FORM_ADD_CHANCE = 'modules/genmobile2/opportunity/edit';
   static const GET_FORM_ADD_CONTRACT = 'modules/genmobile2/contract/add';
@@ -133,12 +135,10 @@ class BASE_URL {
   static const DELETE_NOTE_SUP = 'modules/genmobile2/support/deleteNote';
   static const LIST_PRODUCT = 'modules/genmobile2/product/list_all';
   static const GET_PHONE_CUS = 'modules/genmobile2/customer/getPhone';
-  static const UPLOAD_FILE= 'modules/genmobile2/{module}/fileupload';
+  static const UPLOAD_FILE = 'modules/genmobile2/{module}/fileupload';
   static const GET_FILE = 'modules/genmobile2/documents/list';
   static const DELETE_FILE = 'modules/genmobile2/documents/delete';
-
-  // Quân
-  static const INFOR_ACC = 'modules/genmobile2/profile/info';
+  static const INFO_ACC = 'modules/genmobile2/profile/info';
   static const LIST_CLUE = 'modules/genmobile2/agencycustomer/list';
   static const DETAIL_CLUE = 'modules/genmobile2/agencycustomer/detail';
   static const WORK_CLUE = 'modules/genmobile2/agencycustomer/listJobs';
@@ -154,23 +154,45 @@ class BASE_URL {
   static const DELETE_NOTIFICATION = 'modules/genmobile2/notification/delete';
   static const READ_NOTIFICATION = 'modules/genmobile2/notification/read';
   static const GET_XE = 'modules/genmobile2/product/getsanphamkh';
-  static const DOWNLOAD_FILE =
-      'https://car.gencrm.com/modules/genmobile2/documents/download';
-  // receiveTimeout
+  static const GROUP_PRODUCT = 'modules/genmobile2/product/getCats';
+  static const PRODUCT = 'modules/genmobile2/product/list';
+  static const DETAIL_PRODUCT = 'modules/genmobile2/product/view';
+  static const ADD_PRODUCT = 'modules/genmobile2/product/form';
+  static const EDIT_PRODUCT = 'modules/genmobile2/product/form';
+  static const ADD_PRODUCT_MODULE = 'modules/genmobile2/product/save';
+  static const DELETE_PRODUCT = 'modules/genmobile2/product/delete';
+  static const GET_LIST_BAO_CAO = 'modules/genmobile2/dashboard/list';
+  static const HOME_BAO_CAO = 'modules/genmobile2/dashboard/xetrongxuong';
+  static const SAVE_CHECK_IN = 'modules/genmobile2/job/checkIn';
+  static const LIST_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/list';
+  static const PRODUCT_CUSTOMER_DETAIL =
+      'modules/genmobile2/productCustomer/detail';
+  static const GET_FORM_ADD_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/form';
+  static const SAVE_FROM_PRODUCT_CUSTOMER_ADD =
+      'modules/genmobile2/productCustomer/save';
+  static const GET_FORM_EDIT_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/form';
+  static const SAVE_FROM_PRODUCT_CUSTOMER_EDIT =
+      'modules/genmobile2/productCustomer/save';
+  static const PRODUCT_CUSTOMER_DELETE =
+      'modules/genmobile2/productCustomer/delete';
+  static const GET_FORM_SIGN =
+      'modules/genmobile2/contract/formKn';
+  static const SAVE_SIGN =
+      'modules/genmobile2/contract/saveKn';
+
   static const int receiveTimeout = 15000;
-
   static const ENV = 'assets/.env';
-
-  // connectTimeout
-  static const int connectionTimeout = 45000;//todo timeout them coong viec
-
+  static const int connectionTimeout = 45000; //todo timeout them coong viec
   static const content_type = 'Content-Type';
   static const application_json = 'application/json';
-  ////////////////////////////////////////////////////////
+  static const PHPSESSID = 'PHPSESSID';
+  static const AUTHORIZATION = 'Authorization';
   static const multipart_form_data = 'multipart/form-data';
-
   static const auth_type = 'Cookie';
-  ////////////////////////////////////////////////////////
+
   static String bearer(String token) => token;
 
   static const headerDemoKey = 'Demo-Header';
@@ -184,6 +206,10 @@ class BASE_URL {
   static const LOCK = 0;
   static const KHACH_HANG = 'Khách hàng';
   static const TEN_KHACH_HANG = 'Tên khách hàng';
+  static const NOTE_ID = 'noteid';
+  static const ID = 'id';
+  static const CONTENT = 'content';
+  static const DEVICE_TOKEN = 'device_token';
 }
 
 class Module {
@@ -192,9 +218,9 @@ class Module {
   static const String HO_TRO = 'hotro';
   static const String CONG_VIEC = 'congviec';
   static const String CO_HOI_BH = 'cohoibh';
-  static const String SAN_PHAM = 'sanpham';
   static const String SAN_PHAM_KH = 'sanphamkh';
   static const String DAU_MOI = 'daumoi';
+  static const String PRODUCT = 'sanpham';
 }
 
 // job cv customer: khách hang support ho tro contact đầu mối
@@ -209,13 +235,70 @@ String getURLModule(String module) {
     return 'job';
   } else if (module == Module.HO_TRO) {
     return 'support';
-  }else if (module == Module.CO_HOI_BH) {
+  } else if (module == Module.CO_HOI_BH) {
     return 'opportunity';
+  } else if (module == Module.PRODUCT) {
+    return 'product';
+  } else if (module == Module.SAN_PHAM_KH) {
+    return 'productCustomer';
   }
   return '';
 }
 
-class ModuleText{
+class ModuleMy {
+  static const String CUSTOMER = 'customer';
+  static const String DAU_MOI = 'contact';
+  static const String LICH_HEN = 'opportunity';
+  static const String HOP_DONG = 'contract';
+  static const String CONG_VIEC = 'job';
+  static const String CSKH = 'support';
+  static const String SAN_PHAM = 'product';
+  static const String SAN_PHAM_KH = 'sanphamkh';
+
+  static String getIcon(String id) {
+    if (ModuleMy.CUSTOMER == id) {
+      return ICONS.IC_CUSTOMER_3X_PNG;
+    } else if (ModuleMy.DAU_MOI == id) {
+      return ICONS.IC_CLUE_3X_PNG;
+    } else if (ModuleMy.LICH_HEN == id) {
+      return ICONS.IC_CHANCE_3X_PNG;
+    } else if (ModuleMy.HOP_DONG == id) {
+      return ICONS.IC_CONTRACT_3X_PNG;
+    } else if (ModuleMy.CONG_VIEC == id) {
+      return ICONS.IC_WORK_3X_PNG;
+    } else if (ModuleMy.CSKH == id) {
+      return ICONS.IC_SUPPORT_3X_PNG;
+    } else if (ModuleMy.SAN_PHAM == id) {
+      return ICONS.IC_CONTRACT_3X_PNG;
+    } else if (ModuleMy.SAN_PHAM_KH == id) {
+      return ICONS.IC_CHANCE_3X_PNG;
+    }
+    return ICONS.IC_WORK_3X_PNG;
+  }
+
+  static Color getColor(String id) {
+    if (ModuleMy.CUSTOMER == id) {
+      return Color(0xff369FFF);
+    } else if (ModuleMy.DAU_MOI == id) {
+      return Color(0xffFDC9D2);
+    } else if (ModuleMy.LICH_HEN == id) {
+      return Color(0xffA5A6F6);
+    } else if (ModuleMy.HOP_DONG == id) {
+      return Color(0xffFFC000);
+    } else if (ModuleMy.CONG_VIEC == id) {
+      return Color(0xffFF993A);
+    } else if (ModuleMy.CSKH == id) {
+      return Color(0xff8AC53E);
+    } else if (ModuleMy.SAN_PHAM == id) {
+      return Color(0xff22b290);
+    } else if (ModuleMy.SAN_PHAM_KH == id) {
+      return Color(0xff9c4bbb);
+    }
+    return Color(0xffFF993A);
+  }
+}
+
+class ModuleText {
   static const String CUSTOMER = 'them_khach_hang';
   static const String DAU_MOI = 'them_dau_moi';
   static const String LICH_HEN = 'them_co_hoi';
@@ -224,5 +307,24 @@ class ModuleText{
   static const String CSKH = 'them_ho_tro';
   static const String THEM_MUA_XE = 'them_mua_xe';
   static const String THEM_BAN_XE = 'them_ban_xe';
+  static const String THEM_SAN_PHAM_KH = 'them_sanphamkh';
 
+  static String getIconMenu(String id) {
+    if (ModuleText.CUSTOMER == id) {
+      return ICONS.IC_CUSTOMER_3X_PNG;
+    } else if (ModuleText.DAU_MOI == id) {
+      return ICONS.IC_CLUE_3X_PNG;
+    } else if (ModuleText.LICH_HEN == id) {
+      return ICONS.IC_CHANCE_3X_PNG;
+    } else if (ModuleText.HOP_DONG == id) {
+      return ICONS.IC_CONTRACT_3X_PNG;
+    } else if (ModuleText.CONG_VIEC == id) {
+      return ICONS.IC_WORK_3X_PNG;
+    } else if (ModuleText.CSKH == id) {
+      return ICONS.IC_SUPPORT_3X_PNG;
+    } else if (ModuleText.THEM_SAN_PHAM_KH == id) {
+      return ICONS.IC_CHANCE_3X_PNG;
+    }
+    return ICONS.IC_WORK_3X_PNG;
+  }
 }

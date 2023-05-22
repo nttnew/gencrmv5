@@ -4,21 +4,18 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
-import 'package:get/get.dart';
-
 import '../../api_resfull/user_repository.dart';
+import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/color.dart';
 import '../../src/messages.dart';
 import '../../src/models/model_generator/customer.dart';
-import '../../src/navigator.dart';
-import '../../widgets/widget_dialog.dart';
 
 part 'customer_event.dart';
 part 'customer_state.dart';
 
 class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
   final UserRepository userRepository;
+  List<CustomerData>? listCus;
 
   GetListCustomerBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -36,8 +33,6 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
       yield* _AddCustomerIndividual(data: event.data, files: event.files);
     }
   }
-
-  List<CustomerData>? listCus;
 
   Stream<CustomerState> _getListCustomer(
       {required String filter,
@@ -60,28 +55,12 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
               listCus!, response.data!.filter!, response.data!.total!);
         }
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else
         yield ErrorGetListCustomerState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      Get.dialog(WidgetDialog(
-        title: MESSAGES.NOTIFICATION,
-        content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-        textButton1: "OK",
-        backgroundButton1: COLORS.PRIMARY_COLOR,
-        onTap1: () {
-          AppNavigator.navigateLogout();
-        },
-      ));
+      loginSessionExpired();
       yield ErrorGetListCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
@@ -116,15 +95,7 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
           yield SuccessAddCustomerIndividualState();
         }
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else {
         LoadingApi().popLoading();
         yield ErrorAddCustomerIndividualState(response.msg ?? '');

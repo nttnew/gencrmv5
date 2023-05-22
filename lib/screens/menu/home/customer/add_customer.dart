@@ -17,8 +17,7 @@ import '../../../../src/models/model_generator/add_customer.dart';
 import '../../../../src/pick_file_image.dart';
 import '../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-import '../../../../widgets/widgetFieldInputPercent.dart';
-import '../../../../widgets/widget_dialog.dart';
+import '../../../../widgets/widget_field_input_percent.dart';
 import 'input_dropDown.dart';
 
 class AddCustomer extends StatefulWidget {
@@ -75,33 +74,21 @@ class _AddCustomerState extends State<AddCustomer> {
         body: BlocListener<GetListCustomerBloc, CustomerState>(
           listener: (context, state) async {
             if (state is SuccessAddCustomerIndividualState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
-                    title: MESSAGES.NOTIFICATION,
-                    content: "Thêm mới dữ liệu thành công!",
-                    textButton1: "OK",
-                    backgroundButton1: COLORS.PRIMARY_COLOR,
-                    onTap1: () {
-                      Get.back();
-                      Get.back();
-                      GetListCustomerBloc.of(context)
-                          .add(InitGetListOrderEvent("", 1, ""));
-                    },
-                  );
+              ShowDialogCustom.showDialogBase(
+                title: MESSAGES.NOTIFICATION,
+                content: "Thêm mới dữ liệu thành công!",
+                onTap1: () {
+                  Get.back();
+                  Get.back();
+                  GetListCustomerBloc.of(context)
+                      .add(InitGetListOrderEvent("", 1, ""));
                 },
               );
             }
             if (state is ErrorAddCustomerIndividualState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
-                    title: MESSAGES.NOTIFICATION,
-                    content: state.message,
-                  );
-                },
+              ShowDialogCustom.showDialogBase(
+                title: MESSAGES.NOTIFICATION,
+                content: state.message,
               );
             }
           },
@@ -260,7 +247,7 @@ class _AddCustomerState extends State<AddCustomer> {
         AppNavigator.navigateBack();
       },
       icon: Image.asset(
-        ICONS.ICON_BACK,
+        ICONS.IC_BACK_PNG,
         height: 28,
         width: 28,
         color: COLORS.BLACK,
@@ -310,8 +297,7 @@ class _AddCustomerState extends State<AddCustomer> {
                   child: Container(
                       height: 50,
                       width: 50,
-                      child:
-                          SvgPicture.asset("assets/icons/iconInputImg.svg"))),
+                      child: SvgPicture.asset(ICONS.IC_INPUT_SVG))),
             )
           ]),
         ),
@@ -327,6 +313,7 @@ class _AddCustomerState extends State<AddCustomer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
               style: titlestyle(),
@@ -335,8 +322,8 @@ class _AddCustomerState extends State<AddCustomer> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -407,20 +394,21 @@ class _AddCustomerState extends State<AddCustomer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: label,
               style: TextStyle(
-                  fontFamily: "Roboto",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+                  fontFamily: "Quicksand",
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: COLORS.BLACK),
               children: <TextSpan>[
                 required == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -435,15 +423,9 @@ class _AddCustomerState extends State<AddCustomer> {
             onConfirm: (values) {
               if (maxLength != "" && values.length > int.parse(maxLength)) {
                 values.removeRange(int.parse(maxLength) - 1, values.length - 1);
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return WidgetDialog(
-                      title: MESSAGES.NOTIFICATION,
-                      content: "Bạn chỉ được chọn ${maxLength} giá trị",
-                    );
-                  },
+                ShowDialogCustom.showDialogBase(
+                  title: MESSAGES.NOTIFICATION,
+                  content: "Bạn chỉ được chọn ${maxLength} giá trị",
                 );
               } else {
                 List<dynamic> res = [];
@@ -474,7 +456,7 @@ class _AddCustomerState extends State<AddCustomer> {
               size: 25,
             ),
             initialValue: indexDefault != -1 ? [dropdow[indexDefault]] : [],
-            selectedItemsTextStyle: AppStyle.DEFAULT_12,
+            selectedItemsTextStyle: AppStyle.DEFAULT_14,
           )
         ],
       ),
@@ -482,22 +464,22 @@ class _AddCustomerState extends State<AddCustomer> {
   }
 
   TextStyle hintTextStyle() => TextStyle(
-      fontFamily: "Roboto",
-      fontSize: 11,
-      fontWeight: FontWeight.w500,
-      color: HexColor("#838A91"));
-
-  TextStyle titlestyle() => TextStyle(
-      fontFamily: "Roboto",
-      fontSize: 12,
-      fontWeight: FontWeight.w500,
-      color: HexColor("#697077"));
-
-  TextStyle titlestyleNgTheoDoi() => TextStyle(
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontSize: 14,
       fontWeight: FontWeight.w500,
-      color: HexColor("#697077"));
+      color: COLORS.BLACK);
+
+  TextStyle titlestyle() => TextStyle(
+      fontFamily: "Quicksand",
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      color: COLORS.BLACK);
+
+  TextStyle titlestyleNgTheoDoi() => TextStyle(
+      fontFamily: "Quicksand",
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      color: COLORS.BLACK);
 
   void onClickSave() {
     final Map<String, dynamic> data = {};
@@ -519,14 +501,9 @@ class _AddCustomerState extends State<AddCustomer> {
       }
     }
     if (check == true) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return WidgetDialog(
-            title: MESSAGES.NOTIFICATION,
-            content: "Hãy nhập đủ các trường bắt buộc (*)",
-          );
-        },
+      ShowDialogCustom.showDialogBase(
+        title: MESSAGES.NOTIFICATION,
+        content: "Hãy nhập đủ các trường bắt buộc (*)",
       );
     } else {
       GetListCustomerBloc.of(context).add(AddCustomerIndividualEvent(data,
@@ -572,20 +549,21 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: TextStyle(
-                  fontFamily: "Roboto",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+                  fontFamily: "Quicksand",
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: COLORS.BLACK),
               children: <TextSpan>[
                 widget.data.field_require == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -678,7 +656,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                                           color: COLORS.BACKGROUND),
                                       child: WidgetText(
                                         title: arr[index],
-                                        style: AppStyle.DEFAULT_12,
+                                        style: AppStyle.DEFAULT_14,
                                       )),
                                   Positioned(
                                     top: -13,

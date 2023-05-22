@@ -59,16 +59,46 @@ class AddSupportEvent extends AddDataEvent {
   AddSupportEvent(this.data, {this.files});
 }
 
-class AddJobOppEvent extends AddDataEvent {
-  final Map<String, dynamic> data;
-  final List<File>? files;
-
-  AddJobOppEvent(this.data, {this.files});
-}
-
 class EditJobEvent extends AddDataEvent {
   final Map<String, dynamic> data;
   final List<File>? files;
 
   EditJobEvent(this.data, {this.files});
+}
+
+class AddProductEvent extends AddDataEvent {
+  final Map<String, dynamic> data;
+  final List<File>? files;
+
+  AddProductEvent(this.data, {this.files});
+}
+
+class EditProductEvent extends AddDataEvent {
+  final Map<String, dynamic> data;
+  final List<File>? files;
+  final int id;
+
+  EditProductEvent(this.data, this.id, {this.files});
+}
+
+class AddProductCustomerEvent extends AddDataEvent {
+  final Map<String, dynamic> data;
+  final List<File>? files;
+
+  AddProductCustomerEvent(this.data, {this.files});
+}
+
+class EditProductCustomerEvent extends AddDataEvent {
+  final Map<String, dynamic> data;
+  final List<File>? files;
+
+  EditProductCustomerEvent(this.data, {this.files});
+}
+
+class SignEvent extends AddDataEvent {
+  final Map<String, dynamic> data;
+
+  SignEvent(
+    this.data,
+  );
 }

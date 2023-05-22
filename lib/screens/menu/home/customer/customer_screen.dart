@@ -1,19 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/customer.dart';
 import '../../../../src/src_index.dart';
-import '../../../../storages/share_local.dart';
 import '../../../../widgets/widget_search.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
+import 'item_list_customer.dart';
 
 class CustomerScreen extends StatefulWidget {
   const CustomerScreen({Key? key}) : super(key: key);
@@ -25,9 +24,17 @@ class CustomerScreen extends StatefulWidget {
 class _CustomerScreenState extends State<CustomerScreen> {
   int page = 1;
   int total = 0;
-  int lenght = 0;
+  int length = 0;
   List<CustomerData> listCustomer = [];
-  String idFilter = "";
+  String idFilter = '';
+  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  final _key = GlobalKey<ExpandableFabState>();
+  String search = '';
+  ScrollController _scrollController = ScrollController();
+  List<String> listAdd = [
+    'Khách hàng tổ chức',
+    'Khách hàng cá nhân',
+  ];
 
   @override
   void initState() {
@@ -36,7 +43,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
     _scrollController.addListener(() {
       if (_scrollController.offset ==
               _scrollController.position.maxScrollExtent &&
-          lenght < total) {
+          length < total) {
         GetListCustomerBloc.of(context).add(InitGetListOrderEvent(
             idFilter, page + 1, search,
             isLoadMore: true));
@@ -46,30 +53,107 @@ class _CustomerScreenState extends State<CustomerScreen> {
     super.initState();
   }
 
-  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-
-  String search = '';
-  ScrollController _scrollController = ScrollController();
+  _handleRouter(String value) {
+    if (listAdd.last == value) {
+      AppNavigator.navigateFormAdd("Thêm ${value.toLowerCase()}", 1);
+    } else {
+      AppNavigator.navigateAddCustomer();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
-      drawer: MainDrawer(onPress: handleOnPressItemMenu),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xff1AA928),
-        onPressed: () {
-          showBotomSheet2();
-        },
+      drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: ExpandableFab(
+        key: _key,
+        distance: 65,
+        type: ExpandableFabType.up,
         child: Icon(Icons.add, size: 40),
+        closeButtonStyle: const ExpandableFabCloseButtonStyle(
+          child: Icon(Icons.close),
+          foregroundColor: Colors.white,
+          backgroundColor: Color(0xff1AA928),
+        ),
+        backgroundColor: Color(0xff1AA928),
+        overlayStyle: ExpandableFabOverlayStyle(
+          blur: 5,
+        ),
+        children: listAdd
+            .map(
+              (e) => InkWell(
+                onTap: () async {
+                  final state = _key.currentState;
+                  if (state != null) {
+                    if (state.isOpen) {
+                      await _handleRouter(e);
+                      state.toggle();
+                    }
+                  }
+                },
+                child: Row(
+                  children: [
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: COLORS.BLACK.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                          )
+                        ],
+                      ),
+                      child: WidgetText(
+                        title: e,
+                        style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(
+                        left: 8,
+                        right: 8,
+                      ),
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: COLORS.BLACK.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                          )
+                        ],
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: Image.asset(
+                          ICONS.IC_CUSTOMER_3X_PNG,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+            .toList(),
       ),
       appBar: AppBar(
         toolbarHeight: AppValue.heights * 0.1,
         backgroundColor: HexColor("#D0F1EB"),
         centerTitle: false,
         title: WidgetText(
-            title: Get.arguments,
+            title: Get.arguments ?? '',
             style: TextStyle(
                 color: Colors.black,
                 fontFamily: "Montserrat",
@@ -84,7 +168,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     _drawerKey.currentState!.openDrawer();
                   }
                 },
-                child: SvgPicture.asset("assets/icons/menu.svg"))),
+                child: SvgPicture.asset(ICONS.IC_MENU_SVG))),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(15),
@@ -93,15 +177,15 @@ class _CustomerScreenState extends State<CustomerScreen> {
         actions: [
           Padding(
               padding: EdgeInsets.only(right: 30),
-              child: InkWell(
+              child: GestureDetector(
                 onTap: () => AppNavigator.navigateNotification(),
                 child:
                     BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
                         builder: (context, state) {
                   if (state is NotificationNeedRead) {
-                    return SvgPicture.asset("assets/icons/notification.svg");
+                    return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
                   } else {
-                    return SvgPicture.asset("assets/icons/notification2.svg");
+                    return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
                   }
                 }),
               ))
@@ -110,11 +194,12 @@ class _CustomerScreenState extends State<CustomerScreen> {
       body: Column(
         children: [
           Container(
-            margin: EdgeInsets.symmetric(
-                horizontal: AppValue.widths * 0.05,
-                vertical: AppValue.heights * 0.02),
-            width: double.infinity,
-            height: AppValue.heights * 0.06,
+            margin: EdgeInsets.only(
+              top: 20,
+              left: 25,
+              right: 25,
+              bottom: 10,
+            ),
             decoration: BoxDecoration(
               border: Border.all(color: HexColor("#DBDBDB")),
               borderRadius: BorderRadius.circular(10),
@@ -124,23 +209,20 @@ class _CustomerScreenState extends State<CustomerScreen> {
               if (state is UpdateGetListCustomerState)
                 return WidgetSearch(
                   hintTextStyle: TextStyle(
-                      fontFamily: "Roboto",
+                      fontFamily: "Quicksand",
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       color: HexColor("#707070")),
                   hint: "Tìm khách hàng",
-                  leadIcon:
-                      SvgPicture.asset("assets/icons/search_customer.svg"),
-                  endIcon: SvgPicture.asset("assets/icons/fill_customer.svg"),
+                  leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                  endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
                   onClickRight: () {
                     showBotomSheet(state.listFilter);
                   },
-                  onChanged: (text) {
-                    search = text;
-                  },
-                  onEditingComplete: () {
+                  onSubmit: (v) {
+                    search = v;
                     GetListCustomerBloc.of(context)
-                        .add(InitGetListOrderEvent(idFilter, 1, search));
+                        .add(InitGetListOrderEvent(idFilter, 1, v));
                   },
                 );
               else
@@ -151,7 +233,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
               builder: (context, state) {
             if (state is UpdateGetListCustomerState) {
               total = state.total;
-              lenght = state.listCustomer.length;
+              length = state.listCustomer.length;
               listCustomer = state.listCustomer;
               return Expanded(
                 child: RefreshIndicator(
@@ -163,294 +245,17 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   child: SingleChildScrollView(
                     controller: _scrollController,
                     child: Padding(
-                      padding: EdgeInsets.only(bottom: 10),
+                      padding: EdgeInsets.only(top: 10),
                       child: Column(
                         children: List.generate(
                             state.listCustomer.length,
-                            (index) => GestureDetector(
+                            (index) => ItemCustomer(
+                                  data: state.listCustomer[index],
                                   onTap: () => AppNavigator.navigateDetailCustomer(
                                       state.listCustomer[index].id!,
                                       '${state.listCustomer[index].danh_xung ?? ''}' +
                                           ' ' +
                                           '${state.listCustomer[index].name ?? ''}'),
-                                  child: Container(
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            state.listCustomer[index]
-                                                        .is_company ==
-                                                    true
-                                                ? SvgPicture.asset(
-                                                    "assets/icons/building.svg",
-                                                    color: state
-                                                                .listCustomer[
-                                                                    index]
-                                                                .tong_so_hop_dong! >
-                                                            0
-                                                        ? COLORS.ORANGE_IMAGE
-                                                        : COLORS.GREY,
-                                                  )
-                                                : SvgPicture.asset(
-                                                    "assets/icons/avatar_customer.svg",
-                                                    color: state
-                                                                .listCustomer[
-                                                                    index]
-                                                                .tong_so_hop_dong! >
-                                                            0
-                                                        ? COLORS.ORANGE_IMAGE
-                                                        : COLORS.GREY,
-                                                  ),
-                                            SizedBox(
-                                              width: 8,
-                                            ),
-                                            Expanded(
-                                              child: WidgetText(
-                                                maxLine: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                title: '${state.listCustomer[index].danh_xung ?? ''}' +
-                                                    ' ' +
-                                                    '${state.listCustomer[index].name ?? ''}',
-                                                style: AppStyle.DEFAULT_18
-                                                    .copyWith(
-                                                        color:
-                                                            HexColor("#006CB1"),
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                  color: state
-                                                              .listCustomer[
-                                                                  index]
-                                                              .color ==
-                                                          null
-                                                      ? COLORS.PRIMARY_COLOR
-                                                      : HexColor(state
-                                                          .listCustomer[index]
-                                                          .color!),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          99)),
-                                              width: AppValue.widths * 0.1,
-                                              height: AppValue.heights * 0.02,
-                                            )
-                                          ],
-                                        ),
-                                        SizedBox(
-                                            height: AppValue.heights * 0.01),
-                                        Row(
-                                          children: [
-                                            SvgPicture.asset(
-                                                "assets/icons/location_customer.svg"),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: AppValue.widths * 0.03),
-                                              child: SizedBox(
-                                                  width: AppValue.widths * 0.5,
-                                                  child: WidgetText(
-                                                    title: (state
-                                                                    .listCustomer[
-                                                                        index]
-                                                                    .address ==
-                                                                null ||
-                                                            state
-                                                                    .listCustomer[
-                                                                        index]
-                                                                    .address ==
-                                                                "")
-                                                        ? 'Chưa có'
-                                                        : state
-                                                            .listCustomer[index]
-                                                            .address,
-                                                    style: AppStyle.DEFAULT_14
-                                                        .copyWith(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w400),
-                                                  )),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                            height: AppValue.heights * 0.01),
-                                        (state.listCustomer[index].email!.val !=
-                                                    null &&
-                                                state.listCustomer[index].email!
-                                                        .val !=
-                                                    "")
-                                            ? GestureDetector(
-                                                onTap: () {
-                                                  if ((state.listCustomer[index]
-                                                                  .email!.val !=
-                                                              null &&
-                                                          state
-                                                                  .listCustomer[
-                                                                      index]
-                                                                  .email!
-                                                                  .val !=
-                                                              "") &&
-                                                      state.listCustomer[index]
-                                                              .email!.action !=
-                                                          null) {
-                                                    launchUrl(Uri(
-                                                        scheme: "mailto",
-                                                        path:
-                                                            "${state.listCustomer[index].email!.val!}"));
-                                                  }
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    SvgPicture.asset(
-                                                      "assets/icons/mail_customer.svg",
-                                                      color: COLORS.GREY,
-                                                    ),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left:
-                                                              AppValue.widths *
-                                                                  0.03),
-                                                      child: SizedBox(
-                                                          width:
-                                                              AppValue.widths *
-                                                                  0.5,
-                                                          child: WidgetText(
-                                                            title: state
-                                                                    .listCustomer[
-                                                                        index]
-                                                                    .email!
-                                                                    .val ??
-                                                                'Chưa có',
-                                                            style: AppStyle
-                                                                .DEFAULT_14
-                                                                .copyWith(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400),
-                                                          )),
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            : SizedBox(),
-                                        SizedBox(
-                                            height: AppValue.heights * 0.01),
-                                        Row(
-                                          children: [
-                                            (state.listCustomer[index].phone!
-                                                            .val !=
-                                                        null &&
-                                                    state.listCustomer[index]
-                                                            .phone!.val !=
-                                                        "")
-                                                ? GestureDetector(
-                                                    onTap: () {
-                                                      if ((state
-                                                                      .listCustomer[
-                                                                          index]
-                                                                      .phone!
-                                                                      .val !=
-                                                                  null &&
-                                                              state
-                                                                      .listCustomer[
-                                                                          index]
-                                                                      .phone!
-                                                                      .val !=
-                                                                  "") &&
-                                                          state
-                                                                  .listCustomer[
-                                                                      index]
-                                                                  .phone!
-                                                                  .action !=
-                                                              null) {
-                                                        launchUrl(Uri(
-                                                            scheme: "tel",
-                                                            path:
-                                                                "${state.listCustomer[index].phone!.val!}"));
-                                                      }
-                                                    },
-                                                    child: Row(
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                            "assets/icons/phone_customer.svg"),
-                                                        Padding(
-                                                          padding: EdgeInsets.only(
-                                                              left: AppValue
-                                                                      .widths *
-                                                                  0.03),
-                                                          child: SizedBox(
-                                                              width: AppValue
-                                                                      .widths *
-                                                                  0.5,
-                                                              child: Text(
-                                                                  state
-                                                                          .listCustomer[
-                                                                              index]
-                                                                          .phone!
-                                                                          .val ??
-                                                                      'Chưa có',
-                                                                  style: AppStyle
-                                                                      .DEFAULT_14
-                                                                      .copyWith(
-                                                                          fontWeight: FontWeight
-                                                                              .w400,
-                                                                          color:
-                                                                              HexColor("#0052B4")))),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
-                                                : SizedBox(),
-                                            Spacer(),
-                                            SvgPicture.asset(
-                                                "assets/icons/question_answer.svg"),
-                                            SizedBox(
-                                              width: AppValue.widths * 0.01,
-                                            ),
-                                            Text(
-                                              state.listCustomer[index]
-                                                  .total_comment
-                                                  .toString(),
-                                              style: TextStyle(
-                                                color: HexColor("#0052B4"),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    margin: EdgeInsets.only(
-                                      left: AppValue.widths * 0.05,
-                                      top: AppValue.heights * 0.01,
-                                      right: AppValue.widths * 0.05,
-                                    ),
-                                    padding: EdgeInsets.only(
-                                        left: AppValue.widths * 0.05,
-                                        top: AppValue.heights * 0.02,
-                                        right: AppValue.widths * 0.05,
-                                        bottom: AppValue.widths * 0.05),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(10),
-                                          topRight: Radius.circular(10),
-                                          bottomLeft: Radius.circular(10),
-                                          bottomRight: Radius.circular(10)),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.3),
-                                          spreadRadius: 3,
-                                          blurRadius: 5,
-                                          offset: Offset(0,
-                                              0), // changes position of shadow
-                                        ),
-                                      ],
-                                    ),
-                                  ),
                                 )),
                       ),
                     ),
@@ -469,62 +274,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
         ],
       ),
     );
-  }
-
-  handleOnPressItemMenu(value) async {
-    switch (value['id']) {
-      case '1':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateMain();
-        break;
-      case 'opportunity':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChance(value['title']);
-        break;
-      case 'job':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateWork(value['title']);
-        break;
-      case 'contract':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateContract(value['title']);
-        break;
-      case 'support':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateSupport(value['title']);
-        break;
-      case 'customer':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateCustomer(value['title']);
-        break;
-      case 'contact':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateClue(value['title']);
-        break;
-      case 'report':
-        _drawerKey.currentState!.openEndDrawer();
-        String? money = await shareLocal.getString(PreferencesKey.MONEY);
-        AppNavigator.navigateReport(money ?? "đ");
-        break;
-      case '2':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateInformationAccount();
-        break;
-      case '3':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateAboutUs();
-        break;
-      case '4':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigatePolicy();
-        break;
-      case '5':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChangePassword();
-        break;
-      default:
-        break;
-    }
   }
 
   showBotomSheet(List<FilterData> data) {
@@ -580,7 +329,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                         // crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                            'assets/icons/Filter.svg',
+                                            ICONS.IC_FILTER_SVG,
                                             width: 20,
                                             height: 20,
                                             fit: BoxFit.contain,
@@ -602,81 +351,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
                         )
                       ],
                     ),
-                  ),
-                ),
-              );
-            },
-          );
-        });
-  }
-
-  showBotomSheet2() {
-    showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-        ),
-        elevation: 2,
-        context: context,
-        isScrollControlled: true,
-        constraints: BoxConstraints(maxHeight: Get.height * 0.7),
-        builder: (context) {
-          return StatefulBuilder(
-            builder: (context, setState) {
-              return SafeArea(
-                child: Container(
-                  padding: EdgeInsets.all(16),
-                  margin: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.height / 4),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: WidgetText(
-                          title: 'Chọn kiểu khách hàng',
-                          textAlign: TextAlign.center,
-                          style: AppStyle.DEFAULT_20_BOLD,
-                        ),
-                      ),
-                      AppValue.vSpaceTiny,
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Get.back();
-                              AppNavigator.navigateAddCustomer();
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              margin: EdgeInsets.only(bottom: 10),
-                              child: WidgetText(
-                                title: "Khách hàng cá nhân",
-                                style: AppStyle.DEFAULT_18,
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Get.back();
-                              AppNavigator.navigateFormAdd(
-                                  "Thêm khách hàng tổ chức", 1);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              child: WidgetText(
-                                title: "Khách hàng tổ chức",
-                                style: AppStyle.DEFAULT_18,
-                              ),
-                            ),
-                          )
-                        ],
-                      )
-                    ],
                   ),
                 ),
               );

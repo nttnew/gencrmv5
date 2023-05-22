@@ -1,239 +1,367 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
-import 'package:gen_crm/screens/add_service_voucher/add_service_voucher_screen.dart';
 import 'package:gen_crm/widgets/widget_appbar.dart';
-import 'package:get/get.dart';
 import 'package:gen_crm/models/index.dart';
 import 'package:gen_crm/src/src_index.dart';
-import 'package:hexcolor/hexcolor.dart';
-
+import 'package:gen_crm/widgets/widget_text.dart';
+import 'package:get/get.dart';
+import 'package:is_lock_screen/is_lock_screen.dart';
+import 'package:plugin_pitel/component/pitel_call_state.dart';
+import 'package:plugin_pitel/component/sip_pitel_helper_listener.dart';
+import 'package:plugin_pitel/pitel_sdk/pitel_call.dart';
+import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
+import 'package:plugin_pitel/services/pitel_service.dart';
+import 'package:plugin_pitel/sip/src/sip_ua_helper.dart';
+import 'package:plugin_pitel/voip_push/push_notif.dart';
+import 'package:plugin_pitel/sip/sip_ua.dart';
 import '../bloc/login/login_bloc.dart';
+import '../src/app_const.dart';
 import '../storages/share_local.dart';
+import '../widgets/item_menu.dart';
+import 'add_service_voucher/add_service_voucher_screen.dart';
+import 'call/call_screen.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
 
-class ScreenMain extends StatefulWidget {
+final checkIsPushNotif = StateProvider<bool>((ref) => false);
+
+class ScreenMain extends ConsumerStatefulWidget {
+  final PitelCall _pitelCall = PitelClient.getInstance().pitelCall;
   @override
   _ScreenMainState createState() => _ScreenMainState();
 }
 
-class _ScreenMainState extends State<ScreenMain> {
+class _ScreenMainState extends ConsumerState<ScreenMain>
+    with WidgetsBindingObserver
+    implements SipPitelHelperListener {
+  PitelCall get pitelCall => widget._pitelCall;
+  PitelClient pitelClient = PitelClient.getInstance();
+  final pitelService = PitelServiceImpl();
+  String state = '';
+  bool lockScreen = false;
+  late final bool isRegister;
+
+  ///////////////// UI
+  final _key = GlobalKey<ExpandableFabState>();
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-
   List<ButtonMenuModel> listMenu = [];
-
-  // List<Map> menuItems = [
-  //   {"icon": "assets/icons/addContent.png", "name": "Thêm mua xe"},
-  //   {"icon": "assets/icons/addContent.png", "name": "Thêm bán xe"},
-  //   {"icon": "assets/icons/addContent.png", "name": "Thêm đặt lịch"},
-  //   {"icon": "assets/icons/addContent.png", "name": "Thêm phiếu dịch vụ"},
-  //   {"icon": "assets/icons/add_clue.png", "name": "Thêm khách hàng"},
-  //   {"icon": "assets/icons/addWork.png", "name": "Thêm công việc"},
-  //   {"icon": "assets/icons/Support.png", "name": "Thêm hỗ trợ"},
-  // ];
-
-  String getIconMenu(String id) {
-    if (ModuleText.CUSTOMER == id) {
-      return ICONS.CUSTUMER_3X;
-    } else if (ModuleText.DAU_MOI == id) {
-      return ICONS.CLUE_3X;
-    } else if (ModuleText.LICH_HEN == id) {
-      return ICONS.CHANCE_3X;
-    } else if (ModuleText.HOP_DONG == id) {
-      return ICONS.CONTRACT_3X;
-    } else if (ModuleText.CONG_VIEC == id) {
-      return ICONS.WORK_3X;
-    } else if (ModuleText.CSKH == id) {
-      return ICONS.SUPPORT_3X;
+  void getMenu() async {
+    String menu = await shareLocal.getString(PreferencesKey.MENU);
+    List listM = jsonDecode(menu);
+    for (final value in listM) {
+      String id = value['id'];
+      String name = value['name'];
+      if (id == ModuleMy.HOP_DONG) {
+        String titleReport = name + ' đang làm';
+        shareLocal.putString(PreferencesKey.NAME_REPORT, titleReport);
+      }
+      listMenu.add(
+        ButtonMenuModel(
+            title: name,
+            image: ModuleMy.getIcon(id),
+            backgroundColor: ModuleMy.getColor(id),
+            onTap: () {
+              if (id == ModuleMy.LICH_HEN) {
+                AppNavigator.navigateChance(name);
+              } else if (id == ModuleMy.CONG_VIEC) {
+                AppNavigator.navigateWork(name);
+              } else if (id == ModuleMy.HOP_DONG) {
+                AppNavigator.navigateContract(name);
+              } else if (id == ModuleMy.CSKH) {
+                AppNavigator.navigateSupport(name);
+              } else if (id == ModuleMy.CUSTOMER) {
+                AppNavigator.navigateCustomer(name);
+              } else if (id == ModuleMy.DAU_MOI) {
+                AppNavigator.navigateClue(name);
+              } else if (id == ModuleMy.SAN_PHAM) {
+                AppNavigator.navigateProduct(name);
+              } else if (id == ModuleMy.SAN_PHAM_KH) {
+                AppNavigator.navigateProductCustomer(name);
+              }
+            }),
+      );
     }
-    return ICONS.WORK_3X;
+    listMenu.add(
+      ButtonMenuModel(
+          title: 'Báo cáo',
+          image: ICONS.IC_REPORT_PNG,
+          backgroundColor: Color(0xff5D5FEF),
+          onTap: () async {
+            String? money = await shareLocal.getString(PreferencesKey.MONEY);
+            AppNavigator.navigateReport(money ?? "đ");
+          }),
+    );
+    setState(() {});
   }
+
+  _handelRouterMenuPlus(String id, String name) {
+    if (ModuleText.CUSTOMER == id) {
+      AppNavigator.navigateAddCustomer();
+    } else if (ModuleText.DAU_MOI == id) {
+      AppNavigator.navigateFormAdd(name, 2);
+    } else if (ModuleText.LICH_HEN == id) {
+      AppNavigator.navigateFormAdd(name, 3);
+    } else if (ModuleText.HOP_DONG == id) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => AddServiceVoucherScreen(
+              title: name.toUpperCase().capitalizeFirst ?? '')));
+    } else if (ModuleText.CONG_VIEC == id) {
+      AppNavigator.navigateFormAdd(name, 14);
+    } else if (ModuleText.CSKH == id) {
+      AppNavigator.navigateFormAdd(name, 6);
+    } else if (ModuleText.THEM_MUA_XE == id) {
+      //todo
+    } else if (ModuleText.THEM_BAN_XE == id) {
+      //todo
+    }
+  }
+  //////////////////////
 
   @override
   void initState() {
-    Future.delayed(Duration(milliseconds: 300), () {
-      GetInforAccBloc.of(context).add(InitGetInforAcc());
-      GetListUnReadNotifiBloc.of(context).add(CheckNotification());
-    });
+    callInit();
+    GetInforAccBloc.of(context).add(InitGetInforAcc());
+    GetListUnReadNotifiBloc.of(context).add(CheckNotification());
     getMenu();
     LoginBloc.of(context).getListMenuFlash();
     super.initState();
   }
 
-  getMenu() async {
-    String menu = await shareLocal.getString(PreferencesKey.MENU);
-    List listM = jsonDecode(menu);
-    for (int i = 0; i < listM.length; i++) {
-      listMenu.add(
-        ButtonMenuModel(
-            title: listM[i]['name'],
-            image: listM[i]['id'] == 'opportunity'
-                ? ICONS.CHANCE_3X
-                : listM[i]['id'] == 'job'
-                    ? ICONS.WORK_3X
-                    : listM[i]['id'] == 'contract'
-                        ? ICONS.CONTRACT_3X
-                        : listM[i]['id'] == 'support'
-                            ? ICONS.SUPPORT_3X
-                            : listM[i]['id'] == 'customer'
-                                ? ICONS.CUSTUMER_3X
-                                : ICONS.CLUE_3X,
-            backgroundColor: listM[i]['id'] == 'opportunity'
-                ? Color(0xffFDC9D2)
-                : listM[i]['id'] == 'job'
-                    ? Color(0xffFF993A)
-                    : listM[i]['id'] == 'contract'
-                        ? Color(0xffFFC000)
-                        : listM[i]['id'] == 'support'
-                            ? Color(0xff8AC53E)
-                            : listM[i]['id'] == 'customer'
-                                ? Color(0xff369FFF)
-                                : Color(0xffA5A6F6),
-            onTap: () {
-              if (listM[i]['id'] == 'opportunity') {
-                AppNavigator.navigateChance(listM[i]['name']);
-              } else if (listM[i]['id'] == 'job') {
-                AppNavigator.navigateWork(listM[i]['name']);
-              } else if (listM[i]['id'] == 'contract') {
-                AppNavigator.navigateContract(listM[i]['name']);
-              } else if (listM[i]['id'] == 'support') {
-                AppNavigator.navigateSupport(listM[i]['name']);
-              } else if (listM[i]['id'] == 'customer') {
-                AppNavigator.navigateCustomer(listM[i]['name']);
-              } else {
-                AppNavigator.navigateClue(listM[i]['name']);
-              }
-            }),
-      );
-    }
+  //////////////////// HANDEL CALL
 
-    setState(() {});
+  void callInit() {
+    isRegister =
+        (shareLocal.getString(PreferencesKey.REGISTER_CALL) ?? "true") ==
+            "true";
+    state = pitelCall.getRegisterState();
+    LoginBloc.of(context).receivedMsg.add(LoginBloc.UNREGISTER);
+    _bindEventListeners();
+    if (isRegister) {
+      shareLocal.putString(PreferencesKey.REGISTER_CALL, 'false');
+      _getDeviceToken();
+    }
+    WidgetsBinding.instance.addObserver(this);
   }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.inactive) {
+      final isLock = await isLockScreen();
+      setState(() {
+        lockScreen = isLock ?? false;
+      });
+    }
+  }
+
+  Future<void> _getDeviceToken() async {
+    final deviceToken = await PushVoipNotif.getDeviceToken();
+    shareLocal.putString(PreferencesKey.DEVICE_TOKEN, deviceToken);
+    handleRegisterBase(context, pitelService, deviceToken);
+    _registerDeviceToken(deviceToken);
+  }
+
+  Future<void> _registerDeviceToken(String deviceToken) async {
+    final String domainUrl = shareLocal.getString(PreferencesKey.URL_BASE);
+    final String domain = domainUrl.substring(
+        domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
+    final String user =
+        LoginBloc.of(context).loginData?.info_user?.extension ?? '';
+    bool isAndroid = Platform.isAndroid;
+    await pitelClient.registerDeviceToken(
+      deviceToken: deviceToken,
+      platform: isAndroid ? 'android' : 'ios',
+      bundleId: isAndroid ? PACKAGE_ID : BUNDLE_ID, // BundleId/packageId
+      domain: domain,
+      extension: user,
+      appMode: kReleaseMode ? 'production' : 'dev',
+    );
+  }
+
+  @override
+  void registrationStateChanged(PitelRegistrationState state) {
+    switch (state.state) {
+      case PitelRegistrationStateEnum.REGISTRATION_FAILED:
+        break;
+      case PitelRegistrationStateEnum.NONE:
+      case PitelRegistrationStateEnum.UNREGISTERED:
+        LoginBloc.of(context).receivedMsg.add(LoginBloc.UNREGISTER);
+        break;
+      case PitelRegistrationStateEnum.REGISTERED:
+        LoginBloc.of(context).receivedMsg.add(LoginBloc.REGISTERED);
+        break;
+    }
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    _removeEventListeners();
+  }
+
+  void _bindEventListeners() {
+    pitelCall.addListener(this);
+  }
+
+  void _removeEventListeners() {
+    pitelCall.removeListener(this);
+  }
+
+  @override
+  void callStateChanged(String callId, PitelCallState state) {
+    if (state.state == PitelCallStateEnum.ENDED) {
+      FlutterCallkitIncoming.endAllCalls();
+    }
+  }
+
+  @override
+  void onCallReceived(String callId) {
+    pitelCall.setCallCurrent(callId);
+    if (Platform.isIOS) {
+      pitelCall.answer();
+    }
+    if (Platform.isAndroid) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => CallScreenWidget()));
+    }
+    if (!lockScreen && Platform.isIOS) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => CallScreenWidget()));
+    }
+  }
+
+  @override
+  void onCallInitiated(String callId) {
+    pitelCall.setCallCurrent(callId);
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => CallScreenWidget()));
+  }
+
+  void goBack() {
+    pitelClient.release();
+    Navigator.of(context).pop();
+  }
+
+  @override
+  void onNewMessage(PitelSIPMessageRequest msg) {
+    var msgBody = msg.request.body as String;
+    LoginBloc.of(context).receivedMsg.add(msgBody);
+  }
+
+  @override
+  void transportStateChanged(PitelTransportState state) {}
+
+  /////////////////END
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
-      drawer: MainDrawer(onPress: handleOnPressItemMenu),
+      drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
+      floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: LoginBloc.of(context).listMenuFlash.isNotEmpty
-          ? FloatingActionButton(
+          ? ExpandableFab(
+              key: _key,
+              distance: 65,
+              type: ExpandableFabType.up,
+              child: Icon(Icons.add, size: 40),
+              closeButtonStyle: const ExpandableFabCloseButtonStyle(
+                child: Icon(Icons.close),
+                foregroundColor: Colors.white,
+                backgroundColor: Color(0xff1AA928),
+              ),
               backgroundColor: Color(0xff1AA928),
-              onPressed: () {
-                showModalBottomSheet(
-                    isDismissible: false,
-                    enableDrag: false,
-                    context: context,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30)),
-                    builder: (BuildContext context) {
-                      return Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 25, horizontal: 30),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ...List<Widget>.generate(
-                                LoginBloc.of(context).listMenuFlash.length,
-                                (i) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Get.back();
-
-                                  String id = LoginBloc.of(context)
-                                      .listMenuFlash[i]
-                                      .id
-                                      .toString();
-                                  String name = LoginBloc.of(context)
-                                      .listMenuFlash[i]
-                                      .name
-                                      .toString()
-                                      .toLowerCase();
-                                  if (ModuleText.CUSTOMER == id) {
-                                    AppNavigator.navigateAddCustomer();
-                                  } else if (ModuleText.DAU_MOI == id) {
-                                    AppNavigator.navigateFormAdd(name, 2);
-                                  } else if (ModuleText.LICH_HEN == id) {
-                                    AppNavigator.navigateFormAdd(name, 3);
-                                  } else if (ModuleText.HOP_DONG == id) {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                AddServiceVoucherScreen(
-                                                    title: name
-                                                            .toUpperCase()
-                                                            .capitalizeFirst ??
-                                                        '')));
-                                  } else if (ModuleText.CONG_VIEC == id) {
-                                    AppNavigator.navigateFormAdd(name, 14);
-                                  } else if (ModuleText.CSKH == id) {
-                                    AppNavigator.navigateFormAdd(name, 6);
-                                  } else if (ModuleText.THEM_MUA_XE == id) {
-                                    //todo
-                                  } else if (ModuleText.THEM_BAN_XE == id) {
-                                    //todo
-                                  }
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    AppValue.hSpaceLarge,
-                                    Image.asset(
-                                      getIconMenu(LoginBloc.of(context)
-                                          .listMenuFlash[i]
-                                          .id
-                                          .toString()),
-                                      height: 26,
-                                      width: 26,
-                                      fit: BoxFit.contain,
-                                    ),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      LoginBloc.of(context)
-                                          .listMenuFlash[i]
-                                          .name
-                                          .toString(),
-                                      style: AppStyle.DEFAULT_16_BOLD
-                                          .copyWith(color: Color(0xff006CB1)),
-                                    )
-                                  ],
-                                ),
-                              );
-                            }).toList(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                InkWell(
-                                  onTap: () => Navigator.of(context).pop(),
-                                  child: Container(
-                                    width: AppValue.widths * 0.8,
-                                    height: AppValue.heights * 0.06,
-                                    decoration: BoxDecoration(
-                                      color: HexColor("#D0F1EB"),
-                                      borderRadius:
-                                          BorderRadius.circular(17.06),
-                                    ),
-                                    child: Center(
-                                      child: Text("Đóng"),
-                                    ),
-                                  ),
-                                ),
+              overlayStyle: ExpandableFabOverlayStyle(
+                blur: 5,
+              ),
+              children: LoginBloc.of(context)
+                  .listMenuFlash
+                  .reversed
+                  .map(
+                    (e) => GestureDetector(
+                      onTap: () async {
+                        final state = _key.currentState;
+                        if (state != null) {
+                          if (state.isOpen) {
+                            final id = e.id ?? '';
+                            final name = e.name ?? '';
+                            await _handelRouterMenuPlus(id, name);
+                            state.toggle();
+                          }
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: COLORS.BLACK.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                )
                               ],
                             ),
-                          ],
-                        ),
-                      );
-                    });
-              },
-              child: Icon(Icons.add, size: 40),
+                            child: WidgetText(
+                              title: e.name ?? '',
+                              style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(
+                              left: 8,
+                              right: 8,
+                            ),
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: COLORS.BLACK.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                )
+                              ],
+                            ),
+                            child: SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: Image.asset(
+                                ModuleText.getIconMenu(e.id.toString()),
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
             )
           : SizedBox(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
           content: Text(
@@ -241,184 +369,114 @@ class _ScreenMainState extends State<ScreenMain> {
             style: AppStyle.DEFAULT_16.copyWith(color: COLORS.WHITE),
           ),
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              BlocBuilder<GetInforAccBloc, GetInforAccState>(
-                  builder: (context, state) {
-                if (state is UpdateGetInforAccState) {
-                  return WidgetAppbar(
-                    title:
-                        state.inforAcc != null ? state.inforAcc.fullname : '',
-                    textColor: Colors.black,
-                    right: GestureDetector(onTap: () {
-                      return AppNavigator.navigateNotification();
-                    }, child: BlocBuilder<GetListUnReadNotifiBloc,
-                        UnReadListNotifiState>(builder: (context, state) {
-                      if (state is NotificationNeedRead) {
-                        return SvgPicture.asset(
-                            "assets/icons/notification.svg");
-                      } else {
-                        return SvgPicture.asset(
-                            "assets/icons/notification2.svg");
-                      }
-                    })),
-                    left: GestureDetector(
-                      onTap: () {
-                        if (_drawerKey.currentContext != null &&
-                            !_drawerKey.currentState!.isDrawerOpen) {
-                          _drawerKey.currentState!.openDrawer();
-                        }
-                      },
-                      child: WidgetNetworkImage(
-                        image: state.inforAcc != null
-                            ? state.inforAcc.avatar!
-                            : '',
-                        width: 50,
-                        height: 50,
-                        borderRadius: 25,
-                      ),
-                    ),
-                  );
-                } else {
-                  return WidgetAppbar(
-                    title: '',
-                    textColor: Colors.black,
-                    right: GestureDetector(onTap: () {
-                      return AppNavigator.navigateNotification();
-                    }, child: BlocBuilder<GetListUnReadNotifiBloc,
-                        UnReadListNotifiState>(builder: (context, state) {
-                      if (state is NotificationNeedRead) {
-                        return SvgPicture.asset(
-                            "assets/icons/notification.svg");
-                      } else {
-                        return SvgPicture.asset(
-                            "assets/icons/notification2.svg");
-                      }
-                    })),
-                    left: GestureDetector(
-                      onTap: () {
-                        if (_drawerKey.currentContext != null &&
-                            !_drawerKey.currentState!.isDrawerOpen) {
-                          _drawerKey.currentState!.openDrawer();
-                        }
-                      },
-                      child: WidgetNetworkImage(
-                        image: '',
-                        width: 50,
-                        height: 50,
-                        borderRadius: 25,
-                      ),
-                    ),
-                  );
-                }
-              }),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                child: GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: listMenu.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 25,
-                        mainAxisSpacing: 25),
-                    itemBuilder: (context, index) {
-                      // List<ButtonMenuModel> list = [];
-                      return _buildItemMenu(
-                          data: listMenu[index], index: index);
-                    }),
-              ),
-              GestureDetector(
-                onTap: () async {
-                  String? money =
-                      await shareLocal.getString(PreferencesKey.MONEY);
-                  AppNavigator.navigateReport(money ?? "đ");
-                },
-                child: Container(
-                  width: AppValue.widths,
-                  height: AppValue.heights * 0.18,
-                  margin: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Color(0xff5D5FEF),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 90,
-                        height: 90,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
-                        child: WidgetContainerImage(
-                          image: ICONS.WORK_3X,
-                          fit: BoxFit.contain,
-                          width: 50,
-                          height: 50,
-                        ),
-                      ),
-                      AppValue.vSpaceTiny,
-                      Text("Báo cáo",
-                          style: AppStyle.DEFAULT_20_BOLD.copyWith(
-                              fontFamily: 'Roboto',
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500))
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  _buildItemMenu({required ButtonMenuModel data, required int index}) {
-    return GestureDetector(
-      onTap: data.onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: data.backgroundColor,
-        ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              flex: 2,
-              child: Container(
-                child: Center(
-                  child: Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.white),
-                    child: WidgetContainerImage(
-                      image: data.image,
-                      fit: BoxFit.contain,
-                      width: 40,
-                      height: 40,
+            BlocBuilder<GetInforAccBloc, GetInforAccState>(
+                builder: (context, state) {
+              if (state is UpdateGetInforAccState) {
+                return WidgetAppbar(
+                  title: state.inforAcc.fullname,
+                  textColor: Colors.black,
+                  right: GestureDetector(onTap: () {
+                    return AppNavigator.navigateNotification();
+                  }, child: BlocBuilder<GetListUnReadNotifiBloc,
+                      UnReadListNotifiState>(builder: (context, state) {
+                    if (state is NotificationNeedRead) {
+                      return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
+                    } else {
+                      return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
+                    }
+                  })),
+                  left: GestureDetector(
+                    onTap: () {
+                      if (_drawerKey.currentContext != null &&
+                          !_drawerKey.currentState!.isDrawerOpen) {
+                        _drawerKey.currentState!.openDrawer();
+                      }
+                    },
+                    child: WidgetNetworkImage(
+                      image: state.inforAcc.avatar ?? '',
+                      width: 50,
+                      height: 50,
+                      borderRadius: 25,
                     ),
                   ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                child: Center(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Text(
-                      data.title,
-                      style: AppStyle.DEFAULT_12.copyWith(
-                          fontFamily: 'Roboto', fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                );
+              } else {
+                return WidgetAppbar(
+                  title: '',
+                  textColor: Colors.black,
+                  right: GestureDetector(onTap: () {
+                    return AppNavigator.navigateNotification();
+                  }, child: BlocBuilder<GetListUnReadNotifiBloc,
+                      UnReadListNotifiState>(builder: (context, state) {
+                    if (state is NotificationNeedRead) {
+                      return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
+                    } else {
+                      return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
+                    }
+                  })),
+                  left: GestureDetector(
+                    onTap: () {
+                      if (_drawerKey.currentContext != null &&
+                          !_drawerKey.currentState!.isDrawerOpen) {
+                        _drawerKey.currentState!.openDrawer();
+                      }
+                    },
+                    child: WidgetNetworkImage(
+                      image: '',
+                      width: 50,
+                      height: 50,
+                      borderRadius: 25,
                     ),
                   ),
+                );
+              }
+            }),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 25,
+                    ),
+                    GridView.builder(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 25,
+                        ),
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: listMenu.length % 2 != 0
+                            ? listMenu.length - 1
+                            : listMenu.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 25,
+                          mainAxisSpacing: 25,
+                        ),
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: listMenu[index].onTap,
+                            child: ItemMenu(data: listMenu[index]),
+                          );
+                        }),
+                    if (listMenu.length % 2 != 0)
+                      GestureDetector(
+                        onTap: listMenu.last.onTap,
+                        child: Container(
+                            margin: EdgeInsets.only(top: 25),
+                            width: (MediaQuery.of(context).size.width - 50),
+                            height:
+                                (MediaQuery.of(context).size.width - 75) / 2,
+                            child: ItemMenu(
+                              data: listMenu.last,
+                              isLast: true,
+                            )),
+                      ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                  ],
                 ),
               ),
             )
@@ -426,61 +484,5 @@ class _ScreenMainState extends State<ScreenMain> {
         ),
       ),
     );
-  }
-
-  handleOnPressItemMenu(value) async {
-    switch (value['id']) {
-      case '1':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateMain();
-        break;
-      case 'opportunity':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChance(value['title']);
-        break;
-      case 'job':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateWork(value['title']);
-        break;
-      case 'contract':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateContract(value['title']);
-        break;
-      case 'support':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateSupport(value['title']);
-        break;
-      case 'customer':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateCustomer(value['title']);
-        break;
-      case 'contact':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateClue(value['title']);
-        break;
-      case 'report':
-        _drawerKey.currentState!.openEndDrawer();
-        String? money = await shareLocal.getString(PreferencesKey.MONEY);
-        AppNavigator.navigateReport(money ?? "đ");
-        break;
-      case '2':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateInformationAccount();
-        break;
-      case '3':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateAboutUs();
-        break;
-      case '4':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigatePolicy();
-        break;
-      case '5':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChangePassword();
-        break;
-      default:
-        break;
-    }
   }
 }

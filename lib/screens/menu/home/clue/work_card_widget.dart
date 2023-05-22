@@ -49,7 +49,7 @@ class WorkCardWidget extends StatelessWidget {
           if (this.nameCustomer != '') ...[
             Row(
               children: [
-                SvgPicture.asset("assets/icons/avatar_customer.svg"),
+                SvgPicture.asset(ICONS.IC_AVATAR_SVG),
                 Padding(
                   padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                   child: Text(
@@ -64,7 +64,7 @@ class WorkCardWidget extends StatelessWidget {
           if (this.statusJob != '') ...[
             Row(
               children: [
-                SvgPicture.asset("assets/icons/icon3svg"),
+                SvgPicture.asset(ICONS.IC_ICON3_SVG),
                 Padding(
                   padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                   child: SizedBox(
@@ -80,7 +80,7 @@ class WorkCardWidget extends StatelessWidget {
           ],
           Row(
             children: [
-              SvgPicture.asset("assets/icons/icon4.svg"),
+              SvgPicture.asset(ICONS.IC_ICON4_SVG),
               Padding(
                 padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                 child: SizedBox(
@@ -89,7 +89,7 @@ class WorkCardWidget extends StatelessWidget {
                         style: OrtherInforCustomerStyle())),
               ),
               Spacer(),
-              SvgPicture.asset("assets/icons/question_answer.svg"),
+              SvgPicture.asset(ICONS.IC_QUESTION_SVG),
               SizedBox(
                 width: AppValue.widths * 0.01,
               ),
@@ -134,12 +134,12 @@ class WorkCardWidget extends StatelessWidget {
 
   TextStyle OrtherInforCustomerStyle() => TextStyle(
       color: HexColor("#263238"),
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontWeight: FontWeight.w400,
       fontSize: 14);
   TextStyle LocationCustomerStyle() => TextStyle(
       color: Colors.black,
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontWeight: FontWeight.w400,
       fontSize: 14);
   TextStyle NameCustomerStyle() => TextStyle(

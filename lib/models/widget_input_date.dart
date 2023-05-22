@@ -7,13 +7,13 @@ import '../src/src_index.dart';
 import '../widgets/widget_text.dart';
 
 class WidgetInputDate extends StatefulWidget {
-  WidgetInputDate(
-      {Key? key,
-      required this.data,
-      required this.onSelect,
-      required this.onInit,
-      this.dateText})
-      : super(key: key);
+  WidgetInputDate({
+    Key? key,
+    required this.data,
+    required this.onSelect,
+    required this.onInit,
+    this.dateText,
+  }) : super(key: key);
 
   final CustomerIndividualItemData data;
   final Function onSelect, onInit;
@@ -45,20 +45,21 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: TextStyle(
-                  fontFamily: "Roboto",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+                  fontFamily: "Quicksand",
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: COLORS.BLACK),
               children: <TextSpan>[
                 widget.data.field_require == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -91,13 +92,12 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
                       padding: EdgeInsets.only(left: 10, top: 15, bottom: 15),
                       child: WidgetText(
                         title: dateText,
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500),
+                        style: AppStyle.DEFAULT_14,
                       ),
                     ),
                   ),
                   WidgetContainerImage(
-                    image: 'assets/icons/date.png',
+                    image: ICONS.IC_DATE_PNG,
                     width: 20,
                     height: 20,
                     fit: BoxFit.contain,

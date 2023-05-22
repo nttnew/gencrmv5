@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:io';
 import 'package:gen_crm/src/models/model_generator/add_data_response.dart';
 import 'package:gen_crm/src/models/model_generator/add_voucher_response.dart';
+import 'package:gen_crm/src/models/model_generator/detail_product_module_response.dart';
 import 'package:gen_crm/src/models/model_generator/get_phone_cus.dart';
 import 'package:gen_crm/src/models/model_generator/infor_acc.dart';
 import 'package:gen_crm/src/models/model_generator/post_info_car_response.dart';
+import 'package:gen_crm/src/models/model_generator/product_customer_edit_response.dart';
 import 'package:gen_crm/src/models/request/voucher_service_request.dart';
 import 'package:dio/dio.dart';
 import 'package:gen_crm/src/models/model_generator/add_customer.dart';
@@ -34,18 +36,28 @@ import '../models/model_generator/contact_by_customer.dart';
 import '../models/model_generator/detail_contract.dart';
 import '../models/model_generator/clue.dart';
 import '../models/model_generator/clue_detail.dart';
+import '../models/model_generator/detail_product_customer_response.dart';
 import '../models/model_generator/file_response.dart';
 import '../models/model_generator/get_xe_response.dart';
+import '../models/model_generator/group_product_response.dart';
 import '../models/model_generator/job_chance.dart';
 import '../models/model_generator/job_customer.dart';
 import '../models/model_generator/list_car_response.dart';
+import '../models/model_generator/list_product_customer_response.dart';
+import '../models/model_generator/list_product_response.dart';
 import '../models/model_generator/policy.dart';
+import '../models/model_generator/product_customer_save_response.dart';
 import '../models/model_generator/product_response.dart';
 import '../models/model_generator/report_contact.dart';
 import '../models/model_generator/report_employee.dart';
 import '../models/model_generator/report_general.dart';
 import '../models/model_generator/report_option.dart';
 import '../models/model_generator/report_product.dart';
+import '../models/model_generator/response_bao_cao.dart';
+import '../models/model_generator/response_car_dashboard.dart';
+import '../models/model_generator/response_edit_product.dart';
+import '../models/model_generator/response_save_product.dart';
+import '../models/model_generator/save_checkin_response.dart';
 import '../models/model_generator/support_customer.dart';
 
 part 'rest_client.g.dart';
@@ -218,7 +230,7 @@ abstract class RestClient {
     @Query('text') String text,
     @Query('filter_id') String filter_id,
   );
-  @GET(BASE_URL.INFOR_ACC)
+  @GET(BASE_URL.INFO_ACC)
   Future<InforAccResponse> getInforAcc();
 
   @GET(BASE_URL.REPORT_OPTIONS)
@@ -227,19 +239,14 @@ abstract class RestClient {
   @GET(BASE_URL.REPORT_OPTIONS_2)
   Future<FilterResponse> getReportOption2();
 
-  //Dương
   @GET(BASE_URL.GET_UPDATE_CUSTOMER)
   Future<AddCustomerIndividual> getUpdateCustomer(@Query('id') String id);
 
   @DELETE(BASE_URL.DELETE_CONTRACT)
-  Future<BaseResponse> deleteContract(
-      // @Query('id') int id
-      @Body() Map<String, dynamic> map);
+  Future<BaseResponse> deleteContract(@Body() Map<String, dynamic> map);
 
   @DELETE(BASE_URL.DELETE_JOB)
-  Future<BaseResponse> deleteJob(
-      // @Query('id') int id
-      @Body() Map<String, dynamic> map);
+  Future<BaseResponse> deleteJob(@Body() Map<String, dynamic> map);
 
   @GET(BASE_URL.DETAIL_JOB)
   Future<DetailWorkResponse> detailJob(@Query('id') int id);
@@ -286,14 +293,10 @@ abstract class RestClient {
   Future<AddCustomerIndividual> getFormAddJobChance(@Query('id') String? id);
 
   @DELETE(BASE_URL.DELETE_CONTACT)
-  Future<BaseResponse> deleteContact(
-      // @Query('id') int id
-      @Body() Map<String, dynamic> map);
+  Future<BaseResponse> deleteContact(@Body() Map<String, dynamic> map);
 
   @DELETE(BASE_URL.DELETE_CHANCE)
-  Future<BaseResponse> deleteChance(
-      // @Query('id') int id
-      @Body() Map<String, dynamic> map);
+  Future<BaseResponse> deleteChance(@Body() Map<String, dynamic> map);
 
   @GET(BASE_URL.FORM_EDIT_CONTACT)
   Future<AddCustomerIndividual> getFormEditContact(@Query('id') String? id);
@@ -374,8 +377,8 @@ abstract class RestClient {
   @GET(BASE_URL.GET_PHONE_CUS)
   Future<GetPhoneCusResponse> getPhoneAgency(@Query('daumoi_id') String? id);
 
-  @GET(BASE_URL.LOGOUT)
-  Future<BaseResponse> logout();
+  @POST(BASE_URL.LOGOUT)
+  Future<BaseResponse> logout(@Body() Map<String, dynamic> map);
 
   // =================================> POST <==================================
 
@@ -436,9 +439,10 @@ abstract class RestClient {
       @Query('code') String code,
       @Query('email') String email,
       @Query('name') String name);
-  //Quân
+
   @POST(BASE_URL.UPDATE_PASS)
   Future<BaseResponse> updatePass(@Body() UpdatePassRequest);
+
   @POST(BASE_URL.READ_NOTIFICATION)
   Future<BaseResponse> readNotification(@Body() ReadNotifiParam);
 
@@ -449,6 +453,7 @@ abstract class RestClient {
       @Part(name: "email") String email,
       @Part(name: "dien_thoai") String phone,
       @Part(name: "dia_chi") String address);
+
   @POST(BASE_URL.CHANGE_INFOR_ACC)
   @MultiPart()
   Future<BaseResponse> changeInforAcc(
@@ -457,7 +462,7 @@ abstract class RestClient {
       @Part(name: "dien_thoai") String phone,
       @Part(name: "dia_chi") String address,
       @Part(name: "avatar") File avatar);
-  //Dương
+
   @POST(BASE_URL.ADD_CUSTOMER_INDIVIDUAL_POST)
   Future<AddDataResponse> addIndividualCustomer(
       @Body() Map<String, dynamic> map);
@@ -543,9 +548,19 @@ abstract class RestClient {
 
   @POST(BASE_URL.UPLOAD_FILE)
   @MultiPart()
-  Future<BaseResponse> uploadMultiFileContract(
+  Future<BaseResponse> uploadMultiFile(
     @Part(name: "main_id") String id,
     @Part(name: 'files[]') List<MultipartFile> files,
+    @Path('module') String module,
+    @Part(name: 'is_after') bool? isAfter,
+  );
+
+  @POST(BASE_URL.UPLOAD_FILE)
+  @MultiPart()
+  Future<BaseResponse> uploadFile(
+    @Part(name: "main_id") String id,
+    @Part(name: "files") File file,
+    @Part(name: 'is_after') bool isAfter,
     @Path('module') String module,
   );
 
@@ -564,4 +579,108 @@ abstract class RestClient {
   Future<GetXeResponse> getXe(
     @Part(name: 'id') String id,
   );
+
+  @GET(BASE_URL.GROUP_PRODUCT)
+  Future<GroupProductResponse> getGroupProduct();
+
+  @POST(BASE_URL.PRODUCT)
+  Future<ListProductResponse> getListProductModule(
+    @Part(name: "chung_loai_san_pham") String? typeProduct,
+    @Part(name: "txt") String? txt,
+    @Part(name: "page") String page,
+    @Part(name: "filter") String? filter,
+  );
+
+  @GET(BASE_URL.DETAIL_PRODUCT)
+  Future<DetailProductResponse> getDetailProduct(
+    @Query('id') String id,
+  );
+
+  @GET(BASE_URL.ADD_PRODUCT)
+  Future<AddCustomerIndividual> getFormAddProduct();
+
+  @GET(BASE_URL.EDIT_PRODUCT)
+  Future<AddCustomerIndividual> getEditProduct(
+    @Query('id') String id,
+  );
+
+  @POST(BASE_URL.ADD_PRODUCT_MODULE)
+  Future<ResponseSaveProduct> addProduct(@Body() Map<String, dynamic> map);
+
+  @POST(BASE_URL.DELETE_PRODUCT)
+  Future<dynamic> deleteProduct(
+    @Part(name: 'id') String id,
+  );
+
+  @POST(BASE_URL.ADD_PRODUCT_MODULE)
+  Future<ResponseEditProduct> editProduct(
+      @Body() Map<String, dynamic> map, @Query('id') int id);
+
+  @POST(BASE_URL.GET_LIST_BAO_CAO)
+  Future<ResponseBaoCao> getListBaoCao(
+    @Part(name: 'page') String page,
+    @Part(name: 'time') String? time,
+    @Part(name: 'timefrom') String? timeFrom,
+    @Part(name: 'timeto') String? timeTo,
+    @Part(name: 'diem_ban') String? diemBan,
+    @Part(name: 'trang_thai') String? trangThai,
+  );
+
+  @POST(BASE_URL.HOME_BAO_CAO)
+  Future<ResponseCarDashboard> getHomeBaoCao(
+    @Part(name: 'time') String? time,
+    @Part(name: 'timefrom') String? timeFrom,
+    @Part(name: 'timeto') String? timeTo,
+    @Part(name: 'diem_ban') String? diemBan,
+  );
+
+  @POST(BASE_URL.SAVE_CHECK_IN)
+  Future<CheckInResponse> saveCheckIn(
+    @Part(name: 'id') String id,
+    @Part(name: 'latitude') String latitude,
+    @Part(name: 'longitude') String longitude,
+    @Part(name: 'note_location') String location,
+  );
+
+  @POST(BASE_URL.LIST_PRODUCT_CUSTOMER)
+  Future<ListProductCustomerResponse> getListProductCustomer(
+    @Part(name: 'page') String page,
+    @Part(name: 'txt') String? txt,
+    @Part(name: 'filter') String? filter,
+  );
+
+  @GET(BASE_URL.PRODUCT_CUSTOMER_DETAIL)
+  Future<DetailProductCustomerResponse> getDetailProductCustomer(
+    @Query('id') String id,
+  );
+
+  @GET(BASE_URL.GET_FORM_ADD_PRODUCT_CUSTOMER)
+  Future<AddCustomerIndividual> getFormAddProductCustomer();
+
+  @GET(BASE_URL.GET_FORM_EDIT_PRODUCT_CUSTOMER)
+  Future<AddCustomerIndividual> getFormEditProductCustomer(
+    @Query('id') String id,
+  );
+
+  @POST(BASE_URL.SAVE_FROM_PRODUCT_CUSTOMER_ADD)
+  Future<ResponseSaveProductCustomer> saveAddProductCustomer(
+      @Body() Map<String, dynamic> map);
+
+  @POST(BASE_URL.SAVE_FROM_PRODUCT_CUSTOMER_EDIT)
+  Future<ResponseEditProductCustomer> saveEditProductCustomer(
+      @Body() Map<String, dynamic> map);
+
+  @POST(BASE_URL.PRODUCT_CUSTOMER_DELETE)
+  Future<dynamic> deleteProductCustomer(
+    @Part(name: 'id') String id,
+  );
+
+  @GET(BASE_URL.GET_FORM_SIGN)
+  Future<AddCustomerIndividual> getFormSign(
+    @Query('id') String id,
+  );
+
+  @POST(BASE_URL.SAVE_SIGN)
+  Future<ResponseSaveProductCustomer> saveSignature(
+      @Body() Map<String, dynamic> map);
 }

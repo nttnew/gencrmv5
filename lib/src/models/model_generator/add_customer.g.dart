@@ -17,6 +17,7 @@ CustomerIndividualItemData _$CustomerIndividualItemDataFromJson(
       json['field_validation_message'] as String?,
       json['field_maxlength'] as String?,
       json['field_hidden'] as String?,
+      json['parent'] as String?,
       json['field_require'] as int?,
       json['field_set_value'],
       (json['field_datasource'] as List<dynamic>?)
@@ -43,6 +44,7 @@ Map<String, dynamic> _$CustomerIndividualItemDataToJson(
       'field_validation_message': instance.field_validation_message,
       'field_maxlength': instance.field_maxlength,
       'field_hidden': instance.field_hidden,
+      'parent': instance.parent,
       'field_require': instance.field_require,
       'field_set_value': instance.field_set_value,
       'field_datasource': instance.field_datasource,
@@ -50,6 +52,38 @@ Map<String, dynamic> _$CustomerIndividualItemDataToJson(
       'field_special': instance.field_special,
       'field_value': instance.field_value,
       'products': instance.products,
+    };
+
+ChuKyResponse _$ChuKyResponseFromJson(Map<String, dynamic> json) =>
+    ChuKyResponse(
+      json['group_name'] as String?,
+      (json['data'] as List<dynamic>?)
+          ?.map((e) => ChuKyModelResponse.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$ChuKyResponseToJson(ChuKyResponse instance) =>
+    <String, dynamic>{
+      'group_name': instance.group_name,
+      'data': instance.data,
+    };
+
+ChuKyModelResponse _$ChuKyModelResponseFromJson(Map<String, dynamic> json) =>
+    ChuKyModelResponse(
+      json['doituongky'] as String?,
+      json['nhanhienthi'] as String?,
+      json['giatrimacdinh'] as String?,
+      json['chuky'] as String?,
+      json['id'] as String?,
+    );
+
+Map<String, dynamic> _$ChuKyModelResponseToJson(ChuKyModelResponse instance) =>
+    <String, dynamic>{
+      'doituongky': instance.doituongky,
+      'nhanhienthi': instance.nhanhienthi,
+      'giatrimacdinh': instance.giatrimacdinh,
+      'chuky': instance.chuky,
+      'id': instance.id,
     };
 
 AddCustomerIndividualData _$AddCustomerIndividualDataFromJson(
@@ -117,6 +151,10 @@ AddCustomerIndividual _$AddCustomerIndividualFromJson(
           ?.map((e) =>
               AddCustomerIndividualData.fromJson(e as Map<String, dynamic>))
           .toList(),
+      (json['chu_ky'] as List<dynamic>?)
+          ?.map((e) => ChuKyResponse.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      (json['chuathanhtoan'] as num?)?.toDouble(),
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
@@ -129,4 +167,6 @@ Map<String, dynamic> _$AddCustomerIndividualToJson(
       'msg': instance.msg,
       'code': instance.code,
       'data': instance.data,
+      'chu_ky': instance.chu_ky,
+      'chuathanhtoan': instance.chuathanhtoan,
     };
