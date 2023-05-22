@@ -1,14 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gen_crm/bloc/car_report/car_report_bloc.dart';
 import 'package:get/get.dart';
 import '../../../api_resfull/user_repository.dart';
+import '../../../src/app_const.dart';
 import '../../../src/base.dart';
-import '../../../src/color.dart';
 import '../../../src/messages.dart';
-import '../../../src/navigator.dart';
 import '../../../widgets/loading_api.dart';
-import '../../../widgets/widget_dialog.dart';
 import '../report_employee/report_employee_bloc.dart';
 import '../report_product/report_product_bloc.dart';
 
@@ -40,33 +39,20 @@ class OptionBloc extends Bloc<OptionEvent, OptionState> {
         if (type == 1)
           ReportProductBloc.of(Get.context!).add(InitReportProductEvent(
               location: "", time: response.data!.thoi_gian_mac_dinh!));
-        else
+        else if (type == 2)
           ReportEmployeeBloc.of(Get.context!).add(InitReportEmployeeEvent(
               time: response.data!.thoi_gian_mac_dinh!));
+        else if (type == 4)
+          CarReportBloc.of(Get.context!).add(GetDashboardCar(
+              time: response.data!.thoi_gian_mac_dinh.toString()));
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else
         yield ErrorOptionState(response.msg ?? '');
     } catch (e) {
       yield ErrorOptionState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      Get.dialog(WidgetDialog(
-        title: MESSAGES.NOTIFICATION,
-        content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-        textButton1: "OK",
-        backgroundButton1: COLORS.PRIMARY_COLOR,
-        onTap1: () {
-          AppNavigator.navigateLogout();
-        },
-      ));
+      loginSessionExpired();
       throw e;
     }
     LoadingApi().popLoading();

@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:get/get.dart';
-
+import 'package:hexcolor/hexcolor.dart';
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
-import '../../../../storages/share_local.dart';
 import '../../../../widgets/widgets.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 import 'widget_chance_item.dart';
@@ -44,7 +44,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
         page = page + 1;
       } else {}
     });
-    title=Get.arguments;
+    title = Get.arguments ?? '';
     super.initState();
   }
 
@@ -52,12 +52,12 @@ class _ChanceScreenState extends State<ChanceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
-      drawer: MainDrawer(onPress: handleOnPressItemMenu),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
+      drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: Column(
         children: [
           WidgetAppbar(
-            title: Get.arguments,
+            title: Get.arguments??'',
             textColor: Colors.black,
             left: Padding(
               padding: EdgeInsets.only(left: 20),
@@ -68,7 +68,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
                     _drawerKey.currentState!.openDrawer();
                   }
                 },
-                child: Image.asset('assets/icons/Menu.png'),
+                child: Image.asset(ICONS.IC_MENU_PNG),
               ),
             ),
             right: GestureDetector(onTap: () {
@@ -77,17 +77,14 @@ class _ChanceScreenState extends State<ChanceScreen> {
                 BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
                     builder: (context, state) {
               if (state is NotificationNeedRead) {
-                return SvgPicture.asset("assets/icons/notification.svg");
+                return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
               } else {
-                return SvgPicture.asset("assets/icons/notification2.svg");
+                return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
               }
             })),
           ),
           AppValue.vSpaceTiny,
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25),
-            child: _buildSearch(),
-          ),
+          _buildSearch(),
           BlocBuilder<GetListChanceBloc, ChanceState>(
               builder: (context, state) {
             if (state is UpdateGetListChanceState) {
@@ -134,7 +131,6 @@ class _ChanceScreenState extends State<ChanceScreen> {
             child: FloatingActionButton(
               backgroundColor: Color(0xff1AA928),
               onPressed: () {
-                // AppNavigator.navigateAddChance(state.listChanceData.first.id!);
                 AppNavigator.navigateFormAdd('Thêm ${title.toLowerCase()}', 3);
               },
               child: Icon(Icons.add, size: 40),
@@ -151,135 +147,35 @@ class _ChanceScreenState extends State<ChanceScreen> {
         builder: (context, state) {
       if (state is UpdateGetListChanceState)
         return Container(
-          height: 50,
+          margin: EdgeInsets.symmetric(
+              horizontal: 25,
+              vertical: 8),
           decoration: BoxDecoration(
-              border: Border.all(
-                color: COLORS.COLORS_BA,
-                width: 1.0,
-              ),
-              borderRadius: BorderRadius.circular(10),
-              color: COLORS.WHITE),
-          child: Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 5),
-                child: Center(
-                    child: Container(
-                  height: 25,
-                  width: 25,
-                  child: SvgPicture.asset(
-                    'assets/icons/Search.svg',
-                    color: COLORS.GREY.withOpacity(0.5),
-                  ),
-                )),
-              ),
-              Expanded(
-                flex: 7,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: TextFormField(
-                    style: AppStyle.DEFAULT_14,
-                    onChanged: (text) {
-                      search = text;
-                    },
-                    onEditingComplete: () {
-                      GetListChanceBloc.of(context).add(
-                          InitGetListOrderEventChance(idFilter, 1, search));
-                    },
-                    textAlign: TextAlign.left,
-                    textAlignVertical: TextAlignVertical.top,
-                    decoration: InputDecoration(
-                      hintText: MESSAGES.SEARCH_CHANCE,
-                      hintStyle: AppStyle.DEFAULT_14
-                          .copyWith(color: Color(0xff707070)),
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                width: 1,
-                height: 50,
-                margin: EdgeInsets.only(right: 15),
-                color: COLORS.COLORS_BA,
-              ),
-              GestureDetector(
-                onTap: () {
-                  showBotomSheet(state.listFilter);
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(right: 15),
-                  child: Container(
-                    height: 20,
-                    width: 20,
-                    child: SvgPicture.asset('assets/icons/Filter.svg'),
-                  ),
-                ),
-              ),
-            ],
+            border: Border.all(color: HexColor("#DBDBDB")),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: WidgetSearch(
+            hintTextStyle: TextStyle(
+                fontFamily: "Quicksand",
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: HexColor("#707070")),
+            hint: "Tìm ${title.toLowerCase()}",
+            leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+            endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
+            onClickRight: () {
+              showBotomSheet(state.listFilter);
+            },
+            onSubmit: (v) {
+              search = v;
+              GetListChanceBloc.of(context)
+                  .add(InitGetListOrderEventChance(idFilter, 1, v));
+            },
           ),
         );
       else
         return Container();
     });
-  }
-
-  handleOnPressItemMenu(value) async {
-    switch (value['id']) {
-      case '1':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateMain();
-        break;
-      case 'opportunity':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChance(value['title']);
-        break;
-      case 'job':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateWork(value['title']);
-        break;
-      case 'contract':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateContract(value['title']);
-        break;
-      case 'support':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateSupport(value['title']);
-        break;
-      case 'customer':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateCustomer(value['title']);
-        break;
-      case 'contact':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateClue(value['title']);
-        break;
-      case 'report':
-        _drawerKey.currentState!.openEndDrawer();
-        String? money = await shareLocal.getString(PreferencesKey.MONEY);
-        AppNavigator.navigateReport(money ?? "đ");
-        break;
-      case '2':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateInformationAccount();
-        break;
-      case '3':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateAboutUs();
-        break;
-      case '4':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigatePolicy();
-        break;
-      case '5':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChangePassword();
-        break;
-      default:
-        break;
-    }
   }
 
   showBotomSheet(List<FilterChance> dataFilter) {
@@ -333,7 +229,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
                                       // crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         SvgPicture.asset(
-                                          'assets/icons/Filter.svg',
+                                          ICONS.IC_FILTER_SVG,
                                           width: 20,
                                           height: 20,
                                           fit: BoxFit.contain,

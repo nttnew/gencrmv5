@@ -4,13 +4,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:rxdart/rxdart.dart';
 
 import '../../../../../src/src_index.dart';
 import '../../../bloc/contract/detail_contract_bloc.dart';
@@ -22,91 +21,86 @@ class Attachment extends StatefulWidget {
   Attachment({
     Key? key,
     required this.id,
-    required this.name,
-    required this.listFileResponse,
     required this.typeModule,
   }) : super(key: key);
   final String id;
-  final String name;
   final String typeModule;
-  final List<FileDataResponse> listFileResponse;
 
   @override
   State<Attachment> createState() => _AttachmentState();
 }
 
 class _AttachmentState extends State<Attachment> {
-  late final List<File> listPickFile;
-  late final List<FileDataResponse> listFileResponseRemove;
   late final String id;
-  late final String name;
   late final String typeModule;
-  late final List<FileDataResponse> listFileResponse;
-  late final BehaviorSubject<bool?> status;
+  static const List<String> pickOptions = ['Trước', 'Sau'];
 
   @override
   void initState() {
-    status = BehaviorSubject.seeded(true);
     id = widget.id;
-    name = widget.name;
     typeModule = widget.typeModule;
-    listFileResponse = widget.listFileResponse;
-    listPickFile = [];
-    listFileResponseRemove = [];
+    DetailContractBloc.of(context).getFile(int.parse(id), typeModule);
     super.initState();
   }
 
   @override
+  void deactivate() {
+    DetailContractBloc.of(context).listFileStream.add(null);
+    super.deactivate();
+  }
+
+  @override
   void dispose() {
-    listPickFile.clear();
-    listFileResponseRemove.clear();
-    status.close();
+    DetailContractBloc.of(context).listFileStream.close();
     super.dispose();
   }
 
-  Future<void> onDinhKem() async {
+  Future<void> _onDinhKem({bool? isAfter}) async {
     if (await Permission.storage.request().isGranted) {
       if (Platform.isAndroid) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return WidgetDialog(
-              title: MESSAGES.NOTIFICATION,
-              content: 'Bạn chưa cấp quyền truy cập vào ảnh?',
-              textButton2: 'Đi đến cài đặt',
-              textButton1: 'Ok',
-              onTap2: () {
-                openAppSettings();
-                Get.back();
-              },
-              onTap1: () {
-                Get.back();
-              },
-            );
+        ShowDialogCustom.showDialogBase(
+          title: MESSAGES.NOTIFICATION,
+          content: 'Bạn chưa cấp quyền truy cập vào ảnh?',
+          textButton2: 'Đi đến cài đặt',
+          onTap2: () {
+            openAppSettings();
+            Get.back();
           },
         );
       } else {
-        pickIos();
+        _pickFileDialog(isAfter: isAfter);
       }
     } else {
-      if (Platform.isIOS) {
-        pickIos();
-      } else {
-        pickFile();
-      }
+      _pickFileDialog(isAfter: isAfter);
     }
   }
 
-  void pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+  void _pickFile({bool? isAfter}) async {
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null && result.files.isNotEmpty) {
-      final filePicked = result.files.first;
-      listPickFile.add(File(filePicked.path!));
-      setState(() {});
+      List<File> listFilePiker = _handelListFile(result.files);
+      await _saveFile(list: listFilePiker, isAfter: isAfter);
     }
   }
 
-  void pickIos() {
+  List<File> _handelListFile(List<PlatformFile> files) {
+    final List<File> list = [];
+    for (final value in files) {
+      list.add(File(value.path!));
+    }
+    return list;
+  }
+
+  List<File> _handelListImage(List<XFile> files) {
+    final List<File> list = [];
+    for (final value in files) {
+      list.add(File(value.path));
+    }
+    return list;
+  }
+
+  void _pickFileDialog({bool? isAfter}) {
     showCupertinoModalPopup(
         context: Get.context!,
         builder: (context) => CupertinoActionSheet(
@@ -120,89 +114,60 @@ class _AttachmentState extends State<Attachment> {
                   CupertinoActionSheetAction(
                     onPressed: () async {
                       Get.back();
-                      getImage();
+                      _getImageCamera(isAfter: isAfter);
                     },
-                    child: Text('Chọn ảnh'),
+                    child: Text('Chụp ảnh mới'),
                   ),
                   CupertinoActionSheetAction(
                     onPressed: () async {
                       Get.back();
-                      pickFile();
+                      _getImageVideo(isAfter: isAfter);
+                    },
+                    child: Text('Quay video mới'),
+                  ),
+                  CupertinoActionSheetAction(
+                    onPressed: () async {
+                      Get.back();
+                      _pickFile(isAfter: isAfter);
                     },
                     child: Text('Chọn file'),
-                  )
+                  ),
+                  CupertinoActionSheetAction(
+                    onPressed: () async {
+                      Get.back();
+                      _getImage(isAfter: isAfter);
+                    },
+                    child: Text('Chọn ảnh có sẵn'),
+                  ),
                 ]));
   }
 
-  Future getImage() async {
+  Future _getImage({bool? isAfter}) async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-
-      if (image == null) return;
-      final imageTemp = File(image.path);
-
-      listPickFile.add(imageTemp);
-      setState(() {});
+      final result = await ImagePicker().pickMultiImage();
+      if (result.isNotEmpty) {
+        List<File> listFilePiker = _handelListImage(result);
+        await _saveFile(list: listFilePiker, isAfter: isAfter);
+      }
     } on PlatformException catch (e) {
       throw e;
     }
   }
 
-  Future<void> onClickSave() async {
-    bool check = false;
-    status.add(check);
-
-    if (listFileResponseRemove.isNotEmpty)
-      check = (await DetailContractBloc.of(context)
-          .deleteFile(listFileResponseRemove))!;
-    if (listPickFile.isNotEmpty)
-      check = (await DetailContractBloc.of(context).uploadFile(
-          widget.id, listPickFile, getURLModule(widget.typeModule)))!;
-
-    if (check) {
-      status.add(check);
-      AppNavigator.navigateBack();
-    } else {
-      status.add(true);
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return const WidgetDialog(
-              title: MESSAGES.NOTIFICATION,
-              content: 'Thất bại',
-            );
-          });
-    }
-  }
-
-  List<File> checkListImage(bool isImage, List<File> list) {
-    final List<File> listImage = [];
-    final List<File> listFile = [];
-    for (final value in list) {
-      final String fileExt = value.path.split("/").last.split('.').last;
-      if (AppValue.checkTypeImage(fileExt)) {
-        listImage.add(value);
-      } else {
-        listFile.add(value);
-      }
-    }
-    if (isImage) {
-      return listImage;
-    } else {
-      return listFile;
-    }
-  }
-
-  List<FileDataResponse> checkListImageApi(
-      bool isImage, List<FileDataResponse> list) {
+  List<FileDataResponse> _checkListImageApi({
+    required bool isImage,
+    required List<FileDataResponse> list,
+    required int isAfter,
+  }) {
     final List<FileDataResponse> listImage = [];
     final List<FileDataResponse> listFile = [];
     for (final value in list) {
-      if (AppValue.checkTypeImage(value.loaiFile.toString())) {
-        listImage.add(value);
-      } else {
-        listFile.add(value);
+      if ((value.is_after ?? IS_BEFORE) == isAfter) {
+        if (AppValue.checkTypeImage(value.loaiFile.toString())) {
+          listImage.add(value);
+        } else {
+          listFile.add(value);
+        }
       }
     }
     if (isImage) {
@@ -212,17 +177,62 @@ class _AttachmentState extends State<Attachment> {
     }
   }
 
-  void removeFilePick(File file) {
-    final int i = listPickFile.indexOf(file);
-    listPickFile.removeAt(i);
-    setState(() {});
+  Future<void> _saveFile({required List<File> list, bool? isAfter}) async {
+    await DetailContractBloc.of(context)
+        .uploadFile(
+            id: widget.id,
+            listFile: list,
+            module: getURLModule(widget.typeModule),
+            isAfter: isAfter)
+        .then((value) {
+      if (value) {
+        DetailContractBloc.of(context)
+            .getFile(int.parse(widget.id), widget.typeModule);
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(
+                'Thêm đính kèm ${value == true ? 'thành công' : 'thất bại'}!')),
+      );
+    });
   }
 
-  void removeFileResponse(FileDataResponse file) {
-    final int i = listFileResponse.indexOf(file);
-    listFileResponseRemove.add(file);
-    listFileResponse.removeAt(i);
-    setState(() {});
+  Future _getImageCamera({bool? isAfter}) async {
+    try {
+      final XFile? camera =
+          await ImagePicker().pickImage(source: ImageSource.camera);
+      if (camera != null) {
+        await _saveFile(list: [File(camera.path)], isAfter: isAfter);
+      }
+    } on PlatformException catch (e) {
+      throw e;
+    }
+  }
+
+  Future _getImageVideo({bool? isAfter}) async {
+    try {
+      final XFile? cameraVideo =
+          await ImagePicker().pickVideo(source: ImageSource.camera);
+      if (cameraVideo != null) {
+        await _saveFile(list: [File(cameraVideo.path)], isAfter: isAfter);
+      }
+    } on PlatformException catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> _removeFilePick(FileDataResponse file) async {
+    await DetailContractBloc.of(context).deleteFileOnly(file).then((value) {
+      if (value) {
+        DetailContractBloc.of(context)
+            .getFile(int.parse(widget.id), widget.typeModule);
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(
+                'Xoá đính kèm ${value == true ? 'thành công' : 'thất bại'}!')),
+      );
+    });
   }
 
   @override
@@ -254,379 +264,236 @@ class _AttachmentState extends State<Attachment> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: listPickFile.isNotEmpty || listFileResponse.isNotEmpty
-                ? StreamBuilder<bool?>(
-                    stream: status,
-                    builder: (context, snapshot) {
-                      if (snapshot.data ?? false) {
-                        return Container(
-                            padding: EdgeInsets.all(16),
-                            child: SingleChildScrollView(
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 60),
-                                child: Column(
-                                  children: [
-                                    if (listFileResponse.isNotEmpty) ...[
-                                      Row(
-                                        children: [
-                                          Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 5),
-                                              child: WidgetText(
-                                                title: "Tệp đã chọn",
-                                                style: AppStyle.DEFAULT_16_BOLD,
-                                              )),
-                                        ],
-                                      ),
-                                      Container(
-                                          margin:
-                                              EdgeInsets.symmetric(vertical: 8),
-                                          width: Get.width,
-                                          child: Column(
-                                            children: [
-                                              ListView.builder(
-                                                physics:
-                                                    NeverScrollableScrollPhysics(),
-                                                shrinkWrap: true,
-                                                itemCount: checkListImageApi(
-                                                        false, listFileResponse)
-                                                    .length,
-                                                itemBuilder: (context, index) =>
-                                                    ItemFile(
-                                                  file: checkListImageApi(false,
-                                                      listFileResponse)[index],
-                                                  functionMy: () {
-                                                    removeFileResponse(
-                                                        checkListImageApi(false,
-                                                                listFileResponse)[
-                                                            index]);
-                                                  },
-                                                ),
-                                              ),
-                                              GridView.builder(
-                                                physics:
-                                                    NeverScrollableScrollPhysics(),
-                                                shrinkWrap: true,
-                                                itemCount: checkListImageApi(
-                                                        true, listFileResponse)
-                                                    .length,
-                                                gridDelegate:
-                                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                                  crossAxisCount: 2,
-                                                  crossAxisSpacing: 25,
-                                                  mainAxisSpacing: 25,
-                                                  mainAxisExtent: 90,
-                                                ),
-                                                itemBuilder: (context, index) =>
-                                                    Stack(
-                                                  clipBehavior: Clip.none,
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.of(context).push(
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        PreviewImage(
-                                                                          isNetwork:
-                                                                              true,
-                                                                          file: File(checkListImageApi(true, listFileResponse)[index]
-                                                                              .link
-                                                                              .toString()),
-                                                                          module:
-                                                                              widget.typeModule,
-                                                                        )));
-                                                      },
-                                                      child: Container(
-                                                        clipBehavior:
-                                                            Clip.hardEdge,
-                                                        width: MediaQuery.of(
-                                                                context)
-                                                            .size
-                                                            .width,
-                                                        height: MediaQuery.of(
-                                                                context)
-                                                            .size
-                                                            .width,
-                                                        decoration: BoxDecoration(
-                                                            color: Colors.grey,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            8))),
-                                                        child: Image.network(
-                                                          checkListImageApi(
-                                                                          true,
-                                                                          listFileResponse)[
-                                                                      index]
-                                                                  .link ??
-                                                              '',
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Positioned(
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          removeFileResponse(
-                                                              checkListImageApi(
-                                                                      true,
-                                                                      listFileResponse)[
-                                                                  index]);
-                                                        },
-                                                        child: Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              shape: BoxShape
-                                                                  .circle,
-                                                              color:
-                                                                  Colors.white,
-                                                              border: Border.all(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  width: 0.1),
-                                                            ),
-                                                            height: 16,
-                                                            width: 16,
-                                                            child: Icon(
-                                                              Icons.close,
-                                                              size: 9,
-                                                            )),
-                                                      ),
-                                                      top: 0,
-                                                      right: 0,
-                                                    )
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          )),
-                                    ],
-                                    if (listPickFile.isNotEmpty) ...[
-                                      Row(
-                                        children: [
-                                          Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 5),
-                                              child: WidgetText(
-                                                title: "Tệp vừa chọn",
-                                                style: AppStyle.DEFAULT_16_BOLD,
-                                              )),
-                                        ],
-                                      ),
-                                      Container(
-                                          margin:
-                                              EdgeInsets.symmetric(vertical: 8),
-                                          width: Get.width,
-                                          child: Column(
-                                            children: [
-                                              ListView.builder(
-                                                physics:
-                                                    NeverScrollableScrollPhysics(),
-                                                shrinkWrap: true,
-                                                itemCount: checkListImage(
-                                                        false, listPickFile)
-                                                    .length,
-                                                itemBuilder: (context, index) =>
-                                                    Container(
-                                                  margin: EdgeInsets.only(
-                                                      bottom: 4),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Expanded(
-                                                        child: WidgetText(
-                                                          title: checkListImage(
-                                                                      false,
-                                                                      listPickFile)[
-                                                                  index]
-                                                              .path
-                                                              .split("/")
-                                                              .last,
-                                                          style: AppStyle
-                                                              .DEFAULT_14,
-                                                          maxLine: 1,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                        ),
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          removeFilePick(
-                                                              checkListImage(
-                                                                      false,
-                                                                      listPickFile)[
-                                                                  index]);
-                                                        },
-                                                        child:
-                                                            WidgetContainerImage(
-                                                          image:
-                                                              'assets/icons/icon_delete.png',
-                                                          width: 20,
-                                                          height: 20,
-                                                          fit: BoxFit.contain,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              GridView.builder(
-                                                physics:
-                                                    NeverScrollableScrollPhysics(),
-                                                shrinkWrap: true,
-                                                itemCount: checkListImage(
-                                                        true, listPickFile)
-                                                    .length,
-                                                gridDelegate:
-                                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                                  crossAxisCount: 2,
-                                                  crossAxisSpacing: 25,
-                                                  mainAxisSpacing: 25,
-                                                  mainAxisExtent: 90,
-                                                ),
-                                                itemBuilder: (context, index) =>
-                                                    Stack(
-                                                  clipBehavior: Clip.none,
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.of(context).push(
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        PreviewImage(
-                                                                          file: checkListImage(
-                                                                              true,
-                                                                              listPickFile)[index],
-                                                                          module:
-                                                                              widget.typeModule,
-                                                                        )));
-                                                      },
-                                                      child: Container(
-                                                        clipBehavior:
-                                                            Clip.hardEdge,
-                                                        width: MediaQuery.of(
-                                                                context)
-                                                            .size
-                                                            .width,
-                                                        height: MediaQuery.of(
-                                                                context)
-                                                            .size
-                                                            .width,
-                                                        decoration: BoxDecoration(
-                                                            color: Colors.grey,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            8))),
-                                                        child: Image.file(
-                                                          checkListImage(true,
-                                                                  listPickFile)[
-                                                              index],
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Positioned(
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          removeFilePick(
-                                                              checkListImage(
-                                                                      true,
-                                                                      listPickFile)[
-                                                                  index]);
-                                                        },
-                                                        child: Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              shape: BoxShape
-                                                                  .circle,
-                                                              color:
-                                                                  Colors.white,
-                                                              border: Border.all(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  width: 0.1),
-                                                            ),
-                                                            height: 16,
-                                                            width: 16,
-                                                            child: Icon(
-                                                              Icons.close,
-                                                              size: 9,
-                                                            )),
-                                                      ),
-                                                      top: 0,
-                                                      right: 0,
-                                                    )
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          )),
-                                    ],
-                                  ],
-                                ),
-                              ),
-                            ));
-                      } else {
-                        return Container(
-                            color: Colors.grey,
-                            child: Center(child: CircularProgressIndicator()));
-                      }
-                    })
-                : Center(
-                    child: Text("Không có dữ liệu"),
+      body: Container(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            WidgetText(
+                title: "Chọn đính kèm",
+                style: AppStyle.DEFAULT_16.copyWith(
+                    fontWeight: FontWeight.w700, color: Color(0xff006CB1))),
+            GridView.builder(
+              padding: EdgeInsets.only(top: 16),
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: pickOptions.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 25,
+                mainAxisSpacing: 25,
+                mainAxisExtent: 90,
+              ),
+              itemBuilder: (context, index) => GestureDetector(
+                onTap: () {
+                  _onDinhKem(isAfter: index == 1 ? true : null);
+                },
+                child: Container(
+                  clipBehavior: Clip.hardEdge,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.publish_sharp,
+                      ),
+                      WidgetText(
+                          title: pickOptions[index],
+                          style: AppStyle.DEFAULT_16
+                              .copyWith(fontWeight: FontWeight.w700)),
+                    ],
                   ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Expanded(
+              child: StreamBuilder<List<FileDataResponse>?>(
+                  stream: DetailContractBloc.of(context).listFileStream,
+                  builder: (context, snapshot) {
+                    final list = snapshot.data;
+                    if (list == null) {
+                      return Container(
+                        margin: EdgeInsets.only(top: 60),
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: CircularProgressIndicator(
+                            color: HexColor("#D0F1EB"),
+                          ),
+                        ),
+                      );
+                    } else if (list == []) {
+                      return Container(
+                        margin: EdgeInsets.only(top: 60),
+                        child: Align(
+                            alignment: Alignment.topCenter,
+                            child: WidgetText(
+                                title: "Chưa có dữ liệu",
+                                style: AppStyle.DEFAULT_16.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black,
+                                ))),
+                      );
+                    }
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        await DetailContractBloc.of(context)
+                            .getFile(int.parse(widget.id), widget.typeModule);
+                      },
+                      child: Container(
+                        height: double.maxFinite,
+                        child: SingleChildScrollView(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: 36),
+                            child: Column(
+                              children: [
+                                viewPickFile(list, 'Trước', IS_BEFORE),
+                                viewPickFile(list, 'Sau', IS_AFTER),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget viewPickFile(List<FileDataResponse> list, String title, int isAfter) {
+    return Column(
+      children: [
+        if (_checkListImageApi(isImage: false, list: list, isAfter: isAfter)
+                .isNotEmpty ||
+            _checkListImageApi(isImage: true, list: list, isAfter: isAfter)
+                .isNotEmpty) ...[
+          Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 5),
+                child: WidgetText(
+                    title: title,
+                    style: AppStyle.DEFAULT_16.copyWith(
+                        fontWeight: FontWeight.w700, color: Color(0xff006CB1))),
+              )
+            ],
           ),
-          StreamBuilder<bool?>(
-              stream: status,
-              builder: (context, snapshot) {
-                return snapshot.data ?? false
-                    ? Container(
-                        color: Colors.white,
-                        height: AppValue.widths * 0.1 + 10,
-                        width: AppValue.widths,
-                        padding: EdgeInsets.only(
-                            left: AppValue.widths * 0.05,
-                            right: AppValue.widths * 0.05,
-                            bottom: 5),
-                        child: Row(
-                          children: [
-                            GestureDetector(
-                                onTap: this.onDinhKem,
-                                child: SvgPicture.asset(
-                                    "assets/icons/attack.svg")),
-                            Spacer(),
-                            GestureDetector(
-                              onTap: () => onClickSave(),
-                              child: Container(
-                                height: AppValue.widths * 0.1,
-                                width: AppValue.widths * 0.25,
-                                decoration: BoxDecoration(
-                                    color: HexColor("#F1A400"),
-                                    borderRadius: BorderRadius.circular(20.5)),
-                                child: Center(
-                                    child: Text(
-                                  "Lưu",
-                                  style: TextStyle(color: Colors.white),
-                                )),
+          Container(
+              margin: EdgeInsets.symmetric(vertical: 8),
+              width: Get.width,
+              child: Column(
+                children: [
+                  ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: _checkListImageApi(
+                            isImage: false, list: list, isAfter: isAfter)
+                        .length,
+                    itemBuilder: (context, index) => ItemFile(
+                      file: _checkListImageApi(
+                          isImage: false, list: list, isAfter: isAfter)[index],
+                      functionMy: () {
+                        _removeFilePick(_checkListImageApi(
+                            isImage: false,
+                            list: list,
+                            isAfter: isAfter)[index]);
+                      },
+                    ),
+                  ),
+                  if (_checkListImageApi(
+                          isImage: true, list: list, isAfter: isAfter)
+                      .isNotEmpty)
+                    GridView.builder(
+                      padding: EdgeInsets.zero,
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: _checkListImageApi(
+                              isImage: true, list: list, isAfter: isAfter)
+                          .length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 25,
+                        mainAxisSpacing: 25,
+                        mainAxisExtent: 90,
+                      ),
+                      itemBuilder: (context, index) => Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => PreviewImage(
+                                        isNetwork: true,
+                                        file: File(_checkListImageApi(
+                                                    isImage: true,
+                                                    list: list,
+                                                    isAfter: isAfter)[index]
+                                                .link ??
+                                            ''),
+                                      )));
+                            },
+                            child: Container(
+                              clipBehavior: Clip.hardEdge,
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8))),
+                              child: Image.network(
+                                _checkListImageApi(
+                                            isImage: true,
+                                            list: list,
+                                            isAfter: isAfter)[index]
+                                        .link ??
+                                    '',
+                                fit: BoxFit.cover,
                               ),
                             ),
-                          ],
-                        ),
-                      )
-                    : SizedBox();
-              }),
-        ],
-      ),
+                          ),
+                          Positioned(
+                            child: InkWell(
+                              onTap: () {
+                                _removeFilePick(_checkListImageApi(
+                                    isImage: true,
+                                    list: list,
+                                    isAfter: isAfter)[index]);
+                              },
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        color: Colors.black, width: 0.1),
+                                  ),
+                                  height: 24,
+                                  width: 24,
+                                  child: Icon(
+                                    Icons.close,
+                                    size: 16,
+                                  )),
+                            ),
+                            top: -1,
+                            right: -1,
+                          )
+                        ],
+                      ),
+                    )
+                ],
+              )),
+        ]
+      ],
     );
   }
 }

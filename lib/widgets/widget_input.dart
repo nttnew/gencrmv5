@@ -111,11 +111,11 @@ class _WidgetInputState extends State<WidgetInput> {
                           .copyWith(color: Color(0xff707070)),
                       hintText: widget.hint,
                       hintStyle: widget.hintStyle ??
-                          AppStyle.DEFAULT_12
+                          AppStyle.DEFAULT_14
                               .copyWith(color: Color(0xff707070)),
                       errorText: widget.errorText,
                       errorStyle:
-                          AppStyle.DEFAULT_12.copyWith(color: COLORS.RED),
+                          AppStyle.DEFAULT_14.copyWith(color: COLORS.RED),
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
@@ -166,7 +166,7 @@ class _WidgetInputState extends State<WidgetInput> {
                     Center(
                       child: Text(
                         widget.labelText1.toString(),
-                        style: AppStyle.DEFAULT_12.copyWith(color: COLORS.GREY),
+                        style: AppStyle.DEFAULT_14.copyWith(color: COLORS.GREY),
                       ),
                     ),
                   ],

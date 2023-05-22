@@ -47,7 +47,7 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
           if (widget.data.user_handling != '') ...[
             Row(
               children: [
-                SvgPicture.asset("assets/icons/avatar_customer.svg"),
+                SvgPicture.asset(ICONS.IC_AVATAR_SVG),
                 Padding(
                   padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                   child: WidgetText(
@@ -63,7 +63,7 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
             Row(
               children: [
                 SvgPicture.asset(
-                  "assets/icons/icon3svg",
+                  ICONS.IC_ICON3_SVG,
                   color: (widget.data.color != "" && widget.data.color != null)
                       ? HexColor(widget.data.color!)
                       : COLORS.PRIMARY_COLOR,
@@ -87,7 +87,7 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
           ],
           Row(
             children: [
-              SvgPicture.asset("assets/icons/icon4.svg"),
+              SvgPicture.asset(ICONS.IC_ICON4_SVG),
               Padding(
                 padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                 child: SizedBox(
@@ -99,7 +99,7 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
                         style: OrtherInforCustomerStyle())),
               ),
               Spacer(),
-              SvgPicture.asset("assets/icons/question_answer.svg"),
+              SvgPicture.asset(ICONS.IC_QUESTION_SVG),
               SizedBox(
                 width: AppValue.widths * 0.01,
               ),
@@ -141,13 +141,13 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
 
   TextStyle OrtherInforCustomerStyle() => TextStyle(
       color: HexColor("#263238"),
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontWeight: FontWeight.w400,
       fontSize: 14);
 
   TextStyle LocationCustomerStyle() => TextStyle(
       color: Colors.black,
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontWeight: FontWeight.w400,
       fontSize: 14);
 

@@ -30,8 +30,7 @@ class _ContractPaymentState extends State<ContractPayment>
               builder: (context, state) {
             if (state is SuccessPaymentContractState) if (state
                         .listPaymentContract.length >
-                    0 &&
-                state.listPaymentContract != null)
+                    0)
               return _buildContent1(state.listPaymentContract);
             else {
               return Expanded(

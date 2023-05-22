@@ -50,6 +50,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
     Future.delayed(Duration(seconds: 0), () async {
       FirebaseMessaging messaging = FirebaseMessaging.instance;
       tokenFirebase = await messaging.getToken();
+      print('tokenfirebase$tokenFirebase');
       canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
       canAuthenticate =
           canAuthenticateWithBiometrics || await auth.isDeviceSupported();
@@ -119,15 +120,9 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         }
         if (state.status.isSubmissionFailure) {
           GetSnackBarUtils.removeSnackBar();
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return WidgetDialog(
-                title: MESSAGES.NOTIFICATION,
-                content: state.message,
-              );
-            },
+          ShowDialogCustom.showDialogBase(
+            title: MESSAGES.NOTIFICATION,
+            content: state.message,
           );
         }
       },
@@ -188,7 +183,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
               fontFamily: "Quicksand",
               color: HexColor("#006CB1"),
               fontWeight: FontWeight.w500,
-              fontSize: 12),
+              fontSize: 14),
         ),
       ),
     );
@@ -204,7 +199,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
           style: TextStyle(
               fontFamily: "Quicksand",
               fontWeight: FontWeight.w500,
-              fontSize: 12),
+              fontSize: 14),
         ),
       ),
     );
@@ -226,15 +221,9 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
                 }
                 state.status.isValidated
                     ? bloc.add(FormSubmitted(device_token: tokenFirebase ?? ''))
-                    : showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) {
-                          return const WidgetDialog(
-                            title: MESSAGES.NOTIFICATION,
-                            content: 'Kiểm tra lại thông tin',
-                          );
-                        },
+                    : ShowDialogCustom.showDialogBase(
+                        title: MESSAGES.NOTIFICATION,
+                        content: 'Kiểm tra lại thông tin',
                       );
               },
               boxDecoration: BoxDecoration(
@@ -305,7 +294,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
               child: Row(
                 children: [
                   Image.asset(
-                    ICONS.ICON_FACE,
+                    ICONS.IC_FACE_PNG,
                     height: 24,
                     width: 24,
                     color: COLORS.BLACK,
@@ -318,7 +307,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
                     style: TextStyle(
                         fontFamily: "Quicksand",
                         fontWeight: FontWeight.w500,
-                        fontSize: 12),
+                        fontSize: 14),
                   )
                 ],
               ),

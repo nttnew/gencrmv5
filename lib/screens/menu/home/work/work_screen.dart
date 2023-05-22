@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'package:gen_crm/bloc/work/work_bloc.dart';
@@ -11,7 +12,7 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-import '../../../../storages/share_local.dart';
+import '../../../../src/app_const.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 
 class WorkScreen extends StatefulWidget {
@@ -30,6 +31,15 @@ class _WorkScreenState extends State<WorkScreen> {
   String search = "";
   String filter_id = "";
   String title = '';
+  List<String> listAdd = [
+    'Thêm check in',
+    'Thêm ${(Get.arguments ?? '').toLowerCase()}'
+  ];
+  final _key = GlobalKey<ExpandableFabState>();
+
+  _handleRouter(String value) {
+    AppNavigator.navigateFormAdd(value, 5, isCheckIn: listAdd.first == value);
+  }
 
   @override
   void initState() {
@@ -44,7 +54,7 @@ class _WorkScreenState extends State<WorkScreen> {
         page = page + 1;
       } else {}
     });
-    title=Get.arguments;
+    title = Get.arguments ?? '';
     super.initState();
   }
 
@@ -52,18 +62,94 @@ class _WorkScreenState extends State<WorkScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
-      drawer: MainDrawer(onPress: handleOnPressItemMenu),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xff1AA928),
-        onPressed: () => AppNavigator.navigateFormAdd('Thêm ${title.toLowerCase()}', 5),
+      drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: ExpandableFab(
+        key: _key,
+        distance: 65,
+        type: ExpandableFabType.up,
         child: Icon(Icons.add, size: 40),
+        closeButtonStyle: const ExpandableFabCloseButtonStyle(
+          child: Icon(Icons.close),
+          foregroundColor: Colors.white,
+          backgroundColor: Color(0xff1AA928),
+        ),
+        backgroundColor: Color(0xff1AA928),
+        overlayStyle: ExpandableFabOverlayStyle(
+          blur: 5,
+        ),
+        children: listAdd
+            .map(
+              (e) => InkWell(
+                onTap: () async {
+                  final state = _key.currentState;
+                  if (state != null) {
+                    if (state.isOpen) {
+                      await _handleRouter(e);
+                      state.toggle();
+                    }
+                  }
+                },
+                child: Row(
+                  children: [
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: COLORS.BLACK.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                          )
+                        ],
+                      ),
+                      child: WidgetText(
+                        title: e,
+                        style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(
+                        left: 8,
+                        right: 8,
+                      ),
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: COLORS.BLACK.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                          )
+                        ],
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: Image.asset(
+                          ICONS.IC_WORK_3X_PNG,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+            .toList(),
       ),
       appBar: AppBar(
         toolbarHeight: AppValue.heights * 0.1,
         backgroundColor: HexColor("#D0F1EB"),
         centerTitle: false,
-        title: Text(Get.arguments,
+        title: Text(Get.arguments ?? '',
             style: TextStyle(
                 color: Colors.black,
                 fontFamily: "Montserrat",
@@ -78,7 +164,7 @@ class _WorkScreenState extends State<WorkScreen> {
                     _drawerKey.currentState!.openDrawer();
                   }
                 },
-                child: SvgPicture.asset("assets/icons/menu.svg"))),
+                child: SvgPicture.asset(ICONS.IC_MENU_SVG))),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(15),
@@ -93,9 +179,9 @@ class _WorkScreenState extends State<WorkScreen> {
                     BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
                         builder: (context, state) {
                   if (state is NotificationNeedRead) {
-                    return SvgPicture.asset("assets/icons/notification.svg");
+                    return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
                   } else {
-                    return SvgPicture.asset("assets/icons/notification2.svg");
+                    return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
                   }
                 }),
               ))
@@ -105,35 +191,31 @@ class _WorkScreenState extends State<WorkScreen> {
         // padding: EdgeInsets.only(bottom: 70),
         child: Column(
           children: [
+            AppValue.vSpaceTiny,
             BlocBuilder<WorkBloc, WorkState>(builder: (context, state) {
               if (state is SuccessGetListWorkState)
                 return Container(
                   margin: EdgeInsets.symmetric(
-                      horizontal: AppValue.widths * 0.05,
-                      vertical: AppValue.heights * 0.02),
-                  width: double.infinity,
-                  height: AppValue.heights * 0.06,
+                      horizontal: 25,
+                      vertical: 8,),
                   decoration: BoxDecoration(
                     border: Border.all(color: HexColor("#DBDBDB")),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: WidgetSearch(
                     hintTextStyle: TextStyle(
-                        fontFamily: "Roboto",
+                        fontFamily: "Quicksand",
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                         color: HexColor("#707070")),
-                    hint: "Tìm công việc",
-                    onChanged: (text) {
-                      search = text;
-                    },
-                    onEditingComplete: () {
+                    hint: "Tìm ${title.toLowerCase()}",
+                    onSubmit: (v) {
+                      search = v;
                       WorkBloc.of(context)
-                          .add(InitGetListWorkEvent("1", search, filter_id));
+                          .add(InitGetListWorkEvent("1", v, filter_id));
                     },
-                    leadIcon:
-                        SvgPicture.asset("assets/icons/search_customer.svg"),
-                    endIcon: SvgPicture.asset("assets/icons/fill_customer.svg"),
+                    leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                    endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
                     onClickRight: () {
                       showBotomSheet(state.data_filter);
                     },
@@ -146,31 +228,30 @@ class _WorkScreenState extends State<WorkScreen> {
                 BlocBuilder<WorkBloc, WorkState>(builder: (context, state) {
               if (state is SuccessGetListWorkState) {
                 pageTotal = state.pageCount;
-                return Container(
-                  // margin: EdgeInsets.only(bottom: 70),
-                  child: RefreshIndicator(
-                    onRefresh: () =>
-                        Future.delayed(Duration(milliseconds: 300), () {
-                      WorkBloc.of(context)
-                          .add(InitGetListWorkEvent("1", "", ""));
-                    }),
-                    child: ListView.separated(
-                      controller: _scrollController,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) => InkWell(
-                          onTap: () => AppNavigator.navigateDeatailWork(
+                return RefreshIndicator(
+                  onRefresh: () =>
+                      Future.delayed(Duration(milliseconds: 300), () {
+                    WorkBloc.of(context)
+                        .add(InitGetListWorkEvent("1", "", ""));
+                  }),
+                  child: ListView.separated(
+                    padding: EdgeInsets.only(top: 8),
+                    controller: _scrollController,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => InkWell(
+                        onTap: () => AppNavigator.navigateDetailWork(
                               int.parse(state.data_list[index].id!),
-                              state.data_list[index].name_job ?? ''),
-                          child: WorkCardWidget(
-                            data_list: state.data_list[index],
-                            index: index,
-                            length: state.data_list.length,
-                          )),
-                      itemCount: state.data_list.length,
-                      separatorBuilder: (BuildContext context, int index) =>
-                          SizedBox(
-                        height: AppValue.heights * 0.01,
-                      ),
+                              state.data_list[index].name_job ?? '',
+                            ),
+                        child: WorkCardWidget(
+                          data_list: state.data_list[index],
+                          index: index,
+                          length: state.data_list.length,
+                        )),
+                    itemCount: state.data_list.length,
+                    separatorBuilder: (BuildContext context, int index) =>
+                        SizedBox(
+                      height: AppValue.heights * 0.01,
                     ),
                   ),
                 );
@@ -232,7 +313,7 @@ class _WorkScreenState extends State<WorkScreen> {
                                       // crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         SvgPicture.asset(
-                                          'assets/icons/Filter.svg',
+                                          ICONS.IC_FILTER_SVG,
                                           width: 20,
                                           height: 20,
                                           fit: BoxFit.contain,
@@ -259,61 +340,5 @@ class _WorkScreenState extends State<WorkScreen> {
             },
           );
         });
-  }
-
-  handleOnPressItemMenu(value) async {
-    switch (value['id']) {
-      case '1':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateMain();
-        break;
-      case 'opportunity':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChance(value['title']);
-        break;
-      case 'job':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateWork(value['title']);
-        break;
-      case 'contract':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateContract(value['title']);
-        break;
-      case 'support':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateSupport(value['title']);
-        break;
-      case 'customer':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateCustomer(value['title']);
-        break;
-      case 'contact':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateClue(value['title']);
-        break;
-      case 'report':
-        _drawerKey.currentState!.openEndDrawer();
-        String? money = await shareLocal.getString(PreferencesKey.MONEY);
-        AppNavigator.navigateReport(money ?? "đ");
-        break;
-      case '2':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateInformationAccount();
-        break;
-      case '3':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateAboutUs();
-        break;
-      case '4':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigatePolicy();
-        break;
-      case '5':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChangePassword();
-        break;
-      default:
-        break;
-    }
   }
 }

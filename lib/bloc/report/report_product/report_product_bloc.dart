@@ -1,15 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import '../../../api_resfull/user_repository.dart';
+import '../../../src/app_const.dart';
 import '../../../src/base.dart';
-import '../../../src/color.dart';
 import '../../../src/messages.dart';
 import '../../../src/models/model_generator/report_product.dart';
-import '../../../src/navigator.dart';
 import '../../../widgets/loading_api.dart';
-import '../../../widgets/widget_dialog.dart';
 
 part 'report_product_event.dart';
 part 'report_product_state.dart';
@@ -40,29 +37,13 @@ class ReportProductBloc extends Bloc<ReportProductEvent, ReportProductState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessReportProductState(response.data!.list);
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else
         yield ErrorReportProductState(response.msg ?? '');
     } catch (e) {
       yield ErrorReportProductState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      Get.dialog(WidgetDialog(
-        title: MESSAGES.NOTIFICATION,
-        content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-        textButton1: "OK",
-        backgroundButton1: COLORS.PRIMARY_COLOR,
-        onTap1: () {
-          AppNavigator.navigateLogout();
-        },
-      ));
+     loginSessionExpired();
       throw e;
     }
     LoadingApi().popLoading();
@@ -97,29 +78,13 @@ class ReportSelectProductBloc
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessReportSelectState(response.data!.list);
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else
         yield ErrorReportSelectProductState(response.msg ?? '');
     } catch (e) {
       yield ErrorReportSelectProductState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      Get.dialog(WidgetDialog(
-        title: MESSAGES.NOTIFICATION,
-        content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-        textButton1: "OK",
-        backgroundButton1: COLORS.PRIMARY_COLOR,
-        onTap1: () {
-          AppNavigator.navigateLogout();
-        },
-      ));
+     loginSessionExpired();
       throw e;
     }
   }

@@ -4,10 +4,8 @@ import 'package:gen_crm/bloc/list_note/add_note_bloc.dart';
 import 'package:gen_crm/screens/menu/home/customer/list_note.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../src/src_index.dart';
-import '../../../../widgets/widget_dialog.dart';
 import '../../../../widgets/widget_text.dart';
 
 class AddNote extends StatefulWidget {
@@ -64,7 +62,7 @@ class _AddNoteState extends State<AddNote> {
           child: BlocListener<AddNoteBloc, AddNoteState>(
             listener: (context, state) async {
               if (state is SuccessAddNoteState) {
-                _editingController.text='';
+                _editingController.text = '';
                 FocusManager.instance.primaryFocus?.unfocus();
                 if (type == 1) {
                   ListNoteBloc.of(context).add(InitNoteCusEvent(id, "1"));
@@ -80,32 +78,16 @@ class _AddNoteState extends State<AddNote> {
                   ListNoteBloc.of(context).add(InitNoteSupEvent(id, "1"));
                 }
               } else if (state is ErrorAddNoteState) {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return WidgetDialog(
-                      title: MESSAGES.NOTIFICATION,
-                      content: state.msg,
-                      textButton1: "Quay lại",
-                      onTap1: () {
-                        Get.back();
-                      },
-                    );
-                  },
+                ShowDialogCustom.showDialogBase(
+                  title: MESSAGES.NOTIFICATION,
+                  content: state.msg,
+                  textButton1: "Quay lại",
                 );
               } else if (state is ErrorDeleteNoteState) {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return WidgetDialog(
-                      title: MESSAGES.NOTIFICATION,
-                      content: state.msg,
-                      textButton1: "Quay lại",
-                      onTap1: () {
-                        Get.back();
-                      },
-                    );
-                  },
+                ShowDialogCustom.showDialogBase(
+                  title: MESSAGES.NOTIFICATION,
+                  content: state.msg,
+                  textButton1: "Quay lại",
                 );
               }
             },
@@ -137,7 +119,7 @@ class _AddNoteState extends State<AddNote> {
                     children: [
                       Expanded(
                         child: TextField(
-                          textCapitalization:TextCapitalization.sentences,
+                          textCapitalization: TextCapitalization.sentences,
                           textInputAction: TextInputAction.send,
                           controller: _editingController,
                           focusNode: _focusNode,
@@ -155,7 +137,7 @@ class _AddNoteState extends State<AddNote> {
                         child: Container(
                           padding: EdgeInsets.all(8),
                           child: WidgetContainerImage(
-                            image: 'assets/icons/send.png',
+                            image: ICONS.IC_SEND_PNG,
                             width: 25,
                             height: 25,
                             fit: BoxFit.contain,

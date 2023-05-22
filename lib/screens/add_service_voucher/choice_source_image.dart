@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import '../../src/messages.dart';
-import '../../widgets/widget_dialog.dart';
+import '../../src/show_dialog.dart';
 
 class ChoiceSourceImage extends StatefulWidget {
   const ChoiceSourceImage({Key? key}) : super(key: key);
@@ -14,11 +13,7 @@ class ChoiceSourceImage extends StatefulWidget {
 
 class _ChoiceSourceImageState extends State<ChoiceSourceImage> {
   void showSettingDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return WidgetDialog(
+     ShowDialogCustom.showDialogBase(
           title: MESSAGES.NOTIFICATION,
           content: "Đi đến cài đặt",
           textButton1: "Đi",
@@ -31,8 +26,6 @@ class _ChoiceSourceImageState extends State<ChoiceSourceImage> {
             Get.back();
           },
         );
-      },
-    );
   }
 
   @override

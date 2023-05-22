@@ -45,19 +45,11 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
     return BlocListener<ResetPasswordBloc, ResetPasswordState>(
       listener: (context, state) {
         if (state is ResetPassSuccess) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return WidgetDialog(
-                title: MESSAGES.NOTIFICATION,
-                content: 'Cập nhật mật khẩu thành công!',
-                onTap1: () {
-                  AppNavigator.navigateLogin();
-                },
-                textButton1: "OK",
-                backgroundButton1: COLORS.PRIMARY_COLOR,
-              );
+          ShowDialogCustom.showDialogBase(
+            title: MESSAGES.NOTIFICATION,
+            content: 'Cập nhật mật khẩu thành công!',
+            onTap1: () {
+              AppNavigator.navigateLogin();
             },
           );
         }
@@ -95,7 +87,7 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
                                 style: TextStyle(
                                     fontFamily: "Quicksand",
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 12),
+                                    fontSize: 14),
                               ),
                               AppValue.vSpaceMedium,
                             ],
@@ -126,27 +118,17 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
           onTap: () {
             if (cfPass == newPass) {
               if (cfPass.length < 6 || newPass.length < 6) {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return WidgetDialog(
-                      title: MESSAGES.NOTIFICATION,
-                      content: 'Mật khẩu có ít nhất 6 kí tự',
-                    );
-                  },
+                ShowDialogCustom.showDialogBase(
+                  title: MESSAGES.NOTIFICATION,
+                  content: 'Mật khẩu có ít nhất 6 kí tự',
                 );
               } else
                 bloc.add(FormResetPasswordSubmitted(
                     newPass: newPass, username: username, email: email));
             } else
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
-                    title: MESSAGES.NOTIFICATION,
-                    content: 'Mật khẩu không trùng khớp!',
-                  );
-                },
+              ShowDialogCustom.showDialogBase(
+                title: MESSAGES.NOTIFICATION,
+                content: 'Mật khẩu không trùng khớp!',
               );
           },
           boxDecoration: BoxDecoration(

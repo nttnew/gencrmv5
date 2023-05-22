@@ -32,7 +32,6 @@ class ErrorEditCustomerState extends AddDataState {
   List<Object> get props => [msg];
 }
 
-//add Contact Cus
 class LoadingAddContactCustomerState extends AddDataState {}
 
 class SuccessAddContactCustomerState extends AddDataState {}

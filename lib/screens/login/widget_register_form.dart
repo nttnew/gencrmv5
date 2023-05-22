@@ -53,16 +53,11 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
       listener: (context, state) {
         if (state.status.isSubmissionSuccess) {
           GetSnackBarUtils.removeSnackBar();
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return WidgetDialog(
+          ShowDialogCustom.showDialogBase(
                 title: MESSAGES.NOTIFICATION,
                 content: MESSAGES.SUCCESS,
                 onTap1: () => AppNavigator.navigateLogout(),
-              );
-            },
+
           );
         }
         if (state.status.isSubmissionInProgress) {
@@ -70,14 +65,10 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
         }
         if (state.status.isSubmissionFailure) {
           GetSnackBarUtils.removeSnackBar();
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return WidgetDialog(
+          ShowDialogCustom.showDialogBase(
                 title: MESSAGES.NOTIFICATION,
                 content: state.message,
-              );
-            },
+
           );
 
           //GetSnackBarUtils.createFailure(message: state.message);

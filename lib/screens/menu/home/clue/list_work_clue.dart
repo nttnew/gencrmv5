@@ -33,7 +33,7 @@ class _ListWorkClueState extends State<ListWorkClue>
               shrinkWrap: true,
               itemBuilder: (context, index) => GestureDetector(
                 onTap: () {
-                  AppNavigator.navigateDeatailWork(
+                  AppNavigator.navigateDetailWork(
                       int.parse(listWorkClue[index].id!),
                       listWorkClue[index].name_job ?? '');
                 },

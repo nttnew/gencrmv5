@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:async';
-import 'package:dio/dio.dart'
-    show MultipartFile; // ignore: import_of_legacy_library_into_null_safe
+import 'package:dio/dio.dart' show MultipartFile;
 import 'package:gen_crm/api_resfull/dio_provider.dart';
 import 'package:gen_crm/src/models/model_generator/chance_customer.dart';
 import 'package:gen_crm/src/models/model_generator/clue_customer.dart';
@@ -15,6 +14,7 @@ import 'package:gen_crm/src/models/model_generator/infor_acc.dart';
 import 'package:gen_crm/src/models/model_generator/job_chance.dart';
 import 'package:gen_crm/src/models/model_generator/job_customer.dart';
 import 'package:gen_crm/src/models/model_generator/list_notification.dart';
+import 'package:gen_crm/src/models/model_generator/list_product_customer_response.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/models/model_generator/note.dart';
 import 'package:gen_crm/src/models/model_generator/note_clue.dart';
@@ -36,17 +36,28 @@ import '../src/models/model_generator/add_customer.dart';
 import '../src/models/model_generator/base_response.dart';
 import '../src/models/model_generator/contract.dart';
 import '../src/models/model_generator/contract_customer.dart';
+import '../src/models/model_generator/detail_product_customer_response.dart';
+import '../src/models/model_generator/detail_product_module_response.dart';
 import '../src/models/model_generator/get_infor.dart';
 import '../src/models/model_generator/get_phone_cus.dart';
 import '../src/models/model_generator/get_xe_response.dart';
+import '../src/models/model_generator/group_product_response.dart';
 import '../src/models/model_generator/list_car_response.dart';
+import '../src/models/model_generator/list_product_response.dart';
 import '../src/models/model_generator/param_del_notif.dart';
 import '../src/models/model_generator/param_read_notifi.dart';
 import '../src/models/model_generator/post_info_car_response.dart';
+import '../src/models/model_generator/product_customer_edit_response.dart';
+import '../src/models/model_generator/product_customer_save_response.dart';
 import '../src/models/model_generator/report_contact.dart';
 import '../src/models/model_generator/report_general.dart';
 import '../src/models/model_generator/report_option.dart';
 import '../src/models/model_generator/report_product.dart';
+import '../src/models/model_generator/response_bao_cao.dart';
+import '../src/models/model_generator/response_car_dashboard.dart';
+import '../src/models/model_generator/response_edit_product.dart';
+import '../src/models/model_generator/response_save_product.dart';
+import '../src/models/model_generator/save_checkin_response.dart';
 import '../src/models/model_generator/support_customer.dart';
 import '../src/models/model_generator/update_pass_request.dart';
 
@@ -65,8 +76,6 @@ class UserRepository {
     else
       DioProvider.instance();
   }
-
-  //==========================================> GET <=========================================
 
   Future<ResponseDataStatus> getInfoUser() async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getInfoUser();
@@ -177,32 +186,42 @@ class UserRepository {
   Future<ListDetailChanceResponse> getListDetailChance(int id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .getListDetailChance(id);
+
   Future<ListClueResponse> getListClue(
           int page, String filter, String search) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .getListClue(page, filter, search);
+
   Future<DetailClue> getDetailClue(String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getDetailClue(id);
+
   Future<WorkClueResponse> getWorkClue(String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getWorkClue(id);
+
   Future<PolicyResponse> getPolicy() async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getPolicy();
+
   Future<InforResponse> getInfor() async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getInfor();
+
   Future<ListNoteClueResponse> getListNoteClue(String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getNoteClue(id);
+
   Future<ListNotificationResponse> getListUnReadNotification(int page) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .getListUnReadNotification(page);
+
   Future<ListNotificationResponse> getListReadedNotification(int page) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .getListReadedNotification(page);
+
   Future<BaseResponse> deleteNotification(int id, String type) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .deleteNotifi(DelNotifiParam(id, type));
+
   Future<InforAccResponse> getInforAcc() async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getInforAcc();
-  //Dương
+
   Future<AddCustomerIndividual> getAddCusOr() async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getAddCustomerOr();
 
@@ -293,27 +312,27 @@ class UserRepository {
 
   Future<BaseResponse> deleteNoteCus(String noteid, String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .deleteNoteCus({"noteid": noteid, "id": id});
+          .deleteNoteCus({BASE_URL.NOTE_ID: noteid, BASE_URL.ID: id});
 
   Future<BaseResponse> deleteNoteContact(String noteid, String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .deleteNoteContact({"noteid": noteid, "id": id});
+          .deleteNoteContact({BASE_URL.NOTE_ID: noteid, BASE_URL.ID: id});
 
   Future<BaseResponse> deleteNoteOop(String noteid, String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .deleteNoteOop({"noteid": noteid, "id": id});
+          .deleteNoteOop({BASE_URL.NOTE_ID: noteid, BASE_URL.ID: id});
 
   Future<BaseResponse> deleteNoteContract(String noteid, String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .deleteNoteContract({"noteid": noteid, "id": id});
+          .deleteNoteContract({BASE_URL.NOTE_ID: noteid, BASE_URL.ID: id});
 
   Future<BaseResponse> deleteNoteJob(String noteid, String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .deleteNoteJob({"noteid": noteid, "id": id});
+          .deleteNoteJob({BASE_URL.NOTE_ID: noteid, BASE_URL.ID: id});
 
   Future<BaseResponse> deleteNoteSup(String noteid, String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .deleteNoteSup({"noteid": noteid, "id": id});
+          .deleteNoteSup({BASE_URL.NOTE_ID: noteid, BASE_URL.ID: id});
 
   Future<AddCustomerIndividual> getFormEditClue(String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
@@ -375,10 +394,11 @@ class UserRepository {
   Future<GetPhoneCusResponse> getPhoneAgency(String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getPhoneAgency(id);
 
-  Future<BaseResponse> logout() async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).logout();
-
-  //=========================================> POST <=========================================
+  Future<BaseResponse> logout({
+    required String device_token,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .logout({BASE_URL.DEVICE_TOKEN: device_token});
 
   Future<LoginResponse> loginApp(
           {required String email,
@@ -482,7 +502,7 @@ class UserRepository {
           {required ParamOrderCourse paramOrderCourse}) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .orderCourse(paramOrderCourse);
-  //Quân
+
   Future<BaseResponse> updatePass(
           {required String username,
           required String oldpass,
@@ -490,6 +510,7 @@ class UserRepository {
       await RestClient(dio, baseUrl: dio.options.baseUrl).updatePass(
           UpdatePassRequest(
               username: username, oldpass: oldpass, newpass: newpass));
+
   Future<BaseResponse> changeInforAcc(
           {required String fullName,
           required String phone,
@@ -498,6 +519,7 @@ class UserRepository {
           required File avatar}) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .changeInforAcc(fullName, email, phone, address, avatar);
+
   Future<BaseResponse> changeInforAccNoAvatar(
           {required String fullName,
           required String phone,
@@ -505,11 +527,12 @@ class UserRepository {
           required String address}) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .changeInforAccNoAvatar(fullName, email, phone, address);
+
   Future<BaseResponse> readNotification(
           {required String id, required String type}) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .readNotification(ReadNotifiParam(id, type));
-  //Dương
+
   Future<AddDataResponse> addIndividualCustomer(
           {required Map<String, dynamic> data}) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
@@ -580,78 +603,68 @@ class UserRepository {
           {required String id,
           required String content,
           required String noteId}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .editNoteCus({"id": id, "content": content, "noteid": noteId});
+      await RestClient(dio, baseUrl: dio.options.baseUrl).editNoteCus({
+        BASE_URL.ID: id,
+        BASE_URL.CONTENT: content,
+        BASE_URL.NOTE_ID: noteId
+      });
 
   Future<BaseResponse> editNoteContact(
           {required String id,
           required String content,
           required String noteId}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .editNoteContact({"id": id, "content": content, "noteid": noteId});
+      await RestClient(dio, baseUrl: dio.options.baseUrl).editNoteContact({
+        BASE_URL.ID: id,
+        BASE_URL.CONTENT: content,
+        BASE_URL.NOTE_ID: noteId
+      });
 
   Future<BaseResponse> editNoteOop(
           {required String id,
           required String content,
           required String noteId}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .editNoteOop({"id": id, "content": content, "noteid": noteId});
+      await RestClient(dio, baseUrl: dio.options.baseUrl).editNoteOop({
+        BASE_URL.ID: id,
+        BASE_URL.CONTENT: content,
+        BASE_URL.NOTE_ID: noteId
+      });
 
   Future<BaseResponse> editNoteContract(
           {required String id,
           required String content,
           required String noteId}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .editNoteContract({"id": id, "content": content, "noteid": noteId});
+      await RestClient(dio, baseUrl: dio.options.baseUrl).editNoteContract({
+        BASE_URL.ID: id,
+        BASE_URL.CONTENT: content,
+        BASE_URL.NOTE_ID: noteId
+      });
 
   Future<BaseResponse> editNoteJob(
           {required String id,
           required String content,
           required String noteId}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .editNoteJob({"id": id, "content": content, "noteid": noteId});
+      await RestClient(dio, baseUrl: dio.options.baseUrl).editNoteJob({
+        BASE_URL.ID: id,
+        BASE_URL.CONTENT: content,
+        BASE_URL.NOTE_ID: noteId
+      });
 
   Future<BaseResponse> editNoteSup(
           {required String id,
           required String content,
           required String noteId}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .editNoteSup({"id": id, "content": content, "noteid": noteId});
+      await RestClient(dio, baseUrl: dio.options.baseUrl).editNoteSup({
+        BASE_URL.ID: id,
+        BASE_URL.CONTENT: content,
+        BASE_URL.NOTE_ID: noteId
+      });
 
-  Future<BaseResponse> uploadFileCus(
-          {required String id, required File files}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .uploadFileCus(id, files);
-
-  Future<BaseResponse> uploadFileContact(
-          {required String id, required File files}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .uploadFileContact(id, files);
-
-  Future<BaseResponse> uploadFileOpp(
-          {required String id, required File files}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .uploadFileOpp(id, files);
-
-  Future<BaseResponse> uploadFileContract(
-          {required String id, required File files}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .uploadFileContract(id, files);
-
-  Future<BaseResponse> uploadFileJob(
-          {required String id, required File files}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .uploadFileJob(id, files);
-
-  Future<BaseResponse> uploadFileSupport(
-          {required String id, required File files}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .uploadFileSupport(id, files);
-
-  Future<BaseResponse> uploadMultiFileContract(
-      {required String id,
-      required List<File> files,
-      required String module}) async {
+  Future<BaseResponse> uploadMultiFileBase({
+    required String id,
+    required List<File> files,
+    required String module,
+    bool? isAfter,
+  }) async {
     final multipartFiles = <MultipartFile>[];
     if (files.isNotEmpty) {
       for (final file in files) {
@@ -664,8 +677,17 @@ class UserRepository {
       }
     }
     return await RestClient(dio, baseUrl: dio.options.baseUrl)
-        .uploadMultiFileContract(id, multipartFiles, module);
+        .uploadMultiFile(id, multipartFiles, module, isAfter);
   }
+
+  Future<BaseResponse> uploadFile({
+    required String id,
+    required File files,
+    required bool isAfter,
+    required String module,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .uploadFile(id, files, isAfter, module);
 
   Future<FileResponse> getFile({
     required String module,
@@ -682,6 +704,135 @@ class UserRepository {
     required String id,
   }) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getXe(id);
+
+  Future<GroupProductResponse> getGroupProduct() async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getGroupProduct();
+
+  Future<ListProductResponse> getListProductModule({
+    String? typeProduct,
+    String? txt,
+    required String page,
+    String? filter,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getListProductModule(
+        typeProduct,
+        txt,
+        page,
+        filter,
+      );
+
+  Future<DetailProductResponse> getDetailProduct({
+    required String id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getDetailProduct(id);
+
+  Future<AddCustomerIndividual> getFormAddProduct() async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getFormAddProduct();
+
+  Future<AddCustomerIndividual> getEditProduct({
+    required String id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getEditProduct(id);
+
+  Future<ResponseSaveProduct> addProduct(
+          {required Map<String, dynamic> data}) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).addProduct(data);
+
+  Future<ResponseEditProduct> editProduct(
+          {required Map<String, dynamic> data, required int id}) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).editProduct(data, id);
+
+  Future<ResponseBaoCao> getListBaoCao({
+    required String page,
+    String? time,
+    timeFrom,
+    timeTo,
+    diemBan,
+    trangThai,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getListBaoCao(
+        page,
+        time,
+        timeFrom,
+        timeTo,
+        diemBan,
+        trangThai,
+      );
+
+  Future<ResponseCarDashboard> getHomeBaoCao({
+    String? time,
+    String? timeFrom,
+    String? timeTo,
+    String? diemBan,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getHomeBaoCao(time, timeFrom, timeTo, diemBan);
+
+  Future<CheckInResponse> saveCheckIn({
+    required String id,
+    required String latitude,
+    required String longitude,
+    required String location,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .saveCheckIn(id, latitude, longitude, location);
+
+  Future<dynamic> deleteProduct({
+    required String id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).deleteProduct(id);
+
+  Future<ListProductCustomerResponse> getListProductCustomer({
+    required String page,
+    String? txt,
+    String? filter,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getListProductCustomer(page, txt, filter);
+
+  Future<DetailProductCustomerResponse> getDetailProductCustomer({
+    required String id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getDetailProductCustomer(id);
+
+  Future<AddCustomerIndividual> getFormAddProductCustomer() async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getFormAddProductCustomer();
+
+  Future<AddCustomerIndividual> getFormEditProductCustomer({
+    required String id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getFormEditProductCustomer(id);
+
+  Future<ResponseSaveProductCustomer> saveAddProductCustomer({
+    required Map<String, dynamic> data,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .saveAddProductCustomer(data);
+
+  Future<ResponseEditProductCustomer> saveEditProductCustomer({
+    required Map<String, dynamic> data,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .saveEditProductCustomer(data);
+
+  Future<dynamic> deleteProductCustomer({
+    required String id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .deleteProductCustomer(id);
+
+  Future<AddCustomerIndividual> getFormAddSign({required String id}) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getFormSign(id);
+
+  Future<ResponseSaveProductCustomer> saveSignature({
+    required Map<String, dynamic> data,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).saveSignature(data);
+
+  //////////////////////
 
   Stream<AuthenticationStatus> get status async* {
     await Future<void>.delayed(const Duration(seconds: 1));

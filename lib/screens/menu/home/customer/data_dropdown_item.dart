@@ -94,25 +94,21 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                         margin: EdgeInsets.only(top: 8, bottom: 4),
                         child: WidgetSearch(
                           hintTextStyle: TextStyle(
-                              fontFamily: "Roboto",
+                              fontFamily: "Quicksand",
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                               color: HexColor("#707070")),
                           hint: "Tìm kiếm",
                           height: 48,
-                          leadIcon: SvgPicture.asset(
-                              "assets/icons/search_customer.svg"),
-                          onEditingComplete: () {
-                            FocusManager.instance.primaryFocus?.unfocus();
-                          },
-                          onChanged: (text) {
-                            search = text;
+                          leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                          onSubmit: (v) {
+                            search = v;
                             if (widget.isSearch == false) {
                               data = listData.where((i) {
                                 String value =
                                     TiengViet.parse(i['label']).toLowerCase();
                                 String search1 =
-                                    TiengViet.parse(text).toLowerCase();
+                                    TiengViet.parse(v).toLowerCase();
                                 if (value.contains(search1))
                                   return true;
                                 else
@@ -122,6 +118,7 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                                 check = !check;
                               });
                             }
+                            FocusManager.instance.primaryFocus?.unfocus();
                           },
                         ),
                       ),

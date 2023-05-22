@@ -2,16 +2,12 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
-import 'package:get/get.dart';
-
 import '../../api_resfull/user_repository.dart';
+import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/color.dart';
 import '../../src/messages.dart';
 import '../../src/models/model_generator/contract_customer.dart';
 import '../../src/models/model_generator/customer.dart';
-import '../../src/navigator.dart';
-import '../../widgets/widget_dialog.dart';
 
 part 'contract_customer_event.dart';
 part 'contract_customer_state.dart';
@@ -19,8 +15,9 @@ part 'contract_customer_state.dart';
 class ContractCustomerBloc
     extends Bloc<ContractCustomerEvent, ContractCustomerState> {
   final UserRepository userRepository;
+  int id = 0;
+  List<CustomerData>? listCus;
 
-  int id=0;
   ContractCustomerBloc({required UserRepository userRepository})
       : userRepository = userRepository,
         super(InitGetContractCustomer());
@@ -33,8 +30,6 @@ class ContractCustomerBloc
     }
   }
 
-  List<CustomerData>? listCus;
-
   Stream<ContractCustomerState> _getContractCustomer({required int id}) async* {
     LoadingApi().pushLoading();
     try {
@@ -43,30 +38,14 @@ class ContractCustomerBloc
           (response.code == BASE_URL.SUCCESS_200)) {
         yield UpdateGetContractCustomerState(response.data!);
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else {
         LoadingApi().popLoading();
         yield ErrorGetContractCustomerState(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      Get.dialog(WidgetDialog(
-        title: MESSAGES.NOTIFICATION,
-        content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-        textButton1: "OK",
-        backgroundButton1: COLORS.PRIMARY_COLOR,
-        onTap1: () {
-          AppNavigator.navigateLogout();
-        },
-      ));
+      loginSessionExpired();
       yield ErrorGetContractCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

@@ -8,47 +8,46 @@ class AppStyle {
   static const DEFAULT_TITLE_APPBAR = TextStyle(
       fontFamily: 'Montserrat',
       fontSize: AppValue.FONT_SIZE_18,
-      color: Colors.black,
+      color: COLORS.BLACK,
       fontWeight: FontWeight.w700,
       height: 1.4);
+
   static const DEFAULT_TITLE_PRODUCT = TextStyle(
       fontFamily: 'Quicksand',
       fontSize: AppValue.FONT_SIZE_18,
       color: Color(0xff006CB1),
       fontWeight: FontWeight.w700,
       height: 1.4);
+
   static const DEFAULT_LABEL_PRODUCT = TextStyle(
-      fontFamily: 'Roboto',
+      fontFamily: 'Quicksand',
       fontSize: AppValue.FONT_SIZE_14,
-      color: Colors.black,
+      color: COLORS.BLACK,
       fontWeight: FontWeight.w400,
       height: 1.4);
+
   static const DEFAULT_LABEL_TARBAR = TextStyle(
       fontFamily: 'Quicksand',
       fontSize: AppValue.FONT_SIZE_16,
-      color: Colors.black,
+      color: COLORS.BLACK,
       fontWeight: FontWeight.w700,
       height: 1.4);
 
   static const DEFAULT_16_T = TextStyle(
-      fontFamily: 'Quicksand',
-      fontSize: AppValue.FONT_SIZE_16,
-      color: COLORS.BLACK,
-      fontWeight: FontWeight.w600,
-      height: 1.4);
-
-  static const DEFAULT_12 = TextStyle(
-      fontFamily: 'Quicksand',
-      fontSize: AppValue.FONT_SIZE_12,
-      color: COLORS.BLACK,
-      height: 1.4);
+    fontFamily: 'Quicksand',
+    fontSize: AppValue.FONT_SIZE_16,
+    color: COLORS.BLACK,
+    fontWeight: FontWeight.w600,
+    height: 1.4,
+  );
 
   static const DEFAULT_14 = TextStyle(
-      fontFamily: 'Quicksand',
-      fontSize: AppValue.FONT_SIZE_14,
-      color: COLORS.BLACK,
-      fontWeight: FontWeight.w600,
-      height: 1.4);
+    fontFamily: 'Quicksand',
+    fontSize: AppValue.FONT_SIZE_14,
+    color: COLORS.BLACK,
+    fontWeight: FontWeight.w600,
+    height: 1.4,
+  );
 
   static const DEFAULT_16 = TextStyle(
       fontFamily: 'Quicksand',
@@ -88,8 +87,8 @@ class AppStyle {
 
   //DEFAULT STYLE MIX
   // ignore: non_constant_identifier_names
-  static final DEFAULT_12_BOLD =
-      DEFAULT_12.copyWith(fontWeight: FontWeight.bold);
+  // static final DEFAULT_12_BOLD =
+  //     DEFAULT_12.copyWith(fontWeight: FontWeight.bold);
   // ignore: non_constant_identifier_names
   static final DEFAULT_14_BOLD =
       DEFAULT_14.copyWith(fontWeight: FontWeight.bold);
@@ -106,9 +105,9 @@ class AppStyle {
   static final DEFAULT_24_BOLD =
       DEFAULT_24.copyWith(fontWeight: FontWeight.bold);
   // ignore: non_constant_identifier_names
-  static final RED_HINT_SMALL = DEFAULT_12.copyWith(color: Colors.red);
+  static final RED_HINT_SMALL = DEFAULT_14.copyWith(color: Colors.red);
   // ignore: non_constant_identifier_names
-  static final PRODUCT_SALE_PRICE = DEFAULT_12.copyWith(
+  static final PRODUCT_SALE_PRICE = DEFAULT_14.copyWith(
     height: 1.4,
     color: Color(0xFF960909),
   );

@@ -6,10 +6,9 @@ import 'package:gen_crm/bloc/support/support_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/support.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-
+import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/customer.dart';
 import '../../../../src/src_index.dart';
-import '../../../../storages/share_local.dart';
 import '../../../../widgets/widget_search.dart';
 import '../../../../widgets/widget_text.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
@@ -50,19 +49,19 @@ class _SupportScreenState extends State<SupportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
-      drawer: MainDrawer(onPress: handleOnPressItemMenu),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff1AA928),
-        onPressed: () =>
-            AppNavigator.navigateFormAdd('Thêm ${Get.arguments.toString().toLowerCase()}', 6),
+        onPressed: () => AppNavigator.navigateFormAdd(
+            'Thêm ${Get.arguments.toString().toLowerCase()}', 6),
         child: Icon(Icons.add, size: 40),
       ),
       appBar: AppBar(
         centerTitle: false,
         toolbarHeight: AppValue.heights * 0.1,
         backgroundColor: HexColor("#D0F1EB"),
-        title: Text(Get.arguments,
+        title: Text(Get.arguments ?? '',
             style: TextStyle(
                 color: Colors.black,
                 fontFamily: "Montserrat",
@@ -77,7 +76,7 @@ class _SupportScreenState extends State<SupportScreen> {
                     _drawerKey.currentState!.openDrawer();
                   }
                 },
-                child: SvgPicture.asset("assets/icons/menu.svg"))),
+                child: SvgPicture.asset(ICONS.IC_MENU_SVG))),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(15),
@@ -92,9 +91,9 @@ class _SupportScreenState extends State<SupportScreen> {
                     BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
                         builder: (context, state) {
                   if (state is NotificationNeedRead) {
-                    return SvgPicture.asset("assets/icons/notification.svg");
+                    return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
                   } else {
-                    return SvgPicture.asset("assets/icons/notification2.svg");
+                    return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
                   }
                 }),
               ))
@@ -106,32 +105,28 @@ class _SupportScreenState extends State<SupportScreen> {
           total = int.parse(state.total);
           return Column(
             children: [
+              AppValue.vSpaceTiny,
               Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: AppValue.widths * 0.05, vertical: 16),
-                width: double.infinity,
-                height: AppValue.heights * 0.06,
+                margin: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
                 decoration: BoxDecoration(
                   border: Border.all(color: HexColor("#DBDBDB")),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: WidgetSearch(
                   hintTextStyle: TextStyle(
-                      fontFamily: "Roboto",
+                      fontFamily: "Quicksand",
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       color: HexColor("#707070")),
-                  hint: "Tìm hỗ trợ",
-                  onEditingComplete: () {
+                  hint:
+                      "Tìm ${Get.arguments == 'CSKH' ? Get.arguments : Get.arguments.toString().toLowerCase()}",
+                  onSubmit: (v) {
+                    search = v;
                     SupportBloc.of(context)
                         .add(InitGetSupportEvent(1, search, id_filter));
                   },
-                  onChanged: (text) {
-                    search = text;
-                  },
-                  leadIcon:
-                      SvgPicture.asset("assets/icons/search_customer.svg"),
-                  endIcon: SvgPicture.asset("assets/icons/fill_customer.svg"),
+                  leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                  endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
                   onClickRight: () {
                     showBotomSheet(state.listFilter);
                   },
@@ -143,19 +138,20 @@ class _SupportScreenState extends State<SupportScreen> {
                     Future.delayed(Duration(milliseconds: 300), () {
                   SupportBloc.of(context).add(InitGetSupportEvent(1, '', ''));
                 }),
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  controller: _scrollController,
-                  itemBuilder: (context, index) => InkWell(
-                      onTap: () => AppNavigator.navigateDeatailSupport(
-                          state.listSupport[index].id.toString(),
-                          state.listSupport[index].ten_ho_tro ?? ''),
-                      child: ItemSupport(state.listSupport[index], index,
-                          state.listSupport.length)),
-                  itemCount: state.listSupport.length,
-                  separatorBuilder: (BuildContext context, int index) =>
-                      SizedBox(
-                    height: AppValue.heights * 0.01,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 8),
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    controller: _scrollController,
+                    itemBuilder: (context, index) => InkWell(
+                        onTap: () => AppNavigator.navigateDetailSupport(
+                            state.listSupport[index].id.toString(),
+                            state.listSupport[index].ten_ho_tro ?? ''),
+                        child: ItemSupport(state.listSupport[index], index,
+                            state.listSupport.length)),
+                    itemCount: state.listSupport.length,
+                    separatorBuilder: (BuildContext context, int index) =>
+                        SizedBox(),
                   ),
                 ),
               ))
@@ -168,14 +164,13 @@ class _SupportScreenState extends State<SupportScreen> {
   }
 
   Widget ItemSupport(SupportItemData data, int index, int length) {
-    return (Container(
+    return Container(
       child: Column(
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: AppValue.widths * 0.5,
+              Expanded(
                 child: WidgetText(
                   title: data.ten_ho_tro ?? '',
                   style: TextStyle(
@@ -185,7 +180,9 @@ class _SupportScreenState extends State<SupportScreen> {
                       fontSize: 18),
                 ),
               ),
-              Spacer(),
+              SizedBox(
+                width: 8,
+              ),
               Container(
                 decoration: BoxDecoration(
                     color: data.color != ""
@@ -197,97 +194,61 @@ class _SupportScreenState extends State<SupportScreen> {
               )
             ],
           ),
-          SizedBox(height: AppValue.heights * 0.01),
-          if (data.customer?.name?.isNotEmpty ?? false) ...[
-            Row(
+          itemTextIcon(
+              text: data.customer?.name ?? '', icon: ICONS.IC_AVATAR_SVG),
+          itemTextIcon(
+              text: data.trang_thai ?? '',
+              styleText: AppStyle.DEFAULT_14.copyWith(
+                  color: data.color != ""
+                      ? HexColor(data.color!)
+                      : COLORS.PRIMARY_COLOR),
+              colorIcon: data.color != ""
+                  ? HexColor(data.color!)
+                  : COLORS.PRIMARY_COLOR,
+              icon: ICONS.IC_ICON3_SVG),
+          Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: Row(
               children: [
-                SvgPicture.asset("assets/icons/avatar_customer.svg"),
                 Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                    child: WidgetText(
-                      title: data.customer!.name ?? '',
-                      style: TextStyle(
-                          color: HexColor("#006CB1"),
+                  child: itemTextIcon(
+                      paddingTop: 0,
+                      text: data.created_date ?? '',
+                      styleText: TextStyle(
+                          color: HexColor("#263238"),
                           fontFamily: "Quicksand",
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18),
-                    ),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14),
+                      icon: ICONS.IC_ICON4_SVG),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                SvgPicture.asset(ICONS.IC_QUESTION_SVG),
+                SizedBox(
+                  width: 4,
+                ),
+                WidgetText(
+                  title: data.total_note ?? '',
+                  style: TextStyle(
+                    color: HexColor("#0052B4"),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: AppValue.heights * 0.01),
-          ],
-          if (data.trang_thai != '') ...[
-            Row(
-              children: [
-                SvgPicture.asset(
-                  "assets/icons/icon3svg",
-                  color: data.color != ""
-                      ? HexColor(data.color!)
-                      : COLORS.PRIMARY_COLOR,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                  child: SizedBox(
-                      width: AppValue.widths * 0.5,
-                      child: WidgetText(
-                        title: data.trang_thai ?? '',
-                        style: AppStyle.DEFAULT_14.copyWith(
-                            color: data.color != ""
-                                ? HexColor(data.color!)
-                                : COLORS.PRIMARY_COLOR),
-                      )),
-                ),
-              ],
-            ),
-            SizedBox(height: AppValue.heights * 0.01),
-          ],
-          Row(
-            children: [
-              SvgPicture.asset("assets/icons/icon4.svg"),
-              Padding(
-                padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                child: SizedBox(
-                    width: AppValue.widths * 0.5,
-                    child: WidgetText(
-                        title: data.created_date ?? "",
-                        style: TextStyle(
-                            color: HexColor("#263238"),
-                            fontFamily: "Roboto",
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14))),
-              ),
-              Spacer(),
-              SvgPicture.asset("assets/icons/question_answer.svg"),
-              SizedBox(
-                width: AppValue.widths * 0.01,
-              ),
-              WidgetText(
-                title: data.total_note ?? '',
-                style: TextStyle(
-                  color: HexColor("#0052B4"),
-                ),
-              ),
-            ],
           ),
         ],
       ),
       margin: EdgeInsets.only(
-          left: 16, top: 16, right: 16, bottom: index == (length - 1) ? 75 : 0),
-      padding: EdgeInsets.only(
-          left: AppValue.widths * 0.05,
-          top: AppValue.heights * 0.02,
-          right: AppValue.widths * 0.05,
-          bottom: AppValue.widths * 0.05),
+        left: 25,
+        right: 25,
+        bottom: 10,
+        top: 10,
+      ),
+      padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10)),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.3),
@@ -297,7 +258,7 @@ class _SupportScreenState extends State<SupportScreen> {
           ),
         ],
       ),
-    ));
+    );
   }
 
   showBotomSheet(List<FilterData> data) {
@@ -351,7 +312,7 @@ class _SupportScreenState extends State<SupportScreen> {
                                         // crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                            'assets/icons/Filter.svg',
+                                            ICONS.IC_FILTER_SVG,
                                             width: 20,
                                             height: 20,
                                             fit: BoxFit.contain,
@@ -379,61 +340,5 @@ class _SupportScreenState extends State<SupportScreen> {
             },
           );
         });
-  }
-
-  handleOnPressItemMenu(value) async {
-    switch (value['id']) {
-      case '1':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateMain();
-        break;
-      case 'opportunity':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChance(value['title']);
-        break;
-      case 'job':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateWork(value['title']);
-        break;
-      case 'contract':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateContract(value['title']);
-        break;
-      case 'support':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateSupport(value['title']);
-        break;
-      case 'customer':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateCustomer(value['title']);
-        break;
-      case 'contact':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateClue(value['title']);
-        break;
-      case 'report':
-        _drawerKey.currentState!.openEndDrawer();
-        String? money = await shareLocal.getString(PreferencesKey.MONEY);
-        AppNavigator.navigateReport(money ?? "đ");
-        break;
-      case '2':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateInformationAccount();
-        break;
-      case '3':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateAboutUs();
-        break;
-      case '4':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigatePolicy();
-        break;
-      case '5':
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChangePassword();
-        break;
-      default:
-        break;
-    }
   }
 }

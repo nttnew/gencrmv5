@@ -39,10 +39,7 @@ class InfoUserBloc extends Bloc<InfoUserEvent, InfoUserState> {
   }
 
   Stream<InfoUserState> _mapResponseTokenToState() async* {
-    try {
-      // final loadUser  = await this._localRepository.loadUser();
-      // yield UploadUserState(user: InfoUser.fromJson(json.decode(loadUser)));
-    } catch (e) {
+    try {} catch (e) {
       throw e;
     }
   }

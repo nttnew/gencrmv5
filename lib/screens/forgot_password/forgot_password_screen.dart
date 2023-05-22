@@ -54,15 +54,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           }
           if (state.status.isSubmissionFailure) {
             GetSnackBarUtils.removeSnackBar();
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return WidgetDialog(
+            ShowDialogCustom.showDialogBase(
                   title: MESSAGES.NOTIFICATION,
                   content: state.message,
-                );
-              },
+
             );
           }
         },
@@ -93,7 +88,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 WidgetText(
                                   title:
                                       "Vui lòng nhập email đăng ký tài khoản",
-                                  style: AppStyle.DEFAULT_12,
+                                  style: AppStyle.DEFAULT_14,
                                 ),
                                 AppValue.vSpaceMedium,
                               ],

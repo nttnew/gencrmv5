@@ -1,4 +1,3 @@
-// ignore: import_of_legacy_library_into_null_safe
 import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

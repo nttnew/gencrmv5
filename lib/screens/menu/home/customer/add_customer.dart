@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,14 +12,12 @@ import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:image_picker/image_picker.dart';
 import '../../../../models/widget_input_date.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
+import '../../../../src/pick_file_image.dart';
 import '../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-
-import '../../../../widgets/widgetFieldInputPercent.dart';
-import '../../../../widgets/widget_dialog.dart';
+import '../../../../widgets/widget_field_input_percent.dart';
 import 'input_dropDown.dart';
 
 class AddCustomer extends StatefulWidget {
@@ -34,13 +31,18 @@ class _AddCustomerState extends State<AddCustomer> {
   List data = [];
   List<ModelItemAdd> addData = [];
   late StreamSubscription<bool> keyboardSubscription;
-  File? fileUpload;
 
   @override
   void initState() {
     AttackBloc.of(context).add(LoadingAttackEvent());
     AddCustomerBloc.of(context).add(InitGetAddCustomerEvent(1));
     super.initState();
+  }
+
+  @override
+  void deactivate() {
+    AttackBloc.of(context).add(RemoveAllAttackEvent());
+    super.deactivate();
   }
 
   @override
@@ -72,33 +74,21 @@ class _AddCustomerState extends State<AddCustomer> {
         body: BlocListener<GetListCustomerBloc, CustomerState>(
           listener: (context, state) async {
             if (state is SuccessAddCustomerIndividualState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
-                    title: MESSAGES.NOTIFICATION,
-                    content: "Thêm mới dữ liệu thành công!",
-                    textButton1: "OK",
-                    backgroundButton1: COLORS.PRIMARY_COLOR,
-                    onTap1: () {
-                      Get.back();
-                      Get.back();
-                      GetListCustomerBloc.of(context)
-                          .add(InitGetListOrderEvent("", 1, ""));
-                    },
-                  );
+              ShowDialogCustom.showDialogBase(
+                title: MESSAGES.NOTIFICATION,
+                content: "Thêm mới dữ liệu thành công!",
+                onTap1: () {
+                  Get.back();
+                  Get.back();
+                  GetListCustomerBloc.of(context)
+                      .add(InitGetListOrderEvent("", 1, ""));
                 },
               );
             }
             if (state is ErrorAddCustomerIndividualState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return WidgetDialog(
-                    title: MESSAGES.NOTIFICATION,
-                    content: state.message,
-                  );
-                },
+              ShowDialogCustom.showDialogBase(
+                title: MESSAGES.NOTIFICATION,
+                content: state.message,
               );
             }
           },
@@ -237,68 +227,10 @@ class _AddCustomerState extends State<AddCustomer> {
                                   ],
                                 )),
                       ),
-                      BlocBuilder<AttackBloc, AttackState>(
-                          builder: (context, state) {
-                        if (state is SuccessAttackState) if (state.file != null)
-                          return Container(
-                              margin: EdgeInsets.symmetric(vertical: 8),
-                              width: Get.width,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: WidgetText(
-                                      title: state.file!.path.split("/").last,
-                                      style: AppStyle.DEFAULT_14,
-                                      maxLine: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      fileUpload = null;
-                                      AttackBloc.of(context)
-                                          .add(InitAttackEvent());
-                                    },
-                                    child: WidgetContainerImage(
-                                      image: 'assets/icons/icon_delete.png',
-                                      width: 20,
-                                      height: 20,
-                                      fit: BoxFit.contain,
-                                    ),
-                                  )
-                                ],
-                              ));
-                        else
-                          return Container();
-                        else
-                          return Container();
-                      }),
-                      Row(
-                        children: [
-                          GestureDetector(
-                              onTap: this.onDinhKem,
-                              child:
-                                  SvgPicture.asset("assets/icons/attack.svg")),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: this.onClickSave,
-                            child: Container(
-                              height: AppValue.widths * 0.1,
-                              width: AppValue.widths * 0.25,
-                              decoration: BoxDecoration(
-                                  color: HexColor("#F1A400"),
-                                  borderRadius: BorderRadius.circular(20.5)),
-                              child: Center(
-                                  child: Text(
-                                "Lưu",
-                                style: TextStyle(color: Colors.white),
-                              )),
-                            ),
-                          ),
-                        ],
-                      )
+                      FileDinhKemUiBase(
+                        context: context,
+                        onTap: () => onClickSave(),
+                      ),
                     ],
                   );
                 } else
@@ -315,7 +247,7 @@ class _AddCustomerState extends State<AddCustomer> {
         AppNavigator.navigateBack();
       },
       icon: Image.asset(
-        ICONS.ICON_BACK,
+        ICONS.IC_BACK_PNG,
         height: 28,
         width: 28,
         color: COLORS.BLACK,
@@ -365,8 +297,7 @@ class _AddCustomerState extends State<AddCustomer> {
                   child: Container(
                       height: 50,
                       width: 50,
-                      child:
-                          SvgPicture.asset("assets/icons/iconInputImg.svg"))),
+                      child: SvgPicture.asset(ICONS.IC_INPUT_SVG))),
             )
           ]),
         ),
@@ -382,6 +313,7 @@ class _AddCustomerState extends State<AddCustomer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
               style: titlestyle(),
@@ -390,8 +322,8 @@ class _AddCustomerState extends State<AddCustomer> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -462,20 +394,21 @@ class _AddCustomerState extends State<AddCustomer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: label,
               style: TextStyle(
-                  fontFamily: "Roboto",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+                  fontFamily: "Quicksand",
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: COLORS.BLACK),
               children: <TextSpan>[
                 required == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -490,15 +423,9 @@ class _AddCustomerState extends State<AddCustomer> {
             onConfirm: (values) {
               if (maxLength != "" && values.length > int.parse(maxLength)) {
                 values.removeRange(int.parse(maxLength) - 1, values.length - 1);
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return WidgetDialog(
-                      title: MESSAGES.NOTIFICATION,
-                      content: "Bạn chỉ được chọn ${maxLength} giá trị",
-                    );
-                  },
+                ShowDialogCustom.showDialogBase(
+                  title: MESSAGES.NOTIFICATION,
+                  content: "Bạn chỉ được chọn ${maxLength} giá trị",
                 );
               } else {
                 List<dynamic> res = [];
@@ -529,7 +456,7 @@ class _AddCustomerState extends State<AddCustomer> {
               size: 25,
             ),
             initialValue: indexDefault != -1 ? [dropdow[indexDefault]] : [],
-            selectedItemsTextStyle: AppStyle.DEFAULT_12,
+            selectedItemsTextStyle: AppStyle.DEFAULT_14,
           )
         ],
       ),
@@ -537,22 +464,22 @@ class _AddCustomerState extends State<AddCustomer> {
   }
 
   TextStyle hintTextStyle() => TextStyle(
-      fontFamily: "Roboto",
-      fontSize: 11,
-      fontWeight: FontWeight.w500,
-      color: HexColor("#838A91"));
-
-  TextStyle titlestyle() => TextStyle(
-      fontFamily: "Roboto",
-      fontSize: 12,
-      fontWeight: FontWeight.w500,
-      color: HexColor("#697077"));
-
-  TextStyle titlestyleNgTheoDoi() => TextStyle(
-      fontFamily: "Roboto",
+      fontFamily: "Quicksand",
       fontSize: 14,
       fontWeight: FontWeight.w500,
-      color: HexColor("#697077"));
+      color: COLORS.BLACK);
+
+  TextStyle titlestyle() => TextStyle(
+      fontFamily: "Quicksand",
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      color: COLORS.BLACK);
+
+  TextStyle titlestyleNgTheoDoi() => TextStyle(
+      fontFamily: "Quicksand",
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      color: COLORS.BLACK);
 
   void onClickSave() {
     final Map<String, dynamic> data = {};
@@ -574,30 +501,13 @@ class _AddCustomerState extends State<AddCustomer> {
       }
     }
     if (check == true) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return WidgetDialog(
-            title: MESSAGES.NOTIFICATION,
-            content: "Hãy nhập đủ các trường bắt buộc (*)",
-          );
-        },
+      ShowDialogCustom.showDialogBase(
+        title: MESSAGES.NOTIFICATION,
+        content: "Hãy nhập đủ các trường bắt buộc (*)",
       );
     } else {
-      GetListCustomerBloc.of(context)
-          .add(AddCustomerIndividualEvent(data, files: fileUpload));
-    }
-  }
-
-  Future<void> onDinhKem() async {
-    ImagePicker picker = ImagePicker();
-    XFile? result = await picker.pickImage(
-        source: ImageSource.gallery, preferredCameraDevice: CameraDevice.rear);
-    if (result != null) {
-      fileUpload = File(result.path);
-      AttackBloc.of(context).add(InitAttackEvent(file: File(result.path)));
-    } else {
-      // User canceled the picker
+      GetListCustomerBloc.of(context).add(AddCustomerIndividualEvent(data,
+          files: AttackBloc.of(context).listFile));
     }
   }
 }
@@ -639,20 +549,21 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: TextStyle(
-                  fontFamily: "Roboto",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: HexColor("#697077")),
+                  fontFamily: "Quicksand",
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: COLORS.BLACK),
               children: <TextSpan>[
                 widget.data.field_require == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.red))
                     : TextSpan(),
@@ -745,7 +656,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
                                           color: COLORS.BACKGROUND),
                                       child: WidgetText(
                                         title: arr[index],
-                                        style: AppStyle.DEFAULT_12,
+                                        style: AppStyle.DEFAULT_14,
                                       )),
                                   Positioned(
                                     top: -13,

@@ -21,11 +21,7 @@ class AnimatedLogo extends AnimatedWidget {
         width: double.infinity,
         padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width / 4),
-        child: Center(
-            child: Image.asset(
-          "assets/icons/logo.png",
-          fit: BoxFit.contain,
-        )),
+        child: Center(child: Image.asset(ICONS.IC_LOGO_PNG)),
         decoration: BoxDecoration(
             gradient: LinearGradient(
           begin: Alignment.topCenter,
@@ -51,6 +47,7 @@ class _LogoAppState extends State<SplashPage>
   late Timer _timer;
   LoginData user = LoginData();
   String? baseUrl = "";
+
   @override
   void initState() {
     super.initState();

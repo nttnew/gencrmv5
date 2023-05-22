@@ -13,11 +13,9 @@ class PreviewImage extends StatefulWidget {
     Key? key,
     required this.file,
     this.isNetwork = false,
-    required this.module,
   }) : super(key: key);
   final File file;
   final bool isNetwork;
-  final String module;
 
   @override
   State<PreviewImage> createState() => _PreviewImageState();
@@ -73,7 +71,7 @@ class _PreviewImageState extends State<PreviewImage> {
         Navigator.of(context).pop();
       },
       icon: Image.asset(
-        ICONS.ICON_BACK,
+        ICONS.IC_BACK_PNG,
         height: 28,
         width: 28,
         color: COLORS.BLACK,

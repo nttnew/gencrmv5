@@ -43,13 +43,19 @@ class _InputDropdownState extends State<InputDropdown> {
     }
     if (mounted && widget.isUpdate) {
       textValue = widget.value;
-      widget.onUpdate!(textValue);
+      String data = '';
+      for (final value in widget.dropdownItemList) {
+        if (value[1] == widget.value) {
+          data = value[0];
+        }
+      }
+      widget.onUpdate!(data);
     }
     super.didUpdateWidget(oldWidget);
   }
 
   void updateList() {
-    dropdow=[];
+    dropdow = [];
     for (int i = 0; i < widget.dropdownItemList.length; i++) {
       if (widget.dropdownItemList[i][1] != null &&
           widget.dropdownItemList[i][0] != null) {
@@ -135,6 +141,7 @@ class _InputDropdownState extends State<InputDropdown> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: titlestyle(),
@@ -143,9 +150,9 @@ class _InputDropdownState extends State<InputDropdown> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
                             color: Colors.red))
                     : TextSpan(),
               ],
@@ -235,10 +242,11 @@ class _InputDropdownState extends State<InputDropdown> {
                               maxLine: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: "Roboto",
-                                  fontWeight: FontWeight.w500,
-                                  color: HexColor("#838A91")),
+                                fontSize: 14,
+                                fontFamily: "Quicksand",
+                                fontWeight: FontWeight.w600,
+                                color: COLORS.BLACK,
+                              ),
                             ),
                           ),
                           Container(
@@ -259,8 +267,8 @@ class _InputDropdownState extends State<InputDropdown> {
   }
 
   TextStyle titlestyle() => TextStyle(
-      fontFamily: "Roboto",
-      fontSize: 12,
-      fontWeight: FontWeight.w500,
-      color: HexColor("#697077"));
+      fontFamily: "Quicksand",
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      color: COLORS.BLACK);
 }

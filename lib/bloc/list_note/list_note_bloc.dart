@@ -3,14 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/note.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
-import 'package:get/get.dart';
 
 import '../../api_resfull/user_repository.dart';
+import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/color.dart';
 import '../../src/messages.dart';
-import '../../src/navigator.dart';
-import '../../widgets/widget_dialog.dart';
 
 part 'list_note_event.dart';
 part 'list_note_state.dart';
@@ -76,15 +73,7 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessGetNoteOppState(response.data!.notes ?? []);
       } else if (response.code == 999) {
-        Get.dialog(WidgetDialog(
-          title: MESSAGES.NOTIFICATION,
-          content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-          textButton1: "OK",
-          backgroundButton1: COLORS.PRIMARY_COLOR,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
-        ));
+        loginSessionExpired();
       } else {
         yield ErrorGetNoteOppState(response.msg ?? '');
         LoadingApi().popLoading();

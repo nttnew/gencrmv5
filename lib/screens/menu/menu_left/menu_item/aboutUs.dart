@@ -15,6 +15,7 @@ class AboutUsScreen extends StatefulWidget {
 class _AboutUsScreenState extends State<AboutUsScreen> {
   @override
   void initState() {
+    super.initState();
     GetInforBloc.of(context).add(InitGetInforEvent());
   }
 
@@ -63,7 +64,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
         AppNavigator.navigateBack();
       },
       icon: Image.asset(
-        ICONS.ICON_BACK,
+        ICONS.IC_BACK_PNG,
         height: 28,
         width: 28,
         color: COLORS.BLACK,

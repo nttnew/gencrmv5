@@ -88,19 +88,16 @@ class _CustomerContractScreenState extends State<CustomerContractScreen> {
                         margin: EdgeInsets.only(top: 8, bottom: 4),
                         child: WidgetSearch(
                           hintTextStyle: TextStyle(
-                              fontFamily: "Roboto",
+                              fontFamily: "Quicksand",
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                               color: HexColor("#707070")),
                           hint: "Tìm khách hàng",
-                          leadIcon: SvgPicture.asset(
-                              "assets/icons/search_customer.svg"),
-                          onChanged: (text) {
-                            search = text;
-                          },
-                          onEditingComplete: () {
+                          leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                          onSubmit: (v) {
+                            search = v;
                             CustomerContractBloc.of(context)
-                                .add(InitGetContractCustomerEvent("1", search));
+                                .add(InitGetContractCustomerEvent("1", v));
                           },
                         ),
                       ),

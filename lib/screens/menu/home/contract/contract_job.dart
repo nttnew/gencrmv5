@@ -32,7 +32,7 @@ class _ContractJobState extends State<ContractJob>
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      AppNavigator.navigateDeatailWork(
+                      AppNavigator.navigateDetailWork(
                           int.parse(state.listJob[index].id!),
                           state.listJob[index].name_job ?? '');
                     },
@@ -87,7 +87,7 @@ class _ContractJobState extends State<ContractJob>
                 width: AppValue.widths * 0.7,
               ),
               Image.asset(
-                'assets/icons/red.png',
+                ICONS.IC_RED_PNG,
                 color: (data.color != null && data.color != "")
                     ? HexColor(data.color!)
                     : COLORS.PRIMARY_COLOR,
@@ -99,7 +99,7 @@ class _ContractJobState extends State<ContractJob>
             Row(
               children: [
                 SvgPicture.asset(
-                  'assets/icons/User.svg',
+                  ICONS.IC_USER2_SVG,
                   color: Color(0xffE75D18),
                 ),
                 AppValue.hSpaceTiny,
@@ -114,7 +114,7 @@ class _ContractJobState extends State<ContractJob>
             Row(
               children: [
                 SvgPicture.asset(
-                  'assets/icons/dangxuly.svg',
+                  ICONS.IC_DANG_XU_LY_SVG,
                   color: (data.color != null && data.color != "")
                       ? HexColor(data.color!)
                       : COLORS.PRIMARY_COLOR,
@@ -136,7 +136,7 @@ class _ContractJobState extends State<ContractJob>
             children: [
               Row(
                 children: [
-                  Image.asset('assets/icons/date.png'),
+                  Image.asset(ICONS.IC_DATE_PNG,height: 20,width: 20,),
                   AppValue.hSpaceTiny,
                   WidgetText(
                       title: data.start_date ?? "",
@@ -146,13 +146,13 @@ class _ContractJobState extends State<ContractJob>
               ),
               Row(
                 children: [
-                  SvgPicture.asset('assets/icons/Mess.svg'),
+                  SvgPicture.asset(ICONS.IC_MESS),
                   SizedBox(
                     width: 5,
                   ),
                   WidgetText(
                     title: data.total_comment.toString(),
-                    style: AppStyle.DEFAULT_12
+                    style: AppStyle.DEFAULT_14
                         .copyWith(color: COLORS.TEXT_BLUE_BOLD),
                   )
                 ],

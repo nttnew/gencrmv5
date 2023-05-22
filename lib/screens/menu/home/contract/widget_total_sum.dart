@@ -24,6 +24,7 @@ class _WidgetTotalSumState extends State<WidgetTotalSum> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: widget.label ?? '',
               style: titlestyle(),
@@ -58,13 +59,13 @@ class _WidgetTotalSumState extends State<WidgetTotalSum> {
 }
 
 TextStyle hintTextStyle() => TextStyle(
-    fontFamily: "Roboto",
-    fontSize: 11,
+    fontFamily: "Quicksand",
+    fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: HexColor("#838A91"));
+    color:COLORS.BLACK);
 
 TextStyle titlestyle() => TextStyle(
-    fontFamily: "Roboto",
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-    color: HexColor("#697077"));
+    fontFamily: "Quicksand",
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: COLORS.BLACK);

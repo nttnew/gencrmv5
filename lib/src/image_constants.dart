@@ -3,4 +3,5 @@ class IMAGES {
   static const String IMAGE_INTRO1 = 'assets/images/img.png';
   static const String IMAGE_INTRO2 = 'assets/images/img-1.png';
   static const String IMAGE_INTRO3 = 'assets/images/img-2.png';
+  static const String IMAGE_CAR_REPORT = 'assets/images/car_report.png';
 }
