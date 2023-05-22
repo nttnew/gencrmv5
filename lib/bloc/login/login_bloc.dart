@@ -42,24 +42,29 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     super.onTransition(transition);
   }
 
-  void logout() {
+  bool checkRegisterSuccess() {
+    return receivedMsg.value == REGISTERED;
+  }
+
+  void logout(BuildContext context) {
     shareLocal.putString(PreferencesKey.REGISTER_CALL, 'true');
     receivedMsg.add(LoginBloc.UNREGISTER);
-    _removeDeviceToken();
+    _removeDeviceToken(context);
     PitelClient.getInstance().pitelCall.unregister();
   }
 
-  Future<void> _removeDeviceToken() async {
-    final String domainUrl = 'https://demo-gencrm.com/';
-    // shareLocal.getString(PreferencesKey.URL_BASE);
+  Future<void> _removeDeviceToken(BuildContext context) async {
+    final String domainUrl = shareLocal.getString(PreferencesKey.URL_BASE);
     final String domain = domainUrl.substring(
         domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
+    final String user =
+        LoginBloc.of(context).loginData?.info_user?.extension ?? '0';
     String deviceToken =
         await shareLocal.getString(PreferencesKey.DEVICE_TOKEN) ?? "";
     await PitelClient.getInstance().removeDeviceToken(
       deviceToken: deviceToken, // Device token
-      domain: domain, //todo
-      extension: '102',
+      domain: domain,
+      extension: user,
     );
     await shareLocal.putString(PreferencesKey.DEVICE_TOKEN, '');
   }

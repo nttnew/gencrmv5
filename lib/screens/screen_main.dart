@@ -178,8 +178,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   }
 
   Future<void> _registerDeviceToken(String deviceToken) async {
-    final String domainUrl = 'https://demo-gencrm.com/';
-    // shareLocal.getString(PreferencesKey.URL_BASE);
+    final String domainUrl = shareLocal.getString(PreferencesKey.URL_BASE);
     final String domain = domainUrl.substring(
         domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
     final String user =
@@ -199,7 +198,6 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   void registrationStateChanged(PitelRegistrationState state) {
     switch (state.state) {
       case PitelRegistrationStateEnum.REGISTRATION_FAILED:
-        goBack();
         break;
       case PitelRegistrationStateEnum.NONE:
       case PitelRegistrationStateEnum.UNREGISTERED:

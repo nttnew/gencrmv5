@@ -221,7 +221,7 @@ class _MainDrawerState extends State<MainDrawer> {
                   onTap2: () {
                 AuthenticationBloc.of(context)
                     .add(AuthenticationLogoutRequested());
-                LoginBloc.of(context).logout();
+                LoginBloc.of(context).logout(context);
               });
             },
             height: 40,

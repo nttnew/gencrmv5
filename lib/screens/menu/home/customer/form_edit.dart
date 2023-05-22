@@ -713,7 +713,7 @@ class _FormEditState extends State<FormEdit> {
               style: TextStyle(
                   fontFamily: "Quicksand",
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   color: COLORS.BLACK),
               children: <TextSpan>[
                 required == 1
@@ -722,7 +722,7 @@ class _FormEditState extends State<FormEdit> {
                         style: TextStyle(
                             fontFamily: "Quicksand",
                             fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             color: Colors.red))
                     : TextSpan(),
               ],
@@ -892,7 +892,7 @@ class _WidgetInputMultiState extends State<WidgetInputMulti> {
               style: TextStyle(
                   fontFamily: "Quicksand",
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   color: COLORS.BLACK),
               children: <TextSpan>[
                 widget.data.field_require == 1

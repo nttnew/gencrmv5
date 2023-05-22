@@ -35,7 +35,6 @@ class _DialogCallState extends State<DialogCall>
   void registrationStateChanged(PitelRegistrationState state) {
     switch (state.state) {
       case PitelRegistrationStateEnum.REGISTRATION_FAILED:
-        goBack(); //todo thaats baij
         break;
       case PitelRegistrationStateEnum.NONE:
       case PitelRegistrationStateEnum.UNREGISTERED:
@@ -97,7 +96,7 @@ class _DialogCallState extends State<DialogCall>
   }
 
   void _handleCall(BuildContext context, [bool voiceonly = false]) {
-    var dest = '0986839102'; //todo harcode
+    var dest = widget.sdt;
     if (dest.isEmpty) {
       showDialog(
         context: context,
@@ -112,7 +111,6 @@ class _DialogCallState extends State<DialogCall>
     } else {
       pitelClient.call(dest, voiceonly).then((value) => value.fold((succ) => {},
           (err) => {LoginBloc.of(context).receivedMsg.add(err.toString())}));
-      // LoginBloc.of(context).preferences.setString('dest', dest);
     }
   }
 
@@ -168,10 +166,10 @@ class _DialogCallState extends State<DialogCall>
                       style: AppStyle.DEFAULT_18_BOLD
                           .copyWith(fontSize: 24, fontWeight: FontWeight.w600)),
                 ),
-                SizedBox(
-                  height: 16,
-                ),
-                if (true) //todo check hide
+                if (LoginBloc.of(context).checkRegisterSuccess()) ...[
+                  SizedBox(
+                    height: 16,
+                  ),
                   GestureDetector(
                     onTap: () {
                       _handleCall(context, true);
@@ -181,9 +179,7 @@ class _DialogCallState extends State<DialogCall>
                         style: AppStyle.DEFAULT_18_BOLD.copyWith(
                             fontSize: 24, fontWeight: FontWeight.w600)),
                   ),
-                SizedBox(
-                  height: 16,
-                ),
+                ]
               ],
             ),
           ),

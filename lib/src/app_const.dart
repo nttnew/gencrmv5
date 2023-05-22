@@ -50,8 +50,7 @@ void loginSessionExpired() {
 
 void handleRegisterBase(
     BuildContext context, PitelServiceImpl pitelService, String deviceToken) {
-  final String domainUrl = 'https://demo-gencrm.com/';
-  //shareLocal.getString(PreferencesKey.URL_BASE);
+  final String domainUrl = shareLocal.getString(PreferencesKey.URL_BASE);
   final String domain = domainUrl.substring(
       domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
   final int user =
