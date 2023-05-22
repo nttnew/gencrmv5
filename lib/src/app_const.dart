@@ -13,8 +13,8 @@ import '../widgets/widget_text.dart';
 
 const int IS_AFTER = 1;
 const int IS_BEFORE = 0;
-const String BUNDLE_ID = 'com.gencrm';
-const String PACKAGE_ID = 'vn.gen_crm';
+const String BUNDLE_ID = 'com.carcrm';
+const String PACKAGE_ID = 'vn.car_crm';
 const String TEAM_ID = 'AEY48KNZRS';
 const int PRODUCT_TYPE = 99;
 const int PRODUCT_CUSTOMER_TYPE = 98;

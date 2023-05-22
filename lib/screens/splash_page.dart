@@ -47,7 +47,6 @@ class _LogoAppState extends State<SplashPage>
   late Timer _timer;
   LoginData user = LoginData();
   String? baseUrl = "";
-
   @override
   void initState() {
     super.initState();
