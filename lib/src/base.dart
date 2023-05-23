@@ -182,6 +182,14 @@ class BASE_URL {
       'modules/genmobile2/contract/formKn';
   static const SAVE_SIGN =
       'modules/genmobile2/contract/saveKn';
+  static const GET_LIST_HT_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/tabHt';
+  static const GET_LIST_CH_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/tabCh';
+  static const GET_LIST_CV_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/tabCv';
+  static const GET_LIST_HD_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/tabHd';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';

@@ -6,11 +6,19 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
-import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../src/app_const.dart';
+import '../../../../src/models/model_generator/contract.dart';
+import '../../../../src/models/model_generator/detail_product_customer_response.dart';
+import '../../../../src/models/model_generator/support.dart';
+import '../../../../widgets/listview_loadmore_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
+import '../chance/widget_chance_item.dart';
+import '../clue/work_card_widget.dart';
+import '../contract/item_list_contract.dart';
+import '../support/item_support.dart';
+import 'infor_tab.dart';
 
 class DetailProductCustomerScreen extends StatefulWidget {
   const DetailProductCustomerScreen({Key? key}) : super(key: key);
@@ -21,22 +29,160 @@ class DetailProductCustomerScreen extends StatefulWidget {
 }
 
 class _DetailProductCustomerScreenState
-    extends State<DetailProductCustomerScreen> {
+    extends State<DetailProductCustomerScreen>
+    with SingleTickerProviderStateMixin {
   String title = Get.arguments[0];
   String id = Get.arguments[1];
+  late TabController _tabController;
+  List<ModuleThaoTac> _list = [];
+  List<Tabs> _listTab = [];
+  final _controllerCv = LoadMoreController();
+  final _controllerHd = LoadMoreController();
+  final _controllerHt = LoadMoreController();
+  final _controllerCh = LoadMoreController();
 
-  List<ModuleThaoTac> list = [];
+  List<Widget> listBody(state, List<Tabs> listTab) {
+    List<Widget> listWidget = [];
+    int idM = int.parse(id);
+    for (final value in listTab) {
+      if (value.module == 'thong_tin_chung') {
+        listWidget.add(InfoTabProductCustomer(
+          state: state,
+        ));
+      } else if (value.module == 'opportunity') {
+        //cơ hội
+        listWidget.add(ListViewLoadMoreBase(
+          functionInit: (page, isInit) {
+            return DetailProductCustomerBloc.of(context)
+                .getListCHProductCustomer(page: page, isInit: isInit, id: idM);
+          },
+          itemWidget: (int index, data) {
+            return WidgetItemChance(
+              listChanceData: ListChanceData(
+                  data.id,
+                  data.name,
+                  data.price,
+                  data.trangThai,
+                  null,
+                  null,
+                  DataCustomer(data.customer.id, data.customer.name, null)),
+            );
+          },
+          controller: _controllerCh,
+        ));
+      } else if (value.module == 'contract') {
+        //hợp đồng
+        listWidget.add(ListViewLoadMoreBase(
+          functionInit: (page, isInit) {
+            return DetailProductCustomerBloc.of(context)
+                .getListHDProductCustomer(page: page, isInit: isInit, id: idM);
+          },
+          itemWidget: (int index, data) {
+            return ItemContract(
+              data: ContractItemData(
+                data.id,
+                data.name,
+                data.price,
+                data.status,
+                null, //data.status_edit,
+                data.color,
+                null, //data.avatar,
+                CustomerContract(
+                  data.customer.id,
+                  data.customer.name,
+                ),
+                null, //data.total_note,
+                data.conlai,
+              ),
+            );
+          },
+          controller: _controllerHd,
+        ));
+      } else if (value.module == 'job') {
+        listWidget.add(ListViewLoadMoreBase(
+          functionInit: (page, isInit) {
+            return DetailProductCustomerBloc.of(context)
+                .getListCVProductCustomer(page: page, isInit: isInit, id: idM);
+          },
+          itemWidget: (int index, data) {
+            return GestureDetector(
+              onTap: () {
+                AppNavigator.navigateDetailWork(
+                    int.parse(data.id ?? '0'), data.nameJob ?? '');
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25),
+                child: WorkCardWidget(
+                  nameCustomer: data.customer.name,
+                  nameJob: data.nameJob,
+                  startDate: data.startDate,
+                  statusJob: data.status,
+                  totalComment: data.totalNote,
+                  color: data.color,
+                ),
+              ),
+            );
+          },
+          controller: _controllerCv,
+        ));
+      } else if (value.module == 'support') {
+        listWidget.add(ListViewLoadMoreBase(
+          functionInit: (page, isInit) {
+            return DetailProductCustomerBloc.of(context)
+                .getListHTProductCustomer(page: page, isInit: isInit, id: idM);
+          },
+          itemWidget: (int index, data) {
+            return ItemSupport(
+              data: SupportItemData(
+                data.id,
+                data.tenHoTro,
+                data.createdDate,
+                data.trangThai,
+                data.color,
+                data.totalNote,
+                CustomerData(
+                  data.customer.id,
+                  data.customer.name,
+                ),
+              ),
+            );
+          },
+          controller: _controllerHt,
+        ));
+      }
+    }
+    return listWidget;
+  }
 
   @override
   void initState() {
-    getThaoTac();
     DetailProductCustomerBloc.of(context)
         .add(InitGetDetailProductCustomerEvent(id));
     super.initState();
   }
 
-  getThaoTac() {
-    list.add(ModuleThaoTac(
+  getThaoTac(List<Tabs> listAction) {
+    for (final value in listAction) {
+      _list.add(ModuleThaoTac(
+        title: value.name ?? '',
+        icon: ModuleMy.getIcon(value.module ?? ''),
+        isSvg: false,
+        onThaoTac: () async {
+          String module = value.module ?? '';
+          Get.back();
+          if (ModuleMy.LICH_HEN == module) {
+            //todo
+          } else if (ModuleMy.DAU_MOI == module) {
+            //todo
+          } else if (ModuleMy.CONG_VIEC == module) {
+            //todo
+          } else if (ModuleMy.CSKH == module) {
+            //todo
+          }
+        },
+      ));
+    }
+    _list.add(ModuleThaoTac(
       title: "Xem đính kèm",
       icon: ICONS.IC_ATTACK_SVG,
       onThaoTac: () async {
@@ -49,7 +195,7 @@ class _DetailProductCustomerScreenState
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: "Sửa",
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
@@ -58,7 +204,7 @@ class _DetailProductCustomerScreenState
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: "Xoá",
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
@@ -122,183 +268,61 @@ class _DetailProductCustomerScreenState
           }
         },
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 25),
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          child: Stack(
-            children: [
-              Positioned(
-                bottom: 0,
-                right: 0,
-                left: 0,
-                child: ButtonThaoTac(onTap: () {
-                  showThaoTac(context, list);
-                }),
-              ),
-              BlocBuilder<DetailProductCustomerBloc,
-                  DetailProductCustomerState>(builder: (context, state) {
-                if (state is UpdateGetDetailProductCustomerState)
-                  return SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(
-                          (state.productInfo.data ?? []).length,
-                          (index) => Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    height: AppValue.heights * 0.04,
-                                  ),
-                                  WidgetText(
-                                    title: (state.productInfo.data ?? [])[index]
-                                            .groupName ??
-                                        '',
-                                    style: TextStyle(
-                                        fontFamily: "Quicksand",
-                                        color: HexColor("#263238"),
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 14),
-                                  ),
-                                  SizedBox(
-                                    height: AppValue.heights * 0.02,
-                                  ),
-                                  Column(
-                                    children: List.generate(
-                                        (state.productInfo.data?[index].data ??
-                                                [])
-                                            .length,
-                                        (index1) =>
-                                            state
-                                                            .productInfo
-                                                            .data?[index]
-                                                            .data?[index1]
-                                                            .valueField !=
-                                                        null &&
-                                                    state
-                                                            .productInfo
-                                                            .data?[index]
-                                                            .data?[index1]
-                                                            .valueField !=
-                                                        ''
-                                                ? Column(
-                                                    children: [
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          WidgetText(
-                                                            title: state
-                                                                .productInfo
-                                                                .data?[index]
-                                                                .data?[index1]
-                                                                .labelField,
-                                                            style: LabelStyle(),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 8,
-                                                          ),
-                                                          Expanded(
-                                                            child:
-                                                                GestureDetector(
-                                                              onTap: () {
-                                                                if (state
-                                                                        .productInfo
-                                                                        .data?[
-                                                                            index]
-                                                                        .data?[
-                                                                            index1]
-                                                                        .labelField ==
-                                                                    BASE_URL
-                                                                        .KHACH_HANG) {
-                                                                  AppNavigator.navigateDetailCustomer(
-                                                                      state.productInfo.data?[index].data?[index1].link ??
-                                                                          '',
-                                                                      state
-                                                                              .productInfo
-                                                                              .data?[index]
-                                                                              .data?[index1]
-                                                                              .valueField ??
-                                                                          '');
-                                                                }
-                                                              },
-                                                              child: WidgetText(
-                                                                title: state
-                                                                    .productInfo
-                                                                    .data?[
-                                                                        index]
-                                                                    .data?[
-                                                                        index1]
-                                                                    .valueField,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .right,
-                                                                style:
-                                                                    ValueStyle()
-                                                                        .copyWith(
-                                                                  decoration: state
-                                                                              .productInfo
-                                                                              .data?[
-                                                                                  index]
-                                                                              .data?[
-                                                                                  index1]
-                                                                              .labelField ==
-                                                                          BASE_URL
-                                                                              .KHACH_HANG
-                                                                      ? TextDecoration
-                                                                          .underline
-                                                                      : null,
-                                                                  color: state
-                                                                              .productInfo
-                                                                              .data?[
-                                                                                  index]
-                                                                              .data?[
-                                                                                  index1]
-                                                                              .labelField ==
-                                                                          BASE_URL
-                                                                              .KHACH_HANG
-                                                                      ? Colors
-                                                                          .blue
-                                                                      : null,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height:
-                                                            AppValue.heights *
-                                                                0.02,
-                                                      ),
-                                                    ],
-                                                  )
-                                                : SizedBox()),
-                                  ),
-                                  LineHorizontal(),
-                                ],
-                              )),
+          child: BlocBuilder<DetailProductCustomerBloc,
+              DetailProductCustomerState>(builder: (context, state) {
+            if (state is GetDetailProductCustomerState) {
+              if (_listTab.isEmpty) {
+                _listTab = [
+                  ...[Tabs(module: 'thong_tin_chung', name: 'Thông tin chung')],
+                  ...state.productInfo.tabs ?? []
+                ];
+                _tabController =
+                    TabController(length: _listTab.length, vsync: this);
+                getThaoTac(state.productInfo.actions ?? []);
+              }
+              return Scaffold(
+                appBar: TabBar(
+                  padding: EdgeInsets.symmetric(horizontal: 25),
+                  isScrollable: true,
+                  controller: _tabController,
+                  labelColor: HexColor("#006CB1"),
+                  unselectedLabelColor: HexColor("#697077"),
+                  labelStyle: TextStyle(
+                      fontFamily: "Quicksand",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700),
+                  indicatorColor: HexColor("#006CB1"),
+                  tabs: _listTab
+                      .map(
+                        (e) => Tab(
+                          text: e.name,
+                        ),
+                      )
+                      .toList(),
+                ),
+                body: Column(
+                  children: [
+                    Expanded(
+                        child: TabBarView(
+                      controller: _tabController,
+                      children: listBody(state, _listTab),
+                    )),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      child: ButtonThaoTac(onTap: () {
+                        showThaoTac(context, _list);
+                      }),
                     ),
-                  );
-                else
-                  return SizedBox();
-              }),
-            ],
-          ),
+                  ],
+                ),
+              );
+            } else
+              return SizedBox();
+          }),
         ),
       ),
     );
   }
-
-  TextStyle ValueStyle([String? color]) => TextStyle(
-      fontFamily: "Quicksand",
-      color: color == null ? HexColor("#263238") : HexColor(color),
-      fontWeight: FontWeight.w700,
-      fontSize: 14);
-
-  TextStyle LabelStyle() => TextStyle(
-      fontFamily: "Quicksand",
-      color: COLORS.GREY,
-      fontWeight: FontWeight.w600,
-      fontSize: 14);
 }

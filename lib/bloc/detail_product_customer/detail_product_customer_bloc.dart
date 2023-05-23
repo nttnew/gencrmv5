@@ -37,7 +37,7 @@ class DetailProductCustomerBloc
       final response = await userRepository.getDetailProductCustomer(id: id);
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        yield UpdateGetDetailProductCustomerState(response);
+        yield GetDetailProductCustomerState(response);
       } else if (response.code == 999) {
         loginSessionExpired();
       } else {
@@ -51,6 +51,114 @@ class DetailProductCustomerBloc
       throw e;
     }
     LoadingApi().popLoading();
+  }
+
+  Future<dynamic> getListCVProductCustomer(
+      {required int id,
+      int page = BASE_URL.PAGE_DEFAULT,
+      bool isInit = true}) async {
+    if (isInit) {
+      LoadingApi().pushLoading();
+    }
+    try {
+      final response =
+          await userRepository.getListCVProductCustomer(spkh: id, page: page);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        LoadingApi().popLoading();
+        return response.data?.data?.dataList ?? [];
+      } else if (response.code == 999) {
+        LoadingApi().popLoading();
+        loginSessionExpired();
+      } else {
+        LoadingApi().popLoading();
+        return response.msg ?? '';
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      loginSessionExpired();
+    }
+  }
+
+  Future<dynamic> getListCHProductCustomer(
+      {required int id,
+      int page = BASE_URL.PAGE_DEFAULT,
+      bool isInit = true}) async {
+    if (isInit) {
+      LoadingApi().pushLoading();
+    }
+    try {
+      final response =
+          await userRepository.getListCHProductCustomer(spkh: id, page: page);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        LoadingApi().popLoading();
+        return response.data?.lists ?? [];
+      } else if (response.code == 999) {
+        LoadingApi().popLoading();
+        loginSessionExpired();
+      } else {
+        LoadingApi().popLoading();
+        return response.msg ?? '';
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      loginSessionExpired();
+    }
+  }
+
+  Future<dynamic> getListHDProductCustomer(
+      {required int id,
+      int page = BASE_URL.PAGE_DEFAULT,
+      bool isInit = true}) async {
+    if (isInit) {
+      LoadingApi().pushLoading();
+    }
+    try {
+      final response =
+          await userRepository.getListHDProductCustomer(spkh: id, page: page);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        LoadingApi().popLoading();
+        return response.data ?? [];
+      } else if (response.code == 999) {
+        LoadingApi().popLoading();
+        loginSessionExpired();
+      } else {
+        LoadingApi().popLoading();
+        return response.msg ?? '';
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      loginSessionExpired();
+    }
+  }
+
+  Future<dynamic> getListHTProductCustomer(
+      {required int id,
+      int page = BASE_URL.PAGE_DEFAULT,
+      bool isInit = true}) async {
+    if (isInit) {
+      LoadingApi().pushLoading();
+    }
+    try {
+      final response =
+          await userRepository.getListHTProductCustomer(spkh: id, page: page);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        LoadingApi().popLoading();
+        return response.data ?? [];
+      } else if (response.code == 999) {
+        LoadingApi().popLoading();
+        loginSessionExpired();
+      } else {
+        LoadingApi().popLoading();
+        return response.msg ?? '';
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      loginSessionExpired();
+    }
   }
 
   Stream<DetailProductCustomerState> _deleteProduct(
