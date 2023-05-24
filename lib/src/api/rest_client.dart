@@ -711,4 +711,24 @@ abstract class RestClient {
     @Query('spkh') int spkh,
     @Query('page') int page,
   );
+
+  @GET(BASE_URL.GET_FORM_CV_PRODUCT_CUSTOMER)
+  Future<AddCustomerIndividual> getFormCVProductCustomer(
+    @Query('spkh') int spkh,
+  );
+
+  @GET(BASE_URL.GET_FORM_HT_PRODUCT_CUSTOMER)
+  Future<AddCustomerIndividual> getFormHTProductCustomer(
+    @Query('spkh') int spkh,
+  );
+
+  @GET(BASE_URL.GET_FORM_HD_PRODUCT_CUSTOMER)
+  Future<AddCustomerIndividual> getFormHDProductCustomer(
+    @Query('spkh') int spkh,
+  );
+
+  @GET(BASE_URL.GET_FORM_CH_PRODUCT_CUSTOMER)
+  Future<AddCustomerIndividual> getFormCHProductCustomer(
+    @Query('spkh') int spkh,
+  );
 }

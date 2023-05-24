@@ -4187,6 +4187,98 @@ class _RestClient implements RestClient {
     return value;
   }
 
+  @override
+  Future<AddCustomerIndividual> getFormCVProductCustomer(spkh) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'spkh': spkh};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AddCustomerIndividual>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/productCustomer/getFormCv',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AddCustomerIndividual.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AddCustomerIndividual> getFormHTProductCustomer(spkh) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'spkh': spkh};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AddCustomerIndividual>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/productCustomer/getFormHt',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AddCustomerIndividual.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AddCustomerIndividual> getFormHDProductCustomer(spkh) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'spkh': spkh};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AddCustomerIndividual>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/productCustomer/getFormHd',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AddCustomerIndividual.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AddCustomerIndividual> getFormCHProductCustomer(spkh) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'spkh': spkh};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AddCustomerIndividual>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/productCustomer/getFormCh',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AddCustomerIndividual.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

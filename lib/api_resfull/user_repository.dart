@@ -864,6 +864,30 @@ class UserRepository {
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .getListCVProductCustomer(spkh, page);
 
+  Future<AddCustomerIndividual> getFormHTProductCustomer({
+    required int id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getFormHTProductCustomer(id);
+
+  Future<AddCustomerIndividual> getFormHDProductCustomer({
+    required int id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getFormHDProductCustomer(id);
+
+  Future<AddCustomerIndividual> getFormCVProductCustomer({
+    required int id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getFormCVProductCustomer(id);
+
+  Future<AddCustomerIndividual> getFormCHProductCustomer({
+    required int id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getFormCHProductCustomer(id);
+
   //////////////////////
 
   Stream<AuthenticationStatus> get status async* {
