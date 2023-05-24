@@ -15,7 +15,6 @@ import '../../../../../bloc/job_customer/job_customer_bloc.dart';
 import '../../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../../bloc/support_customer/support_customer_bloc.dart';
 import '../../../../../src/src_index.dart';
-import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../../widgets/loading_api.dart';
 import '../../../../../widgets/show_thao_tac.dart';
 import '../../../attachment/attachment.dart';
@@ -253,13 +252,12 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                   margin: EdgeInsets.only(right: 20),
                   child: Column(
                     children: [
-                      LineHorizontal(),
                       Expanded(
                         child: TabBarView(
                           controller: _tabController,
                           physics: BouncingScrollPhysics(),
                           children: <Widget>[
-                            GeneralInforCustomer(id: id),
+                            GeneralInfoCustomer(id: id),
                             ClueCustomer(id: id),
                             ChanceCustomer(id: id),
                             ConstractCustomer(id: id),

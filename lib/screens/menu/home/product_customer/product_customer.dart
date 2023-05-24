@@ -125,8 +125,8 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
           backgroundColor: Color(0xff1AA928),
-          onPressed: () =>
-              AppNavigator.navigateFormAdd('Thêm $title', PRODUCT_CUSTOMER_TYPE),
+          onPressed: () => AppNavigator.navigateFormAdd(
+              'Thêm $title', PRODUCT_CUSTOMER_TYPE),
           child: Icon(Icons.add, size: 40),
         ),
         body: Container(
@@ -186,7 +186,7 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                                   productModule: list[i],
                                   onTap: () {
                                     AppNavigator.navigateDetailProductCustomer(
-                                        title, list[i].id ?? '');
+                                        list[i].name ?? '', list[i].id ?? '');
                                   },
                                 )),
                       ),

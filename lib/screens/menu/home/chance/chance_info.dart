@@ -29,8 +29,8 @@ class _ChanceInfoState extends State<ChanceInfo>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            WidgetLine(
-              color: Colors.grey,
+            SizedBox(
+              height: 16,
             ),
             BlocBuilder<GetListDetailChanceBloc, DetailChanceState>(
                 builder: (context, state) {

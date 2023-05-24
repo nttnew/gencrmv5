@@ -22,7 +22,7 @@ class DetailSupportScreen extends StatefulWidget {
 
 class _DetailSupportScreenState extends State<DetailSupportScreen> {
   String id = Get.arguments[0];
-  String title = Get.arguments[0];
+  String title = Get.arguments[1];
   List<ModuleThaoTac> list = [];
 
   @override

@@ -62,12 +62,6 @@ class _ContractOperationState extends State<ContractOperation>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          WidgetLine(
-            color: Colors.grey,
-          ),
-          SizedBox(
-            height: 8,
-          ),
           WidgetText(
             title: data.group_name,
             style: AppStyle.DEFAULT_16_BOLD,
