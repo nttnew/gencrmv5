@@ -36,10 +36,24 @@ class _DetailProductCustomerScreenState
   late TabController _tabController;
   List<ModuleThaoTac> _list = [];
   List<Tabs> _listTab = [];
-  final _controllerCv = LoadMoreController();
-  final _controllerHd = LoadMoreController();
-  final _controllerHt = LoadMoreController();
-  final _controllerCh = LoadMoreController();
+  late final DetailProductCustomerBloc _bloc;
+
+  @override
+  void dispose() {
+    _bloc.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    _bloc = DetailProductCustomerBloc.of(context);
+    // _bloc.initController();
+    _bloc.add(InitGetDetailProductCustomerEvent(id));
+    super.initState();
+  }
+
+
+
 
   List<Widget> listBody(state, List<Tabs> listTab) {
     List<Widget> listWidget = [];
@@ -68,7 +82,7 @@ class _DetailProductCustomerScreenState
                   DataCustomer(data.customer.id, data.customer.name, null)),
             );
           },
-          controller: _controllerCh,
+          controller: _bloc.controllerCh,
         ));
       } else if (value.module == 'contract') {
         //hợp đồng
@@ -96,7 +110,7 @@ class _DetailProductCustomerScreenState
               ),
             );
           },
-          controller: _controllerHd,
+          controller: _bloc.controllerHd,
         ));
       } else if (value.module == 'job') {
         listWidget.add(ListViewLoadMoreBase(
@@ -123,7 +137,7 @@ class _DetailProductCustomerScreenState
               ),
             );
           },
-          controller: _controllerCv,
+          controller: _bloc.controllerCv,
         ));
       } else if (value.module == 'support') {
         listWidget.add(ListViewLoadMoreBase(
@@ -147,18 +161,11 @@ class _DetailProductCustomerScreenState
               ),
             );
           },
-          controller: _controllerHt,
+          controller: _bloc.controllerHt,
         ));
       }
     }
     return listWidget;
-  }
-
-  @override
-  void initState() {
-    DetailProductCustomerBloc.of(context)
-        .add(InitGetDetailProductCustomerEvent(id));
-    super.initState();
   }
 
   getThaoTac(List<Tabs> listAction) {
@@ -171,13 +178,21 @@ class _DetailProductCustomerScreenState
           String module = value.module ?? '';
           Get.back();
           if (ModuleMy.LICH_HEN == module) {
-            //todo
-          } else if (ModuleMy.DAU_MOI == module) {
-            //todo
+            AppNavigator.navigateFormAdd(
+                value.name ?? '', CH_PRODUCT_CUSTOMER_TYPE,
+                id: int.parse(id));
+          } else if (ModuleMy.HOP_DONG == module) {
+            AppNavigator.navigateFormAdd(
+                value.name ?? '', HD_PRODUCT_CUSTOMER_TYPE,
+                id: int.parse(id));
           } else if (ModuleMy.CONG_VIEC == module) {
-            //todo
+            AppNavigator.navigateFormAdd(
+                value.name ?? '', CV_PRODUCT_CUSTOMER_TYPE,
+                id: int.parse(id));
           } else if (ModuleMy.CSKH == module) {
-            //todo
+            AppNavigator.navigateFormAdd(
+                value.name ?? '', HT_PRODUCT_CUSTOMER_TYPE,
+                id: int.parse(id));
           }
         },
       ));

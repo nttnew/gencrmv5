@@ -8,6 +8,7 @@ import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/messages.dart';
 import '../../src/models/model_generator/detail_product_customer_response.dart';
+import '../../widgets/listview_loadmore_base.dart';
 
 part 'detail_product_customer_event.dart';
 part 'detail_product_customer_state.dart';
@@ -15,6 +16,10 @@ part 'detail_product_customer_state.dart';
 class DetailProductCustomerBloc
     extends Bloc<DetailProductCustomerEvent, DetailProductCustomerState> {
   final UserRepository userRepository;
+  late LoadMoreController controllerCv = LoadMoreController();
+  late LoadMoreController controllerCh = LoadMoreController();
+  late LoadMoreController controllerHd = LoadMoreController();
+  late LoadMoreController controllerHt = LoadMoreController();
 
   DetailProductCustomerBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -184,6 +189,13 @@ class DetailProductCustomerBloc
       throw e;
     }
     LoadingApi().popLoading();
+  }
+
+  dispose() {
+    controllerCv.dispose();
+    controllerCh.dispose();
+    controllerHd.dispose();
+    controllerHt.dispose();
   }
 
   static DetailProductCustomerBloc of(BuildContext context) =>

@@ -92,6 +92,13 @@ class LoadMoreController<T> {
     });
   }
 
+  dispose() {
+    streamList.add([]);
+    isLoadMore = true;
+    page = BASE_URL.PAGE_DEFAULT;
+    functionInit = null;
+  }
+
   initData(int page, {bool isInit = true}) async {
     if (functionInit != null) {
       final result = await functionInit!(page, isInit);
