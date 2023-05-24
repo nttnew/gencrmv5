@@ -47,13 +47,10 @@ class _DetailProductCustomerScreenState
   @override
   void initState() {
     _bloc = DetailProductCustomerBloc.of(context);
-    // _bloc.initController();
+    _bloc.initController(id);
     _bloc.add(InitGetDetailProductCustomerEvent(id));
     super.initState();
   }
-
-
-
 
   List<Widget> listBody(state, List<Tabs> listTab) {
     List<Widget> listWidget = [];

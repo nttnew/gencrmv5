@@ -28,7 +28,7 @@ class _ListViewLoadMoreBaseState extends State<ListViewLoadMoreBase>
     super.initState();
     if (mounted) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        _controller.initData(_controller.page, isInit: false);
+        // _controller.loadData(_controller.page, isInit: false);
         _controller.handelLoadMore();
       });
     }
@@ -45,7 +45,7 @@ class _ListViewLoadMoreBaseState extends State<ListViewLoadMoreBase>
             return RefreshIndicator(
               onRefresh: () async {
                 _controller.page = BASE_URL.PAGE_DEFAULT;
-                await _controller.initData(_controller.page);
+                await _controller.loadData(_controller.page);
               },
               child: ListView.builder(
                   padding: EdgeInsets.only(top: 8, bottom: 8),
@@ -79,7 +79,11 @@ class LoadMoreController<T> {
 
   reloadData() {
     int page = BASE_URL.PAGE_DEFAULT;
-    initData(page);
+    loadData(page);
+  }
+
+  initData(List<dynamic> list) {
+    streamList.add(list);
   }
 
   handelLoadMore() {
@@ -87,7 +91,7 @@ class LoadMoreController<T> {
       if (controller.position.maxScrollExtent == controller.offset &&
           isLoadMore) {
         page = page + 1;
-        initData(page);
+        loadData(page);
       }
     });
   }
@@ -99,7 +103,7 @@ class LoadMoreController<T> {
     functionInit = null;
   }
 
-  initData(int page, {bool isInit = true}) async {
+  loadData(int page, {bool isInit = true}) async {
     if (functionInit != null) {
       final result = await functionInit!(page, isInit);
       if (result.runtimeType == String) {
