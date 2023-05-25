@@ -43,6 +43,10 @@ import '../src/models/model_generator/get_phone_cus.dart';
 import '../src/models/model_generator/get_xe_response.dart';
 import '../src/models/model_generator/group_product_response.dart';
 import '../src/models/model_generator/list_car_response.dart';
+import '../src/models/model_generator/list_ch_product_customer_response.dart';
+import '../src/models/model_generator/list_cv_customer_response.dart';
+import '../src/models/model_generator/list_hd_product_customer_response.dart';
+import '../src/models/model_generator/list_ht_product_customer_response.dart';
 import '../src/models/model_generator/list_product_response.dart';
 import '../src/models/model_generator/param_del_notif.dart';
 import '../src/models/model_generator/param_read_notifi.dart';
@@ -769,13 +773,19 @@ class UserRepository {
           .getHomeBaoCao(time, timeFrom, timeTo, diemBan);
 
   Future<CheckInResponse> saveCheckIn({
+    required String module,
     required String id,
     required String latitude,
     required String longitude,
     required String location,
   }) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .saveCheckIn(id, latitude, longitude, location);
+      await RestClient(dio, baseUrl: dio.options.baseUrl).saveCheckIn(
+        module,
+        id,
+        latitude,
+        longitude,
+        location,
+      );
 
   Future<dynamic> deleteProduct({
     required String id,
@@ -831,6 +841,58 @@ class UserRepository {
     required Map<String, dynamic> data,
   }) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).saveSignature(data);
+
+  Future<ListHDProductCustomerResponse> getListHDProductCustomer({
+    required int spkh,
+    required int page,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getListHDProductCustomer(spkh, page);
+
+  Future<ListCHProductCustomerResponse> getListCHProductCustomer({
+    required int spkh,
+    required int page,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getListCHProductCustomer(spkh, page);
+
+  Future<ListHTProductCustomerResponse> getListHTProductCustomer({
+    required int spkh,
+    required int page,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getListHTProductCustomer(spkh, page);
+
+  Future<ListCVProductCustomerResponse> getListCVProductCustomer({
+    required int spkh,
+    required int page,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getListCVProductCustomer(spkh, page);
+
+  Future<AddCustomerIndividual> getFormHTProductCustomer({
+    required int id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getFormHTProductCustomer(id);
+
+  Future<AddCustomerIndividual> getFormHDProductCustomer({
+    required int id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getFormHDProductCustomer(id);
+
+  Future<AddCustomerIndividual> getFormCVProductCustomer({
+    required int id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getFormCVProductCustomer(id);
+
+  Future<AddCustomerIndividual> getFormCHProductCustomer({
+    required int id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getFormCHProductCustomer(id);
 
   //////////////////////
 

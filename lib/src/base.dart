@@ -163,7 +163,7 @@ class BASE_URL {
   static const DELETE_PRODUCT = 'modules/genmobile2/product/delete';
   static const GET_LIST_BAO_CAO = 'modules/genmobile2/dashboard/list';
   static const HOME_BAO_CAO = 'modules/genmobile2/dashboard/xetrongxuong';
-  static const SAVE_CHECK_IN = 'modules/genmobile2/job/checkIn';
+  static const SAVE_CHECK_IN = 'modules/genmobile2/{module}/checkIn';
   static const LIST_PRODUCT_CUSTOMER =
       'modules/genmobile2/productCustomer/list';
   static const PRODUCT_CUSTOMER_DETAIL =
@@ -178,10 +178,24 @@ class BASE_URL {
       'modules/genmobile2/productCustomer/save';
   static const PRODUCT_CUSTOMER_DELETE =
       'modules/genmobile2/productCustomer/delete';
-  static const GET_FORM_SIGN =
-      'modules/genmobile2/contract/formKn';
-  static const SAVE_SIGN =
-      'modules/genmobile2/contract/saveKn';
+  static const GET_FORM_SIGN = 'modules/genmobile2/contract/formKn';
+  static const SAVE_SIGN = 'modules/genmobile2/contract/saveKn';
+  static const GET_LIST_HT_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/tabHt';
+  static const GET_LIST_CH_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/tabCh';
+  static const GET_LIST_CV_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/tabCv';
+  static const GET_LIST_HD_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/tabHd';
+  static const GET_FORM_CH_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/getFormCh';
+  static const GET_FORM_HD_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/getFormHd';
+  static const GET_FORM_CV_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/getFormCv';
+  static const GET_FORM_HT_PRODUCT_CUSTOMER =
+      'modules/genmobile2/productCustomer/getFormHt';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';

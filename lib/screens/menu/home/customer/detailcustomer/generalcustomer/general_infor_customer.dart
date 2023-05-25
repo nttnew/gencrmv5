@@ -9,16 +9,16 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../../../src/src_index.dart';
 import '../../../../../../widgets/line_horizontal_widget.dart';
 
-class GeneralInforCustomer extends StatefulWidget {
-  GeneralInforCustomer({Key? key, required this.id}) : super(key: key);
+class GeneralInfoCustomer extends StatefulWidget {
+  GeneralInfoCustomer({Key? key, required this.id}) : super(key: key);
 
   final String id;
 
   @override
-  State<GeneralInforCustomer> createState() => _GeneralInforCustomerState();
+  State<GeneralInfoCustomer> createState() => _GeneralInfoCustomerState();
 }
 
-class _GeneralInforCustomerState extends State<GeneralInforCustomer>
+class _GeneralInfoCustomerState extends State<GeneralInfoCustomer>
     with AutomaticKeepAliveClientMixin {
   @override
   void initState() {

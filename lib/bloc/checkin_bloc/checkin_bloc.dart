@@ -23,23 +23,27 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
         latitude: event.latitude,
         location: event.location,
         id: event.id,
+        module: event.module,
       );
     }
   }
 
   Stream<CheckInState> saveCheckIn({
+    required String module,
     required String longitude,
     required String latitude,
     required String location,
     required String id,
   }) async* {
     LoadingApi().pushLoading();
+    yield LoadingCheckInState();
     try {
       final response = await userRepository.saveCheckIn(
         longitude: longitude,
         latitude: latitude,
         location: location,
         id: id,
+        module: module,
       );
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {

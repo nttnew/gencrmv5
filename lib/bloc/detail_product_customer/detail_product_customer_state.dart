@@ -8,9 +8,9 @@ abstract class DetailProductCustomerState extends Equatable {
 
 class InitGetDetailProduct extends DetailProductCustomerState {}
 
-class UpdateGetDetailProductCustomerState extends DetailProductCustomerState {
+class GetDetailProductCustomerState extends DetailProductCustomerState {
   final DetailProductCustomerResponse productInfo;
-  const UpdateGetDetailProductCustomerState(this.productInfo);
+  const GetDetailProductCustomerState(this.productInfo);
   @override
   List<Object> get props => [productInfo];
 }

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 
 import '../../api_resfull/user_repository.dart';
@@ -38,10 +39,13 @@ class DetailSupportBloc extends Bloc<DetailSupportEvent, DetailSupportState> {
       final response = await userRepository.getDetailSupport(id);
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        yield SuccessGetDetailSupportState(response.data!);
+        yield SuccessGetDetailSupportState(
+            response.data ?? [], response.location);
       } else
         yield ErrorGetDetailSupportState(response.msg ?? '');
     } catch (e) {
+      LoadingApi().popLoading();
+      loginSessionExpired();
       yield ErrorGetDetailSupportState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
@@ -58,6 +62,8 @@ class DetailSupportBloc extends Bloc<DetailSupportEvent, DetailSupportState> {
       } else
         yield ErrorDeleteSupportState(response.msg ?? '');
     } catch (e) {
+      LoadingApi().popLoading();
+      loginSessionExpired();
       yield ErrorDeleteSupportState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

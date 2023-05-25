@@ -29,6 +29,7 @@ import '../../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import '../../../../bloc/contract/attack_bloc.dart';
 import '../../../../bloc/contract/contract_bloc.dart';
 import '../../../../bloc/contract_customer/contract_customer_bloc.dart';
+import '../../../../bloc/detail_product_customer/detail_product_customer_bloc.dart';
 import '../../../../bloc/job_contract/job_contract_bloc.dart';
 import '../../../../bloc/job_customer/job_customer_bloc.dart';
 import '../../../../bloc/support/support_bloc.dart';
@@ -82,47 +83,49 @@ class _FormAddDataState extends State<FormAddData> {
     if (type == 1) {
       FormAddBloc.of(context).add(InitFormAddCusOrEvent());
     } else if (type == 11) {
-      FormAddBloc.of(context)
-          .add(InitFormAddContactCusEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddContactCusEvent(id));
     } else if (type == 12) {
-      FormAddBloc.of(context)
-          .add(InitFormAddOppCusEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddOppCusEvent(id));
     } else if (type == 13) {
-      FormAddBloc.of(context)
-          .add(InitFormAddContractCusEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddContractCusEvent(id));
     } else if (type == 14) {
-      FormAddBloc.of(context)
-          .add(InitFormAddJobCusEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddJobCusEvent(id));
     } else if (type == 15) {
-      FormAddBloc.of(context)
-          .add(InitFormAddSupportCusEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddSupportCusEvent(id));
     } else if (type == 2) {
       FormAddBloc.of(context).add(InitFormAddAgencyEvent());
     } else if (type == 3) {
       FormAddBloc.of(context).add(InitFormAddChanceEvent());
     } else if (type == 4) {
-      FormAddBloc.of(context)
-          .add(InitFormAddContractEvent(id: Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddContractEvent(id: id));
     } else if (type == 5) {
       FormAddBloc.of(context).add(InitFormAddJobEvent());
     } else if (type == 6) {
       FormAddBloc.of(context).add(InitFormAddSupportEvent());
     } else if (type == 21) {
-      FormAddBloc.of(context)
-          .add(InitFormAddJobOppEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddJobOppEvent(id));
     } else if (type == 31) {
-      FormAddBloc.of(context)
-          .add(InitFormAddJobChanceEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddJobChanceEvent(id));
     } else if (type == 41) {
-      FormAddBloc.of(context)
-          .add(InitFormAddSupportContractEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddSupportContractEvent(id));
     } else if (type == 42) {
-      FormAddBloc.of(context)
-          .add(InitFormAddJobContractEvent(Get.arguments[2].toString()));
+      FormAddBloc.of(context).add(InitFormAddJobContractEvent(id));
     } else if (type == PRODUCT_TYPE) {
       FormAddBloc.of(context).add(InitFormAddProductEvent());
     } else if (type == PRODUCT_CUSTOMER_TYPE) {
       FormAddBloc.of(context).add(InitFormAddProductCustomerEvent());
+    } else if (type == CH_PRODUCT_CUSTOMER_TYPE) {
+      FormAddBloc.of(context)
+          .add(InitFormAddCHProductCustomerEvent(int.parse(id)));
+    } else if (type == CV_PRODUCT_CUSTOMER_TYPE) {
+      FormAddBloc.of(context)
+          .add(InitFormAddCVProductCustomerEvent(int.parse(id)));
+    } else if (type == HT_PRODUCT_CUSTOMER_TYPE) {
+      FormAddBloc.of(context)
+          .add(InitFormAddHTProductCustomerEvent(int.parse(id)));
+    } else if (type == HD_PRODUCT_CUSTOMER_TYPE) {
+      FormAddBloc.of(context)
+          .add(InitFormAddHDProductCustomerEvent(int.parse(id)));
     }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Future.delayed(Duration(seconds: 1));
@@ -473,6 +476,22 @@ class _FormAddDataState extends State<FormAddData> {
                       } else if (type == PRODUCT_CUSTOMER_TYPE) {
                         ProductCustomerModuleBloc.of(context)
                             .add(GetProductCustomerModuleEvent());
+                      } else if (type == CV_PRODUCT_CUSTOMER_TYPE) {
+                        DetailProductCustomerBloc.of(context)
+                            .controllerCv
+                            .reloadData();
+                      } else if (type == CH_PRODUCT_CUSTOMER_TYPE) {
+                        DetailProductCustomerBloc.of(context)
+                            .controllerCh
+                            .reloadData();
+                      } else if (type == HT_PRODUCT_CUSTOMER_TYPE) {
+                        DetailProductCustomerBloc.of(context)
+                            .controllerHt
+                            .reloadData();
+                      } else if (type == HD_PRODUCT_CUSTOMER_TYPE) {
+                        DetailProductCustomerBloc.of(context)
+                            .controllerHd
+                            .reloadData();
                       }
                     },
                   );
@@ -959,23 +978,23 @@ class _FormAddDataState extends State<FormAddData> {
         AddDataBloc.of(context).add(
             AddCustomerOrEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 11) {
-        data["customer_id"] = Get.arguments[2];
+        data["customer_id"] = id;
         AddDataBloc.of(context).add(AddContactCustomerEvent(data,
             files: AttackBloc.of(context).listFile));
       } else if (type == 12) {
-        data["customer_id"] = Get.arguments[2];
+        data["customer_id"] = id;
         AddDataBloc.of(context).add(
             AddOpportunityEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 13) {
-        data["customer_id"] = Get.arguments[2];
+        data["customer_id"] = id;
         AddDataBloc.of(context).add(
             AddContractEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 14) {
-        data["customer_id"] = Get.arguments[2];
+        data["customer_id"] = id;
         AddDataBloc.of(context)
             .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 15) {
-        data["customer_id"] = Get.arguments[2];
+        data["customer_id"] = id;
         data["nguoi_xu_lht"] = id_user;
         AddDataBloc.of(context)
             .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
@@ -986,7 +1005,7 @@ class _FormAddDataState extends State<FormAddData> {
         AddDataBloc.of(context).add(
             AddOpportunityEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 4) {
-        data["customer_id"] = Get.arguments[2];
+        data["customer_id"] = id;
         AddDataBloc.of(context).add(
             AddContractEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 5) {
@@ -997,20 +1016,20 @@ class _FormAddDataState extends State<FormAddData> {
         AddDataBloc.of(context)
             .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 21) {
-        data["daumoi_id"] = Get.arguments[2].toString();
+        data["daumoi_id"] = id;
         AddDataBloc.of(context)
             .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 31) {
-        data["cohoi_id"] = Get.arguments[2].toString();
+        data["cohoi_id"] = id;
         AddDataBloc.of(context)
             .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 41) {
-        data["hopdong_id"] = Get.arguments[2].toString();
+        data["hopdong_id"] = id;
         data["nguoi_xu_lht"] = id_user;
         AddDataBloc.of(context)
             .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 42) {
-        data["hopdong_id"] = Get.arguments[2].toString();
+        data["hopdong_id"] = id;
         AddDataBloc.of(context)
             .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == PRODUCT_TYPE) {
@@ -1019,6 +1038,23 @@ class _FormAddDataState extends State<FormAddData> {
       } else if (type == PRODUCT_CUSTOMER_TYPE) {
         AddDataBloc.of(context).add(AddProductCustomerEvent(data,
             files: AttackBloc.of(context).listFile));
+      } else if (type == CV_PRODUCT_CUSTOMER_TYPE) {
+        data["customer_id"] = id;
+        AddDataBloc.of(context)
+            .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
+      } else if (type == HT_PRODUCT_CUSTOMER_TYPE) {
+        data["customer_id"] = id;
+        data["nguoi_xu_lht"] = id_user;
+        AddDataBloc.of(context)
+            .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
+      } else if (type == HD_PRODUCT_CUSTOMER_TYPE) {
+        data["customer_id"] = id;
+        AddDataBloc.of(context).add(
+            AddContractEvent(data, files: AttackBloc.of(context).listFile));
+      } else if (type == CH_PRODUCT_CUSTOMER_TYPE) {
+        data["customer_id"] = id;
+        AddDataBloc.of(context).add(
+            AddOpportunityEvent(data, files: AttackBloc.of(context).listFile));
       }
     }
   }

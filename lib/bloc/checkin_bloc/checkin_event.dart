@@ -12,7 +12,17 @@ class SaveCheckIn extends CheckInEvent {
   final String latitude;
   final String location;
   final String id;
+  final String module;
 
-  SaveCheckIn(this.longitude, this.latitude, this.location,this.id);
+  SaveCheckIn(
+      this.longitude, this.latitude, this.location, this.id, this.module);
 
+  @override
+  List<Object> get props => [
+        longitude,
+        latitude,
+        location,
+        id,
+        module,
+      ];
 }

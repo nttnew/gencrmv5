@@ -155,8 +155,8 @@ class AppNavigator {
   static navigateDetailProduct(String title, String id) async =>
       await Get.toNamed(ROUTE_NAMES.DETAIL_PRODUCT, arguments: [title, id]);
 
-  static navigateCheckIn(String id) async =>
-      await Get.toNamed(ROUTE_NAMES.CHECK_IN, arguments: id);
+  static navigateCheckIn(String id, String module) async =>
+      await Get.toNamed(ROUTE_NAMES.CHECK_IN, arguments: [id, module]);
 
   static navigateProductCustomer(String title) async =>
       await Get.toNamed(ROUTE_NAMES.PRODUCT_CUSTOMER, arguments: title);

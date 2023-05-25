@@ -6,7 +6,7 @@ import '../src/color.dart';
 class LoadingApi {
   RxInt loading = RxInt(0);
 
-  pushLoading({Widget? childLoading}) {
+  pushLoading() {
     loading.value++;
     if (isLoading() && Get.isDialogOpen != true) {
       Get.dialog(Container(

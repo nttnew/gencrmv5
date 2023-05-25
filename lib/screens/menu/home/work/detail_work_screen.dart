@@ -34,7 +34,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   }
 
   getThaoTac() {
-    list=[];
+    list = [];
     list.add(ModuleThaoTac(
       title: "Thêm thảo luận",
       icon: ICONS.IC_ADD_DISCUSS_SVG,
@@ -50,7 +50,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
         icon: ICONS.IC_LOCATION_SVG,
         onThaoTac: () {
           Get.back();
-          AppNavigator.navigateCheckIn(id.toString());
+          AppNavigator.navigateCheckIn(id.toString(), ModuleMy.CONG_VIEC);
         },
       ));
 
@@ -113,30 +113,29 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
         listener: (context, state) {
           if (state is SuccessDeleteWorkState) {
             LoadingApi().popLoading();
-           ShowDialogCustom.showDialogBase(
-                  title: MESSAGES.NOTIFICATION,
-                  content: "Thành công",
-                  onTap1: () {
-                    Get.back();
-                    Get.back();
-                    Get.back();
-                    Get.back();
-                    WorkBloc.of(context).add(InitGetListWorkEvent("1", "", ""));
+            ShowDialogCustom.showDialogBase(
+              title: MESSAGES.NOTIFICATION,
+              content: "Thành công",
+              onTap1: () {
+                Get.back();
+                Get.back();
+                Get.back();
+                Get.back();
+                WorkBloc.of(context).add(InitGetListWorkEvent("1", "", ""));
               },
             );
           } else if (state is ErrorDeleteWorkState) {
             LoadingApi().popLoading();
-           ShowDialogCustom.showDialogBase(
-                  title: MESSAGES.NOTIFICATION,
-                  content: state.msg,
-                  textButton1: "Quay lại",
-                  onTap1: () {
-                    Get.back();
-                    Get.back();
-                    Get.back();
-                    Get.back();
-                  },
-
+            ShowDialogCustom.showDialogBase(
+              title: MESSAGES.NOTIFICATION,
+              content: state.msg,
+              textButton1: "Quay lại",
+              onTap1: () {
+                Get.back();
+                Get.back();
+                Get.back();
+                Get.back();
+              },
             );
           }
         },
@@ -172,10 +171,10 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                                     .group_name ??
                                                 '',
                                             style: TextStyle(
-                                                fontFamily: "Quicksand",
-                                                color: HexColor("#263238"),
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 14,
+                                              fontFamily: "Quicksand",
+                                              color: HexColor("#263238"),
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 14,
                                             ),
                                           ),
                                           SizedBox(

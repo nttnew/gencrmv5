@@ -64,9 +64,6 @@ class _GeneralInfoState extends State<GeneralInfo>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            WidgetLine(
-              color: Colors.grey,
-            ),
             SizedBox(
               height: 16,
             ),

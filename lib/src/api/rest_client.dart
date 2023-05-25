@@ -43,6 +43,10 @@ import '../models/model_generator/group_product_response.dart';
 import '../models/model_generator/job_chance.dart';
 import '../models/model_generator/job_customer.dart';
 import '../models/model_generator/list_car_response.dart';
+import '../models/model_generator/list_ch_product_customer_response.dart';
+import '../models/model_generator/list_cv_customer_response.dart';
+import '../models/model_generator/list_hd_product_customer_response.dart';
+import '../models/model_generator/list_ht_product_customer_response.dart';
 import '../models/model_generator/list_product_customer_response.dart';
 import '../models/model_generator/list_product_response.dart';
 import '../models/model_generator/policy.dart';
@@ -636,6 +640,7 @@ abstract class RestClient {
 
   @POST(BASE_URL.SAVE_CHECK_IN)
   Future<CheckInResponse> saveCheckIn(
+    @Path('module') String module,
     @Part(name: 'id') String id,
     @Part(name: 'latitude') String latitude,
     @Part(name: 'longitude') String longitude,
@@ -683,4 +688,48 @@ abstract class RestClient {
   @POST(BASE_URL.SAVE_SIGN)
   Future<ResponseSaveProductCustomer> saveSignature(
       @Body() Map<String, dynamic> map);
+
+  @GET(BASE_URL.GET_LIST_CH_PRODUCT_CUSTOMER)
+  Future<ListCHProductCustomerResponse> getListCHProductCustomer(
+    @Query('spkh') int spkh,
+    @Query('page') int page,
+  );
+
+  @GET(BASE_URL.GET_LIST_HD_PRODUCT_CUSTOMER)
+  Future<ListHDProductCustomerResponse> getListHDProductCustomer(
+    @Query('spkh') int spkh,
+    @Query('page') int page,
+  );
+
+  @GET(BASE_URL.GET_LIST_CV_PRODUCT_CUSTOMER)
+  Future<ListCVProductCustomerResponse> getListCVProductCustomer(
+    @Query('spkh') int spkh,
+    @Query('page') int page,
+  );
+
+  @GET(BASE_URL.GET_LIST_HT_PRODUCT_CUSTOMER)
+  Future<ListHTProductCustomerResponse> getListHTProductCustomer(
+    @Query('spkh') int spkh,
+    @Query('page') int page,
+  );
+
+  @GET(BASE_URL.GET_FORM_CV_PRODUCT_CUSTOMER)
+  Future<AddCustomerIndividual> getFormCVProductCustomer(
+    @Query('spkh') int spkh,
+  );
+
+  @GET(BASE_URL.GET_FORM_HT_PRODUCT_CUSTOMER)
+  Future<AddCustomerIndividual> getFormHTProductCustomer(
+    @Query('spkh') int spkh,
+  );
+
+  @GET(BASE_URL.GET_FORM_HD_PRODUCT_CUSTOMER)
+  Future<AddCustomerIndividual> getFormHDProductCustomer(
+    @Query('spkh') int spkh,
+  );
+
+  @GET(BASE_URL.GET_FORM_CH_PRODUCT_CUSTOMER)
+  Future<AddCustomerIndividual> getFormCHProductCustomer(
+    @Query('spkh') int spkh,
+  );
 }

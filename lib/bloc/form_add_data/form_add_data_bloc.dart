@@ -58,9 +58,17 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       yield* _getFormAddSign(id: event.id ?? '');
     } else if (event is InitFormAddSignEvent) {
       yield* _getFormAddSign(id: event.id ?? '');
-    }else if (event is ResetDataEvent) {
-        yield SuccessFormAddCustomerOrState(
-         [],
+    } else if (event is InitFormAddCVProductCustomerEvent) {
+      yield* _getFormAddCVProductCustomer(id: event.id);
+    } else if (event is InitFormAddHDProductCustomerEvent) {
+      yield* _getFormAddHDProductCustomer(id: event.id);
+    } else if (event is InitFormAddHTProductCustomerEvent) {
+      yield* _getFormAddHTProductCustomer(id: event.id);
+    } else if (event is InitFormAddCHProductCustomerEvent) {
+      yield* _getFormAddCHProductCustomer(id: event.id);
+    } else if (event is ResetDataEvent) {
+      yield SuccessFormAddCustomerOrState(
+        [],
       );
     }
   }
@@ -425,6 +433,103 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           response.data ?? [],
           chuKyResponse: response.chu_ky,
           soTien: response.chuathanhtoan,
+        );
+      } else {
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
+        LoadingApi().popLoading();
+      }
+    } catch (e) {
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      LoadingApi().popLoading();
+      throw e;
+    }
+    LoadingApi().popLoading();
+  }
+
+  Stream<FormAddState> _getFormAddCHProductCustomer({
+    required int id,
+  }) async* {
+    LoadingApi().pushLoading();
+    try {
+      yield LoadingFormAddCustomerOrState();
+      final response = await userRepository.getFormCHProductCustomer(id: id);
+      print(response);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        yield SuccessFormAddCustomerOrState(
+          response.data ?? [],
+        );
+      } else {
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
+        LoadingApi().popLoading();
+      }
+    } catch (e) {
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      LoadingApi().popLoading();
+      throw e;
+    }
+    LoadingApi().popLoading();
+  }
+
+  Stream<FormAddState> _getFormAddCVProductCustomer({
+    required int id,
+  }) async* {
+    LoadingApi().pushLoading();
+    try {
+      yield LoadingFormAddCustomerOrState();
+      final response = await userRepository.getFormCVProductCustomer(id: id);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        yield SuccessFormAddCustomerOrState(
+          response.data ?? [],
+        );
+      } else {
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
+        LoadingApi().popLoading();
+      }
+    } catch (e) {
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      LoadingApi().popLoading();
+      throw e;
+    }
+    LoadingApi().popLoading();
+  }
+
+  Stream<FormAddState> _getFormAddHDProductCustomer({
+    required int id,
+  }) async* {
+    LoadingApi().pushLoading();
+    try {
+      yield LoadingFormAddCustomerOrState();
+      final response = await userRepository.getFormHDProductCustomer(id: id);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        yield SuccessFormAddCustomerOrState(
+          response.data ?? [],
+        );
+      } else {
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
+        LoadingApi().popLoading();
+      }
+    } catch (e) {
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      LoadingApi().popLoading();
+      throw e;
+    }
+    LoadingApi().popLoading();
+  }
+
+  Stream<FormAddState> _getFormAddHTProductCustomer({
+    required int id,
+  }) async* {
+    LoadingApi().pushLoading();
+    try {
+      yield LoadingFormAddCustomerOrState();
+      final response = await userRepository.getFormHTProductCustomer(id: id);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        yield SuccessFormAddCustomerOrState(
+          response.data ?? [],
         );
       } else {
         yield ErrorFormAddCustomerOrState(response.msg ?? '');
