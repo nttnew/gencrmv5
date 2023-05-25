@@ -142,3 +142,35 @@ class InitFormAddSignEvent extends FormAddEvent {
 class ResetDataEvent extends FormAddEvent {
   ResetDataEvent();
 }
+
+class InitFormAddCHProductCustomerEvent extends FormAddEvent {
+  final int id;
+
+  InitFormAddCHProductCustomerEvent(this.id);
+  @override
+  List<Object> get props => [id];
+}
+
+class InitFormAddCVProductCustomerEvent extends FormAddEvent {
+  final int id;
+
+  InitFormAddCVProductCustomerEvent(this.id);
+  @override
+  List<Object> get props => [id];
+}
+
+class InitFormAddHDProductCustomerEvent extends FormAddEvent {
+  final int id;
+
+  InitFormAddHDProductCustomerEvent(this.id);
+  @override
+  List<Object> get props => [id];
+}
+
+class InitFormAddHTProductCustomerEvent extends FormAddEvent {
+  final int id;
+
+  InitFormAddHTProductCustomerEvent(this.id);
+  @override
+  List<Object> get props => [id];
+}

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'package:gen_crm/bloc/support/support_bloc.dart';
-import 'package:gen_crm/src/models/model_generator/support.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../src/app_const.dart';
@@ -12,6 +11,7 @@ import '../../../../src/src_index.dart';
 import '../../../../widgets/widget_search.dart';
 import '../../../../widgets/widget_text.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
+import 'item_support.dart';
 
 class SupportScreen extends StatefulWidget {
   const SupportScreen({Key? key}) : super(key: key);
@@ -143,12 +143,9 @@ class _SupportScreenState extends State<SupportScreen> {
                   child: ListView.separated(
                     shrinkWrap: true,
                     controller: _scrollController,
-                    itemBuilder: (context, index) => InkWell(
-                        onTap: () => AppNavigator.navigateDetailSupport(
-                            state.listSupport[index].id.toString(),
-                            state.listSupport[index].ten_ho_tro ?? ''),
-                        child: ItemSupport(state.listSupport[index], index,
-                            state.listSupport.length)),
+                    itemBuilder: (context, index) => ItemSupport(
+                      data: state.listSupport[index],
+                    ),
                     itemCount: state.listSupport.length,
                     separatorBuilder: (BuildContext context, int index) =>
                         SizedBox(),
@@ -160,104 +157,6 @@ class _SupportScreenState extends State<SupportScreen> {
         } else
           return Container();
       }),
-    );
-  }
-
-  Widget ItemSupport(SupportItemData data, int index, int length) {
-    return Container(
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: WidgetText(
-                  title: data.ten_ho_tro ?? '',
-                  style: TextStyle(
-                      color: HexColor("#006CB1"),
-                      fontFamily: "Quicksand",
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18),
-                ),
-              ),
-              SizedBox(
-                width: 8,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                    color: data.color != ""
-                        ? HexColor(data.color!)
-                        : COLORS.PRIMARY_COLOR,
-                    borderRadius: BorderRadius.circular(99)),
-                width: AppValue.widths * 0.1,
-                height: AppValue.heights * 0.02,
-              )
-            ],
-          ),
-          itemTextIcon(
-              text: data.customer?.name ?? '', icon: ICONS.IC_AVATAR_SVG),
-          itemTextIcon(
-              text: data.trang_thai ?? '',
-              styleText: AppStyle.DEFAULT_14.copyWith(
-                  color: data.color != ""
-                      ? HexColor(data.color!)
-                      : COLORS.PRIMARY_COLOR),
-              colorIcon: data.color != ""
-                  ? HexColor(data.color!)
-                  : COLORS.PRIMARY_COLOR,
-              icon: ICONS.IC_ICON3_SVG),
-          Padding(
-            padding: const EdgeInsets.only(top: 15),
-            child: Row(
-              children: [
-                Expanded(
-                  child: itemTextIcon(
-                      paddingTop: 0,
-                      text: data.created_date ?? '',
-                      styleText: TextStyle(
-                          color: HexColor("#263238"),
-                          fontFamily: "Quicksand",
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14),
-                      icon: ICONS.IC_ICON4_SVG),
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                SvgPicture.asset(ICONS.IC_QUESTION_SVG),
-                SizedBox(
-                  width: 4,
-                ),
-                WidgetText(
-                  title: data.total_note ?? '',
-                  style: TextStyle(
-                    color: HexColor("#0052B4"),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      margin: EdgeInsets.only(
-        left: 25,
-        right: 25,
-        bottom: 10,
-        top: 10,
-      ),
-      padding: EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 3,
-            blurRadius: 5,
-            offset: Offset(0, 0), // changes position of shadow
-          ),
-        ],
-      ),
     );
   }
 

@@ -292,7 +292,8 @@ class _ProductScreenState extends State<ProductScreen> {
                             itemBuilder: (context, i) => GestureDetector(
                                   onTap: () {
                                     AppNavigator.navigateDetailProduct(
-                                        title, list[i].id ?? '');
+                                        list[i].tenSanPham ?? '',
+                                        list[i].id ?? '');
                                   },
                                   child: ItemProductModule(
                                     productModule: list[i],
