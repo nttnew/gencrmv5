@@ -773,13 +773,19 @@ class UserRepository {
           .getHomeBaoCao(time, timeFrom, timeTo, diemBan);
 
   Future<CheckInResponse> saveCheckIn({
+    required String module,
     required String id,
     required String latitude,
     required String longitude,
     required String location,
   }) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .saveCheckIn(id, latitude, longitude, location);
+      await RestClient(dio, baseUrl: dio.options.baseUrl).saveCheckIn(
+        module,
+        id,
+        latitude,
+        longitude,
+        location,
+      );
 
   Future<dynamic> deleteProduct({
     required String id,

@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:rxdart/rxdart.dart';
+import '../../../../bloc/support/detail_support_bloc.dart';
 import '../../../../bloc/work/detail_work_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
@@ -23,9 +24,12 @@ class CheckInScreen extends StatefulWidget {
 class _CheckInScreenState extends State<CheckInScreen> {
   late final BehaviorSubject<String> nameLocation;
   late final TextEditingController controllerNote;
-  String id = Get.arguments;
+  String id = Get.arguments[0];
+  String module = Get.arguments[1];
   Position? position;
+
   getNameLocation() async {
+    LoadingApi().pushLoading();
     position = await determinePosition(context);
     if (position != null) {
       nameLocation.add(LOADING);
@@ -33,6 +37,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
           position?.latitude ?? 0, position?.longitude ?? 0);
       nameLocation.add(location);
     }
+    LoadingApi().popLoading();
   }
 
   @override
@@ -58,8 +63,13 @@ class _CheckInScreenState extends State<CheckInScreen> {
             content: "Thêm mới check in thành công",
             onTap1: () {
               Get.back();
-              DetailWorkBloc.of(context)
-                  .add(InitGetDetailWorkEvent(int.parse(id)));
+              if (module == ModuleMy.CSKH) {
+                DetailSupportBloc.of(context)
+                    .add(InitGetDetailSupportEvent(id));
+              } else if (module == ModuleMy.CONG_VIEC) {
+                DetailWorkBloc.of(context)
+                    .add(InitGetDetailWorkEvent(int.parse(id)));
+              }
               Navigator.pop(context);
             },
           );
@@ -69,7 +79,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
             title: MESSAGES.NOTIFICATION,
             content: state.msg,
           );
-          Get.back();
         }
       },
       child: Scaffold(
@@ -88,6 +97,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                 '${position?.latitude ?? ''}',
                 controllerNote.text,
                 id,
+                module,
               ));
             }
           },
@@ -302,10 +312,11 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                     fontSize: 14, fontWeight: FontWeight.w500),
                                 onChanged: (text) {},
                                 decoration: InputDecoration(
-                                    focusedBorder: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    disabledBorder: InputBorder.none,
-                                    isDense: true),
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
+                                  isDense: true,
+                                ),
                               ),
                             ),
                           ),

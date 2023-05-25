@@ -640,6 +640,7 @@ abstract class RestClient {
 
   @POST(BASE_URL.SAVE_CHECK_IN)
   Future<CheckInResponse> saveCheckIn(
+    @Path('module') String module,
     @Part(name: 'id') String id,
     @Part(name: 'latitude') String latitude,
     @Part(name: 'longitude') String longitude,

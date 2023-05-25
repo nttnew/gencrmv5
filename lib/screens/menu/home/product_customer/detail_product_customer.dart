@@ -155,6 +155,7 @@ class _DetailProductCustomerScreenState
                   data.customer.id,
                   data.customer.name,
                 ),
+                null,
               ),
             );
           },

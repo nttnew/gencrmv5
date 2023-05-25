@@ -6,11 +6,11 @@ part 'support.g.dart';
 
 @JsonSerializable()
 class SupportItemData {
-  final String? id, ten_ho_tro, created_date, trang_thai, color, total_note;
+  final String? id, ten_ho_tro, created_date, trang_thai, color, total_note,location;
   final CustomerData? customer;
 
   SupportItemData(this.id, this.ten_ho_tro, this.created_date, this.trang_thai,
-      this.color, this.total_note, this.customer);
+      this.color, this.total_note, this.customer, this.location);
 
   factory SupportItemData.fromJson(Map<String, dynamic> json) =>
       _$SupportItemDataFromJson(json);

@@ -34,8 +34,12 @@ class DataDetailChance {
 @JsonSerializable()
 class ListDetailChanceResponse extends BaseResponse {
   final List<DataDetailChance>? data;
+  final int? location;
 
-  ListDetailChanceResponse(this.data);
+  ListDetailChanceResponse(
+    this.data,
+    this.location,
+  );
 
   factory ListDetailChanceResponse.fromJson(Map<String, dynamic> json) =>
       _$ListDetailChanceResponseFromJson(json);
