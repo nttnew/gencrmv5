@@ -17,6 +17,7 @@ SupportItemData _$SupportItemDataFromJson(Map<String, dynamic> json) =>
       json['customer'] == null
           ? null
           : CustomerData.fromJson(json['customer'] as Map<String, dynamic>),
+      json['location'] as String?,
     );
 
 Map<String, dynamic> _$SupportItemDataToJson(SupportItemData instance) =>
@@ -27,6 +28,7 @@ Map<String, dynamic> _$SupportItemDataToJson(SupportItemData instance) =>
       'trang_thai': instance.trang_thai,
       'color': instance.color,
       'total_note': instance.total_note,
+      'location': instance.location,
       'customer': instance.customer,
     };
 

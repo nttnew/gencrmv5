@@ -48,6 +48,7 @@ ListDetailChanceResponse _$ListDetailChanceResponseFromJson(
       (json['data'] as List<dynamic>?)
           ?.map((e) => DataDetailChance.fromJson(e as Map<String, dynamic>))
           .toList(),
+      json['location'] as int?,
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
@@ -60,4 +61,5 @@ Map<String, dynamic> _$ListDetailChanceResponseToJson(
       'msg': instance.msg,
       'code': instance.code,
       'data': instance.data,
+      'location': instance.location,
     };

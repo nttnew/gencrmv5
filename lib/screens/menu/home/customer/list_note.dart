@@ -45,7 +45,9 @@ class _ListNoteState extends State<ListNote> {
       } else if (widget.type == 5) {
         ListNoteBloc.of(context).add(InitNoteJobEvent(widget.id, page));
       } else if (widget.type == 6) {
-        ListNoteBloc.of(context).add(InitNoteSupEvent(widget.id, page));
+        if(mounted){
+          ListNoteBloc.of(context).add(InitNoteSupEvent(widget.id, page));
+        }
       }
     });
     super.initState();

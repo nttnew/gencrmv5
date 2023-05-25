@@ -9,7 +9,10 @@ class InitCheckInState extends CheckInState {}
 
 class LoadingCheckInState extends InitCheckInState {}
 
-class SuccessCheckInState extends InitCheckInState {}
+class SuccessCheckInState extends InitCheckInState {
+  @override
+  List<Object?> get props => [];
+}
 
 class ErrorCheckInState extends InitCheckInState {
   final String msg;

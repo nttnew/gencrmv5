@@ -24,15 +24,26 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
   String id = Get.arguments[0];
   String title = Get.arguments[1];
   List<ModuleThaoTac> list = [];
+  int? location;
 
   @override
   void initState() {
-    getThaoTac();
     DetailSupportBloc.of(context).add(InitGetDetailSupportEvent(id));
     super.initState();
   }
 
   getThaoTac() {
+    list=[];
+    if (location != 1) //1 là có rồi
+      list.add(ModuleThaoTac(
+        title: "Thêm check in",
+        icon: ICONS.IC_LOCATION_SVG,
+        onThaoTac: () {
+          Get.back();
+          AppNavigator.navigateCheckIn(id.toString(), ModuleMy.CSKH);
+        },
+      ));
+
     list.add(ModuleThaoTac(
       title: "Thêm thảo luận",
       icon: ICONS.IC_ADD_DISCUSS_SVG,
@@ -100,34 +111,36 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
         ),
         body: BlocBuilder<DetailSupportBloc, DetailSupportState>(
             builder: (context, state) {
-          if (state is SuccessGetDetailSupportState)
+          if (state is SuccessGetDetailSupportState) {
+            location = state.location;
+            getThaoTac();
             return BlocListener<DetailSupportBloc, DetailSupportState>(
               listener: (context, state) async {
                 if (state is SuccessDeleteSupportState) {
                   LoadingApi().popLoading();
                   ShowDialogCustom.showDialogBase(
-                        title: MESSAGES.NOTIFICATION,
-                        content: "Thành công",
-                        onTap1: () {
-                          Get.back();
-                          Get.back();
-                          Get.back();
-                          Get.back();
-                          SupportBloc.of(context)
-                              .add(InitGetSupportEvent(1, '', ''));
-                        },
+                    title: MESSAGES.NOTIFICATION,
+                    content: "Thành công",
+                    onTap1: () {
+                      Get.back();
+                      Get.back();
+                      Get.back();
+                      Get.back();
+                      SupportBloc.of(context)
+                          .add(InitGetSupportEvent(1, '', ''));
+                    },
                   );
                 } else if (state is ErrorDeleteSupportState) {
                   LoadingApi().popLoading();
                   ShowDialogCustom.showDialogBase(
-                        title: MESSAGES.NOTIFICATION,
-                        content: state.msg,
-                        textButton1: "Quay lại",
-                        onTap1: () {
-                          Get.back();
-                          Get.back();
-                          Get.back();
-                          Get.back();
+                    title: MESSAGES.NOTIFICATION,
+                    content: state.msg,
+                    textButton1: "Quay lại",
+                    onTap1: () {
+                      Get.back();
+                      Get.back();
+                      Get.back();
+                      Get.back();
                     },
                   );
                 }
@@ -270,7 +283,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                 ),
               ),
             );
-          else
+          } else
             return Container();
         }));
   }

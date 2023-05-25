@@ -3795,6 +3795,7 @@ class _RestClient implements RestClient {
 
   @override
   Future<CheckInResponse> saveCheckIn(
+    module,
     id,
     latitude,
     longitude,
@@ -3828,7 +3829,7 @@ class _RestClient implements RestClient {
     )
             .compose(
               _dio.options,
-              'modules/genmobile2/job/checkIn',
+              'modules/genmobile2/${module}/checkIn',
               queryParameters: queryParameters,
               data: _data,
             )

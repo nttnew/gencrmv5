@@ -25,6 +25,19 @@ class ItemSupport extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (data.location != null && data.location != '') ...[
+                  Container(
+                    height: 16,
+                    width: 16,
+                    child: SvgPicture.asset(
+                      ICONS.IC_LOCATION_SVG,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                ],
                 Expanded(
                   child: WidgetText(
                     title: data.ten_ho_tro ?? '',

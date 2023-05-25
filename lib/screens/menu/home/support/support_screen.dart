@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'package:gen_crm/bloc/support/support_bloc.dart';
@@ -22,12 +23,21 @@ class SupportScreen extends StatefulWidget {
 
 class _SupportScreenState extends State<SupportScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  final _key = GlobalKey<ExpandableFabState>();
   String search = '';
   String id_filter = '';
   ScrollController _scrollController = ScrollController();
   int length = 0;
   int total = 0;
   int page = 1;
+  List<String> listAdd = [
+    'Thêm check in',
+    'Thêm ${(Get.arguments ?? '').toLowerCase()}'
+  ];
+
+  _handleRouter(String value) {
+    AppNavigator.navigateFormAdd(value, 6, isCheckIn: listAdd.first == value);
+  }
 
   @override
   void initState() {
@@ -51,11 +61,86 @@ class _SupportScreenState extends State<SupportScreen> {
       key: _drawerKey,
       drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xff1AA928),
-        onPressed: () => AppNavigator.navigateFormAdd(
-            'Thêm ${Get.arguments.toString().toLowerCase()}', 6),
+      floatingActionButton: ExpandableFab(
+        key: _key,
+        distance: 65,
+        type: ExpandableFabType.up,
         child: Icon(Icons.add, size: 40),
+        closeButtonStyle: const ExpandableFabCloseButtonStyle(
+          child: Icon(Icons.close),
+          foregroundColor: Colors.white,
+          backgroundColor: Color(0xff1AA928),
+        ),
+        backgroundColor: Color(0xff1AA928),
+        overlayStyle: ExpandableFabOverlayStyle(
+          blur: 5,
+        ),
+        children: listAdd
+            .map(
+              (e) => InkWell(
+                onTap: () async {
+                  final state = _key.currentState;
+                  if (state != null) {
+                    if (state.isOpen) {
+                      await _handleRouter(e);
+                      state.toggle();
+                    }
+                  }
+                },
+                child: Row(
+                  children: [
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: COLORS.BLACK.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                          )
+                        ],
+                      ),
+                      child: WidgetText(
+                        title: e,
+                        style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(
+                        left: 8,
+                        right: 8,
+                      ),
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: COLORS.BLACK.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                          )
+                        ],
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: Image.asset(
+                          ICONS.IC_SUPPORT_3X_PNG,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+            .toList(),
       ),
       appBar: AppBar(
         centerTitle: false,

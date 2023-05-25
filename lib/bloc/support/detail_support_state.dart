@@ -10,9 +10,10 @@ class InitGetDetailSupport extends DetailSupportState {}
 
 class SuccessGetDetailSupportState extends DetailSupportState {
   final List<DataDetailChance> dataDetailSupport;
-  const SuccessGetDetailSupportState(this.dataDetailSupport);
+  final int? location;
+  const SuccessGetDetailSupportState(this.dataDetailSupport, this.location);
   @override
-  List<Object> get props => [dataDetailSupport];
+  List<Object?> get props => [dataDetailSupport, location];
 }
 
 class LoadingDetailSupportState extends DetailSupportState {}
