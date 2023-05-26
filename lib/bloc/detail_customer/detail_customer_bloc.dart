@@ -29,6 +29,15 @@ class DetailCustomerBloc
       yield* _getDetailCustomer(id: event.id);
     } else if (event is DeleteCustomerEvent) {
       yield* _deleteCustomer(id: event.id);
+    } else if (event is ReloadCustomerEvent) {
+      yield UpdateGetDetailCustomerState(
+          [],
+          CustomerNote(
+            null,
+            null,
+            null,
+            null,
+          ));
     }
   }
 

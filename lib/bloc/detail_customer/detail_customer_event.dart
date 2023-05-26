@@ -17,3 +17,5 @@ class DeleteCustomerEvent extends DetailCustomerEvent {
 
   DeleteCustomerEvent(this.id);
 }
+
+class ReloadCustomerEvent extends DetailCustomerEvent{}

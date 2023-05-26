@@ -62,21 +62,20 @@ class _ClueScreenState extends State<ClueScreen> {
         ),
       ),
       appBar: AppbarBase(_drawerKey, title),
-      body: Column(
-        children: [
-          AppValue.vSpaceTiny,
-          _buildSearch(),
-          BlocBuilder<GetListClueBloc, ClueState>(builder: (context, state) {
-            if (state is UpdateGetListClueState) {
-              listClue = state.listClue;
-              length = state.listClue.length;
-              total = int.parse(state.total);
-              return Expanded(
+      body: BlocBuilder<GetListClueBloc, ClueState>(builder: (context, state) {
+        if (state is UpdateGetListClueState) {
+          listClue = state.listClue;
+          length = state.listClue.length;
+          total = int.parse(state.total);
+          return Column(
+            children: [
+              AppValue.vSpaceTiny,
+              _buildSearch(state),
+              Expanded(
                 child: RefreshIndicator(
                   onRefresh: () =>
                       Future.delayed(Duration(microseconds: 300), () {
                     page = BASE_URL.PAGE_DEFAULT;
-
                     GetListClueBloc.of(context)
                         .add(InitGetListClueEvent('', page, ''));
                   }),
@@ -93,47 +92,40 @@ class _ClueScreenState extends State<ClueScreen> {
                         const SizedBox(),
                   ),
                 ),
-              );
-            } else
-              return noData();
-          }),
-        ],
-      ),
+              ),
+            ],
+          );
+        } else
+          return noData();
+      }),
     );
   }
 
-  _buildSearch() {
+  _buildSearch(UpdateGetListClueState state) {
     return Container(
         margin: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
         decoration: BoxDecoration(
           border: Border.all(color: HexColor("#DBDBDB")),
           borderRadius: BorderRadius.circular(10),
         ),
-        child:
-            BlocBuilder<GetListClueBloc, ClueState>(builder: (context, state) {
-          if (state is UpdateGetListClueState) {
-            return WidgetSearch(
-              hintTextStyle: TextStyle(
-                  fontFamily: "Quicksand",
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: HexColor("#707070")),
-              hint: 'Tìm ${Get.arguments.toString().toLowerCase()}',
-              leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
-              endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
-              onClickRight: () {
-                showBotomSheet(state.listFilter);
-              },
-              onSubmit: (v) {
-                search = v;
-                page = BASE_URL.PAGE_DEFAULT;
-                GetListClueBloc.of(context)
-                    .add(InitGetListClueEvent('', page, v));
-              },
-            );
-          }
-          return noData();
-        }));
+        child: WidgetSearch(
+          hintTextStyle: TextStyle(
+              fontFamily: "Quicksand",
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: HexColor("#707070")),
+          hint: 'Tìm ${Get.arguments.toString().toLowerCase()}',
+          leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+          endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
+          onClickRight: () {
+            showBotomSheet(state.listFilter);
+          },
+          onSubmit: (v) {
+            search = v;
+            page = BASE_URL.PAGE_DEFAULT;
+            GetListClueBloc.of(context).add(InitGetListClueEvent('', page, v));
+          },
+        ));
   }
 
   _buildCustomer(ClueData clueData) {

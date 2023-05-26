@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:gen_crm/widgets/line_horizontal_widget.dart';
 import 'package:hexcolor/hexcolor.dart';
-
-import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
 import 'index.dart';
 

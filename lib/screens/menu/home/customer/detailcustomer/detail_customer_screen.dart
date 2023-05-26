@@ -36,6 +36,12 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
   final List<ModuleThaoTac> list = [];
 
   @override
+  void deactivate() {
+    DetailCustomerBloc.of(context).add(ReloadCustomerEvent());
+    super.deactivate();
+  }
+
+  @override
   void initState() {
     getThaoTac();
     _tabController = TabController(length: 6, vsync: this);
@@ -55,6 +61,8 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     });
     super.initState();
   }
+
+
 
   getThaoTac() {
     if (DetailCustomerBloc.of(context).sdt != null)

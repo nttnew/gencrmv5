@@ -151,23 +151,26 @@ class _CustomerScreenState extends State<CustomerScreen> {
             .toList(),
       ),
       appBar: AppbarBase(_drawerKey, title),
-      body: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(
-              top: 20,
-              left: 25,
-              right: 25,
-              bottom: 10,
-            ),
-            decoration: BoxDecoration(
-              border: Border.all(color: HexColor("#DBDBDB")),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: BlocBuilder<GetListCustomerBloc, CustomerState>(
-                builder: (context, state) {
-              if (state is UpdateGetListCustomerState)
-                return WidgetSearch(
+      body: BlocBuilder<GetListCustomerBloc, CustomerState>(
+          builder: (context, state) {
+        if (state is UpdateGetListCustomerState) {
+          total = state.total;
+          length = state.listCustomer.length;
+          listCustomer = state.listCustomer;
+          return Column(
+            children: [
+              Container(
+                margin: EdgeInsets.only(
+                  top: 20,
+                  left: 25,
+                  right: 25,
+                  bottom: 10,
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(color: HexColor("#DBDBDB")),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: WidgetSearch(
                   hintTextStyle: TextStyle(
                       fontFamily: "Quicksand",
                       fontSize: 16,
@@ -177,25 +180,16 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                   endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
                   onClickRight: () {
-                    showBotomSheet(state.listFilter);
+                    _showBottomSheet(state.listFilter);
                   },
                   onSubmit: (v) {
                     search = v;
                     GetListCustomerBloc.of(context)
                         .add(InitGetListOrderEvent(idFilter, 1, v));
                   },
-                );
-              else
-                return Container();
-            }),
-          ),
-          BlocBuilder<GetListCustomerBloc, CustomerState>(
-              builder: (context, state) {
-            if (state is UpdateGetListCustomerState) {
-              total = state.total;
-              length = state.listCustomer.length;
-              listCustomer = state.listCustomer;
-              return Expanded(
+                ),
+              ),
+              Expanded(
                 child: RefreshIndicator(
                   onRefresh: () =>
                       Future.delayed(Duration(microseconds: 300), () {
@@ -221,16 +215,16 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     ),
                   ),
                 ),
-              );
-            } else
-              return Expanded(child: noData());
-          }),
-        ],
-      ),
+              ),
+            ],
+          );
+        } else
+          return noData();
+      }),
     );
   }
 
-  showBotomSheet(List<FilterData> data) {
+  _showBottomSheet(List<FilterData> data) {
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
