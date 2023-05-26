@@ -9,6 +9,7 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/customer.dart';
 import '../../../../src/src_index.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/widget_search.dart';
 import '../../../../widgets/widget_text.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
@@ -25,6 +26,7 @@ class _SupportScreenState extends State<SupportScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   final _key = GlobalKey<ExpandableFabState>();
   String search = '';
+  String title = Get.arguments ?? '';
   String id_filter = '';
   ScrollController _scrollController = ScrollController();
   int length = 0;
@@ -142,48 +144,7 @@ class _SupportScreenState extends State<SupportScreen> {
             )
             .toList(),
       ),
-      appBar: AppBar(
-        centerTitle: false,
-        toolbarHeight: AppValue.heights * 0.1,
-        backgroundColor: HexColor("#D0F1EB"),
-        title: Text(Get.arguments ?? '',
-            style: TextStyle(
-                color: Colors.black,
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.w700,
-                fontSize: 16)),
-        leading: Padding(
-            padding: EdgeInsets.only(left: 40),
-            child: InkWell(
-                onTap: () {
-                  if (_drawerKey.currentContext != null &&
-                      !_drawerKey.currentState!.isDrawerOpen) {
-                    _drawerKey.currentState!.openDrawer();
-                  }
-                },
-                child: SvgPicture.asset(ICONS.IC_MENU_SVG))),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
-          ),
-        ),
-        actions: [
-          Padding(
-              padding: EdgeInsets.only(right: 30),
-              child: InkWell(
-                onTap: () => AppNavigator.navigateNotification(),
-                child:
-                    BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
-                        builder: (context, state) {
-                  if (state is NotificationNeedRead) {
-                    return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
-                  } else {
-                    return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
-                  }
-                }),
-              ))
-        ],
-      ),
+      appBar: AppbarBase(_drawerKey, title),
       body: BlocBuilder<SupportBloc, SupportState>(builder: (context, state) {
         if (state is SuccessGetSupportState) {
           length = state.listSupport.length;

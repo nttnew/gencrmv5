@@ -5,11 +5,12 @@ import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import '../../bloc/add_service_voucher/add_service_bloc.dart';
+import '../../widgets/appbar_base.dart';
 
 class AddServiceVoucherScreen extends StatefulWidget {
-  const AddServiceVoucherScreen({Key? key, required this.title}) : super(key: key);
+  const AddServiceVoucherScreen({Key? key, required this.title})
+      : super(key: key);
 
   @override
   State<AddServiceVoucherScreen> createState() =>
@@ -22,52 +23,11 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
   String bienSo = '';
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  _buildBack() {
-    return IconButton(
-      onPressed: () {
-        AppNavigator.navigateBack();
-      },
-      icon: Image.asset(
-        ICONS.IC_BACK_PNG,
-        height: 28,
-        width: 28,
-        color: COLORS.BLACK,
-      ),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          toolbarHeight: AppValue.heights * 0.1,
-          backgroundColor: HexColor("#D0F1EB"),
-          title: WidgetText(
-              title:widget.title,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16)),
-          leading: _buildBack(),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(15),
-            ),
-          ),
-        ),
+        appBar: AppbarBaseNormal(widget.title),
         body: BlocListener<ServiceVoucherBloc, ServiceVoucherState>(
-          // bloc: _bloc,
           listener: (context, state) {
             if (state is GetServiceVoucherState) {
               LoadingApi().popLoading();
@@ -76,9 +36,10 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
           },
           child: Container(
             padding: EdgeInsets.only(
-                left: AppValue.widths * 0.05,
-                right: AppValue.widths * 0.05,
-                top: AppValue.heights * 0.02),
+              left: 25,
+              right: 25,
+              top: 20,
+            ),
             color: Colors.white,
             child: SingleChildScrollView(
               child: Column(
@@ -106,11 +67,10 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
                       onTap: () {
                         FocusManager.instance.primaryFocus?.unfocus();
                         if (sdt.trim() == '' && bienSo.trim() == '') {
-                        ShowDialogCustom.showDialogBase(
-                                title: MESSAGES.NOTIFICATION,
-                                content:
-                                    "Bạn phải nhập số điện thoại hoặc biển số",
-                              );
+                          ShowDialogCustom.showDialogBase(
+                            title: MESSAGES.NOTIFICATION,
+                            content: "Bạn phải nhập số điện thoại hoặc biển số",
+                          );
                         } else {
                           ServiceVoucherBloc.of(context).add(
                               PostServiceVoucherEvent(

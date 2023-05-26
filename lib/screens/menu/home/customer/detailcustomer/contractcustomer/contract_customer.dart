@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/screens/menu/home/customer/detailcustomer/contractcustomer/contract_card_widget.dart';
-
 import '../../../../../../bloc/contract_customer/contract_customer_bloc.dart';
+import '../../../../../../src/app_const.dart';
 import '../../../../../../src/src_index.dart';
-import '../../../../../../widgets/widget_text.dart';
 
-class ConstractCustomer extends StatefulWidget {
-  ConstractCustomer({Key? key, required this.id}) : super(key: key);
+class ContractCustomer extends StatefulWidget {
+  ContractCustomer({Key? key, required this.id}) : super(key: key);
 
   final String id;
 
   @override
-  State<ConstractCustomer> createState() => _ConstractCustomerState();
+  State<ContractCustomer> createState() => _ContractCustomerState();
 }
 
-class _ConstractCustomerState extends State<ConstractCustomer>
+class _ContractCustomerState extends State<ContractCustomer>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
@@ -45,12 +44,7 @@ class _ConstractCustomerState extends State<ConstractCustomer>
                       ))),
             );
           else {
-            return Center(
-              child: WidgetText(
-                title: "Không có dữ liệu",
-                style: AppStyle.DEFAULT_16_BOLD,
-              ),
-            );
+            return noData();
           }
           else
             return Container();

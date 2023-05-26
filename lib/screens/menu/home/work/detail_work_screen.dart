@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/btn_thao_tac.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
@@ -91,24 +92,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: AppValue.heights * 0.1,
-        backgroundColor: HexColor("#D0F1EB"),
-        title: WidgetText(
-          title: title,
-          style: AppStyle.DEFAULT_18_BOLD,
-        ),
-        leading: Padding(
-            padding: EdgeInsets.only(left: 30),
-            child: InkWell(
-                onTap: () => AppNavigator.navigateBack(),
-                child: Icon(Icons.arrow_back, color: Colors.black))),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
-          ),
-        ),
-      ),
+      appBar: AppbarBaseNormal(title),
       body: BlocListener<DetailWorkBloc, DetailWorkState>(
         listener: (context, state) {
           if (state is SuccessDeleteWorkState) {

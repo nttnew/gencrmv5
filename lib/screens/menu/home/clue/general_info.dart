@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../bloc/detail_clue/detail_clue_bloc.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/clue_detail.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/widget_line.dart';
-import '../../../../widgets/widget_text.dart';
 import '../customer/list_note.dart';
 
 class GeneralInfo extends StatefulWidget {
@@ -37,12 +36,7 @@ class _GeneralInfoState extends State<GeneralInfo>
                         (index) => _buildContent(state.list[index])),
                   );
                 } else {
-                  return Center(
-                    child: WidgetText(
-                      title: 'Không có dữ liệu',
-                      style: AppStyle.DEFAULT_18_BOLD,
-                    ),
-                  );
+                  return noData();
                 }
               }),
               AppValue.vSpaceTiny,

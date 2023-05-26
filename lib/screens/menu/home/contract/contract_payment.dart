@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/payment_contract/payment_contract_bloc.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 
+import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/detail_contract.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/widget_line.dart';
@@ -33,14 +34,7 @@ class _ContractPaymentState extends State<ContractPayment>
                     0)
               return _buildContent1(state.listPaymentContract);
             else {
-              return Expanded(
-                child: Center(
-                  child: WidgetText(
-                    title: "Không có dữ liệu",
-                    style: AppStyle.DEFAULT_18,
-                  ),
-                ),
-              );
+              return noData();
             }
             else
               return Container();

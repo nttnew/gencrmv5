@@ -15,6 +15,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../../src/src_index.dart';
 import '../../../../storages/share_local.dart';
+import '../../../../widgets/appbar_base.dart';
 
 class InformationAccount extends StatefulWidget {
   const InformationAccount({Key? key}) : super(key: key);
@@ -112,20 +113,7 @@ class _InformationAccountState extends State<InformationAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: COLORS.PRIMARY_COLOR,
-        title: Text(
-          MESSAGES.INFORMATION_ACCOUNT,
-          style: AppStyle.DEFAULT_18_BOLD,
-        ),
-        leading: _buildBack(),
-        toolbarHeight: AppValue.heights * 0.1,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
-          ),
-        ),
-      ),
+      appBar: AppbarBaseNormal(MESSAGES.INFORMATION_ACCOUNT),
       body: SingleChildScrollView(
           child: BlocListener<InforAccBloc, InforAccState>(
         listener: (context, state) {
@@ -324,20 +312,6 @@ class _InformationAccountState extends State<InformationAccount> {
           },
         ),
       )),
-    );
-  }
-
-  _buildBack() {
-    return IconButton(
-      onPressed: () {
-        AppNavigator.navigateBack();
-      },
-      icon: Image.asset(
-        ICONS.IC_BACK_PNG,
-        height: 28,
-        width: 28,
-        color: COLORS.BLACK,
-      ),
     );
   }
 

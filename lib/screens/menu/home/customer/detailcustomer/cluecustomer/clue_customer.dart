@@ -2,9 +2,8 @@ import "package:flutter/material.dart";
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/clue_customer/clue_customer_bloc.dart';
 import 'package:gen_crm/screens/menu/home/customer/detailcustomer/cluecustomer/clue_card_widget.dart';
-
+import '../../../../../../src/app_const.dart';
 import '../../../../../../src/src_index.dart';
-import '../../../../../../widgets/widget_text.dart';
 
 class ClueCustomer extends StatefulWidget {
   ClueCustomer({Key? key, required this.id}) : super(key: key);
@@ -53,12 +52,7 @@ class _ClueCustomerState extends State<ClueCustomer>
                         child: ClueCardWidget(data: state.listClue[index]))),
               );
             else {
-              return Center(
-                child: WidgetText(
-                  title: "Không có dữ liệu",
-                  style: AppStyle.DEFAULT_16_BOLD,
-                ),
-              );
+              return noData();
             }
             else
               return Container();

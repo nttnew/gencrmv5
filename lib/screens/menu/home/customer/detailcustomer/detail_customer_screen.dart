@@ -4,7 +4,6 @@ import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/detail_customer/detail_customer_bloc.dart';
 import 'package:gen_crm/screens/menu/home/customer/index.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
-import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -15,6 +14,7 @@ import '../../../../../bloc/job_customer/job_customer_bloc.dart';
 import '../../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../../bloc/support_customer/support_customer_bloc.dart';
 import '../../../../../src/src_index.dart';
+import '../../../../../widgets/appbar_base.dart';
 import '../../../../../widgets/loading_api.dart';
 import '../../../../../widgets/show_thao_tac.dart';
 import '../../../attachment/attachment.dart';
@@ -29,7 +29,7 @@ class DetailCustomerScreen extends StatefulWidget {
 class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     with SingleTickerProviderStateMixin {
   String id = Get.arguments[0];
-  String name = Get.arguments[1];
+  String title = Get.arguments[1];
   late TabController _tabController;
   int page = 0;
   bool drag = false;
@@ -164,24 +164,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: AppValue.heights * 0.1,
-          backgroundColor: HexColor("#D0F1EB"),
-          centerTitle: false,
-          title: WidgetText(
-              title: name,
-              style: AppStyle.DEFAULT_16.copyWith(fontWeight: FontWeight.w700)),
-          leading: Padding(
-              padding: EdgeInsets.only(left: 30),
-              child: InkWell(
-                  onTap: () => AppNavigator.navigateBack(),
-                  child: Icon(Icons.arrow_back, color: Colors.black))),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(15),
-            ),
-          ),
-        ),
+        appBar: AppbarBaseNormal(title),
         body: BlocListener<DetailCustomerBloc, DetailCustomerState>(
           listener: (context, state) async {
             if (state is SuccessDeleteCustomerState) {
@@ -260,7 +243,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                             GeneralInfoCustomer(id: id),
                             ClueCustomer(id: id),
                             ChanceCustomer(id: id),
-                            ConstractCustomer(id: id),
+                            ContractCustomer(id: id),
                             WorkCustomer(id: id),
                             SupportCustomer(id: id),
                           ],

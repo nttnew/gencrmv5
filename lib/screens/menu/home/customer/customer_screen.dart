@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
+import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -30,6 +31,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   final _key = GlobalKey<ExpandableFabState>();
   String search = '';
+  String title = Get.arguments;
   ScrollController _scrollController = ScrollController();
   List<String> listAdd = [
     'Khách hàng tổ chức',
@@ -148,49 +150,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
             )
             .toList(),
       ),
-      appBar: AppBar(
-        toolbarHeight: AppValue.heights * 0.1,
-        backgroundColor: HexColor("#D0F1EB"),
-        centerTitle: false,
-        title: WidgetText(
-            title: Get.arguments ?? '',
-            style: TextStyle(
-                color: Colors.black,
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.w700,
-                fontSize: 16)),
-        leading: Padding(
-            padding: EdgeInsets.only(left: 40),
-            child: InkWell(
-                onTap: () {
-                  if (_drawerKey.currentContext != null &&
-                      !_drawerKey.currentState!.isDrawerOpen) {
-                    _drawerKey.currentState!.openDrawer();
-                  }
-                },
-                child: SvgPicture.asset(ICONS.IC_MENU_SVG))),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
-          ),
-        ),
-        actions: [
-          Padding(
-              padding: EdgeInsets.only(right: 30),
-              child: GestureDetector(
-                onTap: () => AppNavigator.navigateNotification(),
-                child:
-                    BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
-                        builder: (context, state) {
-                  if (state is NotificationNeedRead) {
-                    return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
-                  } else {
-                    return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
-                  }
-                }),
-              ))
-        ],
-      ),
+      appBar: AppbarBase(_drawerKey, title),
       body: Column(
         children: [
           Container(
@@ -263,13 +223,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 ),
               );
             } else
-              return Expanded(
-                  child: Center(
-                child: WidgetText(
-                  title: 'Không có dữ liệu',
-                  style: AppStyle.DEFAULT_18_BOLD,
-                ),
-              ));
+              return Expanded(child: noData());
           }),
         ],
       ),

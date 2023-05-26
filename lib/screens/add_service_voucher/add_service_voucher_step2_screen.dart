@@ -20,6 +20,7 @@ import '../../models/widget_input_date.dart';
 import '../../src/app_const.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/src_index.dart';
+import '../../widgets/appbar_base.dart';
 import '../../widgets/widget_field_input_percent.dart';
 import '../../widgets/widget_text.dart';
 import '../menu/home/contract/product_contract.dart';
@@ -36,6 +37,7 @@ class AddServiceVoucherStepTwoScreen extends StatefulWidget {
 class _AddServiceVoucherStepTwoScreenState
     extends State<AddServiceVoucherStepTwoScreen> {
   late final ServiceVoucherBloc _bloc;
+  String title = Get.arguments;
 
   void dispose() {
     _bloc.dispose();
@@ -117,22 +119,7 @@ class _AddServiceVoucherStepTwoScreenState
   Widget build(BuildContext context) {
     final addData = _bloc.addData;
     return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: AppValue.heights * 0.1,
-          backgroundColor: HexColor("#D0F1EB"),
-          title: Text("${Get.arguments}",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16)),
-          leading: _buildBack(),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(15),
-            ),
-          ),
-        ),
+        appBar: AppbarBaseNormal(title),
         body: BlocListener<ServiceVoucherBloc, ServiceVoucherState>(
           listener: (context, state) async {
             if (state is SaveServiceVoucherState) {
@@ -226,7 +213,7 @@ class _AddServiceVoucherStepTwoScreenState
                                                     canDelete: true,
                                                   )
                                                 : fieldId == '13366'
-                                                    ? _loaiCar(
+                                                    ? _typeCar(
                                                         fieldData, index, index1)
                                                     : fieldId == '246' &&
                                                             fieldData.field_set_value_datasource !=
@@ -513,21 +500,7 @@ class _AddServiceVoucherStepTwoScreenState
         ));
   }
 
-  _buildBack() {
-    return IconButton(
-      onPressed: () {
-        AppNavigator.navigateBack();
-      },
-      icon: Image.asset(
-        ICONS.IC_BACK_PNG,
-        height: 28,
-        width: 28,
-        color: COLORS.BLACK,
-      ),
-    );
-  }
-
-  Widget _loaiCar(
+  Widget _typeCar(
     CustomerIndividualItemData data,
     int index,
     int index1,

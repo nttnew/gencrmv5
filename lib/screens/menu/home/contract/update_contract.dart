@@ -11,6 +11,7 @@ import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/menu/home/contract/product_contract.dart';
 import 'package:gen_crm/screens/menu/home/contract/widget_total_sum.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
+import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -118,23 +119,7 @@ class _EditContractState extends State<EditContract> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: AppValue.heights * 0.1,
-          backgroundColor: HexColor("#D0F1EB"),
-          title: WidgetText(
-              title: "Sửa thông tin",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16)),
-          leading: _buildBack(),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(15),
-            ),
-          ),
-        ),
+      appBar:AppbarBaseNormal('Sửa thông tin'),
         body: BlocListener<AddDataBloc, AddDataState>(
           listener: (context, state) async {
             if (state is SuccessAddCustomerOrState) {
@@ -468,20 +453,6 @@ class _EditContractState extends State<EditContract> {
             ),
           ),
         ));
-  }
-
-  _buildBack() {
-    return IconButton(
-      onPressed: () {
-        AppNavigator.navigateBack();
-      },
-      icon: Image.asset(
-        ICONS.IC_BACK_PNG,
-        height: 28,
-        width: 28,
-        color: COLORS.BLACK,
-      ),
-    );
   }
 
   Column fieldInputImage() {

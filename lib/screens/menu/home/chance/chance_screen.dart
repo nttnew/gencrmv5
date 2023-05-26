@@ -7,6 +7,7 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/widgets.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 import 'widget_chance_item.dart';
@@ -54,35 +55,9 @@ class _ChanceScreenState extends State<ChanceScreen> {
       key: _drawerKey,
       drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      appBar: AppbarBase(_drawerKey, title),
       body: Column(
         children: [
-          WidgetAppbar(
-            title: Get.arguments??'',
-            textColor: Colors.black,
-            left: Padding(
-              padding: EdgeInsets.only(left: 20),
-              child: GestureDetector(
-                onTap: () {
-                  if (_drawerKey.currentContext != null &&
-                      !_drawerKey.currentState!.isDrawerOpen) {
-                    _drawerKey.currentState!.openDrawer();
-                  }
-                },
-                child: Image.asset(ICONS.IC_MENU_PNG),
-              ),
-            ),
-            right: GestureDetector(onTap: () {
-              AppNavigator.navigateNotification();
-            }, child:
-                BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
-                    builder: (context, state) {
-              if (state is NotificationNeedRead) {
-                return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
-              } else {
-                return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
-              }
-            })),
-          ),
           AppValue.vSpaceTiny,
           _buildSearch(),
           BlocBuilder<GetListChanceBloc, ChanceState>(
@@ -113,13 +88,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
                 ),
               );
             } else
-              return Expanded(
-                  child: Center(
-                child: WidgetText(
-                  title: 'Không có dữ liệu',
-                  style: AppStyle.DEFAULT_18_BOLD,
-                ),
-              ));
+              return noData();
           }),
         ],
       ),

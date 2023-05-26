@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/work_clue/work_clue_bloc.dart';
-
+import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/work_clue.dart';
 import 'package:gen_crm/screens/menu/home/clue/work_card_widget.dart';
-
 import '../../../../src/src_index.dart';
-import '../../../../widgets/widget_text.dart';
 
 class ListWorkClue extends StatefulWidget {
   ListWorkClue({Key? key, required this.id}) : super(key: key);
@@ -52,20 +50,10 @@ class _ListWorkClueState extends State<ListWorkClue>
               ),
             );
           } else {
-            return Center(
-              child: WidgetText(
-                title: 'Không có dữ liệu',
-                style: AppStyle.DEFAULT_18_BOLD,
-              ),
-            );
+            return noData();
           }
         } else {
-          return Center(
-            child: WidgetText(
-              title: 'Không có dữ liệu',
-              style: AppStyle.DEFAULT_18_BOLD,
-            ),
-          );
+          return noData();
         }
       }),
     );

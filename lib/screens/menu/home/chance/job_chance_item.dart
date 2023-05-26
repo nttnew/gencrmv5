@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../bloc/blocs.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/job_chance.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/widget_text.dart';
@@ -36,8 +37,8 @@ class _JobListChanceState extends State<JobListChance>
                       return GestureDetector(
                         onTap: () {
                           AppNavigator.navigateDetailWork(
-                              int.parse(state.data[index].id!),
-                              state.data[index].name_job ?? '',
+                            int.parse(state.data[index].id!),
+                            state.data[index].name_job ?? '',
                           );
                         },
                         child: _tabBarWork(state.data[index]),
@@ -50,21 +51,9 @@ class _JobListChanceState extends State<JobListChance>
                     itemCount: state.data.length)),
           );
         } else
-          return Center(
-            child: WidgetText(
-              title: "Không có dữ liệu",
-              style: AppStyle.DEFAULT_18,
-            ),
-          );
+          return noData();
       } else
-        return Container(
-          child: Center(
-            child: Text(
-              'Không có dữ liệu!',
-              style: AppStyle.DEFAULT_LABEL_TARBAR,
-            ),
-          ),
-        );
+        return noData();
     });
   }
 
@@ -129,7 +118,11 @@ class _JobListChanceState extends State<JobListChance>
                   ),
                 Row(
                   children: [
-                    Image.asset(ICONS.IC_DATE_PNG,height: 20,width: 20,),
+                    Image.asset(
+                      ICONS.IC_DATE_PNG,
+                      height: 20,
+                      width: 20,
+                    ),
                     AppValue.hSpaceTiny,
                     WidgetText(
                         title: data.start_date,

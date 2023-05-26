@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
-
 import '../../../../bloc/readed_list_notification/readed_list_notifi_bloc.dart';
-import '../../../../src/src_index.dart';
+import '../../../../src/app_const.dart';
 import '../../../../widgets/slide_menu.dart';
-import '../../../../widgets/widget_text.dart';
 
-class ReadedList extends StatefulWidget {
+class ReadList extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _ReadedListState();
+  State<StatefulWidget> createState() => new _ReadListState();
 }
 
-class _ReadedListState extends State<ReadedList> {
+class _ReadListState extends State<ReadList> {
   int page = 1;
   int total = 0;
   int lenght = 0;
@@ -56,12 +54,7 @@ class _ReadedListState extends State<ReadedList> {
                     );
                   })).toList());
         } else {
-          return Center(
-            child: WidgetText(
-              title: 'Không có dữ liệu',
-              style: AppStyle.DEFAULT_18_BOLD,
-            ),
-          );
+          return noData();
         }
       }),
     );

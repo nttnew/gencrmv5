@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
-import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/clue.dart';
 import '../../../../src/src_index.dart';
-import '../../../../widgets/widget_appbar.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/widget_search.dart';
 import '../../../../widgets/widget_text.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
@@ -24,9 +23,10 @@ class _ClueScreenState extends State<ClueScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   int page = 1;
   int total = 0;
-  int lenght = 0;
+  int length = 0;
   List<ClueData> listClue = [];
   String idFilter = "";
+  String title = Get.arguments;
 
   String search = '';
   ScrollController _scrollController = ScrollController();
@@ -37,7 +37,7 @@ class _ClueScreenState extends State<ClueScreen> {
     _scrollController.addListener(() {
       if (_scrollController.offset ==
               _scrollController.position.maxScrollExtent &&
-          lenght < total) {
+          length < total) {
         page = page + 1;
         GetListClueBloc.of(context).add(InitGetListClueEvent('', page, search));
       }
@@ -61,44 +61,15 @@ class _ClueScreenState extends State<ClueScreen> {
           child: Icon(Icons.add, size: 40),
         ),
       ),
+      appBar: AppbarBase(_drawerKey, title),
       body: Column(
         children: [
-          WidgetAppbar(
-            title: Get.arguments ?? '',
-            textColor: Colors.black,
-            left: Padding(
-              padding: EdgeInsets.only(left: 20),
-              child: GestureDetector(
-                onTap: () {
-                  if (_drawerKey.currentContext != null &&
-                      !_drawerKey.currentState!.isDrawerOpen) {
-                    _drawerKey.currentState!.openDrawer();
-                  }
-                },
-                child: SvgPicture.asset(ICONS.IC_MENU_SVG),
-              ),
-            ),
-            right: GestureDetector(
-              onTap: () {
-                AppNavigator.navigateNotification();
-              },
-              child:
-                  BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
-                      builder: (context, state) {
-                if (state is NotificationNeedRead) {
-                  return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
-                } else {
-                  return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
-                }
-              }),
-            ),
-          ),
           AppValue.vSpaceTiny,
           _buildSearch(),
           BlocBuilder<GetListClueBloc, ClueState>(builder: (context, state) {
             if (state is UpdateGetListClueState) {
               listClue = state.listClue;
-              lenght = state.listClue.length;
+              length = state.listClue.length;
               total = int.parse(state.total);
               return Expanded(
                 child: RefreshIndicator(
@@ -114,7 +85,7 @@ class _ClueScreenState extends State<ClueScreen> {
                     controller: _scrollController,
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-                    itemCount: lenght,
+                    itemCount: length,
                     itemBuilder: (context, index) {
                       return _buildCustomer(listClue[index]);
                     },
@@ -124,13 +95,7 @@ class _ClueScreenState extends State<ClueScreen> {
                 ),
               );
             } else
-              return Expanded(
-                  child: Center(
-                child: WidgetText(
-                  title: 'Không có dữ liệu',
-                  style: AppStyle.DEFAULT_18_BOLD,
-                ),
-              ));
+              return noData();
           }),
         ],
       ),
@@ -167,12 +132,7 @@ class _ClueScreenState extends State<ClueScreen> {
               },
             );
           }
-          return Center(
-            child: WidgetText(
-              title: 'Không có dữ liệu',
-              style: AppStyle.DEFAULT_18_BOLD,
-            ),
-          );
+          return noData();
         }));
   }
 

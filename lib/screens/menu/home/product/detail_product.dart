@@ -8,6 +8,7 @@ import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../bloc/detail_product/detail_product_bloc.dart';
 import '../../../../src/app_const.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
@@ -70,50 +71,32 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: AppValue.heights * 0.1,
-        backgroundColor: HexColor("#D0F1EB"),
-        title: WidgetText(
-          title: title,
-          style: AppStyle.DEFAULT_18_BOLD,
-        ),
-        leading: Padding(
-            padding: EdgeInsets.only(left: 30),
-            child: InkWell(
-                onTap: () => AppNavigator.navigateBack(),
-                child: Icon(Icons.arrow_back, color: Colors.black))),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
-          ),
-        ),
-      ),
+      appBar: AppbarBaseNormal(title),
       body: BlocListener<DetailProductBloc, DetailProductState>(
         listener: (context, state) async {
           if (state is SuccessDeleteProductState) {
             LoadingApi().popLoading();
-           ShowDialogCustom.showDialogBase(
-                  title: MESSAGES.NOTIFICATION,
-                  content: "Xoá thành công",
-                  onTap1: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, ROUTE_NAMES.PRODUCT, ModalRoute.withName('/'),
-                        arguments: title);
+            ShowDialogCustom.showDialogBase(
+              title: MESSAGES.NOTIFICATION,
+              content: "Xoá thành công",
+              onTap1: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, ROUTE_NAMES.PRODUCT, ModalRoute.withName('/'),
+                    arguments: title);
               },
             );
           } else if (state is ErrorDeleteProductState) {
             LoadingApi().popLoading();
-           ShowDialogCustom.showDialogBase(
-                  title: MESSAGES.NOTIFICATION,
-                  content: state.msg,
-                  textButton1: "Quay lại",
-                  onTap1: () {
-                    Get.back();
-                    Get.back();
-                    Get.back();
-                    DetailProductBloc.of(context)
-                        .add(InitGetDetailProductEvent(id));
-
+            ShowDialogCustom.showDialogBase(
+              title: MESSAGES.NOTIFICATION,
+              content: state.msg,
+              textButton1: "Quay lại",
+              onTap1: () {
+                Get.back();
+                Get.back();
+                Get.back();
+                DetailProductBloc.of(context)
+                    .add(InitGetDetailProductEvent(id));
               },
             );
           }

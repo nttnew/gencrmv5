@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:rxdart/rxdart.dart';
+import '../src/app_const.dart';
 import '../src/src_index.dart';
 
 class ListViewLoadMoreBase extends StatefulWidget {
@@ -56,12 +56,7 @@ class _ListViewLoadMoreBaseState extends State<ListViewLoadMoreBase>
                       widget.itemWidget(index, list[index])),
             );
           } else {
-            return Center(
-              child: WidgetText(
-                title: 'Không có dữ liệu',
-                style: AppStyle.DEFAULT_16_BOLD,
-              ),
-            );
+            return noData();
           }
         });
   }

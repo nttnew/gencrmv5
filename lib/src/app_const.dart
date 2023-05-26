@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -51,6 +52,14 @@ void loginSessionExpired() {
     },
   );
 }
+
+Widget noData() => Align(
+  alignment: Alignment.center,
+  child:   WidgetText(
+    title: 'Không có dữ liệu',
+    style: AppStyle.DEFAULT_18_BOLD,
+  ),
+);
 
 void handleRegisterBase(
     BuildContext context, PitelServiceImpl pitelService, String deviceToken) {

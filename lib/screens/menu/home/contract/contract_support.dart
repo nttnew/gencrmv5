@@ -5,6 +5,7 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../bloc/support_contract_bloc/support_contract_bloc.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 
 class ContractSupport extends StatefulWidget {
@@ -184,12 +185,7 @@ class _ContractSupportState extends State<ContractSupport>
                     ),
                 itemCount: state.listSupportContract.length);
           else
-            return Center(
-              child: WidgetText(
-                title: "Không có dữ liệu",
-                style: AppStyle.DEFAULT_18,
-              ),
-            );
+            return noData();
           else
             return Container();
         }));

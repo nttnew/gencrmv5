@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/chance_customer/chance_customer_bloc.dart';
 import 'package:gen_crm/screens/menu/home/customer/detailcustomer/chancecustomer/chance_card_widget.dart';
-
+import '../../../../../../src/app_const.dart';
 import '../../../../../../src/src_index.dart';
-import '../../../../../../widgets/widget_text.dart';
 
 class ChanceCustomer extends StatefulWidget {
   ChanceCustomer({Key? key, required this.id}) : super(key: key);
@@ -44,12 +43,7 @@ class _ChanceCustomerState extends State<ChanceCustomer>
                             ChanceCardWidget(data: state.listChance[index]))),
               );
             else {
-              return Center(
-                child: WidgetText(
-                  title: "Không có dữ liệu",
-                  style: AppStyle.DEFAULT_16_BOLD,
-                ),
-              );
+              return noData();
             }
             else
               return Container();

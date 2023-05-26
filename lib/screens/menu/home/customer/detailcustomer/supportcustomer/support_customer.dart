@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/support_customer/support_customer_bloc.dart';
 import 'package:gen_crm/screens/menu/home/support/support_card_widget.dart';
-import 'package:gen_crm/widgets/widget_text.dart';
-
+import '../../../../../../src/app_const.dart';
 import '../../../../../../src/src_index.dart';
 
 class SupportCustomer extends StatefulWidget {
@@ -44,12 +43,7 @@ class _SupportCustomerState extends State<SupportCustomer>
                             SupportCardWidget(data: state.listSupport[index]))),
               );
             else {
-              return Center(
-                child: WidgetText(
-                  title: "Không có dữ liệu",
-                  style: AppStyle.DEFAULT_16_BOLD,
-                ),
-              );
+              return noData();
             }
             else
               return Container();

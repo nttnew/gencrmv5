@@ -10,6 +10,7 @@ import '../../../../bloc/support/detail_support_bloc.dart';
 import '../../../../bloc/work/detail_work_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/location_base.dart';
 import '../../../../widgets/widget_text.dart';
@@ -112,24 +113,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
             )),
           ),
         ),
-        appBar: AppBar(
-          toolbarHeight: AppValue.heights * 0.1,
-          backgroundColor: HexColor("#D0F1EB"),
-          centerTitle: false,
-          title: WidgetText(
-              title: "Checkin",
-              style: AppStyle.DEFAULT_16.copyWith(fontWeight: FontWeight.w700)),
-          leading: Padding(
-              padding: EdgeInsets.only(left: 30),
-              child: InkWell(
-                  onTap: () => AppNavigator.navigateBack(),
-                  child: Icon(Icons.arrow_back, color: Colors.black))),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(15),
-            ),
-          ),
-        ),
+        appBar: AppbarBaseNormal(  "Checkin"),
         body: Container(
             padding: EdgeInsets.all(16),
             child: StreamBuilder<String>(

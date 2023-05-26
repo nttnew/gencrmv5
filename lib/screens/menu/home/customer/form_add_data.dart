@@ -14,6 +14,7 @@ import 'package:gen_crm/bloc/product_module/product_module_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/menu/home/customer/input_dropDown.dart';
 import 'package:gen_crm/src/app_const.dart';
+import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/widget_field_input_percent.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
@@ -385,23 +386,7 @@ class _FormAddDataState extends State<FormAddData> {
     return Stack(
       children: [
         Scaffold(
-            appBar: AppBar(
-              toolbarHeight: AppValue.heights * 0.1,
-              backgroundColor: HexColor("#D0F1EB"),
-              title: WidgetText(
-                  title: title.toUpperCase().capitalizeFirst,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: "Montserrat",
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16)),
-              leading: _buildBack(),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(15),
-                ),
-              ),
-            ),
+            appBar: AppbarBaseNormal(title.toUpperCase().capitalizeFirst ?? ''),
             body: BlocListener<AddDataBloc, AddDataState>(
               listener: (context, state) async {
                 if (state is SuccessAddCustomerOrState) {
@@ -733,20 +718,6 @@ class _FormAddDataState extends State<FormAddData> {
               }),
         )
       ],
-    );
-  }
-
-  _buildBack() {
-    return IconButton(
-      onPressed: () {
-        AppNavigator.navigateBack();
-      },
-      icon: Image.asset(
-        ICONS.IC_BACK_PNG,
-        height: 28,
-        width: 28,
-        color: COLORS.BLACK,
-      ),
     );
   }
 

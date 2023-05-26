@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/list_note/add_note_bloc.dart';
 import 'package:gen_crm/screens/menu/home/customer/list_note.dart';
+import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../src/src_index.dart';
-import '../../../../widgets/widget_text.dart';
 
 class AddNote extends StatefulWidget {
   AddNote({Key? key}) : super(key: key);
@@ -39,24 +38,7 @@ class _AddNoteState extends State<AddNote> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: AppValue.heights * 0.1,
-          backgroundColor: HexColor("#D0F1EB"),
-          centerTitle: false,
-          title: WidgetText(
-              title: "Thảo luận",
-              style: AppStyle.DEFAULT_16.copyWith(fontWeight: FontWeight.w700)),
-          leading: Padding(
-              padding: EdgeInsets.only(left: 30),
-              child: InkWell(
-                  onTap: () => AppNavigator.navigateBack(),
-                  child: Icon(Icons.arrow_back, color: Colors.black))),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(15),
-            ),
-          ),
-        ),
+        appBar: AppbarBaseNormal('Thảo luận'),
         body: Container(
           padding: EdgeInsets.all(16),
           child: BlocListener<AddNoteBloc, AddNoteState>(

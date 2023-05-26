@@ -11,8 +11,8 @@ import 'package:gen_crm/widgets/widget_search.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import '../../../../src/app_const.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 
 class WorkScreen extends StatefulWidget {
@@ -145,48 +145,7 @@ class _WorkScreenState extends State<WorkScreen> {
             )
             .toList(),
       ),
-      appBar: AppBar(
-        toolbarHeight: AppValue.heights * 0.1,
-        backgroundColor: HexColor("#D0F1EB"),
-        centerTitle: false,
-        title: Text(Get.arguments ?? '',
-            style: TextStyle(
-                color: Colors.black,
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.w700,
-                fontSize: 16)),
-        leading: Padding(
-            padding: EdgeInsets.only(left: 40),
-            child: InkWell(
-                onTap: () {
-                  if (_drawerKey.currentContext != null &&
-                      !_drawerKey.currentState!.isDrawerOpen) {
-                    _drawerKey.currentState!.openDrawer();
-                  }
-                },
-                child: SvgPicture.asset(ICONS.IC_MENU_SVG))),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
-          ),
-        ),
-        actions: [
-          Padding(
-              padding: EdgeInsets.only(right: 30),
-              child: InkWell(
-                onTap: () => AppNavigator.navigateNotification(),
-                child:
-                    BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
-                        builder: (context, state) {
-                  if (state is NotificationNeedRead) {
-                    return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
-                  } else {
-                    return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
-                  }
-                }),
-              ))
-        ],
-      ),
+      appBar: AppbarBase(_drawerKey, title),
       body: Container(
         // padding: EdgeInsets.only(bottom: 70),
         child: Column(
@@ -196,8 +155,9 @@ class _WorkScreenState extends State<WorkScreen> {
               if (state is SuccessGetListWorkState)
                 return Container(
                   margin: EdgeInsets.symmetric(
-                      horizontal: 25,
-                      vertical: 8,),
+                    horizontal: 25,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     border: Border.all(color: HexColor("#DBDBDB")),
                     borderRadius: BorderRadius.circular(10),
@@ -231,8 +191,7 @@ class _WorkScreenState extends State<WorkScreen> {
                 return RefreshIndicator(
                   onRefresh: () =>
                       Future.delayed(Duration(milliseconds: 300), () {
-                    WorkBloc.of(context)
-                        .add(InitGetListWorkEvent("1", "", ""));
+                    WorkBloc.of(context).add(InitGetListWorkEvent("1", "", ""));
                   }),
                   child: ListView.separated(
                     padding: EdgeInsets.only(top: 8),
@@ -250,9 +209,7 @@ class _WorkScreenState extends State<WorkScreen> {
                         )),
                     itemCount: state.data_list.length,
                     separatorBuilder: (BuildContext context, int index) =>
-                        SizedBox(
-                      height: AppValue.heights * 0.01,
-                    ),
+                        SizedBox(),
                   ),
                 );
               } else

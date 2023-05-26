@@ -9,11 +9,11 @@ import 'package:gen_crm/src/models/model_generator/work_clue.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../../../widgets/widget_appbar.dart';
-import '../../../../widgets/widget_text.dart';
 import '../../attachment/attachment.dart';
 
 class InfoCluePage extends StatefulWidget {
@@ -197,12 +197,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
           ),
         );
       } else {
-        return Center(
-          child: WidgetText(
-            title: 'Không có dữ liệu',
-            style: AppStyle.DEFAULT_18_BOLD,
-          ),
-        );
+        return noData();
       }
     });
   }

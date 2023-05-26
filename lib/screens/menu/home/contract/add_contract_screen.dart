@@ -26,6 +26,7 @@ import '../../../../models/widget_input_date.dart';
 import '../../../../src/models/model_generator/login_response.dart';
 import '../../../../src/pick_file_image.dart';
 import '../../../../storages/share_local.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/widget_field_input_percent.dart';
 import '../customer/add_customer.dart';
 import '../customer/input_dropDown.dart';
@@ -127,23 +128,7 @@ class _FormAddContractState extends State<FormAddContract> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: AppValue.heights * 0.1,
-          backgroundColor: HexColor("#D0F1EB"),
-          title: WidgetText(
-              title: "Thêm ${Get.arguments[2].toString().toLowerCase()}",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16)),
-          leading: _buildBack(),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(15),
-            ),
-          ),
-        ),
+        appBar: AppbarBaseNormal("Thêm ${Get.arguments[2].toString().toLowerCase()}"),
         body: BlocListener<AddDataBloc, AddDataState>(
           listener: (context, state) async {
             if (state is SuccessAddCustomerOrState) {
@@ -430,20 +415,6 @@ class _FormAddContractState extends State<FormAddContract> {
             ),
           ),
         ));
-  }
-
-  _buildBack() {
-    return IconButton(
-      onPressed: () {
-        AppNavigator.navigateBack();
-      },
-      icon: Image.asset(
-        ICONS.IC_BACK_PNG,
-        height: 28,
-        width: 28,
-        color: COLORS.BLACK,
-      ),
-    );
   }
 
   Widget _fieldChiTietXe(CustomerIndividualItemData data, int index, int index1,

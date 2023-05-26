@@ -5,6 +5,7 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../bloc/job_contract/job_contract_bloc.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/job_chance.dart';
 import '../../../../src/src_index.dart';
 
@@ -45,12 +46,7 @@ class _ContractJobState extends State<ContractJob>
                     ),
                 itemCount: state.listJob.length);
           else
-            return Center(
-              child: WidgetText(
-                title: "Không có dữ liệu",
-                style: AppStyle.DEFAULT_18,
-              ),
-            );
+            return noData();
           else
             return Container();
         }));
