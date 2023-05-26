@@ -29,7 +29,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
   Position? position;
 
   getNameLocation() async {
-    LoadingApi().pushLoading();
     position = await determinePosition(context);
     if (position != null) {
       nameLocation.add(LOADING);
@@ -37,7 +36,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
           position?.latitude ?? 0, position?.longitude ?? 0);
       nameLocation.add(location);
     }
-    LoadingApi().popLoading();
   }
 
   @override
