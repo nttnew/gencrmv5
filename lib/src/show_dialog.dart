@@ -200,7 +200,6 @@ class ShowDialogCustom {
                       ),
                       WidgetInput(
                         colorFix: Theme.of(context).scaffoldBackgroundColor,
-                        // onChanged: (value) => bloc.add(EmailChanged(email: value)),
                         inputType: TextInputType.text,
                         onChanged: (text) {
                           text_r = text;
@@ -210,8 +209,7 @@ class ShowDialogCustom {
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(color: HexColor("#838A91")),
                         ),
-                        initialValue: dotenv.env[PreferencesKey.BASE_URL],
-                        // errorText: state.email.invalid ? MESSAGES.EMAIL_ERROR : null,
+                        initialValue: initAddressApplication(),
                         Fix: Text("",
                             style: TextStyle(
                                 fontFamily: "Quicksand",
@@ -278,5 +276,14 @@ class ShowDialogCustom {
         );
       },
     );
+  }
+}
+
+String initAddressApplication() {
+  String txt = dotenv.env[PreferencesKey.BASE_URL] ?? '';
+  if (txt.contains('https://')) {
+    return txt.substring(txt.indexOf('//') + 2, txt.lastIndexOf('/'));
+  } else {
+    return txt;
   }
 }
