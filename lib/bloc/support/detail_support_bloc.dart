@@ -55,11 +55,15 @@ class DetailSupportBloc extends Bloc<DetailSupportEvent, DetailSupportState>{
     try {
       final response = await userRepository.deleteSupport({"id":id});
       if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+        LoadingApi().popLoading();
         yield SuccessDeleteSupportState();
       }
-      else
+      else{
+        LoadingApi().popLoading();
         yield ErrorDeleteSupportState(response.msg ?? '');
+      }
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorDeleteSupportState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

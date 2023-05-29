@@ -2,7 +2,7 @@
     package="vn.gen_crm">
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:label="genCrm"
+        android:label="VHT"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true">

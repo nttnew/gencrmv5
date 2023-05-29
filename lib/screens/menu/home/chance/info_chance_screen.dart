@@ -255,24 +255,24 @@ class _InfoChancePageState extends State<InfoChancePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          AppValue.hSpaceLarge,
-                          Image.asset('assets/icons/hopdong.png'),
-                          SizedBox(width: 10),
-                          InkWell(
-                              onTap: () {
-                                Get.back();
-                                AppNavigator.navigateAddContract(id: id);
-                              },
-                              child: Text(
-                                'Thêm hợp đồng',
-                                style: AppStyle.DEFAULT_16_BOLD
-                                    .copyWith(color: Color(0xff006CB1)),
-                              ))
-                        ],
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.start,
+                      //   children: [
+                      //     AppValue.hSpaceLarge,
+                      //     Image.asset('assets/icons/hopdong.png'),
+                      //     SizedBox(width: 10),
+                      //     InkWell(
+                      //         onTap: () {
+                      //           Get.back();
+                      //           AppNavigator.navigateAddContract(id: id);
+                      //         },
+                      //         child: Text(
+                      //           'Thêm hợp đồng',
+                      //           style: AppStyle.DEFAULT_16_BOLD
+                      //               .copyWith(color: Color(0xff006CB1)),
+                      //         ))
+                      //   ],
+                      // ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [

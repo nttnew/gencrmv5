@@ -70,18 +70,19 @@ class _ClueScreenState extends State<ClueScreen> {
               ),
             ),
             right: GestureDetector(
-                onTap: () {AppNavigator.navigateNotification();},
-                child: BlocBuilder<GetListUnReadNotifiBloc,UnReadListNotifiState>(
-                    builder: (context,state){
-                      if(state is NotificationNeedRead){
-                        return SvgPicture.asset("assets/icons/notification.svg");
-                      }
-                      else{
-                        return SvgPicture.asset("assets/icons/notification2.svg");
-                      }
-                    }
-                ),
-          ),
+              onTap: () {
+                AppNavigator.navigateNotification();
+              },
+              child:
+                  BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
+                      builder: (context, state) {
+                if (state is NotificationNeedRead) {
+                  return SvgPicture.asset("assets/icons/notification.svg");
+                } else {
+                  return SvgPicture.asset("assets/icons/notification2.svg");
+                }
+              }),
+            ),
           ),
           AppValue.vSpaceTiny,
           Padding(
@@ -94,8 +95,10 @@ class _ClueScreenState extends State<ClueScreen> {
               total = int.parse(state.total);
               return Expanded(
                 child: RefreshIndicator(
-                  onRefresh: ()=>Future.delayed(Duration(microseconds: 300),(){
-                    GetListClueBloc.of(context).add(InitGetListClueEvent('', 1, ''));
+                  onRefresh: () =>
+                      Future.delayed(Duration(microseconds: 300), () {
+                    GetListClueBloc.of(context)
+                        .add(InitGetListClueEvent('', 1, ''));
                   }),
                   child: ListView.separated(
                     padding: EdgeInsets.only(top: 16),
@@ -128,7 +131,7 @@ class _ClueScreenState extends State<ClueScreen> {
           backgroundColor: Color(0xff1AA928),
           onPressed: () {
             // AppNavigator.navigateAddClue();
-            AppNavigator.navigateFormAdd('Thêm ${Get.arguments}',2);
+            AppNavigator.navigateFormAdd('Thêm ${Get.arguments}', 2);
           },
           child: Icon(Icons.add, size: 40),
         ),
@@ -203,14 +206,16 @@ class _ClueScreenState extends State<ClueScreen> {
                     height: 20,
                     width: 20,
                     child: GestureDetector(
-                        onTap:(){ showBotomSheet(state.listFilter);},
-                        child: SvgPicture.asset('assets/icons/Filter.svg')
-                    ),
+                        onTap: () {
+                          showBotomSheet(state.listFilter);
+                        },
+                        child: SvgPicture.asset('assets/icons/Filter.svg')),
                   ),
                 ),
               ],
             );
-          } return Center(
+          }
+          return Center(
             child: WidgetText(
               title: 'Không có dữ liệu',
               style: AppStyle.DEFAULT_18_BOLD,
@@ -222,7 +227,7 @@ class _ClueScreenState extends State<ClueScreen> {
   _buildCustomer(ClueData cluedata) {
     return GestureDetector(
       onTap: () {
-        AppNavigator.navigateInfoClue(cluedata.id!,cluedata.name!);
+        AppNavigator.navigateInfoClue(cluedata.id ?? '', cluedata.name ?? '');
       },
       child: Container(
         margin: EdgeInsets.only(left: 25, right: 25, bottom: 20),
@@ -251,7 +256,7 @@ class _ClueScreenState extends State<ClueScreen> {
                 SizedBox(
                     width: AppValue.widths * 0.6,
                     child: Text(
-                      (cluedata.name==""||cluedata.name==null)?'Chưa có':cluedata.name!,
+                      cluedata.name ?? 'Chưa có',
                       style: AppStyle.DEFAULT_18_BOLD
                           .copyWith(color: COLORS.TEXT_COLOR),
                     )),
@@ -268,7 +273,7 @@ class _ClueScreenState extends State<ClueScreen> {
                 ),
                 Expanded(
                   child: Text(
-                    (cluedata.customer!.name==""||cluedata.customer!.name==null)?'Chưa có':cluedata.customer!.name!,
+                    cluedata.customer?.name ?? 'Chưa có',
                     style: AppStyle.DEFAULT_LABEL_PRODUCT,
                   ),
                 ),
@@ -287,11 +292,10 @@ class _ClueScreenState extends State<ClueScreen> {
                   width: 10,
                 ),
                 WidgetText(
-                  title: (cluedata.email!.val==null||cluedata.email!.val=="") ? "Chưa có":cluedata.email!.val!,
+                  title: cluedata.email?.val ?? "Chưa có",
                   style: AppStyle.DEFAULT_LABEL_PRODUCT
                       .copyWith(color: COLORS.GREY),
                 ),
-
               ],
             ),
             SizedBox(
@@ -303,7 +307,7 @@ class _ClueScreenState extends State<ClueScreen> {
                 SizedBox(
                   width: 10,
                 ),
-                Text((cluedata.phone!.val==null||cluedata.phone!.val=="") ? "Chưa có":cluedata.phone!.val!,
+                Text(cluedata.phone ?? "Chưa có",
                     style: AppStyle.DEFAULT_LABEL_PRODUCT
                         .copyWith(color: COLORS.TEXT_COLOR)),
                 Spacer(),
@@ -319,13 +323,13 @@ class _ClueScreenState extends State<ClueScreen> {
                 ),
               ],
             ),
-
             AppValue.hSpaceTiny,
           ],
         ),
       ),
     );
   }
+
   showBotomSheet(List<FilterData> data) {
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
@@ -356,41 +360,45 @@ class _ClueScreenState extends State<ClueScreen> {
                       Column(
                         children: List.generate(
                             data.length,
-                                (index) => GestureDetector(
-                              onTap: () {
-                                Get.back();
-                                GetListClueBloc.of(context).add(InitGetListClueEvent(data[index].id.toString(), 1, search));
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 8),
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        bottom: BorderSide(
-                                            width: 1,
-                                            color: COLORS.LIGHT_GREY))),
-                                child: Row(
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/icons/Filter.svg',
-                                      width: 20,
-                                      height: 20,
-                                      fit: BoxFit.contain,
-                                    ),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Expanded(
-                                        child: Container(
+                            (index) => GestureDetector(
+                                  onTap: () {
+                                    Get.back();
+                                    GetListClueBloc.of(context).add(
+                                        InitGetListClueEvent(
+                                            data[index].id.toString(),
+                                            1,
+                                            search));
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 8),
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                width: 1,
+                                                color: COLORS.LIGHT_GREY))),
+                                    child: Row(
+                                      // crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SvgPicture.asset(
+                                          'assets/icons/Filter.svg',
+                                          width: 20,
+                                          height: 20,
+                                          fit: BoxFit.contain,
+                                        ),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        Expanded(
+                                            child: Container(
                                           child: WidgetText(
                                             title: data[index].name ?? '',
                                             style: AppStyle.DEFAULT_16,
                                           ),
                                         )),
-                                  ],
-                                ),
-                              ),
-                            )),
+                                      ],
+                                    ),
+                                  ),
+                                )),
                       )
                     ],
                   ),
@@ -400,8 +408,9 @@ class _ClueScreenState extends State<ClueScreen> {
           );
         });
   }
+
   handleOnPressItemMenu(value) async {
-    switch (value['id']){
+    switch (value['id']) {
       case '1':
         _drawerKey.currentState!.openEndDrawer();
         AppNavigator.navigateMain();

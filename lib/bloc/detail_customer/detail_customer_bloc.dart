@@ -18,17 +18,20 @@ import '../../widgets/widget_dialog.dart';
 part 'detail_customer_event.dart';
 part 'detail_customer_state.dart';
 
-class DetailCustomerBloc extends Bloc<DetailCustomerEvent, DetailCustomerState>{
+class DetailCustomerBloc
+    extends Bloc<DetailCustomerEvent, DetailCustomerState> {
   final UserRepository userRepository;
 
-  DetailCustomerBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitGetDetailCustomer());
+  DetailCustomerBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitGetDetailCustomer());
 
   @override
-  Stream<DetailCustomerState> mapEventToState(DetailCustomerEvent event) async* {
+  Stream<DetailCustomerState> mapEventToState(
+      DetailCustomerEvent event) async* {
     if (event is InitGetDetailCustomerEvent) {
       yield* _getDetailCustomer(id: event.id);
-    }
-    else if(event is DeleteCustomerEvent){
+    } else if (event is DeleteCustomerEvent) {
       yield* _deleteCustomer(id: event.id);
     }
   }
@@ -39,8 +42,10 @@ class DetailCustomerBloc extends Bloc<DetailCustomerEvent, DetailCustomerState>{
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getDetailCustomer(id);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
-        yield UpdateGetDetailCustomerState(response.data!.customer_info!,response.data!.customer_note!);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        yield UpdateGetDetailCustomerState(
+            response.data!.customer_info!, response.data!.customer_note!);
         // if(page==1){
         //   listCus=response.data.list!;
         //   yield UpdateGetListCustomerState(response.data.list!,response.data.filter!,response.data.total!);
@@ -51,8 +56,7 @@ class DetailCustomerBloc extends Bloc<DetailCustomerEvent, DetailCustomerState>{
         //   listCus!.addAll(response.data.list!);
         //   yield UpdateGetListCustomerState(listCus!,response.data.filter!,response.data.total!);
         // }
-      }
-      else if(response.code==999){
+      } else if (response.code == 999) {
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -62,12 +66,10 @@ class DetailCustomerBloc extends Bloc<DetailCustomerEvent, DetailCustomerState>{
             AppNavigator.navigateLogout();
           },
         ));
-      }
-      else{
+      } else {
         yield ErrorGetDetailCustomerState(response.msg ?? '');
         LoadingApi().popLoading();
       }
-
     } catch (e) {
       yield ErrorGetDetailCustomerState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
@@ -88,11 +90,15 @@ class DetailCustomerBloc extends Bloc<DetailCustomerEvent, DetailCustomerState>{
   Stream<DetailCustomerState> _deleteCustomer({required int id}) async* {
     LoadingApi().pushLoading();
     try {
-      final response = await userRepository.deleteCustomer({"id":id});
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+      final response = await userRepository.deleteCustomer({"id": id});
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        LoadingApi().popLoading();
+
         yield SuccessDeleteCustomerState();
-      }
-      else if(response.code==999){
+      } else if (response.code == 999) {
+        LoadingApi().popLoading();
+
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -102,12 +108,11 @@ class DetailCustomerBloc extends Bloc<DetailCustomerEvent, DetailCustomerState>{
             AppNavigator.navigateLogout();
           },
         ));
-      }
-      else{
-        yield ErrorDeleteCustomerState(response.msg ?? '');
+      } else {
         LoadingApi().popLoading();
-      }
 
+        yield ErrorDeleteCustomerState(response.msg ?? '');
+      }
     } catch (e) {
       yield ErrorDeleteCustomerState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
@@ -125,6 +130,6 @@ class DetailCustomerBloc extends Bloc<DetailCustomerEvent, DetailCustomerState>{
     LoadingApi().popLoading();
   }
 
-
-  static DetailCustomerBloc of(BuildContext context) => BlocProvider.of<DetailCustomerBloc>(context);
+  static DetailCustomerBloc of(BuildContext context) =>
+      BlocProvider.of<DetailCustomerBloc>(context);
 }

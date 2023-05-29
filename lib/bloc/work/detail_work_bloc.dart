@@ -51,11 +51,12 @@ class DetailWorkBloc extends Bloc<DetailWorkEvent,DetailWorkState>{
     try{
       final response = await userRepository.deleteJob({"id":id});
       if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+        LoadingApi().popLoading();
         yield SuccessDeleteWorkState();
       }
       else{
-        yield ErrorDeleteWorkState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorDeleteWorkState(response.msg ?? '');
       }
     } catch(e){
       yield ErrorDeleteWorkState(MESSAGES.CONNECT_ERROR);

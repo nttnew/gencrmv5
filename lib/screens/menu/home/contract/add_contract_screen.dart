@@ -36,6 +36,7 @@ import '../../../../bloc/clue/clue_bloc.dart';
 import '../../../../bloc/contract/attack_bloc.dart';
 import '../../../../bloc/contract/contract_bloc.dart';
 import '../../../../bloc/contract/detail_contract_bloc.dart';
+import '../../../../bloc/contract_customer/contract_customer_bloc.dart';
 import '../../../../bloc/support/support_bloc.dart';
 import '../../../../bloc/work/work_bloc.dart';
 import '../../../../models/product_model.dart';
@@ -679,6 +680,7 @@ class _FormAddContractState extends State<FormAddContract> {
         }
         data['products'] = product;
       }
+      data["customer_id"] = Get.arguments[1];
       AddDataBloc.of(context).add(AddContractEvent(data, files: fileUpload));
     }
   }

@@ -25,7 +25,6 @@ import 'package:gen_crm/bloc/information_account/information_account_bloc.dart';
 import 'package:gen_crm/bloc/job_customer/job_customer_bloc.dart';
 import 'package:gen_crm/bloc/list_note/add_note_bloc.dart';
 import 'package:gen_crm/bloc/note_clue/note_clue_bloc.dart';
-import 'package:gen_crm/bloc/payment_contract/payment_contract_bloc.dart';
 import 'package:gen_crm/bloc/policy/policy_bloc.dart';
 import 'package:gen_crm/bloc/product/product_bloc.dart';
 import 'package:gen_crm/bloc/report/report_general/report_general_bloc.dart';
@@ -316,9 +315,6 @@ Future main() async {
           ),
           BlocProvider<PhoneBloc>(
             create: (context) => PhoneBloc(userRepository: userRepository),
-          ),
-          BlocProvider<PaymentContractBloc>(
-            create: (context) => PaymentContractBloc(userRepository: userRepository),
           ),
           BlocProvider<SupportContractBloc>(
             create: (context) => SupportContractBloc(userRepository: userRepository),

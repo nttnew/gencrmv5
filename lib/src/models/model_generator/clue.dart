@@ -19,7 +19,7 @@ class Email{
 @JsonSerializable(explicitToJson: true)
 class ClueData {
   final String? id,name;
-  final Phone? phone;
+  final String? phone;
   final Email? email;
   final Position? position;
   final Customer? customer;
@@ -50,7 +50,7 @@ class FilterData {
 @JsonSerializable()
 class ListClueData {
   final String? page;
-  final String? total;
+  final int? total;
   final int? limit;
   final List<ClueData>? list;
   final List<FilterData>? filter;

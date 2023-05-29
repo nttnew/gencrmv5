@@ -24,7 +24,7 @@ ListChanceData _$ListChanceDataFromJson(Map<String, dynamic> json) =>
       json['id'] as String?,
       json['name'] as String?,
       json['price'] as String?,
-      json['status'] as String?,
+      json['status'],
       json['avatar'] as String?,
       json['dateNextCare'] as String?,
       json['customer'] == null
@@ -38,9 +38,9 @@ Map<String, dynamic> _$ListChanceDataToJson(ListChanceData instance) =>
       'dateNextCare': instance.dateNextCare,
       'name': instance.name,
       'price': instance.price,
-      'status': instance.status,
       'avatar': instance.avatar,
       'customer': instance.customer,
+      'status': instance.status,
     };
 
 FilterChance _$FilterChanceFromJson(Map<String, dynamic> json) => FilterChance(
@@ -55,9 +55,9 @@ Map<String, dynamic> _$FilterChanceToJson(FilterChance instance) =>
     };
 
 DataChance _$DataChanceFromJson(Map<String, dynamic> json) => DataChance(
-      json['page'] as String?,
+      json['page'] as String,
       json['limit'] as int?,
-      json['total'] as String?,
+      json['total'] as int?,
       (json['filter'] as List<dynamic>?)
           ?.map((e) => FilterChance.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -68,9 +68,9 @@ DataChance _$DataChanceFromJson(Map<String, dynamic> json) => DataChance(
 
 Map<String, dynamic> _$DataChanceToJson(DataChance instance) =>
     <String, dynamic>{
-      'total': instance.total,
       'page': instance.page,
       'limit': instance.limit,
+      'total': instance.total,
       'list': instance.list,
       'filter': instance.filter,
     };

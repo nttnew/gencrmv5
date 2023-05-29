@@ -37,7 +37,7 @@ class CustomerInfoItem{
 
 @JsonSerializable()
 class CustomerSale {
-  final String? sale;
+  final int? sale;
 
 
   CustomerSale(this.sale);

@@ -75,7 +75,7 @@ class _ChanceCardWidgetState extends State<ChanceCardWidget> {
               Spacer(),
               SvgPicture.asset("assets/icons/question_answer.svg"),
               SizedBox(width: AppValue.widths*0.01,),
-              WidgetText(title: widget.data!.total_note,style: AppStyle.DEFAULT_14.copyWith(color: COLORS.TEXT_COLOR)),
+              WidgetText(title: widget.data?.total_note??'',style: AppStyle.DEFAULT_14.copyWith(color: COLORS.TEXT_COLOR)),
             ],
           ),
 

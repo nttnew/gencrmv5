@@ -28,9 +28,7 @@ ClueData _$ClueDataFromJson(Map<String, dynamic> json) => ClueData(
       json['customer'] == null
           ? null
           : Customer.fromJson(json['customer'] as Map<String, dynamic>),
-      json['phone'] == null
-          ? null
-          : Phone.fromJson(json['phone'] as Map<String, dynamic>),
+      json['phone'] as String?,
       json['created_date'] as String?,
       json['avatar'] as String?,
       json['total_note'] as String?,
@@ -39,7 +37,7 @@ ClueData _$ClueDataFromJson(Map<String, dynamic> json) => ClueData(
 Map<String, dynamic> _$ClueDataToJson(ClueData instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'phone': instance.phone?.toJson(),
+      'phone': instance.phone,
       'email': instance.email?.toJson(),
       'position': instance.position?.toJson(),
       'customer': instance.customer?.toJson(),
@@ -61,7 +59,7 @@ Map<String, dynamic> _$FilterDataToJson(FilterData instance) =>
 
 ListClueData _$ListClueDataFromJson(Map<String, dynamic> json) => ListClueData(
       json['page'] as String?,
-      json['total'] as String?,
+      json['total'] as int?,
       json['limit'] as int?,
       (json['list'] as List<dynamic>?)
           ?.map((e) => ClueData.fromJson(e as Map<String, dynamic>))

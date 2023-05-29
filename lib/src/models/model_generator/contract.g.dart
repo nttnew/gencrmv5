@@ -53,7 +53,7 @@ ContractData _$ContractDataFromJson(Map<String, dynamic> json) => ContractData(
           ?.map((e) => ContractItemData.fromJson(e as Map<String, dynamic>))
           .toList(),
       json['page'] as String?,
-      json['total'] as String?,
+      json['total'] as int?,
       json['limit'] as int?,
       (json['filter'] as List<dynamic>?)
           ?.map((e) => FilterData.fromJson(e as Map<String, dynamic>))
@@ -65,8 +65,8 @@ Map<String, dynamic> _$ContractDataToJson(ContractData instance) =>
       'list': instance.list,
       'filter': instance.filter,
       'page': instance.page,
-      'total': instance.total,
       'limit': instance.limit,
+      'total': instance.total,
     };
 
 ContractResponse _$ContractResponseFromJson(Map<String, dynamic> json) =>

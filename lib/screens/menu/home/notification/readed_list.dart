@@ -50,7 +50,7 @@ class _ReadedListState extends State<ReadedList> {
           builder: (context, state) {
 
             if (state is UpdateReadedListNotifiState) {
-              total = int.parse(state.total);
+              total = int.parse(state.total==''?'0':state.total);
               lenght = state.list.length;
               return ListView(
                   controller: _scrollController,

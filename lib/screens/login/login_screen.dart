@@ -2,10 +2,13 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/screens/login/index.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
+import '../../api_resfull/dio_provider.dart';
+import '../../storages/share_local.dart';
 import '../../widgets/rounder_bootom_appbar.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
@@ -21,6 +24,13 @@ class _LoginScreenState extends State<LoginScreen> {
   ScrollController scrollController = ScrollController();
   @override
   void initState() {
+    if (dotenv.env[PreferencesKey.BASE_URL] == '' ||
+        dotenv.env[PreferencesKey.BASE_URL] == null) {
+      dotenv.env[PreferencesKey.BASE_URL] =
+          'https://crm.vht.ttc-solutions.com/';
+      shareLocal.putString("baseUrl", 'https://crm.vht.ttc-solutions.com/');
+      DioProvider.instance(baseUrl: 'https://crm.vht.ttc-solutions.com/');
+    }
     // fireBase();
     KeyboardVisibilityController().onChange.listen((visible) {
       if (visible) {

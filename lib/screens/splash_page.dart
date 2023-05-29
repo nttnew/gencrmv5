@@ -11,6 +11,7 @@ import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/storages.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 import '../api_resfull/dio_provider.dart';
 
@@ -22,19 +23,25 @@ class AnimatedLogo extends AnimatedWidget {
   Widget build(BuildContext context) {
     final animation = listenable as Animation<double>;
     return Container(
-      height: double.infinity,
+        height: double.infinity,
         width: double.infinity,
-        child: Center(child:Image.asset("assets/icons/logo.png")),
+        child: Center(
+            child: Container(
+          width: MediaQuery.of(context).size.width / 2,
+          child: Image.asset(
+            "assets/icons/logo.png",
+            fit: BoxFit.contain,
+          ),
+        )),
         decoration: BoxDecoration(
             gradient: LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [
-        HexColor("89F0DD"),
-        HexColor("C5EDFF"),
-      ],
-    ))
-    );
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            HexColor("89F0DD"),
+            HexColor("C5EDFF"),
+          ],
+        )));
   }
 }
 
@@ -49,8 +56,8 @@ class _LogoAppState extends State<SplashPage>
   late Animation<double> animation;
   late AnimationController controller;
   late Timer _timer;
-  LoginData user=LoginData();
-  String? baseUrl="";
+  LoginData user = LoginData();
+  String? baseUrl = "";
   @override
   void initState() {
     super.initState();
@@ -70,26 +77,25 @@ class _LogoAppState extends State<SplashPage>
     controller.forward();
   }
 
-  loadUser()async{
+  loadUser() async {
     final response = await shareLocal.getString(PreferencesKey.USER);
-    if(response!=null)
-     {
-       setState(() {
-         user=LoginData.fromJson(jsonDecode(response));
-       });
-     }
-  }
-  getBaseUrl() async {
-    baseUrl=await shareLocal.getString("baseUrl");
-    String? sess=await shareLocal.getString(PreferencesKey.SESS);
-    String? token=await shareLocal.getString(PreferencesKey.TOKEN);
-    if(baseUrl!= dotenv.env[PreferencesKey.BASE_URL]){
-      dotenv.env[PreferencesKey.BASE_URL]=baseUrl??"";
-      DioProvider.instance(sess: sess??"",baseUrl: baseUrl,token: token??"");
+    if (response != null) {
+      setState(() {
+        user = LoginData.fromJson(jsonDecode(response));
+      });
     }
-
   }
 
+  getBaseUrl() async {
+    baseUrl = await shareLocal.getString("baseUrl");
+    String? sess = await shareLocal.getString(PreferencesKey.SESS);
+    String? token = await shareLocal.getString(PreferencesKey.TOKEN);
+    if (baseUrl != dotenv.env[PreferencesKey.BASE_URL]) {
+      dotenv.env[PreferencesKey.BASE_URL] = baseUrl ?? "";
+      DioProvider.instance(
+          sess: sess ?? "", baseUrl: baseUrl, token: token ?? "");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,10 +104,12 @@ class _LogoAppState extends State<SplashPage>
           var firstTime = await shareLocal.getBools(PreferencesKey.FIRST_TIME);
           switch (state.status) {
             case AuthenticationStatus.authenticated:
-              _timer = Timer(const Duration(seconds: 1), () => AppNavigator.navigateMain(data: user));
+              _timer = Timer(const Duration(seconds: 1),
+                  () => AppNavigator.navigateMain(data: user));
               break;
             case AuthenticationStatus.unauthenticated:
-              _timer = Timer(const Duration(seconds: 1), () => AppNavigator.navigateLogin());
+              _timer = Timer(const Duration(seconds: 1),
+                  () => AppNavigator.navigateLogin());
               break;
             default:
               break;

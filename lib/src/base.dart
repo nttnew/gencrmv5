@@ -47,7 +47,6 @@ class BASE_URL {
   static const ADD_CUSTOMER_GET = 'modules/genmobile2/customer/edit';
   static const ADD_CUSTOMER_INDIVIDUAL_POST = 'modules/genmobile2/customer/saveIndividual';
   static const DETAIL_CONTRACT = 'modules/genmobile2/contract/detail';
-  static const PAYMENT_CONTRACT = 'modules/genmobile2/contract/listPayment';
   static const JOB_CONTRACT = 'modules/genmobile2/contract/listJob';
   static const SUPPORT_CONTRACT = 'modules/genmobile2/contract/listSupports';
   static const DELETE_CUSTOMER = 'modules/genmobile2/customer/delete';

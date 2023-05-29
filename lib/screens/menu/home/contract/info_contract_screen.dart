@@ -3,10 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/bloc/contract/contract_bloc.dart';
 import 'package:gen_crm/bloc/contract/detail_contract_bloc.dart';
-import 'package:gen_crm/bloc/payment_contract/payment_contract_bloc.dart';
 import 'package:gen_crm/screens/menu/home/contract/contract_job.dart';
 import 'package:gen_crm/screens/menu/home/contract/contract_operation.dart';
-import 'package:gen_crm/screens/menu/home/contract/contract_payment.dart';
 import 'package:gen_crm/screens/menu/home/contract/contract_support.dart';
 import 'package:gen_crm/src/models/model_generator/attach_file.dart';
 import 'package:gen_crm/widgets/widget_button.dart';
@@ -37,7 +35,6 @@ class _InfoContractPageState extends State<InfoContractPage> {
   void initState() {
     Future.delayed(Duration(milliseconds: 100), () {
       DetailContractBloc.of(context).add(InitGetDetailContractEvent(int.parse(id)));
-      PaymentContractBloc.of(context).add(InitGetPaymentContractEvent(int.parse(id)));
       JobContractBloc.of(context).add(InitGetJobContractEvent(int.parse(id)));
       SupportContractBloc.of(context).add(InitGetSupportContractEvent(int.parse(id)));
     });
@@ -98,7 +95,7 @@ class _InfoContractPageState extends State<InfoContractPage> {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: DefaultTabController(
-                    length: 4,
+                    length: 3,
                     child: Scaffold(
                       appBar: const TabBar(
                         isScrollable: true,
@@ -110,9 +107,6 @@ class _InfoContractPageState extends State<InfoContractPage> {
                         tabs: [
                           Tab(
                             text: 'Thông tin chung',
-                          ),
-                          Tab(
-                            text: 'Thanh toán',
                           ),
                           Tab(
                             text: 'Công việc',
@@ -128,7 +122,6 @@ class _InfoContractPageState extends State<InfoContractPage> {
                           ContractOperation(
                             id: id,
                           ),
-                          ContractPayment(id: int.parse(id)),
                           ContractJob(id: int.parse(id)),
                           ContractSupport(id: id),
                         ],
@@ -211,24 +204,24 @@ class _InfoContractPageState extends State<InfoContractPage> {
                               ],
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              Get.back();
-                              AppNavigator.navigateAttachment(id, name, listFile);
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                AppValue.hSpaceLarge,
-                                SvgPicture.asset('assets/icons/attack.svg'),
-                                SizedBox(width: 10),
-                                Text(
-                                  'Xem đính kèm',
-                                  style: AppStyle.DEFAULT_16_BOLD.copyWith(color: Color(0xff006CB1)),
-                                )
-                              ],
-                            ),
-                          ),
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     Get.back();
+                          //     AppNavigator.navigateAttachment(id, name, listFile);
+                          //   },
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.start,
+                          //     children: [
+                          //       AppValue.hSpaceLarge,
+                          //       SvgPicture.asset('assets/icons/attack.svg'),
+                          //       SizedBox(width: 10),
+                          //       Text(
+                          //         'Xem đính kèm',
+                          //         style: AppStyle.DEFAULT_16_BOLD.copyWith(color: Color(0xff006CB1)),
+                          //       )
+                          //     ],
+                          //   ),
+                          // ),
                           GestureDetector(
                             onTap: () {
                               Get.back();

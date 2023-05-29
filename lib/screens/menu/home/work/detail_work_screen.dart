@@ -93,21 +93,20 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
             );
           }
         },
-        child: SingleChildScrollView(
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BlocBuilder<DetailWorkBloc, DetailWorkState>(
-                        builder: (context, state) {
-                      if (state is SuccessDetailWorkState)
-                        return Container(
-                          // height: AppValue.heights * 0.7,
-                          child: Column(
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      BlocBuilder<DetailWorkBloc, DetailWorkState>(
+                          builder: (context, state) {
+                        if (state is SuccessDetailWorkState)
+                          return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: List.generate(
                                 state.data_list.length,
@@ -196,258 +195,156 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                         LineHorizontal(),
                                       ],
                                     )),
-                          ),
-                        );
-                      else
-                        return Container();
-                    }),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    ListNote(type: 5, id: id.toString()),
-                  ],
+                          );
+                        else
+                          return Container();
+                      }),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      ListNote(type: 5, id: id.toString()),
+                    ],
+                  ),
                 ),
-
-                // Expanded(
-                //     child: SingleChildScrollView(
-                //       child: Column(
-                //         children: [
-                //           Row(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: [
-                //               Column(
-                //                 children: [
-                //                   CircleAvatar(
-                //                     radius: 30.0,
-                //                     backgroundImage:
-                //                     NetworkImage('https://via.placeholder.com/150'),
-                //                   )
-                //                 ],
-                //               ),
-                //               SizedBox(
-                //                 width: AppValue.widths * 0.03,
-                //               ),
-                //               Expanded(
-                //                 child: Column(
-                //                   crossAxisAlignment: CrossAxisAlignment.start,
-                //                   children: [
-                //                     Text(
-                //                       "Nguyễn Hoàng Nam",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w600,
-                //                           fontSize: 14),
-                //                     ),
-                //                     Text(
-                //                       "20/03/2022 lúc 05:15 PM",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w400,
-                //                           fontSize: 12),
-                //                     ),
-                //                     Text(
-                //                       "Chị Thảo muốn nhận báo giá có ưu đãi. Nếu giá tốt sẽ bắt đầu triển khai ngay vào đầu tháng tới. Chú ý: gửi báo giá cả bản cứng và bản mềm cho chị.",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w400,
-                //                           fontSize: 12),
-                //                     )
-                //                   ],
-                //                 ),
-                //               )
-                //             ],
-                //           ),
-                //           SizedBox(
-                //             height: AppValue.heights * 0.02,
-                //           ),
-                //           Row(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: [
-                //               Column(
-                //                 children: [
-                //                   CircleAvatar(
-                //                     radius: 30.0,
-                //                     backgroundImage:
-                //                     NetworkImage('https://via.placeholder.com/150'),
-                //                   )
-                //                 ],
-                //               ),
-                //               SizedBox(
-                //                 width: AppValue.widths * 0.03,
-                //               ),
-                //               Expanded(
-                //                 child: Column(
-                //                   crossAxisAlignment: CrossAxisAlignment.start,
-                //                   children: [
-                //                     Text(
-                //                       "Nguyễn Hoàng Nam",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w600,
-                //                           fontSize: 14),
-                //                     ),
-                //                     Text(
-                //                       "20/03/2022 lúc 05:15 PM",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w400,
-                //                           fontSize: 12),
-                //                     ),
-                //                     Text(
-                //                       "Chị Thảo muốn nhận báo giá có ưu đãi. Nếu giá tốt sẽ bắt đầu triển khai ngay vào đầu tháng tới. Chú ý: gửi báo giá cả bản cứng và bản mềm cho chị.",
-                //                       style: TextStyle(
-                //                           fontFamily: "Quicksand",
-                //                           fontWeight: FontWeight.w400,
-                //                           fontSize: 12),
-                //                     )
-                //                   ],
-                //                 ),
-                //               )
-                //             ],
-                //           ),
-                //         ],
-                //       ),
-                //     )
-                // )
-                InkWell(
-                  onTap: () {
-                    showModalBottomSheet(
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(30)),
-                        ),
-                        context: context,
-                        builder: (context) {
-                          return SafeArea(
-                            child: Container(
-                              height: AppValue.heights * 0.3,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  SizedBox(
-                                    height: AppValue.heights * 0.03,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Get.back();
-                                      AppNavigator.navigateAddNoteScreen(
-                                          5, id.toString());
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: AppValue.widths * 0.2,
-                                        ),
-                                        SvgPicture.asset(
-                                            "assets/icons/adddiscuss.svg"),
-                                        SizedBox(
-                                          width: AppValue.widths * 0.1,
-                                        ),
-                                        Text("Thêm thảo luận",
-                                            style: styleTitleBottomSheet())
-                                      ],
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Get.back();
-                                      AppNavigator.navigateEditDataScreen(
-                                          id.toString(), 5);
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: AppValue.widths * 0.2,
-                                        ),
-                                        SvgPicture.asset(
-                                            "assets/icons/edit.svg"),
-                                        SizedBox(
-                                          width: AppValue.widths * 0.1,
-                                        ),
-                                        Text("Sửa",
-                                            style: styleTitleBottomSheet())
-                                      ],
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      ShowDialogCustom.showDialogTwoButton(
-                                          onTap2: () =>
-                                              DetailWorkBloc.of(context)
-                                                  .add(InitDeleteWorkEvent(id)),
-                                          content:
-                                              "Bạn chắc chắn muốn xóa không ?");
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: AppValue.widths * 0.2,
-                                        ),
-                                        SvgPicture.asset(
-                                            "assets/icons/delete.svg"),
-                                        SizedBox(
-                                          width: AppValue.widths * 0.1,
-                                        ),
-                                        Text("Xoá",
-                                            style: styleTitleBottomSheet())
-                                      ],
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              InkWell(
+                onTap: () {
+                  showModalBottomSheet(
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(30)),
+                      ),
+                      context: context,
+                      builder: (context) {
+                        return SafeArea(
+                          child: Container(
+                            height: AppValue.heights * 0.3,
+                            child: Column(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                SizedBox(
+                                  height: AppValue.heights * 0.03,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.back();
+                                    AppNavigator.navigateAddNoteScreen(
+                                        5, id.toString());
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.start,
                                     children: [
-                                      InkWell(
-                                        onTap: () =>
-                                            Navigator.of(context).pop(),
-                                        child: Container(
-                                          width: AppValue.widths * 0.8,
-                                          height: AppValue.heights * 0.06,
-                                          decoration: BoxDecoration(
-                                            color: HexColor("#D0F1EB"),
-                                            borderRadius:
-                                                BorderRadius.circular(17.06),
-                                          ),
-                                          child: Center(
-                                            child: Text("Đóng"),
-                                          ),
-                                        ),
+                                      SizedBox(
+                                        width: AppValue.widths * 0.2,
                                       ),
+                                      SvgPicture.asset(
+                                          "assets/icons/adddiscuss.svg"),
+                                      SizedBox(
+                                        width: AppValue.widths * 0.1,
+                                      ),
+                                      Text("Thêm thảo luận",
+                                          style: styleTitleBottomSheet())
                                     ],
                                   ),
-                                ],
-                              ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.back();
+                                    AppNavigator.navigateEditDataScreen(
+                                        id.toString(), 5);
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: AppValue.widths * 0.2,
+                                      ),
+                                      SvgPicture.asset(
+                                          "assets/icons/edit.svg"),
+                                      SizedBox(
+                                        width: AppValue.widths * 0.1,
+                                      ),
+                                      Text("Sửa",
+                                          style: styleTitleBottomSheet())
+                                    ],
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    ShowDialogCustom.showDialogTwoButton(
+                                        onTap2: () =>
+                                            DetailWorkBloc.of(context)
+                                                .add(InitDeleteWorkEvent(id)),
+                                        content:
+                                            "Bạn chắc chắn muốn xóa không ?");
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: AppValue.widths * 0.2,
+                                      ),
+                                      SvgPicture.asset(
+                                          "assets/icons/delete.svg"),
+                                      SizedBox(
+                                        width: AppValue.widths * 0.1,
+                                      ),
+                                      Text("Xoá",
+                                          style: styleTitleBottomSheet())
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    InkWell(
+                                      onTap: () =>
+                                          Navigator.of(context).pop(),
+                                      child: Container(
+                                        width: AppValue.widths * 0.8,
+                                        height: AppValue.heights * 0.06,
+                                        decoration: BoxDecoration(
+                                          color: HexColor("#D0F1EB"),
+                                          borderRadius:
+                                              BorderRadius.circular(17.06),
+                                        ),
+                                        child: Center(
+                                          child: Text("Đóng"),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          );
-                        });
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    height: AppValue.heights * 0.06,
-                    margin: EdgeInsets.symmetric(vertical: 16),
-                    decoration: BoxDecoration(
-                      color: HexColor("#D0F1EB"),
-                      borderRadius: BorderRadius.circular(17.06),
-                    ),
-                    child: Center(
-                      child: Text("THAO TÁC",
-                          style: TextStyle(
-                              fontFamily: "Quicksand",
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16)),
-                    ),
+                          ),
+                        );
+                      });
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: AppValue.heights * 0.06,
+                  margin: EdgeInsets.symmetric(vertical: 16),
+                  decoration: BoxDecoration(
+                    color: HexColor("#D0F1EB"),
+                    borderRadius: BorderRadius.circular(17.06),
                   ),
-                )
-              ],
-            ),
+                  child: Center(
+                    child: Text("THAO TÁC",
+                        style: TextStyle(
+                            fontFamily: "Quicksand",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16)),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),

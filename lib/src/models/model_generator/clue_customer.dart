@@ -8,7 +8,7 @@ part 'clue_customer.g.dart';
 class ClueCustomerData {
   final String? id,name,danh_xung,total_note;
   final Position? position;
-  final ActionData? phone, email;
+  final String? phone, email;
 
 
   ClueCustomerData(

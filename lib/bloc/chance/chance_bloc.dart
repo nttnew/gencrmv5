@@ -38,13 +38,13 @@ class GetListChanceBloc extends Bloc<GetListChanceEvent, ChanceState>{
       if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
         if(page==1){
           listChance=response.data!.list;
-          yield UpdateGetListChanceState(response.data!.list!,response.data!.total!,response.data!.filter!);
+          yield UpdateGetListChanceState(response.data!.list!,response.data!.total.toString(),response.data!.filter!);
         }
         else
         {
           listChance!.addAll(response.data!.list!);
           print('aaaaa $listChance');
-          yield UpdateGetListChanceState(listChance!,response.data!.total!,response.data!.filter!);
+          yield UpdateGetListChanceState(listChance!,response.data!.total.toString(),response.data!.filter!);
         }
       }
       else if(response.code==999){

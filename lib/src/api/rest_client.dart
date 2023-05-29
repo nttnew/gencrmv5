@@ -162,10 +162,6 @@ abstract class RestClient {
   @GET(BASE_URL.ADD_CUSTOMER_GET)
   Future<AddCustomerIndividual> getAddCustomerOr();
 
-  @GET(BASE_URL.PAYMENT_CONTRACT)
-  Future<PaymentContractResponse> getPaymentContract(
-      @Query('id') int id);
-
   @GET(BASE_URL.JOB_CONTRACT)
   Future<JobChance> getJobContract(
       @Query('id') int id);

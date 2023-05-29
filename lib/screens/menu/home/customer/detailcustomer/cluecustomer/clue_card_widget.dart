@@ -34,12 +34,12 @@ class _ClueCardWidgetState extends State<ClueCardWidget> {
           SizedBox(height: AppValue.heights * 0.01),
           GestureDetector(
             onTap: (){
-              if(widget.data!.email!.action!=null && widget.data!.email!.action == 1){
-                if(widget.data!.email!.val!=null)
-                  launchUrl(
-                      Uri(scheme: "mailto",path: "${widget.data!.email!.val}")
-                  );
-              }
+              // if(widget.data!.email!.action!=null && widget.data!.email!.action == 1){
+              //   if(widget.data!.email!.val!=null)
+              //     launchUrl(
+              //         Uri(scheme: "mailto",path: "${widget.data!.email!.val}")
+              //     );
+              // }
             },
             child: Row(
               children: [
@@ -49,7 +49,7 @@ class _ClueCardWidgetState extends State<ClueCardWidget> {
                   child: SizedBox(
                       width: AppValue.widths * 0.5,
                       child: WidgetText(
-                        title:widget.data!.email!.val??'Chưa có',
+                        title:widget.data!.email ??'Chưa có',
                         style: AppStyle.DEFAULT_14.copyWith(color: COLORS.TEXT_BLUE_BOLD),)),
                 ),
               ],
@@ -60,11 +60,11 @@ class _ClueCardWidgetState extends State<ClueCardWidget> {
             children: [
               GestureDetector(
                 onTap: (){
-                  if(widget.data!.phone!.action!=null &&widget.data!.phone!.action == 2){
+                  if(widget.data!.phone!=null &&widget.data!.phone! == 2){
                     // launchUrl("tel://${widget.data!.phone!.val}");
-                    if(widget.data!.phone!.val!=null)
+                    if(widget.data!.phone!=null)
                       launchUrl(
-                          Uri(scheme: "tel",path: "${widget.data!.phone!.val}")
+                          Uri(scheme: "tel",path: "${widget.data!.phone}")
                       );
                   }
                 },
@@ -76,7 +76,7 @@ class _ClueCardWidgetState extends State<ClueCardWidget> {
                       child: SizedBox(
                           width: AppValue.widths * 0.5,
                           child: WidgetText(
-                              title:widget.data!.phone!.val??'',
+                              title:widget.data!.phone ??'',
                               style: AppStyle.DEFAULT_14.copyWith(color: COLORS.TEXT_BLUE_BOLD))),
                     )
                   ],

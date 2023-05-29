@@ -41,12 +41,12 @@ class ContractBloc extends Bloc<ContractEvent, ContractState>{
       if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
         if(page==1){
           list=response.data.list;
-          yield UpdateGetContractState(response.data.list!,response.data.total!,response.data.filter!);
+          yield UpdateGetContractState(response.data.list!,response.data.total.toString(),response.data.filter!);
         }
         else
         {
           list=[...list!,...response.data.list!];
-          yield UpdateGetContractState(list!,response.data.total!,response.data.filter!);
+          yield UpdateGetContractState(list!,response.data.total.toString(),response.data.filter!);
         }
       }
       else if(response.code==999){

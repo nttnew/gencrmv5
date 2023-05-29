@@ -108,8 +108,6 @@ class UserRepository {
 
   Future<AddCustomerIndividual> getAddCustomer(int isIndividual,{String? id}) async => await RestClient(dio, baseUrl: dio.options.baseUrl).getAddCustomer(isIndividual,id);
 
-  Future<PaymentContractResponse> getPaymentContract(int id) async => await RestClient(dio, baseUrl: dio.options.baseUrl).getPaymentContract(id);
-
   Future<JobChance> getJobContract(int id) async => await RestClient(dio, baseUrl: dio.options.baseUrl).getJobContract(id);
 
   Future<BaseResponse> deleteCustomer(Map<String,dynamic> id) async => await RestClient(dio, baseUrl: dio.options.baseUrl).deleteCustomer(id);

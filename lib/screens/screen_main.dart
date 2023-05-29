@@ -110,107 +110,107 @@ class _ScreenMainState extends State<ScreenMain> {
     return Scaffold(
       key: _drawerKey,
       drawer: MainDrawer(onPress: handleOnPressItemMenu),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xff1AA928),
-        onPressed: () {
-          showModalBottomSheet(
-              isDismissible: false,
-              enableDrag: false,
-              context: context,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-              builder: (BuildContext context) {
-                return Container(
-                  padding: EdgeInsets.symmetric(vertical: 25, horizontal: 30),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ...List<Widget>.generate(menuItems.length, (i) {
-                        return GestureDetector(
-                          onTap: () {
-                            Get.back();
-                            switch (i) {
-                              case 0:
-                                {
-                                  //AppNavigator.navigateAddBuyCar();
-                                  break;
-                                }
-                              case 1:
-                                {
-                                  //AppNavigator.navigateAddSellCar();
-                                  break;
-                                }
-                              case 2:
-                                {
-                                  //AppNavigator.navigateAddBooking();
-                                  break;
-                                }
-                              case 3:
-                                {
-                                  //AppNavigator.navigateAddServiceCard();
-                                  break;
-                                }
-                              case 4:
-                                {
-                                  AppNavigator.navigateAddCustomer();
-                                  break;
-                                }
-                              case 5:
-                                {
-                                  AppNavigator.navigateFormAdd("Thêm công việc", 14);
-                                  break;
-                                }
-                              case 6:
-                                {
-                                  AppNavigator.navigateFormAdd("Thêm công việc", 15);
-                                  break;
-                                }
-
-                              default:
-                                break;
-                            }
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              AppValue.hSpaceLarge,
-                              Image.asset(menuItems[i]["icon"]),
-                              SizedBox(width: 10),
-                              Text(
-                                menuItems[i]["name"],
-                                style: AppStyle.DEFAULT_16_BOLD.copyWith(color: Color(0xff006CB1)),
-                              )
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: Container(
-                              width: AppValue.widths * 0.8,
-                              height: AppValue.heights * 0.06,
-                              decoration: BoxDecoration(
-                                color: HexColor("#D0F1EB"),
-                                borderRadius: BorderRadius.circular(17.06),
-                              ),
-                              child: Center(
-                                child: Text("Đóng"),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              });
-        },
-        child: Icon(Icons.add, size: 40),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Color(0xff1AA928),
+      //   onPressed: () {
+      //     showModalBottomSheet(
+      //         isDismissible: false,
+      //         enableDrag: false,
+      //         context: context,
+      //         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      //         builder: (BuildContext context) {
+      //           return Container(
+      //             padding: EdgeInsets.symmetric(vertical: 25, horizontal: 30),
+      //             child: Column(
+      //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //               crossAxisAlignment: CrossAxisAlignment.start,
+      //               children: [
+      //                 ...List<Widget>.generate(menuItems.length, (i) {
+      //                   return GestureDetector(
+      //                     onTap: () {
+      //                       Get.back();
+      //                       switch (i) {
+      //                         case 0:
+      //                           {
+      //                             //AppNavigator.navigateAddBuyCar();
+      //                             break;
+      //                           }
+      //                         case 1:
+      //                           {
+      //                             //AppNavigator.navigateAddSellCar();
+      //                             break;
+      //                           }
+      //                         case 2:
+      //                           {
+      //                             //AppNavigator.navigateAddBooking();
+      //                             break;
+      //                           }
+      //                         case 3:
+      //                           {
+      //                             //AppNavigator.navigateAddServiceCard();
+      //                             break;
+      //                           }
+      //                         case 4:
+      //                           {
+      //                             AppNavigator.navigateAddCustomer();
+      //                             break;
+      //                           }
+      //                         case 5:
+      //                           {
+      //                             AppNavigator.navigateFormAdd("Thêm công việc", 14);
+      //                             break;
+      //                           }
+      //                         case 6:
+      //                           {
+      //                             AppNavigator.navigateFormAdd("Thêm công việc", 15);
+      //                             break;
+      //                           }
+      //
+      //                         default:
+      //                           break;
+      //                       }
+      //                     },
+      //                     child: Row(
+      //                       mainAxisAlignment: MainAxisAlignment.start,
+      //                       children: [
+      //                         AppValue.hSpaceLarge,
+      //                         Image.asset(menuItems[i]["icon"]),
+      //                         SizedBox(width: 10),
+      //                         Text(
+      //                           menuItems[i]["name"],
+      //                           style: AppStyle.DEFAULT_16_BOLD.copyWith(color: Color(0xff006CB1)),
+      //                         )
+      //                       ],
+      //                     ),
+      //                   );
+      //                 }).toList(),
+      //                 Row(
+      //                   mainAxisAlignment: MainAxisAlignment.center,
+      //                   children: [
+      //                     InkWell(
+      //                       onTap: () => Navigator.of(context).pop(),
+      //                       child: Container(
+      //                         width: AppValue.widths * 0.8,
+      //                         height: AppValue.heights * 0.06,
+      //                         decoration: BoxDecoration(
+      //                           color: HexColor("#D0F1EB"),
+      //                           borderRadius: BorderRadius.circular(17.06),
+      //                         ),
+      //                         child: Center(
+      //                           child: Text("Đóng"),
+      //                         ),
+      //                       ),
+      //                     ),
+      //                   ],
+      //                 ),
+      //               ],
+      //             ),
+      //           );
+      //         });
+      //   },
+      //   child: Icon(Icons.add, size: 40),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
           content: Text(
@@ -221,28 +221,36 @@ class _ScreenMainState extends State<ScreenMain> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              BlocBuilder<GetInforAccBloc, GetInforAccState>(builder: (context, state) {
+              BlocBuilder<GetInforAccBloc, GetInforAccState>(
+                  builder: (context, state) {
                 if (state is UpdateGetInforAccState) {
                   return WidgetAppbar(
-                    title: state.inforAcc != null ? state.inforAcc.fullname : '',
+                    title:
+                        state.inforAcc != null ? state.inforAcc.fullname : '',
                     textColor: Colors.black,
                     right: GestureDetector(onTap: () {
                       return AppNavigator.navigateNotification();
-                    }, child: BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(builder: (context, state) {
+                    }, child: BlocBuilder<GetListUnReadNotifiBloc,
+                        UnReadListNotifiState>(builder: (context, state) {
                       if (state is NotificationNeedRead) {
-                        return SvgPicture.asset("assets/icons/notification.svg");
+                        return SvgPicture.asset(
+                            "assets/icons/notification.svg");
                       } else {
-                        return SvgPicture.asset("assets/icons/notification2.svg");
+                        return SvgPicture.asset(
+                            "assets/icons/notification2.svg");
                       }
                     })),
                     left: GestureDetector(
                       onTap: () {
-                        if (_drawerKey.currentContext != null && !_drawerKey.currentState!.isDrawerOpen) {
+                        if (_drawerKey.currentContext != null &&
+                            !_drawerKey.currentState!.isDrawerOpen) {
                           _drawerKey.currentState!.openDrawer();
                         }
                       },
                       child: WidgetNetworkImage(
-                        image: state.inforAcc != null ? state.inforAcc.avatar! : '',
+                        image: state.inforAcc != null
+                            ? state.inforAcc.avatar!
+                            : '',
                         width: 50,
                         height: 50,
                         borderRadius: 25,
@@ -255,16 +263,20 @@ class _ScreenMainState extends State<ScreenMain> {
                     textColor: Colors.black,
                     right: GestureDetector(onTap: () {
                       return AppNavigator.navigateNotification();
-                    }, child: BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(builder: (context, state) {
+                    }, child: BlocBuilder<GetListUnReadNotifiBloc,
+                        UnReadListNotifiState>(builder: (context, state) {
                       if (state is NotificationNeedRead) {
-                        return SvgPicture.asset("assets/icons/notification.svg");
+                        return SvgPicture.asset(
+                            "assets/icons/notification.svg");
                       } else {
-                        return SvgPicture.asset("assets/icons/notification2.svg");
+                        return SvgPicture.asset(
+                            "assets/icons/notification2.svg");
                       }
                     })),
                     left: GestureDetector(
                       onTap: () {
-                        if (_drawerKey.currentContext != null && !_drawerKey.currentState!.isDrawerOpen) {
+                        if (_drawerKey.currentContext != null &&
+                            !_drawerKey.currentState!.isDrawerOpen) {
                           _drawerKey.currentState!.openDrawer();
                         }
                       },
@@ -284,15 +296,20 @@ class _ScreenMainState extends State<ScreenMain> {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: listMenu.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 35, mainAxisSpacing: 25),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 35,
+                        mainAxisSpacing: 25),
                     itemBuilder: (context, index) {
                       // List<ButtonMenuModel> list = [];
-                      return _buildItemMenu(data: listMenu[index], index: index);
+                      return _buildItemMenu(
+                          data: listMenu[index], index: index);
                     }),
               ),
               GestureDetector(
                 onTap: () async {
-                  String? money = await shareLocal.getString(PreferencesKey.MONEY);
+                  String? money =
+                      await shareLocal.getString(PreferencesKey.MONEY);
                   AppNavigator.navigateReport(money ?? "đ");
                 },
                 child: Container(
@@ -309,13 +326,17 @@ class _ScreenMainState extends State<ScreenMain> {
                       Container(
                         width: 60,
                         height: 60,
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Colors.white),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.white),
                         child: WidgetContainerImage(
                           image: ICONS.WORK,
                         ),
                       ),
                       AppValue.vSpaceTiny,
-                      Text("Báo cáo", style: AppStyle.DEFAULT_12_BOLD.copyWith(fontFamily: 'Roboto'))
+                      Text("Báo cáo",
+                          style: AppStyle.DEFAULT_12_BOLD
+                              .copyWith(fontFamily: 'Roboto'))
                     ],
                   ),
                 ),
@@ -349,13 +370,15 @@ class _ScreenMainState extends State<ScreenMain> {
             Container(
               width: 60,
               height: 60,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Colors.white),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30), color: Colors.white),
               child: WidgetContainerImage(
                 image: data.image,
               ),
             ),
             AppValue.vSpaceTiny,
-            Text(data.title, style: AppStyle.DEFAULT_12_BOLD.copyWith(fontFamily: 'Roboto'))
+            Text(data.title,
+                style: AppStyle.DEFAULT_12_BOLD.copyWith(fontFamily: 'Roboto'))
           ],
         ),
       ),

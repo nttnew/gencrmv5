@@ -43,7 +43,7 @@ Map<String, dynamic> _$CustomerInfoItemToJson(CustomerInfoItem instance) =>
     };
 
 CustomerSale _$CustomerSaleFromJson(Map<String, dynamic> json) => CustomerSale(
-      json['sale'] as String?,
+      json['sale'] as int?,
     );
 
 Map<String, dynamic> _$CustomerSaleToJson(CustomerSale instance) =>

@@ -9,7 +9,7 @@ class CustomerData {
   final String? name,rank_type,danh_xung,color,cap_khach_hang,muc_do_tiem_nang,address,avatar;
   final bool? is_company;
   final int? rank_max_level,rank_value,total_comment,tong_so_hop_dong;
-  final ActionData? phone,email;
+  final String? phone,email;
 
 
   CustomerData(

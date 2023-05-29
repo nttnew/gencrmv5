@@ -9,9 +9,7 @@ part of 'customer.dart';
 CustomerData _$CustomerDataFromJson(Map<String, dynamic> json) => CustomerData(
       json['id'] as String?,
       json['name'] as String?,
-      json['phone'] == null
-          ? null
-          : ActionData.fromJson(json['phone'] as Map<String, dynamic>),
+      json['phone'] as String?,
       json['rank_type'] as String?,
       json['danh_xung'] as String?,
       json['color'] as String?,
@@ -23,9 +21,7 @@ CustomerData _$CustomerDataFromJson(Map<String, dynamic> json) => CustomerData(
       json['rank_max_level'] as int?,
       json['rank_value'] as int?,
       json['total_comment'] as int?,
-      json['email'] == null
-          ? null
-          : ActionData.fromJson(json['email'] as Map<String, dynamic>),
+      json['email'] as String?,
       json['tong_so_hop_dong'] as int?,
     );
 

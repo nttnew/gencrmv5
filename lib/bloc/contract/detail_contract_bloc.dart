@@ -18,17 +18,18 @@ import '../../widgets/widget_dialog.dart';
 part 'detail_contract_event.dart';
 part 'detail_contract_state.dart';
 
-class DetailContractBloc extends Bloc<ContractEvent, DetailContractState>{
+class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
   final UserRepository userRepository;
 
-  DetailContractBloc({required UserRepository userRepository}) : userRepository = userRepository, super(InitDetailContract());
+  DetailContractBloc({required UserRepository userRepository})
+      : userRepository = userRepository,
+        super(InitDetailContract());
 
   @override
   Stream<DetailContractState> mapEventToState(ContractEvent event) async* {
-    if(event is InitGetDetailContractEvent){
+    if (event is InitGetDetailContractEvent) {
       yield* _getDetailContract(id: event.id);
-    }
-    else if(event is InitDeleteContractEvent){
+    } else if (event is InitDeleteContractEvent) {
       yield* _deleteContract(id: event.id);
     }
   }
@@ -40,10 +41,10 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState>{
     try {
       yield LoadingDetailContractState();
       final response = await userRepository.getDetailContract(id);
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessDetailContractState(response.data!);
-      }
-      else if(response.code==999){
+      } else if (response.code == 999) {
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -53,8 +54,7 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState>{
             AppNavigator.navigateLogout();
           },
         ));
-      }
-      else
+      } else
         yield ErrorDetailContractState(response.msg ?? '');
     } catch (e) {
       yield ErrorDetailContractState(MESSAGES.CONNECT_ERROR);
@@ -67,11 +67,13 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState>{
     LoadingApi().pushLoading();
     try {
       yield LoadingDeleteContractState();
-      final response = await userRepository.deleteContract({"id":id});
-      if((response.code == BASE_URL.SUCCESS)||(response.code == BASE_URL.SUCCESS_200)){
+      final response = await userRepository.deleteContract({"id": id});
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        LoadingApi().popLoading();
         yield SuccessDeleteContractState();
-      }
-      else if(response.code==999){
+      } else if (response.code == 999) {
+        LoadingApi().popLoading();
         Get.dialog(WidgetDialog(
           title: MESSAGES.NOTIFICATION,
           content: "Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
@@ -81,9 +83,10 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState>{
             AppNavigator.navigateLogout();
           },
         ));
-      }
-      else
+      } else {
+        LoadingApi().popLoading();
         yield ErrorDeleteContractState(response.msg ?? '');
+      }
     } catch (e) {
       LoadingApi().popLoading();
       Get.dialog(WidgetDialog(
@@ -101,6 +104,6 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState>{
     LoadingApi().popLoading();
   }
 
-
-  static DetailContractBloc of(BuildContext context) => BlocProvider.of<DetailContractBloc>(context);
+  static DetailContractBloc of(BuildContext context) =>
+      BlocProvider.of<DetailContractBloc>(context);
 }

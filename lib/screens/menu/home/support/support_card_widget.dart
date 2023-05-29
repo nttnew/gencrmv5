@@ -7,7 +7,7 @@ import '../../../../src/models/model_generator/support_customer.dart';
 import '../../../../src/src_index.dart';
 
 class SupportCardWidget extends StatefulWidget {
-   SupportCardWidget({Key? key, required this.data}) : super(key: key);
+  SupportCardWidget({Key? key, required this.data}) : super(key: key);
 
   final dynamic data;
 
@@ -27,14 +27,17 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
               SizedBox(
                 width: AppValue.widths * 0.5,
                 child: WidgetText(
-                  title: widget.data.name??'',
+                  title: widget.data.name ?? '',
                   style: NameCustomerStyle(),
                 ),
               ),
               Spacer(),
               Container(
                 decoration: BoxDecoration(
-                    color:(widget.data.color!=""&&widget.data.color!=null)? HexColor(widget.data.color!):COLORS.PRIMARY_COLOR,
+                    color:
+                        (widget.data.color != "" && widget.data.color != null)
+                            ? HexColor(widget.data.color!)
+                            : COLORS.PRIMARY_COLOR,
                     borderRadius: BorderRadius.circular(99)),
                 width: AppValue.widths * 0.1,
                 height: AppValue.heights * 0.02,
@@ -48,7 +51,7 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
               Padding(
                 padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                 child: WidgetText(
-                  title: widget.data.user_handling??'',
+                  title: widget.data.user_handling ?? '',
                   style: NameCustomerStyle(),
                 ),
               ),
@@ -57,14 +60,23 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
           SizedBox(height: AppValue.heights * 0.01),
           Row(
             children: [
-              SvgPicture.asset("assets/icons/icon3svg",color: (widget.data.color!=""&&widget.data.color!=null)? HexColor(widget.data.color!):COLORS.PRIMARY_COLOR,),
+              SvgPicture.asset(
+                "assets/icons/icon3svg",
+                color: (widget.data.color != "" && widget.data.color != null)
+                    ? HexColor(widget.data.color!)
+                    : COLORS.PRIMARY_COLOR,
+              ),
               Padding(
                 padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                 child: SizedBox(
                     width: AppValue.widths * 0.5,
                     child: WidgetText(
-                      title: widget.data.status??'',
-                      style: AppStyle.DEFAULT_14.copyWith(color: (widget.data.color!=""&&widget.data.color!=null)? HexColor(widget.data.color!):COLORS.PRIMARY_COLOR),
+                      title: widget.data.status.toString(),
+                      style: AppStyle.DEFAULT_14.copyWith(
+                          color: (widget.data.color != "" &&
+                                  widget.data.color != null)
+                              ? HexColor(widget.data.color!)
+                              : COLORS.PRIMARY_COLOR),
                     )),
               ),
             ],
@@ -77,8 +89,11 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
                 padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                 child: SizedBox(
                     width: AppValue.widths * 0.5,
-                    child:
-                        WidgetText(title:widget.data.start_date!=""? widget.data.start_date!:"", style: OrtherInforCustomerStyle())),
+                    child: WidgetText(
+                        title: widget.data.start_date != ""
+                            ? widget.data.start_date!
+                            : "",
+                        style: OrtherInforCustomerStyle())),
               ),
               Spacer(),
               SvgPicture.asset("assets/icons/question_answer.svg"),
@@ -86,7 +101,7 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
                 width: AppValue.widths * 0.01,
               ),
               WidgetText(
-                title: widget.data.total_note??'',
+                title: widget.data.total_note ?? '',
                 style: TextStyle(
                   color: HexColor("#0052B4"),
                 ),
@@ -96,11 +111,7 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
         ],
       ),
       margin: EdgeInsets.only(
-        left: 5,
-        top: AppValue.heights * 0.01,
-        right: 5,
-        bottom: 5
-      ),
+          left: 5, top: AppValue.heights * 0.01, right: 5, bottom: 5),
       padding: EdgeInsets.only(
           left: AppValue.widths * 0.05,
           top: AppValue.heights * 0.02,
