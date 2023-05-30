@@ -49,6 +49,7 @@ class _ClueScreenState extends State<ClueScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
+      resizeToAvoidBottomInset: false,
       drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: Padding(

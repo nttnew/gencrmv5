@@ -62,16 +62,19 @@ class WidgetNetworkImage extends StatelessWidget {
   final BoxDecoration? boxDecoration;
   final BoxFit? fit;
   final GestureTapCallback? onTap;
+  final bool isAvatar;
 
-  const WidgetNetworkImage(
-      {this.width,
-      this.height,
-      this.borderRadius,
-      this.borderRadiusCustom,
-      required this.image,
-      this.boxDecoration,
-      this.onTap,
-      this.fit = BoxFit.fill});
+  const WidgetNetworkImage({
+    this.width,
+    this.height,
+    this.borderRadius,
+    this.borderRadiusCustom,
+    required this.image,
+    this.boxDecoration,
+    this.onTap,
+    this.fit = BoxFit.fill,
+    this.isAvatar = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -88,8 +91,18 @@ class WidgetNetworkImage extends StatelessWidget {
             height: height,
             width: width,
             fit: fit,
-            errorBuilder: (context, url, error) => Container(
-                width: width, height: height, child: const Icon(Icons.error)),
+            errorBuilder: (context, url, error) => isAvatar
+                ? Container(
+                    width: width,
+                    height: height,
+                    child: Image.asset(
+                      ICONS.IC_PROFILE_ERROR_PNG,
+                      fit: BoxFit.contain,
+                    ))
+                : Container(
+                    width: width,
+                    height: height,
+                    child: const Icon(Icons.error)),
             loadingBuilder: (context, child, loadingProgress) {
               if (loadingProgress == null) return child;
               return Container(

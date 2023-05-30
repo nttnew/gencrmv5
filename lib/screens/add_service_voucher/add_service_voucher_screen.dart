@@ -79,7 +79,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
                       },
                       boxDecoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(17),
-                        color: HexColor("#A6C1BC"),
+                        color: HexColor("#D0F1EB"),
                       ),
                       textStyle: TextStyle(
                           fontFamily: "Quicksand",

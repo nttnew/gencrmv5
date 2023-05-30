@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -74,6 +75,15 @@ Future main() async {
   await dotenv.load(fileName: BASE_URL.ENV);
   shareLocal = await ShareLocal.getInstance();
   WidgetsFlutterBinding.ensureInitialized();
+  if(!Platform.isAndroid){
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.immersiveSticky,
+      overlays: [
+        SystemUiOverlay.top,
+        // SystemUiOverlay.bottom,
+      ],
+    );
+  }
   UserRepository userRepository = UserRepository();
   await PushNotifAndroid.initFirebase(DefaultFirebaseOptions.currentPlatform);
   await Firebase.initializeApp(

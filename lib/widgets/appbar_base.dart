@@ -48,16 +48,17 @@ PreferredSizeWidget AppbarBase(
           fontSize: 16,
         ),
       ),
-      leading: Padding(
-          padding: EdgeInsets.only(left: 40),
-          child: InkWell(
-              onTap: () {
-                if (_drawerKey.currentContext != null &&
-                    !_drawerKey.currentState!.isDrawerOpen) {
-                  _drawerKey.currentState!.openDrawer();
-                }
-              },
-              child: SvgPicture.asset(ICONS.IC_MENU_SVG))),
+      leading: GestureDetector(
+        onTap: () {
+          if (_drawerKey.currentContext != null &&
+              !_drawerKey.currentState!.isDrawerOpen) {
+            _drawerKey.currentState!.openDrawer();
+          }
+        },
+        child: Padding(
+            padding: EdgeInsets.only(left: 40),
+            child: SvgPicture.asset(ICONS.IC_MENU_SVG)),
+      ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(15),

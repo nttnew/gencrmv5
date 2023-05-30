@@ -394,6 +394,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                       }
                     },
                     child: WidgetNetworkImage(
+                      isAvatar: true,
                       image: state.inforAcc.avatar ?? '',
                       width: 50,
                       height: 50,
@@ -423,6 +424,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                       }
                     },
                     child: WidgetNetworkImage(
+                      isAvatar: true,
                       image: '',
                       width: 50,
                       height: 50,

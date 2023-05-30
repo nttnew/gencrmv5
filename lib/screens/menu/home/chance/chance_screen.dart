@@ -53,6 +53,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
+      resizeToAvoidBottomInset: false,
       drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       appBar: AppbarBase(_drawerKey, title),

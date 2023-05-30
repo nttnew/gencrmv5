@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/models/model_generator/file_response.dart';
 import 'package:photo_view/photo_view.dart';
-import '../../src/src_index.dart';
 import '../../widgets/appbar_base.dart';
 import '../../widgets/item_download.dart';
 

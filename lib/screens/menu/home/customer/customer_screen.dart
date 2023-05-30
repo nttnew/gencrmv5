@@ -67,9 +67,11 @@ class _CustomerScreenState extends State<CustomerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
+      resizeToAvoidBottomInset: false,
       drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
+        childrenOffset: Offset(0, 0),
         key: _key,
         distance: 65,
         type: ExpandableFabType.up,

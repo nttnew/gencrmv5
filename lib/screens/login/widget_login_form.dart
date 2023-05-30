@@ -233,12 +233,12 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
                       );
               },
               boxDecoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: HexColor("#A6C1BC"),
+                borderRadius: BorderRadius.circular(12),
+                color: HexColor("#D0F1EB"),
               ),
               enable: state.status.isValidated,
               textStyle:
-                  AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w600),
+                  AppStyle.DEFAULT_18_BOLD,
               text: MESSAGES.LOGIN);
         });
   }
