@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/list_note/list_note_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import '../../../../src/src_index.dart';
 import '../../../../widgets/widget_text.dart';
 
 class ListNote extends StatefulWidget {
   ListNote(
       {Key? key,
-      required this.type,
+      required this.module,
       required this.id,
       this.size = 40,
       this.isAdd = false,
@@ -17,7 +16,7 @@ class ListNote extends StatefulWidget {
       this.onDelete})
       : super(key: key);
 
-  final int type;
+  final String module;
   final String id;
   final double size;
   final bool isAdd;
@@ -29,39 +28,21 @@ class ListNote extends StatefulWidget {
 }
 
 class _ListNoteState extends State<ListNote> {
-  String page = "1";
+  String page = BASE_URL.PAGE_DEFAULT.toString();
 
   @override
   void initState() {
-    Future.delayed(Duration(milliseconds: 100), () {
-      if (widget.type == 1) {
-        ListNoteBloc.of(context).add(InitNoteCusEvent(widget.id, page));
-      } else if (widget.type == 2) {
-        ListNoteBloc.of(context).add(InitNoteContactEvent(widget.id, page));
-      } else if (widget.type == 3) {
-        ListNoteBloc.of(context).add(InitNoteOppEvent(widget.id, page));
-      } else if (widget.type == 4) {
-        ListNoteBloc.of(context).add(InitNoteContractEvent(widget.id, page));
-      } else if (widget.type == 5) {
-        ListNoteBloc.of(context).add(InitNoteJobEvent(widget.id, page));
-      } else if (widget.type == 6) {
-        if (mounted) {
-          ListNoteBloc.of(context).add(InitNoteSupEvent(widget.id, page));
-        }
-      }
-    });
+    ListNoteBloc.of(context).add(InitNoteEvent(
+      widget.id,
+      page,
+      widget.module,
+    ));
     super.initState();
   }
 
   @override
-  void deactivate() {
-    ListNoteBloc.of(context).add(ReloadEvent());
-    super.deactivate();
-  }
-
-  @override
   void dispose() {
-    page = "1";
+    page = BASE_URL.PAGE_DEFAULT.toString();
     super.dispose();
   }
 
@@ -73,33 +54,38 @@ class _ListNoteState extends State<ListNote> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (state.data.isNotEmpty)
-              Column(
-                children: [
-                  SizedBox(
-                    height: AppValue.heights * 0.02,
-                  ),
-                  WidgetText(
-                    title: "Thảo luận",
-                    style: TextStyle(
-                        fontFamily: "Quicksand",
-                        color: HexColor("#263238"),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14),
-                  ),
-                  SizedBox(
-                    height: AppValue.heights * 0.02,
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(25),
+                child: WidgetText(
+                  title: "Thảo luận",
+                  style: TextStyle(
+                      fontFamily: "Quicksand",
+                      color: HexColor("#263238"),
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14),
+                ),
               ),
             ...List.generate(
                 state.data.length,
                 (index) => Container(
-                      padding: EdgeInsets.only(bottom: 8, top: 8),
+                      margin: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+                      width: MediaQuery.of(context).size.width,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 6),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: COLORS.BLACK.withOpacity(0.2),
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                )
+                              ],
+                            ),
                             child: WidgetNetworkImage(
                               isAvatar: true,
                               image: state.data[index].avatar ?? '',
@@ -109,68 +95,104 @@ class _ListNoteState extends State<ListNote> {
                             ),
                           ),
                           AppValue.hSpaceTiny,
-                          Expanded(
-                            child: Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  WidgetText(
-                                    title: state.data[index].uname ?? '',
-                                    style: AppStyle.DEFAULT_14
-                                        .copyWith(fontWeight: FontWeight.w600),
-                                  ),
-                                  WidgetText(
-                                    title: state.data[index].passedtime ?? '',
-                                    style: AppStyle.DEFAULT_14
-                                        .copyWith(color: Color(0xff838A91)),
-                                  ),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-                                  WidgetText(
-                                    title: state.data[index].content ?? '',
-                                    style: AppStyle.DEFAULT_14
-                                        .copyWith(fontWeight: FontWeight.w500),
-                                  )
-                                ],
-                              ),
+                          Container(
+                            padding: EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: COLORS.BLACK.withOpacity(0.1),
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                )
+                              ],
                             ),
-                          ),
-                          widget.isAdd == true
-                              ? Row(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                WidgetText(
+                                  title: state.data[index].uname ?? '',
+                                  style: AppStyle.DEFAULT_14
+                                      .copyWith(fontWeight: FontWeight.w600),
+                                ),
+                                WidgetText(
+                                  title: state.data[index].passedtime ?? '',
+                                  style: AppStyle.DEFAULT_14
+                                      .copyWith(color: Color(0xff838A91)),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        widget.onEdit!(state.data[index].noteid,
-                                            state.data[index].content);
-                                      },
-                                      child: WidgetContainerImage(
-                                        image: ICONS.IC_EDIT_PNG,
-                                        width: 25,
-                                        height: 25,
-                                        fit: BoxFit.contain,
-                                        borderRadius: BorderRadius.circular(0),
+                                    ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        maxHeight: double.maxFinite,
+                                        maxWidth:
+                                            MediaQuery.of(context).size.width -
+                                                130,
+                                        minHeight: 0,
+                                        minWidth: 0,
+                                      ),
+                                      child: WidgetText(
+                                        title: state.data[index].content ?? '',
+                                        style: AppStyle.DEFAULT_14.copyWith(
+                                            fontWeight: FontWeight.w500),
                                       ),
                                     ),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        widget.onDelete!(
-                                            state.data[index].noteid);
-                                      },
-                                      child: WidgetContainerImage(
-                                        image: ICONS.IC_DELETE_PNG,
-                                        width: 25,
-                                        height: 25,
-                                        fit: BoxFit.contain,
-                                        borderRadius: BorderRadius.circular(0),
-                                      ),
-                                    )
+                                    if (widget.isAdd)
+                                      Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Row(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  widget.onEdit!(
+                                                      state.data[index].noteid,
+                                                      state
+                                                          .data[index].content);
+                                                },
+                                                child: WidgetContainerImage(
+                                                  image: ICONS.IC_EDIT_PNG,
+                                                  width: 25,
+                                                  height: 25,
+                                                  fit: BoxFit.contain,
+                                                  borderRadius:
+                                                      BorderRadius.circular(0),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 8,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  widget.onDelete!(
+                                                      state.data[index].noteid);
+                                                },
+                                                child: WidgetContainerImage(
+                                                  image: ICONS.IC_DELETE_PNG,
+                                                  width: 25,
+                                                  height: 25,
+                                                  fit: BoxFit.contain,
+                                                  borderRadius:
+                                                      BorderRadius.circular(0),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      )
                                   ],
                                 )
-                              : Container()
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ))

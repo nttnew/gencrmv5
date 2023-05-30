@@ -31,7 +31,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
   String id = Get.arguments[0];
   String title = Get.arguments[1];
   late TabController _tabController;
-  int page = 0;
+  int page = BASE_URL.PAGE_DEFAULT;
   bool drag = false;
   final List<ModuleThaoTac> list = [];
 
@@ -45,24 +45,21 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
   void initState() {
     getThaoTac();
     _tabController = TabController(length: 6, vsync: this);
-    Future.delayed(Duration(seconds: 0), () {
-      ContractCustomerBloc.of(context).id = int.parse(id);
-      DetailCustomerBloc.of(context)
-          .add(InitGetDetailCustomerEvent(int.parse(id)));
-      ListNoteBloc.of(context).add(InitNoteCusEvent(id, "1"));
-      ClueCustomerBloc.of(context).add(InitGetClueCustomerEvent(int.parse(id)));
-      ChanceCustomerBloc.of(context)
-          .add(InitGetChanceCustomerEvent(int.parse(id)));
-      ContractCustomerBloc.of(context)
-          .add(InitGetContractCustomerEvent(int.parse(id)));
-      JobCustomerBloc.of(context).add(InitGetJobCustomerEvent(int.parse(id)));
-      SupportCustomerBloc.of(context)
-          .add(InitGetSupportCustomerEvent(int.parse(id)));
-    });
+    ContractCustomerBloc.of(context).id = int.parse(id);
+    DetailCustomerBloc.of(context)
+        .add(InitGetDetailCustomerEvent(int.parse(id)));
+    ListNoteBloc.of(context).add(
+        InitNoteEvent(id, BASE_URL.PAGE_DEFAULT.toString(), Module.KHACH_HANG));
+    ClueCustomerBloc.of(context).add(InitGetClueCustomerEvent(int.parse(id)));
+    ChanceCustomerBloc.of(context)
+        .add(InitGetChanceCustomerEvent(int.parse(id)));
+    ContractCustomerBloc.of(context)
+        .add(InitGetContractCustomerEvent(int.parse(id)));
+    JobCustomerBloc.of(context).add(InitGetJobCustomerEvent(int.parse(id)));
+    SupportCustomerBloc.of(context)
+        .add(InitGetSupportCustomerEvent(int.parse(id)));
     super.initState();
   }
-
-
 
   getThaoTac() {
     if (DetailCustomerBloc.of(context).sdt != null)
@@ -131,7 +128,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(1, id);
+        AppNavigator.navigateAddNoteScreen(Module.KHACH_HANG, id);
       },
     ));
 
@@ -204,68 +201,63 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
               );
             }
           },
-          child: Container(
-            margin: EdgeInsets.only(left: 20),
-            child: SafeArea(
-              child: Scaffold(
-                appBar: TabBar(
-                  isScrollable: true,
-                  controller: _tabController,
-                  labelColor: HexColor("#006CB1"),
-                  unselectedLabelColor: HexColor("#697077"),
-                  labelStyle: TextStyle(
-                      fontFamily: "Quicksand",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700),
-                  indicatorColor: HexColor("#006CB1"),
-                  tabs: <Widget>[
-                    Tab(
-                      text: "Thông tin chung",
-                    ),
-                    Tab(
-                      text: "Đầu mối",
-                    ),
-                    Tab(
-                      text: "Cơ hội",
-                    ),
-                    Tab(
-                      text: "Hợp đồng",
-                    ),
-                    Tab(
-                      text: "Công việc",
-                    ),
-                    Tab(
-                      text: "Hỗ trợ",
-                    ),
-                  ],
-                ),
-                body: Container(
-                  margin: EdgeInsets.only(right: 20),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: TabBarView(
-                          controller: _tabController,
-                          physics: BouncingScrollPhysics(),
-                          children: <Widget>[
-                            GeneralInfoCustomer(id: id),
-                            ClueCustomer(id: id),
-                            ChanceCustomer(id: id),
-                            ContractCustomer(id: id),
-                            WorkCustomer(id: id),
-                            SupportCustomer(id: id),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: AppValue.heights * 0.02,
-                      ),
-                      ButtonThaoTac(onTap: () {
-                        showThaoTac(context, list);
-                      }),
-                    ],
+          child: SafeArea(
+            child: Scaffold(
+              appBar: TabBar(
+                padding: EdgeInsets.symmetric(horizontal: 25),
+                isScrollable: true,
+                controller: _tabController,
+                labelColor: HexColor("#006CB1"),
+                unselectedLabelColor: HexColor("#697077"),
+                labelStyle: TextStyle(
+                    fontFamily: "Quicksand",
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700),
+                indicatorColor: HexColor("#006CB1"),
+                tabs: <Widget>[
+                  Tab(
+                    text: "Thông tin chung",
                   ),
-                ),
+                  Tab(
+                    text: "Đầu mối",
+                  ),
+                  Tab(
+                    text: "Cơ hội",
+                  ),
+                  Tab(
+                    text: "Hợp đồng",
+                  ),
+                  Tab(
+                    text: "Công việc",
+                  ),
+                  Tab(
+                    text: "Hỗ trợ",
+                  ),
+                ],
+              ),
+              body: Column(
+                children: [
+                  Expanded(
+                    child: TabBarView(
+                      controller: _tabController,
+                      physics: BouncingScrollPhysics(),
+                      children: <Widget>[
+                        TabInfoCustomer(id: id),
+                        ClueCustomer(id: id),
+                        ChanceCustomer(id: id),
+                        ContractCustomer(id: id),
+                        WorkCustomer(id: id),
+                        SupportCustomer(id: id),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: ButtonThaoTac(onTap: () {
+                      showThaoTac(context, list);
+                    }),
+                  ),
+                ],
               ),
             ),
           ),

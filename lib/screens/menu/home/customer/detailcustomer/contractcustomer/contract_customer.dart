@@ -19,38 +19,33 @@ class _ContractCustomerState extends State<ContractCustomer>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SingleChildScrollView(
-        child: Column(
-      children: [
-        SizedBox(
-          height: AppValue.heights * 0.02,
-        ),
-        BlocBuilder<ContractCustomerBloc, ContractCustomerState>(
-            builder: (context, state) {
-          if (state is UpdateGetContractCustomerState) if (state
-                  .listContract.length >
-              0)
-            return Column(
-              children: List.generate(
-                  state.listContract.length,
-                  (index) => GestureDetector(
-                      onTap: () {
-                        AppNavigator.navigateInfoContract(
-                            state.listContract[index].id!,
-                            state.listContract[index].name!);
-                      },
-                      child: ConstractCardWidget(
-                        data: state.listContract[index],
-                      ))),
-            );
-          else {
-            return noData();
-          }
-          else
-            return Container();
-        }),
-      ],
-    ));
+    return Padding(
+      padding: const EdgeInsets.all(25),
+      child: BlocBuilder<ContractCustomerBloc, ContractCustomerState>(
+          builder: (context, state) {
+        if (state is UpdateGetContractCustomerState) if (state
+                .listContract.length >
+            0)
+          return ListView.builder(
+            itemCount: state.listContract.length,
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: () {
+                AppNavigator.navigateInfoContract(
+                    state.listContract[index].id ?? '',
+                    state.listContract[index].name ?? '');
+              },
+              child: ConstractCardWidget(
+                data: state.listContract[index],
+              ),
+            ),
+          );
+        else {
+          return noData();
+        }
+        else
+          return Container();
+      }),
+    );
   }
 
   @override

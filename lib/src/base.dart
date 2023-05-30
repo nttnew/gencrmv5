@@ -107,32 +107,10 @@ class BASE_URL {
       'modules/genmobile2/contract/addSupport';
   static const GET_CONTACT_BY_CUSTOMER =
       'modules/genmobile2/agencycustomer/getContactsByCustomer';
-  static const GET_NOTE_CUS = 'modules/genmobile2/customer/listNotes';
-  static const GET_NOTE_OPP = 'modules/genmobile2/opportunity/listNotes';
-  static const ADD_NOTE_CUS = 'modules/genmobile2/customer/addNote';
-  static const ADD_NOTE_CONTACT = 'modules/genmobile2/agencycustomer/addNote';
-  static const ADD_NOTE_OOP = 'modules/genmobile2/opportunity/addNote';
-  static const ADD_NOTE_CONTRACT = 'modules/genmobile2/contract/addNote';
-  static const ADD_NOTE_JOB = 'modules/genmobile2/job/addNote';
-  static const ADD_NOTE_SUP = 'modules/genmobile2/support/addNote';
-  static const EDIT_NOTE_CUS = 'modules/genmobile2/customer/updateNote';
-  static const EDIT_NOTE_CONTACT =
-      'modules/genmobile2/agencycustomer/updateNote';
-  static const EDIT_NOTE_OOP = 'modules/genmobile2/opportunity/updateNote';
-  static const EDIT_NOTE_CONTRACT = 'modules/genmobile2/contract/updateNote';
-  static const EDIT_NOTE_JOB = 'modules/genmobile2/job/updateNote';
-  static const EDIT_NOTE_SUP = 'modules/genmobile2/support/updateNote';
-  static const GET_NOTE_CONTACT = 'modules/genmobile2/agencycustomer/listNotes';
-  static const GET_NOTE_CONTRACT = 'modules/genmobile2/contract/listNotes';
-  static const GET_NOTE_JOB = 'modules/genmobile2/job/listNotes';
-  static const GET_NOTE_SUP = 'modules/genmobile2/support/listNotes';
-  static const DELETE_NOTE_CUS = 'modules/genmobile2/customer/deleteNote';
-  static const DELETE_NOTE_CONTACT =
-      'modules/genmobile2/agencycustomer/deleteNote';
-  static const DELETE_NOTE_OOP = 'modules/genmobile2/opportunity/deleteNote';
-  static const DELETE_NOTE_CONTRACT = 'modules/genmobile2/contract/deleteNote';
-  static const DELETE_NOTE_JOB = 'modules/genmobile2/job/deleteNote';
-  static const DELETE_NOTE_SUP = 'modules/genmobile2/support/deleteNote';
+  static const ADD_NOTE = 'modules/genmobile2/{module}/addNote';
+  static const EDIT_NOTE = 'modules/genmobile2/{module}/updateNote';
+  static const GET_LIST_NOTE = 'modules/genmobile2/{module}/listNotes';
+  static const DELETE_NOTE = 'modules/genmobile2/{module}/deleteNote';
   static const LIST_PRODUCT = 'modules/genmobile2/product/list_all';
   static const GET_PHONE_CUS = 'modules/genmobile2/customer/getPhone';
   static const UPLOAD_FILE = 'modules/genmobile2/{module}/fileupload';
@@ -144,7 +122,6 @@ class BASE_URL {
   static const WORK_CLUE = 'modules/genmobile2/agencycustomer/listJobs';
   static const POLICY = 'modules/genmobile2/app/getpolicy';
   static const GET_INFOR = 'modules/genmobile2/app/getinfo';
-  static const NOTE_CLUE = 'modules/genmobile2/agencycustomer/listNotes';
   static const UPDATE_PASS = 'modules/genmobile2/profile/changepass';
   static const CHANGE_INFOR_ACC = 'modules/genmobile2/profile/update';
   static const LIST_UNREAD_NOTIFICATION =

@@ -19,37 +19,27 @@ class _ChanceCustomerState extends State<ChanceCustomer>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(
-            height: AppValue.heights * 0.02,
-          ),
-          BlocBuilder<ChanceCustomerBloc, ChanceCustomerState>(
-              builder: (context, state) {
-            if (state is UpdateGetChanceCustomerState) if (state
-                    .listChance.length >
-                0)
-              return Column(
-                children: List.generate(
-                    state.listChance.length,
-                    (index) => GestureDetector(
-                        onTap: () {
-                          AppNavigator.navigateInfoChance(
-                              state.listChance[index].id!,
-                              state.listChance[index].name!);
-                        },
-                        child:
-                            ChanceCardWidget(data: state.listChance[index]))),
-              );
-            else {
-              return noData();
-            }
-            else
-              return Container();
-          })
-        ],
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(25),
+      child: BlocBuilder<ChanceCustomerBloc, ChanceCustomerState>(
+          builder: (context, state) {
+        if (state is UpdateGetChanceCustomerState) if (state.listChance.length >
+            0)
+          return ListView.builder(
+            itemCount: state.listChance.length,
+            itemBuilder: (BuildContext context, int index) => GestureDetector(
+                onTap: () {
+                  AppNavigator.navigateInfoChance(state.listChance[index].id!,
+                      state.listChance[index].name!);
+                },
+                child: ChanceCardWidget(data: state.listChance[index])),
+          );
+        else {
+          return noData();
+        }
+        else
+          return Container();
+      }),
     );
   }
 

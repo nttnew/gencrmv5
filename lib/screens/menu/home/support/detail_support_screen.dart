@@ -50,7 +50,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(6, id);
+        AppNavigator.navigateAddNoteScreen(Module.HO_TRO, id);
       },
     ));
 
@@ -254,7 +254,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                             SizedBox(
                               height: AppValue.heights * 0.02,
                             ),
-                            ListNote(type: 6, id: id)
+                            ListNote(module: Module.HO_TRO, id: id)
                           ],
                         ),
                       ),

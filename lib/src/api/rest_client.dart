@@ -22,7 +22,6 @@ import 'package:gen_crm/src/models/model_generator/get_infor.dart';
 import 'package:gen_crm/src/models/model_generator/list_notification.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/models/model_generator/note.dart';
-import 'package:gen_crm/src/models/model_generator/note_clue.dart';
 import 'package:gen_crm/src/models/model_generator/support.dart';
 import 'package:gen_crm/src/models/model_generator/param_del_notif.dart';
 import 'package:gen_crm/src/models/model_generator/work_clue.dart';
@@ -208,18 +207,18 @@ abstract class RestClient {
   Future<WorkClueResponse> getWorkClue(
     @Query('id') String id,
   );
-  @GET(BASE_URL.NOTE_CLUE)
-  Future<ListNoteClueResponse> getNoteClue(
-    @Query('id') String id,
-  );
+
   @GET(BASE_URL.POLICY)
   Future<PolicyResponse> getPolicy();
+
   @GET(BASE_URL.GET_INFOR)
   Future<InforResponse> getInfor();
+
   @GET(BASE_URL.LIST_UNREAD_NOTIFICATION)
   Future<ListNotificationResponse> getListUnReadNotification(
     @Query('page') int page,
   );
+
   @GET(BASE_URL.LIST_READED_NOTIFICATION)
   Future<ListNotificationResponse> getListReadedNotification(
     @Query('page') int page,
@@ -315,23 +314,9 @@ abstract class RestClient {
   @DELETE(BASE_URL.DELETE_SUPPORT)
   Future<BaseResponse> deleteSupport(@Body() Map<String, dynamic> map);
 
-  @DELETE(BASE_URL.DELETE_NOTE_CUS)
-  Future<BaseResponse> deleteNoteCus(@Body() Map<String, dynamic> map);
-
-  @DELETE(BASE_URL.DELETE_NOTE_CONTACT)
-  Future<BaseResponse> deleteNoteContact(@Body() Map<String, dynamic> map);
-
-  @DELETE(BASE_URL.DELETE_NOTE_OOP)
-  Future<BaseResponse> deleteNoteOop(@Body() Map<String, dynamic> map);
-
-  @DELETE(BASE_URL.DELETE_NOTE_CONTRACT)
-  Future<BaseResponse> deleteNoteContract(@Body() Map<String, dynamic> map);
-
-  @DELETE(BASE_URL.DELETE_NOTE_JOB)
-  Future<BaseResponse> deleteNoteJob(@Body() Map<String, dynamic> map);
-
-  @DELETE(BASE_URL.DELETE_NOTE_SUP)
-  Future<BaseResponse> deleteNoteSup(@Body() Map<String, dynamic> map);
+  @DELETE(BASE_URL.DELETE_NOTE)
+  Future<BaseResponse> deleteNote(
+      @Path("module") String module, @Body() Map<String, dynamic> map);
 
   @GET(BASE_URL.GET_FORM_EDIT_CONTRACT)
   Future<AddCustomerIndividual> getFormEditContract(@Query('id') String? id);
@@ -347,29 +332,12 @@ abstract class RestClient {
   Future<ContactByCustomerResponse> getContactByCustomer(
       @Query('customer_id') String? id);
 
-  @GET(BASE_URL.GET_NOTE_OPP)
-  Future<NoteResponse> getNoteOpp(
-      @Query('id') String? id, @Query('page') String? page);
-
-  @GET(BASE_URL.GET_NOTE_CUS)
-  Future<NoteResponse> getNoteCus(
-      @Query('id') String? id, @Query('page') String? page);
-
-  @GET(BASE_URL.GET_NOTE_CONTACT)
-  Future<NoteResponse> getNoteContact(
-      @Query('id') String? id, @Query('page') String? page);
-
-  @GET(BASE_URL.GET_NOTE_CONTRACT)
-  Future<NoteResponse> getNoteContract(
-      @Query('id') String? id, @Query('page') String? page);
-
-  @GET(BASE_URL.GET_NOTE_JOB)
-  Future<NoteResponse> getNoteJob(
-      @Query('id') String? id, @Query('page') String? page);
-
-  @GET(BASE_URL.GET_NOTE_SUP)
-  Future<NoteResponse> getNoteSup(
-      @Query('id') String? id, @Query('page') String? page);
+  @GET(BASE_URL.GET_LIST_NOTE)
+  Future<NoteResponse> getNoteList(
+    @Path('module') String module,
+    @Query('id') String id,
+    @Query('page') String page,
+  );
 
   @GET(BASE_URL.LIST_PRODUCT)
   Future<ProductResponse> getListProduct(
@@ -496,59 +464,18 @@ abstract class RestClient {
   @POST(BASE_URL.SAVE_UPDATE_JOB)
   Future<AddDataResponse> saveUpdateJob(@Body() Map<String, dynamic> map);
 
-  @POST(BASE_URL.ADD_NOTE_CUS)
-  Future<BaseResponse> addNoteCus(
+  @POST(BASE_URL.ADD_NOTE)
+  Future<BaseResponse> addNote(
+    @Path("module") String module,
     @Part(name: "id") String id,
     @Part(name: "content") String content,
   );
 
-  @POST(BASE_URL.ADD_NOTE_CONTACT)
-  Future<BaseResponse> addNoteContact(
-    @Part(name: "id") String id,
-    @Part(name: "content") String content,
+  @POST(BASE_URL.EDIT_NOTE)
+  Future<BaseResponse> editNote(
+    @Path('module') String module,
+    @Body() Map<String, dynamic> data,
   );
-
-  @POST(BASE_URL.ADD_NOTE_OOP)
-  Future<BaseResponse> addNoteOpp(
-    @Part(name: "id") String id,
-    @Part(name: "content") String content,
-  );
-
-  @POST(BASE_URL.ADD_NOTE_CONTRACT)
-  Future<BaseResponse> addNoteContract(
-    @Part(name: "id") String id,
-    @Part(name: "content") String content,
-  );
-
-  @POST(BASE_URL.ADD_NOTE_JOB)
-  Future<BaseResponse> addNoteJob(
-    @Part(name: "id") String id,
-    @Part(name: "content") String content,
-  );
-
-  @POST(BASE_URL.ADD_NOTE_SUP)
-  Future<BaseResponse> addNoteSup(
-    @Part(name: "id") String id,
-    @Part(name: "content") String content,
-  );
-
-  @POST(BASE_URL.EDIT_NOTE_CUS)
-  Future<BaseResponse> editNoteCus(@Body() Map<String, dynamic> data);
-
-  @POST(BASE_URL.EDIT_NOTE_CONTACT)
-  Future<BaseResponse> editNoteContact(@Body() Map<String, dynamic> data);
-
-  @POST(BASE_URL.EDIT_NOTE_OOP)
-  Future<BaseResponse> editNoteOop(@Body() Map<String, dynamic> data);
-
-  @POST(BASE_URL.EDIT_NOTE_CONTRACT)
-  Future<BaseResponse> editNoteContract(@Body() Map<String, dynamic> data);
-
-  @POST(BASE_URL.EDIT_NOTE_JOB)
-  Future<BaseResponse> editNoteJob(@Body() Map<String, dynamic> data);
-
-  @POST(BASE_URL.EDIT_NOTE_SUP)
-  Future<BaseResponse> editNoteSup(@Body() Map<String, dynamic> data);
 
   @POST(BASE_URL.UPLOAD_FILE)
   @MultiPart()

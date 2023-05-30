@@ -16,49 +16,30 @@ class ClueCustomer extends StatefulWidget {
 
 class _ClueCustomerState extends State<ClueCustomer>
     with AutomaticKeepAliveClientMixin {
-  int page = 1;
-  ScrollController _scrollController = ScrollController();
-  bool check = false;
-
-  @override
-  void initState() {
-    check = true;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SingleChildScrollView(
-      controller: _scrollController,
-      child: Column(
-        children: [
-          SizedBox(
-            height: AppValue.heights * 0.02,
-          ),
-          BlocBuilder<ClueCustomerBloc, ClueCustomerState>(
-              builder: (context, state) {
-            if (state is UpdateGetClueCustomerState) if (state.listClue.length >
-                0)
-              return Column(
-                children: List.generate(
-                    state.listClue.length,
-                    (index) => GestureDetector(
-                        onTap: () {
-                          AppNavigator.navigateInfoClue(
-                              state.listClue[index].id!,
-                              state.listClue[index].name!);
-                        },
-                        child: ClueCardWidget(data: state.listClue[index]))),
-              );
-            else {
-              return noData();
-            }
-            else
-              return Container();
-          })
-        ],
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(25),
+      child: BlocBuilder<ClueCustomerBloc, ClueCustomerState>(
+          builder: (context, state) {
+        if (state is UpdateGetClueCustomerState) if (state.listClue.length > 0)
+          return ListView.builder(
+            itemCount: state.listClue.length,
+            itemBuilder: (context, int index) => GestureDetector(
+              onTap: () {
+                AppNavigator.navigateInfoClue(state.listClue[index].id ?? '',
+                    state.listClue[index].name ?? '');
+              },
+              child: ClueCardWidget(data: state.listClue[index]),
+            ),
+          );
+        else {
+          return noData();
+        }
+        else
+          return Container();
+      }),
     );
   }
 

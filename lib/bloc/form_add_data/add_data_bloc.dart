@@ -133,7 +133,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         if (files != null) {
           final responseUpload = await userRepository.uploadMultiFileBase(
-              id: response.data!.id.toString(),
+              id: response.data?.id.toString() ?? '',
               files: files,
               module: getURLModule(Module.DAU_MOI));
           if ((responseUpload.code == BASE_URL.SUCCESS) ||

@@ -6,40 +6,14 @@ abstract class ListNoteEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitNoteOppEvent extends ListNoteEvent {
-  final String id, page;
+class InitNoteEvent extends ListNoteEvent {
+  final String id, page, module;
 
-  InitNoteOppEvent(this.id, this.page);
-}
-
-class InitNoteCusEvent extends ListNoteEvent {
-  final String id, page;
-
-  InitNoteCusEvent(this.id, this.page);
-}
-
-class InitNoteContactEvent extends ListNoteEvent {
-  final String id, page;
-
-  InitNoteContactEvent(this.id, this.page);
-}
-
-class InitNoteContractEvent extends ListNoteEvent {
-  final String id, page;
-
-  InitNoteContractEvent(this.id, this.page);
-}
-
-class InitNoteJobEvent extends ListNoteEvent {
-  final String id, page;
-
-  InitNoteJobEvent(this.id, this.page);
-}
-
-class InitNoteSupEvent extends ListNoteEvent {
-  final String id, page;
-
-  InitNoteSupEvent(this.id, this.page);
+  InitNoteEvent(
+    this.id,
+    this.page,
+    this.module,
+  );
 }
 
 class ReloadEvent extends ListNoteEvent {

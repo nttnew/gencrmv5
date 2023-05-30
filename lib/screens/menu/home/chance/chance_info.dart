@@ -162,7 +162,7 @@ class _ChanceInfoState extends State<ChanceInfo>
                 return Container();
             }),
             AppValue.vSpaceTiny,
-            ListNote(type: 3, id: widget.id)
+            ListNote(module: Module.CO_HOI_BH, id: widget.id)
           ],
         ),
       ),

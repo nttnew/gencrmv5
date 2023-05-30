@@ -47,7 +47,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(5, id.toString());
+        AppNavigator.navigateAddNoteScreen(Module.CONG_VIEC, id.toString());
       },
     ));
 
@@ -253,7 +253,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                       SizedBox(
                         height: 16,
                       ),
-                      ListNote(type: 5, id: id.toString()),
+                      ListNote(module: Module.CONG_VIEC, id: id.toString()),
                     ],
                   ),
                 ),

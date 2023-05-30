@@ -16,7 +16,7 @@ class AddNote extends StatefulWidget {
 
 class _AddNoteState extends State<AddNote> {
   String id = Get.arguments[1];
-  int type = Get.arguments[0];
+  String module = Get.arguments[0];
   TextEditingController _editingController = TextEditingController();
   bool isEdit = false;
   late FocusNode _focusNode;
@@ -31,7 +31,6 @@ class _AddNoteState extends State<AddNote> {
   @override
   void dispose() {
     _focusNode.dispose();
-
     super.dispose();
   }
 
@@ -40,25 +39,13 @@ class _AddNoteState extends State<AddNote> {
     return Scaffold(
         appBar: AppbarBaseNormal('Thảo luận'),
         body: Container(
-          padding: EdgeInsets.all(16),
           child: BlocListener<AddNoteBloc, AddNoteState>(
             listener: (context, state) async {
               if (state is SuccessAddNoteState) {
                 _editingController.text = '';
                 FocusManager.instance.primaryFocus?.unfocus();
-                if (type == 1) {
-                  ListNoteBloc.of(context).add(InitNoteCusEvent(id, "1"));
-                } else if (type == 2) {
-                  ListNoteBloc.of(context).add(InitNoteContactEvent(id, "1"));
-                } else if (type == 3) {
-                  ListNoteBloc.of(context).add(InitNoteOppEvent(id, "1"));
-                } else if (type == 4) {
-                  ListNoteBloc.of(context).add(InitNoteContractEvent(id, "1"));
-                } else if (type == 5) {
-                  ListNoteBloc.of(context).add(InitNoteJobEvent(id, "1"));
-                } else if (type == 6) {
-                  ListNoteBloc.of(context).add(InitNoteSupEvent(id, "1"));
-                }
+                ListNoteBloc.of(context).add(InitNoteEvent(
+                    id, BASE_URL.PAGE_DEFAULT.toString(), module));
               } else if (state is ErrorAddNoteState) {
                 ShowDialogCustom.showDialogBase(
                   title: MESSAGES.NOTIFICATION,
@@ -78,9 +65,8 @@ class _AddNoteState extends State<AddNote> {
                 Expanded(
                     child: SingleChildScrollView(
                         child: ListNote(
-                  type: type,
+                  module: module,
                   id: id,
-                  size: 55,
                   isAdd: true,
                   onEdit: (uid, content) {
                     _editingController.text = content;
@@ -94,40 +80,60 @@ class _AddNoteState extends State<AddNote> {
                 ))),
                 Container(
                   decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: COLORS.GREY),
-                      borderRadius: BorderRadius.circular(15)),
-                  padding: EdgeInsets.only(left: 8),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          textCapitalization: TextCapitalization.sentences,
-                          textInputAction: TextInputAction.send,
-                          controller: _editingController,
-                          focusNode: _focusNode,
-                          decoration: InputDecoration(
-                              hintText: "Nhập nội dung",
-                              contentPadding: EdgeInsets.zero,
-                              enabledBorder: InputBorder.none,
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              errorBorder: InputBorder.none),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: this.onSend,
-                        child: Container(
-                          padding: EdgeInsets.all(8),
-                          child: WidgetContainerImage(
-                            image: ICONS.IC_SEND_PNG,
-                            width: 25,
-                            height: 25,
-                            fit: BoxFit.contain,
-                            borderRadius: BorderRadius.circular(0),
-                          ),
-                        ),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: COLORS.BLACK.withOpacity(0.1),
+                        spreadRadius: 1,
+                        blurRadius: 5,
                       )
                     ],
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: COLORS.GREY),
+                        borderRadius: BorderRadius.circular(15)),
+                    padding: EdgeInsets.only(
+                      left: 8,
+                    ),
+                    margin: EdgeInsets.only(
+                      left: 25,
+                      right: 25,
+                      bottom: 25,
+                      top: 15,
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            textCapitalization: TextCapitalization.sentences,
+                            textInputAction: TextInputAction.send,
+                            controller: _editingController,
+                            focusNode: _focusNode,
+                            decoration: InputDecoration(
+                                hintText: "Nhập nội dung",
+                                contentPadding: EdgeInsets.zero,
+                                enabledBorder: InputBorder.none,
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                errorBorder: InputBorder.none),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: this.onSend,
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            child: WidgetContainerImage(
+                              image: ICONS.IC_SEND_PNG,
+                              width: 25,
+                              height: 25,
+                              fit: BoxFit.contain,
+                              borderRadius: BorderRadius.circular(0),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 )
               ],
@@ -139,14 +145,14 @@ class _AddNoteState extends State<AddNote> {
   void onSend() {
     if (isEdit == false) {
       AddNoteBloc.of(context)
-          .add(InitAddNoteEvent(id, _editingController.text, type));
+          .add(InitAddNoteEvent(id, _editingController.text, module));
     } else {
       AddNoteBloc.of(context)
-          .add(InitEditNoteEvent(id, _editingController.text, noteId, type));
+          .add(EditNoteEvent(id, _editingController.text, noteId, module));
     }
   }
 
   void onDeleteNote(nid) {
-    AddNoteBloc.of(context).add(InitDeleteNoteEvent(id, type, nid));
+    AddNoteBloc.of(context).add(DeleteNoteEvent(id, nid, module));
   }
 }

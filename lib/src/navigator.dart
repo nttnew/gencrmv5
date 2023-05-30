@@ -138,8 +138,8 @@ class AppNavigator {
   static navigateEditContractScreen(String id) async =>
       await Get.toNamed(ROUTE_NAMES.EDIT_CONTRACT, arguments: id);
 
-  static navigateAddNoteScreen(int type, String id) async =>
-      await Get.toNamed(ROUTE_NAMES.ADD_NOTE, arguments: [type, id]);
+  static navigateAddNoteScreen(String module, String id) async =>
+      await Get.toNamed(ROUTE_NAMES.ADD_NOTE, arguments: [module, id]);
 
   static navigateNotification() async =>
       await Get.toNamed(ROUTE_NAMES.NOTIFICATION);

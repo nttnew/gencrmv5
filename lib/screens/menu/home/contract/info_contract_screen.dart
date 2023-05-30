@@ -84,7 +84,7 @@ class _InfoContractPageState extends State<InfoContractPage> {
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(4, id);
+        AppNavigator.navigateAddNoteScreen(Module.HOP_DONG, id);
       },
     ));
 

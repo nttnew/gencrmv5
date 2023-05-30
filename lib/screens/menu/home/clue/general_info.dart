@@ -30,7 +30,7 @@ class _GeneralInfoState extends State<GeneralInfo>
               BlocBuilder<GetDetailClueBloc, DetailClueState>(
                   builder: (context, state) {
                 if (state is GetDetailClueState) {
-                  if (state.list==[]||state.list==null) {
+                  if (state.list == [] || state.list == null) {
                     return SizedBox();
                   } else {
                     return Column(
@@ -43,7 +43,7 @@ class _GeneralInfoState extends State<GeneralInfo>
                 }
               }),
               AppValue.vSpaceTiny,
-              ListNote(type: 2, id: widget.id)
+              ListNote(module: Module.DAU_MOI, id: widget.id)
             ],
           ),
         ));

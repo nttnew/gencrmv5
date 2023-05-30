@@ -57,7 +57,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
         icon: ICONS.IC_ADD_DISCUSS_SVG,
         onThaoTac: () {
           Get.back();
-          AppNavigator.navigateAddNoteScreen(2, id);
+          AppNavigator.navigateAddNoteScreen(Module.DAU_MOI, id);
         }));
     list.add(ModuleThaoTac(
       title: 'Xem đính kèm',

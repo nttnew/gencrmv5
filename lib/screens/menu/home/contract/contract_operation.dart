@@ -45,7 +45,7 @@ class _ContractOperationState extends State<ContractOperation>
                 WidgetLine(
                   color: Colors.grey,
                 ),
-                ListNote(type: 4, id: widget.id)
+                ListNote(module: Module.HOP_DONG, id: widget.id)
               ],
             );
           else

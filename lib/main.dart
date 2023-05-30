@@ -28,7 +28,6 @@ import 'package:gen_crm/bloc/infor/infor_bloc.dart';
 import 'package:gen_crm/bloc/information_account/information_account_bloc.dart';
 import 'package:gen_crm/bloc/job_customer/job_customer_bloc.dart';
 import 'package:gen_crm/bloc/list_note/add_note_bloc.dart';
-import 'package:gen_crm/bloc/note_clue/note_clue_bloc.dart';
 import 'package:gen_crm/bloc/payment_contract/payment_contract_bloc.dart';
 import 'package:gen_crm/bloc/policy/policy_bloc.dart';
 import 'package:gen_crm/bloc/product/product_bloc.dart';
@@ -75,7 +74,7 @@ Future main() async {
   await dotenv.load(fileName: BASE_URL.ENV);
   shareLocal = await ShareLocal.getInstance();
   WidgetsFlutterBinding.ensureInitialized();
-  if(!Platform.isAndroid){
+  if (!Platform.isAndroid) {
     SystemChrome.setEnabledSystemUIMode(
       SystemUiMode.immersiveSticky,
       overlays: [
@@ -304,10 +303,6 @@ Future main() async {
           ),
           BlocProvider<DetailWorkBloc>(
             create: (context) => DetailWorkBloc(userRepository: userRepository),
-          ),
-          BlocProvider<GetNoteClueBloc>(
-            create: (context) =>
-                GetNoteClueBloc(userRepository: userRepository),
           ),
           BlocProvider<InforAccBloc>(
             create: (context) => InforAccBloc(userRepository: userRepository),

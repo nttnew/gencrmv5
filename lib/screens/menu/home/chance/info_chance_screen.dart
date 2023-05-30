@@ -36,8 +36,14 @@ class _InfoChancePageState extends State<InfoChancePage> {
     getThaoTac();
     GetListDetailChanceBloc.of(context)
         .add(InitGetListDetailEvent(int.parse(id)));
-    ListNoteBloc.of(context).add(InitNoteOppEvent(id, "1"));
-    GetJobChanceBloc.of(context).add(InitGetJobEventChance(int.parse(id)));
+    ListNoteBloc.of(context).add(InitNoteEvent(
+      id,
+      BASE_URL.PAGE_DEFAULT.toString(),
+      Module.CO_HOI_BH,
+    ));
+    GetJobChanceBloc.of(context).add(InitGetJobEventChance(
+      int.parse(id),
+    ));
     super.initState();
   }
 
@@ -65,7 +71,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(3, id);
+        AppNavigator.navigateAddNoteScreen(Module.CO_HOI_BH, id);
       },
     ));
 

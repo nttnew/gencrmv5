@@ -16,8 +16,6 @@ import 'package:gen_crm/src/models/model_generator/job_customer.dart';
 import 'package:gen_crm/src/models/model_generator/list_notification.dart';
 import 'package:gen_crm/src/models/model_generator/list_product_customer_response.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
-import 'package:gen_crm/src/models/model_generator/note.dart';
-import 'package:gen_crm/src/models/model_generator/note_clue.dart';
 import 'package:gen_crm/src/models/model_generator/policy.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/src/models/model_generator/report_employee.dart';
@@ -27,7 +25,6 @@ import 'package:gen_crm/src/models/model_generator/work.dart';
 import 'package:gen_crm/src/models/request/voucher_service_request.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/share_local.dart';
-
 import '../src/models/model_generator/add_data_response.dart';
 import '../src/models/model_generator/add_voucher_response.dart';
 import '../src/models/model_generator/clue.dart';
@@ -48,6 +45,7 @@ import '../src/models/model_generator/list_cv_customer_response.dart';
 import '../src/models/model_generator/list_hd_product_customer_response.dart';
 import '../src/models/model_generator/list_ht_product_customer_response.dart';
 import '../src/models/model_generator/list_product_response.dart';
+import '../src/models/model_generator/note.dart';
 import '../src/models/model_generator/param_del_notif.dart';
 import '../src/models/model_generator/param_read_notifi.dart';
 import '../src/models/model_generator/post_info_car_response.dart';
@@ -208,8 +206,10 @@ class UserRepository {
   Future<InforResponse> getInfor() async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getInfor();
 
-  Future<ListNoteClueResponse> getListNoteClue(String id) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).getNoteClue(id);
+  Future<NoteResponse> getNoteList(
+          String module, String id, String page) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getNoteList(module, id, page);
 
   Future<ListNotificationResponse> getListUnReadNotification(int page) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
@@ -314,29 +314,10 @@ class UserRepository {
   Future<BaseResponse> deleteSupport(Map<String, dynamic> id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).deleteSupport(id);
 
-  Future<BaseResponse> deleteNoteCus(String noteid, String id) async =>
+  Future<BaseResponse> deleteNote(
+          String noteid, String id, String module) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .deleteNoteCus({BASE_URL.NOTE_ID: noteid, BASE_URL.ID: id});
-
-  Future<BaseResponse> deleteNoteContact(String noteid, String id) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .deleteNoteContact({BASE_URL.NOTE_ID: noteid, BASE_URL.ID: id});
-
-  Future<BaseResponse> deleteNoteOop(String noteid, String id) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .deleteNoteOop({BASE_URL.NOTE_ID: noteid, BASE_URL.ID: id});
-
-  Future<BaseResponse> deleteNoteContract(String noteid, String id) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .deleteNoteContract({BASE_URL.NOTE_ID: noteid, BASE_URL.ID: id});
-
-  Future<BaseResponse> deleteNoteJob(String noteid, String id) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .deleteNoteJob({BASE_URL.NOTE_ID: noteid, BASE_URL.ID: id});
-
-  Future<BaseResponse> deleteNoteSup(String noteid, String id) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .deleteNoteSup({BASE_URL.NOTE_ID: noteid, BASE_URL.ID: id});
+          .deleteNote(module, {BASE_URL.NOTE_ID: noteid, BASE_URL.ID: id});
 
   Future<AddCustomerIndividual> getFormEditClue(String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
@@ -366,26 +347,6 @@ class UserRepository {
   Future<ContactByCustomerResponse> getContactByCustomer(String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .getContactByCustomer(id);
-
-  Future<NoteResponse> getListNoteOpp(String id, String page) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).getNoteOpp(id, page);
-
-  Future<NoteResponse> getListNoteCus(String id, String page) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).getNoteCus(id, page);
-
-  Future<NoteResponse> getListNoteContact(String id, String page) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .getNoteContact(id, page);
-
-  Future<NoteResponse> getListNoteContract(String id, String page) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .getNoteContract(id, page);
-
-  Future<NoteResponse> getListNoteJob(String id, String page) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).getNoteJob(id, page);
-
-  Future<NoteResponse> getListNoteSup(String id, String page) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).getNoteSup(id, page);
 
   Future<ProductResponse> getListProduct(
           String page, String querySearch) async =>
@@ -573,91 +534,24 @@ class UserRepository {
   Future<AddDataResponse> editJob({required Map<String, dynamic> data}) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).saveUpdateJob(data);
 
-  Future<BaseResponse> addNoteCus(
-          {required String id, required String content}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .addNoteCus(id, content);
+  Future<BaseResponse> addNote({
+    required String id,
+    required String content,
+    required String module,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).addNote(
+        module,
+        id,
+        content,
+      );
 
-  Future<BaseResponse> addNoteContact(
-          {required String id, required String content}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .addNoteContact(id, content);
-
-  Future<BaseResponse> addNoteOpp(
-          {required String id, required String content}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .addNoteOpp(id, content);
-
-  Future<BaseResponse> addNoteContract(
-          {required String id, required String content}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .addNoteContract(id, content);
-
-  Future<BaseResponse> addNoteJob(
-          {required String id, required String content}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .addNoteJob(id, content);
-
-  Future<BaseResponse> addNoteSup(
-          {required String id, required String content}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .addNoteSup(id, content);
-
-  Future<BaseResponse> editNoteCus(
-          {required String id,
-          required String content,
-          required String noteId}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).editNoteCus({
-        BASE_URL.ID: id,
-        BASE_URL.CONTENT: content,
-        BASE_URL.NOTE_ID: noteId
-      });
-
-  Future<BaseResponse> editNoteContact(
-          {required String id,
-          required String content,
-          required String noteId}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).editNoteContact({
-        BASE_URL.ID: id,
-        BASE_URL.CONTENT: content,
-        BASE_URL.NOTE_ID: noteId
-      });
-
-  Future<BaseResponse> editNoteOop(
-          {required String id,
-          required String content,
-          required String noteId}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).editNoteOop({
-        BASE_URL.ID: id,
-        BASE_URL.CONTENT: content,
-        BASE_URL.NOTE_ID: noteId
-      });
-
-  Future<BaseResponse> editNoteContract(
-          {required String id,
-          required String content,
-          required String noteId}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).editNoteContract({
-        BASE_URL.ID: id,
-        BASE_URL.CONTENT: content,
-        BASE_URL.NOTE_ID: noteId
-      });
-
-  Future<BaseResponse> editNoteJob(
-          {required String id,
-          required String content,
-          required String noteId}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).editNoteJob({
-        BASE_URL.ID: id,
-        BASE_URL.CONTENT: content,
-        BASE_URL.NOTE_ID: noteId
-      });
-
-  Future<BaseResponse> editNoteSup(
-          {required String id,
-          required String content,
-          required String noteId}) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).editNoteSup({
+  Future<BaseResponse> editNote({
+    required String id,
+    required String content,
+    required String noteId,
+    required String module,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).editNote(module, {
         BASE_URL.ID: id,
         BASE_URL.CONTENT: content,
         BASE_URL.NOTE_ID: noteId

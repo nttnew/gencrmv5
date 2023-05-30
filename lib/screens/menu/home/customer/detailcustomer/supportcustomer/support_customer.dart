@@ -19,37 +19,28 @@ class _SupportCustomerState extends State<SupportCustomer>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(
-            height: AppValue.heights * 0.02,
-          ),
-          BlocBuilder<SupportCustomerBloc, SupportCustomerState>(
-              builder: (context, state) {
-            if (state is UpdateGetSupportCustomerState) if (state
-                    .listSupport.length >
-                0)
-              return Column(
-                children: List.generate(
-                    state.listSupport.length,
-                    (index) => GestureDetector(
-                        onTap: () {
-                          AppNavigator.navigateDetailSupport(
-                              state.listSupport[index].id.toString(),
-                              state.listSupport[index].name ?? '');
-                        },
-                        child:
-                            SupportCardWidget(data: state.listSupport[index]))),
-              );
-            else {
-              return noData();
-            }
-            else
-              return Container();
-          }),
-        ],
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(25.0),
+      child: BlocBuilder<SupportCustomerBloc, SupportCustomerState>(
+          builder: (context, state) {
+        if (state
+            is UpdateGetSupportCustomerState) if (state.listSupport.length > 0)
+          return ListView.builder(
+            itemCount: state.listSupport.length,
+            itemBuilder: (BuildContext context, int index) => GestureDetector(
+                onTap: () {
+                  AppNavigator.navigateDetailSupport(
+                      state.listSupport[index].id.toString(),
+                      state.listSupport[index].name ?? '');
+                },
+                child: SupportCardWidget(data: state.listSupport[index])),
+          );
+        else {
+          return noData();
+        }
+        else
+          return Container();
+      }),
     );
   }
 
