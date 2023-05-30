@@ -104,22 +104,12 @@ class WorkCardWidget extends StatelessWidget {
         ],
       ),
       margin: EdgeInsets.only(
-        left: 1,
-        top: AppValue.heights * 0.01,
-        right: 1,
+        top: 25,
       ),
-      padding: EdgeInsets.only(
-          left: AppValue.widths * 0.05,
-          top: AppValue.heights * 0.02,
-          right: AppValue.widths * 0.05,
-          bottom: AppValue.widths * 0.05),
+      padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10)),
+        borderRadius: BorderRadius.all(Radius.circular(12)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.3),

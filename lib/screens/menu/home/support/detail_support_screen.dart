@@ -34,7 +34,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
   }
 
   getThaoTac() {
-    list=[];
+    list = [];
     if (location != 1) //1 là có rồi
       list.add(ModuleThaoTac(
         title: "Thêm check in",
@@ -91,7 +91,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppbarBaseNormal(  title),
+        appBar: AppbarBaseNormal(title),
         body: BlocBuilder<DetailSupportBloc, DetailSupportState>(
             builder: (context, state) {
           if (state is SuccessGetDetailSupportState) {
@@ -128,16 +128,16 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                   );
                 }
               },
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 25),
+                            child: Column(
                               children: List.generate(
                                   state.dataDetailSupport.length,
                                   (index) => Column(
@@ -251,19 +251,22 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                                         ],
                                       )),
                             ),
-                            SizedBox(
-                              height: AppValue.heights * 0.02,
-                            ),
-                            ListNote(module: Module.HO_TRO, id: id)
-                          ],
-                        ),
+                          ),
+                          SizedBox(
+                            height: AppValue.heights * 0.02,
+                          ),
+                          ListNote(module: Module.HO_TRO, id: id)
+                        ],
                       ),
                     ),
-                    ButtonThaoTac(onTap: () {
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: ButtonThaoTac(onTap: () {
                       showThaoTac(context, list);
                     }),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
           } else

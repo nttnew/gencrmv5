@@ -24,34 +24,39 @@ class _ContractOperationState extends State<ContractOperation>
   Widget build(BuildContext context) {
     super.build(context);
     return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.only(bottom: 10),
-        child: BlocBuilder<DetailContractBloc, DetailContractState>(
-            builder: (context, state) {
-          if (state is SuccessDetailContractState)
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children:
-                      List.generate(state.listDetailContract.length, (index) {
-                    if (state.listDetailContract[index].data != null) {
-                      return _buildContent1(state.listDetailContract[index]);
-                    } else
-                      return Container();
-                  }),
+      child: BlocBuilder<DetailContractBloc, DetailContractState>(
+          builder: (context, state) {
+        if (state is SuccessDetailContractState)
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Column(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(state.listDetailContract.length,
+                          (index) {
+                        if (state.listDetailContract[index].data != null) {
+                          return _buildContent1(
+                              state.listDetailContract[index]);
+                        } else
+                          return Container();
+                      }),
+                    ),
+                    WidgetLine(
+                      color: Colors.grey,
+                    ),
+                  ],
                 ),
-                WidgetLine(
-                  color: Colors.grey,
-                ),
-                ListNote(module: Module.HOP_DONG, id: widget.id)
-              ],
-            );
-          else
-            return Container();
-        }),
-      ),
+              ),
+              ListNote(module: Module.HOP_DONG, id: widget.id)
+            ],
+          );
+        else
+          return Container();
+      }),
     );
   }
 

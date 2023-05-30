@@ -23,19 +23,16 @@ class _ChanceInfoState extends State<ChanceInfo>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Container(
-      padding: EdgeInsets.only(bottom: 10),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 16,
-            ),
-            BlocBuilder<GetListDetailChanceBloc, DetailChanceState>(
-                builder: (context, state) {
-              if (state is UpdateGetListDetailChanceState) {
-                return ListView.separated(
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          BlocBuilder<GetListDetailChanceBloc, DetailChanceState>(
+              builder: (context, state) {
+            if (state is UpdateGetListDetailChanceState) {
+              return Padding(
+                padding: EdgeInsets.all(25),
+                child: ListView.separated(
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
@@ -157,14 +154,14 @@ class _ChanceInfoState extends State<ChanceInfo>
                     separatorBuilder: (context, index) {
                       return SizedBox();
                     },
-                    itemCount: state.data.length);
-              } else
-                return Container();
-            }),
-            AppValue.vSpaceTiny,
-            ListNote(module: Module.CO_HOI_BH, id: widget.id)
-          ],
-        ),
+                    itemCount: state.data.length),
+              );
+            } else
+              return Container();
+          }),
+          AppValue.vSpaceTiny,
+          ListNote(module: Module.CO_HOI_BH, id: widget.id)
+        ],
       ),
     );
   }

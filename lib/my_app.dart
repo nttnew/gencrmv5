@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: ROUTE_NAMES.INFO_CLUE,
-          page: () => InfoCluePage(),
+          page: () => DetailInfoClue(),
         ),
         GetPage(
           name: ROUTE_NAMES.WORK,
@@ -92,7 +92,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: ROUTE_NAMES.INFO_CONTRACT,
-          page: () => InfoContractPage(),
+          page: () => DetailInfoContract(),
         ),
         GetPage(
           name: ROUTE_NAMES.ADD_CONTRACT,

@@ -27,7 +27,11 @@ class _ListWorkClueState extends State<ListWorkClue>
           if (state.data!.length > 0) {
             List<WorkClueData> listWorkClue = state.data!;
             return ListView.separated(
-              padding: EdgeInsets.zero,
+              padding: EdgeInsets.only(
+                left: 25,
+                right: 25,
+                bottom: 25,
+              ),
               shrinkWrap: true,
               itemBuilder: (context, index) => GestureDetector(
                 onTap: () {
@@ -46,7 +50,6 @@ class _ListWorkClueState extends State<ListWorkClue>
               ),
               itemCount: state.data!.length,
               separatorBuilder: (BuildContext context, int index) => SizedBox(
-                height: AppValue.heights * 0.01,
               ),
             );
           } else {

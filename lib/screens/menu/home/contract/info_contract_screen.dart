@@ -17,14 +17,14 @@ import '../../../../widgets/show_thao_tac.dart';
 import '../../../../widgets/widget_appbar.dart';
 import '../../attachment/attachment.dart';
 
-class InfoContractPage extends StatefulWidget {
-  const InfoContractPage({Key? key}) : super(key: key);
+class DetailInfoContract extends StatefulWidget {
+  const DetailInfoContract({Key? key}) : super(key: key);
 
   @override
-  State<InfoContractPage> createState() => _InfoContractPageState();
+  State<DetailInfoContract> createState() => _DetailInfoContractState();
 }
 
-class _InfoContractPageState extends State<InfoContractPage> {
+class _DetailInfoContractState extends State<DetailInfoContract> {
   String id = Get.arguments[0];
   String name = Get.arguments[1];
   List<ModuleThaoTac> list = [];
@@ -163,63 +163,61 @@ class _InfoContractPageState extends State<InfoContractPage> {
             ),
             AppValue.vSpaceTiny,
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: DefaultTabController(
-                    length: 4,
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: const TabBar(
-                            isScrollable: true,
-                            automaticIndicatorColorAdjustment: true,
-                            indicatorColor: COLORS.TEXT_COLOR,
-                            labelColor: COLORS.TEXT_COLOR,
-                            unselectedLabelColor: COLORS.GREY,
-                            labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
-                            tabs: [
-                              Tab(
-                                text: 'Thông tin chung',
-                              ),
-                              Tab(
-                                text: 'Thanh toán',
-                              ),
-                              Tab(
-                                text: 'Công việc',
-                              ),
-                              Tab(
-                                text: 'Hỗ trợ',
-                              ),
-                            ],
-                          ),
+              child: DefaultTabController(
+                  length: 4,
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: const TabBar(
+                          padding: EdgeInsets.symmetric(horizontal: 25),
+                          isScrollable: true,
+                          automaticIndicatorColorAdjustment: true,
+                          indicatorColor: COLORS.TEXT_COLOR,
+                          labelColor: COLORS.TEXT_COLOR,
+                          unselectedLabelColor: COLORS.GREY,
+                          labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
+                          tabs: [
+                            Tab(
+                              text: 'Thông tin chung',
+                            ),
+                            Tab(
+                              text: 'Thanh toán',
+                            ),
+                            Tab(
+                              text: 'Công việc',
+                            ),
+                            Tab(
+                              text: 'Hỗ trợ',
+                            ),
+                          ],
                         ),
-                        Expanded(
-                          child: TabBarView(
-                            children: [
-                              ContractOperation(
-                                id: id,
-                              ),
-                              ContractPayment(id: int.parse(id)),
-                              ContractJob(id: int.parse(id)),
-                              ContractSupport(id: id),
-                            ],
-                          ),
+                      ),
+                      Expanded(
+                        child: TabBarView(
+                          children: [
+                            ContractOperation(
+                              id: id,
+                            ),
+                            ContractPayment(id: int.parse(id)),
+                            ContractJob(id: int.parse(id)),
+                            ContractSupport(id: id),
+                          ],
                         ),
-                        BlocBuilder<DetailContractBloc, DetailContractState>(
-                          builder: (context, state) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 9),
-                              child: ButtonThaoTac(onTap: () {
-                                showThaoTac(context, list);
-                              }),
-                            );
-                          },
-                        )
-                      ],
-                    )),
-              ),
+                      ),
+                      BlocBuilder<DetailContractBloc, DetailContractState>(
+                        builder: (context, state) {
+                          return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 25),
+                            child: ButtonThaoTac(onTap: () {
+                              showThaoTac(context, list);
+                            }),
+                          );
+                        },
+                      )
+                    ],
+                  )),
             )
           ],
         ),

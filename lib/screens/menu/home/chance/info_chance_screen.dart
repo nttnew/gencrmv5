@@ -151,45 +151,43 @@ class _InfoChancePageState extends State<InfoChancePage> {
             ),
             AppValue.vSpaceTiny,
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: DefaultTabController(
-                    length: 2,
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: const TabBar(
-                            isScrollable: true,
-                            indicatorColor: COLORS.TEXT_COLOR,
-                            labelColor: COLORS.TEXT_COLOR,
-                            unselectedLabelColor: COLORS.GREY,
-                            labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
-                            tabs: [
-                              Tab(
-                                text: 'Thông tin chung',
-                              ),
-                              Tab(
-                                text: 'Công việc',
-                              )
-                            ],
-                          ),
+              child: DefaultTabController(
+                  length: 2,
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: const TabBar(
+                          padding: EdgeInsets.symmetric(horizontal: 25),
+                          isScrollable: true,
+                          indicatorColor: COLORS.TEXT_COLOR,
+                          labelColor: COLORS.TEXT_COLOR,
+                          unselectedLabelColor: COLORS.GREY,
+                          labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
+                          tabs: [
+                            Tab(
+                              text: 'Thông tin chung',
+                            ),
+                            Tab(
+                              text: 'Công việc',
+                            )
+                          ],
                         ),
-                        Expanded(
-                          child: TabBarView(
-                            children: [
-                              ChanceInfo(
-                                id: id,
-                              ),
-                              JobListChance(
-                                id: id,
-                              )
-                            ],
-                          ),
+                      ),
+                      Expanded(
+                        child: TabBarView(
+                          children: [
+                            ChanceInfo(
+                              id: id,
+                            ),
+                            JobListChance(
+                              id: id,
+                            )
+                          ],
                         ),
-                      ],
-                    )),
-              ),
+                      ),
+                    ],
+                  )),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),

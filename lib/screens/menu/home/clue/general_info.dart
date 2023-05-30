@@ -21,32 +21,33 @@ class _GeneralInfoState extends State<GeneralInfo>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Container(
-        padding: EdgeInsets.only(bottom: 10),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              BlocBuilder<GetDetailClueBloc, DetailClueState>(
-                  builder: (context, state) {
-                if (state is GetDetailClueState) {
-                  if (state.list == [] || state.list == null) {
-                    return SizedBox();
-                  } else {
-                    return Column(
-                      children: List.generate(state.list!.length,
-                          (index) => _buildContent(state.list![index])),
-                    );
-                  }
-                } else {
-                  return SizedBox();
-                }
-              }),
-              AppValue.vSpaceTiny,
-              ListNote(module: Module.DAU_MOI, id: widget.id)
-            ],
-          ),
-        ));
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          BlocBuilder<GetDetailClueBloc, DetailClueState>(
+              builder: (context, state) {
+            if (state is GetDetailClueState) {
+              if (state.list == [] || state.list == null) {
+                return SizedBox();
+              } else {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25),
+                  child: Column(
+                    children: List.generate(state.list!.length,
+                        (index) => _buildContent(state.list![index])),
+                  ),
+                );
+              }
+            } else {
+              return SizedBox();
+            }
+          }),
+          AppValue.vSpaceTiny,
+          ListNote(module: Module.DAU_MOI, id: widget.id)
+        ],
+      ),
+    );
   }
 
   _buildContent(DetailClueGroupName detailClue) {

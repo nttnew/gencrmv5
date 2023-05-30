@@ -23,37 +23,34 @@ class _ContractJobState extends State<ContractJob>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Container(
-        padding: EdgeInsets.only(bottom: 10),
-        child: BlocBuilder<JobContractBloc, JobContractState>(
-            builder: (context, state) {
-          if (state is SuccessJobContractState) if (state.listJob.length > 0)
-            return ListView.separated(
-                padding: EdgeInsets.zero,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      AppNavigator.navigateDetailWork(
-                          int.parse(state.listJob[index].id!),
-                          state.listJob[index].name_job ?? '');
-                    },
-                    child: _tabBarWork(state.listJob[index]),
-                  );
+    return BlocBuilder<JobContractBloc, JobContractState>(
+        builder: (context, state) {
+      if (state is SuccessJobContractState) if (state.listJob.length > 0)
+        return ListView.separated(
+            padding: EdgeInsets.all(25),
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  AppNavigator.navigateDetailWork(
+                      int.parse(state.listJob[index].id!),
+                      state.listJob[index].name_job ?? '');
                 },
-                separatorBuilder: (BuildContext context, int index) =>
-                    const SizedBox(
-                      height: 10,
-                    ),
-                itemCount: state.listJob.length);
-          else
-            return noData();
-          else
-            return Container();
-        }));
+                child: _tabBarWork(state.listJob[index]),
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) =>
+                const SizedBox(),
+            itemCount: state.listJob.length);
+      else
+        return noData();
+      else
+        return Container();
+    });
   }
 
   _tabBarWork(DataFormAdd data) {
     return Container(
+      margin: EdgeInsets.only(bottom: 20),
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       decoration: BoxDecoration(
         color: COLORS.WHITE,
@@ -132,7 +129,11 @@ class _ContractJobState extends State<ContractJob>
             children: [
               Row(
                 children: [
-                  Image.asset(ICONS.IC_DATE_PNG,height: 20,width: 20,),
+                  Image.asset(
+                    ICONS.IC_DATE_PNG,
+                    height: 20,
+                    width: 20,
+                  ),
                   AppValue.hSpaceTiny,
                   WidgetText(
                       title: data.start_date ?? "",
