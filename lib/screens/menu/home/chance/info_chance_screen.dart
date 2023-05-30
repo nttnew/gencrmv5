@@ -26,6 +26,12 @@ class _InfoChancePageState extends State<InfoChancePage> {
   List<ModuleThaoTac> list = [];
 
   @override
+  void deactivate() {
+    GetListDetailChanceBloc.of(context).add(ReloadChanceEvent());
+    super.deactivate();
+  }
+
+  @override
   void initState() {
     getThaoTac();
     GetListDetailChanceBloc.of(context)

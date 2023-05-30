@@ -41,3 +41,7 @@ class InitNoteSupEvent extends ListNoteEvent {
 
   InitNoteSupEvent(this.id, this.page);
 }
+
+class ReloadEvent extends ListNoteEvent {
+  ReloadEvent();
+}

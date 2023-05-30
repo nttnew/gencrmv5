@@ -9,11 +9,11 @@ abstract class DetailClueState extends Equatable {
 
 class InitGetDetailClueState extends DetailClueState {}
 
-class UpdateGetDetailClueState extends DetailClueState {
-  List<DetailClueGroupName> list;
-  UpdateGetDetailClueState(this.list);
+class GetDetailClueState extends DetailClueState {
+  List<DetailClueGroupName>? list;
+  GetDetailClueState(this.list);
   @override
-  List<Object> get props => [list];
+  List<Object?> get props => [list];
 }
 
 class LoadingDetailClueState extends DetailClueState {}

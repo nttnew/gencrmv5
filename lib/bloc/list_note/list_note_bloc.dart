@@ -33,6 +33,8 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
       yield* _getListNoteJob(id: event.id, page: event.page);
     } else if (event is InitNoteSupEvent) {
       yield* _getListNoteSup(id: event.id, page: event.page);
+    } else if (event is ReloadEvent) {
+      yield SuccessGetNoteOppState([]);
     }
   }
 
@@ -45,7 +47,7 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         // if(response.data != []){
-        yield SuccessGetNoteOppState(response.data!.notes ?? []);
+        yield SuccessGetNoteOppState(response.data?.notes ?? []);
         // }
 
         // else{

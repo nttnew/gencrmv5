@@ -29,6 +29,12 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   List<ModuleThaoTac> list = [];
 
   @override
+  void deactivate() {
+    DetailWorkBloc.of(context).add(ReloadWorkEvent());
+    super.deactivate();
+  }
+
+  @override
   void initState() {
     DetailWorkBloc.of(context).add(InitGetDetailWorkEvent(id));
     super.initState();

@@ -29,6 +29,12 @@ class _InfoCluePageState extends State<InfoCluePage> {
   List<ModuleThaoTac> list = [];
 
   @override
+  void deactivate() {
+    GetDetailClueBloc.of(context).add(ReloadClueEvent());
+    super.deactivate();
+  }
+
+  @override
   void initState() {
     getThaoTac();
     Future.delayed(Duration(milliseconds: 100), () {

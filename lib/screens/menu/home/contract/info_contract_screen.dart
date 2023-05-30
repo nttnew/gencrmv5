@@ -30,6 +30,12 @@ class _InfoContractPageState extends State<InfoContractPage> {
   List<ModuleThaoTac> list = [];
 
   @override
+  void deactivate() {
+    DetailContractBloc.of(context).add(ReloadContractEvent());
+    super.deactivate();
+  }
+
+  @override
   void initState() {
     getThaoTac();
     Future.delayed(Duration(milliseconds: 100), () {
@@ -51,7 +57,7 @@ class _InfoContractPageState extends State<InfoContractPage> {
       isSvg: false,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormSign('Ký nhận',id);
+        AppNavigator.navigateFormSign('Ký nhận', id);
       },
     ));
 

@@ -45,12 +45,18 @@ class _ListNoteState extends State<ListNote> {
       } else if (widget.type == 5) {
         ListNoteBloc.of(context).add(InitNoteJobEvent(widget.id, page));
       } else if (widget.type == 6) {
-        if(mounted){
+        if (mounted) {
           ListNoteBloc.of(context).add(InitNoteSupEvent(widget.id, page));
         }
       }
     });
     super.initState();
+  }
+
+  @override
+  void deactivate() {
+    ListNoteBloc.of(context).add(ReloadEvent());
+    super.deactivate();
   }
 
   @override
@@ -95,6 +101,7 @@ class _ListNoteState extends State<ListNote> {
                           Container(
                             margin: EdgeInsets.only(top: 6),
                             child: WidgetNetworkImage(
+                              isAvatar: true,
                               image: state.data[index].avatar ?? '',
                               width: widget.size,
                               height: widget.size,

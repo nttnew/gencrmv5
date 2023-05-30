@@ -17,3 +17,7 @@ class DeleteProductEvent extends DetailProductEvent {
 
   DeleteProductEvent(this.id);
 }
+
+class ReloadProductEvent extends DetailProductEvent {
+  ReloadProductEvent();
+}

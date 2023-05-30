@@ -19,3 +19,7 @@ class InitDeleteWorkEvent extends DetailWorkEvent {
   @override
   List<Object?> get props => [id];
 }
+
+class ReloadWorkEvent extends DetailWorkEvent {
+  ReloadWorkEvent();
+}

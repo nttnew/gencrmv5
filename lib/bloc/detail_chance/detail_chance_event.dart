@@ -17,3 +17,5 @@ class InitDeleteChanceEvent extends DetailChanceEvent {
 
   InitDeleteChanceEvent(this.id);
 }
+
+class ReloadChanceEvent extends DetailChanceEvent{}
