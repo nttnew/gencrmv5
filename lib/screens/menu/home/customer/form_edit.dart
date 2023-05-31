@@ -69,7 +69,7 @@ class _FormEditState extends State<FormEdit> {
       FormEditBloc.of(context).add(InitFormEditChanceEvent(id));
     } else if (type == 4) {
       FormEditBloc.of(context).add(InitFormEditContractEvent(id));
-    } else if (type == 5) {
+    } else if (type == EDIT_JOB) {
       FormEditBloc.of(context).add(InitFormEditJobEvent(id));
     } else if (type == 6) {
       FormEditBloc.of(context).add(InitFormEditSupportEvent(id));
@@ -179,7 +179,7 @@ class _FormEditState extends State<FormEdit> {
                         GetListChanceBloc.of(context)
                             .add(InitGetListOrderEventChance('', 1, ''));
                       }
-                      if (type == 5) {
+                      if (type == EDIT_JOB) {
                         DetailWorkBloc.of(context)
                             .add(InitGetDetailWorkEvent(int.parse(id)));
                         WorkBloc.of(context)
@@ -227,22 +227,28 @@ class _FormEditState extends State<FormEdit> {
                       data = [];
                       return Container();
                     } else if (state is SuccessFormEditState) {
-                      for (int i = 0; i < state.listEditData.length; i++) {
-                        addData.add(ModelItemAdd(
-                            group_name: state.listEditData[i].group_name ?? '',
-                            data: []));
-                        for (int j = 0;
-                            j < state.listEditData[i].data!.length;
-                            j++) {
-                          addData[i].data.add(ModelDataAdd(
-                              label: state.listEditData[i].data![j].field_name,
-                              value: state
-                                  .listEditData[i].data![j].field_set_value
-                                  .toString(),
-                              required: state
-                                  .listEditData[i].data![j].field_require));
+                      if (addData.isNotEmpty) {
+                      } else {
+                        for (int i = 0; i < state.listEditData.length; i++) {
+                          addData.add(ModelItemAdd(
+                              group_name:
+                                  state.listEditData[i].group_name ?? '',
+                              data: []));
+                          for (int j = 0;
+                              j < state.listEditData[i].data!.length;
+                              j++) {
+                            addData[i].data.add(ModelDataAdd(
+                                label:
+                                    state.listEditData[i].data![j].field_name,
+                                value: state
+                                    .listEditData[i].data![j].field_set_value
+                                    .toString(),
+                                required: state
+                                    .listEditData[i].data![j].field_require));
+                          }
                         }
                       }
+
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -794,7 +800,7 @@ class _FormEditState extends State<FormEdit> {
       } else if (type == 4) {
         AddDataBloc.of(context).add(
             AddContractEvent(data, files: AttackBloc.of(context).listFile));
-      } else if (type == 5) {
+      } else if (type == EDIT_JOB) {
         AddDataBloc.of(context)
             .add(EditJobEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 6) {
@@ -804,7 +810,6 @@ class _FormEditState extends State<FormEdit> {
         AddDataBloc.of(context).add(EditProductEvent(data, int.parse(id),
             files: AttackBloc.of(context).listFile));
       } else if (type == PRODUCT_CUSTOMER_TYPE) {
-        data["id"] = id;
         AddDataBloc.of(context).add(EditProductCustomerEvent(data,
             files: AttackBloc.of(context).listFile));
       }

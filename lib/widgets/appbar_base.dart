@@ -39,13 +39,21 @@ PreferredSizeWidget AppbarBase(
       toolbarHeight: AppValue.heights * 0.1,
       backgroundColor: HexColor("#D0F1EB"),
       centerTitle: false,
-      title: WidgetText(
-        title: title,
-        style: TextStyle(
-          color: Colors.black,
-          fontFamily: "Montserrat",
-          fontWeight: FontWeight.w700,
-          fontSize: 16,
+      title: GestureDetector(
+        onTap: () {
+          if (_drawerKey.currentContext != null &&
+              !_drawerKey.currentState!.isDrawerOpen) {
+            _drawerKey.currentState!.openDrawer();
+          }
+        },
+        child: WidgetText(
+          title: title,
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: "Montserrat",
+            fontWeight: FontWeight.w700,
+            fontSize: 16,
+          ),
         ),
       ),
       leading: GestureDetector(

@@ -557,9 +557,6 @@ class _EditContractState extends State<EditContract> {
   Widget _fieldInputCustomer(
       CustomerIndividualItemData data, int index, int index1,
       {bool noEdit = false, String value = ""}) {
-    // if ((type == 21 && data.field_id == "12547")||(type == 31 && data.field_id == "12547")) {
-    //   return Container();
-    // } else
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Column(

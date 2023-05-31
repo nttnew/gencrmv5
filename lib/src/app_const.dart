@@ -19,6 +19,7 @@ const String PACKAGE_ID = 'vn.gen_crm';
 const String TEAM_ID = 'AEY48KNZRS';
 const int PRODUCT_TYPE = 99;
 const int PRODUCT_CUSTOMER_TYPE = 98;
+const int EDIT_JOB = 5;
 const int CV_PRODUCT_CUSTOMER_TYPE = 97;
 const int HD_PRODUCT_CUSTOMER_TYPE = 96;
 const int HT_PRODUCT_CUSTOMER_TYPE = 95;

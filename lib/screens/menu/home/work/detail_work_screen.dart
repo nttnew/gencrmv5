@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
+import '../../../../src/app_const.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/btn_thao_tac.dart';
 import '../../../../widgets/loading_api.dart';
@@ -79,7 +80,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditDataScreen(id.toString(), 5);
+        AppNavigator.navigateEditDataScreen(id.toString(), EDIT_JOB);
       },
     ));
 
