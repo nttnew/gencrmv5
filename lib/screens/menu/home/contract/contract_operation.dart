@@ -31,7 +31,7 @@ class _ContractOperationState extends State<ContractOperation>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
+                padding: const EdgeInsets.all(25),
                 child: Column(
                   children: [
                     Column(
@@ -62,7 +62,9 @@ class _ContractOperationState extends State<ContractOperation>
 
   _buildContent1(DetailContractData data) {
     return Container(
-      padding: EdgeInsets.only(bottom: 8, top: 16),
+      padding: EdgeInsets.only(
+        bottom: 15,
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,

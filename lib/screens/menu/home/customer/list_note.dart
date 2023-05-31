@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/list_note/list_note_bloc.dart';
@@ -29,19 +31,35 @@ class ListNote extends StatefulWidget {
 
 class _ListNoteState extends State<ListNote> {
   String page = BASE_URL.PAGE_DEFAULT.toString();
+  Timer? _debounce;
 
   @override
   void initState() {
-    ListNoteBloc.of(context).add(InitNoteEvent(
-      widget.id,
-      page,
-      widget.module,
-    ));
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    int millisecondsMy = 350;
+    if (widget.module == Module.CO_HOI_BH) {
+      millisecondsMy = 700;
+    } else if (widget.module == Module.HOP_DONG ||
+        widget.module == Module.HO_TRO) {
+      millisecondsMy = 0;
+    }
+    if (widget.isAdd) millisecondsMy = 0;
+    _debounce = Timer(Duration(milliseconds: millisecondsMy), () {
+      ListNoteBloc.of(context)
+          .add(InitNoteEvent(widget.id, page, widget.module, widget.isAdd));
+    });
     super.initState();
   }
 
   @override
+  void deactivate() {
+    if (!widget.isAdd) ListNoteBloc.of(context).add(ReloadEvent());
+    super.deactivate();
+  }
+
+  @override
   void dispose() {
+    _debounce?.cancel();
     page = BASE_URL.PAGE_DEFAULT.toString();
     super.dispose();
   }

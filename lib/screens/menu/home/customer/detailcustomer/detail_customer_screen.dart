@@ -11,7 +11,6 @@ import '../../../../../bloc/chance_customer/chance_customer_bloc.dart';
 import '../../../../../bloc/clue_customer/clue_customer_bloc.dart';
 import '../../../../../bloc/contract_customer/contract_customer_bloc.dart';
 import '../../../../../bloc/job_customer/job_customer_bloc.dart';
-import '../../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../../bloc/support_customer/support_customer_bloc.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/appbar_base.dart';
@@ -48,8 +47,6 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     ContractCustomerBloc.of(context).id = int.parse(id);
     DetailCustomerBloc.of(context)
         .add(InitGetDetailCustomerEvent(int.parse(id)));
-    ListNoteBloc.of(context).add(
-        InitNoteEvent(id, BASE_URL.PAGE_DEFAULT.toString(), Module.KHACH_HANG));
     ClueCustomerBloc.of(context).add(InitGetClueCustomerEvent(int.parse(id)));
     ChanceCustomerBloc.of(context)
         .add(InitGetChanceCustomerEvent(int.parse(id)));

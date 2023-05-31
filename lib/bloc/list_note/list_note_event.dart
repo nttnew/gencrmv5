@@ -8,11 +8,12 @@ abstract class ListNoteEvent extends Equatable {
 
 class InitNoteEvent extends ListNoteEvent {
   final String id, page, module;
+  final bool isAdd;
 
   InitNoteEvent(
     this.id,
     this.page,
-    this.module,
+    this.module, this.isAdd,
   );
 }
 

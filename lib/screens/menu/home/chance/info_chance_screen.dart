@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:gen_crm/bloc/list_note/list_note_bloc.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/blocs.dart';
@@ -33,17 +32,12 @@ class _InfoChancePageState extends State<InfoChancePage> {
 
   @override
   void initState() {
-    getThaoTac();
     GetListDetailChanceBloc.of(context)
         .add(InitGetListDetailEvent(int.parse(id)));
-    ListNoteBloc.of(context).add(InitNoteEvent(
-      id,
-      BASE_URL.PAGE_DEFAULT.toString(),
-      Module.CO_HOI_BH,
-    ));
     GetJobChanceBloc.of(context).add(InitGetJobEventChance(
       int.parse(id),
     ));
+    getThaoTac();
     super.initState();
   }
 

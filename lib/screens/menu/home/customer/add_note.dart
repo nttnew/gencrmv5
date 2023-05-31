@@ -45,7 +45,7 @@ class _AddNoteState extends State<AddNote> {
                 _editingController.text = '';
                 FocusManager.instance.primaryFocus?.unfocus();
                 ListNoteBloc.of(context).add(InitNoteEvent(
-                    id, BASE_URL.PAGE_DEFAULT.toString(), module));
+                    id, BASE_URL.PAGE_DEFAULT.toString(), module, true));
               } else if (state is ErrorAddNoteState) {
                 ShowDialogCustom.showDialogBase(
                   title: MESSAGES.NOTIFICATION,

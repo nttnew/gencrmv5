@@ -24,6 +24,7 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
         module: event.module,
         id: event.id,
         page: event.page,
+        isAdd: event.isAdd,
       );
     } else if (event is ReloadEvent) {
       yield SuccessGetNoteOppState([]);
@@ -34,8 +35,9 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
     required String id,
     required String module,
     required String page,
+    required bool isAdd,
   }) async* {
-    LoadingApi().pushLoading();
+    if (isAdd) LoadingApi().pushLoading();
     try {
       yield LoadingGetNoteOppState();
       final response = await userRepository.getNoteList(
