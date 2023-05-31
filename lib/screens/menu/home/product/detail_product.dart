@@ -185,37 +185,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                                                         width: 8,
                                                       ),
                                                       Expanded(
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            if (state
-                                                                    .productInfo
-                                                                    ?.data?[
-                                                                        index]
-                                                                    .data?[
-                                                                        index1]
-                                                                    .labelField ==
-                                                                BASE_URL
-                                                                    .KHACH_HANG) {
-                                                              AppNavigator.navigateDetailCustomer(
-                                                                  state
-                                                                          .productInfo
-                                                                          ?.data?[
-                                                                              index]
-                                                                          .data?[
-                                                                              index1]
-                                                                          .id ??
-                                                                      '',
-                                                                  state
-                                                                          .productInfo
-                                                                          ?.data?[
-                                                                              index]
-                                                                          .data?[
-                                                                              index1]
-                                                                          .valueField ??
-                                                                      '');
-                                                            }
-                                                          },
-                                                          child: WidgetText(
+                                                        child: WidgetText(
                                                             title: state
                                                                 .productInfo
                                                                 ?.data?[index]
@@ -223,34 +193,8 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                                                                 .valueField,
                                                             textAlign:
                                                                 TextAlign.right,
-                                                            style: ValueStyle()
-                                                                .copyWith(
-                                                              decoration: state
-                                                                          .productInfo
-                                                                          ?.data?[
-                                                                              index]
-                                                                          .data?[
-                                                                              index1]
-                                                                          .labelField ==
-                                                                      BASE_URL
-                                                                          .KHACH_HANG
-                                                                  ? TextDecoration
-                                                                      .underline
-                                                                  : null,
-                                                              color: state
-                                                                          .productInfo
-                                                                          ?.data?[
-                                                                              index]
-                                                                          .data?[
-                                                                              index1]
-                                                                          .labelField ==
-                                                                      BASE_URL
-                                                                          .KHACH_HANG
-                                                                  ? Colors.blue
-                                                                  : null,
-                                                            ),
-                                                          ),
-                                                        ),
+                                                            style:
+                                                                ValueStyle()),
                                                       ),
                                                     ],
                                                   ),

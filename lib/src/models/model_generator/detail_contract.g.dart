@@ -57,6 +57,7 @@ DetailContractItem _$DetailContractItemFromJson(Map<String, dynamic> json) =>
       json['value_field'] as String?,
       json['is_link'] as bool?,
       json['field_type'] as String?,
+      json['link'] as String?,
     );
 
 Map<String, dynamic> _$DetailContractItemToJson(DetailContractItem instance) =>
@@ -65,6 +66,7 @@ Map<String, dynamic> _$DetailContractItemToJson(DetailContractItem instance) =>
       'id': instance.id,
       'value_field': instance.value_field,
       'field_type': instance.field_type,
+      'link': instance.link,
       'is_link': instance.is_link,
     };
 

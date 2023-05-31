@@ -18,7 +18,6 @@ class GeneralInfo extends StatefulWidget {
 
 class _GeneralInfoState extends State<GeneralInfo>
     with AutomaticKeepAliveClientMixin {
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -95,9 +94,11 @@ class _GeneralInfoState extends State<GeneralInfo>
                                 child: GestureDetector(
                                   onTap: () {
                                     if (detailClue.data?[index].label_field ==
-                                        BASE_URL.KHACH_HANG) {
+                                            BASE_URL.KHACH_HANG &&
+                                        (detailClue.data?[index].is_link ??
+                                            false)) {
                                       AppNavigator.navigateDetailCustomer(
-                                          detailClue.data?[index].id ?? '',
+                                          detailClue.data?[index].link ?? '',
                                           detailClue.data?[index].value_field ??
                                               '');
                                     }
@@ -106,14 +107,20 @@ class _GeneralInfoState extends State<GeneralInfo>
                                       detailClue.data?[index].value_field ?? "",
                                       textAlign: TextAlign.right,
                                       style: AppStyle.DEFAULT_14_BOLD.copyWith(
-                                        color: detailClue
-                                                    .data?[index].label_field ==
-                                                BASE_URL.KHACH_HANG
+                                        color: (detailClue.data?[index]
+                                                        .label_field ==
+                                                    BASE_URL.KHACH_HANG &&
+                                                (detailClue
+                                                        .data?[index].is_link ??
+                                                    false))
                                             ? Colors.blue
                                             : COLORS.TEXT_GREY_BOLD,
-                                        decoration: detailClue
-                                                    .data?[index].label_field ==
-                                                BASE_URL.KHACH_HANG
+                                        decoration: (detailClue.data?[index]
+                                                        .label_field ==
+                                                    BASE_URL.KHACH_HANG &&
+                                                (detailClue
+                                                        .data?[index].is_link ??
+                                                    false))
                                             ? TextDecoration.underline
                                             : null,
                                       )),

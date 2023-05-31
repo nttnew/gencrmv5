@@ -7,8 +7,10 @@ part 'detail_chance.g.dart';
 class DataContentChance {
   final String? id;
   final String? label_field, value_field, link;
+  final bool? is_link;
 
-  DataContentChance(this.id, this.label_field, this.value_field, this.link);
+  DataContentChance(
+      this.id, this.label_field, this.value_field, this.link, this.is_link);
 
   factory DataContentChance.fromJson(Map<String, dynamic> json) =>
       _$DataContentChanceFromJson(json);

@@ -91,6 +91,8 @@ DetailWorkItemData _$DetailWorkItemDataFromJson(Map<String, dynamic> json) =>
       json['id'] as String?,
       json['value_field'] as String?,
       json['type'] as String?,
+      json['link'] as String?,
+      json['is_link'] as bool?,
     );
 
 Map<String, dynamic> _$DetailWorkItemDataToJson(DetailWorkItemData instance) =>
@@ -99,6 +101,8 @@ Map<String, dynamic> _$DetailWorkItemDataToJson(DetailWorkItemData instance) =>
       'id': instance.id,
       'value_field': instance.value_field,
       'type': instance.type,
+      'link': instance.link,
+      'is_link': instance.is_link,
     };
 
 DetailWorkData _$DetailWorkDataFromJson(Map<String, dynamic> json) =>

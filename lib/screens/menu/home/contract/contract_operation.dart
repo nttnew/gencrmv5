@@ -101,11 +101,13 @@ class _ContractOperationState extends State<ContractOperation>
                                   flex: 2,
                                   child: GestureDetector(
                                     onTap: () {
-                                      if (data.data![index].label_field ==
-                                          BASE_URL.KHACH_HANG) {
+                                      if (data.data?[index].label_field ==
+                                              BASE_URL.KHACH_HANG &&
+                                          (data.data?[index].is_link ??
+                                              false)) {
                                         AppNavigator.navigateDetailCustomer(
-                                            data.data![index].id!,
-                                            data.data![index].value_field ??
+                                            data.data?[index].link ?? '',
+                                            data.data?[index].value_field ??
                                                 '');
                                       }
                                     },
@@ -114,16 +116,20 @@ class _ContractOperationState extends State<ContractOperation>
                                             data.data![index].value_field ?? '',
                                         textAlign: TextAlign.right,
                                         style: AppStyle.DEFAULT_14.copyWith(
-                                          decoration:
-                                              data.data![index].label_field ==
-                                                      BASE_URL.KHACH_HANG
-                                                  ? TextDecoration.underline
-                                                  : null,
-                                          color:
-                                              data.data![index].label_field ==
-                                                      BASE_URL.KHACH_HANG
-                                                  ? Colors.blue
-                                                  : null,
+                                          decoration: (data.data?[index]
+                                                          .label_field ==
+                                                      BASE_URL.KHACH_HANG &&
+                                                  (data.data?[index].is_link ??
+                                                      false))
+                                              ? TextDecoration.underline
+                                              : null,
+                                          color: (data.data?[index]
+                                                          .label_field ==
+                                                      BASE_URL.KHACH_HANG &&
+                                                  (data.data?[index].is_link ??
+                                                      false))
+                                              ? Colors.blue
+                                              : null,
                                         )),
                                   ))
                             ],

@@ -198,20 +198,16 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                                                                 child:
                                                                     GestureDetector(
                                                                   onTap: () {
-                                                                    if (state
-                                                                            .dataDetailSupport[
-                                                                                index]
-                                                                            .data![
-                                                                                index1]
-                                                                            .label_field ==
-                                                                        BASE_URL
-                                                                            .KHACH_HANG) {
+                                                                    if (state.dataDetailSupport[index].data?[index1].label_field ==
+                                                                            BASE_URL
+                                                                                .KHACH_HANG &&
+                                                                        (state.dataDetailSupport[index].data?[index1].is_link ??
+                                                                            false)) {
                                                                       AppNavigator.navigateDetailCustomer(
-                                                                          state
-                                                                              .dataDetailSupport[index]
-                                                                              .data![index1]
-                                                                              .id!,
-                                                                          state.dataDetailSupport[index].data![index1].value_field ?? '');
+                                                                          state.dataDetailSupport[index].data?[index1].link ??
+                                                                              '',
+                                                                          state.dataDetailSupport[index].data![index1].value_field ??
+                                                                              '');
                                                                     }
                                                                   },
                                                                   child:
@@ -226,13 +222,17 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                                                                             .right,
                                                                     style: ValueStyle()
                                                                         .copyWith(
-                                                                      decoration: state.dataDetailSupport[index].data![index1].label_field ==
-                                                                              BASE_URL.KHACH_HANG
-                                                                          ? TextDecoration.underline
+                                                                      decoration: (state.dataDetailSupport[index].data?[index1].label_field == BASE_URL.KHACH_HANG &&
+                                                                              (state.dataDetailSupport[index].data?[index1].is_link ??
+                                                                                  false))
+                                                                          ? TextDecoration
+                                                                              .underline
                                                                           : null,
-                                                                      color: state.dataDetailSupport[index].data![index1].label_field ==
-                                                                              BASE_URL.KHACH_HANG
-                                                                          ? Colors.blue
+                                                                      color: (state.dataDetailSupport[index].data?[index1].label_field == BASE_URL.KHACH_HANG &&
+                                                                              (state.dataDetailSupport[index].data?[index1].is_link ??
+                                                                                  false))
+                                                                          ? Colors
+                                                                              .blue
                                                                           : null,
                                                                     ),
                                                                   ),

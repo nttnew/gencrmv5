@@ -70,13 +70,14 @@ class _AddServiceVoucherStepTwoScreenState
         for (int j = 0; j < listAddData[i].data!.length; j++) {
           addData[i].data.add(ModelDataAdd(
               label: listAddData[i].data![j].field_name,
-              value: listAddData[i].data![j].field_id == '12708'
+              value: listAddData[i].data![j].field_name == 'hdsan_pham_kh'
                   ? _bloc.getIdXe(
                       listAddData[i].data![j].field_datasource ?? [],
                       listAddData[i].data![j].field_value.toString(),
                       i,
                       j)
-                  : _bloc.getTextInit(id: listAddData[i].data![j].field_id) ??
+                  : _bloc.getTextInit(
+                          name: listAddData[i].data![j].field_name) ??
                       listAddData[i].data![j].field_set_value_datasource?[0]
                           [1] ??
                       listAddData[i].data![j].field_set_value ??
@@ -192,9 +193,9 @@ class _AddServiceVoucherStepTwoScreenState
                                                     .field_special ??
                                                 '') ==
                                             "url";
-                                        final fieldId = listAddData[index]
+                                        final fieldName = listAddData[index]
                                                 .data?[index1]
-                                                .field_id ??
+                                                .field_name ??
                                             '';
                                         final fieldType = listAddData[index]
                                             .data?[index1]
@@ -212,10 +213,10 @@ class _AddServiceVoucherStepTwoScreenState
                                                     neverHidden: true,
                                                     canDelete: true,
                                                   )
-                                                : fieldId == '13366'
+                                                : fieldName == 'chi_tiet_xe'
                                                     ? _typeCar(
                                                         fieldData, index, index1)
-                                                    : fieldId == '246' &&
+                                                    : fieldName == 'col131' &&
                                                             fieldData.field_set_value_datasource !=
                                                                 []
                                                         ? fieldInputCustomer(
@@ -231,10 +232,10 @@ class _AddServiceVoucherStepTwoScreenState
                                                                           index1]
                                                                       .value = data;
                                                                 },
-                                                                isUpdate: _bloc.getTextInit(id: fieldId, list: fieldData.field_datasource) !=
+                                                                isUpdate: _bloc.getTextInit(name: fieldName, list: fieldData.field_datasource) !=
                                                                         null &&
-                                                                    fieldId !=
-                                                                        '12708',
+                                                                    fieldName !=
+                                                                        'hdsan_pham_kh',
                                                                 dropdownItemList:
                                                                     fieldData.field_datasource ??
                                                                         [],
@@ -245,8 +246,8 @@ class _AddServiceVoucherStepTwoScreenState
                                                                       .data[
                                                                           index1]
                                                                       .value = data;
-                                                                  if (fieldId ==
-                                                                      '12708') {
+                                                                  if (fieldName ==
+                                                                      'hdsan_pham_kh') {
                                                                     if (data !=
                                                                         ServiceVoucherBloc
                                                                             .THEM_MOI_XE) {
@@ -258,9 +259,9 @@ class _AddServiceVoucherStepTwoScreenState
                                                                   }
                                                                 },
                                                                 value: _bloc.infoCar.value != null &&
-                                                                        fieldId !=
-                                                                            '12708'
-                                                                    ? _bloc.getTextInit(id: fieldId, list: fieldData.field_datasource) ??
+                                                                        fieldName !=
+                                                                            'hdsan_pham_kh'
+                                                                    ? _bloc.getTextInit(name: fieldName, list: fieldData.field_datasource) ??
                                                                         ''
                                                                     : fieldData.field_value ??
                                                                         '')
@@ -1004,29 +1005,29 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
     index1 = widget.index1;
     data = widget.data;
     _controller = TextEditingController();
-    _controller.text = _bloc.getTextInit(id: data.field_id) ??
+    _controller.text = _bloc.getTextInit(name: data.field_name) ??
         ((data.field_set_value ?? '').trim() != ''
             ? data.field_set_value
             : data.field_set_value_datasource?[0][1]) ??
         _bloc.addData[index].data[index1].value ??
         '';
     _bloc.addData[index].data[index1].value =
-        _bloc.getTextInit(id: data.field_id) ??
+        _bloc.getTextInit(name: data.field_name) ??
             ((data.field_set_value ?? '').trim() != ''
                 ? data.field_set_value
                 : data.field_set_value_datasource?[0][1]) ??
             _bloc.addData[index].data[index1].value ??
             '';
-    isEdit = data.field_id == '246' || data.field_id == '264';
+    isEdit = data.field_name == 'col131' || data.field_name == 'col121';
     _bloc.infoCar.listen((value) {
-      _controller.text = _bloc.getTextInit(id: data.field_id) ??
+      _controller.text = _bloc.getTextInit(name: data.field_name) ??
           ((data.field_set_value ?? '').trim() != ''
               ? data.field_set_value
               : data.field_set_value_datasource?[0][1]) ??
           _bloc.addData[index].data[index1].value ??
           '';
       _bloc.addData[index].data[index1].value =
-          _bloc.getTextInit(id: data.field_id) ??
+          _bloc.getTextInit(name: data.field_name) ??
               ((data.field_set_value ?? '').trim() != ''
                   ? data.field_set_value
                   : data.field_set_value_datasource?[0][1]) ??

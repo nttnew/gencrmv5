@@ -82,18 +82,26 @@ class _ChanceInfoState extends State<ChanceInfo>
                                                   child: GestureDetector(
                                                     onTap: () {
                                                       if (state
-                                                              .data[index]
-                                                              .data![index1]
-                                                              .label_field ==
-                                                          BASE_URL.KHACH_HANG) {
+                                                                  .data[index]
+                                                                  .data?[index1]
+                                                                  .label_field ==
+                                                              BASE_URL
+                                                                  .KHACH_HANG &&
+                                                          (state
+                                                                  .data[index]
+                                                                  .data?[index1]
+                                                                  .is_link ??
+                                                              false)) {
                                                         AppNavigator.navigateDetailCustomer(
                                                             state
-                                                                .data[index]
-                                                                .data![index1]
-                                                                .id!,
+                                                                    .data[index]
+                                                                    .data?[
+                                                                        index1]
+                                                                    .link ??
+                                                                '',
                                                             state
                                                                     .data[index]
-                                                                    .data![
+                                                                    .data?[
                                                                         index1]
                                                                     .value_field ??
                                                                 '');
@@ -110,25 +118,39 @@ class _ChanceInfoState extends State<ChanceInfo>
                                                         style: AppStyle
                                                             .DEFAULT_14
                                                             .copyWith(
-                                                          decoration: state
-                                                                      .data[
-                                                                          index]
-                                                                      .data![
-                                                                          index1]
-                                                                      .label_field ==
-                                                                  BASE_URL
-                                                                      .KHACH_HANG
+                                                          decoration: (state
+                                                                          .data[
+                                                                              index]
+                                                                          .data?[
+                                                                              index1]
+                                                                          .label_field ==
+                                                                      BASE_URL
+                                                                          .KHACH_HANG &&
+                                                                  (state
+                                                                          .data[
+                                                                              index]
+                                                                          .data?[
+                                                                              index1]
+                                                                          .is_link ??
+                                                                      false))
                                                               ? TextDecoration
                                                                   .underline
                                                               : null,
-                                                          color: state
-                                                                      .data[
-                                                                          index]
-                                                                      .data![
-                                                                          index1]
-                                                                      .label_field ==
-                                                                  BASE_URL
-                                                                      .KHACH_HANG
+                                                          color: (state
+                                                                          .data[
+                                                                              index]
+                                                                          .data?[
+                                                                              index1]
+                                                                          .label_field ==
+                                                                      BASE_URL
+                                                                          .KHACH_HANG &&
+                                                                  (state
+                                                                          .data[
+                                                                              index]
+                                                                          .data?[
+                                                                              index1]
+                                                                          .is_link ??
+                                                                      false))
                                                               ? Colors.blue
                                                               : null,
                                                         )),

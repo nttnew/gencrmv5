@@ -175,8 +175,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                                   .length,
                                               (index1) =>
                                                   state
-                                                              .data_list[
-                                                                  index]
+                                                              .data_list[index]
                                                               .data![index1]
                                                               .value_field !=
                                                           ''
@@ -203,13 +202,17 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                                                 Expanded(
                                                                   child:
                                                                       GestureDetector(
-                                                                    onTap:
-                                                                        () {
-                                                                      if (state.data_list[index].data![index1].label_field ==
-                                                                          BASE_URL.KHACH_HANG) {
+                                                                    onTap: () {
+                                                                      if (state.data_list[index].data?[index1].label_field ==
+                                                                              BASE_URL
+                                                                                  .KHACH_HANG &&
+                                                                          (state.data_list[index].data?[index1].is_link ??
+                                                                              false)) {
                                                                         AppNavigator.navigateDetailCustomer(
-                                                                            state.data_list[index].data![index1].id!,
-                                                                            state.data_list[index].data![index1].value_field ?? '');
+                                                                            state.data_list[index].data?[index1].link ??
+                                                                                '',
+                                                                            state.data_list[index].data![index1].value_field ??
+                                                                                '');
                                                                       }
                                                                     },
                                                                     child:
@@ -220,8 +223,8 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                                                               title: state.data_list[index].data![index1].value_field,
                                                                               textAlign: TextAlign.right,
                                                                               style: ValueStyle().copyWith(
-                                                                                decoration: state.data_list[index].data![index1].label_field == BASE_URL.KHACH_HANG ? TextDecoration.underline : null,
-                                                                                color: state.data_list[index].data![index1].label_field == BASE_URL.KHACH_HANG ? Colors.blue : null,
+                                                                                decoration: (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG && (state.data_list[index].data?[index1].is_link ?? false)) ? TextDecoration.underline : null,
+                                                                                color: (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG && (state.data_list[index].data?[index1].is_link ?? false)) ? Colors.blue : null,
                                                                               ),
                                                                             )
                                                                           : Html(

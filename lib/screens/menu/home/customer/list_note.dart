@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/list_note/list_note_bloc.dart';
@@ -29,9 +28,12 @@ class ListNote extends StatefulWidget {
 class _ListNoteState extends State<ListNote> {
   String page = BASE_URL.PAGE_DEFAULT.toString();
   Timer? _debounce;
+  late final ListNoteBloc _bloc;
 
   @override
   void initState() {
+    _bloc =
+        ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     int millisecondsMy = 350;
     if (widget.module == Module.CO_HOI_BH) {
@@ -42,58 +44,52 @@ class _ListNoteState extends State<ListNote> {
     }
     if (widget.isAdd) millisecondsMy = 0;
     _debounce = Timer(Duration(milliseconds: millisecondsMy), () {
-      ListNoteBloc.of(context)
-          .add(InitNoteEvent(widget.id, page, widget.module, widget.isAdd));
+      _bloc.add(InitNoteEvent(widget.id, page, widget.module, widget.isAdd));
     });
     super.initState();
   }
 
   @override
-  void deactivate() {
-    if (!widget.isAdd) ListNoteBloc.of(context).add(ReloadEvent());
-    super.deactivate();
-  }
-
-  @override
   void dispose() {
     _debounce?.cancel();
-    page = BASE_URL.PAGE_DEFAULT.toString();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ListNoteBloc, ListNoteState>(builder: (context, state) {
-      if (state is SuccessGetNoteOppState) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (state.data.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.all(25),
-                child: WidgetText(
-                  title: "Thảo luận",
-                  style: TextStyle(
-                      fontFamily: "Quicksand",
-                      color: HexColor("#263238"),
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14),
-                ),
-              ),
-            ...List.generate(
-              state.data.length,
-              (index) => ItemNote(
-                data: state.data[index],
-                size: widget.size,
-                isAdd: widget.isAdd,
-                onDelete: () {},
-                onEdit: () {},
-              ),
-            )
-          ],
-        );
-      } else
-        return Container();
-    });
+    return BlocBuilder<ListNoteBloc, ListNoteState>(
+        bloc: _bloc,
+        builder: (context, state) {
+          if (state is SuccessGetNoteOppState) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (state.data.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.all(25),
+                    child: WidgetText(
+                      title: "Thảo luận",
+                      style: TextStyle(
+                          fontFamily: "Quicksand",
+                          color: HexColor("#263238"),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14),
+                    ),
+                  ),
+                ...List.generate(
+                  state.data.length,
+                  (index) => ItemNote(
+                    data: state.data[index],
+                    size: widget.size,
+                    isAdd: widget.isAdd,
+                    onDelete: () {},
+                    onEdit: () {},
+                  ),
+                )
+              ],
+            );
+          } else
+            return Container();
+        });
   }
 }

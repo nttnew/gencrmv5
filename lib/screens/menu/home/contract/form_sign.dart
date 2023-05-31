@@ -139,10 +139,7 @@ class _FormAddSignState extends State<FormAddSign> {
               },
               child: Container(
                 height: MediaQuery.of(context).size.height,
-                padding: EdgeInsets.only(
-                    left: AppValue.widths * 0.05,
-                    right: AppValue.widths * 0.05,
-                    top: AppValue.heights * 0.02),
+                padding: EdgeInsets.all(25),
                 color: Colors.white,
                 child: SingleChildScrollView(
                   controller: scrollController,
@@ -202,7 +199,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(
-                                        height: AppValue.heights * 0.01,
+                                        height: 25,
                                       ),
                                       if (state.listAddData[indexParent]
                                               .group_name !=
@@ -214,7 +211,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                           style: AppStyle.DEFAULT_18_BOLD,
                                         ),
                                       SizedBox(
-                                        height: AppValue.heights * 0.01,
+                                        height: 25,
                                       ),
                                       _itemField(
                                         state.listAddData[indexParent].data ??
@@ -227,7 +224,7 @@ class _FormAddSignState extends State<FormAddSign> {
                               ),
                               _signatureUi(state.chuKyResponse),
                               SizedBox(
-                                height: AppValue.widths * 0.1 + 10,
+                                height: 25,
                               )
                             ],
                           );
@@ -364,16 +361,16 @@ class _FormAddSignState extends State<FormAddSign> {
                                                       ? SwitchBase(
                                                           isHide: soTien == 0 &&
                                                               dataFiled
-                                                                      .field_id ==
-                                                                  '13588',
+                                                                      .field_name ==
+                                                                  'da_thu_tien',
                                                           onChange: (check) {
                                                             if (dataFiled
-                                                                    .field_id ==
-                                                                '13588') {
+                                                                    .field_name ==
+                                                                'da_thu_tien') {
                                                               daThuTien = check;
                                                             } else if (dataFiled
-                                                                    .field_id ==
-                                                                '13590') {
+                                                                    .field_name ==
+                                                                'hd_yeu_cau_xuat') {
                                                               ycXuatHoaDon =
                                                                   check;
                                                             }
@@ -408,7 +405,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                                                   dataFiled,
                                                                   indexParent,
                                                                   indexChild,
-                                                                  noEdit: dataFiled.field_id == '13623'
+                                                                  noEdit: dataFiled.field_name == 'kh_danh_gia_nd'
                                                                       ? (((dataFiled.field_set_value ?? '') != '') ||
                                                                           editStar)
                                                                       : false,
@@ -418,7 +415,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                                                   dataFiled,
                                                                   indexParent,
                                                                   indexChild,
-                                                                  value: dataFiled.field_id == '13620'
+                                                                  value: dataFiled.field_name == 'hd_sotien'
                                                                       ? soTien.toInt().toString()
                                                                       : '')
                   : SizedBox()
@@ -572,7 +569,7 @@ class _FormAddSignState extends State<FormAddSign> {
   Widget _fieldInputCustomer(
       CustomerIndividualItemData data, int indexParent, int indexChild,
       {bool noEdit = false, String value = ""}) {
-    if (data.field_id == '13620' &&
+    if (data.field_name == 'hd_sotien' &&
             addData[indexParent].data[indexChild].value == null ||
         addData[indexParent].data[indexChild].value == '' ||
         addData[indexParent].data[indexChild].value == 'null') {
@@ -646,7 +643,7 @@ class _FormAddSignState extends State<FormAddSign> {
               ),
             ),
           ),
-          if (data.field_id == '13620') ...[
+          if (data.field_name == 'hd_sotien') ...[
             SizedBox(
               height: 8,
             ),

@@ -208,7 +208,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                             (index) => ItemCustomer(
                                   data: state.listCustomer[index],
                                   onTap: () => AppNavigator.navigateDetailCustomer(
-                                      state.listCustomer[index].id!,
+                                      state.listCustomer[index].id??'',
                                       '${state.listCustomer[index].danh_xung ?? ''}' +
                                           ' ' +
                                           '${state.listCustomer[index].name ?? ''}'),
