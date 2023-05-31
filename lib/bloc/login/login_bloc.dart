@@ -126,7 +126,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               platform: Platform.isIOS ? 'iOS' : 'Android',
               device_token: event.device_token);
           if (response.code == BASE_URL.SUCCESS) {
-            _saveData(response);
+            await shareLocal.putString(
+                PreferencesKey.USER_NAME, state.email.value);
+            await _saveData(response);
             await shareLocal.putString(
                 PreferencesKey.USER_PASSWORD, state.password.value);
             DioProvider.instance(
@@ -162,7 +164,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               platform: Platform.isIOS ? 'iOS' : 'Android',
               device_token: event.device_token);
           if (response.code == BASE_URL.SUCCESS) {
-            _saveData(response);
+            await _saveData(response);
             DioProvider.instance(
                 sess: response.data?.session_id ?? '',
                 token: response.data?.token);
@@ -185,7 +187,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  void _saveData(response) async {
+  Future<void> _saveData(response) async {
     listMenuFlash = [];
     listMenuFlash.addAll(response.data?.quick ?? []);
     await shareLocal.putString(
