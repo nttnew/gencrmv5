@@ -59,11 +59,9 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
         yield SuccessAddNoteState();
       } else {
         yield ErrorAddNoteState(response.msg ?? '');
-        LoadingApi().popLoading();
       }
     } catch (e) {
       yield ErrorAddNoteState(MESSAGES.CONNECT_ERROR);
-      LoadingApi().popLoading();
       throw e;
     }
     LoadingApi().popLoading();

@@ -9,10 +9,12 @@ class ListViewLoadMoreBase extends StatefulWidget {
     required this.functionInit,
     required this.itemWidget,
     required this.controller,
+    this.isInit = false,
   }) : super(key: key);
   final Future<dynamic> Function(int page, bool isInit) functionInit;
   final Function(int index, dynamic data) itemWidget;
   final LoadMoreController controller;
+  final bool isInit;
 
   @override
   State<ListViewLoadMoreBase> createState() => _ListViewLoadMoreBaseState();
@@ -28,7 +30,7 @@ class _ListViewLoadMoreBaseState extends State<ListViewLoadMoreBase>
     super.initState();
     if (mounted) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        // _controller.loadData(_controller.page, isInit: false);
+        if (widget.isInit) _controller.loadData(_controller.page);
         _controller.handelLoadMore();
       });
     }

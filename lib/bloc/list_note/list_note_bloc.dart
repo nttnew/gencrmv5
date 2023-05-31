@@ -60,6 +60,40 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
     LoadingApi().popLoading();
   }
 
+  Future<dynamic> getListNote({
+    required String id,
+    required String module,
+    required String page,
+    required bool isAdd,
+    required bool isInit,
+  }) async {
+    if (isInit) {
+      LoadingApi().pushLoading();
+    }
+    try {
+
+      final response = await userRepository.getNoteList(
+        getURLModule(module),
+        id,
+        page,
+      );
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        LoadingApi().popLoading();
+        return response.data?.notes ?? [];
+      } else if (response.code == 999) {
+        LoadingApi().popLoading();
+        return response.msg ?? '';
+      } else {
+        LoadingApi().popLoading();
+        return response.msg ?? '';
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+    }
+  }
+
+
   static ListNoteBloc of(BuildContext context) =>
       BlocProvider.of<ListNoteBloc>(context);
 }
