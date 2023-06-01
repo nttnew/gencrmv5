@@ -9,10 +9,10 @@ abstract class DetailProductState extends Equatable {
 class InitGetDetailProduct extends DetailProductState {}
 
 class UpdateGetDetailProductState extends DetailProductState {
-  final DetailProductResponse productInfo;
+  final DetailProductResponse? productInfo;
   const UpdateGetDetailProductState(this.productInfo);
   @override
-  List<Object> get props => [productInfo];
+  List<Object?> get props => [productInfo];
 }
 
 class LoadingDetailProductState extends DetailProductState {}

@@ -19,3 +19,7 @@ class InitDeleteClueEvent extends GetDetailClueEvent {
   @override
   List<Object?> get props => [id];
 }
+
+class ReloadClueEvent extends GetDetailClueEvent {
+  ReloadClueEvent();
+}

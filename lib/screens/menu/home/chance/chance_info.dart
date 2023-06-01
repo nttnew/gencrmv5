@@ -23,19 +23,16 @@ class _ChanceInfoState extends State<ChanceInfo>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Container(
-      padding: EdgeInsets.only(bottom: 10),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 16,
-            ),
-            BlocBuilder<GetListDetailChanceBloc, DetailChanceState>(
-                builder: (context, state) {
-              if (state is UpdateGetListDetailChanceState) {
-                return ListView.separated(
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          BlocBuilder<GetListDetailChanceBloc, DetailChanceState>(
+              builder: (context, state) {
+            if (state is UpdateGetListDetailChanceState) {
+              return Padding(
+                padding: EdgeInsets.all(25),
+                child: ListView.separated(
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
@@ -85,18 +82,26 @@ class _ChanceInfoState extends State<ChanceInfo>
                                                   child: GestureDetector(
                                                     onTap: () {
                                                       if (state
-                                                              .data[index]
-                                                              .data![index1]
-                                                              .label_field ==
-                                                          BASE_URL.KHACH_HANG) {
+                                                                  .data[index]
+                                                                  .data?[index1]
+                                                                  .label_field ==
+                                                              BASE_URL
+                                                                  .KHACH_HANG &&
+                                                          (state
+                                                                  .data[index]
+                                                                  .data?[index1]
+                                                                  .is_link ??
+                                                              false)) {
                                                         AppNavigator.navigateDetailCustomer(
                                                             state
-                                                                .data[index]
-                                                                .data![index1]
-                                                                .id!,
+                                                                    .data[index]
+                                                                    .data?[
+                                                                        index1]
+                                                                    .link ??
+                                                                '',
                                                             state
                                                                     .data[index]
-                                                                    .data![
+                                                                    .data?[
                                                                         index1]
                                                                     .value_field ??
                                                                 '');
@@ -113,25 +118,39 @@ class _ChanceInfoState extends State<ChanceInfo>
                                                         style: AppStyle
                                                             .DEFAULT_14
                                                             .copyWith(
-                                                          decoration: state
-                                                                      .data[
-                                                                          index]
-                                                                      .data![
-                                                                          index1]
-                                                                      .label_field ==
-                                                                  BASE_URL
-                                                                      .KHACH_HANG
+                                                          decoration: (state
+                                                                          .data[
+                                                                              index]
+                                                                          .data?[
+                                                                              index1]
+                                                                          .label_field ==
+                                                                      BASE_URL
+                                                                          .KHACH_HANG &&
+                                                                  (state
+                                                                          .data[
+                                                                              index]
+                                                                          .data?[
+                                                                              index1]
+                                                                          .is_link ??
+                                                                      false))
                                                               ? TextDecoration
                                                                   .underline
                                                               : null,
-                                                          color: state
-                                                                      .data[
-                                                                          index]
-                                                                      .data![
-                                                                          index1]
-                                                                      .label_field ==
-                                                                  BASE_URL
-                                                                      .KHACH_HANG
+                                                          color: (state
+                                                                          .data[
+                                                                              index]
+                                                                          .data?[
+                                                                              index1]
+                                                                          .label_field ==
+                                                                      BASE_URL
+                                                                          .KHACH_HANG &&
+                                                                  (state
+                                                                          .data[
+                                                                              index]
+                                                                          .data?[
+                                                                              index1]
+                                                                          .is_link ??
+                                                                      false))
                                                               ? Colors.blue
                                                               : null,
                                                         )),
@@ -157,14 +176,13 @@ class _ChanceInfoState extends State<ChanceInfo>
                     separatorBuilder: (context, index) {
                       return SizedBox();
                     },
-                    itemCount: state.data.length);
-              } else
-                return Container();
-            }),
-            AppValue.vSpaceTiny,
-            ListNote(type: 3, id: widget.id)
-          ],
-        ),
+                    itemCount: state.data.length),
+              );
+            } else
+              return Container();
+          }),
+          ListNote(module: Module.CO_HOI_BH, id: widget.id)
+        ],
       ),
     );
   }

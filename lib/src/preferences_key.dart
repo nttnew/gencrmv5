@@ -20,6 +20,7 @@ class PreferencesKey {
   static const String IMAGES_ANIMATION = "IMAGES_ANIMATION";
   static const String MESSAGES = "message";
   static const String USER_ID = 'userId';
+  static const String ID_USER = 'idUser';
   static const String NOTIFICATION = 'NOTIFICATION';
   static const String NOTIFICATION_FAIL = 'NOTIFICATION_FAIL';
   static const String USER_CODE = 'USER_CODE';

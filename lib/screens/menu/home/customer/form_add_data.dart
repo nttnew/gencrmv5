@@ -14,6 +14,7 @@ import 'package:gen_crm/bloc/product_module/product_module_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/menu/home/customer/input_dropDown.dart';
 import 'package:gen_crm/src/app_const.dart';
+import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/widget_field_input_percent.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
@@ -22,6 +23,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import '../../../../bloc/add_service_voucher/add_service_bloc.dart';
 import '../../../../bloc/chance_customer/chance_customer_bloc.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
 import '../../../../bloc/clue_customer/clue_customer_bloc.dart';
@@ -44,6 +46,7 @@ import '../../../../src/pick_file_image.dart';
 import '../../../../storages/share_local.dart';
 import '../../../../widgets/location_base.dart';
 import 'package:geolocator/geolocator.dart' show Position;
+import '../../../add_service_voucher/add_service_voucher_step2_screen.dart';
 
 class FormAddData extends StatefulWidget {
   const FormAddData({Key? key}) : super(key: key);
@@ -57,6 +60,7 @@ class _FormAddDataState extends State<FormAddData> {
   int type = Get.arguments[1];
   String id = Get.arguments[2] != null ? Get.arguments[2].toString() : "";
   bool isCheckIn = Get.arguments[3];
+  String typeCheckIn = Get.arguments[4];
   List data = [];
   List<ModelItemAdd> addData = [];
   late String id_user;
@@ -173,6 +177,8 @@ class _FormAddDataState extends State<FormAddData> {
     data.clear();
     addData.clear();
     AttackBloc.of(context).add(RemoveAllAttackEvent());
+    ServiceVoucherBloc.of(context).loaiXe.add('');
+    ServiceVoucherBloc.of(context).resetDataCarVerison();
     super.deactivate();
   }
 
@@ -385,23 +391,7 @@ class _FormAddDataState extends State<FormAddData> {
     return Stack(
       children: [
         Scaffold(
-            appBar: AppBar(
-              toolbarHeight: AppValue.heights * 0.1,
-              backgroundColor: HexColor("#D0F1EB"),
-              title: WidgetText(
-                  title: title.toUpperCase().capitalizeFirst,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: "Montserrat",
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16)),
-              leading: _buildBack(),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(15),
-                ),
-              ),
-            ),
+            appBar: AppbarBaseNormal(title.toUpperCase().capitalizeFirst ?? ''),
             body: BlocListener<AddDataBloc, AddDataState>(
               listener: (context, state) async {
                 if (state is SuccessAddCustomerOrState) {
@@ -584,15 +574,18 @@ class _FormAddDataState extends State<FormAddData> {
                                                     children: List.generate(
                                                         state.listAddData[index]
                                                             .data!.length,
-                                                        (index1) => state.listAddData[index].data![index1].field_hidden !=
+                                                        (index1) => state
+                                                                    .listAddData[
+                                                                        index]
+                                                                    .data![
+                                                                        index1]
+                                                                    .field_hidden !=
                                                                 "1"
                                                             ? state.listAddData[index].data![index1].field_special ==
                                                                     "none-edit"
-                                                                ? ((state.listAddData[index].data![index1].field_id == "12547" ||
-                                                                        state.listAddData[index].data![index1].field_id ==
-                                                                            "1472")
-                                                                    ? BlocBuilder<PhoneBloc, PhoneState>(
-                                                                        builder: (context, stateA) {
+                                                                ? ((state.listAddData[index].data![index1].field_name ==
+                                                                        "so_dien_thoai")
+                                                                    ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
                                                                         if (stateA
                                                                             is SuccessPhoneState) {
                                                                           return _fieldInputCustomer(
@@ -605,16 +598,12 @@ class _FormAddDataState extends State<FormAddData> {
                                                                           return Container();
                                                                       })
                                                                     : _fieldInputCustomer(
-                                                                        state.listAddData[index].data![
-                                                                            index1],
+                                                                        state.listAddData[index].data![index1],
                                                                         index,
                                                                         index1,
-                                                                        noEdit:
-                                                                            true))
-                                                                : state.listAddData[index].data![index1].field_type == "SELECT" ||
-                                                                        state.listAddData[index].data![index1].field_id == "12463" ||
-                                                                        state.listAddData[index].data![index1].field_id == "12464"
-                                                                    ? ((state.listAddData[index].data![index1].field_id == '115' || state.listAddData[index].data![index1].field_id == '135')
+                                                                        noEdit: true))
+                                                                : state.listAddData[index].data![index1].field_type == "SELECT"
+                                                                    ? ((state.listAddData[index].data![index1].field_name == 'cv_nguoiLienHe' || state.listAddData[index].data![index1].field_name == 'col131')
                                                                         ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(builder: (context, stateA) {
                                                                             if (stateA
                                                                                 is UpdateGetContacBytCustomerState) {
@@ -623,7 +612,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                                                   data: state.listAddData[index].data![index1],
                                                                                   onSuccess: (data) {
                                                                                     addData[index].data[index1].value = data;
-                                                                                    if (state.listAddData[index].data![index1].field_id != "107") PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
+                                                                                    if (state.listAddData[index].data![index1].field_name != "cv_kh") PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
                                                                                   },
                                                                                   value: state.listAddData[index].data![index1].field_value ?? '');
                                                                             } else if (stateA
@@ -635,7 +624,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                                                   data: state.listAddData[index].data![index1],
                                                                                   onSuccess: (data) {
                                                                                     addData[index].data[index1].value = data;
-                                                                                    if (state.listAddData[index].data![index1].field_id != "107") PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
+                                                                                    if (state.listAddData[index].data![index1].field_name != "cv_kh") PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
                                                                                   },
                                                                                   value: state.listAddData[index].data![index1].field_value ?? '');
                                                                             }
@@ -645,7 +634,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                                             data: state.listAddData[index].data![index1],
                                                                             onSuccess: (data) {
                                                                               addData[index].data[index1].value = data;
-                                                                              if (state.listAddData[index].data![index1].field_id == "107" || state.listAddData[index].data![index1].field_id == "128") {
+                                                                              if (state.listAddData[index].data![index1].field_name == "cv_kh" || state.listAddData[index].data![index1].field_name == "col121") {
                                                                                 ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
                                                                                 PhoneBloc.of(context).add(InitPhoneEvent(data));
                                                                               }
@@ -687,7 +676,18 @@ class _FormAddDataState extends State<FormAddData> {
                                                                                                   addData[index].data[index1].value = text;
                                                                                                 },
                                                                                               )
-                                                                                            : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1)
+                                                                                            : state.listAddData[index].data![index1].field_name == 'chi_tiet_xe' && state.listAddData[index].data![index1].field_type == 'TEXT'
+                                                                                                ? TypeCarBase(
+                                                                                                    state.listAddData[index].data![index1],
+                                                                                                    index,
+                                                                                                    index1,
+                                                                                                    context,
+                                                                                                    ServiceVoucherBloc.of(context),
+                                                                                                    (v) {
+                                                                                                      addData[index].data[index1].value = v;
+                                                                                                    },
+                                                                                                  )
+                                                                                                : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1)
                                                             : SizedBox()),
                                                   )
                                                 ],
@@ -736,25 +736,11 @@ class _FormAddDataState extends State<FormAddData> {
     );
   }
 
-  _buildBack() {
-    return IconButton(
-      onPressed: () {
-        AppNavigator.navigateBack();
-      },
-      icon: Image.asset(
-        ICONS.IC_BACK_PNG,
-        height: 28,
-        width: 28,
-        color: COLORS.BLACK,
-      ),
-    );
-  }
-
   Widget _fieldInputCustomer(
       CustomerIndividualItemData data, int index, int index1,
       {bool noEdit = false, String value = ""}) {
-    if ((type == 21 && data.field_id == "12547") ||
-        (type == 31 && data.field_id == "12547")) {
+    if ((type == 21 && data.field_name == "so_dien_thoai") ||
+        (type == 31 && data.field_name == "so_dien_thoai")) {
       return Container();
     } else {
       return Container(
@@ -963,6 +949,7 @@ class _FormAddDataState extends State<FormAddData> {
         data['longitude'] = position?.longitude.toString();
         data['latitude'] = position?.latitude.toString();
         data['note_location'] = controllerNote.text;
+        data['type'] = typeCheckIn;
       } else {
         check = true;
       }

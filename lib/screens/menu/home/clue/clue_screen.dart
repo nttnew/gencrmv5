@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
-import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/clue.dart';
 import '../../../../src/src_index.dart';
-import '../../../../widgets/widget_appbar.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/widget_search.dart';
 import '../../../../widgets/widget_text.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
@@ -24,9 +23,10 @@ class _ClueScreenState extends State<ClueScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   int page = 1;
   int total = 0;
-  int lenght = 0;
+  int length = 0;
   List<ClueData> listClue = [];
   String idFilter = "";
+  String title = Get.arguments;
 
   String search = '';
   ScrollController _scrollController = ScrollController();
@@ -37,7 +37,7 @@ class _ClueScreenState extends State<ClueScreen> {
     _scrollController.addListener(() {
       if (_scrollController.offset ==
               _scrollController.position.maxScrollExtent &&
-          lenght < total) {
+          length < total) {
         page = page + 1;
         GetListClueBloc.of(context).add(InitGetListClueEvent('', page, search));
       }
@@ -49,6 +49,7 @@ class _ClueScreenState extends State<ClueScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
+      resizeToAvoidBottomInset: false,
       drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: Padding(
@@ -61,51 +62,21 @@ class _ClueScreenState extends State<ClueScreen> {
           child: Icon(Icons.add, size: 40),
         ),
       ),
-      body: Column(
-        children: [
-          WidgetAppbar(
-            title: Get.arguments ?? '',
-            textColor: Colors.black,
-            left: Padding(
-              padding: EdgeInsets.only(left: 20),
-              child: GestureDetector(
-                onTap: () {
-                  if (_drawerKey.currentContext != null &&
-                      !_drawerKey.currentState!.isDrawerOpen) {
-                    _drawerKey.currentState!.openDrawer();
-                  }
-                },
-                child: SvgPicture.asset(ICONS.IC_MENU_SVG),
-              ),
-            ),
-            right: GestureDetector(
-              onTap: () {
-                AppNavigator.navigateNotification();
-              },
-              child:
-                  BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
-                      builder: (context, state) {
-                if (state is NotificationNeedRead) {
-                  return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
-                } else {
-                  return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
-                }
-              }),
-            ),
-          ),
-          AppValue.vSpaceTiny,
-          _buildSearch(),
-          BlocBuilder<GetListClueBloc, ClueState>(builder: (context, state) {
-            if (state is UpdateGetListClueState) {
-              listClue = state.listClue;
-              lenght = state.listClue.length;
-              total = int.parse(state.total);
-              return Expanded(
+      appBar: AppbarBase(_drawerKey, title),
+      body: BlocBuilder<GetListClueBloc, ClueState>(builder: (context, state) {
+        if (state is UpdateGetListClueState) {
+          listClue = state.listClue;
+          length = state.listClue.length;
+          total = int.parse(state.total);
+          return Column(
+            children: [
+              AppValue.vSpaceTiny,
+              _buildSearch(state),
+              Expanded(
                 child: RefreshIndicator(
                   onRefresh: () =>
                       Future.delayed(Duration(microseconds: 300), () {
                     page = BASE_URL.PAGE_DEFAULT;
-
                     GetListClueBloc.of(context)
                         .add(InitGetListClueEvent('', page, ''));
                   }),
@@ -114,7 +85,7 @@ class _ClueScreenState extends State<ClueScreen> {
                     controller: _scrollController,
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-                    itemCount: lenght,
+                    itemCount: length,
                     itemBuilder: (context, index) {
                       return _buildCustomer(listClue[index]);
                     },
@@ -122,58 +93,40 @@ class _ClueScreenState extends State<ClueScreen> {
                         const SizedBox(),
                   ),
                 ),
-              );
-            } else
-              return Expanded(
-                  child: Center(
-                child: WidgetText(
-                  title: 'Không có dữ liệu',
-                  style: AppStyle.DEFAULT_18_BOLD,
-                ),
-              ));
-          }),
-        ],
-      ),
+              ),
+            ],
+          );
+        } else
+          return noData();
+      }),
     );
   }
 
-  _buildSearch() {
+  _buildSearch(UpdateGetListClueState state) {
     return Container(
         margin: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
         decoration: BoxDecoration(
           border: Border.all(color: HexColor("#DBDBDB")),
           borderRadius: BorderRadius.circular(10),
         ),
-        child:
-            BlocBuilder<GetListClueBloc, ClueState>(builder: (context, state) {
-          if (state is UpdateGetListClueState) {
-            return WidgetSearch(
-              hintTextStyle: TextStyle(
-                  fontFamily: "Quicksand",
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: HexColor("#707070")),
-              hint: 'Tìm ${Get.arguments.toString().toLowerCase()}',
-              leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
-              endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
-              onClickRight: () {
-                showBotomSheet(state.listFilter);
-              },
-              onSubmit: (v) {
-                search = v;
-                page = BASE_URL.PAGE_DEFAULT;
-                GetListClueBloc.of(context)
-                    .add(InitGetListClueEvent('', page, v));
-              },
-            );
-          }
-          return Center(
-            child: WidgetText(
-              title: 'Không có dữ liệu',
-              style: AppStyle.DEFAULT_18_BOLD,
-            ),
-          );
-        }));
+        child: WidgetSearch(
+          hintTextStyle: TextStyle(
+              fontFamily: "Quicksand",
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: HexColor("#707070")),
+          hint: 'Tìm ${Get.arguments.toString().toLowerCase()}',
+          leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+          endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
+          onClickRight: () {
+            showBotomSheet(state.listFilter);
+          },
+          onSubmit: (v) {
+            search = v;
+            page = BASE_URL.PAGE_DEFAULT;
+            GetListClueBloc.of(context).add(InitGetListClueEvent('', page, v));
+          },
+        ));
   }
 
   _buildCustomer(ClueData clueData) {

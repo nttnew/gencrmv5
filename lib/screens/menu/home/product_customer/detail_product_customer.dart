@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/detail_product_customer/detail_product_customer_bloc.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
-import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
@@ -10,6 +9,7 @@ import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/contract.dart';
 import '../../../../src/models/model_generator/detail_product_customer_response.dart';
 import '../../../../src/models/model_generator/support.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/listview_loadmore_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
@@ -57,9 +57,7 @@ class _DetailProductCustomerScreenState
     int idM = int.parse(id);
     for (final value in listTab) {
       if (value.module == 'thong_tin_chung') {
-        listWidget.add(InfoTabProductCustomer(
-          state: state,
-        ));
+        listWidget.add(InfoTabProductCustomer());
       } else if (value.module == 'opportunity') {
         //cơ hội
         listWidget.add(ListViewLoadMoreBase(
@@ -233,24 +231,7 @@ class _DetailProductCustomerScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: AppValue.heights * 0.1,
-        backgroundColor: HexColor("#D0F1EB"),
-        title: WidgetText(
-          title: title,
-          style: AppStyle.DEFAULT_18_BOLD,
-        ),
-        leading: Padding(
-            padding: EdgeInsets.only(left: 30),
-            child: GestureDetector(
-                onTap: () => AppNavigator.navigateBack(),
-                child: Icon(Icons.arrow_back, color: Colors.black))),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
-          ),
-        ),
-      ),
+      appBar: AppbarBaseNormal(title),
       body: BlocListener<DetailProductCustomerBloc, DetailProductCustomerState>(
         listener: (context, state) async {
           if (state is SuccessDeleteProductState) {

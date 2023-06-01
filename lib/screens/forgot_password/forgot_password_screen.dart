@@ -117,7 +117,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         onTap: () => bloc.add(FormForgotPasswordSubmitted()),
         boxDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: HexColor("#A6C1BC"),
+          color: HexColor("#D0F1EB"),
         ),
         textStyle: AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w600),
         text: MESSAGES.NEXT.toUpperCase(),

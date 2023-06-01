@@ -133,7 +133,7 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
           },
           boxDecoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: HexColor("#A6C1BC"),
+            color: HexColor("#D0F1EB"),
           ),
           textStyle: TextStyle(
               fontFamily: "Quicksand",

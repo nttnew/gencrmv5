@@ -8,6 +8,7 @@ import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../bloc/detail_product/detail_product_bloc.dart';
 import '../../../../src/app_const.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
@@ -23,6 +24,12 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
   String id = Get.arguments[1];
   String title = Get.arguments[0];
   List<ModuleThaoTac> list = [];
+
+  @override
+  void deactivate() {
+    DetailProductBloc.of(context).add(ReloadProductEvent());
+    super.deactivate();
+  }
 
   @override
   void initState() {
@@ -70,50 +77,32 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: AppValue.heights * 0.1,
-        backgroundColor: HexColor("#D0F1EB"),
-        title: WidgetText(
-          title: title,
-          style: AppStyle.DEFAULT_18_BOLD,
-        ),
-        leading: Padding(
-            padding: EdgeInsets.only(left: 30),
-            child: InkWell(
-                onTap: () => AppNavigator.navigateBack(),
-                child: Icon(Icons.arrow_back, color: Colors.black))),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
-          ),
-        ),
-      ),
+      appBar: AppbarBaseNormal(title),
       body: BlocListener<DetailProductBloc, DetailProductState>(
         listener: (context, state) async {
           if (state is SuccessDeleteProductState) {
             LoadingApi().popLoading();
-           ShowDialogCustom.showDialogBase(
-                  title: MESSAGES.NOTIFICATION,
-                  content: "Xoá thành công",
-                  onTap1: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, ROUTE_NAMES.PRODUCT, ModalRoute.withName('/'),
-                        arguments: title);
+            ShowDialogCustom.showDialogBase(
+              title: MESSAGES.NOTIFICATION,
+              content: "Xoá thành công",
+              onTap1: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, ROUTE_NAMES.PRODUCT, ModalRoute.withName('/'),
+                    arguments: title);
               },
             );
           } else if (state is ErrorDeleteProductState) {
             LoadingApi().popLoading();
-           ShowDialogCustom.showDialogBase(
-                  title: MESSAGES.NOTIFICATION,
-                  content: state.msg,
-                  textButton1: "Quay lại",
-                  onTap1: () {
-                    Get.back();
-                    Get.back();
-                    Get.back();
-                    DetailProductBloc.of(context)
-                        .add(InitGetDetailProductEvent(id));
-
+            ShowDialogCustom.showDialogBase(
+              title: MESSAGES.NOTIFICATION,
+              content: state.msg,
+              textButton1: "Quay lại",
+              onTap1: () {
+                Get.back();
+                Get.back();
+                Get.back();
+                DetailProductBloc.of(context)
+                    .add(InitGetDetailProductEvent(id));
               },
             );
           }
@@ -139,7 +128,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: List.generate(
-                          (state.productInfo.data ?? []).length,
+                          (state.productInfo?.data ?? []).length,
                           (index) => Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -147,9 +136,10 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                                     height: AppValue.heights * 0.04,
                                   ),
                                   WidgetText(
-                                    title: (state.productInfo.data ?? [])[index]
-                                            .groupName ??
-                                        '',
+                                    title:
+                                        (state.productInfo?.data ?? [])[index]
+                                                .groupName ??
+                                            '',
                                     style: TextStyle(
                                         fontFamily: "Quicksand",
                                         color: HexColor("#263238"),
@@ -161,116 +151,60 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                                   ),
                                   Column(
                                     children: List.generate(
-                                        (state.productInfo.data?[index].data ??
+                                        (state.productInfo?.data?[index].data ??
                                                 [])
                                             .length,
-                                        (index1) =>
-                                            state
-                                                            .productInfo
-                                                            .data?[index]
-                                                            .data?[index1]
-                                                            .valueField !=
-                                                        null &&
-                                                    state
-                                                            .productInfo
-                                                            .data?[index]
-                                                            .data?[index1]
-                                                            .valueField !=
-                                                        ''
-                                                ? Column(
+                                        (index1) => state
+                                                        .productInfo
+                                                        ?.data?[index]
+                                                        .data?[index1]
+                                                        .valueField !=
+                                                    null &&
+                                                state
+                                                        .productInfo
+                                                        ?.data?[index]
+                                                        .data?[index1]
+                                                        .valueField !=
+                                                    ''
+                                            ? Column(
+                                                children: [
+                                                  Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          WidgetText(
-                                                            title: state
-                                                                .productInfo
-                                                                .data?[index]
-                                                                .data?[index1]
-                                                                .labelField,
-                                                            style: LabelStyle(),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 8,
-                                                          ),
-                                                          Expanded(
-                                                            child:
-                                                                GestureDetector(
-                                                              onTap: () {
-                                                                if (state
-                                                                        .productInfo
-                                                                        .data?[
-                                                                            index]
-                                                                        .data?[
-                                                                            index1]
-                                                                        .labelField ==
-                                                                    BASE_URL
-                                                                        .KHACH_HANG) {
-                                                                  AppNavigator.navigateDetailCustomer(
-                                                                      state.productInfo.data?[index].data?[index1].id ??
-                                                                          '',
-                                                                      state
-                                                                              .productInfo
-                                                                              .data?[index]
-                                                                              .data?[index1]
-                                                                              .valueField ??
-                                                                          '');
-                                                                }
-                                                              },
-                                                              child: WidgetText(
-                                                                title: state
-                                                                    .productInfo
-                                                                    .data?[
-                                                                        index]
-                                                                    .data?[
-                                                                        index1]
-                                                                    .valueField,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .right,
-                                                                style:
-                                                                    ValueStyle()
-                                                                        .copyWith(
-                                                                  decoration: state
-                                                                              .productInfo
-                                                                              .data?[
-                                                                                  index]
-                                                                              .data?[
-                                                                                  index1]
-                                                                              .labelField ==
-                                                                          BASE_URL
-                                                                              .KHACH_HANG
-                                                                      ? TextDecoration
-                                                                          .underline
-                                                                      : null,
-                                                                  color: state
-                                                                              .productInfo
-                                                                              .data?[
-                                                                                  index]
-                                                                              .data?[
-                                                                                  index1]
-                                                                              .labelField ==
-                                                                          BASE_URL
-                                                                              .KHACH_HANG
-                                                                      ? Colors
-                                                                          .blue
-                                                                      : null,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
+                                                      WidgetText(
+                                                        title: state
+                                                            .productInfo
+                                                            ?.data?[index]
+                                                            .data?[index1]
+                                                            .labelField,
+                                                        style: LabelStyle(),
                                                       ),
                                                       SizedBox(
-                                                        height:
-                                                            AppValue.heights *
-                                                                0.02,
+                                                        width: 8,
+                                                      ),
+                                                      Expanded(
+                                                        child: WidgetText(
+                                                            title: state
+                                                                .productInfo
+                                                                ?.data?[index]
+                                                                .data?[index1]
+                                                                .valueField,
+                                                            textAlign:
+                                                                TextAlign.right,
+                                                            style:
+                                                                ValueStyle()),
                                                       ),
                                                     ],
-                                                  )
-                                                : SizedBox()),
+                                                  ),
+                                                  SizedBox(
+                                                    height:
+                                                        AppValue.heights * 0.02,
+                                                  ),
+                                                ],
+                                              )
+                                            : SizedBox()),
                                   ),
                                   LineHorizontal(),
                                 ],

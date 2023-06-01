@@ -83,9 +83,11 @@ class WorkResponse extends BaseResponse {
 
 @JsonSerializable()
 class DetailWorkItemData {
-  final String? label_field, id, value_field, type;
+  final String? label_field, id, value_field, type, link;
+  final bool? is_link;
 
-  DetailWorkItemData(this.label_field, this.id, this.value_field, this.type);
+  DetailWorkItemData(this.label_field, this.id, this.value_field, this.type,
+      this.link, this.is_link,);
 
   factory DetailWorkItemData.fromJson(Map<String, dynamic> json) =>
       _$DetailWorkItemDataFromJson(json);
@@ -112,7 +114,7 @@ class DetailWorkResponse extends BaseResponse {
   final List<DetailWorkData>? data;
   final int? location;
 
-  DetailWorkResponse(this.data,this.location);
+  DetailWorkResponse(this.data, this.location);
 
   factory DetailWorkResponse.fromJson(Map<String, dynamic> json) =>
       _$DetailWorkResponseFromJson(json);

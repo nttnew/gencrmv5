@@ -17,6 +17,7 @@ import '../../../../src/models/model_generator/add_customer.dart';
 import '../../../../src/pick_file_image.dart';
 import '../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/widget_field_input_percent.dart';
 import 'input_dropDown.dart';
 
@@ -55,22 +56,7 @@ class _AddCustomerState extends State<AddCustomer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: AppValue.heights * 0.1,
-          backgroundColor: HexColor("#D0F1EB"),
-          title: Text("Thêm khách hàng cá nhân",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16)),
-          leading: _buildBack(),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(15),
-            ),
-          ),
-        ),
+        appBar: AppbarBaseNormal('Thêm khách hàng cá nhân'),
         body: BlocListener<GetListCustomerBloc, CustomerState>(
           listener: (context, state) async {
             if (state is SuccessAddCustomerIndividualState) {
@@ -93,10 +79,7 @@ class _AddCustomerState extends State<AddCustomer> {
             }
           },
           child: Container(
-            margin: EdgeInsets.only(
-                left: AppValue.widths * 0.05,
-                right: AppValue.widths * 0.05,
-                top: AppValue.heights * 0.02),
+            margin: EdgeInsets.all(25),
             child: SingleChildScrollView(
               child: BlocBuilder<AddCustomerBloc, AddCustomerState>(
                   builder: (context, state) {
@@ -105,21 +88,22 @@ class _AddCustomerState extends State<AddCustomer> {
                   addData = [];
                   return Container();
                 } else if (state is UpdateGetAddCustomerState) {
-                  for (int i = 0; i < state.listAddData.length; i++) {
-                    addData.add(ModelItemAdd(
-                        group_name: state.listAddData[i].group_name ?? '',
-                        data: []));
-                    for (int j = 0;
-                        j < state.listAddData[i].data!.length;
-                        j++) {
-                      addData[i].data.add(ModelDataAdd(
-                          label: state.listAddData[i].data![j].field_name,
-                          value: state.listAddData[i].data![j].field_set_value
-                              .toString(),
-                          required:
-                              state.listAddData[i].data![j].field_require));
+                  if (addData.isEmpty)
+                    for (int i = 0; i < state.listAddData.length; i++) {
+                      addData.add(ModelItemAdd(
+                          group_name: state.listAddData[i].group_name ?? '',
+                          data: []));
+                      for (int j = 0;
+                          j < state.listAddData[i].data!.length;
+                          j++) {
+                        addData[i].data.add(ModelDataAdd(
+                            label: state.listAddData[i].data![j].field_name,
+                            value: state.listAddData[i].data![j].field_set_value
+                                .toString(),
+                            required:
+                                state.listAddData[i].data![j].field_require));
+                      }
                     }
-                  }
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -153,9 +137,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                                           .field_hidden !=
                                                       "1"
                                                   ? state.listAddData[index].data![index1].field_type ==
-                                                              "SELECT" ||
-                                                          state.listAddData[index].data![index1].field_id ==
-                                                              "12466"
+                                                          "SELECT"
                                                       ? InputDropdown(
                                                           dropdownItemList:
                                                               state.listAddData[index].data![index1].field_datasource ??
@@ -169,9 +151,12 @@ class _AddCustomerState extends State<AddCustomer> {
                                                                 .data[index1]
                                                                 .value = data;
                                                           },
-                                                          value:
-                                                              state.listAddData[index].data![index1].field_value ??
-                                                                  '')
+                                                          value: state
+                                                                  .listAddData[
+                                                                      index]
+                                                                  .data![index1]
+                                                                  .field_value ??
+                                                              '')
                                                       : state.listAddData[index].data![index1].field_type ==
                                                               "TEXT_MULTI"
                                                           ? _fieldInputTextMulti(
@@ -239,20 +224,6 @@ class _AddCustomerState extends State<AddCustomer> {
             ),
           ),
         ));
-  }
-
-  _buildBack() {
-    return IconButton(
-      onPressed: () {
-        AppNavigator.navigateBack();
-      },
-      icon: Image.asset(
-        ICONS.IC_BACK_PNG,
-        height: 28,
-        width: 28,
-        color: COLORS.BLACK,
-      ),
-    );
   }
 
   Column fieldInputImage() {

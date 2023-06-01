@@ -69,22 +69,26 @@ class _InputDropdownState extends State<InputDropdown> {
 
   @override
   void initState() {
-    if (widget.data.field_id == '246' ||
-        widget.data.field_id == '128' ||
-        widget.data.field_id == '107' ||
-        widget.data.field_id == '438') {
+    if (
+        // widget.data.field_name == 'col131' ||
+        widget.data.field_name == 'col121' ||
+            widget.data.field_name == 'khach_hang_id_dm' ||
+            widget.data.field_name == 'cv_kh' ||
+            widget.data.field_name == 'khach_hang') {
       getCustomer(1);
       if (widget.data.field_set_value != null &&
           widget.data.field_set_value != "") {
-        if (widget.data.field_id == '107') {
+        if (widget.data.field_name == 'cv_kh') {
           PhoneBloc.of(context)
               .add(InitPhoneEvent(widget.data.field_set_value.toString()));
-        } else if (widget.data.field_id == '246') {
-          PhoneBloc.of(context)
-              .add(InitPhoneEvent(widget.data.field_set_value.toString()));
-          ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(
-              widget.data.field_set_value.toString()));
-        } else
+        }
+        // else if (widget.data.field_name == 'col131') {
+        //   PhoneBloc.of(context)
+        //       .add(InitPhoneEvent(widget.data.field_set_value.toString()));
+        //   ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(
+        //       widget.data.field_set_value.toString()));
+        // }
+        else
           ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(
               widget.data.field_set_value.toString()));
       }
@@ -180,11 +184,13 @@ class _InputDropdownState extends State<InputDropdown> {
                               bottom: MediaQuery.of(context).viewInsets.bottom),
                           child: DataDropDownItem(
                             data: dropdow,
-                            isSearch: (widget.data.field_id == '246' ||
-                                    widget.data.field_id == '128' ||
-                                    widget.data.field_id == '107' ||
-                                    widget.data.field_id == '184' ||
-                                    widget.data.field_id == '438')
+                            isSearch: (
+                                    // widget.data.field_name == 'col131' ||
+                                    widget.data.field_name == 'col121' ||
+                                        widget.data.field_name == 'cv_kh' ||
+                                        widget.data.field_name ==
+                                            'khach_hang_id_dm' ||
+                                        widget.data.field_name == 'khach_hang')
                                 ? true
                                 : false,
                             onSuccess: (data, label) {
@@ -204,11 +210,12 @@ class _InputDropdownState extends State<InputDropdown> {
                               FocusManager.instance.primaryFocus?.unfocus();
                             },
                             onLoadMore: (int pagee, String search) {
-                              if (widget.data.field_id == '246' ||
-                                  widget.data.field_id == '128' ||
-                                  widget.data.field_id == '107' ||
-                                  widget.data.field_id == '184' ||
-                                  widget.data.field_id == '438')
+                              if (widget.data.field_name == 'col131' ||
+                                  widget.data.field_name == 'col121' ||
+                                  widget.data.field_name == 'cv_kh' ||
+                                  widget.data.field_name ==
+                                      'khach_hang_id_dm' ||
+                                  widget.data.field_name == 'khach_hang')
                                 getCustomer(pagee,
                                     reload: () => setState1(() {}),
                                     search: search,

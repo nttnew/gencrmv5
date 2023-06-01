@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
-
+import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/list_notification.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/slide_menu.dart';
-import '../../../../widgets/widget_text.dart';
 
 class UnReadList extends StatefulWidget {
   @override
@@ -60,12 +59,7 @@ class _UnReadListState extends State<UnReadList> {
                     );
                   })).toList());
         } else {
-          return Center(
-            child: WidgetText(
-              title: 'Không có dữ liệu',
-              style: AppStyle.DEFAULT_18_BOLD,
-            ),
-          );
+          return noData();
         }
       }),
     );

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -395,6 +394,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                       }
                     },
                     child: WidgetNetworkImage(
+                      isAvatar: true,
                       image: state.inforAcc.avatar ?? '',
                       width: 50,
                       height: 50,
@@ -424,6 +424,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                       }
                     },
                     child: WidgetNetworkImage(
+                      isAvatar: true,
                       image: '',
                       width: 50,
                       height: 50,

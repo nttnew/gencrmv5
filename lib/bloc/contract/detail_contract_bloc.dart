@@ -20,8 +20,7 @@ part 'detail_contract_state.dart';
 class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
   final UserRepository userRepository;
   List<ContractItemData>? list;
-  BehaviorSubject<List<FileDataResponse>?> listFileStream =
-      BehaviorSubject();
+  BehaviorSubject<List<FileDataResponse>?> listFileStream = BehaviorSubject();
 
   DetailContractBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -33,6 +32,8 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       yield* _getDetailContract(id: event.id);
     } else if (event is InitDeleteContractEvent) {
       yield* _deleteContract(id: event.id);
+    } else if (event is ReloadContractEvent) {
+      yield SuccessDetailContractState([]);
     }
   }
 
@@ -43,7 +44,7 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       final response = await userRepository.getDetailContract(id);
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        yield SuccessDetailContractState(response.data!);
+        yield SuccessDetailContractState(response.data ?? []);
       } else if (response.code == 999) {
         loginSessionExpired();
       } else
@@ -101,7 +102,7 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
   Future<bool> deleteFileOnly(FileDataResponse file) async {
     final response = await userRepository.deleteFile(id: file.id.toString());
     final statusCode =
-    (response as Map<String, dynamic>).getOrElse('e', () => -1);
+        (response as Map<String, dynamic>).getOrElse('e', () => -1);
     if (statusCode == 0) {
       return true;
     }

@@ -33,11 +33,17 @@ class PaymentContractResponse extends BaseResponse {
 
 @JsonSerializable()
 class DetailContractItem {
-  final String? label_field, id, value_field, field_type;
+  final String? label_field, id, value_field, field_type, link;
   final bool? is_link;
 
-  DetailContractItem(this.label_field, this.id, this.value_field, this.is_link,
-      this.field_type);
+  DetailContractItem(
+    this.label_field,
+    this.id,
+    this.value_field,
+    this.is_link,
+    this.field_type,
+    this.link,
+  );
 
   factory DetailContractItem.fromJson(Map<String, dynamic> json) =>
       _$DetailContractItemFromJson(json);

@@ -7,22 +7,32 @@ abstract class AddNoteEvent extends Equatable {
 }
 
 class InitAddNoteEvent extends AddNoteEvent {
-  final String id, content;
-  final int type;
+  final String id, content, module;
 
-  InitAddNoteEvent(this.id, this.content, this.type);
+  InitAddNoteEvent(
+    this.id,
+    this.content,
+    this.module,
+  );
 }
 
-class InitEditNoteEvent extends AddNoteEvent {
-  final String id, content, id_note;
-  final int type;
+class EditNoteEvent extends AddNoteEvent {
+  final String id, content, id_note, module;
 
-  InitEditNoteEvent(this.id, this.content, this.id_note, this.type);
+  EditNoteEvent(
+    this.id,
+    this.content,
+    this.id_note,
+    this.module,
+  );
 }
 
-class InitDeleteNoteEvent extends AddNoteEvent {
-  final String id, noteId;
-  final int type;
+class DeleteNoteEvent extends AddNoteEvent {
+  final String id, noteId, module;
 
-  InitDeleteNoteEvent(this.id, this.type, this.noteId);
+  DeleteNoteEvent(
+    this.id,
+    this.noteId,
+    this.module,
+  );
 }

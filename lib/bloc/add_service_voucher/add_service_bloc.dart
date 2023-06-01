@@ -247,16 +247,16 @@ class ServiceVoucherBloc
     }
   }
 
-  String? getTextInit({String? id, List<dynamic>? list}) {
-    if (id == '13366') {
+  String? getTextInit({String? name, List<dynamic>? list}) {
+    if (name == 'chi_tiet_xe') {
       return infoCar.value?.chiTietXe;
-    } else if (id == '12914') {
+    } else if (name == 'bien_so') {
       return infoCar.value?.bienSo;
-    } else if (id == '13432') {
+    } else if (name == 'hang_xe') {
       return infoCar.value?.hangXe;
-    } else if (id == '13314') {
+    } else if (name == 'so_kilomet') {
       return infoCar.value?.soKilomet;
-    } else if (id == '13559') {
+    } else if (name == 'mau_sac') {
       if (list != null) {
         for (final data in list) {
           if (data.first == infoCar.value?.mauXe) {

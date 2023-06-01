@@ -27,6 +27,9 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
     if (event is InitDeleteClueEvent) {
       yield* _deleteClue(event.id!);
     }
+    if (event is ReloadClueEvent) {
+      yield GetDetailClueState(null);
+    }
   }
 
   Stream<DetailClueState> _getDetailClue(String id) async* {
@@ -36,7 +39,7 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
       final responseDetailClue = await userRepository.getDetailClue(id);
       if ((responseDetailClue.code == BASE_URL.SUCCESS) ||
           (responseDetailClue.code == BASE_URL.SUCCESS_200)) {
-        yield UpdateGetDetailClueState(responseDetailClue.data!);
+        yield GetDetailClueState(responseDetailClue.data ?? []);
       } else {
         yield ErrorGetDetailClueState(responseDetailClue.msg ?? '');
         LoadingApi().popLoading();

@@ -14,7 +14,7 @@ class SuccessDetailWorkState extends DetailWorkState {
   int? location;
   SuccessDetailWorkState(this.data_list, this.location);
   @override
-  List<Object> get props => [data_list, location!];
+  List<Object?> get props => [data_list, location];
 }
 
 class LoadingDetailWorkState extends DetailWorkState {}

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/work_clue/work_clue_bloc.dart';
-
+import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/work_clue.dart';
 import 'package:gen_crm/screens/menu/home/clue/work_card_widget.dart';
-
 import '../../../../src/src_index.dart';
-import '../../../../widgets/widget_text.dart';
 
 class ListWorkClue extends StatefulWidget {
   ListWorkClue({Key? key, required this.id}) : super(key: key);
@@ -29,7 +27,11 @@ class _ListWorkClueState extends State<ListWorkClue>
           if (state.data!.length > 0) {
             List<WorkClueData> listWorkClue = state.data!;
             return ListView.separated(
-              padding: EdgeInsets.zero,
+              padding: EdgeInsets.only(
+                left: 25,
+                right: 25,
+                bottom: 25,
+              ),
               shrinkWrap: true,
               itemBuilder: (context, index) => GestureDetector(
                 onTap: () {
@@ -48,24 +50,13 @@ class _ListWorkClueState extends State<ListWorkClue>
               ),
               itemCount: state.data!.length,
               separatorBuilder: (BuildContext context, int index) => SizedBox(
-                height: AppValue.heights * 0.01,
               ),
             );
           } else {
-            return Center(
-              child: WidgetText(
-                title: 'Không có dữ liệu',
-                style: AppStyle.DEFAULT_18_BOLD,
-              ),
-            );
+            return noData();
           }
         } else {
-          return Center(
-            child: WidgetText(
-              title: 'Không có dữ liệu',
-              style: AppStyle.DEFAULT_18_BOLD,
-            ),
-          );
+          return noData();
         }
       }),
     );

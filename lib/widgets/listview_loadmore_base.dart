@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:rxdart/rxdart.dart';
+import '../src/app_const.dart';
 import '../src/src_index.dart';
 
 class ListViewLoadMoreBase extends StatefulWidget {
@@ -9,10 +9,12 @@ class ListViewLoadMoreBase extends StatefulWidget {
     required this.functionInit,
     required this.itemWidget,
     required this.controller,
+    this.isInit = false,
   }) : super(key: key);
   final Future<dynamic> Function(int page, bool isInit) functionInit;
   final Function(int index, dynamic data) itemWidget;
   final LoadMoreController controller;
+  final bool isInit;
 
   @override
   State<ListViewLoadMoreBase> createState() => _ListViewLoadMoreBaseState();
@@ -28,7 +30,7 @@ class _ListViewLoadMoreBaseState extends State<ListViewLoadMoreBase>
     super.initState();
     if (mounted) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        // _controller.loadData(_controller.page, isInit: false);
+        if (widget.isInit) _controller.loadData(_controller.page);
         _controller.handelLoadMore();
       });
     }
@@ -56,12 +58,7 @@ class _ListViewLoadMoreBaseState extends State<ListViewLoadMoreBase>
                       widget.itemWidget(index, list[index])),
             );
           } else {
-            return Center(
-              child: WidgetText(
-                title: 'Không có dữ liệu',
-                style: AppStyle.DEFAULT_16_BOLD,
-              ),
-            );
+            return noData();
           }
         });
   }

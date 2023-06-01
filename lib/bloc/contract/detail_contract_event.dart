@@ -17,3 +17,7 @@ class InitDeleteContractEvent extends ContractEvent {
 
   InitDeleteContractEvent(this.id);
 }
+
+class ReloadContractEvent extends ContractEvent {
+  ReloadContractEvent();
+}

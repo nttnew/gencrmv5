@@ -12,6 +12,7 @@ DataContentChance _$DataContentChanceFromJson(Map<String, dynamic> json) =>
       json['label_field'] as String?,
       json['value_field'] as String?,
       json['link'] as String?,
+      json['is_link'] as bool?,
     );
 
 Map<String, dynamic> _$DataContentChanceToJson(DataContentChance instance) =>
@@ -20,6 +21,7 @@ Map<String, dynamic> _$DataContentChanceToJson(DataContentChance instance) =>
       'label_field': instance.label_field,
       'value_field': instance.value_field,
       'link': instance.link,
+      'is_link': instance.is_link,
     };
 
 DataDetailChance _$DataDetailChanceFromJson(Map<String, dynamic> json) =>

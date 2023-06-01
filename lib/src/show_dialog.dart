@@ -25,10 +25,11 @@ class ShowDialogCustom {
       {String? title,
       String? content,
       String? textButton1,
-      Color? colorButton1,
+      Color? txtColorButton1,
       VoidCallback? onTap1,
       String? textButton2,
       Color? colorButton2,
+      Color? colorButton1,
       VoidCallback? onTap2}) {
     showDialog<void>(
       context: Get.context!,
@@ -81,16 +82,18 @@ class ShowDialogCustom {
                                 child: Container(
                                   padding: EdgeInsets.all(15),
                                   decoration: BoxDecoration(
-                                      color: onTap2 == null
-                                          ? COLORS.PRIMARY_COLOR
-                                          : COLORS.GREY.withOpacity(0.5),
+                                      color: colorButton1 ??
+                                          (onTap2 == null
+                                              ? COLORS.PRIMARY_COLOR
+                                              : COLORS.GREY.withOpacity(0.5)),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Center(
                                     child: Text(
                                       textButton1 ??
                                           (onTap2 != null ? 'Huỷ' : 'Oke'),
                                       style: AppStyle.DEFAULT_16_BOLD.copyWith(
-                                          color: colorButton1 ?? Colors.black),
+                                          color:
+                                              txtColorButton1 ?? Colors.black),
                                     ),
                                   ),
                                 )),
@@ -105,7 +108,8 @@ class ShowDialogCustom {
                                   child: Container(
                                     padding: EdgeInsets.all(15),
                                     decoration: BoxDecoration(
-                                        color: COLORS.SECONDS_COLOR,
+                                        color: colorButton2 ??
+                                            COLORS.SECONDS_COLOR,
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     child: Center(
@@ -113,7 +117,7 @@ class ShowDialogCustom {
                                         textButton2 ?? 'Đồng ý',
                                         style: AppStyle.DEFAULT_16_BOLD
                                             .copyWith(
-                                                color: colorButton1 ??
+                                                color: txtColorButton1 ??
                                                     Colors.black),
                                       ),
                                     ),
@@ -200,7 +204,6 @@ class ShowDialogCustom {
                       ),
                       WidgetInput(
                         colorFix: Theme.of(context).scaffoldBackgroundColor,
-                        // onChanged: (value) => bloc.add(EmailChanged(email: value)),
                         inputType: TextInputType.text,
                         onChanged: (text) {
                           text_r = text;
@@ -210,8 +213,7 @@ class ShowDialogCustom {
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(color: HexColor("#838A91")),
                         ),
-                        initialValue: dotenv.env[PreferencesKey.BASE_URL],
-                        // errorText: state.email.invalid ? MESSAGES.EMAIL_ERROR : null,
+                        initialValue: initAddressApplication(),
                         Fix: Text("",
                             style: TextStyle(
                                 fontFamily: "Quicksand",
@@ -278,5 +280,14 @@ class ShowDialogCustom {
         );
       },
     );
+  }
+}
+
+String initAddressApplication() {
+  String txt = dotenv.env[PreferencesKey.BASE_URL] ?? '';
+  if (txt.contains('https://')) {
+    return txt.substring(txt.indexOf('//') + 2, txt.lastIndexOf('/'));
+  } else {
+    return txt;
   }
 }

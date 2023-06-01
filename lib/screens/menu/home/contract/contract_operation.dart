@@ -24,40 +24,47 @@ class _ContractOperationState extends State<ContractOperation>
   Widget build(BuildContext context) {
     super.build(context);
     return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.only(bottom: 10),
-        child: BlocBuilder<DetailContractBloc, DetailContractState>(
-            builder: (context, state) {
-          if (state is SuccessDetailContractState)
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children:
-                      List.generate(state.listDetailContract.length, (index) {
-                    if (state.listDetailContract[index].data != null) {
-                      return _buildContent1(state.listDetailContract[index]);
-                    } else
-                      return Container();
-                  }),
+      child: BlocBuilder<DetailContractBloc, DetailContractState>(
+          builder: (context, state) {
+        if (state is SuccessDetailContractState)
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(25),
+                child: Column(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(state.listDetailContract.length,
+                          (index) {
+                        if (state.listDetailContract[index].data != null) {
+                          return _buildContent1(
+                              state.listDetailContract[index]);
+                        } else
+                          return Container();
+                      }),
+                    ),
+                    WidgetLine(
+                      color: Colors.grey,
+                    ),
+                  ],
                 ),
-                WidgetLine(
-                  color: Colors.grey,
-                ),
-                ListNote(type: 4, id: widget.id)
-              ],
-            );
-          else
-            return Container();
-        }),
-      ),
+              ),
+              ListNote(module: Module.HOP_DONG, id: widget.id)
+            ],
+          );
+        else
+          return Container();
+      }),
     );
   }
 
   _buildContent1(DetailContractData data) {
     return Container(
-      padding: EdgeInsets.only(bottom: 8, top: 16),
+      padding: EdgeInsets.only(
+        bottom: 15,
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,11 +101,13 @@ class _ContractOperationState extends State<ContractOperation>
                                   flex: 2,
                                   child: GestureDetector(
                                     onTap: () {
-                                      if (data.data![index].label_field ==
-                                          BASE_URL.KHACH_HANG) {
+                                      if (data.data?[index].label_field ==
+                                              BASE_URL.KHACH_HANG &&
+                                          (data.data?[index].is_link ??
+                                              false)) {
                                         AppNavigator.navigateDetailCustomer(
-                                            data.data![index].id!,
-                                            data.data![index].value_field ??
+                                            data.data?[index].link ?? '',
+                                            data.data?[index].value_field ??
                                                 '');
                                       }
                                     },
@@ -107,16 +116,20 @@ class _ContractOperationState extends State<ContractOperation>
                                             data.data![index].value_field ?? '',
                                         textAlign: TextAlign.right,
                                         style: AppStyle.DEFAULT_14.copyWith(
-                                          decoration:
-                                              data.data![index].label_field ==
-                                                      BASE_URL.KHACH_HANG
-                                                  ? TextDecoration.underline
-                                                  : null,
-                                          color:
-                                              data.data![index].label_field ==
-                                                      BASE_URL.KHACH_HANG
-                                                  ? Colors.blue
-                                                  : null,
+                                          decoration: (data.data?[index]
+                                                          .label_field ==
+                                                      BASE_URL.KHACH_HANG &&
+                                                  (data.data?[index].is_link ??
+                                                      false))
+                                              ? TextDecoration.underline
+                                              : null,
+                                          color: (data.data?[index]
+                                                          .label_field ==
+                                                      BASE_URL.KHACH_HANG &&
+                                                  (data.data?[index].is_link ??
+                                                      false))
+                                              ? Colors.blue
+                                              : null,
                                         )),
                                   ))
                             ],

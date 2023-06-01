@@ -59,8 +59,7 @@ Future<String> getLocationName(double latitude, double longitude) async {
   return checkData('Số', '${placemarks.first.name},') +
       checkData('', '${placemarks.first.thoroughfare},') +
       checkData('', '${placemarks.first.subAdministrativeArea},') +
-      checkData('', '${placemarks.first.administrativeArea},') +
-      checkData('', '${placemarks.first.country}');
+      checkData('', '${placemarks.first.administrativeArea}');
 }
 
 String checkData(String title, String value) {

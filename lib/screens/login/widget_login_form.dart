@@ -162,15 +162,20 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         onTap: () {
           ShowDialogCustom.showDialogTwoButtonAddress(onTap2: (String text) {
             if (text != "") {
-              if (text.split("/").length < 4) {
-                dotenv.env[PreferencesKey.BASE_URL] = text + '/';
-                shareLocal.putString(PreferencesKey.URL_BASE, text + '/');
-                DioProvider.instance(baseUrl: text + '/');
+              String urlBase = '';
+              if (text.split('/').length == 1) {
+                urlBase = 'https://$text/';
+              } else if (text.split('/').length == 2) {
+                urlBase = 'https://$text';
+              } else if (text.contains('https://') &&
+                  text.split('/').length < 4) {
+                urlBase = '$text/';
               } else {
-                dotenv.env[PreferencesKey.BASE_URL] = text;
-                shareLocal.putString(PreferencesKey.URL_BASE, text);
-                DioProvider.instance(baseUrl: text);
+                urlBase = text;
               }
+              shareLocal.putString(PreferencesKey.URL_BASE, urlBase);
+              dotenv.env[PreferencesKey.BASE_URL] = urlBase;
+              DioProvider.instance(baseUrl: urlBase);
               Get.back();
               widget.reload();
             } else
@@ -180,10 +185,11 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         child: Text(
           "Đổi địa chỉ ứng dụng",
           style: TextStyle(
-              fontFamily: "Quicksand",
-              color: HexColor("#006CB1"),
-              fontWeight: FontWeight.w500,
-              fontSize: 14),
+            fontFamily: "Quicksand",
+            color: HexColor("#006CB1"),
+            fontWeight: FontWeight.w500,
+            fontSize: 14,
+          ),
         ),
       ),
     );
@@ -227,12 +233,12 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
                       );
               },
               boxDecoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: HexColor("#A6C1BC"),
+                borderRadius: BorderRadius.circular(12),
+                color: HexColor("#D0F1EB"),
               ),
               enable: state.status.isValidated,
               textStyle:
-                  AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w600),
+                  AppStyle.DEFAULT_18_BOLD,
               text: MESSAGES.LOGIN);
         });
   }

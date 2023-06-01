@@ -41,7 +41,7 @@ class WidgetButton extends StatelessWidget {
             boxDecoration: boxDecoration ??
                 BoxDecoration(
                     color: backgroundColor ?? COLORS.PRIMARY_COLOR,
-                    borderRadius: BorderRadius.circular(30)),
+                    borderRadius: BorderRadius.circular(12)),
             child: child ??
                 Text(
                   text!,

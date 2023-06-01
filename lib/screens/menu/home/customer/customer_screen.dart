@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
+import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -30,6 +31,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   final _key = GlobalKey<ExpandableFabState>();
   String search = '';
+  String title = Get.arguments;
   ScrollController _scrollController = ScrollController();
   List<String> listAdd = [
     'Khách hàng tổ chức',
@@ -55,9 +57,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
   _handleRouter(String value) {
     if (listAdd.last == value) {
-      AppNavigator.navigateFormAdd("Thêm ${value.toLowerCase()}", 1);
-    } else {
       AppNavigator.navigateAddCustomer();
+    } else {
+      AppNavigator.navigateFormAdd("Thêm ${value.toLowerCase()}", 1);
     }
   }
 
@@ -65,9 +67,11 @@ class _CustomerScreenState extends State<CustomerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
+      resizeToAvoidBottomInset: false,
       drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
+        childrenOffset: Offset(0, 0),
         key: _key,
         distance: 65,
         type: ExpandableFabType.up,
@@ -148,66 +152,27 @@ class _CustomerScreenState extends State<CustomerScreen> {
             )
             .toList(),
       ),
-      appBar: AppBar(
-        toolbarHeight: AppValue.heights * 0.1,
-        backgroundColor: HexColor("#D0F1EB"),
-        centerTitle: false,
-        title: WidgetText(
-            title: Get.arguments ?? '',
-            style: TextStyle(
-                color: Colors.black,
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.w700,
-                fontSize: 16)),
-        leading: Padding(
-            padding: EdgeInsets.only(left: 40),
-            child: InkWell(
-                onTap: () {
-                  if (_drawerKey.currentContext != null &&
-                      !_drawerKey.currentState!.isDrawerOpen) {
-                    _drawerKey.currentState!.openDrawer();
-                  }
-                },
-                child: SvgPicture.asset(ICONS.IC_MENU_SVG))),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
-          ),
-        ),
-        actions: [
-          Padding(
-              padding: EdgeInsets.only(right: 30),
-              child: GestureDetector(
-                onTap: () => AppNavigator.navigateNotification(),
-                child:
-                    BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
-                        builder: (context, state) {
-                  if (state is NotificationNeedRead) {
-                    return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
-                  } else {
-                    return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
-                  }
-                }),
-              ))
-        ],
-      ),
-      body: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(
-              top: 20,
-              left: 25,
-              right: 25,
-              bottom: 10,
-            ),
-            decoration: BoxDecoration(
-              border: Border.all(color: HexColor("#DBDBDB")),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: BlocBuilder<GetListCustomerBloc, CustomerState>(
-                builder: (context, state) {
-              if (state is UpdateGetListCustomerState)
-                return WidgetSearch(
+      appBar: AppbarBase(_drawerKey, title),
+      body: BlocBuilder<GetListCustomerBloc, CustomerState>(
+          builder: (context, state) {
+        if (state is UpdateGetListCustomerState) {
+          total = state.total;
+          length = state.listCustomer.length;
+          listCustomer = state.listCustomer;
+          return Column(
+            children: [
+              Container(
+                margin: EdgeInsets.only(
+                  top: 20,
+                  left: 25,
+                  right: 25,
+                  bottom: 10,
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(color: HexColor("#DBDBDB")),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: WidgetSearch(
                   hintTextStyle: TextStyle(
                       fontFamily: "Quicksand",
                       fontSize: 16,
@@ -217,25 +182,16 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                   endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
                   onClickRight: () {
-                    showBotomSheet(state.listFilter);
+                    _showBottomSheet(state.listFilter);
                   },
                   onSubmit: (v) {
                     search = v;
                     GetListCustomerBloc.of(context)
                         .add(InitGetListOrderEvent(idFilter, 1, v));
                   },
-                );
-              else
-                return Container();
-            }),
-          ),
-          BlocBuilder<GetListCustomerBloc, CustomerState>(
-              builder: (context, state) {
-            if (state is UpdateGetListCustomerState) {
-              total = state.total;
-              length = state.listCustomer.length;
-              listCustomer = state.listCustomer;
-              return Expanded(
+                ),
+              ),
+              Expanded(
                 child: RefreshIndicator(
                   onRefresh: () =>
                       Future.delayed(Duration(microseconds: 300), () {
@@ -252,7 +208,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                             (index) => ItemCustomer(
                                   data: state.listCustomer[index],
                                   onTap: () => AppNavigator.navigateDetailCustomer(
-                                      state.listCustomer[index].id!,
+                                      state.listCustomer[index].id??'',
                                       '${state.listCustomer[index].danh_xung ?? ''}' +
                                           ' ' +
                                           '${state.listCustomer[index].name ?? ''}'),
@@ -261,22 +217,16 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     ),
                   ),
                 ),
-              );
-            } else
-              return Expanded(
-                  child: Center(
-                child: WidgetText(
-                  title: 'Không có dữ liệu',
-                  style: AppStyle.DEFAULT_18_BOLD,
-                ),
-              ));
-          }),
-        ],
-      ),
+              ),
+            ],
+          );
+        } else
+          return noData();
+      }),
     );
   }
 
-  showBotomSheet(List<FilterData> data) {
+  _showBottomSheet(List<FilterData> data) {
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(

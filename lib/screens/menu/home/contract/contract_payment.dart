@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/payment_contract/payment_contract_bloc.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 
+import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/detail_contract.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/widget_line.dart';
@@ -21,45 +22,32 @@ class _ContractPaymentState extends State<ContractPayment>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Container(
-      padding: EdgeInsets.only(bottom: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          BlocBuilder<PaymentContractBloc, PaymentContractState>(
-              builder: (context, state) {
-            if (state is SuccessPaymentContractState) if (state
-                        .listPaymentContract.length >
-                    0)
-              return _buildContent1(state.listPaymentContract);
-            else {
-              return Expanded(
-                child: Center(
-                  child: WidgetText(
-                    title: "Không có dữ liệu",
-                    style: AppStyle.DEFAULT_18,
-                  ),
-                ),
-              );
-            }
-            else
-              return Container();
-          })
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        BlocBuilder<PaymentContractBloc, PaymentContractState>(
+            builder: (context, state) {
+          if (state is SuccessPaymentContractState) if (state
+                      .listPaymentContract.length >
+                  0)
+            return _buildContent1(state.listPaymentContract);
+          else {
+            return noData();
+          }
+          else
+            return Container();
+        })
+      ],
     );
   }
 
   _buildContent1(List<PaymentContractItem> data) {
     return Container(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: EdgeInsets.all(25),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          WidgetLine(
-            color: Colors.grey,
-          ),
           Column(
             children: List.generate(data.length, (index) {
               if (data[index].field_hidden != 1)

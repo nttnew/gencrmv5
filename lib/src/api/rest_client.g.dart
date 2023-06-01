@@ -942,29 +942,6 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ListNoteClueResponse> getNoteClue(id) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'id': id};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ListNoteClueResponse>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/agencycustomer/listNotes',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ListNoteClueResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
   Future<PolicyResponse> getPolicy() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -1708,7 +1685,10 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<BaseResponse> deleteNoteCus(map) async {
+  Future<BaseResponse> deleteNote(
+    module,
+    map,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -1722,127 +1702,7 @@ class _RestClient implements RestClient {
     )
             .compose(
               _dio.options,
-              'modules/genmobile2/customer/deleteNote',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> deleteNoteContact(map) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(map);
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'DELETE',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/agencycustomer/deleteNote',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> deleteNoteOop(map) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(map);
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'DELETE',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/opportunity/deleteNote',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> deleteNoteContract(map) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(map);
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'DELETE',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/contract/deleteNote',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> deleteNoteJob(map) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(map);
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'DELETE',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/job/deleteNote',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> deleteNoteSup(map) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(map);
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'DELETE',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/support/deleteNote',
+              'modules/genmobile2/${module}/deleteNote',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -1948,7 +1808,8 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NoteResponse> getNoteOpp(
+  Future<NoteResponse> getNoteList(
+    module,
     id,
     page,
   ) async {
@@ -1957,7 +1818,6 @@ class _RestClient implements RestClient {
       r'id': id,
       r'page': page,
     };
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio
@@ -1968,157 +1828,7 @@ class _RestClient implements RestClient {
     )
             .compose(
               _dio.options,
-              'modules/genmobile2/opportunity/listNotes',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NoteResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<NoteResponse> getNoteCus(
-    id,
-    page,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'id': id,
-      r'page': page,
-    };
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<NoteResponse>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/customer/listNotes',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NoteResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<NoteResponse> getNoteContact(
-    id,
-    page,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'id': id,
-      r'page': page,
-    };
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<NoteResponse>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/agencycustomer/listNotes',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NoteResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<NoteResponse> getNoteContract(
-    id,
-    page,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'id': id,
-      r'page': page,
-    };
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<NoteResponse>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/contract/listNotes',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NoteResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<NoteResponse> getNoteJob(
-    id,
-    page,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'id': id,
-      r'page': page,
-    };
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<NoteResponse>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/job/listNotes',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NoteResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<NoteResponse> getNoteSup(
-    id,
-    page,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'id': id,
-      r'page': page,
-    };
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<NoteResponse>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/support/listNotes',
+              'modules/genmobile2/${module}/listNotes',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -2941,7 +2651,8 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<BaseResponse> addNoteCus(
+  Future<BaseResponse> addNote(
+    module,
     id,
     content,
   ) async {
@@ -2965,7 +2676,7 @@ class _RestClient implements RestClient {
     )
             .compose(
               _dio.options,
-              'modules/genmobile2/customer/addNote',
+              'modules/genmobile2/${module}/addNote',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -2975,180 +2686,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<BaseResponse> addNoteContact(
-    id,
-    content,
+  Future<BaseResponse> editNote(
+    module,
+    data,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'id',
-      id,
-    ));
-    _data.fields.add(MapEntry(
-      'content',
-      content,
-    ));
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/agencycustomer/addNote',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> addNoteOpp(
-    id,
-    content,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'id',
-      id,
-    ));
-    _data.fields.add(MapEntry(
-      'content',
-      content,
-    ));
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/opportunity/addNote',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> addNoteContract(
-    id,
-    content,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'id',
-      id,
-    ));
-    _data.fields.add(MapEntry(
-      'content',
-      content,
-    ));
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/contract/addNote',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> addNoteJob(
-    id,
-    content,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'id',
-      id,
-    ));
-    _data.fields.add(MapEntry(
-      'content',
-      content,
-    ));
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/job/addNote',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> addNoteSup(
-    id,
-    content,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'id',
-      id,
-    ));
-    _data.fields.add(MapEntry(
-      'content',
-      content,
-    ));
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/support/addNote',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> editNoteCus(data) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(data);
     final _result = await _dio
@@ -3159,127 +2703,7 @@ class _RestClient implements RestClient {
     )
             .compose(
               _dio.options,
-              'modules/genmobile2/customer/updateNote',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> editNoteContact(data) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(data);
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/agencycustomer/updateNote',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> editNoteOop(data) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(data);
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/opportunity/updateNote',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> editNoteContract(data) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(data);
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/contract/updateNote',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> editNoteJob(data) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(data);
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/job/updateNote',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> editNoteSup(data) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(data);
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/support/updateNote',
+              'modules/genmobile2/${module}/updateNote',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -3800,6 +3224,7 @@ class _RestClient implements RestClient {
     latitude,
     longitude,
     location,
+    type,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -3820,6 +3245,10 @@ class _RestClient implements RestClient {
     _data.fields.add(MapEntry(
       'note_location',
       location,
+    ));
+    _data.fields.add(MapEntry(
+      'type',
+      type,
     ));
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<CheckInResponse>(Options(

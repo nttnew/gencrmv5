@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -18,12 +19,19 @@ const String PACKAGE_ID = 'vn.gen_crm';
 const String TEAM_ID = 'AEY48KNZRS';
 const int PRODUCT_TYPE = 99;
 const int PRODUCT_CUSTOMER_TYPE = 98;
+const int EDIT_JOB = 5;
 const int CV_PRODUCT_CUSTOMER_TYPE = 97;
 const int HD_PRODUCT_CUSTOMER_TYPE = 96;
 const int HT_PRODUCT_CUSTOMER_TYPE = 95;
 const int CH_PRODUCT_CUSTOMER_TYPE = 94;
 const LOADING = 'loading';
 
+class TypeCheckIn {
+  static const CHECK_IN = 'checkin';
+  static const CHECK_OUT = 'checkout';
+}
+
+//type="checkin" và type="checkout"
 TextStyle hintTextStyle() => TextStyle(
     fontFamily: "Quicksand",
     fontSize: 14,
@@ -51,6 +59,14 @@ void loginSessionExpired() {
     },
   );
 }
+
+Widget noData() => Align(
+      alignment: Alignment.center,
+      child: WidgetText(
+        title: 'Không có dữ liệu',
+        style: AppStyle.DEFAULT_18_BOLD,
+      ),
+    );
 
 void handleRegisterBase(
     BuildContext context, PitelServiceImpl pitelService, String deviceToken) {
