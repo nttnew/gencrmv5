@@ -60,6 +60,7 @@ class _FormAddDataState extends State<FormAddData> {
   int type = Get.arguments[1];
   String id = Get.arguments[2] != null ? Get.arguments[2].toString() : "";
   bool isCheckIn = Get.arguments[3];
+  String typeCheckIn = Get.arguments[4];
   List data = [];
   List<ModelItemAdd> addData = [];
   late String id_user;
@@ -948,6 +949,7 @@ class _FormAddDataState extends State<FormAddData> {
         data['longitude'] = position?.longitude.toString();
         data['latitude'] = position?.latitude.toString();
         data['note_location'] = controllerNote.text;
+        data['type'] = typeCheckIn;
       } else {
         check = true;
       }

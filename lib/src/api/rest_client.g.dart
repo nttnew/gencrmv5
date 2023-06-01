@@ -3224,6 +3224,7 @@ class _RestClient implements RestClient {
     latitude,
     longitude,
     location,
+    type,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -3244,6 +3245,10 @@ class _RestClient implements RestClient {
     _data.fields.add(MapEntry(
       'note_location',
       location,
+    ));
+    _data.fields.add(MapEntry(
+      'type',
+      type,
     ));
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<CheckInResponse>(Options(

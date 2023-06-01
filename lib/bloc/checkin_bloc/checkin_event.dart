@@ -13,9 +13,16 @@ class SaveCheckIn extends CheckInEvent {
   final String location;
   final String id;
   final String module;
+  final String type;
 
   SaveCheckIn(
-      this.longitude, this.latitude, this.location, this.id, this.module);
+    this.longitude,
+    this.latitude,
+    this.location,
+    this.id,
+    this.module,
+    this.type,
+  );
 
   @override
   List<Object> get props => [
@@ -24,5 +31,6 @@ class SaveCheckIn extends CheckInEvent {
         location,
         id,
         module,
+        type,
       ];
 }

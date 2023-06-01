@@ -26,6 +26,12 @@ const int HT_PRODUCT_CUSTOMER_TYPE = 95;
 const int CH_PRODUCT_CUSTOMER_TYPE = 94;
 const LOADING = 'loading';
 
+class TypeCheckIn {
+  static const CHECK_IN = 'checkin';
+  static const CHECK_OUT = 'checkout';
+}
+
+//type="checkin" và type="checkout"
 TextStyle hintTextStyle() => TextStyle(
     fontFamily: "Quicksand",
     fontSize: 14,
@@ -55,12 +61,12 @@ void loginSessionExpired() {
 }
 
 Widget noData() => Align(
-  alignment: Alignment.center,
-  child:   WidgetText(
-    title: 'Không có dữ liệu',
-    style: AppStyle.DEFAULT_18_BOLD,
-  ),
-);
+      alignment: Alignment.center,
+      child: WidgetText(
+        title: 'Không có dữ liệu',
+        style: AppStyle.DEFAULT_18_BOLD,
+      ),
+    );
 
 void handleRegisterBase(
     BuildContext context, PitelServiceImpl pitelService, String deviceToken) {

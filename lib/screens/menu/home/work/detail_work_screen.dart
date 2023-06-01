@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
+import '../../../../bloc/checkin_bloc/checkin_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/btn_thao_tac.dart';
@@ -27,6 +28,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   int id = Get.arguments[0];
   String title = Get.arguments[1];
   int? location;
+  bool isCheckDone = false;
   List<ModuleThaoTac> list = [];
 
   @override
@@ -41,6 +43,19 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
     super.initState();
   }
 
+  checkLocation(state) {
+    location = state.location;
+    if (state.data_list.isNotEmpty) {
+      final listLocation = state.data_list.first.data
+          ?.where((element) => element.id == 'checkout')
+          .toList();
+      if (listLocation?.isNotEmpty ?? false) {
+        isCheckDone = listLocation?.first.value_field != '' &&
+            listLocation?.first.value_field != null;
+      }
+    }
+  }
+
   getThaoTac() {
     list = [];
     list.add(ModuleThaoTac(
@@ -51,16 +66,37 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
         AppNavigator.navigateAddNoteScreen(Module.CONG_VIEC, id.toString());
       },
     ));
-
-    if (location != 1) //1 là có rồi
-      list.add(ModuleThaoTac(
-        title: "Thêm check in",
-        icon: ICONS.IC_LOCATION_SVG,
-        onThaoTac: () {
-          Get.back();
-          AppNavigator.navigateCheckIn(id.toString(), ModuleMy.CONG_VIEC);
-        },
-      ));
+    if (!isCheckDone) {
+      if (location != 1) {
+        list.add(ModuleThaoTac(
+          title: "Check in",
+          icon: ICONS.IC_LOCATION_SVG,
+          onThaoTac: () {
+            Get.back();
+            AppNavigator.navigateCheckIn(
+                id.toString(), ModuleMy.CONG_VIEC, TypeCheckIn.CHECK_IN);
+          },
+        ));
+      } else {
+        list.add(ModuleThaoTac(
+          title: "Check out",
+          icon: ICONS.IC_LOCATION_SVG,
+          onThaoTac: () {
+            Get.back();
+            CheckInBloc.of(context).add(
+              SaveCheckIn(
+                '',
+                '',
+                '',
+                id.toString(),
+                ModuleMy.CONG_VIEC,
+                TypeCheckIn.CHECK_OUT,
+              ),
+            );
+          },
+        ));
+      }
+    }
 
     list.add(ModuleThaoTac(
       title: "Xem đính kèm",
@@ -100,176 +136,186 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppbarBaseNormal(title),
-      body: BlocListener<DetailWorkBloc, DetailWorkState>(
+      body: BlocListener<CheckInBloc, CheckInState>(
         listener: (context, state) {
-          if (state is SuccessDeleteWorkState) {
-            LoadingApi().popLoading();
-            ShowDialogCustom.showDialogBase(
-              title: MESSAGES.NOTIFICATION,
-              content: "Thành công",
-              onTap1: () {
-                Get.back();
-                Get.back();
-                Get.back();
-                Get.back();
-                WorkBloc.of(context).add(InitGetListWorkEvent("1", "", ""));
-              },
-            );
-          } else if (state is ErrorDeleteWorkState) {
-            LoadingApi().popLoading();
+          if (state is SuccessCheckInState) {
+            DetailWorkBloc.of(context).add(InitGetDetailWorkEvent(id));
+          } else if (state is ErrorCheckInState) {
             ShowDialogCustom.showDialogBase(
               title: MESSAGES.NOTIFICATION,
               content: state.msg,
-              textButton1: "Quay lại",
-              onTap1: () {
-                Get.back();
-                Get.back();
-                Get.back();
-                Get.back();
-              },
             );
           }
         },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BlocBuilder<DetailWorkBloc, DetailWorkState>(
-                        builder: (context, state) {
-                      if (state is SuccessDetailWorkState) {
-                        location = state.location;
-                        getThaoTac();
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: List.generate(
-                                state.data_list.length,
-                                (index) => Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: AppValue.heights * 0.04,
-                                        ),
-                                        WidgetText(
-                                          title: state.data_list[index]
-                                                  .group_name ??
-                                              '',
-                                          style: TextStyle(
-                                            fontFamily: "Quicksand",
-                                            color: HexColor("#263238"),
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 14,
+        child: BlocListener<DetailWorkBloc, DetailWorkState>(
+          listener: (context, state) {
+            if (state is SuccessDeleteWorkState) {
+              LoadingApi().popLoading();
+              ShowDialogCustom.showDialogBase(
+                title: MESSAGES.NOTIFICATION,
+                content: "Thành công",
+                onTap1: () {
+                  Get.back();
+                  Get.back();
+                  Get.back();
+                  Get.back();
+                  WorkBloc.of(context).add(InitGetListWorkEvent("1", "", ""));
+                },
+              );
+            } else if (state is ErrorDeleteWorkState) {
+              LoadingApi().popLoading();
+              ShowDialogCustom.showDialogBase(
+                title: MESSAGES.NOTIFICATION,
+                content: state.msg,
+                textButton1: "Quay lại",
+                onTap1: () {
+                  Get.back();
+                  Get.back();
+                  Get.back();
+                  Get.back();
+                },
+              );
+            }
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      BlocBuilder<DetailWorkBloc, DetailWorkState>(
+                          builder: (context, state) {
+                        if (state is SuccessDetailWorkState) {
+                          checkLocation(state);
+                          getThaoTac();
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 25),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: List.generate(
+                                  state.data_list.length,
+                                  (index) => Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: AppValue.heights * 0.04,
                                           ),
-                                        ),
-                                        SizedBox(
-                                          height: AppValue.heights * 0.02,
-                                        ),
-                                        Column(
-                                          children: List.generate(
-                                              state.data_list[index].data!
-                                                  .length,
-                                              (index1) =>
-                                                  state
-                                                              .data_list[index]
-                                                              .data![index1]
-                                                              .value_field !=
-                                                          ''
-                                                      ? Column(
-                                                          children: [
-                                                            Row(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                WidgetText(
-                                                                  title: state
-                                                                      .data_list[
-                                                                          index]
-                                                                      .data![
-                                                                          index1]
-                                                                      .label_field,
-                                                                  style:
-                                                                      LabelStyle(),
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 8,
-                                                                ),
-                                                                Expanded(
-                                                                  child:
-                                                                      GestureDetector(
-                                                                    onTap: () {
-                                                                      if (state.data_list[index].data?[index1].label_field ==
-                                                                              BASE_URL
-                                                                                  .KHACH_HANG &&
-                                                                          (state.data_list[index].data?[index1].is_link ??
-                                                                              false)) {
-                                                                        AppNavigator.navigateDetailCustomer(
-                                                                            state.data_list[index].data?[index1].link ??
-                                                                                '',
-                                                                            state.data_list[index].data![index1].value_field ??
-                                                                                '');
-                                                                      }
-                                                                    },
+                                          WidgetText(
+                                            title: state.data_list[index]
+                                                    .group_name ??
+                                                '',
+                                            style: TextStyle(
+                                              fontFamily: "Quicksand",
+                                              color: HexColor("#263238"),
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: AppValue.heights * 0.02,
+                                          ),
+                                          Column(
+                                            children: List.generate(
+                                                state.data_list[index].data!
+                                                    .length,
+                                                (index1) =>
+                                                    state
+                                                                .data_list[
+                                                                    index]
+                                                                .data![index1]
+                                                                .value_field !=
+                                                            ''
+                                                        ? Column(
+                                                            children: [
+                                                              Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  WidgetText(
+                                                                    title: state
+                                                                        .data_list[
+                                                                            index]
+                                                                        .data![
+                                                                            index1]
+                                                                        .label_field,
+                                                                    style:
+                                                                        LabelStyle(),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: 8,
+                                                                  ),
+                                                                  Expanded(
                                                                     child:
-                                                                        SizedBox(
-                                                                      child: state.data_list[index].data![index1].type !=
-                                                                              'text_area'
-                                                                          ? WidgetText(
-                                                                              title: state.data_list[index].data![index1].value_field,
-                                                                              textAlign: TextAlign.right,
-                                                                              style: ValueStyle().copyWith(
-                                                                                decoration: (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG && (state.data_list[index].data?[index1].is_link ?? false)) ? TextDecoration.underline : null,
-                                                                                color: (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG && (state.data_list[index].data?[index1].is_link ?? false)) ? Colors.blue : null,
+                                                                        GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        if (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG &&
+                                                                            (state.data_list[index].data?[index1].is_link ??
+                                                                                false)) {
+                                                                          AppNavigator.navigateDetailCustomer(
+                                                                              state.data_list[index].data?[index1].link ?? '',
+                                                                              state.data_list[index].data![index1].value_field ?? '');
+                                                                        }
+                                                                      },
+                                                                      child:
+                                                                          SizedBox(
+                                                                        child: state.data_list[index].data![index1].type !=
+                                                                                'text_area'
+                                                                            ? WidgetText(
+                                                                                title: state.data_list[index].data![index1].value_field,
+                                                                                textAlign: TextAlign.right,
+                                                                                style: ValueStyle().copyWith(
+                                                                                  decoration: (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG && (state.data_list[index].data?[index1].is_link ?? false)) ? TextDecoration.underline : null,
+                                                                                  color: (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG && (state.data_list[index].data?[index1].is_link ?? false)) ? Colors.blue : null,
+                                                                                ),
+                                                                              )
+                                                                            : Html(
+                                                                                data: state.data_list[index].data![index1].value_field,
                                                                               ),
-                                                                            )
-                                                                          : Html(
-                                                                              data: state.data_list[index].data![index1].value_field,
-                                                                            ),
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            SizedBox(
-                                                              height: AppValue
-                                                                      .heights *
-                                                                  0.02,
-                                                            ),
-                                                          ],
-                                                        )
-                                                      : SizedBox()),
-                                        ),
-                                        LineHorizontal(),
-                                      ],
-                                    )),
-                          ),
-                        );
-                      } else
-                        return Container();
-                    }),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    ListNote(module: Module.CONG_VIEC, id: id.toString()),
-                  ],
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: AppValue
+                                                                        .heights *
+                                                                    0.02,
+                                                              ),
+                                                            ],
+                                                          )
+                                                        : SizedBox()),
+                                          ),
+                                          LineHorizontal(),
+                                        ],
+                                      )),
+                            ),
+                          );
+                        } else
+                          return Container();
+                      }),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      ListNote(module: Module.CONG_VIEC, id: id.toString()),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: ButtonThaoTac(
-                onTap: () {
-                  showThaoTac(context, list);
-                },
-              ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: ButtonThaoTac(
+                  onTap: () {
+                    showThaoTac(context, list);
+                  },
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

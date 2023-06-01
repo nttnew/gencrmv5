@@ -572,6 +572,7 @@ abstract class RestClient {
     @Part(name: 'latitude') String latitude,
     @Part(name: 'longitude') String longitude,
     @Part(name: 'note_location') String location,
+    @Part(name: 'type') String type,
   );
 
   @POST(BASE_URL.LIST_PRODUCT_CUSTOMER)

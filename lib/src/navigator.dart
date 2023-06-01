@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:gen_crm/src/router.dart';
 
 import '../models/product_model.dart';
+import 'app_const.dart';
 
 class AppNavigator {
   AppNavigator._();
@@ -29,10 +30,15 @@ class AppNavigator {
       await Get.toNamed(ROUTE_NAMES.ADD_SERVICE_VOUCHER_STEP_TWO,
           arguments: title);
 
-  static navigateFormAdd(String title, int type,
-          {int? id, bool isCheckIn = false}) async =>
+  static navigateFormAdd(
+    String title,
+    int type, {
+    int? id,
+    bool isCheckIn = false,
+    String typeCheckIn = TypeCheckIn.CHECK_IN,
+  }) async =>
       await Get.toNamed(ROUTE_NAMES.FORM_ADD,
-          arguments: [title, type, id, isCheckIn]);
+          arguments: [title, type, id, isCheckIn, typeCheckIn]);
 
   static navigateAddWork() async => await Get.toNamed(ROUTE_NAMES.ADD_WORK);
 
@@ -155,8 +161,8 @@ class AppNavigator {
   static navigateDetailProduct(String title, String id) async =>
       await Get.toNamed(ROUTE_NAMES.DETAIL_PRODUCT, arguments: [title, id]);
 
-  static navigateCheckIn(String id, String module) async =>
-      await Get.toNamed(ROUTE_NAMES.CHECK_IN, arguments: [id, module]);
+  static navigateCheckIn(String id, String module, String type) async =>
+      await Get.toNamed(ROUTE_NAMES.CHECK_IN, arguments: [id, module, type]);
 
   static navigateProductCustomer(String title) async =>
       await Get.toNamed(ROUTE_NAMES.PRODUCT_CUSTOMER, arguments: title);

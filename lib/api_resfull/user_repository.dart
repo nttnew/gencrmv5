@@ -672,6 +672,7 @@ class UserRepository {
     required String latitude,
     required String longitude,
     required String location,
+    required String type,
   }) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).saveCheckIn(
         module,
@@ -679,6 +680,7 @@ class UserRepository {
         latitude,
         longitude,
         location,
+        type
       );
 
   Future<dynamic> deleteProduct({

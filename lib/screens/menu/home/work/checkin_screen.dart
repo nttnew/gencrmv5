@@ -27,6 +27,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
   late final TextEditingController controllerNote;
   String id = Get.arguments[0];
   String module = Get.arguments[1];
+  String type = Get.arguments[2];
   Position? position;
 
   getNameLocation() async {
@@ -92,12 +93,12 @@ class _CheckInScreenState extends State<CheckInScreen> {
               );
             } else {
               CheckInBloc.of(context).add(SaveCheckIn(
-                '${position?.longitude ?? ''}',
-                '${position?.latitude ?? ''}',
-                controllerNote.text,
-                id,
-                module,
-              ));
+                  '${position?.longitude ?? ''}',
+                  '${position?.latitude ?? ''}',
+                  controllerNote.text,
+                  id,
+                  module,
+                  type));
             }
           },
           child: Container(
@@ -113,7 +114,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
             )),
           ),
         ),
-        appBar: AppbarBaseNormal(  "Checkin"),
+        appBar: AppbarBaseNormal("Checkin"),
         body: Container(
             padding: EdgeInsets.all(16),
             child: StreamBuilder<String>(
