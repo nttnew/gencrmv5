@@ -57,9 +57,7 @@ class _DetailProductCustomerScreenState
     int idM = int.parse(id);
     for (final value in listTab) {
       if (value.module == 'thong_tin_chung') {
-        listWidget.add(InfoTabProductCustomer(
-          state: state,
-        ));
+        listWidget.add(InfoTabProductCustomer());
       } else if (value.module == 'opportunity') {
         //cơ hội
         listWidget.add(ListViewLoadMoreBase(

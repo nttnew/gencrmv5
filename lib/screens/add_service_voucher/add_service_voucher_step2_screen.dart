@@ -44,6 +44,7 @@ class _AddServiceVoucherStepTwoScreenState
     super.dispose();
   }
 
+
   @override
   void initState() {
     _bloc = ServiceVoucherBloc.of(context);
@@ -214,8 +215,17 @@ class _AddServiceVoucherStepTwoScreenState
                                                     canDelete: true,
                                                   )
                                                 : fieldName == 'chi_tiet_xe'
-                                                    ? _typeCar(
-                                                        fieldData, index, index1)
+                                                    ? TypeCarBase(
+                                                        fieldData,
+                                                        index,
+                                                        index1,
+                                                        context,
+                                                        _bloc, (v) {
+                                                        _bloc
+                                                            .addData[index]
+                                                            .data[index1]
+                                                            .value = v;
+                                                      })
                                                     : fieldName == 'col131' &&
                                                             fieldData.field_set_value_datasource !=
                                                                 []
@@ -232,8 +242,7 @@ class _AddServiceVoucherStepTwoScreenState
                                                                           index1]
                                                                       .value = data;
                                                                 },
-                                                                isUpdate: _bloc.getTextInit(name: fieldName, list: fieldData.field_datasource) !=
-                                                                        null &&
+                                                                isUpdate: _bloc.getTextInit(name: fieldName, list: fieldData.field_datasource) != null &&
                                                                     fieldName !=
                                                                         'hdsan_pham_kh',
                                                                 dropdownItemList:
@@ -258,9 +267,7 @@ class _AddServiceVoucherStepTwoScreenState
                                                                     }
                                                                   }
                                                                 },
-                                                                value: _bloc.infoCar.value != null &&
-                                                                        fieldName !=
-                                                                            'hdsan_pham_kh'
+                                                                value: _bloc.infoCar.value != null && fieldName != 'hdsan_pham_kh'
                                                                     ? _bloc.getTextInit(name: fieldName, list: fieldData.field_datasource) ??
                                                                         ''
                                                                     : fieldData.field_value ??
@@ -499,82 +506,6 @@ class _AddServiceVoucherStepTwoScreenState
             ),
           ),
         ));
-  }
-
-  Widget _typeCar(
-    CustomerIndividualItemData data,
-    int index,
-    int index1,
-  ) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: data.field_label ?? '',
-              style: titlestyle(),
-              children: <TextSpan>[
-                data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Quicksand",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red))
-                    : TextSpan(),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          GestureDetector(
-            onTap: () {
-              showModalBottomSheet(
-                  isDismissible: false,
-                  enableDrag: false,
-                  isScrollControlled: true,
-                  context: context,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  builder: (BuildContext context) {
-                    return SelectCar();
-                  });
-            },
-            child: StreamBuilder<String>(
-                stream: _bloc.loaiXe,
-                builder: (context, snapshot) {
-                  if (_bloc.loaiXe.value.trim() != '') {
-                    _bloc.addData[index].data[index1].value =
-                        _bloc.loaiXe.value;
-                  }
-                  return Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: HexColor("#BEB4B4"))),
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 10, top: 15, bottom: 15),
-                      child: Container(
-                        child: WidgetText(
-                          title: (_bloc.loaiXe.value != ''
-                              ? _bloc.loaiXe.value
-                              : '---Chọn---'),
-                          style: AppStyle.DEFAULT_14,
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _check(CustomerIndividualItemData data, int index, int index1) {
@@ -1105,4 +1036,85 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
       ),
     );
   }
+}
+
+Widget TypeCarBase(
+  CustomerIndividualItemData data,
+  int index,
+  int index1,
+  BuildContext context,
+  dynamic _bloc,
+  Function(String v) function,
+) {
+  if (data.field_set_value != '' && data.field_set_value != null) {
+    _bloc.loaiXe.add(data.field_set_value);
+  }
+  return Container(
+    margin: EdgeInsets.only(bottom: 16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        RichText(
+          textScaleFactor: MediaQuery.of(context).textScaleFactor,
+          text: TextSpan(
+            text: data.field_label ?? '',
+            style: titlestyle(),
+            children: <TextSpan>[
+              data.field_require == 1
+                  ? TextSpan(
+                      text: '*',
+                      style: TextStyle(
+                          fontFamily: "Quicksand",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.red))
+                  : TextSpan(),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        GestureDetector(
+          onTap: () {
+            showModalBottomSheet(
+                isDismissible: false,
+                enableDrag: false,
+                isScrollControlled: true,
+                context: context,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)),
+                builder: (BuildContext context) {
+                  return SelectCar();
+                });
+          },
+          child: StreamBuilder<String>(
+              stream: _bloc.loaiXe,
+              builder: (context, snapshot) {
+                if (_bloc.loaiXe.value.trim() != '') {
+                  function(_bloc.loaiXe.value);
+                }
+                return Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: HexColor("#BEB4B4"))),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10, top: 15, bottom: 15),
+                    child: Container(
+                      child: WidgetText(
+                        title: (_bloc.loaiXe.value != ''
+                            ? _bloc.loaiXe.value
+                            : '---Chọn---'),
+                        style: AppStyle.DEFAULT_14,
+                      ),
+                    ),
+                  ),
+                );
+              }),
+        ),
+      ],
+    ),
+  );
 }

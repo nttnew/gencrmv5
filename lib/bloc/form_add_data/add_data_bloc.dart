@@ -101,23 +101,18 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
               module: getURLModule(Module.KHACH_HANG));
           if ((responseUpload.code == BASE_URL.SUCCESS) ||
               (responseUpload.code == BASE_URL.SUCCESS_200)) {
-            LoadingApi().popLoading();
             yield SuccessEditCustomerState();
           } else {
-            LoadingApi().popLoading();
             yield ErrorEditCustomerState(responseUpload.msg ?? '');
           }
         } else {
-          LoadingApi().popLoading();
           yield SuccessEditCustomerState();
         }
       } else {
         yield ErrorEditCustomerState(response.msg ?? '');
-        LoadingApi().popLoading();
       }
     } catch (e) {
       yield ErrorEditCustomerState(MESSAGES.CONNECT_ERROR);
-      LoadingApi().popLoading();
       throw e;
     }
     LoadingApi().popLoading();

@@ -57,9 +57,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
   _handleRouter(String value) {
     if (listAdd.last == value) {
-      AppNavigator.navigateFormAdd("Thêm ${value.toLowerCase()}", 1);
-    } else {
       AppNavigator.navigateAddCustomer();
+    } else {
+      AppNavigator.navigateFormAdd("Thêm ${value.toLowerCase()}", 1);
     }
   }
 

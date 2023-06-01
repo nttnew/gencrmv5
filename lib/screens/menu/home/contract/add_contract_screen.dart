@@ -128,49 +128,46 @@ class _FormAddContractState extends State<FormAddContract> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppbarBaseNormal("Thêm ${Get.arguments[2].toString().toLowerCase()}"),
+        appBar: AppbarBaseNormal(
+            "Thêm ${Get.arguments[2].toString().toLowerCase()}",),
         body: BlocListener<AddDataBloc, AddDataState>(
           listener: (context, state) async {
             if (state is SuccessAddCustomerOrState) {
               ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
-                    content: "Thêm mới dữ liệu thành công!",
-                    onTap1: () {
-                      Get.back();
-                      Get.back();
-                      GetListCustomerBloc.of(context)
-                          .add(InitGetListOrderEvent("", 1, ""));
-                    },
-
+                title: MESSAGES.NOTIFICATION,
+                content: "Thêm mới dữ liệu thành công!",
+                 onTap1: () {
+                  Get.back();
+                  Get.back();
+                  GetListCustomerBloc.of(context)
+                      .add(InitGetListOrderEvent("", 1, ""));
+                },
               );
             }
             if (state is ErrorAddCustomerOrState) {
               ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
-                    content: state.msg,
-
+                title: MESSAGES.NOTIFICATION,
+                content: state.msg,
               );
             }
             if (state is SuccessAddContactCustomerState) {
-    ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
-                    content: "Thêm mới dữ liệu thành công!",
-                    onTap1: () {
-                      Get.back();
-                      Get.back();
-                      ContractCustomerBloc.of(context).add(
-                          InitGetContractCustomerEvent(
-                              ContractCustomerBloc.of(context).id));
-                      ContractBloc.of(context)
-                          .add(InitGetContractEvent(1, "", ""));
-
+              ShowDialogCustom.showDialogBase(
+                title: MESSAGES.NOTIFICATION,
+                content: "Thêm mới dữ liệu thành công!",
+                onTap1: () {
+                  Get.back();
+                  Get.back();
+                  ContractCustomerBloc.of(context).add(
+                      InitGetContractCustomerEvent(
+                          ContractCustomerBloc.of(context).id));
+                  ContractBloc.of(context).add(InitGetContractEvent(1, "", ""));
                 },
               );
             }
             if (state is ErrorAddContactCustomerState) {
               ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
-                    content: state.msg,
+                title: MESSAGES.NOTIFICATION,
+                content: state.msg,
               );
             }
           },
@@ -200,7 +197,7 @@ class _FormAddContractState extends State<FormAddContract> {
                           value: state.listAddData[i].data![j].field_set_value
                               .toString(),
                           required:
-                              state.listAddData[i].data![j].field_require));
+                              state.listAddData[i].data![j].field_require,));
                     }
                   }
                   return Column(
@@ -247,9 +244,9 @@ class _FormAddContractState extends State<FormAddContract> {
                                                         state
                                                                 .listAddData[index]
                                                                 .data![index1]
-                                                                .field_id !=
-                                                            '246')
-                                                    ? (state.listAddData[index].data![index1].field_id == '774'
+                                                                .field_name !=
+                                                            'col131')
+                                                    ? (state.listAddData[index].data![index1].field_name == 'so_dien_thoai'
                                                         ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
                                                             if (stateA
                                                                 is SuccessPhoneState) {
@@ -271,7 +268,7 @@ class _FormAddContractState extends State<FormAddContract> {
                                                             } else
                                                               return Container();
                                                           })
-                                                        : state.listAddData[index].data![index1].field_id == '13502'
+                                                        : state.listAddData[index].data![index1].field_name == 'chi_tiet_xe'
                                                             ? StreamBuilder<String>(
                                                                 stream: ContactByCustomerBloc.of(context).chiTietXe,
                                                                 builder: (context, snapshot) {
@@ -299,8 +296,8 @@ class _FormAddContractState extends State<FormAddContract> {
                                                             neverHidden: true,
                                                             canDelete: true,
                                                           )
-                                                        : state.listAddData[index].data![index1].field_type == "SELECT" || state.listAddData[index].data![index1].field_id == "12465" || state.listAddData[index].data![index1].field_id == "1391"
-                                                            ? (state.listAddData[index].data![index1].field_id == '256'
+                                                        : state.listAddData[index].data![index1].field_type == "SELECT"
+                                                            ? (state.listAddData[index].data![index1].field_name == 'col141'
                                                                 ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(builder: (context, stateA) {
                                                                     if (stateA
                                                                         is UpdateGetContacBytCustomerState)
@@ -320,7 +317,7 @@ class _FormAddContractState extends State<FormAddContract> {
                                                                     else
                                                                       return Container();
                                                                   })
-                                                                : state.listAddData[index].data![index1].field_id == '12708'
+                                                                : state.listAddData[index].data![index1].field_name == 'hdsan_pham_kh'
                                                                     ? StreamBuilder<List<List<dynamic>>>(
                                                                         stream: ContactByCustomerBloc.of(context).listXe,
                                                                         builder: (context, snapshot) {
@@ -348,10 +345,9 @@ class _FormAddContractState extends State<FormAddContract> {
                                                                           addData[index]
                                                                               .data[index1]
                                                                               .value = data;
-                                                                          if (state.listAddData[index].data![index1].field_id ==
-                                                                              '246') {
+                                                                          if (state.listAddData[index].data![index1].field_name ==
+                                                                              'col131') {
                                                                             ContactByCustomerBloc.of(context).chiTietXe.add('');
-                                                                            ContactByCustomerBloc.of(context).listXe.add([]);
                                                                             ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
                                                                             PhoneBloc.of(context).add(InitPhoneEvent(data));
                                                                           }
@@ -650,10 +646,9 @@ class _FormAddContractState extends State<FormAddContract> {
                 if (maxLength != '' && values.length > int.parse(maxLength)) {
                   values.removeRange(
                       int.parse(maxLength) - 1, values.length - 1);
-    ShowDialogCustom.showDialogBase(
-                        title: MESSAGES.NOTIFICATION,
-                        content: "Bạn chỉ được chọn ${maxLength} giá trị",
-
+                  ShowDialogCustom.showDialogBase(
+                    title: MESSAGES.NOTIFICATION,
+                    content: "Bạn chỉ được chọn ${maxLength} giá trị",
                   );
                 } else {
                   List<String> res = [];
@@ -728,10 +723,9 @@ class _FormAddContractState extends State<FormAddContract> {
       }
     }
     if (check == true) {
-        ShowDialogCustom.showDialogBase(
-            title: MESSAGES.NOTIFICATION,
-            content: "Hãy nhập đủ các trường bắt buộc (*)",
-
+      ShowDialogCustom.showDialogBase(
+        title: MESSAGES.NOTIFICATION,
+        content: "Hãy nhập đủ các trường bắt buộc (*)",
       );
     } else {
       if (listProduct.length > 0) {

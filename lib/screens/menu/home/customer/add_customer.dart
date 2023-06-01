@@ -79,10 +79,7 @@ class _AddCustomerState extends State<AddCustomer> {
             }
           },
           child: Container(
-            margin: EdgeInsets.only(
-                left: AppValue.widths * 0.05,
-                right: AppValue.widths * 0.05,
-                top: AppValue.heights * 0.02),
+            margin: EdgeInsets.all(25),
             child: SingleChildScrollView(
               child: BlocBuilder<AddCustomerBloc, AddCustomerState>(
                   builder: (context, state) {
@@ -91,21 +88,22 @@ class _AddCustomerState extends State<AddCustomer> {
                   addData = [];
                   return Container();
                 } else if (state is UpdateGetAddCustomerState) {
-                  for (int i = 0; i < state.listAddData.length; i++) {
-                    addData.add(ModelItemAdd(
-                        group_name: state.listAddData[i].group_name ?? '',
-                        data: []));
-                    for (int j = 0;
-                        j < state.listAddData[i].data!.length;
-                        j++) {
-                      addData[i].data.add(ModelDataAdd(
-                          label: state.listAddData[i].data![j].field_name,
-                          value: state.listAddData[i].data![j].field_set_value
-                              .toString(),
-                          required:
-                              state.listAddData[i].data![j].field_require));
+                  if (addData.isEmpty)
+                    for (int i = 0; i < state.listAddData.length; i++) {
+                      addData.add(ModelItemAdd(
+                          group_name: state.listAddData[i].group_name ?? '',
+                          data: []));
+                      for (int j = 0;
+                          j < state.listAddData[i].data!.length;
+                          j++) {
+                        addData[i].data.add(ModelDataAdd(
+                            label: state.listAddData[i].data![j].field_name,
+                            value: state.listAddData[i].data![j].field_set_value
+                                .toString(),
+                            required:
+                                state.listAddData[i].data![j].field_require));
+                      }
                     }
-                  }
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -139,9 +137,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                                           .field_hidden !=
                                                       "1"
                                                   ? state.listAddData[index].data![index1].field_type ==
-                                                              "SELECT" ||
-                                                          state.listAddData[index].data![index1].field_id ==
-                                                              "12466"
+                                                          "SELECT"
                                                       ? InputDropdown(
                                                           dropdownItemList:
                                                               state.listAddData[index].data![index1].field_datasource ??
@@ -155,9 +151,12 @@ class _AddCustomerState extends State<AddCustomer> {
                                                                 .data[index1]
                                                                 .value = data;
                                                           },
-                                                          value:
-                                                              state.listAddData[index].data![index1].field_value ??
-                                                                  '')
+                                                          value: state
+                                                                  .listAddData[
+                                                                      index]
+                                                                  .data![index1]
+                                                                  .field_value ??
+                                                              '')
                                                       : state.listAddData[index].data![index1].field_type ==
                                                               "TEXT_MULTI"
                                                           ? _fieldInputTextMulti(

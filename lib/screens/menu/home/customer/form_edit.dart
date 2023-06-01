@@ -17,6 +17,7 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../api_resfull/user_repository.dart';
+import '../../../../bloc/add_service_voucher/add_service_bloc.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
 import '../../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import '../../../../bloc/contract/attack_bloc.dart';
@@ -32,7 +33,9 @@ import '../../../../src/pick_file_image.dart';
 import '../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../../../widgets/appbar_base.dart';
+import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/widget_field_input_percent.dart';
+import '../../../add_service_voucher/add_service_voucher_step2_screen.dart';
 import 'input_dropDown.dart';
 
 class FormEdit extends StatefulWidget {
@@ -99,6 +102,8 @@ class _FormEditState extends State<FormEdit> {
 
   @override
   void deactivate() {
+    ServiceVoucherBloc.of(context).loaiXe.add('');
+    ServiceVoucherBloc.of(context).resetDataCarVerison();
     AttackBloc.of(context).add(RemoveAllAttackEvent());
     super.deactivate();
   }
@@ -140,6 +145,7 @@ class _FormEditState extends State<FormEdit> {
             body: BlocListener<AddDataBloc, AddDataState>(
               listener: (context, state) async {
                 if (state is SuccessEditCustomerState) {
+                  LoadingApi().popLoading();
                   ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: "Update dữ liệu thành công!",
@@ -147,7 +153,6 @@ class _FormEditState extends State<FormEdit> {
                       if (type == 1)
                         GetListCustomerBloc.of(context)
                             .add(InitGetListOrderEvent("", 1, ""));
-
                       Get.back();
                       Get.back();
                       Get.back();
@@ -155,6 +160,7 @@ class _FormEditState extends State<FormEdit> {
                   );
                 }
                 if (state is ErrorEditCustomerState) {
+                  LoadingApi().popLoading();
                   ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: state.msg,
@@ -279,8 +285,8 @@ class _FormEditState extends State<FormEdit> {
                                               state.listEditData[index].data!
                                                   .length, (index1) {
                                             if (state.listEditData[index]
-                                                    .data![index1].field_id ==
-                                                "246")
+                                                    .data![index1].field_name ==
+                                                "col131")
                                               customer_id = state
                                                   .listEditData[index]
                                                   .data![index1]
@@ -296,13 +302,10 @@ class _FormEditState extends State<FormEdit> {
                                                             .data![index1]
                                                             .field_special ==
                                                         "none-edit"
-                                                    ? (state.listEditData[index].data![index1].field_id ==
-                                                                "12547" ||
-                                                            state.listEditData[index].data![index1].field_id ==
-                                                                "1472"
-                                                        ? BlocBuilder<PhoneBloc, PhoneState>(
-                                                            builder: (context,
-                                                                stateA) {
+                                                    ? (state.listEditData[index].data?[index1].field_name ==
+                                                            "so_dien_thoai"
+                                                        ? BlocBuilder<PhoneBloc, PhoneState>(builder:
+                                                            (context, stateA) {
                                                             if (stateA
                                                                 is SuccessPhoneState) {
                                                               return _fieldInputCustomer(
@@ -340,13 +343,14 @@ class _FormEditState extends State<FormEdit> {
                                                         : _fieldInputCustomer(
                                                             state.listEditData[index].data![index1], index, index1,
                                                             noEdit: true))
-                                                    : state
-                                                                .listEditData[index]
-                                                                .data![index1]
-                                                                .field_type ==
+                                                    : state.listEditData[index].data![index1].field_type ==
                                                             "SELECT"
-                                                        ? ((state.listEditData[index].data![index1].field_id == '115' || state.listEditData[index].data![index1].field_id == '135')
-                                                            ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(builder: (context, stateA) {
+                                                        ? ((state.listEditData[index].data![index1].field_name ==
+                                                                    'cv_nguoiLienHe' ||
+                                                                state.listEditData[index].data![index1].field_name ==
+                                                                    'col131')
+                                                            ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(
+                                                                builder: (context, stateA) {
                                                                 if (stateA
                                                                     is UpdateGetContacBytCustomerState)
                                                                   return InputDropdown(
@@ -363,8 +367,8 @@ class _FormEditState extends State<FormEdit> {
                                                                         addData[index]
                                                                             .data[index1]
                                                                             .value = data;
-                                                                        if (state.listEditData[index].data![index1].field_id !=
-                                                                            "107")
+                                                                        if (state.listEditData[index].data![index1].field_name !=
+                                                                            "cv_kh")
                                                                           PhoneBloc.of(context)
                                                                               .add(InitAgencyPhoneEvent(data));
                                                                       },
@@ -393,8 +397,8 @@ class _FormEditState extends State<FormEdit> {
                                                                         addData[index]
                                                                             .data[index1]
                                                                             .value = data;
-                                                                        if (state.listEditData[index].data![index1].field_id !=
-                                                                            "107")
+                                                                        if (state.listEditData[index].data![index1].field_name !=
+                                                                            "cv_kh")
                                                                           PhoneBloc.of(context)
                                                                               .add(InitAgencyPhoneEvent(data));
                                                                       },
@@ -416,11 +420,11 @@ class _FormEditState extends State<FormEdit> {
                                                                       .data[
                                                                           index1]
                                                                       .value = data;
-                                                                  if (state.listEditData[index].data![index1].field_id ==
-                                                                          "107" ||
+                                                                  if (state.listEditData[index].data![index1].field_name ==
+                                                                          "cv_kh" ||
                                                                       state.listEditData[index].data![index1]
-                                                                              .field_id ==
-                                                                          "128") {
+                                                                              .field_name ==
+                                                                          "col121") {
                                                                     ContactByCustomerBloc.of(
                                                                             context)
                                                                         .add(InitGetContactByCustomerrEvent(
@@ -493,7 +497,18 @@ class _FormEditState extends State<FormEdit> {
                                                                                       addData[index].data[index1].value = text;
                                                                                     },
                                                                                   )
-                                                                                : _fieldInputCustomer(state.listEditData[index].data![index1], index, index1, value: state.listEditData[index].data![index1].field_set_value.toString())
+                                                                                : state.listEditData[index].data![index1].field_name == 'chi_tiet_xe' && state.listEditData[index].data![index1].field_type == 'TEXT'
+                                                                                    ? TypeCarBase(
+                                                                                        state.listEditData[index].data![index1],
+                                                                                        index,
+                                                                                        index1,
+                                                                                        context,
+                                                                                        ServiceVoucherBloc.of(context),
+                                                                                        (v) {
+                                                                                          addData[index].data[index1].value = v;
+                                                                                        },
+                                                                                      )
+                                                                                    : _fieldInputCustomer(state.listEditData[index].data![index1], index, index1, value: state.listEditData[index].data![index1].field_set_value.toString())
                                                 : SizedBox();
                                           }),
                                         )
