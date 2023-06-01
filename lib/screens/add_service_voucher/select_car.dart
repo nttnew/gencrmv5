@@ -105,12 +105,10 @@ class _SelectCarState extends State<SelectCar> {
                   _bloc.canXe = '';
                   _bloc.kieuDang = '';
                   _bloc.soCho = '';
-
                   _bloc.getListNamSanXuat(v);
                   _bloc.getListKieuDang(v);
                   _bloc.getListCanXe(v);
                   _bloc.getListSoCho(v);
-
                   setState(() {});
                 }),
               if (isHang && isDong && isPhienBan) ...[

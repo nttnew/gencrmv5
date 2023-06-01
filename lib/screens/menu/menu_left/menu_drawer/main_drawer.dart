@@ -111,6 +111,7 @@ class _MainDrawerState extends State<MainDrawer> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         WidgetNetworkImage(
+                          isAvatar: true,
                           image: state.inforAcc.avatar ?? "",
                           width: 75,
                           height: 75,
@@ -152,6 +153,7 @@ class _MainDrawerState extends State<MainDrawer> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         WidgetNetworkImage(
+                          isAvatar: true,
                           image: "",
                           width: 75,
                           height: 75,
@@ -218,17 +220,19 @@ class _MainDrawerState extends State<MainDrawer> {
           WidgetButton(
             onTap: () {
               ShowDialogCustom.showDialogBase(
+                  colorButton2: COLORS.GREY.withOpacity(0.5),
+                  colorButton1: COLORS.SECONDS_COLOR,
                   onTap2: () {
-                AuthenticationBloc.of(context)
-                    .add(AuthenticationLogoutRequested());
-                LoginBloc.of(context).logout(context);
-              });
+                    AuthenticationBloc.of(context)
+                        .add(AuthenticationLogoutRequested());
+                    LoginBloc.of(context).logout(context);
+                  });
             },
             height: 40,
             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             text: MESSAGES.LOG_OUT,
             textColor: Colors.black,
-            backgroundColor: COLORS.SECONDS_COLOR,
+            backgroundColor: COLORS.GREY.withOpacity(0.5),
           ),
         ],
       ),

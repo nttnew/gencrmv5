@@ -9,16 +9,16 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../../../src/src_index.dart';
 import '../../../../../../widgets/line_horizontal_widget.dart';
 
-class GeneralInfoCustomer extends StatefulWidget {
-  GeneralInfoCustomer({Key? key, required this.id}) : super(key: key);
+class TabInfoCustomer extends StatefulWidget {
+  TabInfoCustomer({Key? key, required this.id}) : super(key: key);
 
   final String id;
 
   @override
-  State<GeneralInfoCustomer> createState() => _GeneralInfoCustomerState();
+  State<TabInfoCustomer> createState() => _TabInfoCustomerState();
 }
 
-class _GeneralInfoCustomerState extends State<GeneralInfoCustomer>
+class _TabInfoCustomerState extends State<TabInfoCustomer>
     with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
@@ -36,21 +36,14 @@ class _GeneralInfoCustomerState extends State<GeneralInfoCustomer>
           BlocBuilder<DetailCustomerBloc, DetailCustomerState>(
               builder: (context, state) {
             if (state is UpdateGetDetailCustomerState)
-              return Container(
-                child: Column(
-                  children: List.generate(state.customerInfo.length,
-                      (index) => _renderInfo(state.customerInfo[index])),
-                ),
+              return Column(
+                children: List.generate(state.customerInfo.length,
+                    (index) => _renderInfo(state.customerInfo[index])),
               );
             else
               return Container();
           }),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListNote(type: 1, id: widget.id),
-            ],
-          )
+          ListNote(module: Module.KHACH_HANG, id: widget.id),
         ],
       ),
     );
@@ -58,16 +51,17 @@ class _GeneralInfoCustomerState extends State<GeneralInfoCustomer>
 
   Widget _renderInfo(CustomerInfoData data) {
     return (Container(
+      padding: EdgeInsets.symmetric(horizontal: 25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           WidgetText(
-              title: data.group_name!,
+              title: data.group_name ?? '',
               style: AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w700)),
           AppValue.vSpaceTiny,
           Column(
             children: List.generate(
-              data.data!.length,
+              data.data?.length ?? 0,
               (index) =>
                   data.data?[index].value_field?.trim().isNotEmpty ?? false
                       ? Container(
@@ -77,7 +71,7 @@ class _GeneralInfoCustomerState extends State<GeneralInfoCustomer>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               WidgetText(
-                                title: data.data![index].label_field,
+                                title: data.data?[index].label_field ?? '',
                                 style: AppStyle.DEFAULT_14.copyWith(
                                   fontWeight: FontWeight.w600,
                                   color: COLORS.TEXT_GREY,
@@ -114,7 +108,7 @@ class _GeneralInfoCustomerState extends State<GeneralInfoCustomer>
           AppValue.vSpaceTiny,
           LineHorizontal(),
           SizedBox(
-            height: AppValue.heights * 0.02,
+            height: 25,
           ),
         ],
       ),

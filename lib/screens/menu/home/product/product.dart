@@ -1,11 +1,9 @@
 import 'dart:math';
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/product_module/product_module_bloc.dart';
-import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'package:gen_crm/screens/menu/home/product/scanner_qrcode.dart';
 import 'package:gen_crm/src/models/model_generator/list_product_response.dart';
 import 'package:get/get.dart';
@@ -13,6 +11,7 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/group_product_response.dart';
 import '../../../../src/src_index.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/widget_search.dart';
 import '../../../../widgets/widget_text.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
@@ -86,49 +85,10 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _drawerKey,
+        resizeToAvoidBottomInset: false,
         drawer:
             MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
-        appBar: AppBar(
-          centerTitle: false,
-          toolbarHeight: AppValue.heights * 0.1,
-          backgroundColor: HexColor("#D0F1EB"),
-          title: Text(title,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16)),
-          leading: Padding(
-              padding: EdgeInsets.only(left: 40),
-              child: GestureDetector(
-                  onTap: () {
-                    if (_drawerKey.currentContext != null &&
-                        !_drawerKey.currentState!.isDrawerOpen) {
-                      _drawerKey.currentState!.openDrawer();
-                    }
-                  },
-                  child: SvgPicture.asset(ICONS.IC_MENU_SVG))),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(15),
-            ),
-          ),
-          actions: [
-            Padding(
-                padding: EdgeInsets.only(right: 30),
-                child: GestureDetector(
-                  onTap: () => AppNavigator.navigateNotification(),
-                  child: BlocBuilder<GetListUnReadNotifiBloc,
-                      UnReadListNotifiState>(builder: (context, state) {
-                    if (state is NotificationNeedRead) {
-                      return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
-                    } else {
-                      return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
-                    }
-                  }),
-                ))
-          ],
-        ),
+        appBar: AppbarBase(_drawerKey, title),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
           backgroundColor: Color(0xff1AA928),

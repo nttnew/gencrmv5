@@ -25,6 +25,8 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
       yield* _getDetailProduct(id: event.id);
     } else if (event is DeleteProductEvent) {
       yield* _deleteProduct(id: event.id);
+    } else if (event is ReloadProductEvent) {
+      yield UpdateGetDetailProductState(null);
     }
   }
 

@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/product/product_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/widgets/widgets.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:rxdart/rxdart.dart';
-
 import '../../../../models/product_model.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import 'package:get/get.dart';
+import '../../../../widgets/appbar_base.dart';
 
 class ListProduct extends StatefulWidget {
   ListProduct({Key? key}) : super(key: key);
@@ -50,23 +50,7 @@ class _ListProductState extends State<ListProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: AppValue.heights * 0.1,
-        backgroundColor: HexColor("#D0F1EB"),
-        title: WidgetText(
-            title: "Chọn sản phẩm",
-            style: TextStyle(
-                color: Colors.black,
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.w700,
-                fontSize: 16)),
-        leading: _buildBack(),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
-          ),
-        ),
-      ),
+      appBar: AppbarBaseNormal('Chọn sản phẩm'),
       body: BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
         if (state is LoadingGetListProductState) {
           listSelected = [];
@@ -205,29 +189,8 @@ class _ListProductState extends State<ListProduct> {
             ),
           );
         } else
-          return Container(
-            child: Center(
-              child: WidgetText(
-                title: "Không có dữ liệu",
-                style: AppStyle.DEFAULT_16_BOLD,
-              ),
-            ),
-          );
+          return noData();
       }),
-    );
-  }
-
-  _buildBack() {
-    return IconButton(
-      onPressed: () {
-        AppNavigator.navigateBack();
-      },
-      icon: Image.asset(
-        ICONS.IC_BACK_PNG,
-        height: 28,
-        width: 28,
-        color: COLORS.BLACK,
-      ),
     );
   }
 

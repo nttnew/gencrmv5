@@ -126,41 +126,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               platform: Platform.isIOS ? 'iOS' : 'Android',
               device_token: event.device_token);
           if (response.code == BASE_URL.SUCCESS) {
-            listMenuFlash = [];
-            listMenuFlash.addAll(response.data?.quick ?? []);
-            await shareLocal.putString(PreferencesKey.LIST_MENU_FLASH,
-                jsonEncode(response.data?.quick));
-            await shareLocal.putString(
-                PreferencesKey.DATA_CALL, jsonEncode(response.data));
-            await localRepository.saveUser(jsonEncode(response.data));
-            await shareLocal.putString(
-                PreferencesKey.SESS, response.data!.session_id!);
-            await shareLocal.putString(
-                PreferencesKey.TOKEN, response.data!.token!);
-            await shareLocal.putString(
-                PreferencesKey.MENU, jsonEncode(response.data!.menu!));
-            await shareLocal.putBools(PreferencesKey.FIRST_TIME, true);
-            await shareLocal.putString(
-                dotenv.env[PreferencesKey.TOKEN]!, response.data!.token!);
             await shareLocal.putString(
                 PreferencesKey.USER_NAME, state.email.value);
-            await shareLocal.putString(PreferencesKey.USER_EMAIL,
-                response.data!.info_user!.email ?? "");
-            await shareLocal.putString(PreferencesKey.USER_PHONE,
-                response.data!.info_user!.phone ?? "");
-            await shareLocal.putString(PreferencesKey.USER_ADDRESS,
-                response.data!.info_user!.dia_chi ?? "");
-            await shareLocal.putString(PreferencesKey.USER_FULLNAME,
-                response.data!.info_user!.fullname ?? "");
-            await shareLocal.putString(PreferencesKey.URL_AVATAR,
-                response.data!.info_user!.avatar ?? "");
-            await shareLocal.putString(
-                PreferencesKey.MONEY, response.data!.tien_te ?? "");
+            await _saveData(response);
             await shareLocal.putString(
                 PreferencesKey.USER_PASSWORD, state.password.value);
-
             DioProvider.instance(
-                sess: response.data!.session_id!, token: response.data!.token);
+                sess: response.data?.session_id ?? '',
+                token: response.data?.token);
             yield state.copyWith(
                 status: FormzStatus.submissionSuccess,
                 message: response.msg ?? '',
@@ -191,37 +164,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               platform: Platform.isIOS ? 'iOS' : 'Android',
               device_token: event.device_token);
           if (response.code == BASE_URL.SUCCESS) {
-            listMenuFlash = [];
-            listMenuFlash.addAll(response.data?.quick ?? []);
-            await shareLocal.putString(
-                PreferencesKey.DATA_CALL, jsonEncode(response.data));
-            await shareLocal.putString(PreferencesKey.LIST_MENU_FLASH,
-                jsonEncode(response.data?.quick));
-            await localRepository.saveUser(jsonEncode(response.data));
-            await shareLocal.putString(
-                PreferencesKey.SESS, response.data!.session_id!);
-            await shareLocal.putString(
-                PreferencesKey.TOKEN, response.data!.token!);
-            await shareLocal.putString(
-                PreferencesKey.MENU, jsonEncode(response.data!.menu!));
-            await shareLocal.putBools(PreferencesKey.FIRST_TIME, true);
-            await shareLocal.putString(
-                dotenv.env[PreferencesKey.TOKEN]!, response.data!.token!);
-            await shareLocal.putString(PreferencesKey.USER_EMAIL,
-                response.data!.info_user!.email ?? "");
-            await shareLocal.putString(PreferencesKey.USER_PHONE,
-                response.data!.info_user!.phone ?? "");
-            await shareLocal.putString(PreferencesKey.USER_ADDRESS,
-                response.data!.info_user!.dia_chi ?? "");
-            await shareLocal.putString(PreferencesKey.USER_FULLNAME,
-                response.data!.info_user!.fullname ?? "");
-            await shareLocal.putString(PreferencesKey.URL_AVATAR,
-                response.data!.info_user!.avatar ?? "");
-            await shareLocal.putString(
-                PreferencesKey.MONEY, response.data!.tien_te ?? "");
-
+            await _saveData(response);
             DioProvider.instance(
-                sess: response.data!.session_id!, token: response.data!.token);
+                sess: response.data?.session_id ?? '',
+                token: response.data?.token);
             yield state.copyWith(
                 status: FormzStatus.submissionSuccess,
                 message: response.msg ?? '',
@@ -239,6 +185,39 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
       }
     }
+  }
+
+  Future<void> _saveData(response) async {
+    listMenuFlash = [];
+    listMenuFlash.addAll(response.data?.quick ?? []);
+    await shareLocal.putString(
+        PreferencesKey.LIST_MENU_FLASH, jsonEncode(response.data?.quick));
+    await shareLocal.putString(
+        PreferencesKey.DATA_CALL, jsonEncode(response.data));
+    await localRepository.saveUser(jsonEncode(response.data));
+    await shareLocal.putString(
+        PreferencesKey.SESS, response.data?.session_id ?? '');
+    await shareLocal.putString(
+        PreferencesKey.TOKEN, response.data?.token ?? '');
+    await shareLocal.putString(
+        PreferencesKey.MENU, jsonEncode(response.data?.menu ?? ''));
+    await shareLocal.putBools(PreferencesKey.FIRST_TIME, true);
+    await shareLocal.putString(
+        dotenv.env[PreferencesKey.TOKEN] ?? '', response.data?.token ?? '');
+    await shareLocal.putString(
+        PreferencesKey.USER_EMAIL, response.data?.info_user?.email ?? "");
+    await shareLocal.putString(
+        PreferencesKey.USER_PHONE, response.data?.info_user?.phone ?? "");
+    await shareLocal.putString(
+        PreferencesKey.USER_ADDRESS, response.data?.info_user?.dia_chi ?? "");
+    await shareLocal.putString(
+        PreferencesKey.USER_FULLNAME, response.data?.info_user?.fullname ?? "");
+    await shareLocal.putString(
+        PreferencesKey.URL_AVATAR, response.data?.info_user?.avatar ?? "");
+    await shareLocal.putString(
+        PreferencesKey.ID_USER, response.data?.info_user?.user_id ?? "");
+    await shareLocal.putString(
+        PreferencesKey.MONEY, response.data?.tien_te ?? "");
   }
 
   static LoginBloc of(BuildContext context) =>

@@ -7,6 +7,8 @@ import 'package:gen_crm/widgets/widget_input.dart';
 import '../../../../src/src_index.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../widgets/appbar_base.dart';
+
 
 class ChangePassWordPage extends StatefulWidget {
   const ChangePassWordPage({Key? key}) : super(key: key);
@@ -56,26 +58,11 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
   Widget build(BuildContext context) {
     final bloc = ChangePasswordBloc.of(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: COLORS.PRIMARY_COLOR,
-        title: Text(
-          'Đổi mật khẩu',
-          style: AppStyle.DEFAULT_18_BOLD,
-        ),
-        leading: _buildBack(),
-        toolbarHeight: AppValue.heights * 0.1,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: AppValue.heights - AppValue.heights * 0.1,
-          padding: EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 30),
-          color: Colors.white,
-          child: BlocListener<ChangePasswordBloc, ChangePasswordState>(
+      appBar: AppbarBaseNormal('Đổi mật khẩu'),
+      body: Container(
+        padding: EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 30),
+        color: Colors.white,
+        child: BlocListener<ChangePasswordBloc, ChangePasswordState>(
             listener: (context, state) {
               if (state.status.isSubmissionSuccess) {
                 GetSnackBarUtils.removeSnackBar();
@@ -126,21 +113,6 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  _buildBack() {
-    return IconButton(
-      onPressed: () {
-        AppNavigator.navigateBack();
-      },
-      icon: Image.asset(
-        ICONS.IC_BACK_PNG,
-        height: 28,
-        width: 28,
-        color: COLORS.BLACK,
       ),
     );
   }

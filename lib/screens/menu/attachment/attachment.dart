@@ -14,6 +14,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../../../../src/src_index.dart';
 import '../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../src/models/model_generator/file_response.dart';
+import '../../../widgets/appbar_base.dart';
 import '../../../widgets/item_file.dart';
 import '../../add_service_voucher/preview_image.dart';
 
@@ -240,30 +241,7 @@ class _AttachmentState extends State<Attachment> {
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
-      appBar: AppBar(
-        toolbarHeight: AppValue.heights * 0.1,
-        backgroundColor: HexColor("#D0F1EB"),
-        centerTitle: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            WidgetText(
-                title: "Xem đính kèm",
-                style:
-                    AppStyle.DEFAULT_16.copyWith(fontWeight: FontWeight.w700))
-          ],
-        ),
-        leading: Padding(
-            padding: EdgeInsets.only(left: 30),
-            child: InkWell(
-                onTap: () => AppNavigator.navigateBack(),
-                child: Icon(Icons.arrow_back, color: Colors.black))),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
-          ),
-        ),
-      ),
+      appBar: AppbarBaseNormal('Xem đính kèm'),
       body: Container(
         padding: EdgeInsets.all(16),
         child: Column(

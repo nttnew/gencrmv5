@@ -8,8 +8,15 @@ class DataClueGroupName {
   String? label_field;
   String? id;
   String? link;
+  bool? is_link;
   String? value_field;
-  DataClueGroupName(this.label_field, this.id, this.link, this.value_field);
+  DataClueGroupName(
+    this.label_field,
+    this.id,
+    this.link,
+    this.value_field,
+    this.is_link,
+  );
 
   factory DataClueGroupName.fromJson(Map<String, dynamic> json) =>
       _$DataClueGroupNameFromJson(json);

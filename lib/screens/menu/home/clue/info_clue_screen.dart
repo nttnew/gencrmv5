@@ -9,24 +9,30 @@ import 'package:gen_crm/src/models/model_generator/work_clue.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../../../widgets/widget_appbar.dart';
-import '../../../../widgets/widget_text.dart';
 import '../../attachment/attachment.dart';
 
-class InfoCluePage extends StatefulWidget {
-  const InfoCluePage({Key? key}) : super(key: key);
+class DetailInfoClue extends StatefulWidget {
+  const DetailInfoClue({Key? key}) : super(key: key);
 
   @override
-  State<InfoCluePage> createState() => _InfoCluePageState();
+  State<DetailInfoClue> createState() => _DetailInfoClueState();
 }
 
-class _InfoCluePageState extends State<InfoCluePage> {
+class _DetailInfoClueState extends State<DetailInfoClue> {
   String id = Get.arguments[0];
   String name = Get.arguments[1];
   List<ModuleThaoTac> list = [];
+
+  @override
+  void deactivate() {
+    GetDetailClueBloc.of(context).add(ReloadClueEvent());
+    super.deactivate();
+  }
 
   @override
   void initState() {
@@ -51,7 +57,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
         icon: ICONS.IC_ADD_DISCUSS_SVG,
         onThaoTac: () {
           Get.back();
-          AppNavigator.navigateAddNoteScreen(2, id);
+          AppNavigator.navigateAddNoteScreen(Module.DAU_MOI, id);
         }));
     list.add(ModuleThaoTac(
       title: 'Xem đính kèm',
@@ -125,42 +131,40 @@ class _InfoCluePageState extends State<InfoCluePage> {
             ),
             AppValue.vSpaceTiny,
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: DefaultTabController(
-                    length: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: TabBar(
-                            isScrollable: true,
-                            indicatorColor: COLORS.TEXT_COLOR,
-                            labelColor: COLORS.TEXT_COLOR,
-                            unselectedLabelColor: COLORS.GREY,
-                            labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
-                            tabs: [
-                              Tab(
-                                text: 'Thông tin chung',
-                              ),
-                              Tab(
-                                text: 'Công việc',
-                              )
-                            ],
-                          ),
+              child: DefaultTabController(
+                  length: 2,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: TabBar(
+                          padding: EdgeInsets.symmetric(horizontal: 25),
+                          isScrollable: true,
+                          indicatorColor: COLORS.TEXT_COLOR,
+                          labelColor: COLORS.TEXT_COLOR,
+                          unselectedLabelColor: COLORS.GREY,
+                          labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
+                          tabs: [
+                            Tab(
+                              text: 'Thông tin chung',
+                            ),
+                            Tab(
+                              text: 'Công việc',
+                            )
+                          ],
                         ),
-                        Expanded(
-                          child: TabBarView(
-                            children: [
-                              GeneralInfo(id: id),
-                              ListWorkClue(id: id)
-                            ],
-                          ),
+                      ),
+                      Expanded(
+                        child: TabBarView(
+                          children: [
+                            GeneralInfo(id: id),
+                            ListWorkClue(id: id)
+                          ],
                         ),
-                      ],
-                    )),
-              ),
+                      ),
+                    ],
+                  )),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -197,12 +201,7 @@ class _InfoCluePageState extends State<InfoCluePage> {
           ),
         );
       } else {
-        return Center(
-          child: WidgetText(
-            title: 'Không có dữ liệu',
-            style: AppStyle.DEFAULT_18_BOLD,
-          ),
-        );
+        return noData();
       }
     });
   }

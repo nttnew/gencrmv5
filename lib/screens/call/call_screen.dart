@@ -11,10 +11,9 @@ import 'package:plugin_pitel/component/sip_pitel_helper_listener.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_call.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:plugin_pitel/sip/sip_ua.dart';
-
 import '../../src/src_index.dart';
+import '../../widgets/appbar_base.dart';
 import 'ripple_logo.dart';
-import '../../widgets/widget_text.dart';
 import 'action_button.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -359,29 +358,7 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: HexColor("#D0F1EB").withOpacity(0.9),
-      appBar: AppBar(
-        toolbarHeight: AppValue.heights * 0.1,
-        backgroundColor: HexColor("#D0F1EB"),
-        title: Align(
-          alignment: Alignment.centerLeft,
-          child: WidgetText(
-            title: "Gọi điện tổng đài",
-            style: TextStyle(
-              color: Colors.black,
-              fontFamily: "Montserrat",
-              fontWeight: FontWeight.w700,
-              fontSize: 16,
-            ),
-            textAlign: TextAlign.left,
-          ),
-        ),
-        automaticallyImplyLeading: false,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
-          ),
-        ),
-      ),
+      appBar: AppbarBaseNormal('Gọi điện tổng đài'),
       body: Container(
         child: pitelCall.isConnected && pitelCall.isHaveCall
             ? _buildContent()

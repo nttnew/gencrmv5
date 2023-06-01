@@ -24,6 +24,7 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
         location: event.location,
         id: event.id,
         module: event.module,
+          type:event.type,
       );
     }
   }
@@ -34,6 +35,7 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
     required String latitude,
     required String location,
     required String id,
+    required String type,
   }) async* {
     LoadingApi().pushLoading();
     yield LoadingCheckInState();
@@ -44,6 +46,7 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
         location: location,
         id: id,
         module: module,
+        type: type,
       );
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {

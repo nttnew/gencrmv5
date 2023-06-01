@@ -12,6 +12,7 @@ DataClueGroupName _$DataClueGroupNameFromJson(Map<String, dynamic> json) =>
       json['id'] as String?,
       json['link'] as String?,
       json['value_field'] as String?,
+      json['is_link'] as bool?,
     );
 
 Map<String, dynamic> _$DataClueGroupNameToJson(DataClueGroupName instance) =>
@@ -19,6 +20,7 @@ Map<String, dynamic> _$DataClueGroupNameToJson(DataClueGroupName instance) =>
       'label_field': instance.label_field,
       'id': instance.id,
       'link': instance.link,
+      'is_link': instance.is_link,
       'value_field': instance.value_field,
     };
 

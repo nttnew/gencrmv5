@@ -9,6 +9,9 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
+import '../../../../bloc/checkin_bloc/checkin_bloc.dart';
+import '../../../../src/app_const.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/btn_thao_tac.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
@@ -25,12 +28,32 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   int id = Get.arguments[0];
   String title = Get.arguments[1];
   int? location;
+  bool isCheckDone = false;
   List<ModuleThaoTac> list = [];
+
+  @override
+  void deactivate() {
+    DetailWorkBloc.of(context).add(ReloadWorkEvent());
+    super.deactivate();
+  }
 
   @override
   void initState() {
     DetailWorkBloc.of(context).add(InitGetDetailWorkEvent(id));
     super.initState();
+  }
+
+  checkLocation(state) {
+    location = state.location;
+    if (state.data_list.isNotEmpty) {
+      final listLocation = state.data_list.first.data
+          ?.where((element) => element.id == 'checkout')
+          .toList();
+      if (listLocation?.isNotEmpty ?? false) {
+        isCheckDone = listLocation?.first.value_field != '' &&
+            listLocation?.first.value_field != null;
+      }
+    }
   }
 
   getThaoTac() {
@@ -40,19 +63,40 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(5, id.toString());
+        AppNavigator.navigateAddNoteScreen(Module.CONG_VIEC, id.toString());
       },
     ));
-
-    if (location != 1) //1 là có rồi
-      list.add(ModuleThaoTac(
-        title: "Thêm check in",
-        icon: ICONS.IC_LOCATION_SVG,
-        onThaoTac: () {
-          Get.back();
-          AppNavigator.navigateCheckIn(id.toString(), ModuleMy.CONG_VIEC);
-        },
-      ));
+    if (!isCheckDone) {
+      if (location != 1) {
+        list.add(ModuleThaoTac(
+          title: "Check in",
+          icon: ICONS.IC_LOCATION_SVG,
+          onThaoTac: () {
+            Get.back();
+            AppNavigator.navigateCheckIn(
+                id.toString(), ModuleMy.CONG_VIEC, TypeCheckIn.CHECK_IN);
+          },
+        ));
+      } else {
+        list.add(ModuleThaoTac(
+          title: "Check out",
+          icon: ICONS.IC_LOCATION_SVG,
+          onThaoTac: () {
+            Get.back();
+            CheckInBloc.of(context).add(
+              SaveCheckIn(
+                '',
+                '',
+                '',
+                id.toString(),
+                ModuleMy.CONG_VIEC,
+                TypeCheckIn.CHECK_OUT,
+              ),
+            );
+          },
+        ));
+      }
+    }
 
     list.add(ModuleThaoTac(
       title: "Xem đính kèm",
@@ -72,7 +116,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditDataScreen(id.toString(), 5);
+        AppNavigator.navigateEditDataScreen(id.toString(), EDIT_JOB);
       },
     ));
 
@@ -91,56 +135,48 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: AppValue.heights * 0.1,
-        backgroundColor: HexColor("#D0F1EB"),
-        title: WidgetText(
-          title: title,
-          style: AppStyle.DEFAULT_18_BOLD,
-        ),
-        leading: Padding(
-            padding: EdgeInsets.only(left: 30),
-            child: InkWell(
-                onTap: () => AppNavigator.navigateBack(),
-                child: Icon(Icons.arrow_back, color: Colors.black))),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
-          ),
-        ),
-      ),
-      body: BlocListener<DetailWorkBloc, DetailWorkState>(
+      appBar: AppbarBaseNormal(title),
+      body: BlocListener<CheckInBloc, CheckInState>(
         listener: (context, state) {
-          if (state is SuccessDeleteWorkState) {
-            LoadingApi().popLoading();
-            ShowDialogCustom.showDialogBase(
-              title: MESSAGES.NOTIFICATION,
-              content: "Thành công",
-              onTap1: () {
-                Get.back();
-                Get.back();
-                Get.back();
-                Get.back();
-                WorkBloc.of(context).add(InitGetListWorkEvent("1", "", ""));
-              },
-            );
-          } else if (state is ErrorDeleteWorkState) {
-            LoadingApi().popLoading();
+          if (state is SuccessCheckInState) {
+            DetailWorkBloc.of(context).add(InitGetDetailWorkEvent(id));
+          } else if (state is ErrorCheckInState) {
             ShowDialogCustom.showDialogBase(
               title: MESSAGES.NOTIFICATION,
               content: state.msg,
-              textButton1: "Quay lại",
-              onTap1: () {
-                Get.back();
-                Get.back();
-                Get.back();
-                Get.back();
-              },
             );
           }
         },
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 16),
+        child: BlocListener<DetailWorkBloc, DetailWorkState>(
+          listener: (context, state) {
+            if (state is SuccessDeleteWorkState) {
+              LoadingApi().popLoading();
+              ShowDialogCustom.showDialogBase(
+                title: MESSAGES.NOTIFICATION,
+                content: "Thành công",
+                onTap1: () {
+                  Get.back();
+                  Get.back();
+                  Get.back();
+                  Get.back();
+                  WorkBloc.of(context).add(InitGetListWorkEvent("1", "", ""));
+                },
+              );
+            } else if (state is ErrorDeleteWorkState) {
+              LoadingApi().popLoading();
+              ShowDialogCustom.showDialogBase(
+                title: MESSAGES.NOTIFICATION,
+                content: state.msg,
+                textButton1: "Quay lại",
+                onTap1: () {
+                  Get.back();
+                  Get.back();
+                  Get.back();
+                  Get.back();
+                },
+              );
+            }
+          },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -152,9 +188,10 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                       BlocBuilder<DetailWorkBloc, DetailWorkState>(
                           builder: (context, state) {
                         if (state is SuccessDetailWorkState) {
-                          location = state.location;
+                          checkLocation(state);
                           getThaoTac();
-                          return Container(
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 25),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: List.generate(
@@ -216,10 +253,11 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                                                         GestureDetector(
                                                                       onTap:
                                                                           () {
-                                                                        if (state.data_list[index].data![index1].label_field ==
-                                                                            BASE_URL.KHACH_HANG) {
+                                                                        if (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG &&
+                                                                            (state.data_list[index].data?[index1].is_link ??
+                                                                                false)) {
                                                                           AppNavigator.navigateDetailCustomer(
-                                                                              state.data_list[index].data![index1].id!,
+                                                                              state.data_list[index].data?[index1].link ?? '',
                                                                               state.data_list[index].data![index1].value_field ?? '');
                                                                         }
                                                                       },
@@ -231,8 +269,8 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                                                                 title: state.data_list[index].data![index1].value_field,
                                                                                 textAlign: TextAlign.right,
                                                                                 style: ValueStyle().copyWith(
-                                                                                  decoration: state.data_list[index].data![index1].label_field == BASE_URL.KHACH_HANG ? TextDecoration.underline : null,
-                                                                                  color: state.data_list[index].data![index1].label_field == BASE_URL.KHACH_HANG ? Colors.blue : null,
+                                                                                  decoration: (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG && (state.data_list[index].data?[index1].is_link ?? false)) ? TextDecoration.underline : null,
+                                                                                  color: (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG && (state.data_list[index].data?[index1].is_link ?? false)) ? Colors.blue : null,
                                                                                 ),
                                                                               )
                                                                             : Html(
@@ -263,15 +301,18 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                       SizedBox(
                         height: 16,
                       ),
-                      ListNote(type: 5, id: id.toString()),
+                      ListNote(module: Module.CONG_VIEC, id: id.toString()),
                     ],
                   ),
                 ),
               ),
-              ButtonThaoTac(
-                onTap: () {
-                  showThaoTac(context, list);
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: ButtonThaoTac(
+                  onTap: () {
+                    showThaoTac(context, list);
+                  },
+                ),
               )
             ],
           ),

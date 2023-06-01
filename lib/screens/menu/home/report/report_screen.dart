@@ -21,6 +21,7 @@ import '../../../../bloc/report/report_option/report_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/report_general.dart';
 import '../../../../src/src_index.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/image_default.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 
@@ -153,47 +154,7 @@ class _ReportScreenState extends State<ReportScreen> {
         key: _drawerKey,
         drawer:
             MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
-        appBar: AppBar(
-          centerTitle: false,
-          toolbarHeight: AppValue.heights * 0.1,
-          backgroundColor: HexColor("#D0F1EB"),
-          title: Text("Báo cáo",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16)),
-          leading: Padding(
-              padding: EdgeInsets.only(left: 40),
-              child: GestureDetector(
-                  onTap: () {
-                    if (_drawerKey.currentContext != null &&
-                        !_drawerKey.currentState!.isDrawerOpen) {
-                      _drawerKey.currentState!.openDrawer();
-                    }
-                  },
-                  child: SvgPicture.asset(ICONS.IC_MENU_SVG))),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(15),
-            ),
-          ),
-          actions: [
-            Padding(
-                padding: EdgeInsets.only(right: 30),
-                child: GestureDetector(
-                  onTap: () => AppNavigator.navigateNotification(),
-                  child: BlocBuilder<GetListUnReadNotifiBloc,
-                      UnReadListNotifiState>(builder: (context, state) {
-                    if (state is NotificationNeedRead) {
-                      return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
-                    } else {
-                      return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
-                    }
-                  }),
-                ))
-          ],
-        ),
+        appBar: AppbarBase(_drawerKey, 'Báo cáo'),
         body: Padding(
           padding: EdgeInsets.only(
               left: 15, right: 15, top: AppValue.heights * 0.02),
@@ -651,7 +612,8 @@ class _ReportScreenState extends State<ReportScreen> {
                                       children: [
                                         Row(
                                           children: [
-                                            ImageBaseDefault(icon: ICONS.IC_CONTRACT_3X_PNG),
+                                            ImageBaseDefault(
+                                                icon: ICONS.IC_CONTRACT_3X_PNG),
                                             SizedBox(
                                               width: 10,
                                             ),
@@ -1061,7 +1023,8 @@ class _ReportScreenState extends State<ReportScreen> {
                                     children: [
                                       Row(
                                         children: [
-                                          ImageBaseDefault(icon: ICONS.IC_CONTRACT_3X_PNG),
+                                          ImageBaseDefault(
+                                              icon: ICONS.IC_CONTRACT_3X_PNG),
                                           SizedBox(
                                             width: 10,
                                           ),
@@ -1244,8 +1207,8 @@ class _ReportScreenState extends State<ReportScreen> {
 
   _step4() {
     return Expanded(
-      child: BlocBuilder<CarReportBloc, CarReportState>(
-          builder: (context, state) {
+      child:
+          BlocBuilder<CarReportBloc, CarReportState>(builder: (context, state) {
         if (state is SuccessCarReportState) {
           return state.responseCarDashboard != null
               ? StreamBuilder<String>(
@@ -1260,7 +1223,8 @@ class _ReportScreenState extends State<ReportScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  height: MediaQuery.of(context).size.height / 6,
+                                  height:
+                                      MediaQuery.of(context).size.height / 6,
                                   child: Center(
                                     child: Image.asset(
                                       IMAGES.IMAGE_CAR_REPORT,
@@ -1272,8 +1236,8 @@ class _ReportScreenState extends State<ReportScreen> {
                                   child: Center(
                                     child: RichText(
                                       textAlign: TextAlign.center,
-                                      textScaleFactor:
-                                          MediaQuery.of(context).textScaleFactor,
+                                      textScaleFactor: MediaQuery.of(context)
+                                          .textScaleFactor,
                                       text: TextSpan(
                                         style: TextStyle(
                                             color: Colors.black, fontSize: 20),
@@ -1290,9 +1254,11 @@ class _ReportScreenState extends State<ReportScreen> {
                                                           FontWeight.w600)),
                                           TextSpan(
                                               text: ' xe',
-                                              style: AppStyle.DEFAULT_18.copyWith(
-                                                  fontSize: 24,
-                                                  fontWeight: FontWeight.w500)),
+                                              style: AppStyle.DEFAULT_18
+                                                  .copyWith(
+                                                      fontSize: 24,
+                                                      fontWeight:
+                                                          FontWeight.w500)),
                                         ],
                                       ),
                                     ),
@@ -1342,8 +1308,10 @@ class _ReportScreenState extends State<ReportScreen> {
                                             ),
                                             decoration: BoxDecoration(
                                                 color: statusCar ==
-                                                        state.responseCarDashboard
-                                                            ?.status?[index].id
+                                                        state
+                                                            .responseCarDashboard
+                                                            ?.status?[index]
+                                                            .id
                                                             .toString()
                                                     ? Color(0xffFDEEC8)
                                                     : Color(0xffC8E5FD),
@@ -1351,11 +1319,14 @@ class _ReportScreenState extends State<ReportScreen> {
                                                     BorderRadius.circular(15)),
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Text(
-                                                  state.responseCarDashboard
-                                                          ?.status?[index].name ??
+                                                  state
+                                                          .responseCarDashboard
+                                                          ?.status?[index]
+                                                          .name ??
                                                       '',
                                                 ),
                                                 Text(
@@ -1365,7 +1336,8 @@ class _ReportScreenState extends State<ReportScreen> {
                                                               .total ??
                                                           0)
                                                       .toString(),
-                                                  style: AppStyle.DEFAULT_18_BOLD
+                                                  style: AppStyle
+                                                      .DEFAULT_18_BOLD
                                                       .copyWith(
                                                           color: COLORS
                                                               .TEXT_BLUE_BOLD),
@@ -1417,16 +1389,6 @@ class _ReportScreenState extends State<ReportScreen> {
       ),
     );
   }
-
-  Widget noData() => Container(
-        child: Center(
-          child: WidgetText(
-            title: 'Không có dữ liệu',
-            style:
-                AppStyle.DEFAULT_16_BOLD.copyWith(fontStyle: FontStyle.italic),
-          ),
-        ),
-      );
 
   _buildCustomer(ItemResponseReportCar data) {
     return GestureDetector(

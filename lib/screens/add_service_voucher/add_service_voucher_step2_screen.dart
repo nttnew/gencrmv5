@@ -20,6 +20,7 @@ import '../../models/widget_input_date.dart';
 import '../../src/app_const.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/src_index.dart';
+import '../../widgets/appbar_base.dart';
 import '../../widgets/widget_field_input_percent.dart';
 import '../../widgets/widget_text.dart';
 import '../menu/home/contract/product_contract.dart';
@@ -36,11 +37,13 @@ class AddServiceVoucherStepTwoScreen extends StatefulWidget {
 class _AddServiceVoucherStepTwoScreenState
     extends State<AddServiceVoucherStepTwoScreen> {
   late final ServiceVoucherBloc _bloc;
+  String title = Get.arguments;
 
   void dispose() {
     _bloc.dispose();
     super.dispose();
   }
+
 
   @override
   void initState() {
@@ -68,13 +71,14 @@ class _AddServiceVoucherStepTwoScreenState
         for (int j = 0; j < listAddData[i].data!.length; j++) {
           addData[i].data.add(ModelDataAdd(
               label: listAddData[i].data![j].field_name,
-              value: listAddData[i].data![j].field_id == '12708'
+              value: listAddData[i].data![j].field_name == 'hdsan_pham_kh'
                   ? _bloc.getIdXe(
                       listAddData[i].data![j].field_datasource ?? [],
                       listAddData[i].data![j].field_value.toString(),
                       i,
                       j)
-                  : _bloc.getTextInit(id: listAddData[i].data![j].field_id) ??
+                  : _bloc.getTextInit(
+                          name: listAddData[i].data![j].field_name) ??
                       listAddData[i].data![j].field_set_value_datasource?[0]
                           [1] ??
                       listAddData[i].data![j].field_set_value ??
@@ -117,22 +121,7 @@ class _AddServiceVoucherStepTwoScreenState
   Widget build(BuildContext context) {
     final addData = _bloc.addData;
     return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: AppValue.heights * 0.1,
-          backgroundColor: HexColor("#D0F1EB"),
-          title: Text("${Get.arguments}",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16)),
-          leading: _buildBack(),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(15),
-            ),
-          ),
-        ),
+        appBar: AppbarBaseNormal(title),
         body: BlocListener<ServiceVoucherBloc, ServiceVoucherState>(
           listener: (context, state) async {
             if (state is SaveServiceVoucherState) {
@@ -205,9 +194,9 @@ class _AddServiceVoucherStepTwoScreenState
                                                     .field_special ??
                                                 '') ==
                                             "url";
-                                        final fieldId = listAddData[index]
+                                        final fieldName = listAddData[index]
                                                 .data?[index1]
-                                                .field_id ??
+                                                .field_name ??
                                             '';
                                         final fieldType = listAddData[index]
                                             .data?[index1]
@@ -225,10 +214,19 @@ class _AddServiceVoucherStepTwoScreenState
                                                     neverHidden: true,
                                                     canDelete: true,
                                                   )
-                                                : fieldId == '13366'
-                                                    ? _loaiCar(
-                                                        fieldData, index, index1)
-                                                    : fieldId == '246' &&
+                                                : fieldName == 'chi_tiet_xe'
+                                                    ? TypeCarBase(
+                                                        fieldData,
+                                                        index,
+                                                        index1,
+                                                        context,
+                                                        _bloc, (v) {
+                                                        _bloc
+                                                            .addData[index]
+                                                            .data[index1]
+                                                            .value = v;
+                                                      })
+                                                    : fieldName == 'col131' &&
                                                             fieldData.field_set_value_datasource !=
                                                                 []
                                                         ? fieldInputCustomer(
@@ -244,10 +242,9 @@ class _AddServiceVoucherStepTwoScreenState
                                                                           index1]
                                                                       .value = data;
                                                                 },
-                                                                isUpdate: _bloc.getTextInit(id: fieldId, list: fieldData.field_datasource) !=
-                                                                        null &&
-                                                                    fieldId !=
-                                                                        '12708',
+                                                                isUpdate: _bloc.getTextInit(name: fieldName, list: fieldData.field_datasource) != null &&
+                                                                    fieldName !=
+                                                                        'hdsan_pham_kh',
                                                                 dropdownItemList:
                                                                     fieldData.field_datasource ??
                                                                         [],
@@ -258,8 +255,8 @@ class _AddServiceVoucherStepTwoScreenState
                                                                       .data[
                                                                           index1]
                                                                       .value = data;
-                                                                  if (fieldId ==
-                                                                      '12708') {
+                                                                  if (fieldName ==
+                                                                      'hdsan_pham_kh') {
                                                                     if (data !=
                                                                         ServiceVoucherBloc
                                                                             .THEM_MOI_XE) {
@@ -270,10 +267,8 @@ class _AddServiceVoucherStepTwoScreenState
                                                                     }
                                                                   }
                                                                 },
-                                                                value: _bloc.infoCar.value != null &&
-                                                                        fieldId !=
-                                                                            '12708'
-                                                                    ? _bloc.getTextInit(id: fieldId, list: fieldData.field_datasource) ??
+                                                                value: _bloc.infoCar.value != null && fieldName != 'hdsan_pham_kh'
+                                                                    ? _bloc.getTextInit(name: fieldName, list: fieldData.field_datasource) ??
                                                                         ''
                                                                     : fieldData.field_value ??
                                                                         '')
@@ -511,96 +506,6 @@ class _AddServiceVoucherStepTwoScreenState
             ),
           ),
         ));
-  }
-
-  _buildBack() {
-    return IconButton(
-      onPressed: () {
-        AppNavigator.navigateBack();
-      },
-      icon: Image.asset(
-        ICONS.IC_BACK_PNG,
-        height: 28,
-        width: 28,
-        color: COLORS.BLACK,
-      ),
-    );
-  }
-
-  Widget _loaiCar(
-    CustomerIndividualItemData data,
-    int index,
-    int index1,
-  ) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: data.field_label ?? '',
-              style: titlestyle(),
-              children: <TextSpan>[
-                data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Quicksand",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red))
-                    : TextSpan(),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          GestureDetector(
-            onTap: () {
-              showModalBottomSheet(
-                  isDismissible: false,
-                  enableDrag: false,
-                  isScrollControlled: true,
-                  context: context,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  builder: (BuildContext context) {
-                    return SelectCar();
-                  });
-            },
-            child: StreamBuilder<String>(
-                stream: _bloc.loaiXe,
-                builder: (context, snapshot) {
-                  if (_bloc.loaiXe.value.trim() != '') {
-                    _bloc.addData[index].data[index1].value =
-                        _bloc.loaiXe.value;
-                  }
-                  return Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: HexColor("#BEB4B4"))),
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 10, top: 15, bottom: 15),
-                      child: Container(
-                        child: WidgetText(
-                          title: (_bloc.loaiXe.value != ''
-                              ? _bloc.loaiXe.value
-                              : '---Chọn---'),
-                          style: AppStyle.DEFAULT_14,
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _check(CustomerIndividualItemData data, int index, int index1) {
@@ -1031,29 +936,29 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
     index1 = widget.index1;
     data = widget.data;
     _controller = TextEditingController();
-    _controller.text = _bloc.getTextInit(id: data.field_id) ??
+    _controller.text = _bloc.getTextInit(name: data.field_name) ??
         ((data.field_set_value ?? '').trim() != ''
             ? data.field_set_value
             : data.field_set_value_datasource?[0][1]) ??
         _bloc.addData[index].data[index1].value ??
         '';
     _bloc.addData[index].data[index1].value =
-        _bloc.getTextInit(id: data.field_id) ??
+        _bloc.getTextInit(name: data.field_name) ??
             ((data.field_set_value ?? '').trim() != ''
                 ? data.field_set_value
                 : data.field_set_value_datasource?[0][1]) ??
             _bloc.addData[index].data[index1].value ??
             '';
-    isEdit = data.field_id == '246' || data.field_id == '264';
+    isEdit = data.field_name == 'col131' || data.field_name == 'col121';
     _bloc.infoCar.listen((value) {
-      _controller.text = _bloc.getTextInit(id: data.field_id) ??
+      _controller.text = _bloc.getTextInit(name: data.field_name) ??
           ((data.field_set_value ?? '').trim() != ''
               ? data.field_set_value
               : data.field_set_value_datasource?[0][1]) ??
           _bloc.addData[index].data[index1].value ??
           '';
       _bloc.addData[index].data[index1].value =
-          _bloc.getTextInit(id: data.field_id) ??
+          _bloc.getTextInit(name: data.field_name) ??
               ((data.field_set_value ?? '').trim() != ''
                   ? data.field_set_value
                   : data.field_set_value_datasource?[0][1]) ??
@@ -1131,4 +1036,85 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
       ),
     );
   }
+}
+
+Widget TypeCarBase(
+  CustomerIndividualItemData data,
+  int index,
+  int index1,
+  BuildContext context,
+  dynamic _bloc,
+  Function(String v) function,
+) {
+  if (data.field_set_value != '' && data.field_set_value != null) {
+    _bloc.loaiXe.add(data.field_set_value);
+  }
+  return Container(
+    margin: EdgeInsets.only(bottom: 16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        RichText(
+          textScaleFactor: MediaQuery.of(context).textScaleFactor,
+          text: TextSpan(
+            text: data.field_label ?? '',
+            style: titlestyle(),
+            children: <TextSpan>[
+              data.field_require == 1
+                  ? TextSpan(
+                      text: '*',
+                      style: TextStyle(
+                          fontFamily: "Quicksand",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.red))
+                  : TextSpan(),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        GestureDetector(
+          onTap: () {
+            showModalBottomSheet(
+                isDismissible: false,
+                enableDrag: false,
+                isScrollControlled: true,
+                context: context,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)),
+                builder: (BuildContext context) {
+                  return SelectCar();
+                });
+          },
+          child: StreamBuilder<String>(
+              stream: _bloc.loaiXe,
+              builder: (context, snapshot) {
+                if (_bloc.loaiXe.value.trim() != '') {
+                  function(_bloc.loaiXe.value);
+                }
+                return Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: HexColor("#BEB4B4"))),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10, top: 15, bottom: 15),
+                    child: Container(
+                      child: WidgetText(
+                        title: (_bloc.loaiXe.value != ''
+                            ? _bloc.loaiXe.value
+                            : '---Chọn---'),
+                        style: AppStyle.DEFAULT_14,
+                      ),
+                    ),
+                  ),
+                );
+              }),
+        ),
+      ],
+    ),
+  );
 }

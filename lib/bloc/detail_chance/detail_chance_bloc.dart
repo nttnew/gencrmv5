@@ -26,6 +26,8 @@ class GetListDetailChanceBloc
       yield* _getListChanceDetail(id: event.id);
     } else if (event is InitDeleteChanceEvent) {
       yield* _deleteChance(id: event.id);
+    } else if (event is ReloadChanceEvent) {
+      yield UpdateGetListDetailChanceState([]);
     }
   }
 
@@ -35,7 +37,7 @@ class GetListDetailChanceBloc
       final response = await userRepository.getListDetailChance(id);
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        yield UpdateGetListDetailChanceState(response.data!);
+        yield UpdateGetListDetailChanceState(response.data ?? []);
       } else if (response.code == 999) {
         loginSessionExpired();
       } else {

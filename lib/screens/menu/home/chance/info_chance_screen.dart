@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:gen_crm/bloc/list_note/list_note_bloc.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/blocs.dart';
@@ -26,12 +25,19 @@ class _InfoChancePageState extends State<InfoChancePage> {
   List<ModuleThaoTac> list = [];
 
   @override
+  void deactivate() {
+    GetListDetailChanceBloc.of(context).add(ReloadChanceEvent());
+    super.deactivate();
+  }
+
+  @override
   void initState() {
-    getThaoTac();
     GetListDetailChanceBloc.of(context)
         .add(InitGetListDetailEvent(int.parse(id)));
-    ListNoteBloc.of(context).add(InitNoteOppEvent(id, "1"));
-    GetJobChanceBloc.of(context).add(InitGetJobEventChance(int.parse(id)));
+    GetJobChanceBloc.of(context).add(InitGetJobEventChance(
+      int.parse(id),
+    ));
+    getThaoTac();
     super.initState();
   }
 
@@ -59,7 +65,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(3, id);
+        AppNavigator.navigateAddNoteScreen(Module.CO_HOI_BH, id);
       },
     ));
 
@@ -139,45 +145,43 @@ class _InfoChancePageState extends State<InfoChancePage> {
             ),
             AppValue.vSpaceTiny,
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: DefaultTabController(
-                    length: 2,
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: const TabBar(
-                            isScrollable: true,
-                            indicatorColor: COLORS.TEXT_COLOR,
-                            labelColor: COLORS.TEXT_COLOR,
-                            unselectedLabelColor: COLORS.GREY,
-                            labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
-                            tabs: [
-                              Tab(
-                                text: 'Thông tin chung',
-                              ),
-                              Tab(
-                                text: 'Công việc',
-                              )
-                            ],
-                          ),
+              child: DefaultTabController(
+                  length: 2,
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: const TabBar(
+                          padding: EdgeInsets.symmetric(horizontal: 25),
+                          isScrollable: true,
+                          indicatorColor: COLORS.TEXT_COLOR,
+                          labelColor: COLORS.TEXT_COLOR,
+                          unselectedLabelColor: COLORS.GREY,
+                          labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
+                          tabs: [
+                            Tab(
+                              text: 'Thông tin chung',
+                            ),
+                            Tab(
+                              text: 'Công việc',
+                            )
+                          ],
                         ),
-                        Expanded(
-                          child: TabBarView(
-                            children: [
-                              ChanceInfo(
-                                id: id,
-                              ),
-                              JobListChance(
-                                id: id,
-                              )
-                            ],
-                          ),
+                      ),
+                      Expanded(
+                        child: TabBarView(
+                          children: [
+                            ChanceInfo(
+                              id: id,
+                            ),
+                            JobListChance(
+                              id: id,
+                            )
+                          ],
                         ),
-                      ],
-                    )),
-              ),
+                      ),
+                    ],
+                  )),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
