@@ -16,6 +16,7 @@ class WidgetSearch extends StatelessWidget {
   final TextInputType? inputType;
   final Widget? leadIcon;
   final Widget? endIcon;
+  final Widget? endIconFinal;
   final bool? enabled;
   final FocusNode? focusNode;
   final CrossAxisAlignment? crossAxisAlignment;
@@ -44,6 +45,7 @@ class WidgetSearch extends StatelessWidget {
     this.textInputAction = TextInputAction.go,
     this.leadIcon,
     this.endIcon,
+    this.endIconFinal,
     this.enabled = true,
     this.boxDecoration,
     this.hintTextStyle,
@@ -117,7 +119,11 @@ class WidgetSearch extends StatelessWidget {
                             Container(height: 20, width: 20, child: endIcon)),
                   ),
                 )
-              : Container()
+              : Container(),
+          if (endIconFinal != null)
+            Container(
+              child: endIconFinal,
+            ),
         ],
       ),
     );

@@ -12,6 +12,7 @@ import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/widget_search.dart';
 import '../../../../widgets/widget_text.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
+import '../product/scanner_qrcode.dart';
 
 class ProductCustomerScreen extends StatefulWidget {
   const ProductCustomerScreen({Key? key}) : super(key: key);
@@ -94,10 +95,14 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.symmetric(
-                  horizontal: 25,
-                  vertical: 16,
+                margin: EdgeInsets.only(
+                  right: 25,
+                  left: 25,
+                  top: 25,
+                  bottom: 10,
                 ),
+                width: double.infinity,
+                height: AppValue.heights * 0.06,
                 decoration: BoxDecoration(
                   border: Border.all(color: HexColor("#DBDBDB")),
                   borderRadius: BorderRadius.circular(10),
@@ -109,14 +114,65 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       color: HexColor("#707070")),
-                  hint: "Tìm ${title.toLowerCase()}",
+                  hint: "Nhập tên, barCode, qrCode",
                   leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
-                  endIcon: GestureDetector(
-                      onTap: () {
-                        showBotomSheet(_bloc.dataFilter ?? []);
-                      },
-                      child: SvgPicture.asset(ICONS.IC_FILTER_SVG)),
-                  onClickRight: () {},
+                  endIconFinal: Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                        ),
+                        height: double.maxFinite,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(color: HexColor("#DBDBDB")),
+                            right: BorderSide(color: HexColor("#DBDBDB")),
+                          ),
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(
+                                    builder: (context) => ScannerQrcode()))
+                                .then((value) async {
+                              if (value != '') {
+                                final result = await _bloc.getListProduct(
+                                    querySearch: value);
+                                if (result?.data?.lists?.isNotEmpty ?? false) {
+                                  AppNavigator.navigateDetailProductCustomer(
+                                      result?.data?.lists?.first.name ?? '',
+                                      result?.data?.lists?.first.id ?? '');
+                                } else {
+                                  ShowDialogCustom.showDialogBase(
+                                    title: MESSAGES.NOTIFICATION,
+                                    content: 'Không có dữ liệu',
+                                  );
+                                }
+                              }
+                            });
+                          },
+                          child: Icon(
+                            Icons.qr_code_scanner,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                        ),
+                        child: GestureDetector(
+                            onTap: () {
+                              showBotomSheet(_bloc.dataFilter ?? []);
+                            },
+                            child: SvgPicture.asset(
+                              ICONS.IC_FILTER_SVG,
+                              height: 20,
+                              width: 20,
+                            )),
+                      ),
+                    ],
+                  ),
                   onSubmit: (v) {
                     _bloc.querySearch = v;
                     search();
