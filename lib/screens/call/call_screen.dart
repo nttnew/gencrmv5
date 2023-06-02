@@ -13,6 +13,7 @@ import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:plugin_pitel/sip/sip_ua.dart';
 import '../../src/src_index.dart';
 import '../../widgets/appbar_base.dart';
+import '../../widgets/cupertino_loading.dart';
 import 'ripple_logo.dart';
 import 'action_button.dart';
 import 'package:wakelock/wakelock.dart';
@@ -363,7 +364,7 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
         child: pitelCall.isConnected && pitelCall.isHaveCall
             ? _buildContent()
             : const Center(
-                child: CircularProgressIndicator(),
+                child: CupertinoLoading(),
               ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

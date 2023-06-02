@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../src/color.dart';
+import 'cupertino_loading.dart';
 
 class LoadingApi {
   RxInt loading = RxInt(0);
@@ -13,10 +14,7 @@ class LoadingApi {
         color: Colors.transparent,
         child: GestureDetector(
           onTap: () {},
-          child: Center(
-              child: CircularProgressIndicator(
-            color: COLORS.PRIMARY_COLOR,
-          )),
+          child: Center(child: CupertinoLoading()),
         ),
       ));
     }

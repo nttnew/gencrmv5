@@ -15,6 +15,7 @@ import '../../../../../src/src_index.dart';
 import '../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../src/models/model_generator/file_response.dart';
 import '../../../widgets/appbar_base.dart';
+import '../../../widgets/cupertino_loading.dart';
 import '../../../widgets/item_file.dart';
 import '../../add_service_voucher/preview_image.dart';
 
@@ -302,9 +303,7 @@ class _AttachmentState extends State<Attachment> {
                         margin: EdgeInsets.only(top: 60),
                         child: Align(
                           alignment: Alignment.topCenter,
-                          child: CircularProgressIndicator(
-                            color: HexColor("#D0F1EB"),
-                          ),
+                          child: CupertinoLoading(),
                         ),
                       );
                     } else if (list == []) {
