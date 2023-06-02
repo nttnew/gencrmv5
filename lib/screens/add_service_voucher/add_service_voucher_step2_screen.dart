@@ -1,19 +1,15 @@
-import 'dart:async';
-import 'dart:io';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/add_service_voucher/add_service_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
-import 'package:gen_crm/screens/add_service_voucher/preview_image.dart';
 import 'package:gen_crm/screens/add_service_voucher/select_car.dart';
 import 'package:gen_crm/src/models/request/voucher_service_request.dart';
+import 'package:gen_crm/src/pick_file_image.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-import 'package:permission_handler/permission_handler.dart';
+import '../../bloc/contract/attack_bloc.dart';
 import '../../bloc/contract/total_bloc.dart';
 import '../../models/model_data_add.dart';
 import '../../models/widget_input_date.dart';
@@ -21,6 +17,7 @@ import '../../src/app_const.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/src_index.dart';
 import '../../widgets/appbar_base.dart';
+import '../../widgets/multiple_widget.dart';
 import '../../widgets/widget_field_input_percent.dart';
 import '../../widgets/widget_text.dart';
 import '../menu/home/contract/product_contract.dart';
@@ -43,7 +40,6 @@ class _AddServiceVoucherStepTwoScreenState
     _bloc.dispose();
     super.dispose();
   }
-
 
   @override
   void initState() {
@@ -285,7 +281,7 @@ class _AddServiceVoucherStepTwoScreenState
                                                                 : fieldType == "HIDDEN"
                                                                     ? Container()
                                                                     : fieldType == "TEXT_MULTI_NEW"
-                                                                        ? WidgetInputMulti(
+                                                                        ? InputMultipleWidget(
                                                                             data: fieldData,
                                                                             onSelect: (data) {
                                                                               addData[index].data[index1].value = data.join(",");
@@ -318,185 +314,8 @@ class _AddServiceVoucherStepTwoScreenState
                                 );
                               }),
                             ),
-                            StreamBuilder(
-                                stream: _bloc.listFileAllStream,
-                                builder: (context, state) {
-                                  return Container(
-                                      margin: EdgeInsets.symmetric(vertical: 8),
-                                      width: Get.width,
-                                      child: Column(
-                                        children: [
-                                          ListView.builder(
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            shrinkWrap: true,
-                                            itemCount: _bloc.listFile.length,
-                                            itemBuilder: (context, index) =>
-                                                Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 4),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Expanded(
-                                                    child: WidgetText(
-                                                      title: _bloc
-                                                          .listFile[index].path
-                                                          .split("/")
-                                                          .last,
-                                                      style:
-                                                          AppStyle.DEFAULT_14,
-                                                      maxLine: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
-                                                  ),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      final List<File> list =
-                                                          [];
-                                                      _bloc.listFile
-                                                          .removeAt(index);
-                                                      list.addAll(
-                                                          _bloc.listFile);
-                                                      list.addAll(
-                                                          _bloc.listImage);
-                                                      _bloc.listFileAllStream
-                                                          .add(list);
-                                                    },
-                                                    child: WidgetContainerImage(
-                                                      image:
-                                                          ICONS.IC_DELETE_PNG,
-                                                      width: 20,
-                                                      height: 20,
-                                                      fit: BoxFit.contain,
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          if (_bloc.listImage.isNotEmpty)
-                                            GridView.builder(
-                                              physics:
-                                                  NeverScrollableScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemCount: _bloc.listImage.length,
-                                              gridDelegate:
-                                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 2,
-                                                crossAxisSpacing: 25,
-                                                mainAxisSpacing: 25,
-                                                mainAxisExtent: 90,
-                                              ),
-                                              itemBuilder: (context, index) =>
-                                                  Stack(
-                                                clipBehavior: Clip.none,
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.of(context).push(
-                                                          MaterialPageRoute(
-                                                              builder:
-                                                                  (context) =>
-                                                                      PreviewImage(
-                                                                        file: _bloc
-                                                                            .listImage[index],
-                                                                      )));
-                                                    },
-                                                    child: Container(
-                                                      clipBehavior:
-                                                          Clip.hardEdge,
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width,
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width,
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.grey,
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          8))),
-                                                      child: Image.file(
-                                                        _bloc.listImage[index],
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Positioned(
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        final List<File> list =
-                                                            [];
-                                                        _bloc.listImage
-                                                            .removeAt(index);
-                                                        list.addAll(
-                                                            _bloc.listFile);
-                                                        list.addAll(
-                                                            _bloc.listImage);
-                                                        _bloc.listFileAllStream
-                                                            .add(list);
-                                                      },
-                                                      child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            shape:
-                                                                BoxShape.circle,
-                                                            color: Colors.white,
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .black,
-                                                                width: 0.1),
-                                                          ),
-                                                          height: 16,
-                                                          width: 16,
-                                                          child: Icon(
-                                                            Icons.close,
-                                                            size: 9,
-                                                          )),
-                                                    ),
-                                                    top: 0,
-                                                    right: 0,
-                                                  )
-                                                ],
-                                              ),
-                                            )
-                                        ],
-                                      ));
-                                }),
-                            Row(
-                              children: [
-                                GestureDetector(
-                                    onTap: this.onDinhKem,
-                                    child: SvgPicture.asset(
-                                      ICONS.IC_ATTACK_SVG,
-                                    )),
-                                Spacer(),
-                                GestureDetector(
-                                  onTap: this.onClickSave,
-                                  child: Container(
-                                    height: AppValue.widths * 0.1,
-                                    width: AppValue.widths * 0.25,
-                                    decoration: BoxDecoration(
-                                        color: HexColor("#F1A400"),
-                                        borderRadius:
-                                            BorderRadius.circular(20.5)),
-                                    child: Center(
-                                        child: Text(
-                                      "Lưu",
-                                      style: TextStyle(color: Colors.white),
-                                    )),
-                                  ),
-                                ),
-                              ],
-                            )
+                            FileDinhKemUiBase(
+                                context: context, onTap: onClickSave)
                           ],
                         );
                       });
@@ -705,205 +524,9 @@ class _AddServiceVoucherStepTwoScreenState
       }
       VoucherServiceRequest voucherServiceRequest =
           VoucherServiceRequest.fromJson(data);
-      _bloc.add(SaveVoucherServiceEvent(voucherServiceRequest));
+      _bloc.add(SaveVoucherServiceEvent(
+          voucherServiceRequest, AttackBloc.of(context).listFile));
     }
-  }
-
-  Future<void> onDinhKem() async {
-    if (await Permission.storage.request().isGranted) {
-      openAppSettings();
-    } else {
-      FilePickerResult? result = await FilePicker.platform.pickFiles();
-      if (result != null && result.files.isNotEmpty) {
-        final filePicked = result.files.first;
-        final fileExt =
-            result.files.first.path?.split("/").last.split('.').last;
-        if (AppValue.checkTypeImage(fileExt.toString())) {
-          _bloc.listImage.add(File(filePicked.path!));
-        } else {
-          _bloc.listFile.add(File(filePicked.path!));
-        }
-        final List<File> list = [];
-        list.addAll(_bloc.listImage);
-        list.addAll(_bloc.listFile);
-        _bloc.listFileAllStream.add(list);
-      }
-    }
-  }
-}
-
-class WidgetInputMulti extends StatefulWidget {
-  WidgetInputMulti({Key? key, required this.data, required this.onSelect})
-      : super(key: key);
-
-  final CustomerIndividualItemData data;
-  Function onSelect;
-
-  @override
-  State<WidgetInputMulti> createState() => _WidgetInputMultiState();
-}
-
-class _WidgetInputMultiState extends State<WidgetInputMulti> {
-  List<String> arr = [];
-  TextEditingController _editingController = TextEditingController();
-  bool check = false;
-  late FocusNode _focusNode;
-
-  @override
-  void initState() {
-    _focusNode = FocusNode();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: widget.data.field_label ?? '',
-              style: TextStyle(
-                  fontFamily: "Quicksand",
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: COLORS.BLACK),
-              children: <TextSpan>[
-                widget.data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Quicksand",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.red))
-                    : TextSpan(),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: HexColor("#BEB4B4"))),
-            child: Padding(
-              padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
-              child: Focus(
-                onFocusChange: (status) {
-                  if (status == false) {
-                    if (_editingController.text != "") {
-                      arr.add(_editingController.text);
-                      widget.onSelect(arr);
-                      setState(() {
-                        check = !check;
-                      });
-                    }
-                    _editingController.text = "";
-                    _focusNode.unfocus();
-                  }
-                },
-                child: TextField(
-                  controller: _editingController,
-                  onEditingComplete: () {
-                    if (_editingController.text != "") {
-                      arr.add(_editingController.text);
-                      widget.onSelect(arr);
-                      setState(() {
-                        check = !check;
-                      });
-                    }
-                    _editingController.text = "";
-                    _focusNode.unfocus();
-                  },
-                  focusNode: _focusNode,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                  keyboardType: widget.data.field_special == "default"
-                      ? TextInputType.text
-                      : widget.data.field_special == "numberic"
-                          ? TextInputType.number
-                          : widget.data.field_special == "email-address"
-                              ? TextInputType.emailAddress
-                              : TextInputType.text,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(
-                        widget.data.field_maxlength != null
-                            ? int.parse(widget.data.field_maxlength!)
-                            : null),
-                  ],
-                  maxLengthEnforcement:
-                      MaxLengthEnforcement.truncateAfterCompositionEnds,
-                  decoration: InputDecoration(
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      isDense: true),
-                ),
-              ),
-            ),
-          ),
-          arr.length > 0
-              ? Container(
-                  margin: EdgeInsets.only(top: 8),
-                  child: Row(
-                    children: List.generate(
-                        arr.length,
-                        (index) => Container(
-                              margin: EdgeInsets.only(right: 8),
-                              child: Stack(
-                                clipBehavior: Clip.none,
-                                children: [
-                                  Container(
-                                      padding: EdgeInsets.only(
-                                          top: 3, bottom: 3, left: 8, right: 8),
-                                      // margin: EdgeInsets.only(right: 8),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          color: COLORS.BACKGROUND),
-                                      child: WidgetText(
-                                        title: arr[index],
-                                        style: AppStyle.DEFAULT_14,
-                                      )),
-                                  Positioned(
-                                    top: -13,
-                                    right: -8,
-                                    child: InkWell(
-                                        onTap: () {
-                                          arr.removeAt(index);
-                                          setState(() {
-                                            check = !check;
-                                          });
-                                        },
-                                        child: Container(
-                                          color: Colors.transparent,
-                                          padding: EdgeInsets.all(5),
-                                          child: WidgetText(
-                                            title: "x",
-                                            style: AppStyle.DEFAULT_16,
-                                          ),
-                                        )),
-                                  )
-                                ],
-                              ),
-                            )),
-                  ),
-                )
-              : Container()
-        ],
-      ),
-    );
   }
 }
 

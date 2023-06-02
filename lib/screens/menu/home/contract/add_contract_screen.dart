@@ -27,8 +27,8 @@ import '../../../../src/models/model_generator/login_response.dart';
 import '../../../../src/pick_file_image.dart';
 import '../../../../storages/share_local.dart';
 import '../../../../widgets/appbar_base.dart';
+import '../../../../widgets/multiple_widget.dart';
 import '../../../../widgets/widget_field_input_percent.dart';
-import '../customer/add_customer.dart';
 import '../customer/input_dropDown.dart';
 
 class FormAddContract extends StatefulWidget {
@@ -358,7 +358,7 @@ class _FormAddContractState extends State<FormAddContract> {
                                                                 : state.listAddData[index].data![index1].field_type == "HIDDEN"
                                                                     ? Container()
                                                                     : state.listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"
-                                                                        ? WidgetInputMulti(
+                                                                        ? InputMultipleWidget(
                                                                             data:
                                                                                 state.listAddData[index].data![index1],
                                                                             onSelect:
@@ -555,6 +555,8 @@ class _FormAddContractState extends State<FormAddContract> {
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
                 child: TextFormField(
+                  minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
+                  maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                   keyboardType: data.field_type == "TEXT_NUMERIC"
                       ? TextInputType.number
