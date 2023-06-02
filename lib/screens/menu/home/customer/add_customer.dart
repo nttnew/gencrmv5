@@ -18,6 +18,7 @@ import '../../../../src/pick_file_image.dart';
 import '../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../../../widgets/appbar_base.dart';
+import '../../../../widgets/multiple_widget.dart';
 import '../../../../widgets/widget_field_input_percent.dart';
 import 'input_dropDown.dart';
 
@@ -173,7 +174,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                                           : state.listAddData[index].data![index1].field_type == "HIDDEN"
                                                               ? Container()
                                                               : state.listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"
-                                                                  ? WidgetInputMulti(
+                                                                  ? InputMultipleWidget(
                                                                       data: state.listAddData[index].data![index1],
                                                                       onSelect: (data) {
                                                                         addData[index]
@@ -313,6 +314,8 @@ class _AddCustomerState extends State<AddCustomer> {
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
                 child: TextField(
+                  minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
+                  maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                   keyboardType: data.field_special == "default"
                       ? TextInputType.text
@@ -480,182 +483,5 @@ class _AddCustomerState extends State<AddCustomer> {
       GetListCustomerBloc.of(context).add(AddCustomerIndividualEvent(data,
           files: AttackBloc.of(context).listFile));
     }
-  }
-}
-
-class WidgetInputMulti extends StatefulWidget {
-  WidgetInputMulti({Key? key, required this.data, required this.onSelect})
-      : super(key: key);
-
-  final CustomerIndividualItemData data;
-  Function onSelect;
-
-  @override
-  State<WidgetInputMulti> createState() => _WidgetInputMultiState();
-}
-
-class _WidgetInputMultiState extends State<WidgetInputMulti> {
-  List<String> arr = [];
-  TextEditingController _editingController = TextEditingController();
-  bool check = false;
-  late FocusNode _focusNode;
-
-  @override
-  void initState() {
-    _focusNode = FocusNode();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: widget.data.field_label ?? '',
-              style: TextStyle(
-                  fontFamily: "Quicksand",
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: COLORS.BLACK),
-              children: <TextSpan>[
-                widget.data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Quicksand",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red))
-                    : TextSpan(),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: HexColor("#BEB4B4"))),
-            child: Padding(
-              padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
-              child: Focus(
-                onFocusChange: (status) {
-                  if (status == false) {
-                    if (_editingController.text != "") {
-                      arr.add(_editingController.text);
-                      widget.onSelect(arr);
-                      setState(() {
-                        check = !check;
-                      });
-                    }
-                    _editingController.text = "";
-                    _focusNode.unfocus();
-                  }
-                },
-                child: TextField(
-                  controller: _editingController,
-                  onEditingComplete: () {
-                    if (_editingController.text != "") {
-                      arr.add(_editingController.text);
-                      widget.onSelect(arr);
-                      setState(() {
-                        check = !check;
-                      });
-                    }
-                    _editingController.text = "";
-                    _focusNode.unfocus();
-                  },
-                  focusNode: _focusNode,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                  keyboardType: widget.data.field_special == "default"
-                      ? TextInputType.text
-                      : widget.data.field_special == "numberic"
-                          ? TextInputType.number
-                          : widget.data.field_special == "email-address"
-                              ? TextInputType.emailAddress
-                              : TextInputType.text,
-                  // maxLength:widget.data.field_maxlength!=null? int.parse(widget.data.field_maxlength!):null,
-                  // maxLengthEnforcement: MaxLengthEnforcement.none,123123
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(
-                        widget.data.field_maxlength != null
-                            ? int.parse(widget.data.field_maxlength!)
-                            : null),
-                  ],
-                  maxLengthEnforcement:
-                      MaxLengthEnforcement.truncateAfterCompositionEnds,
-                  decoration: InputDecoration(
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      isDense: true),
-                ),
-              ),
-            ),
-          ),
-          arr.length > 0
-              ? Container(
-                  margin: EdgeInsets.only(top: 8),
-                  child: Row(
-                    children: List.generate(
-                        arr.length,
-                        (index) => Container(
-                              margin: EdgeInsets.only(right: 8),
-                              child: Stack(
-                                clipBehavior: Clip.none,
-                                children: [
-                                  Container(
-                                      padding: EdgeInsets.only(
-                                          top: 3, bottom: 3, left: 8, right: 8),
-                                      // margin: EdgeInsets.only(right: 8),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          color: COLORS.BACKGROUND),
-                                      child: WidgetText(
-                                        title: arr[index],
-                                        style: AppStyle.DEFAULT_14,
-                                      )),
-                                  Positioned(
-                                    top: -13,
-                                    right: -8,
-                                    child: InkWell(
-                                        onTap: () {
-                                          arr.removeAt(index);
-                                          setState(() {
-                                            check = !check;
-                                          });
-                                        },
-                                        child: Container(
-                                          color: Colors.transparent,
-                                          padding: EdgeInsets.all(5),
-                                          child: WidgetText(
-                                            title: "x",
-                                            style: AppStyle.DEFAULT_16,
-                                          ),
-                                        )),
-                                  )
-                                ],
-                              ),
-                            )),
-                  ),
-                )
-              : Container()
-        ],
-      ),
-    );
   }
 }

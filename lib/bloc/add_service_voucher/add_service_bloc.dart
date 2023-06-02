@@ -37,7 +37,7 @@ class ServiceVoucherBloc
     if (event is PostServiceVoucherEvent) {
       yield* _postAddServiceVoucher(event.sdt, event.bienSoXe);
     } else if (event is SaveVoucherServiceEvent) {
-      yield* _postAddSave(event.voucherServiceRequest);
+      yield* _postAddSave(event.voucherServiceRequest, event.listFile);
     }
   }
 
@@ -46,11 +46,8 @@ class ServiceVoucherBloc
   BehaviorSubject<bool> checkboxStream = BehaviorSubject.seeded(false);
   BehaviorSubject<String> idCar = BehaviorSubject.seeded('');
   BehaviorSubject<String> loaiXe = BehaviorSubject.seeded('');
-  BehaviorSubject<List<File>?> listFileAllStream = BehaviorSubject();
   BehaviorSubject<List<AddCustomerIndividualData>> listAddData =
       BehaviorSubject.seeded([]);
-  List<File> listFile = [];
-  List<File> listImage = [];
   List<Versions> listVersionCar = [];
   BehaviorSubject<Set<HangXe>> listHangXe = BehaviorSubject.seeded({});
   BehaviorSubject<Set<String>> listDongXe = BehaviorSubject.seeded({});
@@ -273,7 +270,9 @@ class ServiceVoucherBloc
   }
 
   Stream<ServiceVoucherState> _postAddSave(
-      VoucherServiceRequest voucherServiceRequest) async* {
+    VoucherServiceRequest voucherServiceRequest,
+    List<File>? listFile,
+  ) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingServiceVoucherState();
@@ -284,10 +283,10 @@ class ServiceVoucherBloc
       final data = (response).getOrElse('data', () => -1);
       if ((statusCode == BASE_URL.SUCCESS) ||
           (statusCode == BASE_URL.SUCCESS_200)) {
-        if (listFileAllStream.valueOrNull?.isNotEmpty ?? false) {
+        if (listFile?.isNotEmpty ?? false) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: data['recordId'].toString(),
-              files: listFileAllStream.value ?? [],
+              files: listFile ?? [],
               module: getURLModule(Module.HOP_DONG));
           if ((responseUpload.code == BASE_URL.SUCCESS) ||
               (responseUpload.code == BASE_URL.SUCCESS_200)) {
@@ -329,35 +328,35 @@ class ServiceVoucherBloc
         final List<AddCustomerIndividualData> list = response.data?.data
                 ?.map(
                   (e) => AddCustomerIndividualData(
-                      e.data?.map((f) {
-                            return CustomerIndividualItemData(
-                                f.fieldId,
-                                f.fieldName,
-                                f.fieldLabel,
-                                f.fieldType,
-                                f.fieldValidation,
-                                f.fieldValidationMessage,
-                                f.fieldMaxlength,
-                                f.fieldHidden,
-                                null,
-                                f.fieldRequire,
-                                f.fieldSetValue,
-                                f.fieldId == '12708' //theem xe
-                                    ? listThemXe(f.fieldDatasource, bienSoXe)
-                                    : f.fieldDatasource,
-                                f.fieldSpecial,
-                                f.fieldSetValueDatasource,
-                                f.fieldId == '12708' &&
-                                        bienSoXe != '' //theem xe
-                                    ? checkXe(f.fieldDatasource, bienSoXe)
-                                    : f.fieldValue,
-                                null
-                                // e.fieldProducts
-                                );
-                          }).toList() ??
-                          [],
-                      e.groupName,
-                      null,
+                    e.data?.map((f) {
+                          return CustomerIndividualItemData(
+                              f.fieldId,
+                              f.fieldName,
+                              f.fieldLabel,
+                              f.fieldType,
+                              f.fieldValidation,
+                              f.fieldValidationMessage,
+                              f.fieldMaxlength,
+                              f.fieldHidden,
+                              null,
+                              f.fieldRequire,
+                              f.fieldSetValue,
+                              f.fieldName == 'hdsan_pham_kh' //theem xe
+                                  ? listThemXe(f.fieldDatasource, bienSoXe)
+                                  : f.fieldDatasource,
+                              f.fieldSpecial,
+                              f.fieldSetValueDatasource,
+                              f.fieldName == 'hdsan_pham_kh' &&
+                                      bienSoXe != '' //theem xe
+                                  ? checkXe(f.fieldDatasource, bienSoXe)
+                                  : f.fieldValue,
+                              null
+                              // e.fieldProducts
+                              );
+                        }).toList() ??
+                        [],
+                    e.groupName,
+                    null,
                   ),
                 )
                 .toList() ??
@@ -380,10 +379,10 @@ class ServiceVoucherBloc
   void dispose() {
     listAddData.add([]);
     addData = [];
-    listFile = [];
-    listImage = [];
+    // listFile = [];
+    // listImage = [];
     loaiXe.add('');
-    listFileAllStream.add(null);
+    // listFileAllStream.add(null);
     resetDataCarVerison();
     infoCar.add(InfoCar(
       soKilomet: '',

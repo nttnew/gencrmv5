@@ -93,6 +93,27 @@ class ProductCustomerModuleBloc
     LoadingApi().popLoading();
   }
 
+  Future<ListProductCustomerResponse?> getListProduct({
+    required String querySearch,
+  }) async {
+    LoadingApi().pushLoading();
+    try {
+      final response = await userRepository.getListProductCustomer(
+        txt: querySearch,
+        page: BASE_URL.PAGE_DEFAULT.toString(),
+      );
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        LoadingApi().popLoading();
+        return response;
+      }
+    } catch (e) {
+      throw e;
+    }
+    LoadingApi().popLoading();
+    return null;
+  }
+
   void dispose() {
     listType.add([]);
     typeStream.add(null);

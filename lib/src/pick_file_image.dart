@@ -31,6 +31,7 @@ Widget FileDinhKemUiBase(
                     child: Column(
                       children: [
                         ListView.builder(
+                          padding: EdgeInsets.zero,
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount:
@@ -72,6 +73,7 @@ Widget FileDinhKemUiBase(
                           ),
                         ),
                         GridView.builder(
+                          padding: EdgeInsets.zero,
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount:
