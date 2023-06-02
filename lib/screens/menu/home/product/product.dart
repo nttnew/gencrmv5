@@ -60,10 +60,11 @@ class _ProductScreenState extends State<ProductScreen> {
 
   search() {
     _bloc.add(InitGetListProductModuleEvent(
-        page: BASE_URL.PAGE_DEFAULT,
-        filter: _bloc.filter,
-        typeProduct: _bloc.type,
-        querySearch: _bloc.querySearch));
+      page: BASE_URL.PAGE_DEFAULT,
+      filter: _bloc.filter,
+      typeProduct: _bloc.type,
+      querySearch: _bloc.querySearch,
+    ));
   }
 
   getDataFirst() {
@@ -126,10 +127,21 @@ class _ProductScreenState extends State<ProductScreen> {
                       Navigator.of(context)
                           .push(MaterialPageRoute(
                               builder: (context) => ScannerQrcode()))
-                          .then((value) {
+                          .then((value) async {
                         if (value != '') {
-                          _controllerText.text = value;
-                          search();
+                          final result =
+                              await _bloc.getListProduct(querySearch: value);
+                          if (result?.data?.lists?.isNotEmpty ?? false) {
+                            AppNavigator.navigateDetailProduct(
+                              result?.data?.lists?.first.tenSanPham ?? '',
+                              result?.data?.lists?.first.id ?? '',
+                            );
+                          } else {
+                            ShowDialogCustom.showDialogBase(
+                              title: MESSAGES.NOTIFICATION,
+                              content: 'Không có dữ liệu',
+                            );
+                          }
                         }
                       });
                     },
