@@ -140,7 +140,7 @@ class _FormAddContractState extends State<FormAddContract> {
                   Get.back();
                   Get.back();
                   GetListCustomerBloc.of(context)
-                      .add(InitGetListOrderEvent("", 1, ""));
+                      .add(InitGetListOrderEvent());
                 },
               );
             }
@@ -160,7 +160,7 @@ class _FormAddContractState extends State<FormAddContract> {
                   ContractCustomerBloc.of(context).add(
                       InitGetContractCustomerEvent(
                           ContractCustomerBloc.of(context).id));
-                  ContractBloc.of(context).add(InitGetContractEvent(1, "", ""));
+                  ContractBloc.of(context).add(InitGetContractEvent());
                 },
               );
             }

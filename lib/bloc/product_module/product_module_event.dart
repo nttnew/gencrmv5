@@ -11,11 +11,13 @@ class InitGetListProductModuleEvent extends ProductModuleEvent {
   String? querySearch;
   String? typeProduct;
   String? filter;
+  String? ids;
 
   InitGetListProductModuleEvent({
     this.page,
     this.querySearch,
     this.filter,
     this.typeProduct,
+    this.ids,
   });
 }

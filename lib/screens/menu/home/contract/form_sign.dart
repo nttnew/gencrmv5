@@ -110,7 +110,7 @@ class _FormAddSignState extends State<FormAddSign> {
                       Get.back();
                       Get.back();
                       GetListCustomerBloc.of(context)
-                          .add(InitGetListOrderEvent("", 1, ""));
+                          .add(InitGetListOrderEvent());
                     },
                   );
                 }

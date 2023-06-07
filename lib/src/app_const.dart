@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
@@ -321,4 +322,19 @@ String getCheckHttp(String text) {
     return text;
   }
   return 'https://' + text;
+}
+
+class Debounce {
+  final int milliseconds;
+  VoidCallback? action;
+  Timer? _timer;
+
+  Debounce({this.milliseconds = 450});
+
+  void run(VoidCallback action) {
+    if (_timer != null) {
+      _timer?.cancel();
+    }
+    _timer = Timer(Duration(milliseconds: milliseconds), action);
+  }
 }

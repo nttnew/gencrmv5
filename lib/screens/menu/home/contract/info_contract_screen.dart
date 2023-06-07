@@ -137,7 +137,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                 Get.back();
                 Get.back();
                 Get.back();
-                ContractBloc.of(context).add(InitGetContractEvent(1, "", ""));
+                ContractBloc.of(context).add(InitGetContractEvent());
               },
             );
           } else if (state is ErrorDeleteContractState) {

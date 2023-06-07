@@ -10,10 +10,12 @@ class GetProductCustomerModuleEvent extends ProductCustomerModuleEvent {
   int? page;
   String? querySearch;
   String? filter;
+  String? ids;
 
   GetProductCustomerModuleEvent({
     this.page,
     this.querySearch,
     this.filter,
+    this.ids,
   });
 }

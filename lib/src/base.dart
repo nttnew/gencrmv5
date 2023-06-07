@@ -173,6 +173,8 @@ class BASE_URL {
       'modules/genmobile2/productCustomer/getFormCv';
   static const GET_FORM_HT_PRODUCT_CUSTOMER =
       'modules/genmobile2/productCustomer/getFormHt';
+  static const GET_LIST_MANAGER_FILTER =
+      'modules/genmobile2/settings/nql';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';

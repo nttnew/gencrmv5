@@ -1,19 +1,16 @@
-import 'dart:math';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/product_module/product_module_bloc.dart';
 import 'package:gen_crm/screens/menu/home/product/scanner_qrcode.dart';
-import 'package:gen_crm/src/models/model_generator/list_product_response.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
+import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../src/app_const.dart';
-import '../../../../src/models/model_generator/group_product_response.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
-import '../../../../widgets/widget_search.dart';
-import '../../../../widgets/widget_text.dart';
+import '../../../../widgets/drop_down_base.dart';
+import '../../../../widgets/search_base.dart';
+import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 import 'item_product.dart';
 
@@ -26,17 +23,19 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  late final TextEditingController _controllerText;
   late final ProductModuleBloc _bloc;
   late final ScrollController _scrollController;
   late final String title;
+  late final ManagerBloc managerBloc;
 
   @override
   void initState() {
+    managerBloc =
+        ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
+    managerBloc.getManager(module: Module.PRODUCT);
     title = Get.arguments ?? '';
     _scrollController = ScrollController();
     _bloc = ProductModuleBloc.of(context);
-    _controllerText = TextEditingController();
     getDataFirst();
     listenerLoadMore();
     _bloc.getFilter();
@@ -50,20 +49,23 @@ class _ProductScreenState extends State<ProductScreen> {
           _bloc.isLength) {
         _bloc.page = _bloc.page + 1;
         _bloc.add(InitGetListProductModuleEvent(
-            page: _bloc.page,
-            filter: _bloc.filter,
-            typeProduct: _bloc.type,
-            querySearch: _bloc.querySearch));
+          page: _bloc.page,
+          filter: _bloc.filter,
+          typeProduct: _bloc.type,
+          querySearch: _bloc.querySearch,
+          ids: _bloc.ids,
+        ));
       } else {}
     });
   }
 
-  search() {
+  _research() {
     _bloc.add(InitGetListProductModuleEvent(
       page: BASE_URL.PAGE_DEFAULT,
       filter: _bloc.filter,
       typeProduct: _bloc.type,
       querySearch: _bloc.querySearch,
+      ids: _bloc.ids,
     ));
   }
 
@@ -100,144 +102,104 @@ class _ProductScreenState extends State<ProductScreen> {
         body: Container(
           child: Column(
             children: [
-              SizedBox(
-                height: 16,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                  horizontal: 25,
-                ),
-                width: double.infinity,
-                height: AppValue.heights * 0.06,
-                decoration: BoxDecoration(
-                  border: Border.all(color: HexColor("#DBDBDB")),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: WidgetSearch(
-                  inputController: _controllerText,
-                  hintTextStyle: TextStyle(
-                      fontFamily: "Quicksand",
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: HexColor("#707070")),
-                  hint: "Nhập tên, barCode, qrCode",
-                  leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
-                  endIcon: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(
-                              builder: (context) => ScannerQrcode()))
-                          .then((value) async {
-                        if (value != '') {
-                          final result =
-                              await _bloc.getListProduct(querySearch: value);
-                          if (result?.data?.lists?.isNotEmpty ?? false) {
-                            AppNavigator.navigateDetailProduct(
-                              result?.data?.lists?.first.tenSanPham ?? '',
-                              result?.data?.lists?.first.id ?? '',
-                            );
-                          } else {
-                            ShowDialogCustom.showDialogBase(
-                              title: MESSAGES.NOTIFICATION,
-                              content: 'Không có dữ liệu',
-                            );
-                          }
+              AppValue.vSpaceSmall,
+              SearchBase(
+                hint: "Nhập tên, barCode, qrCode",
+                leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                endIcon: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(
+                            builder: (context) => ScannerQrcode()))
+                        .then((value) async {
+                      if (value != '') {
+                        final result =
+                            await _bloc.getListProduct(querySearch: value);
+                        if (result?.data?.lists?.isNotEmpty ?? false) {
+                          AppNavigator.navigateDetailProduct(
+                            result?.data?.lists?.first.tenSanPham ?? '',
+                            result?.data?.lists?.first.id ?? '',
+                          );
+                        } else {
+                          ShowDialogCustom.showDialogBase(
+                            title: MESSAGES.NOTIFICATION,
+                            content: 'Không có dữ liệu',
+                          );
                         }
-                      });
-                    },
-                    child: Icon(
-                      Icons.qr_code_scanner,
-                      size: 20,
-                    ),
-                  ),
-                  onClickRight: () {},
-                  onSubmit: (v) {
-                    _bloc.querySearch = v;
-                    search();
+                      }
+                    });
                   },
+                  child: Icon(
+                    Icons.qr_code_scanner,
+                    size: 20,
+                  ),
                 ),
+                onSubmit: (String v) {
+                  _bloc.querySearch = v;
+                  _research();
+                },
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25),
+                padding: EdgeInsets.only(
+                  left: 25,
+                  right: 25,
+                  top: 6,
+                  bottom: 6,
+                ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    StreamBuilder<List<Cats>>(
+                    Expanded(
+                      child: DropDownBase(
                         stream: _bloc.listType,
-                        builder: (context, snapshot) {
-                          final listFilter = snapshot.data ?? [];
-                          return listFilter.isNotEmpty
-                              ? StreamBuilder<String?>(
-                                  stream: _bloc.typeStream,
-                                  builder: (context, snapshot) {
-                                    final filter = snapshot.data;
-                                    return Column(
-                                      children: [
-                                        DropdownButton2(
-                                          dropdownMaxHeight:
-                                              MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  2,
-                                          hint: Row(
-                                            children: [
-                                              Text(
-                                                filter ?? 'Chọn loại',
-                                                style: AppStyle.DEFAULT_18_BOLD
-                                                    .copyWith(
-                                                        color:
-                                                            COLORS.TEXT_COLOR),
-                                              ),
-                                              SizedBox(
-                                                width: 8,
-                                              ),
-                                              Transform.rotate(
-                                                  angle: -4.5 * pi,
-                                                  child: Icon(
-                                                    Icons
-                                                        .arrow_back_ios_new_sharp,
-                                                    size: 20,
-                                                    color: COLORS.TEXT_COLOR,
-                                                  ))
-                                            ],
-                                          ),
-                                          icon: Container(),
-                                          dropdownWidth: Get.width / 1.5,
-                                          underline: Container(),
-                                          onChanged: (String? value) {},
-                                          items: listFilter
-                                              .map((items) =>
-                                                  DropdownMenuItem<String>(
-                                                    onTap: () {
-                                                      _bloc.typeStream
-                                                          .add(items.label);
-                                                      _bloc.type = items.id;
-                                                      search();
-                                                    },
-                                                    value: items.label,
-                                                    child: Text(
-                                                      items.label ?? '',
-                                                      style: AppStyle
-                                                          .DEFAULT_16_BOLD,
-                                                    ),
-                                                  ))
-                                              .toList(),
-                                        ),
-                                      ],
-                                    );
-                                  })
-                              : SizedBox();
-                        }),
-                    GestureDetector(
-                        onTap: () {
-                          showBotomSheet(_bloc.dataFilter ?? []);
+                        onTap: (item) {
+                          _bloc.type = item.id;
+                          _research();
                         },
-                        child: SvgPicture.asset(
-                          ICONS.IC_FILL_SVG,
-                          width: 20,
-                          height: 20,
-                          fit: BoxFit.contain,
-                        )),
+                      ),
+                    ),
+                    if (_bloc.listFilter.value.isNotEmpty) ...[
+                      SizedBox(
+                        width: 6,
+                      ),
+                      Expanded(
+                        child: DropDownBase(
+                          stream: _bloc.listFilter,
+                          isName: true,
+                          onTap: (item) {
+                            _bloc.filter = item.id;
+                            _research();
+                          },
+                        ),
+                      ),
+                    ],
+                    if (managerBloc.managerTrees.value.isNotEmpty) ...[
+                      SizedBox(
+                        width: 6,
+                      ),
+                      GestureDetector(
+                          onTap: () {
+                            showManagerFilter(context, managerBloc, (v) {
+                              _bloc.ids = v;
+                              _research();
+                            });
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(14),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: COLORS.GREY_400,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(4))),
+                            child: SvgPicture.asset(
+                              ICONS.IC_FILL_SVG,
+                              width: 20,
+                              height: 20,
+                              fit: BoxFit.contain,
+                            ),
+                          )),
+                    ]
                   ],
                 ),
               ),
@@ -254,7 +216,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       height: MediaQuery.of(context).size.height,
                       child: RefreshIndicator(
                         onRefresh: () async {
-                          await getDataFirst();
+                          await _research();
                         },
                         child: ListView.builder(
                             padding: EdgeInsets.only(top: 10, bottom: 10),
@@ -280,82 +242,5 @@ class _ProductScreenState extends State<ProductScreen> {
             ],
           ),
         ));
-  }
-
-  showBotomSheet(List<DataFilter> dataFilter) {
-    showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-        ),
-        elevation: 2,
-        context: context,
-        isScrollControlled: true,
-        constraints: BoxConstraints(maxHeight: Get.height * 0.7),
-        builder: (context) {
-          return StatefulBuilder(
-            builder: (context, setState) {
-              return SafeArea(
-                child: Container(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: WidgetText(
-                          title: 'Chọn lọc',
-                          textAlign: TextAlign.center,
-                          style: AppStyle.DEFAULT_16_BOLD,
-                        ),
-                      ),
-                      Column(
-                        children: List.generate(
-                            dataFilter.length,
-                            (index) => GestureDetector(
-                                  onTap: () {
-                                    _bloc.filter =
-                                        dataFilter[index].id.toString();
-                                    Get.back();
-                                    search();
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(vertical: 8),
-                                    decoration: BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                width: 1,
-                                                color: COLORS.LIGHT_GREY))),
-                                    child: Row(
-                                      // crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        SvgPicture.asset(
-                                          ICONS.IC_FILTER_SVG,
-                                          width: 20,
-                                          height: 20,
-                                          fit: BoxFit.contain,
-                                        ),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        Expanded(
-                                            child: Container(
-                                          child: WidgetText(
-                                            title: dataFilter[index].name ?? '',
-                                            style: AppStyle.DEFAULT_16,
-                                          ),
-                                        )),
-                                      ],
-                                    ),
-                                  ),
-                                )),
-                      )
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        });
   }
 }

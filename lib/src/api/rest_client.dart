@@ -5,6 +5,7 @@ import 'package:gen_crm/src/models/model_generator/add_voucher_response.dart';
 import 'package:gen_crm/src/models/model_generator/detail_product_module_response.dart';
 import 'package:gen_crm/src/models/model_generator/get_phone_cus.dart';
 import 'package:gen_crm/src/models/model_generator/infor_acc.dart';
+import 'package:gen_crm/src/models/model_generator/manager_filter_response.dart';
 import 'package:gen_crm/src/models/model_generator/post_info_car_response.dart';
 import 'package:gen_crm/src/models/model_generator/product_customer_edit_response.dart';
 import 'package:gen_crm/src/models/request/voucher_service_request.dart';
@@ -100,12 +101,20 @@ abstract class RestClient {
   Future<DetailCoursesResponse> getDetailCourse(@Query('id') int id);
 
   @GET(BASE_URL.LIST_CUSTOMER)
-  Future<ListCustomerResponse> getListCustomer(@Query('page') int page,
-      @Query('filter') String filter, @Query('search') String search);
+  Future<ListCustomerResponse> getListCustomer(
+    @Query('page') int page,
+    @Query('filter') String filter,
+    @Query('search') String search,
+    @Query('nguoi_quan_ly') String? manager,
+  );
 
   @GET(BASE_URL.LIST_CHANCE)
-  Future<ListChanceResponse> getListChance(@Query('page') int page,
-      @Query('filter') String filter, @Query('search') String search);
+  Future<ListChanceResponse> getListChance(
+    @Query('page') int page,
+    @Query('filter') String filter,
+    @Query('search') String search,
+    @Query('nguoi_quan_ly') String? manager,
+  );
 
   @GET(BASE_URL.DETAIL_CUSTOMER)
   Future<DetailCustomerResponse> getDetailCustomer(@Query('id') int id);
@@ -147,6 +156,7 @@ abstract class RestClient {
     @Query('page') int page,
     @Query('search') String search,
     @Query('filter') String filter,
+    @Query('nguoi_quan_ly') String? manager,
   );
 
   @GET(BASE_URL.LIST_SUPPORT)
@@ -154,27 +164,38 @@ abstract class RestClient {
     @Query('page') int page,
     @Query('search') String search,
     @Query('filter') String filter,
+    @Query('nguoi_quan_ly') String? manager,
   );
 
   @GET(BASE_URL.LIST_CLUE)
-  Future<ListClueResponse> getListClue(@Query('page') int page,
-      @Query('filter') String filter, @Query('search') String search);
+  Future<ListClueResponse> getListClue(
+    @Query('page') int page,
+    @Query('filter') String filter,
+    @Query('search') String search,
+    @Query('nguoi_quan_ly') String? manager,
+  );
 
   @GET(BASE_URL.ADD_CUSTOMER_GET)
   Future<AddCustomerIndividual> getAddCustomer(
-      @Query('la_ca_nhan') int la_ca_nhan, @Query('id') String? id);
+    @Query('la_ca_nhan') int la_ca_nhan,
+    @Query('id') String? id,
+  );
 
   @POST(BASE_URL.ADD_SERVICE_VOUCHER)
   Future<AddVoucherResponse> postAddServiceVoucher(
-      @Field('so_dien_thoai') String soDienThoai,
-      @Field('bien_so') String bienSo);
+    @Field('so_dien_thoai') String soDienThoai,
+    @Field('bien_so') String bienSo,
+  );
 
   @POST(BASE_URL.POST_INFO_CAR)
-  Future<InfoCar> postInfoCar(@Part(name: "idxe") String idxe);
+  Future<InfoCar> postInfoCar(
+    @Part(name: "idxe") String idxe,
+  );
 
   @POST(BASE_URL.SAVE_SERVICE_VOUCHER)
   Future<dynamic> saveServiceVoucher(
-      @Body() VoucherServiceRequest voucherServiceRequest);
+    @Body() VoucherServiceRequest voucherServiceRequest,
+  );
 
   @POST(BASE_URL.LIST_CAR_INFO)
   Future<ListCarInfo> getVersionInfoCar();
@@ -183,21 +204,27 @@ abstract class RestClient {
   Future<AddCustomerIndividual> getAddCustomerOr();
 
   @GET(BASE_URL.PAYMENT_CONTRACT)
-  Future<PaymentContractResponse> getPaymentContract(@Query('id') int id);
+  Future<PaymentContractResponse> getPaymentContract(
+    @Query('id') int id,
+  );
 
   @GET(BASE_URL.JOB_CONTRACT)
   Future<JobChance> getJobContract(@Query('id') int id);
 
   @DELETE(BASE_URL.DELETE_CUSTOMER)
   Future<BaseResponse> deleteCustomer(
-      // @Query('id') int id
-      @Body() Map<String, dynamic> map);
+    @Body() Map<String, dynamic> map,
+  );
 
   @GET(BASE_URL.DETAIL_CONTRACT)
-  Future<DetailContractResponse> getDetailContract(@Query('id') int id);
+  Future<DetailContractResponse> getDetailContract(
+    @Query('id') int id,
+  );
 
   @GET(BASE_URL.SUPPORT_CONTRACT)
-  Future<SupportContractResponse> getSupportContract(@Query('id') int id);
+  Future<SupportContractResponse> getSupportContract(
+    @Query('id') int id,
+  );
 
   @GET(BASE_URL.DETAIL_CLUE)
   Future<DetailClue> getDetailClue(
@@ -232,6 +259,7 @@ abstract class RestClient {
     @Query('pageIndex') String pageIndex,
     @Query('text') String text,
     @Query('filter_id') String filter_id,
+    @Query('nguoi_quan_ly') String? manager,
   );
   @GET(BASE_URL.INFO_ACC)
   Future<InforAccResponse> getInforAcc();
@@ -243,94 +271,141 @@ abstract class RestClient {
   Future<FilterResponse> getReportOption2();
 
   @GET(BASE_URL.GET_UPDATE_CUSTOMER)
-  Future<AddCustomerIndividual> getUpdateCustomer(@Query('id') String id);
+  Future<AddCustomerIndividual> getUpdateCustomer(
+    @Query('id') String id,
+  );
 
   @DELETE(BASE_URL.DELETE_CONTRACT)
-  Future<BaseResponse> deleteContract(@Body() Map<String, dynamic> map);
+  Future<BaseResponse> deleteContract(
+    @Body() Map<String, dynamic> map,
+  );
 
   @DELETE(BASE_URL.DELETE_JOB)
-  Future<BaseResponse> deleteJob(@Body() Map<String, dynamic> map);
+  Future<BaseResponse> deleteJob(
+    @Body() Map<String, dynamic> map,
+  );
 
   @GET(BASE_URL.DETAIL_JOB)
-  Future<DetailWorkResponse> detailJob(@Query('id') int id);
+  Future<DetailWorkResponse> detailJob(
+    @Query('id') int id,
+  );
 
   @GET(BASE_URL.GET_FORM_ADD_CONTACT_CUS)
   Future<AddCustomerIndividual> getFormaddContactCus(
-      @Query('customer_id') String customer_id);
+    @Query('customer_id') String customer_id,
+  );
 
   @GET(BASE_URL.GET_FORM_ADD_OPPORT_CUS)
   Future<AddCustomerIndividual> getFormAddOppCus(
-      @Query('customer_id') String customer_id);
+    @Query('customer_id') String customer_id,
+  );
 
   @GET(BASE_URL.GET_FORM_ADD_CONTRACT_CUS)
   Future<AddCustomerIndividual> getFormAddContractCus(
-      @Query('customer_id') String customer_id);
+    @Query('customer_id') String customer_id,
+  );
 
   @GET(BASE_URL.GET_FORM_ADD_JOB_CUS)
   Future<AddCustomerIndividual> getFormAddJobCus(
-      @Query('customer_id') String customer_id);
+    @Query('customer_id') String customer_id,
+  );
 
   @GET(BASE_URL.GET_FORM_ADD_SUPPORT_CUS)
   Future<AddCustomerIndividual> getFormAddSupportCus(
-      @Query('customer_id') String customer_id);
+    @Query('customer_id') String customer_id,
+  );
 
   @GET(BASE_URL.GET_FORM_ADD_AGENCY)
-  Future<AddCustomerIndividual> getFormAddAgency(@Query('id') String? id);
+  Future<AddCustomerIndividual> getFormAddAgency(
+    @Query('id') String? id,
+  );
 
   @GET(BASE_URL.GET_FORM_ADD_CHANCE)
-  Future<AddCustomerIndividual> getFormAddChance(@Query('id') String? id);
+  Future<AddCustomerIndividual> getFormAddChance(
+    @Query('id') String? id,
+  );
 
   @GET(BASE_URL.GET_FORM_ADD_CONTRACT)
-  Future<AddCustomerIndividual> getFormAddContract(@Query('idch') String? id);
+  Future<AddCustomerIndividual> getFormAddContract(
+    @Query('idch') String? id,
+  );
 
   @GET(BASE_URL.GET_FORM_ADD_JOB)
-  Future<AddCustomerIndividual> getFormAddJob(@Query('id') String? id);
+  Future<AddCustomerIndividual> getFormAddJob(
+    @Query('id') String? id,
+  );
 
   @GET(BASE_URL.GET_FORM_ADD_SUPPORT)
-  Future<AddCustomerIndividual> getFormAddSupport(@Query('id') String? id);
+  Future<AddCustomerIndividual> getFormAddSupport(
+    @Query('id') String? id,
+  );
 
   @GET(BASE_URL.GET_FORM_ADD_JOB_OPP)
-  Future<AddCustomerIndividual> getFormAddJobOpp(@Query('id') String? id);
+  Future<AddCustomerIndividual> getFormAddJobOpp(
+    @Query('id') String? id,
+  );
 
   @GET(BASE_URL.GET_FORM_ADD_JOB_CHANCE)
-  Future<AddCustomerIndividual> getFormAddJobChance(@Query('id') String? id);
+  Future<AddCustomerIndividual> getFormAddJobChance(
+    @Query('id') String? id,
+  );
 
   @DELETE(BASE_URL.DELETE_CONTACT)
-  Future<BaseResponse> deleteContact(@Body() Map<String, dynamic> map);
+  Future<BaseResponse> deleteContact(
+    @Body() Map<String, dynamic> map,
+  );
 
   @DELETE(BASE_URL.DELETE_CHANCE)
-  Future<BaseResponse> deleteChance(@Body() Map<String, dynamic> map);
+  Future<BaseResponse> deleteChance(
+    @Body() Map<String, dynamic> map,
+  );
 
   @GET(BASE_URL.FORM_EDIT_CONTACT)
-  Future<AddCustomerIndividual> getFormEditContact(@Query('id') String? id);
+  Future<AddCustomerIndividual> getFormEditContact(
+    @Query('id') String? id,
+  );
 
   @GET(BASE_URL.FORM_EDIT_SUPPORT)
-  Future<AddCustomerIndividual> getFormEditSupport(@Query('id') String? id);
+  Future<AddCustomerIndividual> getFormEditSupport(
+    @Query('id') String? id,
+  );
 
   @GET(BASE_URL.GET_CUSTOMER_CONTRACT)
   Future<CustomerContractResponse> getCustomerContract(
-      @Query('page') String? page, @Query('querySearch') String? querySearch);
+    @Query('page') String? page,
+    @Query('querySearch') String? querySearch,
+  );
 
   @DELETE(BASE_URL.DELETE_SUPPORT)
-  Future<BaseResponse> deleteSupport(@Body() Map<String, dynamic> map);
+  Future<BaseResponse> deleteSupport(
+    @Body() Map<String, dynamic> map,
+  );
 
   @DELETE(BASE_URL.DELETE_NOTE)
   Future<BaseResponse> deleteNote(
-      @Path("module") String module, @Body() Map<String, dynamic> map);
+    @Path("module") String module,
+    @Body() Map<String, dynamic> map,
+  );
 
   @GET(BASE_URL.GET_FORM_EDIT_CONTRACT)
-  Future<AddCustomerIndividual> getFormEditContract(@Query('id') String? id);
+  Future<AddCustomerIndividual> getFormEditContract(
+    @Query('id') String? id,
+  );
 
   @GET(BASE_URL.GET_FORM_ADD_JOB_CONTRACT)
-  Future<AddCustomerIndividual> getFormAddJobContract(@Query('id') String? id);
+  Future<AddCustomerIndividual> getFormAddJobContract(
+    @Query('id') String? id,
+  );
 
   @GET(BASE_URL.GET_FORM_ADD_SUPPORT_CONTRACT)
   Future<AddCustomerIndividual> getFormAddSupportContract(
-      @Query('id') String? id);
+    @Query('id') String? id,
+  );
 
   @GET(BASE_URL.GET_CONTACT_BY_CUSTOMER)
   Future<ContactByCustomerResponse> getContactByCustomer(
-      @Query('customer_id') String? id);
+    @Query('customer_id') String? id,
+  );
 
   @GET(BASE_URL.GET_LIST_NOTE)
   Future<NoteResponse> getNoteList(
@@ -341,61 +416,81 @@ abstract class RestClient {
 
   @GET(BASE_URL.LIST_PRODUCT)
   Future<ProductResponse> getListProduct(
-      @Query('page') String? page, @Query('querySearch') String? querySearch);
+    @Query('page') String? page,
+    @Query('querySearch') String? querySearch,
+  );
 
   @GET(BASE_URL.GET_PHONE_CUS)
-  Future<GetPhoneCusResponse> getPhoneCus(@Query('id') String? id);
+  Future<GetPhoneCusResponse> getPhoneCus(
+    @Query('id') String? id,
+  );
 
   @GET(BASE_URL.GET_PHONE_CUS)
-  Future<GetPhoneCusResponse> getPhoneAgency(@Query('daumoi_id') String? id);
+  Future<GetPhoneCusResponse> getPhoneAgency(
+    @Query('daumoi_id') String? id,
+  );
 
   @POST(BASE_URL.LOGOUT)
-  Future<BaseResponse> logout(@Body() Map<String, dynamic> map);
+  Future<BaseResponse> logout(
+    @Body() Map<String, dynamic> map,
+  );
 
   // =================================> POST <==================================
 
   @POST(BASE_URL.LOGIN)
-  Future<LoginResponse> loginApp(@Body() LoginAppRequest loginAppRequest);
+  Future<LoginResponse> loginApp(
+    @Body() LoginAppRequest loginAppRequest,
+  );
 
   @POST(BASE_URL.REGISTER)
   Future<ResponseStatus> registerApp(
-      @Body() RegisterAppRequest registerAppRequest);
+    @Body() RegisterAppRequest registerAppRequest,
+  );
 
   @POST(BASE_URL.CHANGE_PASSWORD)
   Future<ResponseStatus> changePassword(
-      @Body() ParamChangePassword paramChangePassword);
+    @Body() ParamChangePassword paramChangePassword,
+  );
 
   @POST(BASE_URL.FORGOT_PASSWORD)
   Future<ParamForgotPassword> forgotPassword(
-      @Body() ParamRequestForgotPassword paramRequestForgotPassword);
+    @Body() ParamRequestForgotPassword paramRequestForgotPassword,
+  );
 
   @POST(BASE_URL.FORGOT_PASSWORD_OTP)
   Future<BaseResponse> forgotPasswordOtp(
-      @Body() ParamRequestForgotPasswordOtp paramRequestForgotPasswordOtp);
+    @Body() ParamRequestForgotPasswordOtp paramRequestForgotPasswordOtp,
+  );
 
   @POST(BASE_URL.RESET_PASSWORD)
   Future<BaseResponse> resetPassword(
-      @Body() ParamResetPassword paramResetPassword);
+    @Body() ParamResetPassword paramResetPassword,
+  );
 
   @POST(BASE_URL.EDIT_PROFILE)
   Future<ResponseDataStatus> postUpdateProfile(
-      @Body() ParamChangeInfo infoUser);
+    @Body() ParamChangeInfo infoUser,
+  );
 
   @POST(BASE_URL.EDIT_PROFILE)
   Future<ResponseDataStatus> postUpdateProfileNotImage(
-      @Body() ParamChangeInfoNotImage infoUser);
+    @Body() ParamChangeInfoNotImage infoUser,
+  );
 
   @POST(BASE_URL.ORDER_COURSE)
   Future<ResponseDataStatus> orderCourse(
-      @Body() ParamOrderCourse paramOrderCourse);
+    @Body() ParamOrderCourse paramOrderCourse,
+  );
 
   @POST(BASE_URL.REPORT_CONTACT)
   Future<ContactReportResponse> reportContact(
-      @Body() RequestBodyReport requestBodyReport);
+    @Body() RequestBodyReport requestBodyReport,
+  );
 
   @POST(BASE_URL.REPORT_GENERAL)
   Future<DataGeneralResponse> reportGeneral(
-      @Body() RequestBodyReport requestBodyReport);
+    @Body() RequestBodyReport requestBodyReport,
+  );
 
   @POST(BASE_URL.REPORT_EMPLOYEE)
   Future<DataEmployResponse> reportEmployee(
@@ -403,66 +498,90 @@ abstract class RestClient {
 
   @POST(BASE_URL.REPORT_PRODUCT)
   Future<ReportProductResponse> reportProduct(
-      @Body() RequestBodyReportProduct requestBodyReportProduct);
+    @Body() RequestBodyReportProduct requestBodyReportProduct,
+  );
 
   @POST(BASE_URL.PROFILE)
   Future<ResponseDataStatus> postImages(
-      @Part() File image,
-      @Query('code') String code,
-      @Query('email') String email,
-      @Query('name') String name);
+    @Part() File image,
+    @Query('code') String code,
+    @Query('email') String email,
+    @Query('name') String name,
+  );
 
   @POST(BASE_URL.UPDATE_PASS)
-  Future<BaseResponse> updatePass(@Body() UpdatePassRequest);
+  Future<BaseResponse> updatePass(
+    @Body() UpdatePassRequest,
+  );
 
   @POST(BASE_URL.READ_NOTIFICATION)
-  Future<BaseResponse> readNotification(@Body() ReadNotifiParam);
+  Future<BaseResponse> readNotification(
+    @Body() ReadNotifiParam,
+  );
 
   @POST(BASE_URL.CHANGE_INFOR_ACC)
   @MultiPart()
   Future<BaseResponse> changeInforAccNoAvatar(
-      @Part(name: "ho_va_ten") String fullName,
-      @Part(name: "email") String email,
-      @Part(name: "dien_thoai") String phone,
-      @Part(name: "dia_chi") String address);
+    @Part(name: "ho_va_ten") String fullName,
+    @Part(name: "email") String email,
+    @Part(name: "dien_thoai") String phone,
+    @Part(name: "dia_chi") String address,
+  );
 
   @POST(BASE_URL.CHANGE_INFOR_ACC)
   @MultiPart()
   Future<BaseResponse> changeInforAcc(
-      @Part(name: "ho_va_ten") String fullName,
-      @Part(name: "email") String email,
-      @Part(name: "dien_thoai") String phone,
-      @Part(name: "dia_chi") String address,
-      @Part(name: "avatar") File avatar);
+    @Part(name: "ho_va_ten") String fullName,
+    @Part(name: "email") String email,
+    @Part(name: "dien_thoai") String phone,
+    @Part(name: "dia_chi") String address,
+    @Part(name: "avatar") File avatar,
+  );
 
   @POST(BASE_URL.ADD_CUSTOMER_INDIVIDUAL_POST)
   Future<AddDataResponse> addIndividualCustomer(
-      @Body() Map<String, dynamic> map);
+    @Body() Map<String, dynamic> map,
+  );
 
   @POST(BASE_URL.ADD_CUSTOMER_OR)
   Future<AddDataResponse> addOrganizationCustomer(
-      @Body() Map<String, dynamic> map);
+    @Body() Map<String, dynamic> map,
+  );
 
   @POST(BASE_URL.EDIT_CUSTOMER)
-  Future<EditCusResponse> editCustomer(@Body() Map<String, dynamic> map);
+  Future<EditCusResponse> editCustomer(
+    @Body() Map<String, dynamic> map,
+  );
 
   @POST(BASE_URL.ADD_CONTACT_CUS)
-  Future<AddDataResponse> addContactCus(@Body() Map<String, dynamic> map);
+  Future<AddDataResponse> addContactCus(
+    @Body() Map<String, dynamic> map,
+  );
 
   @POST(BASE_URL.ADD_OPPORTUNITY)
-  Future<AddDataResponse> addOpportunity(@Body() Map<String, dynamic> map);
+  Future<AddDataResponse> addOpportunity(
+    @Body() Map<String, dynamic> map,
+  );
 
   @POST(BASE_URL.ADD_CONTRACT)
-  Future<AddDataResponse> addContract(@Body() Map<String, dynamic> map);
+  Future<AddDataResponse> addContract(
+    @Body() Map<String, dynamic> map,
+  );
 
   @POST(BASE_URL.ADD_JOB)
-  Future<AddDataResponse> addJob(@Body() Map<String, dynamic> map);
+  Future<AddDataResponse> addJob(
+    @Body() Map<String, dynamic> map,
+  );
 
   @POST(BASE_URL.ADD_SUPPORT)
-  Future<AddDataResponse> addSupport(@Body() Map<String, dynamic> map);
+  Future<AddDataResponse> addSupport(
+    @Body() Map<String, dynamic> map,
+  );
 
   @POST(BASE_URL.SAVE_UPDATE_JOB)
-  Future<AddDataResponse> saveUpdateJob(@Body() Map<String, dynamic> map);
+  Future<AddDataResponse> saveUpdateJob(
+    @Body() Map<String, dynamic> map,
+  );
 
   @POST(BASE_URL.ADD_NOTE)
   Future<BaseResponse> addNote(
@@ -520,6 +639,7 @@ abstract class RestClient {
     @Part(name: "txt") String? txt,
     @Part(name: "page") String page,
     @Part(name: "filter") String? filter,
+    @Query('nguoi_quan_ly') String? manager,
   );
 
   @GET(BASE_URL.DETAIL_PRODUCT)
@@ -536,7 +656,9 @@ abstract class RestClient {
   );
 
   @POST(BASE_URL.ADD_PRODUCT_MODULE)
-  Future<ResponseSaveProduct> addProduct(@Body() Map<String, dynamic> map);
+  Future<ResponseSaveProduct> addProduct(
+    @Body() Map<String, dynamic> map,
+  );
 
   @POST(BASE_URL.DELETE_PRODUCT)
   Future<dynamic> deleteProduct(
@@ -545,7 +667,9 @@ abstract class RestClient {
 
   @POST(BASE_URL.ADD_PRODUCT_MODULE)
   Future<ResponseEditProduct> editProduct(
-      @Body() Map<String, dynamic> map, @Query('id') int id);
+    @Body() Map<String, dynamic> map,
+    @Query('id') int id,
+  );
 
   @POST(BASE_URL.GET_LIST_BAO_CAO)
   Future<ResponseBaoCao> getListBaoCao(
@@ -580,6 +704,7 @@ abstract class RestClient {
     @Part(name: 'page') String page,
     @Part(name: 'txt') String? txt,
     @Part(name: 'filter') String? filter,
+    @Query('nguoi_quan_ly') String? manager,
   );
 
   @GET(BASE_URL.PRODUCT_CUSTOMER_DETAIL)
@@ -597,11 +722,13 @@ abstract class RestClient {
 
   @POST(BASE_URL.SAVE_FROM_PRODUCT_CUSTOMER_ADD)
   Future<ResponseSaveProductCustomer> saveAddProductCustomer(
-      @Body() Map<String, dynamic> map);
+    @Body() Map<String, dynamic> map,
+  );
 
   @POST(BASE_URL.SAVE_FROM_PRODUCT_CUSTOMER_EDIT)
   Future<ResponseEditProductCustomer> saveEditProductCustomer(
-      @Body() Map<String, dynamic> map);
+    @Body() Map<String, dynamic> map,
+  );
 
   @POST(BASE_URL.PRODUCT_CUSTOMER_DELETE)
   Future<dynamic> deleteProductCustomer(
@@ -615,7 +742,8 @@ abstract class RestClient {
 
   @POST(BASE_URL.SAVE_SIGN)
   Future<ResponseSaveProductCustomer> saveSignature(
-      @Body() Map<String, dynamic> map);
+    @Body() Map<String, dynamic> map,
+  );
 
   @GET(BASE_URL.GET_LIST_CH_PRODUCT_CUSTOMER)
   Future<ListCHProductCustomerResponse> getListCHProductCustomer(
@@ -659,5 +787,10 @@ abstract class RestClient {
   @GET(BASE_URL.GET_FORM_CH_PRODUCT_CUSTOMER)
   Future<AddCustomerIndividual> getFormCHProductCustomer(
     @Query('spkh') int spkh,
+  );
+
+  @GET(BASE_URL.GET_LIST_MANAGER_FILTER)
+  Future<ManagerFilterResponse> getListManagerFilter(
+    @Query('module') String module,
   );
 }

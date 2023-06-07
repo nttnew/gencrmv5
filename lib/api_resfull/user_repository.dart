@@ -16,6 +16,7 @@ import 'package:gen_crm/src/models/model_generator/job_customer.dart';
 import 'package:gen_crm/src/models/model_generator/list_notification.dart';
 import 'package:gen_crm/src/models/model_generator/list_product_customer_response.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
+import 'package:gen_crm/src/models/model_generator/manager_filter_response.dart';
 import 'package:gen_crm/src/models/model_generator/policy.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/src/models/model_generator/report_employee.dart';
@@ -62,6 +63,7 @@ import '../src/models/model_generator/response_save_product.dart';
 import '../src/models/model_generator/save_checkin_response.dart';
 import '../src/models/model_generator/support_customer.dart';
 import '../src/models/model_generator/update_pass_request.dart';
+import '../widgets/tree/tree_node_model.dart';
 
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 
@@ -106,14 +108,30 @@ class UserRepository {
       await RestClient(dio, baseUrl: dio.options.baseUrl).getDetailCourse(id);
 
   Future<ListCustomerResponse> getListCustomer(
-          int page, String filter, String search) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .getListCustomer(page, filter, search);
+    int page,
+    String filter,
+    String search,
+    String? managers,
+  ) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getListCustomer(
+        page,
+        filter,
+        search,
+        managers,
+      );
 
   Future<ListChanceResponse> getListChance(
-          int page, String filter, String search) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .getListChance(page, filter, search);
+    int page,
+    String filter,
+    String search,
+    String? managers,
+  ) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getListChance(
+        page,
+        filter,
+        search,
+        managers,
+      );
 
   Future<DetailCustomerResponse> getDetailCustomer(int id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getDetailCustomer(id);
@@ -139,14 +157,30 @@ class UserRepository {
       await RestClient(dio, baseUrl: dio.options.baseUrl).getDetailSupport(id);
 
   Future<ContractResponse> getListContract(
-          int page, String search, String filter) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .getListContract(page, search, filter);
+    int page,
+    String search,
+    String filter,
+    String? managers,
+  ) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getListContract(
+        page,
+        search,
+        filter,
+        managers,
+      );
 
   Future<SupportResponse> getListSupport(
-          int page, String search, String filter) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .getListSupport(page, search, filter);
+    int page,
+    String search,
+    String filter,
+    String? managers,
+  ) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getListSupport(
+        page,
+        search,
+        filter,
+        managers,
+      );
 
   Future<AddCustomerIndividual> getAddCustomer(int isIndividual,
           {String? id}) async =>
@@ -190,9 +224,17 @@ class UserRepository {
           .getListDetailChance(id);
 
   Future<ListClueResponse> getListClue(
-          int page, String filter, String search) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .getListClue(page, filter, search);
+    int page,
+    String filter,
+    String search,
+    String? managers,
+  ) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getListClue(
+        page,
+        filter,
+        search,
+        managers,
+      );
 
   Future<DetailClue> getDetailClue(String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getDetailClue(id);
@@ -243,9 +285,17 @@ class UserRepository {
           .getSupportContract(id);
 
   Future<WorkResponse> getListJob(
-          String pageIndex, String text, String filter_id) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .getListJob(pageIndex, text, filter_id);
+    String pageIndex,
+    String text,
+    String filter_id,
+    String? managers,
+  ) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getListJob(
+        pageIndex,
+        text,
+        filter_id,
+        managers,
+      );
 
   Future<AddCustomerIndividual> getUpdateCustomer(String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getUpdateCustomer(id);
@@ -611,12 +661,14 @@ class UserRepository {
     String? txt,
     required String page,
     String? filter,
+    String? managers,
   }) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getListProductModule(
         typeProduct,
         txt,
         page,
         filter,
+        managers,
       );
 
   Future<DetailProductResponse> getDetailProduct({
@@ -674,14 +726,8 @@ class UserRepository {
     required String location,
     required String type,
   }) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).saveCheckIn(
-        module,
-        id,
-        latitude,
-        longitude,
-        location,
-        type
-      );
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .saveCheckIn(module, id, latitude, longitude, location, type);
 
   Future<dynamic> deleteProduct({
     required String id,
@@ -692,9 +738,15 @@ class UserRepository {
     required String page,
     String? txt,
     String? filter,
+    String? managers,
   }) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .getListProductCustomer(page, txt, filter);
+          .getListProductCustomer(
+        page,
+        txt,
+        filter,
+        managers,
+      );
 
   Future<DetailProductCustomerResponse> getDetailProductCustomer({
     required String id,
@@ -789,6 +841,14 @@ class UserRepository {
   }) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .getFormCHProductCustomer(id);
+
+  Future<List<TreeNodeData>> getListManagerFilter({
+    required String module,
+  }) async {
+    final result = await RestClient(dio, baseUrl: dio.options.baseUrl)
+        .getListManagerFilter(module);
+    return ManagerFilterResponse.mapManagerToTree(result.data?.d) ?? [];
+  }
 
   //////////////////////
 

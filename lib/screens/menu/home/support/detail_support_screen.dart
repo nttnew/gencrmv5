@@ -160,7 +160,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                         Get.back();
                         Get.back();
                         SupportBloc.of(context)
-                            .add(InitGetSupportEvent(1, '', ''));
+                            .add(InitGetSupportEvent());
                       },
                     );
                   } else if (state is ErrorDeleteSupportState) {

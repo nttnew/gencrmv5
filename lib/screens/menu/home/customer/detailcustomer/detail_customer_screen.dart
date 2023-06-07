@@ -180,7 +180,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                   Get.back();
                   Get.back();
                   GetListCustomerBloc.of(context)
-                      .add(InitGetListOrderEvent("", 1, ""));
+                      .add(InitGetListOrderEvent());
                 },
               );
             } else if (state is ErrorDeleteCustomerState) {

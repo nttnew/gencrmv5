@@ -4,15 +4,17 @@ import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'package:gen_crm/bloc/work/work_bloc.dart';
-import 'package:gen_crm/src/models/model_generator/work.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/screens/menu/home/work/index.dart';
-import 'package:gen_crm/widgets/widget_search.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
+import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../widgets/appbar_base.dart';
+import '../../../../widgets/drop_down_base.dart';
+import '../../../../widgets/search_base.dart';
+import '../../../../widgets/tree/tree_node_model.dart';
+import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 
 class WorkScreen extends StatefulWidget {
@@ -24,13 +26,13 @@ class WorkScreen extends StatefulWidget {
 
 class _WorkScreenState extends State<WorkScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-
   ScrollController _scrollController = ScrollController();
-  int page = 1;
+  int page = BASE_URL.PAGE_DEFAULT;
   int pageTotal = 1;
   String search = "";
-  String filter_id = "";
+  String idFilter = "";
   String title = '';
+  String ids = '';
   List<String> listAdd = [
     'Thêm check in',
     'Thêm ${(Get.arguments ?? '').toLowerCase()}'
@@ -41,21 +43,35 @@ class _WorkScreenState extends State<WorkScreen> {
     AppNavigator.navigateFormAdd(value, 5, isCheckIn: listAdd.first == value);
   }
 
+  late final ManagerBloc managerBloc;
+
   @override
   void initState() {
+    managerBloc =
+        ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
+    managerBloc.getManager(module: Module.CONG_VIEC);
+    title = Get.arguments ?? '';
     GetListUnReadNotifiBloc.of(context).add(CheckNotification());
-    WorkBloc.of(context).add(InitGetListWorkEvent("1", "", ""));
+    WorkBloc.of(context).add(InitGetListWorkEvent());
     _scrollController.addListener(() {
       if (_scrollController.offset ==
               _scrollController.position.maxScrollExtent &&
           page < pageTotal) {
-        WorkBloc.of(context).add(
-            InitGetListWorkEvent((page + 1).toString(), search, filter_id));
         page = page + 1;
+        _research(pageNew: page);
       } else {}
     });
-    title = Get.arguments ?? '';
     super.initState();
+  }
+
+  _research({int? pageNew}) {
+    page = pageNew ?? BASE_URL.PAGE_DEFAULT;
+    WorkBloc.of(context).add(InitGetListWorkEvent(
+      filter: idFilter,
+      page: page,
+      ids: ids,
+      search: search,
+    ));
   }
 
   @override
@@ -151,40 +167,53 @@ class _WorkScreenState extends State<WorkScreen> {
         // padding: EdgeInsets.only(bottom: 70),
         child: Column(
           children: [
-            AppValue.vSpaceTiny,
-            BlocBuilder<WorkBloc, WorkState>(builder: (context, state) {
-              if (state is SuccessGetListWorkState)
-                return Container(
-                  margin: EdgeInsets.symmetric(
-                    horizontal: 25,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: HexColor("#DBDBDB")),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: WidgetSearch(
-                    hintTextStyle: TextStyle(
-                        fontFamily: "Quicksand",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: HexColor("#707070")),
+            AppValue.vSpaceSmall,
+            StreamBuilder<List<TreeNodeData>>(
+                stream: managerBloc.managerTrees,
+                builder: (context, snapshot) {
+                  return SearchBase(
                     hint: "Tìm ${title.toLowerCase()}",
-                    onSubmit: (v) {
-                      search = v;
-                      WorkBloc.of(context)
-                          .add(InitGetListWorkEvent("1", v, filter_id));
-                    },
                     leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
-                    endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
+                    endIcon: (snapshot.data ?? []).isNotEmpty
+                        ? SvgPicture.asset(
+                            ICONS.IC_FILL_SVG,
+                            width: 16,
+                            height: 16,
+                            fit: BoxFit.contain,
+                          )
+                        : null,
                     onClickRight: () {
-                      showBotomSheet(state.data_filter);
+                      showManagerFilter(context, managerBloc, (v) {
+                        ids = v;
+                        _research();
+                      });
                     },
-                  ),
-                );
-              else
-                return Container();
-            }),
+                    onSubmit: (String v) {
+                      search = v;
+                      _research();
+                    },
+                  );
+                }),
+            SizedBox(
+              height: 6,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: DropDownBase(
+                  isName: true,
+                  stream: WorkBloc.of(context).listType,
+                  onTap: (item) {
+                    idFilter = item.id.toString();
+                    _research();
+                  },
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 6,
+            ),
             Expanded(child:
                 BlocBuilder<WorkBloc, WorkState>(builder: (context, state) {
               if (state is SuccessGetListWorkState) {
@@ -192,7 +221,7 @@ class _WorkScreenState extends State<WorkScreen> {
                 return RefreshIndicator(
                   onRefresh: () =>
                       Future.delayed(Duration(milliseconds: 300), () {
-                    WorkBloc.of(context).add(InitGetListWorkEvent("1", "", ""));
+                    _research();
                   }),
                   child: ListView.separated(
                     padding: EdgeInsets.only(top: 8),
@@ -220,83 +249,5 @@ class _WorkScreenState extends State<WorkScreen> {
         ),
       ),
     );
-  }
-
-  showBotomSheet(List<FilterData> data) {
-    showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-        ),
-        elevation: 2,
-        context: context,
-        isScrollControlled: true,
-        constraints: BoxConstraints(maxHeight: Get.height * 0.7),
-        builder: (context) {
-          return StatefulBuilder(
-            builder: (context, setState) {
-              return SafeArea(
-                child: Container(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: WidgetText(
-                          title: 'Chọn lọc',
-                          textAlign: TextAlign.center,
-                          style: AppStyle.DEFAULT_16_BOLD,
-                        ),
-                      ),
-                      Column(
-                        children: List.generate(
-                            data.length,
-                            (index) => GestureDetector(
-                                  onTap: () {
-                                    Get.back();
-                                    filter_id = data[index].id.toString();
-                                    WorkBloc.of(context).add(
-                                        InitGetListWorkEvent("1", search,
-                                            data[index].id.toString()));
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(vertical: 8),
-                                    decoration: BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                width: 1,
-                                                color: COLORS.LIGHT_GREY))),
-                                    child: Row(
-                                      // crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        SvgPicture.asset(
-                                          ICONS.IC_FILTER_SVG,
-                                          width: 20,
-                                          height: 20,
-                                          fit: BoxFit.contain,
-                                        ),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        Expanded(
-                                            child: Container(
-                                          child: WidgetText(
-                                            title: data[index].name ?? '',
-                                            style: AppStyle.DEFAULT_16,
-                                          ),
-                                        )),
-                                      ],
-                                    ),
-                                  ),
-                                )),
-                      )
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        });
   }
 }

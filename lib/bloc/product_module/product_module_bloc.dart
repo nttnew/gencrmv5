@@ -16,14 +16,14 @@ part 'product_module_event.dart';
 class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
   final UserRepository userRepository;
   List<ProductModule>? dataList;
-  List<DataFilter>? dataFilter;
   bool isLength = true;
   int page = 1;
   String? querySearch;
   String? filter;
   String? type;
+  String? ids;
   BehaviorSubject<List<Cats>> listType = BehaviorSubject.seeded([]);
-  BehaviorSubject<String?> typeStream = BehaviorSubject.seeded(null);
+  BehaviorSubject<List<DataFilter>> listFilter = BehaviorSubject.seeded([]);
 
   ProductModuleBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -69,8 +69,8 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
       );
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        if (dataFilter == null) {
-          dataFilter = response.data?.dataFilter ?? [];
+        if (listFilter.value.isEmpty) {
+          listFilter.add(response.data?.dataFilter ?? []);
         }
         if (page == 1) {
           isLength = true;
@@ -115,7 +115,6 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
 
   void dispose() {
     listType.add([]);
-    typeStream.add(null);
     isLength = true;
     page = BASE_URL.PAGE_DEFAULT;
     dataList = null;

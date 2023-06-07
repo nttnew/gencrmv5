@@ -68,7 +68,7 @@ class _AddCustomerState extends State<AddCustomer> {
                   Get.back();
                   Get.back();
                   GetListCustomerBloc.of(context)
-                      .add(InitGetListOrderEvent("", 1, ""));
+                      .add(InitGetListOrderEvent());
                 },
               );
             }

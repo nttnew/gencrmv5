@@ -159,7 +159,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                   Get.back();
                   Get.back();
                   Get.back();
-                  WorkBloc.of(context).add(InitGetListWorkEvent("1", "", ""));
+                  WorkBloc.of(context).add(InitGetListWorkEvent());
                 },
               );
             } else if (state is ErrorDeleteWorkState) {

@@ -17,13 +17,14 @@ class ProductCustomerModuleBloc
     extends Bloc<ProductCustomerModuleEvent, ProductCustomerModuleState> {
   final UserRepository userRepository;
   List<ProductCustomerResponse>? dataList;
-  List<DataFilter>? dataFilter;
   bool isLength = true;
   int page = 1;
   String? querySearch;
+  String? ids;
   String? filter;
   String? type;
   BehaviorSubject<List<Cats>> listType = BehaviorSubject.seeded([]);
+  BehaviorSubject<List<DataFilter>> listFilter = BehaviorSubject.seeded([]);
   BehaviorSubject<String?> typeStream = BehaviorSubject.seeded(null);
 
   ProductCustomerModuleBloc({required UserRepository userRepository})
@@ -38,6 +39,7 @@ class ProductCustomerModuleBloc
         page: event.page,
         filter: event.filter,
         querySearch: event.querySearch,
+        ids: event.ids,
       );
     }
   }
@@ -54,6 +56,7 @@ class ProductCustomerModuleBloc
     int? page,
     String? querySearch,
     String? filter,
+    String? ids,
   }) async* {
     LoadingApi().pushLoading();
     if (page == null) {
@@ -69,8 +72,8 @@ class ProductCustomerModuleBloc
       );
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        if (dataFilter == null) {
-          dataFilter = response.data?.dataFilter ?? [];
+        if (listFilter.value.isEmpty) {
+          listFilter.add(response.data?.dataFilter ?? []);
         }
         if (page == 1) {
           isLength = true;
@@ -93,7 +96,7 @@ class ProductCustomerModuleBloc
     LoadingApi().popLoading();
   }
 
-  Future<ListProductCustomerResponse?> getListProduct({
+  Future<ListProductCustomerResponse?> getListProductCustomer({
     required String querySearch,
   }) async {
     LoadingApi().pushLoading();

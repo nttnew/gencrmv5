@@ -1,14 +1,18 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
+import 'package:gen_crm/widgets/drop_down_base.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
+import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/clue.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
-import '../../../../widgets/widget_search.dart';
+import '../../../../widgets/search_base.dart';
+import '../../../../widgets/tree/tree_node_model.dart';
+import '../../../../widgets/tree/tree_widget.dart';
 import '../../../../widgets/widget_text.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 
@@ -21,28 +25,44 @@ class ClueScreen extends StatefulWidget {
 
 class _ClueScreenState extends State<ClueScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  int page = 1;
+  int page = BASE_URL.PAGE_DEFAULT;
   int total = 0;
   int length = 0;
   List<ClueData> listClue = [];
-  String idFilter = "";
-  String title = Get.arguments;
-
+  String idFilter = '';
+  String ids = '';
+  String title = Get.arguments ?? '';
   String search = '';
   ScrollController _scrollController = ScrollController();
+  late final ManagerBloc managerBloc;
+  late final GetListClueBloc _bloc;
+
   @override
   void initState() {
-    GetListClueBloc.of(context)
-        .add(InitGetListClueEvent('', BASE_URL.PAGE_DEFAULT, ''));
+    _bloc = GetListClueBloc.of(context);
+    managerBloc =
+        ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
+    managerBloc.getManager(module: Module.DAU_MOI);
+    _bloc.add(InitGetListClueEvent());
     _scrollController.addListener(() {
       if (_scrollController.offset ==
               _scrollController.position.maxScrollExtent &&
           length < total) {
         page = page + 1;
-        GetListClueBloc.of(context).add(InitGetListClueEvent('', page, search));
+        _research(pageNew: page);
       }
     });
     super.initState();
+  }
+
+  _research({int? pageNew}) {
+    page = pageNew ?? BASE_URL.PAGE_DEFAULT;
+    _bloc.add(InitGetListClueEvent(
+      filter: idFilter,
+      page: page,
+      ids: ids,
+      search: search,
+    ));
   }
 
   @override
@@ -57,7 +77,7 @@ class _ClueScreenState extends State<ClueScreen> {
         child: FloatingActionButton(
           backgroundColor: Color(0xff1AA928),
           onPressed: () {
-            AppNavigator.navigateFormAdd('Thêm ${Get.arguments}', 2);
+            AppNavigator.navigateFormAdd('Thêm ${title}', 2);
           },
           child: Icon(Icons.add, size: 40),
         ),
@@ -70,15 +90,55 @@ class _ClueScreenState extends State<ClueScreen> {
           total = int.parse(state.total);
           return Column(
             children: [
-              AppValue.vSpaceTiny,
-              _buildSearch(state),
+              AppValue.vSpaceSmall,
+              StreamBuilder<List<TreeNodeData>>(
+                  stream: managerBloc.managerTrees,
+                  builder: (context, snapshot) {
+                    return SearchBase(
+                      hint: 'Tìm ${title.toLowerCase()}',
+                      leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                      endIcon: (snapshot.data ?? []).isNotEmpty
+                          ? SvgPicture.asset(
+                              ICONS.IC_FILL_SVG,
+                              width: 16,
+                              height: 16,
+                              fit: BoxFit.contain,
+                            )
+                          : null,
+                      onClickRight: () {
+                        showManagerFilter(context, managerBloc, (v) {
+                          ids = v;
+                          _research();
+                        });
+                      },
+                      onSubmit: (String v) {
+                        search = v;
+                        _research();
+                      },
+                    );
+                  }),
+              SizedBox(
+                height: 6,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: DropDownBase(
+                    isName: true,
+                    stream: _bloc.listType,
+                    onTap: (item) {
+                      idFilter = item.id.toString();
+                      _research();
+                    },
+                  ),
+                ),
+              ),
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: () =>
                       Future.delayed(Duration(microseconds: 300), () {
-                    page = BASE_URL.PAGE_DEFAULT;
-                    GetListClueBloc.of(context)
-                        .add(InitGetListClueEvent('', page, ''));
+                    _research();
                   }),
                   child: ListView.separated(
                     padding: EdgeInsets.only(top: 16),
@@ -100,33 +160,6 @@ class _ClueScreenState extends State<ClueScreen> {
           return noData();
       }),
     );
-  }
-
-  _buildSearch(UpdateGetListClueState state) {
-    return Container(
-        margin: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-        decoration: BoxDecoration(
-          border: Border.all(color: HexColor("#DBDBDB")),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: WidgetSearch(
-          hintTextStyle: TextStyle(
-              fontFamily: "Quicksand",
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: HexColor("#707070")),
-          hint: 'Tìm ${Get.arguments.toString().toLowerCase()}',
-          leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
-          endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
-          onClickRight: () {
-            showBotomSheet(state.listFilter);
-          },
-          onSubmit: (v) {
-            search = v;
-            page = BASE_URL.PAGE_DEFAULT;
-            GetListClueBloc.of(context).add(InitGetListClueEvent('', page, v));
-          },
-        ));
   }
 
   _buildCustomer(ClueData clueData) {
@@ -204,85 +237,5 @@ class _ClueScreenState extends State<ClueScreen> {
         ),
       ),
     );
-  }
-
-  showBotomSheet(List<FilterData> data) {
-    showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-        ),
-        elevation: 2,
-        context: context,
-        isScrollControlled: true,
-        constraints: BoxConstraints(maxHeight: Get.height * 0.7),
-        builder: (context) {
-          return StatefulBuilder(
-            builder: (context, setState) {
-              return SafeArea(
-                child: Container(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: WidgetText(
-                          title: 'Chọn lọc',
-                          textAlign: TextAlign.center,
-                          style: AppStyle.DEFAULT_16_BOLD,
-                        ),
-                      ),
-                      Column(
-                        children: List.generate(
-                            data.length,
-                            (index) => GestureDetector(
-                                  onTap: () {
-                                    Get.back();
-                                    page = BASE_URL.PAGE_DEFAULT;
-                                    GetListClueBloc.of(context).add(
-                                        InitGetListClueEvent(
-                                            data[index].id.toString(),
-                                            page,
-                                            search));
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(vertical: 8),
-                                    decoration: BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                width: 1,
-                                                color: COLORS.LIGHT_GREY))),
-                                    child: Row(
-                                      // crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        SvgPicture.asset(
-                                          ICONS.IC_FILTER_SVG,
-                                          width: 20,
-                                          height: 20,
-                                          fit: BoxFit.contain,
-                                        ),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        Expanded(
-                                            child: Container(
-                                          child: WidgetText(
-                                            title: data[index].name ?? '',
-                                            style: AppStyle.DEFAULT_16,
-                                          ),
-                                        )),
-                                      ],
-                                    ),
-                                  ),
-                                )),
-                      )
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        });
   }
 }

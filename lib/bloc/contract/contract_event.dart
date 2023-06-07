@@ -7,9 +7,15 @@ abstract class ContractEvent extends Equatable {
 }
 
 class InitGetContractEvent extends ContractEvent {
-  final String search, filter;
-  final int page;
+  final String? search, filter, ids;
+  final int? page;
   final bool? isLoadMore;
 
-  InitGetContractEvent(this.page, this.search, this.filter, {this.isLoadMore});
+  InitGetContractEvent({
+    this.isLoadMore,
+    this.page,
+    this.search,
+    this.filter,
+    this.ids,
+  });
 }

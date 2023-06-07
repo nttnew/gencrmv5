@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
+import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
@@ -16,6 +17,7 @@ part 'customer_state.dart';
 class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
   final UserRepository userRepository;
   List<CustomerData>? listCus;
+  BehaviorSubject<List<FilterData>> listType = BehaviorSubject.seeded([]);
 
   GetListCustomerBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -25,28 +27,36 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
   Stream<CustomerState> mapEventToState(GetListCustomerEvent event) async* {
     if (event is InitGetListOrderEvent) {
       yield* _getListCustomer(
-          filter: event.filter,
-          page: event.page,
-          search: event.search,
-          isLoadMore: event.isLoadMore);
+          filter: event.filter ?? '',
+          page: event.page ?? BASE_URL.PAGE_DEFAULT,
+          search: event.search ?? '',
+          isLoadMore: event.isLoadMore,
+          ids: event.ids ?? '');
     } else if (event is AddCustomerIndividualEvent) {
       yield* _AddCustomerIndividual(data: event.data, files: event.files);
     }
   }
 
-  Stream<CustomerState> _getListCustomer(
-      {required String filter,
-      required int page,
-      required String search,
-      bool? isLoadMore = false}) async* {
+  Stream<CustomerState> _getListCustomer({
+    required String filter,
+    required int page,
+    required String search,
+    required String ids,
+    bool? isLoadMore = false,
+  }) async* {
     LoadingApi().pushLoading();
     try {
-      final response =
-          await userRepository.getListCustomer(page, filter, search);
+      final response = await userRepository.getListCustomer(
+        page,
+        filter,
+        search,
+        ids,
+      );
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         if (page == 1) {
           listCus = response.data!.list!;
+          listType.add(response.data!.filter!);
           yield UpdateGetListCustomerState(response.data!.list!,
               response.data!.filter!, response.data!.total!);
         } else {
@@ -80,8 +90,7 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: response.data!.id.toString(),
               files: files,
-              module: getURLModule(Module.KHACH_HANG)
-          );
+              module: getURLModule(Module.KHACH_HANG));
           if ((responseUpload.code == BASE_URL.SUCCESS) ||
               (responseUpload.code == BASE_URL.SUCCESS_200)) {
             LoadingApi().popLoading();

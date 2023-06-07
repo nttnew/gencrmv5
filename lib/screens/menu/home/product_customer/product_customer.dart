@@ -4,12 +4,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/product_customer_module/product_customer_module_bloc.dart';
 import 'package:gen_crm/screens/menu/home/product_customer/item_product_customer.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
+import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/list_product_customer_response.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
-import '../../../../widgets/widget_search.dart';
+import '../../../../widgets/drop_down_base.dart';
+import '../../../../widgets/search_base.dart';
+import '../../../../widgets/tree/tree_widget.dart';
 import '../../../../widgets/widget_text.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 import '../product/scanner_qrcode.dart';
@@ -23,17 +25,19 @@ class ProductCustomerScreen extends StatefulWidget {
 
 class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  late final TextEditingController _controllerText;
   late final ProductCustomerModuleBloc _bloc;
   late final ScrollController _scrollController;
   late final String title;
+  late final ManagerBloc managerBloc;
 
   @override
   void initState() {
+    managerBloc =
+        ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
+    managerBloc.getManager(module: Module.SAN_PHAM_KH);
     title = Get.arguments ?? '';
     _scrollController = ScrollController();
     _bloc = ProductCustomerModuleBloc.of(context);
-    _controllerText = TextEditingController();
     getDataFirst();
     listenerLoadMore();
     _bloc.getFilter();
@@ -47,18 +51,22 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
           _bloc.isLength) {
         _bloc.page = _bloc.page + 1;
         _bloc.add(GetProductCustomerModuleEvent(
-            page: _bloc.page,
-            filter: _bloc.filter,
-            querySearch: _bloc.querySearch));
+          page: _bloc.page,
+          filter: _bloc.filter,
+          querySearch: _bloc.querySearch,
+          ids: _bloc.ids,
+        ));
       } else {}
     });
   }
 
-  search() {
+  _research() {
     _bloc.add(GetProductCustomerModuleEvent(
-        page: BASE_URL.PAGE_DEFAULT,
-        filter: _bloc.filter,
-        querySearch: _bloc.querySearch));
+      page: BASE_URL.PAGE_DEFAULT,
+      filter: _bloc.filter,
+      querySearch: _bloc.querySearch,
+      ids: _bloc.ids,
+    ));
   }
 
   getDataFirst() {
@@ -94,89 +102,86 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
         body: Container(
           child: Column(
             children: [
-              Container(
-                margin: EdgeInsets.only(
-                  right: 25,
-                  left: 25,
-                  top: 25,
-                  bottom: 10,
+              AppValue.vSpaceSmall,
+              SearchBase(
+                hint: "Nhập tên, barCode, qrCode",
+                leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                endIcon: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(
+                            builder: (context) => ScannerQrcode()))
+                        .then((value) async {
+                      if (value != '') {
+                        final result = await _bloc.getListProductCustomer(
+                            querySearch: value);
+                        if (result?.data?.lists?.isNotEmpty ?? false) {
+                          AppNavigator.navigateDetailProductCustomer(
+                            result?.data?.lists?.first.name ?? '',
+                            result?.data?.lists?.first.id ?? '',
+                          );
+                        } else {
+                          ShowDialogCustom.showDialogBase(
+                            title: MESSAGES.NOTIFICATION,
+                            content: 'Không có dữ liệu',
+                          );
+                        }
+                      }
+                    });
+                  },
+                  child: Icon(
+                    Icons.qr_code_scanner,
+                    size: 20,
+                  ),
                 ),
-                width: double.infinity,
-                height: AppValue.heights * 0.06,
-                decoration: BoxDecoration(
-                  border: Border.all(color: HexColor("#DBDBDB")),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: WidgetSearch(
-                  inputController: _controllerText,
-                  hintTextStyle: TextStyle(
-                      fontFamily: "Quicksand",
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: HexColor("#707070")),
-                  hint: "Nhập tên, barCode, qrCode",
-                  leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
-                  endIconFinal: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                        ),
-                        height: double.maxFinite,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            left: BorderSide(color: HexColor("#DBDBDB")),
-                            right: BorderSide(color: HexColor("#DBDBDB")),
-                          ),
-                        ),
-                        child: GestureDetector(
+                onSubmit: (String v) {
+                  _bloc.querySearch = v;
+                  _research();
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: DropDownBase(
+                        isName: true,
+                        stream: _bloc.listFilter,
+                        onTap: (item) {
+                          _bloc.filter = item.id.toString();
+                          _research();
+                        },
+                      ),
+                    ),
+                    if (managerBloc.managerTrees.value.isNotEmpty) ...[
+                      SizedBox(
+                        width: 6,
+                      ),
+                      GestureDetector(
                           onTap: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(
-                                    builder: (context) => ScannerQrcode()))
-                                .then((value) async {
-                              if (value != '') {
-                                final result = await _bloc.getListProduct(
-                                    querySearch: value);
-                                if (result?.data?.lists?.isNotEmpty ?? false) {
-                                  AppNavigator.navigateDetailProductCustomer(
-                                      result?.data?.lists?.first.name ?? '',
-                                      result?.data?.lists?.first.id ?? '');
-                                } else {
-                                  ShowDialogCustom.showDialogBase(
-                                    title: MESSAGES.NOTIFICATION,
-                                    content: 'Không có dữ liệu',
-                                  );
-                                }
-                              }
+                            showManagerFilter(context, managerBloc, (v) {
+                              _bloc.ids = v;
+                              _research();
                             });
                           },
-                          child: Icon(
-                            Icons.qr_code_scanner,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                        ),
-                        child: GestureDetector(
-                            onTap: () {
-                              showBotomSheet(_bloc.dataFilter ?? []);
-                            },
+                          child: Container(
+                            padding: EdgeInsets.all(14),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: COLORS.GREY_400,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(4))),
                             child: SvgPicture.asset(
-                              ICONS.IC_FILTER_SVG,
-                              height: 20,
+                              ICONS.IC_FILL_SVG,
                               width: 20,
-                            )),
-                      ),
-                    ],
-                  ),
-                  onSubmit: (v) {
-                    _bloc.querySearch = v;
-                    search();
-                  },
+                              height: 20,
+                              fit: BoxFit.contain,
+                            ),
+                          )),
+                    ]
+                  ],
                 ),
               ),
               Expanded(child: BlocBuilder<ProductCustomerModuleBloc,
@@ -252,7 +257,7 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                                     _bloc.filter =
                                         dataFilter[index].id.toString();
                                     Get.back();
-                                    search();
+                                    _research();
                                   },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(vertical: 8),

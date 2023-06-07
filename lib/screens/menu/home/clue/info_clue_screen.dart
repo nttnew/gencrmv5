@@ -105,7 +105,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                 Get.back();
                 Get.back();
                 GetListClueBloc.of(context)
-                    .add(InitGetListClueEvent('', 1, ''));
+                    .add(InitGetListClueEvent());
               },
             );
           } else if (state is ErrorDeleteClueState) {

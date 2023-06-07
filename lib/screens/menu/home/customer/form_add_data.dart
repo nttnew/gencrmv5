@@ -403,7 +403,7 @@ class _FormAddDataState extends State<FormAddData> {
                       Get.back();
                       Get.back();
                       GetListCustomerBloc.of(context)
-                          .add(InitGetListOrderEvent("", 1, ""));
+                          .add(InitGetListOrderEvent());
                     },
                   );
                 }
@@ -422,19 +422,19 @@ class _FormAddDataState extends State<FormAddData> {
                       Get.back();
                       if (type == 2)
                         GetListClueBloc.of(context)
-                            .add(InitGetListClueEvent('', 1, ''));
+                            .add(InitGetListClueEvent());
                       else if (type == 3) {
                         GetListChanceBloc.of(context)
-                            .add(InitGetListOrderEventChance('', 1, ''));
+                            .add(InitGetListOrderEventChance());
                       } else if (type == 4) {
                         ContractBloc.of(context)
-                            .add(InitGetContractEvent(1, "", ""));
+                            .add(InitGetContractEvent());
                       } else if (type == 5) {
                         WorkBloc.of(context)
-                            .add(InitGetListWorkEvent("1", "", ""));
+                            .add(InitGetListWorkEvent());
                       } else if (type == 6) {
                         SupportBloc.of(context)
-                            .add(InitGetSupportEvent(1, '', ''));
+                            .add(InitGetSupportEvent());
                       } else if (type == 21) {
                         WorkClueBloc.of(context).add(GetWorkClue(id: id));
                       } else if (type == 31) {

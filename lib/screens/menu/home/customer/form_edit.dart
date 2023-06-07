@@ -153,7 +153,7 @@ class _FormEditState extends State<FormEdit> {
                     onTap1: () {
                       if (type == 1)
                         GetListCustomerBloc.of(context)
-                            .add(InitGetListOrderEvent("", 1, ""));
+                            .add(InitGetListOrderEvent());
                       Get.back();
                       Get.back();
                       Get.back();
@@ -177,20 +177,18 @@ class _FormEditState extends State<FormEdit> {
                       if (type == 2) {
                         GetDetailClueBloc.of(context)
                             .add(InitGetDetailClueEvent(id));
-                        GetListClueBloc.of(context)
-                            .add(InitGetListClueEvent('', 1, ''));
+                        GetListClueBloc.of(context).add(InitGetListClueEvent());
                       }
                       if (type == 3) {
                         GetListDetailChanceBloc.of(context)
                             .add(InitGetListDetailEvent(int.parse(id)));
                         GetListChanceBloc.of(context)
-                            .add(InitGetListOrderEventChance('', 1, ''));
+                            .add(InitGetListOrderEventChance());
                       }
                       if (type == EDIT_JOB) {
                         DetailWorkBloc.of(context)
                             .add(InitGetDetailWorkEvent(int.parse(id)));
-                        WorkBloc.of(context)
-                            .add(InitGetListWorkEvent("1", "", ""));
+                        WorkBloc.of(context).add(InitGetListWorkEvent());
                       }
                       if (type == 4)
                         DetailContractBloc.of(context)
@@ -199,7 +197,7 @@ class _FormEditState extends State<FormEdit> {
                         DetailSupportBloc.of(context)
                             .add(InitGetDetailSupportEvent(id));
                         SupportBloc.of(context)
-                            .add(InitGetSupportEvent(1, '', ''));
+                            .add(InitGetSupportEvent());
                       }
                       if (type == PRODUCT_TYPE) {
                         DetailProductBloc.of(context)

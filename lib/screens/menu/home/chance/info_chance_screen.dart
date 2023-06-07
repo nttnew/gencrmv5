@@ -119,7 +119,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                 Get.back();
                 Get.back();
                 GetListChanceBloc.of(context)
-                    .add(InitGetListOrderEventChance('', 1, ''));
+                    .add(InitGetListOrderEventChance());
               },
             );
           } else if (state is ErrorDeleteChanceState) {
