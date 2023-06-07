@@ -10,11 +10,10 @@ class InitGetListClue extends ClueState {}
 
 class UpdateGetListClueState extends ClueState {
   final List<ClueData> listClue;
-  final List<FilterData> listFilter;
   final String total;
-  const UpdateGetListClueState(this.listClue, this.listFilter, this.total);
+  const UpdateGetListClueState(this.listClue, this.total);
   @override
-  List<Object> get props => [listClue, listFilter, total];
+  List<Object> get props => [listClue, total];
 }
 
 class LoadingListClueState extends ClueState {}

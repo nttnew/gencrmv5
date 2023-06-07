@@ -39,19 +39,16 @@ class _SupportScreenState extends State<SupportScreen> {
     'Thêm check in',
     'Thêm ${(Get.arguments ?? '').toLowerCase()}'
   ];
-
-  _handleRouter(String value) {
-    AppNavigator.navigateFormAdd(value, 6, isCheckIn: listAdd.first == value);
-  }
-
   late final ManagerBloc managerBloc;
+  late final SupportBloc _bloc;
 
   @override
   void initState() {
+    _bloc = SupportBloc.of(context);
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.HO_TRO);
-    SupportBloc.of(context).add(InitGetSupportEvent());
+    _bloc.add(InitGetSupportEvent());
     _scrollController.addListener(() {
       if (_scrollController.offset ==
               _scrollController.position.maxScrollExtent &&
@@ -64,11 +61,15 @@ class _SupportScreenState extends State<SupportScreen> {
     super.initState();
   }
 
+  _handleRouter(String value) {
+    AppNavigator.navigateFormAdd(value, 6, isCheckIn: listAdd.first == value);
+  }
+
   _research({
     int? pageNew,
   }) {
     page = pageNew ?? BASE_URL.PAGE_DEFAULT;
-    SupportBloc.of(context).add(InitGetSupportEvent(
+    _bloc.add(InitGetSupportEvent(
       filter: idFilter,
       page: page,
       ids: ids,
@@ -207,7 +208,7 @@ class _SupportScreenState extends State<SupportScreen> {
                   alignment: Alignment.centerLeft,
                   child: DropDownBase(
                     isName: true,
-                    stream: SupportBloc.of(context).listType,
+                    stream: _bloc.listType,
                     onTap: (item) {
                       idFilter = item.id.toString();
                       _research();

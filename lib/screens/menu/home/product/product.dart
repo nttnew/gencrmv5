@@ -10,6 +10,7 @@ import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/drop_down_base.dart';
 import '../../../../widgets/search_base.dart';
+import '../../../../widgets/tree/tree_node_model.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 import 'item_product.dart';
@@ -173,33 +174,38 @@ class _ProductScreenState extends State<ProductScreen> {
                         ),
                       ),
                     ],
-                    if (managerBloc.managerTrees.value.isNotEmpty) ...[
-                      SizedBox(
-                        width: 6,
-                      ),
-                      GestureDetector(
-                          onTap: () {
-                            showManagerFilter(context, managerBloc, (v) {
-                              _bloc.ids = v;
-                              _research();
-                            });
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(14),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: COLORS.GREY_400,
-                                ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(4))),
-                            child: SvgPicture.asset(
-                              ICONS.IC_FILL_SVG,
-                              width: 20,
-                              height: 20,
-                              fit: BoxFit.contain,
-                            ),
-                          )),
-                    ]
+                    StreamBuilder<List<TreeNodeData>>(
+                        stream: managerBloc.managerTrees,
+                        builder: (context, snapshot) {
+                          if (snapshot.data?.isNotEmpty ?? false)
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 6.0),
+                              child: GestureDetector(
+                                  onTap: () {
+                                    showManagerFilter(context, managerBloc,
+                                        (v) {
+                                      _bloc.ids = v;
+                                      _research();
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(14),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: COLORS.GREY_400,
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4))),
+                                    child: SvgPicture.asset(
+                                      ICONS.IC_FILL_SVG,
+                                      width: 20,
+                                      height: 20,
+                                      fit: BoxFit.contain,
+                                    ),
+                                  )),
+                            );
+                          return SizedBox();
+                        }),
                   ],
                 ),
               ),

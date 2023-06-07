@@ -52,13 +52,12 @@ class GetListClueBloc extends Bloc<GetListClueEvent, ClueState> {
         listType.add(response.data?.filter ?? []);
         if (page == 1) {
           listClueData = [];
-          yield UpdateGetListClueState(response.data!.list!,
-              response.data!.filter!, response.data!.total!);
+          yield UpdateGetListClueState(
+              response.data?.list ?? [], response.data?.total ?? '0');
         }
         yield UpdateGetListClueState(
-            [...listClueData!, ...response.data!.list!],
-            response.data!.filter!,
-            response.data!.total!);
+            [...listClueData ?? [], ...response.data?.list ?? []],
+            response.data?.total ?? '0');
         listClueData?.addAll(response.data?.list ?? []);
       } else if (response.code == 999) {
         loginSessionExpired();

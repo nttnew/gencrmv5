@@ -134,6 +134,9 @@ class _ClueScreenState extends State<ClueScreen> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 6,
+              ),
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: () =>

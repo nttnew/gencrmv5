@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/product_customer_module/product_customer_module_bloc.dart';
 import 'package:gen_crm/screens/menu/home/product_customer/item_product_customer.dart';
+import 'package:gen_crm/widgets/tree/tree_node_model.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../src/app_const.dart';
@@ -139,6 +140,9 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                   _research();
                 },
               ),
+              SizedBox(
+                height: 6,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: Row(
@@ -154,35 +158,43 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                         },
                       ),
                     ),
-                    if (managerBloc.managerTrees.value.isNotEmpty) ...[
-                      SizedBox(
-                        width: 6,
-                      ),
-                      GestureDetector(
-                          onTap: () {
-                            showManagerFilter(context, managerBloc, (v) {
-                              _bloc.ids = v;
-                              _research();
-                            });
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(14),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: COLORS.GREY_400,
-                                ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(4))),
-                            child: SvgPicture.asset(
-                              ICONS.IC_FILL_SVG,
-                              width: 20,
-                              height: 20,
-                              fit: BoxFit.contain,
-                            ),
-                          )),
-                    ]
+                    StreamBuilder<List<TreeNodeData>>(
+                        stream: managerBloc.managerTrees,
+                        builder: (context, snapshot) {
+                          if (snapshot.data?.isNotEmpty ?? false)
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 6.0),
+                              child: GestureDetector(
+                                  onTap: () {
+                                    showManagerFilter(context, managerBloc,
+                                        (v) {
+                                      _bloc.ids = v;
+                                      _research();
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(14),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: COLORS.GREY_400,
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4))),
+                                    child: SvgPicture.asset(
+                                      ICONS.IC_FILL_SVG,
+                                      width: 20,
+                                      height: 20,
+                                      fit: BoxFit.contain,
+                                    ),
+                                  )),
+                            );
+                          return SizedBox();
+                        }),
                   ],
                 ),
+              ),
+              SizedBox(
+                height: 6,
               ),
               Expanded(child: BlocBuilder<ProductCustomerModuleBloc,
                   ProductCustomerModuleState>(

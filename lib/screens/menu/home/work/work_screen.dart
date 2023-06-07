@@ -38,21 +38,18 @@ class _WorkScreenState extends State<WorkScreen> {
     'Thêm ${(Get.arguments ?? '').toLowerCase()}'
   ];
   final _key = GlobalKey<ExpandableFabState>();
-
-  _handleRouter(String value) {
-    AppNavigator.navigateFormAdd(value, 5, isCheckIn: listAdd.first == value);
-  }
-
   late final ManagerBloc managerBloc;
+  late final WorkBloc _bloc;
 
   @override
   void initState() {
+    _bloc = WorkBloc.of(context);
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.CONG_VIEC);
     title = Get.arguments ?? '';
     GetListUnReadNotifiBloc.of(context).add(CheckNotification());
-    WorkBloc.of(context).add(InitGetListWorkEvent());
+    _bloc.add(InitGetListWorkEvent());
     _scrollController.addListener(() {
       if (_scrollController.offset ==
               _scrollController.position.maxScrollExtent &&
@@ -64,9 +61,13 @@ class _WorkScreenState extends State<WorkScreen> {
     super.initState();
   }
 
+  _handleRouter(String value) {
+    AppNavigator.navigateFormAdd(value, 5, isCheckIn: listAdd.first == value);
+  }
+
   _research({int? pageNew}) {
     page = pageNew ?? BASE_URL.PAGE_DEFAULT;
-    WorkBloc.of(context).add(InitGetListWorkEvent(
+    _bloc.add(InitGetListWorkEvent(
       filter: idFilter,
       page: page,
       ids: ids,
@@ -203,7 +204,7 @@ class _WorkScreenState extends State<WorkScreen> {
                 alignment: Alignment.centerLeft,
                 child: DropDownBase(
                   isName: true,
-                  stream: WorkBloc.of(context).listType,
+                  stream: _bloc.listType,
                   onTap: (item) {
                     idFilter = item.id.toString();
                     _research();

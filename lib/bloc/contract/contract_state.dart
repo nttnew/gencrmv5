@@ -11,10 +11,9 @@ class InitGetContract extends ContractState {}
 class UpdateGetContractState extends ContractState {
   final List<ContractItemData> listContract;
   final String total;
-  final List<FilterData> listFilter;
-  const UpdateGetContractState(this.listContract, this.total, this.listFilter);
+  const UpdateGetContractState(this.listContract, this.total);
   @override
-  List<Object> get props => [listContract, total, listFilter];
+  List<Object> get props => [listContract, total];
 }
 
 class LoadingContractState extends ContractState {}

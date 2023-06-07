@@ -54,14 +54,15 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         listType.add(response.data.filter ?? []);
-        if (page == 1) {
+        if (page == BASE_URL.PAGE_DEFAULT) {
           list = response.data.list;
-          yield UpdateGetContractState(response.data.list ?? [],
-              response.data.total ?? '', response.data.filter ?? []);
-        } else {
-          list = [...list!, ...response.data.list!];
           yield UpdateGetContractState(
-              list!, response.data.total!, response.data.filter!);
+            response.data.list ?? [],
+            response.data.total ?? '0',
+          );
+        } else {
+          list = [...list ?? [], ...response.data.list ?? []];
+          yield UpdateGetContractState(list ?? [], response.data.total ?? '0');
         }
       } else if (response.code == 999) {
         loginSessionExpired();

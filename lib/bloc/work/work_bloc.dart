@@ -56,14 +56,12 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
           yield SuccessGetListWorkState(
             response.data?.data_list ?? [],
             response.data?.pageCount ?? 0,
-            response.data?.data_filter ?? [],
           );
         } else {
           data = [...data, ...response.data?.data_list ?? []];
           yield SuccessGetListWorkState(
             data,
             response.data?.pageCount ?? 0,
-            response.data?.data_filter ?? [],
           );
         }
       } else {

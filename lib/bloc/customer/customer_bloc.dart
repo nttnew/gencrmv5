@@ -55,14 +55,14 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         if (page == 1) {
-          listCus = response.data!.list!;
-          listType.add(response.data!.filter!);
-          yield UpdateGetListCustomerState(response.data!.list!,
-              response.data!.filter!, response.data!.total!);
-        } else {
-          listCus!.addAll(response.data!.list!);
+          listCus = response.data?.list ?? [];
+          listType.add(response.data?.filter ?? []);
           yield UpdateGetListCustomerState(
-              listCus!, response.data!.filter!, response.data!.total!);
+              response.data?.list ?? [], response.data?.total ?? 0);
+        } else {
+          listCus?.addAll(response.data?.list ?? []);
+          yield UpdateGetListCustomerState(
+              listCus ?? [], response.data?.total ?? 0);
         }
       } else if (response.code == 999) {
         loginSessionExpired();

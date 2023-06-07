@@ -10,12 +10,10 @@ class InitGetListCustomer extends CustomerState {}
 
 class UpdateGetListCustomerState extends CustomerState {
   final List<CustomerData> listCustomer;
-  final List<FilterData> listFilter;
   final int total;
-  const UpdateGetListCustomerState(
-      this.listCustomer, this.listFilter, this.total);
+  const UpdateGetListCustomerState(this.listCustomer, this.total);
   @override
-  List<Object> get props => [listCustomer, listFilter, total];
+  List<Object> get props => [listCustomer, total];
 }
 
 class LoadingListCustomerState extends CustomerState {}
