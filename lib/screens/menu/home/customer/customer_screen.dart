@@ -38,8 +38,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
   String title = Get.arguments;
   ScrollController _scrollController = ScrollController();
   List<String> listAdd = [
-    'Khách hàng tổ chức',
-    'Khách hàng cá nhân',
+    '${Get.arguments} tổ chức',
+    '${Get.arguments} cá nhân',
   ];
   late final ManagerBloc managerBloc;
   late final GetListCustomerBloc _bloc;
@@ -76,7 +76,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
   _handleRouter(String value) {
     if (listAdd.last == value) {
-      AppNavigator.navigateAddCustomer();
+      AppNavigator.navigateAddCustomer("Thêm ${value.toLowerCase()}");
     } else {
       AppNavigator.navigateFormAdd("Thêm ${value.toLowerCase()}", 1);
     }
@@ -86,6 +86,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
+      appBar: AppbarBase(_drawerKey, title),
       resizeToAvoidBottomInset: false,
       drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
       floatingActionButtonLocation: ExpandableFab.location,
@@ -171,7 +172,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
             )
             .toList(),
       ),
-      appBar: AppbarBase(_drawerKey, title),
       body: BlocBuilder<GetListCustomerBloc, CustomerState>(
           builder: (context, state) {
         if (state is UpdateGetListCustomerState) {
@@ -185,15 +185,15 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   stream: managerBloc.managerTrees,
                   builder: (context, snapshot) {
                     return SearchBase(
-                      hint: "Tìm khách hàng",
+                      hint: "Tìm ${title.toLowerCase()}",
                       leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                       endIcon: (snapshot.data ?? []).isNotEmpty
                           ? SvgPicture.asset(
-                            ICONS.IC_FILL_SVG,
-                            width: 16,
-                            height: 16,
-                            fit: BoxFit.contain,
-                          )
+                              ICONS.IC_FILL_SVG,
+                              width: 16,
+                              height: 16,
+                              fit: BoxFit.contain,
+                            )
                           : null,
                       onClickRight: () {
                         showManagerFilter(context, managerBloc, (v) {

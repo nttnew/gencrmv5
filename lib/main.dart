@@ -75,15 +75,6 @@ Future main() async {
   await dotenv.load(fileName: BASE_URL.ENV);
   shareLocal = await ShareLocal.getInstance();
   WidgetsFlutterBinding.ensureInitialized();
-  if (!Platform.isAndroid) {
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.immersiveSticky,
-      overlays: [
-        SystemUiOverlay.top,
-        // SystemUiOverlay.bottom,
-      ],
-    );
-  }
   UserRepository userRepository = UserRepository();
   await PushNotifAndroid.initFirebase(DefaultFirebaseOptions.currentPlatform);
   await Firebase.initializeApp(

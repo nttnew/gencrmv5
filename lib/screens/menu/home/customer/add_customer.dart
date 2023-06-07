@@ -33,6 +33,7 @@ class _AddCustomerState extends State<AddCustomer> {
   List data = [];
   List<ModelItemAdd> addData = [];
   late StreamSubscription<bool> keyboardSubscription;
+  String title = Get.arguments ?? '';
 
   @override
   void initState() {
@@ -57,7 +58,7 @@ class _AddCustomerState extends State<AddCustomer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppbarBaseNormal('Thêm khách hàng cá nhân'),
+        appBar: AppbarBaseNormal(title),
         body: BlocListener<GetListCustomerBloc, CustomerState>(
           listener: (context, state) async {
             if (state is SuccessAddCustomerIndividualState) {
@@ -67,8 +68,7 @@ class _AddCustomerState extends State<AddCustomer> {
                 onTap1: () {
                   Get.back();
                   Get.back();
-                  GetListCustomerBloc.of(context)
-                      .add(InitGetListOrderEvent());
+                  GetListCustomerBloc.of(context).add(InitGetListOrderEvent());
                 },
               );
             }

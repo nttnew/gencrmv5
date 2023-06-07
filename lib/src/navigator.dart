@@ -23,8 +23,8 @@ class AppNavigator {
   ) async =>
       await Get.toNamed(ROUTE_NAMES.DETAIL_WORK, arguments: [id, title]);
 
-  static navigateAddCustomer() async =>
-      await Get.toNamed(ROUTE_NAMES.ADD_CUSTOMER);
+  static navigateAddCustomer(String title) async =>
+      await Get.toNamed(ROUTE_NAMES.ADD_CUSTOMER, arguments: title);
 
   static navigateAddServiceVoucherStepTwo(String title) async =>
       await Get.toNamed(ROUTE_NAMES.ADD_SERVICE_VOUCHER_STEP_TWO,

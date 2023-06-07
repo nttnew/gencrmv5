@@ -105,7 +105,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
 
   _handelRouterMenuPlus(String id, String name) {
     if (ModuleText.CUSTOMER == id) {
-      AppNavigator.navigateAddCustomer();
+      AppNavigator.navigateAddCustomer('Thêm ${name.toLowerCase()} cá nhân');
     } else if (ModuleText.DAU_MOI == id) {
       AppNavigator.navigateFormAdd(name, 2);
     } else if (ModuleText.LICH_HEN == id) {
