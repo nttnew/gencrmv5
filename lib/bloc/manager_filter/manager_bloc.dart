@@ -107,7 +107,6 @@ class ManagerBloc extends Bloc<ManagerEvent, ManagerState> {
     ids = '';
     saveDataFilter = {};
     _getDataSave(managerTrees.value);
-
     print(saveDataFilter);
   }
 
@@ -115,12 +114,17 @@ class ManagerBloc extends Bloc<ManagerEvent, ManagerState> {
     for (final value in list) {
       if (value.checked) {
         saveDataFilter.add(value);
-        _getDataSave(value.children);
-        if (ids == '') {
-          ids += '${value.id}';
-        } else {
-          ids += ',${value.id}';
+
+        if (value.id.toString().contains('u')) {
+          //id minus u
+          final id = value.id.substring(1, value.id.length);
+          if (ids == '') {
+            ids += '${id}';
+          } else {
+            ids += ',${id}';
+          }
         }
+        _getDataSave(value.children);
       } else {
         _getDataSave(value.children);
       }

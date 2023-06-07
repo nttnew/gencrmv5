@@ -40,4 +40,5 @@ class PreferencesKey {
   static const String DATA_CALL = "DATA_CALL";
   static const String DEVICE_TOKEN = "deviceToken";
   static const String NAME_REPORT = "nameReport";
+  static const String NAME_CUSTOMER = "nameCustomer";
 }
