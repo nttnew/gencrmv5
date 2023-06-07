@@ -28,6 +28,7 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/share_local.dart';
 import '../src/models/model_generator/add_data_response.dart';
 import '../src/models/model_generator/add_voucher_response.dart';
+import '../src/models/model_generator/address_customer_response.dart';
 import '../src/models/model_generator/clue.dart';
 import '../src/models/model_generator/clue_detail.dart';
 import '../src/models/model_generator/add_customer.dart';
@@ -849,6 +850,12 @@ class UserRepository {
         .getListManagerFilter(module);
     return ManagerFilterResponse.mapManagerToTree(result.data?.d) ?? [];
   }
+
+  Future<AddressCustomerResponse?> getAddressCustomer({
+    required String id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getAddressCustomer(id);
 
   //////////////////////
 

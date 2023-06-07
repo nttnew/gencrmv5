@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../api_resfull/user_repository.dart';
 import '../../src/base.dart';
@@ -13,6 +14,7 @@ part 'form_add_data_state.dart';
 
 class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
   final UserRepository userRepository;
+  final BehaviorSubject<String> addressStream = BehaviorSubject();
 
   FormAddBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -20,6 +22,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
 
   @override
   Stream<FormAddState> mapEventToState(FormAddEvent event) async* {
+    addressStream.add('');
     if (event is InitFormAddCusOrEvent) {
       yield* _getFormAddCustomerOrganization();
     } else if (event is InitFormAddContactCusEvent) {
@@ -78,6 +81,15 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       return id;
     }
     return '';
+  }
+
+  void getAddressCustomer(String id) async {
+    try {
+      final result = await userRepository.getAddressCustomer(id: id);
+      addressStream.add(result?.data ?? 'Chưa có');
+    } catch (e) {
+      throw e;
+    }
   }
 
   Stream<FormAddState> _getFormAddCustomerOrganization() async* {

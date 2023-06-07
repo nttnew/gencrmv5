@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
+import 'package:gen_crm/bloc/contract/contract_bloc.dart';
 import 'package:gen_crm/bloc/contract/phone_bloc.dart';
 import 'package:gen_crm/bloc/detail_product/detail_product_bloc.dart';
 import 'package:gen_crm/bloc/detail_product_customer/detail_product_customer_bloc.dart';
@@ -23,6 +23,8 @@ import '../../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import '../../../../bloc/contract/attack_bloc.dart';
 import '../../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../../bloc/detail_clue/detail_clue_bloc.dart';
+import '../../../../bloc/product_customer_module/product_customer_module_bloc.dart';
+import '../../../../bloc/product_module/product_module_bloc.dart';
 import '../../../../bloc/support/detail_support_bloc.dart';
 import '../../../../bloc/support/support_bloc.dart';
 import '../../../../bloc/work/detail_work_bloc.dart';
@@ -190,20 +192,25 @@ class _FormEditState extends State<FormEdit> {
                             .add(InitGetDetailWorkEvent(int.parse(id)));
                         WorkBloc.of(context).add(InitGetListWorkEvent());
                       }
-                      if (type == 4)
+                      if (type == 4) {
+                        ContractBloc.of(context).add(InitGetContractEvent());
                         DetailContractBloc.of(context)
                             .add(InitGetDetailContractEvent(int.parse(id)));
+                      }
                       if (type == 6) {
                         DetailSupportBloc.of(context)
                             .add(InitGetDetailSupportEvent(id));
-                        SupportBloc.of(context)
-                            .add(InitGetSupportEvent());
+                        SupportBloc.of(context).add(InitGetSupportEvent());
                       }
                       if (type == PRODUCT_TYPE) {
+                        ProductModuleBloc.of(context)
+                            .add(InitGetListProductModuleEvent());
                         DetailProductBloc.of(context)
                             .add(InitGetDetailProductEvent(id));
                       }
                       if (type == PRODUCT_CUSTOMER_TYPE) {
+                        ProductCustomerModuleBloc.of(context)
+                            .add(GetProductCustomerModuleEvent());
                         DetailProductCustomerBloc.of(context)
                             .add(InitGetDetailProductCustomerEvent(id));
                       }

@@ -32,6 +32,7 @@ import 'package:retrofit/retrofit.dart';
 import 'package:gen_crm/src/base.dart';
 import 'package:gen_crm/src/models/index.dart';
 
+import '../models/model_generator/address_customer_response.dart';
 import '../models/model_generator/contact_by_customer.dart';
 import '../models/model_generator/detail_contract.dart';
 import '../models/model_generator/clue.dart';
@@ -792,5 +793,10 @@ abstract class RestClient {
   @GET(BASE_URL.GET_LIST_MANAGER_FILTER)
   Future<ManagerFilterResponse> getListManagerFilter(
     @Query('module') String module,
+  );
+
+  @GET(BASE_URL.GET_ADDRESS_CUSTOMER)
+  Future<AddressCustomerResponse?> getAddressCustomer(
+    @Query('id') String id,
   );
 }

@@ -46,19 +46,18 @@ class _FormAddContractState extends State<FormAddContract> {
   List<List<dynamic>> dauMoi = [];
   double total = 0;
   TextEditingController value_contract_controller = TextEditingController();
-
+  late final FormAddBloc _bloc;
   @override
   void initState() {
     loadUser();
+    _bloc = FormAddBloc.of(context);
     AttackBloc.of(context).add(LoadingAttackEvent());
     if (Get.arguments[0] != null)
-      FormAddBloc.of(context)
-          .add(InitFormAddContractEvent(id: Get.arguments[0]));
+      _bloc.add(InitFormAddContractEvent(id: Get.arguments[0]));
     else if (Get.arguments[1] != null) {
-      FormAddBloc.of(context)
-          .add(InitFormAddContractCusEvent(Get.arguments[1]));
+      _bloc.add(InitFormAddContractCusEvent(Get.arguments[1]));
     } else {
-      FormAddBloc.of(context).add(InitFormAddContractEvent());
+      _bloc.add(InitFormAddContractEvent());
     }
     super.initState();
   }
@@ -129,18 +128,18 @@ class _FormAddContractState extends State<FormAddContract> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppbarBaseNormal(
-            "Thêm ${Get.arguments[2].toString().toLowerCase()}",),
+          "Thêm ${Get.arguments[2].toString().toLowerCase()}",
+        ),
         body: BlocListener<AddDataBloc, AddDataState>(
           listener: (context, state) async {
             if (state is SuccessAddCustomerOrState) {
               ShowDialogCustom.showDialogBase(
                 title: MESSAGES.NOTIFICATION,
                 content: "Thêm mới dữ liệu thành công!",
-                 onTap1: () {
+                onTap1: () {
                   Get.back();
                   Get.back();
-                  GetListCustomerBloc.of(context)
-                      .add(InitGetListOrderEvent());
+                  GetListCustomerBloc.of(context).add(InitGetListOrderEvent());
                 },
               );
             }
@@ -193,11 +192,12 @@ class _FormAddContractState extends State<FormAddContract> {
                         j < state.listAddData[i].data!.length;
                         j++) {
                       addData[i].data.add(ModelDataAdd(
-                          label: state.listAddData[i].data![j].field_name,
-                          value: state.listAddData[i].data![j].field_set_value
-                              .toString(),
-                          required:
-                              state.listAddData[i].data![j].field_require,));
+                            label: state.listAddData[i].data![j].field_name,
+                            value: state.listAddData[i].data![j].field_set_value
+                                .toString(),
+                            required:
+                                state.listAddData[i].data![j].field_require,
+                          ));
                     }
                   }
                   return Column(
@@ -235,18 +235,15 @@ class _FormAddContractState extends State<FormAddContract> {
                                             children: List.generate(
                                                 state.listAddData[index].data!
                                                     .length,
-                                                (index1) => (state
-                                                                .listAddData[
-                                                                    index]
-                                                                .data![index1]
-                                                                .field_special ==
+                                                (index1) => (state.listAddData[index].data![index1].field_special ==
                                                             "none-edit" &&
-                                                        state
+                                                        state.listAddData[index].data![index1].field_name !=
+                                                            'col131')
+                                                    ? (state
                                                                 .listAddData[index]
                                                                 .data![index1]
-                                                                .field_name !=
-                                                            'col131')
-                                                    ? (state.listAddData[index].data![index1].field_name == 'so_dien_thoai'
+                                                                .field_name ==
+                                                            'so_dien_thoai'
                                                         ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
                                                             if (stateA
                                                                 is SuccessPhoneState) {
@@ -268,7 +265,7 @@ class _FormAddContractState extends State<FormAddContract> {
                                                             } else
                                                               return Container();
                                                           })
-                                                        : state.listAddData[index].data![index1].field_name == 'chi_tiet_xe'
+                                                        : state.listAddData[index].data?[index1].field_name == 'chi_tiet_xe'
                                                             ? StreamBuilder<String>(
                                                                 stream: ContactByCustomerBloc.of(context).chiTietXe,
                                                                 builder: (context, snapshot) {
@@ -286,7 +283,25 @@ class _FormAddContractState extends State<FormAddContract> {
                                                                         chiTietXe,
                                                                   );
                                                                 })
-                                                            : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, noEdit: true))
+                                                            : state.listAddData[index].data?[index1].field_name == 'col1411'
+                                                                ? //address
+                                                                StreamBuilder<String>(
+                                                                    stream: _bloc.addressStream,
+                                                                    builder: (context, snapshot) {
+                                                                      final address =
+                                                                          snapshot.data ??
+                                                                              '';
+                                                                      return _fieldChiTietXe(
+                                                                        state
+                                                                            .listAddData[index]
+                                                                            .data![index1],
+                                                                        index,
+                                                                        index1,
+                                                                        value:
+                                                                            address,
+                                                                      );
+                                                                    })
+                                                                : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1, noEdit: true))
                                                     : state.listAddData[index].data![index1].field_special == "url"
                                                         ? ProductContract(
                                                             data: listProduct,
@@ -347,6 +362,7 @@ class _FormAddContractState extends State<FormAddContract> {
                                                                               .value = data;
                                                                           if (state.listAddData[index].data![index1].field_name ==
                                                                               'col131') {
+                                                                            _bloc.getAddressCustomer(data);
                                                                             ContactByCustomerBloc.of(context).chiTietXe.add('');
                                                                             ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
                                                                             PhoneBloc.of(context).add(InitPhoneEvent(data));

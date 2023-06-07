@@ -175,6 +175,8 @@ class BASE_URL {
       'modules/genmobile2/productCustomer/getFormHt';
   static const GET_LIST_MANAGER_FILTER =
       'modules/genmobile2/settings/nql';
+  static const GET_ADDRESS_CUSTOMER =
+      'modules/genmobile2/customer/getAddress';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';

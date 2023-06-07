@@ -13,7 +13,7 @@ class ItemContract extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AppNavigator.navigateInfoContract(data.id!, data.name!);
+        AppNavigator.navigateInfoContract(data.id ?? '', data.name ?? 'Chưa có');
       },
       child: Container(
         margin: EdgeInsets.only(left: 25, right: 25, bottom: 20),

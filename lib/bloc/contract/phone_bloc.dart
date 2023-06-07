@@ -30,13 +30,13 @@ class PhoneBloc extends Bloc<PhoneEvent, PhoneState> {
   }
 
   Stream<PhoneState> _getPhone(String id) async* {
-    LoadingApi().pushLoading();
+    // LoadingApi().pushLoading();
     try {
       yield LoadingPhoneState();
       final response = await userRepository.getPhoneCus(id);
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        yield SuccessPhoneState(response.data!);
+        yield SuccessPhoneState(response.data ?? '');
       } else if (response.code == 999) {
         loginSessionExpired();
       } else
@@ -45,7 +45,6 @@ class PhoneBloc extends Bloc<PhoneEvent, PhoneState> {
       yield ErrorPhoneState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
-    LoadingApi().popLoading();
   }
 
   Stream<PhoneState> _getPhoneAgency(String id) async* {

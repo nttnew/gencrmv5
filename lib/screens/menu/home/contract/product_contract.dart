@@ -99,9 +99,10 @@ class _ProductContractState extends State<ProductContract> {
                             },
                             model: productData[index],
                             listDvt: listDVT,
-                            listVat: listVAT, onReload: () {
+                            listVat: listVAT,
+                            onReload: () {
                               reload();
-                      },
+                            },
                           )),
                 )
               : Container(),
@@ -111,10 +112,21 @@ class _ProductContractState extends State<ProductContract> {
                 AppNavigator.navigateAddProduct(
                     widget.addProduct, reload, productData);
               },
-              child: WidgetText(
-                title: "Chọn sản phẩm",
-                style: AppStyle.DEFAULT_14_BOLD
-                    .copyWith(color: COLORS.TEXT_BLUE_BOLD),
+              child: Container(
+                margin: EdgeInsets.symmetric(
+                  vertical: 8,
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                    color: COLORS.TEXT_COLOR,
+                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                    border: Border.all(
+                      color: COLORS.TEXT_COLOR,
+                    )),
+                child: WidgetText(
+                  title: "Chọn sản phẩm",
+                  style: AppStyle.DEFAULT_14_BOLD.copyWith(color: Colors.white),
+                ),
               ),
             ),
           )
