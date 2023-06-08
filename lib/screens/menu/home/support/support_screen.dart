@@ -62,7 +62,7 @@ class _SupportScreenState extends State<SupportScreen> {
   }
 
   _handleRouter(String value) {
-    AppNavigator.navigateFormAdd(value, 6, isCheckIn: listAdd.first == value);
+    AppNavigator.navigateFormAdd(value, ADD_SUPPORT, isCheckIn: listAdd.first == value);
   }
 
   _research({

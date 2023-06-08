@@ -162,7 +162,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
             child: FloatingActionButton(
               backgroundColor: Color(0xff1AA928),
               onPressed: () {
-                AppNavigator.navigateFormAdd('Thêm ${title.toLowerCase()}', 3);
+                AppNavigator.navigateFormAdd('Thêm ${title.toLowerCase()}', ADD_CHANCE);
               },
               child: Icon(Icons.add, size: 40),
             ),

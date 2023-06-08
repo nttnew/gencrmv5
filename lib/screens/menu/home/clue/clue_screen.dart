@@ -77,7 +77,7 @@ class _ClueScreenState extends State<ClueScreen> {
         child: FloatingActionButton(
           backgroundColor: Color(0xff1AA928),
           onPressed: () {
-            AppNavigator.navigateFormAdd('Thêm ${title}', 2);
+            AppNavigator.navigateFormAdd('Thêm ${title}', ADD_CLUE);
           },
           child: Icon(Icons.add, size: 40),
         ),

@@ -49,7 +49,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
       title: "Thêm công việc",
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
-        AppNavigator.navigateFormAdd('Thêm công việc', 21, id: int.parse(id));
+        AppNavigator.navigateFormAdd('Thêm công việc', ADD_CLUE_JOB, id: int.parse(id));
       },
     ));
     list.add(ModuleThaoTac(
@@ -76,7 +76,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
         icon: ICONS.IC_EDIT_SVG,
         onThaoTac: () {
           Get.back();
-          AppNavigator.navigateEditDataScreen(id, 2);
+          AppNavigator.navigateEditDataScreen(id, EDIT_CLUE);
         }));
     list.add(ModuleThaoTac(
         title: 'Xóa',

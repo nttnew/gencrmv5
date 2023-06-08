@@ -116,7 +116,7 @@ class _ReportScreenState extends State<ReportScreen> {
     _scrollCarController.addListener(() {
       if (_scrollCarController.offset ==
               _scrollCarController.position.maxScrollExtent &&
-          CarListReportBloc.of(context).isTotal) {
+        CarListReportBloc.of(context).isTotal) {
         CarListReportBloc.of(context).page += 1;
         CarListReportBloc.of(context).add(GetListReportCar(
             time: timeFilter.toString(),

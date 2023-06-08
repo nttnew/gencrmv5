@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/blocs.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
@@ -56,7 +57,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd('Thêm công việc', 31, id: int.parse(id));
+        AppNavigator.navigateFormAdd('Thêm công việc', ADD_CHANCE_JOB, id: int.parse(id));
       },
     ));
 
@@ -87,7 +88,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditDataScreen(id, 3);
+        AppNavigator.navigateEditDataScreen(id, EDIT_CHANCE);
       },
     ));
 

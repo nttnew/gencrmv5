@@ -62,7 +62,7 @@ class _WorkScreenState extends State<WorkScreen> {
   }
 
   _handleRouter(String value) {
-    AppNavigator.navigateFormAdd(value, 5, isCheckIn: listAdd.first == value);
+    AppNavigator.navigateFormAdd(value, ADD_JOB, isCheckIn: listAdd.first == value);
   }
 
   _research({int? pageNew}) {

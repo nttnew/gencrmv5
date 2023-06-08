@@ -109,17 +109,17 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     if (ModuleText.CUSTOMER == id) {
       AppNavigator.navigateAddCustomer('Thêm ${name.toLowerCase()} cá nhân');
     } else if (ModuleText.DAU_MOI == id) {
-      AppNavigator.navigateFormAdd(name, 2);
+      AppNavigator.navigateFormAdd(name, ADD_CLUE);
     } else if (ModuleText.LICH_HEN == id) {
-      AppNavigator.navigateFormAdd(name, 3);
+      AppNavigator.navigateFormAdd(name, ADD_CHANCE);
     } else if (ModuleText.HOP_DONG == id) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => AddServiceVoucherScreen(
               title: name.toUpperCase().capitalizeFirst ?? '')));
     } else if (ModuleText.CONG_VIEC == id) {
-      AppNavigator.navigateFormAdd(name, 14);
+      AppNavigator.navigateFormAdd(name, ADD_JOB);
     } else if (ModuleText.CSKH == id) {
-      AppNavigator.navigateFormAdd(name, 6);
+      AppNavigator.navigateFormAdd(name, ADD_SUPPORT);
     } else if (ModuleText.THEM_MUA_XE == id) {
       //todo
     } else if (ModuleText.THEM_BAN_XE == id) {

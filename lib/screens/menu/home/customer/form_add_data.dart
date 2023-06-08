@@ -84,35 +84,35 @@ class _FormAddDataState extends State<FormAddData> {
     isMaxScroll = BehaviorSubject.seeded(false);
     loadUser();
     AttackBloc.of(context).add(LoadingAttackEvent());
-    if (type == 1) {
+    if (type == ADD_CUSTOMER) {
       FormAddBloc.of(context).add(InitFormAddCusOrEvent());
-    } else if (type == 11) {
+    } else if (type == ADD_CLUE_CUSTOMER) {
       FormAddBloc.of(context).add(InitFormAddContactCusEvent(id));
-    } else if (type == 12) {
+    } else if (type == ADD_CHANCE_CUSTOMER) {
       FormAddBloc.of(context).add(InitFormAddOppCusEvent(id));
     } else if (type == 13) {
       FormAddBloc.of(context).add(InitFormAddContractCusEvent(id));
-    } else if (type == 14) {
+    } else if (type == ADD_JOB_CUSTOMER) {
       FormAddBloc.of(context).add(InitFormAddJobCusEvent(id));
-    } else if (type == 15) {
+    } else if (type == ADD_SUPPORT_CUSTOMER) {
       FormAddBloc.of(context).add(InitFormAddSupportCusEvent(id));
-    } else if (type == 2) {
+    } else if (type == ADD_CLUE) {
       FormAddBloc.of(context).add(InitFormAddAgencyEvent());
-    } else if (type == 3) {
+    } else if (type == ADD_CHANCE) {
       FormAddBloc.of(context).add(InitFormAddChanceEvent());
     } else if (type == 4) {
       FormAddBloc.of(context).add(InitFormAddContractEvent(id: id));
-    } else if (type == 5) {
+    } else if (type == ADD_JOB) {
       FormAddBloc.of(context).add(InitFormAddJobEvent());
-    } else if (type == 6) {
+    } else if (type == ADD_SUPPORT) {
       FormAddBloc.of(context).add(InitFormAddSupportEvent());
-    } else if (type == 21) {
+    } else if (type == ADD_CLUE_JOB) {
       FormAddBloc.of(context).add(InitFormAddJobOppEvent(id));
-    } else if (type == 31) {
+    } else if (type == ADD_CHANCE_JOB) {
       FormAddBloc.of(context).add(InitFormAddJobChanceEvent(id));
-    } else if (type == 41) {
+    } else if (type == ADD_SUPPORT_CONTRACT) {
       FormAddBloc.of(context).add(InitFormAddSupportContractEvent(id));
-    } else if (type == 42) {
+    } else if (type == ADD_JOB_CONTRACT) {
       FormAddBloc.of(context).add(InitFormAddJobContractEvent(id));
     } else if (type == PRODUCT_TYPE) {
       FormAddBloc.of(context).add(InitFormAddProductEvent());
@@ -419,45 +419,41 @@ class _FormAddDataState extends State<FormAddData> {
                     onTap1: () {
                       Get.back();
                       Get.back();
-                      if (type == 2)
-                        GetListClueBloc.of(context)
-                            .add(InitGetListClueEvent());
-                      else if (type == 3) {
+                      if (type == ADD_CLUE)
+                        GetListClueBloc.of(context).add(InitGetListClueEvent());
+                      else if (type == ADD_CHANCE) {
                         GetListChanceBloc.of(context)
                             .add(InitGetListOrderEventChance());
                       } else if (type == 4) {
-                        ContractBloc.of(context)
-                            .add(InitGetContractEvent());
-                      } else if (type == 5) {
-                        WorkBloc.of(context)
-                            .add(InitGetListWorkEvent());
-                      } else if (type == 6) {
-                        SupportBloc.of(context)
-                            .add(InitGetSupportEvent());
-                      } else if (type == 21) {
+                        ContractBloc.of(context).add(InitGetContractEvent());
+                      } else if (type == ADD_JOB) {
+                        WorkBloc.of(context).add(InitGetListWorkEvent());
+                      } else if (type == ADD_SUPPORT) {
+                        SupportBloc.of(context).add(InitGetSupportEvent());
+                      } else if (type == ADD_CLUE_JOB) {
                         WorkClueBloc.of(context).add(GetWorkClue(id: id));
-                      } else if (type == 31) {
+                      } else if (type == ADD_CHANCE_JOB) {
                         GetJobChanceBloc.of(context)
                             .add(InitGetJobEventChance(int.parse(id)));
-                      } else if (type == 41) {
+                      } else if (type == ADD_SUPPORT_CONTRACT) {
                         SupportContractBloc.of(context)
                             .add(InitGetSupportContractEvent(int.parse(id)));
-                      } else if (type == 42) {
+                      } else if (type == ADD_JOB_CONTRACT) {
                         JobContractBloc.of(context)
                             .add(InitGetJobContractEvent(int.parse(id)));
-                      } else if (type == 11) {
+                      } else if (type == ADD_CLUE_CUSTOMER) {
                         ClueCustomerBloc.of(context)
                             .add(InitGetClueCustomerEvent(int.parse(id)));
-                      } else if (type == 12) {
+                      } else if (type == ADD_CHANCE_CUSTOMER) {
                         ChanceCustomerBloc.of(context)
                             .add(InitGetChanceCustomerEvent(int.parse(id)));
                       } else if (type == 13) {
                         ContractCustomerBloc.of(context)
                             .add(InitGetContractCustomerEvent(int.parse(id)));
-                      } else if (type == 14) {
+                      } else if (type == ADD_JOB_CUSTOMER) {
                         JobCustomerBloc.of(context)
                             .add(InitGetJobCustomerEvent(int.parse(id)));
-                      } else if (type == 15) {
+                      } else if (type == ADD_SUPPORT_CUSTOMER) {
                         SupportCustomerBloc.of(context)
                             .add(InitGetSupportCustomerEvent(int.parse(id)));
                       } else if (type == PRODUCT_TYPE) {
@@ -739,8 +735,8 @@ class _FormAddDataState extends State<FormAddData> {
   Widget _fieldInputCustomer(
       CustomerIndividualItemData data, int index, int index1,
       {bool noEdit = false, String value = ""}) {
-    if ((type == 21 && data.field_name == "so_dien_thoai") ||
-        (type == 31 && data.field_name == "so_dien_thoai")) {
+    if ((type == ADD_CLUE_JOB && data.field_name == "so_dien_thoai") ||
+        (type == ADD_CHANCE_JOB && data.field_name == "so_dien_thoai")) {
       return Container();
     } else {
       return Container(
@@ -966,11 +962,11 @@ class _FormAddDataState extends State<FormAddData> {
       if (type == 1) {
         AddDataBloc.of(context).add(
             AddCustomerOrEvent(data, files: AttackBloc.of(context).listFile));
-      } else if (type == 11) {
+      } else if (type == ADD_CLUE_CUSTOMER) {
         data["customer_id"] = id;
         AddDataBloc.of(context).add(AddContactCustomerEvent(data,
             files: AttackBloc.of(context).listFile));
-      } else if (type == 12) {
+      } else if (type == ADD_CHANCE_CUSTOMER) {
         data["customer_id"] = id;
         AddDataBloc.of(context).add(
             AddOpportunityEvent(data, files: AttackBloc.of(context).listFile));
@@ -978,46 +974,46 @@ class _FormAddDataState extends State<FormAddData> {
         data["customer_id"] = id;
         AddDataBloc.of(context).add(
             AddContractEvent(data, files: AttackBloc.of(context).listFile));
-      } else if (type == 14) {
+      } else if (type == ADD_JOB_CUSTOMER) {
         data["customer_id"] = id;
         AddDataBloc.of(context)
             .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
-      } else if (type == 15) {
+      } else if (type == ADD_SUPPORT_CUSTOMER) {
         data["customer_id"] = id;
         data["nguoi_xu_lht"] = id_user;
         AddDataBloc.of(context)
             .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
-      } else if (type == 2) {
+      } else if (type == ADD_CLUE) {
         AddDataBloc.of(context).add(AddContactCustomerEvent(data,
             files: AttackBloc.of(context).listFile));
-      } else if (type == 3) {
+      } else if (type == ADD_CHANCE) {
         AddDataBloc.of(context).add(
             AddOpportunityEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 4) {
         data["customer_id"] = id;
         AddDataBloc.of(context).add(
             AddContractEvent(data, files: AttackBloc.of(context).listFile));
-      } else if (type == 5) {
+      } else if (type == ADD_JOB) {
         AddDataBloc.of(context)
             .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
-      } else if (type == 6) {
+      } else if (type == ADD_SUPPORT) {
         data["nguoi_xu_lht"] = id_user;
         AddDataBloc.of(context)
             .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
-      } else if (type == 21) {
+      } else if (type == ADD_CLUE_JOB) {
         data["daumoi_id"] = id;
         AddDataBloc.of(context)
             .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
-      } else if (type == 31) {
+      } else if (type == ADD_CHANCE_JOB) {
         data["cohoi_id"] = id;
         AddDataBloc.of(context)
             .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
-      } else if (type == 41) {
+      } else if (type == ADD_SUPPORT_CONTRACT) {
         data["hopdong_id"] = id;
         data["nguoi_xu_lht"] = id_user;
         AddDataBloc.of(context)
             .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
-      } else if (type == 42) {
+      } else if (type == ADD_JOB_CONTRACT) {
         data["hopdong_id"] = id;
         AddDataBloc.of(context)
             .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));

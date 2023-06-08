@@ -67,17 +67,17 @@ class _FormEditState extends State<FormEdit> {
     isMaxScroll = BehaviorSubject.seeded(false);
     scrollController = ScrollController();
     AttackBloc.of(context).add(LoadingAttackEvent());
-    if (type == 1)
+    if (type == EDIT_CUSTOMER)
       FormEditBloc.of(context).add(InitFormEditCusEvent(id));
-    else if (type == 2) {
+    else if (type == EDIT_CLUE) {
       FormEditBloc.of(context).add(InitFormEditClueEvent(id));
-    } else if (type == 3) {
+    } else if (type == EDIT_CHANCE) {
       FormEditBloc.of(context).add(InitFormEditChanceEvent(id));
     } else if (type == 4) {
       FormEditBloc.of(context).add(InitFormEditContractEvent(id));
     } else if (type == EDIT_JOB) {
       FormEditBloc.of(context).add(InitFormEditJobEvent(id));
-    } else if (type == 6) {
+    } else if (type == EDIT_SUPPORT) {
       FormEditBloc.of(context).add(InitFormEditSupportEvent(id));
     } else if (type == PRODUCT_TYPE) {
       FormEditBloc.of(context).add(InitFormEditProductEvent(id));
@@ -153,7 +153,7 @@ class _FormEditState extends State<FormEdit> {
                     title: MESSAGES.NOTIFICATION,
                     content: "Update dữ liệu thành công!",
                     onTap1: () {
-                      if (type == 1)
+                      if (type == EDIT_CUSTOMER)
                         GetListCustomerBloc.of(context)
                             .add(InitGetListOrderEvent());
                       Get.back();
@@ -176,12 +176,12 @@ class _FormEditState extends State<FormEdit> {
                     onTap1: () {
                       Get.back();
                       Get.back();
-                      if (type == 2) {
+                      if (type == EDIT_CLUE) {
                         GetDetailClueBloc.of(context)
                             .add(InitGetDetailClueEvent(id));
                         GetListClueBloc.of(context).add(InitGetListClueEvent());
                       }
-                      if (type == 3) {
+                      if (type == EDIT_CHANCE) {
                         GetListDetailChanceBloc.of(context)
                             .add(InitGetListDetailEvent(int.parse(id)));
                         GetListChanceBloc.of(context)
@@ -197,7 +197,7 @@ class _FormEditState extends State<FormEdit> {
                         DetailContractBloc.of(context)
                             .add(InitGetDetailContractEvent(int.parse(id)));
                       }
-                      if (type == 6) {
+                      if (type == EDIT_SUPPORT) {
                         DetailSupportBloc.of(context)
                             .add(InitGetDetailSupportEvent(id));
                         SupportBloc.of(context).add(InitGetSupportEvent());
@@ -805,13 +805,13 @@ class _FormEditState extends State<FormEdit> {
       );
     } else {
       data["id"] = id;
-      if (type == 1) {
+      if (type == EDIT_CUSTOMER) {
         AddDataBloc.of(context).add(
             EditCustomerEvent(data, files: AttackBloc.of(context).listFile));
-      } else if (type == 2) {
+      } else if (type == EDIT_CLUE) {
         AddDataBloc.of(context).add(AddContactCustomerEvent(data,
             files: AttackBloc.of(context).listFile));
-      } else if (type == 3) {
+      } else if (type == EDIT_CHANCE) {
         AddDataBloc.of(context).add(
             AddOpportunityEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 4) {
@@ -820,7 +820,7 @@ class _FormEditState extends State<FormEdit> {
       } else if (type == EDIT_JOB) {
         AddDataBloc.of(context)
             .add(EditJobEvent(data, files: AttackBloc.of(context).listFile));
-      } else if (type == 6) {
+      } else if (type == EDIT_SUPPORT) {
         AddDataBloc.of(context)
             .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == PRODUCT_TYPE) {
