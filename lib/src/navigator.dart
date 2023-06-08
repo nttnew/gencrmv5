@@ -36,9 +36,21 @@ class AppNavigator {
     int? id,
     bool isCheckIn = false,
     String typeCheckIn = TypeCheckIn.CHECK_IN,
+    bool isResultData = false,
   }) async =>
       await Get.toNamed(ROUTE_NAMES.FORM_ADD,
-          arguments: [title, type, id, isCheckIn, typeCheckIn]);
+          arguments: [title, type, id, isCheckIn, typeCheckIn, isResultData]);
+
+  static navigateFormAddCustomerGroup(
+    String title,
+    int type, {
+    int? id,
+    bool isCheckIn = false,
+    String typeCheckIn = TypeCheckIn.CHECK_IN,
+    bool isResultData = false,
+  }) async =>
+      await Get.toNamed(ROUTE_NAMES.FORM_ADD_CUSTOMER_GROUP,
+          arguments: [title, type, id, isCheckIn, typeCheckIn, isResultData]);
 
   static navigateAddWork() async => await Get.toNamed(ROUTE_NAMES.ADD_WORK);
 

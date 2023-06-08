@@ -47,10 +47,11 @@ class _FormAddContractState extends State<FormAddContract> {
   double total = 0;
   TextEditingController value_contract_controller = TextEditingController();
   late final FormAddBloc _bloc;
+
   @override
   void initState() {
     loadUser();
-    _bloc = FormAddBloc.of(context);
+    _bloc = FormAddBloc(userRepository: FormAddBloc.of(context).userRepository);
     AttackBloc.of(context).add(LoadingAttackEvent());
     if (Get.arguments[0] != null)
       _bloc.add(InitFormAddContractEvent(id: Get.arguments[0]));
@@ -178,6 +179,7 @@ class _FormAddContractState extends State<FormAddContract> {
             color: Colors.white,
             child: SingleChildScrollView(
               child: BlocBuilder<FormAddBloc, FormAddState>(
+                  bloc: _bloc,
                   builder: (context, state) {
                 if (state is LoadingFormAddCustomerOrState) {
                   addData = [];

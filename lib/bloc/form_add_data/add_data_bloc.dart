@@ -66,14 +66,16 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
           if ((responseUpload.code == BASE_URL.SUCCESS) ||
               (responseUpload.code == BASE_URL.SUCCESS_200)) {
             LoadingApi().popLoading();
-            yield SuccessAddCustomerOrState();
+            yield SuccessAddCustomerOrState(
+                ['${response.id}', '${response.name}']);
           } else {
             LoadingApi().popLoading();
             yield ErrorAddCustomerOrState(responseUpload.msg ?? '');
           }
         } else {
           LoadingApi().popLoading();
-          yield SuccessAddCustomerOrState();
+          yield SuccessAddCustomerOrState(
+              ['${response.id}', '${response.name}']);
         }
       } else {
         LoadingApi().popLoading();

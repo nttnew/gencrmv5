@@ -19,6 +19,7 @@ class InputDropdown extends StatefulWidget {
     this.isUpdate = false,
     this.onUpdate,
     this.isUpdateList = false,
+    this.isAddList = false,
   }) : super(key: key);
   final List<List<dynamic>> dropdownItemList;
   final CustomerIndividualItemData data;
@@ -26,6 +27,7 @@ class InputDropdown extends StatefulWidget {
   final String value;
   final bool isUpdate;
   final bool isUpdateList;
+  final bool isAddList;
   final Function? onUpdate;
 
   @override
@@ -33,7 +35,7 @@ class InputDropdown extends StatefulWidget {
 }
 
 class _InputDropdownState extends State<InputDropdown> {
-  List dropdow = [];
+  List dropdown = [];
   String textValue = "";
 
   @override
@@ -51,15 +53,18 @@ class _InputDropdownState extends State<InputDropdown> {
       }
       widget.onUpdate!(data);
     }
+    if (mounted && widget.isAddList) {
+      textValue = widget.value;
+    }
     super.didUpdateWidget(oldWidget);
   }
 
   void updateList() {
-    dropdow = [];
+    dropdown = [];
     for (int i = 0; i < widget.dropdownItemList.length; i++) {
       if (widget.dropdownItemList[i][1] != null &&
           widget.dropdownItemList[i][0] != null) {
-        dropdow.add({
+        dropdown.add({
           'label': widget.dropdownItemList[i][1],
           'value': widget.dropdownItemList[i][0]
         });
@@ -96,7 +101,7 @@ class _InputDropdownState extends State<InputDropdown> {
       for (int i = 0; i < widget.dropdownItemList.length; i++) {
         if (widget.dropdownItemList[i][1] != null &&
             widget.dropdownItemList[i][0] != null) {
-          dropdow.add({
+          dropdown.add({
             'label': widget.dropdownItemList[i][1],
             'value': widget.dropdownItemList[i][0]
           });
@@ -113,7 +118,7 @@ class _InputDropdownState extends State<InputDropdown> {
   }
 
   dispose() {
-    dropdow.clear();
+    dropdown.clear();
     textValue = "";
     super.dispose();
   }
@@ -122,10 +127,23 @@ class _InputDropdownState extends State<InputDropdown> {
       {Function? reload, String search = "", bool isLoadMore = false}) async {
     ContactByCustomerBloc.of(context)
         .add(InitGetCustomerContractEvent(page.toString(), search, (response) {
-      if (isLoadMore == false) dropdow = [];
+      if (isLoadMore == false) dropdown = [];
+      // add
+      if (widget.isAddList) {
+        for (int i = 0; i < widget.dropdownItemList.length; i++) {
+          if (widget.dropdownItemList[i][1] != null &&
+              widget.dropdownItemList[i][0] != null) {
+            dropdown.add({
+              'label': widget.dropdownItemList[i][1],
+              'value': widget.dropdownItemList[i][0]
+            });
+          }
+        }
+      }
+      //
       for (int i = 0; i < response.data!.length; i++) {
         if (response.data![i][1] != null && response.data![i][0] != null) {
-          dropdow.add(
+          dropdown.add(
               {'label': response.data![i][1], 'value': response.data![i][0]});
         }
       }
@@ -154,10 +172,11 @@ class _InputDropdownState extends State<InputDropdown> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Quicksand",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.red))
+                          fontFamily: "Quicksand",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.red,
+                        ))
                     : TextSpan(),
               ],
             ),
@@ -167,9 +186,9 @@ class _InputDropdownState extends State<InputDropdown> {
           ),
           GestureDetector(
             onTap: () {
-              if (widget.data.field_special == "none-edit") {
-              } else
+              if (widget.data.field_special != "none-edit") {
                 FocusManager.instance.primaryFocus?.unfocus();
+              }
               showModalBottomSheet(
                   enableDrag: false,
                   isScrollControlled: true,
@@ -179,11 +198,13 @@ class _InputDropdownState extends State<InputDropdown> {
                   builder: (BuildContext context) {
                     return StatefulBuilder(
                       builder: (context, setState1) {
+                        getCustomer(1,
+                            reload: () => setState1(() {}), search: '');
                         return Container(
                           padding: EdgeInsets.only(
                               bottom: MediaQuery.of(context).viewInsets.bottom),
                           child: DataDropDownItem(
-                            data: dropdow,
+                            data: dropdown,
                             isSearch: (
                                     // widget.data.field_name == 'col131' ||
                                     widget.data.field_name == 'col121' ||
@@ -200,8 +221,8 @@ class _InputDropdownState extends State<InputDropdown> {
                                 });
                               }
 
-                              widget.onSuccess(data);
                               Get.back();
+                              widget.onSuccess(data);
                             },
                             onTabSearch: (search) {
                               getCustomer(1,
@@ -209,14 +230,14 @@ class _InputDropdownState extends State<InputDropdown> {
                                   search: search);
                               FocusManager.instance.primaryFocus?.unfocus();
                             },
-                            onLoadMore: (int pagee, String search) {
+                            onLoadMore: (int page, String search) {
                               if (widget.data.field_name == 'col131' ||
                                   widget.data.field_name == 'col121' ||
                                   widget.data.field_name == 'cv_kh' ||
                                   widget.data.field_name ==
                                       'khach_hang_id_dm' ||
                                   widget.data.field_name == 'khach_hang')
-                                getCustomer(pagee,
+                                getCustomer(page,
                                     reload: () => setState1(() {}),
                                     search: search,
                                     isLoadMore: true);

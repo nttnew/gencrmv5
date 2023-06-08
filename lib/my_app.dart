@@ -162,6 +162,10 @@ class MyApp extends StatelessWidget {
           page: () => FormAddData(),
         ),
         GetPage(
+          name: ROUTE_NAMES.FORM_ADD_CUSTOMER_GROUP,
+          page: () => FormAddData(),
+        ),
+        GetPage(
           name: ROUTE_NAMES.FORM_EDIT,
           page: () => FormEdit(),
         ),

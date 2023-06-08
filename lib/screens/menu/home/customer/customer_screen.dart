@@ -78,7 +78,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
     if (listAdd.last == value) {
       AppNavigator.navigateAddCustomer("Thêm ${value.toLowerCase()}");
     } else {
-      AppNavigator.navigateFormAdd("Thêm ${value.toLowerCase()}", ADD_CUSTOMER);
+      AppNavigator.navigateFormAddCustomerGroup("Thêm ${value.toLowerCase()}", ADD_CUSTOMER);
     }
   }
 

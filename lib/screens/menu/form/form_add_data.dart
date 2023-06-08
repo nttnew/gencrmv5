@@ -61,6 +61,7 @@ class _FormAddDataState extends State<FormAddData> {
   String id = Get.arguments[2] != null ? Get.arguments[2].toString() : "";
   bool isCheckIn = Get.arguments[3];
   String typeCheckIn = Get.arguments[4];
+  bool isResultData = Get.arguments[5];
   List data = [];
   List<ModelItemAdd> addData = [];
   late String id_user;
@@ -70,9 +71,20 @@ class _FormAddDataState extends State<FormAddData> {
   late final BehaviorSubject<bool> isMaxScroll;
   late final BehaviorSubject<String> nameLocation;
   late final TextEditingController controllerNote;
+  late final FormAddBloc _bloc;
+  late final List<List<dynamic>> listCustomerForChance;
+  String CA_NHAN = '0';
+  String TO_CHUC = '1';
 
   @override
   void initState() {
+    _bloc = FormAddBloc(userRepository: FormAddBloc.of(context).userRepository);
+    String nameCustomerScreen =
+        shareLocal.getString(PreferencesKey.NAME_CUSTOMER);
+    listCustomerForChance = [
+      [CA_NHAN, "Thêm ${nameCustomerScreen.toString().toLowerCase()} cá nhân"],
+      [TO_CHUC, "Thêm ${nameCustomerScreen.toString().toLowerCase()} tổ chức"]
+    ];
     controllerNote = TextEditingController();
     scrollController = ScrollController();
     nameLocation = BehaviorSubject.seeded('');
@@ -85,51 +97,47 @@ class _FormAddDataState extends State<FormAddData> {
     loadUser();
     AttackBloc.of(context).add(LoadingAttackEvent());
     if (type == ADD_CUSTOMER) {
-      FormAddBloc.of(context).add(InitFormAddCusOrEvent());
+      _bloc.add(InitFormAddCusOrEvent());
     } else if (type == ADD_CLUE_CUSTOMER) {
-      FormAddBloc.of(context).add(InitFormAddContactCusEvent(id));
+      _bloc.add(InitFormAddContactCusEvent(id));
     } else if (type == ADD_CHANCE_CUSTOMER) {
-      FormAddBloc.of(context).add(InitFormAddOppCusEvent(id));
+      _bloc.add(InitFormAddOppCusEvent(id));
     } else if (type == 13) {
-      FormAddBloc.of(context).add(InitFormAddContractCusEvent(id));
+      _bloc.add(InitFormAddContractCusEvent(id));
     } else if (type == ADD_JOB_CUSTOMER) {
-      FormAddBloc.of(context).add(InitFormAddJobCusEvent(id));
+      _bloc.add(InitFormAddJobCusEvent(id));
     } else if (type == ADD_SUPPORT_CUSTOMER) {
-      FormAddBloc.of(context).add(InitFormAddSupportCusEvent(id));
+      _bloc.add(InitFormAddSupportCusEvent(id));
     } else if (type == ADD_CLUE) {
-      FormAddBloc.of(context).add(InitFormAddAgencyEvent());
+      _bloc.add(InitFormAddAgencyEvent());
     } else if (type == ADD_CHANCE) {
-      FormAddBloc.of(context).add(InitFormAddChanceEvent());
+      _bloc.add(InitFormAddChanceEvent());
     } else if (type == 4) {
-      FormAddBloc.of(context).add(InitFormAddContractEvent(id: id));
+      _bloc.add(InitFormAddContractEvent(id: id));
     } else if (type == ADD_JOB) {
-      FormAddBloc.of(context).add(InitFormAddJobEvent());
+      _bloc.add(InitFormAddJobEvent());
     } else if (type == ADD_SUPPORT) {
-      FormAddBloc.of(context).add(InitFormAddSupportEvent());
+      _bloc.add(InitFormAddSupportEvent());
     } else if (type == ADD_CLUE_JOB) {
-      FormAddBloc.of(context).add(InitFormAddJobOppEvent(id));
+      _bloc.add(InitFormAddJobOppEvent(id));
     } else if (type == ADD_CHANCE_JOB) {
-      FormAddBloc.of(context).add(InitFormAddJobChanceEvent(id));
+      _bloc.add(InitFormAddJobChanceEvent(id));
     } else if (type == ADD_SUPPORT_CONTRACT) {
-      FormAddBloc.of(context).add(InitFormAddSupportContractEvent(id));
+      _bloc.add(InitFormAddSupportContractEvent(id));
     } else if (type == ADD_JOB_CONTRACT) {
-      FormAddBloc.of(context).add(InitFormAddJobContractEvent(id));
+      _bloc.add(InitFormAddJobContractEvent(id));
     } else if (type == PRODUCT_TYPE) {
-      FormAddBloc.of(context).add(InitFormAddProductEvent());
+      _bloc.add(InitFormAddProductEvent());
     } else if (type == PRODUCT_CUSTOMER_TYPE) {
-      FormAddBloc.of(context).add(InitFormAddProductCustomerEvent());
+      _bloc.add(InitFormAddProductCustomerEvent());
     } else if (type == CH_PRODUCT_CUSTOMER_TYPE) {
-      FormAddBloc.of(context)
-          .add(InitFormAddCHProductCustomerEvent(int.parse(id)));
+      _bloc.add(InitFormAddCHProductCustomerEvent(int.parse(id)));
     } else if (type == CV_PRODUCT_CUSTOMER_TYPE) {
-      FormAddBloc.of(context)
-          .add(InitFormAddCVProductCustomerEvent(int.parse(id)));
+      _bloc.add(InitFormAddCVProductCustomerEvent(int.parse(id)));
     } else if (type == HT_PRODUCT_CUSTOMER_TYPE) {
-      FormAddBloc.of(context)
-          .add(InitFormAddHTProductCustomerEvent(int.parse(id)));
+      _bloc.add(InitFormAddHTProductCustomerEvent(int.parse(id)));
     } else if (type == HD_PRODUCT_CUSTOMER_TYPE) {
-      FormAddBloc.of(context)
-          .add(InitFormAddHDProductCustomerEvent(int.parse(id)));
+      _bloc.add(InitFormAddHDProductCustomerEvent(int.parse(id)));
     }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Future.delayed(Duration(seconds: 1));
@@ -174,8 +182,6 @@ class _FormAddDataState extends State<FormAddData> {
 
   @override
   void deactivate() {
-    data.clear();
-    addData.clear();
     AttackBloc.of(context).add(RemoveAllAttackEvent());
     ServiceVoucherBloc.of(context).loaiXe.add('');
     ServiceVoucherBloc.of(context).resetDataCarVerison();
@@ -401,18 +407,23 @@ class _FormAddDataState extends State<FormAddData> {
                     onTap1: () {
                       Get.back();
                       Get.back();
+                      if (isResultData)
+                        Get.back(
+                          result: state.result,
+                        );
                       GetListCustomerBloc.of(context)
                           .add(InitGetListOrderEvent());
                     },
                   );
-                }
-                if (state is ErrorAddCustomerOrState) {
+                } else if (state is ErrorAddCustomerOrState) {
                   ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
-                    content: state.msg,
-                  );
-                }
-                if (state is SuccessAddContactCustomerState) {
+                      title: MESSAGES.NOTIFICATION,
+                      content: state.msg,
+                      onTap1: () {
+                        Get.back();
+                        Get.back();
+                      });
+                } else if (state is SuccessAddContactCustomerState) {
                   ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: "Thêm mới dữ liệu thành công!",
@@ -481,8 +492,7 @@ class _FormAddDataState extends State<FormAddData> {
                       }
                     },
                   );
-                }
-                if (state is ErrorAddContactCustomerState) {
+                } else if (state is ErrorAddContactCustomerState) {
                   ShowDialogCustom.showDialogBase(
                     title: MESSAGES.NOTIFICATION,
                     content: state.msg,
@@ -502,42 +512,46 @@ class _FormAddDataState extends State<FormAddData> {
                     children: [
                       location(),
                       BlocBuilder<FormAddBloc, FormAddState>(
+                          bloc: _bloc,
                           builder: (context, state) {
-                        if (state is LoadingFormAddCustomerOrState) {
-                          addData = [];
-                          data = [];
-                          return Container();
-                        } else if (state is SuccessFormAddCustomerOrState) {
-                          for (int i = 0; i < state.listAddData.length; i++) {
-                            if (addData.isNotEmpty) {
-                            } else {
-                              addData.add(ModelItemAdd(
-                                  group_name:
-                                      state.listAddData[i].group_name ?? '',
-                                  data: []));
-                              for (int j = 0;
-                                  j < state.listAddData[i].data!.length;
-                                  j++) {
-                                addData[i].data.add(ModelDataAdd(
-                                    label: state
-                                        .listAddData[i].data![j].field_name,
-                                    value: state
-                                        .listAddData[i].data![j].field_set_value
-                                        .toString(),
-                                    required: state.listAddData[i].data![j]
-                                        .field_require));
+                            if (state is LoadingFormAddCustomerOrState) {
+                              addData = [];
+                              data = [];
+                              return Container();
+                            } else if (state is SuccessFormAddCustomerOrState) {
+                              for (int i = 0;
+                                  i < state.listAddData.length;
+                                  i++) {
+                                if (addData.isNotEmpty) {
+                                } else {
+                                  addData.add(ModelItemAdd(
+                                      group_name:
+                                          state.listAddData[i].group_name ?? '',
+                                      data: []));
+                                  for (int j = 0;
+                                      j < state.listAddData[i].data!.length;
+                                      j++) {
+                                    addData[i].data.add(ModelDataAdd(
+                                        label: state
+                                            .listAddData[i].data![j].field_name,
+                                        value: state.listAddData[i].data![j]
+                                            .field_set_value
+                                            .toString(),
+                                        required: state.listAddData[i].data![j]
+                                            .field_require));
+                                  }
+                                }
                               }
-                            }
-                          }
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Column(
+                              return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: List.generate(
-                                    state.listAddData.length,
-                                    (index) =>
-                                        (state.listAddData[index].data !=
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: List.generate(
+                                        state.listAddData.length,
+                                        (index) => (state.listAddData[index]
+                                                        .data !=
                                                     null &&
                                                 state.listAddData[index].data!
                                                         .length >
@@ -625,17 +639,47 @@ class _FormAddDataState extends State<FormAddData> {
                                                                                   value: state.listAddData[index].data![index1].field_value ?? '');
                                                                             }
                                                                           })
-                                                                        : InputDropdown(
-                                                                            dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
-                                                                            data: state.listAddData[index].data![index1],
-                                                                            onSuccess: (data) {
-                                                                              addData[index].data[index1].value = data;
-                                                                              if (state.listAddData[index].data![index1].field_name == "cv_kh" || state.listAddData[index].data![index1].field_name == "col121") {
-                                                                                ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
-                                                                                PhoneBloc.of(context).add(InitPhoneEvent(data));
-                                                                              }
-                                                                            },
-                                                                            value: state.listAddData[index].data![index1].field_value ?? ''))
+                                                                        : (state.listAddData[index].data![index1].field_name == 'col121' && type == ADD_CHANCE)
+                                                                            ? StreamBuilder<List<dynamic>>(
+                                                                                stream: _bloc.customerNewStream,
+                                                                                builder: (context, snapshot) {
+                                                                                  final list = snapshot.data ?? [];
+                                                                                  return InputDropdown(
+                                                                                    isAddList: true,
+                                                                                    dropdownItemList: listCustomerForChance,
+                                                                                    data: state.listAddData[index].data![index1],
+                                                                                    onSuccess: (data) async {
+                                                                                      if (data == CA_NHAN) {
+                                                                                        AppNavigator.navigateAddCustomer(listCustomerForChance.first[1]);
+                                                                                      } else if (data == TO_CHUC) {
+                                                                                        final result = await AppNavigator.navigateFormAddCustomerGroup(
+                                                                                          listCustomerForChance.last[1],
+                                                                                          ADD_CUSTOMER,
+                                                                                          isResultData: true,
+                                                                                        );
+                                                                                        if (result != null) _bloc.customerNewStream.add(result);
+                                                                                        data = list.first;
+                                                                                        addData[index].data[index1].value = data;
+                                                                                      } else {
+                                                                                        addData[index].data[index1].value = data;
+                                                                                      }
+                                                                                      ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
+                                                                                      PhoneBloc.of(context).add(InitPhoneEvent(data));
+                                                                                    },
+                                                                                    value: list.isNotEmpty ? list.last : state.listAddData[index].data![index1].field_value ?? '',
+                                                                                  );
+                                                                                })
+                                                                            : InputDropdown(
+                                                                                dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
+                                                                                data: state.listAddData[index].data![index1],
+                                                                                onSuccess: (data) {
+                                                                                  addData[index].data[index1].value = data;
+                                                                                  if (state.listAddData[index].data![index1].field_name == "cv_kh" || state.listAddData[index].data![index1].field_name == "col121") {
+                                                                                    ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
+                                                                                    PhoneBloc.of(context).add(InitPhoneEvent(data));
+                                                                                  }
+                                                                                },
+                                                                                value: state.listAddData[index].data![index1].field_value ?? ''))
                                                                     : state.listAddData[index].data![index1].field_type == "TEXT_MULTI"
                                                                         ? _fieldInputTextMulti(state.listAddData[index].data![index1].field_datasource!, state.listAddData[index].data![index1].field_label!, state.listAddData[index].data![index1].field_require!, index, index1, (state.listAddData[index].data![index1].field_set_value_datasource != "" && state.listAddData[index].data![index1].field_set_value_datasource != null) ? state.listAddData[index].data![index1].field_set_value_datasource![0][0].toString() : "", state.listAddData[index].data![index1].field_maxlength ?? '')
                                                                         : state.listAddData[index].data![index1].field_type == "HIDDEN"
@@ -689,19 +733,19 @@ class _FormAddDataState extends State<FormAddData> {
                                                 ],
                                               )
                                             : Container()),
-                              ),
-                              FileDinhKemUiBase(
-                                  context: context,
-                                  onTap: () {},
-                                  isSave: false),
-                              SizedBox(
-                                height: AppValue.widths * 0.1 + 10,
-                              )
-                            ],
-                          );
-                        } else
-                          return Container();
-                      }),
+                                  ),
+                                  FileDinhKemUiBase(
+                                      context: context,
+                                      onTap: () {},
+                                      isSave: false),
+                                  SizedBox(
+                                    height: AppValue.widths * 0.1 + 10,
+                                  )
+                                ],
+                              );
+                            } else
+                              return Container();
+                          }),
                     ],
                   ),
                 ),
@@ -959,7 +1003,7 @@ class _FormAddDataState extends State<FormAddData> {
         content: "Hãy nhập đủ các trường bắt buộc (*)",
       );
     } else {
-      if (type == 1) {
+      if (type == ADD_CUSTOMER) {
         AddDataBloc.of(context).add(
             AddCustomerOrEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == ADD_CLUE_CUSTOMER) {

@@ -15,6 +15,7 @@ part 'form_add_data_state.dart';
 class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
   final UserRepository userRepository;
   final BehaviorSubject<String> addressStream = BehaviorSubject();
+  final BehaviorSubject<List<dynamic>> customerNewStream = BehaviorSubject();
 
   FormAddBloc({required UserRepository userRepository})
       : userRepository = userRepository,
