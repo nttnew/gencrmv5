@@ -37,6 +37,7 @@ class InputDropdown extends StatefulWidget {
 class _InputDropdownState extends State<InputDropdown> {
   List dropdown = [];
   String textValue = "";
+  bool isUpdate = false;
 
   @override
   void didUpdateWidget(covariant InputDropdown oldWidget) {
@@ -54,7 +55,10 @@ class _InputDropdownState extends State<InputDropdown> {
       widget.onUpdate!(data);
     }
     if (mounted && widget.isAddList) {
-      textValue = widget.value;
+     if(widget.value.isNotEmpty){
+       isUpdate = true;
+       textValue = widget.value;
+     }
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -75,7 +79,7 @@ class _InputDropdownState extends State<InputDropdown> {
   @override
   void initState() {
     if (
-        // widget.data.field_name == 'col131' ||
+        widget.data.field_name == 'col131' ||
         widget.data.field_name == 'col121' ||
             widget.data.field_name == 'khach_hang_id_dm' ||
             widget.data.field_name == 'cv_kh' ||
@@ -198,15 +202,18 @@ class _InputDropdownState extends State<InputDropdown> {
                   builder: (BuildContext context) {
                     return StatefulBuilder(
                       builder: (context, setState1) {
-                        getCustomer(1,
-                            reload: () => setState1(() {}), search: '');
+                        if (isUpdate) {
+                          getCustomer(1,
+                              reload: () => setState1(() {}), search: '');
+                          isUpdate = false;
+                        }
                         return Container(
                           padding: EdgeInsets.only(
                               bottom: MediaQuery.of(context).viewInsets.bottom),
                           child: DataDropDownItem(
                             data: dropdown,
                             isSearch: (
-                                    // widget.data.field_name == 'col131' ||
+                                    widget.data.field_name == 'col131' ||
                                     widget.data.field_name == 'col121' ||
                                         widget.data.field_name == 'cv_kh' ||
                                         widget.data.field_name ==

@@ -501,10 +501,7 @@ class _FormAddDataState extends State<FormAddData> {
               },
               child: Container(
                 height: MediaQuery.of(context).size.height,
-                padding: EdgeInsets.only(
-                    left: AppValue.widths * 0.05,
-                    right: AppValue.widths * 0.05,
-                    top: AppValue.heights * 0.02),
+                padding: EdgeInsets.all(25),
                 color: Colors.white,
                 child: SingleChildScrollView(
                   controller: scrollController,
@@ -522,8 +519,7 @@ class _FormAddDataState extends State<FormAddData> {
                               for (int i = 0;
                                   i < state.listAddData.length;
                                   i++) {
-                                if (addData.isNotEmpty) {
-                                } else {
+                                if (addData.isEmpty) {
                                   addData.add(ModelItemAdd(
                                       group_name:
                                           state.listAddData[i].group_name ?? '',
@@ -584,18 +580,15 @@ class _FormAddDataState extends State<FormAddData> {
                                                     children: List.generate(
                                                         state.listAddData[index]
                                                             .data!.length,
-                                                        (index1) => state
-                                                                    .listAddData[
-                                                                        index]
-                                                                    .data![
-                                                                        index1]
-                                                                    .field_hidden !=
+                                                        (index1) => state.listAddData[index].data![index1].field_hidden !=
                                                                 "1"
                                                             ? state.listAddData[index].data![index1].field_special ==
                                                                     "none-edit"
                                                                 ? ((state.listAddData[index].data![index1].field_name ==
                                                                         "so_dien_thoai")
-                                                                    ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
+                                                                    ? BlocBuilder<
+                                                                        PhoneBloc,
+                                                                        PhoneState>(builder: (context, stateA) {
                                                                         if (stateA
                                                                             is SuccessPhoneState) {
                                                                           return _fieldInputCustomer(
@@ -608,7 +601,9 @@ class _FormAddDataState extends State<FormAddData> {
                                                                           return Container();
                                                                       })
                                                                     : _fieldInputCustomer(
-                                                                        state.listAddData[index].data![index1],
+                                                                        state
+                                                                            .listAddData[index]
+                                                                            .data![index1],
                                                                         index,
                                                                         index1,
                                                                         noEdit: true))
@@ -649,20 +644,21 @@ class _FormAddDataState extends State<FormAddData> {
                                                                                     dropdownItemList: listCustomerForChance,
                                                                                     data: state.listAddData[index].data![index1],
                                                                                     onSuccess: (data) async {
+                                                                                      List<dynamic>? result;
                                                                                       if (data == CA_NHAN) {
-                                                                                        AppNavigator.navigateAddCustomer(listCustomerForChance.first[1]);
+                                                                                        result = await AppNavigator.navigateAddCustomer(listCustomerForChance.first[1], isResultData: true);
                                                                                       } else if (data == TO_CHUC) {
-                                                                                        final result = await AppNavigator.navigateFormAddCustomerGroup(
+                                                                                        result = await AppNavigator.navigateFormAddCustomerGroup(
                                                                                           listCustomerForChance.last[1],
                                                                                           ADD_CUSTOMER,
                                                                                           isResultData: true,
                                                                                         );
-                                                                                        if (result != null) _bloc.customerNewStream.add(result);
-                                                                                        data = list.first;
-                                                                                        addData[index].data[index1].value = data;
-                                                                                      } else {
-                                                                                        addData[index].data[index1].value = data;
                                                                                       }
+                                                                                      if (result != null) {
+                                                                                        data = result.first;
+                                                                                        _bloc.customerNewStream.add(result);
+                                                                                      }
+                                                                                      addData[index].data[index1].value = data;
                                                                                       ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
                                                                                       PhoneBloc.of(context).add(InitPhoneEvent(data));
                                                                                     },
@@ -681,7 +677,18 @@ class _FormAddDataState extends State<FormAddData> {
                                                                                 },
                                                                                 value: state.listAddData[index].data![index1].field_value ?? ''))
                                                                     : state.listAddData[index].data![index1].field_type == "TEXT_MULTI"
-                                                                        ? _fieldInputTextMulti(state.listAddData[index].data![index1].field_datasource!, state.listAddData[index].data![index1].field_label!, state.listAddData[index].data![index1].field_require!, index, index1, (state.listAddData[index].data![index1].field_set_value_datasource != "" && state.listAddData[index].data![index1].field_set_value_datasource != null) ? state.listAddData[index].data![index1].field_set_value_datasource![0][0].toString() : "", state.listAddData[index].data![index1].field_maxlength ?? '')
+                                                                        ? _fieldInputTextMulti(
+                                                                            state.listAddData[index].data![index1].field_datasource!,
+                                                                            state.listAddData[index].data![index1].field_label!,
+                                                                            state.listAddData[index].data![index1].field_require!,
+                                                                            index,
+                                                                            index1,
+                                                                            (state.listAddData[index].data![index1].field_set_value_datasource != "" && state.listAddData[index].data![index1].field_set_value_datasource != null)
+                                                                                ? state.listAddData[index].data![index1].field_set_value_datasource![0][0].toString()
+                                                                                : "",
+                                                                            state.listAddData[index].data![index1].field_maxlength ??
+                                                                                '',
+                                                                          )
                                                                         : state.listAddData[index].data![index1].field_type == "HIDDEN"
                                                                             ? Container()
                                                                             : state.listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"

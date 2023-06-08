@@ -49,6 +49,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
       title: "Thêm công việc",
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
+        Get.back();
         AppNavigator.navigateFormAdd('Thêm công việc', ADD_CLUE_JOB, id: int.parse(id));
       },
     ));

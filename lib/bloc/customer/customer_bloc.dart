@@ -94,14 +94,16 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
           if ((responseUpload.code == BASE_URL.SUCCESS) ||
               (responseUpload.code == BASE_URL.SUCCESS_200)) {
             LoadingApi().popLoading();
-            yield SuccessAddCustomerIndividualState();
+            yield SuccessAddCustomerIndividualState(
+                ['${response.id}', '${response.name}']);
           } else {
             LoadingApi().popLoading();
             yield ErrorAddCustomerIndividualState(responseUpload.msg ?? '');
           }
         } else {
           LoadingApi().popLoading();
-          yield SuccessAddCustomerIndividualState();
+          yield SuccessAddCustomerIndividualState(
+              ['${response.id}', '${response.name}']);
         }
       } else if (response.code == 999) {
         loginSessionExpired();

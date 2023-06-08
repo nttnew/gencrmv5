@@ -26,7 +26,13 @@ class ErrorGetListCustomerState extends CustomerState {
   List<Object> get props => [msg];
 }
 
-class SuccessAddCustomerIndividualState extends CustomerState {}
+class SuccessAddCustomerIndividualState extends CustomerState {
+  final List<String> result;
+
+  SuccessAddCustomerIndividualState(this.result);
+  @override
+  List<Object> get props => [result];
+}
 
 class ErrorAddCustomerIndividualState extends CustomerState {
   final String message;

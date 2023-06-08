@@ -33,7 +33,8 @@ class _AddCustomerState extends State<AddCustomer> {
   List data = [];
   List<ModelItemAdd> addData = [];
   late StreamSubscription<bool> keyboardSubscription;
-  String title = Get.arguments ?? '';
+  String title = Get.arguments[0] ?? '';
+  bool isResultData = Get.arguments[1];
 
   @override
   void initState() {
@@ -67,7 +68,11 @@ class _AddCustomerState extends State<AddCustomer> {
                 content: "Thêm mới dữ liệu thành công!",
                 onTap1: () {
                   Get.back();
-                  Get.back();
+                  if (isResultData) {
+                    Get.back(result: state.result);
+                  } else {
+                    Get.back();
+                  }
                   GetListCustomerBloc.of(context).add(InitGetListOrderEvent());
                 },
               );
