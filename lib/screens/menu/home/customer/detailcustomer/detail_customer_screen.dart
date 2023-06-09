@@ -12,6 +12,7 @@ import '../../../../../bloc/clue_customer/clue_customer_bloc.dart';
 import '../../../../../bloc/contract_customer/contract_customer_bloc.dart';
 import '../../../../../bloc/job_customer/job_customer_bloc.dart';
 import '../../../../../bloc/support_customer/support_customer_bloc.dart';
+import '../../../../../src/app_const.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/appbar_base.dart';
 import '../../../../../widgets/loading_api.dart';
@@ -79,7 +80,8 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
         icon: ICONS.IC_ADD_CLUE_SVG,
         onThaoTac: () {
           Get.back();
-          AppNavigator.navigateFormAdd('Thêm đầu mối', 11, id: int.parse(id));
+          AppNavigator.navigateFormAdd('Thêm đầu mối', ADD_CLUE_CUSTOMER,
+              id: int.parse(id));
         },
       ),
     );
@@ -89,7 +91,8 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       icon: ICONS.IC_ADD_CHANCE_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd('Thêm cơ hội', 12, id: int.parse(id));
+        AppNavigator.navigateFormAdd('Thêm cơ hội', ADD_CHANCE_CUSTOMER,
+            id: int.parse(id));
       },
     ));
 
@@ -107,7 +110,8 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd('Thêm công việc', 14, id: int.parse(id));
+        AppNavigator.navigateFormAdd('Thêm công việc', ADD_JOB_CUSTOMER,
+            id: int.parse(id));
       },
     ));
 
@@ -116,7 +120,8 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       icon: ICONS.IC_ADD_SUPPORT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd('Thêm hỗ trợ', 15, id: int.parse(id));
+        AppNavigator.navigateFormAdd('Thêm hỗ trợ', ADD_SUPPORT_CUSTOMER,
+            id: int.parse(id));
       },
     ));
 
@@ -147,7 +152,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditDataScreen(id, 1);
+        AppNavigator.navigateEditDataScreen(id, EDIT_CUSTOMER);
       },
     ));
 
@@ -179,8 +184,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                   Get.back();
                   Get.back();
                   Get.back();
-                  GetListCustomerBloc.of(context)
-                      .add(InitGetListOrderEvent("", 1, ""));
+                  GetListCustomerBloc.of(context).add(InitGetListOrderEvent());
                 },
               );
             } else if (state is ErrorDeleteCustomerState) {

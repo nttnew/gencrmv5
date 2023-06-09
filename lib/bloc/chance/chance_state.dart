@@ -10,12 +10,13 @@ class InitGetListChance extends ChanceState {}
 
 class UpdateGetListChanceState extends ChanceState {
   final List<ListChanceData> listChanceData;
-  final List<FilterChance> listFilter;
   final String total;
   const UpdateGetListChanceState(
-      this.listChanceData, this.total, this.listFilter);
+    this.listChanceData,
+    this.total,
+  );
   @override
-  List<Object> get props => [listChanceData, listFilter, total];
+  List<Object> get props => [listChanceData, total];
 }
 
 class LoadingListChanceState extends ChanceState {}

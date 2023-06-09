@@ -10,7 +10,13 @@ class InitAddDataState extends AddDataState {}
 
 class LoadingAddCustomerOrState extends AddDataState {}
 
-class SuccessAddCustomerOrState extends AddDataState {}
+class SuccessAddCustomerOrState extends AddDataState {
+  final List<String> result;
+
+  SuccessAddCustomerOrState(this.result);
+  @override
+  List<Object> get props => [result];
+}
 
 class ErrorAddCustomerOrState extends AddDataState {
   final String msg;

@@ -244,13 +244,16 @@ class _RestClient implements RestClient {
     page,
     filter,
     search,
+    manager,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
       r'filter': filter,
       r'search': search,
+      r'nguoi_quan_ly': manager,
     };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -275,13 +278,16 @@ class _RestClient implements RestClient {
     page,
     filter,
     search,
+    manager,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
       r'filter': filter,
       r'search': search,
+      r'nguoi_quan_ly': manager,
     };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio
@@ -536,13 +542,16 @@ class _RestClient implements RestClient {
     page,
     search,
     filter,
+    manager,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
       r'search': search,
       r'filter': filter,
+      r'nguoi_quan_ly': manager,
     };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio
@@ -567,13 +576,16 @@ class _RestClient implements RestClient {
     page,
     search,
     filter,
+    manager,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
       r'search': search,
       r'filter': filter,
+      r'nguoi_quan_ly': manager,
     };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio
@@ -598,13 +610,16 @@ class _RestClient implements RestClient {
     page,
     filter,
     search,
+    manager,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
       r'filter': filter,
       r'search': search,
+      r'nguoi_quan_ly': manager,
     };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio
@@ -1062,13 +1077,16 @@ class _RestClient implements RestClient {
     pageIndex,
     text,
     filter_id,
+    manager,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'pageIndex': pageIndex,
       r'text': text,
       r'filter_id': filter_id,
+      r'nguoi_quan_ly': manager,
     };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio
@@ -2908,9 +2926,10 @@ class _RestClient implements RestClient {
     txt,
     page,
     filter,
+    manager,
   ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'nguoi_quan_ly': manager};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = FormData();
@@ -3272,9 +3291,10 @@ class _RestClient implements RestClient {
     page,
     txt,
     filter,
+    manager,
   ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'nguoi_quan_ly': manager};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = FormData();
@@ -3706,6 +3726,54 @@ class _RestClient implements RestClient {
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AddCustomerIndividual.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ManagerFilterResponse> getListManagerFilter(module) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'module': module};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ManagerFilterResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/settings/nql',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ManagerFilterResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AddressCustomerResponse?> getAddressCustomer(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'id': id};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
+        _setStreamType<AddressCustomerResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/customer/getAddress',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data == null
+        ? null
+        : AddressCustomerResponse.fromJson(_result.data!);
     return value;
   }
 

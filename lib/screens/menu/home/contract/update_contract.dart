@@ -131,7 +131,7 @@ class _EditContractState extends State<EditContract> {
                       DetailContractBloc.of(context)
                           .add(InitGetDetailContractEvent(int.parse(id)));
                       ContractBloc.of(context)
-                          .add(InitGetContractEvent(1, "", ""));
+                          .add(InitGetContractEvent());
                 },
               );
             }else if(state is ErrorAddContactCustomerState) {

@@ -84,7 +84,14 @@ class LoginResponse extends BaseResponse {
 
 @JsonSerializable()
 class InfoSetupCallcenterRes {
-  final String? outbound, port, port_app, domain, nth, ntd, zalo_call;
+  final String? outbound,
+      port,
+      port_app,
+      domain,
+      nth,
+      ntd,
+      zalo_call,
+      outbound_proxy;
   final int? type_call;
 
   InfoSetupCallcenterRes({
@@ -96,6 +103,7 @@ class InfoSetupCallcenterRes {
     this.ntd,
     this.zalo_call,
     this.type_call,
+    this.outbound_proxy,
   });
 
   factory InfoSetupCallcenterRes.fromJson(Map<String, dynamic> json) =>

@@ -46,7 +46,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   checkLocation(state) {
     location = state.location;
     if (state.data_list.isNotEmpty) {
-      final listLocation = state.data_list.first.data
+      final listLocation = state.data_list.first.list
           ?.where((element) => element.id == 'checkout')
           .toList();
       if (listLocation?.isNotEmpty ?? false) {
@@ -159,7 +159,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                   Get.back();
                   Get.back();
                   Get.back();
-                  WorkBloc.of(context).add(InitGetListWorkEvent("1", "", ""));
+                  WorkBloc.of(context).add(InitGetListWorkEvent());
                 },
               );
             } else if (state is ErrorDeleteWorkState) {

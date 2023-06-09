@@ -78,7 +78,7 @@ class AuthenticationBloc
       final response = await _localRepository.loadUser();
       if (response != dotenv.env[PreferencesKey.TOKEN]!) {
         try {
-          final response = await _userRepository.getListCustomer(1, '', '');
+          final response = await _userRepository.getListCustomer(1, '', '',null,);
           if ((response.code == BASE_URL.SUCCESS) ||
               (response.code == BASE_URL.SUCCESS_200)) {
             yield AuthenticationState.authenticated();

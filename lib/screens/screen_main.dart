@@ -63,6 +63,8 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
       if (id == ModuleMy.HOP_DONG) {
         String titleReport = name + ' đang làm';
         shareLocal.putString(PreferencesKey.NAME_REPORT, titleReport);
+      } else if (id == ModuleMy.CUSTOMER) {
+        shareLocal.putString(PreferencesKey.NAME_CUSTOMER, name);
       }
       listMenu.add(
         ButtonMenuModel(
@@ -105,19 +107,19 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
 
   _handelRouterMenuPlus(String id, String name) {
     if (ModuleText.CUSTOMER == id) {
-      AppNavigator.navigateAddCustomer();
+      AppNavigator.navigateAddCustomer('Thêm ${name.toLowerCase()} cá nhân');
     } else if (ModuleText.DAU_MOI == id) {
-      AppNavigator.navigateFormAdd(name, 2);
+      AppNavigator.navigateFormAdd(name, ADD_CLUE);
     } else if (ModuleText.LICH_HEN == id) {
-      AppNavigator.navigateFormAdd(name, 3);
+      AppNavigator.navigateFormAdd(name, ADD_CHANCE);
     } else if (ModuleText.HOP_DONG == id) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => AddServiceVoucherScreen(
               title: name.toUpperCase().capitalizeFirst ?? '')));
     } else if (ModuleText.CONG_VIEC == id) {
-      AppNavigator.navigateFormAdd(name, 14);
+      AppNavigator.navigateFormAdd(name, ADD_JOB);
     } else if (ModuleText.CSKH == id) {
-      AppNavigator.navigateFormAdd(name, 6);
+      AppNavigator.navigateFormAdd(name, ADD_SUPPORT);
     } else if (ModuleText.THEM_MUA_XE == id) {
       //todo
     } else if (ModuleText.THEM_BAN_XE == id) {

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +25,23 @@ const int CV_PRODUCT_CUSTOMER_TYPE = 97;
 const int HD_PRODUCT_CUSTOMER_TYPE = 96;
 const int HT_PRODUCT_CUSTOMER_TYPE = 95;
 const int CH_PRODUCT_CUSTOMER_TYPE = 94;
+const int ADD_CUSTOMER = 1;
+const int ADD_CHANCE_JOB = 31;
+const int ADD_CHANCE = 3;
+const int ADD_CLUE = 2;
+const int ADD_SUPPORT = 6;
+const int ADD_JOB = 5;
+const int ADD_CLUE_JOB = 21;
+const int ADD_JOB_CONTRACT = 42;
+const int ADD_SUPPORT_CONTRACT = 41;
+const int ADD_CLUE_CUSTOMER = 11;
+const int ADD_CHANCE_CUSTOMER = 12;
+const int ADD_JOB_CUSTOMER = 14;
+const int ADD_SUPPORT_CUSTOMER = 15;
+const int EDIT_SUPPORT = 6;
+const int EDIT_CHANCE = 3;
+const int EDIT_CLUE = 2;
+const int EDIT_CUSTOMER = 1;
 const LOADING = 'loading';
 
 class TypeCheckIn {
@@ -85,16 +103,27 @@ void handleRegisterBase(
           ?.info_setup_callcenter
           ?.outbound ??
       '';
-  final String apiDomain = LoginBloc.of(context)
+  final String domainSever = LoginBloc.of(context)
           .loginData
           ?.info_user
           ?.info_setup_callcenter
           ?.domain ??
       '';
+
+  final String outboundProxy = LoginBloc.of(context)
+          .loginData
+          ?.info_user
+          ?.info_setup_callcenter
+          ?.outbound_proxy ??
+      '';
+
+  final String port =
+      LoginBloc.of(context).loginData?.info_user?.info_setup_callcenter?.port ??
+          '';
   final sipInfo = SipInfoData.fromJson({
     "authPass": pass,
     "registerServer": domain,
-    "outboundServer": outboundServer,
+    "outboundServer": outboundProxy,
     "userID": user,
     "authID": user,
     "accountName": "${user}",
@@ -102,15 +131,16 @@ void handleRegisterBase(
     "dialPlan": null,
     "randomPort": null,
     "voicemail": null,
-    "wssUrl": BASE_URL.URL_WSS,
+    "wssUrl": 'wss://' +
+        outboundServer +
+        ':' +
+        port,
     "userName": "${user}@${domain}",
-    "apiDomain": getCheckHttp(apiDomain),
+    "apiDomain": domainSever, //apiDomain,
   });
   final pnPushParams = PnPushParams(
     pnProvider: Platform.isAndroid ? 'fcm' : 'apns',
-    pnParam: Platform.isAndroid
-        ? PACKAGE_ID // Example com.company.app
-        : '${TEAM_ID}.${BUNDLE_ID}.voip', // Example com.company.app
+    pnParam: Platform.isAndroid ? PACKAGE_ID : '${TEAM_ID}.${BUNDLE_ID}.voip',
     pnPrid: '${deviceToken}',
   );
   pitelService.setExtensionInfo(sipInfo, pnPushParams);
@@ -321,4 +351,19 @@ String getCheckHttp(String text) {
     return text;
   }
   return 'https://' + text;
+}
+
+class Debounce {
+  final int milliseconds;
+  VoidCallback? action;
+  Timer? _timer;
+
+  Debounce({this.milliseconds = 450});
+
+  void run(VoidCallback action) {
+    if (_timer != null) {
+      _timer?.cancel();
+    }
+    _timer = Timer(Duration(milliseconds: milliseconds), action);
+  }
 }

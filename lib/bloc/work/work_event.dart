@@ -7,8 +7,15 @@ abstract class WorkEvent extends Equatable {
 }
 
 class InitGetListWorkEvent extends WorkEvent {
-  String? pageIndex, text, filter_id;
-  InitGetListWorkEvent(this.pageIndex, this.text, this.filter_id);
-  @override
-  List<Object?> get props => [pageIndex, text, filter_id];
+  final String? filter;
+  final int? page;
+  final String? search;
+  final String? ids;
+
+  InitGetListWorkEvent({
+    this.filter,
+    this.page,
+    this.search,
+    this.ids,
+  });
 }

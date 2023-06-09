@@ -23,8 +23,12 @@ class AppNavigator {
   ) async =>
       await Get.toNamed(ROUTE_NAMES.DETAIL_WORK, arguments: [id, title]);
 
-  static navigateAddCustomer() async =>
-      await Get.toNamed(ROUTE_NAMES.ADD_CUSTOMER);
+  static navigateAddCustomer(
+    String title, {
+    bool isResultData = false,
+  }) async =>
+      await Get.toNamed(ROUTE_NAMES.ADD_CUSTOMER,
+          arguments: [title, isResultData]);
 
   static navigateAddServiceVoucherStepTwo(String title) async =>
       await Get.toNamed(ROUTE_NAMES.ADD_SERVICE_VOUCHER_STEP_TWO,
@@ -36,9 +40,21 @@ class AppNavigator {
     int? id,
     bool isCheckIn = false,
     String typeCheckIn = TypeCheckIn.CHECK_IN,
+    bool isResultData = false,
   }) async =>
       await Get.toNamed(ROUTE_NAMES.FORM_ADD,
-          arguments: [title, type, id, isCheckIn, typeCheckIn]);
+          arguments: [title, type, id, isCheckIn, typeCheckIn, isResultData]);
+
+  static navigateFormAddCustomerGroup(
+    String title,
+    int type, {
+    int? id,
+    bool isCheckIn = false,
+    String typeCheckIn = TypeCheckIn.CHECK_IN,
+    bool isResultData = false,
+  }) async =>
+      await Get.toNamed(ROUTE_NAMES.FORM_ADD_CUSTOMER_GROUP,
+          arguments: [title, type, id, isCheckIn, typeCheckIn, isResultData]);
 
   static navigateAddWork() async => await Get.toNamed(ROUTE_NAMES.ADD_WORK);
 

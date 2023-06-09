@@ -42,6 +42,7 @@ class _FormAddSignState extends State<FormAddSign> {
   static const String HD_YEU_CAU_XUAT = 'hd_yeu_cau_xuat';
   static const String DA_THU_TIEN = 'da_thu_tien';
   late final BehaviorSubject<int> starStream;
+  late final FormAddBloc _bloc;
   bool daThuTien = false;
   bool ycXuatHoaDon = false;
   bool editStar = false;
@@ -49,10 +50,12 @@ class _FormAddSignState extends State<FormAddSign> {
 
   @override
   void initState() {
+    _bloc = FormAddBloc(userRepository: FormAddBloc.of(context).userRepository);
+
     starStream = BehaviorSubject.seeded(-1);
     scrollController = ScrollController();
     isMaxScroll = BehaviorSubject.seeded(false);
-    FormAddBloc.of(context).add(InitFormAddSignEvent(id));
+    _bloc.add(InitFormAddSignEvent(id));
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Future.delayed(Duration(seconds: 1));
       if (scrollController.position.maxScrollExtent > 7) {
@@ -82,7 +85,7 @@ class _FormAddSignState extends State<FormAddSign> {
   @override
   void deactivate() {
     starStream.add(-1);
-    FormAddBloc.of(context).add(ResetDataEvent());
+    _bloc.add(ResetDataEvent());
     super.deactivate();
   }
 
@@ -110,7 +113,7 @@ class _FormAddSignState extends State<FormAddSign> {
                       Get.back();
                       Get.back();
                       GetListCustomerBloc.of(context)
-                          .add(InitGetListOrderEvent("", 1, ""));
+                          .add(InitGetListOrderEvent());
                     },
                   );
                 }
@@ -147,91 +150,98 @@ class _FormAddSignState extends State<FormAddSign> {
                   child: Column(
                     children: [
                       BlocBuilder<FormAddBloc, FormAddState>(
+                          bloc: _bloc,
                           builder: (context, state) {
-                        if (state is LoadingFormAddCustomerOrState) {
-                          addData = [];
-                          data = [];
-                          return Container();
-                        } else if (state is SuccessFormAddCustomerOrState) {
-                          soTien = state.soTien ?? 0;
-                          if (addData.isEmpty) {
-                            for (int i = 0; i < state.listAddData.length; i++) {
-                              addData.add(ModelItemAdd(
-                                  group_name:
-                                      state.listAddData[i].group_name ?? '',
-                                  data: []));
-                              for (int j = 0;
-                                  j < (state.listAddData[i].data?.length ?? 0);
-                                  j++) {
-                                addData[i].data.add(ModelDataAdd(
-                                      parent:
-                                          state.listAddData[i].data?[j].parent,
-                                      label: state
-                                          .listAddData[i].data?[j].field_name,
-                                      value: state.listAddData[i].data?[j]
-                                          .field_set_value
-                                          .toString(),
-                                      required: state.listAddData[i].data?[j]
-                                          .field_require,
-                                    ));
-                              }
+                            if (state is LoadingFormAddCustomerOrState) {
+                              addData = [];
+                              data = [];
+                              return Container();
+                            } else if (state is SuccessFormAddCustomerOrState) {
+                              soTien = state.soTien ?? 0;
+                              if (addData.isEmpty) {
+                                for (int i = 0;
+                                    i < state.listAddData.length;
+                                    i++) {
+                                  addData.add(ModelItemAdd(
+                                      group_name:
+                                          state.listAddData[i].group_name ?? '',
+                                      data: []));
+                                  for (int j = 0;
+                                      j <
+                                          (state.listAddData[i].data?.length ??
+                                              0);
+                                      j++) {
+                                    addData[i].data.add(ModelDataAdd(
+                                          parent: state
+                                              .listAddData[i].data?[j].parent,
+                                          label: state.listAddData[i].data?[j]
+                                              .field_name,
+                                          value: state.listAddData[i].data?[j]
+                                              .field_set_value
+                                              .toString(),
+                                          required: state.listAddData[i]
+                                              .data?[j].field_require,
+                                        ));
+                                  }
 
-                              if (state.chuKyResponse != null &&
-                                  chuKyModelResponse.isEmpty) {
-                                for (final ChuKyModelResponse value
-                                    in (state.chuKyResponse?.first.data ??
-                                        [])) {
-                                  chuKyModelResponse.add(value);
+                                  if (state.chuKyResponse != null &&
+                                      chuKyModelResponse.isEmpty) {
+                                    for (final ChuKyModelResponse value
+                                        in (state.chuKyResponse?.first.data ??
+                                            [])) {
+                                      chuKyModelResponse.add(value);
+                                    }
+                                  }
                                 }
                               }
-                            }
-                          }
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                padding: EdgeInsets.zero,
-                                itemCount: state.listAddData.length,
-                                itemBuilder: (context, indexParent) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: 25,
-                                      ),
-                                      if (state.listAddData[indexParent]
-                                              .group_name !=
-                                          null)
-                                        WidgetText(
-                                          title: state.listAddData[indexParent]
-                                                  .group_name ??
-                                              '',
-                                          style: AppStyle.DEFAULT_18_BOLD,
-                                        ),
-                                      SizedBox(
-                                        height: 25,
-                                      ),
-                                      _itemField(
-                                        state.listAddData[indexParent].data ??
-                                            [],
-                                        indexParent,
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                              _signatureUi(state.chuKyResponse),
-                              SizedBox(
-                                height: 25,
-                              )
-                            ],
-                          );
-                        } else
-                          return Container();
-                      }),
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    padding: EdgeInsets.zero,
+                                    itemCount: state.listAddData.length,
+                                    itemBuilder: (context, indexParent) {
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 25,
+                                          ),
+                                          if (state.listAddData[indexParent]
+                                                  .group_name !=
+                                              null)
+                                            WidgetText(
+                                              title: state
+                                                      .listAddData[indexParent]
+                                                      .group_name ??
+                                                  '',
+                                              style: AppStyle.DEFAULT_18_BOLD,
+                                            ),
+                                          SizedBox(
+                                            height: 25,
+                                          ),
+                                          _itemField(
+                                            state.listAddData[indexParent]
+                                                    .data ??
+                                                [],
+                                            indexParent,
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                  _signatureUi(state.chuKyResponse),
+                                  SizedBox(
+                                    height: 25,
+                                  )
+                                ],
+                              );
+                            } else
+                              return Container();
+                          }),
                     ],
                   ),
                 ),

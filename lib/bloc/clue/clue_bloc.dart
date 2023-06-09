@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
@@ -14,6 +15,7 @@ part 'clue_event.dart';
 class GetListClueBloc extends Bloc<GetListClueEvent, ClueState> {
   final UserRepository userRepository;
   List<ClueData>? listClueData;
+  BehaviorSubject<List<FilterData>> listType = BehaviorSubject.seeded([]);
 
   GetListClueBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -23,28 +25,39 @@ class GetListClueBloc extends Bloc<GetListClueEvent, ClueState> {
   Stream<ClueState> mapEventToState(GetListClueEvent event) async* {
     if (event is InitGetListClueEvent) {
       yield* _getListClue(
-          filter: event.filter, page: event.page, search: event.search);
+        filter: event.filter ?? '',
+        page: event.page ?? BASE_URL.PAGE_DEFAULT,
+        search: event.search ?? '',
+        ids: event.ids ?? '',
+      );
     }
   }
 
-  Stream<ClueState> _getListClue(
-      {required String filter,
-      required int page,
-      required String search}) async* {
+  Stream<ClueState> _getListClue({
+    required String filter,
+    required int page,
+    required String search,
+    required String ids,
+  }) async* {
     LoadingApi().pushLoading();
     try {
-      final response = await userRepository.getListClue(page, filter, search);
+      final response = await userRepository.getListClue(
+        page,
+        filter,
+        search,
+        ids,
+      );
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
+        listType.add(response.data?.filter ?? []);
         if (page == 1) {
-          listClueData=[];
-          yield UpdateGetListClueState(response.data!.list!,
-              response.data!.filter!, response.data!.total!);
+          listClueData = [];
+          yield UpdateGetListClueState(
+              response.data?.list ?? [], response.data?.total ?? '0');
         }
         yield UpdateGetListClueState(
-            [...listClueData!, ...response.data!.list!],
-            response.data!.filter!,
-            response.data!.total!);
+            [...listClueData ?? [], ...response.data?.list ?? []],
+            response.data?.total ?? '0');
         listClueData?.addAll(response.data?.list ?? []);
       } else if (response.code == 999) {
         loginSessionExpired();

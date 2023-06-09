@@ -7,10 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import '../../../../../src/src_index.dart';
 import '../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../src/models/model_generator/file_response.dart';

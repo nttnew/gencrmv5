@@ -7,9 +7,15 @@ abstract class GetListClueEvent extends Equatable {
 }
 
 class InitGetListClueEvent extends GetListClueEvent {
-  final int page;
-  final String search;
-  final String filter;
+  final int? page;
+  final String? search;
+  final String? filter;
+  final String? ids;
 
-  InitGetListClueEvent(this.filter, this.page, this.search);
+  InitGetListClueEvent({
+    this.filter,
+    this.page,
+    this.search,
+    this.ids,
+  });
 }

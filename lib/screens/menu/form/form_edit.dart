@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
+import 'package:gen_crm/bloc/contract/contract_bloc.dart';
 import 'package:gen_crm/bloc/contract/phone_bloc.dart';
 import 'package:gen_crm/bloc/detail_product/detail_product_bloc.dart';
 import 'package:gen_crm/bloc/detail_product_customer/detail_product_customer_bloc.dart';
@@ -16,28 +16,30 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:rxdart/rxdart.dart';
-import '../../../../api_resfull/user_repository.dart';
-import '../../../../bloc/add_service_voucher/add_service_bloc.dart';
-import '../../../../bloc/clue/clue_bloc.dart';
-import '../../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
-import '../../../../bloc/contract/attack_bloc.dart';
-import '../../../../bloc/contract/detail_contract_bloc.dart';
-import '../../../../bloc/detail_clue/detail_clue_bloc.dart';
-import '../../../../bloc/support/detail_support_bloc.dart';
-import '../../../../bloc/support/support_bloc.dart';
-import '../../../../bloc/work/detail_work_bloc.dart';
-import '../../../../bloc/work/work_bloc.dart';
-import '../../../../models/widget_input_date.dart';
-import '../../../../src/models/model_generator/add_customer.dart';
-import '../../../../src/pick_file_image.dart';
-import '../../../../src/src_index.dart';
+import '../../../api_resfull/user_repository.dart';
+import '../../../bloc/add_service_voucher/add_service_bloc.dart';
+import '../../../bloc/clue/clue_bloc.dart';
+import '../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
+import '../../../bloc/contract/attack_bloc.dart';
+import '../../../bloc/contract/detail_contract_bloc.dart';
+import '../../../bloc/detail_clue/detail_clue_bloc.dart';
+import '../../../bloc/product_customer_module/product_customer_module_bloc.dart';
+import '../../../bloc/product_module/product_module_bloc.dart';
+import '../../../bloc/support/detail_support_bloc.dart';
+import '../../../bloc/support/support_bloc.dart';
+import '../../../bloc/work/detail_work_bloc.dart';
+import '../../../bloc/work/work_bloc.dart';
+import '../../../models/widget_input_date.dart';
+import '../../../src/models/model_generator/add_customer.dart';
+import '../../../src/pick_file_image.dart';
+import '../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-import '../../../../widgets/appbar_base.dart';
-import '../../../../widgets/loading_api.dart';
-import '../../../../widgets/multiple_widget.dart';
-import '../../../../widgets/widget_field_input_percent.dart';
-import '../../../add_service_voucher/add_service_voucher_step2_screen.dart';
-import 'input_dropDown.dart';
+import '../../../widgets/appbar_base.dart';
+import '../../../widgets/loading_api.dart';
+import '../../../widgets/multiple_widget.dart';
+import '../../../widgets/widget_field_input_percent.dart';
+import '../../add_service_voucher/add_service_voucher_step2_screen.dart';
+import '../home/customer/input_dropDown.dart';
 
 class FormEdit extends StatefulWidget {
   const FormEdit({Key? key}) : super(key: key);
@@ -65,17 +67,17 @@ class _FormEditState extends State<FormEdit> {
     isMaxScroll = BehaviorSubject.seeded(false);
     scrollController = ScrollController();
     AttackBloc.of(context).add(LoadingAttackEvent());
-    if (type == 1)
+    if (type == EDIT_CUSTOMER)
       FormEditBloc.of(context).add(InitFormEditCusEvent(id));
-    else if (type == 2) {
+    else if (type == EDIT_CLUE) {
       FormEditBloc.of(context).add(InitFormEditClueEvent(id));
-    } else if (type == 3) {
+    } else if (type == EDIT_CHANCE) {
       FormEditBloc.of(context).add(InitFormEditChanceEvent(id));
     } else if (type == 4) {
       FormEditBloc.of(context).add(InitFormEditContractEvent(id));
     } else if (type == EDIT_JOB) {
       FormEditBloc.of(context).add(InitFormEditJobEvent(id));
-    } else if (type == 6) {
+    } else if (type == EDIT_SUPPORT) {
       FormEditBloc.of(context).add(InitFormEditSupportEvent(id));
     } else if (type == PRODUCT_TYPE) {
       FormEditBloc.of(context).add(InitFormEditProductEvent(id));
@@ -151,9 +153,9 @@ class _FormEditState extends State<FormEdit> {
                     title: MESSAGES.NOTIFICATION,
                     content: "Update dữ liệu thành công!",
                     onTap1: () {
-                      if (type == 1)
+                      if (type == EDIT_CUSTOMER)
                         GetListCustomerBloc.of(context)
-                            .add(InitGetListOrderEvent("", 1, ""));
+                            .add(InitGetListOrderEvent());
                       Get.back();
                       Get.back();
                       Get.back();
@@ -174,38 +176,41 @@ class _FormEditState extends State<FormEdit> {
                     onTap1: () {
                       Get.back();
                       Get.back();
-                      if (type == 2) {
+                      if (type == EDIT_CLUE) {
                         GetDetailClueBloc.of(context)
                             .add(InitGetDetailClueEvent(id));
-                        GetListClueBloc.of(context)
-                            .add(InitGetListClueEvent('', 1, ''));
+                        GetListClueBloc.of(context).add(InitGetListClueEvent());
                       }
-                      if (type == 3) {
+                      if (type == EDIT_CHANCE) {
                         GetListDetailChanceBloc.of(context)
                             .add(InitGetListDetailEvent(int.parse(id)));
                         GetListChanceBloc.of(context)
-                            .add(InitGetListOrderEventChance('', 1, ''));
+                            .add(InitGetListOrderEventChance());
                       }
                       if (type == EDIT_JOB) {
                         DetailWorkBloc.of(context)
                             .add(InitGetDetailWorkEvent(int.parse(id)));
-                        WorkBloc.of(context)
-                            .add(InitGetListWorkEvent("1", "", ""));
+                        WorkBloc.of(context).add(InitGetListWorkEvent());
                       }
-                      if (type == 4)
+                      if (type == 4) {
+                        ContractBloc.of(context).add(InitGetContractEvent());
                         DetailContractBloc.of(context)
                             .add(InitGetDetailContractEvent(int.parse(id)));
-                      if (type == 6) {
+                      }
+                      if (type == EDIT_SUPPORT) {
                         DetailSupportBloc.of(context)
                             .add(InitGetDetailSupportEvent(id));
-                        SupportBloc.of(context)
-                            .add(InitGetSupportEvent(1, '', ''));
+                        SupportBloc.of(context).add(InitGetSupportEvent());
                       }
                       if (type == PRODUCT_TYPE) {
+                        ProductModuleBloc.of(context)
+                            .add(InitGetListProductModuleEvent());
                         DetailProductBloc.of(context)
                             .add(InitGetDetailProductEvent(id));
                       }
                       if (type == PRODUCT_CUSTOMER_TYPE) {
+                        ProductCustomerModuleBloc.of(context)
+                            .add(GetProductCustomerModuleEvent());
                         DetailProductCustomerBloc.of(context)
                             .add(InitGetDetailProductCustomerEvent(id));
                       }
@@ -800,13 +805,13 @@ class _FormEditState extends State<FormEdit> {
       );
     } else {
       data["id"] = id;
-      if (type == 1) {
+      if (type == EDIT_CUSTOMER) {
         AddDataBloc.of(context).add(
             EditCustomerEvent(data, files: AttackBloc.of(context).listFile));
-      } else if (type == 2) {
+      } else if (type == EDIT_CLUE) {
         AddDataBloc.of(context).add(AddContactCustomerEvent(data,
             files: AttackBloc.of(context).listFile));
-      } else if (type == 3) {
+      } else if (type == EDIT_CHANCE) {
         AddDataBloc.of(context).add(
             AddOpportunityEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 4) {
@@ -815,7 +820,7 @@ class _FormEditState extends State<FormEdit> {
       } else if (type == EDIT_JOB) {
         AddDataBloc.of(context)
             .add(EditJobEvent(data, files: AttackBloc.of(context).listFile));
-      } else if (type == 6) {
+      } else if (type == EDIT_SUPPORT) {
         AddDataBloc.of(context)
             .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == PRODUCT_TYPE) {

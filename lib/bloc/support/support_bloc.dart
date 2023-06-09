@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../api_resfull/user_repository.dart';
 import '../../src/base.dart';
@@ -14,6 +15,7 @@ part 'support_state.dart';
 
 class SupportBloc extends Bloc<SupportEvent, SupportState> {
   final UserRepository userRepository;
+  BehaviorSubject<List<FilterData>> listType = BehaviorSubject.seeded([]);
 
   SupportBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -23,30 +25,37 @@ class SupportBloc extends Bloc<SupportEvent, SupportState> {
   Stream<SupportState> mapEventToState(SupportEvent event) async* {
     if (event is InitGetSupportEvent) {
       yield* _getListSupport(
-          filter: event.filter, page: event.page, search: event.search);
+        filter: event.filter ?? '',
+        page: event.page ?? BASE_URL.PAGE_DEFAULT,
+        search: event.search ?? '',
+        ids: event.ids ?? '',
+      );
     }
   }
 
   List<SupportItemData>? list;
 
-  Stream<SupportState> _getListSupport(
-      {required String filter,
-      required int page,
-      required String search}) async* {
+  Stream<SupportState> _getListSupport({
+    required String filter,
+    required String ids,
+    required int page,
+    required String search,
+  }) async* {
     LoadingApi().pushLoading();
     try {
       final response =
-          await userRepository.getListSupport(page, search, filter);
+          await userRepository.getListSupport(page, search, filter, ids);
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
+        listType.add(response.data.filter ?? []);
         if (page == 1) {
           list = response.data.list;
-          yield SuccessGetSupportState(
-              response.data.list!, response.data.total!, response.data.filter!);
+          yield SuccessGetSupportState(response.data.list ?? [],
+              response.data.total ?? '0', response.data.filter ?? []);
         } else {
-          list = [...list!, ...response.data.list!];
-          yield SuccessGetSupportState(
-              list!, response.data.total!, response.data.filter!);
+          list = [...list ?? [], ...response.data.list ?? []];
+          yield SuccessGetSupportState(list ?? [], response.data.total ?? '0',
+              response.data.filter ?? []);
         }
       } else
         yield ErrorGetSupportState(response.msg ?? '');

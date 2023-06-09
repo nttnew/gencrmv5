@@ -11,6 +11,7 @@ import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/job_contract/job_contract_bloc.dart';
 import '../../../../bloc/support_contract_bloc/support_contract_bloc.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
@@ -66,7 +67,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd('Thêm công việc', 42, id: int.parse(id));
+        AppNavigator.navigateFormAdd('Thêm công việc', ADD_JOB_CONTRACT, id: int.parse(id));
       },
     ));
 
@@ -75,7 +76,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
       icon: ICONS.IC_ADD_SUPPORT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd('Thêm hỗ trợ', 41, id: int.parse(id));
+        AppNavigator.navigateFormAdd('Thêm hỗ trợ', ADD_SUPPORT_CONTRACT, id: int.parse(id));
       },
     ));
 
@@ -137,7 +138,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                 Get.back();
                 Get.back();
                 Get.back();
-                ContractBloc.of(context).add(InitGetContractEvent(1, "", ""));
+                ContractBloc.of(context).add(InitGetContractEvent());
               },
             );
           } else if (state is ErrorDeleteContractState) {

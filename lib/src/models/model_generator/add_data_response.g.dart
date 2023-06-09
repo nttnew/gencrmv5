@@ -19,6 +19,8 @@ AddDataResponse _$AddDataResponseFromJson(Map<String, dynamic> json) =>
       json['data'] == null
           ? null
           : AddData.fromJson(json['data'] as Map<String, dynamic>),
+      json['name'],
+      json['id'],
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
@@ -30,6 +32,8 @@ Map<String, dynamic> _$AddDataResponseToJson(AddDataResponse instance) =>
       'msg': instance.msg,
       'code': instance.code,
       'data': instance.data,
+      'name': instance.name,
+      'id': instance.id,
     };
 
 EditCusResponse _$EditCusResponseFromJson(Map<String, dynamic> json) =>
