@@ -137,22 +137,26 @@ class UserRepository {
   Future<DetailCustomerResponse> getDetailCustomer(int id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getDetailCustomer(id);
 
-  Future<ClueCustomerResponse> getClueCustomer(int id) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).getClueCustomer(id);
-
-  Future<ChanceCustomerResponse> getChanceCustomer(int id) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).getChanceCustomer(id);
-
-  Future<ContractCustomerResponse> getContractCustomer(int id) async =>
+  Future<ClueCustomerResponse> getClueCustomer(int id, int page) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .getContractCustomer(id);
+          .getClueCustomer(id, page);
 
-  Future<JobCustomerResponse> getJobCustomer(int id) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).getJobCustomer(id);
-
-  Future<SupportCustomerResponse> getSupportCustomer(int id) async =>
+  Future<ChanceCustomerResponse> getChanceCustomer(int id, int page) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .getSupportCustomer(id);
+          .getChanceCustomer(id, page);
+
+  Future<ContractCustomerResponse> getContractCustomer(
+          int id, int page) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getContractCustomer(id, page);
+
+  Future<JobCustomerResponse> getJobCustomer(int id, int page) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getJobCustomer(id, page);
+
+  Future<SupportCustomerResponse> getSupportCustomer(int id, int page) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getSupportCustomer(id, page);
 
   Future<ListDetailChanceResponse> getDetailSupport(String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getDetailSupport(id);
@@ -214,8 +218,9 @@ class UserRepository {
   Future<BaseResponse> deleteCustomer(Map<String, dynamic> id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).deleteCustomer(id);
 
-  Future<JobChance> getJobChance(int id) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).getJobChance(id);
+  Future<JobChance> getJobChance(int id, int page) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getJobChance(id, page);
 
   Future<AddJobResponse> getAddJobChance(int id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getAddJobChance(id);
@@ -240,8 +245,8 @@ class UserRepository {
   Future<DetailClue> getDetailClue(String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getDetailClue(id);
 
-  Future<WorkClueResponse> getWorkClue(String id) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).getWorkClue(id);
+  Future<WorkClueResponse> getWorkClue(String id, int page) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getWorkClue(id, page);
 
   Future<PolicyResponse> getPolicy() async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getPolicy();

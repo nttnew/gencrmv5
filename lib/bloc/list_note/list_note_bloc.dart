@@ -12,6 +12,9 @@ part 'list_note_state.dart';
 
 class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
   final UserRepository userRepository;
+  String? module;
+  String? id;
+  bool? isAdd;
 
   ListNoteBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -20,6 +23,9 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
   @override
   Stream<ListNoteState> mapEventToState(ListNoteEvent event) async* {
     if (event is InitNoteEvent) {
+      module = event.module;
+      id = event.id;
+      isAdd = event.isAdd;
       yield* _getListNote(
         module: event.module,
         id: event.id,
@@ -28,6 +34,13 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
       );
     } else if (event is ReloadEvent) {
       yield SuccessGetNoteOppState([]);
+    } else if (event is RefreshEvent) {
+      yield* _getListNote(
+        module: module ?? '',
+        id: id ?? '',
+        page: BASE_URL.PAGE_DEFAULT.toString(),
+        isAdd: isAdd ?? false,
+      );
     }
   }
 
@@ -71,7 +84,6 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
       LoadingApi().pushLoading();
     }
     try {
-
       final response = await userRepository.getNoteList(
         getURLModule(module),
         id,
@@ -92,7 +104,6 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
       LoadingApi().popLoading();
     }
   }
-
 
   static ListNoteBloc of(BuildContext context) =>
       BlocProvider.of<ListNoteBloc>(context);

@@ -6,13 +6,21 @@ import 'package:gen_crm/src/models/model_generator/detail_customer.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../../../src/src_index.dart';
 import '../../../../../../widgets/line_horizontal_widget.dart';
 
 class TabInfoCustomer extends StatefulWidget {
-  TabInfoCustomer({Key? key, required this.id}) : super(key: key);
+  TabInfoCustomer({
+    Key? key,
+    required this.id,
+    required this.blocNote,
+    required this.bloc,
+  }) : super(key: key);
 
   final String id;
+  final ListNoteBloc blocNote;
+  final DetailCustomerBloc bloc;
 
   @override
   State<TabInfoCustomer> createState() => _TabInfoCustomerState();
@@ -20,31 +28,52 @@ class TabInfoCustomer extends StatefulWidget {
 
 class _TabInfoCustomerState extends State<TabInfoCustomer>
     with AutomaticKeepAliveClientMixin {
+  late final ListNoteBloc _blocNote;
+  late final DetailCustomerBloc _bloc;
   @override
   void initState() {
+    _blocNote = widget.blocNote;
+    _bloc = widget.bloc;
+    init();
     super.initState();
+  }
+
+  init() async {
+    _bloc.add(InitGetDetailCustomerEvent(int.parse(widget.id)));
+    _blocNote.add(RefreshEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AppValue.vSpaceSmall,
-          BlocBuilder<DetailCustomerBloc, DetailCustomerState>(
-              builder: (context, state) {
-            if (state is UpdateGetDetailCustomerState)
-              return Column(
-                children: List.generate(state.customerInfo.length,
-                    (index) => _renderInfo(state.customerInfo[index])),
-              );
-            else
-              return Container();
-          }),
-          ListNote(module: Module.KHACH_HANG, id: widget.id),
-        ],
+    return RefreshIndicator(
+      onRefresh: () async {
+        await init();
+      },
+      child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppValue.vSpaceSmall,
+            BlocBuilder<DetailCustomerBloc, DetailCustomerState>(
+                bloc: _bloc,
+                builder: (context, state) {
+                  if (state is UpdateGetDetailCustomerState)
+                    return Column(
+                      children: List.generate(state.customerInfo.length,
+                          (index) => _renderInfo(state.customerInfo[index])),
+                    );
+                  else
+                    return Container();
+                }),
+            ListNote(
+              module: Module.KHACH_HANG,
+              id: widget.id,
+              bloc: _blocNote,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -10,6 +10,7 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../bloc/checkin_bloc/checkin_bloc.dart';
+import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/btn_thao_tac.dart';
@@ -31,27 +32,30 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   bool isCheckDone = false;
   List<ModuleThaoTac> list = [];
 
+  late final ListNoteBloc _bloc;
+  @override
+  void initState() {
+    _bloc =
+        ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
+    DetailWorkBloc.of(context).add(InitGetDetailWorkEvent(id));
+    super.initState();
+  }
+
   @override
   void deactivate() {
     DetailWorkBloc.of(context).add(ReloadWorkEvent());
     super.deactivate();
   }
 
-  @override
-  void initState() {
-    DetailWorkBloc.of(context).add(InitGetDetailWorkEvent(id));
-    super.initState();
-  }
-
-  checkLocation(state) {
+  checkLocation(SuccessDetailWorkState state) {
     location = state.location;
     if (state.data_list.isNotEmpty) {
-      final listLocation = state.data_list.first.list
-          ?.where((element) => element.id == 'checkout')
+      final listLocation = (state.data_list.first.data ?? [])
+          .where((element) => element.id == 'checkout')
           .toList();
-      if (listLocation?.isNotEmpty ?? false) {
-        isCheckDone = listLocation?.first.value_field != '' &&
-            listLocation?.first.value_field != null;
+      if (listLocation.isNotEmpty) {
+        isCheckDone = listLocation.first.value_field != '' &&
+            listLocation.first.value_field != null;
       }
     }
   }
@@ -301,7 +305,11 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                       SizedBox(
                         height: 16,
                       ),
-                      ListNote(module: Module.CONG_VIEC, id: id.toString()),
+                      ListNote(
+                        module: Module.CONG_VIEC,
+                        id: id.toString(),
+                        bloc: _bloc,
+                      ),
                     ],
                   ),
                 ),

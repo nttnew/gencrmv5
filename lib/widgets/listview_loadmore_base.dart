@@ -47,15 +47,21 @@ class _ListViewLoadMoreBaseState extends State<ListViewLoadMoreBase>
             return RefreshIndicator(
               onRefresh: () async {
                 _controller.page = BASE_URL.PAGE_DEFAULT;
+                _controller.isLoadMore = false;
                 await _controller.loadData(_controller.page);
               },
-              child: ListView.builder(
-                  padding: EdgeInsets.only(top: 8, bottom: 8),
-                  controller: _controller.controller,
-                  shrinkWrap: true,
-                  itemCount: list.length,
-                  itemBuilder: (context, index) =>
-                      widget.itemWidget(index, list[index])),
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                child: ListView.builder(
+                    physics: ClampingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
+                    padding: EdgeInsets.only(top: 8, bottom: 8),
+                    controller: _controller.controller,
+                    shrinkWrap: true,
+                    itemCount: list.length,
+                    itemBuilder: (context, index) =>
+                        widget.itemWidget(index, list[index])),
+              ),
             );
           } else {
             return noData();
@@ -70,7 +76,7 @@ class _ListViewLoadMoreBaseState extends State<ListViewLoadMoreBase>
 class LoadMoreController<T> {
   final BehaviorSubject<List<dynamic>> streamList = BehaviorSubject();
   final ScrollController controller = ScrollController();
-  bool isLoadMore = true;
+  bool isLoadMore = false;
   int page = BASE_URL.PAGE_DEFAULT;
   Future<dynamic> Function(int page, bool isInit)? functionInit;
 
@@ -100,7 +106,7 @@ class LoadMoreController<T> {
     functionInit = null;
   }
 
-  loadData(int page, {bool isInit = true}) async {
+  Future<void> loadData(int page, {bool isInit = true}) async {
     if (functionInit != null) {
       final result = await functionInit!(page, isInit);
       if (result.runtimeType == String) {

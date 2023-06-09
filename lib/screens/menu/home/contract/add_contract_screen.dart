@@ -15,12 +15,11 @@ import 'package:gen_crm/screens/menu/home/contract/widget_total_sum.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../../src/src_index.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../../../bloc/contract/attack_bloc.dart';
 import '../../../../bloc/contract/contract_bloc.dart';
-import '../../../../bloc/contract_customer/contract_customer_bloc.dart';
 import '../../../../models/product_model.dart';
 import '../../../../models/widget_input_date.dart';
 import '../../../../src/app_const.dart';
@@ -161,9 +160,6 @@ class _FormAddContractState extends State<FormAddContract> {
                 onTap1: () {
                   Get.back();
                   Get.back();
-                  ContractCustomerBloc.of(context).add(
-                      InitGetContractCustomerEvent(
-                          ContractCustomerBloc.of(context).id));
                   ContractBloc.of(context).add(InitGetContractEvent());
                 },
               );
@@ -494,7 +490,7 @@ class _FormAddContractState extends State<FormAddContract> {
                         style: TextStyle(
                             fontFamily: "Quicksand",
                             fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             color: Colors.red))
                     : TextSpan(),
               ],
@@ -597,7 +593,7 @@ class _FormAddContractState extends State<FormAddContract> {
                         style: TextStyle(
                             fontFamily: "Quicksand",
                             fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             color: Colors.red))
                     : TextSpan(),
               ],
@@ -693,7 +689,7 @@ class _FormAddContractState extends State<FormAddContract> {
                         style: TextStyle(
                             fontFamily: "Quicksand",
                             fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             color: Colors.red))
                     : TextSpan(),
               ],
@@ -736,7 +732,7 @@ class _FormAddContractState extends State<FormAddContract> {
                 style: TextStyle(
                     fontSize: 14,
                     fontFamily: "Quicksand",
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     color: COLORS.BLACK),
               ),
               decoration: BoxDecoration(
@@ -757,7 +753,7 @@ class _FormAddContractState extends State<FormAddContract> {
   TextStyle hintTextStyle() => TextStyle(
       fontFamily: "Quicksand",
       fontSize: 14,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       color: COLORS.BLACK);
 
   TextStyle titlestyle() => TextStyle(

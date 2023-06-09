@@ -104,7 +104,7 @@ class WorkCardWidget extends StatelessWidget {
         ],
       ),
       margin: EdgeInsets.only(
-        top: 25,
+        top: 20,
       ),
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
