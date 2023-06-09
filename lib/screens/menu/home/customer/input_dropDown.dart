@@ -55,10 +55,14 @@ class _InputDropdownState extends State<InputDropdown> {
       widget.onUpdate!(data);
     }
     if (mounted && widget.isAddList) {
-     if(widget.value.isNotEmpty){
-       isUpdate = true;
-       textValue = widget.value;
-     }
+      if (widget.value.isNotEmpty) {
+        isUpdate = true;
+        if (widget.value == 'null') {
+          textValue = '';
+        } else {
+          textValue = widget.value;
+        }
+      }
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -78,12 +82,11 @@ class _InputDropdownState extends State<InputDropdown> {
 
   @override
   void initState() {
-    if (
-        widget.data.field_name == 'col131' ||
+    if (widget.data.field_name == 'col131' ||
         widget.data.field_name == 'col121' ||
-            widget.data.field_name == 'khach_hang_id_dm' ||
-            widget.data.field_name == 'cv_kh' ||
-            widget.data.field_name == 'khach_hang') {
+        widget.data.field_name == 'khach_hang_id_dm' ||
+        widget.data.field_name == 'cv_kh' ||
+        widget.data.field_name == 'khach_hang') {
       getCustomer(1);
       if (widget.data.field_set_value != null &&
           widget.data.field_set_value != "") {
@@ -212,13 +215,12 @@ class _InputDropdownState extends State<InputDropdown> {
                               bottom: MediaQuery.of(context).viewInsets.bottom),
                           child: DataDropDownItem(
                             data: dropdown,
-                            isSearch: (
-                                    widget.data.field_name == 'col131' ||
+                            isSearch: (widget.data.field_name == 'col131' ||
                                     widget.data.field_name == 'col121' ||
-                                        widget.data.field_name == 'cv_kh' ||
-                                        widget.data.field_name ==
-                                            'khach_hang_id_dm' ||
-                                        widget.data.field_name == 'khach_hang')
+                                    widget.data.field_name == 'cv_kh' ||
+                                    widget.data.field_name ==
+                                        'khach_hang_id_dm' ||
+                                    widget.data.field_name == 'khach_hang')
                                 ? true
                                 : false,
                             onSuccess: (data, label) {

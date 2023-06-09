@@ -644,7 +644,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                                                     dropdownItemList: listCustomerForChance,
                                                                                     data: state.listAddData[index].data![index1],
                                                                                     onSuccess: (data) async {
-                                                                                      List<dynamic>? result;
+                                                                                      List<dynamic>? result = [];
                                                                                       if (data == CA_NHAN) {
                                                                                         result = await AppNavigator.navigateAddCustomer(listCustomerForChance.first[1], isResultData: true);
                                                                                       } else if (data == TO_CHUC) {
@@ -654,9 +654,16 @@ class _FormAddDataState extends State<FormAddData> {
                                                                                           isResultData: true,
                                                                                         );
                                                                                       }
-                                                                                      if (result != null) {
+                                                                                      if (result != null && result.isNotEmpty) {
                                                                                         data = result.first;
                                                                                         _bloc.customerNewStream.add(result);
+                                                                                      }
+                                                                                      else if (result == null) {
+                                                                                        data = '';
+                                                                                        _bloc.customerNewStream.add([
+                                                                                          'null',
+                                                                                          'null'
+                                                                                        ]);
                                                                                       }
                                                                                       addData[index].data[index1].value = data;
                                                                                       ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
