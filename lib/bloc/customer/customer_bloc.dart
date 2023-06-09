@@ -60,9 +60,10 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
           yield UpdateGetListCustomerState(
               response.data?.list ?? [], response.data?.total ?? 0);
         } else {
-          listCus?.addAll(response.data?.list ?? []);
           yield UpdateGetListCustomerState(
-              listCus ?? [], response.data?.total ?? 0);
+              [...listCus ?? [], ...response.data?.list ?? []],
+              response.data?.total ?? 0);
+          listCus?.addAll(response.data?.list ?? []);
         }
       } else if (response.code == 999) {
         loginSessionExpired();

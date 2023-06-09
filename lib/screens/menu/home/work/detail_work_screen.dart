@@ -46,7 +46,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   checkLocation(state) {
     location = state.location;
     if (state.data_list.isNotEmpty) {
-      final listLocation = state.data_list.first.data
+      final listLocation = state.data_list.first.list
           ?.where((element) => element.id == 'checkout')
           .toList();
       if (listLocation?.isNotEmpty ?? false) {

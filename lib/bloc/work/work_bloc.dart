@@ -14,7 +14,7 @@ part 'work_state.dart';
 
 class WorkBloc extends Bloc<WorkEvent, WorkState> {
   UserRepository userRepository;
-  List<WorkItemData> data = [];
+  List<WorkItemData> list = [];
   BehaviorSubject<List<FilterData>> listType = BehaviorSubject.seeded([]);
 
   WorkBloc({required UserRepository userRepository})
@@ -25,7 +25,7 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
     if (event is InitGetListWorkEvent) {
       yield* _getListWork(
         ids: event.ids ?? '',
-        page: BASE_URL.PAGE_DEFAULT.toString(),
+        page: (event.page ?? BASE_URL.PAGE_DEFAULT).toString(),
         search: event.search ?? '',
         filter: event.filter ?? '',
       );
@@ -51,18 +51,18 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
         listType.add(
           response.data?.data_filter ?? [],
         );
-        if (int.parse(page) == 1) {
-          data = response.data?.data_list ?? [];
+        if (int.parse(page) == BASE_URL.PAGE_DEFAULT) {
+          list.addAll(response.data?.data_list ?? []);
           yield SuccessGetListWorkState(
             response.data?.data_list ?? [],
             response.data?.pageCount ?? 0,
           );
         } else {
-          data = [...data, ...response.data?.data_list ?? []];
           yield SuccessGetListWorkState(
-            data,
+            [...list, ...response.data?.data_list ?? []],
             response.data?.pageCount ?? 0,
           );
+          list.addAll(response.data?.data_list ?? []);
         }
       } else {
         yield ErrorGetListWorkState(response.msg ?? '');

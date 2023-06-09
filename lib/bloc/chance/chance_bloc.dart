@@ -53,16 +53,17 @@ class GetListChanceBloc extends Bloc<GetListChanceEvent, ChanceState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         listType.add(response.data?.filter ?? []);
-        if (page == 1) {
+        if (page == BASE_URL.PAGE_DEFAULT) {
           listChance = response.data?.list ?? [];
           yield UpdateGetListChanceState(
             response.data?.list ?? [],
             response.data?.total ?? '0',
           );
         } else {
-          listChance?.addAll(response.data?.list ?? []);
           yield UpdateGetListChanceState(
-              listChance ?? [], response.data?.total ?? '0');
+              [...listChance ?? [], ...response.data?.list ?? []],
+              response.data?.total ?? '0');
+          listChance?.addAll(response.data?.list ?? []);
         }
       } else if (response.code == 999) {
         loginSessionExpired();

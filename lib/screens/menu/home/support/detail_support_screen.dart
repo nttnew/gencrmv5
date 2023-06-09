@@ -39,7 +39,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
   checkLocation(state) {
     location = state.location;
     if (state.dataDetailSupport.isNotEmpty) {
-      final listLocation = state.dataDetailSupport.first.data
+      final listLocation = state.dataDetailSupport.first.list
           ?.where((element) => element.id == 'checkout')
           .toList();
       if (listLocation?.isNotEmpty ?? false) {

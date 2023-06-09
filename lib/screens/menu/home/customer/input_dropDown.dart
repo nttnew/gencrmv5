@@ -148,10 +148,10 @@ class _InputDropdownState extends State<InputDropdown> {
         }
       }
       //
-      for (int i = 0; i < response.data!.length; i++) {
-        if (response.data![i][1] != null && response.data![i][0] != null) {
+      for (int i = 0; i < response.list!.length; i++) {
+        if (response.list![i][1] != null && response.list![i][0] != null) {
           dropdown.add(
-              {'label': response.data![i][1], 'value': response.data![i][0]});
+              {'label': response.list![i][1], 'value': response.list![i][0]});
         }
       }
       if (mounted) {

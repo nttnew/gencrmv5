@@ -103,16 +103,27 @@ void handleRegisterBase(
           ?.info_setup_callcenter
           ?.outbound ??
       '';
-  final String apiDomain = LoginBloc.of(context)
+  final String domainSever = LoginBloc.of(context)
           .loginData
           ?.info_user
           ?.info_setup_callcenter
           ?.domain ??
       '';
+
+  final String outboundProxy = LoginBloc.of(context)
+          .loginData
+          ?.info_user
+          ?.info_setup_callcenter
+          ?.outbound_proxy ??
+      '';
+
+  final String port =
+      LoginBloc.of(context).loginData?.info_user?.info_setup_callcenter?.port ??
+          '';
   final sipInfo = SipInfoData.fromJson({
     "authPass": pass,
     "registerServer": domain,
-    "outboundServer": outboundServer,
+    "outboundServer": outboundProxy,
     "userID": user,
     "authID": user,
     "accountName": "${user}",
@@ -120,9 +131,12 @@ void handleRegisterBase(
     "dialPlan": null,
     "randomPort": null,
     "voicemail": null,
-    "wssUrl": BASE_URL.URL_WSS,
+    "wssUrl": 'wss://' +
+        outboundServer +
+        ':' +
+        port,
     "userName": "${user}@${domain}",
-    "apiDomain": getCheckHttp(apiDomain),
+    "apiDomain": domainSever, //apiDomain,
   });
   final pnPushParams = PnPushParams(
     pnProvider: Platform.isAndroid ? 'fcm' : 'apns',
