@@ -12,10 +12,15 @@ class InitGetListWorkState extends WorkState {}
 class SuccessGetListWorkState extends WorkState {
   List<WorkItemData> data_list;
   int pageCount;
-  List<FilterData> data_filter;
-  SuccessGetListWorkState(this.data_list, this.pageCount, this.data_filter);
+  SuccessGetListWorkState(
+    this.data_list,
+    this.pageCount,
+  );
   @override
-  List<Object> get props => [data_list, pageCount, data_filter];
+  List<Object> get props => [
+        data_list,
+        pageCount,
+      ];
 }
 
 class LoadingListWorkState extends WorkState {}

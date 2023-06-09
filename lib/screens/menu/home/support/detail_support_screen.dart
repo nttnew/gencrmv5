@@ -39,7 +39,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
   checkLocation(state) {
     location = state.location;
     if (state.dataDetailSupport.isNotEmpty) {
-      final listLocation = state.dataDetailSupport.first.data
+      final listLocation = state.dataDetailSupport.first.list
           ?.where((element) => element.id == 'checkout')
           .toList();
       if (listLocation?.isNotEmpty ?? false) {
@@ -111,7 +111,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditDataScreen(id, 6);
+        AppNavigator.navigateEditDataScreen(id, EDIT_SUPPORT);
       },
     ));
 
@@ -160,7 +160,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                         Get.back();
                         Get.back();
                         SupportBloc.of(context)
-                            .add(InitGetSupportEvent(1, '', ''));
+                            .add(InitGetSupportEvent());
                       },
                     );
                   } else if (state is ErrorDeleteSupportState) {

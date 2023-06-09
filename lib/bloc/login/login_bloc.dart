@@ -60,7 +60,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final String user =
         LoginBloc.of(context).loginData?.info_user?.extension ?? '0';
     String deviceToken =
-        await shareLocal.getString(PreferencesKey.DEVICE_TOKEN) ?? "";
+        await shareLocal.getString(PreferencesKey.DEVICE_TOKEN) ?? '';
     await PitelClient.getInstance().removeDeviceToken(
       deviceToken: deviceToken, // Device token
       domain: domain,
@@ -189,35 +189,35 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Future<void> _saveData(response) async {
     listMenuFlash = [];
-    listMenuFlash.addAll(response.data?.quick ?? []);
+    listMenuFlash.addAll(response.list?.quick ?? []);
     await shareLocal.putString(
-        PreferencesKey.LIST_MENU_FLASH, jsonEncode(response.data?.quick));
+        PreferencesKey.LIST_MENU_FLASH, jsonEncode(response.list?.quick));
     await shareLocal.putString(
-        PreferencesKey.DATA_CALL, jsonEncode(response.data));
-    await localRepository.saveUser(jsonEncode(response.data));
+        PreferencesKey.DATA_CALL, jsonEncode(response.list));
+    await localRepository.saveUser(jsonEncode(response.list));
     await shareLocal.putString(
-        PreferencesKey.SESS, response.data?.session_id ?? '');
+        PreferencesKey.SESS, response.list?.session_id ?? '');
     await shareLocal.putString(
-        PreferencesKey.TOKEN, response.data?.token ?? '');
+        PreferencesKey.TOKEN, response.list?.token ?? '');
     await shareLocal.putString(
-        PreferencesKey.MENU, jsonEncode(response.data?.menu ?? ''));
+        PreferencesKey.MENU, jsonEncode(response.list?.menu ?? ''));
     await shareLocal.putBools(PreferencesKey.FIRST_TIME, true);
     await shareLocal.putString(
-        dotenv.env[PreferencesKey.TOKEN] ?? '', response.data?.token ?? '');
+        dotenv.env[PreferencesKey.TOKEN] ?? '', response.list?.token ?? '');
     await shareLocal.putString(
-        PreferencesKey.USER_EMAIL, response.data?.info_user?.email ?? "");
+        PreferencesKey.USER_EMAIL, response.list?.info_user?.email ?? "");
     await shareLocal.putString(
-        PreferencesKey.USER_PHONE, response.data?.info_user?.phone ?? "");
+        PreferencesKey.USER_PHONE, response.list?.info_user?.phone ?? "");
     await shareLocal.putString(
-        PreferencesKey.USER_ADDRESS, response.data?.info_user?.dia_chi ?? "");
+        PreferencesKey.USER_ADDRESS, response.list?.info_user?.dia_chi ?? "");
     await shareLocal.putString(
-        PreferencesKey.USER_FULLNAME, response.data?.info_user?.fullname ?? "");
+        PreferencesKey.USER_FULLNAME, response.list?.info_user?.fullname ?? "");
     await shareLocal.putString(
-        PreferencesKey.URL_AVATAR, response.data?.info_user?.avatar ?? "");
+        PreferencesKey.URL_AVATAR, response.list?.info_user?.avatar ?? "");
     await shareLocal.putString(
-        PreferencesKey.ID_USER, response.data?.info_user?.user_id ?? "");
+        PreferencesKey.ID_USER, response.list?.info_user?.user_id ?? "");
     await shareLocal.putString(
-        PreferencesKey.MONEY, response.data?.tien_te ?? "");
+        PreferencesKey.MONEY, response.list?.tien_te ?? "");
   }
 
   static LoginBloc of(BuildContext context) =>

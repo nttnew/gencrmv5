@@ -130,17 +130,19 @@ class ServiceVoucherBloc
   }
 
   void getVersionCarInfo() {
-    String data = shareLocal.getString(PreferencesKey.INFO_VERSION) ?? "";
-    final result = json.decode(data);
-    final hangXe = result['hang_xe'] as List<dynamic>;
-    final versions = result['versions'] as List<dynamic>;
-    final resultHangXe = hangXe.map((e) => HangXe.fromJson(e)).toList();
-    final Set<HangXe> list = {};
-    for (final obj in resultHangXe) {
-      list.add(obj);
+    String data = shareLocal.getString(PreferencesKey.INFO_VERSION) ?? '';
+    if (data != '' && data != 'null') {
+      final result = json.decode(data);
+      final hangXe = (result['hang_xe'] ?? []) as List<dynamic>;
+      final versions = (result['versions'] ?? []) as List<dynamic>;
+      final resultHangXe = hangXe.map((e) => HangXe.fromJson(e)).toList();
+      final Set<HangXe> list = {};
+      for (final obj in resultHangXe) {
+        list.add(obj);
+      }
+      listHangXe.add(list);
+      listVersionCar = versions.map((e) => Versions.fromJson(e)).toList();
     }
-    listHangXe.add(list);
-    listVersionCar = versions.map((e) => Versions.fromJson(e)).toList();
   }
 
   void getListNamSanXuat(String text) {

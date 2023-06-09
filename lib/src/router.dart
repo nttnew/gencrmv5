@@ -47,6 +47,7 @@ class ROUTE_NAMES {
   static const String INFO_CONTRACT = '/info_contract';
   static const String NOTIFICATION = '/notification';
   static const String FORM_ADD = '/form_add';
+  static const String FORM_ADD_CUSTOMER_GROUP = '/FORM_ADD_CUSTOMER_GR';
   static const String FORM_EDIT = '/form_edit';
   static const String ADD_NOTE = '/add_note';
   static const String ADD_PRODUCT = '/add_product';

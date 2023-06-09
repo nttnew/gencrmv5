@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/api_resfull/api.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../src/base.dart';
 import '../../src/messages.dart';
@@ -13,34 +14,55 @@ part 'work_state.dart';
 
 class WorkBloc extends Bloc<WorkEvent, WorkState> {
   UserRepository userRepository;
+  List<WorkItemData> list = [];
+  BehaviorSubject<List<FilterData>> listType = BehaviorSubject.seeded([]);
+
   WorkBloc({required UserRepository userRepository})
       : userRepository = userRepository,
         super(InitGetListWorkState());
   @override
   Stream<WorkState> mapEventToState(WorkEvent event) async* {
     if (event is InitGetListWorkEvent) {
-      yield* _getListWork(event.pageIndex!, event.text!, event.filter_id!);
+      yield* _getListWork(
+        ids: event.ids ?? '',
+        page: (event.page ?? BASE_URL.PAGE_DEFAULT).toString(),
+        search: event.search ?? '',
+        filter: event.filter ?? '',
+      );
     }
   }
 
-  List<WorkItemData> data = [];
-
-  Stream<WorkState> _getListWork(
-      String pageIndex, String text, String filter_id) async* {
+  Stream<WorkState> _getListWork({
+    required String ids,
+    required String page,
+    required String search,
+    required String filter,
+  }) async* {
     LoadingApi().pushLoading();
     try {
-      final response =
-          await userRepository.getListJob(pageIndex, text, filter_id);
+      final response = await userRepository.getListJob(
+        page,
+        search,
+        filter,
+        ids,
+      );
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        if (int.parse(pageIndex) == 1) {
-          data = response.data!.data_list!;
-          yield SuccessGetListWorkState(response.data!.data_list!,
-              response.data!.pageCount!, response.data!.data_filter!);
-        } else {
-          data = [...data, ...response.data!.data_list!];
+        listType.add(
+          response.data?.data_filter ?? [],
+        );
+        if (int.parse(page) == BASE_URL.PAGE_DEFAULT) {
+          list.addAll(response.data?.data_list ?? []);
           yield SuccessGetListWorkState(
-              data, response.data!.pageCount!, response.data!.data_filter!);
+            response.data?.data_list ?? [],
+            response.data?.pageCount ?? 0,
+          );
+        } else {
+          yield SuccessGetListWorkState(
+            [...list, ...response.data?.data_list ?? []],
+            response.data?.pageCount ?? 0,
+          );
+          list.addAll(response.data?.data_list ?? []);
         }
       } else {
         yield ErrorGetListWorkState(response.msg ?? '');

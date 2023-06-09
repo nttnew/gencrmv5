@@ -116,7 +116,7 @@ class _ReportScreenState extends State<ReportScreen> {
     _scrollCarController.addListener(() {
       if (_scrollCarController.offset ==
               _scrollCarController.position.maxScrollExtent &&
-          CarListReportBloc.of(context).isTotal) {
+        CarListReportBloc.of(context).isTotal) {
         CarListReportBloc.of(context).page += 1;
         CarListReportBloc.of(context).add(GetListReportCar(
             time: timeFilter.toString(),
@@ -585,8 +585,8 @@ class _ReportScreenState extends State<ReportScreen> {
                                 return GestureDetector(
                                   onTap: () {
                                     AppNavigator.navigateInfoContract(
-                                        state.data[index].id!,
-                                        state.data[index].name!);
+                                        state.data[index].id ?? '',
+                                        state.data[index].name ?? '');
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(
@@ -662,7 +662,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                             Expanded(
                                               child: WidgetText(
                                                 title: state.data[index]
-                                                        .customer!.name ??
+                                                        .customer?.name ??
                                                     'Chưa có',
                                                 style: AppStyle
                                                     .DEFAULT_LABEL_PRODUCT,
@@ -718,7 +718,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                               title: 'Doanh số: ' +
                                                   state.data[index].price
                                                       .toString() +
-                                                  money!,
+                                                  (money ?? ''),
                                               style: AppStyle
                                                   .DEFAULT_LABEL_PRODUCT
                                                   .copyWith(color: COLORS.GREY),

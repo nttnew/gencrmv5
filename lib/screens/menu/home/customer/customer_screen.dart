@@ -4,14 +4,17 @@ import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
+import 'package:gen_crm/widgets/tree/tree_node_model.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
+import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/customer.dart';
 import '../../../../src/src_index.dart';
-import '../../../../widgets/widget_search.dart';
+import '../../../../widgets/drop_down_base.dart';
+import '../../../../widgets/search_base.dart';
+import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 import 'item_list_customer.dart';
 
@@ -23,7 +26,7 @@ class CustomerScreen extends StatefulWidget {
 }
 
 class _CustomerScreenState extends State<CustomerScreen> {
-  int page = 1;
+  int page = BASE_URL.PAGE_DEFAULT;
   int total = 0;
   int length = 0;
   List<CustomerData> listCustomer = [];
@@ -31,35 +34,51 @@ class _CustomerScreenState extends State<CustomerScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   final _key = GlobalKey<ExpandableFabState>();
   String search = '';
+  String ids = '';
   String title = Get.arguments;
   ScrollController _scrollController = ScrollController();
   List<String> listAdd = [
-    'Khách hàng tổ chức',
-    'Khách hàng cá nhân',
+    '${Get.arguments} tổ chức',
+    '${Get.arguments} cá nhân',
   ];
+  late final ManagerBloc managerBloc;
+  late final GetListCustomerBloc _bloc;
 
   @override
   void initState() {
+    _bloc = GetListCustomerBloc.of(context);
+    managerBloc =
+        ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
+    managerBloc.getManager(module: Module.KHACH_HANG);
     GetListUnReadNotifiBloc.of(context).add(CheckNotification());
-    GetListCustomerBloc.of(context).add(InitGetListOrderEvent('', 1, ''));
+    _bloc.add(InitGetListOrderEvent());
     _scrollController.addListener(() {
       if (_scrollController.offset ==
               _scrollController.position.maxScrollExtent &&
           length < total) {
-        GetListCustomerBloc.of(context).add(InitGetListOrderEvent(
-            idFilter, page + 1, search,
-            isLoadMore: true));
         page = page + 1;
-      } else {}
+        _research(isLoadMore: true, pageNew: page);
+      }
     });
     super.initState();
   }
 
+  _research({int? pageNew, bool? isLoadMore}) {
+    page = pageNew ?? BASE_URL.PAGE_DEFAULT;
+    _bloc.add(InitGetListOrderEvent(
+      filter: idFilter,
+      page: page,
+      ids: ids,
+      search: search,
+      isLoadMore: isLoadMore,
+    ));
+  }
+
   _handleRouter(String value) {
     if (listAdd.last == value) {
-      AppNavigator.navigateAddCustomer();
+      AppNavigator.navigateAddCustomer("Thêm ${value.toLowerCase()}");
     } else {
-      AppNavigator.navigateFormAdd("Thêm ${value.toLowerCase()}", 1);
+      AppNavigator.navigateFormAddCustomerGroup("Thêm ${value.toLowerCase()}", ADD_CUSTOMER);
     }
   }
 
@@ -67,6 +86,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
+      appBar: AppbarBase(_drawerKey, title),
       resizeToAvoidBottomInset: false,
       drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
       floatingActionButtonLocation: ExpandableFab.location,
@@ -152,7 +172,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
             )
             .toList(),
       ),
-      appBar: AppbarBase(_drawerKey, title),
       body: BlocBuilder<GetListCustomerBloc, CustomerState>(
           builder: (context, state) {
         if (state is UpdateGetListCustomerState) {
@@ -161,42 +180,58 @@ class _CustomerScreenState extends State<CustomerScreen> {
           listCustomer = state.listCustomer;
           return Column(
             children: [
-              Container(
-                margin: EdgeInsets.only(
-                  top: 20,
-                  left: 25,
-                  right: 25,
-                  bottom: 10,
+              AppValue.vSpaceSmall,
+              StreamBuilder<List<TreeNodeData>>(
+                  stream: managerBloc.managerTrees,
+                  builder: (context, snapshot) {
+                    return SearchBase(
+                      hint: "Tìm ${title.toLowerCase()}",
+                      leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                      endIcon: (snapshot.data ?? []).isNotEmpty
+                          ? SvgPicture.asset(
+                              ICONS.IC_FILL_SVG,
+                              width: 16,
+                              height: 16,
+                              fit: BoxFit.contain,
+                            )
+                          : null,
+                      onClickRight: () {
+                        showManagerFilter(context, managerBloc, (v) {
+                          ids = v;
+                          _research();
+                        });
+                      },
+                      onSubmit: (String v) {
+                        search = v;
+                        _research();
+                      },
+                    );
+                  }),
+              SizedBox(
+                height: 6,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: DropDownBase(
+                    isName: true,
+                    stream: _bloc.listType,
+                    onTap: (item) {
+                      idFilter = item.id.toString();
+                      _research();
+                    },
+                  ),
                 ),
-                decoration: BoxDecoration(
-                  border: Border.all(color: HexColor("#DBDBDB")),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: WidgetSearch(
-                  hintTextStyle: TextStyle(
-                      fontFamily: "Quicksand",
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: HexColor("#707070")),
-                  hint: "Tìm khách hàng",
-                  leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
-                  endIcon: SvgPicture.asset(ICONS.IC_FILL_SVG),
-                  onClickRight: () {
-                    _showBottomSheet(state.listFilter);
-                  },
-                  onSubmit: (v) {
-                    search = v;
-                    GetListCustomerBloc.of(context)
-                        .add(InitGetListOrderEvent(idFilter, 1, v));
-                  },
-                ),
+              ),
+              SizedBox(
+                height: 6,
               ),
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: () =>
                       Future.delayed(Duration(microseconds: 300), () {
-                    GetListCustomerBloc.of(context)
-                        .add(InitGetListOrderEvent('', 1, ''));
+                    _research();
                   }),
                   child: SingleChildScrollView(
                     controller: _scrollController,
@@ -208,7 +243,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                             (index) => ItemCustomer(
                                   data: state.listCustomer[index],
                                   onTap: () => AppNavigator.navigateDetailCustomer(
-                                      state.listCustomer[index].id??'',
+                                      state.listCustomer[index].id ?? '',
                                       '${state.listCustomer[index].danh_xung ?? ''}' +
                                           ' ' +
                                           '${state.listCustomer[index].name ?? ''}'),
@@ -224,88 +259,5 @@ class _CustomerScreenState extends State<CustomerScreen> {
           return noData();
       }),
     );
-  }
-
-  _showBottomSheet(List<FilterData> data) {
-    showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-        ),
-        elevation: 2,
-        context: context,
-        isScrollControlled: true,
-        constraints: BoxConstraints(maxHeight: Get.height * 0.7),
-        builder: (context) {
-          return StatefulBuilder(
-            builder: (context, setState) {
-              return SafeArea(
-                child: Container(
-                  padding: EdgeInsets.all(16),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: WidgetText(
-                            title: 'Chọn lọc',
-                            textAlign: TextAlign.center,
-                            style: AppStyle.DEFAULT_16_BOLD,
-                          ),
-                        ),
-                        Column(
-                          children: List.generate(
-                              data.length,
-                              (index) => GestureDetector(
-                                    onTap: () {
-                                      Get.back();
-                                      idFilter = data[index].id.toString();
-                                      GetListCustomerBloc.of(context).add(
-                                          InitGetListOrderEvent(
-                                              data[index].id.toString(),
-                                              1,
-                                              search));
-                                    },
-                                    child: Container(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 8),
-                                      decoration: BoxDecoration(
-                                          border: Border(
-                                              bottom: BorderSide(
-                                                  width: 1,
-                                                  color: COLORS.LIGHT_GREY))),
-                                      child: Row(
-                                        // crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          SvgPicture.asset(
-                                            ICONS.IC_FILTER_SVG,
-                                            width: 20,
-                                            height: 20,
-                                            fit: BoxFit.contain,
-                                          ),
-                                          SizedBox(
-                                            width: 8,
-                                          ),
-                                          Expanded(
-                                              child: Container(
-                                            child: WidgetText(
-                                              title: data[index].name ?? '',
-                                              style: AppStyle.DEFAULT_16,
-                                            ),
-                                          )),
-                                        ],
-                                      ),
-                                    ),
-                                  )),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
-        });
   }
 }

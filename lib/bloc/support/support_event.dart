@@ -7,8 +7,8 @@ abstract class SupportEvent extends Equatable {
 }
 
 class InitGetSupportEvent extends SupportEvent {
-  final String search, filter;
-  final int page;
+  final String? search, filter, ids;
+  final int? page;
 
-  InitGetSupportEvent(this.page, this.search, this.filter);
+  InitGetSupportEvent({this.page, this.search, this.filter, this.ids});
 }

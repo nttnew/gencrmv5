@@ -7,12 +7,19 @@ abstract class GetListCustomerEvent extends Equatable {
 }
 
 class InitGetListOrderEvent extends GetListCustomerEvent {
-  final String filter;
-  final int page;
-  final String search;
+  final String? filter;
+  final int? page;
+  final String? search;
+  final String? ids;
   final bool? isLoadMore;
 
-  InitGetListOrderEvent(this.filter, this.page, this.search, {this.isLoadMore});
+  InitGetListOrderEvent({
+    this.page,
+    this.search,
+    this.filter,
+    this.isLoadMore,
+    this.ids,
+  });
 }
 
 class AddCustomerIndividualEvent extends GetListCustomerEvent {

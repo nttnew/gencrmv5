@@ -1,12 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gen_crm/screens/call/init_app_call.dart';
 import 'package:gen_crm/screens/add_service_voucher/add_service_voucher_step2_screen.dart';
+import 'package:gen_crm/screens/menu/form/form_edit.dart';
 import 'package:gen_crm/screens/menu/home/contract/form_sign.dart';
 import 'package:gen_crm/screens/menu/home/contract/list_product.dart';
 import 'package:gen_crm/screens/menu/home/contract/update_contract.dart';
 import 'package:gen_crm/screens/menu/home/customer/add_note.dart';
-import 'package:gen_crm/screens/menu/home/customer/form_add_data.dart';
-import 'package:gen_crm/screens/menu/home/customer/form_edit.dart';
+import 'package:gen_crm/screens/menu/form/form_add_data.dart';
 import 'package:gen_crm/screens/menu/home/notification/notification_screen.dart';
 import 'package:gen_crm/screens/menu/home/product/detail_product.dart';
 import 'package:gen_crm/screens/menu/home/product/product.dart';
@@ -24,6 +27,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!Platform.isAndroid) {
+      SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.immersiveSticky,
+        overlays: [
+          SystemUiOverlay.top,
+          // SystemUiOverlay.bottom,
+        ],
+      );
+    } else {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+          overlays: [SystemUiOverlay.top]);
+    }
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'NunitoSans'),
@@ -144,6 +159,10 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: ROUTE_NAMES.FORM_ADD,
+          page: () => FormAddData(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.FORM_ADD_CUSTOMER_GROUP,
           page: () => FormAddData(),
         ),
         GetPage(

@@ -7,14 +7,13 @@ import 'package:flutter/services.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import '../../../../../src/src_index.dart';
 import '../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../src/models/model_generator/file_response.dart';
 import '../../../widgets/appbar_base.dart';
+import '../../../widgets/cupertino_loading.dart';
 import '../../../widgets/item_file.dart';
 import '../../add_service_voucher/preview_image.dart';
 
@@ -302,9 +301,7 @@ class _AttachmentState extends State<Attachment> {
                         margin: EdgeInsets.only(top: 60),
                         child: Align(
                           alignment: Alignment.topCenter,
-                          child: CircularProgressIndicator(
-                            color: HexColor("#D0F1EB"),
-                          ),
+                          child: CupertinoLoading(),
                         ),
                       );
                     } else if (list == []) {

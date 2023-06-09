@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
+import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
@@ -13,6 +14,7 @@ part 'chance_state.dart';
 
 class GetListChanceBloc extends Bloc<GetListChanceEvent, ChanceState> {
   final UserRepository userRepository;
+  BehaviorSubject<List<FilterChance>> listType = BehaviorSubject.seeded([]);
 
   GetListChanceBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -22,33 +24,46 @@ class GetListChanceBloc extends Bloc<GetListChanceEvent, ChanceState> {
   Stream<ChanceState> mapEventToState(GetListChanceEvent event) async* {
     if (event is InitGetListOrderEventChance) {
       yield* _getListChance(
-          filter: event.filter,
-          page: event.page,
-          search: event.search,
-          isLoadMore: event.isLoadMore);
+        ids: event.ids ?? '',
+        filter: event.filter ?? '',
+        page: event.page ?? BASE_URL.PAGE_DEFAULT,
+        search: event.search ?? '',
+        isLoadMore: event.isLoadMore,
+      );
     }
   }
 
   List<ListChanceData>? listChance;
 
-  Stream<ChanceState> _getListChance(
-      {required String filter,
-      required int page,
-      required String search,
-      bool? isLoadMore = false}) async* {
+  Stream<ChanceState> _getListChance({
+    required String filter,
+    required String ids,
+    required int page,
+    required String search,
+    bool? isLoadMore = false,
+  }) async* {
     LoadingApi().pushLoading();
     try {
-      final response = await userRepository.getListChance(page, filter, search);
+      final response = await userRepository.getListChance(
+        page,
+        filter,
+        search,
+        ids,
+      );
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        if (page == 1) {
-          listChance = response.data!.list;
-          yield UpdateGetListChanceState(response.data!.list!,
-              response.data!.total!, response.data!.filter!);
-        } else {
-          listChance!.addAll(response.data!.list!);
+        listType.add(response.data?.filter ?? []);
+        if (page == BASE_URL.PAGE_DEFAULT) {
+          listChance = response.data?.list ?? [];
           yield UpdateGetListChanceState(
-              listChance!, response.data!.total!, response.data!.filter!);
+            response.data?.list ?? [],
+            response.data?.total ?? '0',
+          );
+        } else {
+          yield UpdateGetListChanceState(
+              [...listChance ?? [], ...response.data?.list ?? []],
+              response.data?.total ?? '0');
+          listChance?.addAll(response.data?.list ?? []);
         }
       } else if (response.code == 999) {
         loginSessionExpired();

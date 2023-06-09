@@ -8,7 +8,9 @@ part 'add_data_response.g.dart';
 class AddData {
   final dynamic id;
 
-  AddData(this.id);
+  AddData(
+    this.id,
+  );
 
   factory AddData.fromJson(Map<String, dynamic> json) =>
       _$AddDataFromJson(json);
@@ -19,8 +21,10 @@ class AddData {
 @JsonSerializable()
 class AddDataResponse extends BaseResponse {
   final AddData? data;
+  final dynamic name;
+  final dynamic id;
 
-  AddDataResponse(this.data);
+  AddDataResponse(this.data, this.name, this.id);
 
   factory AddDataResponse.fromJson(Map<String, dynamic> json) =>
       _$AddDataResponseFromJson(json);

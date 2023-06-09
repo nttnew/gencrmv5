@@ -26,6 +26,7 @@ Future showThaoTac(
         borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
       ),
       context: context,
+      isScrollControlled: true,
       builder: (context) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
