@@ -22,7 +22,6 @@ import '../../../bloc/clue/clue_bloc.dart';
 import '../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import '../../../bloc/contract/attack_bloc.dart';
 import '../../../bloc/contract/detail_contract_bloc.dart';
-import '../../../bloc/detail_clue/detail_clue_bloc.dart';
 import '../../../bloc/product_customer_module/product_customer_module_bloc.dart';
 import '../../../bloc/product_module/product_module_bloc.dart';
 import '../../../bloc/support/detail_support_bloc.dart';
@@ -176,8 +175,6 @@ class _FormEditState extends State<FormEdit> {
                       Get.back();
                       Get.back();
                       if (type == EDIT_CLUE) {
-                        GetDetailClueBloc.of(context)
-                            .add(InitGetDetailClueEvent(id));
                         GetListClueBloc.of(context).add(InitGetListClueEvent());
                       }
                       if (type == EDIT_CHANCE) {
@@ -359,6 +356,8 @@ class _FormEditState extends State<FormEdit> {
                                                                 if (stateA
                                                                     is UpdateGetContacBytCustomerState)
                                                                   return InputDropdown(
+                                                                      typeScreen:
+                                                                          type,
                                                                       dropdownItemList:
                                                                           stateA
                                                                               .listContactByCustomer,
@@ -391,6 +390,8 @@ class _FormEditState extends State<FormEdit> {
                                                                   return Container();
                                                                 } else
                                                                   return InputDropdown(
+                                                                      typeScreen:
+                                                                          type,
                                                                       dropdownItemList:
                                                                           state.listEditData[index].data![index1].field_datasource ??
                                                                               [],

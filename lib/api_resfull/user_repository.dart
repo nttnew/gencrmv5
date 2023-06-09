@@ -218,8 +218,9 @@ class UserRepository {
   Future<BaseResponse> deleteCustomer(Map<String, dynamic> id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).deleteCustomer(id);
 
-  Future<JobChance> getJobChance(int id) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).getJobChance(id);
+  Future<JobChance> getJobChance(int id, int page) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getJobChance(id, page);
 
   Future<AddJobResponse> getAddJobChance(int id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getAddJobChance(id);
@@ -244,8 +245,8 @@ class UserRepository {
   Future<DetailClue> getDetailClue(String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getDetailClue(id);
 
-  Future<WorkClueResponse> getWorkClue(String id) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).getWorkClue(id);
+  Future<WorkClueResponse> getWorkClue(String id, int page) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getWorkClue(id, page);
 
   Future<PolicyResponse> getPolicy() async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getPolicy();

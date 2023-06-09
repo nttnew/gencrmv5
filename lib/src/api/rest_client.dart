@@ -127,7 +127,10 @@ abstract class RestClient {
   Future<AddJobResponse> getAddJobChance(@Query('id') int id);
 
   @GET(BASE_URL.JOB_CHANCE)
-  Future<JobChance> getJobChance(@Query('id') int id);
+  Future<JobChance> getJobChance(
+    @Query('id') int id,
+    @Query('page') int page,
+  );
 
   @GET(BASE_URL.CLUE_CUSTOMER)
   Future<ClueCustomerResponse> getClueCustomer(
@@ -244,6 +247,7 @@ abstract class RestClient {
   @GET(BASE_URL.WORK_CLUE)
   Future<WorkClueResponse> getWorkClue(
     @Query('id') String id,
+    @Query('page') int page,
   );
 
   @GET(BASE_URL.POLICY)

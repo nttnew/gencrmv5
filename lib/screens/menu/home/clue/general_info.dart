@@ -11,19 +11,26 @@ class GeneralInfo extends StatefulWidget {
   const GeneralInfo({
     Key? key,
     required this.id,
+    required this.blocNote,
+    required this.bloc,
   }) : super(key: key);
   final String id;
+  final ListNoteBloc blocNote;
+  final GetDetailClueBloc bloc;
+
   @override
   State<GeneralInfo> createState() => _GeneralInfoState();
 }
 
 class _GeneralInfoState extends State<GeneralInfo>
     with AutomaticKeepAliveClientMixin {
-  late final ListNoteBloc _bloc;
+  late final ListNoteBloc _blocNote;
+  late final GetDetailClueBloc _bloc;
+
   @override
   void initState() {
-    _bloc =
-        ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
+    _blocNote = widget.blocNote;
+    _bloc = widget.bloc;
     super.initState();
   }
 
@@ -35,28 +42,29 @@ class _GeneralInfoState extends State<GeneralInfo>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           BlocBuilder<GetDetailClueBloc, DetailClueState>(
+              bloc: _bloc,
               builder: (context, state) {
-            if (state is GetDetailClueState) {
-              if (state.list == [] || state.list == null) {
-                return SizedBox();
-              } else {
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
-                  child: Column(
-                    children: List.generate(state.list!.length,
-                        (index) => _buildContent(state.list![index])),
-                  ),
-                );
-              }
-            } else {
-              return SizedBox();
-            }
-          }),
+                if (state is GetDetailClueState) {
+                  if (state.list == [] || state.list == null) {
+                    return SizedBox();
+                  } else {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      child: Column(
+                        children: List.generate(state.list!.length,
+                            (index) => _buildContent(state.list![index])),
+                      ),
+                    );
+                  }
+                } else {
+                  return SizedBox();
+                }
+              }),
           AppValue.vSpaceTiny,
           ListNote(
             module: Module.DAU_MOI,
             id: widget.id,
-            bloc: _bloc,
+            bloc: _blocNote,
           )
         ],
       ),

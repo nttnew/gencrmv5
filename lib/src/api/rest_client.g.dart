@@ -377,9 +377,15 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<JobChance> getJobChance(id) async {
+  Future<JobChance> getJobChance(
+    id,
+    page,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'id': id};
+    final queryParameters = <String, dynamic>{
+      r'id': id,
+      r'page': page,
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio
@@ -964,9 +970,15 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<WorkClueResponse> getWorkClue(id) async {
+  Future<WorkClueResponse> getWorkClue(
+    id,
+    page,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'id': id};
+    final queryParameters = <String, dynamic>{
+      r'id': id,
+      r'page': page,
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio

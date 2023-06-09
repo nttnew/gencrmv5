@@ -32,7 +32,6 @@ import '../../../bloc/job_contract/job_contract_bloc.dart';
 import '../../../bloc/support/support_bloc.dart';
 import '../../../bloc/support_contract_bloc/support_contract_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
-import '../../../bloc/work_clue/work_clue_bloc.dart';
 import '../../../models/model_data_add.dart';
 import '../../../models/widget_input_date.dart';
 import '../../../src/models/model_generator/login_response.dart';
@@ -436,11 +435,6 @@ class _FormAddDataState extends State<FormAddData> {
                         WorkBloc.of(context).add(InitGetListWorkEvent());
                       } else if (type == ADD_SUPPORT) {
                         SupportBloc.of(context).add(InitGetSupportEvent());
-                      } else if (type == ADD_CLUE_JOB) {
-                        WorkClueBloc.of(context).add(GetWorkClue(id: id));
-                      } else if (type == ADD_CHANCE_JOB) {
-                        GetJobChanceBloc.of(context)
-                            .add(InitGetJobEventChance(int.parse(id)));
                       } else if (type == ADD_SUPPORT_CONTRACT) {
                         SupportContractBloc.of(context)
                             .add(InitGetSupportContractEvent(int.parse(id)));

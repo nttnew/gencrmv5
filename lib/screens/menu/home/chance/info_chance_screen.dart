@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/blocs.dart';
+import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
+import '../../../../widgets/listview_loadmore_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../../../widgets/widget_appbar.dart';
 import '../../attachment/attachment.dart';
+import '../clue/work_card_widget.dart';
 import 'chance_info.dart';
-import 'job_chance_item.dart';
 
 class InfoChancePage extends StatefulWidget {
   const InfoChancePage({Key? key}) : super(key: key);
@@ -24,40 +26,39 @@ class _InfoChancePageState extends State<InfoChancePage> {
   String id = Get.arguments[0];
   String name = Get.arguments[1];
   List<ModuleThaoTac> list = [];
-
-  @override
-  void deactivate() {
-    GetListDetailChanceBloc.of(context).add(ReloadChanceEvent());
-    super.deactivate();
-  }
+  late final GetListDetailChanceBloc _bloc;
+  late final ListNoteBloc _blocNote;
 
   @override
   void initState() {
-    GetListDetailChanceBloc.of(context)
-        .add(InitGetListDetailEvent(int.parse(id)));
-    GetJobChanceBloc.of(context).add(InitGetJobEventChance(
-      int.parse(id),
-    ));
+    _bloc = GetListDetailChanceBloc(
+        userRepository: GetListDetailChanceBloc.of(context).userRepository);
+    _bloc.add(InitGetListDetailEvent(int.parse(id)));
+    _blocNote =
+        ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
     getThaoTac();
     super.initState();
   }
 
   getThaoTac() {
-    list.add(ModuleThaoTac(
-      title: "Thêm hợp đồng",
-      icon: ICONS.IC_ADD_CONTRACT_SVG,
-      onThaoTac: () {
-        Get.back();
-        AppNavigator.navigateAddContract(id: id, title: 'hợp đồng');
-      },
-    ));
+    // list.add(ModuleThaoTac(
+    //   title: "Thêm hợp đồng",
+    //   icon: ICONS.IC_ADD_CONTRACT_SVG,
+    //   onThaoTac: () {
+    //     Get.back();
+    //     AppNavigator.navigateAddContract(id: id, title: 'hợp đồng');
+    //   },
+    // ));
 
     list.add(ModuleThaoTac(
       title: "Thêm công việc",
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd('Thêm công việc', ADD_CHANCE_JOB, id: int.parse(id));
+        AppNavigator.navigateFormAdd('Thêm công việc', ADD_CHANCE_JOB,
+            id: int.parse(id), onRefresh: () {
+          _bloc.controllerCV.reloadData();
+        });
       },
     ));
 
@@ -66,7 +67,9 @@ class _InfoChancePageState extends State<InfoChancePage> {
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(Module.CO_HOI_BH, id);
+        AppNavigator.navigateAddNoteScreen(Module.CO_HOI_BH, id, onRefresh: () {
+          _blocNote.add(RefreshEvent());
+        });
       },
     ));
 
@@ -88,7 +91,9 @@ class _InfoChancePageState extends State<InfoChancePage> {
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditDataScreen(id, EDIT_CHANCE);
+        AppNavigator.navigateEditDataScreen(id, EDIT_CHANCE, onRefresh: () {
+          _bloc.add(InitGetListDetailEvent(int.parse(id)));
+        });
       },
     ));
 
@@ -97,8 +102,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
-            onTap2: () => GetListDetailChanceBloc.of(context)
-                .add(InitDeleteChanceEvent(id)),
+            onTap2: () => _bloc.add(InitDeleteChanceEvent(id)),
             content: "Bạn chắc chắn muốn xóa không ?");
       },
     ));
@@ -174,10 +178,41 @@ class _InfoChancePageState extends State<InfoChancePage> {
                           children: [
                             ChanceInfo(
                               id: id,
+                              blocNote: _blocNote,
+                              bloc: _bloc,
                             ),
-                            JobListChance(
-                              id: id,
-                            )
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 25),
+                              child: ListViewLoadMoreBase(
+                                functionInit: (page, isInit) {
+                                  return _bloc.getJobChance(
+                                    id: int.parse(id),
+                                    page: page,
+                                    isInit: isInit,
+                                  );
+                                },
+                                itemWidget: (int index, data) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      AppNavigator.navigateDetailWork(
+                                        int.parse(data.id ?? '0'),
+                                        data.name_job ?? '',
+                                      );
+                                    },
+                                    child: WorkCardWidget(
+                                      color: data.color,
+                                      nameCustomer: data.name_customer,
+                                      nameJob: data.name_job,
+                                      statusJob: data.status_job,
+                                      startDate: data.start_date,
+                                      totalComment: data.total_comment,
+                                    ),
+                                  );
+                                },
+                                controller: _bloc.controllerCV,
+                              ),
+                            ),
                           ],
                         ),
                       ),

@@ -8,6 +8,7 @@ import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/messages.dart';
 import '../../src/models/model_generator/detail_chance.dart';
+import '../../widgets/listview_loadmore_base.dart';
 
 part 'detail_chance_event.dart';
 part 'detail_chance_state.dart';
@@ -15,6 +16,7 @@ part 'detail_chance_state.dart';
 class GetListDetailChanceBloc
     extends Bloc<DetailChanceEvent, DetailChanceState> {
   final UserRepository userRepository;
+  LoadMoreController controllerCV = LoadMoreController();
 
   GetListDetailChanceBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -26,8 +28,6 @@ class GetListDetailChanceBloc
       yield* _getListChanceDetail(id: event.id);
     } else if (event is InitDeleteChanceEvent) {
       yield* _deleteChance(id: event.id);
-    } else if (event is ReloadChanceEvent) {
-      yield UpdateGetListDetailChanceState([]);
     }
   }
 
@@ -69,6 +69,32 @@ class GetListDetailChanceBloc
       throw e;
     }
     LoadingApi().popLoading();
+  }
+
+  Future<dynamic> getJobChance(
+      {required int id,
+      int page = BASE_URL.PAGE_DEFAULT,
+      bool isInit = true}) async {
+    if (isInit) {
+      LoadingApi().pushLoading();
+    }
+    try {
+      final response = await userRepository.getJobChance(id, page);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        LoadingApi().popLoading();
+        return response.data ?? [];
+      } else if (response.code == 999) {
+        LoadingApi().popLoading();
+        loginSessionExpired();
+      } else {
+        LoadingApi().popLoading();
+        return response.msg ?? '';
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      loginSessionExpired();
+    }
   }
 
   static GetListDetailChanceBloc of(BuildContext context) =>

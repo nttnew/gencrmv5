@@ -61,7 +61,6 @@ import 'bloc/report/report_product/report_product_bloc.dart';
 import 'bloc/support_contract_bloc/support_contract_bloc.dart';
 import 'bloc/work/detail_work_bloc.dart';
 import 'bloc/work/work_bloc.dart';
-import 'bloc/work_clue/work_clue_bloc.dart';
 import 'firebase_options.dart';
 
 Future main() async {
@@ -213,10 +212,6 @@ Future main() async {
             create: (context) =>
                 GetListDetailChanceBloc(userRepository: userRepository),
           ),
-          BlocProvider<GetJobChanceBloc>(
-            create: (context) =>
-                GetJobChanceBloc(userRepository: userRepository),
-          ),
           BlocProvider<DetailCustomerBloc>(
             create: (context) =>
                 DetailCustomerBloc(userRepository: userRepository),
@@ -244,9 +239,9 @@ Future main() async {
             create: (context) =>
                 GetDetailClueBloc(userRepository: userRepository),
           ),
-          BlocProvider<WorkClueBloc>(
-            create: (context) => WorkClueBloc(userRepository: userRepository),
-          ),
+          // BlocProvider<WorkClueBloc>(
+          //   create: (context) => WorkClueBloc(userRepository: userRepository),
+          // ),
           BlocProvider<GetPolicyBloc>(
             create: (context) => GetPolicyBloc(userRepository: userRepository),
           ),
