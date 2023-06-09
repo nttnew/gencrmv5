@@ -12,4 +12,3 @@ export 'forgot_password_otp/forgot_password_otp_bloc.dart';
 export 'customer/customer_bloc.dart';
 export 'chance/chance_bloc.dart';
 export 'detail_chance/detail_chance_bloc.dart';
-export 'job_chance/job_chance_bloc.dart';
