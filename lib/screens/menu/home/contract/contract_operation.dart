@@ -5,6 +5,7 @@ import 'package:gen_crm/screens/menu/home/customer/list_note.dart';
 import 'package:gen_crm/widgets/line_horizontal_widget.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 
+import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../src/models/model_generator/detail_contract.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/widget_line.dart';
@@ -20,6 +21,14 @@ class ContractOperation extends StatefulWidget {
 
 class _ContractOperationState extends State<ContractOperation>
     with AutomaticKeepAliveClientMixin {
+  late final ListNoteBloc _bloc;
+  @override
+  void initState() {
+    _bloc =
+        ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -51,7 +60,11 @@ class _ContractOperationState extends State<ContractOperation>
                   ],
                 ),
               ),
-              ListNote(module: Module.HOP_DONG, id: widget.id)
+              ListNote(
+                module: Module.HOP_DONG,
+                id: widget.id,
+                bloc: _bloc,
+              )
             ],
           );
         else

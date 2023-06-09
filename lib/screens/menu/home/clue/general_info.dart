@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../bloc/detail_clue/detail_clue_bloc.dart';
+import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../src/models/model_generator/clue_detail.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/widget_line.dart';
@@ -10,14 +11,29 @@ class GeneralInfo extends StatefulWidget {
   const GeneralInfo({
     Key? key,
     required this.id,
+    required this.blocNote,
+    required this.bloc,
   }) : super(key: key);
   final String id;
+  final ListNoteBloc blocNote;
+  final GetDetailClueBloc bloc;
+
   @override
   State<GeneralInfo> createState() => _GeneralInfoState();
 }
 
 class _GeneralInfoState extends State<GeneralInfo>
     with AutomaticKeepAliveClientMixin {
+  late final ListNoteBloc _blocNote;
+  late final GetDetailClueBloc _bloc;
+
+  @override
+  void initState() {
+    _blocNote = widget.blocNote;
+    _bloc = widget.bloc;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -26,25 +42,30 @@ class _GeneralInfoState extends State<GeneralInfo>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           BlocBuilder<GetDetailClueBloc, DetailClueState>(
+              bloc: _bloc,
               builder: (context, state) {
-            if (state is GetDetailClueState) {
-              if (state.list == [] || state.list == null) {
-                return SizedBox();
-              } else {
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
-                  child: Column(
-                    children: List.generate(state.list!.length,
-                        (index) => _buildContent(state.list![index])),
-                  ),
-                );
-              }
-            } else {
-              return SizedBox();
-            }
-          }),
+                if (state is GetDetailClueState) {
+                  if (state.list == [] || state.list == null) {
+                    return SizedBox();
+                  } else {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      child: Column(
+                        children: List.generate(state.list!.length,
+                            (index) => _buildContent(state.list![index])),
+                      ),
+                    );
+                  }
+                } else {
+                  return SizedBox();
+                }
+              }),
           AppValue.vSpaceTiny,
-          ListNote(module: Module.DAU_MOI, id: widget.id)
+          ListNote(
+            module: Module.DAU_MOI,
+            id: widget.id,
+            bloc: _blocNote,
+          )
         ],
       ),
     );

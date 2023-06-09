@@ -20,3 +20,8 @@ class InitNoteEvent extends ListNoteEvent {
 class ReloadEvent extends ListNoteEvent {
   ReloadEvent();
 }
+
+
+class RefreshEvent extends ListNoteEvent {
+  RefreshEvent();
+}

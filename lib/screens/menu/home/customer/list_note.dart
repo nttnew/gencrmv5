@@ -14,12 +14,14 @@ class ListNote extends StatefulWidget {
     required this.id,
     this.size = 40,
     this.isAdd = false,
+    required this.bloc,
   }) : super(key: key);
 
   final String module;
   final String id;
   final double size;
   final bool isAdd;
+  final ListNoteBloc bloc;
 
   @override
   State<ListNote> createState() => _ListNoteState();
@@ -32,8 +34,7 @@ class _ListNoteState extends State<ListNote> {
 
   @override
   void initState() {
-    _bloc =
-        ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
+    _bloc = widget.bloc;
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     int millisecondsMy = 350;
     if (widget.module == Module.CO_HOI_BH) {

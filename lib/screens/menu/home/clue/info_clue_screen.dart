@@ -1,16 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/bloc/detail_clue/detail_clue_bloc.dart';
-import 'package:gen_crm/bloc/work_clue/work_clue_bloc.dart';
 import 'package:gen_crm/screens/menu/home/clue/general_info.dart';
-import 'package:gen_crm/screens/menu/home/clue/list_work_clue.dart';
 import 'package:gen_crm/screens/menu/home/clue/work_card_widget.dart';
-import 'package:gen_crm/src/models/model_generator/work_clue.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
+import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
+import '../../../../widgets/listview_loadmore_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../../../widgets/widget_appbar.dart';
@@ -27,20 +26,23 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
   String id = Get.arguments[0];
   String name = Get.arguments[1];
   List<ModuleThaoTac> list = [];
+  late final ListNoteBloc _blocNote;
+  late final GetDetailClueBloc _bloc;
 
   @override
   void deactivate() {
-    GetDetailClueBloc.of(context).add(ReloadClueEvent());
     super.deactivate();
   }
 
   @override
   void initState() {
+    _bloc = GetDetailClueBloc(
+      userRepository: GetDetailClueBloc.of(context).userRepository,
+    );
+    _blocNote =
+        ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
+    _bloc.add(InitGetDetailClueEvent(id));
     getThaoTac();
-    Future.delayed(Duration(milliseconds: 100), () {
-      GetDetailClueBloc.of(context).add(InitGetDetailClueEvent(id));
-      WorkClueBloc.of(context).add(GetWorkClue(id: id));
-    });
     super.initState();
   }
 
@@ -50,7 +52,10 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd('Thêm công việc', ADD_CLUE_JOB, id: int.parse(id));
+        AppNavigator.navigateFormAdd('Thêm công việc', ADD_CLUE_JOB,
+            id: int.parse(id), onRefresh: () {
+          _bloc.controllerCV.reloadData();
+        });
       },
     ));
     list.add(ModuleThaoTac(
@@ -58,7 +63,9 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
         icon: ICONS.IC_ADD_DISCUSS_SVG,
         onThaoTac: () {
           Get.back();
-          AppNavigator.navigateAddNoteScreen(Module.DAU_MOI, id);
+          AppNavigator.navigateAddNoteScreen(Module.DAU_MOI, id, onRefresh: () {
+            _blocNote.add(RefreshEvent());
+          });
         }));
     list.add(ModuleThaoTac(
       title: 'Xem đính kèm',
@@ -77,15 +84,16 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
         icon: ICONS.IC_EDIT_SVG,
         onThaoTac: () {
           Get.back();
-          AppNavigator.navigateEditDataScreen(id, EDIT_CLUE);
+          AppNavigator.navigateEditDataScreen(id, EDIT_CLUE, onRefresh: () {
+            _bloc.add(InitGetDetailClueEvent(id));
+          });
         }));
     list.add(ModuleThaoTac(
         title: 'Xóa',
         icon: ICONS.IC_DELETE_SVG,
         onThaoTac: () {
           ShowDialogCustom.showDialogBase(
-              onTap2: () =>
-                  GetDetailClueBloc.of(context).add(InitDeleteClueEvent(id)),
+              onTap2: () => _bloc.add(InitDeleteClueEvent(id)),
               content: "Bạn chắc chắn muốn xóa không ?");
         }));
   }
@@ -105,8 +113,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                 Get.back();
                 Get.back();
                 Get.back();
-                GetListClueBloc.of(context)
-                    .add(InitGetListClueEvent());
+                GetListClueBloc.of(context).add(InitGetListClueEvent());
               },
             );
           } else if (state is ErrorDeleteClueState) {
@@ -159,8 +166,42 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                       Expanded(
                         child: TabBarView(
                           children: [
-                            GeneralInfo(id: id),
-                            ListWorkClue(id: id)
+                            GeneralInfo(
+                              id: id,
+                              blocNote: _blocNote,
+                              bloc: _bloc,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 25),
+                              child: ListViewLoadMoreBase(
+                                functionInit: (page, isInit) {
+                                  return _bloc.getWorkClue(
+                                    id: id,
+                                    page: page,
+                                    isInit: isInit,
+                                  );
+                                },
+                                itemWidget: (int index, data) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      AppNavigator.navigateDetailWork(
+                                          int.parse(data.id ?? '0'),
+                                          data.name_job ?? '');
+                                    },
+                                    child: WorkCardWidget(
+                                      nameCustomer: data.name_customer,
+                                      nameJob: data.name_job,
+                                      startDate: data.start_date,
+                                      statusJob: data.status_job,
+                                      totalComment: data.total_comment,
+                                      color: data.color,
+                                    ),
+                                  );
+                                },
+                                controller: _bloc.controllerCV,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -179,32 +220,6 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
         ),
       ),
     );
-  }
-
-  BlocBuilder<WorkClueBloc, WorkClueState> buildListWorkClue(
-      BuildContext context) {
-    return BlocBuilder<WorkClueBloc, WorkClueState>(builder: (context, state) {
-      if (state is UpdateWorkClue) {
-        List<WorkClueData> listWorkClue = state.data!;
-        return ListView.separated(
-          shrinkWrap: true,
-          itemBuilder: (context, index) => WorkCardWidget(
-            nameCustomer: listWorkClue[index].name_customer,
-            nameJob: listWorkClue[index].name_job,
-            startDate: listWorkClue[index].start_date,
-            statusJob: listWorkClue[index].status_job,
-            totalComment: listWorkClue[index].total_comment,
-            color: listWorkClue[index].color,
-          ),
-          itemCount: state.data!.length,
-          separatorBuilder: (BuildContext context, int index) => SizedBox(
-            height: AppValue.heights * 0.01,
-          ),
-        );
-      } else {
-        return noData();
-      }
-    });
   }
 
   _buildBack() {
