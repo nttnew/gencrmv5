@@ -23,8 +23,8 @@ class InfoChancePage extends StatefulWidget {
 
 class _InfoChancePageState extends State<InfoChancePage> {
   List<DataDetailChance> dataChance = [];
-  String id = Get.arguments[0];
-  String name = Get.arguments[1];
+  String id = Get.arguments[0] ?? '';
+  String name = Get.arguments[1] ?? '';
   List<ModuleThaoTac> list = [];
   late final GetListDetailChanceBloc _bloc;
   late final ListNoteBloc _blocNote;
