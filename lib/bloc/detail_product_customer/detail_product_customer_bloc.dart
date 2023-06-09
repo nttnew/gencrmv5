@@ -16,10 +16,10 @@ part 'detail_product_customer_state.dart';
 class DetailProductCustomerBloc
     extends Bloc<DetailProductCustomerEvent, DetailProductCustomerState> {
   final UserRepository userRepository;
-  late LoadMoreController controllerCv = LoadMoreController();
-  late LoadMoreController controllerCh = LoadMoreController();
-  late LoadMoreController controllerHd = LoadMoreController();
-  late LoadMoreController controllerHt = LoadMoreController();
+   LoadMoreController controllerCv = LoadMoreController();
+   LoadMoreController controllerCh = LoadMoreController();
+   LoadMoreController controllerHd = LoadMoreController();
+   LoadMoreController controllerHt = LoadMoreController();
 
   DetailProductCustomerBloc({required UserRepository userRepository})
       : userRepository = userRepository,

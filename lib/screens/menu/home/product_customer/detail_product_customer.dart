@@ -62,8 +62,8 @@ class _DetailProductCustomerScreenState
         //cơ hội
         listWidget.add(ListViewLoadMoreBase(
           functionInit: (page, isInit) {
-            return DetailProductCustomerBloc.of(context)
-                .getListCHProductCustomer(page: page, isInit: isInit, id: idM);
+            return _bloc.getListCHProductCustomer(
+                page: page, isInit: isInit, id: idM);
           },
           itemWidget: (int index, data) {
             return WidgetItemChance(
@@ -83,8 +83,8 @@ class _DetailProductCustomerScreenState
         //hợp đồng
         listWidget.add(ListViewLoadMoreBase(
           functionInit: (page, isInit) {
-            return DetailProductCustomerBloc.of(context)
-                .getListHDProductCustomer(page: page, isInit: isInit, id: idM);
+            return _bloc.getListHDProductCustomer(
+                page: page, isInit: isInit, id: idM);
           },
           itemWidget: (int index, data) {
             return ItemContract(
@@ -110,8 +110,8 @@ class _DetailProductCustomerScreenState
       } else if (value.module == 'job') {
         listWidget.add(ListViewLoadMoreBase(
           functionInit: (page, isInit) {
-            return DetailProductCustomerBloc.of(context)
-                .getListCVProductCustomer(page: page, isInit: isInit, id: idM);
+            return _bloc.getListCVProductCustomer(
+                page: page, isInit: isInit, id: idM);
           },
           itemWidget: (int index, data) {
             return GestureDetector(
@@ -137,8 +137,8 @@ class _DetailProductCustomerScreenState
       } else if (value.module == 'support') {
         listWidget.add(ListViewLoadMoreBase(
           functionInit: (page, isInit) {
-            return DetailProductCustomerBloc.of(context)
-                .getListHTProductCustomer(page: page, isInit: isInit, id: idM);
+            return _bloc.getListHTProductCustomer(
+                page: page, isInit: isInit, id: idM);
           },
           itemWidget: (int index, data) {
             return ItemSupport(
@@ -221,7 +221,7 @@ class _DetailProductCustomerScreenState
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
             onTap2: () async {
-              DetailProductCustomerBloc.of(context).add(DeleteProductEvent(id));
+              _bloc.add(DeleteProductEvent(id));
             },
             content: "Bạn chắc chắn muốn xóa không ?");
       },
@@ -255,8 +255,7 @@ class _DetailProductCustomerScreenState
                 Get.back();
                 Get.back();
                 Get.back();
-                DetailProductCustomerBloc.of(context)
-                    .add(InitGetDetailProductCustomerEvent(id));
+                _bloc.add(InitGetDetailProductCustomerEvent(id));
               },
             );
           }

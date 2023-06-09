@@ -10,6 +10,7 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../bloc/checkin_bloc/checkin_bloc.dart';
+import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../bloc/support/support_bloc.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/loading_api.dart';
@@ -29,17 +30,20 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
   List<ModuleThaoTac> list = [];
   int? location;
   bool isCheckDone = false;
+  late final ListNoteBloc _bloc;
 
   @override
   void initState() {
+    _bloc =
+        ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
     DetailSupportBloc.of(context).add(InitGetDetailSupportEvent(id));
     super.initState();
   }
 
-  checkLocation(state) {
+  checkLocation(SuccessGetDetailSupportState state) {
     location = state.location;
     if (state.dataDetailSupport.isNotEmpty) {
-      final listLocation = state.dataDetailSupport.first.list
+      final listLocation = state.dataDetailSupport.first.data
           ?.where((element) => element.id == 'checkout')
           .toList();
       if (listLocation?.isNotEmpty ?? false) {
@@ -159,8 +163,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                         Get.back();
                         Get.back();
                         Get.back();
-                        SupportBloc.of(context)
-                            .add(InitGetSupportEvent());
+                        SupportBloc.of(context).add(InitGetSupportEvent());
                       },
                     );
                   } else if (state is ErrorDeleteSupportState) {
@@ -302,7 +305,11 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                             SizedBox(
                               height: AppValue.heights * 0.02,
                             ),
-                            ListNote(module: Module.HO_TRO, id: id)
+                            ListNote(
+                              module: Module.HO_TRO,
+                              id: id,
+                              bloc: _bloc,
+                            )
                           ],
                         ),
                       ),

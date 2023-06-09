@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -12,8 +11,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_crm/bloc/add_job_chance/add_job_chance_bloc.dart';
 import 'package:gen_crm/bloc/add_service_voucher/add_service_bloc.dart';
 import 'package:gen_crm/bloc/car_report/car_report_bloc.dart';
-import 'package:gen_crm/bloc/chance_customer/chance_customer_bloc.dart';
-import 'package:gen_crm/bloc/clue_customer/clue_customer_bloc.dart';
 import 'package:gen_crm/bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import 'package:gen_crm/bloc/contract/attack_bloc.dart';
 import 'package:gen_crm/bloc/contract/contract_bloc.dart';
@@ -26,7 +23,6 @@ import 'package:gen_crm/bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import 'package:gen_crm/bloc/form_edit/form_edit_bloc.dart';
 import 'package:gen_crm/bloc/infor/infor_bloc.dart';
 import 'package:gen_crm/bloc/information_account/information_account_bloc.dart';
-import 'package:gen_crm/bloc/job_customer/job_customer_bloc.dart';
 import 'package:gen_crm/bloc/list_note/add_note_bloc.dart';
 import 'package:gen_crm/bloc/payment_contract/payment_contract_bloc.dart';
 import 'package:gen_crm/bloc/policy/policy_bloc.dart';
@@ -48,7 +44,6 @@ import 'bloc/checkin_bloc/checkin_bloc.dart';
 import 'bloc/clue/clue_bloc.dart';
 import 'bloc/contract/customer_contract_bloc.dart';
 import 'bloc/contract/phone_bloc.dart';
-import 'bloc/contract_customer/contract_customer_bloc.dart';
 import 'bloc/detail_clue/detail_clue_bloc.dart';
 import 'bloc/detail_product/detail_product_bloc.dart';
 import 'bloc/detail_product_customer/detail_product_customer_bloc.dart';
@@ -64,7 +59,6 @@ import 'bloc/report/report_option/option_bloc.dart';
 import 'bloc/report/report_option/report_bloc.dart';
 import 'bloc/report/report_product/report_product_bloc.dart';
 import 'bloc/support_contract_bloc/support_contract_bloc.dart';
-import 'bloc/support_customer/support_customer_bloc.dart';
 import 'bloc/work/detail_work_bloc.dart';
 import 'bloc/work/work_bloc.dart';
 import 'bloc/work_clue/work_clue_bloc.dart';
@@ -231,29 +225,9 @@ Future main() async {
             create: (context) =>
                 DetailProductBloc(userRepository: userRepository),
           ),
-          BlocProvider<ClueCustomerBloc>(
-            create: (context) =>
-                ClueCustomerBloc(userRepository: userRepository),
-          ),
-          BlocProvider<ChanceCustomerBloc>(
-            create: (context) =>
-                ChanceCustomerBloc(userRepository: userRepository),
-          ),
-          BlocProvider<ContractCustomerBloc>(
-            create: (context) =>
-                ContractCustomerBloc(userRepository: userRepository),
-          ),
-          BlocProvider<JobCustomerBloc>(
-            create: (context) =>
-                JobCustomerBloc(userRepository: userRepository),
-          ),
           BlocProvider<AddJobChanceBloc>(
             create: (context) =>
                 AddJobChanceBloc(userRepository: userRepository),
-          ),
-          BlocProvider<SupportCustomerBloc>(
-            create: (context) =>
-                SupportCustomerBloc(userRepository: userRepository),
           ),
           BlocProvider<ContractBloc>(
             create: (context) => ContractBloc(userRepository: userRepository),

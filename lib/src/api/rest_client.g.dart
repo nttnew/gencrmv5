@@ -400,9 +400,15 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ClueCustomerResponse> getClueCustomer(customer_id) async {
+  Future<ClueCustomerResponse> getClueCustomer(
+    customer_id,
+    page,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'customer_id': customer_id};
+    final queryParameters = <String, dynamic>{
+      r'customer_id': customer_id,
+      r'page': page,
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -423,9 +429,15 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ChanceCustomerResponse> getChanceCustomer(customer_id) async {
+  Future<ChanceCustomerResponse> getChanceCustomer(
+    customer_id,
+    page,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'customer_id': customer_id};
+    final queryParameters = <String, dynamic>{
+      r'customer_id': customer_id,
+      r'page': page,
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -446,9 +458,15 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ContractCustomerResponse> getContractCustomer(customer_id) async {
+  Future<ContractCustomerResponse> getContractCustomer(
+    customer_id,
+    page,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'customer_id': customer_id};
+    final queryParameters = <String, dynamic>{
+      r'customer_id': customer_id,
+      r'page': page,
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -469,9 +487,15 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<JobCustomerResponse> getJobCustomer(customer_id) async {
+  Future<JobCustomerResponse> getJobCustomer(
+    customer_id,
+    page,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'customer_id': customer_id};
+    final queryParameters = <String, dynamic>{
+      r'customer_id': customer_id,
+      r'page': page,
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -492,9 +516,15 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<SupportCustomerResponse> getSupportCustomer(customer_id) async {
+  Future<SupportCustomerResponse> getSupportCustomer(
+    customer_id,
+    page,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'customer_id': customer_id};
+    final queryParameters = <String, dynamic>{
+      r'customer_id': customer_id,
+      r'page': page,
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(

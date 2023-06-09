@@ -23,19 +23,14 @@ import '../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../../bloc/add_service_voucher/add_service_bloc.dart';
-import '../../../bloc/chance_customer/chance_customer_bloc.dart';
 import '../../../bloc/clue/clue_bloc.dart';
-import '../../../bloc/clue_customer/clue_customer_bloc.dart';
 import '../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import '../../../bloc/contract/attack_bloc.dart';
 import '../../../bloc/contract/contract_bloc.dart';
-import '../../../bloc/contract_customer/contract_customer_bloc.dart';
 import '../../../bloc/detail_product_customer/detail_product_customer_bloc.dart';
 import '../../../bloc/job_contract/job_contract_bloc.dart';
-import '../../../bloc/job_customer/job_customer_bloc.dart';
 import '../../../bloc/support/support_bloc.dart';
 import '../../../bloc/support_contract_bloc/support_contract_bloc.dart';
-import '../../../bloc/support_customer/support_customer_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
 import '../../../bloc/work_clue/work_clue_bloc.dart';
 import '../../../models/model_data_add.dart';
@@ -452,21 +447,6 @@ class _FormAddDataState extends State<FormAddData> {
                       } else if (type == ADD_JOB_CONTRACT) {
                         JobContractBloc.of(context)
                             .add(InitGetJobContractEvent(int.parse(id)));
-                      } else if (type == ADD_CLUE_CUSTOMER) {
-                        ClueCustomerBloc.of(context)
-                            .add(InitGetClueCustomerEvent(int.parse(id)));
-                      } else if (type == ADD_CHANCE_CUSTOMER) {
-                        ChanceCustomerBloc.of(context)
-                            .add(InitGetChanceCustomerEvent(int.parse(id)));
-                      } else if (type == 13) {
-                        ContractCustomerBloc.of(context)
-                            .add(InitGetContractCustomerEvent(int.parse(id)));
-                      } else if (type == ADD_JOB_CUSTOMER) {
-                        JobCustomerBloc.of(context)
-                            .add(InitGetJobCustomerEvent(int.parse(id)));
-                      } else if (type == ADD_SUPPORT_CUSTOMER) {
-                        SupportCustomerBloc.of(context)
-                            .add(InitGetSupportCustomerEvent(int.parse(id)));
                       } else if (type == PRODUCT_TYPE) {
                         ProductModuleBloc.of(context)
                             .add(InitGetListProductModuleEvent());
@@ -613,6 +593,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                                             if (stateA
                                                                                 is UpdateGetContacBytCustomerState) {
                                                                               return InputDropdown(
+                                                                                  typeScreen: type,
                                                                                   dropdownItemList: stateA.listContactByCustomer,
                                                                                   data: state.listAddData[index].data![index1],
                                                                                   onSuccess: (data) {
@@ -625,6 +606,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                                               return Container();
                                                                             } else {
                                                                               return InputDropdown(
+                                                                                  typeScreen: type,
                                                                                   dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
                                                                                   data: state.listAddData[index].data![index1],
                                                                                   onSuccess: (data) {
@@ -657,8 +639,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                                                       if (result != null && result.isNotEmpty) {
                                                                                         data = result.first;
                                                                                         _bloc.customerNewStream.add(result);
-                                                                                      }
-                                                                                      else if (result == null) {
+                                                                                      } else if (result == null) {
                                                                                         data = '';
                                                                                         _bloc.customerNewStream.add([
                                                                                           'null',

@@ -41,9 +41,18 @@ class AppNavigator {
     bool isCheckIn = false,
     String typeCheckIn = TypeCheckIn.CHECK_IN,
     bool isResultData = false,
+    Function? onRefresh,
   }) async =>
-      await Get.toNamed(ROUTE_NAMES.FORM_ADD,
-          arguments: [title, type, id, isCheckIn, typeCheckIn, isResultData]);
+      await Get.toNamed(ROUTE_NAMES.FORM_ADD, arguments: [
+        title,
+        type,
+        id,
+        isCheckIn,
+        typeCheckIn,
+        isResultData
+      ])?.whenComplete(() {
+        if (onRefresh != null) onRefresh();
+      });
 
   static navigateFormAddCustomerGroup(
     String title,
@@ -107,9 +116,14 @@ class AppNavigator {
       await Get.toNamed(ROUTE_NAMES.CONTRACT, arguments: name);
 
   static navigateAddContract(
-          {String? id, String? customer_id, required String title}) async =>
+          {String? id,
+          String? customer_id,
+          required String title,
+          Function? onRefresh}) async =>
       await Get.toNamed(ROUTE_NAMES.ADD_CONTRACT,
-          arguments: [id, customer_id, title]);
+          arguments: [id, customer_id, title])?.whenComplete(() {
+        if (onRefresh != null) onRefresh();
+      });
 
   static navigateInfoContract(String id, String name) async =>
       await Get.toNamed(ROUTE_NAMES.INFO_CONTRACT, arguments: [id, name]);
@@ -154,14 +168,22 @@ class AppNavigator {
   static navigateBuyCourseScreen(arguments) async =>
       await Get.toNamed(ROUTE_NAMES.BUY_COURSE, arguments: arguments);
 
-  static navigateEditDataScreen(String id, int type) async =>
-      await Get.toNamed(ROUTE_NAMES.FORM_EDIT, arguments: [id, type]);
+  static navigateEditDataScreen(String id, int type,
+          {Function? onRefresh}) async =>
+      await Get.toNamed(ROUTE_NAMES.FORM_EDIT, arguments: [id, type])
+          ?.whenComplete(() {
+        if (onRefresh != null) onRefresh();
+      });
 
   static navigateEditContractScreen(String id) async =>
       await Get.toNamed(ROUTE_NAMES.EDIT_CONTRACT, arguments: id);
 
-  static navigateAddNoteScreen(String module, String id) async =>
-      await Get.toNamed(ROUTE_NAMES.ADD_NOTE, arguments: [module, id]);
+  static navigateAddNoteScreen(String module, String id,
+          {Function? onRefresh}) async =>
+      await Get.toNamed(ROUTE_NAMES.ADD_NOTE, arguments: [module, id])
+          ?.whenComplete(() {
+        if (onRefresh != null) onRefresh();
+      });
 
   static navigateNotification() async =>
       await Get.toNamed(ROUTE_NAMES.NOTIFICATION);

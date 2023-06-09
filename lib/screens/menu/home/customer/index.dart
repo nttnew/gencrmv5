@@ -1,9 +1,4 @@
 export 'customer_screen.dart';
 export 'add_customer.dart';
-export 'detailcustomer/workcustomer/work_customer.dart';
-export 'detailcustomer/chancecustomer/chance_customer.dart';
-export 'detailcustomer/cluecustomer/clue_customer.dart';
-export 'detailcustomer/contractcustomer/contract_customer.dart';
 export 'detailcustomer/detail_customer_screen.dart';
-export 'detailcustomer/generalcustomer/general_infor_customer.dart';
-export 'detailcustomer/supportcustomer/support_customer.dart';
+export 'detailcustomer/item/general_infor_customer.dart';

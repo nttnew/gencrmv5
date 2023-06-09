@@ -131,23 +131,33 @@ abstract class RestClient {
 
   @GET(BASE_URL.CLUE_CUSTOMER)
   Future<ClueCustomerResponse> getClueCustomer(
-      @Query('customer_id') int customer_id);
+    @Query('customer_id') int customer_id,
+    @Query('page') int page,
+  );
 
   @GET(BASE_URL.CHANCE_CUSTOMER)
   Future<ChanceCustomerResponse> getChanceCustomer(
-      @Query('customer_id') int customer_id);
+    @Query('customer_id') int customer_id,
+    @Query('page') int page,
+  );
 
   @GET(BASE_URL.CONTRACT_CUSTOMER)
   Future<ContractCustomerResponse> getContractCustomer(
-      @Query('customer_id') int customer_id);
+    @Query('customer_id') int customer_id,
+    @Query('page') int page,
+  );
 
   @GET(BASE_URL.JOB_CUSTOMER)
   Future<JobCustomerResponse> getJobCustomer(
-      @Query('customer_id') int customer_id);
+    @Query('customer_id') int customer_id,
+    @Query('page') int page,
+  );
 
   @GET(BASE_URL.SUPPORT_CUSTOMER)
   Future<SupportCustomerResponse> getSupportCustomer(
-      @Query('customer_id') int customer_id);
+    @Query('customer_id') int customer_id,
+    @Query('page') int page,
+  );
 
   @GET(BASE_URL.DETAIL_SUPPORT)
   Future<ListDetailChanceResponse> getDetailSupport(@Query('id') String id);

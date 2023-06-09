@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../bloc/detail_clue/detail_clue_bloc.dart';
+import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../src/models/model_generator/clue_detail.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/widget_line.dart';
@@ -18,6 +19,14 @@ class GeneralInfo extends StatefulWidget {
 
 class _GeneralInfoState extends State<GeneralInfo>
     with AutomaticKeepAliveClientMixin {
+  late final ListNoteBloc _bloc;
+  @override
+  void initState() {
+    _bloc =
+        ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -44,7 +53,11 @@ class _GeneralInfoState extends State<GeneralInfo>
             }
           }),
           AppValue.vSpaceTiny,
-          ListNote(module: Module.DAU_MOI, id: widget.id)
+          ListNote(
+            module: Module.DAU_MOI,
+            id: widget.id,
+            bloc: _bloc,
+          )
         ],
       ),
     );

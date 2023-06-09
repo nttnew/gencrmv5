@@ -2,22 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/detail_customer/detail_customer_bloc.dart';
+import 'package:gen_crm/screens/menu/home/customer/detailcustomer/item/work_card_widget.dart';
 import 'package:gen_crm/screens/menu/home/customer/index.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../../../bloc/chance_customer/chance_customer_bloc.dart';
-import '../../../../../bloc/clue_customer/clue_customer_bloc.dart';
-import '../../../../../bloc/contract_customer/contract_customer_bloc.dart';
-import '../../../../../bloc/job_customer/job_customer_bloc.dart';
-import '../../../../../bloc/support_customer/support_customer_bloc.dart';
+import '../../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../../src/app_const.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/appbar_base.dart';
+import '../../../../../widgets/listview_loadmore_base.dart';
 import '../../../../../widgets/loading_api.dart';
 import '../../../../../widgets/show_thao_tac.dart';
 import '../../../attachment/attachment.dart';
+import 'item/chance_card_widget.dart';
+import 'item/clue_card_widget.dart';
+import 'item/contract_card_widget.dart';
+import 'package:gen_crm/screens/menu/home/support/support_card_widget.dart';
 
 class DetailCustomerScreen extends StatefulWidget {
   const DetailCustomerScreen({Key? key}) : super(key: key);
@@ -34,42 +36,36 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
   int page = BASE_URL.PAGE_DEFAULT;
   bool drag = false;
   final List<ModuleThaoTac> list = [];
+  late final ListNoteBloc _blocNote;
+  late final DetailCustomerBloc _bloc;
 
   @override
   void deactivate() {
-    DetailCustomerBloc.of(context).add(ReloadCustomerEvent());
+    _bloc.add(ReloadCustomerEvent());
     super.deactivate();
   }
 
   @override
   void initState() {
+    _bloc = DetailCustomerBloc(
+        userRepository: DetailCustomerBloc.of(context).userRepository);
+    _bloc.initController(id);
+    _blocNote =
+        ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
     getThaoTac();
     _tabController = TabController(length: 6, vsync: this);
-    ContractCustomerBloc.of(context).id = int.parse(id);
-    DetailCustomerBloc.of(context)
-        .add(InitGetDetailCustomerEvent(int.parse(id)));
-    ClueCustomerBloc.of(context).add(InitGetClueCustomerEvent(int.parse(id)));
-    ChanceCustomerBloc.of(context)
-        .add(InitGetChanceCustomerEvent(int.parse(id)));
-    ContractCustomerBloc.of(context)
-        .add(InitGetContractCustomerEvent(int.parse(id)));
-    JobCustomerBloc.of(context).add(InitGetJobCustomerEvent(int.parse(id)));
-    SupportCustomerBloc.of(context)
-        .add(InitGetSupportCustomerEvent(int.parse(id)));
     super.initState();
   }
 
   getThaoTac() {
-    if (DetailCustomerBloc.of(context).sdt != null)
+    if (_bloc.sdt != null)
       list.add(
         ModuleThaoTac(
           title: "Gọi điện",
           icon: ICONS.IC_PHONE_CUSTOMER_SVG,
           onThaoTac: () {
             Get.back();
-            launchUrl(Uri(
-                scheme: "tel",
-                path: DetailCustomerBloc.of(context).sdt.toString()));
+            launchUrl(Uri(scheme: "tel", path: _bloc.sdt.toString()));
           },
         ),
       );
@@ -81,7 +77,9 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
         onThaoTac: () {
           Get.back();
           AppNavigator.navigateFormAdd('Thêm đầu mối', ADD_CLUE_CUSTOMER,
-              id: int.parse(id));
+              id: int.parse(id), onRefresh: () {
+            _bloc.controllerDM.reloadData();
+          });
         },
       ),
     );
@@ -92,7 +90,9 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateFormAdd('Thêm cơ hội', ADD_CHANCE_CUSTOMER,
-            id: int.parse(id));
+            id: int.parse(id), onRefresh: () {
+          _bloc.controllerCH.reloadData();
+        });
       },
     ));
 
@@ -101,7 +101,13 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       icon: ICONS.IC_ADD_CONTRACT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddContract(customer_id: id, title: 'hợp đồng');
+        AppNavigator.navigateAddContract(
+            customer_id: id,
+            title: 'hợp đồng',
+            onRefresh: () {
+              _bloc.controllerHD.reloadData();
+            });
+        ;
       },
     ));
 
@@ -111,7 +117,9 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateFormAdd('Thêm công việc', ADD_JOB_CUSTOMER,
-            id: int.parse(id));
+            id: int.parse(id), onRefresh: () {
+          _bloc.controllerCV.reloadData();
+        });
       },
     ));
 
@@ -121,7 +129,9 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateFormAdd('Thêm hỗ trợ', ADD_SUPPORT_CUSTOMER,
-            id: int.parse(id));
+            id: int.parse(id), onRefresh: () {
+          _bloc.controllerHT.reloadData();
+        });
       },
     ));
 
@@ -130,7 +140,10 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(Module.KHACH_HANG, id);
+        AppNavigator.navigateAddNoteScreen(Module.KHACH_HANG, id,
+            onRefresh: () {
+          _blocNote.add(RefreshEvent());
+        });
       },
     ));
 
@@ -152,7 +165,9 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditDataScreen(id, EDIT_CUSTOMER);
+        AppNavigator.navigateEditDataScreen(id, EDIT_CUSTOMER, onRefresh: () {
+          _bloc.add(InitGetDetailCustomerEvent(int.parse(id)));
+        });
       },
     ));
 
@@ -161,8 +176,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
-            onTap2: () => DetailCustomerBloc.of(context)
-                .add(DeleteCustomerEvent(int.parse(id))),
+            onTap2: () => _bloc.add(DeleteCustomerEvent(int.parse(id))),
             content: "Bạn chắc chắn muốn xóa không ?");
       },
     ));
@@ -243,12 +257,112 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                       controller: _tabController,
                       physics: BouncingScrollPhysics(),
                       children: <Widget>[
-                        TabInfoCustomer(id: id),
-                        ClueCustomer(id: id),
-                        ChanceCustomer(id: id),
-                        ContractCustomer(id: id),
-                        WorkCustomer(id: id),
-                        SupportCustomer(id: id),
+                        TabInfoCustomer(
+                          id: id,
+                          blocNote: _blocNote,
+                          bloc: _bloc,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25),
+                          child: ListViewLoadMoreBase(
+                            functionInit: (page, isInit) {
+                              return _bloc.getClueCustomer(
+                                  id: int.parse(id),
+                                  page: page,
+                                  isInit: isInit);
+                            },
+                            itemWidget: (int index, data) {
+                              return GestureDetector(
+                                onTap: () {
+                                  AppNavigator.navigateInfoClue(
+                                      data.id ?? '', data.name ?? '');
+                                },
+                                child: ClueCardWidget(data: data),
+                              );
+                            },
+                            controller: _bloc.controllerDM,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25),
+                          child: ListViewLoadMoreBase(
+                            functionInit: (page, isInit) {
+                              return _bloc.getChanceCustomer(
+                                  id: int.parse(id),
+                                  page: page,
+                                  isInit: isInit);
+                            },
+                            itemWidget: (int index, data) {
+                              return GestureDetector(
+                                onTap: () {
+                                  AppNavigator.navigateInfoChance(
+                                      data.id ?? '', data.name ?? '');
+                                },
+                                child: ChanceCardWidget(data: data),
+                              );
+                            },
+                            controller: _bloc.controllerCH,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25),
+                          child: ListViewLoadMoreBase(
+                            functionInit: (page, isInit) {
+                              return _bloc.getContractCustomer(
+                                  id: int.parse(id),
+                                  page: page,
+                                  isInit: isInit);
+                            },
+                            itemWidget: (int index, data) {
+                              return GestureDetector(
+                                onTap: () {
+                                  AppNavigator.navigateInfoContract(
+                                      data.id ?? '', data.name ?? '');
+                                },
+                                child: ConstractCardWidget(data: data),
+                              );
+                            },
+                            controller: _bloc.controllerHD,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25),
+                          child: ListViewLoadMoreBase(
+                            functionInit: (page, isInit) {
+                              return _bloc.getJobCustomer(id: int.parse(id));
+                            },
+                            itemWidget: (int index, data) {
+                              return GestureDetector(
+                                onTap: () {
+                                  AppNavigator.navigateDetailWork(
+                                      int.parse(data.id ?? '0'),
+                                      data.name ?? '');
+                                },
+                                child: WorkCardWidget(data: data),
+                              );
+                            },
+                            controller: _bloc.controllerCV,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25),
+                          child: ListViewLoadMoreBase(
+                            functionInit: (page, isInit) {
+                              return _bloc.getSupportCustomer(
+                                  id: int.parse(id));
+                            },
+                            itemWidget: (int index, data) {
+                              return GestureDetector(
+                                onTap: () {
+                                  AppNavigator.navigateDetailSupport(
+                                      data.id ?? '', data.name ?? '');
+                                },
+                                child: SupportCardWidget(data: data),
+                              );
+                            },
+                            controller: _bloc.controllerHT,
+                          ),
+                        ),
                       ],
                     ),
                   ),

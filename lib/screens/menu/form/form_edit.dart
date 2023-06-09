@@ -158,7 +158,6 @@ class _FormEditState extends State<FormEdit> {
                             .add(InitGetListOrderEvent());
                       Get.back();
                       Get.back();
-                      Get.back();
                     },
                   );
                 }
