@@ -348,87 +348,115 @@ class _FormAddSignState extends State<FormAddSign> {
                                                         .floor();
                                               },
                                             )
-                                          : dataFiled.field_type == "CHECK"
-                                              ? RenderCheckBox(
-                                                  onChange: (check) {
-                                                    addData[indexParent]
-                                                        .data[indexChild]
-                                                        .value = check ? 1 : 0;
-                                                  },
+                                          : dataFiled.field_type == "DATETIME"
+                                              ? WidgetInputDate(
+                                                  isDate: false,
                                                   data: dataFiled,
-                                                )
-                                              : dataFiled.field_type ==
-                                                      "PERCENTAGE"
-                                                  ? FieldInputPercent(
-                                                      data: dataFiled,
-                                                      onChanged: (text) {
-                                                        addData[indexParent]
+                                                  onSelect: (date) {
+                                                    addData[indexParent]
                                                             .data[indexChild]
-                                                            .value = text;
+                                                            .value =
+                                                        (date.millisecondsSinceEpoch /
+                                                                1000)
+                                                            .floor();
+                                                  },
+                                                  onInit: () {
+                                                    DateTime date =
+                                                        DateTime.now();
+                                                    addData[indexParent]
+                                                            .data[indexChild]
+                                                            .value =
+                                                        (date.millisecondsSinceEpoch /
+                                                                1000)
+                                                            .floor();
+                                                  },
+                                                )
+                                              : dataFiled.field_type == "CHECK"
+                                                  ? RenderCheckBox(
+                                                      onChange: (check) {
+                                                        addData[indexParent]
+                                                                .data[indexChild]
+                                                                .value =
+                                                            check ? 1 : 0;
                                                       },
+                                                      data: dataFiled,
                                                     )
                                                   : dataFiled.field_type ==
-                                                          "SWITCH"
-                                                      ? SwitchBase(
-                                                          isHide: soTien == 0 &&
-                                                              dataFiled
-                                                                      .field_name ==
-                                                                  'da_thu_tien',
-                                                          onChange: (check) {
-                                                            if (dataFiled
-                                                                    .field_name ==
-                                                                'da_thu_tien') {
-                                                              daThuTien = check;
-                                                            } else if (dataFiled
-                                                                    .field_name ==
-                                                                'hd_yeu_cau_xuat') {
-                                                              ycXuatHoaDon =
-                                                                  check;
-                                                            }
-                                                            setState(() {});
+                                                          "PERCENTAGE"
+                                                      ? FieldInputPercent(
+                                                          data: dataFiled,
+                                                          onChanged: (text) {
                                                             addData[indexParent]
                                                                 .data[
                                                                     indexChild]
-                                                                .value = check;
+                                                                .value = text;
                                                           },
-                                                          data: dataFiled,
                                                         )
                                                       : dataFiled.field_type ==
-                                                              "RATE"
-                                                          ? _rateWidget(
-                                                              dataFiled,
-                                                              indexParent,
-                                                              indexChild,
-                                                              value: int.parse(
+                                                              "SWITCH"
+                                                          ? SwitchBase(
+                                                              isHide: soTien ==
+                                                                      0 &&
                                                                   dataFiled
-                                                                          .field_set_value ??
-                                                                      '0'),
-                                                              noEdit: dataFiled
-                                                                          .field_set_value !=
-                                                                      null &&
-                                                                  dataFiled
-                                                                          .field_set_value !=
-                                                                      "0",
+                                                                          .field_name ==
+                                                                      'da_thu_tien',
+                                                              onChange:
+                                                                  (check) {
+                                                                if (dataFiled
+                                                                        .field_name ==
+                                                                    'da_thu_tien') {
+                                                                  daThuTien =
+                                                                      check;
+                                                                } else if (dataFiled
+                                                                        .field_name ==
+                                                                    'hd_yeu_cau_xuat') {
+                                                                  ycXuatHoaDon =
+                                                                      check;
+                                                                }
+                                                                setState(() {});
+                                                                addData[indexParent]
+                                                                    .data[
+                                                                        indexChild]
+                                                                    .value = check;
+                                                              },
+                                                              data: dataFiled,
                                                             )
                                                           : dataFiled.field_type ==
-                                                                  "TEXTAREA"
-                                                              ? _fieldInputTextarea(
+                                                                  "RATE"
+                                                              ? _rateWidget(
                                                                   dataFiled,
                                                                   indexParent,
                                                                   indexChild,
-                                                                  noEdit: dataFiled.field_name == 'kh_danh_gia_nd'
-                                                                      ? (((dataFiled.field_set_value ?? '') != '') ||
-                                                                          editStar)
-                                                                      : false,
-                                                                  value: dataFiled.field_set_value ??
-                                                                      '')
-                                                              : _fieldInputCustomer(
-                                                                  dataFiled,
-                                                                  indexParent,
-                                                                  indexChild,
-                                                                  value: dataFiled.field_name == 'hd_sotien'
-                                                                      ? soTien.toInt().toString()
-                                                                      : '')
+                                                                  value: int.parse(
+                                                                      dataFiled
+                                                                              .field_set_value ??
+                                                                          '0'),
+                                                                  noEdit: dataFiled
+                                                                              .field_set_value !=
+                                                                          null &&
+                                                                      dataFiled
+                                                                              .field_set_value !=
+                                                                          "0",
+                                                                )
+                                                              : dataFiled.field_type ==
+                                                                      "TEXTAREA"
+                                                                  ? _fieldInputTextarea(
+                                                                      dataFiled,
+                                                                      indexParent,
+                                                                      indexChild,
+                                                                      noEdit: dataFiled.field_name == 'kh_danh_gia_nd'
+                                                                          ? (((dataFiled.field_set_value ?? '') != '') ||
+                                                                              editStar)
+                                                                          : false,
+                                                                      value: dataFiled.field_set_value ??
+                                                                          '')
+                                                                  : _fieldInputCustomer(
+                                                                      dataFiled,
+                                                                      indexParent,
+                                                                      indexChild,
+                                                                      value: dataFiled.field_name == 'hd_sotien'
+                                                                          ? soTien.toInt().toString()
+                                                                          : '')
                   : SizedBox()
               : SizedBox();
         });
