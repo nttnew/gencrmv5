@@ -17,8 +17,9 @@ class WidgetInputDate extends StatefulWidget {
   }) : super(key: key);
 
   final CustomerIndividualItemData data;
-  final Function onSelect, onInit;
-  final String? dateText;
+  final Function onSelect;
+  final Function(int date) onInit;
+  final dynamic dateText;
   final bool isDate;
 
   @override
@@ -30,14 +31,15 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
 
   @override
   void initState() {
-    widget.onInit();
-    if (widget.dateText != null && widget.dateText != '') {
+    if (widget.dateText != null &&
+        widget.dateText != '' &&
+        widget.dateText != 0) {
       setState(() {
         dateText = widget.isDate
-            ? AppValue.formatDate(widget.dateText.toString())
-            : dateText =
-                AppValue.formatStringDateTime(widget.dateText.toString());
+            ? AppValue.formatIntDate(int.parse(widget.dateText))
+            : AppValue.formatIntDateTime(int.parse(widget.dateText));
       });
+      widget.onInit(int.parse(widget.dateText));
     }
     super.initState();
   }

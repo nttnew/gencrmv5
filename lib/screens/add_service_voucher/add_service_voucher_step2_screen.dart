@@ -298,11 +298,8 @@ class _AddServiceVoucherStepTwoScreenState
                                                                                 onSelect: (DateTime date) {
                                                                                   addData[indexParent].data[indexChild].value = date.millisecond;
                                                                                 },
-                                                                                onInit: () {
-                                                                                  if (fieldData.field_set_value != null && fieldData.field_set_value != '') {
-                                                                                    final date = DateTime.parse(fieldData.field_set_value).millisecond;
-                                                                                    addData[indexParent].data[indexChild].value = date;
-                                                                                  }
+                                                                                onInit: (v) {
+                                                                                  addData[indexParent].data[indexChild].value = v;
                                                                                 },
                                                                               )
                                                                             : fieldData.field_type == "DATETIME"
@@ -313,11 +310,8 @@ class _AddServiceVoucherStepTwoScreenState
                                                                                     onSelect: (DateTime date) {
                                                                                       addData[indexParent].data[indexChild].value = date.millisecond;
                                                                                     },
-                                                                                    onInit: () {
-                                                                                      if (fieldData.field_set_value != null && fieldData.field_set_value != '') {
-                                                                                        final date = DateTime.parse(fieldData.field_set_value).millisecond;
-                                                                                        addData[indexParent].data[indexChild].value = date;
-                                                                                      }
+                                                                                    onInit: (v) {
+                                                                                      addData[indexParent].data[indexChild].value = v;
                                                                                     },
                                                                                   )
                                                                                 : fieldType == "PERCENTAGE"

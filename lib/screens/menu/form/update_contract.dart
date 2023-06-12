@@ -413,16 +413,10 @@ class _EditContractState extends State<EditContract> {
                                               .data[indexChild]
                                               .value = date.millisecond;
                                         },
-                                        onInit: () {
-                                          if (data.field_set_value != null &&
-                                              data.field_set_value != '') {
-                                            final date = DateTime.parse(
-                                                    data.field_set_value)
-                                                .millisecond;
-                                            addData[indexParent]
-                                                .data[indexChild]
-                                                .value = date;
-                                          }
+                                        onInit: (v) {
+                                          addData[indexParent]
+                                              .data[indexChild]
+                                              .value = v;
                                         },
                                       )
                                     : data.field_type == "DATETIME"
@@ -435,17 +429,10 @@ class _EditContractState extends State<EditContract> {
                                                   .data[indexChild]
                                                   .value = date.millisecond;
                                             },
-                                            onInit: () {
-                                              if (data.field_set_value !=
-                                                      null &&
-                                                  data.field_set_value != '') {
-                                                final date = DateTime.parse(
-                                                        data.field_set_value)
-                                                    .millisecond;
-                                                addData[indexParent]
-                                                    .data[indexChild]
-                                                    .value = date;
-                                              }
+                                            onInit: (v) {
+                                              addData[indexParent]
+                                                  .data[indexChild]
+                                                  .value = v;
                                             },
                                           )
                                         : data.field_special == 'autosum'

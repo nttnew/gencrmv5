@@ -337,19 +337,10 @@ class _FormAddSignState extends State<FormAddSign> {
                                                     .data[indexChild]
                                                     .value = date.millisecond;
                                               },
-                                              onInit: () {
-                                                if (dataFiled.field_set_value !=
-                                                        null &&
-                                                    dataFiled.field_set_value !=
-                                                        '') {
-                                                  final date = DateTime.parse(
-                                                          dataFiled
-                                                              .field_set_value)
-                                                      .millisecond;
-                                                  addData[indexParent]
-                                                      .data[indexChild]
-                                                      .value = date;
-                                                }
+                                              onInit: (v) {
+                                                addData[indexParent]
+                                                    .data[indexChild]
+                                                    .value = v;
                                               },
                                             )
                                           : dataFiled.field_type == "DATETIME"
@@ -364,21 +355,10 @@ class _FormAddSignState extends State<FormAddSign> {
                                                             .value =
                                                         date.millisecond;
                                                   },
-                                                  onInit: () {
-                                                    if (dataFiled
-                                                                .field_set_value !=
-                                                            null &&
-                                                        dataFiled
-                                                                .field_set_value !=
-                                                            '') {
-                                                      final date = DateTime
-                                                              .parse(dataFiled
-                                                                  .field_set_value)
-                                                          .millisecond;
-                                                      addData[indexParent]
-                                                          .data[indexChild]
-                                                          .value = date;
-                                                    }
+                                                  onInit: (v) {
+                                                    addData[indexParent]
+                                                        .data[indexChild]
+                                                        .value = v;
                                                   },
                                                 )
                                               : dataFiled.field_type == "CHECK"
