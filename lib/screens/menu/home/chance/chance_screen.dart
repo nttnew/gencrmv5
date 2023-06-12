@@ -13,7 +13,7 @@ import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_node_model.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
-import 'widget_chance_item.dart';
+import 'widget/widget_chance_item.dart';
 
 class ChanceScreen extends StatefulWidget {
   const ChanceScreen({Key? key}) : super(key: key);

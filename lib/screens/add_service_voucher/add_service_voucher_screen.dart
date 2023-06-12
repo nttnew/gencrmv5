@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gen_crm/screens/menu/home/contract/widget_total_sum.dart';
+import 'package:gen_crm/screens/menu/home/contract/widget/widget_total_sum.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:gen_crm/widgets/widgets.dart';

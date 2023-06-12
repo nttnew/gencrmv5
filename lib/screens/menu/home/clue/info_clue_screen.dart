@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/bloc/detail_clue/detail_clue_bloc.dart';
-import 'package:gen_crm/screens/menu/home/clue/general_info.dart';
-import 'package:gen_crm/screens/menu/home/clue/work_card_widget.dart';
+import 'package:gen_crm/screens/menu/home/clue/widget/general_info.dart';
+import 'package:gen_crm/screens/menu/home/clue/widget/work_card_widget.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/clue/clue_bloc.dart';

@@ -19,8 +19,8 @@ import '../../widgets/appbar_base.dart';
 import '../../widgets/multiple_widget.dart';
 import '../../widgets/widget_field_input_percent.dart';
 import '../../widgets/widget_text.dart';
-import '../menu/home/contract/product_contract.dart';
-import '../menu/home/customer/input_dropDown.dart';
+import '../menu/home/contract/widget/product_contract.dart';
+import '../menu/home/customer/widget/input_dropDown.dart';
 
 class AddServiceVoucherStepTwoScreen extends StatefulWidget {
   const AddServiceVoucherStepTwoScreen({Key? key}) : super(key: key);
