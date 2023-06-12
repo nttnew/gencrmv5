@@ -295,8 +295,8 @@ class _AddServiceVoucherStepTwoScreenState
                                                                             ? WidgetInputDate(
                                                                                 data: fieldData,
                                                                                 dateText: fieldData.field_set_value,
-                                                                                onSelect: (DateTime date) {
-                                                                                  addData[indexParent].data[indexChild].value = date.millisecond;
+                                                                                onSelect: (int date) {
+                                                                                  addData[indexParent].data[indexChild].value = date;
                                                                                 },
                                                                                 onInit: (v) {
                                                                                   addData[indexParent].data[indexChild].value = v;
@@ -307,8 +307,8 @@ class _AddServiceVoucherStepTwoScreenState
                                                                                     isDate: false,
                                                                                     data: fieldData,
                                                                                     dateText: fieldData.field_set_value,
-                                                                                    onSelect: (DateTime date) {
-                                                                                      addData[indexParent].data[indexChild].value = date.millisecond;
+                                                                                    onSelect: (int date) {
+                                                                                      addData[indexParent].data[indexChild].value = date;
                                                                                     },
                                                                                     onInit: (v) {
                                                                                       addData[indexParent].data[indexChild].value = v;

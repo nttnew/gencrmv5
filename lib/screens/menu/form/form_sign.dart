@@ -332,10 +332,10 @@ class _FormAddSignState extends State<FormAddSign> {
                                               data: dataFiled,
                                               dateText:
                                                   dataFiled.field_set_value,
-                                              onSelect: (DateTime date) {
+                                              onSelect: (int date) {
                                                 addData[indexParent]
                                                     .data[indexChild]
-                                                    .value = date.millisecond;
+                                                    .value = date;
                                               },
                                               onInit: (v) {
                                                 addData[indexParent]
@@ -349,11 +349,11 @@ class _FormAddSignState extends State<FormAddSign> {
                                                   data: dataFiled,
                                                   dateText:
                                                       dataFiled.field_set_value,
-                                                  onSelect: (DateTime date) {
+                                                  onSelect: (int date) {
                                                     addData[indexParent]
                                                             .data[indexChild]
                                                             .value =
-                                                        date.millisecond;
+                                                        date;
                                                   },
                                                   onInit: (v) {
                                                     addData[indexParent]

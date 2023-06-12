@@ -95,11 +95,11 @@ class AppValue {
   static String formatDate(String dateString) =>
       DATE_FORMAT.format(DateTime.parse(dateString));
 
-  static String formatIntDateTime(int dateString) =>
-      DATE_TIME_FORMAT.format(DateTime.fromMillisecondsSinceEpoch(dateString));
+  static String formatIntDateTime(int dateString) => DATE_TIME_FORMAT
+      .format(DateTime.fromMillisecondsSinceEpoch(dateString * 1000));
 
-  static String formatIntDate(int dateString) =>
-      DATE_FORMAT.format(DateTime.fromMillisecondsSinceEpoch(dateString));
+  static String formatIntDate(int dateString) => DATE_FORMAT
+      .format(DateTime.fromMillisecondsSinceEpoch(dateString * 1000));
 
   static String formatShortDate(String dateString) =>
       SHORT_DATE_FORMAT.format(DateTime.parse(dateString));

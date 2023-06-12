@@ -463,10 +463,10 @@ class _FormEditState extends State<FormEdit> {
                                 ? WidgetInputDate(
                                     data: data,
                                     dateText: data.field_set_value,
-                                    onSelect: (DateTime date) {
+                                    onSelect: (int date) {
                                       addData[indexParent]
                                           .data[indexChild]
-                                          .value = date.millisecond;
+                                          .value = date;
                                     },
     onInit: (v) {
     addData[indexParent].data[indexChild].value=v;
@@ -478,10 +478,10 @@ class _FormEditState extends State<FormEdit> {
                                         isDate: false,
                                         data: data,
                                         dateText: data.field_set_value,
-                                        onSelect: (DateTime date) {
+                                        onSelect: (int date) {
                                           addData[indexParent]
                                               .data[indexChild]
-                                              .value = date.millisecond;
+                                              .value = date;
                                         },
       onInit: (v) {
         addData[indexParent].data[indexChild].value=v;

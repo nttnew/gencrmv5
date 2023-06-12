@@ -929,28 +929,32 @@ class _FormAddDataState extends State<FormAddData> {
                                 ? WidgetInputDate(
                                     data: data,
                                     dateText: data.field_set_value,
-                                    onSelect: (DateTime date) {
+                                    onSelect: (int date) {
                                       addData[indexParent]
                                           .data[indexChild]
-                                          .value = date.millisecond;
+                                          .value = date;
                                     },
-      onInit: (v) {
-        addData[indexParent].data[indexChild].value=v;
-      },
+                                    onInit: (v) {
+                                      addData[indexParent]
+                                          .data[indexChild]
+                                          .value = v;
+                                    },
                                   )
                                 : data.field_type == "DATETIME"
                                     ? WidgetInputDate(
                                         isDate: false,
                                         data: data,
                                         dateText: data.field_set_value,
-                                        onSelect: (DateTime date) {
+                                        onSelect: (int date) {
                                           addData[indexParent]
                                               .data[indexChild]
-                                              .value = date.millisecond;
+                                              .value = date;
                                         },
-      onInit: (v) {
-        addData[indexParent].data[indexChild].value=v;
-      },
+                                        onInit: (v) {
+                                          addData[indexParent]
+                                              .data[indexChild]
+                                              .value = v;
+                                        },
                                       )
                                     : data.field_type == "CHECK"
                                         ? renderCheckBox(

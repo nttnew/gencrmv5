@@ -408,10 +408,10 @@ class _EditContractState extends State<EditContract> {
                                     ? WidgetInputDate(
                                         data: data,
                                         dateText: data.field_set_value,
-                                        onSelect: (DateTime date) {
+                                        onSelect: (int date) {
                                           addData[indexParent]
                                               .data[indexChild]
-                                              .value = date.millisecond;
+                                              .value = date;
                                         },
                                         onInit: (v) {
                                           addData[indexParent]
@@ -424,10 +424,10 @@ class _EditContractState extends State<EditContract> {
                                             isDate: false,
                                             data: data,
                                             dateText: data.field_set_value,
-                                            onSelect: (DateTime date) {
+                                            onSelect: (int date) {
                                               addData[indexParent]
                                                   .data[indexChild]
-                                                  .value = date.millisecond;
+                                                  .value = date;
                                             },
                                             onInit: (v) {
                                               addData[indexParent]
