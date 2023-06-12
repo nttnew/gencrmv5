@@ -26,14 +26,17 @@ class WidgetInputDate extends StatefulWidget {
 }
 
 class _WidgetInputDateState extends State<WidgetInputDate> {
-  String dateText = AppValue.formatDate(DateTime.now().toString());
+  String dateText = '';
 
   @override
   void initState() {
     widget.onInit();
-    if (widget.dateText != null) {
+    if (widget.dateText != null && widget.dateText != '') {
       setState(() {
-        dateText = widget.dateText!;
+        dateText = widget.isDate
+            ? AppValue.formatDate(widget.dateText.toString())
+            : dateText =
+                AppValue.formatStringDateTime(widget.dateText.toString());
       });
     }
     super.initState();
@@ -91,7 +94,8 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
                       showTitleActions: true,
                       onConfirm: (date) {
                         setState(() {
-                          dateText = AppValue.formatDate(date.toString());
+                          dateText =
+                              AppValue.formatStringDateTime(date.toString());
                         });
                         widget.onSelect(date);
                       },

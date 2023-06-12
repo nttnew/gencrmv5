@@ -291,27 +291,33 @@ class _AddServiceVoucherStepTwoScreenState
                                                                             onSelect: (data) {
                                                                               addData[indexParent].data[indexChild].value = data.join(",");
                                                                             })
-                                                                        : fieldType == "DATE"
+                                                                        : fieldData.field_type == "DATE"
                                                                             ? WidgetInputDate(
                                                                                 data: fieldData,
-                                                                                onSelect: (date) {
-                                                                                  addData[indexParent].data[indexChild].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                                dateText: fieldData.field_set_value,
+                                                                                onSelect: (DateTime date) {
+                                                                                  addData[indexParent].data[indexChild].value = date.millisecond;
                                                                                 },
                                                                                 onInit: () {
-                                                                                  DateTime date = DateTime.now();
-                                                                                  addData[indexParent].data[indexChild].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                                  if (fieldData.field_set_value != null && fieldData.field_set_value != '') {
+                                                                                    final date = DateTime.parse(fieldData.field_set_value).millisecond;
+                                                                                    addData[indexParent].data[indexChild].value = date;
+                                                                                  }
                                                                                 },
                                                                               )
-                                                                            : fieldType == "DATETIME"
+                                                                            : fieldData.field_type == "DATETIME"
                                                                                 ? WidgetInputDate(
                                                                                     isDate: false,
                                                                                     data: fieldData,
-                                                                                    onSelect: (date) {
-                                                                                      addData[indexParent].data[indexChild].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                                    dateText: fieldData.field_set_value,
+                                                                                    onSelect: (DateTime date) {
+                                                                                      addData[indexParent].data[indexChild].value = date.millisecond;
                                                                                     },
                                                                                     onInit: () {
-                                                                                      DateTime date = DateTime.now();
-                                                                                      addData[indexParent].data[indexChild].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                                      if (fieldData.field_set_value != null && fieldData.field_set_value != '') {
+                                                                                        final date = DateTime.parse(fieldData.field_set_value).millisecond;
+                                                                                        addData[indexParent].data[indexChild].value = date;
+                                                                                      }
                                                                                     },
                                                                                   )
                                                                                 : fieldType == "PERCENTAGE"

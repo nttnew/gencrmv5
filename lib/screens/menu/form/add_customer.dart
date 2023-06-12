@@ -196,36 +196,43 @@ class _AddCustomerState extends State<AddCustomer> {
                         : data.field_type == "DATE"
                             ? WidgetInputDate(
                                 data: data,
-                                onSelect: (date) {
+                                dateText: data.field_set_value,
+                                onSelect: (DateTime date) {
                                   addData[indexParent].data[indexChild].value =
-                                      (date.millisecondsSinceEpoch / 1000)
-                                          .floor();
+                                      date.millisecond;
                                 },
                                 onInit: () {
-                                  DateTime date = DateTime.now();
-                                  addData[indexParent].data[indexChild].value =
-                                      (date.millisecondsSinceEpoch / 1000)
-                                          .floor();
+                                  if (data.field_set_value != null &&
+                                      data.field_set_value != '') {
+                                    final date =
+                                        DateTime.parse(data.field_set_value)
+                                            .millisecond;
+                                    addData[indexParent]
+                                        .data[indexChild]
+                                        .value = date;
+                                  }
                                 },
                               )
                             : data.field_type == "DATETIME"
                                 ? WidgetInputDate(
                                     isDate: false,
                                     data: data,
-                                    onSelect: (date) {
+                                    dateText: data.field_set_value,
+                                    onSelect: (DateTime date) {
                                       addData[indexParent]
-                                              .data[indexChild]
-                                              .value =
-                                          (date.millisecondsSinceEpoch / 1000)
-                                              .floor();
+                                          .data[indexChild]
+                                          .value = date.millisecond;
                                     },
                                     onInit: () {
-                                      DateTime date = DateTime.now();
-                                      addData[indexParent]
-                                              .data[indexChild]
-                                              .value =
-                                          (date.millisecondsSinceEpoch / 1000)
-                                              .floor();
+                                      if (data.field_set_value != null &&
+                                          data.field_set_value != '') {
+                                        final date =
+                                            DateTime.parse(data.field_set_value)
+                                                .millisecond;
+                                        addData[indexParent]
+                                            .data[indexChild]
+                                            .value = date;
+                                      }
                                     },
                                   )
                                 : data.field_type == "PERCENTAGE"

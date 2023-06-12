@@ -407,36 +407,21 @@ class _EditContractState extends State<EditContract> {
                                 : data.field_type == "DATE"
                                     ? WidgetInputDate(
                                         data: data,
-                                        onSelect: (date) {
+                                        dateText: data.field_set_value,
+                                        onSelect: (DateTime date) {
                                           addData[indexParent]
-                                                  .data[indexChild]
-                                                  .value =
-                                              (date.microsecondsSinceEpoch /
-                                                      1000000)
-                                                  .floor();
+                                              .data[indexChild]
+                                              .value = date.millisecond;
                                         },
-                                        dateText: (data.field_set_value != "" &&
-                                                data.field_set_value != null)
-                                            ? AppValue.formatDate(DateTime
-                                                    .fromMillisecondsSinceEpoch(
-                                                        data.field_set_value *
-                                                            1000)
-                                                .toString())
-                                            : "",
                                         onInit: () {
-                                          if (data.field_set_value != "" &&
-                                              data.field_set_value != null) {
+                                          if (data.field_set_value != null &&
+                                              data.field_set_value != '') {
+                                            final date = DateTime.parse(
+                                                    data.field_set_value)
+                                                .millisecond;
                                             addData[indexParent]
                                                 .data[indexChild]
-                                                .value = data.field_set_value;
-                                          } else {
-                                            DateTime date = DateTime.now();
-                                            addData[indexParent]
-                                                    .data[indexChild]
-                                                    .value =
-                                                (date.microsecondsSinceEpoch /
-                                                        1000000)
-                                                    .floor();
+                                                .value = date;
                                           }
                                         },
                                       )
@@ -444,40 +429,22 @@ class _EditContractState extends State<EditContract> {
                                         ? WidgetInputDate(
                                             isDate: false,
                                             data: data,
-                                            onSelect: (date) {
+                                            dateText: data.field_set_value,
+                                            onSelect: (DateTime date) {
                                               addData[indexParent]
-                                                      .data[indexChild]
-                                                      .value =
-                                                  (date.microsecondsSinceEpoch /
-                                                          1000000)
-                                                      .floor();
+                                                  .data[indexChild]
+                                                  .value = date.millisecond;
                                             },
-                                            dateText: (data.field_set_value !=
-                                                        "" &&
-                                                    data.field_set_value !=
-                                                        null)
-                                                ? AppValue.formatDate(DateTime
-                                                        .fromMillisecondsSinceEpoch(
-                                                            data.field_set_value *
-                                                                1000)
-                                                    .toString())
-                                                : "",
                                             onInit: () {
-                                              if (data.field_set_value != "" &&
-                                                  data.field_set_value !=
-                                                      null) {
+                                              if (data.field_set_value !=
+                                                      null &&
+                                                  data.field_set_value != '') {
+                                                final date = DateTime.parse(
+                                                        data.field_set_value)
+                                                    .millisecond;
                                                 addData[indexParent]
-                                                        .data[indexChild]
-                                                        .value =
-                                                    data.field_set_value;
-                                              } else {
-                                                DateTime date = DateTime.now();
-                                                addData[indexParent]
-                                                        .data[indexChild]
-                                                        .value =
-                                                    (date.microsecondsSinceEpoch /
-                                                            1000000)
-                                                        .floor();
+                                                    .data[indexChild]
+                                                    .value = date;
                                               }
                                             },
                                           )

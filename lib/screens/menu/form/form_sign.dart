@@ -330,45 +330,55 @@ class _FormAddSignState extends State<FormAddSign> {
                                       : dataFiled.field_type == "DATE"
                                           ? WidgetInputDate(
                                               data: dataFiled,
-                                              onSelect: (date) {
+                                              dateText:
+                                                  dataFiled.field_set_value,
+                                              onSelect: (DateTime date) {
                                                 addData[indexParent]
-                                                        .data[indexChild]
-                                                        .value =
-                                                    (date.millisecondsSinceEpoch /
-                                                            1000)
-                                                        .floor();
+                                                    .data[indexChild]
+                                                    .value = date.millisecond;
                                               },
                                               onInit: () {
-                                                DateTime date = DateTime.now();
-                                                addData[indexParent]
-                                                        .data[indexChild]
-                                                        .value =
-                                                    (date.millisecondsSinceEpoch /
-                                                            1000)
-                                                        .floor();
+                                                if (dataFiled.field_set_value !=
+                                                        null &&
+                                                    dataFiled.field_set_value !=
+                                                        '') {
+                                                  final date = DateTime.parse(
+                                                          dataFiled
+                                                              .field_set_value)
+                                                      .millisecond;
+                                                  addData[indexParent]
+                                                      .data[indexChild]
+                                                      .value = date;
+                                                }
                                               },
                                             )
                                           : dataFiled.field_type == "DATETIME"
                                               ? WidgetInputDate(
                                                   isDate: false,
                                                   data: dataFiled,
-                                                  onSelect: (date) {
+                                                  dateText:
+                                                      dataFiled.field_set_value,
+                                                  onSelect: (DateTime date) {
                                                     addData[indexParent]
                                                             .data[indexChild]
                                                             .value =
-                                                        (date.millisecondsSinceEpoch /
-                                                                1000)
-                                                            .floor();
+                                                        date.millisecond;
                                                   },
                                                   onInit: () {
-                                                    DateTime date =
-                                                        DateTime.now();
-                                                    addData[indexParent]
-                                                            .data[indexChild]
-                                                            .value =
-                                                        (date.millisecondsSinceEpoch /
-                                                                1000)
-                                                            .floor();
+                                                    if (dataFiled
+                                                                .field_set_value !=
+                                                            null &&
+                                                        dataFiled
+                                                                .field_set_value !=
+                                                            '') {
+                                                      final date = DateTime
+                                                              .parse(dataFiled
+                                                                  .field_set_value)
+                                                          .millisecond;
+                                                      addData[indexParent]
+                                                          .data[indexChild]
+                                                          .value = date;
+                                                    }
                                                   },
                                                 )
                                               : dataFiled.field_type == "CHECK"
