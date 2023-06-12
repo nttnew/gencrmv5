@@ -13,11 +13,13 @@ class WidgetInputDate extends StatefulWidget {
     required this.onSelect,
     required this.onInit,
     this.dateText,
+    this.isDate = true,
   }) : super(key: key);
 
   final CustomerIndividualItemData data;
   final Function onSelect, onInit;
   final String? dateText;
+  final bool isDate;
 
   @override
   State<WidgetInputDate> createState() => _WidgetInputDateState();
@@ -71,14 +73,32 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
           ),
           GestureDetector(
             onTap: () {
-              DatePicker.showDatePicker(context, showTitleActions: true,
-                  // minTime: DateTime.now(),
-                  onConfirm: (date) {
-                setState(() {
-                  dateText = AppValue.formatDate(date.toString());
-                });
-                widget.onSelect(date);
-              }, currentTime: DateTime.now(), locale: LocaleType.vi);
+              widget.isDate
+                  ? DatePicker.showDatePicker(
+                      context,
+                      showTitleActions: true,
+                      onConfirm: (date) {
+                        setState(() {
+                          dateText = AppValue.formatDate(date.toString());
+                        });
+                        widget.onSelect(date);
+                      },
+                      currentTime: DateTime.now(),
+                      locale: LocaleType.vi,
+                    )
+                  : DatePicker.showDateTimePicker(
+                      context,
+                      showTitleActions: true,
+                      onConfirm: (date) {
+                        setState(() {
+                          dateText = AppValue.formatDate(date.toString());
+                        });
+                        widget.onSelect(date);
+                      },
+                      currentTime: DateTime.now(),
+                      locale: LocaleType.vi,
+                    );
+              ;
             },
             child: Container(
               // width: Get.width,
