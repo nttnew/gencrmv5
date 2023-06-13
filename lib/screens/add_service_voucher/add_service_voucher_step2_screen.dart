@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/add_service_voucher/add_service_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
@@ -20,8 +19,8 @@ import '../../widgets/appbar_base.dart';
 import '../../widgets/multiple_widget.dart';
 import '../../widgets/widget_field_input_percent.dart';
 import '../../widgets/widget_text.dart';
-import '../menu/home/contract/product_contract.dart';
-import '../menu/home/customer/input_dropDown.dart';
+import '../menu/home/contract/widget/product_contract.dart';
+import '../menu/home/customer/widget/input_dropDown.dart';
 
 class AddServiceVoucherStepTwoScreen extends StatefulWidget {
   const AddServiceVoucherStepTwoScreen({Key? key}) : super(key: key);
@@ -158,10 +157,10 @@ class _AddServiceVoucherStepTwoScreenState
                           children: [
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children:
-                                  List.generate(listAddData.length, (index) {
+                              children: List.generate(listAddData.length,
+                                  (indexParent) {
                                 final title =
-                                    listAddData[index].group_name ?? '';
+                                    listAddData[indexParent].group_name ?? '';
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -178,27 +177,31 @@ class _AddServiceVoucherStepTwoScreenState
                                     ),
                                     Column(
                                       children: List.generate(
-                                          listAddData[index].data!.length,
-                                          (index1) {
-                                        final isHidden = listAddData[index]
-                                                .data?[index1]
-                                                .field_hidden !=
-                                            "1";
+                                          listAddData[indexParent].data!.length,
+                                          (indexChild) {
+                                        final isHidden =
+                                            listAddData[indexParent]
+                                                    .data?[indexChild]
+                                                    .field_hidden !=
+                                                "1";
                                         final isURL = (state
-                                                    .listAddData[index]
-                                                    .data?[index1]
+                                                    .listAddData[indexParent]
+                                                    .data?[indexChild]
                                                     .field_special ??
                                                 '') ==
                                             "url";
-                                        final fieldName = listAddData[index]
-                                                .data?[index1]
-                                                .field_name ??
-                                            '';
-                                        final fieldType = listAddData[index]
-                                            .data?[index1]
-                                            .field_type;
+                                        final fieldName =
+                                            listAddData[indexParent]
+                                                    .data?[indexChild]
+                                                    .field_name ??
+                                                '';
+                                        final fieldType =
+                                            listAddData[indexParent]
+                                                .data?[indexChild]
+                                                .field_type;
                                         final fieldData =
-                                            listAddData[index].data![index1];
+                                            listAddData[indexParent]
+                                                .data![indexChild];
 
                                         return isHidden
                                             ? isURL
@@ -213,13 +216,14 @@ class _AddServiceVoucherStepTwoScreenState
                                                 : fieldName == 'chi_tiet_xe'
                                                     ? TypeCarBase(
                                                         fieldData,
-                                                        index,
-                                                        index1,
+                                                        indexParent,
+                                                        indexChild,
                                                         context,
                                                         _bloc, (v) {
                                                         _bloc
-                                                            .addData[index]
-                                                            .data[index1]
+                                                            .addData[
+                                                                indexParent]
+                                                            .data[indexChild]
                                                             .value = v;
                                                       })
                                                     : fieldName == 'col131' &&
@@ -227,29 +231,30 @@ class _AddServiceVoucherStepTwoScreenState
                                                                 []
                                                         ? fieldInputCustomer(
                                                             data: fieldData,
-                                                            index: index,
-                                                            index1: index1)
+                                                            indexParent:
+                                                                indexParent,
+                                                            indexChild:
+                                                                indexChild)
                                                         : fieldType == "SELECT"
                                                             ? InputDropdown(
                                                                 onUpdate:
                                                                     (data) {
-                                                                  addData[index]
+                                                                  addData[indexParent]
                                                                       .data[
-                                                                          index1]
+                                                                          indexChild]
                                                                       .value = data;
                                                                 },
                                                                 isUpdate: _bloc.getTextInit(name: fieldName, list: fieldData.field_datasource) != null &&
                                                                     fieldName !=
                                                                         'hdsan_pham_kh',
-                                                                dropdownItemList:
-                                                                    fieldData.field_datasource ??
-                                                                        [],
+                                                                dropdownItemList: fieldData.field_datasource ??
+                                                                    [],
                                                                 data: fieldData,
                                                                 onSuccess:
                                                                     (data) {
-                                                                  addData[index]
+                                                                  addData[indexParent]
                                                                       .data[
-                                                                          index1]
+                                                                          indexChild]
                                                                       .value = data;
                                                                   if (fieldName ==
                                                                       'hdsan_pham_kh') {
@@ -274,8 +279,8 @@ class _AddServiceVoucherStepTwoScreenState
                                                                     fieldData.field_datasource!,
                                                                     fieldData.field_label!,
                                                                     fieldData.field_require!,
-                                                                    index,
-                                                                    index1,
+                                                                    indexParent,
+                                                                    indexChild,
                                                                     (fieldData.field_set_value_datasource != '' && fieldData.field_set_value_datasource != null) ? fieldData.field_set_value_datasource![0][0].toString() : "",
                                                                     fieldData.field_maxlength ?? '')
                                                                 : fieldType == "HIDDEN"
@@ -284,29 +289,41 @@ class _AddServiceVoucherStepTwoScreenState
                                                                         ? InputMultipleWidget(
                                                                             data: fieldData,
                                                                             onSelect: (data) {
-                                                                              addData[index].data[index1].value = data.join(",");
+                                                                              addData[indexParent].data[indexChild].value = data.join(",");
                                                                             })
-                                                                        : fieldType == "DATE"
+                                                                        : fieldData.field_type == "DATE"
                                                                             ? WidgetInputDate(
                                                                                 data: fieldData,
-                                                                                onSelect: (date) {
-                                                                                  addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                                dateText: fieldData.field_set_value,
+                                                                                onSelect: (int date) {
+                                                                                  addData[indexParent].data[indexChild].value = date;
                                                                                 },
-                                                                                onInit: () {
-                                                                                  DateTime date = DateTime.now();
-                                                                                  addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                                onInit: (v) {
+                                                                                  addData[indexParent].data[indexChild].value = v;
                                                                                 },
                                                                               )
-                                                                            : fieldType == "PERCENTAGE"
-                                                                                ? FieldInputPercent(
+                                                                            : fieldData.field_type == "DATETIME"
+                                                                                ? WidgetInputDate(
+                                                                                    isDate: false,
                                                                                     data: fieldData,
-                                                                                    onChanged: (text) {
-                                                                                      addData[index].data[index1].value = text;
+                                                                                    dateText: fieldData.field_set_value,
+                                                                                    onSelect: (int date) {
+                                                                                      addData[indexParent].data[indexChild].value = date;
+                                                                                    },
+                                                                                    onInit: (v) {
+                                                                                      addData[indexParent].data[indexChild].value = v;
                                                                                     },
                                                                                   )
-                                                                                : fieldType == "CHECK"
-                                                                                    ? _check(fieldData, index, index1)
-                                                                                    : fieldInputCustomer(data: fieldData, index: index, index1: index1)
+                                                                                : fieldType == "PERCENTAGE"
+                                                                                    ? FieldInputPercent(
+                                                                                        data: fieldData,
+                                                                                        onChanged: (text) {
+                                                                                          addData[indexParent].data[indexChild].value = text;
+                                                                                        },
+                                                                                      )
+                                                                                    : fieldType == "CHECK"
+                                                                                        ? _check(fieldData, indexParent, indexChild)
+                                                                                        : fieldInputCustomer(data: fieldData, indexParent: indexParent, indexChild: indexChild)
                                             : SizedBox();
                                       }),
                                     )
@@ -327,7 +344,8 @@ class _AddServiceVoucherStepTwoScreenState
         ));
   }
 
-  Widget _check(CustomerIndividualItemData data, int index, int index1) {
+  Widget _check(
+      CustomerIndividualItemData data, int indexParent, int indexChild) {
     TextEditingController controller = TextEditingController();
     controller.text = (data.field_set_value ?? '').trim() ?? '';
     return Container(
@@ -370,7 +388,8 @@ class _AddServiceVoucherStepTwoScreenState
                       checkColor: Colors.white,
                       value: snapshot.data ?? false,
                       onChanged: (bool? value) {
-                        _bloc.addData[index].data[index1].value = value!;
+                        _bloc.addData[indexParent].data[indexChild].value =
+                            value!;
                         _bloc.checkboxStream.sink.add(value);
                       },
                     ),
@@ -386,24 +405,24 @@ class _AddServiceVoucherStepTwoScreenState
     List<List<dynamic>> dropdownItemList,
     String label,
     int required,
-    int index,
-    int index1,
+    int indexParent,
+    int indexChild,
     String value,
     String maxLength,
   ) {
     List<ModelDataAdd> dropdow = [];
-    int indexDefault = -1;
+    int indexParentDefault = -1;
     for (int i = 0; i < dropdownItemList.length; i++) {
       if (dropdownItemList[i][1] != null && dropdownItemList[i][0] != null) {
         dropdow.add(ModelDataAdd(
             label: dropdownItemList[i][1], value: dropdownItemList[i][0]));
         if (dropdownItemList[i][0].toString() == value) {
-          indexDefault = i;
+          indexParentDefault = i;
         }
       }
     }
     return (Container(
-      key: Key(index1.toString()),
+      key: Key(indexChild.toString()),
       margin: EdgeInsets.only(bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -447,7 +466,8 @@ class _AddServiceVoucherStepTwoScreenState
                 for (int i = 0; i < values.length; i++) {
                   res.add(values[i].value!);
                 }
-                _bloc.addData[index].data[index1].value = res.join(",");
+                _bloc.addData[indexParent].data[indexChild].value =
+                    res.join(",");
               }
             },
             onSelectionChanged: (values) {
@@ -470,7 +490,8 @@ class _AddServiceVoucherStepTwoScreenState
               Icons.arrow_drop_down,
               size: 25,
             ),
-            initialValue: indexDefault != -1 ? [dropdow[indexDefault]] : [],
+            initialValue:
+                indexParentDefault != -1 ? [dropdow[indexParentDefault]] : [],
             selectedItemsTextStyle: AppStyle.DEFAULT_14,
           )
         ],
@@ -534,12 +555,12 @@ class fieldInputCustomer extends StatefulWidget {
   const fieldInputCustomer({
     Key? key,
     required this.data,
-    required this.index,
-    required this.index1,
+    required this.indexParent,
+    required this.indexChild,
   }) : super(key: key);
   final CustomerIndividualItemData data;
-  final int index;
-  final int index1;
+  final int indexParent;
+  final int indexChild;
   @override
   State<fieldInputCustomer> createState() => _fieldInputCustomerState();
 }
@@ -547,30 +568,30 @@ class fieldInputCustomer extends StatefulWidget {
 class _fieldInputCustomerState extends State<fieldInputCustomer> {
   late final ServiceVoucherBloc _bloc;
   late final data;
-  late final int index1;
-  late final int index;
+  late final int indexChild;
+  late final int indexParent;
   late final bool isEdit;
   late final TextEditingController _controller;
 
   @override
   void initState() {
     _bloc = ServiceVoucherBloc.of(context);
-    index = widget.index;
-    index1 = widget.index1;
+    indexParent = widget.indexParent;
+    indexChild = widget.indexChild;
     data = widget.data;
     _controller = TextEditingController();
     _controller.text = _bloc.getTextInit(name: data.field_name) ??
         ((data.field_set_value ?? '').trim() != ''
             ? data.field_set_value
             : data.field_set_value_datasource?[0][1]) ??
-        _bloc.addData[index].data[index1].value ??
+        _bloc.addData[indexParent].data[indexChild].value ??
         '';
-    _bloc.addData[index].data[index1].value =
+    _bloc.addData[indexParent].data[indexChild].value =
         _bloc.getTextInit(name: data.field_name) ??
             ((data.field_set_value ?? '').trim() != ''
                 ? data.field_set_value
                 : data.field_set_value_datasource?[0][1]) ??
-            _bloc.addData[index].data[index1].value ??
+            _bloc.addData[indexParent].data[indexChild].value ??
             '';
     isEdit = data.field_name == 'col131' || data.field_name == 'col121';
     _bloc.infoCar.listen((value) {
@@ -578,14 +599,14 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
           ((data.field_set_value ?? '').trim() != ''
               ? data.field_set_value
               : data.field_set_value_datasource?[0][1]) ??
-          _bloc.addData[index].data[index1].value ??
+          _bloc.addData[indexParent].data[indexChild].value ??
           '';
-      _bloc.addData[index].data[index1].value =
+      _bloc.addData[indexParent].data[indexChild].value =
           _bloc.getTextInit(name: data.field_name) ??
               ((data.field_set_value ?? '').trim() != ''
                   ? data.field_set_value
                   : data.field_set_value_datasource?[0][1]) ??
-              _bloc.addData[index].data[index1].value ??
+              _bloc.addData[indexParent].data[indexChild].value ??
               '';
     });
     super.initState();
@@ -642,7 +663,7 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
                               ? TextInputType.emailAddress
                               : TextInputType.text,
                   onChanged: (text) {
-                    _bloc.addData[index].data[index1].value = text;
+                    _bloc.addData[indexParent].data[indexChild].value = text;
                   },
                   decoration: InputDecoration(
                     hintStyle: hintTextStyle(),
@@ -663,8 +684,8 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
 
 Widget TypeCarBase(
   CustomerIndividualItemData data,
-  int index,
-  int index1,
+  int indexParent,
+  int indexChild,
   BuildContext context,
   dynamic _bloc,
   Function(String v) function,

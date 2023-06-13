@@ -11,7 +11,7 @@ import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
 import 'package:gen_crm/bloc/product_customer_module/product_customer_module_bloc.dart';
 import 'package:gen_crm/bloc/product_module/product_module_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
-import 'package:gen_crm/screens/menu/home/customer/input_dropDown.dart';
+import 'package:gen_crm/screens/menu/home/customer/widget/input_dropDown.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/widget_field_input_percent.dart';
@@ -20,7 +20,6 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../../../src/models/model_generator/add_customer.dart';
-import '../../../../../../src/src_index.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../../bloc/add_service_voucher/add_service_bloc.dart';
 import '../../../bloc/clue/clue_bloc.dart';
@@ -28,14 +27,13 @@ import '../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import '../../../bloc/contract/attack_bloc.dart';
 import '../../../bloc/contract/contract_bloc.dart';
 import '../../../bloc/detail_product_customer/detail_product_customer_bloc.dart';
-import '../../../bloc/job_contract/job_contract_bloc.dart';
 import '../../../bloc/support/support_bloc.dart';
-import '../../../bloc/support_contract_bloc/support_contract_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
 import '../../../models/model_data_add.dart';
 import '../../../models/widget_input_date.dart';
 import '../../../src/models/model_generator/login_response.dart';
 import '../../../src/pick_file_image.dart';
+import '../../../src/src_index.dart';
 import '../../../storages/share_local.dart';
 import '../../../widgets/location_base.dart';
 import 'package:geolocator/geolocator.dart' show Position;
@@ -435,12 +433,6 @@ class _FormAddDataState extends State<FormAddData> {
                         WorkBloc.of(context).add(InitGetListWorkEvent());
                       } else if (type == ADD_SUPPORT) {
                         SupportBloc.of(context).add(InitGetSupportEvent());
-                      } else if (type == ADD_SUPPORT_CONTRACT) {
-                        SupportContractBloc.of(context)
-                            .add(InitGetSupportContractEvent(int.parse(id)));
-                      } else if (type == ADD_JOB_CONTRACT) {
-                        JobContractBloc.of(context)
-                            .add(InitGetJobContractEvent(int.parse(id)));
                       } else if (type == PRODUCT_TYPE) {
                         ProductModuleBloc.of(context)
                             .add(InitGetListProductModuleEvent());
@@ -520,11 +512,13 @@ class _FormAddDataState extends State<FormAddData> {
                                         CrossAxisAlignment.start,
                                     children: List.generate(
                                         state.listAddData.length,
-                                        (index) => (state.listAddData[index]
+                                        (indexParent) => (state
+                                                        .listAddData[
+                                                            indexParent]
                                                         .data !=
                                                     null &&
-                                                state.listAddData[index].data!
-                                                        .length >
+                                                state.listAddData[indexParent]
+                                                        .data!.length >
                                                     0)
                                             ? Column(
                                                 crossAxisAlignment:
@@ -534,13 +528,13 @@ class _FormAddDataState extends State<FormAddData> {
                                                     height:
                                                         AppValue.heights * 0.01,
                                                   ),
-                                                  state.listAddData[index]
+                                                  state.listAddData[indexParent]
                                                               .group_name !=
                                                           null
                                                       ? WidgetText(
                                                           title: state
                                                                   .listAddData[
-                                                                      index]
+                                                                      indexParent]
                                                                   .group_name ??
                                                               '',
                                                           style: AppStyle
@@ -552,172 +546,20 @@ class _FormAddDataState extends State<FormAddData> {
                                                   ),
                                                   Column(
                                                     children: List.generate(
-                                                        state.listAddData[index]
-                                                            .data!.length,
-                                                        (index1) => state.listAddData[index].data![index1].field_hidden !=
-                                                                "1"
-                                                            ? state.listAddData[index].data![index1].field_special ==
-                                                                    "none-edit"
-                                                                ? ((state.listAddData[index].data![index1].field_name ==
-                                                                        "so_dien_thoai")
-                                                                    ? BlocBuilder<
-                                                                        PhoneBloc,
-                                                                        PhoneState>(builder: (context, stateA) {
-                                                                        if (stateA
-                                                                            is SuccessPhoneState) {
-                                                                          return _fieldInputCustomer(
-                                                                              state.listAddData[index].data![index1],
-                                                                              index,
-                                                                              index1,
-                                                                              noEdit: true,
-                                                                              value: stateA.phone);
-                                                                        } else
-                                                                          return Container();
-                                                                      })
-                                                                    : _fieldInputCustomer(
-                                                                        state
-                                                                            .listAddData[index]
-                                                                            .data![index1],
-                                                                        index,
-                                                                        index1,
-                                                                        noEdit: true))
-                                                                : state.listAddData[index].data![index1].field_type == "SELECT"
-                                                                    ? ((state.listAddData[index].data![index1].field_name == 'cv_nguoiLienHe' || state.listAddData[index].data![index1].field_name == 'col131')
-                                                                        ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(builder: (context, stateA) {
-                                                                            if (stateA
-                                                                                is UpdateGetContacBytCustomerState) {
-                                                                              return InputDropdown(
-                                                                                  typeScreen: type,
-                                                                                  dropdownItemList: stateA.listContactByCustomer,
-                                                                                  data: state.listAddData[index].data![index1],
-                                                                                  onSuccess: (data) {
-                                                                                    addData[index].data[index1].value = data;
-                                                                                    if (state.listAddData[index].data![index1].field_name != "cv_kh") PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
-                                                                                  },
-                                                                                  value: state.listAddData[index].data![index1].field_value ?? '');
-                                                                            } else if (stateA
-                                                                                is LoadingContactByCustomerState) {
-                                                                              return Container();
-                                                                            } else {
-                                                                              return InputDropdown(
-                                                                                  typeScreen: type,
-                                                                                  dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
-                                                                                  data: state.listAddData[index].data![index1],
-                                                                                  onSuccess: (data) {
-                                                                                    addData[index].data[index1].value = data;
-                                                                                    if (state.listAddData[index].data![index1].field_name != "cv_kh") PhoneBloc.of(context).add(InitAgencyPhoneEvent(data));
-                                                                                  },
-                                                                                  value: state.listAddData[index].data![index1].field_value ?? '');
-                                                                            }
-                                                                          })
-                                                                        : (state.listAddData[index].data![index1].field_name == 'col121' && type == ADD_CHANCE)
-                                                                            ? StreamBuilder<List<dynamic>>(
-                                                                                stream: _bloc.customerNewStream,
-                                                                                builder: (context, snapshot) {
-                                                                                  final list = snapshot.data ?? [];
-                                                                                  return InputDropdown(
-                                                                                    isAddList: true,
-                                                                                    dropdownItemList: listCustomerForChance,
-                                                                                    data: state.listAddData[index].data![index1],
-                                                                                    onSuccess: (data) async {
-                                                                                      List<dynamic>? result = [];
-                                                                                      if (data == CA_NHAN) {
-                                                                                        result = await AppNavigator.navigateAddCustomer(listCustomerForChance.first[1], isResultData: true);
-                                                                                      } else if (data == TO_CHUC) {
-                                                                                        result = await AppNavigator.navigateFormAddCustomerGroup(
-                                                                                          listCustomerForChance.last[1],
-                                                                                          ADD_CUSTOMER,
-                                                                                          isResultData: true,
-                                                                                        );
-                                                                                      }
-                                                                                      if (result != null && result.isNotEmpty) {
-                                                                                        data = result.first;
-                                                                                        _bloc.customerNewStream.add(result);
-                                                                                      } else if (result == null) {
-                                                                                        data = '';
-                                                                                        _bloc.customerNewStream.add([
-                                                                                          'null',
-                                                                                          'null'
-                                                                                        ]);
-                                                                                      }
-                                                                                      addData[index].data[index1].value = data;
-                                                                                      ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
-                                                                                      PhoneBloc.of(context).add(InitPhoneEvent(data));
-                                                                                    },
-                                                                                    value: list.isNotEmpty ? list.last : state.listAddData[index].data![index1].field_value ?? '',
-                                                                                  );
-                                                                                })
-                                                                            : InputDropdown(
-                                                                                dropdownItemList: state.listAddData[index].data![index1].field_datasource ?? [],
-                                                                                data: state.listAddData[index].data![index1],
-                                                                                onSuccess: (data) {
-                                                                                  addData[index].data[index1].value = data;
-                                                                                  if (state.listAddData[index].data![index1].field_name == "cv_kh" || state.listAddData[index].data![index1].field_name == "col121") {
-                                                                                    ContactByCustomerBloc.of(context).add(InitGetContactByCustomerrEvent(data));
-                                                                                    PhoneBloc.of(context).add(InitPhoneEvent(data));
-                                                                                  }
-                                                                                },
-                                                                                value: state.listAddData[index].data![index1].field_value ?? ''))
-                                                                    : state.listAddData[index].data![index1].field_type == "TEXT_MULTI"
-                                                                        ? _fieldInputTextMulti(
-                                                                            state.listAddData[index].data![index1].field_datasource!,
-                                                                            state.listAddData[index].data![index1].field_label!,
-                                                                            state.listAddData[index].data![index1].field_require!,
-                                                                            index,
-                                                                            index1,
-                                                                            (state.listAddData[index].data![index1].field_set_value_datasource != "" && state.listAddData[index].data![index1].field_set_value_datasource != null)
-                                                                                ? state.listAddData[index].data![index1].field_set_value_datasource![0][0].toString()
-                                                                                : "",
-                                                                            state.listAddData[index].data![index1].field_maxlength ??
-                                                                                '',
-                                                                          )
-                                                                        : state.listAddData[index].data![index1].field_type == "HIDDEN"
-                                                                            ? Container()
-                                                                            : state.listAddData[index].data![index1].field_type == "TEXT_MULTI_NEW"
-                                                                                ? InputMultipleWidget(
-                                                                                    data: state.listAddData[index].data![index1],
-                                                                                    onSelect: (data) {
-                                                                                      addData[index].data[index1].value = data.join(",");
-                                                                                    },
-                                                                                  )
-                                                                                : state.listAddData[index].data![index1].field_type == "DATE"
-                                                                                    ? WidgetInputDate(
-                                                                                        data: state.listAddData[index].data![index1],
-                                                                                        onSelect: (date) {
-                                                                                          addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
-                                                                                        },
-                                                                                        onInit: () {
-                                                                                          DateTime date = DateTime.now();
-                                                                                          addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
-                                                                                        },
-                                                                                      )
-                                                                                    : state.listAddData[index].data![index1].field_type == "CHECK"
-                                                                                        ? renderCheckBox(
-                                                                                            onChange: (check) {
-                                                                                              addData[index].data[index1].value = check ? 1 : 0;
-                                                                                            },
-                                                                                            data: state.listAddData[index].data![index1],
-                                                                                          )
-                                                                                        : state.listAddData[index].data![index1].field_type == "PERCENTAGE"
-                                                                                            ? FieldInputPercent(
-                                                                                                data: state.listAddData[index].data![index1],
-                                                                                                onChanged: (text) {
-                                                                                                  addData[index].data[index1].value = text;
-                                                                                                },
-                                                                                              )
-                                                                                            : state.listAddData[index].data![index1].field_name == 'chi_tiet_xe' && state.listAddData[index].data![index1].field_type == 'TEXT'
-                                                                                                ? TypeCarBase(
-                                                                                                    state.listAddData[index].data![index1],
-                                                                                                    index,
-                                                                                                    index1,
-                                                                                                    context,
-                                                                                                    ServiceVoucherBloc.of(context),
-                                                                                                    (v) {
-                                                                                                      addData[index].data[index1].value = v;
-                                                                                                    },
-                                                                                                  )
-                                                                                                : _fieldInputCustomer(state.listAddData[index].data![index1], index, index1)
-                                                            : SizedBox()),
+                                                        state
+                                                                .listAddData[
+                                                                    indexParent]
+                                                                .data
+                                                                ?.length ??
+                                                            0, (indexChild) {
+                                                      return _getBody(
+                                                          state
+                                                              .listAddData[
+                                                                  indexParent]
+                                                              .data![indexChild],
+                                                          indexParent,
+                                                          indexChild);
+                                                    }),
                                                   )
                                                 ],
                                               )
@@ -766,7 +608,7 @@ class _FormAddDataState extends State<FormAddData> {
   }
 
   Widget _fieldInputCustomer(
-      CustomerIndividualItemData data, int index, int index1,
+      CustomerIndividualItemData data, int indexParent, int indexChild,
       {bool noEdit = false, String value = ""}) {
     if ((type == ADD_CLUE_JOB && data.field_name == "so_dien_thoai") ||
         (type == ADD_CHANCE_JOB && data.field_name == "so_dien_thoai")) {
@@ -821,7 +663,7 @@ class _FormAddDataState extends State<FormAddData> {
                                     ? TextInputType.emailAddress
                                     : TextInputType.text,
                     onChanged: (text) {
-                      addData[index].data[index1].value = text;
+                      addData[indexParent].data[indexChild].value = text;
                     },
                     readOnly: noEdit,
                     initialValue: value != ""
@@ -851,17 +693,17 @@ class _FormAddDataState extends State<FormAddData> {
       List<List<dynamic>> dropdownItemList,
       String label,
       int required,
-      int index,
-      int index1,
+      int indexParent,
+      int indexChild,
       String value,
       String maxLength) {
     List<ModelDataAdd> dropdow = [];
-    int indexDefault = -1;
+    int indexParentDefault = -1;
     for (int i = 0; i < dropdownItemList.length; i++) {
       dropdow.add(ModelDataAdd(
           label: dropdownItemList[i][1], value: dropdownItemList[i][0]));
       if (dropdownItemList[i][0].toString() == value) {
-        indexDefault = i;
+        indexParentDefault = i;
       }
     }
     return (Container(
@@ -910,7 +752,7 @@ class _FormAddDataState extends State<FormAddData> {
                   for (int i = 0; i < values.length; i++) {
                     res.add(values[i].value!.toString());
                   }
-                  addData[index].data[index1].value = res.join(",");
+                  addData[indexParent].data[indexChild].value = res.join(",");
                 }
               },
               onSelectionChanged: (values) {
@@ -935,12 +777,214 @@ class _FormAddDataState extends State<FormAddData> {
                 Icons.arrow_drop_down,
                 size: 25,
               ),
-              initialValue: indexDefault != -1 ? [dropdow[indexDefault]] : [],
+              initialValue:
+                  indexParentDefault != -1 ? [dropdow[indexParentDefault]] : [],
               selectedItemsTextStyle: AppStyle.DEFAULT_14,
               itemsTextStyle: AppStyle.DEFAULT_14),
         ],
       ),
     ));
+  }
+
+  Widget _getBody(
+      CustomerIndividualItemData data, int indexParent, int indexChild) {
+    return data.field_hidden != "1"
+        ? data.field_special == "none-edit"
+            ? ((data.field_name == "so_dien_thoai")
+                ? BlocBuilder<PhoneBloc, PhoneState>(
+                    builder: (context, stateA) {
+                    if (stateA is SuccessPhoneState) {
+                      return _fieldInputCustomer(data, indexParent, indexChild,
+                          noEdit: true, value: stateA.phone);
+                    } else
+                      return Container();
+                  })
+                : _fieldInputCustomer(data, indexParent, indexChild,
+                    noEdit: true))
+            : data.field_type == "SELECT"
+                ? ((data.field_name == 'cv_nguoiLienHe' ||
+                        data.field_name == 'col131')
+                    ? BlocBuilder<ContactByCustomerBloc,
+                        ContactByCustomerState>(builder: (context, stateA) {
+                        if (stateA is UpdateGetContacBytCustomerState) {
+                          return InputDropdown(
+                              typeScreen: type,
+                              dropdownItemList: stateA.listContactByCustomer,
+                              data: data,
+                              onSuccess: (data) {
+                                addData[indexParent].data[indexChild].value =
+                                    data;
+                                if (data.field_name != "cv_kh")
+                                  PhoneBloc.of(context)
+                                      .add(InitAgencyPhoneEvent(data));
+                              },
+                              value: data.field_value ?? '');
+                        } else if (stateA is LoadingContactByCustomerState) {
+                          return Container();
+                        } else {
+                          return InputDropdown(
+                              typeScreen: type,
+                              dropdownItemList: data.field_datasource ?? [],
+                              data: data,
+                              onSuccess: (data) {
+                                addData[indexParent].data[indexChild].value =
+                                    data;
+                                if (data.field_name != "cv_kh")
+                                  PhoneBloc.of(context)
+                                      .add(InitAgencyPhoneEvent(data));
+                              },
+                              value: data.field_value ?? '');
+                        }
+                      })
+                    : (data.field_name == 'col121' && type == ADD_CHANCE)
+                        ? StreamBuilder<List<dynamic>>(
+                            stream: _bloc.customerNewStream,
+                            builder: (context, snapshot) {
+                              final list = snapshot.data ?? [];
+                              return InputDropdown(
+                                isAddList: true,
+                                dropdownItemList: listCustomerForChance,
+                                data: data,
+                                onSuccess: (data) async {
+                                  List<dynamic>? result = [];
+                                  if (data == CA_NHAN) {
+                                    result =
+                                        await AppNavigator.navigateAddCustomer(
+                                            listCustomerForChance.first[1],
+                                            isResultData: true);
+                                  } else if (data == TO_CHUC) {
+                                    result = await AppNavigator
+                                        .navigateFormAddCustomerGroup(
+                                      listCustomerForChance.last[1],
+                                      ADD_CUSTOMER,
+                                      isResultData: true,
+                                    );
+                                  }
+                                  if (result != null && result.isNotEmpty) {
+                                    data = result.first;
+                                    _bloc.customerNewStream.add(result);
+                                  } else if (result == null) {
+                                    data = '';
+                                    _bloc.customerNewStream
+                                        .add(['null', 'null']);
+                                  }
+                                  addData[indexParent].data[indexChild].value =
+                                      data;
+                                  ContactByCustomerBloc.of(context).add(
+                                      InitGetContactByCustomerrEvent(data));
+                                  PhoneBloc.of(context)
+                                      .add(InitPhoneEvent(data));
+                                },
+                                value: list.isNotEmpty
+                                    ? list.last
+                                    : data.field_value ?? '',
+                              );
+                            })
+                        : InputDropdown(
+                            dropdownItemList: data.field_datasource ?? [],
+                            data: data,
+                            onSuccess: (data) {
+                              addData[indexParent].data[indexChild].value =
+                                  data;
+                              if (data.field_name == "cv_kh" ||
+                                  data.field_name == "col121") {
+                                ContactByCustomerBloc.of(context)
+                                    .add(InitGetContactByCustomerrEvent(data));
+                                PhoneBloc.of(context).add(InitPhoneEvent(data));
+                              }
+                            },
+                            value: data.field_value ?? ''))
+                : data.field_type == "TEXT_MULTI"
+                    ? _fieldInputTextMulti(
+                        data.field_datasource!,
+                        data.field_label!,
+                        data.field_require!,
+                        indexParent,
+                        indexChild,
+                        (data.field_set_value_datasource != "" &&
+                                data.field_set_value_datasource != null)
+                            ? data.field_set_value_datasource![0][0].toString()
+                            : "",
+                        data.field_maxlength ?? '',
+                      )
+                    : data.field_type == "HIDDEN"
+                        ? Container()
+                        : data.field_type == "TEXT_MULTI_NEW"
+                            ? InputMultipleWidget(
+                                data: data,
+                                onSelect: (data) {
+                                  addData[indexParent].data[indexChild].value =
+                                      data.join(",");
+                                },
+                              )
+                            : data.field_type == "DATE"
+                                ? WidgetInputDate(
+                                    data: data,
+                                    dateText: data.field_set_value,
+                                    onSelect: (int date) {
+                                      addData[indexParent]
+                                          .data[indexChild]
+                                          .value = date;
+                                    },
+                                    onInit: (v) {
+                                      addData[indexParent]
+                                          .data[indexChild]
+                                          .value = v;
+                                    },
+                                  )
+                                : data.field_type == "DATETIME"
+                                    ? WidgetInputDate(
+                                        isDate: false,
+                                        data: data,
+                                        dateText: data.field_set_value,
+                                        onSelect: (int date) {
+                                          addData[indexParent]
+                                              .data[indexChild]
+                                              .value = date;
+                                        },
+                                        onInit: (v) {
+                                          addData[indexParent]
+                                              .data[indexChild]
+                                              .value = v;
+                                        },
+                                      )
+                                    : data.field_type == "CHECK"
+                                        ? renderCheckBox(
+                                            onChange: (check) {
+                                              addData[indexParent]
+                                                  .data[indexChild]
+                                                  .value = check ? 1 : 0;
+                                            },
+                                            data: data,
+                                          )
+                                        : data.field_type == "PERCENTAGE"
+                                            ? FieldInputPercent(
+                                                data: data,
+                                                onChanged: (text) {
+                                                  addData[indexParent]
+                                                      .data[indexChild]
+                                                      .value = text;
+                                                },
+                                              )
+                                            : data.field_name ==
+                                                        'chi_tiet_xe' &&
+                                                    data.field_type == 'TEXT'
+                                                ? TypeCarBase(
+                                                    data,
+                                                    indexParent,
+                                                    indexChild,
+                                                    context,
+                                                    ServiceVoucherBloc.of(
+                                                        context),
+                                                    (v) {
+                                                      addData[indexParent]
+                                                          .data[indexChild]
+                                                          .value = v;
+                                                    },
+                                                  )
+                                                : _fieldInputCustomer(data,
+                                                    indexParent, indexChild)
+        : SizedBox();
   }
 
   TextStyle hintTextStyle() => TextStyle(

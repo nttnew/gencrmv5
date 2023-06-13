@@ -13,26 +13,33 @@ class WidgetInputDate extends StatefulWidget {
     required this.onSelect,
     required this.onInit,
     this.dateText,
+    this.isDate = true,
   }) : super(key: key);
 
   final CustomerIndividualItemData data;
-  final Function onSelect, onInit;
-  final String? dateText;
+  final Function(int dateTime) onSelect;
+  final Function(int date) onInit;
+  final dynamic dateText;
+  final bool isDate;
 
   @override
   State<WidgetInputDate> createState() => _WidgetInputDateState();
 }
 
 class _WidgetInputDateState extends State<WidgetInputDate> {
-  String dateText = AppValue.formatDate(DateTime.now().toString());
+  String dateText = '';
 
   @override
   void initState() {
-    widget.onInit();
-    if (widget.dateText != null) {
+    if (widget.dateText != null &&
+        widget.dateText != '' &&
+        widget.dateText != 0) {
       setState(() {
-        dateText = widget.dateText!;
+        dateText = widget.isDate
+            ? AppValue.formatIntDate(widget.dateText)
+            : AppValue.formatIntDateTime(widget.dateText);
       });
+      widget.onInit(widget.dateText);
     }
     super.initState();
   }
@@ -71,14 +78,35 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
           ),
           GestureDetector(
             onTap: () {
-              DatePicker.showDatePicker(context, showTitleActions: true,
-                  // minTime: DateTime.now(),
-                  onConfirm: (date) {
-                setState(() {
-                  dateText = AppValue.formatDate(date.toString());
-                });
-                widget.onSelect(date);
-              }, currentTime: DateTime.now(), locale: LocaleType.vi);
+              widget.isDate
+                  ? DatePicker.showDatePicker(
+                      context,
+                      showTitleActions: true,
+                      onConfirm: (DateTime date) {
+                        setState(() {
+                          dateText = AppValue.formatDate(date.toString());
+                        });
+                        int time = date.millisecondsSinceEpoch ~/ 1000;
+                        widget.onSelect(time);
+                      },
+                      currentTime: DateTime.now(),
+                      locale: LocaleType.vi,
+                    )
+                  : DatePicker.showDateTimePicker(
+                      context,
+                      showTitleActions: true,
+                      onConfirm: (DateTime date) {
+                        setState(() {
+                          dateText =
+                              AppValue.formatStringDateTime(date.toString());
+                        });
+                        int time = date.millisecondsSinceEpoch ~/ 1000;
+                        widget.onSelect(time);
+                      },
+                      currentTime: DateTime.now(),
+                      locale: LocaleType.vi,
+                    );
+              ;
             },
             child: Container(
               // width: Get.width,

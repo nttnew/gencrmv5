@@ -24,9 +24,7 @@ import '../../../bloc/contract/attack_bloc.dart';
 import '../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../bloc/product_customer_module/product_customer_module_bloc.dart';
 import '../../../bloc/product_module/product_module_bloc.dart';
-import '../../../bloc/support/detail_support_bloc.dart';
 import '../../../bloc/support/support_bloc.dart';
-import '../../../bloc/work/detail_work_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
 import '../../../models/widget_input_date.dart';
 import '../../../src/models/model_generator/add_customer.dart';
@@ -38,7 +36,7 @@ import '../../../widgets/loading_api.dart';
 import '../../../widgets/multiple_widget.dart';
 import '../../../widgets/widget_field_input_percent.dart';
 import '../../add_service_voucher/add_service_voucher_step2_screen.dart';
-import '../home/customer/input_dropDown.dart';
+import '../home/customer/widget/input_dropDown.dart';
 
 class FormEdit extends StatefulWidget {
   const FormEdit({Key? key}) : super(key: key);
@@ -184,8 +182,6 @@ class _FormEditState extends State<FormEdit> {
                             .add(InitGetListOrderEventChance());
                       }
                       if (type == EDIT_JOB) {
-                        DetailWorkBloc.of(context)
-                            .add(InitGetDetailWorkEvent(int.parse(id)));
                         WorkBloc.of(context).add(InitGetListWorkEvent());
                       }
                       if (type == 4) {
@@ -194,8 +190,6 @@ class _FormEditState extends State<FormEdit> {
                             .add(InitGetDetailContractEvent(int.parse(id)));
                       }
                       if (type == EDIT_SUPPORT) {
-                        DetailSupportBloc.of(context)
-                            .add(InitGetDetailSupportEvent(id));
                         SupportBloc.of(context).add(InitGetSupportEvent());
                       }
                       if (type == PRODUCT_TYPE) {
@@ -222,10 +216,7 @@ class _FormEditState extends State<FormEdit> {
               },
               child: Container(
                 color: Colors.white,
-                padding: EdgeInsets.only(
-                    left: AppValue.widths * 0.05,
-                    right: AppValue.widths * 0.05,
-                    top: AppValue.heights * 0.02),
+                padding: EdgeInsets.all(25),
                 child: SingleChildScrollView(
                   controller: scrollController,
                   child: BlocBuilder<FormEditBloc, FormEditState>(
@@ -256,7 +247,6 @@ class _FormEditState extends State<FormEdit> {
                           }
                         }
                       }
-
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -264,17 +254,20 @@ class _FormEditState extends State<FormEdit> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: List.generate(
                                 state.listEditData.length,
-                                (index) => Column(
+                                (indexParent) => Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
                                         SizedBox(
                                           height: AppValue.heights * 0.01,
                                         ),
-                                        state.listEditData[index].group_name !=
+                                        state.listEditData[indexParent]
+                                                    .group_name !=
                                                 null
                                             ? WidgetText(
-                                                title: state.listEditData[index]
+                                                title: state
+                                                        .listEditData[
+                                                            indexParent]
                                                         .group_name ??
                                                     '',
                                                 style: AppStyle.DEFAULT_18_BOLD)
@@ -284,233 +277,16 @@ class _FormEditState extends State<FormEdit> {
                                         ),
                                         Column(
                                           children: List.generate(
-                                              state.listEditData[index].data!
-                                                  .length, (index1) {
-                                            if (state.listEditData[index]
-                                                    .data![index1].field_name ==
-                                                "col131")
-                                              customer_id = state
-                                                  .listEditData[index]
-                                                  .data![index1]
-                                                  .field_set_value
-                                                  .toString();
-                                            return state
-                                                        .listEditData[index]
-                                                        .data![index1]
-                                                        .field_hidden !=
-                                                    "1"
-                                                ? state
-                                                            .listEditData[index]
-                                                            .data![index1]
-                                                            .field_special ==
-                                                        "none-edit"
-                                                    ? (state.listEditData[index].data?[index1].field_name ==
-                                                            "so_dien_thoai"
-                                                        ? BlocBuilder<PhoneBloc, PhoneState>(builder:
-                                                            (context, stateA) {
-                                                            if (stateA
-                                                                is SuccessPhoneState) {
-                                                              return _fieldInputCustomer(
-                                                                  state
-                                                                          .listEditData[
-                                                                              index]
-                                                                          .data![
-                                                                      index1],
-                                                                  index,
-                                                                  index1,
-                                                                  noEdit: true,
-                                                                  value: stateA
-                                                                      .phone);
-                                                            } else if (stateA
-                                                                is LoadingPhoneState)
-                                                              return Container();
-                                                            else {
-                                                              return _fieldInputCustomer(
-                                                                  state
-                                                                          .listEditData[
-                                                                              index]
-                                                                          .data![
-                                                                      index1],
-                                                                  index,
-                                                                  index1,
-                                                                  noEdit: true,
-                                                                  value: state
-                                                                      .listEditData[
-                                                                          index]
-                                                                      .data![
-                                                                          index1]
-                                                                      .field_value!);
-                                                            }
-                                                          })
-                                                        : _fieldInputCustomer(
-                                                            state.listEditData[index].data![index1], index, index1,
-                                                            noEdit: true))
-                                                    : state.listEditData[index].data![index1].field_type ==
-                                                            "SELECT"
-                                                        ? ((state.listEditData[index].data![index1].field_name ==
-                                                                    'cv_nguoiLienHe' ||
-                                                                state.listEditData[index].data![index1].field_name ==
-                                                                    'col131')
-                                                            ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(
-                                                                builder: (context, stateA) {
-                                                                if (stateA
-                                                                    is UpdateGetContacBytCustomerState)
-                                                                  return InputDropdown(
-                                                                      typeScreen:
-                                                                          type,
-                                                                      dropdownItemList:
-                                                                          stateA
-                                                                              .listContactByCustomer,
-                                                                      data: state
-                                                                              .listEditData[
-                                                                                  index]
-                                                                              .data![
-                                                                          index1],
-                                                                      onSuccess:
-                                                                          (data) {
-                                                                        addData[index]
-                                                                            .data[index1]
-                                                                            .value = data;
-                                                                        if (state.listEditData[index].data![index1].field_name !=
-                                                                            "cv_kh")
-                                                                          PhoneBloc.of(context)
-                                                                              .add(InitAgencyPhoneEvent(data));
-                                                                      },
-                                                                      value: (state.listEditData[index].data![index1].field_set_value_datasource != null &&
-                                                                              state.listEditData[index].data![index1].field_set_value_datasource!.length >
-                                                                                  0)
-                                                                          ? state
-                                                                              .listEditData[index]
-                                                                              .data![index1]
-                                                                              .field_set_value_datasource![0][1]
-                                                                              .toString()
-                                                                          : '');
-                                                                else if (stateA
-                                                                    is LoadingContactByCustomerState) {
-                                                                  return Container();
-                                                                } else
-                                                                  return InputDropdown(
-                                                                      typeScreen:
-                                                                          type,
-                                                                      dropdownItemList:
-                                                                          state.listEditData[index].data![index1].field_datasource ??
-                                                                              [],
-                                                                      data: state
-                                                                              .listEditData[index].data![
-                                                                          index1],
-                                                                      onSuccess:
-                                                                          (data) {
-                                                                        addData[index]
-                                                                            .data[index1]
-                                                                            .value = data;
-                                                                        if (state.listEditData[index].data![index1].field_name !=
-                                                                            "cv_kh")
-                                                                          PhoneBloc.of(context)
-                                                                              .add(InitAgencyPhoneEvent(data));
-                                                                      },
-                                                                      value: (state.listEditData[index].data![index1].field_set_value_datasource != null &&
-                                                                              state.listEditData[index].data![index1].field_set_value_datasource!.length >
-                                                                                  0)
-                                                                          ? state
-                                                                              .listEditData[index]
-                                                                              .data![index1]
-                                                                              .field_set_value_datasource![0][1]
-                                                                              .toString()
-                                                                          : '');
-                                                              })
-                                                            : InputDropdown(
-                                                                dropdownItemList: state.listEditData[index].data![index1].field_datasource ?? [],
-                                                                data: state.listEditData[index].data![index1],
-                                                                onSuccess: (data) {
-                                                                  addData[index]
-                                                                      .data[
-                                                                          index1]
-                                                                      .value = data;
-                                                                  if (state.listEditData[index].data![index1].field_name ==
-                                                                          "cv_kh" ||
-                                                                      state.listEditData[index].data![index1]
-                                                                              .field_name ==
-                                                                          "col121") {
-                                                                    ContactByCustomerBloc.of(
-                                                                            context)
-                                                                        .add(InitGetContactByCustomerrEvent(
-                                                                            data));
-                                                                    PhoneBloc.of(
-                                                                            context)
-                                                                        .add(InitPhoneEvent(
-                                                                            data));
-                                                                  }
-                                                                },
-                                                                value: ((state.listEditData[index].data![index1].field_set_value_datasource != null && state.listEditData[index].data![index1].field_set_value_datasource!.length > 0) ? state.listEditData[index].data![index1].field_set_value_datasource![0][1].toString() : '')))
-                                                        : state.listEditData[index].data![index1].field_type == "TEXT_MULTI"
-                                                            ? _fieldInputTextMulti(state.listEditData[index].data![index1].field_datasource!, state.listEditData[index].data![index1].field_label!, state.listEditData[index].data![index1].field_require!, index, index1, (state.listEditData[index].data![index1].field_set_value_datasource != "" && state.listEditData[index].data![index1].field_set_value_datasource != null && state.listEditData[index].data![index1].field_set_value_datasource!.length > 0) ? state.listEditData[index].data![index1].field_set_value_datasource![0][0].toString() : "", state.listEditData[index].data![index1].field_maxlength ?? '')
-                                                            : state.listEditData[index].data![index1].field_type == "HIDDEN"
-                                                                ? Container()
-                                                                : state.listEditData[index].data![index1].field_type == "TEXT_MULTI_NEW"
-                                                                    ? InputMultipleWidget(
-                                                                        data: state
-                                                                            .listEditData[index]
-                                                                            .data![index1],
-                                                                        onSelect:
-                                                                            (data) {
-                                                                          addData[index]
-                                                                              .data[index1]
-                                                                              .value = data.join(",");
-                                                                        },
-                                                                        value: (state.listEditData[index].data![index1].field_set_value != null &&
-                                                                                state.listEditData[index].data![index1].field_set_value != "")
-                                                                            ? state.listEditData[index].data![index1].field_set_value.split(",")
-                                                                            : [],
-                                                                      )
-                                                                    : state.listEditData[index].data![index1].field_type == "DATE"
-                                                                        ? WidgetInputDate(
-                                                                            data:
-                                                                                state.listEditData[index].data![index1],
-                                                                            onSelect:
-                                                                                (date) {
-                                                                              addData[index].data[index1].value = (date.millisecondsSinceEpoch / 1000).floor();
-                                                                            },
-                                                                            dateText: (state.listEditData[index].data![index1].field_set_value != "" && state.listEditData[index].data![index1].field_set_value != null)
-                                                                                ? AppValue.formatDate(DateTime.fromMillisecondsSinceEpoch(state.listEditData[index].data![index1].field_set_value * 1000).toString())
-                                                                                : "",
-                                                                            onInit:
-                                                                                () {
-                                                                              if (state.listEditData[index].data![index1].field_set_value != "" && state.listEditData[index].data![index1].field_set_value != null) {
-                                                                                addData[index].data[index1].value = state.listEditData[index].data![index1].field_set_value;
-                                                                              } else {
-                                                                                DateTime date = DateTime.now();
-                                                                                addData[index].data[index1].value = (date.microsecondsSinceEpoch / 1000000).floor();
-                                                                              }
-                                                                            },
-                                                                          )
-                                                                        : state.listEditData[index].data![index1].field_type == "CHECK"
-                                                                            ? RenderCheckBox(
-                                                                                onChange: (check) {
-                                                                                  addData[index].data[index1].value = check ? 1 : 0;
-                                                                                },
-                                                                                data: state.listEditData[index].data![index1],
-                                                                              )
-                                                                            : state.listEditData[index].data![index1].field_type == "PERCENTAGE"
-                                                                                ? FieldInputPercent(
-                                                                                    data: state.listEditData[index].data![index1],
-                                                                                    onChanged: (text) {
-                                                                                      addData[index].data[index1].value = text;
-                                                                                    },
-                                                                                  )
-                                                                                : state.listEditData[index].data![index1].field_name == 'chi_tiet_xe' && state.listEditData[index].data![index1].field_type == 'TEXT'
-                                                                                    ? TypeCarBase(
-                                                                                        state.listEditData[index].data![index1],
-                                                                                        index,
-                                                                                        index1,
-                                                                                        context,
-                                                                                        ServiceVoucherBloc.of(context),
-                                                                                        (v) {
-                                                                                          addData[index].data[index1].value = v;
-                                                                                        },
-                                                                                      )
-                                                                                    : _fieldInputCustomer(state.listEditData[index].data![index1], index, index1, value: state.listEditData[index].data![index1].field_set_value.toString())
-                                                : SizedBox();
-                                          }),
+                                            (state.listEditData[indexParent]
+                                                    .data?.length ??
+                                                0),
+                                            (indexChild) => _getBody(
+                                              state.listEditData[indexParent]
+                                                  .data![indexChild],
+                                              indexParent,
+                                              indexChild,
+                                            ),
+                                          ),
                                         )
                                       ],
                                     )),
@@ -554,6 +330,193 @@ class _FormEditState extends State<FormEdit> {
                 }))
       ],
     );
+  }
+
+  Widget _getBody(
+      CustomerIndividualItemData data, int indexParent, int indexChild) {
+    if (data.field_name == "col131")
+      customer_id = data.field_set_value.toString();
+    return data.field_hidden != "1"
+        ? data.field_special == "none-edit"
+            ? (data.field_name == "so_dien_thoai"
+                ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
+                    if (stateA is SuccessPhoneState) {
+                      return _fieldInputCustomer(
+                        data,
+                        indexParent,
+                        indexChild,
+                        noEdit: true,
+                        value: stateA.phone,
+                      );
+                    } else if (stateA is LoadingPhoneState)
+                      return Container();
+                    else {
+                      return _fieldInputCustomer(
+                        data,
+                        indexParent,
+                        indexChild,
+                        noEdit: true,
+                        value: data.field_value ?? '',
+                      );
+                    }
+                  })
+                : _fieldInputCustomer(
+                    data,
+                    indexParent,
+                    indexChild,
+                    noEdit: true,
+                  ))
+            : data.field_type == "SELECT"
+                ? ((data.field_name == 'cv_nguoiLienHe' ||
+                        data.field_name == 'col131')
+                    ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(
+                        builder: (context, stateA) {
+                        if (stateA is UpdateGetContacBytCustomerState)
+                          return InputDropdown(
+                            typeScreen: type,
+                            dropdownItemList: stateA.listContactByCustomer,
+                            data: data,
+                            onSuccess: (data) {
+                              addData[indexParent].data[indexChild].value =
+                                  data;
+                              if (data.field_name != "cv_kh")
+                                PhoneBloc.of(context)
+                                    .add(InitAgencyPhoneEvent(data));
+                            },
+                            value: (data.field_set_value_datasource != null &&
+                                    data.field_set_value_datasource!.length > 0)
+                                ? data.field_set_value_datasource![0][1]
+                                    .toString()
+                                : '',
+                          );
+                        else if (stateA is LoadingContactByCustomerState) {
+                          return Container();
+                        } else
+                          return InputDropdown(
+                            typeScreen: type,
+                            dropdownItemList: data.field_datasource ?? [],
+                            data: data,
+                            onSuccess: (data) {
+                              addData[indexParent].data[indexChild].value =
+                                  data;
+                              if (data.field_name != "cv_kh")
+                                PhoneBloc.of(context)
+                                    .add(InitAgencyPhoneEvent(data));
+                            },
+                            value: (data.field_set_value_datasource != null &&
+                                    data.field_set_value_datasource!.length > 0)
+                                ? data.field_set_value_datasource![0][1]
+                                    .toString()
+                                : '',
+                          );
+                      })
+                    : InputDropdown(
+                        dropdownItemList: data.field_datasource ?? [],
+                        data: data,
+                        onSuccess: (data) {
+                          addData[indexParent].data[indexChild].value = data;
+                          if (data.field_name == "cv_kh" ||
+                              data.field_name == "col121") {
+                            ContactByCustomerBloc.of(context)
+                                .add(InitGetContactByCustomerrEvent(data));
+                            PhoneBloc.of(context).add(InitPhoneEvent(data));
+                          }
+                        },
+                        value: ((data.field_set_value_datasource != null &&
+                                data.field_set_value_datasource!.length > 0)
+                            ? data.field_set_value_datasource![0][1].toString()
+                            : '')))
+                : data.field_type == "TEXT_MULTI"
+                    ? _fieldInputTextMulti(
+                        data.field_datasource!,
+                        data.field_label!,
+                        data.field_require!,
+                        indexParent,
+                        indexChild,
+                        (data.field_set_value_datasource != "" &&
+                                data.field_set_value_datasource != null &&
+                                data.field_set_value_datasource!.length > 0)
+                            ? data.field_set_value_datasource![0][0].toString()
+                            : "",
+                        data.field_maxlength ?? '')
+                    : data.field_type == "HIDDEN"
+                        ? Container()
+                        : data.field_type == "TEXT_MULTI_NEW"
+                            ? InputMultipleWidget(
+                                data: data,
+                                onSelect: (data) {
+                                  addData[indexParent].data[indexChild].value =
+                                      data.join(",");
+                                },
+                                value: (data.field_set_value != null &&
+                                        data.field_set_value != "")
+                                    ? data.field_set_value.split(",")
+                                    : [],
+                              )
+                            : data.field_type == "DATE"
+                                ? WidgetInputDate(
+                                    data: data,
+                                    dateText: data.field_set_value,
+                                    onSelect: (int date) {
+                                      addData[indexParent]
+                                          .data[indexChild]
+                                          .value = date;
+                                    },
+    onInit: (v) {
+    addData[indexParent].data[indexChild].value=v;
+    },
+
+                                  )
+                                : data.field_type == "DATETIME"
+                                    ? WidgetInputDate(
+                                        isDate: false,
+                                        data: data,
+                                        dateText: data.field_set_value,
+                                        onSelect: (int date) {
+                                          addData[indexParent]
+                                              .data[indexChild]
+                                              .value = date;
+                                        },
+      onInit: (v) {
+        addData[indexParent].data[indexChild].value=v;
+      },
+                                      )
+                                    : data.field_type == "CHECK"
+                                        ? RenderCheckBox(
+                                            onChange: (check) {
+                                              addData[indexParent]
+                                                  .data[indexChild]
+                                                  .value = check ? 1 : 0;
+                                            },
+                                            data: data,
+                                          )
+                                        : data.field_type == "PERCENTAGE"
+                                            ? FieldInputPercent(
+                                                data: data,
+                                                onChanged: (text) {
+                                                  addData[indexParent]
+                                                      .data[indexChild]
+                                                      .value = text;
+                                                },
+                                              )
+                                            : data.field_name == 'chi_tiet_xe' &&
+                                                    data.field_type == 'TEXT'
+                                                ? TypeCarBase(
+                                                    data,
+                                                    indexParent,
+                                                    indexChild,
+                                                    context,
+                                                    ServiceVoucherBloc.of(
+                                                        context),
+                                                    (v) {
+                                                      addData[indexParent]
+                                                          .data[indexChild]
+                                                          .value = v;
+                                                    },
+                                                  )
+                                                : _fieldInputCustomer(data, indexParent, indexChild,
+                                                    value: data.field_set_value.toString())
+        : SizedBox();
   }
 
   Column fieldInputImage() {
@@ -607,7 +570,7 @@ class _FormEditState extends State<FormEdit> {
   }
 
   Widget _fieldInputCustomer(
-      CustomerIndividualItemData data, int index, int index1,
+      CustomerIndividualItemData data, int indexParent, int indexChild,
       {bool noEdit = false, String value = ""}) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
@@ -656,7 +619,7 @@ class _FormEditState extends State<FormEdit> {
                               ? TextInputType.emailAddress
                               : TextInputType.text,
                   onChanged: (text) {
-                    addData[index].data[index1].value = text;
+                    addData[indexParent].data[indexChild].value = text;
                   },
                   readOnly: noEdit,
                   initialValue: value == "null" ? "" : value,
@@ -679,19 +642,19 @@ class _FormEditState extends State<FormEdit> {
       List<List<dynamic>> dropdownItemList,
       String label,
       int required,
-      int index,
-      int index1,
+      int indexParent,
+      int indexChild,
       String value,
       String maxLength) {
     List<ModelDataAdd> dropdow = [];
-    int indexDefault = -1;
+    int indexParentDefault = -1;
 
     for (int i = 0; i < dropdownItemList.length; i++) {
       if (dropdownItemList[i][1] != null && dropdownItemList[i][0] != null) {
         dropdow.add(ModelDataAdd(
             label: dropdownItemList[i][1], value: dropdownItemList[i][0]));
         if (dropdownItemList[i][0].toString() == value.toString()) {
-          indexDefault = i;
+          indexParentDefault = i;
         } else {}
       }
     }
@@ -741,7 +704,7 @@ class _FormEditState extends State<FormEdit> {
                   for (int i = 0; i < values.length; i++) {
                     res.add(values[i].value!.toString());
                   }
-                  addData[index].data[index1].value = res.join(",");
+                  addData[indexParent].data[indexChild].value = res.join(",");
                 }
               },
               searchable: true,
@@ -760,7 +723,8 @@ class _FormEditState extends State<FormEdit> {
                 Icons.arrow_drop_down,
                 size: 25,
               ),
-              initialValue: indexDefault != -1 ? [dropdow[indexDefault]] : [],
+              initialValue:
+                  indexParentDefault != -1 ? [dropdow[indexParentDefault]] : [],
               selectedItemsTextStyle: AppStyle.DEFAULT_14,
               itemsTextStyle: AppStyle.DEFAULT_14),
         ],

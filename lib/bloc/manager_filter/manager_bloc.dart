@@ -76,28 +76,28 @@ class ManagerBloc extends Bloc<ManagerEvent, ManagerState> {
   }
 
   void initData() {
-    managerTrees.add(resetDataChecked(managerTrees.value));
+    managerTrees.add(resetDataChecked(managerTrees.value, true));
     if (saveDataFilter.isNotEmpty) {
+      managerTrees.add(resetDataChecked(managerTrees.value, false));
       for (final value in saveDataFilter) {
         managerTrees.add(_setTreeData(managerTrees.value, value));
       }
     }
   }
 
-  void resetData() {
-    managerTrees.add(resetDataChecked(managerTrees.value));
+  void resetData(bool isCheck) {
+    managerTrees.add(resetDataChecked(managerTrees.value, isCheck));
   }
 
   List<TreeNodeData> resetDataChecked(
-    List<TreeNodeData> list, {
-    isExpand = true,
-  }) {
+    List<TreeNodeData> list,
+    bool checked,
+  ) {
     return list.map((e) {
-      e.checked = false;
-      if (!isExpand) e.expaned = false;
+      e.checked = checked;
       resetDataChecked(
         e.children,
-        isExpand: false,
+        checked,
       );
       return e;
     }).toList();

@@ -16,7 +16,7 @@ import '../../../../widgets/drop_down_base.dart';
 import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
-import 'item_list_customer.dart';
+import 'widget/item_list_customer.dart';
 
 class CustomerScreen extends StatefulWidget {
   const CustomerScreen({Key? key}) : super(key: key);

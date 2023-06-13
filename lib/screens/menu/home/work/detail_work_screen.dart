@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:gen_crm/bloc/work/detail_work_bloc.dart';
 import 'package:gen_crm/bloc/work/work_bloc.dart';
-import 'package:gen_crm/screens/menu/home/customer/list_note.dart';
+import 'package:gen_crm/screens/menu/home/customer/widget/list_note.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -31,20 +31,22 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   int? location;
   bool isCheckDone = false;
   List<ModuleThaoTac> list = [];
+  late final ListNoteBloc _blocNote;
+  late final DetailWorkBloc _bloc;
 
-  late final ListNoteBloc _bloc;
   @override
   void initState() {
-    _bloc =
+    _bloc = DetailWorkBloc(
+        userRepository: DetailWorkBloc.of(context).userRepository);
+    _blocNote =
         ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
-    DetailWorkBloc.of(context).add(InitGetDetailWorkEvent(id));
+    _bloc.add(InitGetDetailWorkEvent(id));
     super.initState();
   }
 
-  @override
-  void deactivate() {
-    DetailWorkBloc.of(context).add(ReloadWorkEvent());
-    super.deactivate();
+  _init() {
+    _blocNote.add(RefreshEvent());
+    _bloc.add(InitGetDetailWorkEvent(id));
   }
 
   checkLocation(SuccessDetailWorkState state) {
@@ -67,7 +69,10 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(Module.CONG_VIEC, id.toString());
+        AppNavigator.navigateAddNoteScreen(Module.CONG_VIEC, id.toString(),
+            onRefresh: () {
+          _blocNote.add(RefreshEvent());
+        });
       },
     ));
     if (!isCheckDone) {
@@ -78,7 +83,12 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
           onThaoTac: () {
             Get.back();
             AppNavigator.navigateCheckIn(
-                id.toString(), ModuleMy.CONG_VIEC, TypeCheckIn.CHECK_IN);
+                id.toString(), ModuleMy.CONG_VIEC, TypeCheckIn.CHECK_IN,
+                onRefresh: () {
+              _bloc.add(InitGetDetailWorkEvent(id));
+
+              WorkBloc.of(context).add(InitGetListWorkEvent());
+            });
           },
         ));
       } else {
@@ -97,6 +107,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                 TypeCheckIn.CHECK_OUT,
               ),
             );
+            _bloc.add(InitGetDetailWorkEvent(id));
           },
         ));
       }
@@ -120,7 +131,11 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditDataScreen(id.toString(), EDIT_JOB);
+        AppNavigator.navigateEditDataScreen(id.toString(), EDIT_JOB,
+            onRefresh: () {
+          WorkBloc.of(context).add(InitGetListWorkEvent());
+          _bloc.add(InitGetDetailWorkEvent(id));
+        });
       },
     ));
 
@@ -129,8 +144,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
-            onTap2: () =>
-                DetailWorkBloc.of(context).add(InitDeleteWorkEvent(id)),
+            onTap2: () => _bloc.add(InitDeleteWorkEvent(id)),
             content: "Bạn chắc chắn muốn xóa không ?");
       },
     ));
@@ -143,7 +157,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       body: BlocListener<CheckInBloc, CheckInState>(
         listener: (context, state) {
           if (state is SuccessCheckInState) {
-            DetailWorkBloc.of(context).add(InitGetDetailWorkEvent(id));
+            _bloc.add(InitGetDetailWorkEvent(id));
           } else if (state is ErrorCheckInState) {
             ShowDialogCustom.showDialogBase(
               title: MESSAGES.NOTIFICATION,
@@ -152,6 +166,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
           }
         },
         child: BlocListener<DetailWorkBloc, DetailWorkState>(
+          bloc: _bloc,
           listener: (context, state) {
             if (state is SuccessDeleteWorkState) {
               LoadingApi().popLoading();
@@ -185,132 +200,139 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      BlocBuilder<DetailWorkBloc, DetailWorkState>(
-                          builder: (context, state) {
-                        if (state is SuccessDetailWorkState) {
-                          checkLocation(state);
-                          getThaoTac();
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 25),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: List.generate(
-                                  state.data_list.length,
-                                  (index) => Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: AppValue.heights * 0.04,
-                                          ),
-                                          WidgetText(
-                                            title: state.data_list[index]
-                                                    .group_name ??
-                                                '',
-                                            style: TextStyle(
-                                              fontFamily: "Quicksand",
-                                              color: HexColor("#263238"),
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: AppValue.heights * 0.02,
-                                          ),
-                                          Column(
-                                            children: List.generate(
-                                                state.data_list[index].data!
-                                                    .length,
-                                                (index1) =>
-                                                    state
-                                                                .data_list[
-                                                                    index]
-                                                                .data![index1]
-                                                                .value_field !=
-                                                            ''
-                                                        ? Column(
-                                                            children: [
-                                                              Row(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  WidgetText(
-                                                                    title: state
-                                                                        .data_list[
-                                                                            index]
-                                                                        .data![
-                                                                            index1]
-                                                                        .label_field,
-                                                                    style:
-                                                                        LabelStyle(),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    width: 8,
-                                                                  ),
-                                                                  Expanded(
-                                                                    child:
-                                                                        GestureDetector(
-                                                                      onTap:
-                                                                          () {
-                                                                        if (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG &&
-                                                                            (state.data_list[index].data?[index1].is_link ??
-                                                                                false)) {
-                                                                          AppNavigator.navigateDetailCustomer(
-                                                                              state.data_list[index].data?[index1].link ?? '',
-                                                                              state.data_list[index].data![index1].value_field ?? '');
-                                                                        }
-                                                                      },
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    await _init();
+                  },
+                  child: SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        BlocBuilder<DetailWorkBloc, DetailWorkState>(
+                            bloc: _bloc,
+                            builder: (context, state) {
+                              if (state is SuccessDetailWorkState) {
+                                checkLocation(state);
+                                getThaoTac();
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: List.generate(
+                                        state.data_list.length,
+                                        (index) => Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  height:
+                                                      AppValue.heights * 0.04,
+                                                ),
+                                                WidgetText(
+                                                  title: state.data_list[index]
+                                                          .group_name ??
+                                                      '',
+                                                  style: TextStyle(
+                                                    fontFamily: "Quicksand",
+                                                    color: HexColor("#263238"),
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height:
+                                                      AppValue.heights * 0.02,
+                                                ),
+                                                Column(
+                                                  children: List.generate(
+                                                      state.data_list[index]
+                                                          .data!.length,
+                                                      (index1) => state
+                                                                  .data_list[
+                                                                      index]
+                                                                  .data![index1]
+                                                                  .value_field !=
+                                                              ''
+                                                          ? Column(
+                                                              children: [
+                                                                Row(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    WidgetText(
+                                                                      title: state
+                                                                          .data_list[
+                                                                              index]
+                                                                          .data![
+                                                                              index1]
+                                                                          .label_field,
+                                                                      style:
+                                                                          LabelStyle(),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 8,
+                                                                    ),
+                                                                    Expanded(
                                                                       child:
-                                                                          SizedBox(
-                                                                        child: state.data_list[index].data![index1].type !=
-                                                                                'text_area'
-                                                                            ? WidgetText(
-                                                                                title: state.data_list[index].data![index1].value_field,
-                                                                                textAlign: TextAlign.right,
-                                                                                style: ValueStyle().copyWith(
-                                                                                  decoration: (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG && (state.data_list[index].data?[index1].is_link ?? false)) ? TextDecoration.underline : null,
-                                                                                  color: (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG && (state.data_list[index].data?[index1].is_link ?? false)) ? Colors.blue : null,
+                                                                          GestureDetector(
+                                                                        onTap:
+                                                                            () {
+                                                                          if (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG &&
+                                                                              (state.data_list[index].data?[index1].is_link ?? false)) {
+                                                                            AppNavigator.navigateDetailCustomer(state.data_list[index].data?[index1].link ?? '',
+                                                                                state.data_list[index].data![index1].value_field ?? '');
+                                                                          }
+                                                                        },
+                                                                        child:
+                                                                            SizedBox(
+                                                                          child: state.data_list[index].data![index1].type != 'text_area'
+                                                                              ? WidgetText(
+                                                                                  title: state.data_list[index].data![index1].value_field,
+                                                                                  textAlign: TextAlign.right,
+                                                                                  style: ValueStyle().copyWith(
+                                                                                    decoration: (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG && (state.data_list[index].data?[index1].is_link ?? false)) ? TextDecoration.underline : null,
+                                                                                    color: (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG && (state.data_list[index].data?[index1].is_link ?? false)) ? Colors.blue : null,
+                                                                                  ),
+                                                                                )
+                                                                              : Html(
+                                                                                  data: state.data_list[index].data![index1].value_field,
                                                                                 ),
-                                                                              )
-                                                                            : Html(
-                                                                                data: state.data_list[index].data![index1].value_field,
-                                                                              ),
+                                                                        ),
                                                                       ),
                                                                     ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              SizedBox(
-                                                                height: AppValue
-                                                                        .heights *
-                                                                    0.02,
-                                                              ),
-                                                            ],
-                                                          )
-                                                        : SizedBox()),
-                                          ),
-                                          LineHorizontal(),
-                                        ],
-                                      )),
-                            ),
-                          );
-                        } else
-                          return Container();
-                      }),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      ListNote(
-                        module: Module.CONG_VIEC,
-                        id: id.toString(),
-                        bloc: _bloc,
-                      ),
-                    ],
+                                                                  ],
+                                                                ),
+                                                                SizedBox(
+                                                                  height: AppValue
+                                                                          .heights *
+                                                                      0.02,
+                                                                ),
+                                                              ],
+                                                            )
+                                                          : SizedBox()),
+                                                ),
+                                                LineHorizontal(),
+                                              ],
+                                            )),
+                                  ),
+                                );
+                              } else
+                                return Container();
+                            }),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        ListNote(
+                          module: Module.CONG_VIEC,
+                          id: id.toString(),
+                          bloc: _blocNote,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

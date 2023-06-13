@@ -854,9 +854,15 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<JobChance> getJobContract(id) async {
+  Future<JobChance> getJobContract(
+    id,
+    page,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'id': id};
+    final queryParameters = <String, dynamic>{
+      r'id': id,
+      r'page': page,
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio
@@ -924,9 +930,15 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<SupportContractResponse> getSupportContract(id) async {
+  Future<SupportContractResponse> getSupportContract(
+    id,
+    page,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'id': id};
+    final queryParameters = <String, dynamic>{
+      r'id': id,
+      r'page': page,
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(

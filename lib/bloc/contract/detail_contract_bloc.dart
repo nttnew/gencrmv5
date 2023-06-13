@@ -13,6 +13,7 @@ import '../../src/base.dart';
 import '../../src/messages.dart';
 import '../../src/models/model_generator/contract.dart';
 import '../../src/models/model_generator/file_response.dart';
+import '../../widgets/listview_loadmore_base.dart';
 
 part 'detail_contract_event.dart';
 part 'detail_contract_state.dart';
@@ -21,6 +22,8 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
   final UserRepository userRepository;
   List<ContractItemData>? list;
   BehaviorSubject<List<FileDataResponse>?> listFileStream = BehaviorSubject();
+  LoadMoreController controllerCV = LoadMoreController();
+  LoadMoreController controllerHT = LoadMoreController();
 
   DetailContractBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -29,12 +32,21 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
   @override
   Stream<DetailContractState> mapEventToState(ContractEvent event) async* {
     if (event is InitGetDetailContractEvent) {
+      initController(event.id);
       yield* _getDetailContract(id: event.id);
     } else if (event is InitDeleteContractEvent) {
       yield* _deleteContract(id: event.id);
-    } else if (event is ReloadContractEvent) {
-      yield SuccessDetailContractState([]);
     }
+  }
+
+  initController(int idTxt) async {
+    final dataCv = await getJobContract(
+        page: BASE_URL.PAGE_DEFAULT, id: idTxt, isInit: false);
+    await controllerCV.initData(dataCv);
+
+    final dataHT = await getSupportContract(
+        page: BASE_URL.PAGE_DEFAULT, id: idTxt, isInit: false);
+    await controllerHT.initData(dataHT);
   }
 
   Stream<DetailContractState> _getDetailContract({required int id}) async* {
@@ -126,6 +138,58 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       return true;
     } else {
       return false;
+    }
+  }
+
+  Future<dynamic> getSupportContract(
+      {required int id,
+      int page = BASE_URL.PAGE_DEFAULT,
+      bool isInit = true}) async {
+    if (isInit) {
+      LoadingApi().pushLoading();
+    }
+    try {
+      final response = await userRepository.getSupportContract(id, page);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        LoadingApi().popLoading();
+        return response.data ?? [];
+      } else if (response.code == 999) {
+        LoadingApi().popLoading();
+        loginSessionExpired();
+      } else {
+        LoadingApi().popLoading();
+        return response.msg ?? '';
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      loginSessionExpired();
+    }
+  }
+
+  Future<dynamic> getJobContract(
+      {required int id,
+      int page = BASE_URL.PAGE_DEFAULT,
+      bool isInit = true}) async {
+    if (isInit) {
+      LoadingApi().pushLoading();
+    }
+    try {
+      final response = await userRepository.getJobContract(id, page);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        LoadingApi().popLoading();
+        return response.data ?? [];
+      } else if (response.code == 999) {
+        LoadingApi().popLoading();
+        loginSessionExpired();
+      } else {
+        LoadingApi().popLoading();
+        return response.msg ?? '';
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      loginSessionExpired();
     }
   }
 
