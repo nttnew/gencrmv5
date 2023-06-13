@@ -94,10 +94,10 @@ Future main() async {
 
     initializationSettings = new InitializationSettings(android: initializationSettingsAndroid);
   } else {
-    var initializationSettingsIOS = new IOSInitializationSettings();
-    initializationSettings = new InitializationSettings(iOS: initializationSettingsIOS);
+    // var initializationSettingsIOS = new IOSInitializationSettings();
+    // initializationSettings = new InitializationSettings(iOS: initializationSettingsIOS);
   }
-  flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: (String? x) {});
+  // flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: (String? x) {});
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
     RemoteNotification notification = message.notification!;
@@ -108,16 +108,16 @@ Future main() async {
         if (androidNotification != null) {
           var androidPlatformChannelSpecifics = const AndroidNotificationDetails('high_importance_channel', 'xxxx', importance: Importance.max, playSound: true, showProgress: true, priority: Priority.high, ticker: 'test ticker');
 
-          var iOSChannelSpecifics = const IOSNotificationDetails();
-          var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSChannelSpecifics);
-          Vibration.vibrate(duration: 1000, amplitude: 128);
-          await flutterLocalNotificationsPlugin.show(0, notification.title, notification.body, platformChannelSpecifics, payload: 'test');
+          // var iOSChannelSpecifics = const IOSNotificationDetails();
+          // var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSChannelSpecifics);
+          // Vibration.vibrate(duration: 1000, amplitude: 128);
+          // await flutterLocalNotificationsPlugin.show(0, notification.title, notification.body, platformChannelSpecifics, payload: 'test');
         }
       } else if (Platform.isIOS) {
-        var iOSChannelSpecifics = const IOSNotificationDetails();
-        var platformChannelSpecifics = NotificationDetails(iOS: iOSChannelSpecifics);
-        Vibration.vibrate(duration: 1000, amplitude: 128);
-        await flutterLocalNotificationsPlugin.show(0, notification.title, notification.body, platformChannelSpecifics, payload: 'test');
+        // var iOSChannelSpecifics = const IOSNotificationDetails();
+        // var platformChannelSpecifics = NotificationDetails(iOS: iOSChannelSpecifics);
+        // Vibration.vibrate(duration: 1000, amplitude: 128);
+        // await flutterLocalNotificationsPlugin.show(0, notification.title, notification.body, platformChannelSpecifics, payload: 'test');
       }
       // var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
       //     'channel_ID', 'channel name',
