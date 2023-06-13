@@ -309,9 +309,10 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                           child: ListViewLoadMoreBase(
                             functionInit: (page, isInit) {
                               return _bloc.getContractCustomer(
-                                  id: int.parse(id),
-                                  page: page,
-                                  isInit: isInit);
+                                id: int.parse(id),
+                                page: page,
+                                isInit: isInit,
+                              );
                             },
                             itemWidget: (int index, data) {
                               return GestureDetector(
@@ -329,7 +330,11 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                           padding: const EdgeInsets.symmetric(horizontal: 25),
                           child: ListViewLoadMoreBase(
                             functionInit: (page, isInit) {
-                              return _bloc.getJobCustomer(id: int.parse(id));
+                              return _bloc.getJobCustomer(
+                                id: int.parse(id),
+                                page: page,
+                                isInit: isInit,
+                              );
                             },
                             itemWidget: (int index, data) {
                               return GestureDetector(
@@ -349,7 +354,10 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                           child: ListViewLoadMoreBase(
                             functionInit: (page, isInit) {
                               return _bloc.getSupportCustomer(
-                                  id: int.parse(id));
+                                id: int.parse(id),
+                                page: page,
+                                isInit: isInit,
+                              );
                             },
                             itemWidget: (int index, data) {
                               return GestureDetector(
