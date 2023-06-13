@@ -32,10 +32,10 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   bool isCheckDone = false;
   List<ModuleThaoTac> list = [];
 
-  late final ListNoteBloc _bloc;
+  late final ListNoteBloc _blocNote;
   @override
   void initState() {
-    _bloc =
+    _blocNote =
         ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
     DetailWorkBloc.of(context).add(InitGetDetailWorkEvent(id));
     super.initState();
@@ -67,7 +67,9 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(Module.CONG_VIEC, id.toString());
+        AppNavigator.navigateAddNoteScreen(Module.CONG_VIEC, id.toString(),onRefresh: (){
+          _blocNote.add(RefreshEvent());
+        });
       },
     ));
     if (!isCheckDone) {
@@ -120,7 +122,9 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditDataScreen(id.toString(), EDIT_JOB);
+        AppNavigator.navigateEditDataScreen(id.toString(), EDIT_JOB,onRefresh: (){
+          DetailWorkBloc.of(context).add(InitGetDetailWorkEvent(id));
+        });
       },
     ));
 
@@ -308,7 +312,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                       ListNote(
                         module: Module.CONG_VIEC,
                         id: id.toString(),
-                        bloc: _bloc,
+                        bloc: _blocNote,
                       ),
                     ],
                   ),
