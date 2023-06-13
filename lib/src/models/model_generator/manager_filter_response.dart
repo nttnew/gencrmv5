@@ -23,7 +23,7 @@ class ManagerFilterResponse extends BaseResponse {
         ?.map((e) => TreeNodeData(
               title: e.data?.title ?? '',
               expaned: false,
-              checked: false,
+              checked: true,
               children: mapManagerToTree(e.children) ?? [],
               id: e.attr?.id ?? '',
               icon: e.data?.icon ?? '',
