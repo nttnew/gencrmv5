@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'package:gen_crm/bloc/work/work_bloc.dart';
 import 'package:gen_crm/src/src_index.dart';
-import 'package:gen_crm/screens/menu/home/work/index.dart';
+import 'package:gen_crm/screens/menu/home/work/widget/index.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';

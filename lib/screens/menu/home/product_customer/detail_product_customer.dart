@@ -14,11 +14,11 @@ import '../../../../widgets/listview_loadmore_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
-import '../chance/widget_chance_item.dart';
-import '../clue/work_card_widget.dart';
-import '../contract/item_list_contract.dart';
-import '../support/item_support.dart';
-import 'infor_tab.dart';
+import '../chance/widget/widget_chance_item.dart';
+import '../clue/widget/work_card_widget.dart';
+import '../contract/widget/item_list_contract.dart';
+import '../support/widget/item_support.dart';
+import 'widget/infor_tab.dart';
 
 class DetailProductCustomerScreen extends StatefulWidget {
   const DetailProductCustomerScreen({Key? key}) : super(key: key);

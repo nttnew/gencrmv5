@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gen_crm/screens/menu/home/notification/widget/unread_list.dart';
 import 'package:gen_crm/widgets/line_horizontal_widget.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../widgets/appbar_base.dart';
-import 'index.dart';
+import 'widget/index.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({Key? key}) : super(key: key);

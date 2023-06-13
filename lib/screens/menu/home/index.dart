@@ -1,7 +1,6 @@
-export 'news_screen.dart';
-export 'work/index.dart';
-export 'clue/index.dart';
-export 'chance/index.dart';
-export 'contract/index.dart';
-export 'support/index.dart';
-export 'customer/index.dart';
+export 'work/widget/index.dart';
+export 'clue/widget/index.dart';
+export 'chance/widget/index.dart';
+export 'contract/widget/index.dart';
+export 'support/widget/index.dart';
+export 'customer/widget/index.dart';

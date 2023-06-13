@@ -223,7 +223,10 @@ abstract class RestClient {
   );
 
   @GET(BASE_URL.JOB_CONTRACT)
-  Future<JobChance> getJobContract(@Query('id') int id);
+  Future<JobChance> getJobContract(
+    @Query('id') int id,
+    @Query('page') int page,
+  );
 
   @DELETE(BASE_URL.DELETE_CUSTOMER)
   Future<BaseResponse> deleteCustomer(
@@ -238,6 +241,7 @@ abstract class RestClient {
   @GET(BASE_URL.SUPPORT_CONTRACT)
   Future<SupportContractResponse> getSupportContract(
     @Query('id') int id,
+    @Query('page') int page,
   );
 
   @GET(BASE_URL.DETAIL_CLUE)

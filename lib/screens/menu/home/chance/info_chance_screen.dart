@@ -11,8 +11,8 @@ import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../../../widgets/widget_appbar.dart';
 import '../../attachment/attachment.dart';
-import '../clue/work_card_widget.dart';
-import 'chance_info.dart';
+import '../clue/widget/work_card_widget.dart';
+import 'widget/chance_info.dart';
 
 class InfoChancePage extends StatefulWidget {
   const InfoChancePage({Key? key}) : super(key: key);

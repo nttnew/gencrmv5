@@ -22,8 +22,6 @@ class DetailWorkBloc extends Bloc<DetailWorkEvent, DetailWorkState> {
       yield* _getDetailWork(event.id!);
     } else if (event is InitDeleteWorkEvent) {
       yield* _deleteWork(event.id!);
-    } else if (event is ReloadWorkEvent) {
-      yield SuccessDetailWorkState([], null);
     }
   }
 

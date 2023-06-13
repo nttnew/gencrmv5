@@ -118,13 +118,13 @@ class _KyNhanState extends State<KyNhan> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             //SHOW EXPORTED IMAGE IN NEW ROUTE
-            _buttonKyNhan(() => exportImage(context), 'Lưu',
+            _buttonKyNhan(() => exportImage(context), 'Xong',
                 color: COLORS.TEXT_COLOR, textColor: Colors.white),
             _buttonKyNhan(
               () {
                 setState(() => _controller.clear());
               },
-              'Xoá',
+              'Ký lại',
               textColor: Colors.white,
               color: Colors.red,
             ),

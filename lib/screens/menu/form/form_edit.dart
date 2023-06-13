@@ -24,9 +24,7 @@ import '../../../bloc/contract/attack_bloc.dart';
 import '../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../bloc/product_customer_module/product_customer_module_bloc.dart';
 import '../../../bloc/product_module/product_module_bloc.dart';
-import '../../../bloc/support/detail_support_bloc.dart';
 import '../../../bloc/support/support_bloc.dart';
-import '../../../bloc/work/detail_work_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
 import '../../../models/widget_input_date.dart';
 import '../../../src/models/model_generator/add_customer.dart';
@@ -38,7 +36,7 @@ import '../../../widgets/loading_api.dart';
 import '../../../widgets/multiple_widget.dart';
 import '../../../widgets/widget_field_input_percent.dart';
 import '../../add_service_voucher/add_service_voucher_step2_screen.dart';
-import '../home/customer/input_dropDown.dart';
+import '../home/customer/widget/input_dropDown.dart';
 
 class FormEdit extends StatefulWidget {
   const FormEdit({Key? key}) : super(key: key);
@@ -184,8 +182,6 @@ class _FormEditState extends State<FormEdit> {
                             .add(InitGetListOrderEventChance());
                       }
                       if (type == EDIT_JOB) {
-                        DetailWorkBloc.of(context)
-                            .add(InitGetDetailWorkEvent(int.parse(id)));
                         WorkBloc.of(context).add(InitGetListWorkEvent());
                       }
                       if (type == 4) {
@@ -194,8 +190,6 @@ class _FormEditState extends State<FormEdit> {
                             .add(InitGetDetailContractEvent(int.parse(id)));
                       }
                       if (type == EDIT_SUPPORT) {
-                        DetailSupportBloc.of(context)
-                            .add(InitGetDetailSupportEvent(id));
                         SupportBloc.of(context).add(InitGetSupportEvent());
                       }
                       if (type == PRODUCT_TYPE) {
@@ -462,73 +456,30 @@ class _FormEditState extends State<FormEdit> {
                             : data.field_type == "DATE"
                                 ? WidgetInputDate(
                                     data: data,
-                                    onSelect: (date) {
+                                    dateText: data.field_set_value,
+                                    onSelect: (int date) {
                                       addData[indexParent]
-                                              .data[indexChild]
-                                              .value =
-                                          (date.millisecondsSinceEpoch / 1000)
-                                              .floor();
+                                          .data[indexChild]
+                                          .value = date;
                                     },
-                                    dateText: (data.field_set_value != "" &&
-                                            data.field_set_value != null)
-                                        ? AppValue.formatDate(
-                                            DateTime.fromMillisecondsSinceEpoch(
-                                                    data.field_set_value * 1000)
-                                                .toString())
-                                        : "",
-                                    onInit: () {
-                                      if (data.field_set_value != "" &&
-                                          data.field_set_value != null) {
-                                        addData[indexParent]
-                                            .data[indexChild]
-                                            .value = data.field_set_value;
-                                      } else {
-                                        DateTime date = DateTime.now();
-                                        addData[indexParent]
-                                                .data[indexChild]
-                                                .value =
-                                            (date.microsecondsSinceEpoch /
-                                                    1000000)
-                                                .floor();
-                                      }
-                                    },
+    onInit: (v) {
+    addData[indexParent].data[indexChild].value=v;
+    },
+
                                   )
                                 : data.field_type == "DATETIME"
                                     ? WidgetInputDate(
                                         isDate: false,
                                         data: data,
-                                        onSelect: (date) {
+                                        dateText: data.field_set_value,
+                                        onSelect: (int date) {
                                           addData[indexParent]
-                                                  .data[indexChild]
-                                                  .value =
-                                              (date.millisecondsSinceEpoch /
-                                                      1000)
-                                                  .floor();
+                                              .data[indexChild]
+                                              .value = date;
                                         },
-                                        dateText: (data.field_set_value != "" &&
-                                                data.field_set_value != null)
-                                            ? AppValue.formatDate(DateTime
-                                                    .fromMillisecondsSinceEpoch(
-                                                        data.field_set_value *
-                                                            1000)
-                                                .toString())
-                                            : "",
-                                        onInit: () {
-                                          if (data.field_set_value != "" &&
-                                              data.field_set_value != null) {
-                                            addData[indexParent]
-                                                .data[indexChild]
-                                                .value = data.field_set_value;
-                                          } else {
-                                            DateTime date = DateTime.now();
-                                            addData[indexParent]
-                                                    .data[indexChild]
-                                                    .value =
-                                                (date.microsecondsSinceEpoch /
-                                                        1000000)
-                                                    .floor();
-                                          }
-                                        },
+      onInit: (v) {
+        addData[indexParent].data[indexChild].value=v;
+      },
                                       )
                                     : data.field_type == "CHECK"
                                         ? RenderCheckBox(

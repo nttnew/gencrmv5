@@ -47,7 +47,6 @@ import 'bloc/contract/phone_bloc.dart';
 import 'bloc/detail_clue/detail_clue_bloc.dart';
 import 'bloc/detail_product/detail_product_bloc.dart';
 import 'bloc/detail_product_customer/detail_product_customer_bloc.dart';
-import 'bloc/job_contract/job_contract_bloc.dart';
 import 'bloc/list_note/list_note_bloc.dart';
 import 'bloc/manager_filter/manager_bloc.dart';
 import 'bloc/product_customer_module/product_customer_module_bloc.dart';
@@ -58,7 +57,6 @@ import 'bloc/report/report_employee/report_employee_bloc.dart';
 import 'bloc/report/report_option/option_bloc.dart';
 import 'bloc/report/report_option/report_bloc.dart';
 import 'bloc/report/report_product/report_product_bloc.dart';
-import 'bloc/support_contract_bloc/support_contract_bloc.dart';
 import 'bloc/work/detail_work_bloc.dart';
 import 'bloc/work/work_bloc.dart';
 import 'firebase_options.dart';
@@ -321,16 +319,8 @@ Future main() async {
             create: (context) =>
                 PaymentContractBloc(userRepository: userRepository),
           ),
-          BlocProvider<SupportContractBloc>(
-            create: (context) =>
-                SupportContractBloc(userRepository: userRepository),
-          ),
           BlocProvider<OptionBloc>(
             create: (context) => OptionBloc(userRepository: userRepository),
-          ),
-          BlocProvider<JobContractBloc>(
-            create: (context) =>
-                JobContractBloc(userRepository: userRepository),
           ),
           BlocProvider<ReportEmployeeBloc>(
             create: (context) =>

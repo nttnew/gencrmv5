@@ -17,8 +17,9 @@ class WidgetInputDate extends StatefulWidget {
   }) : super(key: key);
 
   final CustomerIndividualItemData data;
-  final Function onSelect, onInit;
-  final String? dateText;
+  final Function(int dateTime) onSelect;
+  final Function(int date) onInit;
+  final dynamic dateText;
   final bool isDate;
 
   @override
@@ -26,15 +27,19 @@ class WidgetInputDate extends StatefulWidget {
 }
 
 class _WidgetInputDateState extends State<WidgetInputDate> {
-  String dateText = AppValue.formatDate(DateTime.now().toString());
+  String dateText = '';
 
   @override
   void initState() {
-    widget.onInit();
-    if (widget.dateText != null) {
+    if (widget.dateText != null &&
+        widget.dateText != '' &&
+        widget.dateText != 0) {
       setState(() {
-        dateText = widget.dateText!;
+        dateText = widget.isDate
+            ? AppValue.formatIntDate(widget.dateText)
+            : AppValue.formatIntDateTime(widget.dateText);
       });
+      widget.onInit(widget.dateText);
     }
     super.initState();
   }
@@ -77,11 +82,12 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
                   ? DatePicker.showDatePicker(
                       context,
                       showTitleActions: true,
-                      onConfirm: (date) {
+                      onConfirm: (DateTime date) {
                         setState(() {
                           dateText = AppValue.formatDate(date.toString());
                         });
-                        widget.onSelect(date);
+                        int time = date.millisecondsSinceEpoch ~/ 1000;
+                        widget.onSelect(time);
                       },
                       currentTime: DateTime.now(),
                       locale: LocaleType.vi,
@@ -89,11 +95,13 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
                   : DatePicker.showDateTimePicker(
                       context,
                       showTitleActions: true,
-                      onConfirm: (date) {
+                      onConfirm: (DateTime date) {
                         setState(() {
-                          dateText = AppValue.formatDate(date.toString());
+                          dateText =
+                              AppValue.formatStringDateTime(date.toString());
                         });
-                        widget.onSelect(date);
+                        int time = date.millisecondsSinceEpoch ~/ 1000;
+                        widget.onSelect(time);
                       },
                       currentTime: DateTime.now(),
                       locale: LocaleType.vi,

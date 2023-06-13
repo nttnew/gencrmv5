@@ -32,6 +32,7 @@ class TreeWidget extends StatefulWidget {
 
 class _TreeWidgetState extends State<TreeWidget> {
   bool isShow = false;
+  bool isCheck = true;
 
   List<TreeNodeData> _setTreeData(
     TreeNodeData node,
@@ -133,7 +134,8 @@ class _TreeWidgetState extends State<TreeWidget> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              widget.bloc.resetData();
+                              isCheck = !isCheck;
+                              widget.bloc.resetData(isCheck);
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -145,7 +147,7 @@ class _TreeWidgetState extends State<TreeWidget> {
                                 vertical: 4,
                               ),
                               child: WidgetText(
-                                title: 'Bỏ chọn',
+                                title: 'Tất cả',
                                 style: AppStyle.DEFAULT_LABEL_PRODUCT,
                               ),
                             ),

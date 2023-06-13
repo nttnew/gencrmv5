@@ -11,7 +11,7 @@ import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
 import 'package:gen_crm/bloc/product_customer_module/product_customer_module_bloc.dart';
 import 'package:gen_crm/bloc/product_module/product_module_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
-import 'package:gen_crm/screens/menu/home/customer/input_dropDown.dart';
+import 'package:gen_crm/screens/menu/home/customer/widget/input_dropDown.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/widget_field_input_percent.dart';
@@ -27,9 +27,7 @@ import '../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import '../../../bloc/contract/attack_bloc.dart';
 import '../../../bloc/contract/contract_bloc.dart';
 import '../../../bloc/detail_product_customer/detail_product_customer_bloc.dart';
-import '../../../bloc/job_contract/job_contract_bloc.dart';
 import '../../../bloc/support/support_bloc.dart';
-import '../../../bloc/support_contract_bloc/support_contract_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
 import '../../../models/model_data_add.dart';
 import '../../../models/widget_input_date.dart';
@@ -435,12 +433,6 @@ class _FormAddDataState extends State<FormAddData> {
                         WorkBloc.of(context).add(InitGetListWorkEvent());
                       } else if (type == ADD_SUPPORT) {
                         SupportBloc.of(context).add(InitGetSupportEvent());
-                      } else if (type == ADD_SUPPORT_CONTRACT) {
-                        SupportContractBloc.of(context)
-                            .add(InitGetSupportContractEvent(int.parse(id)));
-                      } else if (type == ADD_JOB_CONTRACT) {
-                        JobContractBloc.of(context)
-                            .add(InitGetJobContractEvent(int.parse(id)));
                       } else if (type == PRODUCT_TYPE) {
                         ProductModuleBloc.of(context)
                             .add(InitGetListProductModuleEvent());
@@ -928,42 +920,32 @@ class _FormAddDataState extends State<FormAddData> {
                             : data.field_type == "DATE"
                                 ? WidgetInputDate(
                                     data: data,
-                                    onSelect: (date) {
+                                    dateText: data.field_set_value,
+                                    onSelect: (int date) {
                                       addData[indexParent]
-                                              .data[indexChild]
-                                              .value =
-                                          (date.millisecondsSinceEpoch / 1000)
-                                              .floor();
+                                          .data[indexChild]
+                                          .value = date;
                                     },
-                                    onInit: () {
-                                      DateTime date = DateTime.now();
+                                    onInit: (v) {
                                       addData[indexParent]
-                                              .data[indexChild]
-                                              .value =
-                                          (date.millisecondsSinceEpoch / 1000)
-                                              .floor();
+                                          .data[indexChild]
+                                          .value = v;
                                     },
                                   )
                                 : data.field_type == "DATETIME"
                                     ? WidgetInputDate(
                                         isDate: false,
                                         data: data,
-                                        onSelect: (date) {
+                                        dateText: data.field_set_value,
+                                        onSelect: (int date) {
                                           addData[indexParent]
-                                                  .data[indexChild]
-                                                  .value =
-                                              (date.millisecondsSinceEpoch /
-                                                      1000)
-                                                  .floor();
+                                              .data[indexChild]
+                                              .value = date;
                                         },
-                                        onInit: () {
-                                          DateTime date = DateTime.now();
+                                        onInit: (v) {
                                           addData[indexParent]
-                                                  .data[indexChild]
-                                                  .value =
-                                              (date.millisecondsSinceEpoch /
-                                                      1000)
-                                                  .floor();
+                                              .data[indexChild]
+                                              .value = v;
                                         },
                                       )
                                     : data.field_type == "CHECK"

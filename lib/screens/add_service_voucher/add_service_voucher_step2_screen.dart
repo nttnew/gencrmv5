@@ -19,8 +19,8 @@ import '../../widgets/appbar_base.dart';
 import '../../widgets/multiple_widget.dart';
 import '../../widgets/widget_field_input_percent.dart';
 import '../../widgets/widget_text.dart';
-import '../menu/home/contract/product_contract.dart';
-import '../menu/home/customer/input_dropDown.dart';
+import '../menu/home/contract/widget/product_contract.dart';
+import '../menu/home/customer/widget/input_dropDown.dart';
 
 class AddServiceVoucherStepTwoScreen extends StatefulWidget {
   const AddServiceVoucherStepTwoScreen({Key? key}) : super(key: key);
@@ -291,27 +291,27 @@ class _AddServiceVoucherStepTwoScreenState
                                                                             onSelect: (data) {
                                                                               addData[indexParent].data[indexChild].value = data.join(",");
                                                                             })
-                                                                        : fieldType == "DATE"
+                                                                        : fieldData.field_type == "DATE"
                                                                             ? WidgetInputDate(
                                                                                 data: fieldData,
-                                                                                onSelect: (date) {
-                                                                                  addData[indexParent].data[indexChild].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                                dateText: fieldData.field_set_value,
+                                                                                onSelect: (int date) {
+                                                                                  addData[indexParent].data[indexChild].value = date;
                                                                                 },
-                                                                                onInit: () {
-                                                                                  DateTime date = DateTime.now();
-                                                                                  addData[indexParent].data[indexChild].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                                onInit: (v) {
+                                                                                  addData[indexParent].data[indexChild].value = v;
                                                                                 },
                                                                               )
-                                                                            : fieldType == "DATETIME"
+                                                                            : fieldData.field_type == "DATETIME"
                                                                                 ? WidgetInputDate(
                                                                                     isDate: false,
                                                                                     data: fieldData,
-                                                                                    onSelect: (date) {
-                                                                                      addData[indexParent].data[indexChild].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                                    dateText: fieldData.field_set_value,
+                                                                                    onSelect: (int date) {
+                                                                                      addData[indexParent].data[indexChild].value = date;
                                                                                     },
-                                                                                    onInit: () {
-                                                                                      DateTime date = DateTime.now();
-                                                                                      addData[indexParent].data[indexChild].value = (date.millisecondsSinceEpoch / 1000).floor();
+                                                                                    onInit: (v) {
+                                                                                      addData[indexParent].data[indexChild].value = v;
                                                                                     },
                                                                                   )
                                                                                 : fieldType == "PERCENTAGE"

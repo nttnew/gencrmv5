@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/product_customer_module/product_customer_module_bloc.dart';
-import 'package:gen_crm/screens/menu/home/product_customer/item_product_customer.dart';
+import 'package:gen_crm/screens/menu/home/product_customer/widget/item_product_customer.dart';
 import 'package:gen_crm/widgets/tree/tree_node_model.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
