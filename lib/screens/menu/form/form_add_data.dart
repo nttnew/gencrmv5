@@ -27,9 +27,7 @@ import '../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import '../../../bloc/contract/attack_bloc.dart';
 import '../../../bloc/contract/contract_bloc.dart';
 import '../../../bloc/detail_product_customer/detail_product_customer_bloc.dart';
-import '../../../bloc/job_contract/job_contract_bloc.dart';
 import '../../../bloc/support/support_bloc.dart';
-import '../../../bloc/support_contract_bloc/support_contract_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
 import '../../../models/model_data_add.dart';
 import '../../../models/widget_input_date.dart';
@@ -435,12 +433,6 @@ class _FormAddDataState extends State<FormAddData> {
                         WorkBloc.of(context).add(InitGetListWorkEvent());
                       } else if (type == ADD_SUPPORT) {
                         SupportBloc.of(context).add(InitGetSupportEvent());
-                      } else if (type == ADD_SUPPORT_CONTRACT) {
-                        SupportContractBloc.of(context)
-                            .add(InitGetSupportContractEvent(int.parse(id)));
-                      } else if (type == ADD_JOB_CONTRACT) {
-                        JobContractBloc.of(context)
-                            .add(InitGetJobContractEvent(int.parse(id)));
                       } else if (type == PRODUCT_TYPE) {
                         ProductModuleBloc.of(context)
                             .add(InitGetListProductModuleEvent());

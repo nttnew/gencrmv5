@@ -1,22 +1,26 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/contract/contract_bloc.dart';
 import 'package:gen_crm/bloc/contract/detail_contract_bloc.dart';
-import 'package:gen_crm/bloc/payment_contract/payment_contract_bloc.dart';
-import 'package:gen_crm/screens/menu/home/contract/widget/contract_job.dart';
 import 'package:gen_crm/screens/menu/home/contract/widget/contract_operation.dart';
 import 'package:gen_crm/screens/menu/home/contract/widget/contract_payment.dart';
-import 'package:gen_crm/screens/menu/home/contract/widget/contract_support.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
-import '../../../../bloc/job_contract/job_contract_bloc.dart';
-import '../../../../bloc/support_contract_bloc/support_contract_bloc.dart';
+import 'package:hexcolor/hexcolor.dart';
+import '../../../../bloc/list_note/list_note_bloc.dart';
+import '../../../../bloc/payment_contract/payment_contract_bloc.dart';
 import '../../../../src/app_const.dart';
+import '../../../../src/models/model_generator/job_chance.dart';
+import '../../../../src/models/model_generator/support.dart';
 import '../../../../src/src_index.dart';
+import '../../../../widgets/listview_loadmore_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../../../widgets/widget_appbar.dart';
+import '../../../../widgets/widget_text.dart';
 import '../../attachment/attachment.dart';
+import '../support/widget/item_support.dart';
 
 class DetailInfoContract extends StatefulWidget {
   const DetailInfoContract({Key? key}) : super(key: key);
@@ -29,25 +33,18 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
   String id = Get.arguments[0];
   String name = Get.arguments[1];
   List<ModuleThaoTac> list = [];
-
-  @override
-  void deactivate() {
-    DetailContractBloc.of(context).add(ReloadContractEvent());
-    super.deactivate();
-  }
+  late final DetailContractBloc _bloc;
+  late final ListNoteBloc _blocNote;
 
   @override
   void initState() {
     getThaoTac();
-    Future.delayed(Duration(milliseconds: 100), () {
-      DetailContractBloc.of(context)
-          .add(InitGetDetailContractEvent(int.parse(id)));
-      PaymentContractBloc.of(context)
-          .add(InitGetPaymentContractEvent(int.parse(id)));
-      JobContractBloc.of(context).add(InitGetJobContractEvent(int.parse(id)));
-      SupportContractBloc.of(context)
-          .add(InitGetSupportContractEvent(int.parse(id)));
-    });
+    PaymentContractBloc.of(context)
+        .add(InitGetPaymentContractEvent(int.parse(id)));
+    _bloc = DetailContractBloc(
+        userRepository: DetailContractBloc.of(context).userRepository);
+    _blocNote =
+        ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
     super.initState();
   }
 
@@ -67,7 +64,10 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd('Thêm công việc', ADD_JOB_CONTRACT, id: int.parse(id));
+        AppNavigator.navigateFormAdd('Thêm công việc', ADD_JOB_CONTRACT,
+            id: int.parse(id), onRefresh: () {
+          _bloc.controllerCV.reloadData();
+        });
       },
     ));
 
@@ -76,7 +76,10 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
       icon: ICONS.IC_ADD_SUPPORT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd('Thêm hỗ trợ', ADD_SUPPORT_CONTRACT, id: int.parse(id));
+        AppNavigator.navigateFormAdd('Thêm hỗ trợ', ADD_SUPPORT_CONTRACT,
+            id: int.parse(id), onRefresh: () {
+          _bloc.controllerHT.reloadData();
+        });
       },
     ));
 
@@ -85,7 +88,9 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(Module.HOP_DONG, id);
+        AppNavigator.navigateAddNoteScreen(Module.HOP_DONG, id, onRefresh: () {
+          _blocNote.add(RefreshEvent());
+        });
       },
     ));
 
@@ -107,7 +112,9 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditContractScreen(id);
+        AppNavigator.navigateEditContractScreen(id, onRefresh: () {
+          _bloc.add(InitGetDetailContractEvent(int.parse(id)));
+        });
       },
     ));
 
@@ -116,8 +123,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
-            onTap2: () => DetailContractBloc.of(context)
-                .add(InitDeleteContractEvent(int.parse(id))),
+            onTap2: () => _bloc.add(InitDeleteContractEvent(int.parse(id))),
             content: "Bạn chắc chắn muốn xóa không ?");
       },
     ));
@@ -127,6 +133,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<DetailContractBloc, DetailContractState>(
+        bloc: _bloc,
         listener: (context, state) async {
           if (state is SuccessDeleteContractState) {
             LoadingApi().popLoading();
@@ -199,29 +206,188 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                           children: [
                             ContractOperation(
                               id: id,
+                              bloc: _bloc,
+                              blocNote: _blocNote,
                             ),
                             ContractPayment(id: int.parse(id)),
-                            ContractJob(id: int.parse(id)),
-                            ContractSupport(id: id),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 25),
+                              child: ListViewLoadMoreBase(
+                                functionInit: (page, isInit) {
+                                  return _bloc.getJobContract(
+                                    id: int.parse(id),
+                                    page: page,
+                                    isInit: isInit,
+                                  );
+                                },
+                                itemWidget: (int index, data) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      AppNavigator.navigateDetailWork(
+                                          int.parse(data.id ?? ''),
+                                          data.name_job ?? '');
+                                    },
+                                    child: _tabBarWork(data),
+                                  );
+                                },
+                                controller: _bloc.controllerCV,
+                              ),
+                            ),
+                            ListViewLoadMoreBase(
+                              functionInit: (page, isInit) {
+                                return _bloc.getSupportContract(
+                                  id: int.parse(id),
+                                  page: page,
+                                  isInit: isInit,
+                                );
+                              },
+                              itemWidget: (int index, data) {
+                                return ItemSupport(
+                                  data: SupportItemData(
+                                    data.id,
+                                    data.name,
+                                    data.created_date,
+                                    data.status,
+                                    data.color,
+                                    data.total_note,
+                                    CustomerData(
+                                      data.khach_hang,
+                                      data.khach_hang,
+                                    ),
+                                    null,
+                                  ),
+                                );
+                              },
+                              controller: _bloc.controllerHT,
+                            ),
                           ],
                         ),
                       ),
-                      BlocBuilder<DetailContractBloc, DetailContractState>(
-                        builder: (context, state) {
-                          return Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 25),
-                            child: ButtonThaoTac(onTap: () {
-                              showThaoTac(context, list);
-                            }),
-                          );
-                        },
-                      )
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: ButtonThaoTac(onTap: () {
+                          showThaoTac(context, list);
+                        }),
+                      ),
                     ],
                   )),
             )
           ],
         ),
+      ),
+    );
+  }
+
+  _tabBarWork(DataFormAdd data) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 20),
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      decoration: BoxDecoration(
+        color: COLORS.WHITE,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(width: 1, color: Colors.white),
+        boxShadow: [
+          BoxShadow(
+            color: COLORS.BLACK.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 5,
+          )
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                child: WidgetText(
+                  title: data.name_job ?? "",
+                  style: AppStyle.DEFAULT_TITLE_PRODUCT
+                      .copyWith(color: COLORS.TEXT_COLOR),
+                ),
+                width: AppValue.widths * 0.7,
+              ),
+              Image.asset(
+                ICONS.IC_RED_PNG,
+                color: (data.color != null && data.color != "")
+                    ? HexColor(data.color!)
+                    : COLORS.PRIMARY_COLOR,
+              )
+            ],
+          ),
+          AppValue.vSpaceTiny,
+          if (data.name_customer?.isNotEmpty ?? false) ...[
+            Row(
+              children: [
+                SvgPicture.asset(
+                  ICONS.IC_USER2_SVG,
+                  color: Color(0xffE75D18),
+                ),
+                AppValue.hSpaceTiny,
+                WidgetText(
+                    title: data.name_customer ?? "",
+                    style: AppStyle.DEFAULT_LABEL_PRODUCT),
+              ],
+            ),
+            AppValue.vSpaceTiny,
+          ],
+          if (data.status_job?.isNotEmpty ?? false) ...[
+            Row(
+              children: [
+                SvgPicture.asset(
+                  ICONS.IC_DANG_XU_LY_SVG,
+                  color: (data.color != null && data.color != "")
+                      ? HexColor(data.color!)
+                      : COLORS.PRIMARY_COLOR,
+                ),
+                AppValue.hSpaceTiny,
+                WidgetText(
+                  title: data.status_job ?? '',
+                  style: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                      color: (data.color != null && data.color != "")
+                          ? HexColor(data.color ?? 'fff-fff')
+                          : COLORS.PRIMARY_COLOR),
+                ),
+              ],
+            ),
+            AppValue.vSpaceTiny,
+          ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Image.asset(
+                    ICONS.IC_DATE_PNG,
+                    height: 20,
+                    width: 20,
+                  ),
+                  AppValue.hSpaceTiny,
+                  WidgetText(
+                      title: data.start_date ?? "",
+                      style: AppStyle.DEFAULT_LABEL_PRODUCT
+                          .copyWith(color: Colors.grey)),
+                ],
+              ),
+              Row(
+                children: [
+                  SvgPicture.asset(ICONS.IC_MESS),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  WidgetText(
+                    title: data.total_comment.toString(),
+                    style: AppStyle.DEFAULT_14
+                        .copyWith(color: COLORS.TEXT_BLUE_BOLD),
+                  )
+                ],
+              )
+            ],
+          ),
+        ],
       ),
     );
   }

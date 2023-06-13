@@ -6,8 +6,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:rxdart/rxdart.dart';
-import '../../../bloc/support/detail_support_bloc.dart';
-import '../../../bloc/work/detail_work_bloc.dart';
 import '../../../src/app_const.dart';
 import '../../../src/src_index.dart';
 import '../../../widgets/appbar_base.dart';
@@ -63,14 +61,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
             content: "Thêm mới check in thành công",
             onTap1: () {
               Get.back();
-              if (module == ModuleMy.CSKH) {
-                DetailSupportBloc.of(context)
-                    .add(InitGetDetailSupportEvent(id));
-              } else if (module == ModuleMy.CONG_VIEC) {
-                DetailWorkBloc.of(context)
-                    .add(InitGetDetailWorkEvent(int.parse(id)));
-              }
-              Navigator.pop(context);
+              Get.back();
             },
           );
         } else if (state is ErrorCheckInState) {

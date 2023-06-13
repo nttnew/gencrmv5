@@ -175,8 +175,11 @@ class AppNavigator {
         if (onRefresh != null) onRefresh();
       });
 
-  static navigateEditContractScreen(String id) async =>
-      await Get.toNamed(ROUTE_NAMES.EDIT_CONTRACT, arguments: id);
+  static navigateEditContractScreen(String id, {Function? onRefresh}) async =>
+      await Get.toNamed(ROUTE_NAMES.EDIT_CONTRACT, arguments: id)
+          ?.whenComplete(() {
+        if (onRefresh != null) onRefresh();
+      });
 
   static navigateAddNoteScreen(String module, String id,
           {Function? onRefresh}) async =>
@@ -199,8 +202,12 @@ class AppNavigator {
   static navigateDetailProduct(String title, String id) async =>
       await Get.toNamed(ROUTE_NAMES.DETAIL_PRODUCT, arguments: [title, id]);
 
-  static navigateCheckIn(String id, String module, String type) async =>
-      await Get.toNamed(ROUTE_NAMES.CHECK_IN, arguments: [id, module, type]);
+  static navigateCheckIn(String id, String module, String type,
+          {Function? onRefresh}) async =>
+      await Get.toNamed(ROUTE_NAMES.CHECK_IN, arguments: [id, module, type])
+          ?.whenComplete(() {
+        if (onRefresh != null) onRefresh();
+      });
 
   static navigateProductCustomer(String title) async =>
       await Get.toNamed(ROUTE_NAMES.PRODUCT_CUSTOMER, arguments: title);

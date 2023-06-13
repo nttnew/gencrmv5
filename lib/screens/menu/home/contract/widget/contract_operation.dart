@@ -11,8 +11,14 @@ import '../../../../../src/src_index.dart';
 import '../../../../../widgets/widget_line.dart';
 
 class ContractOperation extends StatefulWidget {
-  ContractOperation({Key? key, required this.id}) : super(key: key);
-
+  ContractOperation({
+    Key? key,
+    required this.id,
+    required this.bloc,
+    required this.blocNote,
+  }) : super(key: key);
+  final ListNoteBloc blocNote;
+  final DetailContractBloc bloc;
   final String id;
 
   @override
@@ -21,55 +27,71 @@ class ContractOperation extends StatefulWidget {
 
 class _ContractOperationState extends State<ContractOperation>
     with AutomaticKeepAliveClientMixin {
-  late final ListNoteBloc _bloc;
+  late final ListNoteBloc _blocNote;
+  late final DetailContractBloc _bloc;
+
   @override
   void initState() {
-    _bloc =
-        ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
+    _blocNote = widget.blocNote;
+    _bloc = widget.bloc;
+    _initData();
     super.initState();
+  }
+
+  _initData() {
+    _bloc.add(InitGetDetailContractEvent(int.parse(widget.id)));
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SingleChildScrollView(
-      child: BlocBuilder<DetailContractBloc, DetailContractState>(
-          builder: (context, state) {
-        if (state is SuccessDetailContractState)
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(25),
-                child: Column(
+    return RefreshIndicator(
+      onRefresh: () async {
+        _blocNote.add(RefreshEvent());
+        await _initData();
+      },
+      child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: BlocBuilder<DetailContractBloc, DetailContractState>(
+            bloc: _bloc,
+            builder: (context, state) {
+              if (state is SuccessDetailContractState)
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(state.listDetailContract.length,
-                          (index) {
-                        if (state.listDetailContract[index].data != null) {
-                          return _buildContent1(
-                              state.listDetailContract[index]);
-                        } else
-                          return Container();
-                      }),
+                    Padding(
+                      padding: const EdgeInsets.all(25),
+                      child: Column(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: List.generate(
+                                state.listDetailContract.length, (index) {
+                              if (state.listDetailContract[index].data !=
+                                  null) {
+                                return _buildContent1(
+                                    state.listDetailContract[index]);
+                              } else
+                                return Container();
+                            }),
+                          ),
+                          WidgetLine(
+                            color: Colors.grey,
+                          ),
+                        ],
+                      ),
                     ),
-                    WidgetLine(
-                      color: Colors.grey,
-                    ),
+                    ListNote(
+                      module: Module.HOP_DONG,
+                      id: widget.id,
+                      bloc: _blocNote,
+                    )
                   ],
-                ),
-              ),
-              ListNote(
-                module: Module.HOP_DONG,
-                id: widget.id,
-                bloc: _bloc,
-              )
-            ],
-          );
-        else
-          return Container();
-      }),
+                );
+              else
+                return Container();
+            }),
+      ),
     );
   }
 

@@ -24,9 +24,7 @@ import '../../../bloc/contract/attack_bloc.dart';
 import '../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../bloc/product_customer_module/product_customer_module_bloc.dart';
 import '../../../bloc/product_module/product_module_bloc.dart';
-import '../../../bloc/support/detail_support_bloc.dart';
 import '../../../bloc/support/support_bloc.dart';
-import '../../../bloc/work/detail_work_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
 import '../../../models/widget_input_date.dart';
 import '../../../src/models/model_generator/add_customer.dart';
@@ -184,8 +182,6 @@ class _FormEditState extends State<FormEdit> {
                             .add(InitGetListOrderEventChance());
                       }
                       if (type == EDIT_JOB) {
-                        DetailWorkBloc.of(context)
-                            .add(InitGetDetailWorkEvent(int.parse(id)));
                         WorkBloc.of(context).add(InitGetListWorkEvent());
                       }
                       if (type == 4) {
@@ -194,8 +190,6 @@ class _FormEditState extends State<FormEdit> {
                             .add(InitGetDetailContractEvent(int.parse(id)));
                       }
                       if (type == EDIT_SUPPORT) {
-                        DetailSupportBloc.of(context)
-                            .add(InitGetDetailSupportEvent(id));
                         SupportBloc.of(context).add(InitGetSupportEvent());
                       }
                       if (type == PRODUCT_TYPE) {

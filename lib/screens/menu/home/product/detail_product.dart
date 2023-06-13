@@ -7,6 +7,7 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../bloc/detail_product/detail_product_bloc.dart';
+import '../../../../bloc/product_module/product_module_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/loading_api.dart';
@@ -24,18 +25,19 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
   String id = Get.arguments[1];
   String title = Get.arguments[0];
   List<ModuleThaoTac> list = [];
-
-  @override
-  void deactivate() {
-    DetailProductBloc.of(context).add(ReloadProductEvent());
-    super.deactivate();
-  }
+  late final DetailProductBloc _bloc;
 
   @override
   void initState() {
     getThaoTac();
-    DetailProductBloc.of(context).add(InitGetDetailProductEvent(id));
+    _bloc = DetailProductBloc(
+        userRepository: DetailProductBloc.of(context).userRepository);
+    _init();
     super.initState();
+  }
+
+  _init() {
+    _bloc.add(InitGetDetailProductEvent(id));
   }
 
   getThaoTac() {
@@ -57,7 +59,11 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditDataScreen(id, PRODUCT_TYPE);
+        AppNavigator.navigateEditDataScreen(id, PRODUCT_TYPE, onRefresh: () {
+          _bloc.add(InitGetDetailProductEvent(id));
+          ProductModuleBloc.of(context)
+              .add(InitGetListProductModuleEvent());
+        });
       },
     ));
 
@@ -67,7 +73,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
             onTap2: () async {
-              DetailProductBloc.of(context).add(DeleteProductEvent(id));
+              _bloc.add(DeleteProductEvent(id));
             },
             content: "Bạn chắc chắn muốn xóa không ?");
       },
@@ -79,6 +85,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
     return Scaffold(
       appBar: AppbarBaseNormal(title),
       body: BlocListener<DetailProductBloc, DetailProductState>(
+        bloc: _bloc,
         listener: (context, state) async {
           if (state is SuccessDeleteProductState) {
             LoadingApi().popLoading();
@@ -86,6 +93,8 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
               title: MESSAGES.NOTIFICATION,
               content: "Xoá thành công",
               onTap1: () {
+                ProductModuleBloc.of(context)
+                    .add(InitGetListProductModuleEvent());
                 Navigator.pushNamedAndRemoveUntil(
                     context, ROUTE_NAMES.PRODUCT, ModalRoute.withName('/'),
                     arguments: title);
@@ -101,8 +110,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                 Get.back();
                 Get.back();
                 Get.back();
-                DetailProductBloc.of(context)
-                    .add(InitGetDetailProductEvent(id));
+                _bloc.add(InitGetDetailProductEvent(id));
               },
             );
           }
@@ -122,98 +130,112 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                 }),
               ),
               BlocBuilder<DetailProductBloc, DetailProductState>(
+                  bloc: _bloc,
                   builder: (context, state) {
-                if (state is UpdateGetDetailProductState)
-                  return SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(
-                          (state.productInfo?.data ?? []).length,
-                          (index) => Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    height: AppValue.heights * 0.04,
-                                  ),
-                                  WidgetText(
-                                    title:
-                                        (state.productInfo?.data ?? [])[index]
-                                                .groupName ??
-                                            '',
-                                    style: TextStyle(
-                                        fontFamily: "Quicksand",
-                                        color: HexColor("#263238"),
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 14),
-                                  ),
-                                  SizedBox(
-                                    height: AppValue.heights * 0.02,
-                                  ),
-                                  Column(
-                                    children: List.generate(
-                                        (state.productInfo?.data?[index].data ??
-                                                [])
-                                            .length,
-                                        (index1) => state
-                                                        .productInfo
-                                                        ?.data?[index]
-                                                        .data?[index1]
-                                                        .valueField !=
-                                                    null &&
-                                                state
-                                                        .productInfo
-                                                        ?.data?[index]
-                                                        .data?[index1]
-                                                        .valueField !=
-                                                    ''
-                                            ? Column(
-                                                children: [
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      WidgetText(
-                                                        title: state
-                                                            .productInfo
-                                                            ?.data?[index]
-                                                            .data?[index1]
-                                                            .labelField,
-                                                        style: LabelStyle(),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 8,
-                                                      ),
-                                                      Expanded(
-                                                        child: WidgetText(
-                                                            title: state
-                                                                .productInfo
-                                                                ?.data?[index]
-                                                                .data?[index1]
-                                                                .valueField,
-                                                            textAlign:
-                                                                TextAlign.right,
-                                                            style:
-                                                                ValueStyle()),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height:
-                                                        AppValue.heights * 0.02,
-                                                  ),
-                                                ],
-                                              )
-                                            : SizedBox()),
-                                  ),
-                                  LineHorizontal(),
-                                ],
-                              )),
-                    ),
-                  );
-                else
-                  return SizedBox();
-              }),
+                    if (state is UpdateGetDetailProductState)
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          await _init();
+                        },
+                        child: SingleChildScrollView(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: List.generate(
+                                (state.productInfo?.data ?? []).length,
+                                (index) => Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: AppValue.heights * 0.04,
+                                        ),
+                                        WidgetText(
+                                          title: (state.productInfo?.data ??
+                                                      [])[index]
+                                                  .groupName ??
+                                              '',
+                                          style: TextStyle(
+                                              fontFamily: "Quicksand",
+                                              color: HexColor("#263238"),
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 14),
+                                        ),
+                                        SizedBox(
+                                          height: AppValue.heights * 0.02,
+                                        ),
+                                        Column(
+                                          children: List.generate(
+                                              (state.productInfo?.data?[index]
+                                                          .data ??
+                                                      [])
+                                                  .length,
+                                              (index1) => state
+                                                              .productInfo
+                                                              ?.data?[index]
+                                                              .data?[index1]
+                                                              .valueField !=
+                                                          null &&
+                                                      state
+                                                              .productInfo
+                                                              ?.data?[index]
+                                                              .data?[index1]
+                                                              .valueField !=
+                                                          ''
+                                                  ? Column(
+                                                      children: [
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            WidgetText(
+                                                              title: state
+                                                                  .productInfo
+                                                                  ?.data?[index]
+                                                                  .data?[index1]
+                                                                  .labelField,
+                                                              style:
+                                                                  LabelStyle(),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 8,
+                                                            ),
+                                                            Expanded(
+                                                              child: WidgetText(
+                                                                  title: state
+                                                                      .productInfo
+                                                                      ?.data?[
+                                                                          index]
+                                                                      .data?[
+                                                                          index1]
+                                                                      .valueField,
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .right,
+                                                                  style:
+                                                                      ValueStyle()),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          height:
+                                                              AppValue.heights *
+                                                                  0.02,
+                                                        ),
+                                                      ],
+                                                    )
+                                                  : SizedBox()),
+                                        ),
+                                        LineHorizontal(),
+                                      ],
+                                    )),
+                          ),
+                        ),
+                      );
+                    else
+                      return SizedBox();
+                  }),
             ],
           ),
         ),
