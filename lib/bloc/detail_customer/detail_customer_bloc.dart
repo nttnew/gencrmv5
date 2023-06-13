@@ -78,15 +78,22 @@ class DetailCustomerBloc
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         try {
-          sdt = response.data?.customer_info?[0].data
-              ?.firstWhere((element) => element.id == 'di_dong')
-              .value_field
-              .toString();
+          CustomerInfoItem? item = response.data?.customer_info?.first.data
+              ?.firstWhere((element) => element.id == 'di_dong',
+                  orElse: () => CustomerInfoItem(
+                        '',
+                        '',
+                        '',
+                        '',
+                        0,
+                        false,
+                      ));
+          if (item != null && item.id != '') sdt = item.value_field.toString();
         } catch (e) {
           throw e;
         }
         yield UpdateGetDetailCustomerState(
-            response.data!.customer_info!, response.data!.customer_note!);
+            response.data?.customer_info ?? [], response.data!.customer_note!);
       } else if (response.code == 999) {
         loginSessionExpired();
       } else {
