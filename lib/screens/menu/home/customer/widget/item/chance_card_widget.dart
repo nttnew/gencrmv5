@@ -24,15 +24,18 @@ class _ChanceCardWidgetState extends State<ChanceCardWidget> {
           Row(
             children: [
               SvgPicture.asset(ICONS.IC_ICON1_SVG),
-              Padding(
-                padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                child: WidgetText(
-                  title: widget.data!.name ?? 'Chưa có',
-                  style: AppStyle.DEFAULT_18_BOLD
-                      .copyWith(color: COLORS.TEXT_COLOR),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: AppValue.widths * 0.03),
+                  child: WidgetText(
+                    title: widget.data?.name ?? 'Chưa có',
+                    style: AppStyle.DEFAULT_18_BOLD
+                        .copyWith(color: COLORS.TEXT_COLOR),
+                    maxLine: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
-              Spacer(),
               Container(
                 decoration: BoxDecoration(
                     color: widget.data!.color != null
