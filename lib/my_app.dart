@@ -36,8 +36,10 @@ class MyApp extends StatelessWidget {
         ],
       );
     } else {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-          overlays: [SystemUiOverlay.top]);
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.white,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ));
     }
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
