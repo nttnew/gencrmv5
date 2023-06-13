@@ -35,7 +35,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
   late TabController _tabController;
   int page = BASE_URL.PAGE_DEFAULT;
   bool drag = false;
-  final List<ModuleThaoTac> list = [];
+  List<ModuleThaoTac> list = [];
   late final ListNoteBloc _blocNote;
   late final DetailCustomerBloc _bloc;
 
@@ -52,12 +52,12 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     _bloc.initController(id);
     _blocNote =
         ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
-    getThaoTac();
     _tabController = TabController(length: 6, vsync: this);
     super.initState();
   }
 
   getThaoTac() {
+    list = [];
     if (_bloc.sdt != null)
       list.add(
         ModuleThaoTac(
@@ -187,6 +187,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     return Scaffold(
         appBar: AppbarBaseNormal(title),
         body: BlocListener<DetailCustomerBloc, DetailCustomerState>(
+          bloc: _bloc,
           listener: (context, state) async {
             if (state is SuccessDeleteCustomerState) {
               LoadingApi().popLoading();
@@ -214,6 +215,8 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                   Get.back();
                 },
               );
+            } else if (state is UpdateGetDetailCustomerState) {
+              getThaoTac();
             }
           },
           child: SafeArea(
