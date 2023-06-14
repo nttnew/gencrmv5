@@ -47,8 +47,8 @@ class _FormAddContractState extends State<FormAddContract> {
   double total = 0;
   late final FormAddBloc _bloc;
   late final List<List<dynamic>> listCustomerForChance;
-  String CA_NHAN = '0';
-  String TO_CHUC = '1';
+  String CA_NHAN = 'ca_nhan';
+  String TO_CHUC = 'to_chuc';
   String? id_first = Get.arguments[0];
   String? id_two = Get.arguments[1];
   String title = Get.arguments[2] ?? '';
