@@ -26,9 +26,9 @@ import '../../../bloc/product_customer_module/product_customer_module_bloc.dart'
 import '../../../bloc/product_module/product_module_bloc.dart';
 import '../../../bloc/support/support_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
-import '../../../models/widget_input_date.dart';
+import '../../../widgets/widget_input_date.dart';
 import '../../../src/models/model_generator/add_customer.dart';
-import '../../../src/pick_file_image.dart';
+import '../../../widgets/pick_file_image.dart';
 import '../../../src/src_index.dart';
 import '../../../widgets/appbar_base.dart';
 import '../../../widgets/field_input_select_multi.dart';

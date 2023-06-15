@@ -4,7 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart' as myLocation;
 import '../src/messages.dart';
-import '../src/show_dialog.dart';
+import 'show_dialog.dart';
 
 Future<Position?> determinePosition(BuildContext context) async {
   LocationPermission permission;

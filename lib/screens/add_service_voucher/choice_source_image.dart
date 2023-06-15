@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../src/messages.dart';
-import '../../src/show_dialog.dart';
+import '../../widgets/show_dialog.dart';
 
 class ChoiceSourceImage extends StatefulWidget {
   const ChoiceSourceImage({Key? key}) : super(key: key);

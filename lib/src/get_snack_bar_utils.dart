@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/src/color.dart';
 import 'package:gen_crm/src/messages.dart';
-import 'package:gen_crm/src/widget_handle.dart';
+import 'package:gen_crm/widgets/widget_handle.dart';
 
 class GetSnackBarUtils {
   static SnackStyle _snackStyle = SnackStyle.FLOATING;
