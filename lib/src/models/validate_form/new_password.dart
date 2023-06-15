@@ -17,5 +17,6 @@ class NewPassword extends FormzInput<String, NewPasswordValidationError> {
     if (value.isEmpty || _passwordRegex.hasMatch(value) == false) {
       return NewPasswordValidationError.invalid;
     }
+    return null;
   }
 }

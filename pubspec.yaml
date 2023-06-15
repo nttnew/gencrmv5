@@ -73,39 +73,16 @@ dependencies:
   signature: 5.3.2
   location: 4.4.0
 
-
-#dependency_overrides:
-#  firebase_core_platform_interface: 4.5.3
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  flutter_lints: ^2.0.0
+
+
 flutter:
   uses-material-design: true
   fonts:
-#    - family: NunitoSans
-#      fonts:
-#        - asset: assets/fonts/NunitoSans/NunitoSans-Regular.ttf
-#          weight: 400
-#        - asset: assets/fonts/NunitoSans/NunitoSans-Bold.ttf
-#          weight: 700
-#        - asset: assets/fonts/NunitoSans/NunitoSans-SemiBold.ttf
-#          weight: 600
-#        - asset: assets/fonts/NunitoSans/NunitoSans-Italic.ttf
-#          style: italic
-#
-#    - family: Roboto
-#      fonts:
-#        - asset: assets/fonts/Roboto/Roboto-Regular.ttf
-#          weight: 400
-#        - asset: assets/fonts/Roboto/Roboto-Bold.ttf
-#          weight: 700
-#        - asset: assets/fonts/Roboto/Roboto-Medium.ttf
-#          weight: 600
-#        - asset: assets/fonts/Roboto/Roboto-Italic.ttf
-#          style: italic
-
     - family: Quicksand
       fonts:
         - asset: assets/fonts/Quicksand/Quicksand-Regular.ttf
