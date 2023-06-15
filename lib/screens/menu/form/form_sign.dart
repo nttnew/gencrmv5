@@ -18,10 +18,10 @@ import 'package:rxdart/rxdart.dart';
 import 'package:signature/signature.dart';
 import '../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../src/src_index.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../../models/model_data_add.dart';
 import '../../../models/widget_input_date.dart';
 import '../../../src/pick_file_image.dart';
+import '../../../widgets/field_input_select_multi.dart';
 import '../../../widgets/multiple_widget.dart';
 
 class FormAddSign extends StatefulWidget {
@@ -283,55 +283,59 @@ class _FormAddSignState extends State<FormAddSign> {
         padding: EdgeInsets.zero,
         itemCount: list.length,
         itemBuilder: (context, indexChild) {
-          final dataFiled = list[indexChild];
-          return dataFiled.field_hidden != "1"
-              ? _checkHide(dataFiled.parent)
-                  ? (dataFiled.field_special ?? '') == "none-edit"
-                      ? _fieldInputCustomer(dataFiled, indexParent, indexChild,
+          final data = list[indexChild];
+          return data.field_hidden != "1"
+              ? _checkHide(data.parent)
+                  ? (data.field_special ?? '') == "none-edit"
+                      ? _fieldInputCustomer(data, indexParent, indexChild,
                           noEdit: true)
-                      : dataFiled.field_type == "SELECT"
+                      : data.field_type == "SELECT"
                           ? InputDropdown(
-                              dropdownItemList:
-                                  dataFiled.field_datasource ?? [],
-                              data: dataFiled,
+                              dropdownItemList: data.field_datasource ?? [],
+                              data: data,
                               onSuccess: (data) {
                                 addData[indexParent].data[indexChild].value =
                                     data;
                               },
-                              value: (dataFiled.field_set_value_datasource
+                              value: (data.field_set_value_datasource
                                           ?.isNotEmpty ??
                                       false)
-                                  ? (dataFiled.field_set_value_datasource?[0]
-                                          [1] ??
+                                  ? (data.field_set_value_datasource?[0][1] ??
                                       '')
                                   : '',
                             )
-                          : dataFiled.field_type == "TEXT_MULTI"
-                              ? _fieldInputTextMulti(
-                                  dataFiled.field_datasource ?? [],
-                                  dataFiled.field_label ?? '',
-                                  dataFiled.field_require ?? 0,
-                                  indexParent,
-                                  indexChild,
-                                  dataFiled.field_set_value_datasource?[0][0].toString() ??
-                                      '',
-                                  dataFiled.field_maxlength ?? '')
-                              : dataFiled.field_type == "HIDDEN"
+                          : data.field_type == "TEXT_MULTI"
+                              ? SelectMulti(
+                                  dropdownItemList: data.field_datasource ?? [],
+                                  label: data.field_label ?? '',
+                                  required: data.field_require ?? 0,
+                                  maxLength: data.field_maxlength ?? '',
+                                  initValue: addData[indexParent]
+                                      .data[indexChild]
+                                      .value
+                                      .toString()
+                                      .split(','),
+                                  onChange: (data) {
+                                    addData[indexParent]
+                                        .data[indexChild]
+                                        .value = data;
+                                  },
+                                )
+                              : data.field_type == "HIDDEN"
                                   ? Container()
-                                  : dataFiled.field_type == "TEXT_MULTI_NEW"
+                                  : data.field_type == "TEXT_MULTI_NEW"
                                       ? InputMultipleWidget(
-                                          data: dataFiled,
+                                          data: data,
                                           onSelect: (data) {
                                             addData[indexParent]
                                                 .data[indexChild]
                                                 .value = data.join(",");
                                           },
                                         )
-                                      : dataFiled.field_type == "DATE"
+                                      : data.field_type == "DATE"
                                           ? WidgetInputDate(
-                                              data: dataFiled,
-                                              dateText:
-                                                  dataFiled.field_set_value,
+                                              data: data,
+                                              dateText: data.field_set_value,
                                               onSelect: (int date) {
                                                 addData[indexParent]
                                                     .data[indexChild]
@@ -343,17 +347,16 @@ class _FormAddSignState extends State<FormAddSign> {
                                                     .value = v;
                                               },
                                             )
-                                          : dataFiled.field_type == "DATETIME"
+                                          : data.field_type == "DATETIME"
                                               ? WidgetInputDate(
                                                   isDate: false,
-                                                  data: dataFiled,
+                                                  data: data,
                                                   dateText:
-                                                      dataFiled.field_set_value,
+                                                      data.field_set_value,
                                                   onSelect: (int date) {
                                                     addData[indexParent]
-                                                            .data[indexChild]
-                                                            .value =
-                                                        date;
+                                                        .data[indexChild]
+                                                        .value = date;
                                                   },
                                                   onInit: (v) {
                                                     addData[indexParent]
@@ -361,7 +364,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                                         .value = v;
                                                   },
                                                 )
-                                              : dataFiled.field_type == "CHECK"
+                                              : data.field_type == "CHECK"
                                                   ? RenderCheckBox(
                                                       onChange: (check) {
                                                         addData[indexParent]
@@ -369,12 +372,12 @@ class _FormAddSignState extends State<FormAddSign> {
                                                                 .value =
                                                             check ? 1 : 0;
                                                       },
-                                                      data: dataFiled,
+                                                      data: data,
                                                     )
-                                                  : dataFiled.field_type ==
+                                                  : data.field_type ==
                                                           "PERCENTAGE"
                                                       ? FieldInputPercent(
-                                                          data: dataFiled,
+                                                          data: data,
                                                           onChanged: (text) {
                                                             addData[indexParent]
                                                                 .data[
@@ -382,22 +385,20 @@ class _FormAddSignState extends State<FormAddSign> {
                                                                 .value = text;
                                                           },
                                                         )
-                                                      : dataFiled.field_type ==
+                                                      : data.field_type ==
                                                               "SWITCH"
                                                           ? SwitchBase(
                                                               isHide: soTien ==
                                                                       0 &&
-                                                                  dataFiled
-                                                                          .field_name ==
+                                                                  data.field_name ==
                                                                       'da_thu_tien',
                                                               onChange:
                                                                   (check) {
-                                                                if (dataFiled
-                                                                        .field_name ==
+                                                                if (data.field_name ==
                                                                     'da_thu_tien') {
                                                                   daThuTien =
                                                                       check;
-                                                                } else if (dataFiled
+                                                                } else if (data
                                                                         .field_name ==
                                                                     'hd_yeu_cau_xuat') {
                                                                   ycXuatHoaDon =
@@ -409,42 +410,40 @@ class _FormAddSignState extends State<FormAddSign> {
                                                                         indexChild]
                                                                     .value = check;
                                                               },
-                                                              data: dataFiled,
+                                                              data: data,
                                                             )
-                                                          : dataFiled.field_type ==
+                                                          : data.field_type ==
                                                                   "RATE"
                                                               ? _rateWidget(
-                                                                  dataFiled,
+                                                                  data,
                                                                   indexParent,
                                                                   indexChild,
                                                                   value: int.parse(
-                                                                      dataFiled
-                                                                              .field_set_value ??
+                                                                      data.field_set_value ??
                                                                           '0'),
-                                                                  noEdit: dataFiled
-                                                                              .field_set_value !=
+                                                                  noEdit: data.field_set_value !=
                                                                           null &&
-                                                                      dataFiled
-                                                                              .field_set_value !=
+                                                                      data.field_set_value !=
                                                                           "0",
                                                                 )
-                                                              : dataFiled.field_type ==
+                                                              : data.field_type ==
                                                                       "TEXTAREA"
                                                                   ? _fieldInputTextarea(
-                                                                      dataFiled,
+                                                                      data,
                                                                       indexParent,
                                                                       indexChild,
-                                                                      noEdit: dataFiled.field_name == 'kh_danh_gia_nd'
-                                                                          ? (((dataFiled.field_set_value ?? '') != '') ||
+                                                                      noEdit: data.field_name == 'kh_danh_gia_nd'
+                                                                          ? (((data.field_set_value ?? '') != '') ||
                                                                               editStar)
                                                                           : false,
-                                                                      value: dataFiled.field_set_value ??
-                                                                          '')
+                                                                      value:
+                                                                          data.field_set_value ??
+                                                                              '')
                                                                   : _fieldInputCustomer(
-                                                                      dataFiled,
+                                                                      data,
                                                                       indexParent,
                                                                       indexChild,
-                                                                      value: dataFiled.field_name == 'hd_sotien'
+                                                                      value: data.field_name == 'hd_sotien'
                                                                           ? soTien.toInt().toString()
                                                                           : '')
                   : SizedBox()
@@ -612,7 +611,7 @@ class _FormAddSignState extends State<FormAddSign> {
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
-              style: titlestyle(),
+              style: AppStyle.DEFAULT_14W600,
               children: <TextSpan>[
                 data.field_require == 1
                     ? TextSpan(
@@ -663,7 +662,7 @@ class _FormAddSignState extends State<FormAddSign> {
                               ? data.field_set_value.toString()
                               : null,
                   decoration: InputDecoration(
-                    hintStyle: hintTextStyle(),
+                    hintStyle: AppStyle.DEFAULT_14W500,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     disabledBorder: InputBorder.none,
@@ -681,7 +680,7 @@ class _FormAddSignState extends State<FormAddSign> {
               textScaleFactor: MediaQuery.of(context).textScaleFactor,
               text: TextSpan(
                 text: 'Chưa thanh toán:',
-                style: titlestyle(),
+                style: AppStyle.DEFAULT_14W600,
                 children: <TextSpan>[
                   TextSpan(
                       text: " ${AppValue.format_money(soTien.toString())}",
@@ -707,27 +706,6 @@ class _FormAddSignState extends State<FormAddSign> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // RichText(
-          //   textScaleFactor: MediaQuery.of(context).textScaleFactor,
-          //   text: TextSpan(
-          //     text: data.field_label ?? '',
-          //     style: titlestyle(),
-          //     children: <TextSpan>[
-          //       data.field_require == 1
-          //           ? TextSpan(
-          //               text: '*',
-          //               style: TextStyle(
-          //                   fontFamily: "Quicksand",
-          //                   fontSize: 14,
-          //                   fontWeight: FontWeight.w500,
-          //                   color: Colors.red))
-          //           : TextSpan(),
-          //     ],
-          //   ),
-          // ),
-          // SizedBox(
-          //   height: 8,
-          // ),
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -764,7 +742,7 @@ class _FormAddSignState extends State<FormAddSign> {
                   decoration: InputDecoration(
                     hintText: // noEdit ? null :
                         data.field_label,
-                    hintStyle: hintTextStyle(),
+                    hintStyle: AppStyle.DEFAULT_14W500,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     disabledBorder: InputBorder.none,
@@ -796,7 +774,7 @@ class _FormAddSignState extends State<FormAddSign> {
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
-              style: titlestyle(),
+              style: AppStyle.DEFAULT_14W600,
               children: <TextSpan>[
                 data.field_require == 1
                     ? TextSpan(
@@ -861,113 +839,7 @@ class _FormAddSignState extends State<FormAddSign> {
     );
   }
 
-  Widget _fieldInputTextMulti(
-      List<List<dynamic>> dropdownItemList,
-      String label,
-      int required,
-      int indexParent,
-      int indexChild,
-      String value,
-      String maxLength) {
-    List<ModelDataAdd> dropdow = [];
-    int indexDefault = -1;
-    for (int i = 0; i < dropdownItemList.length; i++) {
-      dropdow.add(ModelDataAdd(
-          label: dropdownItemList[i][1], value: dropdownItemList[i][0]));
-      if (dropdownItemList[i][0].toString() == value) {
-        indexDefault = i;
-      }
-    }
-    return (Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: label,
-              style: TextStyle(
-                  fontFamily: "Quicksand",
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: COLORS.BLACK),
-              children: <TextSpan>[
-                required == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Quicksand",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red))
-                    : TextSpan(),
-              ],
-            ),
-          ),
-          AppValue.vSpaceTiny,
-          MultiSelectDialogField<ModelDataAdd>(
-              items: dropdow
-                  .map((e) => MultiSelectItem(e, e.label ?? ''))
-                  .toList(),
-              listType: MultiSelectListType.CHIP,
-              onConfirm: (values) {
-                if (maxLength != '' && values.length > int.parse(maxLength)) {
-                  values.removeRange(
-                      int.parse(maxLength) - 1, values.length - 1);
-                  ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
-                    content: "Bạn chỉ được chọn ${maxLength} giá trị",
-                  );
-                } else {
-                  List<String> res = [];
-                  for (int i = 0; i < values.length; i++) {
-                    res.add(values[i].value!.toString());
-                  }
-                  addData[indexParent].data[indexChild].value = res.join(",");
-                }
-              },
-              onSelectionChanged: (values) {
-                if (maxLength != "" && values.length > int.parse(maxLength)) {
-                  values.removeRange(
-                      int.parse(maxLength) - 1, values.length - 1);
-                }
-              },
-              searchable: true,
-              title: WidgetText(
-                title: label,
-                style: AppStyle.DEFAULT_18_BOLD,
-              ),
-              buttonText: Text(
-                label,
-                style: titlestyle(),
-              ),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: HexColor("#BEB4B4"))),
-              buttonIcon: Icon(
-                Icons.arrow_drop_down,
-                size: 25,
-              ),
-              initialValue: indexDefault != -1 ? [dropdow[indexDefault]] : [],
-              selectedItemsTextStyle: AppStyle.DEFAULT_14,
-              itemsTextStyle: AppStyle.DEFAULT_14),
-        ],
-      ),
-    ));
-  }
 
-  TextStyle hintTextStyle() => TextStyle(
-      fontFamily: "Quicksand",
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-      color: COLORS.BLACK);
-
-  TextStyle titlestyle() => TextStyle(
-      fontSize: 14,
-      fontFamily: "Quicksand",
-      fontWeight: FontWeight.w600,
-      color: COLORS.BLACK);
 
   void onClickSave() {
     final Map<String, dynamic> data = {};

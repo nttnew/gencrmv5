@@ -75,7 +75,7 @@ class WidgetSearch extends StatelessWidget {
               child: TextFormField(
                 controller: inputController,
                 // onChanged: (change) => onChanged!(change),
-                onFieldSubmitted: (v) {
+                onChanged: (v) {
                   onSubmit(v);
                 },
                 enabled: enabled,

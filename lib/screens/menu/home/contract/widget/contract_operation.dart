@@ -4,11 +4,9 @@ import 'package:gen_crm/bloc/contract/detail_contract_bloc.dart';
 import 'package:gen_crm/screens/menu/home/customer/widget/list_note.dart';
 import 'package:gen_crm/widgets/line_horizontal_widget.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
-
 import '../../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../../src/models/model_generator/detail_contract.dart';
 import '../../../../../src/src_index.dart';
-import '../../../../../widgets/widget_line.dart';
 
 class ContractOperation extends StatefulWidget {
   ContractOperation({
@@ -74,9 +72,6 @@ class _ContractOperationState extends State<ContractOperation>
                               } else
                                 return Container();
                             }),
-                          ),
-                          WidgetLine(
-                            color: Colors.grey,
                           ),
                         ],
                       ),

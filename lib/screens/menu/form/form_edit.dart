@@ -30,8 +30,8 @@ import '../../../models/widget_input_date.dart';
 import '../../../src/models/model_generator/add_customer.dart';
 import '../../../src/pick_file_image.dart';
 import '../../../src/src_index.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../../widgets/appbar_base.dart';
+import '../../../widgets/field_input_select_multi.dart';
 import '../../../widgets/loading_api.dart';
 import '../../../widgets/multiple_widget.dart';
 import '../../../widgets/widget_field_input_percent.dart';
@@ -339,7 +339,8 @@ class _FormEditState extends State<FormEdit> {
     return data.field_hidden != "1"
         ? data.field_special == "none-edit"
             ? (data.field_name == "so_dien_thoai"
-                ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
+                ? BlocBuilder<PhoneBloc, PhoneState>(
+                    builder: (context, stateA) {
                     if (stateA is SuccessPhoneState) {
                       return _fieldInputCustomer(
                         data,
@@ -427,18 +428,20 @@ class _FormEditState extends State<FormEdit> {
                             ? data.field_set_value_datasource![0][1].toString()
                             : '')))
                 : data.field_type == "TEXT_MULTI"
-                    ? _fieldInputTextMulti(
-                        data.field_datasource!,
-                        data.field_label!,
-                        data.field_require!,
-                        indexParent,
-                        indexChild,
-                        (data.field_set_value_datasource != "" &&
-                                data.field_set_value_datasource != null &&
-                                data.field_set_value_datasource!.length > 0)
-                            ? data.field_set_value_datasource![0][0].toString()
-                            : "",
-                        data.field_maxlength ?? '')
+                    ? SelectMulti(
+                        dropdownItemList: data.field_datasource ?? [],
+                        label: data.field_label ?? '',
+                        required: data.field_require ?? 0,
+                        maxLength: data.field_maxlength ?? '',
+                        initValue: addData[indexParent]
+                            .data[indexChild]
+                            .value
+                            .toString()
+                            .split(','),
+                        onChange: (data) {
+                          addData[indexParent].data[indexChild].value = data;
+                        },
+                      )
                     : data.field_type == "HIDDEN"
                         ? Container()
                         : data.field_type == "TEXT_MULTI_NEW"
@@ -462,10 +465,11 @@ class _FormEditState extends State<FormEdit> {
                                           .data[indexChild]
                                           .value = date;
                                     },
-    onInit: (v) {
-    addData[indexParent].data[indexChild].value=v;
-    },
-
+                                    onInit: (v) {
+                                      addData[indexParent]
+                                          .data[indexChild]
+                                          .value = v;
+                                    },
                                   )
                                 : data.field_type == "DATETIME"
                                     ? WidgetInputDate(
@@ -477,9 +481,11 @@ class _FormEditState extends State<FormEdit> {
                                               .data[indexChild]
                                               .value = date;
                                         },
-      onInit: (v) {
-        addData[indexParent].data[indexChild].value=v;
-      },
+                                        onInit: (v) {
+                                          addData[indexParent]
+                                              .data[indexChild]
+                                              .value = v;
+                                        },
                                       )
                                     : data.field_type == "CHECK"
                                         ? RenderCheckBox(
@@ -499,7 +505,8 @@ class _FormEditState extends State<FormEdit> {
                                                       .value = text;
                                                 },
                                               )
-                                            : data.field_name == 'chi_tiet_xe' &&
+                                            : data.field_name ==
+                                                        'chi_tiet_xe' &&
                                                     data.field_type == 'TEXT'
                                                 ? TypeCarBase(
                                                     data,
@@ -514,8 +521,10 @@ class _FormEditState extends State<FormEdit> {
                                                           .value = v;
                                                     },
                                                   )
-                                                : _fieldInputCustomer(data, indexParent, indexChild,
-                                                    value: data.field_set_value.toString())
+                                                : _fieldInputCustomer(data,
+                                                    indexParent, indexChild,
+                                                    value: data.field_set_value
+                                                        .toString())
         : SizedBox();
   }
 
@@ -525,7 +534,7 @@ class _FormEditState extends State<FormEdit> {
       children: [
         Text(
           "Hình ảnh",
-          style: titlestyle(),
+          style: AppStyle.DEFAULT_14W600,
         ),
         SizedBox(
           height: AppValue.heights * 0.005,
@@ -547,7 +556,7 @@ class _FormEditState extends State<FormEdit> {
                   decoration: InputDecoration(
                     hintText: "Tải hình ảnh",
                     enabled: false,
-                    hintStyle: hintTextStyle(),
+                    hintStyle: AppStyle.DEFAULT_14W500,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     disabledBorder: InputBorder.none,
@@ -581,7 +590,7 @@ class _FormEditState extends State<FormEdit> {
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
-              style: titlestyle(),
+              style: AppStyle.DEFAULT_14W600,
               children: <TextSpan>[
                 data.field_require == 1
                     ? TextSpan(
@@ -624,7 +633,7 @@ class _FormEditState extends State<FormEdit> {
                   readOnly: noEdit,
                   initialValue: value == "null" ? "" : value,
                   decoration: InputDecoration(
-                      hintStyle: hintTextStyle(),
+                      hintStyle: AppStyle.DEFAULT_14W500,
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
@@ -638,111 +647,6 @@ class _FormEditState extends State<FormEdit> {
     );
   }
 
-  Widget _fieldInputTextMulti(
-      List<List<dynamic>> dropdownItemList,
-      String label,
-      int required,
-      int indexParent,
-      int indexChild,
-      String value,
-      String maxLength) {
-    List<ModelDataAdd> dropdow = [];
-    int indexParentDefault = -1;
-
-    for (int i = 0; i < dropdownItemList.length; i++) {
-      if (dropdownItemList[i][1] != null && dropdownItemList[i][0] != null) {
-        dropdow.add(ModelDataAdd(
-            label: dropdownItemList[i][1], value: dropdownItemList[i][0]));
-        if (dropdownItemList[i][0].toString() == value.toString()) {
-          indexParentDefault = i;
-        } else {}
-      }
-    }
-    return (Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: label,
-              style: TextStyle(
-                  fontFamily: "Quicksand",
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: COLORS.BLACK),
-              children: <TextSpan>[
-                required == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Quicksand",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.red))
-                    : TextSpan(),
-              ],
-            ),
-          ),
-          AppValue.vSpaceTiny,
-          MultiSelectDialogField<ModelDataAdd>(
-              items: dropdow
-                  .map((e) => MultiSelectItem(e, e.label ?? ''))
-                  .toList(),
-              listType: MultiSelectListType.CHIP,
-              onConfirm: (values) {
-                // _selectedAnimals = values;
-                if (maxLength != "" && values.length > int.parse(maxLength)) {
-                  values.removeRange(int.parse(maxLength), values.length);
-                  ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
-                    content: "Bạn chỉ được chọn ${maxLength} giá trị",
-                  );
-                } else {
-                  List<String> res = [];
-                  for (int i = 0; i < values.length; i++) {
-                    res.add(values[i].value!.toString());
-                  }
-                  addData[indexParent].data[indexChild].value = res.join(",");
-                }
-              },
-              searchable: true,
-              title: WidgetText(
-                title: label,
-                style: AppStyle.DEFAULT_18_BOLD,
-              ),
-              buttonText: Text(
-                label,
-                style: titlestyle(),
-              ),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: HexColor("#BEB4B4"))),
-              buttonIcon: Icon(
-                Icons.arrow_drop_down,
-                size: 25,
-              ),
-              initialValue:
-                  indexParentDefault != -1 ? [dropdow[indexParentDefault]] : [],
-              selectedItemsTextStyle: AppStyle.DEFAULT_14,
-              itemsTextStyle: AppStyle.DEFAULT_14),
-        ],
-      ),
-    ));
-  }
-
-  TextStyle hintTextStyle() => TextStyle(
-      fontFamily: "Quicksand",
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-      color: COLORS.BLACK);
-
-  TextStyle titlestyle() => TextStyle(
-      fontFamily: "Quicksand",
-      fontSize: 14,
-      fontWeight: FontWeight.w600,
-      color: COLORS.BLACK);
 
   void onClickSave() {
     final Map<String, dynamic> data = {};
