@@ -39,9 +39,12 @@ class DetailSupportBloc extends Bloc<DetailSupportEvent, DetailSupportState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessGetDetailSupportState(
             response.data ?? [], response.location);
-      } else
+      } else{
+        LoadingApi().popLoading();
         yield ErrorGetDetailSupportState(response.msg ?? '');
+      }
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorGetDetailSupportState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
@@ -55,9 +58,12 @@ class DetailSupportBloc extends Bloc<DetailSupportEvent, DetailSupportState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessDeleteSupportState();
-      } else
+      } else{
+        LoadingApi().popLoading();
         yield ErrorDeleteSupportState(response.msg ?? '');
+      }
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorDeleteSupportState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

@@ -40,9 +40,12 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
             1, null, response.data!.thoi_gian_mac_dinh!));
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
-      } else
+      } else{
+        LoadingApi().popLoading();
         yield ErrorReportWorkState(response.msg ?? '');
+      }
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorReportWorkState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

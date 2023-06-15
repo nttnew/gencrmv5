@@ -40,6 +40,7 @@ class ReportGeneralBloc extends Bloc<ReportGeneralEvent, ReportGeneralState> {
       } else
         yield ErrorReportGeneralState(response.msg ?? '');
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorReportGeneralState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

@@ -42,6 +42,7 @@ class PhoneBloc extends Bloc<PhoneEvent, PhoneState> {
       } else
         yield ErrorPhoneState(response.msg ?? '');
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorPhoneState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

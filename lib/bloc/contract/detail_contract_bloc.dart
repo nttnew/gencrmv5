@@ -62,6 +62,7 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       } else
         yield ErrorDetailContractState(response.msg ?? '');
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorDetailContractState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

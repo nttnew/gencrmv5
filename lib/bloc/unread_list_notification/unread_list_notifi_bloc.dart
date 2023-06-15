@@ -36,9 +36,12 @@ class GetListUnReadNotifiBloc
         if ((response.code == BASE_URL.SUCCESS) ||
             (response.code == BASE_URL.SUCCESS_200)) {
           yield DeleteUnReadListNotifiState();
-        } else
+        } else{
+          LoadingApi().popLoading();
           yield ErrorDeleteUnReadListNotifiState(response.msg ?? "");
+        }
       } catch (e) {
+        LoadingApi().popLoading();
         yield ErrorDeleteUnReadListNotifiState(MESSAGES.CONNECT_ERROR);
         throw e;
       }
@@ -49,9 +52,12 @@ class GetListUnReadNotifiBloc
         if ((response.code == BASE_URL.SUCCESS) ||
             (response.code == BASE_URL.SUCCESS_200)) {
           yield ReadUnReadListNotifiState();
-        } else
+        } else{
+          LoadingApi().popLoading();
           yield ErrorReadUnReadListNotifiState(response.msg ?? "");
+        }
       } catch (e) {
+        LoadingApi().popLoading();
         yield ErrorReadUnReadListNotifiState(MESSAGES.CONNECT_ERROR);
         throw e;
       }
@@ -102,16 +108,15 @@ class GetListUnReadNotifiBloc
         } else {
           listNotifi!.addAll(response.data.list!);
         }
-
+        LoadingApi().popLoading();
         yield UpdateUnReadListNotifiState(
             list: listNotifi!,
             total: response.data.total!,
             limit: response.data.limit!,
             page: page);
-        LoadingApi().popLoading();
       } else {
-        yield ErrorGetUnReadListNotifiState(response.msg ?? "");
         LoadingApi().popLoading();
+        yield ErrorGetUnReadListNotifiState(response.msg ?? "");
       }
     } catch (e) {
       LoadingApi().popLoading();

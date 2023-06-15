@@ -62,12 +62,12 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessGetNoteOppState(response.data?.notes ?? []);
       } else {
-        yield ErrorGetNoteOppState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorGetNoteOppState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorGetNoteOppState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorGetNoteOppState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();

@@ -97,12 +97,12 @@ class DetailCustomerBloc
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
-        yield ErrorGetDetailCustomerState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorGetDetailCustomerState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorGetDetailCustomerState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorGetDetailCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -121,8 +121,8 @@ class DetailCustomerBloc
         yield ErrorDeleteCustomerState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorDeleteCustomerState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorDeleteCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();

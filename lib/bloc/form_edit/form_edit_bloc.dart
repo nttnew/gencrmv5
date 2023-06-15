@@ -58,12 +58,12 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormEditState(response.data!);
       } else {
-        yield ErrorFormEditState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormEditState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormEditState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormEditState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
