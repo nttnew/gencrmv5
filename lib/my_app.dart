@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
         SystemUiMode.immersiveSticky,
         overlays: [
           SystemUiOverlay.top,
-          // SystemUiOverlay.bottom,
         ],
       );
     } else {

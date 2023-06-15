@@ -115,7 +115,6 @@ Future main() async {
             priority: Priority.high,
             ticker: 'test ticker',
           );
-
           var iOSChannelSpecifics = const DarwinNotificationDetails();
           var platformChannelSpecifics = NotificationDetails(
               android: androidPlatformChannelSpecifics,
@@ -134,7 +133,7 @@ Future main() async {
             0, notification.title, notification.body, platformChannelSpecifics,
             payload: 'test');
       }
-    } else {}
+    }
   });
   if (defaultTargetPlatform == TargetPlatform.android) {}
   runApp(
@@ -278,7 +277,6 @@ Future main() async {
             create: (context) =>
                 GetInforAccBloc(userRepository: userRepository),
           ),
-
           BlocProvider<SupportBloc>(
             create: (context) => SupportBloc(userRepository: userRepository),
           ),
