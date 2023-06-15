@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gen_crm/src/src_index.dart';
-// ignore: import_of_legacy_library_into_null_safe
 
 class WidgetText extends StatelessWidget {
   final String? title;
@@ -30,6 +28,6 @@ class WidgetText extends StatelessWidget {
           ),
       overflow: overflow,
       maxLines: maxLine,
-    ).animate().fade();
+    );
   }
 }
