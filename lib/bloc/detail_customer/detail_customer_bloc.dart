@@ -94,7 +94,7 @@ class DetailCustomerBloc
         }
         yield UpdateGetDetailCustomerState(
             response.data?.customer_info ?? [], response.data!.customer_note!);
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         yield ErrorGetDetailCustomerState(response.msg ?? '');
@@ -103,7 +103,6 @@ class DetailCustomerBloc
     } catch (e) {
       yield ErrorGetDetailCustomerState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      loginSessionExpired();
       throw e;
     }
     LoadingApi().popLoading();
@@ -116,7 +115,7 @@ class DetailCustomerBloc
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessDeleteCustomerState();
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         yield ErrorDeleteCustomerState(response.msg ?? '');
@@ -124,7 +123,6 @@ class DetailCustomerBloc
     } catch (e) {
       yield ErrorDeleteCustomerState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      loginSessionExpired();
       throw e;
     }
     LoadingApi().popLoading();
@@ -143,7 +141,7 @@ class DetailCustomerBloc
           (response.code == BASE_URL.SUCCESS_200)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         LoadingApi().popLoading();
         loginSessionExpired();
       } else {
@@ -152,7 +150,6 @@ class DetailCustomerBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
     }
   }
 
@@ -169,8 +166,7 @@ class DetailCustomerBloc
           (response.code == BASE_URL.SUCCESS_200)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == 999) {
-        LoadingApi().popLoading();
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -178,7 +174,6 @@ class DetailCustomerBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
     }
   }
 
@@ -195,8 +190,7 @@ class DetailCustomerBloc
           (response.code == BASE_URL.SUCCESS_200)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == 999) {
-        LoadingApi().popLoading();
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -204,7 +198,6 @@ class DetailCustomerBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
     }
   }
 
@@ -221,8 +214,7 @@ class DetailCustomerBloc
           (response.code == BASE_URL.SUCCESS_200)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == 999) {
-        LoadingApi().popLoading();
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -230,7 +222,6 @@ class DetailCustomerBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
     }
   }
 
@@ -247,8 +238,7 @@ class DetailCustomerBloc
           (response.code == BASE_URL.SUCCESS_200)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == 999) {
-        LoadingApi().popLoading();
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -256,7 +246,6 @@ class DetailCustomerBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
     }
   }
 

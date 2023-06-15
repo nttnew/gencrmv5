@@ -62,7 +62,7 @@ class CarListReportBloc extends Bloc<CarListReportEvent, CarListReportState> {
         isTotal = (response.data?.lists?.length ?? 0) == BASE_URL.SIZE_DEFAULT;
         yield SuccessGetCarListReportState([...listData,...response.data?.lists ?? []]);
         listData.addAll(response.data?.lists ?? []);
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else{
         yield ErrorGetListCarListReportState(response.msg ?? '');
@@ -70,7 +70,6 @@ class CarListReportBloc extends Bloc<CarListReportEvent, CarListReportState> {
     } catch (e) {
       yield ErrorGetListCarListReportState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      loginSessionExpired();
       throw e;
     }
     LoadingApi().popLoading();

@@ -53,7 +53,6 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
     } catch (e) {
       yield ErrorGetDetailClueState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      loginSessionExpired();
       throw (e);
     }
     LoadingApi().popLoading();
@@ -74,7 +73,6 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
     } catch (e) {
       yield ErrorDeleteClueState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      loginSessionExpired();
       throw (e);
     }
     LoadingApi().popLoading();
@@ -93,7 +91,7 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         LoadingApi().popLoading();
         loginSessionExpired();
       } else {
@@ -102,7 +100,6 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
     }
   }
 

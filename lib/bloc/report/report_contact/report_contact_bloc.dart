@@ -46,14 +46,13 @@ class ReportContactBloc extends Bloc<ReportContactEvent, ReportContactState> {
           list = [...list!, ...response.data!.list!];
           yield SuccessReportContactState(list!, response.data!.total ?? "");
         }
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
-      } else
+      } else{
         yield ErrorReportContactState(response.msg ?? '');
+      }
     } catch (e) {
       yield ErrorReportContactState(MESSAGES.CONNECT_ERROR);
-      LoadingApi().popLoading();
-      loginSessionExpired();
       throw e;
     }
     LoadingApi().popLoading();

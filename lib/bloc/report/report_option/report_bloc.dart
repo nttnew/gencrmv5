@@ -38,14 +38,12 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
             response.data!.diem_ban!, response.data!.thoi_gian_mac_dinh!);
         ReportGeneralBloc.of(Get.context!).add(SelectReportGeneralEvent(
             1, null, response.data!.thoi_gian_mac_dinh!));
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorReportWorkState(response.msg ?? '');
     } catch (e) {
       yield ErrorReportWorkState(MESSAGES.CONNECT_ERROR);
-      LoadingApi().popLoading();
-      loginSessionExpired();
       throw e;
     }
     LoadingApi().popLoading();

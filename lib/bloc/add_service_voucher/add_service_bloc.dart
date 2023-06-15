@@ -302,7 +302,7 @@ class ServiceVoucherBloc
           LoadingApi().popLoading();
           yield SaveServiceVoucherState();
         }
-      } else if (statusCode == 999) {
+      } else if (statusCode == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         yield ErrorGetServiceVoucherState(
@@ -311,7 +311,6 @@ class ServiceVoucherBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
       yield ErrorGetServiceVoucherState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
@@ -364,11 +363,11 @@ class ServiceVoucherBloc
                 .toList() ??
             [];
         yield GetServiceVoucherState(list);
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
-        yield ErrorGetServiceVoucherState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorGetServiceVoucherState(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();

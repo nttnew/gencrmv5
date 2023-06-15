@@ -1,9 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
-
 import '../../api_resfull/user_repository.dart';
 import '../../src/base.dart';
 import '../../src/messages.dart';
@@ -44,8 +42,6 @@ class DetailSupportBloc extends Bloc<DetailSupportEvent, DetailSupportState> {
       } else
         yield ErrorGetDetailSupportState(response.msg ?? '');
     } catch (e) {
-      LoadingApi().popLoading();
-      loginSessionExpired();
       yield ErrorGetDetailSupportState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
@@ -62,8 +58,6 @@ class DetailSupportBloc extends Bloc<DetailSupportEvent, DetailSupportState> {
       } else
         yield ErrorDeleteSupportState(response.msg ?? '');
     } catch (e) {
-      LoadingApi().popLoading();
-      loginSessionExpired();
       yield ErrorDeleteSupportState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

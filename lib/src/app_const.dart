@@ -11,6 +11,7 @@ import 'package:plugin_pitel/services/pitel_service.dart';
 import 'package:plugin_pitel/services/sip_info_data.dart';
 import '../bloc/login/login_bloc.dart';
 import '../storages/share_local.dart';
+import '../widgets/loading_api.dart';
 import '../widgets/widget_text.dart';
 
 const int IS_AFTER = 1;
@@ -52,6 +53,7 @@ class TypeCheckIn {
 }
 
 void loginSessionExpired() {
+  LoadingApi().popLoading();
   ShowDialogCustom.showDialogBase(
     title: MESSAGES.NOTIFICATION,
     content: MESSAGES.PHIEN_DANG_NHAP_HET,
@@ -114,10 +116,7 @@ void handleRegisterBase(
     "dialPlan": null,
     "randomPort": null,
     "voicemail": null,
-    "wssUrl": 'wss://' +
-        outboundServer +
-        ':' +
-        port,
+    "wssUrl": 'wss://' + outboundServer + ':' + port,
     "userName": "${user}@${domain}",
     "apiDomain": domainSever, //apiDomain,
   });

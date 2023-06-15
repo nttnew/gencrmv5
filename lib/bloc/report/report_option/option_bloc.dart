@@ -45,14 +45,12 @@ class OptionBloc extends Bloc<OptionEvent, OptionState> {
         else if (type == 4)
           CarReportBloc.of(Get.context!).add(GetDashboardCar(
               time: response.data!.thoi_gian_mac_dinh.toString()));
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorOptionState(response.msg ?? '');
     } catch (e) {
       yield ErrorOptionState(MESSAGES.CONNECT_ERROR);
-      LoadingApi().popLoading();
-      loginSessionExpired();
       throw e;
     }
     LoadingApi().popLoading();

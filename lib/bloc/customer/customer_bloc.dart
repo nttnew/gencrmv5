@@ -65,13 +65,14 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
               response.data?.total ?? 0);
           listCus?.addAll(response.data?.list ?? []);
         }
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
-      } else
+      } else {
+        LoadingApi().popLoading();
         yield ErrorGetListCustomerState(response.msg ?? '');
+      }
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
       yield ErrorGetListCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
@@ -106,7 +107,7 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
           yield SuccessAddCustomerIndividualState(
               ['${response.id}', '${response.name}']);
         }
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();

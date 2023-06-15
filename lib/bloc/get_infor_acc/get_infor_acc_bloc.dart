@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../api_resfull/user_repository.dart';
-import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/messages.dart';
 import '../../src/models/model_generator/infor_acc.dart';
@@ -40,7 +39,6 @@ class GetInforAccBloc extends Bloc<GetInforAccEvent, GetInforAccState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
       yield ErrorGetInForAccState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

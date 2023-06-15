@@ -59,14 +59,13 @@ class GetListClueBloc extends Bloc<GetListClueEvent, ClueState> {
             [...listClueData ?? [], ...response.data?.list ?? []],
             response.data?.total ?? '0');
         listClueData?.addAll(response.data?.list ?? []);
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorGetListClueState(response.msg ?? '');
     } catch (e) {
-      yield ErrorGetListClueState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      loginSessionExpired();
+      yield ErrorGetListClueState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();

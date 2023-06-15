@@ -48,14 +48,14 @@ class CarReportBloc extends Bloc<CarReportEvent, CarReportState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessCarReportState(response.data);
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorGetListCarReportState(response.msg ?? '');
     } catch (e) {
-      yield ErrorGetListCarReportState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      loginSessionExpired();
+      yield ErrorGetListCarReportState(MESSAGES.CONNECT_ERROR);
+
       throw e;
     }
     LoadingApi().popLoading();

@@ -45,7 +45,7 @@ class GetListDetailChanceBloc
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield UpdateGetListDetailChanceState(response.data ?? []);
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         yield ErrorGetListDetailChanceState(response.msg ?? '');
@@ -54,7 +54,6 @@ class GetListDetailChanceBloc
     } catch (e) {
       yield ErrorGetListDetailChanceState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      loginSessionExpired();
       throw e;
     }
     LoadingApi().popLoading();
@@ -72,7 +71,6 @@ class GetListDetailChanceBloc
       }
     } catch (e) {
       yield ErrorDeleteChanceState(MESSAGES.CONNECT_ERROR);
-      loginSessionExpired();
       throw e;
     }
     LoadingApi().popLoading();
@@ -91,7 +89,7 @@ class GetListDetailChanceBloc
           (response.code == BASE_URL.SUCCESS_200)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         LoadingApi().popLoading();
         loginSessionExpired();
       } else {
@@ -100,7 +98,6 @@ class GetListDetailChanceBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
     }
   }
 
