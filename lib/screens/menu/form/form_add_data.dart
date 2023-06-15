@@ -30,9 +30,9 @@ import '../../../bloc/detail_product_customer/detail_product_customer_bloc.dart'
 import '../../../bloc/support/support_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
 import '../../../models/model_data_add.dart';
-import '../../../models/widget_input_date.dart';
+import '../../../widgets/widget_input_date.dart';
 import '../../../src/models/model_generator/login_response.dart';
-import '../../../src/pick_file_image.dart';
+import '../../../widgets/pick_file_image.dart';
 import '../../../src/src_index.dart';
 import '../../../storages/share_local.dart';
 import '../../../widgets/location_base.dart';

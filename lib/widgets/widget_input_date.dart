@@ -4,7 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../src/models/model_generator/add_customer.dart';
 import '../src/src_index.dart';
-import '../widgets/widget_text.dart';
+import 'widget_text.dart';
 
 class WidgetInputDate extends StatefulWidget {
   WidgetInputDate({

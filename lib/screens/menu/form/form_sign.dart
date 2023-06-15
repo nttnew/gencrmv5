@@ -19,8 +19,8 @@ import 'package:signature/signature.dart';
 import '../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../src/src_index.dart';
 import '../../../models/model_data_add.dart';
-import '../../../models/widget_input_date.dart';
-import '../../../src/pick_file_image.dart';
+import '../../../widgets/widget_input_date.dart';
+import '../../../widgets/pick_file_image.dart';
 import '../../../widgets/field_input_select_multi.dart';
 import '../../../widgets/multiple_widget.dart';
 
