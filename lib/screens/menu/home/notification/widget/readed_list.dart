@@ -10,10 +10,11 @@ class ReadList extends StatefulWidget {
   State<StatefulWidget> createState() => new _ReadListState();
 }
 
-class _ReadListState extends State<ReadList> {
+class _ReadListState extends State<ReadList>
+    with AutomaticKeepAliveClientMixin {
   int page = 1;
   int total = 0;
-  int lenght = 0;
+  int length = 0;
   ScrollController _scrollController = ScrollController();
   @override
   void initState() {
@@ -21,29 +22,29 @@ class _ReadListState extends State<ReadList> {
     _scrollController.addListener(() {
       if (_scrollController.offset ==
               _scrollController.position.maxScrollExtent &&
-          lenght < total) {
+          length < total) {
         GetListReadedNotifiBloc.of(context)
             .add(InitGetListReadedNotifiEvent(page + 1));
         page = page + 1;
-      } else {}
+      }
     });
     super.initState();
   }
 
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocListener<GetListReadedNotifiBloc, ReadedListNotifiState>(
       listener: (context, state) {
         if (state is DeleteReadedListNotifiState) {
           GetListReadedNotifiBloc.of(context)
               .add(InitGetListReadedNotifiEvent(1));
-        } else if (state is ErrorDeleteReadedListNotifiState) {
-        }
+        } else if (state is ErrorDeleteReadedListNotifiState) {}
       },
       child: BlocBuilder<GetListReadedNotifiBloc, ReadedListNotifiState>(
           builder: (context, state) {
         if (state is UpdateReadedListNotifiState) {
           total = int.parse(state.total);
-          lenght = state.list.length;
+          length = state.list.length;
           return ListView(
               controller: _scrollController,
               children: ListTile.divideTiles(
@@ -81,4 +82,7 @@ class _ReadListState extends State<ReadList> {
       ],
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

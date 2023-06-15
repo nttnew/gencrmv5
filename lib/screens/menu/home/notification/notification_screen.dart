@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/screens/menu/home/notification/widget/unread_list.dart';
-import 'package:gen_crm/widgets/line_horizontal_widget.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../widgets/appbar_base.dart';
 import 'widget/index.dart';
@@ -18,6 +17,7 @@ class NotificationScreen extends StatelessWidget {
             length: 2,
             child: Scaffold(
                 appBar: TabBar(
+                  padding: EdgeInsets.symmetric(horizontal: 25),
                   isScrollable: true,
                   labelColor: HexColor("#006CB1"),
                   unselectedLabelColor: HexColor("#697077"),
@@ -38,7 +38,6 @@ class NotificationScreen extends StatelessWidget {
                 body: Container(
                   child: Column(
                     children: [
-                      LineHorizontal(),
                       Expanded(
                         child: TabBarView(
                           children: [
