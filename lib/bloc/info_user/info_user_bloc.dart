@@ -27,20 +27,12 @@ class InfoUserBloc extends Bloc<InfoUserEvent, InfoUserState> {
 
   @override
   Stream<InfoUserState> mapEventToState(InfoUserEvent event) async* {
-    if (event is LoadResponseToken) {
-      yield* _mapResponseTokenToState();
-    } else if (event is InitDataEvent) {
+    if (event is InitDataEvent) {
       yield* _mapInfoUserState();
     } else if (event is AddDataEvent) {
       yield* _mapAddDataInfoUserState();
     } else if (event is UploadImagesEvent) {
       yield* _mapUploadImagesState(event.file, event.bloc);
-    }
-  }
-
-  Stream<InfoUserState> _mapResponseTokenToState() async* {
-    try {} catch (e) {
-      throw e;
     }
   }
 

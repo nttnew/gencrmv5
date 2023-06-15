@@ -46,13 +46,12 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
           (responseDetailClue.code == BASE_URL.SUCCESS_200)) {
         yield GetDetailClueState(responseDetailClue.data ?? []);
       } else {
-        yield ErrorGetDetailClueState(responseDetailClue.msg ?? '');
         LoadingApi().popLoading();
-        yield ErrorGetDetailClueState("${responseDetailClue.msg ?? ''}");
+        yield ErrorGetDetailClueState(responseDetailClue.msg ?? '');
       }
     } catch (e) {
-      yield ErrorGetDetailClueState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorGetDetailClueState(MESSAGES.CONNECT_ERROR);
       throw (e);
     }
     LoadingApi().popLoading();
@@ -71,8 +70,8 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
         yield ErrorDeleteClueState(responseDetailClue.msg ?? '');
       }
     } catch (e) {
-      yield ErrorDeleteClueState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorDeleteClueState(MESSAGES.CONNECT_ERROR);
       throw (e);
     }
     LoadingApi().popLoading();

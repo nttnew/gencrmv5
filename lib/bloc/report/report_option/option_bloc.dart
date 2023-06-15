@@ -47,9 +47,12 @@ class OptionBloc extends Bloc<OptionEvent, OptionState> {
               time: response.data!.thoi_gian_mac_dinh.toString()));
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
-      } else
+      } else{
+        LoadingApi().popLoading();
         yield ErrorOptionState(response.msg ?? '');
+      }
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorOptionState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

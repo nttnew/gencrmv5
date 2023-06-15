@@ -33,6 +33,7 @@ class GetInforBloc extends Bloc<GetInforEvent, InforState> {
       } else
         yield ErrorGetInforState(response.msg ?? '');
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorGetInforState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

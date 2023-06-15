@@ -103,12 +103,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -123,12 +123,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -143,12 +143,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -163,12 +163,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -183,12 +183,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -203,12 +203,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -223,12 +223,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
-        yield ErrorFormAddContactCustomerState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddContactCustomerState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddContactCustomerState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddContactCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -243,12 +243,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -267,8 +267,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
         LoadingApi().popLoading();
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -283,12 +283,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -303,12 +303,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -323,12 +323,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -343,12 +343,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -363,12 +363,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -383,12 +383,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -403,12 +403,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(response.data ?? []);
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -423,12 +423,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(response.data ?? []);
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -449,12 +449,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           soTien: response.chuathanhtoan,
         );
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -474,12 +474,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           response.data ?? [],
         );
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -498,12 +498,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           response.data ?? [],
         );
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -522,12 +522,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           response.data ?? [],
         );
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -546,12 +546,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           response.data ?? [],
         );
       } else {
-        yield ErrorFormAddCustomerOrState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorFormAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();

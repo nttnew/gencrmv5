@@ -65,9 +65,11 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
           list.addAll(response.data?.data_list ?? []);
         }
       } else {
+        LoadingApi().popLoading();
         yield ErrorGetListWorkState(response.msg ?? '');
       }
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorGetListWorkState(MESSAGES.CONNECT_ERROR);
       throw (e);
     }

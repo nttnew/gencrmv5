@@ -33,6 +33,7 @@ class GetPolicyBloc extends Bloc<GetPolicyEvent, PolicyState> {
       } else
         yield ErrorGetPolicyState(response.msg ?? '');
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorGetPolicyState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

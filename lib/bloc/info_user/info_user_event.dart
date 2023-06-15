@@ -6,8 +6,6 @@ abstract class InfoUserEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class LoadResponseToken extends InfoUserEvent {}
-
 class InitDataEvent extends InfoUserEvent {}
 
 class AddDataEvent extends InfoUserEvent {}

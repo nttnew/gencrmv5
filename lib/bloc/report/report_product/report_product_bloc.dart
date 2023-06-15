@@ -38,9 +38,12 @@ class ReportProductBloc extends Bloc<ReportProductEvent, ReportProductState> {
         yield SuccessReportProductState(response.data!.list);
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
-      } else
+      } else{
+        LoadingApi().popLoading();
         yield ErrorReportProductState(response.msg ?? '');
+      }
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorReportProductState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

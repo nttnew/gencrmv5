@@ -57,9 +57,12 @@ class SupportBloc extends Bloc<SupportEvent, SupportState> {
           yield SuccessGetSupportState(list ?? [], response.data.total ?? '0',
               response.data.filter ?? []);
         }
-      } else
+      } else{
+        LoadingApi().popLoading();
         yield ErrorGetSupportState(response.msg ?? '');
+      }
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorGetSupportState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

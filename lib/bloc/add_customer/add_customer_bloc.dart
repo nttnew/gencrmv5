@@ -63,8 +63,8 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState> {
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
-        yield ErrorGetEditCustomerState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorGetEditCustomerState(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();

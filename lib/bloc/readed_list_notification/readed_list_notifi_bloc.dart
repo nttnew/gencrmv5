@@ -61,6 +61,7 @@ class GetListReadedNotifiBloc
       } else
         yield ErrorGetReadedListNotifiState(response.msg ?? "");
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorGetReadedListNotifiState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

@@ -52,6 +52,7 @@ class CustomerContractBloc
       } else
         yield ErrorGetContractCustomerState(response.msg ?? '');
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorGetContractCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

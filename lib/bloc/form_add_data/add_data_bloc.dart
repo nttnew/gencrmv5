@@ -82,6 +82,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
         yield ErrorAddCustomerOrState(response.msg ?? '');
       }
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorAddCustomerOrState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
@@ -114,6 +115,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
         yield ErrorEditCustomerState(response.msg ?? '');
       }
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorEditCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

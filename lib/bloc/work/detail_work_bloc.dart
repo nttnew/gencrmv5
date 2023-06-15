@@ -33,12 +33,12 @@ class DetailWorkBloc extends Bloc<DetailWorkEvent, DetailWorkState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessDetailWorkState(response.data ?? [], response.location);
       } else {
-        yield ErrorGetDetailWorkState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorGetDetailWorkState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorGetDetailWorkState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorGetDetailWorkState(MESSAGES.CONNECT_ERROR);
       throw (e);
     }
     LoadingApi().popLoading();
@@ -52,11 +52,12 @@ class DetailWorkBloc extends Bloc<DetailWorkEvent, DetailWorkState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessDeleteWorkState();
       } else {
+        LoadingApi().popLoading();
         yield ErrorDeleteWorkState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorDeleteWorkState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorDeleteWorkState(MESSAGES.CONNECT_ERROR);
       throw (e);
     }
     LoadingApi().popLoading();

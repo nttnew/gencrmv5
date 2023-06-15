@@ -48,8 +48,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       } else
         yield ErrorGetListProductState(response.msg ?? '');
     } catch (e) {
-      yield ErrorGetListProductState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
+      yield ErrorGetListProductState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();

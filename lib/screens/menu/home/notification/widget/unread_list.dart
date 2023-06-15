@@ -12,10 +12,11 @@ class UnReadList extends StatefulWidget {
   State<StatefulWidget> createState() => new _UnReadListState();
 }
 
-class _UnReadListState extends State<UnReadList> {
+class _UnReadListState extends State<UnReadList>
+    with AutomaticKeepAliveClientMixin {
   int page = 1;
   int total = 0;
-  int lenght = 0;
+  int length = 0;
   ScrollController _scrollController = ScrollController();
   @override
   void initState() {
@@ -23,16 +24,17 @@ class _UnReadListState extends State<UnReadList> {
     _scrollController.addListener(() {
       if (_scrollController.offset ==
               _scrollController.position.maxScrollExtent &&
-          lenght < total) {
-        GetListUnReadNotifiBloc.of(context)
-            .add(InitGetListUnReadNotifiEvent(page + 1));
+          length < total) {
         page = page + 1;
-      } else {}
+        GetListUnReadNotifiBloc.of(context)
+            .add(InitGetListUnReadNotifiEvent(page));
+      }
     });
     super.initState();
   }
 
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocListener<GetListUnReadNotifiBloc, UnReadListNotifiState>(
       listener: (context, state) {
         if (state is DeleteUnReadListNotifiState) {
@@ -48,7 +50,7 @@ class _UnReadListState extends State<UnReadList> {
           builder: (context, state) {
         if (state is UpdateUnReadListNotifiState) {
           total = int.parse(state.total);
-          lenght = state.list.length;
+          length = state.list.length;
           return ListView(
               controller: _scrollController,
               children: ListTile.divideTiles(
@@ -106,4 +108,7 @@ class _UnReadListState extends State<UnReadList> {
       ],
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
