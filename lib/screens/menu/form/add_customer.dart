@@ -250,7 +250,7 @@ class _AddCustomerState extends State<AddCustomer> {
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
-              style: titlestyle(),
+              style: AppStyle.DEFAULT_14W600,
               children: <TextSpan>[
                 data.field_require == 1
                     ? TextSpan(
@@ -290,7 +290,7 @@ class _AddCustomerState extends State<AddCustomer> {
                     addData[indexParent].data[indexChild].value = text;
                   },
                   decoration: InputDecoration(
-                      hintStyle: hintTextStyle(),
+                      hintStyle: AppStyle.DEFAULT_14W500,
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
@@ -304,23 +304,9 @@ class _AddCustomerState extends State<AddCustomer> {
     );
   }
 
-  TextStyle hintTextStyle() => TextStyle(
-      fontFamily: "Quicksand",
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-      color: COLORS.BLACK);
 
-  TextStyle titlestyle() => TextStyle(
-      fontFamily: "Quicksand",
-      fontSize: 14,
-      fontWeight: FontWeight.w600,
-      color: COLORS.BLACK);
 
-  TextStyle titlestyleNgTheoDoi() => TextStyle(
-      fontFamily: "Quicksand",
-      fontSize: 14,
-      fontWeight: FontWeight.w600,
-      color: COLORS.BLACK);
+
 
   void onClickSave() {
     final Map<String, dynamic> data = {};

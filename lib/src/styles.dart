@@ -85,6 +85,18 @@ class AppStyle {
       color: COLORS.PRIMARY_COLOR,
       height: 1.4);
 
+  static const DEFAULT_14W600 = TextStyle(
+      fontFamily: 'Quicksand',
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      color: COLORS.BLACK);
+
+  static const DEFAULT_14W500 = TextStyle(
+      fontFamily: 'Quicksand',
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      color: COLORS.BLACK);
+
   static final DEFAULT_14_BOLD =
       DEFAULT_14.copyWith(fontWeight: FontWeight.bold);
 

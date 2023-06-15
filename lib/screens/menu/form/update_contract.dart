@@ -481,7 +481,7 @@ class _EditContractState extends State<EditContract> {
       children: [
         Text(
           "Hình ảnh",
-          style: titlestyle(),
+          style: AppStyle.DEFAULT_14W600,
         ),
         SizedBox(
           height: AppValue.heights * 0.005,
@@ -503,7 +503,7 @@ class _EditContractState extends State<EditContract> {
                   decoration: InputDecoration(
                     hintText: "Tải hình ảnh",
                     enabled: false,
-                    hintStyle: hintTextStyle(),
+                    hintStyle: AppStyle.DEFAULT_14W500,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     disabledBorder: InputBorder.none,
@@ -538,7 +538,7 @@ class _EditContractState extends State<EditContract> {
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
-              style: titlestyle(),
+              style: AppStyle.DEFAULT_14W600,
               children: <TextSpan>[
                 data.field_require == 1
                     ? TextSpan(
@@ -587,7 +587,7 @@ class _EditContractState extends State<EditContract> {
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
-              style: titlestyle(),
+              style: AppStyle.DEFAULT_14W600,
               children: <TextSpan>[
                 data.field_require == 1
                     ? TextSpan(
@@ -644,7 +644,7 @@ class _EditContractState extends State<EditContract> {
                                   ? data.field_set_value.toString()
                                   : null,
                   decoration: InputDecoration(
-                      hintStyle: hintTextStyle(),
+                      hintStyle: AppStyle.DEFAULT_14W500,
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
@@ -658,17 +658,7 @@ class _EditContractState extends State<EditContract> {
     );
   }
 
-  TextStyle hintTextStyle() => TextStyle(
-      fontFamily: "Quicksand",
-      fontSize: 14,
-      fontWeight: FontWeight.w600,
-      color: COLORS.BLACK);
 
-  TextStyle titlestyle() => TextStyle(
-      fontFamily: "Quicksand",
-      fontSize: 14,
-      fontWeight: FontWeight.w600,
-      color: COLORS.BLACK);
 
   void onClickSave() {
     final Map<String, dynamic> data = {};

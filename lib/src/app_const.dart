@@ -51,25 +51,6 @@ class TypeCheckIn {
   static const CHECK_OUT = 'checkout';
 }
 
-//type="checkin" và type="checkout"
-TextStyle hintTextStyle() => TextStyle(
-    fontFamily: "Quicksand",
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-    color: COLORS.BLACK);
-
-TextStyle titlestyle() => TextStyle(
-    fontFamily: "Quicksand",
-    fontSize: 14,
-    fontWeight: FontWeight.w600,
-    color: COLORS.BLACK);
-
-TextStyle titlestyleNgTheoDoi() => TextStyle(
-    fontFamily: "Quicksand",
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-    color: COLORS.BLACK);
-
 void loginSessionExpired() {
   ShowDialogCustom.showDialogBase(
     title: MESSAGES.NOTIFICATION,

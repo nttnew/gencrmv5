@@ -11,7 +11,6 @@ import '../../bloc/contract/attack_bloc.dart';
 import '../../bloc/contract/total_bloc.dart';
 import '../../models/model_data_add.dart';
 import '../../models/widget_input_date.dart';
-import '../../src/app_const.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/src_index.dart';
 import '../../widgets/appbar_base.dart';
@@ -388,7 +387,7 @@ class _AddServiceVoucherStepTwoScreenState
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
-              style: titlestyle(),
+              style: AppStyle.DEFAULT_14W600,
               children: <TextSpan>[
                 data.field_require == 1
                     ? TextSpan(
@@ -555,7 +554,7 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
-              style: titlestyle(),
+              style: AppStyle.DEFAULT_14W600,
               children: <TextSpan>[
                 data.field_require == 1
                     ? TextSpan(
@@ -598,7 +597,7 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
                     _bloc.addData[indexParent].data[indexChild].value = text;
                   },
                   decoration: InputDecoration(
-                    hintStyle: hintTextStyle(),
+                    hintStyle: AppStyle.DEFAULT_14W500,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     disabledBorder: InputBorder.none,
@@ -634,7 +633,7 @@ Widget TypeCarBase(
           textScaleFactor: MediaQuery.of(context).textScaleFactor,
           text: TextSpan(
             text: data.field_label ?? '',
-            style: titlestyle(),
+            style: AppStyle.DEFAULT_14W600,
             children: <TextSpan>[
               data.field_require == 1
                   ? TextSpan(

@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gen_crm/screens/menu/home/contract/widget/widget_total_sum.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:gen_crm/widgets/widgets.dart';
@@ -104,7 +103,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: label,
-              style: titlestyle(),
+              style: AppStyle.DEFAULT_14W600,
             ),
           ),
           SizedBox(
@@ -124,7 +123,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
                   onChanged: (v) => onChange(v),
                   decoration: InputDecoration(
                       hintText: prefixText,
-                      hintStyle: hintTextStyle(),
+                      hintStyle: AppStyle.DEFAULT_14W500,
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,

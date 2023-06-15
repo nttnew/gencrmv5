@@ -337,7 +337,7 @@ class _FormAddDataState extends State<FormAddData> {
                         textScaleFactor: MediaQuery.of(context).textScaleFactor,
                         text: TextSpan(
                           text: 'Vị trí',
-                          style: titlestyle(),
+                          style: AppStyle.DEFAULT_14W600,
                           children: <TextSpan>[
                             TextSpan(
                                 text: '*',
@@ -623,7 +623,7 @@ class _FormAddDataState extends State<FormAddData> {
               textScaleFactor: MediaQuery.of(context).textScaleFactor,
               text: TextSpan(
                 text: data.field_label ?? '',
-                style: titlestyle(),
+                style: AppStyle.DEFAULT_14W600,
                 children: <TextSpan>[
                   data.field_require == 1
                       ? TextSpan(
@@ -674,7 +674,7 @@ class _FormAddDataState extends State<FormAddData> {
                                 ? data.field_set_value.toString()
                                 : null,
                     decoration: InputDecoration(
-                        hintStyle: hintTextStyle(),
+                        hintStyle: AppStyle.DEFAULT_14W500,
                         focusedBorder: InputBorder.none,
                         enabledBorder: InputBorder.none,
                         disabledBorder: InputBorder.none,
@@ -891,18 +891,6 @@ class _FormAddDataState extends State<FormAddData> {
                                                     indexParent, indexChild)
         : SizedBox();
   }
-
-  TextStyle hintTextStyle() => TextStyle(
-      fontFamily: "Quicksand",
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-      color: COLORS.BLACK);
-
-  TextStyle titlestyle() => TextStyle(
-      fontSize: 14,
-      fontFamily: "Quicksand",
-      fontWeight: FontWeight.w600,
-      color: COLORS.BLACK);
 
   void onClickSave() {
     final Map<String, dynamic> data = {};

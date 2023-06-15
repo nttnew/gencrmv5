@@ -611,7 +611,7 @@ class _FormAddSignState extends State<FormAddSign> {
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
-              style: titlestyle(),
+              style: AppStyle.DEFAULT_14W600,
               children: <TextSpan>[
                 data.field_require == 1
                     ? TextSpan(
@@ -662,7 +662,7 @@ class _FormAddSignState extends State<FormAddSign> {
                               ? data.field_set_value.toString()
                               : null,
                   decoration: InputDecoration(
-                    hintStyle: hintTextStyle(),
+                    hintStyle: AppStyle.DEFAULT_14W500,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     disabledBorder: InputBorder.none,
@@ -680,7 +680,7 @@ class _FormAddSignState extends State<FormAddSign> {
               textScaleFactor: MediaQuery.of(context).textScaleFactor,
               text: TextSpan(
                 text: 'Chưa thanh toán:',
-                style: titlestyle(),
+                style: AppStyle.DEFAULT_14W600,
                 children: <TextSpan>[
                   TextSpan(
                       text: " ${AppValue.format_money(soTien.toString())}",
@@ -706,27 +706,6 @@ class _FormAddSignState extends State<FormAddSign> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // RichText(
-          //   textScaleFactor: MediaQuery.of(context).textScaleFactor,
-          //   text: TextSpan(
-          //     text: data.field_label ?? '',
-          //     style: titlestyle(),
-          //     children: <TextSpan>[
-          //       data.field_require == 1
-          //           ? TextSpan(
-          //               text: '*',
-          //               style: TextStyle(
-          //                   fontFamily: "Quicksand",
-          //                   fontSize: 14,
-          //                   fontWeight: FontWeight.w500,
-          //                   color: Colors.red))
-          //           : TextSpan(),
-          //     ],
-          //   ),
-          // ),
-          // SizedBox(
-          //   height: 8,
-          // ),
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -763,7 +742,7 @@ class _FormAddSignState extends State<FormAddSign> {
                   decoration: InputDecoration(
                     hintText: // noEdit ? null :
                         data.field_label,
-                    hintStyle: hintTextStyle(),
+                    hintStyle: AppStyle.DEFAULT_14W500,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     disabledBorder: InputBorder.none,
@@ -795,7 +774,7 @@ class _FormAddSignState extends State<FormAddSign> {
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: data.field_label ?? '',
-              style: titlestyle(),
+              style: AppStyle.DEFAULT_14W600,
               children: <TextSpan>[
                 data.field_require == 1
                     ? TextSpan(
@@ -860,17 +839,7 @@ class _FormAddSignState extends State<FormAddSign> {
     );
   }
 
-  TextStyle hintTextStyle() => TextStyle(
-      fontFamily: "Quicksand",
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-      color: COLORS.BLACK);
 
-  TextStyle titlestyle() => TextStyle(
-      fontSize: 14,
-      fontFamily: "Quicksand",
-      fontWeight: FontWeight.w600,
-      color: COLORS.BLACK);
 
   void onClickSave() {
     final Map<String, dynamic> data = {};
