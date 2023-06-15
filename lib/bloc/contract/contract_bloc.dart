@@ -64,13 +64,12 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
           list = [...list ?? [], ...response.data.list ?? []];
           yield UpdateGetContractState(list ?? [], response.data.total ?? '0');
         }
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorGetContractState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
       yield ErrorGetContractState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

@@ -83,13 +83,12 @@ class ProductCustomerModuleBloc
           yield SuccessGetListProductCustomerModuleState(
               [...dataList ?? [], ...response.data?.lists ?? []]);
         }
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorGetListProductCustomerModuleState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
       yield ErrorGetListProductCustomerModuleState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

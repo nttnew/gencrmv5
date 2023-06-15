@@ -79,13 +79,12 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
           yield SuccessGetListProductModuleState(
               [...dataList ?? [], ...response.data?.lists ?? []]);
         }
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorGetListProductModuleState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
       yield ErrorGetListProductModuleState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

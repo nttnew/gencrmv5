@@ -35,16 +35,15 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield UpdateGetDetailProductState(response);
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
-        yield ErrorGetDetailProductState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorGetDetailProductState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorGetDetailProductState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      loginSessionExpired();
+      yield ErrorGetDetailProductState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -61,13 +60,12 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
       if ((statusCode == BASE_URL.SUCCESS) ||
           (statusCode == BASE_URL.SUCCESS_200)) {
         yield SuccessDeleteProductState();
-      } else if (statusCode == 999) {
+      } else if (statusCode == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorDeleteProductState(msg);
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
       yield ErrorDeleteProductState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

@@ -47,7 +47,7 @@ class CustomerContractBloc
             yield SuccessGetContractCustomerState(list!);
           }
         }
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorGetContractCustomerState(response.msg ?? '');
@@ -67,13 +67,12 @@ class CustomerContractBloc
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessGetContractCustomerState(response.data!);
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorGetContractCustomerState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
       yield ErrorGetContractCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

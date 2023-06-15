@@ -195,6 +195,7 @@ class BASE_URL {
 
   static const SUCCESS = 0;
   static const SUCCESS_200 = 200;
+  static const SUCCESS_999 = 999;
   static const FAIL = 9100;
 
   static const ACTIVE = 1;

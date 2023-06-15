@@ -37,7 +37,7 @@ class PhoneBloc extends Bloc<PhoneEvent, PhoneState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessPhoneState(response.data ?? '');
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorPhoneState(response.msg ?? '');
@@ -60,13 +60,12 @@ class PhoneBloc extends Bloc<PhoneEvent, PhoneState> {
         } else {
           yield SuccessPhoneState(phone);
         }
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorPhoneState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
       yield ErrorPhoneState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

@@ -72,7 +72,7 @@ class ContactByCustomerBloc
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield UpdateGetContacBytCustomerState(response.data!);
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorGetContactByCustomerState(response.msg ?? '');
@@ -92,7 +92,7 @@ class ContactByCustomerBloc
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         success(response);
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorGetContactByCustomerState(response.msg ?? '');

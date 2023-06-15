@@ -43,16 +43,15 @@ class DetailProductCustomerBloc
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield GetDetailProductCustomerState(response);
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
-        yield ErrorGetDetailProductCustomerState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorGetDetailProductCustomerState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorGetDetailProductCustomerState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      loginSessionExpired();
+      yield ErrorGetDetailProductCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
@@ -72,8 +71,7 @@ class DetailProductCustomerBloc
           (response.code == BASE_URL.SUCCESS_200)) {
         LoadingApi().popLoading();
         return response.data?.data?.dataList ?? [];
-      } else if (response.code == 999) {
-        LoadingApi().popLoading();
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -81,7 +79,6 @@ class DetailProductCustomerBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
     }
   }
 
@@ -99,8 +96,7 @@ class DetailProductCustomerBloc
           (response.code == BASE_URL.SUCCESS_200)) {
         LoadingApi().popLoading();
         return response.data?.lists ?? [];
-      } else if (response.code == 999) {
-        LoadingApi().popLoading();
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -108,7 +104,6 @@ class DetailProductCustomerBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
     }
   }
 
@@ -126,8 +121,7 @@ class DetailProductCustomerBloc
           (response.code == BASE_URL.SUCCESS_200)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == 999) {
-        LoadingApi().popLoading();
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -135,7 +129,6 @@ class DetailProductCustomerBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
     }
   }
 
@@ -153,8 +146,7 @@ class DetailProductCustomerBloc
           (response.code == BASE_URL.SUCCESS_200)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == 999) {
-        LoadingApi().popLoading();
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -162,7 +154,6 @@ class DetailProductCustomerBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
     }
   }
 
@@ -178,13 +169,12 @@ class DetailProductCustomerBloc
       if ((statusCode == BASE_URL.SUCCESS) ||
           (statusCode == BASE_URL.SUCCESS_200)) {
         yield SuccessDeleteProductState();
-      } else if (statusCode == 999) {
+      } else if (statusCode == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorDeleteProductState(msg);
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
       yield ErrorDeleteProductState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

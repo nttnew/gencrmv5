@@ -33,14 +33,13 @@ class AddJobChanceBloc extends Bloc<AddJobChanceEvent, AddJobChanceState> {
       final response = await userRepository.getAddJobChance(id);
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        yield UpdateGetAddJobChanceState(response.data!);
-      } else if (response.code == 999) {
+        yield UpdateGetAddJobChanceState(response.data ?? []);
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorGetAddJobChanceState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
       yield ErrorGetAddJobChanceState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

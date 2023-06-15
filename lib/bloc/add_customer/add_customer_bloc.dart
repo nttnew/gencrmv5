@@ -37,12 +37,12 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState> {
       final response = await userRepository.getAddCustomer(isIndividual);
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        yield UpdateGetAddCustomerState(response.data!);
-      } else if (response.code == 999) {
+        yield UpdateGetAddCustomerState(response.data ?? []);
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
-        yield ErrorGetAddCustomerState(response.msg ?? '');
         LoadingApi().popLoading();
+        yield ErrorGetAddCustomerState(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
@@ -56,11 +56,11 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState> {
     LoadingApi().pushLoading();
     try {
       yield LoadingGetEditCustomerState();
-      final response = await userRepository.getUpdateCustomer(id!);
+      final response = await userRepository.getUpdateCustomer(id??'');
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        yield SuccessGetEditCustomerState(response.data!);
-      } else if (response.code == 999) {
+        yield SuccessGetEditCustomerState(response.data??[]);
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         yield ErrorGetEditCustomerState(response.msg ?? '');
@@ -68,7 +68,6 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
       yield ErrorGetEditCustomerState(MESSAGES.CONNECT_ERROR);
       throw e;
     }

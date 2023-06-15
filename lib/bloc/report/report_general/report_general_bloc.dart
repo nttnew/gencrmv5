@@ -35,14 +35,12 @@ class ReportGeneralBloc extends Bloc<ReportGeneralEvent, ReportGeneralState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessReportGeneralState(response.data);
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorReportGeneralState(response.msg ?? '');
     } catch (e) {
       yield ErrorReportGeneralState(MESSAGES.CONNECT_ERROR);
-      LoadingApi().popLoading();
-      loginSessionExpired();
       throw e;
     }
     LoadingApi().popLoading();

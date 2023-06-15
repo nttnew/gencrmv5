@@ -36,14 +36,12 @@ class ReportProductBloc extends Bloc<ReportProductEvent, ReportProductState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessReportProductState(response.data!.list);
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorReportProductState(response.msg ?? '');
     } catch (e) {
       yield ErrorReportProductState(MESSAGES.CONNECT_ERROR);
-      LoadingApi().popLoading();
-     loginSessionExpired();
       throw e;
     }
     LoadingApi().popLoading();
@@ -77,14 +75,12 @@ class ReportSelectProductBloc
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessReportSelectState(response.data!.list);
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorReportSelectProductState(response.msg ?? '');
     } catch (e) {
       yield ErrorReportSelectProductState(MESSAGES.CONNECT_ERROR);
-      LoadingApi().popLoading();
-     loginSessionExpired();
       throw e;
     }
   }

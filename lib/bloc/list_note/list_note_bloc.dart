@@ -93,7 +93,7 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         LoadingApi().popLoading();
         return response.data?.notes ?? [];
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         LoadingApi().popLoading();
         return response.msg ?? '';
       } else {

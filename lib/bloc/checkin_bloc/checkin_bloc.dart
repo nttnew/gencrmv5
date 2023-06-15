@@ -51,15 +51,14 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessCheckInState();
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         yield ErrorCheckInState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorCheckInState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      loginSessionExpired();
+      yield ErrorCheckInState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();

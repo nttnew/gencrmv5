@@ -57,7 +57,7 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessDetailContractState(response.data ?? []);
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorDetailContractState(response.msg ?? '');
@@ -76,13 +76,12 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessDeleteContractState();
-      } else if (response.code == 999) {
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
         yield ErrorDeleteContractState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
       yield ErrorDeleteContractState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
@@ -154,8 +153,7 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == 999) {
-        LoadingApi().popLoading();
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -163,7 +161,6 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
     }
   }
 
@@ -180,8 +177,7 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
           (response.code == BASE_URL.SUCCESS_200)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == 999) {
-        LoadingApi().popLoading();
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -189,7 +185,6 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      loginSessionExpired();
     }
   }
 

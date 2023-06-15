@@ -39,15 +39,16 @@ class ReportEmployeeBloc
           await userRepository.reportEmployee(time!, diemBan, timeFrom, timeTo);
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        yield SuccessReportEmployeeState(response.data!.list!);
-      } else if (response.code == 999) {
+        yield SuccessReportEmployeeState(response.data?.list??[]);
+      } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
-      } else
+      } else{
+        LoadingApi().popLoading();
         yield ErrorReportEmployeeState(response.msg ?? '');
+      }
     } catch (e) {
-      yield ErrorReportEmployeeState(MESSAGES.CONNECT_ERROR);
       LoadingApi().popLoading();
-      loginSessionExpired();
+      yield ErrorReportEmployeeState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();
