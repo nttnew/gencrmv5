@@ -12,9 +12,9 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../models/widget_input_date.dart';
 import '../../../src/models/model_generator/add_customer.dart';
 import '../../../src/pick_file_image.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../../src/src_index.dart';
 import '../../../widgets/appbar_base.dart';
+import '../../../widgets/field_input_select_multi.dart';
 import '../../../widgets/multiple_widget.dart';
 import '../../../widgets/widget_field_input_percent.dart';
 import '../home/customer/widget/input_dropDown.dart';
@@ -173,17 +173,20 @@ class _AddCustomerState extends State<AddCustomer> {
                 },
                 value: data.field_value ?? '')
             : data.field_type == "TEXT_MULTI"
-                ? _fieldInputTextMulti(
-                    data.field_datasource!,
-                    data.field_label!,
-                    data.field_require!,
-                    indexParent,
-                    indexChild,
-                    (data.field_set_value_datasource != '' &&
-                            data.field_set_value_datasource != null)
-                        ? data.field_set_value_datasource![0][0].toString()
-                        : "",
-                    data.field_maxlength ?? '')
+                ? SelectMulti(
+                    dropdownItemList: data.field_datasource ?? [],
+                    label: data.field_label ?? '',
+                    required: data.field_require ?? 0,
+                    maxLength: data.field_maxlength ?? '',
+                    initValue: addData[indexParent]
+                        .data[indexChild]
+                        .value
+                        .toString()
+                        .split(','),
+                    onChange: (data) {
+                      addData[indexParent].data[indexChild].value = data;
+                    },
+                  )
                 : data.field_type == "HIDDEN"
                     ? Container()
                     : data.field_type == "TEXT_MULTI_NEW"
@@ -299,102 +302,6 @@ class _AddCustomerState extends State<AddCustomer> {
         ],
       ),
     );
-  }
-
-  Widget _fieldInputTextMulti(
-      List<List<dynamic>> dropdownItemList,
-      String label,
-      int required,
-      int indexParent,
-      int indexChild,
-      String value,
-      String maxLength) {
-    List<ModelDataAdd> dropdow = [];
-    int indexParentDefault = -1;
-    for (int i = 0; i < dropdownItemList.length; i++) {
-      if (dropdownItemList[i][1] != null && dropdownItemList[i][0] != null) {
-        dropdow.add(ModelDataAdd(
-            label: dropdownItemList[i][1], value: dropdownItemList[i][0]));
-        if (dropdownItemList[i][0].toString() == value) {
-          indexParentDefault = i;
-        }
-      }
-    }
-    return (Container(
-      key: Key(indexChild.toString()),
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: label,
-              style: TextStyle(
-                  fontFamily: "Quicksand",
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: COLORS.BLACK),
-              children: <TextSpan>[
-                required == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Quicksand",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red))
-                    : TextSpan(),
-              ],
-            ),
-          ),
-          AppValue.vSpaceTiny,
-          MultiSelectDialogField<ModelDataAdd>(
-            items:
-                dropdow.map((e) => MultiSelectItem(e, e.label ?? '')).toList(),
-            listType: MultiSelectListType.CHIP,
-            onConfirm: (values) {
-              if (maxLength != "" && values.length > int.parse(maxLength)) {
-                values.removeRange(int.parse(maxLength) - 1, values.length - 1);
-                ShowDialogCustom.showDialogBase(
-                  title: MESSAGES.NOTIFICATION,
-                  content: "Bạn chỉ được chọn ${maxLength} giá trị",
-                );
-              } else {
-                List<dynamic> res = [];
-                for (int i = 0; i < values.length; i++) {
-                  res.add(values[i].value!);
-                }
-                addData[indexParent].data[indexChild].value = res.join(",");
-              }
-            },
-            onSelectionChanged: (values) {
-              if (maxLength != "" && values.length > int.parse(maxLength)) {
-                values.removeRange(int.parse(maxLength) - 1, values.length - 1);
-              }
-            },
-            title: WidgetText(
-              title: label,
-              style: AppStyle.DEFAULT_18_BOLD,
-            ),
-            buttonText: Text(
-              label,
-              style: titlestyleNgTheoDoi(),
-            ),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: HexColor("#BEB4B4"))),
-            buttonIcon: Icon(
-              Icons.arrow_drop_down,
-              size: 25,
-            ),
-            initialValue:
-                indexParentDefault != -1 ? [dropdow[indexParentDefault]] : [],
-            selectedItemsTextStyle: AppStyle.DEFAULT_14,
-          )
-        ],
-      ),
-    ));
   }
 
   TextStyle hintTextStyle() => TextStyle(

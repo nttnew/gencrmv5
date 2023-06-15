@@ -7,7 +7,6 @@ import 'package:gen_crm/src/models/request/voucher_service_request.dart';
 import 'package:gen_crm/src/pick_file_image.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../bloc/contract/attack_bloc.dart';
 import '../../bloc/contract/total_bloc.dart';
 import '../../models/model_data_add.dart';
@@ -16,6 +15,7 @@ import '../../src/app_const.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/src_index.dart';
 import '../../widgets/appbar_base.dart';
+import '../../widgets/field_input_select_multi.dart';
 import '../../widgets/multiple_widget.dart';
 import '../../widgets/widget_field_input_percent.dart';
 import '../../widgets/widget_text.dart';
@@ -60,6 +60,7 @@ class _AddServiceVoucherStepTwoScreenState
     TotalBloc.of(context).add(ReloadTotalEvent());
     super.deactivate();
   }
+
   void checkData() {
     final addData = _bloc.addData;
     final listAddData = _bloc.listAddData.value;
@@ -204,9 +205,8 @@ class _AddServiceVoucherStepTwoScreenState
                                             listAddData[indexParent]
                                                 .data?[indexChild]
                                                 .field_type;
-                                        final fieldData =
-                                            listAddData[indexParent]
-                                                .data![indexChild];
+                                        final data = listAddData[indexParent]
+                                            .data![indexChild];
 
                                         return isHidden
                                             ? isURL
@@ -220,7 +220,7 @@ class _AddServiceVoucherStepTwoScreenState
                                                   )
                                                 : fieldName == 'chi_tiet_xe'
                                                     ? TypeCarBase(
-                                                        fieldData,
+                                                        data,
                                                         indexParent,
                                                         indexChild,
                                                         context,
@@ -232,10 +232,10 @@ class _AddServiceVoucherStepTwoScreenState
                                                             .value = v;
                                                       })
                                                     : fieldName == 'col131' &&
-                                                            fieldData.field_set_value_datasource !=
+                                                            data.field_set_value_datasource !=
                                                                 []
                                                         ? fieldInputCustomer(
-                                                            data: fieldData,
+                                                            data: data,
                                                             indexParent:
                                                                 indexParent,
                                                             indexChild:
@@ -249,12 +249,14 @@ class _AddServiceVoucherStepTwoScreenState
                                                                           indexChild]
                                                                       .value = data;
                                                                 },
-                                                                isUpdate: _bloc.getTextInit(name: fieldName, list: fieldData.field_datasource) != null &&
+                                                                isUpdate: _bloc.getTextInit(name: fieldName, list: data.field_datasource) !=
+                                                                        null &&
                                                                     fieldName !=
                                                                         'hdsan_pham_kh',
-                                                                dropdownItemList: fieldData.field_datasource ??
-                                                                    [],
-                                                                data: fieldData,
+                                                                dropdownItemList:
+                                                                    data.field_datasource ??
+                                                                        [],
+                                                                data: data,
                                                                 onSuccess:
                                                                     (data) {
                                                                   addData[indexParent]
@@ -273,33 +275,56 @@ class _AddServiceVoucherStepTwoScreenState
                                                                     }
                                                                   }
                                                                 },
-                                                                value: _bloc.infoCar.value != null && fieldName != 'hdsan_pham_kh'
-                                                                    ? _bloc.getTextInit(name: fieldName, list: fieldData.field_datasource) ??
+                                                                value: _bloc.infoCar.value != null &&
+                                                                        fieldName !=
+                                                                            'hdsan_pham_kh'
+                                                                    ? _bloc.getTextInit(
+                                                                            name: fieldName,
+                                                                            list: data.field_datasource) ??
                                                                         ''
-                                                                    : fieldData.field_value ??
-                                                                        '')
-                                                            : fieldType ==
-                                                                    "TEXT_MULTI"
-                                                                ? _fieldInputTextMulti(
-                                                                    fieldData.field_datasource!,
-                                                                    fieldData.field_label!,
-                                                                    fieldData.field_require!,
-                                                                    indexParent,
-                                                                    indexChild,
-                                                                    (fieldData.field_set_value_datasource != '' && fieldData.field_set_value_datasource != null) ? fieldData.field_set_value_datasource![0][0].toString() : "",
-                                                                    fieldData.field_maxlength ?? '')
+                                                                    : data.field_value ?? '')
+                                                            : fieldType == "TEXT_MULTI"
+                                                                ? SelectMulti(
+                                                                    dropdownItemList:
+                                                                        data.field_datasource ??
+                                                                            [],
+                                                                    label:
+                                                                        data.field_label ??
+                                                                            '',
+                                                                    required:
+                                                                        data.field_require ??
+                                                                            0,
+                                                                    maxLength:
+                                                                        data.field_maxlength ??
+                                                                            '',
+                                                                    initValue: addData[
+                                                                            indexParent]
+                                                                        .data[
+                                                                            indexChild]
+                                                                        .value
+                                                                        .toString()
+                                                                        .split(
+                                                                            ','),
+                                                                    onChange:
+                                                                        (data) {
+                                                                      addData[indexParent]
+                                                                          .data[
+                                                                              indexChild]
+                                                                          .value = data;
+                                                                    },
+                                                                  )
                                                                 : fieldType == "HIDDEN"
                                                                     ? Container()
                                                                     : fieldType == "TEXT_MULTI_NEW"
                                                                         ? InputMultipleWidget(
-                                                                            data: fieldData,
+                                                                            data: data,
                                                                             onSelect: (data) {
                                                                               addData[indexParent].data[indexChild].value = data.join(",");
                                                                             })
-                                                                        : fieldData.field_type == "DATE"
+                                                                        : data.field_type == "DATE"
                                                                             ? WidgetInputDate(
-                                                                                data: fieldData,
-                                                                                dateText: fieldData.field_set_value,
+                                                                                data: data,
+                                                                                dateText: data.field_set_value,
                                                                                 onSelect: (int date) {
                                                                                   addData[indexParent].data[indexChild].value = date;
                                                                                 },
@@ -307,11 +332,11 @@ class _AddServiceVoucherStepTwoScreenState
                                                                                   addData[indexParent].data[indexChild].value = v;
                                                                                 },
                                                                               )
-                                                                            : fieldData.field_type == "DATETIME"
+                                                                            : data.field_type == "DATETIME"
                                                                                 ? WidgetInputDate(
                                                                                     isDate: false,
-                                                                                    data: fieldData,
-                                                                                    dateText: fieldData.field_set_value,
+                                                                                    data: data,
+                                                                                    dateText: data.field_set_value,
                                                                                     onSelect: (int date) {
                                                                                       addData[indexParent].data[indexChild].value = date;
                                                                                     },
@@ -321,14 +346,14 @@ class _AddServiceVoucherStepTwoScreenState
                                                                                   )
                                                                                 : fieldType == "PERCENTAGE"
                                                                                     ? FieldInputPercent(
-                                                                                        data: fieldData,
+                                                                                        data: data,
                                                                                         onChanged: (text) {
                                                                                           addData[indexParent].data[indexChild].value = text;
                                                                                         },
                                                                                       )
                                                                                     : fieldType == "CHECK"
-                                                                                        ? _check(fieldData, indexParent, indexChild)
-                                                                                        : fieldInputCustomer(data: fieldData, indexParent: indexParent, indexChild: indexChild)
+                                                                                        ? _check(data, indexParent, indexChild)
+                                                                                        : fieldInputCustomer(data: data, indexParent: indexParent, indexChild: indexChild)
                                             : SizedBox();
                                       }),
                                     )
@@ -404,104 +429,6 @@ class _AddServiceVoucherStepTwoScreenState
         ],
       ),
     );
-  }
-
-  Widget _fieldInputTextMulti(
-    List<List<dynamic>> dropdownItemList,
-    String label,
-    int required,
-    int indexParent,
-    int indexChild,
-    String value,
-    String maxLength,
-  ) {
-    List<ModelDataAdd> dropdow = [];
-    int indexParentDefault = -1;
-    for (int i = 0; i < dropdownItemList.length; i++) {
-      if (dropdownItemList[i][1] != null && dropdownItemList[i][0] != null) {
-        dropdow.add(ModelDataAdd(
-            label: dropdownItemList[i][1], value: dropdownItemList[i][0]));
-        if (dropdownItemList[i][0].toString() == value) {
-          indexParentDefault = i;
-        }
-      }
-    }
-    return (Container(
-      key: Key(indexChild.toString()),
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: label,
-              style: TextStyle(
-                  fontFamily: "Quicksand",
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: COLORS.BLACK),
-              children: <TextSpan>[
-                required == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Quicksand",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.red))
-                    : TextSpan(),
-              ],
-            ),
-          ),
-          AppValue.vSpaceTiny,
-          MultiSelectDialogField<ModelDataAdd>(
-            items:
-                dropdow.map((e) => MultiSelectItem(e, e.label ?? '')).toList(),
-            listType: MultiSelectListType.CHIP,
-            onConfirm: (values) {
-              if (maxLength != "" && values.length > int.parse(maxLength)) {
-                values.removeRange(int.parse(maxLength) - 1, values.length - 1);
-                ShowDialogCustom.showDialogBase(
-                  title: MESSAGES.NOTIFICATION,
-                  content: "Bạn chỉ được chọn ${maxLength} giá trị",
-                );
-              } else {
-                List<dynamic> res = [];
-                for (int i = 0; i < values.length; i++) {
-                  res.add(values[i].value!);
-                }
-                _bloc.addData[indexParent].data[indexChild].value =
-                    res.join(",");
-              }
-            },
-            onSelectionChanged: (values) {
-              if (maxLength != "" && values.length > int.parse(maxLength)) {
-                values.removeRange(int.parse(maxLength) - 1, values.length - 1);
-              }
-            },
-            title: WidgetText(
-              title: label,
-              style: AppStyle.DEFAULT_18_BOLD,
-            ),
-            buttonText: Text(
-              label,
-              style: titlestyleNgTheoDoi(),
-            ),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: HexColor("#BEB4B4"))),
-            buttonIcon: Icon(
-              Icons.arrow_drop_down,
-              size: 25,
-            ),
-            initialValue:
-                indexParentDefault != -1 ? [dropdow[indexParentDefault]] : [],
-            selectedItemsTextStyle: AppStyle.DEFAULT_14,
-          )
-        ],
-      ),
-    ));
   }
 
   void onClickSave() {
