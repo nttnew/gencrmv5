@@ -43,6 +43,8 @@ const int EDIT_CHANCE = 3;
 const int EDIT_CLUE = 2;
 const int EDIT_CUSTOMER = 1;
 const LOADING = 'loading';
+String CA_NHAN = 'ca_nhan';
+String TO_CHUC = 'to_chuc';
 
 class TypeCheckIn {
   static const CHECK_IN = 'checkin';

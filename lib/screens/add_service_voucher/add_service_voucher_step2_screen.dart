@@ -55,6 +55,11 @@ class _AddServiceVoucherStepTwoScreenState
     super.initState();
   }
 
+  @override
+  void deactivate() {
+    TotalBloc.of(context).add(ReloadTotalEvent());
+    super.deactivate();
+  }
   void checkData() {
     final addData = _bloc.addData;
     final listAddData = _bloc.listAddData.value;

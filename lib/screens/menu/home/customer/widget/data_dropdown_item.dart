@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -33,7 +34,6 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
   ScrollController _scrollController = ScrollController();
   List listData = [];
   List data = [];
-  bool check = false;
   int page = 1;
 
   @override
@@ -103,22 +103,6 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                           leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                           onSubmit: (v) {
                             search = v;
-                            if (widget.isSearch == false) {
-                              data = listData.where((i) {
-                                String value =
-                                    TiengViet.parse(i['label']).toLowerCase();
-                                String search1 =
-                                    TiengViet.parse(v).toLowerCase();
-                                if (value.contains(search1))
-                                  return true;
-                                else
-                                  return false;
-                              }).toList();
-                              setState(() {
-                                check = !check;
-                              });
-                            }
-                            FocusManager.instance.primaryFocus?.unfocus();
                           },
                         ),
                       ),
@@ -141,7 +125,35 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                               ),
                             ),
                           )
-                        : Container()
+                        : GestureDetector(
+                            onTap: () {
+                              if (widget.isSearch == false) {
+                                data = listData.where((i) {
+                                  String value =
+                                      TiengViet.parse(i['label']).toLowerCase();
+                                  String search1 =
+                                      TiengViet.parse(search).toLowerCase();
+                                  if (value.contains(search1))
+                                    return true;
+                                  else
+                                    return false;
+                                }).toList();
+                                setState(() {});
+                              }
+                              FocusManager.instance.primaryFocus?.unfocus();
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(left: 8),
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  color: COLORS.PRIMARY_COLOR,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: WidgetText(
+                                title: "Tìm",
+                                style: AppStyle.DEFAULT_14,
+                              ),
+                            ),
+                          )
                   ],
                 ),
                 Expanded(
@@ -169,8 +181,18 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                                               MediaQuery.of(context).size.width,
                                           child: WidgetText(
                                             title: data[index]['label'] ?? '',
-                                            style: AppStyle.DEFAULT_18.copyWith(
-                                                color: COLORS.TEXT_BLUE_BOLD),
+                                            style: (data[index]['value'] ==
+                                                        CA_NHAN ||
+                                                    data[index]['value'] ==
+                                                        TO_CHUC)
+                                                ? AppStyle.DEFAULT_18_BOLD
+                                                    .copyWith(
+                                                        color: COLORS
+                                                            .TEXT_BLUE_BOLD)
+                                                : AppStyle.DEFAULT_18.copyWith(
+                                                    color:
+                                                        COLORS.TEXT_BLUE_BOLD,
+                                                  ),
                                           ),
                                         ),
                                         SizedBox(

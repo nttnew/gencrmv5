@@ -18,6 +18,8 @@ class TotalBloc extends Bloc<TotalEvent, TotalState> {
   Stream<TotalState> mapEventToState(TotalEvent event) async* {
     if (event is InitTotalEvent) {
       yield* _getTotalContract(event.total);
+    } else if (event is ReloadTotalEvent) {
+      yield SuccessTotalState(0);
     }
   }
 

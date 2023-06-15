@@ -109,6 +109,7 @@ class _EditContractState extends State<EditContract> {
 
   @override
   void deactivate() {
+    TotalBloc.of(context).add(ReloadTotalEvent());
     ContactByCustomerBloc.of(context).chiTietXe.add('');
     ContactByCustomerBloc.of(context).listXe.add([]);
     AttackBloc.of(context).add(RemoveAllAttackEvent());

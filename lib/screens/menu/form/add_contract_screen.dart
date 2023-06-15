@@ -47,8 +47,6 @@ class _FormAddContractState extends State<FormAddContract> {
   double total = 0;
   late final FormAddBloc _bloc;
   late final List<List<dynamic>> listCustomerForChance;
-  String CA_NHAN = 'ca_nhan';
-  String TO_CHUC = 'to_chuc';
   String? id_first = Get.arguments[0];
   String? id_two = Get.arguments[1];
   String title = Get.arguments[2] ?? '';
@@ -122,6 +120,7 @@ class _FormAddContractState extends State<FormAddContract> {
 
   @override
   void deactivate() {
+    TotalBloc.of(context).add(ReloadTotalEvent());
     AttackBloc.of(context).add(RemoveAllAttackEvent());
     ContactByCustomerBloc.of(context).chiTietXe.add('');
     ContactByCustomerBloc.of(context).listXe.add([]);
