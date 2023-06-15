@@ -255,7 +255,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                 MediaQuery.of(context).textScaleFactor,
                             text: TextSpan(
                               text: 'Vị trí',
-                              style: titlestyle(),
+                              style: AppStyle.DEFAULT_14W600,
                               children: <TextSpan>[
                                 TextSpan(
                                     text: '*',

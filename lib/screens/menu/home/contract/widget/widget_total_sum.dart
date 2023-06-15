@@ -3,6 +3,7 @@ import 'package:gen_crm/widgets/widgets.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../../src/color.dart';
+import '../../../../../src/src_index.dart';
 
 class WidgetTotalSum extends StatefulWidget {
   WidgetTotalSum({Key? key, required this.label, required this.value})
@@ -27,7 +28,7 @@ class _WidgetTotalSumState extends State<WidgetTotalSum> {
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: widget.label ?? '',
-              style: titlestyle(),
+              style: AppStyle.DEFAULT_14W600,
               children: <TextSpan>[
                 TextSpan(),
               ],
@@ -47,7 +48,7 @@ class _WidgetTotalSumState extends State<WidgetTotalSum> {
               child: Container(
                 child: WidgetText(
                   title: widget.value,
-                  style: hintTextStyle(),
+                  style: AppStyle.DEFAULT_14W500,
                 ),
               ),
             ),
@@ -57,15 +58,3 @@ class _WidgetTotalSumState extends State<WidgetTotalSum> {
     );
   }
 }
-
-TextStyle hintTextStyle() => TextStyle(
-    fontFamily: "Quicksand",
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-    color:COLORS.BLACK);
-
-TextStyle titlestyle() => TextStyle(
-    fontFamily: "Quicksand",
-    fontSize: 14,
-    fontWeight: FontWeight.w600,
-    color: COLORS.BLACK);

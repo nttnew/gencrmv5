@@ -43,30 +43,13 @@ const int EDIT_CHANCE = 3;
 const int EDIT_CLUE = 2;
 const int EDIT_CUSTOMER = 1;
 const LOADING = 'loading';
+String CA_NHAN = 'ca_nhan';
+String TO_CHUC = 'to_chuc';
 
 class TypeCheckIn {
   static const CHECK_IN = 'checkin';
   static const CHECK_OUT = 'checkout';
 }
-
-//type="checkin" và type="checkout"
-TextStyle hintTextStyle() => TextStyle(
-    fontFamily: "Quicksand",
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-    color: COLORS.BLACK);
-
-TextStyle titlestyle() => TextStyle(
-    fontFamily: "Quicksand",
-    fontSize: 14,
-    fontWeight: FontWeight.w600,
-    color: COLORS.BLACK);
-
-TextStyle titlestyleNgTheoDoi() => TextStyle(
-    fontFamily: "Quicksand",
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-    color: COLORS.BLACK);
 
 void loginSessionExpired() {
   ShowDialogCustom.showDialogBase(

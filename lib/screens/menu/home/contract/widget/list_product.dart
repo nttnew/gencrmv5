@@ -263,10 +263,6 @@ class _ItemProductState extends State<ItemProduct> {
   void didUpdateWidget(covariant ItemProduct oldWidget) {
     if (oldWidget != widget) {
       setState(() {
-        Dvt = widget.model?.nameDvt ?? '';
-        Vat = widget.model?.nameVat ?? '';
-        giamGia = widget.model?.giamGia ?? '';
-        typeGiamGia = widget.model?.typeGiamGia == "%" ? false : true;
         soLuong.add((widget.model?.soLuong ?? 0).toString());
         price = widget.model?.item.sell_price ?? '';
       });
@@ -680,7 +676,7 @@ class _ItemProductState extends State<ItemProduct> {
                             width: 45,
                             child: WidgetText(
                               textAlign: TextAlign.center,
-                              title: typeGiamGia == true ? "VNĐ" : "%",
+                              title: typeGiamGia ? "VNĐ" : "%",
                               style: AppStyle.DEFAULT_14,
                             ),
                           ),
@@ -690,7 +686,7 @@ class _ItemProductState extends State<ItemProduct> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            if (typeGiamGia == true &&
+                            if (!typeGiamGia &&
                                 (double.parse(_editingController.text) >
                                     double.parse(widget.data.sell_price!))) {
                               _editingController.text = widget.data.sell_price!;
@@ -702,7 +698,7 @@ class _ItemProductState extends State<ItemProduct> {
                                   Get.back();
                                 },
                               );
-                            } else if (typeGiamGia == false &&
+                            } else if (!typeGiamGia &&
                                 (double.parse(_editingController.text) > 100)) {
                               ShowDialogCustom.showDialogBase(
                                 title: MESSAGES.NOTIFICATION,
@@ -713,13 +709,15 @@ class _ItemProductState extends State<ItemProduct> {
                               );
                             } else {
                               setState(() {
-                                giamGia = typeGiamGia == true
+                                giamGia = typeGiamGia
                                     ? AppValue.APP_MONEY_FORMAT.format(
                                         double.parse(_editingController.text))
                                     : _editingController.text;
                               });
-                              widget.onGiamGia!(_editingController.text,
-                                  typeGiamGia == true ? "vnd" : "%");
+                              widget.onGiamGia!(
+                                _editingController.text,
+                                typeGiamGia ? "vnd" : "%",
+                              );
                               Get.back();
                             }
                           },

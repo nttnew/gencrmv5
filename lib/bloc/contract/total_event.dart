@@ -11,3 +11,7 @@ class InitTotalEvent extends TotalEvent {
 
   InitTotalEvent(this.total);
 }
+
+class ReloadTotalEvent extends TotalEvent {
+  ReloadTotalEvent();
+}

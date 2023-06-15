@@ -290,6 +290,8 @@ class _ReportScreenState extends State<ReportScreen> {
                       alignment: Alignment.centerRight,
                       value: valueTime,
                       dropdownWidth: 150,
+                      dropdownMaxHeight: 275,
+                      itemHeight: 40,
                       icon: const Icon(Icons.arrow_drop_down_outlined),
                       underline: Container(),
                       onChanged: (String? value) {

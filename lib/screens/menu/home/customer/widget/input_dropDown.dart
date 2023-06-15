@@ -172,7 +172,7 @@ class _InputDropdownState extends State<InputDropdown> {
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: widget.data.field_label ?? '',
-              style: titlestyle(),
+              style: AppStyle.DEFAULT_14W600,
               children: <TextSpan>[
                 widget.data.field_require == 1
                     ? TextSpan(
@@ -305,10 +305,4 @@ class _InputDropdownState extends State<InputDropdown> {
       ),
     );
   }
-
-  TextStyle titlestyle() => TextStyle(
-      fontFamily: "Quicksand",
-      fontSize: 14,
-      fontWeight: FontWeight.w600,
-      color: COLORS.BLACK);
 }
