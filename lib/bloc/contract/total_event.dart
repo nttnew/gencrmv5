@@ -9,7 +9,9 @@ abstract class TotalEvent extends Equatable {
 class InitTotalEvent extends TotalEvent {
   final double total;
 
-  InitTotalEvent(this.total);
+  InitTotalEvent(
+    this.total,
+  );
 }
 
 class ReloadTotalEvent extends TotalEvent {

@@ -77,8 +77,10 @@ Future main() async {
   var initializationSettings;
   if (Platform.isAndroid) {
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
-        'high_importance_channel', 'xxxx',
-        importance: Importance.max);
+      'high_importance_channel',
+      'xxxx',
+      importance: Importance.max,
+    );
     var initializationSettingsAndroid =
         new AndroidInitializationSettings("@mipmap/ic_launcher");
     await flutterLocalNotificationsPlugin
@@ -105,13 +107,14 @@ Future main() async {
         if (androidNotification != null) {
           var androidPlatformChannelSpecifics =
               const AndroidNotificationDetails(
-                  'high_importance_channel', 'xxxx',
-                  importance: Importance.max,
-                  playSound: true,
-                  showProgress: true,
-                  priority: Priority.high,
-                  ticker: 'test ticker');
-
+            'high_importance_channel',
+            'xxxx',
+            importance: Importance.max,
+            playSound: true,
+            showProgress: true,
+            priority: Priority.high,
+            ticker: 'test ticker',
+          );
           var iOSChannelSpecifics = const DarwinNotificationDetails();
           var platformChannelSpecifics = NotificationDetails(
               android: androidPlatformChannelSpecifics,
@@ -130,7 +133,7 @@ Future main() async {
             0, notification.title, notification.body, platformChannelSpecifics,
             payload: 'test');
       }
-    } else {}
+    }
   });
   if (defaultTargetPlatform == TargetPlatform.android) {}
   runApp(
@@ -237,16 +240,12 @@ Future main() async {
             create: (context) =>
                 GetDetailClueBloc(userRepository: userRepository),
           ),
-          // BlocProvider<WorkClueBloc>(
-          //   create: (context) => WorkClueBloc(userRepository: userRepository),
-          // ),
           BlocProvider<GetPolicyBloc>(
             create: (context) => GetPolicyBloc(userRepository: userRepository),
           ),
           BlocProvider<GetInforBloc>(
               create: (context) =>
                   GetInforBloc(userRepository: userRepository)),
-          //Dương
           BlocProvider<FormAddBloc>(
             create: (context) => FormAddBloc(userRepository: userRepository),
           ),
@@ -266,9 +265,9 @@ Future main() async {
           BlocProvider<InforAccBloc>(
             create: (context) => InforAccBloc(userRepository: userRepository),
           ),
-          BlocProvider<GetListUnReadNotifiBloc>(
+          BlocProvider<GetNotificationBloc>(
             create: (context) =>
-                GetListUnReadNotifiBloc(userRepository: userRepository),
+                GetNotificationBloc(userRepository: userRepository),
           ),
           BlocProvider<GetListReadedNotifiBloc>(
             create: (context) =>
@@ -278,7 +277,6 @@ Future main() async {
             create: (context) =>
                 GetInforAccBloc(userRepository: userRepository),
           ),
-
           BlocProvider<SupportBloc>(
             create: (context) => SupportBloc(userRepository: userRepository),
           ),

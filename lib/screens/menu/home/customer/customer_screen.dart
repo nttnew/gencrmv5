@@ -50,7 +50,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.KHACH_HANG);
-    GetListUnReadNotifiBloc.of(context).add(CheckNotification());
+    GetNotificationBloc.of(context).add(CheckNotification());
     _bloc.add(InitGetListOrderEvent());
     _scrollController.addListener(() {
       if (_scrollController.offset ==
@@ -78,7 +78,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
     if (listAdd.last == value) {
       AppNavigator.navigateAddCustomer("Thêm ${value.toLowerCase()}");
     } else {
-      AppNavigator.navigateFormAddCustomerGroup("Thêm ${value.toLowerCase()}", ADD_CUSTOMER);
+      AppNavigator.navigateFormAddCustomerGroup(
+          "Thêm ${value.toLowerCase()}", ADD_CUSTOMER);
     }
   }
 
@@ -234,6 +235,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     _research();
                   }),
                   child: SingleChildScrollView(
+                    physics: ClampingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
                     controller: _scrollController,
                     child: Padding(
                       padding: EdgeInsets.only(top: 10),

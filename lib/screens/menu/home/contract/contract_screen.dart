@@ -42,7 +42,7 @@ class _ContractScreenState extends State<ContractScreen> {
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.HOP_DONG);
-    GetListUnReadNotifiBloc.of(context).add(CheckNotification());
+    GetNotificationBloc.of(context).add(CheckNotification());
     _bloc.add(InitGetContractEvent());
     title = Get.arguments ?? '';
     _scrollController.addListener(() {
@@ -135,6 +135,8 @@ class _ContractScreenState extends State<ContractScreen> {
                   _research();
                 }),
                 child: SingleChildScrollView(
+                  physics: ClampingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics()),
                   controller: _scrollController,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8),

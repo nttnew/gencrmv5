@@ -48,7 +48,7 @@ class _WorkScreenState extends State<WorkScreen> {
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.CONG_VIEC);
     title = Get.arguments ?? '';
-    GetListUnReadNotifiBloc.of(context).add(CheckNotification());
+    GetNotificationBloc.of(context).add(CheckNotification());
     _bloc.add(InitGetListWorkEvent());
     _scrollController.addListener(() {
       if (_scrollController.offset ==
@@ -225,6 +225,8 @@ class _WorkScreenState extends State<WorkScreen> {
                     _research();
                   }),
                   child: ListView.separated(
+                    physics: ClampingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
                     padding: EdgeInsets.only(top: 8),
                     controller: _scrollController,
                     shrinkWrap: true,

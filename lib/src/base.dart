@@ -1,4 +1,8 @@
+import 'dart:convert';
 import 'dart:ui';
+import 'package:gen_crm/src/preferences_key.dart';
+
+import '../storages/share_local.dart';
 import 'icon_constants.dart';
 
 class BASE_URL {
@@ -173,10 +177,8 @@ class BASE_URL {
       'modules/genmobile2/productCustomer/getFormCv';
   static const GET_FORM_HT_PRODUCT_CUSTOMER =
       'modules/genmobile2/productCustomer/getFormHt';
-  static const GET_LIST_MANAGER_FILTER =
-      'modules/genmobile2/settings/nql';
-  static const GET_ADDRESS_CUSTOMER =
-      'modules/genmobile2/customer/getAddress';
+  static const GET_LIST_MANAGER_FILTER = 'modules/genmobile2/settings/nql';
+  static const GET_ADDRESS_CUSTOMER = 'modules/genmobile2/customer/getAddress';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';
@@ -270,6 +272,23 @@ class ModuleMy {
       return ICONS.IC_CHANCE_3X_PNG;
     }
     return ICONS.IC_WORK_3X_PNG;
+  }
+
+  static String getNameModuleMy(String txt, {isTitle = false}) {
+    String menu = shareLocal.getString(PreferencesKey.MENU);
+    List listM = jsonDecode(menu);
+    for (final value in listM) {
+      String id = value['id'];
+      String name = value['name'];
+      if (id == txt) {
+        if (isTitle) {
+          return name;
+        } else {
+          return name.toLowerCase();
+        }
+      }
+    }
+    return '';
   }
 
   static Color getColor(String id) {

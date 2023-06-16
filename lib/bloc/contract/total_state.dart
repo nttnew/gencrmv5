@@ -10,9 +10,13 @@ class InitGetTotalState extends TotalState {}
 
 class SuccessTotalState extends TotalState {
   final double total;
-  const SuccessTotalState(this.total);
+  const SuccessTotalState(
+    this.total,
+  );
   @override
-  List<Object> get props => [total];
+  List<Object> get props => [
+        total,
+      ];
 }
 
 class LoadingTotalState extends TotalState {}

@@ -91,6 +91,12 @@ class AppStyle {
       fontWeight: FontWeight.w600,
       color: COLORS.BLACK);
 
+  static const DEFAULT_14W600_RED = TextStyle(
+      fontFamily: 'Quicksand',
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      color: COLORS.RED);
+
   static const DEFAULT_14W500 = TextStyle(
       fontFamily: 'Quicksand',
       fontSize: 14,
