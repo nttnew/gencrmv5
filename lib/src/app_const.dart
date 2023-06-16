@@ -136,7 +136,7 @@ Widget itemIcon(String title, String icon, Function() click,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(
-          width: AppValue.widths * 0.2,
+          width: 40,
         ),
         Container(
           height: 24,
@@ -153,7 +153,7 @@ Widget itemIcon(String title, String icon, Function() click,
                     )),
         ),
         SizedBox(
-          width: AppValue.widths * 0.1,
+          width: 25,
         ),
         WidgetText(title: title, style: styleTitleBottomSheet())
       ],
