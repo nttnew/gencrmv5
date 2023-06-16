@@ -146,7 +146,9 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                                         data[index]['label']);
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.only(top: 8),
+                                    padding: EdgeInsets.only(
+                                      top: 16,
+                                    ),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -160,10 +162,9 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                                                         CA_NHAN ||
                                                     data[index]['value'] ==
                                                         TO_CHUC)
-                                                ? AppStyle.DEFAULT_18_BOLD
-                                                    .copyWith(
-                                                        color: COLORS
-                                                            .TEXT_BLUE_BOLD)
+                                                ? AppStyle.DEFAULT_18.copyWith(
+                                                    color: COLORS.RED,
+                                                    fontWeight: FontWeight.w500)
                                                 : AppStyle.DEFAULT_18.copyWith(
                                                     color:
                                                         COLORS.TEXT_BLUE_BOLD,
@@ -171,7 +172,7 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                                           ),
                                         ),
                                         SizedBox(
-                                          height: 8,
+                                          height: 16,
                                         ),
                                         LineHorizontal()
                                       ],
