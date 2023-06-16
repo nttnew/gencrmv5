@@ -144,6 +144,8 @@ class _ClueScreenState extends State<ClueScreen> {
                     _research();
                   }),
                   child: ListView.separated(
+                    physics: ClampingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
                     padding: EdgeInsets.only(top: 16),
                     controller: _scrollController,
                     scrollDirection: Axis.vertical,

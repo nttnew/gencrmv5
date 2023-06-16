@@ -225,6 +225,8 @@ class _WorkScreenState extends State<WorkScreen> {
                     _research();
                   }),
                   child: ListView.separated(
+                    physics: ClampingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
                     padding: EdgeInsets.only(top: 8),
                     controller: _scrollController,
                     shrinkWrap: true,

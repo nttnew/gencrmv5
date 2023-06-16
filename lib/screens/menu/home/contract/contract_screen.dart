@@ -135,6 +135,8 @@ class _ContractScreenState extends State<ContractScreen> {
                   _research();
                 }),
                 child: SingleChildScrollView(
+                  physics: ClampingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics()),
                   controller: _scrollController,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8),

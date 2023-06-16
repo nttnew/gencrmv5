@@ -226,6 +226,8 @@ class _SupportScreenState extends State<SupportScreen> {
                   _research();
                 }),
                 child: ListView.separated(
+                  physics: ClampingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics()),
                   shrinkWrap: true,
                   controller: _scrollController,
                   itemBuilder: (context, index) => ItemSupport(

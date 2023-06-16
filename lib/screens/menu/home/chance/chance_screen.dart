@@ -135,6 +135,8 @@ class _ChanceScreenState extends State<ChanceScreen> {
                     _research();
                   }),
                   child: ListView.separated(
+                    physics: ClampingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
                     padding: EdgeInsets.only(top: 16),
                     controller: _scrollController,
                     shrinkWrap: true,
