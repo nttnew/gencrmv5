@@ -510,8 +510,11 @@ class _FormAddContractState extends State<FormAddContract> {
                                                       stateA.total.toString();
                                                   return WidgetTotalSum(
                                                       label: data.field_label,
-                                                      value: stateA.total
-                                                          .toStringAsFixed(0));
+                                                      value: AppValue
+                                                          .format_money(stateA
+                                                              .total
+                                                              .toStringAsFixed(
+                                                                  0)));
                                                 } else {
                                                   return WidgetTotalSum(
                                                       label: data.field_label,

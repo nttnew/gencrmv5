@@ -70,7 +70,9 @@ class _EditContractState extends State<EditContract> {
         break;
       }
     }
-    if (check == false) listProduct.add(data);
+    if (check == false) {
+      listProduct.add(data);
+    }
   }
 
   reload() {
@@ -81,18 +83,18 @@ class _EditContractState extends State<EditContract> {
         i--;
       } else {
         if (listProduct[i].typeGiamGia == '%') {
-          total += (double.parse(listProduct[i].item.sell_price!) *
+          total += (double.parse(listProduct[i].item.sell_price ?? '0') *
                   listProduct[i].soLuong) *
               ((100 -
-                      double.parse(listProduct[i].giamGia == ""
-                          ? "0"
+                      double.parse(listProduct[i].giamGia == ''
+                          ? '0'
                           : listProduct[i].giamGia)) /
                   100);
         } else {
-          total += (double.parse(listProduct[i].item.sell_price!) *
+          total += (double.parse(listProduct[i].item.sell_price ?? '0') *
                   listProduct[i].soLuong) -
               double.parse(
-                  listProduct[i].giamGia == "" ? "0" : listProduct[i].giamGia);
+                  listProduct[i].giamGia == '' ? '0' : listProduct[i].giamGia);
         }
       }
     }
@@ -156,59 +158,60 @@ class _EditContractState extends State<EditContract> {
                   listProduct = [];
                   return Container();
                 } else if (state is SuccessFormEditState) {
-                  for (int i = 0; i < state.listEditData.length; i++) {
-                    addData.add(ModelItemAdd(
-                        group_name: state.listEditData[i].group_name ?? '',
-                        data: []));
-                    for (int j = 0;
-                        j < state.listEditData[i].data!.length;
-                        j++) {
-                      // if(state.listEditData[i].data![j].field_type!="HIDDEN")
-                      if (state.listEditData[i].data![j].field_special ==
-                          "url") {
-                        if (state.listEditData[i].data![j].products != null)
-                          for (int k = 0;
-                              k <
-                                  state.listEditData[i].data![j].products!
-                                      .length;
-                              k++) {
-                            listProduct.add(ProductModel(
-                                state.listEditData[i].data![j].products![k]
-                                    .id_product
-                                    .toString(),
-                                double.parse(state.listEditData[i].data![j]
-                                        .products![k].quantity!)
-                                    .toInt(),
-                                ProductItem(
-                                    state.listEditData[i].data![j].products![k]
-                                        .id_product
-                                        .toString(),
-                                    "",
-                                    "",
-                                    state.listEditData[i].data![j].products![k]
-                                        .name_product,
-                                    state.listEditData[i].data![j].products![k]
-                                        .unit
-                                        .toString(),
-                                    state.listEditData[i].data![j].products![k]
-                                        .vat,
-                                    state.listEditData[i].data![j].products![k]
-                                        .price),
-                                state.listEditData[i].data![j].products![k]
-                                    .sale_off.value!,
-                                state.listEditData[i].data![j].products![k]
-                                    .unit_name!,
-                                state.listEditData[i].data![j].products![k]
-                                    .vat_name!,
-                                state.listEditData[i].data![j].products![k]
-                                    .sale_off.type!));
-                          }
-                      } else
-                        addData[i].data.add(ModelDataAdd(
-                            label: state.listEditData[i].data![j].field_name,
-                            value: state
-                                .listEditData[i].data![j].field_set_value
-                                .toString()));
+                  if (addData.isEmpty) {
+                    for (int i = 0; i < state.listEditData.length; i++) {
+                      addData.add(ModelItemAdd(
+                          group_name: state.listEditData[i].group_name ?? '',
+                          data: []));
+                      for (int j = 0;
+                          j < state.listEditData[i].data!.length;
+                          j++) {
+                        if (state.listEditData[i].data![j].field_special ==
+                            "url") {
+                          if (state.listEditData[i].data![j].products != null)
+                            for (int k = 0;
+                                k <
+                                    state.listEditData[i].data![j].products!
+                                        .length;
+                                k++) {
+                              listProduct.add(ProductModel(
+                                  state.listEditData[i].data![j].products![k]
+                                      .id_product
+                                      .toString(),
+                                  double.parse(state.listEditData[i].data![j]
+                                          .products![k].quantity!)
+                                      .toInt(),
+                                  ProductItem(
+                                      state.listEditData[i].data![j]
+                                          .products![k].id_product
+                                          .toString(),
+                                      "",
+                                      "",
+                                      state.listEditData[i].data![j]
+                                          .products![k].name_product,
+                                      state.listEditData[i].data![j]
+                                          .products![k].unit
+                                          .toString(),
+                                      state.listEditData[i].data![j]
+                                          .products![k].vat,
+                                      state.listEditData[i].data![j]
+                                          .products![k].price),
+                                  state.listEditData[i].data![j].products![k]
+                                      .sale_off.value!,
+                                  state.listEditData[i].data![j].products![k]
+                                      .unit_name!,
+                                  state.listEditData[i].data![j].products![k]
+                                      .vat_name!,
+                                  state.listEditData[i].data![j].products![k]
+                                      .sale_off.type!));
+                            }
+                        } else
+                          addData[i].data.add(ModelDataAdd(
+                              label: state.listEditData[i].data![j].field_name,
+                              value: state
+                                  .listEditData[i].data![j].field_set_value
+                                  .toString()));
+                      }
                     }
                   }
                   return Column(
@@ -309,6 +312,8 @@ class _EditContractState extends State<EditContract> {
                     data: listProduct,
                     addProduct: addProduct,
                     reload: reload,
+                    neverHidden: true,
+                    canDelete: true,
                   )
                 : data.field_type == "SELECT"
                     ? (data.field_name == 'col141'
@@ -448,13 +453,17 @@ class _EditContractState extends State<EditContract> {
                                                   addData[indexParent]
                                                           .data[indexChild]
                                                           .value =
-                                                      stateA.total.toString();
+                                                      stateA
+                                                          .total
+                                                          .toStringAsFixed(
+                                                          0);
                                                   return WidgetTotalSum(
                                                       label: data.field_label,
                                                       value: AppValue
-                                                          .APP_MONEY_FORMAT
-                                                          .format(
-                                                              stateA.total));
+                                                          .format_money(stateA
+                                                              .total
+                                                              .toStringAsFixed(
+                                                                  0)));
                                                 } else {
                                                   return WidgetTotalSum(
                                                       label: data.field_label,
@@ -657,8 +666,6 @@ class _EditContractState extends State<EditContract> {
       ),
     );
   }
-
-
 
   void onClickSave() {
     final Map<String, dynamic> data = {};
