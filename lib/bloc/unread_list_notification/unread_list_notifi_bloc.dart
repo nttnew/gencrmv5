@@ -14,11 +14,12 @@ import '../../widgets/loading_api.dart';
 part 'unread_list_notifi_event.dart';
 part 'unread_list_notifi_state.dart';
 
-class GetListUnReadNotifiBloc
-    extends Bloc<ListUnReadNotifiEvent, UnReadListNotifiState> {
+class GetNotificationBloc
+    extends Bloc<ListUnReadNotificationEvent, UnReadListNotifiState> {
   final UserRepository userRepository;
+  int total = 0;
 
-  GetListUnReadNotifiBloc({required UserRepository userRepository})
+  GetNotificationBloc({required UserRepository userRepository})
       : userRepository = userRepository,
         super(InitGetUnReadListNotifiState()) {
     getVersionInfoCar();
@@ -26,17 +27,17 @@ class GetListUnReadNotifiBloc
 
   @override
   Stream<UnReadListNotifiState> mapEventToState(
-      ListUnReadNotifiEvent event) async* {
-    if (event is InitGetListUnReadNotifiEvent) {
+      ListUnReadNotificationEvent event) async* {
+    if (event is InitGetListUnReadNotificationEvent) {
       yield* _getListNotifi(page: event.page);
-    } else if (event is DeleteUnReadListNotifiEvent) {
+    } else if (event is DeleteUnReadListNotificationEvent) {
       try {
         final response =
             await userRepository.deleteNotification(event.id, event.type);
         if ((response.code == BASE_URL.SUCCESS) ||
             (response.code == BASE_URL.SUCCESS_200)) {
           yield DeleteUnReadListNotifiState();
-        } else{
+        } else {
           LoadingApi().popLoading();
           yield ErrorDeleteUnReadListNotifiState(response.msg ?? "");
         }
@@ -45,14 +46,14 @@ class GetListUnReadNotifiBloc
         yield ErrorDeleteUnReadListNotifiState(MESSAGES.CONNECT_ERROR);
         throw e;
       }
-    } else if (event is ReadNotifiEvent) {
+    } else if (event is ReadNotificationEvent) {
       try {
         final response = await userRepository.readNotification(
             id: event.id, type: event.type);
         if ((response.code == BASE_URL.SUCCESS) ||
             (response.code == BASE_URL.SUCCESS_200)) {
           yield ReadUnReadListNotifiState();
-        } else{
+        } else {
           LoadingApi().popLoading();
           yield ErrorReadUnReadListNotifiState(response.msg ?? "");
         }
@@ -67,6 +68,7 @@ class GetListUnReadNotifiBloc
         if ((response.code == BASE_URL.SUCCESS) ||
             (response.code == BASE_URL.SUCCESS_200)) {
           if (response.data.list!.length > 0) {
+            total = int.parse(response.data.total ?? '0');
             LoadingApi().popLoading();
             yield NotificationNeedRead();
           }
@@ -102,6 +104,7 @@ class GetListUnReadNotifiBloc
       final response = await userRepository.getListUnReadNotification(page);
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
+        total = int.parse(response.data.total ?? '0');
         int page = int.parse(response.data.page!);
         if (page == 1) {
           listNotifi = response.data.list;
@@ -126,6 +129,6 @@ class GetListUnReadNotifiBloc
     LoadingApi().popLoading();
   }
 
-  static GetListUnReadNotifiBloc of(BuildContext context) =>
-      BlocProvider.of<GetListUnReadNotifiBloc>(context);
+  static GetNotificationBloc of(BuildContext context) =>
+      BlocProvider.of<GetNotificationBloc>(context);
 }

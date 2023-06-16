@@ -225,9 +225,10 @@ class _ProductScreenState extends State<ProductScreen> {
                           await _research();
                         },
                         child: ListView.builder(
+                            physics: ClampingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics()),
                             padding: EdgeInsets.only(top: 10, bottom: 10),
                             controller: _scrollController,
-                            physics: AlwaysScrollableScrollPhysics(),
                             itemCount: list.length,
                             itemBuilder: (context, i) => GestureDetector(
                                   onTap: () {

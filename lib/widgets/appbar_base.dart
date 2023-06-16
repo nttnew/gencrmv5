@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gen_crm/widgets/widget_appbar.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:hexcolor/hexcolor.dart';
-import '../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import '../src/src_index.dart';
 
 PreferredSizeWidget AppbarBaseNormal(String title) => AppBar(
@@ -39,22 +38,32 @@ PreferredSizeWidget AppbarBase(
       toolbarHeight: AppValue.heights * 0.1,
       backgroundColor: HexColor("#D0F1EB"),
       centerTitle: false,
-      title: GestureDetector(
-        onTap: () {
-          if (_drawerKey.currentContext != null &&
-              !_drawerKey.currentState!.isDrawerOpen) {
-            _drawerKey.currentState!.openDrawer();
-          }
-        },
-        child: WidgetText(
-          title: title,
-          style: TextStyle(
-            color: Colors.black,
-            fontFamily: "Montserrat",
-            fontWeight: FontWeight.w700,
-            fontSize: 16,
+      title: Row(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                if (_drawerKey.currentContext != null &&
+                    !_drawerKey.currentState!.isDrawerOpen) {
+                  _drawerKey.currentState!.openDrawer();
+                }
+              },
+              child: WidgetText(
+                title: title,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: "Montserrat",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                ),
+              ),
+            ),
           ),
-        ),
+          rightAppBar(),
+          SizedBox(
+            width: 9,
+          ),
+        ],
       ),
       leading: GestureDetector(
         onTap: () {
@@ -63,29 +72,21 @@ PreferredSizeWidget AppbarBase(
             _drawerKey.currentState!.openDrawer();
           }
         },
-        child: Padding(
-            padding: EdgeInsets.only(left: 40),
-            child: SvgPicture.asset(ICONS.IC_MENU_SVG)),
+        child: Container(
+            padding: EdgeInsets.only(left: 25),
+            child: Container(
+              child: SvgPicture.asset(
+                ICONS.IC_MENU_SVG,
+                fit: BoxFit.contain,
+                width: 24,
+                height: 24,
+              ),
+            )),
       ),
+      leadingWidth: 49,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(15),
         ),
       ),
-      actions: [
-        Padding(
-            padding: EdgeInsets.only(right: 30),
-            child: GestureDetector(
-              onTap: () => AppNavigator.navigateNotification(),
-              child:
-                  BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
-                      builder: (context, state) {
-                if (state is NotificationNeedRead) {
-                  return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
-                } else {
-                  return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
-                }
-              }),
-            ))
-      ],
     );

@@ -42,7 +42,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.CO_HOI_BH);
-    GetListUnReadNotifiBloc.of(context).add(CheckNotification());
+    GetNotificationBloc.of(context).add(CheckNotification());
     _bloc.add(InitGetListOrderEventChance());
     _scrollController.addListener(() {
       if (_scrollController.offset ==
@@ -135,6 +135,8 @@ class _ChanceScreenState extends State<ChanceScreen> {
                     _research();
                   }),
                   child: ListView.separated(
+                    physics: ClampingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
                     padding: EdgeInsets.only(top: 16),
                     controller: _scrollController,
                     shrinkWrap: true,

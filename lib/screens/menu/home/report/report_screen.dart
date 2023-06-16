@@ -89,7 +89,7 @@ class _ReportScreenState extends State<ReportScreen> {
     select = typeReport[0]['name'];
     timeInit = 0;
     timeFilter = 0;
-    GetListUnReadNotifiBloc.of(context).add(CheckNotification());
+    GetNotificationBloc.of(context).add(CheckNotification());
     ReportBloc.of(context).add(InitReportEvent());
     scroll();
     super.initState();

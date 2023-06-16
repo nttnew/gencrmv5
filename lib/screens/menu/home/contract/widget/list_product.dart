@@ -29,7 +29,8 @@ class _ListProductState extends State<ListProduct> {
 
   @override
   void initState() {
-    ProductBloc.of(context).add(InitGetListProductEvent("1", ""));
+    ProductBloc.of(context)
+        .add(InitGetListProductEvent(BASE_URL.PAGE_DEFAULT.toString(), ""));
     _scrollController.addListener(() {
       if (_scrollController.offset ==
               _scrollController.position.maxScrollExtent &&
@@ -37,7 +38,7 @@ class _ListProductState extends State<ListProduct> {
         ProductBloc.of(context).add(InitGetListProductEvent(
             (page + 1).toString(), _editingController.text));
         page = page + 1;
-      } else {}
+      }
     });
     super.initState();
   }

@@ -41,21 +41,14 @@ class _InfoChancePageState extends State<InfoChancePage> {
   }
 
   getThaoTac() {
-    // list.add(ModuleThaoTac(
-    //   title: "Thêm hợp đồng",
-    //   icon: ICONS.IC_ADD_CONTRACT_SVG,
-    //   onThaoTac: () {
-    //     Get.back();
-    //     AppNavigator.navigateAddContract(id: id, title: 'hợp đồng');
-    //   },
-    // ));
-
     list.add(ModuleThaoTac(
-      title: "Thêm công việc",
+      title: "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd('Thêm công việc', ADD_CHANCE_JOB,
+        AppNavigator.navigateFormAdd(
+            "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
+            ADD_CHANCE_JOB,
             id: int.parse(id), onRefresh: () {
           _bloc.controllerCV.reloadData();
         });
@@ -156,7 +149,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                     children: [
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: const TabBar(
+                        child: TabBar(
                           padding: EdgeInsets.symmetric(horizontal: 25),
                           isScrollable: true,
                           indicatorColor: COLORS.TEXT_COLOR,
@@ -168,7 +161,8 @@ class _InfoChancePageState extends State<InfoChancePage> {
                               text: 'Thông tin chung',
                             ),
                             Tab(
-                              text: 'Công việc',
+                              text: ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC,
+                                  isTitle: true),
                             )
                           ],
                         ),

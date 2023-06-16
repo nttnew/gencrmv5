@@ -57,7 +57,7 @@ class _SupportScreenState extends State<SupportScreen> {
         _research(pageNew: page);
       } else {}
     });
-    GetListUnReadNotifiBloc.of(context).add(CheckNotification());
+    GetNotificationBloc.of(context).add(CheckNotification());
     super.initState();
   }
 
@@ -226,6 +226,8 @@ class _SupportScreenState extends State<SupportScreen> {
                   _research();
                 }),
                 child: ListView.separated(
+                  physics: ClampingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics()),
                   shrinkWrap: true,
                   controller: _scrollController,
                   itemBuilder: (context, index) => ItemSupport(

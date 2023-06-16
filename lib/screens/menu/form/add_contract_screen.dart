@@ -115,6 +115,7 @@ class _FormAddContractState extends State<FormAddContract> {
         }
       }
     }
+    TotalBloc.of(context).getPaid();
     TotalBloc.of(context).add(InitTotalEvent(total));
   }
 
@@ -274,7 +275,7 @@ class _FormAddContractState extends State<FormAddContract> {
     int indexChild,
   ) {
     return (data.field_special == 'none-edit' && data.field_name != 'col131')
-        ? (data.field_name == 'so_dien_thoai'
+        ? data.field_name == 'so_dien_thoai'
             ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
                 if (stateA is SuccessPhoneState) {
                   addData[indexParent].data[indexChild].value = stateA.phone;
@@ -308,8 +309,20 @@ class _FormAddContractState extends State<FormAddContract> {
                             value: address,
                           );
                         })
-                    : _fieldInputCustomer(data, indexParent, indexChild,
-                        noEdit: true))
+                    : data.field_name == 'chuathanhtoan'
+                        ? StreamBuilder<double>(
+                            stream: TotalBloc.of(context).unpaidStream,
+                            builder: (context, snapshot) {
+                              final value = snapshot.data;
+                              addData[indexParent].data[indexChild].value =
+                                  value;
+                              return WidgetTotalSum(
+                                  label: data.field_label,
+                                  value: AppValue.format_money(
+                                      (value ?? 0).toStringAsFixed(0)));
+                            })
+                        : _fieldInputCustomer(data, indexParent, indexChild,
+                            noEdit: true)
         : data.field_special == 'none-edit'
             ? _fieldInputCustomer(data, indexParent, indexChild, noEdit: true)
             : data.field_special == 'url'
@@ -369,78 +382,129 @@ class _FormAddContractState extends State<FormAddContract> {
                                     : data.field_value ?? '',
                               );
                             })
-                        : (data.field_name == 'col141'
-                            ? BlocBuilder<ContactByCustomerBloc,
-                                    ContactByCustomerState>(
-                                builder: (context, stateA) {
-                                if (stateA is UpdateGetContacBytCustomerState)
+                        : data.field_name == 'col131'
+                            ? StreamBuilder<List<dynamic>>(
+                                stream: _bloc.customerNewStream,
+                                builder: (context, snapshot) {
+                                  final list = snapshot.data ?? [];
                                   return InputDropdown(
-                                      dropdownItemList:
-                                          stateA.listContactByCustomer,
-                                      data: data,
-                                      onSuccess: (data) {
-                                        addData[indexParent]
-                                            .data[indexChild]
-                                            .value = data;
-                                        PhoneBloc.of(context)
-                                            .add(InitAgencyPhoneEvent(data));
-                                      },
-                                      value: data.field_value ?? '');
-                                else
-                                  return Container();
-                              })
-                            : data.field_name == 'hdsan_pham_kh'
-                                ? StreamBuilder<List<List<dynamic>>>(
-                                    stream: ContactByCustomerBloc.of(context)
-                                        .listXe,
-                                    builder: (context, snapshot) {
-                                      final list = snapshot.data;
-                                      return InputDropdown(
-                                          isUpdate: true,
-                                          isUpdateList: true,
-                                          dropdownItemList: list ??
-                                              data.field_datasource ??
-                                              [],
-                                          data: data,
-                                          onSuccess: (data) {
-                                            addData[indexParent]
-                                                .data[indexChild]
-                                                .value = data;
-                                            ContactByCustomerBloc.of(context)
-                                                .getCar(data);
-                                          },
-                                          onUpdate: (data) {
-                                            addData[indexParent]
-                                                .data[indexChild]
-                                                .value = data;
-                                            ContactByCustomerBloc.of(context)
-                                                .getCar(data);
-                                          },
-                                          value: list?.isEmpty ?? false
-                                              ? ''
-                                              : data.field_value ?? '');
-                                    })
-                                : InputDropdown(
-                                    dropdownItemList:
-                                        data.field_datasource ?? [],
+                                    isAddList: true,
+                                    dropdownItemList: listCustomerForChance,
                                     data: data,
-                                    onSuccess: (data) {
+                                    onSuccess: (data) async {
+                                      List<dynamic>? result = [];
+                                      if (data == CA_NHAN) {
+                                        result = await AppNavigator
+                                            .navigateAddCustomer(
+                                                listCustomerForChance.first[1],
+                                                isResultData: true);
+                                      } else if (data == TO_CHUC) {
+                                        result = await AppNavigator
+                                            .navigateFormAddCustomerGroup(
+                                          listCustomerForChance.last[1],
+                                          ADD_CUSTOMER,
+                                          isResultData: true,
+                                        );
+                                      }
+                                      if (result != null && result.isNotEmpty) {
+                                        data = result.first;
+                                        _bloc.customerNewStream.add(result);
+                                      } else if (result == null) {
+                                        data = '';
+                                        _bloc.customerNewStream
+                                            .add(['null', 'null']);
+                                      }
                                       addData[indexParent]
                                           .data[indexChild]
                                           .value = data;
-                                      if (data.field_name == 'col131') {
-                                        _bloc.getAddressCustomer(data);
-                                        ContactByCustomerBloc.of(context)
-                                            .chiTietXe
-                                            .add('');
-                                        ContactByCustomerBloc.of(context).add(
-                                            InitGetContactByCustomerrEvent(
-                                                data));
-                                        PhoneBloc.of(context)
-                                            .add(InitPhoneEvent(data));
-                                      }
+                                      _bloc.getAddressCustomer(data);
+                                      ContactByCustomerBloc.of(context)
+                                          .chiTietXe
+                                          .add('');
+                                      ContactByCustomerBloc.of(context).add(
+                                          InitGetContactByCustomerrEvent(data));
+                                      PhoneBloc.of(context)
+                                          .add(InitPhoneEvent(data));
                                     },
-                                    value: data.field_value ?? ''))
+                                    value: list.isNotEmpty
+                                        ? list.last
+                                        : data.field_value ?? '',
+                                  );
+                                })
+                            : (data.field_name == 'hinh_thuc_thanh_toan'
+                                ? StreamBuilder<double>(
+                                    stream: TotalBloc.of(context).paidStream,
+                                    builder: (context, snapshot) {
+                                      if ((snapshot.data ?? 0) == 0) {
+                                        return SizedBox();
+                                      } else {
+                                        return InputDropdown(
+                                            dropdownItemList:
+                                                data.field_datasource ?? [],
+                                            data: data,
+                                            onSuccess: (data) {
+                                              addData[indexParent]
+                                                  .data[indexChild]
+                                                  .value = data;
+                                            },
+                                            value: data.field_value ?? '');
+                                      }
+                                    })
+                                : data.field_name == 'hdsan_pham_kh'
+                                    ? StreamBuilder<List<List<dynamic>>>(
+                                        stream:
+                                            ContactByCustomerBloc.of(context)
+                                                .listXe,
+                                        builder: (context, snapshot) {
+                                          final list = snapshot.data;
+                                          return InputDropdown(
+                                              isUpdate: true,
+                                              isUpdateList: true,
+                                              dropdownItemList: list ??
+                                                  data.field_datasource ??
+                                                  [],
+                                              data: data,
+                                              onSuccess: (data) {
+                                                addData[indexParent]
+                                                    .data[indexChild]
+                                                    .value = data;
+                                                ContactByCustomerBloc.of(
+                                                        context)
+                                                    .getCar(data);
+                                              },
+                                              onUpdate: (data) {
+                                                addData[indexParent]
+                                                    .data[indexChild]
+                                                    .value = data;
+                                                ContactByCustomerBloc.of(
+                                                        context)
+                                                    .getCar(data);
+                                              },
+                                              value: list?.isEmpty ?? false
+                                                  ? ''
+                                                  : data.field_value ?? '');
+                                        })
+                                    : InputDropdown(
+                                        dropdownItemList:
+                                            data.field_datasource ?? [],
+                                        data: data,
+                                        onSuccess: (data) {
+                                          addData[indexParent]
+                                              .data[indexChild]
+                                              .value = data;
+                                          if (data.field_name == 'col131') {
+                                            _bloc.getAddressCustomer(data);
+                                            ContactByCustomerBloc.of(context)
+                                                .chiTietXe
+                                                .add('');
+                                            ContactByCustomerBloc.of(context).add(
+                                                InitGetContactByCustomerrEvent(
+                                                    data));
+                                            PhoneBloc.of(context)
+                                                .add(InitPhoneEvent(data));
+                                          }
+                                        },
+                                        value: data.field_value ?? ''))
                     : data.field_type == 'TEXT_MULTI'
                         ? SelectMulti(
                             dropdownItemList: data.field_datasource ?? [],
@@ -500,7 +564,8 @@ class _FormAddContractState extends State<FormAddContract> {
                                             },
                                           )
                                         : data.field_special == 'autosum'
-                                            ? BlocBuilder<TotalBloc, TotalState>(
+                                            ? BlocBuilder<TotalBloc,
+                                                    TotalState>(
                                                 builder: (context, stateA) {
                                                 if (stateA
                                                     is SuccessTotalState) {
@@ -510,8 +575,11 @@ class _FormAddContractState extends State<FormAddContract> {
                                                       stateA.total.toString();
                                                   return WidgetTotalSum(
                                                       label: data.field_label,
-                                                      value: stateA.total
-                                                          .toStringAsFixed(0));
+                                                      value: AppValue
+                                                          .format_money(stateA
+                                                              .total
+                                                              .toStringAsFixed(
+                                                                  0)));
                                                 } else {
                                                   return WidgetTotalSum(
                                                       label: data.field_label,
@@ -691,6 +759,12 @@ class _FormAddContractState extends State<FormAddContract> {
                                   ? TextInputType.emailAddress
                                   : TextInputType.text,
                   onChanged: (text) {
+                    if (data.field_name == 'datt') {
+                      TotalBloc.of(context)
+                          .paidStream
+                          .add(double.parse(text.trim() == '' ? '0' : text));
+                      TotalBloc.of(context).getPaid();
+                    }
                     addData[indexParent].data[indexChild].value = text;
                   },
                   readOnly: noEdit,
@@ -735,10 +809,15 @@ class _FormAddContractState extends State<FormAddContract> {
         }
       }
     }
+    if (TotalBloc.of(context).unpaidStream.value < 0) {
+      check = true;
+    }
     if (check == true) {
       ShowDialogCustom.showDialogBase(
         title: MESSAGES.NOTIFICATION,
-        content: 'Hãy nhập đủ các trường bắt buộc (*)',
+        content: TotalBloc.of(context).unpaidStream.value < 0
+            ? 'Số tiền đã thanh toán không được lớn hơn tổng tiền'
+            : 'Hãy nhập đủ các trường bắt buộc (*)',
       );
     } else {
       if (listProduct.length > 0) {

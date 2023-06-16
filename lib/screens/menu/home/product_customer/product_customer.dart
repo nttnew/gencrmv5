@@ -212,9 +212,10 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                           await getDataFirst();
                         },
                         child: ListView.builder(
+                            physics: ClampingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics()),
                             padding: EdgeInsets.only(top: 10, bottom: 10),
                             controller: _scrollController,
-                            physics: AlwaysScrollableScrollPhysics(),
                             itemCount: list.length,
                             itemBuilder: (context, i) => ItemProductCustomer(
                                   productModule: list[i],

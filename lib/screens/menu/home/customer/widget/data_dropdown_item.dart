@@ -35,6 +35,7 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
   List listData = [];
   List data = [];
   int page = 1;
+  Debounce debounce = Debounce();
 
   @override
   void initState() {
@@ -103,57 +104,31 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                           leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                           onSubmit: (v) {
                             search = v;
+                            debounce.run(() {
+                              if (widget.isSearch == true) {
+                                widget.onTabSearch!(search);
+                                page = 1;
+                              } else {
+                                if (widget.isSearch == false) {
+                                  data = listData.where((i) {
+                                    String value = TiengViet.parse(i['label'])
+                                        .toLowerCase();
+                                    String search1 =
+                                        TiengViet.parse(search).toLowerCase();
+                                    if (value.contains(search1))
+                                      return true;
+                                    else
+                                      return false;
+                                  }).toList();
+                                  setState(() {});
+                                }
+                                FocusManager.instance.primaryFocus?.unfocus();
+                              }
+                            });
                           },
                         ),
                       ),
                     ),
-                    widget.isSearch == true
-                        ? GestureDetector(
-                            onTap: () {
-                              widget.onTabSearch!(search);
-                              page = 1;
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(left: 8),
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                  color: COLORS.PRIMARY_COLOR,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: WidgetText(
-                                title: "Tìm",
-                                style: AppStyle.DEFAULT_14,
-                              ),
-                            ),
-                          )
-                        : GestureDetector(
-                            onTap: () {
-                              if (widget.isSearch == false) {
-                                data = listData.where((i) {
-                                  String value =
-                                      TiengViet.parse(i['label']).toLowerCase();
-                                  String search1 =
-                                      TiengViet.parse(search).toLowerCase();
-                                  if (value.contains(search1))
-                                    return true;
-                                  else
-                                    return false;
-                                }).toList();
-                                setState(() {});
-                              }
-                              FocusManager.instance.primaryFocus?.unfocus();
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(left: 8),
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                  color: COLORS.PRIMARY_COLOR,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: WidgetText(
-                                title: "Tìm",
-                                style: AppStyle.DEFAULT_14,
-                              ),
-                            ),
-                          )
                   ],
                 ),
                 Expanded(
@@ -171,7 +146,9 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                                         data[index]['label']);
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.only(top: 8),
+                                    padding: EdgeInsets.only(
+                                      top: 16,
+                                    ),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -185,10 +162,9 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                                                         CA_NHAN ||
                                                     data[index]['value'] ==
                                                         TO_CHUC)
-                                                ? AppStyle.DEFAULT_18_BOLD
-                                                    .copyWith(
-                                                        color: COLORS
-                                                            .TEXT_BLUE_BOLD)
+                                                ? AppStyle.DEFAULT_18.copyWith(
+                                                    color: COLORS.RED,
+                                                    fontWeight: FontWeight.w500)
                                                 : AppStyle.DEFAULT_18.copyWith(
                                                     color:
                                                         COLORS.TEXT_BLUE_BOLD,
@@ -196,7 +172,7 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                                           ),
                                         ),
                                         SizedBox(
-                                          height: 8,
+                                          height: 16,
                                         ),
                                         LineHorizontal()
                                       ],

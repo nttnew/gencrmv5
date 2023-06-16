@@ -6,6 +6,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
+import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/clue.dart';
 import '../../../../src/src_index.dart';
@@ -43,6 +44,7 @@ class _ClueScreenState extends State<ClueScreen> {
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.DAU_MOI);
+    GetNotificationBloc.of(context).add(CheckNotification());
     _bloc.add(InitGetListClueEvent());
     _scrollController.addListener(() {
       if (_scrollController.offset ==
@@ -144,6 +146,8 @@ class _ClueScreenState extends State<ClueScreen> {
                     _research();
                   }),
                   child: ListView.separated(
+                    physics: ClampingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
                     padding: EdgeInsets.only(top: 16),
                     controller: _scrollController,
                     scrollDirection: Axis.vertical,

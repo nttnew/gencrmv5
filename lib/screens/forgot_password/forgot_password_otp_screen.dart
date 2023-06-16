@@ -88,10 +88,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
                               ),
                               Text(
                                 "Vui lòng nhập mã OTP được gửi đến email:",
-                                style: TextStyle(
-                                    fontFamily: "Quicksand",
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14),
+                                style: AppStyle.DEFAULT_14W500,
                               ),
                               SizedBox(
                                 height: 5,
