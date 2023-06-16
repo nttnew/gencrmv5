@@ -50,7 +50,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.KHACH_HANG);
-    GetListUnReadNotifiBloc.of(context).add(CheckNotification());
+    GetNotificationBloc.of(context).add(CheckNotification());
     _bloc.add(InitGetListOrderEvent());
     _scrollController.addListener(() {
       if (_scrollController.offset ==

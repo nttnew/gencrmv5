@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'package:gen_crm/widgets/widget_appbar.dart';
@@ -132,7 +131,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   void initState() {
     callInit();
     GetInforAccBloc.of(context).add(InitGetInforAcc());
-    GetListUnReadNotifiBloc.of(context).add(CheckNotification());
+    GetNotificationBloc.of(context).add(CheckNotification());
     getMenu();
     LoginBloc.of(context).getListMenuFlash();
     super.initState();
@@ -378,16 +377,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                 return WidgetAppbar(
                   title: state.inforAcc.fullname,
                   textColor: Colors.black,
-                  right: GestureDetector(onTap: () {
-                    return AppNavigator.navigateNotification();
-                  }, child: BlocBuilder<GetListUnReadNotifiBloc,
-                      UnReadListNotifiState>(builder: (context, state) {
-                    if (state is NotificationNeedRead) {
-                      return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
-                    } else {
-                      return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
-                    }
-                  })),
+                  right: rightAppBar(),
                   left: GestureDetector(
                     onTap: () {
                       if (_drawerKey.currentContext != null &&
@@ -408,16 +398,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                 return WidgetAppbar(
                   title: '',
                   textColor: Colors.black,
-                  right: GestureDetector(onTap: () {
-                    return AppNavigator.navigateNotification();
-                  }, child: BlocBuilder<GetListUnReadNotifiBloc,
-                      UnReadListNotifiState>(builder: (context, state) {
-                    if (state is NotificationNeedRead) {
-                      return SvgPicture.asset(ICONS.IC_NOTIFICATION_SVG);
-                    } else {
-                      return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
-                    }
-                  })),
+                  right: rightAppBar(),
                   left: GestureDetector(
                     onTap: () {
                       if (_drawerKey.currentContext != null &&

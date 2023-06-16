@@ -1,6 +1,11 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:flutter/material.dart';
+
+import '../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 
 class WidgetAppbar extends StatelessWidget {
   final String? title;
@@ -55,11 +60,9 @@ class WidgetAppbar extends StatelessWidget {
                     ? Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
-                            padding: EdgeInsets.only(left: 16), child: left),
+                            padding: EdgeInsets.only(left: 25), child: left),
                       )
                     : AppValue.kEmptyWidget,
-                // AppValue.hSpace(16),
-                //isTitleCenter == true ? Spacer() : AppValue.kEmptyWidget,
                 Align(
                   alignment: isTitleCenter == true
                       ? Alignment.center
@@ -82,7 +85,7 @@ class WidgetAppbar extends StatelessWidget {
                     ? Align(
                         alignment: Alignment.centerRight,
                         child: Container(
-                            padding: EdgeInsets.only(right: 16), child: right),
+                            padding: EdgeInsets.only(right: 25), child: right),
                       )
                     : AppValue.kEmptyWidget,
               ],
@@ -100,3 +103,50 @@ class WidgetAppbar extends StatelessWidget {
     );
   }
 }
+
+Widget rightAppBar() => GestureDetector(onTap: () {
+      return AppNavigator.navigateNotification();
+    }, child: BlocBuilder<GetNotificationBloc, UnReadListNotifiState>(
+        builder: (context, state) {
+      if (state is NotificationNeedRead) {
+        return Stack(
+          clipBehavior: Clip.none,
+          children: [
+            SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG),
+            if (GetNotificationBloc.of(context).total != 0)
+              Positioned(
+                  top: -5,
+                  right: -95,
+                  child: Container(
+                      width: 100,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(2),
+                            decoration: GetNotificationBloc.of(context).total <
+                                10
+                                ? BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            )
+                                : BoxDecoration(
+                                color: Colors.red,
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(100))),
+                            child: WidgetText(
+                              title: '${GetNotificationBloc.of(context).total}',
+                              style: AppStyle.APP_MEDIUM.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 8),
+                            ),
+                          ),
+                        ],
+                      )))
+          ],
+        );
+      } else {
+        return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
+      }
+    }));

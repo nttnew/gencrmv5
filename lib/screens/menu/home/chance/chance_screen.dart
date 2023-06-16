@@ -42,7 +42,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.CO_HOI_BH);
-    GetListUnReadNotifiBloc.of(context).add(CheckNotification());
+    GetNotificationBloc.of(context).add(CheckNotification());
     _bloc.add(InitGetListOrderEventChance());
     _scrollController.addListener(() {
       if (_scrollController.offset ==

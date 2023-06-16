@@ -20,14 +20,14 @@ class _UnReadListState extends State<UnReadList>
   ScrollController _scrollController = ScrollController();
   @override
   void initState() {
-    GetListUnReadNotifiBloc.of(context).add(InitGetListUnReadNotifiEvent(1));
+    GetNotificationBloc.of(context).add(InitGetListUnReadNotificationEvent(1));
     _scrollController.addListener(() {
       if (_scrollController.offset ==
               _scrollController.position.maxScrollExtent &&
           length < total) {
         page = page + 1;
-        GetListUnReadNotifiBloc.of(context)
-            .add(InitGetListUnReadNotifiEvent(page));
+        GetNotificationBloc.of(context)
+            .add(InitGetListUnReadNotificationEvent(page));
       }
     });
     super.initState();
@@ -35,18 +35,18 @@ class _UnReadListState extends State<UnReadList>
 
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocListener<GetListUnReadNotifiBloc, UnReadListNotifiState>(
+    return BlocListener<GetNotificationBloc, UnReadListNotifiState>(
       listener: (context, state) {
         if (state is DeleteUnReadListNotifiState) {
-          GetListUnReadNotifiBloc.of(context)
-              .add(InitGetListUnReadNotifiEvent(1));
+          GetNotificationBloc.of(context)
+              .add(InitGetListUnReadNotificationEvent(1));
         } else if (state is ErrorDeleteUnReadListNotifiState) {
         } else if (state is ReadUnReadListNotifiState) {
-          GetListUnReadNotifiBloc.of(context)
-              .add(InitGetListUnReadNotifiEvent(1));
+          GetNotificationBloc.of(context)
+              .add(InitGetListUnReadNotificationEvent(1));
         } else if (state is ErrorReadUnReadListNotifiState) {}
       },
-      child: BlocBuilder<GetListUnReadNotifiBloc, UnReadListNotifiState>(
+      child: BlocBuilder<GetNotificationBloc, UnReadListNotifiState>(
           builder: (context, state) {
         if (state is UpdateUnReadListNotifiState) {
           total = int.parse(state.total);
@@ -85,8 +85,8 @@ class _UnReadListState extends State<UnReadList>
           } else {
             AppNavigator.navigateInfoClue(item.record_id!, 'Chi tiết');
           }
-          GetListUnReadNotifiBloc.of(context)
-              .add(ReadNotifiEvent(item.id!, item.type!));
+          GetNotificationBloc.of(context)
+              .add(ReadNotificationEvent(item.id!, item.type!));
         },
         title: new Text(item.title!),
         subtitle: Container(
@@ -101,8 +101,8 @@ class _UnReadListState extends State<UnReadList>
           child: new IconButton(
             icon: new Icon(Icons.delete),
             color: Colors.white,
-            onPressed: () => GetListUnReadNotifiBloc.of(context).add(
-                DeleteUnReadListNotifiEvent(int.parse(item.id!), item.type!)),
+            onPressed: () => GetNotificationBloc.of(context).add(
+                DeleteUnReadListNotificationEvent(int.parse(item.id!), item.type!)),
           ),
         ),
       ],

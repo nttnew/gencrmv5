@@ -453,10 +453,8 @@ class _EditContractState extends State<EditContract> {
                                                   addData[indexParent]
                                                           .data[indexChild]
                                                           .value =
-                                                      stateA
-                                                          .total
-                                                          .toStringAsFixed(
-                                                          0);
+                                                      stateA.total
+                                                          .toStringAsFixed(0);
                                                   return WidgetTotalSum(
                                                       label: data.field_label,
                                                       value: AppValue
@@ -550,13 +548,7 @@ class _EditContractState extends State<EditContract> {
               style: AppStyle.DEFAULT_14W600,
               children: <TextSpan>[
                 data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Quicksand",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.red))
+                    ? TextSpan(text: '*', style: AppStyle.DEFAULT_14W600_RED)
                     : TextSpan(),
               ],
             ),
@@ -625,7 +617,7 @@ class _EditContractState extends State<EditContract> {
                 child: TextFormField(
                   minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
                   maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                  style: AppStyle.DEFAULT_14W600,
                   keyboardType: data.field_type == "TEXT_NUMERIC"
                       ? TextInputType.number
                       : data.field_special == "default"

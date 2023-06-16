@@ -57,7 +57,7 @@ class _SupportScreenState extends State<SupportScreen> {
         _research(pageNew: page);
       } else {}
     });
-    GetListUnReadNotifiBloc.of(context).add(CheckNotification());
+    GetNotificationBloc.of(context).add(CheckNotification());
     super.initState();
   }
 

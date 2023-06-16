@@ -48,7 +48,7 @@ class _WorkScreenState extends State<WorkScreen> {
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.CONG_VIEC);
     title = Get.arguments ?? '';
-    GetListUnReadNotifiBloc.of(context).add(CheckNotification());
+    GetNotificationBloc.of(context).add(CheckNotification());
     _bloc.add(InitGetListWorkEvent());
     _scrollController.addListener(() {
       if (_scrollController.offset ==
