@@ -60,11 +60,13 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
     ));
 
     list.add(ModuleThaoTac(
-      title: "Thêm công việc",
+      title: "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd('Thêm công việc', ADD_JOB_CONTRACT,
+        AppNavigator.navigateFormAdd(
+            "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
+            ADD_JOB_CONTRACT,
             id: int.parse(id), onRefresh: () {
           _bloc.controllerCV.reloadData();
         });
@@ -72,11 +74,13 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
     ));
 
     list.add(ModuleThaoTac(
-      title: "Thêm hỗ trợ",
+      title: "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
       icon: ICONS.IC_ADD_SUPPORT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd('Thêm hỗ trợ', ADD_SUPPORT_CONTRACT,
+        AppNavigator.navigateFormAdd(
+            "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
+            ADD_SUPPORT_CONTRACT,
             id: int.parse(id), onRefresh: () {
           _bloc.controllerHT.reloadData();
         });
@@ -177,7 +181,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                     children: [
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: const TabBar(
+                        child: TabBar(
                           padding: EdgeInsets.symmetric(horizontal: 25),
                           isScrollable: true,
                           automaticIndicatorColorAdjustment: true,
@@ -193,10 +197,12 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                               text: 'Thanh toán',
                             ),
                             Tab(
-                              text: 'Công việc',
+                              text: ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC,
+                                  isTitle: true),
                             ),
                             Tab(
-                              text: 'Hỗ trợ',
+                              text: ModuleMy.getNameModuleMy(ModuleMy.CSKH,
+                                  isTitle: true),
                             ),
                           ],
                         ),

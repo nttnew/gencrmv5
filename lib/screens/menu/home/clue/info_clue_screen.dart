@@ -48,11 +48,13 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
 
   getThaoTac() {
     list.add(ModuleThaoTac(
-      title: "Thêm công việc",
+      title: "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd('Thêm công việc', ADD_CLUE_JOB,
+        AppNavigator.navigateFormAdd(
+            "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
+            ADD_CLUE_JOB,
             id: int.parse(id), onRefresh: () {
           _bloc.controllerCV.reloadData();
         });
@@ -158,7 +160,8 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                               text: 'Thông tin chung',
                             ),
                             Tab(
-                              text: 'Công việc',
+                              text: ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC,
+                                  isTitle: true),
                             )
                           ],
                         ),

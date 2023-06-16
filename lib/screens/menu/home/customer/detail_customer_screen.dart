@@ -72,11 +72,13 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
 
     list.add(
       ModuleThaoTac(
-        title: "Thêm đầu mối",
+        title: "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}",
         icon: ICONS.IC_ADD_CLUE_SVG,
         onThaoTac: () {
           Get.back();
-          AppNavigator.navigateFormAdd('Thêm đầu mối', ADD_CLUE_CUSTOMER,
+          AppNavigator.navigateFormAdd(
+              "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}",
+              ADD_CLUE_CUSTOMER,
               id: int.parse(id), onRefresh: () {
             _bloc.controllerDM.reloadData();
           });
@@ -85,11 +87,13 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     );
 
     list.add(ModuleThaoTac(
-      title: "Thêm cơ hội",
+      title: "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}",
       icon: ICONS.IC_ADD_CHANCE_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd('Thêm cơ hội', ADD_CHANCE_CUSTOMER,
+        AppNavigator.navigateFormAdd(
+            "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}",
+            ADD_CHANCE_CUSTOMER,
             id: int.parse(id), onRefresh: () {
           _bloc.controllerCH.reloadData();
         });
@@ -97,13 +101,13 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     ));
 
     list.add(ModuleThaoTac(
-      title: "Thêm hợp đồng",
+      title: "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}",
       icon: ICONS.IC_ADD_CONTRACT_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateAddContract(
             customer_id: id,
-            title: 'hợp đồng',
+            title: "${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}",
             onRefresh: () {
               _bloc.controllerHD.reloadData();
             });
@@ -112,11 +116,13 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     ));
 
     list.add(ModuleThaoTac(
-      title: "Thêm công việc",
+      title: "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd('Thêm công việc', ADD_JOB_CUSTOMER,
+        AppNavigator.navigateFormAdd(
+            "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
+            ADD_JOB_CUSTOMER,
             id: int.parse(id), onRefresh: () {
           _bloc.controllerCV.reloadData();
         });
@@ -124,11 +130,13 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     ));
 
     list.add(ModuleThaoTac(
-      title: "Thêm hỗ trợ",
+      title: "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
       icon: ICONS.IC_ADD_SUPPORT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd('Thêm hỗ trợ', ADD_SUPPORT_CUSTOMER,
+        AppNavigator.navigateFormAdd(
+            "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
+            ADD_SUPPORT_CUSTOMER,
             id: int.parse(id), onRefresh: () {
           _bloc.controllerHT.reloadData();
         });
@@ -237,19 +245,24 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                     text: "Thông tin chung",
                   ),
                   Tab(
-                    text: "Đầu mối",
+                    text: ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI,
+                        isTitle: true),
                   ),
                   Tab(
-                    text: "Cơ hội",
+                    text: ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN,
+                        isTitle: true),
                   ),
                   Tab(
-                    text: "Hợp đồng",
+                    text: ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG,
+                        isTitle: true),
                   ),
                   Tab(
-                    text: "Công việc",
+                    text: ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC,
+                        isTitle: true),
                   ),
                   Tab(
-                    text: "Hỗ trợ",
+                    text:
+                        ModuleMy.getNameModuleMy(ModuleMy.CSKH, isTitle: true),
                   ),
                 ],
               ),
