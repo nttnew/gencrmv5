@@ -65,8 +65,8 @@ class _FormAddDataState extends State<FormAddData> {
   late final TextEditingController controllerNote;
   late final FormAddBloc _bloc;
   late final List<List<dynamic>> listCustomerForChance;
-  String CA_NHAN = '0';
-  String TO_CHUC = '1';
+  String CA_NHAN = 'CA_NHAN';
+  String TO_CHUC = 'TO_CHUC';
 
   @override
   void initState() {
