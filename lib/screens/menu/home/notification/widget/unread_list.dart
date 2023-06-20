@@ -35,20 +35,20 @@ class _UnReadListState extends State<UnReadList>
 
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocListener<GetNotificationBloc, UnReadListNotifiState>(
+    return BlocListener<GetNotificationBloc, NotificationState>(
       listener: (context, state) {
-        if (state is DeleteUnReadListNotifiState) {
+        if (state is DeleteNotificationState) {
           GetNotificationBloc.of(context)
               .add(InitGetListUnReadNotificationEvent(1));
-        } else if (state is ErrorDeleteUnReadListNotifiState) {
-        } else if (state is ReadUnReadListNotifiState) {
+        } else if (state is ErrorDeleteNotificationState) {
+        } else if (state is ReadNotificationState) {
           GetNotificationBloc.of(context)
               .add(InitGetListUnReadNotificationEvent(1));
-        } else if (state is ErrorReadUnReadListNotifiState) {}
+        } else if (state is ErrorNotificationState) {}
       },
-      child: BlocBuilder<GetNotificationBloc, UnReadListNotifiState>(
+      child: BlocBuilder<GetNotificationBloc, NotificationState>(
           builder: (context, state) {
-        if (state is UpdateUnReadListNotifiState) {
+        if (state is UpdateNotificationState) {
           total = int.parse(state.total);
           length = state.list.length;
           return ListView(

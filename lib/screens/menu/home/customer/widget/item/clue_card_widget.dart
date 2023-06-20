@@ -10,7 +10,7 @@ import '../../../../../../src/src_index.dart';
 class ClueCardWidget extends StatefulWidget {
   ClueCardWidget({Key? key, required this.data}) : super(key: key);
 
-  ClueCustomerData? data;
+  final ClueCustomerData? data;
 
   @override
   State<ClueCardWidget> createState() => _ClueCardWidgetState();

@@ -159,7 +159,7 @@ class _ContractScreenState extends State<ContractScreen> {
         child: FloatingActionButton(
           backgroundColor: Color(0xff1AA928),
           onPressed: () {
-            AppNavigator.navigateAddContract(title: title.toLowerCase());
+            AppNavigator.navigateAddContract(title: 'Thêm ${title.toLowerCase()}');
           },
           child: Icon(Icons.add, size: 40),
         ),

@@ -10,8 +10,8 @@ abstract class WorkState extends Equatable {
 class InitGetListWorkState extends WorkState {}
 
 class SuccessGetListWorkState extends WorkState {
-  List<WorkItemData> data_list;
-  int pageCount;
+  final List<WorkItemData> data_list;
+  final int pageCount;
   SuccessGetListWorkState(
     this.data_list,
     this.pageCount,

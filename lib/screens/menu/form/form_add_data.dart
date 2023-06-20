@@ -852,7 +852,7 @@ class _FormAddDataState extends State<FormAddData> {
                                         },
                                       )
                                     : data.field_type == "CHECK"
-                                        ? renderCheckBox(
+                                        ? RenderCheckBox(
                                             onChange: (check) {
                                               addData[indexParent]
                                                   .data[indexChild]
@@ -1013,18 +1013,18 @@ class _FormAddDataState extends State<FormAddData> {
   }
 }
 
-class renderCheckBox extends StatefulWidget {
-  renderCheckBox({Key? key, required this.onChange, required this.data})
+class RenderCheckBox extends StatefulWidget {
+  RenderCheckBox({Key? key, required this.onChange, required this.data})
       : super(key: key);
 
-  Function? onChange;
+  final Function? onChange;
   final CustomerIndividualItemData data;
 
   @override
-  State<renderCheckBox> createState() => _renderCheckBoxState();
+  State<RenderCheckBox> createState() => _RenderCheckBoxState();
 }
 
-class _renderCheckBoxState extends State<renderCheckBox> {
+class _RenderCheckBoxState extends State<RenderCheckBox> {
   bool isCheck = false;
 
   @override

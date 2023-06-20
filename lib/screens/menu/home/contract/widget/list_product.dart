@@ -233,17 +233,17 @@ class ItemProduct extends StatefulWidget {
   final ProductItem data;
   final List<List<dynamic>> listDvt;
   final List<List<dynamic>> listVat;
-  Function? onPlus;
-  Function? onMinus;
-  Function? onDVT;
-  Function? onVAT;
-  Function? onGiamGia;
-  Function? onPrice;
-  Function() onReload;
-  ProductModel? model;
-  bool neverHidden;
-  bool canDelete;
-  Function(ProductModel productModel)? onDelete;
+  final Function? onPlus;
+  final Function? onMinus;
+  final Function? onDVT;
+  final Function? onVAT;
+  final Function? onGiamGia;
+  final Function? onPrice;
+  final Function() onReload;
+  final ProductModel? model;
+  final bool neverHidden;
+  final bool canDelete;
+  final Function(ProductModel productModel)? onDelete;
 
   @override
   State<ItemProduct> createState() => _ItemProductState();

@@ -132,7 +132,7 @@ class _FormAddContractState extends State<FormAddContract> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppbarBaseNormal(
-          'Thêm ${title.toLowerCase()}',
+          title,
         ),
         body: BlocListener<AddDataBloc, AddDataState>(
           listener: (context, state) async {

@@ -15,18 +15,18 @@ part 'unread_list_notifi_event.dart';
 part 'unread_list_notifi_state.dart';
 
 class GetNotificationBloc
-    extends Bloc<ListUnReadNotificationEvent, UnReadListNotifiState> {
+    extends Bloc<ListUnReadNotificationEvent, NotificationState> {
   final UserRepository userRepository;
   int total = 0;
 
   GetNotificationBloc({required UserRepository userRepository})
       : userRepository = userRepository,
-        super(InitGetUnReadListNotifiState()) {
+        super(InitGetNotificationState()) {
     getVersionInfoCar();
   }
 
   @override
-  Stream<UnReadListNotifiState> mapEventToState(
+  Stream<NotificationState> mapEventToState(
       ListUnReadNotificationEvent event) async* {
     if (event is InitGetListUnReadNotificationEvent) {
       yield* _getListNotifi(page: event.page);
@@ -36,14 +36,14 @@ class GetNotificationBloc
             await userRepository.deleteNotification(event.id, event.type);
         if ((response.code == BASE_URL.SUCCESS) ||
             (response.code == BASE_URL.SUCCESS_200)) {
-          yield DeleteUnReadListNotifiState();
+          yield DeleteNotificationState();
         } else {
           LoadingApi().popLoading();
-          yield ErrorDeleteUnReadListNotifiState(response.msg ?? "");
+          yield ErrorDeleteNotificationState(response.msg ?? "");
         }
       } catch (e) {
         LoadingApi().popLoading();
-        yield ErrorDeleteUnReadListNotifiState(MESSAGES.CONNECT_ERROR);
+        yield ErrorDeleteNotificationState(MESSAGES.CONNECT_ERROR);
         throw e;
       }
     } else if (event is ReadNotificationEvent) {
@@ -52,14 +52,14 @@ class GetNotificationBloc
             id: event.id, type: event.type);
         if ((response.code == BASE_URL.SUCCESS) ||
             (response.code == BASE_URL.SUCCESS_200)) {
-          yield ReadUnReadListNotifiState();
+          yield ReadNotificationState();
         } else {
           LoadingApi().popLoading();
-          yield ErrorReadUnReadListNotifiState(response.msg ?? "");
+          yield ErrorNotificationState(response.msg ?? "");
         }
       } catch (e) {
         LoadingApi().popLoading();
-        yield ErrorReadUnReadListNotifiState(MESSAGES.CONNECT_ERROR);
+        yield ErrorNotificationState(MESSAGES.CONNECT_ERROR);
         throw e;
       }
     } else if (event is CheckNotification) {
@@ -74,11 +74,11 @@ class GetNotificationBloc
           }
         } else {
           LoadingApi().popLoading();
-          yield ErrorGetUnReadListNotifiState(response.msg ?? "");
+          yield ErrorGetNotificationState(response.msg ?? "");
         }
       } catch (e) {
         LoadingApi().popLoading();
-        yield ErrorGetUnReadListNotifiState(MESSAGES.CONNECT_ERROR);
+        yield ErrorGetNotificationState(MESSAGES.CONNECT_ERROR);
         throw e;
       }
     }
@@ -98,7 +98,7 @@ class GetNotificationBloc
   }
 
   List<DataNotification>? listNotifi;
-  Stream<UnReadListNotifiState> _getListNotifi({required int page}) async* {
+  Stream<NotificationState> _getListNotifi({required int page}) async* {
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getListUnReadNotification(page);
@@ -112,18 +112,18 @@ class GetNotificationBloc
           listNotifi!.addAll(response.data.list!);
         }
         LoadingApi().popLoading();
-        yield UpdateUnReadListNotifiState(
+        yield UpdateNotificationState(
             list: listNotifi!,
             total: response.data.total!,
             limit: response.data.limit!,
             page: page);
       } else {
         LoadingApi().popLoading();
-        yield ErrorGetUnReadListNotifiState(response.msg ?? "");
+        yield ErrorGetNotificationState(response.msg ?? "");
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetUnReadListNotifiState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetNotificationState(MESSAGES.CONNECT_ERROR);
       throw e;
     }
     LoadingApi().popLoading();

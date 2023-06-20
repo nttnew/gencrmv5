@@ -111,10 +111,13 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
       AppNavigator.navigateFormAdd(name, ADD_CLUE);
     } else if (ModuleText.LICH_HEN == id) {
       AppNavigator.navigateFormAdd(name, ADD_CHANCE);
-    } else if (ModuleText.HOP_DONG == id) {
+    } else if (ModuleText.HOP_DONG_FLASH == id) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => AddServiceVoucherScreen(
               title: name.toUpperCase().capitalizeFirst ?? '')));
+    } else if (ModuleText.HOP_DONG == id) {
+      AppNavigator.navigateAddContract(
+          title: name.toUpperCase().capitalizeFirst ?? '');
     } else if (ModuleText.CONG_VIEC == id) {
       AppNavigator.navigateFormAdd(name, ADD_JOB);
     } else if (ModuleText.CSKH == id) {

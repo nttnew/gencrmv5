@@ -1198,7 +1198,7 @@ class _ReportScreenState extends State<ReportScreen> {
                             ));
                 });
               },
-              text: "Done",
+              text: "Xong",
               backgroundColor: COLORS.BLUE,
             ),
           )

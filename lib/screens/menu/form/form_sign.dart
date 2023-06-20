@@ -921,7 +921,7 @@ class RenderCheckBox extends StatefulWidget {
   RenderCheckBox({Key? key, required this.onChange, required this.data})
       : super(key: key);
 
-  Function? onChange;
+  final Function? onChange;
   final CustomerIndividualItemData data;
 
   @override

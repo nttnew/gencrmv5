@@ -10,20 +10,20 @@ import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
 
 class DataDropDownItem extends StatefulWidget {
-  DataDropDownItem(
-      {Key? key,
-      required this.data,
-      required this.onSuccess,
-      this.onLoadMore,
-      this.onTabSearch,
-      this.isSearch})
-      : super(key: key);
+  DataDropDownItem({
+    Key? key,
+    required this.data,
+    required this.onSuccess,
+    this.onLoadMore,
+    this.onTabSearch,
+    this.isSearch = false,
+  }) : super(key: key);
 
-  List data;
-  Function onSuccess;
-  Function? onLoadMore;
-  Function? onTabSearch;
-  bool? isSearch = false;
+  final List data;
+  final Function onSuccess;
+  final Function? onLoadMore;
+  final Function? onTabSearch;
+  final bool? isSearch;
 
   @override
   State<DataDropDownItem> createState() => _DataDropDownItemState();

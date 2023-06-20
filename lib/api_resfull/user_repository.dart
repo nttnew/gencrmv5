@@ -263,7 +263,7 @@ class UserRepository {
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .getListUnReadNotification(page);
 
-  Future<ListNotificationResponse> getListReadedNotification(int page) async =>
+  Future<ListNotificationResponse> getListReadNotification(int page) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .getListReadedNotification(page);
 
@@ -271,7 +271,7 @@ class UserRepository {
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .deleteNotifi(DelNotifiParam(id, type));
 
-  Future<InforAccResponse> getInforAcc() async =>
+  Future<InforAccResponse> getInfoAcc() async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getInforAcc();
 
   Future<AddCustomerIndividual> getAddCusOr() async =>

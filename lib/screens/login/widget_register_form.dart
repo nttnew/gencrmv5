@@ -1,4 +1,3 @@
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:community_material_icon/community_material_icon.dart';
@@ -70,8 +69,6 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
                 content: state.message,
 
           );
-
-          //GetSnackBarUtils.createFailure(message: state.message);
         }
       },
       child: Container(

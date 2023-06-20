@@ -15,11 +15,11 @@ class ProductContract extends StatefulWidget {
     this.neverHidden = false,
     this.canDelete = false,
   }) : super(key: key);
-  List<ProductModel> data;
-  Function addProduct;
-  Function reload;
-  bool neverHidden;
-  bool canDelete;
+  final List<ProductModel> data;
+  final Function addProduct;
+  final Function reload;
+  final bool neverHidden;
+  final bool canDelete;
 
   @override
   State<ProductContract> createState() => _ProductContractState();

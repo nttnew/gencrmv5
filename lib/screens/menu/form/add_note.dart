@@ -182,8 +182,8 @@ class ListNote extends StatefulWidget {
   final String id;
   final double size;
   final bool isAdd;
-  Function onEdit;
-  Function onDelete;
+  final Function onEdit;
+  final Function onDelete;
 
   @override
   State<ListNote> createState() => _ListNoteState();

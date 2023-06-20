@@ -7,10 +7,10 @@ abstract class ProductCustomerModuleEvent extends Equatable {
 }
 
 class GetProductCustomerModuleEvent extends ProductCustomerModuleEvent {
-  int? page;
-  String? querySearch;
-  String? filter;
-  String? ids;
+  final int? page;
+  final String? querySearch;
+  final String? filter;
+  final String? ids;
 
   GetProductCustomerModuleEvent({
     this.page,

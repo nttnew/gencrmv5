@@ -106,7 +106,7 @@ class WidgetAppbar extends StatelessWidget {
 
 Widget rightAppBar() => GestureDetector(onTap: () {
       return AppNavigator.navigateNotification();
-    }, child: BlocBuilder<GetNotificationBloc, UnReadListNotifiState>(
+    }, child: BlocBuilder<GetNotificationBloc, NotificationState>(
         builder: (context, state) {
       if (state is NotificationNeedRead) {
         return Stack(

@@ -7,14 +7,14 @@ abstract class GetDetailClueEvent extends Equatable {
 }
 
 class InitGetDetailClueEvent extends GetDetailClueEvent {
-  String? id;
+  final String? id;
   InitGetDetailClueEvent(this.id);
   @override
   List<Object?> get props => [id];
 }
 
 class InitDeleteClueEvent extends GetDetailClueEvent {
-  String? id;
+  final String? id;
   InitDeleteClueEvent(this.id);
   @override
   List<Object?> get props => [id];

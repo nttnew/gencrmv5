@@ -9,8 +9,8 @@ class FieldInputPercent extends StatefulWidget {
   FieldInputPercent({Key? key, required this.data, required this.onChanged})
       : super(key: key);
 
-  CustomerIndividualItemData data;
-  Function onChanged;
+  final CustomerIndividualItemData data;
+  final Function onChanged;
 
   @override
   State<FieldInputPercent> createState() => _FieldInputPercentState();

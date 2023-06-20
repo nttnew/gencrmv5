@@ -107,7 +107,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
         Get.back();
         AppNavigator.navigateAddContract(
             customer_id: id,
-            title: "${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}",
+            title: "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}",
             onRefresh: () {
               _bloc.controllerHD.reloadData();
             });

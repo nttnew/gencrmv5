@@ -1,20 +1,20 @@
 part of 'readed_list_notifi_bloc.dart';
 
-abstract class ReadedListNotifiState extends Equatable {
+abstract class ReadNotificationState extends Equatable {
   @override
   List<Object?> get props => [];
 
-  ReadedListNotifiState();
+  ReadNotificationState();
 }
 
-class InitGetReadedListNotifiState extends ReadedListNotifiState {}
+class InitGetReadNotificationState extends ReadNotificationState {}
 
-class UpdateReadedListNotifiState extends ReadedListNotifiState {
-  List<DataNotification> list;
-  String total;
-  int limit, page;
+class UpdateReadNotificationState extends ReadNotificationState {
+  final List<DataNotification> list;
+  final String total;
+  final int limit, page;
 
-  UpdateReadedListNotifiState(
+  UpdateReadNotificationState(
       {required this.list,
       required this.page,
       required this.total,
@@ -24,23 +24,23 @@ class UpdateReadedListNotifiState extends ReadedListNotifiState {
   List<Object> get props => [this.list, this.total, this.limit, this.page];
 }
 
-class LoadingReadedListNotifiState extends ReadedListNotifiState {}
+class LoadingReadNotificationState extends ReadNotificationState {}
 
-class DeleteReadedListNotifiState extends ReadedListNotifiState {}
+class DeleteReadNotificationState extends ReadNotificationState {}
 
-class ErrorDeleteReadedListNotifiState extends ReadedListNotifiState {
+class ErrorDeleteReadNotificationState extends ReadNotificationState {
   final String msg;
 
-  ErrorDeleteReadedListNotifiState(this.msg);
+  ErrorDeleteReadNotificationState(this.msg);
 
   @override
   List<Object> get props => [msg];
 }
 
-class ErrorGetReadedListNotifiState extends ReadedListNotifiState {
+class ErrorGetReadNotificationState extends ReadNotificationState {
   final String msg;
 
-  ErrorGetReadedListNotifiState(this.msg);
+  ErrorGetReadNotificationState(this.msg);
 
   @override
   List<Object> get props => [msg];
