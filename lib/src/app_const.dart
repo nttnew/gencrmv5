@@ -349,3 +349,13 @@ class Debounce {
     _timer = Timer(Duration(milliseconds: milliseconds), action);
   }
 }
+
+String getFlagCountry(String locole) {
+  if (locole == 'vi') {
+    return ICONS.IC_FLAG_VI;
+  } else if (locole == 'en') {
+    return ICONS.IC_FLAG_EN;
+  } else  {
+    return ICONS.IC_FLAG_KO;
+  }
+}

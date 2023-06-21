@@ -41,6 +41,10 @@ class ICONS {
   static const String IC_SUPPORT_3X_PNG = 'assets/icons/Support_3x.png';
   static const String IC_REPORT_PNG = 'assets/icons/insights.png';
 
+  static const String IC_FLAG_VI = 'assets/icons/vietnam.png';
+  static const String IC_FLAG_KO = 'assets/icons/south-korea.png';
+  static const String IC_FLAG_EN = 'assets/icons/united-kingdom.png';
+
   //////////////===============SVG===============//////////////
   static const String IC_MAIL_CUSTOMER_SVG = 'assets/icons/mail_customer.svg';
   static const String IC_ADD_CLUE_SVG = 'assets/icons/addclue.svg';

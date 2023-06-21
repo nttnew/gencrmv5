@@ -105,7 +105,7 @@ class _ProductScreenState extends State<ProductScreen> {
             children: [
               AppValue.vSpaceSmall,
               SearchBase(
-                hint: "Nhập tên, barCode, qrCode",
+                hint: "Nhập tên, barcode, qrcode",
                 leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                 endIcon: GestureDetector(
                   onTap: () {
