@@ -1,5 +1,3 @@
-// ignore: import_of_legacy_library_into_null_safe
-import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -45,21 +43,21 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
 
   @override
   void initState() {
+    _init();
     super.initState();
+  }
 
-    Future.delayed(Duration(seconds: 0), () async {
-      FirebaseMessaging messaging = FirebaseMessaging.instance;
-      tokenFirebase = await messaging.getToken();
-      print('tokenfirebase$tokenFirebase');
-      canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
-      canAuthenticate =
-          canAuthenticateWithBiometrics || await auth.isDeviceSupported();
-      availableBiometrics = await auth.getAvailableBiometrics();
-      setState(() {
-        canAuthenticateWithBiometrics = canAuthenticateWithBiometrics;
-        canAuthenticate = canAuthenticate;
-        availableBiometrics = availableBiometrics;
-      });
+  _init() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    tokenFirebase = await messaging.getToken();
+    canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+    canAuthenticate =
+        canAuthenticateWithBiometrics || await auth.isDeviceSupported();
+    availableBiometrics = await auth.getAvailableBiometrics();
+    setState(() {
+      canAuthenticateWithBiometrics = canAuthenticateWithBiometrics;
+      canAuthenticate = canAuthenticate;
+      availableBiometrics = availableBiometrics;
     });
     getUname();
     _emailFocusNode.addListener(() {
@@ -146,7 +144,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
               ),
               AppValue.vSpaceSmall,
               _buildButtonLogin(bloc),
-              AppValue.vSpaceSmall,
+              AppValue.vSpaceMedium,
               _buildChangeAddressApplication(),
             ],
           ),
@@ -184,11 +182,9 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         },
         child: Text(
           "Đổi địa chỉ ứng dụng",
-          style: TextStyle(
-            fontFamily: "Quicksand",
+          style: AppStyle.DEFAULT_14W500.copyWith(
             color: HexColor("#006CB1"),
-            fontWeight: FontWeight.w500,
-            fontSize: 14,
+            decoration: TextDecoration.underline,
           ),
         ),
       ),
@@ -216,30 +212,30 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         buildWhen: (previous, current) => previous.status != current.status,
         builder: (context, state) {
           return WidgetButton(
-              onTap: () async {
-                final baseUrl =
-                    await shareLocal.getString(PreferencesKey.URL_BASE);
-                if (baseUrl == null || baseUrl == '' || baseUrl == 'null') {
-                  dotenv.env[PreferencesKey.BASE_URL] = BASE_URL.URL_DEMO;
-                  shareLocal.putString(
-                      PreferencesKey.URL_BASE, BASE_URL.URL_DEMO);
-                  DioProvider.instance(baseUrl: BASE_URL.URL_DEMO);
-                }
-                state.status.isValidated
-                    ? bloc.add(FormSubmitted(device_token: tokenFirebase ?? ''))
-                    : ShowDialogCustom.showDialogBase(
-                        title: MESSAGES.NOTIFICATION,
-                        content: 'Kiểm tra lại thông tin',
-                      );
-              },
-              boxDecoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: HexColor("#D0F1EB"),
-              ),
-              enable: state.status.isValidated,
-              textStyle:
-                  AppStyle.DEFAULT_18_BOLD,
-              text: MESSAGES.LOGIN);
+            onTap: () async {
+              final baseUrl =
+                  await shareLocal.getString(PreferencesKey.URL_BASE);
+              if (baseUrl == null || baseUrl == '' || baseUrl == 'null') {
+                dotenv.env[PreferencesKey.BASE_URL] = BASE_URL.URL_DEMO;
+                shareLocal.putString(
+                    PreferencesKey.URL_BASE, BASE_URL.URL_DEMO);
+                DioProvider.instance(baseUrl: BASE_URL.URL_DEMO);
+              }
+              state.status.isValidated
+                  ? bloc.add(FormSubmitted(device_token: tokenFirebase ?? ''))
+                  : ShowDialogCustom.showDialogBase(
+                      title: MESSAGES.NOTIFICATION,
+                      content: 'Kiểm tra lại thông tin',
+                    );
+            },
+            boxDecoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: HexColor("#D0F1EB"),
+            ),
+            enable: state.status.isValidated,
+            textStyle: AppStyle.DEFAULT_18_BOLD,
+            text: MESSAGES.LOGIN,
+          );
         });
   }
 

@@ -40,8 +40,8 @@ class RoundedAppBar extends StatelessWidget implements PreferredSizeWidget {
         Padding(
           padding: EdgeInsets.only(top: AppValue.heights * 0.08),
           child: Image.asset(
-           ICONS.IC_LOGO_PNG,
-            width: AppValue.widths * 60 / 100,
+            ICONS.IC_LOGO_PNG,
+            width: AppValue.widths * 0.45,
             fit: BoxFit.contain,
           ),
         )

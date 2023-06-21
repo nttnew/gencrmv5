@@ -2,7 +2,7 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/bloc/blocs.dart';
-import 'package:gen_crm/screens/login/index.dart';
+import 'package:gen_crm/screens/login/widget/index.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
@@ -33,7 +33,6 @@ class _LoginScreenState extends State<LoginScreen> {
         scrollController.jumpTo(0);
       }
     });
-
     super.initState();
   }
 
@@ -54,31 +53,61 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         child: SingleChildScrollView(
-          physics: ScrollPhysics(),
           controller: scrollController,
           child: Padding(
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: Column(
-              children: [
-                WidgetTouchHideKeyBoard(
-                  child: Column(
+            child: WidgetTouchHideKeyBoard(
+              child: Column(
+                children: [
+                  Stack(
                     children: [
-                      Stack(
-                        children: [
-                          RoundedAppBar(),
-                          Positioned(
-                            top: 50,
-                            right: 15,
-                            child: DropdownButton2(
-                              hint: StreamBuilder<Locale>(
-                                  stream: LoginBloc.of(context).locale,
-                                  builder: (context, snapshot) {
-                                    return Row(
+                      RoundedAppBar(),
+                      Positioned(
+                        top: 50,
+                        right: 15,
+                        child: DropdownButton2(
+                          hint: StreamBuilder<Locale>(
+                              stream: LoginBloc.of(context).locale,
+                              builder: (context, snapshot) {
+                                return Row(
+                                  children: [
+                                    Container(
+                                      child: Image.asset(getFlagCountry(
+                                        snapshot.data.toString(),
+                                      )),
+                                      height: 30,
+                                      width: 30,
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                      child: Text(
+                                        snapshot.data.toString().toUpperCase(),
+                                        style: AppStyle.DEFAULT_16_BOLD,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }),
+                          icon: Container(),
+                          underline: Container(),
+                          onChanged: (String? value) {},
+                          dropdownWidth: 90,
+                          barrierColor: Colors.grey.withOpacity(0.4),
+                          items: L10n.all
+                              .map((items) => DropdownMenuItem<String>(
+                                    onTap: () {
+                                      LoginBloc.of(context).locale.add(items);
+                                    },
+                                    value: items.toString(),
+                                    child: Row(
                                       children: [
                                         Container(
                                           child: Image.asset(getFlagCountry(
-                                            snapshot.data.toString(),
+                                            items.toString(),
                                           )),
                                           height: 30,
                                           width: 30,
@@ -86,85 +115,35 @@ class _LoginScreenState extends State<LoginScreen> {
                                         SizedBox(
                                           width: 4,
                                         ),
-                                        SizedBox(
-                                          width: 20,
-                                          child: Text(
-                                            snapshot.data
-                                                .toString()
-                                                .toUpperCase(),
-                                            style: AppStyle.DEFAULT_16_BOLD,
-                                          ),
+                                        Text(
+                                          items.toString().toUpperCase(),
+                                          style: AppStyle.DEFAULT_16_BOLD,
                                         ),
                                       ],
-                                    );
-                                  }),
-                              icon: Container(),
-                              underline: Container(),
-                              onChanged: (String? value) {},
-                              dropdownWidth: 90,
-                              barrierColor: Colors.grey.withOpacity(0.4),
-                              items: L10n.all
-                                  .map((items) => DropdownMenuItem<String>(
-                                        onTap: () {
-                                          LoginBloc.of(context)
-                                              .locale
-                                              .add(items);
-                                        },
-                                        value: items.toString(),
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              child: Image.asset(getFlagCountry(
-                                                items.toString(),
-                                              )),
-                                              height: 30,
-                                              width: 30,
-                                            ),
-                                            SizedBox(
-                                              width: 4,
-                                            ),
-                                            Text(
-                                              items.toString().toUpperCase(),
-                                              style: AppStyle.DEFAULT_16_BOLD,
-                                            ),
-                                          ],
-                                        ),
-                                      ))
-                                  .toList(),
-                            ),
-                          )
-                        ],
-                      ),
-                      SingleChildScrollView(
-                        child: Container(
-                          child: Column(
-                            children: [
-                              AppValue.vSpaceMedium,
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Đăng nhập",
-                                    style: TextStyle(
-                                        fontFamily: "Quicksand",
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  )
-                                ],
-                              ),
-                              AppValue.vSpaceMedium,
-                              WidgetLoginForm(
-                                reload: reload,
-                                isLogin: isLogin,
-                              ),
-                            ],
-                          ),
+                                    ),
+                                  ))
+                              .toList(),
                         ),
-                      ),
+                      )
                     ],
                   ),
-                ),
-              ],
+                  AppValue.vSpaceSmall,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Đăng nhập",
+                        style: AppStyle.DEFAULT_18_BOLD,
+                      )
+                    ],
+                  ),
+                  AppValue.vSpaceSmall,
+                  WidgetLoginForm(
+                    reload: reload,
+                    isLogin: isLogin,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

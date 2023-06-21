@@ -32,6 +32,8 @@ class ICONS {
   static const String IC_STAR_BOLD_PNG = 'assets/icons/star_bold.png';
   static const String IC_PROFILE_ERROR_PNG = 'assets/icons/profile_error.png';
   static const String IC_REMOVE_TXT_PNG = 'assets/icons/remove_txt.png';
+  static const String IC_HIDE_PNG = 'assets/icons/hide.png';
+  static const String IC_SHOW_PNG = 'assets/icons/show.png';
 
   static const String IC_CUSTOMER_3X_PNG = 'assets/icons/Custumer_3x.png';
   static const String IC_CLUE_3X_PNG = 'assets/icons/Clue_3x.png';
