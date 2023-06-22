@@ -26,6 +26,7 @@ import 'package:gen_crm/screens/screens.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -34,6 +35,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!Platform.isAndroid) {
@@ -63,7 +69,6 @@ class _MyAppState extends State<MyApp> {
             supportedLocales: L10n.all,
             debugShowCheckedModeBanner: false,
             theme: ThemeData(fontFamily: 'NunitoSans'),
-            title: MESSAGES.APP_TITLE,
             initialRoute: ROUTE_NAMES.SPLASH,
             getPages: [
               GetPage(

@@ -1,11 +1,11 @@
 import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
 import '../../src/models/model_generator/list_notification.dart';
 import '../../src/preferences_key.dart';
 import '../../storages/share_local.dart';
@@ -43,7 +43,8 @@ class GetNotificationBloc
         }
       } catch (e) {
         LoadingApi().popLoading();
-        yield ErrorDeleteNotificationState(MESSAGES.CONNECT_ERROR);
+        yield ErrorDeleteNotificationState(
+            AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
         throw e;
       }
     } else if (event is ReadNotificationEvent) {
@@ -59,7 +60,8 @@ class GetNotificationBloc
         }
       } catch (e) {
         LoadingApi().popLoading();
-        yield ErrorNotificationState(MESSAGES.CONNECT_ERROR);
+        yield ErrorNotificationState(
+            AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
         throw e;
       }
     } else if (event is CheckNotification) {
@@ -78,7 +80,8 @@ class GetNotificationBloc
         }
       } catch (e) {
         LoadingApi().popLoading();
-        yield ErrorGetNotificationState(MESSAGES.CONNECT_ERROR);
+        yield ErrorGetNotificationState(
+            AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
         throw e;
       }
     }
@@ -123,7 +126,8 @@ class GetNotificationBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetNotificationState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetNotificationState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();

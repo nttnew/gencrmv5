@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/src_index.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 class WidgetContainerImage extends StatelessWidget {
   final double? width, height, padding, margin;
@@ -309,24 +307,6 @@ class WidgetContainerCenter extends StatelessWidget {
         decoration: boxDecoration,
         child: Center(child: child),
       );
-}
-
-class WidgetNoData extends StatelessWidget {
-  final String? text;
-
-  const WidgetNoData({Key? key, this.text}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(5),
-      child: Center(
-        child: Text(
-          text ?? 'no_data'.tr,
-          style: AppStyle.DEFAULT_16,
-        ),
-      ),
-    );
-  }
 }
 
 class UnicornOutlineButton extends StatelessWidget {

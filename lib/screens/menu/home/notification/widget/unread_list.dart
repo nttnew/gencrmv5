@@ -6,6 +6,8 @@ import '../../../../../src/app_const.dart';
 import '../../../../../src/models/model_generator/list_notification.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/slide_menu.dart';
+import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UnReadList extends StatefulWidget {
   @override
@@ -72,18 +74,35 @@ class _UnReadListState extends State<UnReadList>
       child: new ListTile(
         onTap: () {
           if (item.module == 'customer') {
-            AppNavigator.navigateDetailCustomer(item.record_id!, 'Chi tiết');
+            AppNavigator.navigateDetailCustomer(
+              item.record_id!,
+              AppLocalizations.of(Get.context!)?.detail ?? '',
+            );
           } else if (item.module == 'opportunity') {
-            AppNavigator.navigateInfoChance(item.record_id!, 'Chi tiết');
+            AppNavigator.navigateInfoChance(
+              item.record_id!,
+              AppLocalizations.of(Get.context!)?.detail ?? '',
+            );
           } else if (item.module == 'job') {
             AppNavigator.navigateDetailWork(
-                int.parse(item.record_id!), 'Chi tiết');
+              int.parse(item.record_id!),
+              AppLocalizations.of(Get.context!)?.detail ?? '',
+            );
           } else if (item.module == 'contract') {
-            AppNavigator.navigateInfoContract(item.record_id!, 'Chi tiết');
+            AppNavigator.navigateInfoContract(
+              item.record_id!,
+              AppLocalizations.of(Get.context!)?.detail ?? '',
+            );
           } else if (item.module == 'support') {
-            AppNavigator.navigateDetailSupport(item.record_id!, 'Chi tiết');
+            AppNavigator.navigateDetailSupport(
+              item.record_id!,
+              AppLocalizations.of(Get.context!)?.detail ?? '',
+            );
           } else {
-            AppNavigator.navigateInfoClue(item.record_id!, 'Chi tiết');
+            AppNavigator.navigateInfoClue(
+              item.record_id!,
+              AppLocalizations.of(Get.context!)?.detail ?? '',
+            );
           }
           GetNotificationBloc.of(context)
               .add(ReadNotificationEvent(item.id!, item.type!));
@@ -102,7 +121,8 @@ class _UnReadListState extends State<UnReadList>
             icon: new Icon(Icons.delete),
             color: Colors.white,
             onPressed: () => GetNotificationBloc.of(context).add(
-                DeleteUnReadListNotificationEvent(int.parse(item.id!), item.type!)),
+                DeleteUnReadListNotificationEvent(
+                    int.parse(item.id!), item.type!)),
           ),
         ),
       ],

@@ -27,11 +27,9 @@ import 'package:gen_crm/src/models/model_generator/support.dart';
 import 'package:gen_crm/src/models/model_generator/param_del_notif.dart';
 import 'package:gen_crm/src/models/model_generator/work_clue.dart';
 import 'package:gen_crm/src/models/model_generator/work.dart';
-
 import 'package:retrofit/retrofit.dart';
 import 'package:gen_crm/src/base.dart';
 import 'package:gen_crm/src/models/index.dart';
-
 import '../models/model_generator/address_customer_response.dart';
 import '../models/model_generator/contact_by_customer.dart';
 import '../models/model_generator/detail_contract.dart';

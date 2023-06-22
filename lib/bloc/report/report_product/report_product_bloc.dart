@@ -2,9 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../../src/app_const.dart';
 import '../../../src/base.dart';
-import '../../../src/messages.dart';
 import '../../../src/models/model_generator/report_product.dart';
 import '../../../widgets/loading_api.dart';
 
@@ -38,13 +39,14 @@ class ReportProductBloc extends Bloc<ReportProductEvent, ReportProductState> {
         yield SuccessReportProductState(response.data!.list);
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
-      } else{
+      } else {
         LoadingApi().popLoading();
         yield ErrorReportProductState(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorReportProductState(MESSAGES.CONNECT_ERROR);
+      yield ErrorReportProductState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -83,7 +85,8 @@ class ReportSelectProductBloc
       } else
         yield ErrorReportSelectProductState(response.msg ?? '');
     } catch (e) {
-      yield ErrorReportSelectProductState(MESSAGES.CONNECT_ERROR);
+      yield ErrorReportSelectProductState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
   }

@@ -6,9 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
+
 import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
+
 import '../../src/models/model_generator/customer.dart';
 
 part 'customer_event.dart';
@@ -73,7 +77,8 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetListCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetListCustomerState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -115,7 +120,8 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddCustomerIndividualState(MESSAGES.CONNECT_ERROR);
+      yield ErrorAddCustomerIndividualState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();

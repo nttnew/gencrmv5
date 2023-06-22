@@ -4,10 +4,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
-
 import '../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
 
 part 'add_data_event.dart';
 part 'add_data_state.dart';
@@ -83,7 +83,8 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -116,7 +117,8 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorEditCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorEditCustomerState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -153,7 +155,8 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorAddContactCustomerState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -190,7 +193,8 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorAddContactCustomerState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -227,7 +231,8 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorAddContactCustomerState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -265,7 +270,8 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorAddContactCustomerState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -302,7 +308,8 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorAddContactCustomerState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -339,7 +346,8 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorAddContactCustomerState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -376,7 +384,8 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorAddContactCustomerState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -413,7 +422,8 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorAddContactCustomerState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -450,7 +460,8 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorAddContactCustomerState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -487,7 +498,8 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorAddContactCustomerState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -508,7 +520,8 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorAddContactCustomerState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();

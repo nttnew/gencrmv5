@@ -8,6 +8,8 @@ import 'package:gen_crm/bloc/profile/profile_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/storages.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 part 'info_user_event.dart';
 part 'info_user_state.dart';
@@ -55,7 +57,8 @@ class InfoUserBloc extends Bloc<InfoUserEvent, InfoUserState> {
         AppNavigator.navigateEditInfo(infoUser.payload!);
       }
     } catch (e) {
-      yield LoginExpiredState(message: MESSAGES.LOGIN_EXPIRED);
+      yield LoginExpiredState(
+          message: AppLocalizations.of(Get.context!)?.login_has_expired ?? '');
       throw e;
     }
   }
@@ -63,7 +66,8 @@ class InfoUserBloc extends Bloc<InfoUserEvent, InfoUserState> {
   Stream<InfoUserState> _mapUploadImagesState(
       File file, ProfileBloc bloc) async* {
     try {} catch (e) {
-      await GetSnackBarUtils.createFailure(message: MESSAGES.CONNECT_ERROR);
+      await GetSnackBarUtils.createFailure(
+          message: AppLocalizations.of(Get.context!)?.an_error_occurred);
       throw e;
     }
   }

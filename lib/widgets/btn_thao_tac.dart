@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class ButtonThaoTac extends StatelessWidget {
   const ButtonThaoTac({
@@ -24,7 +26,7 @@ class ButtonThaoTac extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            title ?? "THAO TÁC",
+            title ?? AppLocalizations.of(Get.context!)?.action ?? '',
             style: TextStyle(
               fontFamily: "Quicksand",
               fontWeight: FontWeight.w700,

@@ -15,6 +15,9 @@ import 'package:gen_crm/storages/event_repository_storage.dart';
 import 'package:gen_crm/storages/share_local.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart' as GET;
+
 part 'login_event.dart';
 part 'login_state.dart';
 
@@ -149,7 +152,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } catch (e) {
         yield state.copyWith(
             status: FormzStatus.submissionFailure,
-            message: MESSAGES.CONNECT_ERROR);
+            message: AppLocalizations.of(GET.Get.context!)?.an_error_occurred);
         throw e;
       }
     } else {
@@ -182,7 +185,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         } catch (e) {
           yield state.copyWith(
               status: FormzStatus.submissionFailure,
-              message: MESSAGES.CONNECT_ERROR);
+              message:
+                  AppLocalizations.of(GET.Get.context!)?.an_error_occurred);
           throw e;
         }
       }

@@ -6,7 +6,7 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:signature/signature.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../src/models/model_generator/add_customer.dart';
 
 class KyNhan extends StatefulWidget {
@@ -47,8 +47,10 @@ class _KyNhanState extends State<KyNhan> {
   Future<void> exportImage(BuildContext context) async {
     if (_controller.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Bạn chưa thực hiện ký!'),
+        SnackBar(
+          content: Text(AppLocalizations.of(Get.context!)
+                  ?.you_have_not_done_the_sign_yet ??
+              ''),
         ),
       );
       return;
@@ -96,7 +98,8 @@ class _KyNhanState extends State<KyNhan> {
               bottom: 15,
             ),
             child: WidgetText(
-              title: 'Ký điện tử: ${widget.data?.nhanhienthi}',
+              title:
+                  '${AppLocalizations.of(Get.context!)?.electronic_signature}: ${widget.data?.nhanhienthi}',
               style: AppStyle.DEFAULT_18_BOLD,
             ),
           ),
@@ -118,19 +121,20 @@ class _KyNhanState extends State<KyNhan> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             //SHOW EXPORTED IMAGE IN NEW ROUTE
-            _buttonKyNhan(() => exportImage(context), 'Xong',
+            _buttonKyNhan(() => exportImage(context),
+                '${AppLocalizations.of(Get.context!)?.done}',
                 color: COLORS.TEXT_COLOR, textColor: Colors.white),
             _buttonKyNhan(
               () {
                 setState(() => _controller.clear());
               },
-              'Ký lại',
+              '${AppLocalizations.of(Get.context!)?.sign_again}',
               textColor: Colors.white,
               color: Colors.red,
             ),
             _buttonKyNhan(() {
               setState(() => Get.back());
-            }, 'Đóng'),
+            }, '${AppLocalizations.of(Get.context!)?.close}'),
           ],
         ),
       ],

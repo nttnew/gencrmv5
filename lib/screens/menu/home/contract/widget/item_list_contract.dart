@@ -5,6 +5,8 @@ import '../../../../../src/app_const.dart';
 import '../../../../../src/models/model_generator/contract.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/widget_text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class ItemContract extends StatelessWidget {
   const ItemContract({Key? key, required this.data}) : super(key: key);
@@ -13,7 +15,8 @@ class ItemContract extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AppNavigator.navigateInfoContract(data.id ?? '', data.name ?? 'Chưa có');
+        AppNavigator.navigateInfoContract(data.id ?? '',
+            data.name ?? AppLocalizations.of(Get.context!)?.not_yet ?? '');
       },
       child: Container(
         margin: EdgeInsets.only(left: 25, right: 25, bottom: 20),
@@ -38,7 +41,9 @@ class ItemContract extends StatelessWidget {
                 Expanded(
                   child: itemTextIcon(
                       paddingTop: 0,
-                      text: data.name ?? 'Chưa có',
+                      text: data.name ??
+                          AppLocalizations.of(Get.context!)?.not_yet ??
+                          '',
                       icon: ICONS.IC_CONTRACT_3X_PNG,
                       styleText: AppStyle.DEFAULT_TITLE_PRODUCT
                           .copyWith(color: COLORS.TEXT_COLOR),
@@ -56,7 +61,9 @@ class ItemContract extends StatelessWidget {
               ],
             ),
             itemTextIcon(
-              text: data.customer?.name?.trim() ?? 'Chưa có',
+              text: data.customer?.name?.trim() ??
+                  AppLocalizations.of(Get.context!)?.not_yet ??
+                  '',
               icon: ICONS.IC_USER2_SVG,
               colorIcon: Color(0xffE75D18),
             ),
@@ -83,7 +90,10 @@ class ItemContract extends StatelessWidget {
                     child: itemTextIcon(
                       colorIcon: COLORS.GREY,
                       paddingTop: 0,
-                      text: 'Tổng tiền: ' + '${data.price.toString()}' + 'đ',
+                      text:
+                          '${AppLocalizations.of(Get.context!)?.total_amount}: ' +
+                              '${data.price.toString()}' +
+                              'đ',
                       icon: ICONS.IC_MAIL_SVG,
                       styleText: AppStyle.DEFAULT_LABEL_PRODUCT
                           .copyWith(color: COLORS.GREY),

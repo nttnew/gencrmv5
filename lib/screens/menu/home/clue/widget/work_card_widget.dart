@@ -127,11 +127,13 @@ class WorkCardWidget extends StatelessWidget {
       fontFamily: "Quicksand",
       fontWeight: FontWeight.w400,
       fontSize: 14);
+
   TextStyle LocationCustomerStyle() => TextStyle(
       color: Colors.black,
       fontFamily: "Quicksand",
       fontWeight: FontWeight.w400,
       fontSize: 14);
+
   TextStyle NameCustomerStyle() => TextStyle(
       color: HexColor("#006CB1"),
       fontFamily: "Quicksand",

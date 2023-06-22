@@ -2,8 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
 import '../../src/models/model_generator/list_notification.dart';
 import '../../widgets/loading_api.dart';
 
@@ -33,7 +34,8 @@ class GetListReadedNotifiBloc
         } else
           yield ErrorDeleteReadNotificationState(response.msg ?? "");
       } catch (e) {
-        yield ErrorDeleteReadNotificationState(MESSAGES.CONNECT_ERROR);
+        yield ErrorDeleteReadNotificationState(
+            AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
         throw e;
       }
     }
@@ -62,7 +64,8 @@ class GetListReadedNotifiBloc
         yield ErrorGetReadNotificationState(response.msg ?? "");
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetReadNotificationState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetReadNotificationState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();

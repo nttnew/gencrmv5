@@ -24,6 +24,7 @@ import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/image_default.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({Key? key}) : super(key: key);
@@ -46,7 +47,7 @@ class _ReportScreenState extends State<ReportScreen> {
   late int timeFilter;
   bool isFirst = false;
   String? gt;
-  String valueTime = "Lựa chọn";
+  String valueTime = AppLocalizations.of(Get.context!)?.pick_filter ?? '';
   String? valueLocation;
   int step = 1;
   String location = "";
@@ -58,9 +59,18 @@ class _ReportScreenState extends State<ReportScreen> {
   late String select;
 
   List<Map<String, dynamic>> typeDoanhSo = [
-    {"name": 'Doanh số', "gt": 'doanh_so'}, // label is required and unique
-    {"name": 'Thực thu', "gt": 'thuc_thu'},
-    {"name": 'Số hợp đồng', "gt": 'so_hop_dong'},
+    {
+      "name": AppLocalizations.of(Get.context!)?.sales ?? '',
+      "gt": 'doanh_so'
+    }, // label is required and unique
+    {
+      "name": AppLocalizations.of(Get.context!)?.real_revenue ?? '',
+      "gt": 'thuc_thu'
+    },
+    {
+      "name": AppLocalizations.of(Get.context!)?.number_contract ?? '',
+      "gt": 'so_hop_dong'
+    },
   ];
 
   String checkDataDoanhSo(DataList data, String gt) {
@@ -78,14 +88,21 @@ class _ReportScreenState extends State<ReportScreen> {
   void initState() {
     final nameReport = shareLocal.getString(PreferencesKey.NAME_REPORT);
     typeReport = [
-      {"name": 'Doanh số chung', "index": 1}, // label is required and unique
-      {"name": 'Doanh số sản phẩm', "index": 2},
-      {"name": 'Doanh số nhân viên', "index": 3},
+      {
+        "name": AppLocalizations.of(Get.context!)?.turn_over ?? '',
+        "index": 1
+      }, // label is required and unique
+      {
+        "name": AppLocalizations.of(Get.context!)?.sales_product ?? '',
+        "index": 2
+      },
+      {
+        "name": AppLocalizations.of(Get.context!)?.employee_turnover ?? '',
+        "index": 3
+      },
       {"name": nameReport.toString(), "index": 4},
     ];
-    items = [
-      'Toàn công ty',
-    ];
+    items = [AppLocalizations.of(Get.context!)?.all_company ?? ''];
     select = typeReport[0]['name'];
     timeInit = 0;
     timeFilter = 0;
@@ -116,7 +133,7 @@ class _ReportScreenState extends State<ReportScreen> {
     _scrollCarController.addListener(() {
       if (_scrollCarController.offset ==
               _scrollCarController.position.maxScrollExtent &&
-        CarListReportBloc.of(context).isTotal) {
+          CarListReportBloc.of(context).isTotal) {
         CarListReportBloc.of(context).page += 1;
         CarListReportBloc.of(context).add(GetListReportCar(
             time: timeFilter.toString(),
@@ -154,7 +171,8 @@ class _ReportScreenState extends State<ReportScreen> {
         key: _drawerKey,
         drawer:
             MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
-        appBar: AppbarBase(_drawerKey, 'Báo cáo'),
+        appBar: AppbarBase(
+            _drawerKey, AppLocalizations.of(Get.context!)?.report ?? ''),
         body: Padding(
           padding: EdgeInsets.only(
               left: 15, right: 15, top: AppValue.heights * 0.02),
@@ -192,10 +210,12 @@ class _ReportScreenState extends State<ReportScreen> {
           items: typeReport
               .map((items) => DropdownMenuItem<String>(
                     onTap: () {
-                      valueLocation = 'Tất cả';
+                      valueLocation =
+                          AppLocalizations.of(Get.context!)?.all ?? '';
                       location = '';
                       step = items['index'];
-                      valueTime = 'Lựa chọn';
+                      valueTime =
+                          AppLocalizations.of(Get.context!)?.pick_filter ?? '';
                       timeFrom = timeTo = null;
                       _range = "";
                       isFirst = false;
@@ -552,7 +572,7 @@ class _ReportScreenState extends State<ReportScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Ẩn chi tiết',
+          Text(AppLocalizations.of(Get.context!)?.hide_details ?? '',
               style:
                   AppStyle.DEFAULT_14.copyWith(color: COLORS.TEXT_BLUE_BOLD)),
           Icon(Icons.arrow_drop_down_sharp, color: COLORS.TEXT_BLUE_BOLD)
@@ -665,7 +685,10 @@ class _ReportScreenState extends State<ReportScreen> {
                                               child: WidgetText(
                                                 title: state.data[index]
                                                         .customer?.name ??
-                                                    'Chưa có',
+                                                    AppLocalizations.of(
+                                                            Get.context!)
+                                                        ?.not_yet ??
+                                                    '',
                                                 style: AppStyle
                                                     .DEFAULT_LABEL_PRODUCT,
                                               ),
@@ -717,10 +740,11 @@ class _ReportScreenState extends State<ReportScreen> {
                                               width: 10,
                                             ),
                                             WidgetText(
-                                              title: 'Doanh số: ' +
-                                                  state.data[index].price
-                                                      .toString() +
-                                                  (money ?? ''),
+                                              title:
+                                                  '${AppLocalizations.of(Get.context!)?.sales}: ' +
+                                                      state.data[index].price
+                                                          .toString() +
+                                                      (money ?? ''),
                                               style: AppStyle
                                                   .DEFAULT_LABEL_PRODUCT
                                                   .copyWith(color: COLORS.GREY),
@@ -796,14 +820,18 @@ class _ReportScreenState extends State<ReportScreen> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            state.list[index].name ?? "Chưa có",
+                                            state.list[index].name ??
+                                                AppLocalizations.of(
+                                                        Get.context!)
+                                                    ?.not_yet ??
+                                                '',
                                             style: AppStyle.DEFAULT_16_BOLD
                                                 .copyWith(
                                                     color:
                                                         COLORS.TEXT_BLUE_BOLD),
                                           ),
                                           Text(
-                                              "${state.list[index].doanh_so ?? 'Chưa có'}$money")
+                                              "${state.list[index].doanh_so ?? AppLocalizations.of(Get.context!)?.not_yet ?? ''}$money")
                                         ],
                                       ),
                                     ),
@@ -859,13 +887,16 @@ class _ReportScreenState extends State<ReportScreen> {
                                             EdgeInsets.symmetric(vertical: 4),
                                         child: Text(
                                             state.listSelect[index].name ??
-                                                "Chưa xác định",
+                                                AppLocalizations.of(
+                                                        Get.context!)
+                                                    ?.undefined ??
+                                                '',
                                             style: AppStyle.DEFAULT_18))),
                                 SizedBox(
                                   width: 5,
                                 ),
                                 Text(
-                                  "${state.listSelect[index].doanh_so ?? 'Chưa xác định'}$money",
+                                  "${state.listSelect[index].doanh_so ?? AppLocalizations.of(Get.context!)?.undefined ?? ''}$money",
                                   style: AppStyle.DEFAULT_16,
                                 )
                               ],
@@ -937,14 +968,17 @@ class _ReportScreenState extends State<ReportScreen> {
                                           children: [
                                             Text(
                                               state.data[index].name ??
-                                                  "Chưa có",
+                                                  AppLocalizations.of(
+                                                          Get.context!)
+                                                      ?.not_yet ??
+                                                  '',
                                               style: AppStyle.DEFAULT_18_BOLD
                                                   .copyWith(
                                                       color: COLORS
                                                           .TEXT_BLUE_BOLD),
                                             ),
                                             Text(
-                                                "${state.data[index].total_contract ?? "0"} hợp đồng")
+                                                "${state.data[index].total_contract ?? "0"} ${AppLocalizations.of(Get.context!)?.contract ?? ''}")
                                           ],
                                         ),
                                       ),
@@ -1034,7 +1068,10 @@ class _ReportScreenState extends State<ReportScreen> {
                                               width: AppValue.widths * 0.5,
                                               child: WidgetText(
                                                 title: state.data[index].name ??
-                                                    "Chưa có",
+                                                    AppLocalizations.of(
+                                                            Get.context!)
+                                                        ?.not_yet ??
+                                                    '',
                                                 style: AppStyle
                                                     .DEFAULT_TITLE_PRODUCT
                                                     .copyWith(
@@ -1073,7 +1110,10 @@ class _ReportScreenState extends State<ReportScreen> {
                                             child: WidgetText(
                                               title: state.data[index].customer!
                                                       .name ??
-                                                  "chưa có",
+                                                  AppLocalizations.of(
+                                                          Get.context!)
+                                                      ?.not_yet ??
+                                                  '',
                                               style: AppStyle
                                                   .DEFAULT_LABEL_PRODUCT,
                                             ),
@@ -1104,7 +1144,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                                   .copyWith(
                                                 color: state.data[index]
                                                             .status_color !=
-                                                        ""
+                                                        ''
                                                     ? HexColor(state.data[index]
                                                         .status_color!)
                                                     : COLORS.RED,
@@ -1124,10 +1164,11 @@ class _ReportScreenState extends State<ReportScreen> {
                                             width: 10,
                                           ),
                                           WidgetText(
-                                            title: 'Doanh số: ' +
-                                                state.data[index].price
-                                                    .toString() +
-                                                money!,
+                                            title:
+                                                '${AppLocalizations.of(Get.context!)?.sales ?? ''}: ' +
+                                                    state.data[index].price
+                                                        .toString() +
+                                                    money!,
                                             style: AppStyle
                                                 .DEFAULT_LABEL_PRODUCT
                                                 .copyWith(color: COLORS.GREY),
@@ -1198,7 +1239,7 @@ class _ReportScreenState extends State<ReportScreen> {
                             ));
                 });
               },
-              text: "Xong",
+              text: AppLocalizations.of(Get.context!)?.done ?? '',
               backgroundColor: COLORS.BLUE,
             ),
           )
@@ -1255,7 +1296,8 @@ class _ReportScreenState extends State<ReportScreen> {
                                                       fontWeight:
                                                           FontWeight.w600)),
                                           TextSpan(
-                                              text: ' xe',
+                                              text:
+                                                  ' ${AppLocalizations.of(Get.context!)?.car}',
                                               style: AppStyle.DEFAULT_18
                                                   .copyWith(
                                                       fontSize: 24,
@@ -1460,7 +1502,9 @@ class _ReportScreenState extends State<ReportScreen> {
               colorText: data.color != "" ? HexColor(data.color!) : COLORS.RED,
             ),
             itemTextIcon(
-                text: 'Tổng tiền: ' + '${data.giaTriHopDong ?? 0}' + 'đ',
+                text: '${AppLocalizations.of(Get.context!)?.total_amount}: ' +
+                    '${data.giaTriHopDong ?? 0}' +
+                    'đ',
                 icon: ICONS.IC_MAIL_SVG,
                 colorIcon: Colors.grey,
                 colorText: Colors.grey),

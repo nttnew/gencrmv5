@@ -2,8 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
 import '../../src/models/model_generator/infor_acc.dart';
 import '../../widgets/loading_api.dart';
 
@@ -39,7 +40,8 @@ class GetInforAccBloc extends Bloc<GetInforAccEvent, GetInforAccState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetInForAccState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetInForAccState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();

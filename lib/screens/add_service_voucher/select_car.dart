@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:rxdart/rxdart.dart';
-
 import '../../bloc/add_service_voucher/add_service_bloc.dart';
 import '../../src/models/model_generator/list_car_response.dart';
 import '../../src/src_index.dart';
 import '../../widgets/widget_text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class SelectCar extends StatefulWidget {
   const SelectCar({Key? key}) : super(key: key);
@@ -44,7 +45,7 @@ class _SelectCarState extends State<SelectCar> {
                     height: 16,
                   ),
                   WidgetText(
-                    title: 'Hãng xe',
+                    title: AppLocalizations.of(Get.context!)?.car_brand,
                     style: AppStyle.DEFAULT_16.copyWith(
                         color: HexColor("0079B5"), fontWeight: FontWeight.w700),
                   ),
@@ -91,15 +92,16 @@ class _SelectCarState extends State<SelectCar> {
                 ],
               ),
               if (isHang)
-                _baseSelect("Dòng xe", _bloc.dongXe, _bloc.listDongXe, (v) {
+                _baseSelect(AppLocalizations.of(Get.context!)?.car_series??'',
+                    _bloc.dongXe, _bloc.listDongXe, (v) {
                   _bloc.dongXe = v;
                   _bloc.phienBan = '';
                   _bloc.getPhienBan(v);
                   setState(() {});
                 }),
               if (isHang && isDong)
-                _baseSelect("Phiên bản", _bloc.phienBan, _bloc.listPhienBan,
-                    (v) {
+                _baseSelect(AppLocalizations.of(Get.context!)?.version??'',
+                    _bloc.phienBan, _bloc.listPhienBan, (v) {
                   _bloc.phienBan = v;
                   _bloc.namSanXuat = '';
                   _bloc.canXe = '';
@@ -113,21 +115,24 @@ class _SelectCarState extends State<SelectCar> {
                 }),
               if (isHang && isDong && isPhienBan) ...[
                 _baseSelect(
-                    "Năm sản xuất", _bloc.namSanXuat, _bloc.listNamSanXuat,
-                    (v) {
+                    AppLocalizations.of(Get.context!)?.year_of_manufacture??'',
+                    _bloc.namSanXuat,
+                    _bloc.listNamSanXuat, (v) {
                   _bloc.namSanXuat = v;
                   setState(() {});
                 }),
-                _baseSelect("Hạng xe", _bloc.canXe, _bloc.listCanXe, (v) {
+                _baseSelect(AppLocalizations.of(Get.context!)?.car_class??'',
+                    _bloc.canXe, _bloc.listCanXe, (v) {
                   _bloc.canXe = v;
                   setState(() {});
                 }),
-                _baseSelect("Kiểu dáng", _bloc.kieuDang, _bloc.listKieuDang,
-                    (v) {
+                _baseSelect(AppLocalizations.of(Get.context!)?.style??'',
+                    _bloc.kieuDang, _bloc.listKieuDang, (v) {
                   _bloc.kieuDang = v;
                   setState(() {});
                 }),
-                _baseSelect("Số chỗ", _bloc.soCho, _bloc.listSoCho, (v) {
+                _baseSelect(AppLocalizations.of(Get.context!)?.number_seats??'',
+                    _bloc.soCho, _bloc.listSoCho, (v) {
                   _bloc.soCho = v;
                   setState(() {});
                 }),
@@ -158,7 +163,7 @@ class _SelectCarState extends State<SelectCar> {
                                   BorderRadius.all(Radius.circular(17))),
                           child: Center(
                             child: WidgetText(
-                              title: 'CHỌN',
+                              title: AppLocalizations.of(Get.context!)?.select,
                               style: AppStyle.DEFAULT_16.copyWith(
                                   color: HexColor("130F26"),
                                   fontWeight: FontWeight.w700),
@@ -180,7 +185,7 @@ class _SelectCarState extends State<SelectCar> {
                                   BorderRadius.all(Radius.circular(17))),
                           child: Center(
                             child: WidgetText(
-                              title: 'ĐÓNG',
+                              title: AppLocalizations.of(Get.context!)?.close,
                               style: AppStyle.DEFAULT_16.copyWith(
                                   color: HexColor("130F26"),
                                   fontWeight: FontWeight.w700),

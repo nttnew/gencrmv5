@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import '../../../../../src/app_const.dart';
 import '../../../../../src/models/model_generator/support.dart';
 import '../../../../../src/src_index.dart';

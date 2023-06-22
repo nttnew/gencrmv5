@@ -6,6 +6,8 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/widget_text.dart';
 import 'item_note.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class ListNote extends StatefulWidget {
   ListNote({
@@ -69,7 +71,7 @@ class _ListNoteState extends State<ListNote> {
                   Padding(
                     padding: const EdgeInsets.all(25),
                     child: WidgetText(
-                      title: "Thảo luận",
+                      title: AppLocalizations.of(Get.context!)?.discuss,
                       style: TextStyle(
                           fontFamily: "Quicksand",
                           color: HexColor("#263238"),

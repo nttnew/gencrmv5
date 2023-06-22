@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,7 @@ import 'package:get/get.dart';
 import 'package:formz/formz.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../src/src_index.dart';
 import '../../../../storages/share_local.dart';
 import '../../../../widgets/appbar_base.dart';
@@ -113,7 +112,8 @@ class _InformationAccountState extends State<InformationAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarBaseNormal(MESSAGES.INFORMATION_ACCOUNT),
+      appBar: AppbarBaseNormal(
+          AppLocalizations.of(Get.context!)?.account_information ?? ''),
       body: SingleChildScrollView(
           child: BlocListener<InforAccBloc, InforAccState>(
         listener: (context, state) {
@@ -124,7 +124,7 @@ class _InformationAccountState extends State<InformationAccount> {
                 GetInforAccBloc.of(context).add(InitGetInforAcc());
                 AppNavigator.navigateBack();
               },
-              title: MESSAGES.SUCCESS,
+              title: AppLocalizations.of(Get.context!)?.success,
               content: state.message,
             );
           }
@@ -134,7 +134,7 @@ class _InformationAccountState extends State<InformationAccount> {
           if (state.status.isSubmissionFailure) {
             GetSnackBarUtils.removeSnackBar();
             ShowDialogCustom.showDialogBase(
-              title: MESSAGES.NOTIFICATION,
+              title: AppLocalizations.of(Get.context!)?.notification,
               content: state.message,
             );
           }
@@ -160,9 +160,14 @@ class _InformationAccountState extends State<InformationAccount> {
                       showCupertinoModalPopup(
                           context: Get.context!,
                           builder: (context) => CupertinoActionSheet(
-                                  title: Text('Ảnh đại diện'),
+                                  title: Text(AppLocalizations.of(Get.context!)
+                                          ?.avatar ??
+                                      ''),
                                   cancelButton: CupertinoActionSheetAction(
-                                    child: Text('Huỷ'),
+                                    child: Text(
+                                        AppLocalizations.of(Get.context!)
+                                                ?.cancel ??
+                                            ''),
                                     onPressed: () {
                                       AppNavigator.navigateBack();
                                     },
@@ -173,14 +178,20 @@ class _InformationAccountState extends State<InformationAccount> {
                                         Get.back();
                                         getImage();
                                       },
-                                      child: Text('Chọn ảnh có sẵn'),
+                                      child: Text(
+                                          AppLocalizations.of(Get.context!)
+                                                  ?.pick_photo ??
+                                              ''),
                                     ),
                                     CupertinoActionSheetAction(
                                       onPressed: () async {
                                         Get.back();
                                         getImageCamera();
                                       },
-                                      child: Text('Chụp ảnh mới'),
+                                      child: Text(
+                                          AppLocalizations.of(Get.context!)
+                                                  ?.new_photo_shoot ??
+                                              ''),
                                     )
                                   ]));
                     },
@@ -224,7 +235,7 @@ class _InformationAccountState extends State<InformationAccount> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Họ và tên',
+                          AppLocalizations.of(Get.context!)?.full_name ?? '',
                           style:
                               AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY),
                         ),
@@ -233,7 +244,9 @@ class _InformationAccountState extends State<InformationAccount> {
                         ),
                         _buildFullNameField(bloc),
                         AppValue.vSpaceSmall,
-                        Text('Số điện thoại',
+                        Text(
+                            AppLocalizations.of(Get.context!)?.number_phone ??
+                                '',
                             style: AppStyle.DEFAULT_16
                                 .copyWith(color: COLORS.GREY)),
                         SizedBox(
@@ -241,7 +254,7 @@ class _InformationAccountState extends State<InformationAccount> {
                         ),
                         _buildPhoneField(bloc),
                         AppValue.vSpaceSmall,
-                        Text('Email',
+                        Text(AppLocalizations.of(Get.context!)?.email ?? '',
                             style: AppStyle.DEFAULT_16
                                 .copyWith(color: COLORS.GREY)),
                         SizedBox(
@@ -249,7 +262,7 @@ class _InformationAccountState extends State<InformationAccount> {
                         ),
                         _buildEnailField(bloc),
                         AppValue.vSpaceSmall,
-                        Text('Địa chỉ',
+                        Text(AppLocalizations.of(Get.context!)?.address ?? '',
                             style: AppStyle.DEFAULT_16
                                 .copyWith(color: COLORS.GREY)),
                         SizedBox(
@@ -280,8 +293,10 @@ class _InformationAccountState extends State<InformationAccount> {
                                 }
                               } else {
                                 ShowDialogCustom.showDialogBase(
-                                  title: MESSAGES.NOTIFICATION,
-                                  content: 'Kiểm tra lại thông tin',
+                                  title: AppLocalizations.of(Get.context!)
+                                      ?.notification,
+                                  content: AppLocalizations.of(Get.context!)
+                                      ?.check_the_information,
                                 );
                               }
                             },
@@ -291,7 +306,7 @@ class _InformationAccountState extends State<InformationAccount> {
                                 right: 20,
                                 bottom: 20,
                                 top: AppValue.heights * 0.1),
-                            text: MESSAGES.SAVE,
+                            text: AppLocalizations.of(Get.context!)?.save,
                             textStyle: AppStyle.DEFAULT_14.copyWith(
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white),
@@ -302,7 +317,7 @@ class _InformationAccountState extends State<InformationAccount> {
             } else if (state is Error) {
               return Center(
                 child: WidgetText(
-                  title: 'Lỗi kết nối ',
+                  title: AppLocalizations.of(Get.context!)?.an_error_occurred,
                   style: AppStyle.DEFAULT_18_BOLD,
                 ),
               );
@@ -346,7 +361,9 @@ class _InformationAccountState extends State<InformationAccount> {
             keyboardType: TextInputType.number,
             onChanged: (value) => bloc.add(PhoneChanged(value)),
             decoration: InputDecoration(
-                errorText: state.phone.invalid ? MESSAGES.PHONE_ERROR : null),
+                errorText: state.phone.invalid
+                    ? AppLocalizations.of(Get.context!)?.invalid_phone_number
+                    : null),
             focusNode: _phoneFocusNode,
             textInputAction: TextInputAction.next,
             initialValue: initPhone,
@@ -366,7 +383,9 @@ class _InformationAccountState extends State<InformationAccount> {
           height: 30,
           child: TextFormField(
             decoration: InputDecoration(
-              errorText: state.email.invalid ? MESSAGES.EMAIL_ERROR : null,
+              errorText: state.email.invalid
+                  ? AppLocalizations.of(Get.context!)?.this_account_is_invalid
+                  : null,
             ),
             onChanged: (value) => bloc.add(EmailChanged(value)),
             focusNode: _emailFocusNode,
@@ -411,17 +430,18 @@ class _InformationAccountState extends State<InformationAccount> {
                 Row(
                   children: [
                     WidgetText(
-                        title: "Đăng nhập vân tay, khuôn mặt: ",
+                        title:
+                            "${AppLocalizations.of(Get.context!)?.login_with_fingerprint_face_id}: ",
                         style:
                             AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY)),
                     !(snapshot.data ?? false)
                         ? WidgetText(
-                            title: "NO",
+                            title: AppLocalizations.of(Get.context!)?.no,
                             style: AppStyle.DEFAULT_16.copyWith(
                                 fontFamily: 'Quicksand',
                                 fontWeight: FontWeight.w600))
                         : WidgetText(
-                            title: "YES",
+                            title: AppLocalizations.of(Get.context!)?.yes,
                             style: AppStyle.DEFAULT_16.copyWith(
                                 fontFamily: 'Quicksand',
                                 fontWeight: FontWeight.w600)),
@@ -432,8 +452,9 @@ class _InformationAccountState extends State<InformationAccount> {
                   onChanged: (value) {
                     if (!(supportBiometric.data ?? false)) {
                       ShowDialogCustom.showDialogBase(
-                        title: MESSAGES.NOTIFICATION,
-                        content: "Thiết bị chưa thiết lập vân tay, khuôn mặt",
+                        title: AppLocalizations.of(Get.context!)?.notification,
+                        content: AppLocalizations.of(Get.context!)
+                            ?.the_device_has_not_setup_fingerprint_face,
                       );
                     } else {
                       useBiometric(value: value);
@@ -468,7 +489,9 @@ class _InformationAccountState extends State<InformationAccount> {
       return;
     }
     try {
-      final String reason = "Đăng nhập vân tay, khuôn mặt";
+      final String reason =
+          AppLocalizations.of(Get.context!)?.login_with_fingerprint_face_id ??
+              '';
       final bool didAuthenticate = await auth.authenticate(
         localizedReason: reason,
         options: const AuthenticationOptions(
@@ -481,8 +504,10 @@ class _InformationAccountState extends State<InformationAccount> {
         shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "true");
       } else {
         ShowDialogCustom.showDialogBase(
-          title: MESSAGES.NOTIFICATION,
-          content: "Đăng nhập thất bại bạn vui lòng thử lại",
+          title: AppLocalizations.of(Get.context!)?.notification,
+          content:
+              AppLocalizations.of(Get.context!)?.login_fail_please_try_again ??
+                  '',
         );
       }
     } catch (e) {

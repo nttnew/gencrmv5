@@ -5,11 +5,12 @@ import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/add_service_voucher/select_car.dart';
 import 'package:gen_crm/src/models/request/voucher_service_request.dart';
 import 'package:gen_crm/widgets/pick_file_image.dart';
-import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../bloc/contract/attack_bloc.dart';
 import '../../bloc/contract/total_bloc.dart';
 import '../../models/model_data_add.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../widgets/widget_input_date.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/src_index.dart';
@@ -126,8 +127,9 @@ class _AddServiceVoucherStepTwoScreenState
           listener: (context, state) async {
             if (state is SaveServiceVoucherState) {
               ShowDialogCustom.showDialogBase(
-                  title: MESSAGES.NOTIFICATION,
-                  content: "Thêm mới phiếu dịch vụ thành công!",
+                  title: AppLocalizations.of(Get.context!)?.notification,
+                  content: AppLocalizations.of(Get.context!)
+                      ?.add_success,
                   onTap1: () {
                     Navigator.of(context)
                       ..pop()
@@ -137,7 +139,7 @@ class _AddServiceVoucherStepTwoScreenState
             }
             if (state is ErrorGetServiceVoucherState) {
               ShowDialogCustom.showDialogBase(
-                title: MESSAGES.NOTIFICATION,
+                title: AppLocalizations.of(Get.context!)?.notification,
                 content: state.msg,
               );
             }
@@ -453,8 +455,9 @@ class _AddServiceVoucherStepTwoScreenState
     }
     if (check == true) {
       ShowDialogCustom.showDialogBase(
-        title: MESSAGES.NOTIFICATION,
-        content: "Hãy nhập đủ các trường bắt buộc (*)",
+        title: AppLocalizations.of(Get.context!)?.notification,
+        content:
+            AppLocalizations.of(Get.context!)?.please_enter_all_required_fields,
       );
     } else {
       if (_bloc.listProduct.length > 0) {
@@ -681,7 +684,7 @@ Widget TypeCarBase(
                       child: WidgetText(
                         title: (_bloc.loaiXe.value != ''
                             ? _bloc.loaiXe.value
-                            : '---Chọn---'),
+                            : '---${AppLocalizations.of(Get.context!)?.select}---'),
                         style: AppStyle.DEFAULT_14,
                       ),
                     ),

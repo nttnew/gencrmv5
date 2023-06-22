@@ -2,9 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../../src/app_const.dart';
 import '../../../src/base.dart';
-import '../../../src/messages.dart';
 import '../../../src/models/model_generator/report_contact.dart';
 import '../../../widgets/loading_api.dart';
 
@@ -48,11 +49,12 @@ class ReportContactBloc extends Bloc<ReportContactEvent, ReportContactState> {
         }
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
-      } else{
+      } else {
         yield ErrorReportContactState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorReportContactState(MESSAGES.CONNECT_ERROR);
+      yield ErrorReportContactState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();

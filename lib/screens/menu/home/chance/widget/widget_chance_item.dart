@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/src/app_const.dart';
 import '../../../../../src/src_index.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class WidgetItemChance extends StatelessWidget {
   final ListChanceData listChanceData;
@@ -40,7 +42,7 @@ class WidgetItemChance extends StatelessWidget {
                 Expanded(
                   child: itemTextIcon(
                     paddingTop: 0,
-                    text: listChanceData.name ?? 'Chưa có',
+                    text: listChanceData.name ?? AppLocalizations.of(Get.context!)?.not_yet ?? '',
                     icon: ICONS.IC_CHANCE_3X_PNG,
                     isSVG: false,
                     styleText: AppStyle.DEFAULT_TITLE_PRODUCT
@@ -78,7 +80,7 @@ class WidgetItemChance extends StatelessWidget {
                     child: itemTextIcon(
                       isSVG: false,
                       paddingTop: 0,
-                      text: listChanceData.dateNextCare ?? 'Chưa có',
+                      text: listChanceData.dateNextCare ?? AppLocalizations.of(Get.context!)?.not_yet ?? '',
                       icon: ICONS.IC_DATE_PNG,
                     ),
                   ),

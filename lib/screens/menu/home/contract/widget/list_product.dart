@@ -5,9 +5,10 @@ import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../../models/product_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../../../../src/app_const.dart';
 import '../../../../../src/src_index.dart';
-import 'package:get/get.dart';
 import '../../../../../widgets/appbar_base.dart';
 
 class ListProduct extends StatefulWidget {
@@ -51,7 +52,8 @@ class _ListProductState extends State<ListProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarBaseNormal('Chọn sản phẩm'),
+      appBar: AppbarBaseNormal(
+          AppLocalizations.of(Get.context!)?.select_product ?? ''),
       body: BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
         if (state is LoadingGetListProductState) {
           listSelected = [];
@@ -100,7 +102,9 @@ class _ListProductState extends State<ListProduct> {
                         child: TextField(
                           controller: _editingController,
                           decoration: InputDecoration(
-                            hintText: "Tìm sản phẩm",
+                            hintText: AppLocalizations.of(Get.context!)
+                                    ?.find_product ??
+                                '',
                             border: InputBorder.none,
                             disabledBorder: InputBorder.none,
                             enabledBorder: InputBorder.none,
@@ -118,7 +122,8 @@ class _ListProductState extends State<ListProduct> {
                               color: COLORS.PRIMARY_COLOR,
                               borderRadius: BorderRadius.circular(20)),
                           child: WidgetText(
-                            title: "Tìm",
+                            title:
+                                AppLocalizations.of(Get.context!)?.find ?? '',
                             style: AppStyle.DEFAULT_16,
                             textAlign: TextAlign.center,
                           ),
@@ -179,7 +184,7 @@ class _ListProductState extends State<ListProduct> {
                           color: COLORS.PRIMARY_COLOR,
                           borderRadius: BorderRadius.circular(20)),
                       child: WidgetText(
-                        title: "Chọn",
+                        title: AppLocalizations.of(Get.context!)?.select ?? '',
                         style: AppStyle.DEFAULT_16,
                         textAlign: TextAlign.center,
                       ),
@@ -349,7 +354,9 @@ class _ItemProductState extends State<ItemProduct> {
                   height: 3,
                 ),
                 WidgetText(
-                  title: "Mã sản phẩm: " + "${widget.data.product_code ?? ''}",
+                  title:
+                      "${AppLocalizations.of(Get.context!)?.code_product}: " +
+                          "${widget.data.product_code ?? ''}",
                   style: AppStyle.DEFAULT_14_BOLD
                       .copyWith(color: COLORS.TEXT_GREY),
                 ),
@@ -364,7 +371,8 @@ class _ItemProductState extends State<ItemProduct> {
                         borderRadius: BorderRadius.circular(7)),
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: WidgetText(
-                      title: "Giá: " + "${AppValue.format_money(price)}",
+                      title: "${AppLocalizations.of(Get.context!)?.price}: " +
+                          "${AppValue.format_money(price)}",
                       style: AppStyle.DEFAULT_14_BOLD
                           .copyWith(color: COLORS.TEXT_GREY),
                     ),
@@ -388,7 +396,9 @@ class _ItemProductState extends State<ItemProduct> {
                                       borderRadius: BorderRadius.circular(7)),
                                   padding: EdgeInsets.symmetric(horizontal: 10),
                                   child: WidgetText(
-                                    title: "ĐVT: " + "${Dvt}",
+                                    title:
+                                        "${AppLocalizations.of(Get.context!)?.dvt}: " +
+                                            "${Dvt}",
                                     style: AppStyle.DEFAULT_14
                                         .copyWith(color: COLORS.ORANGE_IMAGE),
                                     maxLine: 4,
@@ -410,7 +420,9 @@ class _ItemProductState extends State<ItemProduct> {
                                       borderRadius: BorderRadius.circular(7)),
                                   padding: EdgeInsets.symmetric(horizontal: 10),
                                   child: WidgetText(
-                                    title: "VAT: " + "${Vat}",
+                                    title:
+                                        "${AppLocalizations.of(Get.context!)?.vat}: " +
+                                            "${Vat}",
                                     style: AppStyle.DEFAULT_14
                                         .copyWith(color: COLORS.ORANGE_IMAGE),
                                     maxLine: 4,
@@ -431,9 +443,10 @@ class _ItemProductState extends State<ItemProduct> {
                                   borderRadius: BorderRadius.circular(7)),
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               child: WidgetText(
-                                title: "Giảm giá: " +
-                                    giamGia +
-                                    "${typeGiamGia == true ? 'vnd' : '%'}",
+                                title:
+                                    "${AppLocalizations.of(Get.context!)?.sale}: " +
+                                        giamGia +
+                                        "${typeGiamGia == true ? 'vnd' : '%'}",
                                 style: AppStyle.DEFAULT_14
                                     .copyWith(color: COLORS.BLUE),
                               ),
@@ -519,7 +532,7 @@ class _ItemProductState extends State<ItemProduct> {
                 Container(
                   width: Get.width,
                   child: WidgetText(
-                    title: "Chọn",
+                    title: AppLocalizations.of(Get.context!)?.select,
                     style: AppStyle.DEFAULT_16_BOLD,
                     textAlign: TextAlign.center,
                   ),
@@ -578,7 +591,7 @@ class _ItemProductState extends State<ItemProduct> {
                 Container(
                   width: Get.width,
                   child: WidgetText(
-                    title: "Chọn",
+                    title: AppLocalizations.of(Get.context!)?.select ?? '',
                     style: AppStyle.DEFAULT_16_BOLD,
                     textAlign: TextAlign.center,
                   ),
@@ -629,7 +642,8 @@ class _ItemProductState extends State<ItemProduct> {
                     Container(
                       width: Get.width,
                       child: WidgetText(
-                        title: "Nhập giảm giá",
+                        title:
+                            AppLocalizations.of(Get.context!)?.enter_price_sale,
                         style: AppStyle.DEFAULT_16_BOLD,
                         textAlign: TextAlign.center,
                       ),
@@ -692,9 +706,11 @@ class _ItemProductState extends State<ItemProduct> {
                                     double.parse(widget.data.sell_price!))) {
                               _editingController.text = widget.data.sell_price!;
                               ShowDialogCustom.showDialogBase(
-                                title: MESSAGES.NOTIFICATION,
-                                content:
-                                    "Bạn không được nhập giá giảm lớn hơn giá của sản phẩm",
+                                title: AppLocalizations.of(Get.context!)
+                                    ?.notification,
+                                content: AppLocalizations.of(Get.context!)
+                                        ?.you_cannot_enter_a_discount_greater_than_the_price_of_the_product ??
+                                    '',
                                 onTap1: () {
                                   Get.back();
                                 },
@@ -702,8 +718,10 @@ class _ItemProductState extends State<ItemProduct> {
                             } else if (!typeGiamGia &&
                                 (double.parse(_editingController.text) > 100)) {
                               ShowDialogCustom.showDialogBase(
-                                title: MESSAGES.NOTIFICATION,
-                                content: "Bạn không được nhập quá 100%",
+                                title: AppLocalizations.of(Get.context!)
+                                    ?.notification,
+                                content: AppLocalizations.of(Get.context!)
+                                    ?.you_cannot_enter_more_than_100,
                                 onTap1: () {
                                   Get.back();
                                 },
@@ -729,7 +747,7 @@ class _ItemProductState extends State<ItemProduct> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 8),
                             child: WidgetText(
-                              title: "Nhập",
+                              title: AppLocalizations.of(Get.context!)?.enter,
                               style: AppStyle.DEFAULT_16,
                             ),
                           ),
@@ -766,7 +784,7 @@ class _ItemProductState extends State<ItemProduct> {
                     Container(
                       width: Get.width,
                       child: WidgetText(
-                        title: "Nhập giá",
+                        title: AppLocalizations.of(Get.context!)?.enter_price,
                         style: AppStyle.DEFAULT_16_BOLD,
                         textAlign: TextAlign.center,
                       ),
@@ -816,7 +834,7 @@ class _ItemProductState extends State<ItemProduct> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 8),
                             child: WidgetText(
-                              title: "Nhập",
+                              title: AppLocalizations.of(Get.context!)?.enter,
                               style: AppStyle.DEFAULT_16,
                             ),
                           ),

@@ -5,10 +5,12 @@ import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/widgets/widget_button.dart';
 import '../../../../bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import '../../../../models/button_menu_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../../../src/src_index.dart';
 import '../../../../storages/share_local.dart';
 import '../../../../widgets/widget_text.dart';
-import 'widget_item_list_menu.dart'; // ignore: import_of_legacy_library_into_null_safe
+import 'widget_item_list_menu.dart';
 
 class MainDrawer extends StatefulWidget {
   final Function? onPress;
@@ -32,7 +34,7 @@ class _MainDrawerState extends State<MainDrawer> {
   getMenu() async {
     _elements.add({
       'id': '1',
-      'title': MESSAGES.MAIN,
+      'title': AppLocalizations.of(Get.context!)?.home_page??'',
       'image': ICONS.IC_MENU_HOME_PNG,
       'group': '1',
       'isAdmin': false,
@@ -53,35 +55,35 @@ class _MainDrawerState extends State<MainDrawer> {
       ...[
         {
           'id': 'report',
-          'title': 'Báo cáo',
+          'title':  AppLocalizations.of(Get.context!)?.report,
           'image': ICONS.IC_REPORT_PNG,
           'group': '1',
           'isAdmin': false
         },
         {
           'id': '2',
-          'title': MESSAGES.INFORMATION_ACCOUNT,
+          'title': AppLocalizations.of(Get.context!)?.account_information,
           'image': ICONS.IC_USER_PNG,
           'group': '1',
           'isAdmin': false
         },
         {
           'id': '3',
-          'title': MESSAGES.MENU_INTRODUCE,
+          'title': AppLocalizations.of(Get.context!)?.introduce,
           'image': ICONS.IC_ABOUT_US_PNG,
           'group': '1',
           'isAdmin': false,
         },
         {
           'id': '4',
-          'title': MESSAGES.POLICY,
+          'title': AppLocalizations.of(Get.context!)?.policy_terms,
           'image': ICONS.IC_POLICY_PNG,
           'group': '1',
           'isAdmin': false,
         },
         {
           'id': '5',
-          'title': MESSAGES.CHANGE_PASSWORD,
+          'title': AppLocalizations.of(Get.context!)?.change_password,
           'image': ICONS.IC_CHANGE_PASS_WORK_PNG,
           'group': '1',
           'isAdmin': false,
@@ -230,7 +232,7 @@ class _MainDrawerState extends State<MainDrawer> {
             },
             height: 40,
             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-            text: MESSAGES.LOG_OUT,
+            text: AppLocalizations.of(Get.context!)?.logout,
             textColor: Colors.black,
             backgroundColor: COLORS.GREY.withOpacity(0.5),
           ),

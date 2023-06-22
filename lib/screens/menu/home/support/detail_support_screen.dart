@@ -12,6 +12,7 @@ import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../bloc/checkin_bloc/checkin_bloc.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../bloc/support/support_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
@@ -67,7 +68,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
       if (location != 1) {
         //1 là có rồi
         list.add(ModuleThaoTac(
-          title: "Check in",
+          title: AppLocalizations.of(Get.context!)?.check_in ?? '',
           icon: ICONS.IC_LOCATION_SVG,
           onThaoTac: () {
             Get.back();
@@ -81,7 +82,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
         ));
       } else {
         list.add(ModuleThaoTac(
-          title: "Check out",
+          title: AppLocalizations.of(Get.context!)?.check_out ?? '',
           icon: ICONS.IC_LOCATION_SVG,
           onThaoTac: () {
             Get.back();
@@ -101,7 +102,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
     }
 
     list.add(ModuleThaoTac(
-      title: "Thêm thảo luận",
+      title: AppLocalizations.of(Get.context!)?.add_discuss ?? '',
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
@@ -112,7 +113,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
     ));
 
     list.add(ModuleThaoTac(
-      title: "Xem đính kèm",
+      title: AppLocalizations.of(Get.context!)?.see_attachment ?? '',
       icon: ICONS.IC_ATTACK_SVG,
       onThaoTac: () async {
         Get.back();
@@ -125,7 +126,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
     ));
 
     list.add(ModuleThaoTac(
-      title: "Sửa",
+      title: AppLocalizations.of(Get.context!)?.edit ?? '',
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
@@ -136,12 +137,15 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
     ));
 
     list.add(ModuleThaoTac(
-      title: "Xoá",
+      title: AppLocalizations.of(Get.context!)?.delete ?? '',
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
-            onTap2: () => _bloc.add(DeleteSupportEvent(id)),
-            content: "Bạn chắc chắn muốn xóa không ?");
+          onTap2: () => _bloc.add(DeleteSupportEvent(id)),
+          content: AppLocalizations.of(Get.context!)
+                  ?.are_you_sure_you_want_to_delete ??
+              '',
+        );
       },
     ));
   }
@@ -157,7 +161,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
               _bloc.add(InitGetDetailSupportEvent(id));
             } else if (state is ErrorCheckInState) {
               ShowDialogCustom.showDialogBase(
-                title: MESSAGES.NOTIFICATION,
+                title: AppLocalizations.of(Get.context!)?.notification,
                 content: state.msg,
               );
             }
@@ -174,8 +178,10 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                       if (state is SuccessDeleteSupportState) {
                         LoadingApi().popLoading();
                         ShowDialogCustom.showDialogBase(
-                          title: MESSAGES.NOTIFICATION,
-                          content: "Thành công",
+                          title:
+                              AppLocalizations.of(Get.context!)?.notification,
+                          content:
+                              AppLocalizations.of(Get.context!)?.success ?? '',
                           onTap1: () {
                             Get.back();
                             Get.back();
@@ -187,9 +193,12 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                       } else if (state is ErrorDeleteSupportState) {
                         LoadingApi().popLoading();
                         ShowDialogCustom.showDialogBase(
-                          title: MESSAGES.NOTIFICATION,
+                          title:
+                              AppLocalizations.of(Get.context!)?.notification,
                           content: state.msg,
-                          textButton1: "Quay lại",
+                          textButton1:
+                              AppLocalizations.of(Get.context!)?.come_back ??
+                                  '',
                           onTap1: () {
                             Get.back();
                             Get.back();

@@ -6,6 +6,7 @@ import 'package:gen_crm/screens/menu/home/product_customer/widget/item_product_c
 import 'package:gen_crm/widgets/tree/tree_node_model.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/list_product_customer_response.dart';
 import '../../../../src/src_index.dart';
@@ -97,7 +98,8 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Color(0xff1AA928),
           onPressed: () => AppNavigator.navigateFormAdd(
-              'Thêm $title', PRODUCT_CUSTOMER_TYPE),
+              '${AppLocalizations.of(Get.context!)?.add} $title',
+              PRODUCT_CUSTOMER_TYPE),
           child: Icon(Icons.add, size: 40),
         ),
         body: Container(
@@ -105,7 +107,8 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
             children: [
               AppValue.vSpaceSmall,
               SearchBase(
-                hint: "Nhập tên, barcode, qrcode",
+                hint: AppLocalizations.of(Get.context!)
+                    ?.enter_name_barcode_qr_code,
                 leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                 endIcon: GestureDetector(
                   onTap: () {
@@ -123,8 +126,11 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                           );
                         } else {
                           ShowDialogCustom.showDialogBase(
-                            title: MESSAGES.NOTIFICATION,
-                            content: 'Không có dữ liệu',
+                            title:
+                                AppLocalizations.of(Get.context!)?.notification,
+                            content:
+                                AppLocalizations.of(Get.context!)?.no_data ??
+                                    '',
                           );
                         }
                       }
@@ -257,7 +263,8 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                     children: [
                       Center(
                         child: WidgetText(
-                          title: 'Chọn lọc',
+                          title:
+                              AppLocalizations.of(Get.context!)?.select_filter,
                           textAlign: TextAlign.center,
                           style: AppStyle.DEFAULT_16_BOLD,
                         ),
@@ -280,7 +287,6 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                                                 width: 1,
                                                 color: COLORS.LIGHT_GREY))),
                                     child: Row(
-                                      // crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         SvgPicture.asset(
                                           ICONS.IC_FILTER_SVG,

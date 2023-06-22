@@ -12,6 +12,7 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WidgetLoginForm extends StatefulWidget {
   WidgetLoginForm({
@@ -119,7 +120,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         if (state.status.isSubmissionFailure) {
           GetSnackBarUtils.removeSnackBar();
           ShowDialogCustom.showDialogBase(
-            title: MESSAGES.NOTIFICATION,
+            title: AppLocalizations.of(Get.context!)?.notification,
             content: state.message,
           );
         }
@@ -181,7 +182,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
           });
         },
         child: Text(
-          "Đổi địa chỉ ứng dụng",
+          AppLocalizations.of(Get.context!)?.change_address_application??'',
           style: AppStyle.DEFAULT_14W500.copyWith(
             color: HexColor("#006CB1"),
             decoration: TextDecoration.underline,
@@ -197,7 +198,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
       child: InkWell(
         onTap: () => AppNavigator.navigateForgotPassword(),
         child: Text(
-          MESSAGES.FORGOT_PASSWORD + "?",
+          AppLocalizations.of(Get.context!)?.forgot_password ?? '' + "?",
           style: TextStyle(
               fontFamily: "Quicksand",
               fontWeight: FontWeight.w500,
@@ -224,8 +225,9 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
               state.status.isValidated
                   ? bloc.add(FormSubmitted(device_token: tokenFirebase ?? ''))
                   : ShowDialogCustom.showDialogBase(
-                      title: MESSAGES.NOTIFICATION,
-                      content: 'Kiểm tra lại thông tin',
+                      title: AppLocalizations.of(Get.context!)?.notification,
+                      content: AppLocalizations.of(Get.context!)
+                          ?.check_the_information,
                     );
             },
             boxDecoration: BoxDecoration(
@@ -234,7 +236,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
             ),
             enable: state.status.isValidated,
             textStyle: AppStyle.DEFAULT_18_BOLD,
-            text: MESSAGES.LOGIN,
+            text: AppLocalizations.of(Get.context!)?.login,
           );
         });
   }
@@ -244,13 +246,16 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
       return WidgetInput(
         colorFix: Theme.of(context).scaffoldBackgroundColor,
         Fix: WidgetText(
-            title: "Mật khẩu",
+            title: AppLocalizations.of(Get.context!)?.password,
             style: TextStyle(
                 fontFamily: "Quicksand",
                 fontWeight: FontWeight.w600,
                 fontSize: 14)),
         onChanged: (value) => bloc.add(PasswordChanged(password: value)),
-        errorText: state.password.invalid ? MESSAGES.PASSWORD_ERROR : null,
+        errorText: state.password.invalid
+            ? AppLocalizations.of(Get.context!)
+                ?.password_must_be_at_least_6_characters
+            : null,
         obscureText: obscurePassword,
         focusNode: _passwordFocusNode,
         boxDecoration: BoxDecoration(
@@ -273,9 +278,11 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
           border: Border.all(color: HexColor("#838A91")),
         ),
         inputController: _unameController,
-        errorText: state.email.invalid ? MESSAGES.EMAIL_ERROR : null,
+        errorText: state.email.invalid
+            ? AppLocalizations.of(Get.context!)?.this_account_is_invalid
+            : null,
         Fix: WidgetText(
-            title: "Tài khoản",
+            title: AppLocalizations.of(Get.context!)?.account,
             style: TextStyle(
                 fontFamily: "Quicksand",
                 fontWeight: FontWeight.w600,
@@ -305,7 +312,8 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
                     width: 8,
                   ),
                   WidgetText(
-                    title: "Vân tay, khuôn mặt",
+                    title:
+                        AppLocalizations.of(Get.context!)?.print_finger_face_id,
                     style: TextStyle(
                         fontFamily: "Quicksand",
                         fontWeight: FontWeight.w500,
@@ -322,7 +330,8 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
     final LocalAuthentication auth = LocalAuthentication();
     try {
       final didAuthenticate = await auth.authenticate(
-          localizedReason: 'Đăng nhập bằng vân tay, khuôn mặt',
+          localizedReason:
+              AppLocalizations.of(Get.context!)?.login_with_fingerprint_face_id??'',
           options: const AuthenticationOptions(biometricOnly: true));
       if (didAuthenticate) {
         LoginBloc.of(context)

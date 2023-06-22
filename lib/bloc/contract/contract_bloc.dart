@@ -4,9 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
 import '../../src/models/model_generator/contract.dart';
 import '../../src/models/model_generator/customer.dart';
 
@@ -70,7 +71,9 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
         yield ErrorGetContractState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetContractState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetContractState(AppLocalizations.of(Get.context!)?.
+
+an_error_occurred??'');
       throw e;
     }
     LoadingApi().popLoading();

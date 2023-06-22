@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/api_resfull/api.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
+
 import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
+
 import '../../widgets/loading_api.dart';
+
 part 'checkin_event.dart';
 part 'checkin_state.dart';
 
@@ -24,7 +28,7 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
         location: event.location,
         id: event.id,
         module: event.module,
-          type:event.type,
+        type: event.type,
       );
     }
   }
@@ -58,7 +62,8 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorCheckInState(MESSAGES.CONNECT_ERROR);
+      yield ErrorCheckInState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();

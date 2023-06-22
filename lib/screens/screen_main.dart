@@ -24,6 +24,7 @@ import 'package:plugin_pitel/sip/src/sip_ua_helper.dart';
 import 'package:plugin_pitel/voip_push/push_notif.dart';
 import 'package:plugin_pitel/sip/sip_ua.dart';
 import '../bloc/login/login_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../src/app_const.dart';
 import '../storages/share_local.dart';
 import '../widgets/item_menu.dart';
@@ -60,7 +61,8 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
       String id = value['id'];
       String name = value['name'];
       if (id == ModuleMy.HOP_DONG) {
-        String titleReport = name + ' đang làm';
+        String titleReport =
+            name + ' ${AppLocalizations.of(Get.context!)?.doing}';
         shareLocal.putString(PreferencesKey.NAME_REPORT, titleReport);
       } else if (id == ModuleMy.CUSTOMER) {
         shareLocal.putString(PreferencesKey.NAME_CUSTOMER, name);
@@ -93,7 +95,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     }
     listMenu.add(
       ButtonMenuModel(
-          title: 'Báo cáo',
+          title: AppLocalizations.of(Get.context!)?.report ?? '',
           image: ICONS.IC_REPORT_PNG,
           backgroundColor: Color(0xff5D5FEF),
           onTap: () async {
@@ -106,7 +108,9 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
 
   _handelRouterMenuPlus(String id, String name) {
     if (ModuleText.CUSTOMER == id) {
-      AppNavigator.navigateAddCustomer('Thêm ${name.toLowerCase()} cá nhân');
+      AppNavigator.navigateAddCustomer(
+          '${AppLocalizations.of(Get.context!)?.add}'
+          ' ${name.toLowerCase()} ${AppLocalizations.of(Get.context!)?.individual}');
     } else if (ModuleText.DAU_MOI == id) {
       AppNavigator.navigateFormAdd(name, ADD_CLUE);
     } else if (ModuleText.LICH_HEN == id) {
@@ -368,7 +372,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
           content: Text(
-            MESSAGES.BACK_TO_EXIT,
+            AppLocalizations.of(Get.context!)?.press_again_to_exit ?? '',
             style: AppStyle.DEFAULT_16.copyWith(color: COLORS.WHITE),
           ),
         ),

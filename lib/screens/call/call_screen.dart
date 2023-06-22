@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -359,7 +360,8 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: HexColor("#D0F1EB").withOpacity(0.9),
-      appBar: AppbarBaseNormal('Gọi điện tổng đài'),
+      appBar:
+          AppbarBaseNormal(AppLocalizations.of(Get.context!)?.call_operator),
       body: Container(
         child: pitelCall.isConnected && pitelCall.isHaveCall
             ? _buildContent()
