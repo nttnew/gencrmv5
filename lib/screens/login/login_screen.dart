@@ -102,6 +102,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               .map((items) => DropdownMenuItem<String>(
                                     onTap: () {
                                       LoginBloc.of(context).locale.add(items);
+                                      setState(() {
+                                      });
                                     },
                                     value: items.toString(),
                                     child: Row(

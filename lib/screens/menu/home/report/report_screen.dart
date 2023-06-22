@@ -37,6 +37,8 @@ class _ReportScreenState extends State<ReportScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   String? money = Get.arguments;
   String total = "0";
+  String timeInitFinal = '';
+  String locationInitFinal = '';
   int length = 0;
   int page = 1;
   int? _id;
@@ -47,7 +49,7 @@ class _ReportScreenState extends State<ReportScreen> {
   late int timeFilter;
   bool isFirst = false;
   String? gt;
-  String valueTime = AppLocalizations.of(Get.context!)?.pick_filter ?? '';
+  String valueTime = '';
   String? valueLocation;
   int step = 1;
   String location = "";
@@ -210,12 +212,10 @@ class _ReportScreenState extends State<ReportScreen> {
           items: typeReport
               .map((items) => DropdownMenuItem<String>(
                     onTap: () {
-                      valueLocation =
-                          AppLocalizations.of(Get.context!)?.all ?? '';
+                      valueLocation = locationInitFinal;
                       location = '';
                       step = items['index'];
-                      valueTime =
-                          AppLocalizations.of(Get.context!)?.pick_filter ?? '';
+                      valueTime = timeInitFinal;
                       timeFrom = timeTo = null;
                       _range = "";
                       isFirst = false;
@@ -246,6 +246,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       if (state.dataTime[i][0] ==
                               state.thoi_gian_mac_dinh.toString() &&
                           isFirst == false) {
+                        timeInitFinal = state.dataTime.first[1];
                         valueTime = state.dataTime[i][1];
                         timeInit = state.thoi_gian_mac_dinh;
                         timeFilter = timeInit;
@@ -299,6 +300,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       if (state.dataTime[i][0] ==
                               state.thoi_gian_mac_dinh.toString() &&
                           isFirst == false) {
+                        timeInitFinal = state.dataTime.first[1];
                         valueTime = state.dataTime[i][1];
                         timeInit = state.thoi_gian_mac_dinh;
                         timeFilter = timeInit;
@@ -376,6 +378,9 @@ class _ReportScreenState extends State<ReportScreen> {
                 builder: (context, state) {
                   if (state is SuccessReportWorkState) {
                     if (state.dataLocation.isNotEmpty) {
+                      if (state.dataLocation.isNotEmpty) {
+                        locationInitFinal = state.dataLocation.first[1];
+                      }
                       return DropdownButton2(
                           value: valueLocation ?? state.dataLocation[0][1],
                           icon: const Icon(Icons.arrow_drop_down_outlined),
@@ -425,6 +430,9 @@ class _ReportScreenState extends State<ReportScreen> {
                 builder: (context, state) {
                   if (state is SuccessOptionState) {
                     if (state.dataLocation.isNotEmpty) {
+                      if (state.dataLocation.isNotEmpty) {
+                        locationInitFinal = state.dataLocation.first[1];
+                      }
                       return DropdownButton2(
                           value: valueLocation ?? state.dataLocation[0][1],
                           icon: const Icon(Icons.arrow_drop_down_outlined),
