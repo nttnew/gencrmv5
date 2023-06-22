@@ -85,9 +85,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     SizedBox(
                                       width: 20,
-                                      child: Text(
-                                        snapshot.data.toString().toUpperCase(),
-                                        style: AppStyle.DEFAULT_16_BOLD,
+                                      child: FittedBox(
+                                        child: Text(
+                                          snapshot.data
+                                              .toString()
+                                              .toUpperCase(),
+                                          style: AppStyle.DEFAULT_16_BOLD,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -102,8 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               .map((items) => DropdownMenuItem<String>(
                                     onTap: () {
                                       LoginBloc.of(context).locale.add(items);
-                                      setState(() {
-                                      });
+                                      setState(() {});
                                     },
                                     value: items.toString(),
                                     child: Row(
@@ -135,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        AppLocalizations.of(Get.context!)?.login??'',
+                        AppLocalizations.of(Get.context!)?.login ?? '',
                         style: AppStyle.DEFAULT_18_BOLD,
                       )
                     ],
