@@ -8,6 +8,7 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
 import '../../l10n/l10n.dart';
+import '../../storages/share_local.dart';
 import '../../widgets/rounder_bootom_appbar.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -23,8 +24,11 @@ class _LoginScreenState extends State<LoginScreen> {
   String? tokenFirebase;
   late final ScrollController scrollController;
   late bool isLogin;
+
   @override
   void initState() {
+    String? language = shareLocal.getString(PreferencesKey.LANGUAGE);
+    if (language != null) LoginBloc.of(context).locale.add(Locale(language));
     scrollController = ScrollController();
     isLogin = Get.arguments == 'login';
     KeyboardVisibilityController().onChange.listen((visible) {
@@ -105,6 +109,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           items: L10n.all
                               .map((items) => DropdownMenuItem<String>(
                                     onTap: () {
+                                      shareLocal.putString(
+                                          PreferencesKey.LANGUAGE,
+                                          items.toString());
                                       LoginBloc.of(context).locale.add(items);
                                       setState(() {});
                                     },
