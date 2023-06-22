@@ -81,8 +81,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       child: Image.asset(getFlagCountry(
                                         snapshot.data.toString(),
                                       )),
-                                      height: 30,
-                                      width: 30,
+                                      height: 24,
+                                      width: 24,
                                     ),
                                     SizedBox(
                                       width: 4,
