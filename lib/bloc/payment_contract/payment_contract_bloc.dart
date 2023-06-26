@@ -2,9 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/api_resfull/api.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
 import '../../src/models/model_generator/detail_contract.dart';
 import '../../widgets/loading_api.dart';
 
@@ -43,7 +44,8 @@ class PaymentContractBloc
       } else
         yield ErrorPaymentContractState(response.msg ?? '');
     } catch (e) {
-      yield ErrorPaymentContractState(MESSAGES.CONNECT_ERROR);
+      yield ErrorPaymentContractState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();

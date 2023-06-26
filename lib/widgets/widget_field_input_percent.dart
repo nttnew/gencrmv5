@@ -65,7 +65,6 @@ class _FieldInputPercentState extends State<FieldInputPercent> {
                 children: [
                   Expanded(
                     child: TextField(
-                      // controller: data.field_type=="TEXT_NUMERIC"?_wholesalePriceEditController:null,
                       style:
                           TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                       keyboardType: TextInputType.number,
@@ -99,6 +98,4 @@ class _FieldInputPercentState extends State<FieldInputPercent> {
       ),
     );
   }
-
-
 }

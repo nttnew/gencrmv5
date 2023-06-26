@@ -5,6 +5,7 @@ import 'package:gen_crm/widgets/tree/tree_node_model.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../src/base.dart';
+
 part 'manager_event.dart';
 part 'manager_state.dart';
 

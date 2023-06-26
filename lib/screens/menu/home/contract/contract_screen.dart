@@ -14,6 +14,7 @@ import '../../../../widgets/tree/tree_node_model.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 import 'widget/item_list_contract.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ContractScreen extends StatefulWidget {
   const ContractScreen({Key? key}) : super(key: key);
@@ -82,7 +83,7 @@ class _ContractScreenState extends State<ContractScreen> {
               stream: managerBloc.managerTrees,
               builder: (context, snapshot) {
                 return SearchBase(
-                  hint: "Tìm ${title.toLowerCase()}",
+                  hint: "${AppLocalizations.of(Get.context!)?.find} ${title.toLowerCase()}",
                   leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                   endIcon: (snapshot.data ?? []).isNotEmpty
                       ? SvgPicture.asset(
@@ -159,7 +160,7 @@ class _ContractScreenState extends State<ContractScreen> {
         child: FloatingActionButton(
           backgroundColor: Color(0xff1AA928),
           onPressed: () {
-            AppNavigator.navigateAddContract(title: 'Thêm ${title.toLowerCase()}');
+            AppNavigator.navigateAddContract(title: '${AppLocalizations.of(Get.context!)?.add} ${title.toLowerCase()}');
           },
           child: Icon(Icons.add, size: 40),
         ),

@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import '../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
 
 part 'customer_contract_event.dart';
 part 'customer_contract_state.dart';
@@ -34,11 +35,12 @@ class CustomerContractBloc
       {required String page, required String search}) async* {
     LoadingApi().pushLoading();
     try {
-      if (page == "1") yield LoadingContractCustomerState();
+      if (page == BASE_URL.PAGE_DEFAULT.toString())
+        yield LoadingContractCustomerState();
       final response = await userRepository.getCustomerContract(page, search);
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        if (page == "1") {
+        if (page == BASE_URL.PAGE_DEFAULT.toString()) {
           list = response.data;
           yield SuccessGetContractCustomerState(response.data!);
         } else {
@@ -53,7 +55,8 @@ class CustomerContractBloc
         yield ErrorGetContractCustomerState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetContractCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetContractCustomerState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -74,7 +77,8 @@ class CustomerContractBloc
         yield ErrorGetContractCustomerState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetContractCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetContractCustomerState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();

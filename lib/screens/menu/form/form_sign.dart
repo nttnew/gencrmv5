@@ -18,6 +18,7 @@ import 'package:signature/signature.dart';
 import '../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../src/src_index.dart';
 import '../../../models/model_data_add.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../widgets/pick_file_image.dart';
 import '../../../widgets/field_input_select_multi.dart';
@@ -50,7 +51,6 @@ class _FormAddSignState extends State<FormAddSign> {
   @override
   void initState() {
     _bloc = FormAddBloc(userRepository: FormAddBloc.of(context).userRepository);
-
     starStream = BehaviorSubject.seeded(-1);
     scrollController = ScrollController();
     isMaxScroll = BehaviorSubject.seeded(false);
@@ -106,8 +106,9 @@ class _FormAddSignState extends State<FormAddSign> {
               listener: (context, state) async {
                 if (state is SuccessAddCustomerOrState) {
                   ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
-                    content: "Thêm mới dữ liệu thành công!",
+                    title: AppLocalizations.of(Get.context!)?.notification,
+                    content: AppLocalizations.of(Get.context!)
+                        ?.new_data_added_successfully,
                     onTap1: () {
                       Get.back();
                       Get.back();
@@ -118,14 +119,15 @@ class _FormAddSignState extends State<FormAddSign> {
                 }
                 if (state is ErrorAddCustomerOrState) {
                   ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
+                    title: AppLocalizations.of(Get.context!)?.notification,
                     content: state.msg,
                   );
                 }
                 if (state is SuccessAddContactCustomerState) {
                   ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
-                    content: "Thêm mới dữ liệu thành công!",
+                    title: AppLocalizations.of(Get.context!)?.notification,
+                    content: AppLocalizations.of(Get.context!)
+                        ?.new_data_added_successfully,
                     onTap1: () {
                       Get.back();
                       Get.back();
@@ -134,7 +136,7 @@ class _FormAddSignState extends State<FormAddSign> {
                 }
                 if (state is ErrorAddContactCustomerState) {
                   ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
+                    title: AppLocalizations.of(Get.context!)?.notification,
                     content: state.msg,
                   );
                 }
@@ -551,7 +553,8 @@ class _FormAddSignState extends State<FormAddSign> {
                         width: MediaQuery.of(context).size.width,
                         child: Center(
                           child: WidgetText(
-                            title: 'Click để thực hiện ký',
+                            title: AppLocalizations.of(Get.context!)?.click_to_sign ??
+                                '',
                             style: AppStyle.DEFAULT_14.copyWith(
                               color: COLORS.TEXT_COLOR,
                             ),
@@ -677,7 +680,7 @@ class _FormAddSignState extends State<FormAddSign> {
             RichText(
               textScaleFactor: MediaQuery.of(context).textScaleFactor,
               text: TextSpan(
-                text: 'Chưa thanh toán:',
+                text: '${AppLocalizations.of(Get.context!)?.unpaid}:',
                 style: AppStyle.DEFAULT_14W600,
                 children: <TextSpan>[
                   TextSpan(
@@ -837,8 +840,6 @@ class _FormAddSignState extends State<FormAddSign> {
     );
   }
 
-
-
   void onClickSave() {
     final Map<String, dynamic> data = {};
     bool check = false;
@@ -898,18 +899,18 @@ class _FormAddSignState extends State<FormAddSign> {
       }
       data['chuky'] = chukys;
     }
-
     data["id"] = id;
-
     //
     if (check == true) {
       ShowDialogCustom.showDialogBase(
-        title: MESSAGES.NOTIFICATION,
+        title: AppLocalizations.of(Get.context!)?.notification,
         content: isCheckMoney
-            ? "Số tiền không được lớn hơn số tiền chưa thanh toán"
+            ? AppLocalizations.of(Get.context!)
+                ?.the_amount_cannot_be_greater_than_the_outstanding_amount
             : isCheckRate
-                ? "Vui lòng đánh giá số sao"
-                : "Hãy nhập đủ các trường bắt buộc (*)",
+                ? AppLocalizations.of(Get.context!)?.rate_star_please
+                : AppLocalizations.of(Get.context!)
+                    ?.please_enter_all_required_fields,
       );
     } else {
       AddDataBloc.of(context).add(SignEvent(data));

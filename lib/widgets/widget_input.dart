@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:gen_crm/src/src_index.dart';
+import 'package:rxdart/rxdart.dart';
 
 class WidgetInput extends StatefulWidget {
   final TextEditingController? inputController;
@@ -14,7 +15,7 @@ class WidgetInput extends StatefulWidget {
   final int? minLine;
   final int? maxLength;
   final double? height, heightIcon, widthIcon;
-  final bool? obscureText;
+  final bool obscureText;
   final TextInputType? inputType;
   final Widget? leadIcon;
   final Widget? endIcon;
@@ -60,10 +61,24 @@ class WidgetInput extends StatefulWidget {
 }
 
 class _WidgetInputState extends State<WidgetInput> {
+  BehaviorSubject<String> _text = BehaviorSubject.seeded('');
+  bool obscureText = false;
+
+  @override
+  void initState() {
+    obscureText = widget.obscureText;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _text.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
-      // overflow: Overflow.visible,
       clipBehavior: Clip.none,
       children: [
         Container(
@@ -81,16 +96,14 @@ class _WidgetInputState extends State<WidgetInput> {
                     )
                   : Container(),
               Expanded(
-                flex: 7,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: TextFormField(
                     key: widget.key,
                     controller: widget.inputController,
                     onChanged: (change) {
-                      if (widget.onChanged != null)
-                        widget.onChanged!(change);
-                      else {}
+                      _text.add(change);
+                      if (widget.onChanged != null) widget.onChanged!(change);
                     },
                     enabled: widget.enabled,
                     validator: widget.validator,
@@ -99,7 +112,7 @@ class _WidgetInputState extends State<WidgetInput> {
                     minLines: widget.minLine,
                     keyboardType: widget.inputType,
                     textAlign: TextAlign.left,
-                    obscureText: widget.obscureText!,
+                    obscureText: obscureText,
                     initialValue: widget.initialValue,
                     focusNode: widget.focusNode,
                     textAlignVertical: TextAlignVertical.top,
@@ -123,6 +136,31 @@ class _WidgetInputState extends State<WidgetInput> {
                   ),
                 ),
               ),
+              if (widget.obscureText)
+                StreamBuilder<String>(
+                    stream: _text,
+                    builder: (context, snapshot) {
+                      final txt = snapshot.data;
+                      if (txt == '') {
+                        return SizedBox();
+                      }
+                      return GestureDetector(
+                        onTap: () {
+                          obscureText = !obscureText;
+                          setState(() {});
+                        },
+                        child: Container(
+                          height: 18,
+                          width: 20,
+                          child: Image.asset(
+                            !obscureText
+                                ? ICONS.IC_HIDE_PNG
+                                : ICONS.IC_SHOW_PNG,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      );
+                    }),
               Container(
                 width: 1,
                 height: widget.height,
@@ -133,9 +171,10 @@ class _WidgetInputState extends State<WidgetInput> {
                   ? Padding(
                       padding: EdgeInsets.only(right: 15),
                       child: Container(
-                          height: widget.heightIcon ?? 18,
-                          width: widget.widthIcon ?? 20,
-                          child: widget.endIcon),
+                        height: widget.heightIcon ?? 18,
+                        width: widget.widthIcon ?? 20,
+                        child: widget.endIcon,
+                      ),
                     )
                   : Container()
             ],

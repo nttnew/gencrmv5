@@ -1,9 +1,7 @@
 import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../api_resfull/user_repository.dart';
 
 part 'attack_event.dart';

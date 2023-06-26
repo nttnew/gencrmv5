@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
 import '../../src/models/model_generator/group_product_response.dart';
 import '../../src/models/model_generator/list_product_customer_response.dart';
 import '../../widgets/loading_api.dart';
@@ -89,7 +90,8 @@ class ProductCustomerModuleBloc
         yield ErrorGetListProductCustomerModuleState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetListProductCustomerModuleState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetListProductCustomerModuleState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -125,8 +127,6 @@ class ProductCustomerModuleBloc
     querySearch = null;
     filter = null;
     type = null;
-    // listType.close();
-    // typeStream.close();
     SuccessGetListProductCustomerModuleState([]);
   }
 

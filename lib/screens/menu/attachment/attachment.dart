@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../../../src/src_index.dart';
 import '../../../bloc/contract/detail_contract_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../src/models/model_generator/file_response.dart';
 import '../../../widgets/appbar_base.dart';
 import '../../../widgets/cupertino_loading.dart';
@@ -33,7 +34,10 @@ class Attachment extends StatefulWidget {
 class _AttachmentState extends State<Attachment> {
   late final String id;
   late final String typeModule;
-  static const List<String> pickOptions = ['Trước', 'Sau'];
+  static final List<String> pickOptions = [
+    AppLocalizations.of(Get.context!)?.begin??'',
+    AppLocalizations.of(Get.context!)?.after??''
+  ];
 
   @override
   void initState() {
@@ -59,9 +63,9 @@ class _AttachmentState extends State<Attachment> {
     if (await Permission.storage.request().isGranted) {
       if (Platform.isAndroid) {
         ShowDialogCustom.showDialogBase(
-          title: MESSAGES.NOTIFICATION,
-          content: 'Bạn chưa cấp quyền truy cập vào ảnh?',
-          textButton2: 'Đi đến cài đặt',
+          title: AppLocalizations.of(Get.context!)?.notification,
+          content: AppLocalizations.of(Get.context!)?.you_have_not_granted_permission_to_access_the_photo,
+          textButton2: AppLocalizations.of(Get.context!)?.go_to_setting,
           onTap2: () {
             openAppSettings();
             Get.back();
@@ -105,7 +109,7 @@ class _AttachmentState extends State<Attachment> {
         context: Get.context!,
         builder: (context) => CupertinoActionSheet(
                 cancelButton: CupertinoActionSheetAction(
-                  child: Text('Huỷ'),
+                  child: Text(AppLocalizations.of(Get.context!)?.cancel??''),
                   onPressed: () {
                     AppNavigator.navigateBack();
                   },
@@ -116,28 +120,28 @@ class _AttachmentState extends State<Attachment> {
                       Get.back();
                       _getImageCamera(isAfter: isAfter);
                     },
-                    child: Text('Chụp ảnh mới'),
+                    child: Text(AppLocalizations.of(Get.context!)?.new_photo_shoot??''),
                   ),
                   CupertinoActionSheetAction(
                     onPressed: () async {
                       Get.back();
                       _getImageVideo(isAfter: isAfter);
                     },
-                    child: Text('Quay video mới'),
+                    child: Text(AppLocalizations.of(Get.context!)?.new_video_recoding??''),
                   ),
                   CupertinoActionSheetAction(
                     onPressed: () async {
                       Get.back();
                       _pickFile(isAfter: isAfter);
                     },
-                    child: Text('Chọn file'),
+                    child: Text(AppLocalizations.of(Get.context!)?.pick_file??''),
                   ),
                   CupertinoActionSheetAction(
                     onPressed: () async {
                       Get.back();
                       _getImage(isAfter: isAfter);
                     },
-                    child: Text('Chọn ảnh có sẵn'),
+                    child: Text(AppLocalizations.of(Get.context!)?.pick_photo??''),
                   ),
                 ]));
   }
@@ -192,7 +196,11 @@ class _AttachmentState extends State<Attachment> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             content: Text(
-                'Thêm đính kèm ${value == true ? 'thành công' : 'thất bại'}!')),
+                '${AppLocalizations.of(Get.context!)?.add_attachment} '
+                    '${value == true ?
+                AppLocalizations.of(Get.context!)?.success.toLowerCase()
+                    :
+                AppLocalizations.of(Get.context!)?.fail.toLowerCase()}!')),
       );
     });
   }
@@ -230,7 +238,11 @@ class _AttachmentState extends State<Attachment> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             content: Text(
-                'Xoá đính kèm ${value == true ? 'thành công' : 'thất bại'}!')),
+                '${AppLocalizations.of(Get.context!)?.delete_attachment} '
+                    '${value == true ?
+                AppLocalizations.of(Get.context!)?.success.toLowerCase()
+                    :
+                AppLocalizations.of(Get.context!)?.fail.toLowerCase()}!')),
       );
     });
   }
@@ -240,14 +252,14 @@ class _AttachmentState extends State<Attachment> {
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
-      appBar: AppbarBaseNormal('Xem đính kèm'),
+      appBar: AppbarBaseNormal(AppLocalizations.of(Get.context!)?.see_attachment),
       body: Container(
         padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             WidgetText(
-                title: "Chọn đính kèm",
+                title: AppLocalizations.of(Get.context!)?.select_attachment,
                 style: AppStyle.DEFAULT_16.copyWith(
                     fontWeight: FontWeight.w700, color: Color(0xff006CB1))),
             GridView.builder(
@@ -310,7 +322,7 @@ class _AttachmentState extends State<Attachment> {
                         child: Align(
                             alignment: Alignment.topCenter,
                             child: WidgetText(
-                                title: "Chưa có dữ liệu",
+                                title: AppLocalizations.of(Get.context!)?.no_data??'',
                                 style: AppStyle.DEFAULT_16.copyWith(
                                   fontWeight: FontWeight.w700,
                                   color: Colors.black,
@@ -330,8 +342,8 @@ class _AttachmentState extends State<Attachment> {
                             margin: EdgeInsets.only(bottom: 36),
                             child: Column(
                               children: [
-                                viewPickFile(list, 'Trước', IS_BEFORE),
-                                viewPickFile(list, 'Sau', IS_AFTER),
+                                viewPickFile(list, AppLocalizations.of(Get.context!)?.begin??'', IS_BEFORE),
+                                viewPickFile(list, AppLocalizations.of(Get.context!)?.after??'', IS_AFTER),
                               ],
                             ),
                           ),

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import '../../../../../../src/models/model_generator/contract_customer.dart';
 import '../../../../../../src/src_index.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class ConstractCardWidget extends StatefulWidget {
   ConstractCardWidget({Key? key, required this.data}) : super(key: key);
@@ -95,7 +96,7 @@ class _ConstractCardWidgetState extends State<ConstractCardWidget> {
                 child: SizedBox(
                     width: AppValue.widths * 0.5,
                     child: WidgetText(
-                      title: "Tổng tiền: " +
+                      title: "${AppLocalizations.of(Get.context!)?.total_amount}: " +
                           "${widget.data!.total_value ?? ''}" +
                           "đ",
                       style: OrtherInforCustomerStyle(),

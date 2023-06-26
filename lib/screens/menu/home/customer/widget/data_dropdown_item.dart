@@ -5,9 +5,9 @@ import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tiengviet/tiengviet.dart';
-
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DataDropDownItem extends StatefulWidget {
   DataDropDownItem({
@@ -77,7 +77,7 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
           Container(
             width: Get.width,
             child: WidgetText(
-              title: "Chọn",
+              title: AppLocalizations.of(Get.context!)?.select,
               style: AppStyle.DEFAULT_20_BOLD,
               textAlign: TextAlign.center,
             ),
@@ -99,7 +99,7 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                               color: HexColor("#707070")),
-                          hint: "Tìm kiếm",
+                          hint: AppLocalizations.of(Get.context!)?.find,
                           height: 48,
                           leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                           onSubmit: (v) {

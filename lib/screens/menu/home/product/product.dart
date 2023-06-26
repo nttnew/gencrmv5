@@ -5,6 +5,7 @@ import 'package:gen_crm/bloc/product_module/product_module_bloc.dart';
 import 'package:gen_crm/screens/menu/home/product/scanner_qrcode.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
@@ -96,8 +97,8 @@ class _ProductScreenState extends State<ProductScreen> {
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
           backgroundColor: Color(0xff1AA928),
-          onPressed: () =>
-              AppNavigator.navigateFormAdd('Thêm $title', PRODUCT_TYPE),
+          onPressed: () => AppNavigator.navigateFormAdd(
+              '${AppLocalizations.of(Get.context!)?.add} $title', PRODUCT_TYPE),
           child: Icon(Icons.add, size: 40),
         ),
         body: Container(
@@ -105,7 +106,9 @@ class _ProductScreenState extends State<ProductScreen> {
             children: [
               AppValue.vSpaceSmall,
               SearchBase(
-                hint: "Nhập tên, barCode, qrCode",
+                hint: AppLocalizations.of(Get.context!)
+                        ?.enter_name_barcode_qr_code ??
+                    '',
                 leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                 endIcon: GestureDetector(
                   onTap: () {
@@ -123,8 +126,11 @@ class _ProductScreenState extends State<ProductScreen> {
                           );
                         } else {
                           ShowDialogCustom.showDialogBase(
-                            title: MESSAGES.NOTIFICATION,
-                            content: 'Không có dữ liệu',
+                            title:
+                                AppLocalizations.of(Get.context!)?.notification,
+                            content:
+                                AppLocalizations.of(Get.context!)?.no_data ??
+                                    '',
                           );
                         }
                       }

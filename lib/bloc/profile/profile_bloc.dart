@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/api_resfull/api.dart';
 import 'package:gen_crm/src/src_index.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 part 'profile_state.dart';
 part 'profile_event.dart';
@@ -31,9 +33,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         if (response.code == BASE_URL.SUCCESS) {
           yield SuccessProfileState();
         } else
-          yield FalseProfileState(error: response.message ?? 'Có lỗi xảy ra');
+          yield FalseProfileState(
+              error: response.message ??
+                  AppLocalizations.of(Get.context!)?.an_error_occurred ??
+                  '');
       } catch (e) {
-        yield FalseProfileState(error: 'Lỗi không xác định');
+        yield FalseProfileState(
+            error: AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
         throw e;
       }
     } else {
@@ -51,9 +57,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         if (response.code == BASE_URL.SUCCESS) {
           yield SuccessProfileState();
         } else
-          yield FalseProfileState(error: response.message ?? 'Có lỗi xảy ra');
+          yield FalseProfileState(
+              error: response.message ??
+                  AppLocalizations.of(Get.context!)?.an_error_occurred ??
+                  '');
       } catch (e) {
-        yield FalseProfileState(error: 'Lỗi không xác định');
+        yield FalseProfileState(
+            error: AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
         throw e;
       }
     }

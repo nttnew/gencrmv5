@@ -5,7 +5,7 @@ import 'package:gen_crm/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../widgets/rounder_bootom_appbar.dart';
 
 class ForgotPasswordResetScreen extends StatefulWidget {
@@ -46,8 +46,9 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
       listener: (context, state) {
         if (state is ResetPassSuccess) {
           ShowDialogCustom.showDialogBase(
-            title: MESSAGES.NOTIFICATION,
-            content: 'Cập nhật mật khẩu thành công!',
+            title: AppLocalizations.of(Get.context!)?.notification,
+            content:
+                AppLocalizations.of(Get.context!)?.update_password_successful,
             onTap1: () {
               AppNavigator.navigateLogin();
             },
@@ -73,7 +74,9 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
                           Column(
                             children: [
                               Text(
-                                "Cập nhật mật khẩu",
+                                AppLocalizations.of(Get.context!)
+                                        ?.update_password ??
+                                    '',
                                 style: TextStyle(
                                     fontFamily: "Quicksand",
                                     fontWeight: FontWeight.bold,
@@ -83,7 +86,9 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
                                 height: 5,
                               ),
                               Text(
-                                "Nhập mật khẩu mới để đăng nhập tài khoản",
+                                AppLocalizations.of(Get.context!)
+                                        ?.enter_a_new_password_to_log_into_your_account ??
+                                    '',
                                 style: TextStyle(
                                     fontFamily: "Quicksand",
                                     fontWeight: FontWeight.w400,
@@ -119,17 +124,17 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
             if (cfPass == newPass) {
               if (cfPass.length < 6 || newPass.length < 6) {
                 ShowDialogCustom.showDialogBase(
-                  title: MESSAGES.NOTIFICATION,
-                  content: 'Mật khẩu có ít nhất 6 kí tự',
-                );
+                    title: AppLocalizations.of(Get.context!)?.notification,
+                    content: AppLocalizations.of(Get.context!)
+                        ?.password_must_be_at_least_6_characters);
               } else
                 bloc.add(FormResetPasswordSubmitted(
                     newPass: newPass, username: username, email: email));
             } else
               ShowDialogCustom.showDialogBase(
-                title: MESSAGES.NOTIFICATION,
-                content: 'Mật khẩu không trùng khớp!',
-              );
+                  title: AppLocalizations.of(Get.context!)?.notification,
+                  content:
+                      AppLocalizations.of(Get.context!)?.password_not_match);
           },
           boxDecoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -139,7 +144,7 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
               fontFamily: "Quicksand",
               fontWeight: FontWeight.w600,
               fontSize: 14),
-          text: "Hoàn thành");
+          text: AppLocalizations.of(Get.context!)?.completed);
     });
   }
 
@@ -151,7 +156,7 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
         focusNode: _newPassFocusNode,
         inputType: TextInputType.text,
         colorFix: Theme.of(context).scaffoldBackgroundColor,
-        Fix: Text("Mật khẩu",
+        Fix: Text(AppLocalizations.of(Get.context!)?.password ?? '',
             style: TextStyle(
                 fontFamily: "Quicksand",
                 fontWeight: FontWeight.w600,
@@ -173,7 +178,7 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
       focusNode: _cfPassFocusNode,
       inputType: TextInputType.text,
       colorFix: Theme.of(context).scaffoldBackgroundColor,
-      Fix: Text("Nhập lại mật khẩu",
+      Fix: Text(AppLocalizations.of(Get.context!)?.enter_password_again ?? '',
           style: TextStyle(
               fontFamily: "Quicksand",
               fontWeight: FontWeight.w600,

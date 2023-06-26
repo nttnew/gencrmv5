@@ -3,7 +3,6 @@ import 'package:gen_crm/bloc/contract/phone_bloc.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import '../../../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import '../../../../../src/app_const.dart';
 import '../../../../../src/models/model_generator/add_customer.dart';

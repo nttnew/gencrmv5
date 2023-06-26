@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../src/app_const.dart';
 import '../../../src/src_index.dart';
 import '../../../widgets/appbar_base.dart';
@@ -57,8 +58,9 @@ class _CheckInScreenState extends State<CheckInScreen> {
         if (state is SuccessCheckInState) {
           LoadingApi().popLoading();
           ShowDialogCustom.showDialogBase(
-            title: MESSAGES.NOTIFICATION,
-            content: "Thêm mới check in thành công",
+            title: AppLocalizations.of(Get.context!)?.notification,
+            content:
+                AppLocalizations.of(Get.context!)?.new_data_added_successfully,
             onTap1: () {
               Get.back();
               Get.back();
@@ -67,7 +69,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
         } else if (state is ErrorCheckInState) {
           LoadingApi().popLoading();
           ShowDialogCustom.showDialogBase(
-            title: MESSAGES.NOTIFICATION,
+            title: AppLocalizations.of(Get.context!)?.notification,
             content: state.msg,
           );
         }
@@ -79,8 +81,9 @@ class _CheckInScreenState extends State<CheckInScreen> {
           onTap: () {
             if (controllerNote.text.trim() == '') {
               ShowDialogCustom.showDialogBase(
-                title: MESSAGES.NOTIFICATION,
-                content: "Hãy nhập đủ các trường bắt buộc (*)",
+                title: AppLocalizations.of(Get.context!)?.notification,
+                content: AppLocalizations.of(Get.context!)
+                    ?.please_enter_all_required_fields,
               );
             } else {
               CheckInBloc.of(context).add(SaveCheckIn(
@@ -100,12 +103,14 @@ class _CheckInScreenState extends State<CheckInScreen> {
                 borderRadius: BorderRadius.circular(20.5)),
             child: Center(
                 child: Text(
-              "Lưu",
+              AppLocalizations.of(Get.context!)?.save ?? '',
               style: TextStyle(color: Colors.white),
             )),
           ),
         ),
-        appBar: AppbarBaseNormal("Checkin"),
+        appBar: AppbarBaseNormal(
+          AppLocalizations.of(Get.context!)?.check_in,
+        ),
         body: Container(
             padding: EdgeInsets.all(16),
             child: StreamBuilder<String>(
@@ -119,7 +124,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                         child: Row(
                           children: [
                             WidgetText(
-                                title: 'Vị trí của bạn',
+                                title: AppLocalizations.of(Get.context!)
+                                    ?.your_position,
                                 style: AppStyle.DEFAULT_18_BOLD),
                             WidgetText(
                                 title: '*',
@@ -182,7 +188,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                   color: COLORS.TEXT_COLOR,
                                 )),
                             child: WidgetText(
-                                title: 'Check in',
+                                title:
+                                    AppLocalizations.of(Get.context!)?.check_in,
                                 style: TextStyle(
                                     fontFamily: "Quicksand",
                                     fontSize: 14,
@@ -208,7 +215,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                       color: COLORS.TEXT_COLOR,
                                     )),
                                 child: WidgetText(
-                                    title: 'Check in lại',
+                                    title: AppLocalizations.of(Get.context!)
+                                        ?.check_in_again,
                                     style: TextStyle(
                                       fontFamily: "Quicksand",
                                       fontSize: 14,
@@ -234,7 +242,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                       color: Colors.red,
                                     )),
                                 child: WidgetText(
-                                    title: 'Xoá',
+                                    title: AppLocalizations.of(Get.context!)
+                                        ?.delete,
                                     style: TextStyle(
                                         fontFamily: "Quicksand",
                                         fontSize: 14,
@@ -254,7 +263,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                             textScaleFactor:
                                 MediaQuery.of(context).textScaleFactor,
                             text: TextSpan(
-                              text: 'Vị trí',
+                              text: AppLocalizations.of(Get.context!)?.location,
                               style: AppStyle.DEFAULT_14W600,
                               children: <TextSpan>[
                                 TextSpan(

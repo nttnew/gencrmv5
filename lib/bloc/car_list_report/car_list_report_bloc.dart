@@ -4,9 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
 import '../../src/models/model_generator/response_bao_cao.dart';
 
 part 'car_list_report_event.dart';
@@ -60,15 +61,17 @@ class CarListReportBloc extends Bloc<CarListReportEvent, CarListReportState> {
           listData = [];
         }
         isTotal = (response.data?.lists?.length ?? 0) == BASE_URL.SIZE_DEFAULT;
-        yield SuccessGetCarListReportState([...listData,...response.data?.lists ?? []]);
+        yield SuccessGetCarListReportState(
+            [...listData, ...response.data?.lists ?? []]);
         listData.addAll(response.data?.lists ?? []);
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
-      } else{
+      } else {
         yield ErrorGetListCarListReportState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorGetListCarListReportState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetListCarListReportState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       LoadingApi().popLoading();
       throw e;
     }

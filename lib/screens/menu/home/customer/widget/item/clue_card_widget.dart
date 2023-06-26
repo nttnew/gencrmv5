@@ -4,8 +4,9 @@ import 'package:gen_crm/src/models/model_generator/clue_customer.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../../../../../src/src_index.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class ClueCardWidget extends StatefulWidget {
   ClueCardWidget({Key? key, required this.data}) : super(key: key);
@@ -56,7 +57,7 @@ class _ClueCardWidgetState extends State<ClueCardWidget> {
                     child: SizedBox(
                         width: AppValue.widths * 0.5,
                         child: WidgetText(
-                          title: widget.data!.email!.val ?? 'Chưa có',
+                          title: widget.data!.email!.val ?? AppLocalizations.of(Get.context!)?.not_yet ?? '',
                           style: AppStyle.DEFAULT_14
                               .copyWith(color: COLORS.TEXT_BLUE_BOLD),
                         )),

@@ -12,8 +12,11 @@ import 'package:gen_crm/src/models/request/voucher_service_request.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:rxdart/rxdart.dart';
-
 import '../../api_resfull/user_repository.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
+
 import '../../src/app_const.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/models/model_generator/customer.dart';
@@ -65,8 +68,12 @@ class ServiceVoucherBloc
   String canXe = '';
   String kieuDang = '';
   String soCho = '';
-  static const String KHONG_XAC_DINH = 'Không xác định';
-  static const String THEM_MOI_XE = 'Thêm xe mới';
+  static final String KHONG_XAC_DINH = AppLocalizations.of(Get.context!)?.
+
+unknown??'';
+  static final String THEM_MOI_XE = AppLocalizations.of(Get.context!)?.
+
+add_new_car??'';
   final List<ProductModel> listProduct = [];
   double total = 0;
 
@@ -311,7 +318,9 @@ class ServiceVoucherBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetServiceVoucherState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetServiceVoucherState(AppLocalizations.of(Get.context!)?.
+
+an_error_occurred??'');
       throw e;
     }
     LoadingApi().popLoading();
@@ -371,7 +380,9 @@ class ServiceVoucherBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetServiceVoucherState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetServiceVoucherState(AppLocalizations.of(Get.context!)?.
+
+an_error_occurred??'');
       throw e;
     }
     LoadingApi().popLoading();

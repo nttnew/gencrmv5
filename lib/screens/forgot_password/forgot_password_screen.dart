@@ -6,6 +6,9 @@ import 'package:gen_crm/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
+
 import '../../widgets/rounder_bootom_appbar.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -55,9 +58,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           if (state.status.isSubmissionFailure) {
             GetSnackBarUtils.removeSnackBar();
             ShowDialogCustom.showDialogBase(
-                  title: MESSAGES.NOTIFICATION,
-                  content: state.message,
-
+              title: AppLocalizations.of(Get.context!)?.notification,
+              content: state.message,
             );
           }
         },
@@ -80,14 +82,15 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             Column(
                               children: [
                                 WidgetText(
-                                    title: "Quên mật khẩu",
+                                    title: AppLocalizations.of(Get.context!)
+                                        ?.forgot_password,
                                     style: AppStyle.DEFAULT_20_BOLD),
                                 SizedBox(
                                   height: 5,
                                 ),
                                 WidgetText(
-                                  title:
-                                      "Vui lòng nhập email đăng ký tài khoản",
+                                  title: AppLocalizations.of(Get.context!)
+                                      ?.please_enter_email_register_account,
                                   style: AppStyle.DEFAULT_14,
                                 ),
                                 AppValue.vSpaceMedium,
@@ -120,7 +123,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           color: HexColor("#D0F1EB"),
         ),
         textStyle: AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w600),
-        text: MESSAGES.NEXT.toUpperCase(),
+        text: (AppLocalizations.of(Get.context!)?.continue_my ?? '')
+            .toUpperCase(),
       );
     });
   }
@@ -134,13 +138,15 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         colorFix: Theme.of(context).scaffoldBackgroundColor,
         focusNode: _EmailFocusNode,
         inputType: TextInputType.emailAddress,
-        errorText: state.email.invalid ? MESSAGES.EMAIL_ERROR : null,
+        errorText: state.email.invalid
+            ? AppLocalizations.of(Get.context!)?.this_account_is_invalid
+            : null,
         boxDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: HexColor("#838A91")),
         ),
         Fix: WidgetText(
-            title: "Email",
+            title: AppLocalizations.of(Get.context!)?.email,
             style: TextStyle(
                 fontFamily: "Quicksand",
                 fontWeight: FontWeight.w600,
@@ -162,7 +168,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: HexColor("#838A91")),
         ),
-        Fix: Text("User",
+        Fix: Text(AppLocalizations.of(Get.context!)?.user??'',
             style: TextStyle(
                 fontFamily: "Quicksand",
                 fontWeight: FontWeight.w600,

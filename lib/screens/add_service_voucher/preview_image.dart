@@ -4,6 +4,8 @@ import 'package:gen_crm/src/models/model_generator/file_response.dart';
 import 'package:photo_view/photo_view.dart';
 import '../../widgets/appbar_base.dart';
 import '../../widgets/item_download.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class PreviewImage extends StatefulWidget {
   const PreviewImage({
@@ -23,7 +25,8 @@ class _PreviewImageState extends State<PreviewImage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppbarBaseNormal('Preview image'),
+      appBar:
+          AppbarBaseNormal(AppLocalizations.of(Get.context!)?.preview_image),
       body: Center(
         child: Stack(
           children: [

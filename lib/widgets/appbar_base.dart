@@ -5,10 +5,10 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../src/src_index.dart';
 
-PreferredSizeWidget AppbarBaseNormal(String title) => AppBar(
+PreferredSizeWidget AppbarBaseNormal(String? title) => AppBar(
       toolbarHeight: AppValue.heights * 0.1,
       backgroundColor: HexColor("#D0F1EB"),
-      title: Text(title,
+      title: Text(title ?? '',
           style: TextStyle(
               color: Colors.black,
               fontFamily: "Montserrat",

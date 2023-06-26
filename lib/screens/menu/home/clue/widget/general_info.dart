@@ -125,7 +125,7 @@ class _GeneralInfoState extends State<GeneralInfo>
                                     }
                                   },
                                   child: Text(
-                                      detailClue.data?[index].value_field ?? "",
+                                      detailClue.data?[index].value_field ?? '',
                                       textAlign: TextAlign.right,
                                       style: AppStyle.DEFAULT_14_BOLD.copyWith(
                                         color: (detailClue.data?[index]

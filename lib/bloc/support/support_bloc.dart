@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:rxdart/rxdart.dart';
-
 import '../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
 import '../../src/models/model_generator/customer.dart';
 import '../../src/models/model_generator/support.dart';
 
@@ -57,13 +57,14 @@ class SupportBloc extends Bloc<SupportEvent, SupportState> {
           yield SuccessGetSupportState(list ?? [], response.data.total ?? '0',
               response.data.filter ?? []);
         }
-      } else{
+      } else {
         LoadingApi().popLoading();
         yield ErrorGetSupportState(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetSupportState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetSupportState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();

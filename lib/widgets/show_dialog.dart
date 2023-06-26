@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ShowDialogCustom {
   static showLoading() {
@@ -64,7 +65,10 @@ class ShowDialogCustom {
                         ),
                       ],
                       Text(
-                        content ?? 'Bạn chắc chắn muốn đăng xuất ?',
+                        content ??
+                            AppLocalizations.of(Get.context!)
+                                ?.are_you_sure_you_want_to_sign_out ??
+                            '',
                         style: title != null
                             ? AppStyle.DEFAULT_14
                             : AppStyle.DEFAULT_18_BOLD,
@@ -90,7 +94,15 @@ class ShowDialogCustom {
                                   child: Center(
                                     child: Text(
                                       textButton1 ??
-                                          (onTap2 != null ? 'Huỷ' : 'Oke'),
+                                          (onTap2 != null
+                                              ? AppLocalizations.of(
+                                                          Get.context!)
+                                                      ?.cancel ??
+                                                  ''
+                                              : AppLocalizations.of(
+                                                          Get.context!)
+                                                      ?.ok ??
+                                                  ''),
                                       style: AppStyle.DEFAULT_16_BOLD.copyWith(
                                           color:
                                               txtColorButton1 ?? Colors.black),
@@ -114,7 +126,10 @@ class ShowDialogCustom {
                                             BorderRadius.circular(10)),
                                     child: Center(
                                       child: Text(
-                                        textButton2 ?? 'Đồng ý',
+                                        textButton2 ??
+                                            AppLocalizations.of(Get.context!)
+                                                ?.agree ??
+                                            '',
                                         style: AppStyle.DEFAULT_16_BOLD
                                             .copyWith(
                                                 color: txtColorButton1 ??
@@ -197,7 +212,11 @@ class ShowDialogCustom {
                       SizedBox(
                         height: 10,
                       ),
-                      Text(title ?? 'Nhập địa chỉ ứng dụng bên dưới',
+                      Text(
+                          title ??
+                              AppLocalizations.of(Get.context!)
+                                  ?.enter_address_application_below ??
+                              '',
                           style: AppStyle.DEFAULT_16.copyWith(fontSize: 14)),
                       SizedBox(
                         height: 25,
@@ -238,7 +257,10 @@ class ShowDialogCustom {
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Center(
                                     child: Text(
-                                      textButton1 ?? 'Huỷ',
+                                      textButton1 ??
+                                          AppLocalizations.of(Get.context!)
+                                              ?.cancel ??
+                                          '',
                                       style: AppStyle.DEFAULT_16_BOLD.copyWith(
                                           color: colorButton1 ?? Colors.black),
                                     ),
@@ -262,7 +284,10 @@ class ShowDialogCustom {
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Center(
                                     child: Text(
-                                      textButton2 ?? 'Đồng ý',
+                                      textButton2 ??
+                                          AppLocalizations.of(Get.context!)
+                                              ?.agree ??
+                                          '',
                                       style: AppStyle.DEFAULT_16_BOLD.copyWith(
                                           color: colorButton1 ?? Colors.black),
                                     ),

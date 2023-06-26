@@ -8,12 +8,16 @@ import 'package:formz/formz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gen_crm/api_resfull/dio_provider.dart';
 import 'package:gen_crm/api_resfull/user_repository.dart';
+import 'package:gen_crm/l10n/l10n.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/event_repository_storage.dart';
 import 'package:gen_crm/storages/share_local.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart' as GET;
+
 part 'login_event.dart';
 part 'login_state.dart';
 
@@ -21,6 +25,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
   final EventRepositoryStorage localRepository;
   late List<ItemMenu> listMenuFlash = [];
+  BehaviorSubject<Locale> locale = BehaviorSubject.seeded(L10n.all.first);
+  static const String UNREGISTER = 'UNREGISTER';
+  static const String REGISTERED = 'REGISTERED';
+  late BehaviorSubject<String> receivedMsg = BehaviorSubject.seeded(UNREGISTER);
+  LoginData? loginData;
+
   LoginBloc({
     required this.userRepository,
     required this.localRepository,
@@ -31,11 +41,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             message: '',
             user: LoginData(),
             device_token: ''));
-
-  static const String UNREGISTER = 'UNREGISTER';
-  static const String REGISTERED = 'REGISTERED';
-  late BehaviorSubject<String> receivedMsg = BehaviorSubject.seeded(UNREGISTER);
-  LoginData? loginData;
 
   @override
   void onTransition(Transition<LoginEvent, LoginState> transition) {
@@ -147,7 +152,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } catch (e) {
         yield state.copyWith(
             status: FormzStatus.submissionFailure,
-            message: MESSAGES.CONNECT_ERROR);
+            message: AppLocalizations.of(GET.Get.context!)?.an_error_occurred);
         throw e;
       }
     } else {
@@ -180,7 +185,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         } catch (e) {
           yield state.copyWith(
               status: FormzStatus.submissionFailure,
-              message: MESSAGES.CONNECT_ERROR);
+              message:
+                  AppLocalizations.of(GET.Get.context!)?.an_error_occurred);
           throw e;
         }
       }

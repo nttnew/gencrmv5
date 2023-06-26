@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:rxdart/rxdart.dart';
-
 import '../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
 import '../../src/models/model_generator/add_customer.dart';
 
 part 'form_add_data_event.dart';
@@ -108,7 +108,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -128,7 +129,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -148,7 +150,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -168,7 +171,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -188,7 +192,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -208,7 +213,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -228,7 +234,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddContactCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddContactCustomerState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -248,7 +255,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -268,7 +276,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -288,7 +297,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -308,7 +318,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -328,7 +339,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -348,7 +360,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -368,7 +381,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -388,7 +402,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -408,7 +423,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -428,7 +444,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -454,7 +471,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -479,7 +497,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -503,7 +522,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -527,7 +547,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -551,7 +572,8 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormAddCustomerOrState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormAddCustomerOrState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();

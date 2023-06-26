@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
 import 'package:gen_crm/bloc/form_edit/form_edit_bloc.dart';
@@ -21,6 +20,7 @@ import '../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../bloc/contract/phone_bloc.dart';
 import '../../../bloc/contract/total_bloc.dart';
 import '../../../models/product_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/models/model_generator/login_response.dart';
 import '../../../widgets/pick_file_image.dart';
@@ -121,13 +121,15 @@ class _EditContractState extends State<EditContract> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppbarBaseNormal('Sửa thông tin'),
+        appBar: AppbarBaseNormal(
+            AppLocalizations.of(Get.context!)?.edit_information ?? ''),
         body: BlocListener<AddDataBloc, AddDataState>(
           listener: (context, state) async {
             if (state is SuccessAddContactCustomerState) {
               ShowDialogCustom.showDialogBase(
-                title: MESSAGES.NOTIFICATION,
-                content: "Update dữ liệu thành công!",
+                title: AppLocalizations.of(Get.context!)?.notification,
+                content:
+                    AppLocalizations.of(Get.context!)?.update_data_successfully,
                 onTap1: () {
                   Get.back();
                   Get.back();
@@ -138,7 +140,7 @@ class _EditContractState extends State<EditContract> {
               );
             } else if (state is ErrorAddContactCustomerState) {
               ShowDialogCustom.showDialogBase(
-                title: MESSAGES.NOTIFICATION,
+                title: AppLocalizations.of(Get.context!)?.notification,
                 content: state.msg,
               );
             }
@@ -480,56 +482,6 @@ class _EditContractState extends State<EditContract> {
                                                 : _fieldInputCustomer(data,
                                                     indexParent, indexChild)
         : SizedBox();
-  }
-
-  Column fieldInputImage() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Hình ảnh",
-          style: AppStyle.DEFAULT_14W600,
-        ),
-        SizedBox(
-          height: AppValue.heights * 0.005,
-        ),
-        Container(
-          width: double.infinity,
-          height: AppValue.heights * 0.05,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: HexColor("#BEB4B4"))),
-          child: Row(children: [
-            SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: "Tải hình ảnh",
-                    enabled: false,
-                    hintStyle: AppStyle.DEFAULT_14W500,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 15),
-              child: Center(
-                  child: Container(
-                      height: 50,
-                      width: 50,
-                      child: SvgPicture.asset(ICONS.IC_INPUT_SVG))),
-            )
-          ]),
-        ),
-      ],
-    );
   }
 
   Widget _fieldNoEdit(

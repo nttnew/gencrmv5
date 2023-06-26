@@ -10,6 +10,8 @@ import 'package:plugin_pitel/services/models/pn_push_params.dart';
 import 'package:plugin_pitel/services/pitel_service.dart';
 import 'package:plugin_pitel/services/sip_info_data.dart';
 import '../bloc/login/login_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../storages/share_local.dart';
 import '../widgets/loading_api.dart';
 import '../widgets/widget_text.dart';
@@ -55,8 +57,9 @@ class TypeCheckIn {
 void loginSessionExpired() {
   LoadingApi().popLoading();
   ShowDialogCustom.showDialogBase(
-    title: MESSAGES.NOTIFICATION,
-    content: MESSAGES.PHIEN_DANG_NHAP_HET,
+    title: AppLocalizations.of(Get.context!)?.notification,
+    content: AppLocalizations.of(Get.context!)
+        ?.login_session_expired_please_login_again,
     onTap1: () {
       AppNavigator.navigateLogout();
     },
@@ -66,7 +69,7 @@ void loginSessionExpired() {
 Widget noData() => Align(
       alignment: Alignment.center,
       child: WidgetText(
-        title: 'Không có dữ liệu',
+        title: AppLocalizations.of(Get.context!)?.no_data ?? '',
         style: AppStyle.DEFAULT_18_BOLD,
       ),
     );
@@ -347,5 +350,15 @@ class Debounce {
       _timer?.cancel();
     }
     _timer = Timer(Duration(milliseconds: milliseconds), action);
+  }
+}
+
+String getFlagCountry(String locole) {
+  if (locole == 'vi') {
+    return ICONS.IC_FLAG_VI;
+  } else if (locole == 'en') {
+    return ICONS.IC_FLAG_EN;
+  } else {
+    return ICONS.IC_FLAG_KO;
   }
 }

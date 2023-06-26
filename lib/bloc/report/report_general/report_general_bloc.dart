@@ -2,9 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../../src/app_const.dart';
 import '../../../src/base.dart';
-import '../../../src/messages.dart';
 import '../../../src/models/model_generator/report_general.dart';
 import '../../../widgets/loading_api.dart';
 
@@ -41,7 +42,8 @@ class ReportGeneralBloc extends Bloc<ReportGeneralEvent, ReportGeneralState> {
         yield ErrorReportGeneralState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorReportGeneralState(MESSAGES.CONNECT_ERROR);
+      yield ErrorReportGeneralState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();

@@ -3,6 +3,8 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import '../src/src_index.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class DropDownBase extends StatefulWidget {
   const DropDownBase({
@@ -55,7 +57,12 @@ class _DropDownBaseState extends State<DropDownBase> {
                             children: [
                               Text(
                                 filter ??
-                                    (!widget.isName ? 'Chọn loại' : 'Chọn lọc'),
+                                    (!widget.isName
+                                        ? AppLocalizations.of(Get.context!)
+                                            ?.select_type
+                                        : AppLocalizations.of(Get.context!)
+                                            ?.select_filter) ??
+                                    '',
                                 style: AppStyle.DEFAULT_16
                                     .copyWith(fontWeight: FontWeight.w600),
                               ),

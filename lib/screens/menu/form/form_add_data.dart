@@ -30,6 +30,7 @@ import '../../../bloc/detail_product_customer/detail_product_customer_bloc.dart'
 import '../../../bloc/support/support_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
 import '../../../models/model_data_add.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/models/model_generator/login_response.dart';
 import '../../../widgets/pick_file_image.dart';
@@ -72,8 +73,18 @@ class _FormAddDataState extends State<FormAddData> {
     String nameCustomerScreen =
         shareLocal.getString(PreferencesKey.NAME_CUSTOMER);
     listCustomerForChance = [
-      [CA_NHAN, "Thêm ${nameCustomerScreen.toString().toLowerCase()} cá nhân"],
-      [TO_CHUC, "Thêm ${nameCustomerScreen.toString().toLowerCase()} tổ chức"]
+      [
+        CA_NHAN,
+        '${AppLocalizations.of(Get.context!)?.begin}'
+            ' ${nameCustomerScreen.toString().toLowerCase()} '
+            '${AppLocalizations.of(Get.context!)?.individual}'
+      ],
+      [
+        TO_CHUC,
+        '${AppLocalizations.of(Get.context!)?.begin}'
+            ' ${nameCustomerScreen.toString().toLowerCase()} '
+            '${AppLocalizations.of(Get.context!)?.organization}'
+      ]
     ];
     controllerNote = TextEditingController();
     scrollController = ScrollController();
@@ -201,7 +212,7 @@ class _FormAddDataState extends State<FormAddData> {
                     child: Row(
                       children: [
                         WidgetText(
-                            title: 'Vị trí của bạn',
+                            title: AppLocalizations.of(Get.context!)?.your_position,
                             style: AppStyle.DEFAULT_18_BOLD),
                         WidgetText(
                             title: '*',
@@ -263,7 +274,7 @@ class _FormAddDataState extends State<FormAddData> {
                               color: COLORS.TEXT_COLOR,
                             )),
                         child: WidgetText(
-                            title: 'Check in',
+                            title:AppLocalizations.of(Get.context!)?.check_in,
                             style: TextStyle(
                                 fontFamily: "Quicksand",
                                 fontSize: 14,
@@ -289,7 +300,7 @@ class _FormAddDataState extends State<FormAddData> {
                                   color: COLORS.TEXT_COLOR,
                                 )),
                             child: WidgetText(
-                                title: 'Check in lại',
+                                title: AppLocalizations.of(Get.context!)?.check_in_again,
                                 style: TextStyle(
                                   fontFamily: "Quicksand",
                                   fontSize: 14,
@@ -315,7 +326,7 @@ class _FormAddDataState extends State<FormAddData> {
                                   color: Colors.red,
                                 )),
                             child: WidgetText(
-                                title: 'Xoá',
+                                title:AppLocalizations.of(Get.context!)?.delete,
                                 style: TextStyle(
                                     fontFamily: "Quicksand",
                                     fontSize: 14,
@@ -334,7 +345,7 @@ class _FormAddDataState extends State<FormAddData> {
                       child: RichText(
                         textScaleFactor: MediaQuery.of(context).textScaleFactor,
                         text: TextSpan(
-                          text: 'Vị trí',
+                          text: AppLocalizations.of(Get.context!)?.location,
                           style: AppStyle.DEFAULT_14W600,
                           children: <TextSpan>[
                             TextSpan(
@@ -392,8 +403,8 @@ class _FormAddDataState extends State<FormAddData> {
               listener: (context, state) async {
                 if (state is SuccessAddCustomerOrState) {
                   ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
-                    content: "Thêm mới dữ liệu thành công!",
+                    title: AppLocalizations.of(Get.context!)?.notification,
+                    content: AppLocalizations.of(Get.context!)?.new_data_added_successfully,
                     onTap1: () {
                       Get.back();
                       Get.back();
@@ -407,7 +418,7 @@ class _FormAddDataState extends State<FormAddData> {
                   );
                 } else if (state is ErrorAddCustomerOrState) {
                   ShowDialogCustom.showDialogBase(
-                      title: MESSAGES.NOTIFICATION,
+                      title: AppLocalizations.of(Get.context!)?.notification,
                       content: state.msg,
                       onTap1: () {
                         Get.back();
@@ -415,8 +426,8 @@ class _FormAddDataState extends State<FormAddData> {
                       });
                 } else if (state is SuccessAddContactCustomerState) {
                   ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
-                    content: "Thêm mới dữ liệu thành công!",
+                    title: AppLocalizations.of(Get.context!)?.notification,
+                    content:AppLocalizations.of(Get.context!)?.new_data_added_successfully,
                     onTap1: () {
                       Get.back();
                       Get.back();
@@ -458,7 +469,7 @@ class _FormAddDataState extends State<FormAddData> {
                   );
                 } else if (state is ErrorAddContactCustomerState) {
                   ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
+                    title: AppLocalizations.of(Get.context!)?.notification,
                     content: state.msg,
                   );
                 }
@@ -923,8 +934,8 @@ class _FormAddDataState extends State<FormAddData> {
     //
     if (check == true) {
       ShowDialogCustom.showDialogBase(
-        title: MESSAGES.NOTIFICATION,
-        content: "Hãy nhập đủ các trường bắt buộc (*)",
+        title: AppLocalizations.of(Get.context!)?.notification,
+        content: AppLocalizations.of(Get.context!)?.please_enter_all_required_fields,
       );
     } else {
       if (type == ADD_CUSTOMER) {

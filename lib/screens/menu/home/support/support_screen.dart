@@ -16,6 +16,7 @@ import '../../../../widgets/tree/tree_widget.dart';
 import '../../../../widgets/widget_text.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 import 'widget/item_support.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SupportScreen extends StatefulWidget {
   const SupportScreen({Key? key}) : super(key: key);
@@ -36,8 +37,8 @@ class _SupportScreenState extends State<SupportScreen> {
   int page = BASE_URL.PAGE_DEFAULT;
   String ids = '';
   List<String> listAdd = [
-    'Thêm check in',
-    'Thêm ${(Get.arguments ?? '').toLowerCase()}'
+    '${AppLocalizations.of(Get.context!)?.add} ${AppLocalizations.of(Get.context!)?.check_in}',
+    '${AppLocalizations.of(Get.context!)?.add} ${(Get.arguments ?? '').toLowerCase()}'
   ];
   late final ManagerBloc managerBloc;
   late final SupportBloc _bloc;
@@ -62,7 +63,8 @@ class _SupportScreenState extends State<SupportScreen> {
   }
 
   _handleRouter(String value) {
-    AppNavigator.navigateFormAdd(value, ADD_SUPPORT, isCheckIn: listAdd.first == value);
+    AppNavigator.navigateFormAdd(value, ADD_SUPPORT,
+        isCheckIn: listAdd.first == value);
   }
 
   _research({
@@ -177,7 +179,8 @@ class _SupportScreenState extends State<SupportScreen> {
                   stream: managerBloc.managerTrees,
                   builder: (context, snapshot) {
                     return SearchBase(
-                      hint: "Tìm ${title.toLowerCase()}",
+                      hint:
+                          "${AppLocalizations.of(Get.context!)?.find} ${title.toLowerCase()}",
                       leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                       endIcon: (snapshot.data ?? []).isNotEmpty
                           ? SvgPicture.asset(

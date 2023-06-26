@@ -5,6 +5,8 @@ import 'package:formz/formz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gen_crm/api_resfull/user_repository.dart';
 import 'package:gen_crm/src/src_index.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart' as GET;
 
 part 'register_event.dart';
 part 'register_state.dart';
@@ -79,7 +81,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       } catch (e) {
         yield state.copyWith(
             status: FormzStatus.submissionFailure,
-            message: MESSAGES.CONNECT_ERROR);
+            message: AppLocalizations.of(GET.Get.context!)?.an_error_occurred);
         throw e;
       }
     }

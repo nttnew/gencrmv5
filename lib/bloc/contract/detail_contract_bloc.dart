@@ -8,9 +8,10 @@ import 'package:gen_crm/src/models/model_generator/detail_contract.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
 import '../../src/models/model_generator/contract.dart';
 import '../../src/models/model_generator/file_response.dart';
 import '../../widgets/listview_loadmore_base.dart';
@@ -63,7 +64,8 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
         yield ErrorDetailContractState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorDetailContractState(MESSAGES.CONNECT_ERROR);
+      yield ErrorDetailContractState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -83,7 +85,8 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
         yield ErrorDeleteContractState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorDeleteContractState(MESSAGES.CONNECT_ERROR);
+      yield ErrorDeleteContractState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();

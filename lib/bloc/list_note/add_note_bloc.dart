@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import '../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
 
 part 'add_note_event.dart';
 part 'add_note_state.dart';
@@ -61,7 +62,8 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
         yield ErrorAddNoteState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorAddNoteState(MESSAGES.CONNECT_ERROR);
+      yield ErrorAddNoteState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -90,7 +92,8 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
         LoadingApi().popLoading();
       }
     } catch (e) {
-      yield ErrorAddNoteState(MESSAGES.CONNECT_ERROR);
+      yield ErrorAddNoteState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       LoadingApi().popLoading();
       throw e;
     }
@@ -118,7 +121,8 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
         LoadingApi().popLoading();
       }
     } catch (e) {
-      yield ErrorDeleteNoteState(MESSAGES.CONNECT_ERROR);
+      yield ErrorDeleteNoteState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       LoadingApi().popLoading();
       throw e;
     }

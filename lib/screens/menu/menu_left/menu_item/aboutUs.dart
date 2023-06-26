@@ -4,6 +4,8 @@ import 'package:gen_crm/bloc/infor/infor_bloc.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class AboutUsScreen extends StatefulWidget {
   const AboutUsScreen({Key? key}) : super(key: key);
@@ -22,7 +24,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarBaseNormal('Giới thiệu'),
+      appBar: AppbarBaseNormal(AppLocalizations.of(Get.context!)?.introduce),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
         child: BlocBuilder<GetInforBloc, InforState>(builder: (context, state) {

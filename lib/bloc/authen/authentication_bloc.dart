@@ -7,6 +7,9 @@ import 'package:gen_crm/api_resfull/user_repository.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/storages.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
+
 part 'authentication_event.dart';
 
 part 'authentication_state.dart';
@@ -38,7 +41,8 @@ class AuthenticationBloc
     } else if (event is AuthenticationStatusChanged) {
       yield* _mapAuthenticationStatusChangedToState(event);
     } else if (event is AuthenticationLogoutRequested) {
-      final deviceToken = await shareLocal.getString(PreferencesKey.DEVICE_TOKEN);
+      final deviceToken =
+          await shareLocal.getString(PreferencesKey.DEVICE_TOKEN);
       var response = await userRepository.logout(device_token: deviceToken);
       if (response.code == 888) {
         AppNavigator.navigateLogout();
@@ -50,9 +54,10 @@ class AuthenticationBloc
         _userRepository.logOut();
       } else {
         ShowDialogCustom.showDialogBase(
-          title: MESSAGES.NOTIFICATION,
-          content: response.msg ?? "Có lỗi xảy ra!!!",
-          textButton1: MESSAGES.OKE,
+          title: AppLocalizations.of(Get.context!)?.notification,
+          content: response.msg ??
+              AppLocalizations.of(Get.context!)?.an_error_occurred,
+          textButton1: AppLocalizations.of(Get.context!)?.ok,
           onTap1: () {
             AppNavigator.navigateLogout();
           },
@@ -78,7 +83,12 @@ class AuthenticationBloc
       final response = await _localRepository.loadUser();
       if (response != dotenv.env[PreferencesKey.TOKEN]!) {
         try {
-          final response = await _userRepository.getListCustomer(1, '', '',null,);
+          final response = await _userRepository.getListCustomer(
+            1,
+            '',
+            '',
+            null,
+          );
           if ((response.code == BASE_URL.SUCCESS) ||
               (response.code == BASE_URL.SUCCESS_200)) {
             yield AuthenticationState.authenticated();
