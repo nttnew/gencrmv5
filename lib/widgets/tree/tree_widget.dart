@@ -121,118 +121,116 @@ class _TreeWidgetState extends State<TreeWidget> {
           if (list?.isNotEmpty ?? false) {
             return Scaffold(
               backgroundColor: Colors.transparent,
-              body: SafeArea(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(25),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          WidgetText(
-                            title: AppLocalizations.of(Get.context!)
-                                ?.select_filter,
-                            style: AppStyle.DEFAULT_TITLE_APPBAR,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              isCheck = !isCheck;
-                              widget.bloc.resetData(isCheck);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.red.withOpacity(0.15),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
-                              ),
-                              child: WidgetText(
-                                title: AppLocalizations.of(Get.context!)?.all,
-                                style: AppStyle.DEFAULT_LABEL_PRODUCT,
-                              ),
+              body: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        WidgetText(
+                          title: AppLocalizations.of(Get.context!)
+                              ?.select_filter,
+                          style: AppStyle.DEFAULT_TITLE_APPBAR,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            isCheck = !isCheck;
+                            widget.bloc.resetData(isCheck);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.red.withOpacity(0.15),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            child: WidgetText(
+                              title: AppLocalizations.of(Get.context!)?.all,
+                              style: AppStyle.DEFAULT_LABEL_PRODUCT,
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: TreeView(
-                          data: list ?? [],
-                          onTap: (data, index) {
-                            widget.bloc.managerTrees.add(_setTreeExpand(
-                              data,
-                              list ?? [],
-                              !data.expaned,
-                            ));
-                          },
-                          onCheck: (isCheck, data, index, p, lp) {
-                            widget.bloc.managerTrees.add(_setTreeData(
-                              data,
-                              list ?? [],
-                              isCheck,
-                              p: p,
-                              listParent: lp,
-                            ));
-                          },
-                          showCheckBox: true,
                         ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: TreeView(
+                        data: list ?? [],
+                        onTap: (data, index) {
+                          widget.bloc.managerTrees.add(_setTreeExpand(
+                            data,
+                            list ?? [],
+                            !data.expaned,
+                          ));
+                        },
+                        onCheck: (isCheck, data, index, p, lp) {
+                          widget.bloc.managerTrees.add(_setTreeData(
+                            data,
+                            list ?? [],
+                            isCheck,
+                            p: p,
+                            listParent: lp,
+                          ));
+                        },
+                        showCheckBox: true,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(25.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                                onTap: () => Get.back(),
-                                child: Container(
-                                  padding: EdgeInsets.all(15),
-                                  decoration: BoxDecoration(
-                                      color: COLORS.GREY.withOpacity(0.5),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Center(
-                                    child: Text(
-                                      AppLocalizations.of(Get.context!)
-                                              ?.close ??
-                                          '',
-                                      style: AppStyle.DEFAULT_16_BOLD,
-                                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                              onTap: () => Get.back(),
+                              child: Container(
+                                padding: EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                    color: COLORS.GREY.withOpacity(0.5),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(
+                                  child: Text(
+                                    AppLocalizations.of(Get.context!)
+                                            ?.close ??
+                                        '',
+                                    style: AppStyle.DEFAULT_16_BOLD,
                                   ),
-                                )),
-                          ),
-                          SizedBox(
-                            width: 25,
-                          ),
-                          Expanded(
-                            child: GestureDetector(
-                                onTap: () {
-                                  widget.bloc.save();
-                                  widget.funFilter(widget.bloc.ids);
-                                  Get.back();
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(15),
-                                  decoration: BoxDecoration(
-                                      color: COLORS.SECONDS_COLOR,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Center(
-                                    child: Text(
-                                      AppLocalizations.of(Get.context!)?.find ??
-                                          '',
-                                      style: AppStyle.DEFAULT_16_BOLD,
-                                    ),
+                                ),
+                              )),
+                        ),
+                        SizedBox(
+                          width: 25,
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                              onTap: () {
+                                widget.bloc.save();
+                                widget.funFilter(widget.bloc.ids);
+                                Get.back();
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                    color: COLORS.SECONDS_COLOR,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(
+                                  child: Text(
+                                    AppLocalizations.of(Get.context!)?.find ??
+                                        '',
+                                    style: AppStyle.DEFAULT_16_BOLD,
                                   ),
-                                )),
-                          ),
-                        ],
-                      ),
+                                ),
+                              )),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
           }

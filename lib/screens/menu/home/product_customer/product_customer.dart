@@ -254,63 +254,61 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
         builder: (context) {
           return StatefulBuilder(
             builder: (context, setState) {
-              return SafeArea(
-                child: Container(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: WidgetText(
-                          title:
-                              AppLocalizations.of(Get.context!)?.select_filter,
-                          textAlign: TextAlign.center,
-                          style: AppStyle.DEFAULT_16_BOLD,
-                        ),
+              return Container(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: WidgetText(
+                        title:
+                            AppLocalizations.of(Get.context!)?.select_filter,
+                        textAlign: TextAlign.center,
+                        style: AppStyle.DEFAULT_16_BOLD,
                       ),
-                      Column(
-                        children: List.generate(
-                            dataFilter.length,
-                            (index) => GestureDetector(
-                                  onTap: () {
-                                    _bloc.filter =
-                                        dataFilter[index].id.toString();
-                                    Get.back();
-                                    _research();
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(vertical: 8),
-                                    decoration: BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                width: 1,
-                                                color: COLORS.LIGHT_GREY))),
-                                    child: Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                          ICONS.IC_FILTER_SVG,
-                                          width: 20,
-                                          height: 20,
-                                          fit: BoxFit.contain,
+                    ),
+                    Column(
+                      children: List.generate(
+                          dataFilter.length,
+                          (index) => GestureDetector(
+                                onTap: () {
+                                  _bloc.filter =
+                                      dataFilter[index].id.toString();
+                                  Get.back();
+                                  _research();
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 8),
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                          bottom: BorderSide(
+                                              width: 1,
+                                              color: COLORS.LIGHT_GREY))),
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        ICONS.IC_FILTER_SVG,
+                                        width: 20,
+                                        height: 20,
+                                        fit: BoxFit.contain,
+                                      ),
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      Expanded(
+                                          child: Container(
+                                        child: WidgetText(
+                                          title: dataFilter[index].name ?? '',
+                                          style: AppStyle.DEFAULT_16,
                                         ),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        Expanded(
-                                            child: Container(
-                                          child: WidgetText(
-                                            title: dataFilter[index].name ?? '',
-                                            style: AppStyle.DEFAULT_16,
-                                          ),
-                                        )),
-                                      ],
-                                    ),
+                                      )),
+                                    ],
                                   ),
-                                )),
-                      )
-                    ],
-                  ),
+                                ),
+                              )),
+                    )
+                  ],
                 ),
               );
             },
