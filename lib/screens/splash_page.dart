@@ -2,14 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gen_crm/api_resfull/user_repository.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/storages.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import '../api_resfull/dio_provider.dart';
 
 class AnimatedLogo extends AnimatedWidget {
@@ -82,11 +80,8 @@ class _LogoAppState extends State<SplashPage>
     baseUrl = await shareLocal.getString(PreferencesKey.URL_BASE);
     String? sess = await shareLocal.getString(PreferencesKey.SESS);
     String? token = await shareLocal.getString(PreferencesKey.TOKEN);
-    if (baseUrl != dotenv.env[PreferencesKey.BASE_URL]) {
-      dotenv.env[PreferencesKey.BASE_URL] = baseUrl ?? "";
-      DioProvider.instance(
-          sess: sess ?? "", baseUrl: baseUrl, token: token ?? "");
-    }
+    DioProvider.instance(
+        sess: sess ?? '', baseUrl: baseUrl, token: token ?? '');
   }
 
   @override

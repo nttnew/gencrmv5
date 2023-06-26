@@ -137,8 +137,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             await shareLocal.putString(
                 PreferencesKey.USER_PASSWORD, state.password.value);
             DioProvider.instance(
-                sess: response.data?.session_id ?? '',
-                token: response.data?.token);
+                sess: response.data?.session_id, token: response.data?.token);
             yield state.copyWith(
                 status: FormzStatus.submissionSuccess,
                 message: response.msg ?? '',
@@ -171,8 +170,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           if (response.code == BASE_URL.SUCCESS) {
             await _saveData(response);
             DioProvider.instance(
-                sess: response.data?.session_id ?? '',
-                token: response.data?.token);
+                sess: response.data?.session_id, token: response.data?.token);
             yield state.copyWith(
                 status: FormzStatus.submissionSuccess,
                 message: response.msg ?? '',

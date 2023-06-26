@@ -1,6 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gen_crm/api_resfull/dio_provider.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/storages/share_local.dart';
@@ -173,7 +172,6 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
                 urlBase = text;
               }
               shareLocal.putString(PreferencesKey.URL_BASE, urlBase);
-              dotenv.env[PreferencesKey.BASE_URL] = urlBase;
               DioProvider.instance(baseUrl: urlBase);
               Get.back();
               widget.reload();
@@ -217,7 +215,6 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
               final baseUrl =
                   await shareLocal.getString(PreferencesKey.URL_BASE);
               if (baseUrl == null || baseUrl == '' || baseUrl == 'null') {
-                dotenv.env[PreferencesKey.BASE_URL] = BASE_URL.URL_DEMO;
                 shareLocal.putString(
                     PreferencesKey.URL_BASE, BASE_URL.URL_DEMO);
                 DioProvider.instance(baseUrl: BASE_URL.URL_DEMO);
