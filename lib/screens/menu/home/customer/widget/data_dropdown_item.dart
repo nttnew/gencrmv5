@@ -5,25 +5,25 @@ import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tiengviet/tiengviet.dart';
-
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DataDropDownItem extends StatefulWidget {
-  DataDropDownItem(
-      {Key? key,
-      required this.data,
-      required this.onSuccess,
-      this.onLoadMore,
-      this.onTabSearch,
-      this.isSearch})
-      : super(key: key);
+  DataDropDownItem({
+    Key? key,
+    required this.data,
+    required this.onSuccess,
+    this.onLoadMore,
+    this.onTabSearch,
+    this.isSearch = false,
+  }) : super(key: key);
 
-  List data;
-  Function onSuccess;
-  Function? onLoadMore;
-  Function? onTabSearch;
-  bool? isSearch = false;
+  final List data;
+  final Function onSuccess;
+  final Function? onLoadMore;
+  final Function? onTabSearch;
+  final bool? isSearch;
 
   @override
   State<DataDropDownItem> createState() => _DataDropDownItemState();
@@ -77,7 +77,7 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
           Container(
             width: Get.width,
             child: WidgetText(
-              title: "Chọn",
+              title: AppLocalizations.of(Get.context!)?.select,
               style: AppStyle.DEFAULT_20_BOLD,
               textAlign: TextAlign.center,
             ),
@@ -99,7 +99,7 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                               color: HexColor("#707070")),
-                          hint: "Tìm kiếm",
+                          hint: AppLocalizations.of(Get.context!)?.find,
                           height: 48,
                           leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                           onSubmit: (v) {

@@ -4,7 +4,6 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:flutter/material.dart';
-
 import '../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 
 class WidgetAppbar extends StatelessWidget {
@@ -106,7 +105,7 @@ class WidgetAppbar extends StatelessWidget {
 
 Widget rightAppBar() => GestureDetector(onTap: () {
       return AppNavigator.navigateNotification();
-    }, child: BlocBuilder<GetNotificationBloc, UnReadListNotifiState>(
+    }, child: BlocBuilder<GetNotificationBloc, NotificationState>(
         builder: (context, state) {
       if (state is NotificationNeedRead) {
         return Stack(
@@ -125,15 +124,15 @@ Widget rightAppBar() => GestureDetector(onTap: () {
                           Container(
                             padding: EdgeInsets.all(2),
                             decoration: GetNotificationBloc.of(context).total <
-                                10
+                                    10
                                 ? BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                            )
+                                    color: Colors.red,
+                                    shape: BoxShape.circle,
+                                  )
                                 : BoxDecoration(
-                                color: Colors.red,
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(100))),
+                                    color: Colors.red,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(100))),
                             child: WidgetText(
                               title: '${GetNotificationBloc.of(context).total}',
                               style: AppStyle.APP_MEDIUM.copyWith(

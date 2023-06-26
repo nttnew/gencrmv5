@@ -33,16 +33,16 @@ class _ReadListState extends State<ReadList>
 
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocListener<GetListReadedNotifiBloc, ReadedListNotifiState>(
+    return BlocListener<GetListReadedNotifiBloc, ReadNotificationState>(
       listener: (context, state) {
-        if (state is DeleteReadedListNotifiState) {
+        if (state is DeleteReadNotificationState) {
           GetListReadedNotifiBloc.of(context)
               .add(InitGetListReadedNotifiEvent(1));
-        } else if (state is ErrorDeleteReadedListNotifiState) {}
+        } else if (state is ErrorDeleteReadNotificationState) {}
       },
-      child: BlocBuilder<GetListReadedNotifiBloc, ReadedListNotifiState>(
+      child: BlocBuilder<GetListReadedNotifiBloc, ReadNotificationState>(
           builder: (context, state) {
-        if (state is UpdateReadedListNotifiState) {
+        if (state is UpdateReadNotificationState) {
           total = int.parse(state.total);
           length = state.list.length;
           return ListView(

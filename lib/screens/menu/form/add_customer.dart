@@ -9,6 +9,7 @@ import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/models/model_generator/add_customer.dart';
 import '../../../widgets/pick_file_image.dart';
@@ -61,8 +62,9 @@ class _AddCustomerState extends State<AddCustomer> {
           listener: (context, state) async {
             if (state is SuccessAddCustomerIndividualState) {
               ShowDialogCustom.showDialogBase(
-                title: MESSAGES.NOTIFICATION,
-                content: "Thêm mới dữ liệu thành công!",
+                title: AppLocalizations.of(Get.context!)?.notification,
+                content: AppLocalizations.of(Get.context!)
+                    ?.new_data_added_successfully,
                 onTap1: () {
                   Get.back();
                   if (isResultData) {
@@ -76,7 +78,7 @@ class _AddCustomerState extends State<AddCustomer> {
             }
             if (state is ErrorAddCustomerIndividualState) {
               ShowDialogCustom.showDialogBase(
-                title: MESSAGES.NOTIFICATION,
+                title: AppLocalizations.of(Get.context!)?.notification,
                 content: state.message,
               );
             }
@@ -304,10 +306,6 @@ class _AddCustomerState extends State<AddCustomer> {
     );
   }
 
-
-
-
-
   void onClickSave() {
     final Map<String, dynamic> data = {};
     bool check = false;
@@ -329,8 +327,9 @@ class _AddCustomerState extends State<AddCustomer> {
     }
     if (check == true) {
       ShowDialogCustom.showDialogBase(
-        title: MESSAGES.NOTIFICATION,
-        content: "Hãy nhập đủ các trường bắt buộc (*)",
+        title: AppLocalizations.of(Get.context!)?.notification,
+        content:
+            AppLocalizations.of(Get.context!)?.please_enter_all_required_fields,
       );
     } else {
       GetListCustomerBloc.of(context).add(AddCustomerIndividualEvent(data,

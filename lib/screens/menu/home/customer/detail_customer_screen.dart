@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
@@ -61,7 +62,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     if (_bloc.sdt != null)
       list.add(
         ModuleThaoTac(
-          title: "Gọi điện",
+          title: AppLocalizations.of(Get.context!)?.call ?? '',
           icon: ICONS.IC_PHONE_CUSTOMER_SVG,
           onThaoTac: () {
             Get.back();
@@ -72,12 +73,13 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
 
     list.add(
       ModuleThaoTac(
-        title: "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}",
+        title:
+            "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}",
         icon: ICONS.IC_ADD_CLUE_SVG,
         onThaoTac: () {
           Get.back();
           AppNavigator.navigateFormAdd(
-              "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}",
+              "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}",
               ADD_CLUE_CUSTOMER,
               id: int.parse(id), onRefresh: () {
             _bloc.controllerDM.reloadData();
@@ -87,12 +89,13 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     );
 
     list.add(ModuleThaoTac(
-      title: "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}",
+      title:
+          "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}",
       icon: ICONS.IC_ADD_CHANCE_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateFormAdd(
-            "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}",
+            "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}",
             ADD_CHANCE_CUSTOMER,
             id: int.parse(id), onRefresh: () {
           _bloc.controllerCH.reloadData();
@@ -101,13 +104,15 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     ));
 
     list.add(ModuleThaoTac(
-      title: "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}",
+      title:
+          "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}",
       icon: ICONS.IC_ADD_CONTRACT_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateAddContract(
             customer_id: id,
-            title: "${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}",
+            title:
+                "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}",
             onRefresh: () {
               _bloc.controllerHD.reloadData();
             });
@@ -116,12 +121,13 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     ));
 
     list.add(ModuleThaoTac(
-      title: "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
+      title:
+          "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateFormAdd(
-            "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
+            "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
             ADD_JOB_CUSTOMER,
             id: int.parse(id), onRefresh: () {
           _bloc.controllerCV.reloadData();
@@ -130,12 +136,13 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     ));
 
     list.add(ModuleThaoTac(
-      title: "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
+      title:
+          "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
       icon: ICONS.IC_ADD_SUPPORT_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateFormAdd(
-            "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
+            "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
             ADD_SUPPORT_CUSTOMER,
             id: int.parse(id), onRefresh: () {
           _bloc.controllerHT.reloadData();
@@ -144,7 +151,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     ));
 
     list.add(ModuleThaoTac(
-      title: "Thêm thảo luận",
+      title: AppLocalizations.of(Get.context!)?.add_discuss ?? '',
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
@@ -156,7 +163,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     ));
 
     list.add(ModuleThaoTac(
-      title: "Xem đính kèm",
+      title: AppLocalizations.of(Get.context!)?.see_attachment ?? '',
       icon: ICONS.IC_ATTACK_SVG,
       onThaoTac: () async {
         Get.back();
@@ -169,7 +176,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     ));
 
     list.add(ModuleThaoTac(
-      title: "Sửa",
+      title: AppLocalizations.of(Get.context!)?.edit ?? '',
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
@@ -180,12 +187,15 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     ));
 
     list.add(ModuleThaoTac(
-      title: "Xoá",
+      title: AppLocalizations.of(Get.context!)?.delete ?? '',
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
-            onTap2: () => _bloc.add(DeleteCustomerEvent(int.parse(id))),
-            content: "Bạn chắc chắn muốn xóa không ?");
+          onTap2: () => _bloc.add(DeleteCustomerEvent(int.parse(id))),
+          content: AppLocalizations.of(Get.context!)
+                  ?.are_you_sure_you_want_to_delete ??
+              '',
+        );
       },
     ));
   }
@@ -200,8 +210,9 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
             if (state is SuccessDeleteCustomerState) {
               LoadingApi().popLoading();
               ShowDialogCustom.showDialogBase(
-                title: MESSAGES.NOTIFICATION,
-                content: "Thành công",
+                title: AppLocalizations.of(Get.context!)?.notification,
+                content: AppLocalizations.of(Get.context!)
+                    ?.success??'',
                 onTap1: () {
                   Get.back();
                   Get.back();
@@ -213,9 +224,10 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
             } else if (state is ErrorDeleteCustomerState) {
               LoadingApi().popLoading();
               ShowDialogCustom.showDialogBase(
-                title: MESSAGES.NOTIFICATION,
+                title: AppLocalizations.of(Get.context!)?.notification,
                 content: state.msg,
-                textButton1: "Quay lại",
+                textButton1:AppLocalizations.of(Get.context!)
+                    ?.come_back,
                 onTap1: () {
                   Get.back();
                   Get.back();
@@ -242,7 +254,8 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                 indicatorColor: HexColor("#006CB1"),
                 tabs: <Widget>[
                   Tab(
-                    text: "Thông tin chung",
+                    text: AppLocalizations.of(Get.context!)
+                        ?.information??'',
                   ),
                   Tab(
                     text: ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI,

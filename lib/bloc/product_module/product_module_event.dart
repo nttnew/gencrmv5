@@ -7,11 +7,11 @@ abstract class ProductModuleEvent extends Equatable {
 }
 
 class InitGetListProductModuleEvent extends ProductModuleEvent {
-  int? page;
-  String? querySearch;
-  String? typeProduct;
-  String? filter;
-  String? ids;
+  final int? page;
+  final String? querySearch;
+  final String? typeProduct;
+  final String? filter;
+  final String? ids;
 
   InitGetListProductModuleEvent({
     this.page,

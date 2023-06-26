@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/api_resfull/api.dart';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
 import '../../src/models/model_generator/work.dart';
 import '../../widgets/loading_api.dart';
 
@@ -70,7 +70,8 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetListWorkState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetListWorkState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw (e);
     }
     LoadingApi().popLoading();

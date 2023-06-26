@@ -5,6 +5,10 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 
 import '../../api_resfull/user_repository.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
+
 import '../../src/app_const.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/models/model_generator/customer.dart';
@@ -46,7 +50,9 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetAddCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetAddCustomerState(AppLocalizations.of(Get.context!)?.
+
+an_error_occurred??'');
       throw e;
     }
     LoadingApi().popLoading();
@@ -68,7 +74,9 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetEditCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetEditCustomerState(AppLocalizations.of(Get.context!)?.
+
+an_error_occurred??'');
       throw e;
     }
     LoadingApi().popLoading();

@@ -13,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../../../src/src_index.dart';
 import '../bloc/contract/attack_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../screens/add_service_voucher/preview_image.dart';
 
 Widget FileDinhKemUiBase(
@@ -180,7 +181,7 @@ Widget FileLuuBase(BuildContext context, Function() onTap,
                   borderRadius: BorderRadius.circular(20.5)),
               child: Center(
                   child: Text(
-                "Lưu",
+                AppLocalizations.of(Get.context!)?.save ?? '',
                 style: TextStyle(color: Colors.white),
               )),
             ),
@@ -193,9 +194,10 @@ Future<List<File>> onDinhKemBase(BuildContext context) async {
   if (await Permission.storage.request().isGranted) {
     if (Platform.isAndroid) {
       ShowDialogCustom.showDialogBase(
-        title: MESSAGES.NOTIFICATION,
-        content: MESSAGES.BAN_CHUA_CAP_QUYEN,
-        textButton2: MESSAGES.DI_DEN_CAI_DAT,
+        title: AppLocalizations.of(Get.context!)?.notification,
+        content: AppLocalizations.of(Get.context!)
+            ?.you_have_not_granted_access_to_photos,
+        textButton2: AppLocalizations.of(Get.context!)?.go_to_setting,
         onTap2: () {
           openAppSettings();
           Get.back();
@@ -216,7 +218,7 @@ Future<List<File>> pickFileDialog() async {
       context: Get.context!,
       builder: (context) => CupertinoActionSheet(
               cancelButton: CupertinoActionSheetAction(
-                child: Text('Huỷ'),
+                child: Text(AppLocalizations.of(Get.context!)?.cancel ?? ''),
                 onPressed: () {
                   AppNavigator.navigateBack();
                 },
@@ -228,7 +230,8 @@ Future<List<File>> pickFileDialog() async {
                     if (file != null) listFile.add(file);
                     Get.back();
                   },
-                  child: Text(MESSAGES.CHUP_ANH_MOI),
+                  child: Text(
+                      AppLocalizations.of(Get.context!)?.new_photo_shoot ?? ''),
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
@@ -236,7 +239,9 @@ Future<List<File>> pickFileDialog() async {
                     if (file != null) listFile.add(file);
                     Get.back();
                   },
-                  child: Text(MESSAGES.QUAY_VIDEO_MOI),
+                  child: Text(
+                      AppLocalizations.of(Get.context!)?.new_video_recoding ??
+                          ''),
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
@@ -244,7 +249,8 @@ Future<List<File>> pickFileDialog() async {
                     if (files != null) listFile.addAll(files);
                     Get.back();
                   },
-                  child: Text(MESSAGES.CHON_FILE),
+                  child:
+                      Text(AppLocalizations.of(Get.context!)?.pick_file ?? ''),
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
@@ -252,7 +258,8 @@ Future<List<File>> pickFileDialog() async {
                     if (files != null) listFile.addAll(files);
                     Get.back();
                   },
-                  child: Text(MESSAGES.CHON_ANH_CO_SAN),
+                  child:
+                      Text(AppLocalizations.of(Get.context!)?.pick_photo ?? ''),
                 ),
               ]));
   return listFile;

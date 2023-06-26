@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/car_report/car_report_bloc.dart';
 import 'package:get/get.dart';
 import '../../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../src/app_const.dart';
 import '../../../src/base.dart';
-import '../../../src/messages.dart';
 import '../../../widgets/loading_api.dart';
 import '../report_employee/report_employee_bloc.dart';
 import '../report_product/report_product_bloc.dart';
@@ -53,7 +53,9 @@ class OptionBloc extends Bloc<OptionEvent, OptionState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorOptionState(MESSAGES.CONNECT_ERROR);
+      yield ErrorOptionState(AppLocalizations.of(Get.context!)?.
+
+an_error_occurred??'');
       throw e;
     }
     LoadingApi().popLoading();

@@ -2,10 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
-
 import '../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
 import '../../src/models/model_generator/add_customer.dart';
 
 part 'form_edit_event.dart';
@@ -63,7 +63,8 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorFormEditState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormEditState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -82,7 +83,8 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
         LoadingApi().popLoading();
       }
     } catch (e) {
-      yield ErrorFormEditState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormEditState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       LoadingApi().popLoading();
       throw e;
     }
@@ -102,7 +104,8 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
         LoadingApi().popLoading();
       }
     } catch (e) {
-      yield ErrorFormEditState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormEditState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       LoadingApi().popLoading();
       throw e;
     }
@@ -122,7 +125,8 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
         LoadingApi().popLoading();
       }
     } catch (e) {
-      yield ErrorFormEditState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormEditState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       LoadingApi().popLoading();
       throw e;
     }
@@ -142,7 +146,8 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
         LoadingApi().popLoading();
       }
     } catch (e) {
-      yield ErrorFormEditState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormEditState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       LoadingApi().popLoading();
       throw e;
     }
@@ -162,7 +167,8 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
         LoadingApi().popLoading();
       }
     } catch (e) {
-      yield ErrorFormEditState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormEditState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       LoadingApi().popLoading();
       throw e;
     }
@@ -182,7 +188,8 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
         LoadingApi().popLoading();
       }
     } catch (e) {
-      yield ErrorFormEditState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormEditState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       LoadingApi().popLoading();
       throw e;
     }
@@ -202,7 +209,8 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
         LoadingApi().popLoading();
       }
     } catch (e) {
-      yield ErrorFormEditState(MESSAGES.CONNECT_ERROR);
+      yield ErrorFormEditState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       LoadingApi().popLoading();
       throw e;
     }

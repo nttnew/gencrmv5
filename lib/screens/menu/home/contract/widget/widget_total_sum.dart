@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:hexcolor/hexcolor.dart';
-
-import '../../../../../src/color.dart';
 import '../../../../../src/src_index.dart';
 
 class WidgetTotalSum extends StatefulWidget {

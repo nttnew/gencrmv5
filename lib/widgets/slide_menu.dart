@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class SlideMenu extends StatefulWidget {
   final Widget child;
   final List<Widget> menuItems;
@@ -8,13 +9,16 @@ class SlideMenu extends StatefulWidget {
   @override
   _SlideMenuState createState() => new _SlideMenuState();
 }
-class _SlideMenuState extends State<SlideMenu> with SingleTickerProviderStateMixin {
+
+class _SlideMenuState extends State<SlideMenu>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
   initState() {
     super.initState();
-    _controller = new AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
+    _controller = new AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 200));
   }
 
   @override
@@ -26,9 +30,8 @@ class _SlideMenuState extends State<SlideMenu> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     final animation = new Tween(
-        begin: const Offset(0.0, 0.0),
-        end: const Offset(-0.2, 0.0)
-    ).animate(new CurveTween(curve: Curves.decelerate).animate(_controller));
+            begin: const Offset(0.0, 0.0), end: const Offset(-0.2, 0.0))
+        .animate(new CurveTween(curve: Curves.decelerate).animate(_controller));
 
     return new GestureDetector(
       onHorizontalDragUpdate: (data) {
@@ -39,8 +42,11 @@ class _SlideMenuState extends State<SlideMenu> with SingleTickerProviderStateMix
       },
       onHorizontalDragEnd: (data) {
         if (data.primaryVelocity! > 2000)
-          _controller.animateTo(.0); //close menu on fast swipe in the right direction
-        else if (_controller.value >= .5 || data.primaryVelocity! < -2000) // fully open if dragged a lot to left or on fast swipe to left
+          _controller
+              .animateTo(.0); //close menu on fast swipe in the right direction
+        else if (_controller.value >= .5 ||
+            data.primaryVelocity! <
+                -2000) // fully open if dragged a lot to left or on fast swipe to left
           _controller.animateTo(1.0);
         else // close if none of above
           _controller.animateTo(.0);
@@ -83,5 +89,4 @@ class _SlideMenuState extends State<SlideMenu> with SingleTickerProviderStateMix
       ),
     );
   }
-
 }

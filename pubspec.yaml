@@ -9,6 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 
   flutter_dotenv: ^5.0.2
   flutter_bloc: ^7.0.0
@@ -17,7 +20,6 @@ dependencies:
   cached_network_image: ^3.2.0
   formz: ^0.4.1
   equatable: ^2.0.3
-  intl: ^0.17.0
   double_back_to_close_app: ^2.1.0
   url_launcher: ^6.0.17
   nb_utils: ^4.4.10
@@ -81,6 +83,7 @@ dev_dependencies:
 
 
 flutter:
+  generate: true
   uses-material-design: true
   fonts:
     - family: Quicksand

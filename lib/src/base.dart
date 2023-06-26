@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:gen_crm/src/preferences_key.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../storages/share_local.dart';
 import 'icon_constants.dart';
 
 class BASE_URL {
   BASE_URL._();
-  static const int SIZE_DEFAULT = 10; //todo
-  static const int PAGE_DEFAULT = 1; //todo
-  static const URL_WSS = 'wss://wss-mobile.tel4vn.com:7444'; //todo
-  static const URL_DEMO = 'https://car.gencrm.com/';
+  static const int SIZE_DEFAULT = 10;
+  static const int PAGE_DEFAULT = 1;
+  static const URL_DEMO = 'https://demo.gencrm.com/';
   static const GET_INFO_USER = 'api/user/profile';
   static const LOGIN = 'loginmobile.php';
   static const LOGOUT = 'lougoutmobile.php';
@@ -182,7 +182,7 @@ class BASE_URL {
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';
-  static const int connectionTimeout = 45000; //todo timeout them coong viec
+  static const int connectionTimeout = 45000;
   static const content_type = 'Content-Type';
   static const application_json = 'application/json';
   static const PHPSESSID = 'PHPSESSID';
@@ -202,8 +202,7 @@ class BASE_URL {
 
   static const ACTIVE = 1;
   static const LOCK = 0;
-  static const KHACH_HANG = 'Khách hàng';
-  static const TEN_KHACH_HANG = 'Tên khách hàng';
+  static final KHACH_HANG = AppLocalizations.of(Get.context!)?.client??'';
   static const NOTE_ID = 'noteid';
   static const ID = 'id';
   static const CONTENT = 'content';
@@ -318,6 +317,7 @@ class ModuleText {
   static const String DAU_MOI = 'them_dau_moi';
   static const String LICH_HEN = 'them_co_hoi';
   static const String HOP_DONG = 'them_hop_dong';
+  static const String HOP_DONG_FLASH = 'them_phieu_dich_vu';
   static const String CONG_VIEC = 'them_cong_viec';
   static const String CSKH = 'them_ho_tro';
   static const String THEM_MUA_XE = 'them_mua_xe';
@@ -332,6 +332,8 @@ class ModuleText {
     } else if (ModuleText.LICH_HEN == id) {
       return ICONS.IC_CHANCE_3X_PNG;
     } else if (ModuleText.HOP_DONG == id) {
+      return ICONS.IC_CONTRACT_3X_PNG;
+    } else if (ModuleText.HOP_DONG_FLASH == id) {
       return ICONS.IC_CONTRACT_3X_PNG;
     } else if (ModuleText.CONG_VIEC == id) {
       return ICONS.IC_WORK_3X_PNG;

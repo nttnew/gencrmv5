@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class WidgetItemListMenu extends StatelessWidget {
   final String? icon, title;
-  bool? check;
+  final bool? check;
   WidgetItemListMenu({this.icon, this.check, this.title});
   @override
   Widget build(BuildContext context) {

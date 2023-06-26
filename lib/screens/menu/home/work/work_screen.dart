@@ -16,6 +16,7 @@ import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_node_model.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WorkScreen extends StatefulWidget {
   const WorkScreen({Key? key}) : super(key: key);
@@ -34,8 +35,8 @@ class _WorkScreenState extends State<WorkScreen> {
   String title = '';
   String ids = '';
   List<String> listAdd = [
-    'Thêm check in',
-    'Thêm ${(Get.arguments ?? '').toLowerCase()}'
+    '${AppLocalizations.of(Get.context!)?.add} ${AppLocalizations.of(Get.context!)?.check_in}',
+    '${AppLocalizations.of(Get.context!)?.add} ${(Get.arguments ?? '').toLowerCase()}'
   ];
   final _key = GlobalKey<ExpandableFabState>();
   late final ManagerBloc managerBloc;
@@ -62,7 +63,8 @@ class _WorkScreenState extends State<WorkScreen> {
   }
 
   _handleRouter(String value) {
-    AppNavigator.navigateFormAdd(value, ADD_JOB, isCheckIn: listAdd.first == value);
+    AppNavigator.navigateFormAdd(value, ADD_JOB,
+        isCheckIn: listAdd.first == value);
   }
 
   _research({int? pageNew}) {
@@ -173,7 +175,8 @@ class _WorkScreenState extends State<WorkScreen> {
                 stream: managerBloc.managerTrees,
                 builder: (context, snapshot) {
                   return SearchBase(
-                    hint: "Tìm ${title.toLowerCase()}",
+                    hint:
+                        "${AppLocalizations.of(Get.context!)?.find} ${title.toLowerCase()}",
                     leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                     endIcon: (snapshot.data ?? []).isNotEmpty
                         ? SvgPicture.asset(

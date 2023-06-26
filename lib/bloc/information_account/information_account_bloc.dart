@@ -1,13 +1,12 @@
 import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-
 import '../../api_resfull/user_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart' as GET;
 import '../../src/base.dart';
-import '../../src/messages.dart';
 import '../../src/models/index.dart';
 import '../../src/models/validate_form/email.dart';
 part 'information_account_event.dart';
@@ -82,7 +81,8 @@ class InforAccBloc extends Bloc<InforAccEvent, InforAccState> {
         } catch (e) {
           yield state.copyWith(
               status: FormzStatus.submissionFailure,
-              message: MESSAGES.CONNECT_ERROR);
+              message:
+                  AppLocalizations.of(GET.Get.context!)?.an_error_occurred);
           throw e;
         }
       }
@@ -107,7 +107,8 @@ class InforAccBloc extends Bloc<InforAccEvent, InforAccState> {
         } catch (e) {
           yield state.copyWith(
               status: FormzStatus.submissionFailure,
-              message: MESSAGES.CONNECT_ERROR);
+              message:
+                  AppLocalizations.of(GET.Get.context!)?.an_error_occurred);
           throw e;
         }
       }

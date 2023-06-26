@@ -1,4 +1,3 @@
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:community_material_icon/community_material_icon.dart';
@@ -6,6 +5,8 @@ import 'package:formz/formz.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class WidgetRegisterForm extends StatefulWidget {
   @override
@@ -54,10 +55,9 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
         if (state.status.isSubmissionSuccess) {
           GetSnackBarUtils.removeSnackBar();
           ShowDialogCustom.showDialogBase(
-                title: MESSAGES.NOTIFICATION,
-                content: MESSAGES.SUCCESS,
-                onTap1: () => AppNavigator.navigateLogout(),
-
+            title: AppLocalizations.of(Get.context!)?.notification,
+            content: AppLocalizations.of(Get.context!)?.success,
+            onTap1: () => AppNavigator.navigateLogout(),
           );
         }
         if (state.status.isSubmissionInProgress) {
@@ -66,12 +66,9 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
         if (state.status.isSubmissionFailure) {
           GetSnackBarUtils.removeSnackBar();
           ShowDialogCustom.showDialogBase(
-                title: MESSAGES.NOTIFICATION,
-                content: state.message,
-
+            title: AppLocalizations.of(Get.context!)?.notification,
+            content: state.message,
           );
-
-          //GetSnackBarUtils.createFailure(message: state.message);
         }
       },
       child: Container(
@@ -83,21 +80,21 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                MESSAGES.FULL_NAME,
+                AppLocalizations.of(Get.context!)?.full_name ?? '',
                 style: AppStyle.DEFAULT_16_BOLD,
               ),
               AppValue.vSpaceSmall,
               _buildTextFieldFullName(bloc),
               AppValue.vSpaceMedium,
               Text(
-                MESSAGES.EMAIL,
+                AppLocalizations.of(Get.context!)?.email ?? '',
                 style: AppStyle.DEFAULT_16_BOLD,
               ),
               AppValue.vSpaceSmall,
               _buildTextFieldEmail(bloc),
               AppValue.vSpaceMedium,
               Text(
-                MESSAGES.PASSWORD,
+                AppLocalizations.of(Get.context!)?.password ?? '',
                 style: AppStyle.DEFAULT_16_BOLD,
               ),
               AppValue.vSpaceSmall,
@@ -119,12 +116,9 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
             onTap: () => state.status.isValidated
                 ? bloc.add(RegisterFormSubmitted())
                 : null,
-            // onTap: () {
-            //   ShowDialogCustom.showLoading();
-            // },
             enable: state.status.isValidated,
             backgroundColor: COLORS.PRIMARY_COLOR,
-            text: MESSAGES.REGISTER,
+            text: AppLocalizations.of(Get.context!)?.register,
           );
         });
   }
@@ -134,12 +128,15 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
       return WidgetInput(
         onChanged: (value) =>
             bloc.add(PasswordRegisterChanged(password: value)),
-        errorText: state.password.invalid ? MESSAGES.PASSWORD_ERROR : null,
+        errorText: state.password.invalid
+            ? AppLocalizations.of(Get.context!)
+                ?.password_must_be_at_least_6_characters
+            : null,
         obscureText: obscurePassword,
         focusNode: _passwordFocusNode,
         boxDecoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25), color: COLORS.WHITE),
-        hint: MESSAGES.PASSWORD_HINT,
+        hint: AppLocalizations.of(Get.context!)?.enter_your_password,
         endIcon: GestureDetector(
           onTap: () => setState(() => obscurePassword = !obscurePassword),
           child: Icon(
@@ -162,8 +159,10 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
         focusNode: _emailFocusNode,
         boxDecoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25), color: COLORS.WHITE),
-        hint: MESSAGES.EMAIL_HINT,
-        errorText: state.email.invalid ? MESSAGES.EMAIL_ERROR : null,
+        hint: AppLocalizations.of(Get.context!)?.enter_your_email,
+        errorText: state.email.invalid
+            ? AppLocalizations.of(Get.context!)?.this_account_is_invalid
+            : null,
       );
     });
   }
@@ -177,8 +176,10 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
         focusNode: _fullNameFocusNode,
         boxDecoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25), color: COLORS.WHITE),
-        hint: MESSAGES.FULL_NAME_HINT,
-        errorText: state.fullName.invalid ? MESSAGES.WARNING_FULL_NAME : null,
+        hint: AppLocalizations.of(Get.context!)?.enter_full_name,
+        errorText: state.fullName.invalid
+            ? AppLocalizations.of(Get.context!)?.name_cannot_be_left_blank
+            : null,
       );
     });
   }

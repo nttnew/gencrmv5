@@ -88,7 +88,7 @@ class _ScannerQrcodeState extends State<ScannerQrcode> {
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
     if (!p) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('no Permission')),
+        const SnackBar(content: Text('!!!!!')),
       );
     }
   }

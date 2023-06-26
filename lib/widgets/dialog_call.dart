@@ -9,6 +9,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../bloc/login/login_bloc.dart';
 import '../screens/call/call_screen.dart';
 import '../src/src_index.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class DialogCall extends StatefulWidget {
   final String sdt;
@@ -98,16 +100,6 @@ class _DialogCallState extends State<DialogCall>
   void _handleCall(BuildContext context, [bool voiceonly = false]) {
     var dest = widget.sdt;
     if (dest.isEmpty) {
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return const AlertDialog(
-            title: Text('Target is empty.'),
-            content: Text('Please enter a SIP URI or username!'),
-          );
-        },
-      );
     } else {
       pitelClient.call(dest, voiceonly).then((value) => value.fold((succ) => {},
           (err) => {LoginBloc.of(context).receivedMsg.add(err.toString())}));
@@ -146,11 +138,13 @@ class _DialogCallState extends State<DialogCall>
                         text: widget.sdt,
                       ),
                     ).then((_) {
-                      showToast('Sao chép thành công');
+                      showToast(
+                          AppLocalizations.of(Get.context!)?.copy_success ??
+                              '');
                     });
                   },
                   child: WidgetText(
-                      title: 'Sao chép',
+                      title: AppLocalizations.of(Get.context!)?.copy,
                       style: AppStyle.DEFAULT_18_BOLD
                           .copyWith(fontSize: 24, fontWeight: FontWeight.w600)),
                 ),
@@ -162,7 +156,7 @@ class _DialogCallState extends State<DialogCall>
                     launchUrl(Uri(scheme: "tel", path: widget.sdt));
                   },
                   child: WidgetText(
-                      title: 'Gọi điện',
+                      title: AppLocalizations.of(Get.context!)?.call,
                       style: AppStyle.DEFAULT_18_BOLD
                           .copyWith(fontSize: 24, fontWeight: FontWeight.w600)),
                 ),
@@ -175,7 +169,7 @@ class _DialogCallState extends State<DialogCall>
                       _handleCall(context, true);
                     },
                     child: WidgetText(
-                        title: 'Gọi qua tổng đài',
+                        title: AppLocalizations.of(Get.context!)?.call_operator,
                         style: AppStyle.DEFAULT_18_BOLD.copyWith(
                             fontSize: 24, fontWeight: FontWeight.w600)),
                   ),

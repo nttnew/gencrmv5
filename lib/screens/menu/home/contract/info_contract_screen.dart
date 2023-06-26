@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../bloc/payment_contract/payment_contract_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/job_chance.dart';
 import '../../../../src/models/model_generator/support.dart';
@@ -50,22 +51,24 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
 
   getThaoTac() {
     list.add(ModuleThaoTac(
-      title: "Ký nhận",
+      title: AppLocalizations.of(Get.context!)?.sign ?? '',
       icon: ICONS.IC_ELECTRIC_SIGN_PNG,
       isSvg: false,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormSign('Ký nhận', id);
+        AppNavigator.navigateFormSign(
+            AppLocalizations.of(Get.context!)?.sign ?? '', id);
       },
     ));
 
     list.add(ModuleThaoTac(
-      title: "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
+      title:
+          "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateFormAdd(
-            "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
+            "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
             ADD_JOB_CONTRACT,
             id: int.parse(id), onRefresh: () {
           _bloc.controllerCV.reloadData();
@@ -74,12 +77,13 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
     ));
 
     list.add(ModuleThaoTac(
-      title: "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
+      title:
+          "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
       icon: ICONS.IC_ADD_SUPPORT_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateFormAdd(
-            "Thêm ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
+            "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
             ADD_SUPPORT_CONTRACT,
             id: int.parse(id), onRefresh: () {
           _bloc.controllerHT.reloadData();
@@ -88,7 +92,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
     ));
 
     list.add(ModuleThaoTac(
-      title: "Thêm thảo luận",
+      title: AppLocalizations.of(Get.context!)?.add_discuss ?? '',
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
@@ -99,7 +103,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
     ));
 
     list.add(ModuleThaoTac(
-      title: "Xem đính kèm",
+      title: AppLocalizations.of(Get.context!)?.see_attachment ?? '',
       icon: ICONS.IC_ATTACK_SVG,
       onThaoTac: () async {
         Get.back();
@@ -112,7 +116,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
     ));
 
     list.add(ModuleThaoTac(
-      title: "Sửa",
+      title: AppLocalizations.of(Get.context!)?.edit ?? '',
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
@@ -123,12 +127,15 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
     ));
 
     list.add(ModuleThaoTac(
-      title: "Xoá",
+      title: AppLocalizations.of(Get.context!)?.delete ?? '',
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
-            onTap2: () => _bloc.add(InitDeleteContractEvent(int.parse(id))),
-            content: "Bạn chắc chắn muốn xóa không ?");
+          onTap2: () => _bloc.add(InitDeleteContractEvent(int.parse(id))),
+          content: AppLocalizations.of(Get.context!)
+                  ?.are_you_sure_you_want_to_delete ??
+              '',
+        );
       },
     ));
   }
@@ -142,8 +149,8 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
           if (state is SuccessDeleteContractState) {
             LoadingApi().popLoading();
             ShowDialogCustom.showDialogBase(
-              title: MESSAGES.NOTIFICATION,
-              content: "Thành công",
+              title: AppLocalizations.of(Get.context!)?.notification,
+              content: AppLocalizations.of(Get.context!)?.success ?? '',
               onTap1: () {
                 Get.back();
                 Get.back();
@@ -155,9 +162,9 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
           } else if (state is ErrorDeleteContractState) {
             LoadingApi().popLoading();
             ShowDialogCustom.showDialogBase(
-              title: MESSAGES.NOTIFICATION,
+              title: AppLocalizations.of(Get.context!)?.notification,
               content: state.msg,
-              textButton1: "Quay lại",
+              textButton1: AppLocalizations.of(Get.context!)?.come_back ?? '',
               onTap1: () {
                 Get.back();
                 Get.back();
@@ -191,10 +198,13 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                           labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
                           tabs: [
                             Tab(
-                              text: 'Thông tin chung',
+                              text: AppLocalizations.of(Get.context!)
+                                      ?.information ??
+                                  '',
                             ),
                             Tab(
-                              text: 'Thanh toán',
+                              text:
+                                  AppLocalizations.of(Get.context!)?.pay ?? '',
                             ),
                             Tab(
                               text: ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC,

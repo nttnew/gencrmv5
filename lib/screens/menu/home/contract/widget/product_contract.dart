@@ -3,8 +3,9 @@ import 'package:gen_crm/api_resfull/api.dart';
 import 'package:gen_crm/screens/menu/home/contract/widget/list_product.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
-
 import '../../../../../models/product_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class ProductContract extends StatefulWidget {
   ProductContract({
@@ -15,11 +16,11 @@ class ProductContract extends StatefulWidget {
     this.neverHidden = false,
     this.canDelete = false,
   }) : super(key: key);
-  List<ProductModel> data;
-  Function addProduct;
-  Function reload;
-  bool neverHidden;
-  bool canDelete;
+  final List<ProductModel> data;
+  final Function addProduct;
+  final Function reload;
+  final bool neverHidden;
+  final bool canDelete;
 
   @override
   State<ProductContract> createState() => _ProductContractState();
@@ -124,7 +125,8 @@ class _ProductContractState extends State<ProductContract> {
                       color: COLORS.TEXT_COLOR,
                     )),
                 child: WidgetText(
-                  title: "Chọn sản phẩm",
+                  title: AppLocalizations.of(Get.context!)
+                      ?.select_product??'',
                   style: AppStyle.DEFAULT_14_BOLD.copyWith(color: Colors.white),
                 ),
               ),

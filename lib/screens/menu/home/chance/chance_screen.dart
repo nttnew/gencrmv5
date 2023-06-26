@@ -14,6 +14,7 @@ import '../../../../widgets/tree/tree_node_model.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 import 'widget/widget_chance_item.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChanceScreen extends StatefulWidget {
   const ChanceScreen({Key? key}) : super(key: key);
@@ -81,7 +82,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
               stream: managerBloc.managerTrees,
               builder: (context, snapshot) {
                 return SearchBase(
-                  hint: "Tìm ${title.toLowerCase()}",
+                  hint: "${AppLocalizations.of(Get.context!)?.find} ${title.toLowerCase()}",
                   leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                   endIcon: (snapshot.data ?? []).isNotEmpty
                       ? SvgPicture.asset(
@@ -164,7 +165,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
             child: FloatingActionButton(
               backgroundColor: Color(0xff1AA928),
               onPressed: () {
-                AppNavigator.navigateFormAdd('Thêm ${title.toLowerCase()}', ADD_CHANCE);
+                AppNavigator.navigateFormAdd('${AppLocalizations.of(Get.context!)?.add} ${title.toLowerCase()}', ADD_CHANCE);
               },
               child: Icon(Icons.add, size: 40),
             ),

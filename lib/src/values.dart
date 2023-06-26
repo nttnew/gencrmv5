@@ -3,14 +3,12 @@ import 'dart:ui';
 import 'dart:io' show File, Platform;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:gen_crm/src/messages.dart';
 
 class AppValue {
   AppValue._();
 
   static final APP_MONEY_FORMAT = new NumberFormat.currency(
-      locale: 'vi',
-      symbol: MESSAGES.MONEY_UNIT); // ignore: non_constant_identifier_names
+      locale: 'vi', symbol: ''); // ignore: non_constant_identifier_names
   static final APP_DATE_FORMAT =
       DateFormat('kk:mm - dd/MM/yyyy'); // ignore: non_constant_identifier_names
   static final DATE_FORMAT =

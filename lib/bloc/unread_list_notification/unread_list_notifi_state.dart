@@ -1,20 +1,20 @@
 part of 'unread_list_notifi_bloc.dart';
 
-abstract class UnReadListNotifiState extends Equatable {
+abstract class NotificationState extends Equatable {
   @override
   List<Object?> get props => [];
 
-  UnReadListNotifiState();
+  NotificationState();
 }
 
-class InitGetUnReadListNotifiState extends UnReadListNotifiState {}
+class InitGetNotificationState extends NotificationState {}
 
-class UpdateUnReadListNotifiState extends UnReadListNotifiState {
-  List<DataNotification> list;
-  String total;
-  int limit, page;
+class UpdateNotificationState extends NotificationState {
+  final List<DataNotification> list;
+  final String total;
+  final int limit, page;
 
-  UpdateUnReadListNotifiState(
+  UpdateNotificationState(
       {required this.list,
       required this.page,
       required this.total,
@@ -24,37 +24,37 @@ class UpdateUnReadListNotifiState extends UnReadListNotifiState {
   List<Object> get props => [this.list, this.total, this.limit, this.page];
 }
 
-class LoadingUnReadListNotifiState extends UnReadListNotifiState {}
+class LoadingNotificationState extends NotificationState {}
 
-class DeleteUnReadListNotifiState extends UnReadListNotifiState {}
+class DeleteNotificationState extends NotificationState {}
 
-class ReadUnReadListNotifiState extends UnReadListNotifiState {}
+class ReadNotificationState extends NotificationState {}
 
-class ErrorReadUnReadListNotifiState extends UnReadListNotifiState {
+class ErrorNotificationState extends NotificationState {
   final String msg;
 
-  ErrorReadUnReadListNotifiState(this.msg);
+  ErrorNotificationState(this.msg);
 
   @override
   List<Object> get props => [msg];
 }
 
-class ErrorDeleteUnReadListNotifiState extends UnReadListNotifiState {
+class ErrorDeleteNotificationState extends NotificationState {
   final String msg;
 
-  ErrorDeleteUnReadListNotifiState(this.msg);
+  ErrorDeleteNotificationState(this.msg);
 
   @override
   List<Object> get props => [msg];
 }
 
-class ErrorGetUnReadListNotifiState extends UnReadListNotifiState {
+class ErrorGetNotificationState extends NotificationState {
   final String msg;
 
-  ErrorGetUnReadListNotifiState(this.msg);
+  ErrorGetNotificationState(this.msg);
 
   @override
   List<Object> get props => [msg];
 }
 
-class NotificationNeedRead extends UnReadListNotifiState {}
+class NotificationNeedRead extends NotificationState {}

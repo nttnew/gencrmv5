@@ -7,14 +7,14 @@ abstract class DetailWorkEvent extends Equatable {
 }
 
 class InitGetDetailWorkEvent extends DetailWorkEvent {
-  int? id;
+  final int? id;
   InitGetDetailWorkEvent(this.id);
   @override
   List<Object?> get props => [id];
 }
 
 class InitDeleteWorkEvent extends DetailWorkEvent {
-  int? id;
+  final int? id;
   InitDeleteWorkEvent(this.id);
   @override
   List<Object?> get props => [id];

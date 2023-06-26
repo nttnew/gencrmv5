@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import '../../api_resfull/user_repository.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
+
 import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
+
 import '../../src/models/model_generator/detail_product_customer_response.dart';
 import '../../widgets/listview_loadmore_base.dart';
 
@@ -51,7 +55,9 @@ class DetailProductCustomerBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetDetailProductCustomerState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetDetailProductCustomerState(AppLocalizations.of(Get.context!)?.
+
+an_error_occurred??'');
       throw e;
     }
     LoadingApi().popLoading();
@@ -175,7 +181,9 @@ class DetailProductCustomerBloc
         yield ErrorDeleteProductState(msg);
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorDeleteProductState(MESSAGES.CONNECT_ERROR);
+      yield ErrorDeleteProductState(AppLocalizations.of(Get.context!)?.
+
+an_error_occurred??'');
       throw e;
     }
     LoadingApi().popLoading();

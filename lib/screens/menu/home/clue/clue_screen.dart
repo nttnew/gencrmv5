@@ -16,6 +16,7 @@ import '../../../../widgets/tree/tree_node_model.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../../../widgets/widget_text.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ClueScreen extends StatefulWidget {
   const ClueScreen({Key? key}) : super(key: key);
@@ -79,7 +80,8 @@ class _ClueScreenState extends State<ClueScreen> {
         child: FloatingActionButton(
           backgroundColor: Color(0xff1AA928),
           onPressed: () {
-            AppNavigator.navigateFormAdd('Thêm ${title}', ADD_CLUE);
+            AppNavigator.navigateFormAdd(
+                '${AppLocalizations.of(Get.context!)?.add} ${title}', ADD_CLUE);
           },
           child: Icon(Icons.add, size: 40),
         ),
@@ -97,7 +99,8 @@ class _ClueScreenState extends State<ClueScreen> {
                   stream: managerBloc.managerTrees,
                   builder: (context, snapshot) {
                     return SearchBase(
-                      hint: 'Tìm ${title.toLowerCase()}',
+                      hint:
+                          '${AppLocalizations.of(Get.context!)?.find} ${title.toLowerCase()}',
                       leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                       endIcon: (snapshot.data ?? []).isNotEmpty
                           ? SvgPicture.asset(
@@ -194,19 +197,25 @@ class _ClueScreenState extends State<ClueScreen> {
           children: [
             itemTextIcon(
               paddingTop: 0,
-              text: clueData.name ?? 'Chưa có',
+              text: clueData.name ??
+                  AppLocalizations.of(Get.context!)?.not_yet ??
+                  '',
               icon: ICONS.IC_CHANCE_3X_PNG,
               isSVG: false,
               styleText:
                   AppStyle.DEFAULT_18_BOLD.copyWith(color: COLORS.TEXT_COLOR),
             ),
             itemTextIcon(
-              text: clueData.customer?.name ?? 'Chưa có',
+              text: clueData.customer?.name ??
+                  AppLocalizations.of(Get.context!)?.not_yet ??
+                  '',
               icon: ICONS.IC_USER2_SVG,
               colorIcon: COLORS.GREY,
             ),
             itemTextIcon(
-              text: clueData.email?.val ?? 'Chưa có',
+              text: clueData.email?.val ??
+                  AppLocalizations.of(Get.context!)?.not_yet ??
+                  '',
               icon: ICONS.IC_MAIL_SVG,
               colorIcon: COLORS.GREY,
             ),
@@ -217,7 +226,9 @@ class _ClueScreenState extends State<ClueScreen> {
                   Expanded(
                     child: itemTextIcon(
                       paddingTop: 0,
-                      text: clueData.phone?.val ?? 'Chưa có',
+                      text: clueData.phone?.val ??
+                          AppLocalizations.of(Get.context!)?.not_yet ??
+                          '',
                       icon: ICONS.IC_CALL_SVG,
                       styleText: AppStyle.DEFAULT_LABEL_PRODUCT
                           .copyWith(color: COLORS.TEXT_COLOR),
@@ -231,7 +242,9 @@ class _ClueScreenState extends State<ClueScreen> {
                     width: 4,
                   ),
                   WidgetText(
-                    title: clueData.total_note ?? 'Chưa có',
+                    title: clueData.total_note ??
+                        AppLocalizations.of(Get.context!)?.not_yet ??
+                        '',
                     style: TextStyle(
                       color: HexColor("#0052B4"),
                     ),

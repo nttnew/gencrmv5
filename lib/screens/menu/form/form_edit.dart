@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/contract/contract_bloc.dart';
 import 'package:gen_crm/bloc/contract/phone_bloc.dart';
@@ -26,6 +25,7 @@ import '../../../bloc/product_customer_module/product_customer_module_bloc.dart'
 import '../../../bloc/product_module/product_module_bloc.dart';
 import '../../../bloc/support/support_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/models/model_generator/add_customer.dart';
 import '../../../widgets/pick_file_image.dart';
@@ -125,9 +125,9 @@ class _FormEditState extends State<FormEdit> {
 
   showLog(String mess) {
     ShowDialogCustom.showDialogBase(
-      title: MESSAGES.NOTIFICATION,
+      title: AppLocalizations.of(Get.context!)?.notification,
       content: mess,
-      textButton1: "Quay lại",
+      textButton1: AppLocalizations.of(Get.context!)?.come_back,
       onTap1: () {
         Get.back();
         Get.back();
@@ -141,14 +141,17 @@ class _FormEditState extends State<FormEdit> {
       children: [
         Scaffold(
             backgroundColor: Colors.white,
-            appBar: AppbarBaseNormal('Sửa thông tin'),
+            appBar: AppbarBaseNormal(
+                AppLocalizations.of(Get.context!)?.edit_information ?? ''),
             body: BlocListener<AddDataBloc, AddDataState>(
               listener: (context, state) async {
                 if (state is SuccessEditCustomerState) {
                   LoadingApi().popLoading();
                   ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
-                    content: "Update dữ liệu thành công!",
+                    title: AppLocalizations.of(Get.context!)?.notification,
+                    content: AppLocalizations.of(Get.context!)
+                            ?.update_data_successfully ??
+                        '',
                     onTap1: () {
                       if (type == EDIT_CUSTOMER)
                         GetListCustomerBloc.of(context)
@@ -161,14 +164,15 @@ class _FormEditState extends State<FormEdit> {
                 if (state is ErrorEditCustomerState) {
                   LoadingApi().popLoading();
                   ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
+                    title: AppLocalizations.of(Get.context!)?.notification,
                     content: state.msg,
                   );
                 }
                 if (state is SuccessAddContactCustomerState) {
                   ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
-                    content: "Update dữ liệu thành công!",
+                    title: AppLocalizations.of(Get.context!)?.notification,
+                    content: AppLocalizations.of(Get.context!)
+                        ?.update_data_successfully,
                     onTap1: () {
                       Get.back();
                       Get.back();
@@ -209,7 +213,7 @@ class _FormEditState extends State<FormEdit> {
                 }
                 if (state is ErrorAddContactCustomerState) {
                   ShowDialogCustom.showDialogBase(
-                    title: MESSAGES.NOTIFICATION,
+                    title: AppLocalizations.of(Get.context!)?.notification,
                     content: state.msg,
                   );
                 }
@@ -294,7 +298,7 @@ class _FormEditState extends State<FormEdit> {
                           FileDinhKemUiBase(
                               context: context, onTap: () {}, isSave: false),
                           SizedBox(
-                            height: AppValue.widths * 0.1 + 10,
+                            height: 25,
                           )
                         ],
                       );
@@ -528,56 +532,6 @@ class _FormEditState extends State<FormEdit> {
         : SizedBox();
   }
 
-  Column fieldInputImage() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Hình ảnh",
-          style: AppStyle.DEFAULT_14W600,
-        ),
-        SizedBox(
-          height: AppValue.heights * 0.005,
-        ),
-        Container(
-          width: double.infinity,
-          height: AppValue.heights * 0.05,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: HexColor("#BEB4B4"))),
-          child: Row(children: [
-            SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: "Tải hình ảnh",
-                    enabled: false,
-                    hintStyle: AppStyle.DEFAULT_14W500,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 15),
-              child: Center(
-                  child: Container(
-                      height: 50,
-                      width: 50,
-                      child: SvgPicture.asset(ICONS.IC_INPUT_SVG))),
-            )
-          ]),
-        ),
-      ],
-    );
-  }
-
   Widget _fieldInputCustomer(
       CustomerIndividualItemData data, int indexParent, int indexChild,
       {bool noEdit = false, String value = ""}) {
@@ -647,7 +601,6 @@ class _FormEditState extends State<FormEdit> {
     );
   }
 
-
   void onClickSave() {
     final Map<String, dynamic> data = {};
     bool check = false;
@@ -668,8 +621,9 @@ class _FormEditState extends State<FormEdit> {
     }
     if (check == true) {
       ShowDialogCustom.showDialogBase(
-        title: MESSAGES.NOTIFICATION,
-        content: "Hãy nhập đủ các trường bắt buộc (*)",
+        title: AppLocalizations.of(Get.context!)?.notification,
+        content:
+            AppLocalizations.of(Get.context!)?.please_enter_all_required_fields,
       );
     } else {
       data["id"] = id;
@@ -706,7 +660,7 @@ class RenderCheckBox extends StatefulWidget {
   RenderCheckBox({Key? key, required this.onChange, required this.data})
       : super(key: key);
 
-  Function? onChange;
+  final Function? onChange;
   final CustomerIndividualItemData data;
 
   @override
@@ -718,7 +672,6 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     setState(() {
       isCheck = widget.data.field_set_value == "1" ? true : false;

@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import '../../api_resfull/user_repository.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
+
 import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/messages.dart';
+
 import '../../src/models/model_generator/detail_product_module_response.dart';
 
 part 'detail_product_event.dart';
@@ -43,7 +47,8 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetDetailProductState(MESSAGES.CONNECT_ERROR);
+      yield ErrorGetDetailProductState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -66,7 +71,8 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
         yield ErrorDeleteProductState(msg);
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorDeleteProductState(MESSAGES.CONNECT_ERROR);
+      yield ErrorDeleteProductState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();

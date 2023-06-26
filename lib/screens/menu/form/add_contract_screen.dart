@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import 'package:gen_crm/bloc/contract/phone_bloc.dart';
@@ -19,6 +18,7 @@ import '../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../bloc/contract/attack_bloc.dart';
 import '../../../bloc/contract/contract_bloc.dart';
 import '../../../models/product_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/app_const.dart';
 import '../../../src/models/model_generator/login_response.dart';
@@ -58,8 +58,18 @@ class _FormAddContractState extends State<FormAddContract> {
     String nameCustomerScreen =
         shareLocal.getString(PreferencesKey.NAME_CUSTOMER);
     listCustomerForChance = [
-      [CA_NHAN, 'Thêm ${nameCustomerScreen.toString().toLowerCase()} cá nhân'],
-      [TO_CHUC, 'Thêm ${nameCustomerScreen.toString().toLowerCase()} tổ chức']
+      [
+        CA_NHAN,
+        '${AppLocalizations.of(Get.context!)?.begin}'
+            ' ${nameCustomerScreen.toString().toLowerCase()} '
+            '${AppLocalizations.of(Get.context!)?.individual}'
+      ],
+      [
+        TO_CHUC,
+        '${AppLocalizations.of(Get.context!)?.begin}'
+            ' ${nameCustomerScreen.toString().toLowerCase()} '
+            '${AppLocalizations.of(Get.context!)?.organization}'
+      ]
     ];
     AttackBloc.of(context).add(LoadingAttackEvent());
     if (id_first != null)
@@ -132,14 +142,15 @@ class _FormAddContractState extends State<FormAddContract> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppbarBaseNormal(
-          'Thêm ${title.toLowerCase()}',
+          title,
         ),
         body: BlocListener<AddDataBloc, AddDataState>(
           listener: (context, state) async {
             if (state is SuccessAddCustomerOrState) {
               ShowDialogCustom.showDialogBase(
-                title: MESSAGES.NOTIFICATION,
-                content: 'Thêm mới dữ liệu thành công!',
+                title: AppLocalizations.of(Get.context!)?.notification,
+                content: AppLocalizations.of(Get.context!)
+                    ?.new_data_added_successfully,
                 onTap1: () {
                   Get.back();
                   Get.back();
@@ -149,14 +160,15 @@ class _FormAddContractState extends State<FormAddContract> {
             }
             if (state is ErrorAddCustomerOrState) {
               ShowDialogCustom.showDialogBase(
-                title: MESSAGES.NOTIFICATION,
+                title: AppLocalizations.of(Get.context!)?.notification,
                 content: state.msg,
               );
             }
             if (state is SuccessAddContactCustomerState) {
               ShowDialogCustom.showDialogBase(
-                title: MESSAGES.NOTIFICATION,
-                content: 'Thêm mới dữ liệu thành công!',
+                title: AppLocalizations.of(Get.context!)?.notification,
+                content: AppLocalizations.of(Get.context!)
+                    ?.new_data_added_successfully,
                 onTap1: () {
                   Get.back();
                   Get.back();
@@ -166,7 +178,7 @@ class _FormAddContractState extends State<FormAddContract> {
             }
             if (state is ErrorAddContactCustomerState) {
               ShowDialogCustom.showDialogBase(
-                title: MESSAGES.NOTIFICATION,
+                title: AppLocalizations.of(Get.context!)?.notification,
                 content: state.msg,
               );
             }
@@ -653,56 +665,6 @@ class _FormAddContractState extends State<FormAddContract> {
     );
   }
 
-  Column fieldInputImage() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Hình ảnh',
-          style: AppStyle.DEFAULT_14W600,
-        ),
-        SizedBox(
-          height: AppValue.heights * 0.005,
-        ),
-        Container(
-          width: double.infinity,
-          height: AppValue.heights * 0.05,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: HexColor('#BEB4B4'))),
-          child: Row(children: [
-            SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Tải hình ảnh',
-                    enabled: false,
-                    hintStyle: AppStyle.DEFAULT_14W500,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 15),
-              child: Center(
-                  child: Container(
-                      height: 50,
-                      width: 50,
-                      child: SvgPicture.asset(ICONS.IC_INPUT_SVG))),
-            )
-          ]),
-        ),
-      ],
-    );
-  }
-
   Widget _fieldInputCustomer(
     CustomerIndividualItemData data,
     int indexParent,
@@ -814,10 +776,12 @@ class _FormAddContractState extends State<FormAddContract> {
     }
     if (check == true) {
       ShowDialogCustom.showDialogBase(
-        title: MESSAGES.NOTIFICATION,
+        title: AppLocalizations.of(Get.context!)?.notification,
         content: TotalBloc.of(context).unpaidStream.value < 0
-            ? 'Số tiền đã thanh toán không được lớn hơn tổng tiền'
-            : 'Hãy nhập đủ các trường bắt buộc (*)',
+            ? AppLocalizations.of(Get.context!)
+                ?.the_amount_paid_cannot_be_greater_than_the_total_amount
+            : AppLocalizations.of(Get.context!)
+                ?.please_enter_all_required_fields,
       );
     } else {
       if (listProduct.length > 0) {

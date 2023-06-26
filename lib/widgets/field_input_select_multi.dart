@@ -3,6 +3,8 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../models/model_data_add.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import '../src/src_index.dart';
 
 class SelectMulti extends StatefulWidget {
@@ -81,8 +83,9 @@ class _SelectMultiState extends State<SelectMulti> {
                 values.removeRange(
                     int.parse(widget.maxLength) - 1, values.length - 1);
                 ShowDialogCustom.showDialogBase(
-                  title: MESSAGES.NOTIFICATION,
-                  content: "Bạn chỉ được chọn ${widget.maxLength} giá trị",
+                  title: AppLocalizations.of(Get.context!)?.notification,
+                  content:
+                      "${AppLocalizations.of(Get.context!)?.you_can_only_choose} ${widget.maxLength} ${AppLocalizations.of(Get.context!)?.value}",
                 );
               } else {
                 List<String> res = [];

@@ -3,6 +3,8 @@ import 'package:gen_crm/screens/menu/home/notification/widget/unread_list.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../widgets/appbar_base.dart';
 import 'widget/index.dart';
+import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({Key? key}) : super(key: key);
@@ -10,7 +12,9 @@ class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppbarBaseNormal(  "Thông báo"),
+        appBar: AppbarBaseNormal(
+          AppLocalizations.of(Get.context!)?.notification ?? '',
+        ),
         body: SafeArea(
           child: DefaultTabController(
             initialIndex: 0,
@@ -28,10 +32,10 @@ class NotificationScreen extends StatelessWidget {
                   indicatorColor: HexColor("#006CB1"),
                   tabs: <Widget>[
                     Tab(
-                      text: "Chưa đọc",
+                      text: AppLocalizations.of(Get.context!)?.unread ?? '',
                     ),
                     Tab(
-                      text: "Đã đọc",
+                      text: AppLocalizations.of(Get.context!)?.readed ?? '',
                     ),
                   ],
                 ),

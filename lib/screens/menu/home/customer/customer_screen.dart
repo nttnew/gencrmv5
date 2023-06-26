@@ -17,6 +17,7 @@ import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 import 'widget/item_list_customer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomerScreen extends StatefulWidget {
   const CustomerScreen({Key? key}) : super(key: key);
@@ -38,8 +39,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
   String title = Get.arguments;
   ScrollController _scrollController = ScrollController();
   List<String> listAdd = [
-    '${Get.arguments} tổ chức',
-    '${Get.arguments} cá nhân',
+    '${Get.arguments} ${AppLocalizations.of(Get.context!)?.organization}',
+    '${Get.arguments} ${AppLocalizations.of(Get.context!)?.individual}',
   ];
   late final ManagerBloc managerBloc;
   late final GetListCustomerBloc _bloc;
@@ -76,10 +77,12 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
   _handleRouter(String value) {
     if (listAdd.last == value) {
-      AppNavigator.navigateAddCustomer("Thêm ${value.toLowerCase()}");
+      AppNavigator.navigateAddCustomer(
+          "${AppLocalizations.of(Get.context!)?.add} ${value.toLowerCase()}");
     } else {
       AppNavigator.navigateFormAddCustomerGroup(
-          "Thêm ${value.toLowerCase()}", ADD_CUSTOMER);
+          "${AppLocalizations.of(Get.context!)?.add} ${value.toLowerCase()}",
+          ADD_CUSTOMER);
     }
   }
 
@@ -186,7 +189,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   stream: managerBloc.managerTrees,
                   builder: (context, snapshot) {
                     return SearchBase(
-                      hint: "Tìm ${title.toLowerCase()}",
+                      hint:
+                          "${AppLocalizations.of(Get.context!)?.find} ${title.toLowerCase()}",
                       leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                       endIcon: (snapshot.data ?? []).isNotEmpty
                           ? SvgPicture.asset(
