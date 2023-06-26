@@ -1,14 +1,16 @@
-import 'package:dio/dio.dart' show Dio, LogInterceptor;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:dio/dio.dart' show Dio;
 import 'package:gen_crm/src/src_index.dart';
-
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:flutter/foundation.dart' as Foundation;
 import '../src/app_const.dart';
+import '../storages/share_local.dart';
 
 class DioProvider {
   static final Dio dio = Dio();
   static void instance({String? token, String? sess, String? baseUrl}) {
     dio
-      ..options.baseUrl = baseUrl ?? dotenv.env[PreferencesKey.BASE_URL]!
+      ..options.baseUrl =
+          baseUrl ?? shareLocal.getString(PreferencesKey.URL_BASE)
       ..options.connectTimeout =
           Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds
       ..options.receiveTimeout =
@@ -28,12 +30,17 @@ class DioProvider {
           }
         }
         return status! < 503;
-      }
-      ..interceptors.add(LogInterceptor(
-        request: true,
-        responseBody: true,
-        requestBody: true,
-        requestHeader: true,
-      ));
+      };
+    if (Foundation.kDebugMode) {
+      dio.interceptors.add(dioLogger());
+    }
   }
+}
+
+PrettyDioLogger dioLogger() {
+  return PrettyDioLogger(
+    requestHeader: true,
+    requestBody: true,
+    maxWidth: 100,
+  );
 }

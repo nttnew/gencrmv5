@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:gen_crm/storages/share_local.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
@@ -309,7 +309,7 @@ class ShowDialogCustom {
 }
 
 String initAddressApplication() {
-  String txt = dotenv.env[PreferencesKey.BASE_URL] ?? '';
+  String txt = shareLocal.getString(PreferencesKey.URL_BASE);
   if (txt.contains('https://')) {
     return txt.substring(txt.indexOf('//') + 2, txt.lastIndexOf('/'));
   } else {
