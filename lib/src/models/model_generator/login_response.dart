@@ -91,7 +91,8 @@ class InfoSetupCallcenterRes {
       nth,
       ntd,
       zalo_call,
-      outbound_proxy;
+      outbound_proxy,
+      wss_mobile;
   final int? type_call;
 
   InfoSetupCallcenterRes({
@@ -104,6 +105,7 @@ class InfoSetupCallcenterRes {
     this.zalo_call,
     this.type_call,
     this.outbound_proxy,
+    this.wss_mobile,
   });
 
   factory InfoSetupCallcenterRes.fromJson(Map<String, dynamic> json) =>

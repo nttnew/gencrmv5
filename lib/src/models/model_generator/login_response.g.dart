@@ -117,6 +117,7 @@ InfoSetupCallcenterRes _$InfoSetupCallcenterResFromJson(
       zalo_call: json['zalo_call'] as String?,
       type_call: json['type_call'] as int?,
       outbound_proxy: json['outbound_proxy'] as String?,
+      wss_mobile: json['wss_mobile'] as String?,
     );
 
 Map<String, dynamic> _$InfoSetupCallcenterResToJson(
@@ -130,5 +131,6 @@ Map<String, dynamic> _$InfoSetupCallcenterResToJson(
       'ntd': instance.ntd,
       'zalo_call': instance.zalo_call,
       'outbound_proxy': instance.outbound_proxy,
+      'wss_mobile': instance.wss_mobile,
       'type_call': instance.type_call,
     };

@@ -36,7 +36,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
   final _key = GlobalKey<ExpandableFabState>();
   String search = '';
   String ids = '';
-  String title = Get.arguments;
+  final String title = Get.arguments ?? '';
   ScrollController _scrollController = ScrollController();
   List<String> listAdd = [
     '${Get.arguments} ${AppLocalizations.of(Get.context!)?.organization}',
@@ -254,6 +254,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                       '${state.listCustomer[index].danh_xung ?? ''}' +
                                           ' ' +
                                           '${state.listCustomer[index].name ?? ''}'),
+                                  title: title,
                                 )),
                       ),
                     ),

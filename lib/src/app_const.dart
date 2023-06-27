@@ -85,12 +85,6 @@ void handleRegisterBase(
   final String pass = stringToBase64.decode(
       LoginBloc.of(context).loginData?.info_user?.password_extension ?? '');
 
-  final String outboundServer = LoginBloc.of(context)
-          .loginData
-          ?.info_user
-          ?.info_setup_callcenter
-          ?.outbound ??
-      '';
   final String domainSever = LoginBloc.of(context)
           .loginData
           ?.info_user
@@ -105,8 +99,8 @@ void handleRegisterBase(
           ?.outbound_proxy ??
       '';
 
-  final String port =
-      LoginBloc.of(context).loginData?.info_user?.info_setup_callcenter?.port ??
+  final String wssMobile =
+      LoginBloc.of(context).loginData?.info_user?.info_setup_callcenter?.wss_mobile ??
           '';
   final sipInfo = SipInfoData.fromJson({
     "authPass": pass,
@@ -119,7 +113,7 @@ void handleRegisterBase(
     "dialPlan": null,
     "randomPort": null,
     "voicemail": null,
-    "wssUrl": 'wss://' + outboundServer + ':' + port,
+    "wssUrl": wssMobile,
     "userName": "${user}@${domain}",
     "apiDomain": domainSever, //apiDomain,
   });

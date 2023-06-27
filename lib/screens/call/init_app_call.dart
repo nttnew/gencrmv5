@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/screens/screen_main.dart';
 import 'package:gen_crm/src/app_const.dart';
@@ -21,6 +22,7 @@ class InitCallApp extends StatefulWidget {
 class _InitCallAppState extends State<InitCallApp> with WidgetsBindingObserver {
   final pitelService = PitelServiceImpl();
   final PitelCall pitelCall = PitelClient.getInstance().pitelCall;
+  bool isCall = false;
 
   @override
   void initState() {
@@ -36,6 +38,18 @@ class _InitCallAppState extends State<InitCallApp> with WidgetsBindingObserver {
         pitelCall.hangup();
       },
     );
+    initRegister();
+  }
+
+  void initRegister() async {
+    isCall = true;
+    final List<dynamic> res = await FlutterCallkitIncoming.activeCalls();
+    if (Platform.isAndroid) {
+      handleRegister();
+    }
+    if (res.isEmpty && Platform.isIOS) {
+      handleRegister();
+    }
   }
 
   @override
@@ -48,7 +62,6 @@ class _InitCallAppState extends State<InitCallApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      //! Re-Register when resumed/open app in IOS
       handleRegister();
     }
   }
@@ -60,17 +73,28 @@ class _InitCallAppState extends State<InitCallApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    if (Platform.isAndroid) {
-      return AppLifecycleTracker(
-        //! Re-Register when resumed/open app in Android
-        didChangeAppState: (state) {
-          if (Platform.isAndroid && state == AppState.opened) {
+    return AppLifecycleTracker(
+      didChangeAppState: (state) async {
+        if (Platform.isIOS) {
+          final List<dynamic> res = await FlutterCallkitIncoming.activeCalls();
+          if (state == AppState.resumed && res.isEmpty) {
+            if (!isCall) {
+              handleRegister();
+            }
+          }
+          if (state == AppState.inactive || state == AppState.paused) {
+            setState(() {
+              isCall = false;
+            });
+          }
+        }
+        if (Platform.isAndroid && state == AppState.resumed) {
+          if (!pitelCall.isConnected) {
             handleRegister();
           }
-        },
-        child: ScreenMain(),
-      );
-    }
-    return ScreenMain();
+        }
+      },
+      child: ScreenMain(),
+    );
   }
 }

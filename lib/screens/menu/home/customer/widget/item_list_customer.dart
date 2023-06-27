@@ -11,9 +11,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 
 class ItemCustomer extends StatelessWidget {
-  const ItemCustomer({Key? key, required this.data, required this.onTap})
+  const ItemCustomer(
+      {Key? key, required this.data, required this.onTap, required this.title})
       : super(key: key);
   final CustomerData data;
+  final String title;
   final Function() onTap;
 
   @override
@@ -106,6 +108,7 @@ class ItemCustomer extends StatelessWidget {
                           builder: (BuildContext context) {
                             return DialogCall(
                               sdt: "${data.phone?.val}",
+                              title: title,
                             );
                           },
                         );

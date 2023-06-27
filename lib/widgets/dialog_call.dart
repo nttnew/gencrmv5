@@ -14,7 +14,12 @@ import 'package:get/get.dart';
 
 class DialogCall extends StatefulWidget {
   final String sdt;
-  const DialogCall({Key? key, required this.sdt}) : super(key: key);
+  final String title;
+  const DialogCall({
+    Key? key,
+    required this.sdt,
+    required this.title,
+  }) : super(key: key);
 
   @override
   State<DialogCall> createState() => _DialogCallState();
@@ -80,6 +85,7 @@ class _DialogCallState extends State<DialogCall>
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => CallScreenWidget(
               modelScreen: ROUTE_NAMES.CUSTOMER,
+              title: widget.title,
             )));
   }
 
@@ -89,6 +95,7 @@ class _DialogCallState extends State<DialogCall>
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => CallScreenWidget(
               modelScreen: ROUTE_NAMES.CUSTOMER,
+              title: widget.title,
             )));
   }
 
