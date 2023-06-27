@@ -309,7 +309,7 @@ class ShowDialogCustom {
 }
 
 String initAddressApplication() {
-  String txt = shareLocal.getString(PreferencesKey.URL_BASE);
+  String txt = shareLocal.getString(PreferencesKey.URL_BASE) ?? '';
   if (txt.contains('https://')) {
     return txt.substring(txt.indexOf('//') + 2, txt.lastIndexOf('/'));
   } else {
