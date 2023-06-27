@@ -76,20 +76,25 @@ Widget noData() => Align(
 
 void handleRegisterBase(
     BuildContext context, PitelServiceImpl pitelService, String deviceToken) {
-  final String domainUrl = shareLocal.getString(PreferencesKey.URL_BASE);
-  final String domain = domainUrl.substring(
-      domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
   final int user =
       int.parse(LoginBloc.of(context).loginData?.info_user?.extension ?? '0');
   Codec<String, String> stringToBase64 = utf8.fuse(base64);
+
   final String pass = stringToBase64.decode(
       LoginBloc.of(context).loginData?.info_user?.password_extension ?? '');
 
-  final String domainSever = LoginBloc.of(context)
+  final String domain = LoginBloc.of(context)
           .loginData
           ?.info_user
           ?.info_setup_callcenter
-          ?.domain ??
+          ?.domain_mobile ??
+      '';
+
+  final String portApp = LoginBloc.of(context)
+          .loginData
+          ?.info_user
+          ?.info_setup_callcenter
+          ?.port_app ??
       '';
 
   final String outboundProxy = LoginBloc.of(context)
@@ -99,12 +104,23 @@ void handleRegisterBase(
           ?.outbound_proxy ??
       '';
 
-  final String wssMobile =
-      LoginBloc.of(context).loginData?.info_user?.info_setup_callcenter?.wss_mobile ??
-          '';
+  final String wssMobile = LoginBloc.of(context)
+          .loginData
+          ?.info_user
+          ?.info_setup_callcenter
+          ?.wss_mobile ??
+      '';
+
+  final String apiDomain = LoginBloc.of(context)
+          .loginData
+          ?.info_user
+          ?.info_setup_callcenter
+          ?.api_url ??
+      '';
+
   final sipInfo = SipInfoData.fromJson({
     "authPass": pass,
-    "registerServer": domain,
+    "registerServer": domain + (portApp != '' ? ':' + portApp : ''),
     "outboundServer": outboundProxy,
     "userID": user,
     "authID": user,
@@ -115,7 +131,7 @@ void handleRegisterBase(
     "voicemail": null,
     "wssUrl": wssMobile,
     "userName": "${user}@${domain}",
-    "apiDomain": domainSever, //apiDomain,
+    "apiDomain": apiDomain, //apiDomain,
   });
   final pnPushParams = PnPushParams(
     pnProvider: Platform.isAndroid ? 'fcm' : 'apns',

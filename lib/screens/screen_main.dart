@@ -151,7 +151,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
         (shareLocal.getString(PreferencesKey.REGISTER_CALL) ?? "true") ==
             "true";
     state = pitelCall.getRegisterState();
-    LoginBloc.of(context).receivedMsg.add(LoginBloc.UNREGISTER);
+    shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.UNREGISTER);
     _bindEventListeners();
     if (isRegister) {
       shareLocal.putString(PreferencesKey.REGISTER_CALL, 'false');
@@ -185,12 +185,18 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   }
 
   Future<void> _registerDeviceToken(String deviceToken) async {
-    final String domainUrl = shareLocal.getString(PreferencesKey.URL_BASE);
-    final String domain = domainUrl.substring(
-        domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
+    final String domain = LoginBloc.of(context)
+            .loginData
+            ?.info_user
+            ?.info_setup_callcenter
+            ?.domain_mobile ??
+        '';
+
     final String user =
         LoginBloc.of(context).loginData?.info_user?.extension ?? '';
+
     bool isAndroid = Platform.isAndroid;
+
     await pitelClient.registerDeviceToken(
       deviceToken: deviceToken,
       platform: isAndroid ? 'android' : 'ios',
@@ -208,10 +214,10 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
         break;
       case PitelRegistrationStateEnum.NONE:
       case PitelRegistrationStateEnum.UNREGISTERED:
-        LoginBloc.of(context).receivedMsg.add(LoginBloc.UNREGISTER);
+        shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.UNREGISTER);
         break;
       case PitelRegistrationStateEnum.REGISTERED:
-        LoginBloc.of(context).receivedMsg.add(LoginBloc.REGISTERED);
+        shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.REGISTERED);
         break;
     }
   }
@@ -268,7 +274,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   @override
   void onNewMessage(PitelSIPMessageRequest msg) {
     var msgBody = msg.request.body as String;
-    LoginBloc.of(context).receivedMsg.add(msgBody);
+    shareLocal.putString(PreferencesKey.REGISTER_MSG, msgBody);
   }
 
   @override

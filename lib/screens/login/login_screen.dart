@@ -27,6 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
+    shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.UNREGISTER);
     String? language = shareLocal.getString(PreferencesKey.LANGUAGE);
     if (language != null) LoginBloc.of(context).locale.add(Locale(language));
     scrollController = ScrollController();
@@ -68,76 +69,76 @@ class _LoginScreenState extends State<LoginScreen> {
                   Stack(
                     children: [
                       RoundedAppBar(),
-                      Positioned(
-                        top: 50,
-                        right: 15,
-                        child: DropdownButton2(
-                          hint: StreamBuilder<Locale>(
-                              stream: LoginBloc.of(context).locale,
-                              builder: (context, snapshot) {
-                                return Row(
-                                  children: [
-                                    Container(
-                                      child: Image.asset(getFlagCountry(
-                                        snapshot.data.toString(),
-                                      )),
-                                      height: 24,
-                                      width: 24,
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                      child: FittedBox(
-                                        child: Text(
-                                          snapshot.data
-                                              .toString()
-                                              .toUpperCase(),
-                                          style: AppStyle.DEFAULT_16_BOLD,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              }),
-                          icon: Container(),
-                          underline: Container(),
-                          onChanged: (String? value) {},
-                          dropdownWidth: 90,
-                          barrierColor: Colors.grey.withOpacity(0.4),
-                          items: L10n.all
-                              .map((items) => DropdownMenuItem<String>(
-                                    onTap: () {
-                                      shareLocal.putString(
-                                          PreferencesKey.LANGUAGE,
-                                          items.toString());
-                                      LoginBloc.of(context).locale.add(items);
-                                      setState(() {});
-                                    },
-                                    value: items.toString(),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          child: Image.asset(getFlagCountry(
-                                            items.toString(),
-                                          )),
-                                          height: 30,
-                                          width: 30,
-                                        ),
-                                        SizedBox(
-                                          width: 4,
-                                        ),
-                                        Text(
-                                          items.toString().toUpperCase(),
-                                          style: AppStyle.DEFAULT_16_BOLD,
-                                        ),
-                                      ],
-                                    ),
-                                  ))
-                              .toList(),
-                        ),
-                      )
+                      // Positioned(
+                      //   top: 50,
+                      //   right: 15,
+                      //   child: DropdownButton2(
+                      //     hint: StreamBuilder<Locale>(
+                      //         stream: LoginBloc.of(context).locale,
+                      //         builder: (context, snapshot) {
+                      //           return Row(
+                      //             children: [
+                      //               Container(
+                      //                 child: Image.asset(getFlagCountry(
+                      //                   snapshot.data.toString(),
+                      //                 )),
+                      //                 height: 24,
+                      //                 width: 24,
+                      //               ),
+                      //               SizedBox(
+                      //                 width: 4,
+                      //               ),
+                      //               SizedBox(
+                      //                 width: 20,
+                      //                 child: FittedBox(
+                      //                   child: Text(
+                      //                     snapshot.data
+                      //                         .toString()
+                      //                         .toUpperCase(),
+                      //                     style: AppStyle.DEFAULT_16_BOLD,
+                      //                   ),
+                      //                 ),
+                      //               ),
+                      //             ],
+                      //           );
+                      //         }),
+                      //     icon: Container(),
+                      //     underline: Container(),
+                      //     onChanged: (String? value) {},
+                      //     dropdownWidth: 90,
+                      //     barrierColor: Colors.grey.withOpacity(0.4),
+                      //     items: L10n.all
+                      //         .map((items) => DropdownMenuItem<String>(
+                      //               onTap: () {
+                      //                 shareLocal.putString(
+                      //                     PreferencesKey.LANGUAGE,
+                      //                     items.toString());
+                      //                 LoginBloc.of(context).locale.add(items);
+                      //                 setState(() {});
+                      //               },
+                      //               value: items.toString(),
+                      //               child: Row(
+                      //                 children: [
+                      //                   Container(
+                      //                     child: Image.asset(getFlagCountry(
+                      //                       items.toString(),
+                      //                     )),
+                      //                     height: 30,
+                      //                     width: 30,
+                      //                   ),
+                      //                   SizedBox(
+                      //                     width: 4,
+                      //                   ),
+                      //                   Text(
+                      //                     items.toString().toUpperCase(),
+                      //                     style: AppStyle.DEFAULT_16_BOLD,
+                      //                   ),
+                      //                 ],
+                      //               ),
+                      //             ))
+                      //         .toList(),
+                      //   ),
+                      // )
                     ],
                   ),
                   AppValue.vSpaceSmall,

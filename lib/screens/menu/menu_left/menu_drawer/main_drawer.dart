@@ -219,6 +219,15 @@ class _MainDrawerState extends State<MainDrawer> {
                       },
                     )
                   : SizedBox()),
+          AppValue.vSpaceTiny,
+          Center(
+            child: WidgetText(
+              title: 'Version: 2.0.0',
+              style: AppStyle.DEFAULT_16.copyWith(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w400),
+            ),
+          ),
           WidgetButton(
             onTap: () {
               ShowDialogCustom.showDialogBase(

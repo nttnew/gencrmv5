@@ -215,9 +215,17 @@ class _InformationAccountState extends State<InformationAccount> {
                                   child: ClipOval(
                                     child: Image.network(
                                       urlAvatar,
-                                      fit: BoxFit.cover,
+                                      fit: BoxFit.contain,
                                       width: 100,
                                       height: 100,
+                                      errorBuilder: (_, __, ___) => Container(
+                                        width: 100,
+                                        height: 100,
+                                        child: Image.asset(
+                                          ICONS.IC_PROFILE_ERROR_PNG,
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
