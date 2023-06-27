@@ -12,9 +12,16 @@ import '../src/src_index.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 
+import '../storages/share_local.dart';
+
 class DialogCall extends StatefulWidget {
   final String sdt;
-  const DialogCall({Key? key, required this.sdt}) : super(key: key);
+  final String title;
+  const DialogCall({
+    Key? key,
+    required this.sdt,
+    required this.title,
+  }) : super(key: key);
 
   @override
   State<DialogCall> createState() => _DialogCallState();
@@ -41,7 +48,7 @@ class _DialogCallState extends State<DialogCall>
       case PitelRegistrationStateEnum.NONE:
       case PitelRegistrationStateEnum.UNREGISTERED:
       case PitelRegistrationStateEnum.REGISTERED:
-        LoginBloc.of(context).receivedMsg.add(LoginBloc.UNREGISTER);
+        shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.UNREGISTER);
         break;
     }
   }
@@ -65,7 +72,7 @@ class _DialogCallState extends State<DialogCall>
   @override
   void onNewMessage(PitelSIPMessageRequest msg) {
     var msgBody = msg.request.body as String;
-    LoginBloc.of(context).receivedMsg.add(msgBody);
+    shareLocal.putString(PreferencesKey.REGISTER_MSG, msgBody);
   }
 
   @override
@@ -80,6 +87,7 @@ class _DialogCallState extends State<DialogCall>
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => CallScreenWidget(
               modelScreen: ROUTE_NAMES.CUSTOMER,
+              title: widget.title,
             )));
   }
 
@@ -89,6 +97,7 @@ class _DialogCallState extends State<DialogCall>
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => CallScreenWidget(
               modelScreen: ROUTE_NAMES.CUSTOMER,
+              title: widget.title,
             )));
   }
 
@@ -101,8 +110,12 @@ class _DialogCallState extends State<DialogCall>
     var dest = widget.sdt;
     if (dest.isEmpty) {
     } else {
-      pitelClient.call(dest, voiceonly).then((value) => value.fold((succ) => {},
-          (err) => {LoginBloc.of(context).receivedMsg.add(err.toString())}));
+      pitelClient.call(dest, voiceonly).then((value) => value.fold(
+          (succ) => {},
+          (err) => {
+                shareLocal.putString(
+                    PreferencesKey.REGISTER_MSG, err.toString())
+              }));
     }
   }
 

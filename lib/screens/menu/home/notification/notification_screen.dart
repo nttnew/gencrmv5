@@ -15,45 +15,43 @@ class NotificationScreen extends StatelessWidget {
         appBar: AppbarBaseNormal(
           AppLocalizations.of(Get.context!)?.notification ?? '',
         ),
-        body: SafeArea(
-          child: DefaultTabController(
-            initialIndex: 0,
-            length: 2,
-            child: Scaffold(
-                appBar: TabBar(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
-                  isScrollable: true,
-                  labelColor: HexColor("#006CB1"),
-                  unselectedLabelColor: HexColor("#697077"),
-                  labelStyle: TextStyle(
-                      fontFamily: "Quicksand",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700),
-                  indicatorColor: HexColor("#006CB1"),
-                  tabs: <Widget>[
-                    Tab(
-                      text: AppLocalizations.of(Get.context!)?.unread ?? '',
-                    ),
-                    Tab(
-                      text: AppLocalizations.of(Get.context!)?.readed ?? '',
+        body: DefaultTabController(
+          initialIndex: 0,
+          length: 2,
+          child: Scaffold(
+              appBar: TabBar(
+                padding: EdgeInsets.symmetric(horizontal: 25),
+                isScrollable: true,
+                labelColor: HexColor("#006CB1"),
+                unselectedLabelColor: HexColor("#697077"),
+                labelStyle: TextStyle(
+                    fontFamily: "Quicksand",
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700),
+                indicatorColor: HexColor("#006CB1"),
+                tabs: <Widget>[
+                  Tab(
+                    text: AppLocalizations.of(Get.context!)?.unread ?? '',
+                  ),
+                  Tab(
+                    text: AppLocalizations.of(Get.context!)?.readed ?? '',
+                  ),
+                ],
+              ),
+              body: Container(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          UnReadList(),
+                          ReadList(),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-                body: Container(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: TabBarView(
-                          children: [
-                            UnReadList(),
-                            ReadList(),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                )),
-          ),
+              )),
         ));
   }
 }

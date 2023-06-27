@@ -28,7 +28,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   BehaviorSubject<Locale> locale = BehaviorSubject.seeded(L10n.all.first);
   static const String UNREGISTER = 'UNREGISTER';
   static const String REGISTERED = 'REGISTERED';
-  late BehaviorSubject<String> receivedMsg = BehaviorSubject.seeded(UNREGISTER);
+  // late BehaviorSubject<String> receivedMsg = BehaviorSubject.seeded(UNREGISTER);
   LoginData? loginData;
 
   LoginBloc({
@@ -48,29 +48,37 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   bool checkRegisterSuccess() {
-    return receivedMsg.value == REGISTERED;
+    return shareLocal.getString(PreferencesKey.REGISTER_MSG) == REGISTERED;
   }
 
   void logout(BuildContext context) {
     shareLocal.putString(PreferencesKey.REGISTER_CALL, 'true');
-    receivedMsg.add(LoginBloc.UNREGISTER);
+    shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.UNREGISTER);
     _removeDeviceToken(context);
     PitelClient.getInstance().pitelCall.unregister();
   }
 
   Future<void> _removeDeviceToken(BuildContext context) async {
-    final String domainUrl = shareLocal.getString(PreferencesKey.URL_BASE);
-    final String domain = domainUrl.substring(
-        domainUrl.indexOf('//') + 2, domainUrl.lastIndexOf('/'));
+
+    final String domain = LoginBloc.of(context)
+        .loginData
+        ?.info_user
+        ?.info_setup_callcenter
+        ?.domain_mobile ??
+        '';
+
     final String user =
         LoginBloc.of(context).loginData?.info_user?.extension ?? '0';
+
     String deviceToken =
         await shareLocal.getString(PreferencesKey.DEVICE_TOKEN) ?? '';
+
     await PitelClient.getInstance().removeDeviceToken(
       deviceToken: deviceToken, // Device token
       domain: domain,
       extension: user,
     );
+
     await shareLocal.putString(PreferencesKey.DEVICE_TOKEN, '');
   }
 

@@ -24,10 +24,12 @@ class CallScreenWidget extends ConsumerStatefulWidget {
     Key? key,
     this.receivedBackground = false,
     this.modelScreen,
+    this.title,
   }) : super(key: key);
   final PitelCall _pitelCall = PitelClient.getInstance().pitelCall;
   final bool receivedBackground;
   final String? modelScreen;
+  final String? title;
 
   @override
   ConsumerState<CallScreenWidget> createState() => _MyCallScreenWidget();
@@ -55,7 +57,6 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     handleCall();
-
     pitelCall.addListener(this);
     if (voiceonly) {
       _initRenderers();
@@ -86,6 +87,7 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
     Navigator.pushReplacementNamed(
       context,
       widget.modelScreen ?? ROUTE_NAMES.MAIN,
+      arguments: widget.title,
     );
   }
 
@@ -293,6 +295,7 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
         break;
       case PitelCallStateEnum.FAILED:
       case PitelCallStateEnum.ENDED:
+        _timer.cancel();
         basicActions.add(hangupBtnInactive);
         break;
       default:

@@ -239,178 +239,176 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
               getThaoTac();
             }
           },
-          child: SafeArea(
-            child: Scaffold(
-              appBar: TabBar(
-                padding: EdgeInsets.symmetric(horizontal: 25),
-                isScrollable: true,
-                controller: _tabController,
-                labelColor: HexColor("#006CB1"),
-                unselectedLabelColor: HexColor("#697077"),
-                labelStyle: TextStyle(
-                    fontFamily: "Quicksand",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700),
-                indicatorColor: HexColor("#006CB1"),
-                tabs: <Widget>[
-                  Tab(
-                    text: AppLocalizations.of(Get.context!)
-                        ?.information??'',
-                  ),
-                  Tab(
-                    text: ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI,
-                        isTitle: true),
-                  ),
-                  Tab(
-                    text: ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN,
-                        isTitle: true),
-                  ),
-                  Tab(
-                    text: ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG,
-                        isTitle: true),
-                  ),
-                  Tab(
-                    text: ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC,
-                        isTitle: true),
-                  ),
-                  Tab(
-                    text:
-                        ModuleMy.getNameModuleMy(ModuleMy.CSKH, isTitle: true),
-                  ),
-                ],
-              ),
-              body: Column(
-                children: [
-                  Expanded(
-                    child: TabBarView(
-                      controller: _tabController,
-                      physics: BouncingScrollPhysics(),
-                      children: <Widget>[
-                        TabInfoCustomer(
-                          id: id,
-                          blocNote: _blocNote,
-                          bloc: _bloc,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25),
-                          child: ListViewLoadMoreBase(
-                            functionInit: (page, isInit) {
-                              return _bloc.getClueCustomer(
-                                  id: int.parse(id),
-                                  page: page,
-                                  isInit: isInit);
-                            },
-                            itemWidget: (int index, data) {
-                              return GestureDetector(
-                                onTap: () {
-                                  AppNavigator.navigateInfoClue(
-                                      data.id ?? '', data.name ?? '');
-                                },
-                                child: ClueCardWidget(data: data),
-                              );
-                            },
-                            controller: _bloc.controllerDM,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25),
-                          child: ListViewLoadMoreBase(
-                            functionInit: (page, isInit) {
-                              return _bloc.getChanceCustomer(
-                                  id: int.parse(id),
-                                  page: page,
-                                  isInit: isInit);
-                            },
-                            itemWidget: (int index, data) {
-                              return GestureDetector(
-                                onTap: () {
-                                  AppNavigator.navigateInfoChance(
-                                      data.id ?? '', data.name ?? '');
-                                },
-                                child: ChanceCardWidget(data: data),
-                              );
-                            },
-                            controller: _bloc.controllerCH,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25),
-                          child: ListViewLoadMoreBase(
-                            functionInit: (page, isInit) {
-                              return _bloc.getContractCustomer(
+          child: Scaffold(
+            appBar: TabBar(
+              padding: EdgeInsets.symmetric(horizontal: 25),
+              isScrollable: true,
+              controller: _tabController,
+              labelColor: HexColor("#006CB1"),
+              unselectedLabelColor: HexColor("#697077"),
+              labelStyle: TextStyle(
+                  fontFamily: "Quicksand",
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700),
+              indicatorColor: HexColor("#006CB1"),
+              tabs: <Widget>[
+                Tab(
+                  text: AppLocalizations.of(Get.context!)
+                      ?.information??'',
+                ),
+                Tab(
+                  text: ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI,
+                      isTitle: true),
+                ),
+                Tab(
+                  text: ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN,
+                      isTitle: true),
+                ),
+                Tab(
+                  text: ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG,
+                      isTitle: true),
+                ),
+                Tab(
+                  text: ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC,
+                      isTitle: true),
+                ),
+                Tab(
+                  text:
+                      ModuleMy.getNameModuleMy(ModuleMy.CSKH, isTitle: true),
+                ),
+              ],
+            ),
+            body: Column(
+              children: [
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    physics: BouncingScrollPhysics(),
+                    children: <Widget>[
+                      TabInfoCustomer(
+                        id: id,
+                        blocNote: _blocNote,
+                        bloc: _bloc,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: ListViewLoadMoreBase(
+                          functionInit: (page, isInit) {
+                            return _bloc.getClueCustomer(
                                 id: int.parse(id),
                                 page: page,
-                                isInit: isInit,
-                              );
-                            },
-                            itemWidget: (int index, data) {
-                              return GestureDetector(
-                                onTap: () {
-                                  AppNavigator.navigateInfoContract(
-                                      data.id ?? '', data.name ?? '');
-                                },
-                                child: ConstractCardWidget(data: data),
-                              );
-                            },
-                            controller: _bloc.controllerHD,
-                          ),
+                                isInit: isInit);
+                          },
+                          itemWidget: (int index, data) {
+                            return GestureDetector(
+                              onTap: () {
+                                AppNavigator.navigateInfoClue(
+                                    data.id ?? '', data.name ?? '');
+                              },
+                              child: ClueCardWidget(data: data),
+                            );
+                          },
+                          controller: _bloc.controllerDM,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25),
-                          child: ListViewLoadMoreBase(
-                            functionInit: (page, isInit) {
-                              return _bloc.getJobCustomer(
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: ListViewLoadMoreBase(
+                          functionInit: (page, isInit) {
+                            return _bloc.getChanceCustomer(
                                 id: int.parse(id),
                                 page: page,
-                                isInit: isInit,
-                              );
-                            },
-                            itemWidget: (int index, data) {
-                              return GestureDetector(
-                                onTap: () {
-                                  AppNavigator.navigateDetailWork(
-                                      int.parse(data.id ?? '0'),
-                                      data.name ?? '');
-                                },
-                                child: WorkCardWidget(data: data),
-                              );
-                            },
-                            controller: _bloc.controllerCV,
-                          ),
+                                isInit: isInit);
+                          },
+                          itemWidget: (int index, data) {
+                            return GestureDetector(
+                              onTap: () {
+                                AppNavigator.navigateInfoChance(
+                                    data.id ?? '', data.name ?? '');
+                              },
+                              child: ChanceCardWidget(data: data),
+                            );
+                          },
+                          controller: _bloc.controllerCH,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25),
-                          child: ListViewLoadMoreBase(
-                            functionInit: (page, isInit) {
-                              return _bloc.getSupportCustomer(
-                                id: int.parse(id),
-                                page: page,
-                                isInit: isInit,
-                              );
-                            },
-                            itemWidget: (int index, data) {
-                              return GestureDetector(
-                                onTap: () {
-                                  AppNavigator.navigateDetailSupport(
-                                      data.id ?? '', data.name ?? '');
-                                },
-                                child: SupportCardWidget(data: data),
-                              );
-                            },
-                            controller: _bloc.controllerHT,
-                          ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: ListViewLoadMoreBase(
+                          functionInit: (page, isInit) {
+                            return _bloc.getContractCustomer(
+                              id: int.parse(id),
+                              page: page,
+                              isInit: isInit,
+                            );
+                          },
+                          itemWidget: (int index, data) {
+                            return GestureDetector(
+                              onTap: () {
+                                AppNavigator.navigateInfoContract(
+                                    data.id ?? '', data.name ?? '');
+                              },
+                              child: ConstractCardWidget(data: data),
+                            );
+                          },
+                          controller: _bloc.controllerHD,
                         ),
-                      ],
-                    ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: ListViewLoadMoreBase(
+                          functionInit: (page, isInit) {
+                            return _bloc.getJobCustomer(
+                              id: int.parse(id),
+                              page: page,
+                              isInit: isInit,
+                            );
+                          },
+                          itemWidget: (int index, data) {
+                            return GestureDetector(
+                              onTap: () {
+                                AppNavigator.navigateDetailWork(
+                                    int.parse(data.id ?? '0'),
+                                    data.name ?? '');
+                              },
+                              child: WorkCardWidget(data: data),
+                            );
+                          },
+                          controller: _bloc.controllerCV,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: ListViewLoadMoreBase(
+                          functionInit: (page, isInit) {
+                            return _bloc.getSupportCustomer(
+                              id: int.parse(id),
+                              page: page,
+                              isInit: isInit,
+                            );
+                          },
+                          itemWidget: (int index, data) {
+                            return GestureDetector(
+                              onTap: () {
+                                AppNavigator.navigateDetailSupport(
+                                    data.id ?? '', data.name ?? '');
+                              },
+                              child: SupportCardWidget(data: data),
+                            );
+                          },
+                          controller: _bloc.controllerHT,
+                        ),
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    child: ButtonThaoTac(onTap: () {
-                      showThaoTac(context, list);
-                    }),
-                  ),
-                ],
-              ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: ButtonThaoTac(onTap: () {
+                    showThaoTac(context, list);
+                  }),
+                ),
+              ],
             ),
           ),
         ));

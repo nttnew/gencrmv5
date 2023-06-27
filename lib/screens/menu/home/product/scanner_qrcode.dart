@@ -28,6 +28,7 @@ class _ScannerQrcodeState extends State<ScannerQrcode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: HexColor("#D0F1EB"),
       body: SafeArea(
         child: Stack(
           children: [
