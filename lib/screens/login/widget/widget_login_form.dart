@@ -213,8 +213,8 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
           return WidgetButton(
             onTap: () async {
               final baseUrl =
-                  await shareLocal.getString(PreferencesKey.URL_BASE);
-              if (baseUrl == null || baseUrl == '' || baseUrl == 'null') {
+                  await shareLocal.getString(PreferencesKey.URL_BASE) ?? '';
+              if (baseUrl == '' || baseUrl == 'null') {
                 shareLocal.putString(
                     PreferencesKey.URL_BASE, BASE_URL.URL_DEMO);
                 DioProvider.instance(baseUrl: BASE_URL.URL_DEMO);

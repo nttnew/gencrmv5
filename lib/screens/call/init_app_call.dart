@@ -19,7 +19,7 @@ class InitCallApp extends StatefulWidget {
   State<InitCallApp> createState() => _InitCallAppState();
 }
 
-class _InitCallAppState extends State<InitCallApp> with WidgetsBindingObserver {
+class _InitCallAppState extends State<InitCallApp> {
   final pitelService = PitelServiceImpl();
   final PitelCall pitelCall = PitelClient.getInstance().pitelCall;
   bool isCall = false;
@@ -48,20 +48,6 @@ class _InitCallAppState extends State<InitCallApp> with WidgetsBindingObserver {
       handleRegister();
     }
     if (res.isEmpty && Platform.isIOS) {
-      handleRegister();
-    }
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
       handleRegister();
     }
   }
