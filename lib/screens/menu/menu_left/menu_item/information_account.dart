@@ -317,7 +317,7 @@ class _InformationAccountState extends State<InformationAccount> {
                             text: AppLocalizations.of(Get.context!)?.save,
                             textStyle: AppStyle.DEFAULT_14.copyWith(
                                 fontWeight: FontWeight.w700,
-                                color: Colors.white),
+                                color: COLORS.WHITE),
                             backgroundColor: Color(0xffF1A400));
                       }))
                 ],

@@ -68,7 +68,7 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
                             fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: Colors.red))
+                            color: COLORS.RED))
                     : TextSpan(),
               ],
             ),

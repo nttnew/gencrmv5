@@ -24,7 +24,7 @@ class ItemContract extends StatelessWidget {
         decoration: BoxDecoration(
           color: COLORS.WHITE,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(width: 1, color: Colors.white),
+          border: Border.all(width: 1, color: COLORS.WHITE),
           boxShadow: [
             BoxShadow(
               color: COLORS.BLACK.withOpacity(0.1),

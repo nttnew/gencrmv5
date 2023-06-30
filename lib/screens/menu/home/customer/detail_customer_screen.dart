@@ -9,7 +9,6 @@ import 'package:gen_crm/screens/menu/home/customer/widget/item/general_infor_cus
 import 'package:gen_crm/screens/menu/home/customer/widget/item/work_card_widget.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -244,13 +243,13 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
               padding: EdgeInsets.symmetric(horizontal: 25),
               isScrollable: true,
               controller: _tabController,
-              labelColor: HexColor("#006CB1"),
-              unselectedLabelColor: HexColor("#697077"),
+              labelColor: COLORS.ff006CB1,
+              unselectedLabelColor: COLORS.ff697077,
               labelStyle: TextStyle(
                   fontFamily: "Quicksand",
                   fontSize: 14,
                   fontWeight: FontWeight.w700),
-              indicatorColor: HexColor("#006CB1"),
+              indicatorColor: COLORS.ff006CB1,
               tabs: <Widget>[
                 Tab(
                   text: AppLocalizations.of(Get.context!)

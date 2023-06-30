@@ -15,7 +15,7 @@ class GetSnackBarUtils {
   static Color _backgroundColor = COLORS.PRIMARY_COLOR;
   static Color _successColor = Colors.green;
   static Color _failureColor = Colors.orange;
-  static Color _errorColor = Colors.red;
+  static Color _errorColor = COLORS.RED;
   static Color _warningColor = Colors.yellow;
   static Color _informationColor = Colors.blue;
 

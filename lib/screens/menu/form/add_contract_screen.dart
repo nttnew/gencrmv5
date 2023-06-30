@@ -185,7 +185,7 @@ class _FormAddContractState extends State<FormAddContract> {
           },
           child: Container(
             padding: EdgeInsets.all(25),
-            color: Colors.white,
+            color: COLORS.WHITE,
             child: SingleChildScrollView(
               child: BlocBuilder<FormAddBloc, FormAddState>(
                   bloc: _bloc,
@@ -637,7 +637,7 @@ class _FormAddContractState extends State<FormAddContract> {
                             fontFamily: 'Quicksand',
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: Colors.red))
+                            color: COLORS.RED))
                     : TextSpan(),
               ],
             ),
@@ -690,7 +690,7 @@ class _FormAddContractState extends State<FormAddContract> {
                             fontFamily: 'Quicksand',
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: Colors.red))
+                            color: COLORS.RED))
                     : TextSpan(),
               ],
             ),
@@ -701,7 +701,7 @@ class _FormAddContractState extends State<FormAddContract> {
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-                color: noEdit == true ? COLORS.LIGHT_GREY : Colors.white,
+                color: noEdit == true ? COLORS.LIGHT_GREY : COLORS.WHITE,
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: HexColor('#BEB4B4'))),
             child: Padding(

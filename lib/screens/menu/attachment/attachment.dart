@@ -35,8 +35,8 @@ class _AttachmentState extends State<Attachment> {
   late final String id;
   late final String typeModule;
   static final List<String> pickOptions = [
-    AppLocalizations.of(Get.context!)?.begin??'',
-    AppLocalizations.of(Get.context!)?.after??''
+    AppLocalizations.of(Get.context!)?.begin ?? '',
+    AppLocalizations.of(Get.context!)?.after ?? ''
   ];
 
   @override
@@ -64,7 +64,8 @@ class _AttachmentState extends State<Attachment> {
       if (Platform.isAndroid) {
         ShowDialogCustom.showDialogBase(
           title: AppLocalizations.of(Get.context!)?.notification,
-          content: AppLocalizations.of(Get.context!)?.you_have_not_granted_permission_to_access_the_photo,
+          content: AppLocalizations.of(Get.context!)
+              ?.you_have_not_granted_permission_to_access_the_photo,
           textButton2: AppLocalizations.of(Get.context!)?.go_to_setting,
           onTap2: () {
             openAppSettings();
@@ -109,7 +110,7 @@ class _AttachmentState extends State<Attachment> {
         context: Get.context!,
         builder: (context) => CupertinoActionSheet(
                 cancelButton: CupertinoActionSheetAction(
-                  child: Text(AppLocalizations.of(Get.context!)?.cancel??''),
+                  child: Text(AppLocalizations.of(Get.context!)?.cancel ?? ''),
                   onPressed: () {
                     AppNavigator.navigateBack();
                   },
@@ -120,28 +121,34 @@ class _AttachmentState extends State<Attachment> {
                       Get.back();
                       _getImageCamera(isAfter: isAfter);
                     },
-                    child: Text(AppLocalizations.of(Get.context!)?.new_photo_shoot??''),
+                    child: Text(
+                        AppLocalizations.of(Get.context!)?.new_photo_shoot ??
+                            ''),
                   ),
                   CupertinoActionSheetAction(
                     onPressed: () async {
                       Get.back();
                       _getImageVideo(isAfter: isAfter);
                     },
-                    child: Text(AppLocalizations.of(Get.context!)?.new_video_recoding??''),
+                    child: Text(
+                        AppLocalizations.of(Get.context!)?.new_video_recoding ??
+                            ''),
                   ),
                   CupertinoActionSheetAction(
                     onPressed: () async {
                       Get.back();
                       _pickFile(isAfter: isAfter);
                     },
-                    child: Text(AppLocalizations.of(Get.context!)?.pick_file??''),
+                    child: Text(
+                        AppLocalizations.of(Get.context!)?.pick_file ?? ''),
                   ),
                   CupertinoActionSheetAction(
                     onPressed: () async {
                       Get.back();
                       _getImage(isAfter: isAfter);
                     },
-                    child: Text(AppLocalizations.of(Get.context!)?.pick_photo??''),
+                    child: Text(
+                        AppLocalizations.of(Get.context!)?.pick_photo ?? ''),
                   ),
                 ]));
   }
@@ -197,10 +204,7 @@ class _AttachmentState extends State<Attachment> {
         SnackBar(
             content: Text(
                 '${AppLocalizations.of(Get.context!)?.add_attachment} '
-                    '${value == true ?
-                AppLocalizations.of(Get.context!)?.success.toLowerCase()
-                    :
-                AppLocalizations.of(Get.context!)?.fail.toLowerCase()}!')),
+                '${value == true ? AppLocalizations.of(Get.context!)?.success.toLowerCase() : AppLocalizations.of(Get.context!)?.fail.toLowerCase()}!')),
       );
     });
   }
@@ -239,10 +243,7 @@ class _AttachmentState extends State<Attachment> {
         SnackBar(
             content: Text(
                 '${AppLocalizations.of(Get.context!)?.delete_attachment} '
-                    '${value == true ?
-                AppLocalizations.of(Get.context!)?.success.toLowerCase()
-                    :
-                AppLocalizations.of(Get.context!)?.fail.toLowerCase()}!')),
+                '${value == true ? AppLocalizations.of(Get.context!)?.success.toLowerCase() : AppLocalizations.of(Get.context!)?.fail.toLowerCase()}!')),
       );
     });
   }
@@ -250,9 +251,10 @@ class _AttachmentState extends State<Attachment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: COLORS.WHITE,
       floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
-      appBar: AppbarBaseNormal(AppLocalizations.of(Get.context!)?.see_attachment),
+      appBar:
+          AppbarBaseNormal(AppLocalizations.of(Get.context!)?.see_attachment),
       body: Container(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -261,7 +263,7 @@ class _AttachmentState extends State<Attachment> {
             WidgetText(
                 title: AppLocalizations.of(Get.context!)?.select_attachment,
                 style: AppStyle.DEFAULT_16.copyWith(
-                    fontWeight: FontWeight.w700, color: Color(0xff006CB1))),
+                    fontWeight: FontWeight.w700, color: COLORS.TEXT_COLOR)),
             GridView.builder(
               padding: EdgeInsets.only(top: 16),
               physics: NeverScrollableScrollPhysics(),
@@ -322,10 +324,12 @@ class _AttachmentState extends State<Attachment> {
                         child: Align(
                             alignment: Alignment.topCenter,
                             child: WidgetText(
-                                title: AppLocalizations.of(Get.context!)?.no_data??'',
+                                title: AppLocalizations.of(Get.context!)
+                                        ?.no_data ??
+                                    '',
                                 style: AppStyle.DEFAULT_16.copyWith(
                                   fontWeight: FontWeight.w700,
-                                  color: Colors.black,
+                                  color: COLORS.BLACK,
                                 ))),
                       );
                     }
@@ -342,8 +346,16 @@ class _AttachmentState extends State<Attachment> {
                             margin: EdgeInsets.only(bottom: 36),
                             child: Column(
                               children: [
-                                viewPickFile(list, AppLocalizations.of(Get.context!)?.begin??'', IS_BEFORE),
-                                viewPickFile(list, AppLocalizations.of(Get.context!)?.after??'', IS_AFTER),
+                                viewPickFile(
+                                    list,
+                                    AppLocalizations.of(Get.context!)?.begin ??
+                                        '',
+                                    IS_BEFORE),
+                                viewPickFile(
+                                    list,
+                                    AppLocalizations.of(Get.context!)?.after ??
+                                        '',
+                                    IS_AFTER),
                               ],
                             ),
                           ),
@@ -372,7 +384,7 @@ class _AttachmentState extends State<Attachment> {
                 child: WidgetText(
                     title: title,
                     style: AppStyle.DEFAULT_16.copyWith(
-                        fontWeight: FontWeight.w700, color: Color(0xff006CB1))),
+                        fontWeight: FontWeight.w700, color: COLORS.TEXT_COLOR)),
               )
             ],
           ),
@@ -460,7 +472,7 @@ class _AttachmentState extends State<Attachment> {
                               child: Container(
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.white,
+                                    color: COLORS.WHITE,
                                     border: Border.all(
                                         color: Colors.black, width: 0.1),
                                   ),

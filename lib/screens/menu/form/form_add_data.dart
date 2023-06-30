@@ -217,7 +217,7 @@ class _FormAddDataState extends State<FormAddData> {
                         WidgetText(
                             title: '*',
                             style: AppStyle.DEFAULT_18_BOLD
-                                .copyWith(color: Colors.red)),
+                                .copyWith(color: COLORS.RED)),
                       ],
                     ),
                   ),
@@ -279,7 +279,7 @@ class _FormAddDataState extends State<FormAddData> {
                                 fontFamily: "Quicksand",
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.white)),
+                                color: COLORS.WHITE)),
                       ),
                     ),
                   if (location != '')
@@ -323,7 +323,7 @@ class _FormAddDataState extends State<FormAddData> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(16)),
                                 border: Border.all(
-                                  color: Colors.red,
+                                  color: COLORS.RED,
                                 )),
                             child: WidgetText(
                                 title:AppLocalizations.of(Get.context!)?.delete,
@@ -331,7 +331,7 @@ class _FormAddDataState extends State<FormAddData> {
                                     fontFamily: "Quicksand",
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.red)),
+                                    color: COLORS.RED)),
                           ),
                         ),
                       ],
@@ -354,7 +354,7 @@ class _FormAddDataState extends State<FormAddData> {
                                     fontFamily: "Quicksand",
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.red))
+                                    color: COLORS.RED))
                           ],
                         ),
                       ),
@@ -477,7 +477,7 @@ class _FormAddDataState extends State<FormAddData> {
               child: Container(
                 height: MediaQuery.of(context).size.height,
                 padding: EdgeInsets.all(25),
-                color: Colors.white,
+                color: COLORS.WHITE,
                 child: SingleChildScrollView(
                   controller: scrollController,
                   child: Column(
@@ -600,7 +600,7 @@ class _FormAddDataState extends State<FormAddData> {
                 return Visibility(
                   visible: snapshot.data ?? false,
                   child: Container(
-                    color: Colors.white,
+                    color: COLORS.WHITE,
                     height: AppValue.widths * 0.1 + 10,
                     width: AppValue.widths,
                     padding: EdgeInsets.only(
@@ -641,7 +641,7 @@ class _FormAddDataState extends State<FormAddData> {
                               fontFamily: "Quicksand",
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
-                              color: Colors.red))
+                              color: COLORS.RED))
                       : TextSpan(),
                 ],
               ),
@@ -652,7 +652,7 @@ class _FormAddDataState extends State<FormAddData> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: noEdit == true ? COLORS.LIGHT_GREY : Colors.white,
+                  color: noEdit == true ? COLORS.LIGHT_GREY : COLORS.WHITE,
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(color: HexColor("#BEB4B4"))),
               child: Padding(
@@ -1074,7 +1074,7 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
                             fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: Colors.red))
+                            color: COLORS.RED))
                     : TextSpan(),
               ],
             ),

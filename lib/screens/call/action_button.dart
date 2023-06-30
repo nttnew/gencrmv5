@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../src/color.dart';
 
-// ignore: must_be_immutable
 class ActionButton extends StatelessWidget {
   final String title;
   final FontWeight fontWeight;
@@ -44,7 +44,7 @@ class ActionButton extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
-                color: fillColor ?? (checked ? Colors.blue : Colors.white),
+                color: fillColor ?? (checked ? Colors.blue : COLORS.WHITE),
                 shape: BoxShape.circle,
               ),
               child: number
@@ -65,8 +65,8 @@ class ActionButton extends StatelessWidget {
                       size: 34.0,
                       color: iconColor ??
                           (fillColor != null
-                              ? Colors.white
-                              : (checked ? Colors.white : Colors.green)),
+                              ? COLORS.WHITE
+                              : (checked ? COLORS.WHITE : Colors.green)),
                     ),
             )),
         number

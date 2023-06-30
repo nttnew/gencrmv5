@@ -101,7 +101,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
                                     fontFamily: "Quicksand",
                                     fontWeight: FontWeight.w400,
                                     fontSize: 14,
-                                    color: HexColor("#006CB1")),
+                                    color: COLORS.ff006CB1),
                               ),
                               AppValue.vSpaceMedium,
                             ],
@@ -135,7 +135,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
               fontFamily: "Quicksand",
               fontWeight: FontWeight.w500,
               fontSize: 14,
-              color: Colors.black),
+              color: COLORS.BLACK),
           children: <TextSpan>[
             TextSpan(
               recognizer: TapGestureRecognizer()
@@ -147,7 +147,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
                   fontFamily: "Quicksand",
                   fontWeight: FontWeight.w500,
                   fontSize: 14,
-                  color: HexColor("#006CB1")),
+                  color: COLORS.ff006CB1),
             ),
           ],
         ),

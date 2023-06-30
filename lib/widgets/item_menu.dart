@@ -30,7 +30,7 @@ class ItemMenu extends StatelessWidget {
                   width: isLast ? 90 : 80,
                   height: isLast ? 90 : 80,
                   decoration: BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.white),
+                      shape: BoxShape.circle, color: COLORS.WHITE),
                   child: WidgetContainerImage(
                     image: data.image,
                     fit: BoxFit.contain,
@@ -51,7 +51,7 @@ class ItemMenu extends StatelessWidget {
                     style: isLast
                         ? AppStyle.DEFAULT_14.copyWith(
                             fontSize: 24,
-                            color: Colors.white,
+                            color: COLORS.WHITE,
                             fontFamily: 'Quicksand',
                             fontWeight: FontWeight.w700)
                         : AppStyle.DEFAULT_14.copyWith(

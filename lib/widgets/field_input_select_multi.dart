@@ -67,7 +67,7 @@ class _SelectMultiState extends State<SelectMulti> {
                           fontFamily: "Quicksand",
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: Colors.red))
+                          color: COLORS.RED))
               ],
             ),
           ),

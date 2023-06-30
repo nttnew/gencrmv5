@@ -158,7 +158,7 @@ class _ContractScreenState extends State<ContractScreen> {
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 20),
         child: FloatingActionButton(
-          backgroundColor: Color(0xff1AA928),
+          backgroundColor: COLORS.ff1AA928,
           onPressed: () {
             AppNavigator.navigateAddContract(title: '${AppLocalizations.of(Get.context!)?.add} ${title.toLowerCase()}');
           },

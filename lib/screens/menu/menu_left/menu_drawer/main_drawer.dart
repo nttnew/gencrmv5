@@ -242,7 +242,7 @@ class _MainDrawerState extends State<MainDrawer> {
             height: 40,
             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             text: AppLocalizations.of(Get.context!)?.logout,
-            textColor: Colors.black,
+            textColor: COLORS.BLACK,
             backgroundColor: COLORS.GREY.withOpacity(0.5),
           ),
         ],

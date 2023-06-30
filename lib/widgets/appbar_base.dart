@@ -10,7 +10,7 @@ PreferredSizeWidget AppbarBaseNormal(String? title) => AppBar(
       backgroundColor: HexColor("#D0F1EB"),
       title: Text(title ?? '',
           style: TextStyle(
-              color: Colors.black,
+              color: COLORS.BLACK,
               fontFamily: "Montserrat",
               fontWeight: FontWeight.w700,
               fontSize: 16)),
@@ -51,7 +51,7 @@ PreferredSizeWidget AppbarBase(
               child: WidgetText(
                 title: title,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: COLORS.BLACK,
                   fontFamily: "Montserrat",
                   fontWeight: FontWeight.w700,
                   fontSize: 16,

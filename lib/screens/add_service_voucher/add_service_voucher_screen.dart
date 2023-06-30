@@ -26,7 +26,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: COLORS.WHITE,
         appBar: AppbarBaseNormal(widget.title),
         body: BlocListener<ServiceVoucherBloc, ServiceVoucherState>(
           listener: (context, state) {
@@ -41,7 +41,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
               right: 25,
               top: 20,
             ),
-            color: Colors.white,
+            color: COLORS.WHITE,
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -50,7 +50,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
                       title: AppLocalizations.of(Get.context!)
                           ?.enter_number_phone_or_license_plates,
                       style: TextStyle(
-                        color: Colors.black,
+                        color: COLORS.BLACK,
                         fontFamily: "Montserrat",
                         fontWeight: FontWeight.w700,
                         fontSize: 16,

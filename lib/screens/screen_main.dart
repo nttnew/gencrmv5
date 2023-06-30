@@ -97,7 +97,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
       ButtonMenuModel(
           title: AppLocalizations.of(Get.context!)?.report ?? '',
           image: ICONS.IC_REPORT_PNG,
-          backgroundColor: Color(0xff5D5FEF),
+          backgroundColor: COLORS.ff5D5FEF,
           onTap: () async {
             String? money = await shareLocal.getString(PreferencesKey.MONEY);
             AppNavigator.navigateReport(money ?? "đ");
@@ -296,10 +296,10 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
               child: Icon(Icons.add, size: 40),
               closeButtonStyle: const ExpandableFabCloseButtonStyle(
                 child: Icon(Icons.close),
-                foregroundColor: Colors.white,
-                backgroundColor: Color(0xff1AA928),
+                foregroundColor: COLORS.WHITE,
+                backgroundColor: COLORS.ff1AA928,
               ),
-              backgroundColor: Color(0xff1AA928),
+              backgroundColor: COLORS.ff1AA928,
               overlayStyle: ExpandableFabOverlayStyle(
                 blur: 5,
               ),
@@ -325,7 +325,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                             padding: EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 8),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: COLORS.WHITE,
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
@@ -349,7 +349,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
                             ),
                             padding: EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: COLORS.WHITE,
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
@@ -389,7 +389,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
               if (state is UpdateGetInforAccState) {
                 return WidgetAppbar(
                   title: state.inforAcc.fullname,
-                  textColor: Colors.black,
+                  textColor: COLORS.BLACK,
                   right: rightAppBar(),
                   left: GestureDetector(
                     onTap: () {
@@ -410,7 +410,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
               } else {
                 return WidgetAppbar(
                   title: '',
-                  textColor: Colors.black,
+                  textColor: COLORS.BLACK,
                   right: rightAppBar(),
                   left: GestureDetector(
                     onTap: () {

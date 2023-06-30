@@ -140,7 +140,7 @@ class _FormEditState extends State<FormEdit> {
     return Stack(
       children: [
         Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: COLORS.WHITE,
             appBar: AppbarBaseNormal(
                 AppLocalizations.of(Get.context!)?.edit_information ?? ''),
             body: BlocListener<AddDataBloc, AddDataState>(
@@ -219,7 +219,7 @@ class _FormEditState extends State<FormEdit> {
                 }
               },
               child: Container(
-                color: Colors.white,
+                color: COLORS.WHITE,
                 padding: EdgeInsets.all(25),
                 child: SingleChildScrollView(
                   controller: scrollController,
@@ -321,7 +321,7 @@ class _FormEditState extends State<FormEdit> {
                   return Visibility(
                     visible: snapshot.data ?? false,
                     child: Container(
-                      color: Colors.white,
+                      color: COLORS.WHITE,
                       height: AppValue.widths * 0.1 + 10,
                       width: AppValue.widths,
                       padding: EdgeInsets.only(
@@ -553,7 +553,7 @@ class _FormEditState extends State<FormEdit> {
                             fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: Colors.red))
+                            color: COLORS.RED))
                     : TextSpan(),
               ],
             ),
@@ -564,7 +564,7 @@ class _FormEditState extends State<FormEdit> {
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-                color: noEdit == true ? COLORS.LIGHT_GREY : Colors.white,
+                color: noEdit == true ? COLORS.LIGHT_GREY : COLORS.WHITE,
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: HexColor("#BEB4B4"))),
             child: Padding(
@@ -714,7 +714,7 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
                             fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: Colors.red))
+                            color: COLORS.RED))
                     : TextSpan(),
               ],
             ),

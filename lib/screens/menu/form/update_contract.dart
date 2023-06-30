@@ -150,7 +150,7 @@ class _EditContractState extends State<EditContract> {
                 left: AppValue.widths * 0.05,
                 right: AppValue.widths * 0.05,
                 top: AppValue.heights * 0.02),
-            color: Colors.white,
+            color: COLORS.WHITE,
             child: SingleChildScrollView(
               child: BlocBuilder<FormEditBloc, FormEditState>(
                   builder: (context, state) {
@@ -549,7 +549,7 @@ class _EditContractState extends State<EditContract> {
                             fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: Colors.red))
+                            color: COLORS.RED))
                     : TextSpan(),
               ],
             ),
@@ -560,7 +560,7 @@ class _EditContractState extends State<EditContract> {
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-                color: noEdit == true ? COLORS.LIGHT_GREY : Colors.white,
+                color: noEdit == true ? COLORS.LIGHT_GREY : COLORS.WHITE,
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: HexColor("#BEB4B4"))),
             child: Padding(

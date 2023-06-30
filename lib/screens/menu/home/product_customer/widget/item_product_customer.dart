@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/models/model_generator/list_product_customer_response.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/app_const.dart';
 import '../../../../../src/src_index.dart';
 import 'package:get/get.dart';
@@ -27,7 +26,7 @@ class ItemProductCustomer extends StatelessWidget {
               icon: ICONS.IC_CHANCE_3X_PNG,
               isSVG: false,
               styleText: AppStyle.DEFAULT_18.copyWith(
-                  color: HexColor("#006CB1"), fontWeight: FontWeight.w700),
+                  color: COLORS.ff006CB1, fontWeight: FontWeight.w700),
             ),
             itemTextIcon(
               text: productModule.customer?.name ??  AppLocalizations.of(Get.context!)?.not_yet ?? '',
@@ -51,7 +50,7 @@ class ItemProductCustomer extends StatelessWidget {
         margin: EdgeInsets.only(left: 25, right: 25, bottom: 20),
         padding: EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: COLORS.WHITE,
           borderRadius: BorderRadius.all(Radius.circular(10)),
           boxShadow: [
             BoxShadow(

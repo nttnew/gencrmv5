@@ -62,7 +62,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
           AppbarBaseNormal(AppLocalizations.of(Get.context!)?.change_password),
       body: Container(
         padding: EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 30),
-        color: Colors.white,
+        color: COLORS.WHITE,
         child: BlocListener<ChangePasswordBloc, ChangePasswordState>(
           listener: (context, state) {
             if (state.status.isSubmissionSuccess) {
@@ -158,7 +158,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
             width: 150,
             height: 20,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: COLORS.WHITE,
             ),
             child: Stack(
               children: [
@@ -166,9 +166,9 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
                     width: double.infinity,
                     decoration: BoxDecoration(
                       border: Border(
-                        top: BorderSide(color: Colors.white),
-                        left: BorderSide(color: Colors.white),
-                        right: BorderSide(color: Colors.white),
+                        top: BorderSide(color: COLORS.WHITE),
+                        left: BorderSide(color: COLORS.WHITE),
+                        right: BorderSide(color: COLORS.WHITE),
                       ),
                     ),
                     height: 11),
@@ -221,7 +221,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
             width: 150,
             height: 20,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: COLORS.WHITE,
             ),
             child: Stack(
               children: [
@@ -229,9 +229,9 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
                     width: double.infinity,
                     decoration: BoxDecoration(
                       border: Border(
-                        top: BorderSide(color: Colors.white),
-                        left: BorderSide(color: Colors.white),
-                        right: BorderSide(color: Colors.white),
+                        top: BorderSide(color: COLORS.WHITE),
+                        left: BorderSide(color: COLORS.WHITE),
+                        right: BorderSide(color: COLORS.WHITE),
                       ),
                     ),
                     height: 11),
@@ -286,7 +286,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
             width: 150,
             height: 20,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: COLORS.WHITE,
             ),
             child: Stack(
               children: [
@@ -294,9 +294,9 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
                     width: double.infinity,
                     decoration: BoxDecoration(
                       border: Border(
-                        top: BorderSide(color: Colors.white),
-                        left: BorderSide(color: Colors.white),
-                        right: BorderSide(color: Colors.white),
+                        top: BorderSide(color: COLORS.WHITE),
+                        left: BorderSide(color: COLORS.WHITE),
+                        right: BorderSide(color: COLORS.WHITE),
                       ),
                     ),
                     height: 11),

@@ -78,7 +78,7 @@ class _ClueScreenState extends State<ClueScreen> {
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 20),
         child: FloatingActionButton(
-          backgroundColor: Color(0xff1AA928),
+          backgroundColor: COLORS.ff1AA928,
           onPressed: () {
             AppNavigator.navigateFormAdd(
                 '${AppLocalizations.of(Get.context!)?.add} ${title}', ADD_CLUE);
@@ -183,7 +183,7 @@ class _ClueScreenState extends State<ClueScreen> {
         decoration: BoxDecoration(
           color: COLORS.WHITE,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(width: 1, color: Colors.white),
+          border: Border.all(width: 1, color: COLORS.WHITE),
           boxShadow: [
             BoxShadow(
               color: COLORS.BLACK.withOpacity(0.1),

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/models/model_generator/file_response.dart';
 import 'package:photo_view/photo_view.dart';
+import '../../src/color.dart';
 import '../../widgets/appbar_base.dart';
 import '../../widgets/item_download.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -24,7 +25,7 @@ class _PreviewImageState extends State<PreviewImage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: COLORS.BLACK,
       appBar:
           AppbarBaseNormal(AppLocalizations.of(Get.context!)?.preview_image),
       body: Center(

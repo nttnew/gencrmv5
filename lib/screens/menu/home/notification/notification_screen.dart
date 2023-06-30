@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/screens/menu/home/notification/widget/unread_list.dart';
-import 'package:hexcolor/hexcolor.dart';
+import '../../../../src/color.dart';
 import '../../../../widgets/appbar_base.dart';
 import 'widget/index.dart';
 import 'package:get/get.dart';
@@ -22,13 +22,13 @@ class NotificationScreen extends StatelessWidget {
               appBar: TabBar(
                 padding: EdgeInsets.symmetric(horizontal: 25),
                 isScrollable: true,
-                labelColor: HexColor("#006CB1"),
-                unselectedLabelColor: HexColor("#697077"),
+                labelColor: COLORS.ff006CB1,
+                unselectedLabelColor: COLORS.ff697077,
                 labelStyle: TextStyle(
                     fontFamily: "Quicksand",
                     fontSize: 14,
                     fontWeight: FontWeight.w700),
-                indicatorColor: HexColor("#006CB1"),
+                indicatorColor: COLORS.ff006CB1,
                 tabs: <Widget>[
                   Tab(
                     text: AppLocalizations.of(Get.context!)?.unread ?? '',

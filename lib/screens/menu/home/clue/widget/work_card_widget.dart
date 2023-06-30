@@ -108,7 +108,7 @@ class WorkCardWidget extends StatelessWidget {
       ),
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: COLORS.WHITE,
         borderRadius: BorderRadius.all(Radius.circular(12)),
         boxShadow: [
           BoxShadow(
@@ -129,13 +129,13 @@ class WorkCardWidget extends StatelessWidget {
       fontSize: 14);
 
   TextStyle LocationCustomerStyle() => TextStyle(
-      color: Colors.black,
+      color: COLORS.BLACK,
       fontFamily: "Quicksand",
       fontWeight: FontWeight.w400,
       fontSize: 14);
 
   TextStyle NameCustomerStyle() => TextStyle(
-      color: HexColor("#006CB1"),
+      color: COLORS.ff006CB1,
       fontFamily: "Quicksand",
       fontWeight: FontWeight.w700,
       fontSize: 18);

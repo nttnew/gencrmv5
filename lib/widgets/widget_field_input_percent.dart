@@ -45,7 +45,7 @@ class _FieldInputPercentState extends State<FieldInputPercent> {
                             fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: Colors.red))
+                            color: COLORS.RED))
                     : TextSpan(),
               ],
             ),
@@ -56,7 +56,7 @@ class _FieldInputPercentState extends State<FieldInputPercent> {
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-                color: Colors.white,
+                color: COLORS.WHITE,
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: HexColor("#BEB4B4"))),
             child: Padding(

@@ -398,7 +398,7 @@ class _AddServiceVoucherStepTwoScreenState
                             fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: Colors.red))
+                            color: COLORS.RED))
                     : TextSpan(),
               ],
             ),
@@ -416,7 +416,7 @@ class _AddServiceVoucherStepTwoScreenState
                     child: Checkbox(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(2)),
-                      checkColor: Colors.white,
+                      checkColor: COLORS.WHITE,
                       value: snapshot.data ?? false,
                       onChanged: (bool? value) {
                         _bloc.addData[indexParent].data[indexChild].value =
@@ -566,7 +566,7 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
                             fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: Colors.red))
+                            color: COLORS.RED))
                     : TextSpan(),
               ],
             ),
@@ -579,7 +579,7 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
             decoration: BoxDecoration(
                 color: isEdit && _controller.text != ''
                     ? COLORS.LIGHT_GREY
-                    : Colors.white,
+                    : COLORS.WHITE,
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: HexColor("#BEB4B4"))),
             child: Padding(
@@ -645,7 +645,7 @@ Widget TypeCarBase(
                           fontFamily: "Quicksand",
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: Colors.red))
+                          color: COLORS.RED))
                   : TextSpan(),
             ],
           ),
@@ -675,7 +675,7 @@ Widget TypeCarBase(
                 return Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: COLORS.WHITE,
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(color: HexColor("#BEB4B4"))),
                   child: Padding(

@@ -1,13 +1,10 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/screens/login/widget/index.dart';
-import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
-import '../../l10n/l10n.dart';
 import '../../storages/share_local.dart';
 import '../../widgets/rounder_bootom_appbar.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';

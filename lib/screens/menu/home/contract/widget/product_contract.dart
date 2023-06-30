@@ -127,7 +127,7 @@ class _ProductContractState extends State<ProductContract> {
                 child: WidgetText(
                   title: AppLocalizations.of(Get.context!)
                       ?.select_product??'',
-                  style: AppStyle.DEFAULT_14_BOLD.copyWith(color: Colors.white),
+                  style: AppStyle.DEFAULT_14_BOLD.copyWith(color: COLORS.WHITE),
                 ),
               ),
             ),

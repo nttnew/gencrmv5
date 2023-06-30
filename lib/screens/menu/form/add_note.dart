@@ -89,7 +89,7 @@ class _AddNoteState extends State<AddNote> {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: COLORS.WHITE,
                     boxShadow: [
                       BoxShadow(
                         color: COLORS.BLACK.withOpacity(0.1),
