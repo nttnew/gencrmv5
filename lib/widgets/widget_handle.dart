@@ -227,7 +227,7 @@ class WidgetContainerColor extends StatelessWidget {
 
   const WidgetContainerColor(
       {Key? key,
-      this.color = Colors.black,
+      this.color = COLORS.BLACK,
       this.width = 25,
       this.height = 25,
       this.radius = 5,
@@ -258,8 +258,8 @@ class WidgetContainerIcon extends StatelessWidget {
       {this.width = 35,
       this.height = 35,
       this.icon,
-      this.backgroundColor = Colors.white,
-      this.iconColor = Colors.black});
+      this.backgroundColor = COLORS.WHITE,
+      this.iconColor = COLORS.BLACK});
 
   @override
   Widget build(BuildContext context) {

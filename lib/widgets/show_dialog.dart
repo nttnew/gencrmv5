@@ -44,7 +44,7 @@ class ShowDialogCustom {
               child: Center(
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: COLORS.WHITE,
                       borderRadius: BorderRadius.circular(10)),
                   padding: EdgeInsets.all(15),
                   margin: EdgeInsets.all(25),
@@ -105,7 +105,7 @@ class ShowDialogCustom {
                                                   ''),
                                       style: AppStyle.DEFAULT_16_BOLD.copyWith(
                                           color:
-                                              txtColorButton1 ?? Colors.black),
+                                              txtColorButton1 ?? COLORS.BLACK),
                                     ),
                                   ),
                                 )),
@@ -133,7 +133,7 @@ class ShowDialogCustom {
                                         style: AppStyle.DEFAULT_16_BOLD
                                             .copyWith(
                                                 color: txtColorButton1 ??
-                                                    Colors.black),
+                                                    COLORS.BLACK),
                                       ),
                                     ),
                                   )),
@@ -165,7 +165,7 @@ class ShowDialogCustom {
               child: Center(
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: COLORS.WHITE,
                       borderRadius: BorderRadius.circular(10)),
                   padding: EdgeInsets.all(15),
                   margin: EdgeInsets.all(25),
@@ -202,7 +202,7 @@ class ShowDialogCustom {
               child: Center(
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: COLORS.WHITE,
                       borderRadius: BorderRadius.circular(10)),
                   padding: EdgeInsets.all(15),
                   margin: EdgeInsets.all(25),
@@ -262,7 +262,7 @@ class ShowDialogCustom {
                                               ?.cancel ??
                                           '',
                                       style: AppStyle.DEFAULT_16_BOLD.copyWith(
-                                          color: colorButton1 ?? Colors.black),
+                                          color: colorButton1 ?? COLORS.BLACK),
                                     ),
                                   ),
                                 )),
@@ -289,7 +289,7 @@ class ShowDialogCustom {
                                               ?.agree ??
                                           '',
                                       style: AppStyle.DEFAULT_16_BOLD.copyWith(
-                                          color: colorButton1 ?? Colors.black),
+                                          color: colorButton1 ?? COLORS.BLACK),
                                     ),
                                   ),
                                 )),

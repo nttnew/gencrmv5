@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import '../../../../../bloc/readed_list_notification/readed_list_notifi_bloc.dart';
 import '../../../../../src/app_const.dart';
+import '../../../../../src/color.dart';
 import '../../../../../widgets/slide_menu.dart';
 
 class ReadList extends StatefulWidget {
@@ -71,10 +72,10 @@ class _ReadListState extends State<ReadList>
       ),
       menuItems: <Widget>[
         new Container(
-          color: Colors.red,
+          color: COLORS.RED,
           child: new IconButton(
             icon: new Icon(Icons.delete),
-            color: Colors.white,
+            color: COLORS.WHITE,
             onPressed: () => GetListReadedNotifiBloc.of(context).add(
                 DeleteReadedListNotifiEvent(int.parse(item.id), item.type)),
           ),

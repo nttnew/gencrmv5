@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../src/color.dart';
+
 class RippleButton extends StatefulWidget {
   const RippleButton({Key? key, required this.icon, required this.color})
       : super(key: key);
@@ -58,7 +60,7 @@ class _RippleButtonState extends State<RippleButton>
       height: radius,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white.withOpacity(0.15),
+        color: COLORS.WHITE.withOpacity(0.15),
       ),
     );
   }
@@ -111,12 +113,12 @@ class _AnimatedIconExampleState extends State<AnimatedIconExample>
               child: Icon(
                 Icons.phone,
                 size: 34.0,
-                color: Colors.white,
+                color: COLORS.WHITE,
               ))
           : Icon(
               widget.icon,
               size: 34.0,
-              color: Colors.white,
+              color: COLORS.WHITE,
             ),
     );
   }

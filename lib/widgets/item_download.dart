@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/models/model_generator/file_response.dart';
 
+import '../src/color.dart';
 import 'item_file.dart';
 
 class ItemDownload extends StatefulWidget {
@@ -30,7 +31,7 @@ class _ItemDownloadState extends State<ItemDownload> {
         child: !isWeb
             ? Icon(
                 Icons.download,
-                color: widget.colors ?? Colors.white,
+                color: widget.colors ?? COLORS.WHITE,
               )
             : Icon(
                 Icons.done,

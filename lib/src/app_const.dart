@@ -353,7 +353,7 @@ class Debounce {
   VoidCallback? action;
   Timer? _timer;
 
-  Debounce({this.milliseconds = 450});
+  Debounce({this.milliseconds = 1500});
 
   void run(VoidCallback action) {
     if (_timer != null) {

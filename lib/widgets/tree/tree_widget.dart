@@ -140,7 +140,7 @@ class _TreeWidgetState extends State<TreeWidget> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: Colors.red.withOpacity(0.15),
+                              color: COLORS.RED.withOpacity(0.15),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             padding: EdgeInsets.symmetric(

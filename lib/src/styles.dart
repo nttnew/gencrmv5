@@ -15,7 +15,7 @@ class AppStyle {
   static const DEFAULT_TITLE_PRODUCT = TextStyle(
       fontFamily: 'Quicksand',
       fontSize: AppValue.FONT_SIZE_18,
-      color: Color(0xff006CB1),
+      color: COLORS.TEXT_COLOR,
       fontWeight: FontWeight.w700,
       height: 1.4);
 
@@ -118,7 +118,7 @@ class AppStyle {
   static final DEFAULT_24_BOLD =
       DEFAULT_24.copyWith(fontWeight: FontWeight.bold);
 
-  static final RED_HINT_SMALL = DEFAULT_14.copyWith(color: Colors.red);
+  static final RED_HINT_SMALL = DEFAULT_14.copyWith(color: COLORS.RED);
 
   static final PRODUCT_SALE_PRICE = DEFAULT_14.copyWith(
     height: 1.4,

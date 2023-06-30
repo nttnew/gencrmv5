@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/detail_product_customer/detail_product_customer_bloc.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../src/app_const.dart';
@@ -281,13 +280,13 @@ class _DetailProductCustomerScreenState
                   padding: EdgeInsets.symmetric(horizontal: 25),
                   isScrollable: true,
                   controller: _tabController,
-                  labelColor: HexColor("#006CB1"),
-                  unselectedLabelColor: HexColor("#697077"),
+                  labelColor: COLORS.ff006CB1,
+                  unselectedLabelColor: COLORS.ff697077,
                   labelStyle: TextStyle(
                       fontFamily: "Quicksand",
                       fontSize: 14,
                       fontWeight: FontWeight.w700),
-                  indicatorColor: HexColor("#006CB1"),
+                  indicatorColor: COLORS.ff006CB1,
                   tabs: _listTab
                       .map(
                         (e) => Tab(

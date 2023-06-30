@@ -116,10 +116,10 @@ class _UnReadListState extends State<UnReadList>
       ),
       menuItems: <Widget>[
         new Container(
-          color: Colors.red,
+          color: COLORS.RED,
           child: new IconButton(
             icon: new Icon(Icons.delete),
-            color: Colors.white,
+            color: COLORS.WHITE,
             onPressed: () => GetNotificationBloc.of(context).add(
                 DeleteUnReadListNotificationEvent(
                     int.parse(item.id!), item.type!)),

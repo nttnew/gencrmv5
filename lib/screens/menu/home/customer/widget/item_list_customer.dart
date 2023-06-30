@@ -59,7 +59,7 @@ class ItemCustomer extends StatelessWidget {
                         ? '${data.danh_xung ?? ''}' + ' ' + '${data.name ?? ''}'
                         : AppLocalizations.of(Get.context!)?.not_yet ?? '',
                     style: AppStyle.DEFAULT_18.copyWith(
-                        color: HexColor("#006CB1"),
+                        color: COLORS.ff006CB1,
                         fontWeight: FontWeight.w700),
                   ),
                 ),
@@ -143,7 +143,7 @@ class ItemCustomer extends StatelessWidget {
         margin: EdgeInsets.only(left: 25, right: 25, bottom: 20),
         padding: EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: COLORS.WHITE,
           borderRadius: BorderRadius.all(Radius.circular(10)),
           boxShadow: [
             BoxShadow(

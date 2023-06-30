@@ -44,7 +44,7 @@ class _ItemNoteState extends State<ItemNote> {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: COLORS.WHITE,
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
@@ -70,7 +70,7 @@ class _ItemNoteState extends State<ItemNote> {
               Container(
                 padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
-                  color: isOwner ? COLORS.SECONDS_COLOR : Colors.white,
+                  color: isOwner ? COLORS.SECONDS_COLOR : COLORS.WHITE,
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(

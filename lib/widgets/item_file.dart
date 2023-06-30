@@ -42,7 +42,7 @@ class _ItemFileState extends State<ItemFile> {
               child: !_status
                   ? Icon(
                       Icons.download,
-                      color: Colors.black,
+                      color: COLORS.BLACK,
                     )
                   : Icon(
                       Icons.done,

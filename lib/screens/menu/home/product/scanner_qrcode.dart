@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import '../../../../src/color.dart';
+
 class ScannerQrcode extends StatefulWidget {
   const ScannerQrcode({Key? key}) : super(key: key);
 
@@ -49,7 +51,7 @@ class _ScannerQrcodeState extends State<ScannerQrcode> {
                     child: Center(
                         child: Icon(
                       Icons.arrow_back_ios_new_outlined,
-                      color: Colors.white,
+                      color: COLORS.WHITE,
                       size: 24,
                     ))),
               ),

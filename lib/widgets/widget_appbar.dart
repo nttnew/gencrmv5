@@ -74,7 +74,7 @@ class WidgetAppbar extends StatelessWidget {
                         Text(
                           title ?? "",
                           style: AppStyle.DEFAULT_18_BOLD.copyWith(
-                              color: Colors.black, fontFamily: 'Montserrat'),
+                              color: COLORS.BLACK, fontFamily: 'Montserrat'),
                         ),
                   ),
                 ),
@@ -126,17 +126,17 @@ Widget rightAppBar() => GestureDetector(onTap: () {
                             decoration: GetNotificationBloc.of(context).total <
                                     10
                                 ? BoxDecoration(
-                                    color: Colors.red,
+                                    color: COLORS.RED,
                                     shape: BoxShape.circle,
                                   )
                                 : BoxDecoration(
-                                    color: Colors.red,
+                                    color: COLORS.RED,
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(100))),
                             child: WidgetText(
                               title: '${GetNotificationBloc.of(context).total}',
                               style: AppStyle.APP_MEDIUM.copyWith(
-                                  color: Colors.white,
+                                  color: COLORS.WHITE,
                                   fontWeight: FontWeight.w400,
                                   fontSize: 8),
                             ),

@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> {
       );
     } else {
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.white,
+        systemNavigationBarColor: COLORS.WHITE,
         systemNavigationBarIconBrightness: Brightness.dark,
       ));
     }

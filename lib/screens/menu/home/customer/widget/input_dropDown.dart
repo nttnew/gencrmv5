@@ -180,7 +180,7 @@ class _InputDropdownState extends State<InputDropdown> {
                           fontFamily: "Quicksand",
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: Colors.red,
+                          color: COLORS.RED,
                         ))
                     : TextSpan(),
               ],

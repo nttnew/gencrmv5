@@ -76,8 +76,7 @@ class _RippleLogoState extends State<RippleLogo>
                       padding: const EdgeInsets.all(6),
                       child: WidgetText(
                         title: widget.timeLabel,
-                        style: const TextStyle(
-                            fontSize: 14, color: Colors.black54),
+                        style: TextStyle(fontSize: 14, color: COLORS.BLACK54),
                       ),
                     ),
                   ],
@@ -100,7 +99,7 @@ class _RippleLogoState extends State<RippleLogo>
     String txt =
         '${(widget.pitelCall.remoteIdentity?.length ?? 0) < 10 ? '0' + widget.pitelCall.remoteIdentity.toString() : widget.pitelCall.remoteIdentity}';
     if (txt == "0null") {
-      return AppLocalizations.of(Get.context!)?.call_ended??'';
+      return AppLocalizations.of(Get.context!)?.call_ended ?? '';
     }
     return txt;
   }
@@ -111,7 +110,7 @@ class _RippleLogoState extends State<RippleLogo>
       height: radius,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white.withOpacity(0.15),
+        color: COLORS.WHITE.withOpacity(0.15),
       ),
     );
   }

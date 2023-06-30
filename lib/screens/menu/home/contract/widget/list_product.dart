@@ -84,7 +84,7 @@ class _ListProductState extends State<ListProduct> {
           return Container(
             margin: EdgeInsets.only(top: 8, bottom: 8),
             height: Get.height,
-            color: Colors.white,
+            color: COLORS.WHITE,
             child: Column(
               children: [
                 Container(

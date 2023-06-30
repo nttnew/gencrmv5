@@ -188,7 +188,7 @@ class _WidgetInputState extends State<WidgetInput> {
                 width: 100,
                 height: 20,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: COLORS.WHITE,
                 ),
                 child: Stack(
                   children: [
@@ -196,9 +196,9 @@ class _WidgetInputState extends State<WidgetInput> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           border: Border(
-                            top: BorderSide(color: Colors.white),
-                            left: BorderSide(color: Colors.white),
-                            right: BorderSide(color: Colors.white),
+                            top: BorderSide(color: COLORS.WHITE),
+                            left: BorderSide(color: COLORS.WHITE),
+                            right: BorderSide(color: COLORS.WHITE),
                           ),
                         ),
                         height: 11),

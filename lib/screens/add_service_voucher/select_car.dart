@@ -70,7 +70,7 @@ class _SelectCarState extends State<SelectCar> {
                                     child: Container(
                                         decoration: BoxDecoration(
                                           color: _bloc.hangXe != e.name
-                                              ? Colors.white
+                                              ? COLORS.WHITE
                                               : HexColor("0079B5")
                                                   .withOpacity(0.2),
                                           borderRadius:
@@ -236,7 +236,7 @@ class _SelectCarState extends State<SelectCar> {
                           child: Container(
                               decoration: BoxDecoration(
                                 color: select != e
-                                    ? Colors.white
+                                    ? COLORS.WHITE
                                     : HexColor("0079B5").withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(

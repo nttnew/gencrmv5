@@ -144,7 +144,7 @@ class _FormAddSignState extends State<FormAddSign> {
               child: Container(
                 height: MediaQuery.of(context).size.height,
                 padding: EdgeInsets.all(25),
-                color: Colors.white,
+                color: COLORS.WHITE,
                 child: SingleChildScrollView(
                   controller: scrollController,
                   child: Column(
@@ -256,7 +256,7 @@ class _FormAddSignState extends State<FormAddSign> {
                 return Visibility(
                   visible: snapshot.data ?? false,
                   child: Container(
-                    color: Colors.white,
+                    color: COLORS.WHITE,
                     height: AppValue.widths * 0.1 + 10,
                     width: AppValue.widths,
                     padding: EdgeInsets.only(
@@ -570,7 +570,7 @@ class _FormAddSignState extends State<FormAddSign> {
         if (dataSign?.chuky != null)
           Container(
             decoration: BoxDecoration(
-                color: Colors.white,
+                color: COLORS.WHITE,
                 border: Border.all(color: HexColor("#BEB4B4")),
                 borderRadius: BorderRadius.all(Radius.circular(6))),
             height: 300,
@@ -621,7 +621,7 @@ class _FormAddSignState extends State<FormAddSign> {
                             fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: Colors.red))
+                            color: COLORS.RED))
                     : TextSpan(),
               ],
             ),
@@ -632,7 +632,7 @@ class _FormAddSignState extends State<FormAddSign> {
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-                color: noEdit == true ? COLORS.LIGHT_GREY : Colors.white,
+                color: noEdit == true ? COLORS.LIGHT_GREY : COLORS.WHITE,
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: HexColor("#BEB4B4"))),
             child: Padding(
@@ -710,7 +710,7 @@ class _FormAddSignState extends State<FormAddSign> {
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-                color: noEdit == true ? COLORS.LIGHT_GREY : Colors.white,
+                color: noEdit == true ? COLORS.LIGHT_GREY : COLORS.WHITE,
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: HexColor("#BEB4B4"))),
             child: Padding(
@@ -784,7 +784,7 @@ class _FormAddSignState extends State<FormAddSign> {
                             fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: Colors.red))
+                            color: COLORS.RED))
                     : TextSpan(),
               ],
             ),
@@ -968,7 +968,7 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
                             fontFamily: "Quicksand",
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: Colors.red))
+                            color: COLORS.RED))
                     : TextSpan(),
               ],
             ),
@@ -1026,7 +1026,7 @@ class _SwitchBaseState extends State<SwitchBase> {
                               fontFamily: "Quicksand",
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
-                              color: Colors.red))
+                              color: COLORS.RED))
                       : TextSpan(),
                 ],
               ),

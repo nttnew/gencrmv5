@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import '../src/color.dart';
 
 class TrailLoading extends StatelessWidget {
   final double height;
@@ -13,7 +14,7 @@ class TrailLoading extends StatelessWidget {
         height: height,
         width: width,
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(10)),
+            color: COLORS.WHITE, borderRadius: BorderRadius.circular(10)),
         child: Lottie.asset(
           'assets/lottie/loading.json',
         ),

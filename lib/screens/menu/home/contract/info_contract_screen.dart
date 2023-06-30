@@ -302,7 +302,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
       decoration: BoxDecoration(
         color: COLORS.WHITE,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(width: 1, color: Colors.white),
+        border: Border.all(width: 1, color: COLORS.WHITE),
         boxShadow: [
           BoxShadow(
             color: COLORS.BLACK.withOpacity(0.1),
@@ -385,7 +385,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                   WidgetText(
                       title: data.start_date ?? "",
                       style: AppStyle.DEFAULT_LABEL_PRODUCT
-                          .copyWith(color: Colors.grey)),
+                          .copyWith(color: COLORS.GREY_400)),
                 ],
               ),
               Row(

@@ -116,7 +116,7 @@ class _ClueCardWidgetState extends State<ClueCardWidget> {
       ),
       padding: EdgeInsets.only(left: 15, top: 20, right: 15, bottom: 20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: COLORS.WHITE,
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
@@ -141,13 +141,13 @@ class _ClueCardWidgetState extends State<ClueCardWidget> {
       fontSize: 14);
 
   TextStyle LocationCustomerStyle() => TextStyle(
-      color: Colors.black,
+      color: COLORS.BLACK,
       fontFamily: "Quicksand",
       fontWeight: FontWeight.w400,
       fontSize: 14);
 
   TextStyle NameCustomerStyle() => TextStyle(
-      color: HexColor("#006CB1"),
+      color: COLORS.ff006CB1,
       fontFamily: "Quicksand",
       fontWeight: FontWeight.w700,
       fontSize: 18);

@@ -24,9 +24,9 @@ class KyNhan extends StatefulWidget {
 class _KyNhanState extends State<KyNhan> {
   final SignatureController _controller = SignatureController(
     penStrokeWidth: 2,
-    penColor: Colors.black,
+    penColor: COLORS.BLACK,
     exportBackgroundColor: Colors.transparent,
-    exportPenColor: Colors.black,
+    exportPenColor: COLORS.BLACK,
     onDrawStart: () {},
     onDrawEnd: () {},
   );
@@ -123,14 +123,14 @@ class _KyNhanState extends State<KyNhan> {
             //SHOW EXPORTED IMAGE IN NEW ROUTE
             _buttonKyNhan(() => exportImage(context),
                 '${AppLocalizations.of(Get.context!)?.done}',
-                color: COLORS.TEXT_COLOR, textColor: Colors.white),
+                color: COLORS.TEXT_COLOR, textColor: COLORS.WHITE),
             _buttonKyNhan(
               () {
                 setState(() => _controller.clear());
               },
               '${AppLocalizations.of(Get.context!)?.sign_again}',
-              textColor: Colors.white,
-              color: Colors.red,
+              textColor: COLORS.WHITE,
+              color: COLORS.RED,
             ),
             _buttonKyNhan(() {
               setState(() => Get.back());
@@ -153,7 +153,7 @@ class _KyNhanState extends State<KyNhan> {
         margin: EdgeInsets.only(left: 8, top: 15),
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-            color: color ?? Colors.white,
+            color: color ?? COLORS.WHITE,
             borderRadius: BorderRadius.all(Radius.circular(10)),
             border: Border.all(
               color: color ?? textColor ?? COLORS.TEXT_COLOR,

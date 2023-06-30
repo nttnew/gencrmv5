@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class COLORS {
   COLORS._();
   static const PRIMARY_COLOR = const Color(0xffD0F1EB);
   static const SECONDS_COLOR = const Color(0xffD0F1EB);
   static const BLACK = const Color(0xFF000000);
+  static final BLACK54 = Colors.black54;
   static const WHITE = const Color(0xffffffff);
+  static final WHITE60 = Colors.white60;
+  static final WHITE10 = Colors.white10;
   static const GREY = const Color(0xFF808080);
   static const GREY_400 = const Color(0xFFBDBDBD);
   static const LIGHT_GREY = const Color(0xEEEEEEEE);
@@ -26,4 +30,10 @@ class COLORS {
   static const GRAY_IMAGE = Color(0xffB4B6BC);
   static const TEXT_RED = Color(0xffD80027);
   static const ORANGE_IMAGE = Color(0xffE75D18);
+  static const ff5D5FEF = Color(0xff5D5FEF);
+  static const ff1AA928 = Color(0xff1AA928);
+  static final ff006CB1 = HexColor("#006CB1");
+  static final ff697077 = HexColor("#697077");
+  static final ff89F0DD = HexColor("89F0DD");
+  static final ffC5EDFF = HexColor("C5EDFF");
 }

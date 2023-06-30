@@ -226,7 +226,7 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
         _backToDialPad();
       },
       icon: Icons.call_end,
-      fillColor: Colors.red,
+      fillColor: COLORS.RED,
     );
 
     var hangupBtnInactive = ActionButton(
@@ -259,7 +259,7 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
               pitelCall.removeListener(this);
             },
             icon: Icons.call_end,
-            fillColor: Colors.red,
+            fillColor: COLORS.RED,
           ),
         ];
         break;

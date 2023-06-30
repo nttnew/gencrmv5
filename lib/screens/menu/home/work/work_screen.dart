@@ -91,10 +91,10 @@ class _WorkScreenState extends State<WorkScreen> {
         child: Icon(Icons.add, size: 40),
         closeButtonStyle: const ExpandableFabCloseButtonStyle(
           child: Icon(Icons.close),
-          foregroundColor: Colors.white,
-          backgroundColor: Color(0xff1AA928),
+          foregroundColor: COLORS.WHITE,
+          backgroundColor: COLORS.ff1AA928,
         ),
-        backgroundColor: Color(0xff1AA928),
+        backgroundColor: COLORS.ff1AA928,
         overlayStyle: ExpandableFabOverlayStyle(
           blur: 5,
         ),
@@ -116,7 +116,7 @@ class _WorkScreenState extends State<WorkScreen> {
                       padding:
                           EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: COLORS.WHITE,
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
@@ -147,7 +147,7 @@ class _WorkScreenState extends State<WorkScreen> {
                             blurRadius: 5,
                           )
                         ],
-                        color: Colors.white,
+                        color: COLORS.WHITE,
                         shape: BoxShape.circle,
                       ),
                       child: SizedBox(

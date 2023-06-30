@@ -25,7 +25,7 @@ class WidgetItemChance extends StatelessWidget {
         decoration: BoxDecoration(
           color: COLORS.WHITE,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(width: 1, color: Colors.white),
+          border: Border.all(width: 1, color: COLORS.WHITE),
           boxShadow: [
             BoxShadow(
               color: COLORS.BLACK.withOpacity(0.1),
@@ -52,7 +52,7 @@ class WidgetItemChance extends StatelessWidget {
                 SizedBox(width: 8,),
                 Container(
                   decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: COLORS.RED,
                       borderRadius: BorderRadius.circular(99)),
                   width: AppValue.widths * 0.1,
                   height: AppValue.heights * 0.02,
@@ -70,7 +70,7 @@ class WidgetItemChance extends StatelessWidget {
               text: listChanceData.status ?? '',
               icon: ICONS.IC_DANG_XU_LY_SVG,
               styleText:
-                  AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(color: Colors.red),
+                  AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(color: COLORS.RED),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 15),

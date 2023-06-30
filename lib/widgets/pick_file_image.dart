@@ -124,9 +124,9 @@ Widget FileDinhKemUiBase(
                                   child: Container(
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: Colors.white,
+                                        color: COLORS.WHITE,
                                         border: Border.all(
-                                            color: Colors.black, width: 0.1),
+                                            color: COLORS.BLACK, width: 0.1),
                                       ),
                                       height: 24,
                                       width: 24,
@@ -182,7 +182,7 @@ Widget FileLuuBase(BuildContext context, Function() onTap,
               child: Center(
                   child: Text(
                 AppLocalizations.of(Get.context!)?.save ?? '',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: COLORS.WHITE),
               )),
             ),
           ),

@@ -75,7 +75,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: COLORS.WHITE,
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: GestureDetector(
           onTap: () {
@@ -104,7 +104,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
             child: Center(
                 child: Text(
               AppLocalizations.of(Get.context!)?.save ?? '',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: COLORS.WHITE),
             )),
           ),
         ),
@@ -130,7 +130,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                             WidgetText(
                                 title: '*',
                                 style: AppStyle.DEFAULT_18_BOLD
-                                    .copyWith(color: Colors.red)),
+                                    .copyWith(color: COLORS.RED)),
                           ],
                         ),
                       ),
@@ -194,7 +194,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                     fontFamily: "Quicksand",
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.white)),
+                                    color: COLORS.WHITE)),
                           ),
                         ),
                       if (location != '')
@@ -239,7 +239,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(16)),
                                     border: Border.all(
-                                      color: Colors.red,
+                                      color: COLORS.RED,
                                     )),
                                 child: WidgetText(
                                     title: AppLocalizations.of(Get.context!)
@@ -248,7 +248,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                         fontFamily: "Quicksand",
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
-                                        color: Colors.red)),
+                                        color: COLORS.RED)),
                               ),
                             ),
                           ],
@@ -272,7 +272,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                         fontFamily: "Quicksand",
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
-                                        color: Colors.red))
+                                        color: COLORS.RED))
                               ],
                             ),
                           ),

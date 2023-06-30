@@ -41,7 +41,7 @@ class ItemSupport extends StatelessWidget {
                   child: WidgetText(
                     title: data.ten_ho_tro ?? '',
                     style: TextStyle(
-                        color: HexColor("#006CB1"),
+                        color: COLORS.ff006CB1,
                         fontFamily: "Quicksand",
                         fontWeight: FontWeight.w700,
                         fontSize: 18),
@@ -114,7 +114,7 @@ class ItemSupport extends StatelessWidget {
         ),
         padding: EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: COLORS.WHITE,
           borderRadius: BorderRadius.all(Radius.circular(10)),
           boxShadow: [
             BoxShadow(

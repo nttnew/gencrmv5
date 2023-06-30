@@ -7,7 +7,6 @@ import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/storages.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../api_resfull/dio_provider.dart';
 
 class AnimatedLogo extends AnimatedWidget {
@@ -29,8 +28,8 @@ class AnimatedLogo extends AnimatedWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            HexColor("89F0DD"),
-            HexColor("C5EDFF"),
+            COLORS.ff89F0DD,
+            COLORS.ffC5EDFF,
           ],
         )));
   }

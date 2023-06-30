@@ -182,7 +182,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         child: Text(
           AppLocalizations.of(Get.context!)?.change_address_application??'',
           style: AppStyle.DEFAULT_14W500.copyWith(
-            color: HexColor("#006CB1"),
+            color: COLORS.ff006CB1,
             decoration: TextDecoration.underline,
           ),
         ),

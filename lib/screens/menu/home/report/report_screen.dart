@@ -169,7 +169,7 @@ class _ReportScreenState extends State<ReportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: COLORS.WHITE,
         key: _drawerKey,
         drawer:
             MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
@@ -627,7 +627,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                       color: COLORS.WHITE,
                                       borderRadius: BorderRadius.circular(20),
                                       border: Border.all(
-                                          width: 1, color: Colors.white),
+                                          width: 1, color: COLORS.WHITE),
                                       boxShadow: [
                                         BoxShadow(
                                           color: COLORS.BLACK.withOpacity(0.1),
@@ -1052,7 +1052,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                     color: COLORS.WHITE,
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(
-                                        width: 1, color: Colors.white),
+                                        width: 1, color: COLORS.WHITE),
                                     boxShadow: [
                                       BoxShadow(
                                         color: COLORS.BLACK.withOpacity(0.1),
@@ -1291,7 +1291,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                           .textScaleFactor,
                                       text: TextSpan(
                                         style: TextStyle(
-                                            color: Colors.black, fontSize: 20),
+                                            color: COLORS.BLACK, fontSize: 20),
                                         children: <TextSpan>[
                                           TextSpan(
                                               text:
@@ -1453,7 +1453,7 @@ class _ReportScreenState extends State<ReportScreen> {
         decoration: BoxDecoration(
           color: COLORS.WHITE,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(width: 1, color: Colors.white),
+          border: Border.all(width: 1, color: COLORS.WHITE),
           boxShadow: [
             BoxShadow(
               color: COLORS.BLACK.withOpacity(0.1),

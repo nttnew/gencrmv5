@@ -29,7 +29,7 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
       margin: EdgeInsets.only(bottom: 20, left: 25, right: 25),
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: COLORS.WHITE,
         borderRadius: BorderRadius.all(Radius.circular(10)),
         boxShadow: [
           BoxShadow(
@@ -125,13 +125,13 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
       fontSize: 14);
 
   TextStyle LocationCustomerStyle() => TextStyle(
-      color: Colors.black,
+      color: COLORS.BLACK,
       fontFamily: "Quicksand",
       fontWeight: FontWeight.w400,
       fontSize: 14);
 
   TextStyle NameCustomerStyle() => TextStyle(
-      color: HexColor("#006CB1"),
+      color: COLORS.ff006CB1,
       fontFamily: "Quicksand",
       fontWeight: FontWeight.w700,
       fontSize: 18);

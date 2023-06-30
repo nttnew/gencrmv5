@@ -96,7 +96,7 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
         appBar: AppbarBase(_drawerKey, title),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Color(0xff1AA928),
+          backgroundColor: COLORS.ff1AA928,
           onPressed: () => AppNavigator.navigateFormAdd(
               '${AppLocalizations.of(Get.context!)?.add} $title',
               PRODUCT_CUSTOMER_TYPE),

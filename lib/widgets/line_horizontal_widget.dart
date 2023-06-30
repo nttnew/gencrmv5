@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
+import '../src/color.dart';
 
 class LineHorizontal extends StatelessWidget {
   const LineHorizontal({Key? key}) : super(key: key);
@@ -7,6 +7,6 @@ class LineHorizontal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: double.maxFinite, height: 1, color: HexColor("#697077"));
+        width: double.maxFinite, height: 1, color: COLORS.ff697077);
   }
 }
