@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/api_resfull/api.dart';
-import 'package:gen_crm/screens/menu/home/contract/widget/list_product.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import '../../../../../models/product_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
+
+import 'item_product.dart';
 
 class ProductContract extends StatefulWidget {
   ProductContract({
@@ -37,15 +38,15 @@ class _ProductContractState extends State<ProductContract> {
       productData = widget.data;
     });
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      final response = await userRepository.getListProduct("1", "");
+      final response = await userRepository.getListProduct(
+          BASE_URL.PAGE_DEFAULT.toString(), '');
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         if (listVAT.isEmpty) {
-          listVAT = response.data!.vats!;
+          listVAT = response.data?.vats ?? [];
         }
-
         if (listDVT.isEmpty) {
-          listDVT = response.data!.units!;
+          listDVT = response.data?.units ?? [];
         }
       }
     });
@@ -125,8 +126,8 @@ class _ProductContractState extends State<ProductContract> {
                       color: COLORS.TEXT_COLOR,
                     )),
                 child: WidgetText(
-                  title: AppLocalizations.of(Get.context!)
-                      ?.select_product??'',
+                  title:
+                      AppLocalizations.of(Get.context!)?.select_product ?? '',
                   style: AppStyle.DEFAULT_14_BOLD.copyWith(color: COLORS.WHITE),
                 ),
               ),

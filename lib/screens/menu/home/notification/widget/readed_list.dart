@@ -3,8 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import '../../../../../bloc/readed_list_notification/readed_list_notifi_bloc.dart';
 import '../../../../../src/app_const.dart';
+import '../../../../../src/base.dart';
 import '../../../../../src/color.dart';
+import '../../../../../src/models/model_generator/list_notification.dart';
+import '../../../../../src/src_index.dart';
 import '../../../../../widgets/slide_menu.dart';
+import '../../../../../widgets/widget_text.dart';
 
 class ReadList extends StatefulWidget {
   @override
@@ -13,10 +17,11 @@ class ReadList extends StatefulWidget {
 
 class _ReadListState extends State<ReadList>
     with AutomaticKeepAliveClientMixin {
-  int page = 1;
+  int page = BASE_URL.PAGE_DEFAULT;
   int total = 0;
   int length = 0;
   ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     GetListReadedNotifiBloc.of(context).add(InitGetListReadedNotifiEvent(1));
@@ -32,13 +37,16 @@ class _ReadListState extends State<ReadList>
     super.initState();
   }
 
+  reload() async {
+    GetListReadedNotifiBloc.of(context).add(InitGetListReadedNotifiEvent(1));
+  }
+
   Widget build(BuildContext context) {
     super.build(context);
     return BlocListener<GetListReadedNotifiBloc, ReadNotificationState>(
       listener: (context, state) {
         if (state is DeleteReadNotificationState) {
-          GetListReadedNotifiBloc.of(context)
-              .add(InitGetListReadedNotifiEvent(1));
+          reload();
         } else if (state is ErrorDeleteReadNotificationState) {}
       },
       child: BlocBuilder<GetListReadedNotifiBloc, ReadNotificationState>(
@@ -46,15 +54,23 @@ class _ReadListState extends State<ReadList>
         if (state is UpdateReadNotificationState) {
           total = int.parse(state.total);
           length = state.list.length;
-          return ListView(
-              controller: _scrollController,
-              children: ListTile.divideTiles(
-                  context: context,
-                  tiles: state.list.map((element) {
-                    return Builder(
-                      builder: (ctx) => _buildSlideMenuItem(ctx, element),
-                    );
-                  })).toList());
+          if (length != 0)
+            return RefreshIndicator(
+              onRefresh: () async {
+                await reload();
+              },
+              child: ListView(
+                controller: _scrollController,
+                children: ListTile.divideTiles(
+                    context: context,
+                    tiles: state.list.map((element) {
+                      return Builder(
+                        builder: (ctx) => _buildSlideMenuItem(ctx, element),
+                      );
+                    })).toList(),
+              ),
+            );
+          return noData();
         } else {
           return noData();
         }
@@ -62,22 +78,33 @@ class _ReadListState extends State<ReadList>
     );
   }
 
-  Widget _buildSlideMenuItem(BuildContext context, item) {
-    return new SlideMenu(
-      child: new ListTile(
-        title: new Text(item.title),
-        subtitle: new Container(
-          child: Html(data: item.content!),
+  Widget _buildSlideMenuItem(BuildContext context, DataNotification item) {
+    return SlideMenu(
+      child: ListTile(
+        onTap: () {
+          ModuleMy.getNavigate(
+              item.record_id ?? '', item.title ?? '', item.module ?? '');
+        },
+        contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 4),
+        title: WidgetText(
+          title: item.title ?? '',
+          style: AppStyle.DEFAULT_16.copyWith(fontWeight: FontWeight.w600),
+        ),
+        subtitle: Container(
+          decoration: BoxDecoration(),
+          padding: EdgeInsets.all(2),
+          child: Html(data: item.content ?? ''),
         ),
       ),
       menuItems: <Widget>[
-        new Container(
+        Container(
           color: COLORS.RED,
-          child: new IconButton(
-            icon: new Icon(Icons.delete),
+          child: IconButton(
+            icon: Icon(Icons.delete),
             color: COLORS.WHITE,
             onPressed: () => GetListReadedNotifiBloc.of(context).add(
-                DeleteReadedListNotifiEvent(int.parse(item.id), item.type)),
+                DeleteReadedListNotifiEvent(
+                    int.parse(item.id ?? '0'), item.type ?? '')),
           ),
         ),
       ],
