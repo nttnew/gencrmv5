@@ -222,7 +222,7 @@ class ShowDialogCustom {
                         height: 25,
                       ),
                       WidgetInput(
-                        colorFix: Theme.of(context).scaffoldBackgroundColor,
+                        colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
                         inputType: TextInputType.text,
                         onChanged: (text) {
                           text_r = text;
@@ -233,7 +233,7 @@ class ShowDialogCustom {
                           border: Border.all(color: HexColor("#838A91")),
                         ),
                         initialValue: initAddressApplication(),
-                        Fix: Text("",
+                        textLabel: Text("",
                             style: TextStyle(
                                 fontFamily: "Quicksand",
                                 fontWeight: FontWeight.w600,

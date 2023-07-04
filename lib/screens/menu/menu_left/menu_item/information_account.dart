@@ -268,7 +268,7 @@ class _InformationAccountState extends State<InformationAccount> {
                         SizedBox(
                           height: 15,
                         ),
-                        _buildEnailField(bloc),
+                        _buildEmailField(bloc),
                         AppValue.vSpaceSmall,
                         Text(AppLocalizations.of(Get.context!)?.address ?? '',
                             style: AppStyle.DEFAULT_16
@@ -383,7 +383,7 @@ class _InformationAccountState extends State<InformationAccount> {
     });
   }
 
-  _buildEnailField(InforAccBloc bloc) {
+  _buildEmailField(InforAccBloc bloc) {
     return BlocBuilder<InforAccBloc, InforAccState>(builder: (context, state) {
       return GestureDetector(
         onTap: null,

@@ -492,9 +492,10 @@ class _ItemProductState extends State<ItemProduct> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            if (!typeGiamGia &&
+                            if (typeGiamGia &&
                                 (double.parse(_editingController.text) >
-                                    double.parse(widget.data.sell_price!))) {
+                                    double.parse(
+                                        widget.data.sell_price ?? '0'))) {
                               _editingController.text = widget.data.sell_price!;
                               ShowDialogCustom.showDialogBase(
                                 title: AppLocalizations.of(Get.context!)
@@ -519,10 +520,16 @@ class _ItemProductState extends State<ItemProduct> {
                               );
                             } else {
                               setState(() {
-                                giamGia = typeGiamGia
-                                    ? AppValue.APP_MONEY_FORMAT.format(
-                                        double.parse(_editingController.text))
-                                    : _editingController.text;
+                                if (double.parse(_editingController.text) ==
+                                    0) {
+                                  giamGia = '0';
+                                  _editingController.text = '0';
+                                } else {
+                                  giamGia = typeGiamGia
+                                      ? AppValue.APP_MONEY_FORMAT.format(
+                                          double.parse(_editingController.text))
+                                      : _editingController.text;
+                                }
                               });
                               widget.onGiamGia!(
                                 _editingController.text,

@@ -127,6 +127,7 @@ class _MainDrawerState extends State<MainDrawer> {
                             height: 75,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 WidgetText(
                                   title: state.inforAcc.fullname ?? '',

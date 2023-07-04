@@ -181,5 +181,6 @@
 "number": "Number",
 "are_you_sure_you_want_to_sign_out": "Are you sure you want to sign out?",
 "agree": "Agree",
-"enter_address_application_below": "Enter the application address below"
+"enter_address_application_below": "Enter the application address below",
+"this_email_is_invalid":"Email không hợp lệ"
 }

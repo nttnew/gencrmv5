@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import '../../../../../bloc/readed_list_notification/readed_list_notifi_bloc.dart';
 import '../../../../../src/app_const.dart';
-import '../../../../../src/base.dart';
-import '../../../../../src/color.dart';
 import '../../../../../src/models/model_generator/list_notification.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/slide_menu.dart';

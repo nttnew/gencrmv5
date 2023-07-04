@@ -76,7 +76,6 @@ class ICONS {
   static const String IC_USER2_SVG = 'assets/icons/User.svg';
   static const String IC_DANG_XU_LY_SVG = 'assets/icons/dangxuly.svg';
   static const String IC_HINT_SVG = 'assets/icons/pass.svg';
-  static const String IC_HINT_PASS_SVG = 'assets/icons/hintPass.svg';
   static const String IC_BUILD_SVG = 'assets/icons/building.svg';
   static const String IC_CART_SVG = 'assets/icons/cart.svg';
   static const String IC_LOCATION_PNG = 'assets/icons/location_customer.svg';

@@ -1,4 +1,3 @@
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
 import 'package:gen_crm/bloc/blocs.dart';
@@ -88,9 +87,9 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
             children: [
               AppValue.vSpaceTiny,
               _buildCurrentPass(bloc),
-              AppValue.vSpaceMedium,
+              AppValue.vSpaceSmall,
               _buildNewPass(bloc),
-              AppValue.vSpaceMedium,
+              AppValue.vSpaceSmall,
               _buildConfirmNewPass(bloc),
               Spacer(),
               BlocBuilder<ChangePasswordBloc, ChangePasswordState>(
@@ -125,7 +124,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
         builder: (context, state) {
       return GestureDetector(
         child: WidgetInput(
-          colorFix: COLORS.WHITE,
+          colorTxtLabel: COLORS.WHITE,
           height: 55,
           obscureText: obscurePassword,
           focusNode: _passwordFocusNode,
@@ -135,15 +134,6 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
               : null,
           onChanged: (value) =>
               bloc.add(OldPasswordChanged(oldPassword: value)),
-          endIcon: GestureDetector(
-            onTap: () => setState(() => obscurePassword = !obscurePassword),
-            child: SvgPicture.asset(
-              obscurePassword ? ICONS.IC_HINT_PASS_SVG : ICONS.IC_HINT_SVG,
-              color: COLORS.GREY,
-              height: 25,
-              width: 25,
-            ),
-          ),
           widthIcon: null,
           inputController: null,
           enabled: null,
@@ -154,7 +144,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
           inputType: TextInputType.text,
           hintStyle: AppStyle.DEFAULT_16.copyWith(color: Colors.grey),
           hint: AppLocalizations.of(Get.context!)?.enter_current_password,
-          Fix: Container(
+          textLabel: Container(
             width: 150,
             height: 20,
             decoration: BoxDecoration(
@@ -187,7 +177,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
         builder: (context, state) {
       return GestureDetector(
         child: WidgetInput(
-          colorFix: COLORS.WHITE,
+          colorTxtLabel: COLORS.WHITE,
           height: 55,
           obscureText: obscureNewPassword,
           focusNode: _newPasswordFocusNode,
@@ -197,16 +187,6 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
               : null,
           onChanged: (value) =>
               bloc.add(NewPasswordChanged(newPassword: value)),
-          endIcon: GestureDetector(
-            onTap: () =>
-                setState(() => obscureNewPassword = !obscureNewPassword),
-            child: SvgPicture.asset(
-              obscureNewPassword ? ICONS.IC_HINT_PASS_SVG : ICONS.IC_HINT_SVG,
-              color: COLORS.GREY,
-              height: 25,
-              width: 25,
-            ),
-          ),
           widthIcon: null,
           inputController: null,
           enabled: null,
@@ -217,7 +197,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
           inputType: TextInputType.text,
           hintStyle: AppStyle.DEFAULT_16.copyWith(color: Colors.grey),
           hint: AppLocalizations.of(Get.context!)?.enter_your_new_password,
-          Fix: Container(
+          textLabel: Container(
             width: 150,
             height: 20,
             decoration: BoxDecoration(
@@ -250,7 +230,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
         builder: (context, state) {
       return GestureDetector(
         child: WidgetInput(
-          colorFix: COLORS.WHITE,
+          colorTxtLabel: COLORS.WHITE,
           height: 55,
           obscureText: obscureConfirmPassword,
           focusNode: _confirmPassFocusNode,
@@ -260,18 +240,6 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
           onChanged: (value) {
             bloc.add(RepeatPasswordChanged(repeatPassword: value));
           },
-          endIcon: GestureDetector(
-            onTap: () => setState(
-                () => obscureConfirmPassword = !obscureConfirmPassword),
-            child: SvgPicture.asset(
-              obscureConfirmPassword
-                  ? ICONS.IC_HINT_PASS_SVG
-                  : ICONS.IC_HINT_SVG,
-              color: COLORS.GREY,
-              height: 25,
-              width: 25,
-            ),
-          ),
           widthIcon: null,
           inputController: null,
           enabled: null,
@@ -282,7 +250,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
           inputType: TextInputType.text,
           hintStyle: AppStyle.DEFAULT_16.copyWith(color: Colors.grey),
           hint: AppLocalizations.of(Get.context!)?.enter_password_again,
-          Fix: Container(
+          textLabel: Container(
             width: 150,
             height: 20,
             decoration: BoxDecoration(
