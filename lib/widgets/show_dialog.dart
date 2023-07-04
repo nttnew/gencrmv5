@@ -219,7 +219,7 @@ class ShowDialogCustom {
                               '',
                           style: AppStyle.DEFAULT_16.copyWith(fontSize: 14)),
                       SizedBox(
-                        height: 25,
+                        height: 15,
                       ),
                       WidgetInput(
                         colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
