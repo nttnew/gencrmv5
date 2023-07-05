@@ -204,7 +204,7 @@ class _MainDrawerState extends State<MainDrawer> {
                                 ),
                                 AppValue.vSpaceTiny,
                                 WidgetText(
-                                  title: state.inforAcc.email ?? '',
+                                  title: state.inforAcc.department_name ?? '',
                                   style: AppStyle.DEFAULT_16.copyWith(
                                       fontFamily: 'Montserrat',
                                       fontWeight: FontWeight.w400),
@@ -293,7 +293,8 @@ class _MainDrawerState extends State<MainDrawer> {
                                     stream: fingerPrintIsCheck,
                                     builder: (context, snapshot) {
                                       return Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 20),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20),
                                         margin: EdgeInsets.only(bottom: 20),
                                         child: Row(
                                           mainAxisAlignment:
@@ -306,13 +307,13 @@ class _MainDrawerState extends State<MainDrawer> {
                                                         "${AppLocalizations.of(Get.context!)?.login_with_fingerprint_face_id}: ",
                                                     style: AppStyle.DEFAULT_16
                                                         .copyWith(
-                                                            color: COLORS.GREY)),
+                                                            color:
+                                                                COLORS.GREY)),
                                                 !(snapshot.data ?? false)
                                                     ? WidgetText(
-                                                        title:
-                                                            AppLocalizations.of(
-                                                                    Get.context!)
-                                                                ?.no,
+                                                        title: AppLocalizations.of(
+                                                                Get.context!)
+                                                            ?.no,
                                                         style: AppStyle.DEFAULT_16
                                                             .copyWith(
                                                                 fontFamily:
@@ -323,9 +324,11 @@ class _MainDrawerState extends State<MainDrawer> {
                                                     : WidgetText(
                                                         title:
                                                             AppLocalizations.of(
-                                                                    Get.context!)
+                                                                    Get
+                                                                        .context!)
                                                                 ?.yes,
-                                                        style: AppStyle.DEFAULT_16
+                                                        style: AppStyle
+                                                            .DEFAULT_16
                                                             .copyWith(
                                                                 fontFamily:
                                                                     'Quicksand',
@@ -339,12 +342,13 @@ class _MainDrawerState extends State<MainDrawer> {
                                               onChanged: (value) {
                                                 if (!(supportBiometric.data ??
                                                     false)) {
-                                                  ShowDialogCustom.showDialogBase(
+                                                  ShowDialogCustom
+                                                      .showDialogBase(
                                                     title: AppLocalizations.of(
                                                             Get.context!)
                                                         ?.notification,
-                                                    content: AppLocalizations.of(
-                                                            Get.context!)
+                                                    content: AppLocalizations
+                                                            .of(Get.context!)
                                                         ?.the_device_has_not_setup_fingerprint_face,
                                                   );
                                                 } else {

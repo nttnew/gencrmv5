@@ -5,10 +5,10 @@ part 'infor_acc.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class InforAcc {
-  final String? user_id, fullname, email, phone, avatar, address;
+  final String? user_id, fullname, email, phone, avatar, address,department_name;
 
   InforAcc(this.user_id, this.fullname, this.email, this.phone, this.avatar,
-      this.address);
+      this.address,this.department_name);
 
   factory InforAcc.fromJson(Map<String, dynamic> json) =>
       _$InforAccFromJson(json);
