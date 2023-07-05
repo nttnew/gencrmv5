@@ -99,9 +99,9 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
                           ),
                         ],
                       ),
-                      AppValue.vSpaceMedium,
+                      AppValue.vSpaceSmall,
                       _buildTextFieldPassword(context, bloc),
-                      AppValue.vSpaceMedium,
+                      AppValue.vSpaceSmall,
                       _buildTextFieldPasswordPressAgain(context),
                       AppValue.vSpaceSmall,
                       _buildButtonSubmit(bloc)
@@ -155,8 +155,8 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
         onChanged: (value) => newPass = value,
         focusNode: _newPassFocusNode,
         inputType: TextInputType.text,
-        colorFix: Theme.of(context).scaffoldBackgroundColor,
-        Fix: Text(AppLocalizations.of(Get.context!)?.password ?? '',
+        colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
+        textLabel: Text(AppLocalizations.of(Get.context!)?.password ?? '',
             style: TextStyle(
                 fontFamily: "Quicksand",
                 fontWeight: FontWeight.w600,
@@ -177,8 +177,8 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
       },
       focusNode: _cfPassFocusNode,
       inputType: TextInputType.text,
-      colorFix: Theme.of(context).scaffoldBackgroundColor,
-      Fix: Text(AppLocalizations.of(Get.context!)?.enter_password_again ?? '',
+      colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
+      textLabel: Text(AppLocalizations.of(Get.context!)?.enter_password_again ?? '',
           style: TextStyle(
               fontFamily: "Quicksand",
               fontWeight: FontWeight.w600,

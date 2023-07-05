@@ -85,14 +85,14 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
               ),
               AppValue.vSpaceSmall,
               _buildTextFieldFullName(bloc),
-              AppValue.vSpaceMedium,
+              AppValue.vSpaceSmall,
               Text(
                 AppLocalizations.of(Get.context!)?.email ?? '',
                 style: AppStyle.DEFAULT_16_BOLD,
               ),
               AppValue.vSpaceSmall,
               _buildTextFieldEmail(bloc),
-              AppValue.vSpaceMedium,
+              AppValue.vSpaceSmall,
               Text(
                 AppLocalizations.of(Get.context!)?.password ?? '',
                 style: AppStyle.DEFAULT_16_BOLD,

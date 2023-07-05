@@ -26,7 +26,6 @@ class GetInforAccBloc extends Bloc<GetInforAccEvent, GetInforAccState> {
   }
 
   Stream<GetInforAccState> _getInfoAcc() async* {
-    // LoadingApi().pushLoading();
     try {
       yield LoadingInforAccState();
       final response = await userRepository.getInfoAcc();

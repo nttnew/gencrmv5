@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import '../storages/share_local.dart';
 import 'icon_constants.dart';
+import 'navigator.dart';
 
 class BASE_URL {
   BASE_URL._();
@@ -202,7 +203,7 @@ class BASE_URL {
 
   static const ACTIVE = 1;
   static const LOCK = 0;
-  static final KHACH_HANG = AppLocalizations.of(Get.context!)?.client??'';
+  static final KHACH_HANG = AppLocalizations.of(Get.context!)?.client ?? '';
   static const NOTE_ID = 'noteid';
   static const ID = 'id';
   static const CONTENT = 'content';
@@ -288,6 +289,44 @@ class ModuleMy {
       }
     }
     return '';
+  }
+
+  static void getNavigate(String id, String title, String module) {
+    if (ModuleMy.CUSTOMER == module) {
+      AppNavigator.navigateDetailCustomer(
+        id,
+        title,
+      );
+    } else if (ModuleMy.DAU_MOI == module) {
+      AppNavigator.navigateInfoClue(
+        id,
+        title,
+      );
+    } else if (ModuleMy.LICH_HEN == module) {
+      AppNavigator.navigateInfoChance(
+        id,
+        title,
+      );
+    } else if (ModuleMy.HOP_DONG == module) {
+      AppNavigator.navigateInfoContract(
+        id,
+        title,
+      );
+    } else if (ModuleMy.CONG_VIEC == module) {
+      AppNavigator.navigateDetailWork(
+        int.parse(id),
+        title,
+      );
+    } else if (ModuleMy.CSKH == module) {
+      AppNavigator.navigateDetailSupport(
+        id,
+        title,
+      );
+    } else if (ModuleMy.SAN_PHAM == module) {
+      AppNavigator.navigateDetailProduct(title, id);
+    } else if (ModuleMy.SAN_PHAM_KH == module) {
+      AppNavigator.navigateDetailProductCustomer(title, id);
+    }
   }
 
   static Color getColor(String id) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:gen_crm/src/src_index.dart';
+import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:rxdart/rxdart.dart';
 
 class WidgetInput extends StatefulWidget {
@@ -10,7 +10,7 @@ class WidgetInput extends StatefulWidget {
   final String? hint, errorText, labelText, labelText1, initialValue;
   final int? maxLine;
   final Padding? padding;
-  final Color? colorFix;
+  final Color? colorTxtLabel;
   final TextStyle? hintStyle;
   final int? minLine;
   final int? maxLength;
@@ -19,12 +19,13 @@ class WidgetInput extends StatefulWidget {
   final TextInputType? inputType;
   final Widget? leadIcon;
   final Widget? endIcon;
-  final Widget? Fix;
+  final Widget? textLabel;
   final bool? enabled;
   final FocusNode? focusNode;
   final CrossAxisAlignment? crossAxisAlignment;
   final TextInputAction? textInputAction;
   final BoxDecoration? boxDecoration;
+
   const WidgetInput(
       {Key? key,
       this.focusNode,
@@ -47,8 +48,8 @@ class WidgetInput extends StatefulWidget {
       this.endIcon,
       this.enabled = true,
       this.boxDecoration,
-      this.Fix,
-      this.colorFix,
+      this.textLabel,
+      this.colorTxtLabel,
       this.labelText1,
       this.widthIcon,
       this.heightIcon,
@@ -78,9 +79,40 @@ class _WidgetInputState extends State<WidgetInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        widget.textLabel ??
+            Container(
+              width: 100,
+              height: 20,
+              decoration: BoxDecoration(
+                color: COLORS.WHITE,
+              ),
+              child: Stack(
+                children: [
+                  Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(color: COLORS.WHITE),
+                          left: BorderSide(color: COLORS.WHITE),
+                          right: BorderSide(color: COLORS.WHITE),
+                        ),
+                      ),
+                      height: 11),
+                  Center(
+                    child: Text(
+                      widget.labelText1.toString(),
+                      style: AppStyle.DEFAULT_14.copyWith(color: COLORS.GREY),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        SizedBox(
+          height: 8,
+        ),
         Container(
           height: widget.height,
           decoration: widget.boxDecoration,
@@ -126,9 +158,6 @@ class _WidgetInputState extends State<WidgetInput> {
                       hintStyle: widget.hintStyle ??
                           AppStyle.DEFAULT_14
                               .copyWith(color: Color(0xff707070)),
-                      errorText: widget.errorText,
-                      errorStyle:
-                          AppStyle.DEFAULT_14.copyWith(color: COLORS.RED),
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
@@ -165,7 +194,7 @@ class _WidgetInputState extends State<WidgetInput> {
                 width: 1,
                 height: widget.height,
                 margin: EdgeInsets.only(right: 15),
-                color: widget.colorFix ?? COLORS.COLORS_BA,
+                color: widget.colorTxtLabel ?? COLORS.COLORS_BA,
               ),
               widget.endIcon != null
                   ? Padding(
@@ -180,38 +209,15 @@ class _WidgetInputState extends State<WidgetInput> {
             ],
           ),
         ),
-        Positioned(
-          top: -21,
-          left: 3,
-          child: widget.Fix ??
-              Container(
-                width: 100,
-                height: 20,
-                decoration: BoxDecoration(
-                  color: COLORS.WHITE,
-                ),
-                child: Stack(
-                  children: [
-                    Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            top: BorderSide(color: COLORS.WHITE),
-                            left: BorderSide(color: COLORS.WHITE),
-                            right: BorderSide(color: COLORS.WHITE),
-                          ),
-                        ),
-                        height: 11),
-                    Center(
-                      child: Text(
-                        widget.labelText1.toString(),
-                        style: AppStyle.DEFAULT_14.copyWith(color: COLORS.GREY),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-        ),
+        if (widget.errorText != null && widget.errorText != '') ...[
+          SizedBox(
+            height: 1,
+          ),
+          WidgetText(
+            title: widget.errorText,
+            style: AppStyle.DEFAULT_14.copyWith(color: COLORS.RED),
+          )
+        ]
       ],
     );
   }

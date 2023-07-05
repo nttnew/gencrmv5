@@ -6,6 +6,7 @@ import 'package:gen_crm/screens/menu/home/product/scanner_qrcode.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
@@ -35,6 +36,7 @@ class _ProductScreenState extends State<ProductScreen> {
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.PRODUCT);
+    GetNotificationBloc.of(context).add(CheckNotification());
     title = Get.arguments ?? '';
     _scrollController = ScrollController();
     _bloc = ProductModuleBloc.of(context);

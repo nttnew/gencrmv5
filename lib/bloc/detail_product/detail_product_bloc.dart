@@ -2,6 +2,8 @@ import 'package:dartx/dartx.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gen_crm/models/product_model.dart';
+import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import '../../api_resfull/user_repository.dart';
 
@@ -38,7 +40,24 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
       final response = await userRepository.getDetailProduct(id: id);
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        yield UpdateGetDetailProductState(response);
+        yield UpdateGetDetailProductState(
+            response,
+            ProductModel(
+                response.info?.productId ?? '',
+                1,
+                ProductItem(
+                  response.info?.productId,
+                  response.info?.productCode,
+                  response.info?.productEdit,
+                  response.info?.productName,
+                  response.info?.dvt,
+                  response.info?.vat,
+                  response.info?.sellPrice.toString(),
+                ),
+                '0',
+                response.info?.nameDvt ?? '',
+                response.info?.nameVat ?? '',
+                ''));
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {

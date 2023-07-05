@@ -7,13 +7,13 @@ class ActionButton extends StatelessWidget {
   final TextStyle titleStyle;
   final TextStyle subTitleStyle;
   final String subTitle;
-  IconData? icon;
+  final IconData? icon;
   final bool checked;
   final bool number;
   final Color? fillColor;
   final Color? iconColor;
   final Function() onPressed;
-  Function()? onLongPress;
+  final Function()? onLongPress;
 
   ActionButton(
       {Key? key,

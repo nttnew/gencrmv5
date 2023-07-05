@@ -59,12 +59,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Future<void> _removeDeviceToken(BuildContext context) async {
-
     final String domain = LoginBloc.of(context)
-        .loginData
-        ?.info_user
-        ?.info_setup_callcenter
-        ?.domain_mobile ??
+            .loginData
+            ?.info_user
+            ?.info_setup_callcenter
+            ?.domain_mobile ??
         '';
 
     final String user =
@@ -139,6 +138,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               platform: Platform.isIOS ? 'iOS' : 'Android',
               device_token: event.device_token);
           if (response.code == BASE_URL.SUCCESS) {
+            final userName =
+                await shareLocal.getString(PreferencesKey.USER_NAME);
+            if (userName != state.email.value.trim()) {
+              shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "false");
+              shareLocal.putString(PreferencesKey.SHOW_LOGIN_FINGER_PRINT, "true");
+            }
             await shareLocal.putString(
                 PreferencesKey.USER_NAME, state.email.value);
             await _saveData(response);

@@ -50,6 +50,7 @@ class _FormAddContractState extends State<FormAddContract> {
   String? id_first = Get.arguments[0];
   String? id_two = Get.arguments[1];
   String title = Get.arguments[2] ?? '';
+  ProductModel? product = Get.arguments[3];
 
   @override
   void initState() {
@@ -71,6 +72,9 @@ class _FormAddContractState extends State<FormAddContract> {
             '${AppLocalizations.of(Get.context!)?.organization}'
       ]
     ];
+    if (product != null) {
+      addProduct(product!);
+    }
     AttackBloc.of(context).add(LoadingAttackEvent());
     if (id_first != null)
       _bloc.add(InitFormAddContractEvent(id: id_first));
@@ -97,7 +101,7 @@ class _FormAddContractState extends State<FormAddContract> {
         break;
       }
     }
-    if (check == false) {
+    if (!check) {
       listProduct.add(data);
     }
   }
@@ -173,6 +177,8 @@ class _FormAddContractState extends State<FormAddContract> {
                   Get.back();
                   Get.back();
                   ContractBloc.of(context).add(InitGetContractEvent());
+                  if (product != null)
+                    AppNavigator.navigateContract(ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG));
                 },
               );
             }

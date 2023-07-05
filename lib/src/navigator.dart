@@ -115,13 +115,15 @@ class AppNavigator {
   static navigateContract(String name) async =>
       await Get.toNamed(ROUTE_NAMES.CONTRACT, arguments: name);
 
-  static navigateAddContract(
-          {String? id,
-          String? customer_id,
-          required String title,
-          Function? onRefresh}) async =>
+  static navigateAddContract({
+    String? id,
+    String? customer_id,
+    required String title,
+    Function? onRefresh,
+    ProductModel? product,
+  }) async =>
       await Get.toNamed(ROUTE_NAMES.ADD_CONTRACT,
-          arguments: [id, customer_id, title])?.whenComplete(() {
+          arguments: [id, customer_id, title, product])?.whenComplete(() {
         if (onRefresh != null) onRefresh();
       });
 
