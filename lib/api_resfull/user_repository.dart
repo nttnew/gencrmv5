@@ -271,7 +271,7 @@ class UserRepository {
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .deleteNotifi(DelNotifiParam(id, type));
 
-  Future<InforAccResponse> getInfoAcc() async =>
+  Future<InfoAccResponse> getInfoAcc() async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getInforAcc();
 
   Future<AddCustomerIndividual> getAddCusOr() async =>

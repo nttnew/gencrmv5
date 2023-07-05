@@ -279,7 +279,7 @@ abstract class RestClient {
     @Query('nguoi_quan_ly') String? manager,
   );
   @GET(BASE_URL.INFO_ACC)
-  Future<InforAccResponse> getInforAcc();
+  Future<InfoAccResponse> getInforAcc();
 
   @GET(BASE_URL.REPORT_OPTIONS)
   Future<TimeResponse> getReportOption();
