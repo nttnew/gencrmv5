@@ -31,6 +31,7 @@ class ShowDialogCustom {
       String? textButton2,
       Color? colorButton2,
       Color? colorButton1,
+      Widget? child,
       VoidCallback? onTap2}) {
     showDialog<void>(
       context: Get.context!,
@@ -74,6 +75,7 @@ class ShowDialogCustom {
                             : AppStyle.DEFAULT_18_BOLD,
                         textAlign: TextAlign.center,
                       ),
+                      if (child != null) child,
                       SizedBox(
                         height: 25,
                       ),
@@ -222,7 +224,8 @@ class ShowDialogCustom {
                         height: 15,
                       ),
                       WidgetInput(
-                        colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
+                        colorTxtLabel:
+                            Theme.of(context).scaffoldBackgroundColor,
                         inputType: TextInputType.text,
                         onChanged: (text) {
                           text_r = text;

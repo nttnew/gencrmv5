@@ -183,5 +183,6 @@
 "are_you_sure_you_want_to_sign_out":"Bạn chắc chắn muốn đăng xuất?",
 "agree":"Đồng ý",
 "enter_address_application_below":"Nhập địa chỉ ứng dụng bên dưới",
-"this_email_is_invalid":"Email không hợp lệ"
+"this_email_is_invalid":"Email không hợp lệ",
+"turn_on_login_with_finger_print_faceid":"Bật đăng nhập với vân tay, khuôn mặt"
 }

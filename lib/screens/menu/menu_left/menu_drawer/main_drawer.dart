@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/widgets/widget_button.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:rxdart/rxdart.dart';
 import '../../../../bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import '../../../../models/button_menu_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -24,17 +26,82 @@ class MainDrawer extends StatefulWidget {
 class _MainDrawerState extends State<MainDrawer> {
   List<ButtonMenuModel> listMenu = [];
   List _elements = [];
+  late final BehaviorSubject<bool> supportBiometric;
+  late final BehaviorSubject<bool> fingerPrintIsCheck;
+  String? canLoginWithFingerPrint;
+  late final LocalAuthentication auth;
 
   @override
   void initState() {
     getMenu();
+    auth = LocalAuthentication();
+    fingerPrintIsCheck = BehaviorSubject();
+    supportBiometric = BehaviorSubject();
+    canLoginWithFingerPrint =
+        shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT);
+    if (canLoginWithFingerPrint == null ||
+        canLoginWithFingerPrint == "" ||
+        canLoginWithFingerPrint == "false") {
+      fingerPrintIsCheck.add(false);
+    } else {
+      if (canLoginWithFingerPrint == "true") {
+        fingerPrintIsCheck.add(true);
+      }
+    }
+    checkBiometricEnable();
     super.initState();
+  }
+
+  Future<void> checkBiometricEnable() async {
+    final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+    if (!canAuthenticateWithBiometrics) {
+      return;
+    }
+
+    final List<BiometricType> availableBiometrics =
+        await auth.getAvailableBiometrics();
+    if (availableBiometrics.isNotEmpty) {
+      supportBiometric.add(true);
+    }
+  }
+
+  Future<void> useBiometric({required bool value}) async {
+    if (!value) {
+      fingerPrintIsCheck.sink.add(false);
+      shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "false");
+      return;
+    }
+    try {
+      final String reason =
+          AppLocalizations.of(Get.context!)?.login_with_fingerprint_face_id ??
+              '';
+      final bool didAuthenticate = await auth.authenticate(
+        localizedReason: reason,
+        options: const AuthenticationOptions(
+          useErrorDialogs: false,
+          stickyAuth: true,
+        ),
+      );
+      if (didAuthenticate) {
+        fingerPrintIsCheck.add(true);
+        shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "true");
+      } else {
+        ShowDialogCustom.showDialogBase(
+          title: AppLocalizations.of(Get.context!)?.notification,
+          content:
+              AppLocalizations.of(Get.context!)?.login_fail_please_try_again ??
+                  '',
+        );
+      }
+    } catch (e) {
+      return;
+    }
   }
 
   getMenu() async {
     _elements.add({
       'id': '1',
-      'title': AppLocalizations.of(Get.context!)?.home_page??'',
+      'title': AppLocalizations.of(Get.context!)?.home_page ?? '',
       'image': ICONS.IC_MENU_HOME_PNG,
       'group': '1',
       'isAdmin': false,
@@ -55,7 +122,7 @@ class _MainDrawerState extends State<MainDrawer> {
       ...[
         {
           'id': 'report',
-          'title':  AppLocalizations.of(Get.context!)?.report,
+          'title': AppLocalizations.of(Get.context!)?.report,
           'image': ICONS.IC_REPORT_PNG,
           'group': '1',
           'isAdmin': false
@@ -200,23 +267,98 @@ class _MainDrawerState extends State<MainDrawer> {
           Expanded(
               child: _elements.length > 0
                   ? ListView.builder(
-                      itemCount: _elements.length,
+                      itemCount: _elements.length + 1,
                       itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: Column(
-                            children: [
-                              InkWell(
-                                onTap: () => widget.onPress!(_elements[index]),
-                                child: WidgetItemListMenu(
-                                  icon: _elements[index]['image'],
-                                  title: _elements[index]['title'],
+                        return _elements.length != index
+                            ? Container(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Column(
+                                  children: [
+                                    InkWell(
+                                      onTap: () =>
+                                          widget.onPress!(_elements[index]),
+                                      child: WidgetItemListMenu(
+                                        icon: _elements[index]['image'],
+                                        title: _elements[index]['title'],
+                                      ),
+                                    ),
+                                    AppValue.vSpaceSmall,
+                                  ],
                                 ),
-                              ),
-                              AppValue.vSpaceSmall,
-                            ],
-                          ),
-                        );
+                              )
+                            : StreamBuilder<bool>(
+                                stream: supportBiometric,
+                                builder: (_, supportBiometric) {
+                                  return StreamBuilder<bool>(
+                                    stream: fingerPrintIsCheck,
+                                    builder: (context, snapshot) {
+                                      return Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 20),
+                                        margin: EdgeInsets.only(bottom: 20),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                WidgetText(
+                                                    title:
+                                                        "${AppLocalizations.of(Get.context!)?.login_with_fingerprint_face_id}: ",
+                                                    style: AppStyle.DEFAULT_16
+                                                        .copyWith(
+                                                            color: COLORS.GREY)),
+                                                !(snapshot.data ?? false)
+                                                    ? WidgetText(
+                                                        title:
+                                                            AppLocalizations.of(
+                                                                    Get.context!)
+                                                                ?.no,
+                                                        style: AppStyle.DEFAULT_16
+                                                            .copyWith(
+                                                                fontFamily:
+                                                                    'Quicksand',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600))
+                                                    : WidgetText(
+                                                        title:
+                                                            AppLocalizations.of(
+                                                                    Get.context!)
+                                                                ?.yes,
+                                                        style: AppStyle.DEFAULT_16
+                                                            .copyWith(
+                                                                fontFamily:
+                                                                    'Quicksand',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600)),
+                                              ],
+                                            ),
+                                            Switch(
+                                              value: snapshot.data ?? false,
+                                              onChanged: (value) {
+                                                if (!(supportBiometric.data ??
+                                                    false)) {
+                                                  ShowDialogCustom.showDialogBase(
+                                                    title: AppLocalizations.of(
+                                                            Get.context!)
+                                                        ?.notification,
+                                                    content: AppLocalizations.of(
+                                                            Get.context!)
+                                                        ?.the_device_has_not_setup_fingerprint_face,
+                                                  );
+                                                } else {
+                                                  useBiometric(value: value);
+                                                }
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              );
                       },
                     )
                   : SizedBox()),
@@ -225,8 +367,7 @@ class _MainDrawerState extends State<MainDrawer> {
             child: WidgetText(
               title: 'Version: 2.0.0',
               style: AppStyle.DEFAULT_16.copyWith(
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w400),
+                  fontFamily: 'Montserrat', fontWeight: FontWeight.w400),
             ),
           ),
           WidgetButton(

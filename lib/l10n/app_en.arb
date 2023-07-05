@@ -182,5 +182,6 @@
 "are_you_sure_you_want_to_sign_out": "Are you sure you want to sign out?",
 "agree": "Agree",
 "enter_address_application_below": "Enter the application address below",
-"this_email_is_invalid":"Email không hợp lệ"
+"this_email_is_invalid":"Email không hợp lệ",
+"turn_on_login_with_finger_print_faceid":"Bật đăng nhập với vân tay, khuôn mặt"
 }

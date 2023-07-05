@@ -28,6 +28,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../src/app_const.dart';
 import '../storages/share_local.dart';
 import '../widgets/item_menu.dart';
+import '../widgets/widget_fingerprint_faceid.dart';
 import 'add_service_voucher/add_service_voucher_screen.dart';
 import 'call/call_screen.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
@@ -136,13 +137,30 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
 
   @override
   void initState() {
+    _showFaceId();
     callInit();
     GetInforAccBloc.of(context).add(InitGetInforAcc());
     GetNotificationBloc.of(context).add(CheckNotification());
-    GetNotificationBloc.of(context).add(InitGetListUnReadNotificationEvent(BASE_URL.PAGE_DEFAULT));
+    GetNotificationBloc.of(context)
+        .add(InitGetListUnReadNotificationEvent(BASE_URL.PAGE_DEFAULT));
     getMenu();
     LoginBloc.of(context).getListMenuFlash();
     super.initState();
+  }
+
+  void _showFaceId() async {
+    final bool showDialogFaceID =
+        await (shareLocal.getString(PreferencesKey.SHOW_LOGIN_FINGER_PRINT) ??
+                "true") ==
+            "true";
+    if (showDialogFaceID) {
+      shareLocal.putString(PreferencesKey.SHOW_LOGIN_FINGER_PRINT, 'false');
+      ShowDialogCustom.showDialogBase(
+        content: AppLocalizations.of(Get.context!)
+            ?.turn_on_login_with_finger_print_faceid,
+        child: WidgetFingerPrint(),
+      );
+    }
   }
 
   //////////////////// HANDEL CALL
