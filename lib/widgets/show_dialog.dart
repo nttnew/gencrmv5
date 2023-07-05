@@ -31,6 +31,7 @@ class ShowDialogCustom {
       String? textButton2,
       Color? colorButton2,
       Color? colorButton1,
+      Widget? child,
       VoidCallback? onTap2}) {
     showDialog<void>(
       context: Get.context!,
@@ -74,6 +75,7 @@ class ShowDialogCustom {
                             : AppStyle.DEFAULT_18_BOLD,
                         textAlign: TextAlign.center,
                       ),
+                      if (child != null) child,
                       SizedBox(
                         height: 25,
                       ),
@@ -219,10 +221,11 @@ class ShowDialogCustom {
                               '',
                           style: AppStyle.DEFAULT_16.copyWith(fontSize: 14)),
                       SizedBox(
-                        height: 25,
+                        height: 15,
                       ),
                       WidgetInput(
-                        colorFix: Theme.of(context).scaffoldBackgroundColor,
+                        colorTxtLabel:
+                            Theme.of(context).scaffoldBackgroundColor,
                         inputType: TextInputType.text,
                         onChanged: (text) {
                           text_r = text;
@@ -233,7 +236,7 @@ class ShowDialogCustom {
                           border: Border.all(color: HexColor("#838A91")),
                         ),
                         initialValue: initAddressApplication(),
-                        Fix: Text("",
+                        textLabel: Text("",
                             style: TextStyle(
                                 fontFamily: "Quicksand",
                                 fontWeight: FontWeight.w600,

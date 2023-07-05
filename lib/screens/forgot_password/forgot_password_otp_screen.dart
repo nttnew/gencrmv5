@@ -108,7 +108,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
                           ),
                         ],
                       ),
-                      AppValue.vSpaceMedium,
+                      AppValue.vSpaceSmall,
                       _buildPassAuth(context, bloc),
                       AppValue.vSpaceSmall,
                       _buildButtonSubmit(bloc),
@@ -180,14 +180,14 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
         builder: (context, state) {
       return WidgetInput(
         onChanged: (value) => code = value,
-        colorFix: Theme.of(context).scaffoldBackgroundColor,
+        colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
         focusNode: _OtpFocusNode,
         inputType: TextInputType.emailAddress,
         boxDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: HexColor("#838A91")),
         ),
-        Fix: Text(AppLocalizations.of(Get.context!)?.verification_codes ?? '',
+        textLabel: Text(AppLocalizations.of(Get.context!)?.verification_codes ?? '',
             style: TextStyle(
                 fontFamily: "Quicksand",
                 fontWeight: FontWeight.w600,

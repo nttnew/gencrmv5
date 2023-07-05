@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_crm/bloc/add_job_chance/add_job_chance_bloc.dart';
 import 'package:gen_crm/bloc/add_service_voucher/add_service_bloc.dart';
@@ -34,7 +31,6 @@ import 'package:gen_crm/my_app.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/storages.dart';
 import 'package:plugin_pitel/voip_push/push_notif.dart';
-import 'package:vibration/vibration.dart';
 import 'api_resfull/api.dart';
 import 'bloc/add_customer/add_customer_bloc.dart';
 import 'bloc/blocs.dart';
@@ -71,69 +67,6 @@ Future main() async {
     name: "carCRM",
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-  var initializationSettings;
-  if (Platform.isAndroid) {
-    const AndroidNotificationChannel channel = AndroidNotificationChannel(
-      'high_importance_channel',
-      'xxxx',
-      importance: Importance.max,
-    );
-    var initializationSettingsAndroid =
-        new AndroidInitializationSettings("@mipmap/ic_launcher");
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()!
-        .createNotificationChannel(channel);
-
-    initializationSettings =
-        new InitializationSettings(android: initializationSettingsAndroid);
-  } else {
-    var initializationSettingsIOS = new DarwinInitializationSettings();
-    initializationSettings =
-        new InitializationSettings(iOS: initializationSettingsIOS);
-  }
-  flutterLocalNotificationsPlugin.initialize(initializationSettings);
-
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-    RemoteNotification? notification = message.notification;
-
-    if (notification != null) {
-      if (Platform.isAndroid) {
-        AndroidNotification? androidNotification =
-            message.notification?.android;
-        if (androidNotification != null) {
-          var androidPlatformChannelSpecifics =
-              const AndroidNotificationDetails(
-            'high_importance_channel',
-            'xxxx',
-            importance: Importance.max,
-            playSound: true,
-            showProgress: true,
-            priority: Priority.high,
-            ticker: 'test ticker',
-          );
-          var iOSChannelSpecifics = const DarwinNotificationDetails();
-          var platformChannelSpecifics = NotificationDetails(
-              android: androidPlatformChannelSpecifics,
-              iOS: iOSChannelSpecifics);
-          Vibration.vibrate(duration: 1000, amplitude: 128);
-          await flutterLocalNotificationsPlugin.show(0, notification.title,
-              notification.body, platformChannelSpecifics,
-              payload: 'test');
-        }
-      } else if (Platform.isIOS) {
-        var iOSChannelSpecifics = const DarwinNotificationDetails();
-        var platformChannelSpecifics =
-            NotificationDetails(iOS: iOSChannelSpecifics);
-        Vibration.vibrate(duration: 1000, amplitude: 128);
-        await flutterLocalNotificationsPlugin.show(
-            0, notification.title, notification.body, platformChannelSpecifics,
-            payload: 'test');
-      }
-    }
-  });
   runApp(
     MultiRepositoryProvider(
       providers: [

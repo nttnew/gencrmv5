@@ -1,4 +1,3 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
@@ -103,49 +102,50 @@ class WidgetAppbar extends StatelessWidget {
   }
 }
 
-Widget rightAppBar() => GestureDetector(onTap: () {
-      return AppNavigator.navigateNotification();
-    }, child: BlocBuilder<GetNotificationBloc, NotificationState>(
-        builder: (context, state) {
-      if (state is NotificationNeedRead) {
-        return Stack(
-          clipBehavior: Clip.none,
-          children: [
-            SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG),
-            if (GetNotificationBloc.of(context).total != 0)
-              Positioned(
-                  top: -5,
-                  right: -95,
-                  child: Container(
-                      width: 100,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(2),
-                            decoration: GetNotificationBloc.of(context).total <
-                                    10
-                                ? BoxDecoration(
-                                    color: COLORS.RED,
-                                    shape: BoxShape.circle,
-                                  )
-                                : BoxDecoration(
-                                    color: COLORS.RED,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(100))),
-                            child: WidgetText(
-                              title: '${GetNotificationBloc.of(context).total}',
-                              style: AppStyle.APP_MEDIUM.copyWith(
-                                  color: COLORS.WHITE,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 8),
-                            ),
-                          ),
-                        ],
-                      )))
-          ],
-        );
-      } else {
-        return SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG);
-      }
-    }));
+Widget rightAppBar() => GestureDetector(
+      onTap: () {
+        return AppNavigator.navigateNotification();
+      },
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG),
+          StreamBuilder<int>(
+              stream: GetNotificationBloc.of(Get.context!).total,
+              builder: (context, snapshot) {
+                final int total = snapshot.data ?? 0;
+                if (total != 0)
+                  return Positioned(
+                      top: -5,
+                      right: -95,
+                      child: Container(
+                          width: 100,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(2),
+                                decoration: total < 10
+                                    ? BoxDecoration(
+                                        color: COLORS.RED,
+                                        shape: BoxShape.circle,
+                                      )
+                                    : BoxDecoration(
+                                        color: COLORS.RED,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(100))),
+                                child: WidgetText(
+                                  title: total.toString(),
+                                  style: AppStyle.APP_MEDIUM.copyWith(
+                                      color: COLORS.WHITE,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 8),
+                                ),
+                              ),
+                            ],
+                          )));
+                return SizedBox.shrink();
+              })
+        ],
+      ),
+    );

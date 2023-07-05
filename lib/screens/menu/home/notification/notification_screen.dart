@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/screens/menu/home/notification/widget/unread_list.dart';
-import '../../../../src/color.dart';
+import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
 import 'widget/index.dart';
 import 'package:get/get.dart';
@@ -24,10 +24,7 @@ class NotificationScreen extends StatelessWidget {
                 isScrollable: true,
                 labelColor: COLORS.ff006CB1,
                 unselectedLabelColor: COLORS.ff697077,
-                labelStyle: TextStyle(
-                    fontFamily: "Quicksand",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700),
+                labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
                 indicatorColor: COLORS.ff006CB1,
                 tabs: <Widget>[
                   Tab(

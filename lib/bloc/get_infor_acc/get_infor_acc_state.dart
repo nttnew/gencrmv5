@@ -9,7 +9,7 @@ abstract class GetInforAccState extends Equatable {
 class InitGetInforAccState extends GetInforAccState {}
 
 class UpdateGetInforAccState extends GetInforAccState {
-  final InforAcc inforAcc;
+  final InfoAcc inforAcc;
 
   const UpdateGetInforAccState(this.inforAcc);
 

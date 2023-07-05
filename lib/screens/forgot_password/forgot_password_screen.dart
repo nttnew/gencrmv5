@@ -75,7 +75,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     margin: EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       children: [
-                        AppValue.vSpaceMedium,
+                        AppValue.vSpaceSmall,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -98,10 +98,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             ),
                           ],
                         ),
-                        AppValue.vSpaceMedium,
+                        AppValue.vSpaceSmall,
                         _buildTextFieldEmail(context, bloc),
-                        AppValue.vSpaceMedium,
+                        AppValue.vSpaceSmall,
                         _buildTextFieldUsername(context, bloc),
+                        AppValue.vSpaceMedium,
                         _buildButtonSubmit(bloc),
                       ],
                     ),
@@ -135,17 +136,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       return WidgetInput(
         onChanged: (value) =>
             bloc.add(EmailForgotPasswordChanged(email: value)),
-        colorFix: Theme.of(context).scaffoldBackgroundColor,
+        colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
         focusNode: _EmailFocusNode,
         inputType: TextInputType.emailAddress,
         errorText: state.email.invalid
-            ? AppLocalizations.of(Get.context!)?.this_account_is_invalid
+            ? AppLocalizations.of(Get.context!)?.this_email_is_invalid
             : null,
         boxDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: HexColor("#838A91")),
         ),
-        Fix: WidgetText(
+        textLabel: WidgetText(
             title: AppLocalizations.of(Get.context!)?.email,
             style: TextStyle(
                 fontFamily: "Quicksand",
@@ -161,14 +162,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       return WidgetInput(
         onChanged: (value) =>
             bloc.add(UserForgotPasswordChanged(username: value)),
-        colorFix: Theme.of(context).scaffoldBackgroundColor,
+        colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
         focusNode: _UserFocusNode,
         inputType: TextInputType.text,
         boxDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: HexColor("#838A91")),
         ),
-        Fix: Text(AppLocalizations.of(Get.context!)?.user??'',
+        errorText: state.username.invalid
+            ? AppLocalizations.of(Get.context!)?.this_account_is_invalid
+            : null,
+        textLabel: Text(AppLocalizations.of(Get.context!)?.user ?? '',
             style: TextStyle(
                 fontFamily: "Quicksand",
                 fontWeight: FontWeight.w600,

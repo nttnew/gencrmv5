@@ -8,6 +8,8 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart' as GET;
 
+import '../../src/models/validate_form/email.dart';
+
 part 'forgot_password_event.dart';
 part 'forgot_password_state.dart';
 
@@ -18,8 +20,8 @@ class ForgotPasswordBloc
   ForgotPasswordBloc({required UserRepository userRepository})
       : userRepository = userRepository,
         super(ForgotPasswordState(
-            email: UserName.pure(),
-            username: NotNull.pure(),
+            email: Email.pure(),
+            username: UserName.pure(),
             message: '',
             status: FormzStatus.invalid,
             timestamp: AppValue.DATE_TIME_FORMAT.format(DateTime.now())));
@@ -34,28 +36,28 @@ class ForgotPasswordBloc
   Stream<ForgotPasswordState> mapEventToState(
       ForgotPasswordEvent event) async* {
     if (event is EmailForgotPasswordChanged) {
-      final email = UserName.dirty(event.email);
+      final email = Email.dirty(event.email);
       yield state.copyWith(
-        email: email.valid ? email : UserName.pure(event.email),
+        email: email.valid ? email : Email.pure(event.email),
         status: Formz.validate([email, state.username]),
       );
     } else if (event is EmailForgotPasswordUnfocused) {
-      final email = UserName.dirty(state.email.value);
+      final email = Email.dirty(state.email.value);
       yield state.copyWith(
         email: email,
         status: Formz.validate([email, state.username]),
       );
     } else if (event is UserForgotPasswordChanged) {
-      final username = NotNull.dirty(event.username);
+      final username = UserName.dirty(event.username);
       yield state.copyWith(
-        username: username.valid ? username : NotNull.pure(event.username),
+        username: username.valid ? username : UserName.pure(event.username),
         status: Formz.validate([
           username,
           state.email,
         ]),
       );
     } else if (event is UserForgotPasswordUnfocused) {
-      final username = NotNull.dirty(state.username.value);
+      final username = UserName.dirty(state.username.value);
       yield state.copyWith(
         username: username,
         status: Formz.validate([username, state.email]),

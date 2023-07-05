@@ -33,7 +33,7 @@
 "enter_your_password":"Nhập mật khẩu của bạn",
 "password_not_match":"Mật khẩu không khớp",
 "login_session_expired_please_login_again":"Phiên đăng nhập hết hạn, hãy đăng nhập lại!",
-"ok":"OK",
+"ok":"Đóng",
 "new_photo_shoot":"Chụp ảnh mới",
 "new_video_recoding":"Quay video mới",
 "pick_file":"Chọn file",
@@ -78,7 +78,7 @@
 "enter_password_again":"Nhập lại mật khẩu",
 "forgot_password":"Quên mật khẩu",
 "please_enter_email_register_account":"Vui lòng nhập email đăng ký tài khoản",
-"user":"User",
+"user":"Tài khoản",
 "change_address_application":"Đổi địa chỉ ứng dụng",
 "check_the_information":"Kiểm tra lại thông tin",
 "account":"Tài khoản",
@@ -182,5 +182,7 @@
 "number":"Số",
 "are_you_sure_you_want_to_sign_out":"Bạn chắc chắn muốn đăng xuất?",
 "agree":"Đồng ý",
-"enter_address_application_below":"Nhập địa chỉ ứng dụng bên dưới"
+"enter_address_application_below":"Nhập địa chỉ ứng dụng bên dưới",
+"this_email_is_invalid":"Email không hợp lệ",
+"turn_on_login_with_finger_print_faceid":"Bật đăng nhập với vân tay, khuôn mặt"
 }

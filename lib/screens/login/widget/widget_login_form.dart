@@ -132,7 +132,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
             children: [
               AppValue.vSpaceSmall,
               _buildTextFieldUsername(bloc),
-              AppValue.vSpaceMedium,
+              AppValue.vSpaceSmall,
               _buildTextFieldPassword(bloc),
               AppValue.vSpaceSmall,
               Row(
@@ -241,8 +241,8 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
   _buildTextFieldPassword(LoginBloc bloc) {
     return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
       return WidgetInput(
-        colorFix: Theme.of(context).scaffoldBackgroundColor,
-        Fix: WidgetText(
+        colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
+        textLabel: WidgetText(
             title: AppLocalizations.of(Get.context!)?.password,
             style: TextStyle(
                 fontFamily: "Quicksand",
@@ -266,7 +266,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
   _buildTextFieldUsername(LoginBloc bloc) {
     return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
       return WidgetInput(
-        colorFix: Theme.of(context).scaffoldBackgroundColor,
+        colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
         onChanged: (value) => bloc.add(EmailChanged(email: value)),
         // inputType: TextInputType.emailAddress,
         focusNode: _emailFocusNode,
@@ -278,7 +278,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         errorText: state.email.invalid
             ? AppLocalizations.of(Get.context!)?.this_account_is_invalid
             : null,
-        Fix: WidgetText(
+        textLabel: WidgetText(
             title: AppLocalizations.of(Get.context!)?.account,
             style: TextStyle(
                 fontFamily: "Quicksand",

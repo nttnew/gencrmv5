@@ -73,9 +73,19 @@ class _ContractScreenState extends State<ContractScreen> {
     return Scaffold(
       key: _drawerKey,
       resizeToAvoidBottomInset: false,
+      appBar: AppbarBase(_drawerKey, title),
       drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      appBar: AppbarBase(_drawerKey, title),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 20),
+        child: FloatingActionButton(
+          backgroundColor: COLORS.ff1AA928,
+          onPressed: () {
+            AppNavigator.navigateAddContract(title: '${AppLocalizations.of(Get.context!)?.add} ${title.toLowerCase()}');
+          },
+          child: Icon(Icons.add, size: 40),
+        ),
+      ),
       body: Column(
         children: [
           AppValue.vSpaceSmall,
@@ -154,16 +164,6 @@ class _ContractScreenState extends State<ContractScreen> {
               return Container();
           }),
         ],
-      ),
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 20),
-        child: FloatingActionButton(
-          backgroundColor: COLORS.ff1AA928,
-          onPressed: () {
-            AppNavigator.navigateAddContract(title: '${AppLocalizations.of(Get.context!)?.add} ${title.toLowerCase()}');
-          },
-          child: Icon(Icons.add, size: 40),
-        ),
       ),
     );
   }

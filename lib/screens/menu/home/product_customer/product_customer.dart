@@ -7,6 +7,7 @@ import 'package:gen_crm/widgets/tree/tree_node_model.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/list_product_customer_response.dart';
 import '../../../../src/src_index.dart';
@@ -38,6 +39,7 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.SAN_PHAM_KH);
     title = Get.arguments ?? '';
+    GetNotificationBloc.of(context).add(CheckNotification());
     _scrollController = ScrollController();
     _bloc = ProductCustomerModuleBloc.of(context);
     getDataFirst();
