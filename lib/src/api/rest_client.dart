@@ -4,7 +4,7 @@ import 'package:gen_crm/src/models/model_generator/add_data_response.dart';
 import 'package:gen_crm/src/models/model_generator/add_voucher_response.dart';
 import 'package:gen_crm/src/models/model_generator/detail_product_module_response.dart';
 import 'package:gen_crm/src/models/model_generator/get_phone_cus.dart';
-import 'package:gen_crm/src/models/model_generator/infor_acc.dart';
+import 'package:gen_crm/src/models/model_generator/info_acc.dart';
 import 'package:gen_crm/src/models/model_generator/manager_filter_response.dart';
 import 'package:gen_crm/src/models/model_generator/post_info_car_response.dart';
 import 'package:gen_crm/src/models/model_generator/product_customer_edit_response.dart';
