@@ -101,7 +101,7 @@ void handleRegisterBase(
           .loginData
           ?.info_user
           ?.info_setup_callcenter
-          ?.outbound_proxy ??
+          ?.outbound_server ??
       '';
 
   final String wssMobile = LoginBloc.of(context)

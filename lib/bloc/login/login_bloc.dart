@@ -28,7 +28,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   BehaviorSubject<Locale> locale = BehaviorSubject.seeded(L10n.all.first);
   static const String UNREGISTER = 'UNREGISTER';
   static const String REGISTERED = 'REGISTERED';
-  // late BehaviorSubject<String> receivedMsg = BehaviorSubject.seeded(UNREGISTER);
   LoginData? loginData;
 
   LoginBloc({

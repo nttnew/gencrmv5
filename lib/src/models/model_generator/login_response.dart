@@ -92,6 +92,7 @@ class InfoSetupCallcenterRes {
       ntd,
       zalo_call,
       outbound_proxy,
+      outbound_server,
       wss_mobile,
       api_url,
       domain_mobile;
@@ -107,6 +108,7 @@ class InfoSetupCallcenterRes {
     this.zalo_call,
     this.type_call,
     this.outbound_proxy,
+    this.outbound_server,
     this.wss_mobile,
     this.api_url,
     this.domain_mobile,

@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'infor_acc.dart';
+part of 'info_acc.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-InfoAcc _$InforAccFromJson(Map<String, dynamic> json) => InfoAcc(
+InfoAcc _$InfoAccFromJson(Map<String, dynamic> json) => InfoAcc(
       json['user_id'] as String?,
       json['fullname'] as String?,
       json['email'] as String?,
@@ -16,7 +16,7 @@ InfoAcc _$InforAccFromJson(Map<String, dynamic> json) => InfoAcc(
       json['department_name'] as String?,
     );
 
-Map<String, dynamic> _$InforAccToJson(InfoAcc instance) => <String, dynamic>{
+Map<String, dynamic> _$InfoAccToJson(InfoAcc instance) => <String, dynamic>{
       'user_id': instance.user_id,
       'fullname': instance.fullname,
       'email': instance.email,
@@ -26,7 +26,7 @@ Map<String, dynamic> _$InforAccToJson(InfoAcc instance) => <String, dynamic>{
       'department_name': instance.department_name,
     };
 
-InfoAccResponse _$InforAccResponseFromJson(Map<String, dynamic> json) =>
+InfoAccResponse _$InfoAccResponseFromJson(Map<String, dynamic> json) =>
     InfoAccResponse(
       json['data'] == null
           ? null
@@ -36,7 +36,7 @@ InfoAccResponse _$InforAccResponseFromJson(Map<String, dynamic> json) =>
       ..msg = json['msg'] as String?
       ..code = json['code'] as int?;
 
-Map<String, dynamic> _$InforAccResponseToJson(InfoAccResponse instance) =>
+Map<String, dynamic> _$InfoAccResponseToJson(InfoAccResponse instance) =>
     <String, dynamic>{
       'success': instance.success,
       'msg': instance.msg,

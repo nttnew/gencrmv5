@@ -10,7 +10,7 @@ import 'package:gen_crm/src/models/model_generator/customer_contract.dart';
 import 'package:gen_crm/src/models/model_generator/detail_contract.dart';
 import 'package:gen_crm/src/models/model_generator/detail_customer.dart';
 import 'package:gen_crm/src/models/model_generator/file_response.dart';
-import 'package:gen_crm/src/models/model_generator/infor_acc.dart';
+import 'package:gen_crm/src/models/model_generator/info_acc.dart';
 import 'package:gen_crm/src/models/model_generator/job_chance.dart';
 import 'package:gen_crm/src/models/model_generator/job_customer.dart';
 import 'package:gen_crm/src/models/model_generator/list_notification.dart';
