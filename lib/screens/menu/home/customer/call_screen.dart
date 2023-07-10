@@ -26,16 +26,26 @@ class _CallScreenState extends State<CallScreen>
     implements SipPitelHelperListener {
   late final pitelCall;
   late final pitelClient;
-  late final BehaviorSubject<String> _controller;
+  late final TextEditingController _controller;
   final String nameModule = Get.arguments;
+  late final FocusNode _focusNode;
+  bool _isCursorTapped = false;
 
   @override
   void initState() {
     pitelCall = PitelClient.getInstance().pitelCall;
-    _controller = BehaviorSubject.seeded('');
+    _controller = TextEditingController();
     pitelClient = PitelClient.getInstance();
     _bindEventListeners();
     super.initState();
+    _focusNode = FocusNode();
+    _focusNode.requestFocus();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose(); // Giải phóng FocusNode khi widget bị hủy
+    super.dispose();
   }
 
   // STATUS: check register status
@@ -106,7 +116,7 @@ class _CallScreenState extends State<CallScreen>
   }
 
   void _handleCall(BuildContext context, [bool voiceonly = false]) {
-    var dest = _controller.value;
+    var dest = _controller.text;
     if (dest.isEmpty) {
       showToast(
           AppLocalizations.of(Get.context!)?.you_did_not_enter_a_number_phone ??
@@ -132,68 +142,53 @@ class _CallScreenState extends State<CallScreen>
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                SizedBox(
+                  width: 40,
+                  height: 40,
+                ),
+                Expanded(
+                  child: TextFormField(
+                    focusNode: _focusNode,
+                    controller: _controller,
+                    textAlign: TextAlign.center,
+                    showCursor: true,
+                    readOnly: true,
+                    style: styleNumber.copyWith(fontSize: 50),
+                    decoration: InputDecoration(
+                      enabledBorder: InputBorder.none,
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                    ),
+                  ),
+                ),
                 SizedBox(
                   width: 20,
                   height: 20,
                 ),
-                StreamBuilder<String>(
-                    stream: _controller,
-                    builder: (context, snapshot) {
-                      return SizedBox(
-                        height: 60,
-                        width: MediaQuery.of(context).size.width - 170,
-                        child: FittedBox(
-                          child: Center(
-                            child: Text(
-                              snapshot.data.toString(),
-                              style: styleNumber.copyWith(fontSize: 50),
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-                Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        await Clipboard.setData(
-                            ClipboardData(text: _controller.value));
-                      },
-                      child: Image.asset(
-                        ICONS.IC_COPY_PNG,
-                        width: 20,
-                        height: 20,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        ClipboardData? clipboardData =
-                            await Clipboard.getData(Clipboard.kTextPlain);
-                        if (clipboardData != null &&
-                            int.tryParse(clipboardData.text ?? '') != null) {
-                          if ((clipboardData.text?.length ?? 0) > 10) {
-                            _controller.add(
-                                clipboardData.text.toString().substring(0, 10));
-                          } else {
-                            _controller.add(clipboardData.text ?? '');
-                          }
-                        } else {}
-                      },
-                      child: Image.asset(
-                        ICONS.IC_PASTE_PNG,
-                        width: 20,
-                        height: 20,
-                      ),
-                    ),
-                  ],
-                )
+                GestureDetector(
+                  onTap: () async {
+                    ClipboardData? clipboardData =
+                        await Clipboard.getData(Clipboard.kTextPlain);
+                    if (clipboardData != null &&
+                        int.tryParse(clipboardData.text ?? '') != null) {
+                      if ((clipboardData.text?.length ?? 0) > 10) {
+                        _controller.text =
+                            clipboardData.text.toString().substring(0, 10);
+                      } else {
+                        _controller.text = clipboardData.text ?? '';
+                      }
+                      _controller.selection = TextSelection.fromPosition(
+                          TextPosition(offset: _controller.text.length));
+                    }
+                  },
+                  child: Image.asset(
+                    ICONS.IC_PASTE_PNG,
+                    width: 20,
+                    height: 20,
+                  ),
+                ),
               ],
             ),
             SizedBox(
@@ -219,8 +214,8 @@ class _CallScreenState extends State<CallScreen>
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 SizedBox(
-                  width: 40,
-                  height: 40,
+                  width: 80,
+                  height: 80,
                 ),
                 ActionButton(
                   title: "hangup",
@@ -232,20 +227,32 @@ class _CallScreenState extends State<CallScreen>
                 ),
                 GestureDetector(
                   onLongPress: () {
-                    if (_controller.value.isNotEmpty) _controller.value = '';
+                    if (_controller.text.isNotEmpty) _controller.text = '';
                   },
                   onTap: () {
-                    if (_controller.value.isNotEmpty)
-                      _controller.value = _controller.value
-                          .substring(0, _controller.value.length - 1);
+                    if (_controller.text.isNotEmpty) {
+                      if (_controller.selection.baseOffset ==
+                          _controller.selection.extentOffset) {
+                        deleteTextAtPosition(
+                            _controller.selection.extentOffset - 1);
+                      } else {
+                        deleteTextRange(_controller.selection.baseOffset,
+                            _controller.selection.extentOffset - 1);
+                      }
+                    }
                   },
                   child: Container(
                     color: Colors.transparent,
-                    padding: const EdgeInsets.only(bottom: 14),
+                    padding: const EdgeInsets.only(
+                      bottom: 28,
+                      top: 14,
+                      right: 20,
+                      left: 20,
+                    ),
                     child: Image.asset(
                       ICONS.IC_DELETE_TEXT_PNG,
-                      width: 36,
-                      height: 36,
+                      width: 32,
+                      height: 32,
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -261,11 +268,46 @@ class _CallScreenState extends State<CallScreen>
     );
   }
 
+  void deleteTextRange(int start, int end) {
+    if (start >= 0 && end < _controller.text.length) {
+      final text = _controller.text;
+      final newText = text.replaceRange(start, end + 1, '');
+      _controller.text = newText;
+      _controller.selection =
+          TextSelection.fromPosition(TextPosition(offset: start));
+    }
+  }
+
+  void deleteTextAtPosition(int position) {
+    if (_controller.text.length > position && position != -1) {
+      final text = _controller.text;
+      final newText =
+          text.substring(0, position) + text.substring(position + 1);
+      _controller.text = newText;
+      _controller.selection =
+          TextSelection.fromPosition(TextPosition(offset: position));
+    }
+  }
+
+  void insertTextAtPosition(int position, String text) {
+    if (_controller.text.length < 10) if (position >= 0 &&
+        position <= _controller.text.length) {
+      final currentText = _controller.text;
+      final newText = currentText.replaceRange(position, position, text);
+      _controller.text = newText;
+      _controller.selection = TextSelection.fromPosition(
+          TextPosition(offset: position + text.length));
+    } else {
+      _controller.text = text;
+      _controller.selection =
+          TextSelection.fromPosition(TextPosition(offset: text.length));
+    }
+  }
+
   Widget numberText(int title) => Expanded(
           child: GestureDetector(
         onTap: () {
-          if (_controller.value.length < 11)
-            _controller.value = '${_controller.value}${title}';
+          insertTextAtPosition(_controller.selection.extentOffset, '$title');
         },
         child: Container(
           color: Colors.transparent,
