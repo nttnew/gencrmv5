@@ -8,7 +8,6 @@ import 'package:plugin_pitel/component/sip_pitel_helper_listener.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:plugin_pitel/sip/src/sip_ua_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:rxdart/rxdart.dart';
 import '../../../../bloc/login/login_bloc.dart';
 import '../../../../src/src_index.dart';
 import '../../../../storages/share_local.dart';
@@ -29,7 +28,6 @@ class _CallScreenState extends State<CallScreen>
   late final TextEditingController _controller;
   final String nameModule = Get.arguments;
   late final FocusNode _focusNode;
-  bool _isCursorTapped = false;
 
   @override
   void initState() {
