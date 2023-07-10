@@ -61,8 +61,9 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     if (_bloc.sdt != null)
       list.add(
         ModuleThaoTac(
+          isSvg: false,
           title: AppLocalizations.of(Get.context!)?.call ?? '',
-          icon: ICONS.IC_PHONE_CUSTOMER_SVG,
+          icon: ICONS.IC_PHONE_PNG,
           onThaoTac: () {
             Get.back();
             launchUrl(Uri(scheme: "tel", path: _bloc.sdt.toString()));

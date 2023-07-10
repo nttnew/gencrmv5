@@ -29,6 +29,7 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'bloc/unread_list_notification/unread_list_notifi_bloc.dart';
+import 'screens/menu/home/customer/call_screen.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -297,6 +298,7 @@ class _MyAppState extends State<MyApp> {
                 page: () => DetailProductCustomerScreen(),
               ),
               GetPage(name: ROUTE_NAMES.FORM_SIGN, page: () => FormAddSign()),
+              GetPage(name: ROUTE_NAMES.CALL, page: () => CallScreen()),
             ],
           );
         });
