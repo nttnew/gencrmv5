@@ -47,6 +47,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
   @override
   void initState() {
+    if (LoginBloc.of(context).checkRegisterSuccess())
+      listAdd.add(AppLocalizations.of(Get.context!)?.call_operator ?? '');
     _bloc = GetListCustomerBloc.of(context);
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
@@ -76,13 +78,15 @@ class _CustomerScreenState extends State<CustomerScreen> {
   }
 
   _handleRouter(String value) {
-    if (listAdd.last == value) {
-      AppNavigator.navigateAddCustomer(
-          "${AppLocalizations.of(Get.context!)?.add} ${value.toLowerCase()}");
-    } else {
+    if (listAdd[0] == value) {
       AppNavigator.navigateFormAddCustomerGroup(
           "${AppLocalizations.of(Get.context!)?.add} ${value.toLowerCase()}",
           ADD_CUSTOMER);
+    } else if (listAdd[1] == value) {
+      AppNavigator.navigateAddCustomer(
+          "${AppLocalizations.of(Get.context!)?.add} ${value.toLowerCase()}");
+    } else {
+      AppNavigator.navigateCall(title: title);
     }
   }
 
@@ -165,7 +169,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
                         height: 20,
                         width: 20,
                         child: Image.asset(
-                          ICONS.IC_CUSTOMER_3X_PNG,
+                          listAdd.indexOf(e) == 2
+                              ? ICONS.IC_PHONE_PNG
+                              : ICONS.IC_CUSTOMER_3X_PNG,
                           fit: BoxFit.contain,
                         ),
                       ),

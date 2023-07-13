@@ -112,6 +112,9 @@ class AppNavigator {
 
   static navigateAddClue() async => await Get.toNamed(ROUTE_NAMES.ADD_CLUE);
 
+  static navigateCall({required String title}) async =>
+      await Get.toNamed(ROUTE_NAMES.CALL, arguments: title);
+
   static navigateContract(String name) async =>
       await Get.toNamed(ROUTE_NAMES.CONTRACT, arguments: name);
 

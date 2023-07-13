@@ -48,7 +48,7 @@ class _DialogCallState extends State<DialogCall>
       case PitelRegistrationStateEnum.NONE:
       case PitelRegistrationStateEnum.UNREGISTERED:
       case PitelRegistrationStateEnum.REGISTERED:
-        shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.UNREGISTER);
+        shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.REGISTERED);
         break;
     }
   }

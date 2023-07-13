@@ -56,4 +56,5 @@ class ROUTE_NAMES {
   static const String PRODUCT_CUSTOMER = '/PRODUCT_CUSTOMER';
   static const String DETAIL_PRODUCT_CUSTOMER = '/DETAIL_PRODUCT_CUSTOMER';
   static const String FORM_SIGN = '/FORM_SIGN';
+  static const String CALL = '/CALL';
 }
