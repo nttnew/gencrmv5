@@ -34,6 +34,9 @@ class ICONS {
   static const String IC_REMOVE_TXT_PNG = 'assets/icons/remove_txt.png';
   static const String IC_HIDE_PNG = 'assets/icons/hide.png';
   static const String IC_SHOW_PNG = 'assets/icons/show.png';
+  static const String IC_PHONE_PNG = 'assets/icons/phone.png';
+  static const String IC_COPY_PNG = 'assets/icons/copy.png';
+  static const String IC_PASTE_PNG = 'assets/icons/paste.png';
 
   static const String IC_CUSTOMER_3X_PNG = 'assets/icons/Custumer_3x.png';
   static const String IC_CLUE_3X_PNG = 'assets/icons/Clue_3x.png';
@@ -42,6 +45,7 @@ class ICONS {
   static const String IC_WORK_3X_PNG = 'assets/icons/Work_3x.png';
   static const String IC_SUPPORT_3X_PNG = 'assets/icons/Support_3x.png';
   static const String IC_REPORT_PNG = 'assets/icons/insights.png';
+  static const String IC_DELETE_TEXT_PNG = 'assets/icons/delete_text.png';
 
   static const String IC_FLAG_VI = 'assets/icons/vietnam.png';
   static const String IC_FLAG_KO = 'assets/icons/south-korea.png';

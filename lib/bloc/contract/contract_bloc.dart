@@ -50,7 +50,7 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
         page,
         search,
         filter,
-        null,
+        ids,
       );
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
@@ -71,9 +71,8 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
         yield ErrorGetContractState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetContractState(AppLocalizations.of(Get.context!)?.
-
-an_error_occurred??'');
+      yield ErrorGetContractState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
