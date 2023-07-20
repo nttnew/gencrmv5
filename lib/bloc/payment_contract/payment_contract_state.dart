@@ -13,10 +13,10 @@ class InitPaymentContractState extends PaymentContractState {}
 class LoadingPaymentContractState extends PaymentContractState {}
 
 class SuccessPaymentContractState extends PaymentContractState {
-  final List<PaymentContractItem> listPaymentContract;
+  final List<List<PaymentContractItem>?>? listPaymentContract;
   SuccessPaymentContractState(this.listPaymentContract);
   @override
-  List<Object> get props => [listPaymentContract];
+  List<Object?> get props => [listPaymentContract];
 }
 
 class ErrorPaymentContractState extends PaymentContractState {
