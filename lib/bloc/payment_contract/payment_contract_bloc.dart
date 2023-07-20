@@ -37,7 +37,7 @@ class PaymentContractBloc
         if (response.data!.length == 0) {
           yield SuccessPaymentContractState([]);
         } else {
-          yield SuccessPaymentContractState(response.data![0]!);
+          yield SuccessPaymentContractState(response.data);
         }
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();

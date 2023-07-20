@@ -35,10 +35,14 @@ class _ContractPaymentState extends State<ContractPayment>
           children: [
             BlocBuilder<PaymentContractBloc, PaymentContractState>(
                 builder: (context, state) {
-              if (state is SuccessPaymentContractState) if (state
-                      .listPaymentContract.length >
+              if (state is SuccessPaymentContractState) if ((state
+                          .listPaymentContract?.length ??
+                      0) >
                   0)
-                return _buildContent1(state.listPaymentContract);
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 25),
+                  child: _buildContent1(state.listPaymentContract),
+                );
               else {
                 return Container(
                   height: MediaQuery.of(context).size.height / 2,
@@ -54,40 +58,45 @@ class _ContractPaymentState extends State<ContractPayment>
     );
   }
 
-  _buildContent1(List<PaymentContractItem> data) {
-    return Container(
-      padding: EdgeInsets.all(25),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            children: List.generate(data.length, (index) {
-              if (data[index].field_hidden != 1)
-                return Container(
-                  margin: EdgeInsets.symmetric(vertical: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      WidgetText(
-                        title: data[index].field_label ?? '',
-                        style: AppStyle.DEFAULT_14.copyWith(color: Colors.grey),
-                      ),
-                      WidgetText(
-                          title: data[index].field_value.toString(),
-                          style: AppStyle.DEFAULT_14)
-                    ],
-                  ),
-                );
-              else
-                return Container();
-            }),
-          ),
-          WidgetLine(
-            color: Colors.grey,
-          )
-        ],
-      ),
+  Widget _buildContent1(List<List<PaymentContractItem>?>? data) {
+    return Column(
+      children: (data ?? [])
+          .map((e) => Container(
+                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: List.generate(e?.length ?? 0, (index) {
+                        if (e?[index].field_hidden != 1)
+                          return Container(
+                            margin: EdgeInsets.symmetric(vertical: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                WidgetText(
+                                  title: e?[index].field_label ?? '',
+                                  style: AppStyle.DEFAULT_14
+                                      .copyWith(color: Colors.grey),
+                                ),
+                                WidgetText(
+                                    title: e?[index].field_value.toString(),
+                                    style: AppStyle.DEFAULT_14)
+                              ],
+                            ),
+                          );
+                        else
+                          return Container();
+                      }),
+                    ),
+                    WidgetLine(
+                      color: Colors.grey,
+                    )
+                  ],
+                ),
+              ))
+          .toList(),
     );
   }
 
