@@ -26,11 +26,13 @@ import '../../../bloc/clue/clue_bloc.dart';
 import '../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import '../../../bloc/contract/attack_bloc.dart';
 import '../../../bloc/contract/contract_bloc.dart';
+import '../../../bloc/contract/total_bloc.dart';
 import '../../../bloc/detail_product_customer/detail_product_customer_bloc.dart';
 import '../../../bloc/support/support_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
 import '../../../models/model_data_add.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../models/product_model.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/models/model_generator/login_response.dart';
 import '../../../widgets/pick_file_image.dart';
@@ -40,6 +42,7 @@ import '../../../widgets/location_base.dart';
 import 'package:geolocator/geolocator.dart' show Position;
 import '../../../widgets/multiple_widget.dart';
 import '../../add_service_voucher/add_service_voucher_step2_screen.dart';
+import '../home/contract/widget/product_contract.dart';
 
 class FormAddData extends StatefulWidget {
   const FormAddData({Key? key}) : super(key: key);
@@ -56,6 +59,8 @@ class _FormAddDataState extends State<FormAddData> {
   String typeCheckIn = Get.arguments[4];
   bool isResultData = Get.arguments[5];
   List data = [];
+  double total = 0;
+  List<ProductModel> listProduct = [];
   List<ModelItemAdd> addData = [];
   late String id_user;
   File? fileUpload;
@@ -212,7 +217,8 @@ class _FormAddDataState extends State<FormAddData> {
                     child: Row(
                       children: [
                         WidgetText(
-                            title: AppLocalizations.of(Get.context!)?.your_position,
+                            title: AppLocalizations.of(Get.context!)
+                                ?.your_position,
                             style: AppStyle.DEFAULT_18_BOLD),
                         WidgetText(
                             title: '*',
@@ -274,7 +280,7 @@ class _FormAddDataState extends State<FormAddData> {
                               color: COLORS.TEXT_COLOR,
                             )),
                         child: WidgetText(
-                            title:AppLocalizations.of(Get.context!)?.check_in,
+                            title: AppLocalizations.of(Get.context!)?.check_in,
                             style: TextStyle(
                                 fontFamily: "Quicksand",
                                 fontSize: 14,
@@ -300,7 +306,8 @@ class _FormAddDataState extends State<FormAddData> {
                                   color: COLORS.TEXT_COLOR,
                                 )),
                             child: WidgetText(
-                                title: AppLocalizations.of(Get.context!)?.check_in_again,
+                                title: AppLocalizations.of(Get.context!)
+                                    ?.check_in_again,
                                 style: TextStyle(
                                   fontFamily: "Quicksand",
                                   fontSize: 14,
@@ -326,7 +333,8 @@ class _FormAddDataState extends State<FormAddData> {
                                   color: COLORS.RED,
                                 )),
                             child: WidgetText(
-                                title:AppLocalizations.of(Get.context!)?.delete,
+                                title:
+                                    AppLocalizations.of(Get.context!)?.delete,
                                 style: TextStyle(
                                     fontFamily: "Quicksand",
                                     fontSize: 14,
@@ -393,6 +401,46 @@ class _FormAddDataState extends State<FormAddData> {
         : SizedBox();
   }
 
+  addProduct(ProductModel data) {
+    bool check = false;
+    for (int i = 0; i < listProduct.length; i++) {
+      if (data.id == listProduct[i].id) {
+        check = true;
+        break;
+      }
+    }
+    if (!check) {
+      listProduct.add(data);
+    }
+  }
+
+  reload() {
+    total = 0;
+    for (int i = 0; i < listProduct.length; i++) {
+      if (listProduct[i].soLuong == 0) {
+        listProduct.removeAt(i);
+        i--;
+      } else {
+        if (listProduct[i].typeGiamGia == '%') {
+          total += (double.parse(listProduct[i].item.sell_price ?? '0') *
+                  listProduct[i].soLuong) *
+              ((100 -
+                      double.parse(listProduct[i].giamGia == ''
+                          ? '0'
+                          : listProduct[i].giamGia)) /
+                  100);
+        } else {
+          total += (double.parse(listProduct[i].item.sell_price ?? '0') *
+                  listProduct[i].soLuong) -
+              double.parse(
+                  listProduct[i].giamGia == '' ? '0' : listProduct[i].giamGia);
+        }
+      }
+    }
+    TotalBloc.of(context).getPaid();
+    TotalBloc.of(context).add(InitTotalEvent(total));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -404,7 +452,8 @@ class _FormAddDataState extends State<FormAddData> {
                 if (state is SuccessAddCustomerOrState) {
                   ShowDialogCustom.showDialogBase(
                     title: AppLocalizations.of(Get.context!)?.notification,
-                    content: AppLocalizations.of(Get.context!)?.new_data_added_successfully,
+                    content: AppLocalizations.of(Get.context!)
+                        ?.new_data_added_successfully,
                     onTap1: () {
                       Get.back();
                       Get.back();
@@ -427,7 +476,8 @@ class _FormAddDataState extends State<FormAddData> {
                 } else if (state is SuccessAddContactCustomerState) {
                   ShowDialogCustom.showDialogBase(
                     title: AppLocalizations.of(Get.context!)?.notification,
-                    content:AppLocalizations.of(Get.context!)?.new_data_added_successfully,
+                    content: AppLocalizations.of(Get.context!)
+                        ?.new_data_added_successfully,
                     onTap1: () {
                       Get.back();
                       Get.back();
@@ -823,32 +873,25 @@ class _FormAddDataState extends State<FormAddData> {
                       )
                     : data.field_type == "HIDDEN"
                         ? Container()
-                        : data.field_type == "TEXT_MULTI_NEW"
-                            ? InputMultipleWidget(
-                                data: data,
-                                onSelect: (data) {
-                                  addData[indexParent].data[indexChild].value =
-                                      data.join(",");
-                                },
+                        : data.field_special == 'url'
+                            ? ProductContract(
+                                data: listProduct,
+                                addProduct: addProduct,
+                                reload: reload,
+                                neverHidden: true,
+                                canDelete: true,
                               )
-                            : data.field_type == "DATE"
-                                ? WidgetInputDate(
+                            : data.field_type == "TEXT_MULTI_NEW"
+                                ? InputMultipleWidget(
                                     data: data,
-                                    dateText: data.field_set_value,
-                                    onSelect: (int date) {
+                                    onSelect: (data) {
                                       addData[indexParent]
                                           .data[indexChild]
-                                          .value = date;
-                                    },
-                                    onInit: (v) {
-                                      addData[indexParent]
-                                          .data[indexChild]
-                                          .value = v;
+                                          .value = data.join(",");
                                     },
                                   )
-                                : data.field_type == "DATETIME"
+                                : data.field_type == "DATE"
                                     ? WidgetInputDate(
-                                        isDate: false,
                                         data: data,
                                         dateText: data.field_set_value,
                                         onSelect: (int date) {
@@ -862,42 +905,59 @@ class _FormAddDataState extends State<FormAddData> {
                                               .value = v;
                                         },
                                       )
-                                    : data.field_type == "CHECK"
-                                        ? RenderCheckBox(
-                                            onChange: (check) {
+                                    : data.field_type == "DATETIME"
+                                        ? WidgetInputDate(
+                                            isDate: false,
+                                            data: data,
+                                            dateText: data.field_set_value,
+                                            onSelect: (int date) {
                                               addData[indexParent]
                                                   .data[indexChild]
-                                                  .value = check ? 1 : 0;
+                                                  .value = date;
                                             },
-                                            data: data,
+                                            onInit: (v) {
+                                              addData[indexParent]
+                                                  .data[indexChild]
+                                                  .value = v;
+                                            },
                                           )
-                                        : data.field_type == "PERCENTAGE"
-                                            ? FieldInputPercent(
-                                                data: data,
-                                                onChanged: (text) {
+                                        : data.field_type == "CHECK"
+                                            ? RenderCheckBox(
+                                                onChange: (check) {
                                                   addData[indexParent]
                                                       .data[indexChild]
-                                                      .value = text;
+                                                      .value = check ? 1 : 0;
                                                 },
+                                                data: data,
                                               )
-                                            : data.field_name ==
-                                                        'chi_tiet_xe' &&
-                                                    data.field_type == 'TEXT'
-                                                ? TypeCarBase(
-                                                    data,
-                                                    indexParent,
-                                                    indexChild,
-                                                    context,
-                                                    ServiceVoucherBloc.of(
-                                                        context),
-                                                    (v) {
+                                            : data.field_type == "PERCENTAGE"
+                                                ? FieldInputPercent(
+                                                    data: data,
+                                                    onChanged: (text) {
                                                       addData[indexParent]
                                                           .data[indexChild]
-                                                          .value = v;
+                                                          .value = text;
                                                     },
                                                   )
-                                                : _fieldInputCustomer(data,
-                                                    indexParent, indexChild)
+                                                : data.field_name ==
+                                                            'chi_tiet_xe' &&
+                                                        data.field_type ==
+                                                            'TEXT'
+                                                    ? TypeCarBase(
+                                                        data,
+                                                        indexParent,
+                                                        indexChild,
+                                                        context,
+                                                        ServiceVoucherBloc.of(
+                                                            context),
+                                                        (v) {
+                                                          addData[indexParent]
+                                                              .data[indexChild]
+                                                              .value = v;
+                                                        },
+                                                      )
+                                                    : _fieldInputCustomer(data,
+                                                        indexParent, indexChild)
         : SizedBox();
   }
 
@@ -935,9 +995,27 @@ class _FormAddDataState extends State<FormAddData> {
     if (check == true) {
       ShowDialogCustom.showDialogBase(
         title: AppLocalizations.of(Get.context!)?.notification,
-        content: AppLocalizations.of(Get.context!)?.please_enter_all_required_fields,
+        content:
+            AppLocalizations.of(Get.context!)?.please_enter_all_required_fields,
       );
     } else {
+      if (listProduct.length > 0) {
+        List product = [];
+        for (int i = 0; i < listProduct.length; i++) {
+          product.add({
+            'id': listProduct[i].id,
+            'price': listProduct[i].item.sell_price,
+            'quantity': listProduct[i].soLuong,
+            'vat': listProduct[i].item.vat,
+            'unit': listProduct[i].item.dvt,
+            'sale_off': {
+              'value': listProduct[i].giamGia,
+              'type': listProduct[i].typeGiamGia
+            }
+          });
+        }
+        data['products'] = product;
+      }
       if (type == ADD_CUSTOMER) {
         AddDataBloc.of(context).add(
             AddCustomerOrEvent(data, files: AttackBloc.of(context).listFile));
