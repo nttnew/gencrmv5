@@ -17,8 +17,11 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../bloc/contract/attack_bloc.dart';
 import '../../../bloc/contract/contract_bloc.dart';
+import '../../../bloc/detail_product/detail_product_bloc.dart';
+import '../../../bloc/product_module/product_module_bloc.dart';
 import '../../../models/product_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../src/models/model_generator/product_response.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/app_const.dart';
 import '../../../src/models/model_generator/login_response.dart';
@@ -30,6 +33,7 @@ import '../../../widgets/field_input_select_multi.dart';
 import '../../../widgets/multiple_widget.dart';
 import '../../../widgets/widget_field_input_percent.dart';
 import '../home/customer/widget/input_dropDown.dart';
+import '../home/product/scanner_qrcode.dart';
 
 class FormAddContract extends StatefulWidget {
   const FormAddContract({Key? key}) : super(key: key);
@@ -178,7 +182,8 @@ class _FormAddContractState extends State<FormAddContract> {
                   Get.back();
                   ContractBloc.of(context).add(InitGetContractEvent());
                   if (product != null)
-                    AppNavigator.navigateContract(ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG));
+                    AppNavigator.navigateContract(
+                        ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG));
                 },
               );
             }
@@ -345,12 +350,12 @@ class _FormAddContractState extends State<FormAddContract> {
             ? _fieldInputCustomer(data, indexParent, indexChild, noEdit: true)
             : data.field_special == 'url'
                 ? ProductContract(
-                    data: listProduct,
-                    addProduct: addProduct,
-                    reload: reload,
-                    neverHidden: true,
-                    canDelete: true,
-                  )
+                  data: listProduct,
+                  addProduct: addProduct,
+                  reload: reload,
+                  neverHidden: true,
+                  canDelete: true,
+                )
                 : data.field_type == 'SELECT'
                     ? data.field_name == 'col131'
                         ? StreamBuilder<List<dynamic>>(
