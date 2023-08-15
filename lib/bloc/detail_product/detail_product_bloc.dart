@@ -73,6 +73,26 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
     LoadingApi().popLoading();
   }
 
+  Future<ProductModel> getDetailProductQR({required String id}) async {
+    final response = await userRepository.getDetailProduct(id: id);
+    return ProductModel(
+        response.info?.productId ?? '',
+        1,
+        ProductItem(
+          response.info?.productId,
+          response.info?.productCode,
+          response.info?.productEdit,
+          response.info?.productName,
+          response.info?.dvt,
+          response.info?.vat,
+          response.info?.sellPrice.toString(),
+        ),
+        '0',
+        response.info?.nameDvt ?? '',
+        response.info?.nameVat ?? '',
+        '');
+  }
+
   Stream<DetailProductState> _deleteProduct({required String id}) async* {
     LoadingApi().pushLoading();
     try {
