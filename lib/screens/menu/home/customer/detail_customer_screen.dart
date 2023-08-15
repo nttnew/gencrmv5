@@ -15,6 +15,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
+import '../../../../widgets/dialog_call.dart';
 import '../../../../widgets/listview_loadmore_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
@@ -66,7 +67,15 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
           icon: ICONS.IC_PHONE_PNG,
           onThaoTac: () {
             Get.back();
-            launchUrl(Uri(scheme: "tel", path: _bloc.sdt.toString()));
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return DialogCall(
+                  sdt: _bloc.sdt.toString(),
+                  title: title,
+                );
+              },
+            );
           },
         ),
       );
@@ -211,8 +220,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
               LoadingApi().popLoading();
               ShowDialogCustom.showDialogBase(
                 title: AppLocalizations.of(Get.context!)?.notification,
-                content: AppLocalizations.of(Get.context!)
-                    ?.success??'',
+                content: AppLocalizations.of(Get.context!)?.success ?? '',
                 onTap1: () {
                   Get.back();
                   Get.back();
@@ -226,8 +234,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
               ShowDialogCustom.showDialogBase(
                 title: AppLocalizations.of(Get.context!)?.notification,
                 content: state.msg,
-                textButton1:AppLocalizations.of(Get.context!)
-                    ?.come_back,
+                textButton1: AppLocalizations.of(Get.context!)?.come_back,
                 onTap1: () {
                   Get.back();
                   Get.back();
@@ -253,12 +260,11 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
               indicatorColor: COLORS.ff006CB1,
               tabs: <Widget>[
                 Tab(
-                  text: AppLocalizations.of(Get.context!)
-                      ?.information??'',
+                  text: AppLocalizations.of(Get.context!)?.information ?? '',
                 ),
                 Tab(
-                  text: ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI,
-                      isTitle: true),
+                  text:
+                      ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI, isTitle: true),
                 ),
                 Tab(
                   text: ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN,
@@ -273,8 +279,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                       isTitle: true),
                 ),
                 Tab(
-                  text:
-                      ModuleMy.getNameModuleMy(ModuleMy.CSKH, isTitle: true),
+                  text: ModuleMy.getNameModuleMy(ModuleMy.CSKH, isTitle: true),
                 ),
               ],
             ),
@@ -295,9 +300,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                         child: ListViewLoadMoreBase(
                           functionInit: (page, isInit) {
                             return _bloc.getClueCustomer(
-                                id: int.parse(id),
-                                page: page,
-                                isInit: isInit);
+                                id: int.parse(id), page: page, isInit: isInit);
                           },
                           itemWidget: (int index, data) {
                             return GestureDetector(
@@ -316,9 +319,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                         child: ListViewLoadMoreBase(
                           functionInit: (page, isInit) {
                             return _bloc.getChanceCustomer(
-                                id: int.parse(id),
-                                page: page,
-                                isInit: isInit);
+                                id: int.parse(id), page: page, isInit: isInit);
                           },
                           itemWidget: (int index, data) {
                             return GestureDetector(
@@ -368,8 +369,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                             return GestureDetector(
                               onTap: () {
                                 AppNavigator.navigateDetailWork(
-                                    int.parse(data.id ?? '0'),
-                                    data.name ?? '');
+                                    int.parse(data.id ?? '0'), data.name ?? '');
                               },
                               child: WorkCardWidget(data: data),
                             );
