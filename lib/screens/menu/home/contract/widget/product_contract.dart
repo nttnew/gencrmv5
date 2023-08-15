@@ -114,59 +114,98 @@ class _ProductContractState extends State<ProductContract> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              GestureDetector(
-                onTap: () {
-                  AppNavigator.navigateAddProduct(
-                      widget.addProduct, reload, productData);
-                },
-                child: Container(
-                  margin: EdgeInsets.symmetric(
-                    vertical: 8,
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                      color: COLORS.TEXT_COLOR,
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                      border: Border.all(
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    AppNavigator.navigateAddProduct(
+                        widget.addProduct, reload, productData);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(
+                      vertical: 8,
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
                         color: COLORS.TEXT_COLOR,
-                      )),
-                  child: WidgetText(
-                    title:
-                        AppLocalizations.of(Get.context!)?.select_product ?? '',
-                    style:
-                        AppStyle.DEFAULT_14_BOLD.copyWith(color: COLORS.WHITE),
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                        border: Border.all(
+                          color: COLORS.TEXT_COLOR,
+                        )),
+                    child: Center(
+                      child: WidgetText(
+                        title:
+                            AppLocalizations.of(Get.context!)?.select_product ??
+                                '',
+                        style: AppStyle.DEFAULT_14_BOLD
+                            .copyWith(color: COLORS.WHITE),
+                      ),
+                    ),
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(
-                          builder: (context) => ScannerQrcode()))
-                      .then((value) async {
-                    if (value != '') {
-                      final result = await ProductModuleBloc.of(context)
-                          .getListProduct(querySearch: value);
-                      if (result?.data?.lists?.isNotEmpty ?? false) {
-                        final data = await DetailProductBloc.of(context)
-                            .getDetailProductQR(
-                                id: result?.data?.lists?.first.id ?? '');
-                        widget.addProduct(data);
-                        setState(() {});
-                      } else {
-                        ShowDialogCustom.showDialogBase(
-                          title:
-                              AppLocalizations.of(Get.context!)?.notification,
-                          content:
-                              AppLocalizations.of(Get.context!)?.no_data ?? '',
-                        );
+              SizedBox(
+                width: 16,
+              ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(
+                            builder: (context) => ScannerQrcode()))
+                        .then((value) async {
+                      if (value != '') {
+                        final result = await ProductModuleBloc.of(context)
+                            .getListProduct(querySearch: value);
+                        if (result?.data?.lists?.isNotEmpty ?? false) {
+                          final data = await DetailProductBloc.of(context)
+                              .getDetailProductQR(
+                                  id: result?.data?.lists?.first.id ?? '');
+                          widget.addProduct(data);
+                          setState(() {});
+                        } else {
+                          ShowDialogCustom.showDialogBase(
+                            title:
+                                AppLocalizations.of(Get.context!)?.notification,
+                            content:
+                                AppLocalizations.of(Get.context!)?.no_data ??
+                                    '',
+                          );
+                        }
                       }
-                    }
-                  });
-                },
-                child: Icon(
-                  Icons.qr_code_scanner,
-                  size: 20,
+                    });
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(
+                      vertical: 8,
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                        color: COLORS.TEXT_COLOR,
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                        border: Border.all(
+                          color: COLORS.TEXT_COLOR,
+                        )),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.qr_code_scanner,
+                          size: 14,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        WidgetText(
+                          title: 'QR/Bar Code',
+                          style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                            color: COLORS.WHITE,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],
