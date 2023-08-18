@@ -541,10 +541,10 @@ class _FormAddDataState extends State<FormAddData> {
                               data = [];
                               return Container();
                             } else if (state is SuccessFormAddCustomerOrState) {
-                              for (int i = 0;
-                                  i < state.listAddData.length;
-                                  i++) {
-                                if (addData.isEmpty) {
+                              if (addData.isEmpty) {
+                                for (int i = 0;
+                                    i < state.listAddData.length;
+                                    i++) {
                                   addData.add(ModelItemAdd(
                                       group_name:
                                           state.listAddData[i].group_name ?? '',
