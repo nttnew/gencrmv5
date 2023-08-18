@@ -183,7 +183,8 @@
 "are_you_sure_you_want_to_sign_out":"로그아웃하시겠습니까?",
 "agree":"동의",
 "enter_address_application_below":"아래에 앱 주소를 입력하세요",
-"this_email_is_invalid":"Email không hợp lệ",
-"turn_on_login_with_finger_print_faceid":"Bật đăng nhập với vân tay, khuôn mặt",
-"you_did_not_enter_a_number_phone":"Bạn chưa nhập số điện thoại"
+"this_email_is_invalid":"잘못된 이메일",
+"turn_on_login_with_finger_print_faceid": "다음에 로그인하려면 로그인해야 합니다.",
+"you_did_not_enter_a_number_phone": "전화번호를 입력하지 않았습니다.i",
+"enter_the_quantity":"계속 입력"
 }

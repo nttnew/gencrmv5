@@ -14,8 +14,7 @@ class ItemProduct extends StatefulWidget {
     required this.listDvt,
     required this.listVat,
     required this.neverHidden,
-    this.onPlus,
-    this.onMinus,
+    this.onChangeQuantity,
     this.onDVT,
     this.onVAT,
     this.onGiamGia,
@@ -29,8 +28,7 @@ class ItemProduct extends StatefulWidget {
   final ProductItem data;
   final List<List<dynamic>> listDvt;
   final List<List<dynamic>> listVat;
-  final Function? onPlus;
-  final Function? onMinus;
+  final Function? onChangeQuantity;
   final Function? onDVT;
   final Function? onVAT;
   final Function? onGiamGia;
@@ -53,6 +51,7 @@ class _ItemProductState extends State<ItemProduct> {
   String giamGia = '0';
   TextEditingController _editingController = TextEditingController();
   TextEditingController _priceTextfieldController = TextEditingController();
+  TextEditingController _quantityController = TextEditingController();
 
   bool typeGiamGia = true;
 
@@ -84,6 +83,7 @@ class _ItemProductState extends State<ItemProduct> {
       widget.onDVT!(widget.data.dvt, dvt);
       widget.onVAT!(widget.data.vat, vat);
     }
+
     _priceTextfieldController.text =
         widget.data.sell_price != '' && widget.data.sell_price != null
             ? double.parse(widget.data.sell_price ?? '0').toInt().toString()
@@ -202,7 +202,6 @@ class _ItemProductState extends State<ItemProduct> {
                               GestureDetector(
                                 onTap: this.onClickVat,
                                 child: Container(
-                                  //width: AppValue.widths * 0.3,
                                   constraints: BoxConstraints(
                                       maxWidth: AppValue.widths * 0.28),
                                   decoration: BoxDecoration(
@@ -249,20 +248,22 @@ class _ItemProductState extends State<ItemProduct> {
               ],
             ),
           ),
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               GestureDetector(
                 onTap: () {
-                  if (int.parse(soLuong.value) > 0) {
+                  if (double.parse(soLuong.value) >= 1) {
                     setState(() {
-                      soLuong.add((int.parse(soLuong.value) - 1).toString());
+                      soLuong.add((double.parse(soLuong.value) - 1).toString());
                     });
                   } else {
                     setState(() {
                       soLuong.add("0");
                     });
                   }
-                  widget.onMinus!(int.parse(soLuong.value));
+                  widget.onChangeQuantity!(
+                      double.parse(soLuong.value).toStringAsFixed(2));
                 },
                 child: WidgetContainerImage(
                   image: ICONS.IC_MINUS_PNG,
@@ -273,22 +274,27 @@ class _ItemProductState extends State<ItemProduct> {
                   colorImage: COLORS.GRAY_IMAGE,
                 ),
               ),
-              SizedBox(
-                width: 5,
-              ),
-              WidgetText(
-                title: soLuong.value,
-                style: AppStyle.DEFAULT_14,
-              ),
-              SizedBox(
-                width: 5,
+              GestureDetector(
+                onTap: () {
+                  _quantityController.text =
+                      double.parse(soLuong.value).toStringAsFixed(2);
+                  onClickSoLuong();
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: WidgetText(
+                    title: double.parse(soLuong.value).toStringAsFixed(2),
+                    style: AppStyle.DEFAULT_16_BOLD.copyWith(color: COLORS.BLUE),
+                  ),
+                ),
               ),
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    soLuong.add((int.parse(soLuong.value) + 1).toString());
+                    soLuong.add((double.parse(soLuong.value) + 1).toString());
                   });
-                  widget.onPlus!(int.parse(soLuong.value));
+                  widget.onChangeQuantity!(
+                      double.parse(soLuong.value).toStringAsFixed(2));
                 },
                 child: WidgetContainerImage(
                   image: ICONS.IC_PLUS_PNG,
@@ -537,6 +543,93 @@ class _ItemProductState extends State<ItemProduct> {
                               );
                               Get.back();
                             }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: COLORS.PRIMARY_COLOR,
+                                borderRadius: BorderRadius.circular(30)),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            child: WidgetText(
+                              title: AppLocalizations.of(Get.context!)?.enter,
+                              style: AppStyle.DEFAULT_16,
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              );
+            },
+          );
+        });
+  }
+
+  void onClickSoLuong() {
+    showModalBottomSheet(
+        enableDrag: false,
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: (context, setState1) {
+              return Container(
+                width: Get.width,
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+                    top: 16,
+                    left: 16,
+                    right: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: Get.width,
+                      child: WidgetText(
+                        title: AppLocalizations.of(Get.context!)
+                            ?.enter_the_quantity,
+                        style: AppStyle.DEFAULT_16_BOLD,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Container(
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(width: 1, color: COLORS.GREY_400),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: TextFormField(
+                            controller: _quantityController,
+                            decoration: InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 10),
+                                border: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                errorBorder: InputBorder.none),
+                            keyboardType: TextInputType.numberWithOptions(),
+                          ),
+                        )),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            if (double.parse(_quantityController.text) > 0) {
+                              soLuong.add(_quantityController.text);
+                              widget.onChangeQuantity!(
+                                  double.parse(soLuong.value).toStringAsFixed(
+                                      2)); // change data quantity
+                            }
+                            setState(() {});
+                            Get.back();
                           },
                           child: Container(
                             decoration: BoxDecoration(

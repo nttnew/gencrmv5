@@ -181,8 +181,7 @@ class _EditContractState extends State<EditContract> {
                                       .id_product
                                       .toString(),
                                   double.parse(state.listEditData[i].data![j]
-                                          .products![k].quantity!)
-                                      .toInt(),
+                                          .products![k].quantity!),
                                   ProductItem(
                                       state.listEditData[i].data![j]
                                           .products![k].id_product

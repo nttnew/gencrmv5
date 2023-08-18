@@ -142,11 +142,8 @@ class _ListProductState extends State<ListProduct> {
                           data: listSelected[index].item,
                           listDvt: state.listDvt,
                           listVat: state.listVat,
-                          onPlus: (soLuong) {
-                            listSelected[index].soLuong = soLuong;
-                          },
-                          onMinus: (soLuong) {
-                            listSelected[index].soLuong = soLuong;
+                          onChangeQuantity: (soLuong) {
+                            listSelected[index].soLuong = double.parse(soLuong);
                           },
                           onDVT: (id, name) {
                             listSelected[index].nameDvt = name;

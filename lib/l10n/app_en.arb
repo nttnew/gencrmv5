@@ -184,5 +184,6 @@
 "enter_address_application_below": "Enter the application address below",
 "this_email_is_invalid":"Email không hợp lệ",
 "turn_on_login_with_finger_print_faceid":"Bật đăng nhập với vân tay, khuôn mặt",
-"you_did_not_enter_a_number_phone":"Bạn chưa nhập số điện thoại"
+"you_did_not_enter_a_number_phone":"Bạn chưa nhập số điện thoại",
+"enter_the_quantity":"Enter the quantity"
 }

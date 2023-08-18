@@ -9,7 +9,6 @@ import 'package:gen_crm/screens/menu/home/customer/widget/item/general_infor_cus
 import 'package:gen_crm/screens/menu/home/customer/widget/item/work_card_widget.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../src/app_const.dart';

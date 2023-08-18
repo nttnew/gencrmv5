@@ -2,7 +2,7 @@ import 'package:gen_crm/src/models/model_generator/product_response.dart';
 
 class ProductModel {
   String id;
-  int soLuong;
+  double soLuong;
   ProductItem item;
   String giamGia;
   String nameDvt;

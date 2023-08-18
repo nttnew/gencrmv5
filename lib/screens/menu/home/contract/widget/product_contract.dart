@@ -81,11 +81,8 @@ class _ProductContractState extends State<ProductContract> {
                             canDelete: widget.canDelete,
                             neverHidden: widget.neverHidden,
                             data: productData[index].item,
-                            onPlus: (soLuong) {
-                              productData[index].soLuong = soLuong;
-                            },
-                            onMinus: (soLuong) {
-                              productData[index].soLuong = soLuong;
+                            onChangeQuantity: (soLuong) {
+                              productData[index].soLuong = double.parse(soLuong);
                             },
                             onDVT: (id, name) {
                               productData[index].nameDvt = name;
