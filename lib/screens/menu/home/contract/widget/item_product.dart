@@ -276,15 +276,20 @@ class _ItemProductState extends State<ItemProduct> {
               ),
               GestureDetector(
                 onTap: () {
-                  _quantityController.text =
-                      double.parse(soLuong.value).toStringAsFixed(2);
+                  if (double.parse(soLuong.value) == 0) {
+                    _quantityController.text = '';
+                  } else {
+                    _quantityController.text =
+                        double.parse(soLuong.value).toStringAsFixed(2);
+                  }
                   onClickSoLuong();
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 16),
                   child: WidgetText(
                     title: double.parse(soLuong.value).toStringAsFixed(2),
-                    style: AppStyle.DEFAULT_16_BOLD.copyWith(color: COLORS.BLUE),
+                    style:
+                        AppStyle.DEFAULT_16_BOLD.copyWith(color: COLORS.BLUE),
                   ),
                 ),
               ),
@@ -623,6 +628,12 @@ class _ItemProductState extends State<ItemProduct> {
                         GestureDetector(
                           onTap: () {
                             if (double.parse(_quantityController.text) > 0) {
+                              soLuong.add(_quantityController.text);
+                              widget.onChangeQuantity!(
+                                  double.parse(soLuong.value).toStringAsFixed(
+                                      2)); // change data quantity
+                            } else if (double.parse(_quantityController.text) ==
+                                0) {
                               soLuong.add(_quantityController.text);
                               widget.onChangeQuantity!(
                                   double.parse(soLuong.value).toStringAsFixed(
