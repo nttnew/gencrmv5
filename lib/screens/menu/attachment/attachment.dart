@@ -60,24 +60,7 @@ class _AttachmentState extends State<Attachment> {
   }
 
   Future<void> _onDinhKem({bool? isAfter}) async {
-    if (await Permission.storage.request().isGranted) {
-      if (Platform.isAndroid) {
-        ShowDialogCustom.showDialogBase(
-          title: AppLocalizations.of(Get.context!)?.notification,
-          content: AppLocalizations.of(Get.context!)
-              ?.you_have_not_granted_permission_to_access_the_photo,
-          textButton2: AppLocalizations.of(Get.context!)?.go_to_setting,
-          onTap2: () {
-            openAppSettings();
-            Get.back();
-          },
-        );
-      } else {
-        _pickFileDialog(isAfter: isAfter);
-      }
-    } else {
-      _pickFileDialog(isAfter: isAfter);
-    }
+    _pickFileDialog(isAfter: isAfter);
   }
 
   void _pickFile({bool? isAfter}) async {
