@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class GetNotificationBloc
   GetNotificationBloc({required UserRepository userRepository})
       : userRepository = userRepository,
         super(InitGetNotificationState()) {
-    getVersionInfoCar();
+    unawaited(getVersionInfoCar());
   }
 
   @override
