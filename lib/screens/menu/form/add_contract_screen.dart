@@ -9,7 +9,7 @@ import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
 import 'package:gen_crm/models/model_data_add.dart';
 import 'package:gen_crm/models/model_item_add.dart';
-import 'package:gen_crm/screens/menu/home/contract/widget/product_contract.dart';
+import 'package:gen_crm/screens/menu/form/product_list/product_contract.dart';
 import 'package:gen_crm/screens/menu/home/contract/widget/widget_total_sum.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
@@ -346,12 +346,13 @@ class _FormAddContractState extends State<FormAddContract> {
             ? _fieldInputCustomer(data, indexParent, indexChild, noEdit: true)
             : data.field_special == 'url'
                 ? ProductContract(
-                  data: listProduct,
-                  addProduct: addProduct,
-                  reload: reload,
-                  neverHidden: true,
-                  canDelete: true,
-                )
+                    listBtn: data.button,
+                    data: listProduct,
+                    addProduct: addProduct,
+                    reload: reload,
+                    neverHidden: true,
+                    canDelete: true,
+                  )
                 : data.field_type == 'SELECT'
                     ? data.field_name == 'col131'
                         ? StreamBuilder<List<dynamic>>(

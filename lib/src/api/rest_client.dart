@@ -51,6 +51,7 @@ import '../models/model_generator/list_product_response.dart';
 import '../models/model_generator/policy.dart';
 import '../models/model_generator/product_customer_save_response.dart';
 import '../models/model_generator/product_response.dart';
+import '../models/model_generator/product_service_pack_response.dart';
 import '../models/model_generator/report_contact.dart';
 import '../models/model_generator/report_employee.dart';
 import '../models/model_generator/report_general.dart';
@@ -61,6 +62,7 @@ import '../models/model_generator/response_car_dashboard.dart';
 import '../models/model_generator/response_edit_product.dart';
 import '../models/model_generator/response_save_product.dart';
 import '../models/model_generator/save_checkin_response.dart';
+import '../models/model_generator/service_pack_response.dart';
 import '../models/model_generator/support_customer.dart';
 
 part 'rest_client.g.dart';
@@ -435,6 +437,7 @@ abstract class RestClient {
   Future<ProductResponse> getListProduct(
     @Query('page') String? page,
     @Query('querySearch') String? querySearch,
+    @Query('group') String? group,
   );
 
   @GET(BASE_URL.GET_PHONE_CUS)
@@ -813,6 +816,17 @@ abstract class RestClient {
 
   @GET(BASE_URL.GET_ADDRESS_CUSTOMER)
   Future<AddressCustomerResponse?> getAddressCustomer(
+    @Query('id') String id,
+  );
+
+  @GET(BASE_URL.GET_SERVICE_PACK)
+  Future<ServiceParkResponse> getServicePack(
+    @Query('txt') String? txt,
+    @Query('page') String? page,
+  );
+
+  @GET(BASE_URL.GET_PRODUCT_SERVICE_PACK)
+  Future<ProductServicePackResponse> getProductServicePack(
     @Query('id') String id,
   );
 }

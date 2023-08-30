@@ -1913,11 +1913,13 @@ class _RestClient implements RestClient {
   Future<ProductResponse> getListProduct(
     page,
     querySearch,
+    group,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
       r'querySearch': querySearch,
+      r'group': group,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -3828,6 +3830,59 @@ class _RestClient implements RestClient {
     final value = _result.data == null
         ? null
         : AddressCustomerResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ServiceParkResponse> getServicePack(
+    txt,
+    page,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'txt': txt,
+      r'page': page,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ServiceParkResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/product/getServicePack',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ServiceParkResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ProductServicePackResponse> getProductServicePack(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'id': id};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ProductServicePackResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/product/getProductInServicePack',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ProductServicePackResponse.fromJson(_result.data!);
     return value;
   }
 

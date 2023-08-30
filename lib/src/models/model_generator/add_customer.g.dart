@@ -31,6 +31,9 @@ CustomerIndividualItemData _$CustomerIndividualItemDataFromJson(
       (json['products'] as List<dynamic>?)
           ?.map((e) => ProductItemContract.fromJson(e as Map<String, dynamic>))
           .toList(),
+      (json['button'] as List<dynamic>?)
+          ?.map((e) => ButtonRes.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$CustomerIndividualItemDataToJson(
@@ -52,6 +55,7 @@ Map<String, dynamic> _$CustomerIndividualItemDataToJson(
       'field_special': instance.field_special,
       'field_value': instance.field_value,
       'products': instance.products,
+      'button': instance.button,
     };
 
 ChuKyResponse _$ChuKyResponseFromJson(Map<String, dynamic> json) =>
@@ -169,4 +173,16 @@ Map<String, dynamic> _$AddCustomerIndividualToJson(
       'data': instance.data,
       'chu_ky': instance.chu_ky,
       'chuathanhtoan': instance.chuathanhtoan,
+    };
+
+ButtonRes _$ButtonResFromJson(Map<String, dynamic> json) => ButtonRes(
+      json['field_label'] as String?,
+      json['field_url'] as String?,
+      json['field_type'] as String?,
+    );
+
+Map<String, dynamic> _$ButtonResToJson(ButtonRes instance) => <String, dynamic>{
+      'field_label': instance.field_label,
+      'field_url': instance.field_url,
+      'field_type': instance.field_type,
     };

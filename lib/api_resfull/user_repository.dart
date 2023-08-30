@@ -53,6 +53,7 @@ import '../src/models/model_generator/param_read_notifi.dart';
 import '../src/models/model_generator/post_info_car_response.dart';
 import '../src/models/model_generator/product_customer_edit_response.dart';
 import '../src/models/model_generator/product_customer_save_response.dart';
+import '../src/models/model_generator/product_service_pack_response.dart';
 import '../src/models/model_generator/report_contact.dart';
 import '../src/models/model_generator/report_general.dart';
 import '../src/models/model_generator/report_option.dart';
@@ -62,6 +63,7 @@ import '../src/models/model_generator/response_car_dashboard.dart';
 import '../src/models/model_generator/response_edit_product.dart';
 import '../src/models/model_generator/response_save_product.dart';
 import '../src/models/model_generator/save_checkin_response.dart';
+import '../src/models/model_generator/service_pack_response.dart';
 import '../src/models/model_generator/support_customer.dart';
 import '../src/models/model_generator/update_pass_request.dart';
 import '../widgets/tree/tree_node_model.dart';
@@ -212,8 +214,9 @@ class UserRepository {
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .getPaymentContract(id);
 
-  Future<JobChance> getJobContract(int id,int page) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).getJobContract(id,page);
+  Future<JobChance> getJobContract(int id, int page) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getJobContract(id, page);
 
   Future<BaseResponse> deleteCustomer(Map<String, dynamic> id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).deleteCustomer(id);
@@ -286,9 +289,9 @@ class UserRepository {
   Future<DetailContractResponse> getDetailContract(int id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getDetailContract(id);
 
-  Future<SupportContractResponse> getSupportContract(int id,int page) async =>
+  Future<SupportContractResponse> getSupportContract(int id, int page) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .getSupportContract(id,page);
+          .getSupportContract(id, page);
 
   Future<WorkResponse> getListJob(
     String pageIndex,
@@ -405,9 +408,9 @@ class UserRepository {
           .getContactByCustomer(id);
 
   Future<ProductResponse> getListProduct(
-          String page, String querySearch) async =>
+          String page, String querySearch, String? group) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .getListProduct(page, querySearch);
+          .getListProduct(page, querySearch, group);
 
   Future<GetPhoneCusResponse> getPhoneCus(String id) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getPhoneCus(id);
@@ -861,6 +864,19 @@ class UserRepository {
   }) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .getAddressCustomer(id);
+
+  Future<ServiceParkResponse> getServicePack({
+    String? txt,
+    String? page,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getServicePack(txt, page);
+
+  Future<ProductServicePackResponse> getProductServicePack({
+    required String id,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getProductServicePack(id);
 
   //////////////////////
 

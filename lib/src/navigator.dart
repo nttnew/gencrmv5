@@ -197,9 +197,10 @@ class AppNavigator {
       await Get.toNamed(ROUTE_NAMES.NOTIFICATION);
 
   static navigateAddProduct(
-          Function add, Function reload, List<ProductModel> data) async =>
+          Function add, Function reload, List<ProductModel> data,
+          {String? group}) async =>
       await Get.toNamed(ROUTE_NAMES.ADD_PRODUCT,
-          arguments: [add, reload, data]);
+          arguments: [add, reload, data, group]);
 
   static navigateProduct(String title) async =>
       await Get.toNamed(ROUTE_NAMES.PRODUCT, arguments: title);
@@ -226,4 +227,9 @@ class AppNavigator {
     String id,
   ) async =>
       await Get.toNamed(ROUTE_NAMES.FORM_SIGN, arguments: [title, id]);
+
+  static navigateListServicePark(Function add, Function reload,
+          List<ProductModel> data, String title) async =>
+      await Get.toNamed(ROUTE_NAMES.LIST_SERVICE_PARK,
+          arguments: [add, reload, data, title]);
 }

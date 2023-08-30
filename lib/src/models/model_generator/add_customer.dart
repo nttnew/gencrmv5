@@ -20,24 +20,27 @@ class CustomerIndividualItemData {
   final List<List<dynamic>>? field_set_value_datasource;
   final String? field_special, field_value;
   final List<ProductItemContract>? products;
+  final List<ButtonRes>? button;
 
   CustomerIndividualItemData(
-      this.field_id,
-      this.field_name,
-      this.field_label,
-      this.field_type,
-      this.field_validation,
-      this.field_validation_message,
-      this.field_maxlength,
-      this.field_hidden,
-      this.parent,
-      this.field_require,
-      this.field_set_value,
-      this.field_datasource,
-      this.field_special,
-      this.field_set_value_datasource,
-      this.field_value,
-      this.products);
+    this.field_id,
+    this.field_name,
+    this.field_label,
+    this.field_type,
+    this.field_validation,
+    this.field_validation_message,
+    this.field_maxlength,
+    this.field_hidden,
+    this.parent,
+    this.field_require,
+    this.field_set_value,
+    this.field_datasource,
+    this.field_special,
+    this.field_set_value_datasource,
+    this.field_value,
+    this.products,
+    this.button,
+  );
 
   factory CustomerIndividualItemData.fromJson(Map<String, dynamic> json) =>
       _$CustomerIndividualItemDataFromJson(json);
@@ -145,4 +148,22 @@ class AddCustomerIndividual extends BaseResponse {
       _$AddCustomerIndividualFromJson(json);
 
   Map<String, dynamic> toJson() => _$AddCustomerIndividualToJson(this);
+}
+
+@JsonSerializable()
+class ButtonRes {
+  final String? field_label;
+  final String? field_url;
+  final String? field_type;
+
+  ButtonRes(
+    this.field_label,
+    this.field_url,
+    this.field_type,
+  );
+
+  factory ButtonRes.fromJson(Map<String, dynamic> json) =>
+      _$ButtonResFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ButtonResToJson(this);
 }

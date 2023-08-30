@@ -360,9 +360,9 @@ an_error_occurred??'');
                                       bienSoXe != '' //theem xe
                                   ? checkXe(f.fieldDatasource, bienSoXe)
                                   : f.fieldValue,
-                              null
+                              null,
                               // e.fieldProducts
-                              );
+                              [],);
                         }).toList() ??
                         [],
                     e.groupName,

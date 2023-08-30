@@ -11,7 +11,7 @@ import 'package:gen_crm/screens/call/init_app_call.dart';
 import 'package:gen_crm/screens/add_service_voucher/add_service_voucher_step2_screen.dart';
 import 'package:gen_crm/screens/menu/form/form_edit.dart';
 import 'package:gen_crm/screens/menu/form/form_sign.dart';
-import 'package:gen_crm/screens/menu/home/contract/widget/list_product.dart';
+import 'package:gen_crm/screens/menu/form/product_list/list_product.dart';
 import 'package:gen_crm/screens/menu/form/update_contract.dart';
 import 'package:gen_crm/screens/menu/form/add_note.dart';
 import 'package:gen_crm/screens/menu/form/form_add_data.dart';
@@ -29,6 +29,7 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'bloc/unread_list_notification/unread_list_notifi_bloc.dart';
+import 'screens/menu/form/product_list/list_service_park.dart';
 import 'screens/menu/home/customer/call_screen.dart';
 
 class MyApp extends StatefulWidget {
@@ -299,6 +300,9 @@ class _MyAppState extends State<MyApp> {
               ),
               GetPage(name: ROUTE_NAMES.FORM_SIGN, page: () => FormAddSign()),
               GetPage(name: ROUTE_NAMES.CALL, page: () => CallScreen()),
+              GetPage(
+                  name: ROUTE_NAMES.LIST_SERVICE_PARK,
+                  page: () => ListServicePark()),
             ],
           );
         });

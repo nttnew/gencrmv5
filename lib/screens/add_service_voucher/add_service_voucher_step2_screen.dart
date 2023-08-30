@@ -19,7 +19,7 @@ import '../../widgets/field_input_select_multi.dart';
 import '../../widgets/multiple_widget.dart';
 import '../../widgets/widget_field_input_percent.dart';
 import '../../widgets/widget_text.dart';
-import '../menu/home/contract/widget/product_contract.dart';
+import '../menu/form/product_list/product_contract.dart';
 import '../menu/home/customer/widget/input_dropDown.dart';
 
 class AddServiceVoucherStepTwoScreen extends StatefulWidget {

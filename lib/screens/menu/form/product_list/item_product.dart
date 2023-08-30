@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:rxdart/rxdart.dart';
-import '../../../../../models/product_model.dart';
+import '../../../../models/product_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import '../../../../../src/src_index.dart';
+import '../../../../src/src_index.dart';
 
 class ItemProduct extends StatefulWidget {
   ItemProduct({
@@ -49,8 +49,8 @@ class _ItemProductState extends State<ItemProduct> {
   String dvt = '';
   String vat = '';
   String giamGia = '0';
-  TextEditingController _editingController = TextEditingController();
-  TextEditingController _priceTextfieldController = TextEditingController();
+  TextEditingController _saleController = TextEditingController();
+  TextEditingController _priceController = TextEditingController();
   TextEditingController _quantityController = TextEditingController();
 
   bool typeGiamGia = true;
@@ -83,11 +83,6 @@ class _ItemProductState extends State<ItemProduct> {
       widget.onDVT!(widget.data.dvt, dvt);
       widget.onVAT!(widget.data.vat, vat);
     }
-
-    _priceTextfieldController.text =
-        widget.data.sell_price != '' && widget.data.sell_price != null
-            ? double.parse(widget.data.sell_price ?? '0').toInt().toString()
-            : '';
     soLuong.listen((value) {
       widget.onReload();
     });
@@ -100,6 +95,10 @@ class _ItemProductState extends State<ItemProduct> {
       setState(() {
         soLuong.add((widget.model?.soLuong ?? 0).toString());
         price = widget.model?.item.sell_price ?? '';
+        dvt = widget.model!.nameDvt;
+        vat = widget.model!.nameVat;
+        giamGia = widget.model!.giamGia;
+        typeGiamGia = widget.model!.typeGiamGia == "%" ? false : true;
       });
     }
     super.didUpdateWidget(oldWidget);
@@ -155,19 +154,26 @@ class _ItemProductState extends State<ItemProduct> {
                   height: 3,
                 ),
                 GestureDetector(
-                  onTap: this.onClickPrice,
+                  onTap: () {
+                    _priceController.text = widget.data.sell_price != '' &&
+                            widget.data.sell_price != null
+                        ? double.parse(widget.data.sell_price ?? '0')
+                            .toInt()
+                            .toString()
+                        : '';
+                    onClickPrice();
+                  },
                   child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: COLORS.TEXT_GREY),
-                        borderRadius: BorderRadius.circular(7)),
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: WidgetText(
-                      title: "${AppLocalizations.of(Get.context!)?.price}: " +
-                          "${AppValue.format_money(price)}",
-                      style: AppStyle.DEFAULT_14_BOLD
-                          .copyWith(color: COLORS.TEXT_GREY),
-                    ),
-                  ),
+                      decoration: BoxDecoration(
+                          border: Border.all(width: 1, color: COLORS.TEXT_GREY),
+                          borderRadius: BorderRadius.circular(7)),
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: WidgetText(
+                        title: "${AppLocalizations.of(Get.context!)?.price}: " +
+                            "${AppValue.format_money(price)}",
+                        style: AppStyle.DEFAULT_14_BOLD
+                            .copyWith(color: COLORS.TEXT_GREY),
+                      )),
                 ),
                 soLuong != "0" || widget.neverHidden == true
                     ? new Column(
@@ -225,7 +231,11 @@ class _ItemProductState extends State<ItemProduct> {
                             height: 5,
                           ),
                           GestureDetector(
-                            onTap: this.onClickGiamGia,
+                            onTap: () {
+                              _saleController.text =
+                                  widget.model?.giamGia ?? '';
+                              onClickGiamGia();
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                   border:
@@ -406,11 +416,10 @@ class _ItemProductState extends State<ItemProduct> {
                         widget.listVat.length,
                         (index) => GestureDetector(
                             onTap: () {
-                              setState(() {
-                                vat = widget.listVat[index][1];
-                              });
+                              vat = widget.listVat[index][1];
                               widget.onVAT!(widget.listVat[index][0],
                                   widget.listVat[index][1]);
+                              setState(() {});
                               Get.back();
                             },
                             child: _item(widget.listVat[index][1]))),
@@ -462,7 +471,7 @@ class _ItemProductState extends State<ItemProduct> {
                                   Border.all(width: 1, color: COLORS.GREY_400),
                               borderRadius: BorderRadius.circular(15)),
                           child: TextField(
-                            controller: _editingController,
+                            controller: _saleController,
                             decoration: InputDecoration(
                                 contentPadding:
                                     EdgeInsets.symmetric(horizontal: 10),
@@ -504,10 +513,10 @@ class _ItemProductState extends State<ItemProduct> {
                         GestureDetector(
                           onTap: () {
                             if (typeGiamGia &&
-                                (double.parse(_editingController.text) >
+                                (double.parse(_saleController.text) >
                                     double.parse(
                                         widget.data.sell_price ?? '0'))) {
-                              _editingController.text = widget.data.sell_price!;
+                              _saleController.text = widget.data.sell_price!;
                               ShowDialogCustom.showDialogBase(
                                 title: AppLocalizations.of(Get.context!)
                                     ?.notification,
@@ -519,7 +528,7 @@ class _ItemProductState extends State<ItemProduct> {
                                 },
                               );
                             } else if (!typeGiamGia &&
-                                (double.parse(_editingController.text) > 100)) {
+                                (double.parse(_saleController.text) > 100)) {
                               ShowDialogCustom.showDialogBase(
                                 title: AppLocalizations.of(Get.context!)
                                     ?.notification,
@@ -530,22 +539,21 @@ class _ItemProductState extends State<ItemProduct> {
                                 },
                               );
                             } else {
-                              setState(() {
-                                if (double.parse(_editingController.text) ==
-                                    0) {
-                                  giamGia = '0';
-                                  _editingController.text = '0';
-                                } else {
-                                  giamGia = typeGiamGia
-                                      ? AppValue.APP_MONEY_FORMAT.format(
-                                          double.parse(_editingController.text))
-                                      : _editingController.text;
-                                }
-                              });
+                              if (double.parse(_saleController.text) == 0) {
+                                giamGia = '0';
+                                _saleController.text = '0';
+                              } else {
+                                giamGia = typeGiamGia
+                                    ? AppValue.APP_MONEY_FORMAT.format(
+                                        double.parse(_saleController.text))
+                                    : _saleController.text;
+                              }
+
                               widget.onGiamGia!(
-                                _editingController.text,
+                                _saleController.text,
                                 typeGiamGia ? "vnd" : "%",
                               );
+                              setState(() {});
                               Get.back();
                             }
                           },
@@ -619,9 +627,8 @@ class _ItemProductState extends State<ItemProduct> {
                                 disabledBorder: InputBorder.none,
                                 focusedBorder: InputBorder.none,
                                 errorBorder: InputBorder.none),
-                            keyboardType: TextInputType.numberWithOptions(
-                              decimal: true
-                            ),
+                            keyboardType:
+                                TextInputType.numberWithOptions(decimal: true),
                           ),
                         )),
                         SizedBox(
@@ -705,7 +712,7 @@ class _ItemProductState extends State<ItemProduct> {
                                   Border.all(width: 1, color: COLORS.GREY_400),
                               borderRadius: BorderRadius.circular(15)),
                           child: TextField(
-                            controller: _priceTextfieldController,
+                            controller: _priceController,
                             decoration: InputDecoration(
                                 contentPadding:
                                     EdgeInsets.symmetric(horizontal: 10),
@@ -721,13 +728,12 @@ class _ItemProductState extends State<ItemProduct> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            if (_priceTextfieldController.text != '') {
-                              setState(() {
-                                price = _priceTextfieldController.text;
-                              });
+                            if (_priceController.text != '') {
+                              price = _priceController.text;
                               widget.onPrice!(price);
+                              setState(() {});
                             } else {
-                              _priceTextfieldController.text = price;
+                              _priceController.text = price;
                             }
                             Get.back();
                           },

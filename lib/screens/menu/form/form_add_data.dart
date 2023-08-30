@@ -42,7 +42,7 @@ import '../../../widgets/location_base.dart';
 import 'package:geolocator/geolocator.dart' show Position;
 import '../../../widgets/multiple_widget.dart';
 import '../../add_service_voucher/add_service_voucher_step2_screen.dart';
-import '../home/contract/widget/product_contract.dart';
+import 'product_list/product_contract.dart';
 
 class FormAddData extends StatefulWidget {
   const FormAddData({Key? key}) : super(key: key);

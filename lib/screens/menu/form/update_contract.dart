@@ -6,7 +6,7 @@ import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
 import 'package:gen_crm/bloc/form_edit/form_edit_bloc.dart';
 import 'package:gen_crm/models/model_data_add.dart';
 import 'package:gen_crm/models/model_item_add.dart';
-import 'package:gen_crm/screens/menu/home/contract/widget/product_contract.dart';
+import 'package:gen_crm/screens/menu/form/product_list/product_contract.dart';
 import 'package:gen_crm/screens/menu/home/contract/widget/widget_total_sum.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
