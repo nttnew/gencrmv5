@@ -181,7 +181,7 @@ class _EditContractState extends State<EditContract> {
                                       .id_product
                                       .toString(),
                                   double.parse(state.listEditData[i].data![j]
-                                          .products![k].quantity!),
+                                      .products![k].quantity!),
                                   ProductItem(
                                       state.listEditData[i].data![j]
                                           .products![k].id_product
@@ -310,6 +310,7 @@ class _EditContractState extends State<EditContract> {
                         noEdit: true, value: data.field_set_value ?? ''))
             : data.field_special == "url"
                 ? ProductContract(
+                    listBtn: data.button,
                     data: listProduct,
                     addProduct: addProduct,
                     reload: reload,

@@ -128,8 +128,7 @@ class _AddServiceVoucherStepTwoScreenState
             if (state is SaveServiceVoucherState) {
               ShowDialogCustom.showDialogBase(
                   title: AppLocalizations.of(Get.context!)?.notification,
-                  content: AppLocalizations.of(Get.context!)
-                      ?.add_success,
+                  content: AppLocalizations.of(Get.context!)?.add_success,
                   onTap1: () {
                     Navigator.of(context)
                       ..pop()
@@ -212,6 +211,7 @@ class _AddServiceVoucherStepTwoScreenState
                                         return isHidden
                                             ? isURL
                                                 ? ProductContract(
+                                                    listBtn: data.button,
                                                     data: _bloc.listProduct,
                                                     addProduct:
                                                         _bloc.addProduct,

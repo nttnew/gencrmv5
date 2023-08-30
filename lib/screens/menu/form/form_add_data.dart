@@ -875,6 +875,7 @@ class _FormAddDataState extends State<FormAddData> {
                         ? Container()
                         : data.field_special == 'url'
                             ? ProductContract(
+                                listBtn: data.button,
                                 data: listProduct,
                                 addProduct: addProduct,
                                 reload: reload,

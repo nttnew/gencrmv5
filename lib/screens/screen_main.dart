@@ -453,6 +453,14 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AddServiceVoucherScreen(
+                                title: '')));
+                      },
+                        child:
+                    Container(width: 22,height: 22,color: Colors.grey,)),
                     SizedBox(
                       height: 25,
                     ),

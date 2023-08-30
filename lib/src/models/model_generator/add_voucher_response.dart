@@ -1,3 +1,5 @@
+import 'add_customer.dart';
+
 class AddVoucherResponse {
   bool? success;
   String? msg;
@@ -65,6 +67,7 @@ class Data2 {
   String? fieldSpecial;
   String? fieldUrl;
   List<dynamic>? fieldProducts;
+  List<ButtonRes>? buttons;
 
   Data2({
     this.fieldId,
@@ -85,6 +88,7 @@ class Data2 {
     this.fieldSpecial,
     this.fieldUrl,
     this.fieldProducts,
+    this.buttons,
   });
 
   Data2.fromJson(Map<String, dynamic> json) {
@@ -121,6 +125,12 @@ class Data2 {
       fieldProducts = <dynamic>[];
       json['field_products'].forEach((v) {
         fieldProducts!.add(v);
+      });
+    }
+    if (json['button'] != null) {
+      buttons = <ButtonRes>[];
+      json['button'].forEach((v) {
+        buttons!.add(v);
       });
     }
   }

@@ -68,12 +68,10 @@ class ServiceVoucherBloc
   String canXe = '';
   String kieuDang = '';
   String soCho = '';
-  static final String KHONG_XAC_DINH = AppLocalizations.of(Get.context!)?.
-
-unknown??'';
-  static final String THEM_MOI_XE = AppLocalizations.of(Get.context!)?.
-
-add_new_car??'';
+  static final String KHONG_XAC_DINH =
+      AppLocalizations.of(Get.context!)?.unknown ?? '';
+  static final String THEM_MOI_XE =
+      AppLocalizations.of(Get.context!)?.add_new_car ?? '';
   final List<ProductModel> listProduct = [];
   double total = 0;
 
@@ -318,9 +316,8 @@ add_new_car??'';
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetServiceVoucherState(AppLocalizations.of(Get.context!)?.
-
-an_error_occurred??'');
+      yield ErrorGetServiceVoucherState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
@@ -340,29 +337,30 @@ an_error_occurred??'');
                   (e) => AddCustomerIndividualData(
                     e.data?.map((f) {
                           return CustomerIndividualItemData(
-                              f.fieldId,
-                              f.fieldName,
-                              f.fieldLabel,
-                              f.fieldType,
-                              f.fieldValidation,
-                              f.fieldValidationMessage,
-                              f.fieldMaxlength,
-                              f.fieldHidden,
-                              null,
-                              f.fieldRequire,
-                              f.fieldSetValue,
-                              f.fieldName == 'hdsan_pham_kh' //theem xe
-                                  ? listThemXe(f.fieldDatasource, bienSoXe)
-                                  : f.fieldDatasource,
-                              f.fieldSpecial,
-                              f.fieldSetValueDatasource,
-                              f.fieldName == 'hdsan_pham_kh' &&
-                                      bienSoXe != '' //theem xe
-                                  ? checkXe(f.fieldDatasource, bienSoXe)
-                                  : f.fieldValue,
-                              null,
-                              // e.fieldProducts
-                              [],);
+                            f.fieldId,
+                            f.fieldName,
+                            f.fieldLabel,
+                            f.fieldType,
+                            f.fieldValidation,
+                            f.fieldValidationMessage,
+                            f.fieldMaxlength,
+                            f.fieldHidden,
+                            null,
+                            f.fieldRequire,
+                            f.fieldSetValue,
+                            f.fieldName == 'hdsan_pham_kh' //theem xe
+                                ? listThemXe(f.fieldDatasource, bienSoXe)
+                                : f.fieldDatasource,
+                            f.fieldSpecial,
+                            f.fieldSetValueDatasource,
+                            f.fieldName == 'hdsan_pham_kh' &&
+                                    bienSoXe != '' //theem xe
+                                ? checkXe(f.fieldDatasource, bienSoXe)
+                                : f.fieldValue,
+                            null,
+                            // e.fieldProducts
+                            f.buttons,
+                          );
                         }).toList() ??
                         [],
                     e.groupName,
@@ -380,9 +378,8 @@ an_error_occurred??'');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetServiceVoucherState(AppLocalizations.of(Get.context!)?.
-
-an_error_occurred??'');
+      yield ErrorGetServiceVoucherState(
+          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
       throw e;
     }
     LoadingApi().popLoading();
