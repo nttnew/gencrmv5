@@ -627,8 +627,8 @@ class _ItemProductState extends State<ItemProduct> {
                                 disabledBorder: InputBorder.none,
                                 focusedBorder: InputBorder.none,
                                 errorBorder: InputBorder.none),
-                            keyboardType:
-                                TextInputType.numberWithOptions(decimal: true),
+                            keyboardType: TextInputType.numberWithOptions(
+                                decimal: true, signed: false),
                           ),
                         )),
                         SizedBox(
