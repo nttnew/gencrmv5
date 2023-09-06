@@ -45,7 +45,6 @@ class AuthenticationBloc
           await shareLocal.getString(PreferencesKey.DEVICE_TOKEN);
       var response = await userRepository.logout(device_token: deviceToken);
       if (response.code == 888) {
-        AppNavigator.navigateLogout();
         await _localRepository.saveUser(dotenv.env[PreferencesKey.TOKEN]!);
         await shareLocal.putString(PreferencesKey.TOKEN, '');
         await shareLocal.putString(PreferencesKey.USER_CODE, '');
@@ -58,9 +57,6 @@ class AuthenticationBloc
           content: response.msg ??
               AppLocalizations.of(Get.context!)?.an_error_occurred,
           textButton1: AppLocalizations.of(Get.context!)?.ok,
-          onTap1: () {
-            AppNavigator.navigateLogout();
-          },
         );
       }
     }

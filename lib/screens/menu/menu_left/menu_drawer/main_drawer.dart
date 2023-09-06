@@ -369,7 +369,7 @@ class _MainDrawerState extends State<MainDrawer> {
           AppValue.vSpaceTiny,
           Center(
             child: WidgetText(
-              title: 'Version: 2.0.9',
+              title: 'Version: 2.1.0',
               style: AppStyle.DEFAULT_16.copyWith(
                   fontFamily: 'Montserrat', fontWeight: FontWeight.w400),
             ),
@@ -380,6 +380,7 @@ class _MainDrawerState extends State<MainDrawer> {
                   colorButton2: COLORS.GREY.withOpacity(0.5),
                   colorButton1: COLORS.SECONDS_COLOR,
                   onTap2: () {
+                    AppNavigator.navigateLogout();
                     AuthenticationBloc.of(context)
                         .add(AuthenticationLogoutRequested());
                     LoginBloc.of(context).logout(context);
