@@ -41,24 +41,32 @@ class AuthenticationBloc
     } else if (event is AuthenticationStatusChanged) {
       yield* _mapAuthenticationStatusChangedToState(event);
     } else if (event is AuthenticationLogoutRequested) {
+      await _localRepository.saveUser(dotenv.env[PreferencesKey.TOKEN]!);
+      await shareLocal.putString(PreferencesKey.TOKEN, '');
+      await shareLocal.putString(PreferencesKey.USER_CODE, '');
+      await shareLocal.putString(PreferencesKey.USER_EMAIL, '');
+      await _localRepository.saveUserID("");
+      _userRepository.logOut();
+
       final deviceToken =
           await shareLocal.getString(PreferencesKey.DEVICE_TOKEN);
       var response = await userRepository.logout(device_token: deviceToken);
-      if (response.code == 888) {
-        await _localRepository.saveUser(dotenv.env[PreferencesKey.TOKEN]!);
-        await shareLocal.putString(PreferencesKey.TOKEN, '');
-        await shareLocal.putString(PreferencesKey.USER_CODE, '');
-        await shareLocal.putString(PreferencesKey.USER_EMAIL, '');
-        await _localRepository.saveUserID("");
-        _userRepository.logOut();
-      } else {
-        ShowDialogCustom.showDialogBase(
-          title: AppLocalizations.of(Get.context!)?.notification,
-          content: response.msg ??
-              AppLocalizations.of(Get.context!)?.an_error_occurred,
-          textButton1: AppLocalizations.of(Get.context!)?.ok,
-        );
-      }
+
+      // if (response.code == 888) {
+      //   await _localRepository.saveUser(dotenv.env[PreferencesKey.TOKEN]!);
+      //   await shareLocal.putString(PreferencesKey.TOKEN, '');
+      //   await shareLocal.putString(PreferencesKey.USER_CODE, '');
+      //   await shareLocal.putString(PreferencesKey.USER_EMAIL, '');
+      //   await _localRepository.saveUserID("");
+      //   _userRepository.logOut();
+      // } else {
+      //   ShowDialogCustom.showDialogBase(
+      //     title: AppLocalizations.of(Get.context!)?.notification,
+      //     content: response.msg ??
+      //         AppLocalizations.of(Get.context!)?.an_error_occurred,
+      //     textButton1: AppLocalizations.of(Get.context!)?.ok,
+      //   );
+      // }
     }
   }
 
