@@ -636,20 +636,26 @@ class _ItemProductState extends State<ItemProduct> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            if (double.parse(_quantityController.text) > 0) {
-                              soLuong.add(_quantityController.text);
-                              widget.onChangeQuantity!(
-                                  double.parse(soLuong.value).toStringAsFixed(
-                                      2)); // change data quantity
-                            } else if (double.parse(_quantityController.text) ==
-                                0) {
-                              soLuong.add(_quantityController.text);
-                              widget.onChangeQuantity!(
-                                  double.parse(soLuong.value).toStringAsFixed(
-                                      2)); // change data quantity
+                            String text = _quantityController
+                                .text; // Đoạn văn bản cần kiểm tra
+                            double number = 0;
+                            try {
+                              number = double.parse(text);
+                            } catch (e) {
+                              if (text.split(',').length <= 2) {
+                                number =
+                                    double.parse(text.replaceAll(",", "."));
+                              }
+                              //khong phai kieu double
                             }
-                            setState(() {});
-                            Get.back();
+
+                            if (number > 0) {
+                              soLuong.add(number.toString());
+                              widget.onChangeQuantity!(number
+                                  .toStringAsFixed(2)); // change data quantity
+                              setState(() {});
+                              Get.back();
+                            }
                           },
                           child: Container(
                             decoration: BoxDecoration(
