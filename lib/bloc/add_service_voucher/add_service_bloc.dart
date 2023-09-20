@@ -78,7 +78,8 @@ class ServiceVoucherBloc
   void addProduct(ProductModel data) {
     bool check = false;
     for (int i = 0; i < listProduct.length; i++) {
-      if (data.id == listProduct[i].id) {
+      if (data.id == listProduct[i].id &&
+          data.item.combo_id == listProduct[i].item.combo_id) {
         check = true;
         break;
       }
