@@ -121,6 +121,8 @@ ProductItemContract _$ProductItemContractFromJson(Map<String, dynamic> json) =>
       json['id'] as int?,
       json['id_product'] as int?,
       SaleOff.fromJson(json['sale_off'] as Map<String, dynamic>),
+      json['ten_combo'] as String?,
+      json['combo_id'] as String?,
     );
 
 Map<String, dynamic> _$ProductItemContractToJson(
@@ -136,6 +138,8 @@ Map<String, dynamic> _$ProductItemContractToJson(
       'id_product': instance.id_product,
       'unit': instance.unit,
       'sale_off': instance.sale_off,
+      'combo_id': instance.combo_id,
+      'ten_combo': instance.ten_combo,
     };
 
 SaleOff _$SaleOffFromJson(Map<String, dynamic> json) => SaleOff(

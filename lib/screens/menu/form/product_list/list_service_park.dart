@@ -256,8 +256,8 @@ class _ListServiceParkState extends State<ListServicePark> {
 
   _handleData(List<DataProductServicePack> list) {
     for (int i = 0; i < list.length; i++) {
-      int index = listSelect
-          .indexWhere((element) => element.id == (list[i].productId ?? ''));
+      int index = listSelect.indexWhere(
+          (element) => element.item.combo_id == (list[i].comboId ?? ''));
       if (index == -1) {
         addProduct(ProductModel(
           list[i].productId ?? '',
@@ -270,6 +270,8 @@ class _ListServiceParkState extends State<ListServicePark> {
             list[i].unit,
             list[i].vat,
             '${list[i].price}',
+            ten_combo: list[i].tenCombo,
+            combo_id: list[i].comboId,
           ),
           '${list[i].saleOff?.value}',
           list[i].unitName ?? '',
@@ -290,6 +292,8 @@ class _ListServiceParkState extends State<ListServicePark> {
             list[i].unit,
             list[i].vat,
             '${list[i].price}',
+            ten_combo: list[i].tenCombo,
+            combo_id: list[i].comboId,
           ),
           '${list[i].saleOff?.value}',
           list[i].unitName ?? '',

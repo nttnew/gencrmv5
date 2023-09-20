@@ -469,6 +469,8 @@ class _AddServiceVoucherStepTwoScreenState
             "quantity": _bloc.listProduct[i].soLuong,
             "vat": _bloc.listProduct[i].item.vat,
             "unit": _bloc.listProduct[i].item.dvt,
+            'ten_combo': _bloc.listProduct[i].item.ten_combo,
+            'combo_id': _bloc.listProduct[i].item.combo_id,
             "sale_off": {
               "value": _bloc.listProduct[i].giamGia,
               "type": _bloc.listProduct[i].typeGiamGia,

@@ -183,20 +183,25 @@ class _EditContractState extends State<EditContract> {
                                   double.parse(state.listEditData[i].data![j]
                                       .products![k].quantity!),
                                   ProductItem(
-                                      state.listEditData[i].data![j]
-                                          .products![k].id_product
-                                          .toString(),
-                                      "",
-                                      "",
-                                      state.listEditData[i].data![j]
-                                          .products![k].name_product,
-                                      state.listEditData[i].data![j]
-                                          .products![k].unit
-                                          .toString(),
-                                      state.listEditData[i].data![j]
-                                          .products![k].vat,
-                                      state.listEditData[i].data![j]
-                                          .products![k].price),
+                                    state.listEditData[i].data![j].products![k]
+                                        .id_product
+                                        .toString(),
+                                    "",
+                                    "",
+                                    state.listEditData[i].data![j].products![k]
+                                        .name_product,
+                                    state.listEditData[i].data![j].products![k]
+                                        .unit
+                                        .toString(),
+                                    state.listEditData[i].data![j].products![k]
+                                        .vat,
+                                    state.listEditData[i].data![j].products![k]
+                                        .price,
+                                    ten_combo: state.listEditData[i].data![j]
+                                        .products![k].ten_combo,
+                                    combo_id: state.listEditData[i].data![j]
+                                        .products![k].combo_id,
+                                  ),
                                   state.listEditData[i].data![j].products![k]
                                       .sale_off.value!,
                                   state.listEditData[i].data![j].products![k]
@@ -632,6 +637,8 @@ class _EditContractState extends State<EditContract> {
           "quantity": listProduct[i].soLuong,
           "vat": listProduct[i].item.vat,
           "unit": listProduct[i].item.dvt,
+          'ten_combo': listProduct[i].item.ten_combo,
+          'combo_id': listProduct[i].item.combo_id,
           "sale_off": {
             "value": listProduct[i].giamGia,
             "type": listProduct[i].typeGiamGia

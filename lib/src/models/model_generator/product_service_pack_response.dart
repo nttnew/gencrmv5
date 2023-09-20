@@ -43,6 +43,8 @@ class DataProductServicePack {
   String? unitName;
   SaleOff? saleOff;
   String? suDung;
+  String? tenCombo;
+  String? comboId;
 
   DataProductServicePack(
       {this.idProduct,
@@ -56,7 +58,10 @@ class DataProductServicePack {
         this.unit,
         this.unitName,
         this.saleOff,
-        this.suDung});
+        this.suDung,
+        this.tenCombo,
+        this.comboId,
+      });
 
   DataProductServicePack.fromJson(Map<String, dynamic> json) {
     idProduct = json['id_product'];
@@ -73,6 +78,8 @@ class DataProductServicePack {
         ? new SaleOff.fromJson(json['sale_off'])
         : null;
     suDung = json['su_dung'];
+    tenCombo = json['ten_combo'];
+    comboId = json['combo_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -91,6 +98,8 @@ class DataProductServicePack {
       data['sale_off'] = this.saleOff!.toJson();
     }
     data['su_dung'] = this.suDung;
+    data['ten_combo'] = this.tenCombo;
+    data['combo_id'] = this.comboId;
     return data;
   }
 }

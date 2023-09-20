@@ -145,6 +145,27 @@ class _ItemProductState extends State<ItemProduct> {
                 SizedBox(
                   height: 3,
                 ),
+                if (widget.data.ten_combo != null) ...[
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                      vertical: 3,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 3,
+                    ),
+                    decoration: BoxDecoration(
+                        color: COLORS.GREY.withOpacity(0.2),
+                        borderRadius: BorderRadius.all(Radius.circular(4))),
+                    child: WidgetText(
+                      title: widget.data.ten_combo ?? '',
+                      style: AppStyle.DEFAULT_14.copyWith(
+                        color: COLORS.BLACK,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ],
                 WidgetText(
                   title:
                       "${AppLocalizations.of(Get.context!)?.code_product}: " +

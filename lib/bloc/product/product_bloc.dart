@@ -46,10 +46,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         if (page == "1") {
           data = response.data!.product;
           yield SuccessGetListProductState(
-              response.data!.product!,
-              response.data!.units!,
-              response.data!.vats!,
-              response.data!.total!);
+            response.data!.product!,
+            response.data!.units!,
+            response.data!.vats!,
+            response.data!.total!,
+          );
         } else {
           data = [...data!, ...response.data!.product!];
           yield SuccessGetListProductState(data!, response.data!.units!,

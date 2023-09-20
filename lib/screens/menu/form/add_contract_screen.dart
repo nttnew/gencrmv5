@@ -96,7 +96,8 @@ class _FormAddContractState extends State<FormAddContract> {
   addProduct(ProductModel data) {
     bool check = false;
     for (int i = 0; i < listProduct.length; i++) {
-      if (data.id == listProduct[i].id) {
+      if (data.id == listProduct[i].id &&
+          data.item.combo_id == listProduct[i].item.combo_id) {
         check = true;
         break;
       }
@@ -801,6 +802,8 @@ class _FormAddContractState extends State<FormAddContract> {
             'quantity': listProduct[i].soLuong,
             'vat': listProduct[i].item.vat,
             'unit': listProduct[i].item.dvt,
+            'ten_combo': listProduct[i].item.ten_combo,
+            'combo_id': listProduct[i].item.combo_id,
             'sale_off': {
               'value': listProduct[i].giamGia,
               'type': listProduct[i].typeGiamGia

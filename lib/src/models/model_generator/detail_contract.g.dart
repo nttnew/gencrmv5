@@ -58,6 +58,7 @@ DetailContractItem _$DetailContractItemFromJson(Map<String, dynamic> json) =>
       json['is_link'] as bool?,
       json['field_type'] as String?,
       json['link'] as String?,
+      json['name_field'] as String?,
     );
 
 Map<String, dynamic> _$DetailContractItemToJson(DetailContractItem instance) =>

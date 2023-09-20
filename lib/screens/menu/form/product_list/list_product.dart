@@ -77,7 +77,13 @@ class _ListProductState extends State<ListProduct> {
     }
     for (int i = 0; i < listUI.length; i++) {
       int indexS = listSelected.indexWhere(
-          (element) => element.id == state.listProduct[i].product_id!);
+        (element) =>
+            element.id == state.listProduct[i].product_id! &&
+            (element.item.combo_id == '' ||
+                element.item.combo_id == null ||
+                element.item.ten_combo == '' ||
+                element.item.ten_combo == null),
+      );
       if (indexS != -1) {
         listUI[i] = listSelected[indexS];
       }
@@ -155,8 +161,7 @@ class _ListProductState extends State<ListProduct> {
                         child: Padding(
                           padding: const EdgeInsets.all(16),
                           child: Column(
-                            children: List.generate(listUI.length,
-                                    (index) {
+                            children: List.generate(listUI.length, (index) {
                               return ItemProduct(
                                 neverHidden: false,
                                 data: listUI[index].item,

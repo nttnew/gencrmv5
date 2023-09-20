@@ -98,21 +98,31 @@ class AddCustomerIndividualData {
 
 @JsonSerializable()
 class ProductItemContract {
-  final String? name_product, price, quantity, vat, vat_name, unit_name;
+  final String? name_product,
+      price,
+      quantity,
+      vat,
+      vat_name,
+      unit_name,
+      ten_combo,
+      combo_id;
   final int? id, id_product, unit;
   final SaleOff sale_off;
 
   ProductItemContract(
-      this.name_product,
-      this.price,
-      this.quantity,
-      this.vat,
-      this.vat_name,
-      this.unit,
-      this.unit_name,
-      this.id,
-      this.id_product,
-      this.sale_off);
+    this.name_product,
+    this.price,
+    this.quantity,
+    this.vat,
+    this.vat_name,
+    this.unit,
+    this.unit_name,
+    this.id,
+    this.id_product,
+    this.sale_off,
+    this.ten_combo,
+    this.combo_id,
+  );
 
   factory ProductItemContract.fromJson(Map<String, dynamic> json) =>
       _$ProductItemContractFromJson(json);

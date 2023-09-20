@@ -1009,6 +1009,8 @@ class _FormAddDataState extends State<FormAddData> {
             'quantity': listProduct[i].soLuong,
             'vat': listProduct[i].item.vat,
             'unit': listProduct[i].item.dvt,
+            'ten_combo': listProduct[i].item.ten_combo,
+            'combo_id': listProduct[i].item.combo_id,
             'sale_off': {
               'value': listProduct[i].giamGia,
               'type': listProduct[i].typeGiamGia

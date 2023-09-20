@@ -7,9 +7,6 @@ import 'package:gen_crm/api_resfull/user_repository.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/storages.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
-
 part 'authentication_event.dart';
 
 part 'authentication_state.dart';

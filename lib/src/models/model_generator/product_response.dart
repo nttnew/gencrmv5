@@ -10,10 +10,21 @@ class ProductItem {
       product_name,
       dvt,
       vat,
-      sell_price;
+      sell_price,
+      ten_combo,
+      combo_id;
 
-  ProductItem(this.product_id, this.product_code, this.product_edit,
-      this.product_name, this.dvt, this.vat, this.sell_price);
+  ProductItem(
+    this.product_id,
+    this.product_code,
+    this.product_edit,
+    this.product_name,
+    this.dvt,
+    this.vat,
+    this.sell_price, {
+    this.ten_combo,
+    this.combo_id,
+  });
 
   factory ProductItem.fromJson(Map<String, dynamic> json) =>
       _$ProductItemFromJson(json);
