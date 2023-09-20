@@ -152,38 +152,42 @@ class _ListProductState extends State<ListProduct> {
                     Expanded(
                       child: SingleChildScrollView(
                         controller: _scrollController,
-                        child: Column(
-                          children: List.generate(listUI.length, (index) {
-                            return ItemProduct(
-                              neverHidden: false,
-                              data: listUI[index].item,
-                              listDvt: state.listDvt,
-                              listVat: state.listVat,
-                              onChangeQuantity: (soLuong) {
-                                listUI[index].soLuong = double.parse(soLuong);
-                              },
-                              onDVT: (id, name) {
-                                listUI[index].nameDvt = name;
-                                listUI[index].item.dvt = id;
-                              },
-                              onVAT: (id, name) {
-                                listUI[index].nameVat = name;
-                                listUI[index].item.vat = id;
-                                // }
-                              },
-                              onGiamGia: (so, type) {
-                                listUI[index].giamGia = so;
-                                listUI[index].typeGiamGia = type;
-                              },
-                              onPrice: (price) {
-                                listUI[index].item.sell_price = price;
-                              },
-                              model: listUI[index],
-                              onReload: () {
-                                reload();
-                              },
-                            );
-                          }),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            children: List.generate(listUI.length,
+                                    (index) {
+                              return ItemProduct(
+                                neverHidden: false,
+                                data: listUI[index].item,
+                                listDvt: state.listDvt,
+                                listVat: state.listVat,
+                                onChangeQuantity: (soLuong) {
+                                  listUI[index].soLuong = double.parse(soLuong);
+                                },
+                                onDVT: (id, name) {
+                                  listUI[index].nameDvt = name;
+                                  listUI[index].item.dvt = id;
+                                },
+                                onVAT: (id, name) {
+                                  listUI[index].nameVat = name;
+                                  listUI[index].item.vat = id;
+                                  // }
+                                },
+                                onGiamGia: (so, type) {
+                                  listUI[index].giamGia = so;
+                                  listUI[index].typeGiamGia = type;
+                                },
+                                onPrice: (price) {
+                                  listUI[index].item.sell_price = price;
+                                },
+                                model: listUI[index],
+                                onReload: () {
+                                  reload();
+                                },
+                              );
+                            }),
+                          ),
                         ),
                       ),
                     ),

@@ -109,7 +109,9 @@ class _ItemProductState extends State<ItemProduct> {
     return Container(
       decoration: BoxDecoration(
           border: Border(bottom: BorderSide(width: 1, color: COLORS.GREY_400))),
-      margin: EdgeInsets.only(top: 8, left: 16, right: 16),
+      margin: EdgeInsets.only(
+        top: 8,
+      ),
       padding: EdgeInsets.only(bottom: 16),
       child: Row(
         children: [
@@ -137,8 +139,8 @@ class _ItemProductState extends State<ItemProduct> {
               children: [
                 WidgetText(
                   title: widget.data.product_name ?? '',
-                  style: AppStyle.DEFAULT_14_BOLD
-                      .copyWith(color: COLORS.TEXT_GREY),
+                  style:
+                      AppStyle.DEFAULT_14_BOLD.copyWith(color: COLORS.ORANGE),
                 ),
                 SizedBox(
                   height: 3,
@@ -189,7 +191,7 @@ class _ItemProductState extends State<ItemProduct> {
                                 child: Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(
-                                          width: 1, color: COLORS.ORANGE_IMAGE),
+                                          width: 1, color: COLORS.BLUE),
                                       borderRadius: BorderRadius.circular(7)),
                                   padding: EdgeInsets.symmetric(horizontal: 10),
                                   child: WidgetText(
@@ -197,7 +199,7 @@ class _ItemProductState extends State<ItemProduct> {
                                         "${AppLocalizations.of(Get.context!)?.dvt}: " +
                                             "${dvt}",
                                     style: AppStyle.DEFAULT_14
-                                        .copyWith(color: COLORS.ORANGE_IMAGE),
+                                        .copyWith(color: COLORS.BLUE),
                                     maxLine: 4,
                                   ),
                                 ),
@@ -212,7 +214,7 @@ class _ItemProductState extends State<ItemProduct> {
                                       maxWidth: AppValue.widths * 0.28),
                                   decoration: BoxDecoration(
                                       border: Border.all(
-                                          width: 1, color: COLORS.ORANGE_IMAGE),
+                                          width: 1, color: COLORS.BLUE),
                                       borderRadius: BorderRadius.circular(7)),
                                   padding: EdgeInsets.symmetric(horizontal: 10),
                                   child: WidgetText(
@@ -220,7 +222,7 @@ class _ItemProductState extends State<ItemProduct> {
                                         "${AppLocalizations.of(Get.context!)?.vat}: " +
                                             "${vat == '' ? '0' : vat}",
                                     style: AppStyle.DEFAULT_14
-                                        .copyWith(color: COLORS.ORANGE_IMAGE),
+                                        .copyWith(color: COLORS.BLUE),
                                     maxLine: 4,
                                   ),
                                 ),
@@ -497,7 +499,7 @@ class _ItemProductState extends State<ItemProduct> {
                                 horizontal: 5, vertical: 3),
                             decoration: BoxDecoration(
                                 border:
-                                    Border.all(width: 1, color: COLORS.ORANGE),
+                                    Border.all(width: 1, color: COLORS.BLUE),
                                 borderRadius: BorderRadius.circular(10)),
                             width: 45,
                             child: WidgetText(
