@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:gen_crm/screens/menu/form/product_list/function_product/click_so_luong.dart';
+import 'package:gen_crm/screens/menu/form/product_list/function_product/click_vat.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/widgets/widgets.dart';
-import 'package:rxdart/rxdart.dart';
 import '../../../../models/product_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import '../../../../src/src_index.dart';
+import 'function_product/click_dvt.dart';
+import 'function_product/click_giam_gia.dart';
+import 'function_product/click_into_money.dart';
+import 'function_product/click_price.dart';
 
 class ItemProduct extends StatefulWidget {
   ItemProduct({
@@ -22,6 +27,7 @@ class ItemProduct extends StatefulWidget {
     this.model,
     this.canDelete = false,
     this.onDelete,
+    this.onIntoMoney,
     required this.onReload,
   }) : super(key: key);
 
@@ -33,6 +39,7 @@ class ItemProduct extends StatefulWidget {
   final Function? onVAT;
   final Function? onGiamGia;
   final Function? onPrice;
+  final Function(double)? onIntoMoney;
   final Function() onReload;
   final ProductModel? model;
   final bool neverHidden;
@@ -45,21 +52,20 @@ class ItemProduct extends StatefulWidget {
 
 class _ItemProductState extends State<ItemProduct> {
   String price = '';
-  bool typeGiamGia = true;
+  bool isTypeGiamGIa = true;
   bool typeGiamGiaDefault = true;
-  BehaviorSubject<double> intoMoney = BehaviorSubject.seeded(0);
-  late final BehaviorSubject<String> soLuong;
+  double intoMoney = 0;
   String dvt = '';
   String vat = '';
   String giamGia = '0';
-  TextEditingController _saleController = TextEditingController();
+  String soLuong = '0';
+  TextEditingController _giamGiaController = TextEditingController();
   TextEditingController _priceController = TextEditingController();
-  TextEditingController _quantityController = TextEditingController();
+  TextEditingController _soLuongController = TextEditingController();
   TextEditingController _intoMoneyController = TextEditingController();
 
   @override
   void initState() {
-    soLuong = BehaviorSubject.seeded("0");
     int index =
         widget.listDvt.indexWhere((element) => element[0] == widget.data.dvt);
     int indexVat =
@@ -70,8 +76,8 @@ class _ItemProductState extends State<ItemProduct> {
         dvt = widget.model!.nameDvt;
         vat = widget.model!.nameVat;
         giamGia = widget.model!.giamGia;
-        typeGiamGia = widget.model!.typeGiamGia == "%" ? false : true;
-        soLuong.add(widget.model!.soLuong.toString());
+        isTypeGiamGIa = widget.model!.typeGiamGia == "%" ? false : true;
+        soLuong = widget.model!.soLuong.toString();
         price = widget.model!.item.sell_price!;
       });
       widget.onDVT!(widget.model!.item.dvt, dvt);
@@ -80,15 +86,11 @@ class _ItemProductState extends State<ItemProduct> {
       setState(() {
         dvt = index != -1 ? widget.listDvt[index][1] : "";
         vat = indexVat != -1 ? widget.listVat[indexVat][1] : "0";
-        soLuong.add("0");
+        soLuong = '0';
       });
       widget.onDVT!(widget.data.dvt, dvt);
       widget.onVAT!(widget.data.vat, vat);
     }
-    soLuong.listen((value) {
-      _getIntoMoney();
-      widget.onReload();
-    });
     _getIntoMoney();
     super.initState();
   }
@@ -97,21 +99,21 @@ class _ItemProductState extends State<ItemProduct> {
   void didUpdateWidget(covariant ItemProduct oldWidget) {
     final typeWidget = (widget.model!.typeGiamGia == "%" ? false : true);
     if (oldWidget != widget) {
-      soLuong.add((widget.model?.soLuong ?? 0).toString());
+      soLuong = (widget.model?.soLuong ?? 0).toString();
       price = widget.model?.item.sell_price ?? '';
       dvt = widget.model!.nameDvt;
       vat = widget.model!.nameVat;
       giamGia = widget.model!.giamGia;
-      _getIntoMoney();
       if (typeGiamGiaDefault != typeWidget) {
         typeGiamGiaDefault = typeWidget;
-        typeGiamGia = typeWidget;
+        isTypeGiamGIa = typeWidget;
       }
+      widget.onReload();
     }
     super.didUpdateWidget(oldWidget);
   }
 
-  void _getIntoMoney({bool newPrice = false}) {
+  void _getIntoMoney() {
     double priceProduct = 0;
     double vatProduct = 0;
     double vatProductNumber = 0;
@@ -123,49 +125,71 @@ class _ItemProductState extends State<ItemProduct> {
 
       if (double.parse(giamGia) > 0) discountNumber = double.parse(giamGia);
 
-      if (!typeGiamGia) {
+      if (!isTypeGiamGIa) {
         discount = priceProduct * discountNumber / 100;
       } else {
         discount = discountNumber;
       }
 
-      if (double.parse(vat.split('%').first) > 0) {
-        vatProductNumber = double.parse(vat.split('%').first);
-        vatProduct = vatProductNumber * (priceProduct - discount) / 100;
-      }
+      try {
+        if (double.parse(vat.split('%').first) > 0) {
+          vatProductNumber = double.parse(vat.split('%').first);
+          vatProduct = vatProductNumber * (priceProduct - discount) / 100;
+        }
+      } catch (e) {}
 
-      if (soLuong.value.isNotEmpty) countProduct = double.parse(soLuong.value);
+      if (soLuong.isNotEmpty) countProduct = double.parse(soLuong);
     } catch (e) {}
 
-    if (price != '' && !newPrice) {
-      double money = 0;
-      money = (priceProduct + vatProduct - discount) * countProduct;
-      intoMoney.add(money);
-    } else if (newPrice) {
-      if (countProduct > 0) {
-        double newPrice = 0;
-        double oneProduct = intoMoney.value / countProduct;
-        double discount = 0;
-        double vat = 0;
-        if (!typeGiamGia) {
-          discount = oneProduct - oneProduct * (100 - discountNumber) / 100;
-        } else {
-          discount = discountNumber;
-        }
-        if (vatProductNumber > 0) {
-          vat = (oneProduct - discount) -
-              (oneProduct - discount) * (100 - vatProductNumber) / 100;
-        }
-        newPrice = oneProduct - vat + discount;
+    double money = 0;
+    money = (priceProduct + vatProduct - discount) * countProduct;
+    intoMoney = money;
+    widget.onIntoMoney!(money);
+    widget.onReload();
+    setState(() {});
+  }
 
-        price = newPrice.toStringAsFixed(0);
-        _priceController.text = price;
-        widget.onPrice!(price);
-        setState(() {});
+  void _getNewPrice() {
+    double vatProductNumber = 0;
+    double discountNumber = 0;
+    double countProduct = 0;
+    try {
+      if (double.parse(giamGia) > 0) discountNumber = double.parse(giamGia);
+
+      try {
+        if (double.parse(vat.split('%').first) > 0) {
+          vatProductNumber = double.parse(vat.split('%').first);
+        }
+      } catch (e) {}
+
+      if (soLuong.isNotEmpty) countProduct = double.parse(soLuong);
+    } catch (e) {}
+
+    if (countProduct > 0) {
+      double newPrice = 0;
+      double oneProduct = intoMoney / countProduct;
+      double discount = 0;
+      double vat = 0;
+      if (!isTypeGiamGIa) {
+        discount = oneProduct - oneProduct * (100 - discountNumber) / 100;
       } else {
-        intoMoney.add(0);
+        discount = discountNumber;
       }
+      if (vatProductNumber > 0) {
+        vat = (oneProduct - discount) -
+            (oneProduct - discount) * (100 - vatProductNumber) / 100;
+      }
+      newPrice = oneProduct - vat + discount;
+
+      price = newPrice.toStringAsFixed(0);
+      _priceController.text = price;
+      widget.onPrice!(price);
+      widget.onIntoMoney!(intoMoney);
+    } else {
+      intoMoney = 0;
+      widget.onIntoMoney!(0);
     }
+    setState(() {});
   }
 
   @override
@@ -248,7 +272,16 @@ class _ItemProductState extends State<ItemProduct> {
                             .toInt()
                             .toString()
                         : '';
-                    onClickPrice();
+                    onClickPrice(context, _priceController, (v) {
+                      if (v != '') {
+                        price = v;
+                        widget.onPrice!(price);
+                        _getIntoMoney();
+                      } else {
+                        _priceController.text = price;
+                      }
+                      Get.back();
+                    });
                   },
                   child: Container(
                       decoration: BoxDecoration(
@@ -262,721 +295,267 @@ class _ItemProductState extends State<ItemProduct> {
                             .copyWith(color: COLORS.TEXT_GREY),
                       )),
                 ),
-                soLuong != "0" || widget.neverHidden == true
-                    ? new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            children: [
-                              GestureDetector(
-                                onTap: this.onClickDvt,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          width: 1, color: COLORS.BLUE),
-                                      borderRadius: BorderRadius.circular(7)),
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                  child: WidgetText(
-                                    title:
-                                        "${AppLocalizations.of(Get.context!)?.dvt}: " +
-                                            "${dvt}",
-                                    style: AppStyle.DEFAULT_14
-                                        .copyWith(color: COLORS.BLUE),
-                                    maxLine: 4,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              GestureDetector(
-                                onTap: this.onClickVat,
-                                child: Container(
-                                  constraints: BoxConstraints(
-                                      maxWidth: AppValue.widths * 0.28),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          width: 1, color: COLORS.BLUE),
-                                      borderRadius: BorderRadius.circular(7)),
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                  child: WidgetText(
-                                    title:
-                                        "${AppLocalizations.of(Get.context!)?.vat}: " +
-                                            "${vat == '' ? '0' : vat}",
-                                    style: AppStyle.DEFAULT_14
-                                        .copyWith(color: COLORS.BLUE),
-                                    maxLine: 4,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              if (double.parse(widget.model?.giamGia ?? '0') >
-                                  0) {
-                                _saleController.text =
-                                    widget.model?.giamGia ?? '';
-                              } else {
-                                _saleController.text = '';
-                              }
-                              onClickGiamGia();
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(width: 1, color: COLORS.BLUE),
-                                  borderRadius: BorderRadius.circular(7)),
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: WidgetText(
-                                title:
-                                    "${AppLocalizations.of(Get.context!)?.sale}: " +
-                                        (typeGiamGia
-                                            ? AppValue.format_money(giamGia)
-                                            : giamGia.trim()) +
-                                        "${typeGiamGia ? '' : '%'}",
-                                style: AppStyle.DEFAULT_14
-                                    .copyWith(color: COLORS.BLUE),
-                              ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            onClickDVT(context, widget.listDvt, (v) {
+                              dvt = v[1];
+                              widget.onDVT!(v[0], v[1]);
+                              setState(() {});
+                              Get.back();
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 1, color: COLORS.BLUE),
+                                borderRadius: BorderRadius.circular(7)),
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: WidgetText(
+                              title:
+                                  "${AppLocalizations.of(Get.context!)?.dvt}: " +
+                                      "${dvt}",
+                              style: AppStyle.DEFAULT_14
+                                  .copyWith(color: COLORS.BLUE),
+                              maxLine: 4,
                             ),
                           ),
-                          SizedBox(
-                            height: 5,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            onClickVAT(context, widget.listVat, (v) {
+                              vat = v[1];
+                              widget.onVAT!(v[0], v[1]);
+                              _getIntoMoney();
+                              Get.back();
+                            });
+                          },
+                          child: Container(
+                            constraints: BoxConstraints(
+                                maxWidth: AppValue.widths * 0.28),
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 1, color: COLORS.BLUE),
+                                borderRadius: BorderRadius.circular(7)),
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: WidgetText(
+                              title:
+                                  "${AppLocalizations.of(Get.context!)?.vat}: " +
+                                      "${vat == '' ? '0' : vat}",
+                              style: AppStyle.DEFAULT_14
+                                  .copyWith(color: COLORS.BLUE),
+                              maxLine: 4,
+                            ),
                           ),
-                          StreamBuilder<double>(
-                              stream: intoMoney,
-                              builder: (context, snapshot) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    if (intoMoney.value > 0) {
-                                      _intoMoneyController.text =
-                                          intoMoney.value.toStringAsFixed(0);
-                                    } else {
-                                      _intoMoneyController.text = '';
-                                    }
-                                    onClickIntoMoney();
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            width: 1, color: COLORS.BLUE),
-                                        borderRadius: BorderRadius.circular(7)),
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    child: WidgetText(
-                                      title: "${AppLocalizations.of(Get.context!)?.into_money}: " +
-                                          "${AppValue.format_money(intoMoney.value.toString())}",
-                                      style: AppStyle.DEFAULT_14
-                                          .copyWith(color: COLORS.BLUE),
-                                    ),
-                                  ),
-                                );
-                              }),
-                        ],
-                      )
-                    : Container()
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        if (double.parse(widget.model?.giamGia ?? '0') > 0) {
+                          _giamGiaController.text = widget.model?.giamGia ?? '';
+                        } else {
+                          _giamGiaController.text = '';
+                        }
+                        onClickGiamGia(
+                            context, isTypeGiamGIa, _giamGiaController,
+                            (isGiam, txt) {
+                          _onClickGiamGia(isGiam, txt);
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: COLORS.BLUE),
+                            borderRadius: BorderRadius.circular(7)),
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: WidgetText(
+                          title:
+                              "${AppLocalizations.of(Get.context!)?.sale}: " +
+                                  (isTypeGiamGIa
+                                      ? AppValue.format_money(giamGia)
+                                      : giamGia.trim()) +
+                                  "${isTypeGiamGIa ? '' : '%'}",
+                          style:
+                              AppStyle.DEFAULT_14.copyWith(color: COLORS.BLUE),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        if (intoMoney > 0) {
+                          _intoMoneyController.text =
+                              intoMoney.toStringAsFixed(0);
+                        } else {
+                          _intoMoneyController.text = '';
+                        }
+                        onClickIntoMoney(context, _intoMoneyController, (v) {
+                          if (double.parse(v) >= 0) {
+                            intoMoney = (double.parse(v));
+                            _getNewPrice();
+                            // widget.onPay!(intoMoney.value);
+                          } else {
+                            _intoMoneyController.text =
+                                intoMoney.toStringAsFixed(0);
+                          }
+                          widget.onReload();
+                          Get.back();
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: COLORS.BLUE),
+                            borderRadius: BorderRadius.circular(7)),
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: WidgetText(
+                          title: "${AppLocalizations.of(Get.context!)?.into_money}: " +
+                              "${AppValue.format_money(intoMoney.toStringAsFixed(0))}",
+                          style:
+                              AppStyle.DEFAULT_14.copyWith(color: COLORS.BLUE),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  if (double.parse(soLuong.value) >= 1) {
-                    setState(() {
-                      soLuong.add((double.parse(soLuong.value) - 1).toString());
-                    });
-                  } else {
-                    setState(() {
-                      soLuong.add("0");
-                    });
-                  }
-                  widget.onChangeQuantity!(
-                      double.parse(soLuong.value).toStringAsFixed(2));
-                },
-                child: WidgetContainerImage(
-                  image: ICONS.IC_MINUS_PNG,
-                  width: 20,
-                  height: 20,
-                  fit: BoxFit.contain,
-                  borderRadius: BorderRadius.circular(0),
-                  colorImage: COLORS.GRAY_IMAGE,
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  if (double.parse(soLuong.value) == 0) {
-                    _quantityController.text = '';
-                  } else {
-                    _quantityController.text =
-                        double.parse(soLuong.value).toStringAsFixed(2);
-                  }
-                  onClickSoLuong();
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  child: WidgetText(
-                    title: double.parse(soLuong.value).toStringAsFixed(2),
-                    style:
-                        AppStyle.DEFAULT_16_BOLD.copyWith(color: COLORS.BLUE),
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    soLuong.add((double.parse(soLuong.value) + 1).toString());
-                  });
-                  widget.onChangeQuantity!(
-                      double.parse(soLuong.value).toStringAsFixed(2));
-                },
-                child: WidgetContainerImage(
-                  image: ICONS.IC_PLUS_PNG,
-                  width: 20,
-                  height: 20,
-                  fit: BoxFit.contain,
-                  borderRadius: BorderRadius.circular(0),
-                  colorImage: COLORS.GRAY_IMAGE,
-                ),
-              )
-            ],
-          )
+          _widgetSoLuong(),
         ],
       ),
     );
   }
 
-  void onClickDvt() {
-    showModalBottomSheet(
-        enableDrag: false,
-        isScrollControlled: true,
-        context: context,
-        constraints:
-            BoxConstraints(maxHeight: Get.height * 0.55, minWidth: Get.width),
-        builder: (BuildContext context) {
-          return Container(
-            padding: EdgeInsets.all(16),
-            width: Get.width,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: Get.width,
-                  child: WidgetText(
-                    title: AppLocalizations.of(Get.context!)?.select,
-                    style: AppStyle.DEFAULT_16_BOLD,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Expanded(
-                    child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(
-                        widget.listDvt.length,
-                        (index) => GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                dvt = widget.listDvt[index][1];
-                              });
-                              widget.onDVT!(widget.listDvt[index][0],
-                                  widget.listDvt[index][1]);
-                              Get.back();
-                            },
-                            child: _item(widget.listDvt[index][1]))),
-                  ),
-                ))
-              ],
+  _onClickGiamGia(bool isGiam, String txt) {
+    isTypeGiamGIa = isGiam;
+    if (isTypeGiamGIa &&
+        (double.parse(txt) > double.parse(widget.data.sell_price ?? '0'))) {
+      ShowDialogCustom.showDialogBase(
+        title: AppLocalizations.of(Get.context!)?.notification,
+        content: AppLocalizations.of(Get.context!)
+                ?.you_cannot_enter_a_discount_greater_than_the_price_of_the_product ??
+            '',
+        onTap1: () {
+          Get.back();
+        },
+      );
+    } else if (!isTypeGiamGIa && (double.parse(txt) > 100)) {
+      ShowDialogCustom.showDialogBase(
+        title: AppLocalizations.of(Get.context!)?.notification,
+        content:
+            AppLocalizations.of(Get.context!)?.you_cannot_enter_more_than_100,
+        onTap1: () {
+          Get.back();
+        },
+      );
+    } else {
+      if (double.parse(txt) == 0) {
+        giamGia = '0';
+        _giamGiaController.text = giamGia;
+      } else {
+        giamGia = txt;
+      }
+
+      widget.onGiamGia!(
+        txt,
+        isTypeGiamGIa ? "đ" : "%",
+      );
+      _getIntoMoney();
+      Get.back();
+    }
+  }
+
+  _widgetSoLuong() => Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          GestureDetector(
+            onTap: () {
+              if (double.parse(soLuong) >= 1) {
+                soLuong = (double.parse(soLuong) - 1).toString();
+              } else {
+                soLuong = '0';
+              }
+              widget
+                  .onChangeQuantity!(double.parse(soLuong).toStringAsFixed(2));
+              _getIntoMoney();
+            },
+            child: WidgetContainerImage(
+              image: ICONS.IC_MINUS_PNG,
+              width: 20,
+              height: 20,
+              fit: BoxFit.contain,
+              borderRadius: BorderRadius.circular(0),
+              colorImage: COLORS.GRAY_IMAGE,
             ),
-          );
-        });
-  }
+          ),
+          GestureDetector(
+            onTap: () {
+              if (double.parse(soLuong) == 0) {
+                _soLuongController.text = '';
+              } else {
+                _soLuongController.text =
+                    double.parse(soLuong).toStringAsFixed(2);
+              }
+              onClickSoLuong(context, _soLuongController, (v) {
+                String text = v; // Đoạn văn bản cần kiểm tra
+                double number = 0;
+                try {
+                  number = double.parse(text);
+                } catch (e) {
+                  if (text.split(',').length <= 2) {
+                    number = double.parse(text.replaceAll(",", "."));
+                  }
+                  //khong phai kieu double
+                }
 
-  Widget _item(String data) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 8),
-      width: Get.width,
-      decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(width: 1, color: COLORS.GREY_400))),
-      child: WidgetText(
-        title: data.toString(),
-        style: AppStyle.DEFAULT_16.copyWith(color: COLORS.TEXT_BLUE_BOLD),
-      ),
-    );
-  }
-
-  void onClickVat() {
-    showModalBottomSheet(
-        enableDrag: false,
-        isScrollControlled: true,
-        context: context,
-        constraints:
-            BoxConstraints(maxHeight: Get.height * 0.55, minWidth: Get.width),
-        builder: (BuildContext context) {
-          return Container(
-            padding: EdgeInsets.all(16),
-            width: Get.width,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: Get.width,
-                  child: WidgetText(
-                    title: AppLocalizations.of(Get.context!)?.select ?? '',
-                    style: AppStyle.DEFAULT_16_BOLD,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Expanded(
-                    child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(
-                        widget.listVat.length,
-                        (index) => GestureDetector(
-                            onTap: () {
-                              vat = widget.listVat[index][1];
-                              widget.onVAT!(widget.listVat[index][0],
-                                  widget.listVat[index][1]);
-                              _getIntoMoney();
-                              setState(() {});
-                              Get.back();
-                            },
-                            child: _item(widget.listVat[index][1]))),
-                  ),
-                ))
-              ],
+                if (number > 0) {
+                  soLuong = number.toString();
+                  widget.onChangeQuantity!(
+                      number.toStringAsFixed(2)); // change data quantity
+                  _getIntoMoney();
+                  Get.back();
+                }
+              });
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: WidgetText(
+                title: double.parse(soLuong).toStringAsFixed(2),
+                style: AppStyle.DEFAULT_16_BOLD.copyWith(color: COLORS.BLUE),
+              ),
             ),
-          );
-        });
-  }
-
-  void onClickGiamGia() {
-    showModalBottomSheet(
-        enableDrag: false,
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (context, setState1) {
-              return Container(
-                width: Get.width,
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-                    top: 16,
-                    left: 16,
-                    right: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: Get.width,
-                      child: WidgetText(
-                        title:
-                            AppLocalizations.of(Get.context!)?.enter_price_sale,
-                        style: AppStyle.DEFAULT_16_BOLD,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Container(
-                          decoration: BoxDecoration(
-                              border:
-                                  Border.all(width: 1, color: COLORS.GREY_400),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: TextField(
-                            controller: _saleController,
-                            decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 10),
-                                border: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                errorBorder: InputBorder.none),
-                            keyboardType:
-                                TextInputType.numberWithOptions(decimal: true),
-                          ),
-                        )),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            typeGiamGia = !typeGiamGia;
-                            setState1(() {});
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 3),
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 1, color: COLORS.BLUE),
-                                borderRadius: BorderRadius.circular(10)),
-                            width: 45,
-                            child: WidgetText(
-                              textAlign: TextAlign.center,
-                              title: typeGiamGia ? "đ" : "%",
-                              style: AppStyle.DEFAULT_14,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            if (typeGiamGia &&
-                                (double.parse(_saleController.text) >
-                                    double.parse(
-                                        widget.data.sell_price ?? '0'))) {
-                              ShowDialogCustom.showDialogBase(
-                                title: AppLocalizations.of(Get.context!)
-                                    ?.notification,
-                                content: AppLocalizations.of(Get.context!)
-                                        ?.you_cannot_enter_a_discount_greater_than_the_price_of_the_product ??
-                                    '',
-                                onTap1: () {
-                                  Get.back();
-                                },
-                              );
-                            } else if (!typeGiamGia &&
-                                (double.parse(_saleController.text) > 100)) {
-                              ShowDialogCustom.showDialogBase(
-                                title: AppLocalizations.of(Get.context!)
-                                    ?.notification,
-                                content: AppLocalizations.of(Get.context!)
-                                    ?.you_cannot_enter_more_than_100,
-                                onTap1: () {
-                                  Get.back();
-                                },
-                              );
-                            } else {
-                              if (double.parse(_saleController.text) == 0) {
-                                giamGia = '0';
-                                _saleController.text = giamGia;
-                              } else {
-                                giamGia = _saleController.text;
-                              }
-
-                              widget.onGiamGia!(
-                                _saleController.text,
-                                typeGiamGia ? "đ" : "%",
-                              );
-                              _getIntoMoney();
-                              setState(() {});
-                              Get.back();
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: COLORS.PRIMARY_COLOR,
-                                borderRadius: BorderRadius.circular(30)),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
-                            child: WidgetText(
-                              title: AppLocalizations.of(Get.context!)?.enter,
-                              style: AppStyle.DEFAULT_16,
-                            ),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              );
+          ),
+          GestureDetector(
+            onTap: () {
+              soLuong = (double.parse(soLuong) + 1).toString();
+              widget
+                  .onChangeQuantity!(double.parse(soLuong).toStringAsFixed(2));
+              _getIntoMoney();
             },
-          );
-        });
-  }
-
-  void onClickSoLuong() {
-    showModalBottomSheet(
-        enableDrag: false,
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (context, setState1) {
-              return Container(
-                width: Get.width,
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-                    top: 16,
-                    left: 16,
-                    right: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: Get.width,
-                      child: WidgetText(
-                        title: AppLocalizations.of(Get.context!)
-                            ?.enter_the_quantity,
-                        style: AppStyle.DEFAULT_16_BOLD,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Container(
-                          decoration: BoxDecoration(
-                              border:
-                                  Border.all(width: 1, color: COLORS.GREY_400),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: TextFormField(
-                            controller: _quantityController,
-                            decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 10),
-                                border: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                errorBorder: InputBorder.none),
-                            keyboardType: TextInputType.numberWithOptions(
-                                decimal: true, signed: false),
-                          ),
-                        )),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            String text = _quantityController
-                                .text; // Đoạn văn bản cần kiểm tra
-                            double number = 0;
-                            try {
-                              number = double.parse(text);
-                            } catch (e) {
-                              if (text.split(',').length <= 2) {
-                                number =
-                                    double.parse(text.replaceAll(",", "."));
-                              }
-                              //khong phai kieu double
-                            }
-
-                            if (number > 0) {
-                              soLuong.add(number.toString());
-                              widget.onChangeQuantity!(number
-                                  .toStringAsFixed(2)); // change data quantity
-                              setState(() {});
-                              Get.back();
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: COLORS.PRIMARY_COLOR,
-                                borderRadius: BorderRadius.circular(30)),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
-                            child: WidgetText(
-                              title: AppLocalizations.of(Get.context!)?.enter,
-                              style: AppStyle.DEFAULT_16,
-                            ),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              );
-            },
-          );
-        });
-  }
-
-  void onClickPrice() {
-    showModalBottomSheet(
-        enableDrag: false,
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (context, setState1) {
-              return Container(
-                width: Get.width,
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-                    top: 16,
-                    left: 16,
-                    right: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: Get.width,
-                      child: WidgetText(
-                        title: AppLocalizations.of(Get.context!)?.enter_price,
-                        style: AppStyle.DEFAULT_16_BOLD,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Container(
-                          decoration: BoxDecoration(
-                              border:
-                                  Border.all(width: 1, color: COLORS.GREY_400),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: TextField(
-                            controller: _priceController,
-                            decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 10),
-                                border: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                errorBorder: InputBorder.none),
-                            keyboardType: TextInputType.numberWithOptions(),
-                          ),
-                        )),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            if (_priceController.text != '') {
-                              price = _priceController.text;
-                              widget.onPrice!(price);
-                              _getIntoMoney();
-                              setState(() {});
-                            } else {
-                              _priceController.text = price;
-                            }
-                            Get.back();
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: COLORS.PRIMARY_COLOR,
-                                borderRadius: BorderRadius.circular(30)),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
-                            child: WidgetText(
-                              title: AppLocalizations.of(Get.context!)?.enter,
-                              style: AppStyle.DEFAULT_16,
-                            ),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              );
-            },
-          );
-        });
-  }
-
-  void onClickIntoMoney() {
-    showModalBottomSheet(
-        enableDrag: false,
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (context, setState1) {
-              return Container(
-                width: Get.width,
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-                  top: 16,
-                  left: 16,
-                  right: 16,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: Get.width,
-                      child: WidgetText(
-                        title: '${AppLocalizations.of(Get.context!)?.enter} ' +
-                            '${AppLocalizations.of(Get.context!)?.into_money}'
-                                .toLowerCase(),
-                        style: AppStyle.DEFAULT_16_BOLD,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Container(
-                          decoration: BoxDecoration(
-                              border:
-                                  Border.all(width: 1, color: COLORS.GREY_400),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: TextField(
-                            controller: _intoMoneyController,
-                            decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 10),
-                                border: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                errorBorder: InputBorder.none),
-                            keyboardType: TextInputType.numberWithOptions(),
-                          ),
-                        )),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            if (double.parse(_intoMoneyController.text) >= 0) {
-                              intoMoney
-                                  .add(double.parse(_intoMoneyController.text));
-                              _getIntoMoney(newPrice: true);
-                              // widget.onPay!(intoMoney.value);
-                            } else {
-                              _intoMoneyController.text =
-                                  intoMoney.value.toString();
-                            }
-                            Get.back();
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: COLORS.PRIMARY_COLOR,
-                                borderRadius: BorderRadius.circular(30)),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
-                            child: WidgetText(
-                              title: AppLocalizations.of(Get.context!)?.enter,
-                              style: AppStyle.DEFAULT_16,
-                            ),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              );
-            },
-          );
-        });
-  }
+            child: WidgetContainerImage(
+              image: ICONS.IC_PLUS_PNG,
+              width: 20,
+              height: 20,
+              fit: BoxFit.contain,
+              borderRadius: BorderRadius.circular(0),
+              colorImage: COLORS.GRAY_IMAGE,
+            ),
+          )
+        ],
+      );
 }

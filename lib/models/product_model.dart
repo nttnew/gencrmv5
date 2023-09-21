@@ -8,6 +8,7 @@ class ProductModel {
   String nameDvt;
   String nameVat;
   String typeGiamGia;
+  double? intoMoney;
 
   ProductModel(
     this.id,
@@ -16,6 +17,7 @@ class ProductModel {
     this.giamGia,
     this.nameDvt,
     this.nameVat,
-    this.typeGiamGia,
-  );
+    this.typeGiamGia, {
+    this.intoMoney,
+  });
 }

@@ -100,6 +100,9 @@ class _ProductContractState extends State<ProductContract> {
             onPrice: (price) {
               productData[index].item.sell_price = price;
             },
+            onIntoMoney: (intoMoney) {
+              productData[index].intoMoney = intoMoney;
+            },
             model: productData[index],
             listDvt: listDVT,
             listVat: listVAT,

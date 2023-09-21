@@ -92,28 +92,7 @@ class _AddServiceVoucherStepTwoScreenState
 
   void reload() {
     for (int i = 0; i < _bloc.listProduct.length; i++) {
-      if (_bloc.listProduct[i].soLuong == 0) {
-        _bloc.listProduct.removeAt(i);
-        i--;
-      } else {
-        if (_bloc.listProduct[i].typeGiamGia == '%') {
-          _bloc.total +=
-              (double.parse(_bloc.listProduct[i].item.sell_price ?? '0') *
-                      _bloc.listProduct[i].soLuong) *
-                  ((100 -
-                          double.parse(_bloc.listProduct[i].giamGia == ""
-                              ? "0"
-                              : _bloc.listProduct[i].giamGia)) /
-                      100);
-        } else {
-          _bloc.total +=
-              (double.parse(_bloc.listProduct[i].item.sell_price ?? '0') *
-                      _bloc.listProduct[i].soLuong) -
-                  double.parse(_bloc.listProduct[i].giamGia == ""
-                      ? "0"
-                      : _bloc.listProduct[i].giamGia);
-        }
-      }
+      _bloc.total += _bloc.listProduct[i].intoMoney ?? 0;
     }
     TotalBloc.of(context).add(InitTotalEvent(_bloc.total));
   }

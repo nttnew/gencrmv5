@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../storages/share_local.dart';
 import '../../../../../widgets/widget_text.dart';
@@ -68,7 +69,7 @@ class _ItemNoteState extends State<ItemNote> {
                 !isOwner ? CrossAxisAlignment.start : CrossAxisAlignment.end,
             children: [
               Container(
-                padding: EdgeInsets.all(15),
+                padding: EdgeInsets.symmetric(vertical: 15),
                 decoration: BoxDecoration(
                   color: isOwner ? COLORS.SECONDS_COLOR : COLORS.WHITE,
                   borderRadius: BorderRadius.circular(12),
@@ -83,31 +84,42 @@ class _ItemNoteState extends State<ItemNote> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    WidgetText(
-                      title: widget.data.uname ?? '',
-                      style: AppStyle.DEFAULT_14.copyWith(
-                        fontWeight: FontWeight.w600,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 15,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          WidgetText(
+                            title: widget.data.uname ?? '',
+                            style: AppStyle.DEFAULT_14.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          WidgetText(
+                            title: widget.data.passedtime ?? '',
+                            style: AppStyle.DEFAULT_14
+                                .copyWith(color: Color(0xff838A91)),
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                        ],
                       ),
                     ),
-                    WidgetText(
-                      title: widget.data.passedtime ?? '',
-                      style: AppStyle.DEFAULT_14
-                          .copyWith(color: Color(0xff838A91)),
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: double.maxFinite,
-                        maxWidth: MediaQuery.of(context).size.width - 130,
-                        minHeight: 0,
-                        minWidth: 0,
-                      ),
-                      child: WidgetText(
-                        title: widget.data.content ?? '',
-                        style: AppStyle.DEFAULT_14.copyWith(
-                          fontWeight: FontWeight.w500,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: double.maxFinite,
+                          maxWidth: MediaQuery.of(context).size.width - 130,
+                          minHeight: 0,
+                          minWidth: 0,
+                        ),
+                        child: Html(
+                          data: widget.data.content ?? '',
+                          shrinkWrap: true,
                         ),
                       ),
                     ),

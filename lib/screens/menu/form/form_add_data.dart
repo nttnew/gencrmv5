@@ -418,25 +418,7 @@ class _FormAddDataState extends State<FormAddData> {
   reload() {
     total = 0;
     for (int i = 0; i < listProduct.length; i++) {
-      if (listProduct[i].soLuong == 0) {
-        listProduct.removeAt(i);
-        i--;
-      } else {
-        if (listProduct[i].typeGiamGia == '%') {
-          total += (double.parse(listProduct[i].item.sell_price ?? '0') *
-                  listProduct[i].soLuong) *
-              ((100 -
-                      double.parse(listProduct[i].giamGia == ''
-                          ? '0'
-                          : listProduct[i].giamGia)) /
-                  100);
-        } else {
-          total += (double.parse(listProduct[i].item.sell_price ?? '0') *
-                  listProduct[i].soLuong) -
-              double.parse(
-                  listProduct[i].giamGia == '' ? '0' : listProduct[i].giamGia);
-        }
-      }
+      total += listProduct[i].intoMoney ?? 0;
     }
     TotalBloc.of(context).getPaid();
     TotalBloc.of(context).add(InitTotalEvent(total));

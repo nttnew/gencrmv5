@@ -186,6 +186,9 @@ class _ListProductState extends State<ListProduct> {
                                 onPrice: (price) {
                                   listUI[index].item.sell_price = price;
                                 },
+                                onIntoMoney: (intoMoney) {
+                                  listUI[index].intoMoney = intoMoney;
+                                },
                                 model: listUI[index],
                                 onReload: () {
                                   reload();
