@@ -116,11 +116,15 @@ class AppValue {
   }
 
   static format_money(String money) {
+    String result = '0';
     if (money == '') {
       return '';
     }
     final currencyFormatter = NumberFormat('#,##0', 'ID');
-    return currencyFormatter.format(double.parse(money)) + 'đ';
+    try {
+      result = currencyFormatter.format(double.parse(money));
+    } catch (e) {}
+    return result + 'đ';
   }
 
   static bool checkTypeImage(String fileExt) {

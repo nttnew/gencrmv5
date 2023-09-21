@@ -73,42 +73,41 @@ class _ProductContractState extends State<ProductContract> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        productData.length > 0
-            ? Column(
-                children: List.generate(
-                    productData.length,
-                    (index) => ItemProduct(
-                          onDelete: removeProduct,
-                          canDelete: widget.canDelete,
-                          neverHidden: widget.neverHidden,
-                          data: productData[index].item,
-                          onChangeQuantity: (soLuong) {
-                            productData[index].soLuong = double.parse(soLuong);
-                          },
-                          onDVT: (id, name) {
-                            productData[index].nameDvt = name;
-                            productData[index].item.dvt = id;
-                          },
-                          onVAT: (id, name) {
-                            productData[index].nameVat = name;
-                            productData[index].item.vat = id;
-                          },
-                          onGiamGia: (so, type) {
-                            productData[index].giamGia = so;
-                            productData[index].typeGiamGia = type;
-                          },
-                          onPrice: (price) {
-                            productData[index].item.sell_price = price;
-                          },
-                          model: productData[index],
-                          listDvt: listDVT,
-                          listVat: listVAT,
-                          onReload: () {
-                            reload();
-                          },
-                        )),
-              )
-            : Container(),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: productData.length,
+          itemBuilder: (context, index) => ItemProduct(
+            onDelete: removeProduct,
+            canDelete: widget.canDelete,
+            neverHidden: widget.neverHidden,
+            data: productData[index].item,
+            onChangeQuantity: (soLuong) {
+              productData[index].soLuong = double.parse(soLuong);
+            },
+            onDVT: (id, name) {
+              productData[index].nameDvt = name;
+              productData[index].item.dvt = id;
+            },
+            onVAT: (id, name) {
+              productData[index].nameVat = name;
+              productData[index].item.vat = id;
+            },
+            onGiamGia: (so, type) {
+              productData[index].giamGia = so;
+              productData[index].typeGiamGia = type;
+            },
+            onPrice: (price) {
+              productData[index].item.sell_price = price;
+            },
+            model: productData[index],
+            listDvt: listDVT,
+            listVat: listVAT,
+            onReload: () {
+              reload();
+            },
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: Wrap(
@@ -168,8 +167,11 @@ class _ProductContractState extends State<ProductContract> {
                         );
                       } else {
                         AppNavigator.navigateAddProduct(
-                            widget.addProduct, reload, productData,
-                            group: item.field_url);
+                          widget.addProduct,
+                          reload,
+                          productData,
+                          group: item.field_url,
+                        );
                       }
                     },
                         color: item.field_type == 'service'

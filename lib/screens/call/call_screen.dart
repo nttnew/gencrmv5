@@ -57,7 +57,8 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     handleCall();
-    pitelCall.addListener(this);
+    pitelCall.addListener(this);//
+    // pitelCall.enableSpeakerphone(true);
     if (voiceonly) {
       _initRenderers();
     }

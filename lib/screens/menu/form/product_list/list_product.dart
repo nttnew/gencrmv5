@@ -78,7 +78,7 @@ class _ListProductState extends State<ListProduct> {
     for (int i = 0; i < listUI.length; i++) {
       int indexS = listSelected.indexWhere(
         (element) =>
-            element.id == state.listProduct[i].product_id! &&
+            element.id == listUI[i].id &&
             (element.item.combo_id == '' ||
                 element.item.combo_id == null ||
                 element.item.ten_combo == '' ||

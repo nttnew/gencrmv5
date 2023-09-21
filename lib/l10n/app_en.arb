@@ -186,5 +186,7 @@
 "turn_on_login_with_finger_print_faceid":"Bật đăng nhập với vân tay, khuôn mặt",
 "you_did_not_enter_a_number_phone":"Bạn chưa nhập số điện thoại",
 "enter_the_quantity":"Enter the quantity",
-"search":"Search"
+"search":"Search",
+"into_money":"Into money",
+"count_product_validate":"Count must be greater than 0"
 }

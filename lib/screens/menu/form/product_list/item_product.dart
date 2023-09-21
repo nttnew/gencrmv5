@@ -45,6 +45,9 @@ class ItemProduct extends StatefulWidget {
 
 class _ItemProductState extends State<ItemProduct> {
   String price = '';
+  bool typeGiamGia = true;
+  bool typeGiamGiaDefault = true;
+  BehaviorSubject<double> intoMoney = BehaviorSubject.seeded(0);
   late final BehaviorSubject<String> soLuong;
   String dvt = '';
   String vat = '';
@@ -52,8 +55,7 @@ class _ItemProductState extends State<ItemProduct> {
   TextEditingController _saleController = TextEditingController();
   TextEditingController _priceController = TextEditingController();
   TextEditingController _quantityController = TextEditingController();
-
-  bool typeGiamGia = true;
+  TextEditingController _intoMoneyController = TextEditingController();
 
   @override
   void initState() {
@@ -84,24 +86,86 @@ class _ItemProductState extends State<ItemProduct> {
       widget.onVAT!(widget.data.vat, vat);
     }
     soLuong.listen((value) {
+      _getIntoMoney();
       widget.onReload();
     });
+    _getIntoMoney();
     super.initState();
   }
 
   @override
   void didUpdateWidget(covariant ItemProduct oldWidget) {
+    final typeWidget = (widget.model!.typeGiamGia == "%" ? false : true);
     if (oldWidget != widget) {
-      setState(() {
-        soLuong.add((widget.model?.soLuong ?? 0).toString());
-        price = widget.model?.item.sell_price ?? '';
-        dvt = widget.model!.nameDvt;
-        vat = widget.model!.nameVat;
-        giamGia = widget.model!.giamGia;
-        typeGiamGia = widget.model!.typeGiamGia == "%" ? false : true;
-      });
+      soLuong.add((widget.model?.soLuong ?? 0).toString());
+      price = widget.model?.item.sell_price ?? '';
+      dvt = widget.model!.nameDvt;
+      vat = widget.model!.nameVat;
+      giamGia = widget.model!.giamGia;
+      _getIntoMoney();
+      if (typeGiamGiaDefault != typeWidget) {
+        typeGiamGiaDefault = typeWidget;
+        typeGiamGia = typeWidget;
+      }
     }
     super.didUpdateWidget(oldWidget);
+  }
+
+  void _getIntoMoney({bool newPrice = false}) {
+    double priceProduct = 0;
+    double vatProduct = 0;
+    double vatProductNumber = 0;
+    double discount = 0;
+    double discountNumber = 0;
+    double countProduct = 0;
+    try {
+      if (double.parse(price) > 0) priceProduct = double.parse(price);
+
+      if (double.parse(giamGia) > 0) discountNumber = double.parse(giamGia);
+
+      if (!typeGiamGia) {
+        discount = priceProduct * discountNumber / 100;
+      } else {
+        discount = discountNumber;
+      }
+
+      if (double.parse(vat.split('%').first) > 0) {
+        vatProductNumber = double.parse(vat.split('%').first);
+        vatProduct = vatProductNumber * (priceProduct - discount) / 100;
+      }
+
+      if (soLuong.value.isNotEmpty) countProduct = double.parse(soLuong.value);
+    } catch (e) {}
+
+    if (price != '' && !newPrice) {
+      double money = 0;
+      money = (priceProduct + vatProduct - discount) * countProduct;
+      intoMoney.add(money);
+    } else if (newPrice) {
+      if (countProduct > 0) {
+        double newPrice = 0;
+        double oneProduct = intoMoney.value / countProduct;
+        double discount = 0;
+        double vat = 0;
+        if (!typeGiamGia) {
+          discount = oneProduct - oneProduct * (100 - discountNumber) / 100;
+        } else {
+          discount = discountNumber;
+        }
+        if (vatProductNumber > 0) {
+          vat = (oneProduct - discount) -
+              (oneProduct - discount) * (100 - vatProductNumber) / 100;
+        }
+        newPrice = oneProduct - vat + discount;
+
+        price = newPrice.toStringAsFixed(0);
+        _priceController.text = price;
+        widget.onPrice!(price);
+        setState(() {});
+      } else {
+        intoMoney.add(0);
+      }
+    }
   }
 
   @override
@@ -255,8 +319,13 @@ class _ItemProductState extends State<ItemProduct> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              _saleController.text =
-                                  widget.model?.giamGia ?? '';
+                              if (double.parse(widget.model?.giamGia ?? '0') >
+                                  0) {
+                                _saleController.text =
+                                    widget.model?.giamGia ?? '';
+                              } else {
+                                _saleController.text = '';
+                              }
                               onClickGiamGia();
                             },
                             child: Container(
@@ -268,13 +337,47 @@ class _ItemProductState extends State<ItemProduct> {
                               child: WidgetText(
                                 title:
                                     "${AppLocalizations.of(Get.context!)?.sale}: " +
-                                        giamGia.trim() +
-                                        "${typeGiamGia == true ? 'vnd' : '%'}",
+                                        (typeGiamGia
+                                            ? AppValue.format_money(giamGia)
+                                            : giamGia.trim()) +
+                                        "${typeGiamGia ? '' : '%'}",
                                 style: AppStyle.DEFAULT_14
                                     .copyWith(color: COLORS.BLUE),
                               ),
                             ),
                           ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          StreamBuilder<double>(
+                              stream: intoMoney,
+                              builder: (context, snapshot) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    if (intoMoney.value > 0) {
+                                      _intoMoneyController.text =
+                                          intoMoney.value.toStringAsFixed(0);
+                                    } else {
+                                      _intoMoneyController.text = '';
+                                    }
+                                    onClickIntoMoney();
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: 1, color: COLORS.BLUE),
+                                        borderRadius: BorderRadius.circular(7)),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    child: WidgetText(
+                                      title: "${AppLocalizations.of(Get.context!)?.into_money}: " +
+                                          "${AppValue.format_money(intoMoney.value.toString())}",
+                                      style: AppStyle.DEFAULT_14
+                                          .copyWith(color: COLORS.BLUE),
+                                    ),
+                                  ),
+                                );
+                              }),
                         ],
                       )
                     : Container()
@@ -442,6 +545,7 @@ class _ItemProductState extends State<ItemProduct> {
                               vat = widget.listVat[index][1];
                               widget.onVAT!(widget.listVat[index][0],
                                   widget.listVat[index][1]);
+                              _getIntoMoney();
                               setState(() {});
                               Get.back();
                             },
@@ -511,9 +615,8 @@ class _ItemProductState extends State<ItemProduct> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            setState1(() {
-                              typeGiamGia = !typeGiamGia;
-                            });
+                            typeGiamGia = !typeGiamGia;
+                            setState1(() {});
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
@@ -525,7 +628,7 @@ class _ItemProductState extends State<ItemProduct> {
                             width: 45,
                             child: WidgetText(
                               textAlign: TextAlign.center,
-                              title: typeGiamGia ? "VNĐ" : "%",
+                              title: typeGiamGia ? "đ" : "%",
                               style: AppStyle.DEFAULT_14,
                             ),
                           ),
@@ -539,7 +642,6 @@ class _ItemProductState extends State<ItemProduct> {
                                 (double.parse(_saleController.text) >
                                     double.parse(
                                         widget.data.sell_price ?? '0'))) {
-                              _saleController.text = widget.data.sell_price!;
                               ShowDialogCustom.showDialogBase(
                                 title: AppLocalizations.of(Get.context!)
                                     ?.notification,
@@ -564,18 +666,16 @@ class _ItemProductState extends State<ItemProduct> {
                             } else {
                               if (double.parse(_saleController.text) == 0) {
                                 giamGia = '0';
-                                _saleController.text = '0';
+                                _saleController.text = giamGia;
                               } else {
-                                giamGia = typeGiamGia
-                                    ? AppValue.APP_MONEY_FORMAT.format(
-                                        double.parse(_saleController.text))
-                                    : _saleController.text;
+                                giamGia = _saleController.text;
                               }
 
                               widget.onGiamGia!(
                                 _saleController.text,
-                                typeGiamGia ? "vnd" : "%",
+                                typeGiamGia ? "đ" : "%",
                               );
+                              _getIntoMoney();
                               setState(() {});
                               Get.back();
                             }
@@ -760,9 +860,101 @@ class _ItemProductState extends State<ItemProduct> {
                             if (_priceController.text != '') {
                               price = _priceController.text;
                               widget.onPrice!(price);
+                              _getIntoMoney();
                               setState(() {});
                             } else {
                               _priceController.text = price;
+                            }
+                            Get.back();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: COLORS.PRIMARY_COLOR,
+                                borderRadius: BorderRadius.circular(30)),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            child: WidgetText(
+                              title: AppLocalizations.of(Get.context!)?.enter,
+                              style: AppStyle.DEFAULT_16,
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              );
+            },
+          );
+        });
+  }
+
+  void onClickIntoMoney() {
+    showModalBottomSheet(
+        enableDrag: false,
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: (context, setState1) {
+              return Container(
+                width: Get.width,
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+                  top: 16,
+                  left: 16,
+                  right: 16,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: Get.width,
+                      child: WidgetText(
+                        title: '${AppLocalizations.of(Get.context!)?.enter} ' +
+                            '${AppLocalizations.of(Get.context!)?.into_money}'
+                                .toLowerCase(),
+                        style: AppStyle.DEFAULT_16_BOLD,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Container(
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(width: 1, color: COLORS.GREY_400),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: TextField(
+                            controller: _intoMoneyController,
+                            decoration: InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 10),
+                                border: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                errorBorder: InputBorder.none),
+                            keyboardType: TextInputType.numberWithOptions(),
+                          ),
+                        )),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            if (double.parse(_intoMoneyController.text) >= 0) {
+                              intoMoney
+                                  .add(double.parse(_intoMoneyController.text));
+                              _getIntoMoney(newPrice: true);
+                              // widget.onPay!(intoMoney.value);
+                            } else {
+                              _intoMoneyController.text =
+                                  intoMoney.value.toString();
                             }
                             Get.back();
                           },
