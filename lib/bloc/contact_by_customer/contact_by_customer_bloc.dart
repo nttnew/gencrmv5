@@ -18,7 +18,7 @@ class ContactByCustomerBloc
   List<CustomerData>? listCus;
   BehaviorSubject<List<List<dynamic>>> listXe = BehaviorSubject.seeded([]);
   BehaviorSubject<String> chiTietXe = BehaviorSubject.seeded('');
-  Map<String,dynamic> dataCarNew = {};
+  Map<String, dynamic> dataCarNew = {};
 
   ContactByCustomerBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -28,7 +28,7 @@ class ContactByCustomerBloc
   Stream<ContactByCustomerState> mapEventToState(
       ContactByCustomerEvent event) async* {
     if (event is InitGetContactByCustomerrEvent) {
-      await getXe(event.id);
+      await getXe(event.id, isAddCarNew: event.isAddNewCar);
       yield* _getContactByCustomer(customer_id: event.id);
     }
     if (event is InitGetCustomerContractEvent) {
@@ -58,17 +58,18 @@ class ContactByCustomerBloc
     }
   }
 
-  Future<void> getXe(String id) async {
+  Future<void> getXe(String id, {isAddCarNew = false}) async {
     final res = await userRepository.getXe(id: id);
     if ((res.code == BASE_URL.SUCCESS) || (res.code == BASE_URL.SUCCESS_200)) {
       listXe.add(res.data?.products ?? []);
     }
-    listXe.add([
-      ...[
-        [ADD_NEW_CAR, ADD_NEW_CAR, '', '']
-      ],
-      ...listXe.value
-    ]);
+    if (isAddCarNew)
+      listXe.add([
+        ...[
+          [ADD_NEW_CAR, ADD_NEW_CAR, '', '']
+        ],
+        ...listXe.value
+      ]);
   }
 
   Stream<ContactByCustomerState> _getContactByCustomer(

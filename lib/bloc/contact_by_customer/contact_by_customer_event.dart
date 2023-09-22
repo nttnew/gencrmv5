@@ -8,8 +8,12 @@ abstract class ContactByCustomerEvent extends Equatable {
 
 class InitGetContactByCustomerrEvent extends ContactByCustomerEvent {
   final String id;
+  final bool isAddNewCar;
 
-  InitGetContactByCustomerrEvent(this.id);
+  InitGetContactByCustomerrEvent(
+    this.id, {
+    this.isAddNewCar = false,
+  });
 }
 
 class InitGetCustomerContractEvent extends ContactByCustomerEvent {

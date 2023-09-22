@@ -375,8 +375,11 @@ class _FormAddContractState extends State<FormAddContract> {
                                   ContactByCustomerBloc.of(context)
                                       .chiTietXe
                                       .add('');
-                                  ContactByCustomerBloc.of(context).add(
-                                      InitGetContactByCustomerrEvent(data));
+                                  ContactByCustomerBloc.of(context)
+                                      .add(InitGetContactByCustomerrEvent(
+                                    data,
+                                    isAddNewCar: true,
+                                  ));
                                   PhoneBloc.of(context)
                                       .add(InitPhoneEvent(data));
                                 },
@@ -424,8 +427,11 @@ class _FormAddContractState extends State<FormAddContract> {
                                       ContactByCustomerBloc.of(context)
                                           .chiTietXe
                                           .add('');
-                                      ContactByCustomerBloc.of(context).add(
-                                          InitGetContactByCustomerrEvent(data));
+                                      ContactByCustomerBloc.of(context)
+                                          .add(InitGetContactByCustomerrEvent(
+                                        data,
+                                        isAddNewCar: true,
+                                      ));
                                       PhoneBloc.of(context)
                                           .add(InitPhoneEvent(data));
                                     },
@@ -558,7 +564,9 @@ class _FormAddContractState extends State<FormAddContract> {
                                                 .add('');
                                             ContactByCustomerBloc.of(context).add(
                                                 InitGetContactByCustomerrEvent(
-                                                    data));
+                                              data,
+                                              isAddNewCar: true,
+                                            ));
                                             PhoneBloc.of(context)
                                                 .add(InitPhoneEvent(data));
                                           }
