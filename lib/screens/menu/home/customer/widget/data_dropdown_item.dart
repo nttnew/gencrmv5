@@ -158,10 +158,13 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                                               MediaQuery.of(context).size.width,
                                           child: WidgetText(
                                             title: data[index]['label'] ?? '',
-                                            style: (data[index]['value'] ==
+                                            style: (data[index]
+                                                            ['value'] ==
                                                         CA_NHAN ||
                                                     data[index]['value'] ==
-                                                        TO_CHUC)
+                                                        TO_CHUC ||
+                                                    data[index]['value'] ==
+                                                        ADD_NEW_CAR)
                                                 ? AppStyle.DEFAULT_18.copyWith(
                                                     color: COLORS.RED,
                                                     fontWeight: FontWeight.w500)

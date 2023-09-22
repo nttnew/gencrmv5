@@ -41,6 +41,7 @@ class AppNavigator {
     bool isCheckIn = false,
     String typeCheckIn = TypeCheckIn.CHECK_IN,
     bool isResultData = false,
+    bool isGetData = false, //getdata cho khsp
     Function? onRefresh,
   }) async =>
       await Get.toNamed(ROUTE_NAMES.FORM_ADD, arguments: [
@@ -49,7 +50,8 @@ class AppNavigator {
         id,
         isCheckIn,
         typeCheckIn,
-        isResultData
+        isResultData,
+        isGetData,
       ])?.whenComplete(() {
         if (onRefresh != null) onRefresh();
       });
@@ -61,9 +63,17 @@ class AppNavigator {
     bool isCheckIn = false,
     String typeCheckIn = TypeCheckIn.CHECK_IN,
     bool isResultData = false,
+    bool isGetData = false, //getdata cho khsp
   }) async =>
-      await Get.toNamed(ROUTE_NAMES.FORM_ADD_CUSTOMER_GROUP,
-          arguments: [title, type, id, isCheckIn, typeCheckIn, isResultData]);
+      await Get.toNamed(ROUTE_NAMES.FORM_ADD_CUSTOMER_GROUP, arguments: [
+        title,
+        type,
+        id,
+        isCheckIn,
+        typeCheckIn,
+        isResultData,
+        isGetData,
+      ]);
 
   static navigateAddWork() async => await Get.toNamed(ROUTE_NAMES.ADD_WORK);
 

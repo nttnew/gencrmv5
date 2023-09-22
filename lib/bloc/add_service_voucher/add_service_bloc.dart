@@ -324,6 +324,33 @@ class ServiceVoucherBloc
     LoadingApi().popLoading();
   }
 
+  Future<bool> checkHasCar(String bienSoXe) async {
+    LoadingApi().pushLoading();
+    try {
+      final response = await userRepository.postAddServiceVoucher('', bienSoXe);
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        LoadingApi().popLoading();
+        final list = response.data?.data ?? [];
+        for (final value in list) {
+          for (final valueChild in value.data ?? []) {
+            if (valueChild.fieldName == 'hdsan_pham_kh') {
+              return valueChild.fieldDatasource != [] &&
+                  valueChild.fieldDatasource != null;
+            }
+          }
+        }
+      } else {
+        LoadingApi().popLoading();
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      throw e;
+    }
+    LoadingApi().popLoading();
+    return false;
+  }
+
   Stream<ServiceVoucherState> _postAddServiceVoucher(
       String sdt, String bienSoXe) async* {
     LoadingApi().pushLoading();

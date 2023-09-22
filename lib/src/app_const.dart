@@ -48,6 +48,7 @@ const int EDIT_CUSTOMER = 1;
 const LOADING = 'loading';
 String CA_NHAN = 'ca_nhan';
 String TO_CHUC = 'to_chuc';
+String ADD_NEW_CAR = 'Thêm';
 
 class TypeCheckIn {
   static const CHECK_IN = 'checkin';

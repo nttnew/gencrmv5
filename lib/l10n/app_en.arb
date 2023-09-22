@@ -188,5 +188,6 @@
 "enter_the_quantity":"Enter the quantity",
 "search":"Search",
 "into_money":"Into money",
-"count_product_validate":"Count must be greater than 0"
+"count_product_validate":"Count must be greater than 0",
+"already_exist":"already exist"
 }

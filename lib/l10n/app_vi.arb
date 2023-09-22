@@ -189,5 +189,6 @@
 "enter_the_quantity":"Nhập số lượng",
 "search":"Tìm",
 "into_money":"Thành tiền",
-"count_product_validate":"Số lượng phải lớn hơn 0"
+"count_product_validate":"Số lượng phải lớn hơn 0",
+"already_exist":"đã tồn tại"
 }

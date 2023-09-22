@@ -467,24 +467,80 @@ class _FormAddContractState extends State<FormAddContract> {
                                                   data.field_datasource ??
                                                   [],
                                               data: data,
-                                              onSuccess: (data) {
-                                                addData[indexParent]
-                                                    .data[indexChild]
-                                                    .value = data;
+                                              onSuccess: (dataRes) async {
+                                                ///
+                                                ///
+                                                if (dataRes == ADD_NEW_CAR) {
+                                                  final List<dynamic>? result =
+                                                      await AppNavigator
+                                                          .navigateFormAdd(
+                                                    '${AppLocalizations.of(Get.context!)?.add} ${data.field_label}',
+                                                    PRODUCT_CUSTOMER_TYPE,
+                                                    isGetData: true,
+                                                  );
+                                                  if (result != null) {
+                                                    final dataResult = result
+                                                            .first
+                                                        as Map<String, dynamic>;
+                                                    //todo data
+                                                    dataRes = [
+                                                      '',
+                                                      dataResult['bien_so'],
+                                                      dataResult['bien_so'],
+                                                      ADD_NEW_CAR,
+                                                    ];
+
+                                                    //remove data truoc đó
+                                                    for (final value
+                                                        in (list ?? [])) {
+                                                      if (value.last ==
+                                                          ADD_NEW_CAR) {
+                                                        list?.remove(value);
+                                                        break;
+                                                      }
+                                                    }
+                                                    list?.add(dataRes);
+                                                    ContactByCustomerBloc.of(
+                                                            context)
+                                                        .listXe
+                                                        .add(list ?? []);
+                                                    //
+                                                    addData[indexParent]
+                                                        .data[indexChild]
+                                                        .value = ADD_NEW_CAR;
+
+                                                    ContactByCustomerBloc.of(
+                                                                context)
+                                                            .dataCarNew =
+                                                        dataResult;
+                                                  }
+                                                  /////////
+                                                  ///// ///
+                                                } else {
+                                                  addData[indexParent]
+                                                      .data[indexChild]
+                                                      .value = dataRes;
+                                                  ContactByCustomerBloc.of(
+                                                          context)
+                                                      .getCar(dataRes);
+                                                }
+                                                //// // /
+                                                /// /// //
+                                              },
+                                              onUpdate: (dataRes) {
+                                                if (ContactByCustomerBloc.of(
+                                                            context)
+                                                        .dataCarNew ==
+                                                    [])
+                                                  addData[indexParent]
+                                                      .data[indexChild]
+                                                      .value = dataRes;
                                                 ContactByCustomerBloc.of(
                                                         context)
-                                                    .getCar(data);
+                                                    .getCar(dataRes);
                                               },
-                                              onUpdate: (data) {
-                                                addData[indexParent]
-                                                    .data[indexChild]
-                                                    .value = data;
-                                                ContactByCustomerBloc.of(
-                                                        context)
-                                                    .getCar(data);
-                                              },
-                                              value: list?.isEmpty ?? false
-                                                  ? ''
+                                              value: (list ?? []).isNotEmpty
+                                                  ? list![list.length - 1][1]
                                                   : data.field_value ?? '');
                                         })
                                     : InputDropdown(
@@ -755,13 +811,21 @@ class _FormAddContractState extends State<FormAddContract> {
           check = true;
           break;
         } else if (addData[i].data[j].value != null &&
-            addData[i].data[j].value != 'null')
-          data['${addData[i].data[j].label}'] = addData[i].data[j].value;
-        else {
+            addData[i].data[j].value != 'null') {
+          if (addData[i].data[j].label == 'hdsan_pham_kh' &&
+              addData[i].data[j].value == ADD_NEW_CAR) {
+            if (ContactByCustomerBloc.of(context).dataCarNew != {})
+              data['productscus'] =
+                  ContactByCustomerBloc.of(context).dataCarNew;
+          } else {
+            data['${addData[i].data[j].label}'] = addData[i].data[j].value;
+          }
+        } else {
           data['${addData[i].data[j].label}'] = '';
         }
       }
     }
+
     if (TotalBloc.of(context).unpaidStream.value < 0) {
       check = true;
     }

@@ -277,7 +277,7 @@ class _InputDropdownState extends State<InputDropdown> {
                         children: [
                           Expanded(
                             child: WidgetText(
-                              title: textValue,
+                              title: textValue==ADD_NEW_CAR?'':textValue,
                               maxLine: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(

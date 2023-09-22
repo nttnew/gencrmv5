@@ -18,6 +18,7 @@ class ContactByCustomerBloc
   List<CustomerData>? listCus;
   BehaviorSubject<List<List<dynamic>>> listXe = BehaviorSubject.seeded([]);
   BehaviorSubject<String> chiTietXe = BehaviorSubject.seeded('');
+  Map<String,dynamic> dataCarNew = {};
 
   ContactByCustomerBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -62,6 +63,12 @@ class ContactByCustomerBloc
     if ((res.code == BASE_URL.SUCCESS) || (res.code == BASE_URL.SUCCESS_200)) {
       listXe.add(res.data?.products ?? []);
     }
+    listXe.add([
+      ...[
+        [ADD_NEW_CAR, ADD_NEW_CAR, '', '']
+      ],
+      ...listXe.value
+    ]);
   }
 
   Stream<ContactByCustomerState> _getContactByCustomer(
