@@ -15,6 +15,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../src/app_const.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/btn_thao_tac.dart';
+import '../../../../widgets/dialog_call.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
@@ -30,6 +31,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   int id = Get.arguments[0];
   String title = Get.arguments[1];
   int? location;
+  String? diDong;
   bool isCheckDone = false;
   List<ModuleThaoTac> list = [];
   late final ListNoteBloc _blocNote;
@@ -52,6 +54,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
 
   checkLocation(SuccessDetailWorkState state) {
     location = state.location;
+    diDong = state.diDong;
     if (state.data_list.isNotEmpty) {
       final listLocation = (state.data_list.first.data ?? [])
           .where((element) => element.id == 'checkout')
@@ -65,6 +68,27 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
 
   getThaoTac() {
     list = [];
+    if (diDong != null && diDong != '')
+      list.add(
+        ModuleThaoTac(
+          isSvg: false,
+          title: AppLocalizations.of(Get.context!)?.call ?? '',
+          icon: ICONS.IC_PHONE_PNG,
+          onThaoTac: () {
+            Get.back();
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return DialogCall(
+                  sdt: diDong.toString(),
+                  title: diDong.toString(),
+                );
+              },
+            );
+          },
+        ),
+      );
+
     list.add(ModuleThaoTac(
       title: AppLocalizations.of(Get.context!)?.add_discuss ?? '',
       icon: ICONS.IC_ADD_DISCUSS_SVG,

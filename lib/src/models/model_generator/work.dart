@@ -18,7 +18,8 @@ class WorkItemData {
       status_id,
       status_color,
       start_date,
-      location;
+      location,
+      di_dong;
 
   WorkItemData(
     this.id,
@@ -35,6 +36,7 @@ class WorkItemData {
     this.status_color,
     this.start_date,
     this.location,
+    this.di_dong,
   );
 
   factory WorkItemData.fromJson(Map<String, dynamic> json) =>
@@ -86,8 +88,14 @@ class DetailWorkItemData {
   final String? label_field, id, value_field, type, link;
   final bool? is_link;
 
-  DetailWorkItemData(this.label_field, this.id, this.value_field, this.type,
-      this.link, this.is_link,);
+  DetailWorkItemData(
+    this.label_field,
+    this.id,
+    this.value_field,
+    this.type,
+    this.link,
+    this.is_link,
+  );
 
   factory DetailWorkItemData.fromJson(Map<String, dynamic> json) =>
       _$DetailWorkItemDataFromJson(json);
@@ -113,8 +121,9 @@ class DetailWorkData {
 class DetailWorkResponse extends BaseResponse {
   final List<DetailWorkData>? data;
   final int? location;
+  final String? di_dong;
 
-  DetailWorkResponse(this.data, this.location);
+  DetailWorkResponse(this.data, this.location, this.di_dong);
 
   factory DetailWorkResponse.fromJson(Map<String, dynamic> json) =>
       _$DetailWorkResponseFromJson(json);

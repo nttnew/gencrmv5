@@ -31,7 +31,8 @@ class DetailWorkBloc extends Bloc<DetailWorkEvent, DetailWorkState> {
       final response = await userRepository.detailJob(id);
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        yield SuccessDetailWorkState(response.data ?? [], response.location);
+        yield SuccessDetailWorkState(
+            response.data ?? [], response.location, response.di_dong);
       } else {
         LoadingApi().popLoading();
         yield ErrorGetDetailWorkState(response.msg ?? '');

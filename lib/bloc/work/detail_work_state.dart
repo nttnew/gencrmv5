@@ -12,7 +12,8 @@ class InitGetDetailWorkState extends DetailWorkState {}
 class SuccessDetailWorkState extends DetailWorkState {
   final List<DetailWorkData> data_list;
   final int? location;
-  SuccessDetailWorkState(this.data_list, this.location);
+  final String? diDong;
+  SuccessDetailWorkState(this.data_list, this.location, this.diDong);
   @override
   List<Object?> get props => [data_list, location];
 }
