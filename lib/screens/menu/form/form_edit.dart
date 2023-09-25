@@ -365,12 +365,22 @@ class _FormEditState extends State<FormEdit> {
                       );
                     }
                   })
-                : _fieldInputCustomer(
-                    data,
-                    indexParent,
-                    indexChild,
-                    noEdit: true,
-                  ))
+                : ServiceVoucherBloc.of(context).getInput(data.field_name ?? '')
+                    ? StreamBuilder<String>(
+                        stream: ServiceVoucherBloc.of(context)
+                            .loaiXe, //todo getdata selectcar local
+                        builder: (context, snapshot) {
+                          return fieldCar(
+                              data, indexParent, indexChild, context,
+                              value: ServiceVoucherBloc.of(context)
+                                  .getDataSelectCar(data.field_name ?? ''));
+                        })
+                    : _fieldInputCustomer(
+                        data,
+                        indexParent,
+                        indexChild,
+                        noEdit: true,
+                      ))
             : data.field_type == "SELECT"
                 ? ((data.field_name == 'cv_nguoiLienHe' ||
                         data.field_name == 'col131')

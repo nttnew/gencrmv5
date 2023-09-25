@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:rxdart/rxdart.dart';
@@ -17,6 +18,19 @@ class SelectCar extends StatefulWidget {
 
 class _SelectCarState extends State<SelectCar> {
   late final ServiceVoucherBloc _bloc;
+  ScrollController _controller =ScrollController();
+
+  void _scrollLate(){
+    Timer(Duration(milliseconds: 200), () {
+      _controller.animateTo(
+        _controller.position.maxScrollExtent, // Vị trí đầu trang (điểm xuất phát)
+        duration: Duration(milliseconds: 500), // Thời gian cuộn (milliseconds)
+        curve: Curves.easeOut, // Loại hiệu ứng cuộn
+      );
+    });
+
+  }
+
   @override
   void initState() {
     _bloc = ServiceVoucherBloc.of(context);
@@ -35,6 +49,7 @@ class _SelectCarState extends State<SelectCar> {
         height: MediaQuery.of(context).size.height * 0.9,
         padding: EdgeInsets.symmetric(vertical: 25, horizontal: 16),
         child: SingleChildScrollView(
+          controller: _controller,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -64,7 +79,13 @@ class _SelectCarState extends State<SelectCar> {
                                     onTap: () {
                                       _bloc.hangXe = e.name.toString();
                                       _bloc.dongXe = '';
+                                      _bloc.phienBan = '';
+                                      _bloc.namSanXuat = '';
+                                      _bloc.canXe = '';
+                                      _bloc.kieuDang = '';
+                                      _bloc.soCho = '';
                                       _bloc.getDongXe(e.id.toString());
+                                      _scrollLate();
                                       setState(() {});
                                     },
                                     child: Container(
@@ -96,7 +117,12 @@ class _SelectCarState extends State<SelectCar> {
                     _bloc.dongXe, _bloc.listDongXe, (v) {
                   _bloc.dongXe = v;
                   _bloc.phienBan = '';
+                  _bloc.namSanXuat = '';
+                  _bloc.canXe = '';
+                  _bloc.kieuDang = '';
+                  _bloc.soCho = '';
                   _bloc.getPhienBan(v);
+                  _scrollLate();
                   setState(() {});
                 }),
               if (isHang && isDong)
@@ -111,6 +137,7 @@ class _SelectCarState extends State<SelectCar> {
                   _bloc.getListKieuDang(v);
                   _bloc.getListCanXe(v);
                   _bloc.getListSoCho(v);
+                  _scrollLate();
                   setState(() {});
                 }),
               if (isHang && isDong && isPhienBan) ...[

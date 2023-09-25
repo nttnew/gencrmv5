@@ -293,49 +293,51 @@ class _MainDrawerState extends State<MainDrawer> {
                                     stream: fingerPrintIsCheck,
                                     builder: (context, snapshot) {
                                       return Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 20),
-                                        margin: EdgeInsets.only(bottom: 20),
+                                        margin: EdgeInsets.only(
+                                          bottom: 20,
+                                          left: 20,
+                                          right: 20,
+                                        ),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Row(
-                                              children: [
-                                                WidgetText(
-                                                    title:
-                                                        "${AppLocalizations.of(Get.context!)?.login_with_fingerprint_face_id}: ",
-                                                    style: AppStyle.DEFAULT_16
-                                                        .copyWith(
-                                                            color:
-                                                                COLORS.GREY)),
-                                                !(snapshot.data ?? false)
-                                                    ? WidgetText(
-                                                        title: AppLocalizations.of(
-                                                                Get.context!)
-                                                            ?.no,
-                                                        style: AppStyle.DEFAULT_16
-                                                            .copyWith(
-                                                                fontFamily:
-                                                                    'Quicksand',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600))
-                                                    : WidgetText(
-                                                        title:
-                                                            AppLocalizations.of(
-                                                                    Get
-                                                                        .context!)
-                                                                ?.yes,
-                                                        style: AppStyle
-                                                            .DEFAULT_16
-                                                            .copyWith(
-                                                                fontFamily:
-                                                                    'Quicksand',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600)),
-                                              ],
+                                            Expanded(
+                                              child: Row(
+                                                children: [
+                                                  WidgetText(
+                                                      title:
+                                                          "${AppLocalizations.of(Get.context!)?.login_with_fingerprint_face_id}: ",
+                                                      style: AppStyle.DEFAULT_16
+                                                          .copyWith(
+                                                              color:
+                                                                  COLORS.GREY)),
+                                                  !(snapshot.data ??
+                                                          false)
+                                                      ? WidgetText(
+                                                          title:
+                                                              AppLocalizations.of(Get
+                                                                      .context!)
+                                                                  ?.no,
+                                                          style: AppStyle
+                                                              .DEFAULT_16
+                                                              .copyWith(
+                                                                  fontFamily:
+                                                                      'Quicksand',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600))
+                                                      : WidgetText(
+                                                          title: AppLocalizations.of(
+                                                                  Get.context!)
+                                                              ?.yes,
+                                                          style: AppStyle.DEFAULT_16
+                                                              .copyWith(
+                                                                  fontFamily:
+                                                                      'Quicksand',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600)),
+                                                ],
+                                              ),
                                             ),
                                             Switch(
                                               value: snapshot.data ?? false,
@@ -366,6 +368,14 @@ class _MainDrawerState extends State<MainDrawer> {
                       },
                     )
                   : SizedBox()),
+          AppValue.vSpaceTiny,
+          Center(
+            child: WidgetText(
+              title: initAddressApplication(),
+              style: AppStyle.DEFAULT_16.copyWith(
+                  fontFamily: 'Montserrat', fontWeight: FontWeight.w400),
+            ),
+          ),
           AppValue.vSpaceTiny,
           Center(
             child: WidgetText(

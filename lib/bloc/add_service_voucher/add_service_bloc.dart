@@ -89,6 +89,36 @@ class ServiceVoucherBloc
     }
   }
 
+  String getDataSelectCar(String fieldName) {
+    switch (fieldName) {
+      case 'hang_xe'://fieldName theo api
+        return canXe;
+      case 'nam_san_xuat':
+        return namSanXuat;
+      case 'kieu_dang':
+        return kieuDang;
+      case 'dong_xe':
+        return dongXe;
+      case 'hang_x_xe':
+        return hangXe;
+      default:
+        return '';
+    }
+  }
+
+bool getInput(String fieldName) {
+    switch (fieldName) {
+      case 'hang_xe'://fieldName theo api
+      case 'nam_san_xuat':
+      case 'kieu_dang':
+      case 'dong_xe':
+      case 'hang_x_xe':
+        return true;
+      default:
+        return false;
+    }
+  }
+
   List<List<dynamic>>? listThemXe(List<List<dynamic>>? list, String bienSoXe) {
     if (bienSoXe != '') {
       for (final value in list ?? []) {

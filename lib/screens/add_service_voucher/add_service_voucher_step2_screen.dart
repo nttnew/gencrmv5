@@ -597,6 +597,63 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
   }
 }
 
+Widget fieldCar(
+  CustomerIndividualItemData data,
+  int indexParent,
+  int indexChild,
+  BuildContext context, {
+  bool noEdit = true,
+  String value = "",
+}) {
+  return Container(
+    margin: EdgeInsets.only(bottom: 16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        RichText(
+          textScaleFactor: MediaQuery.of(context).textScaleFactor,
+          text: TextSpan(
+            text: data.field_label ?? '',
+            style: AppStyle.DEFAULT_14W600,
+            children: <TextSpan>[
+              data.field_require == 1
+                  ? TextSpan(
+                      text: '*',
+                      style: TextStyle(
+                          fontFamily: "Quicksand",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: COLORS.RED))
+                  : TextSpan(),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+              color: noEdit == true ? COLORS.LIGHT_GREY : COLORS.WHITE,
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: HexColor("#BEB4B4"))),
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: 10,
+              top: 16,
+              bottom: 16,
+            ),
+            child: Container(
+              child: Text('${value != '' ? value : (data.field_value ?? '')}',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 Widget TypeCarBase(
   CustomerIndividualItemData data,
   int indexParent,
