@@ -53,8 +53,10 @@ class _InitCallAppState extends State<InitCallApp> {
   }
 
   void handleRegister() async {
-    final deviceToken = await PushVoipNotif.getDeviceToken();
-    handleRegisterBase(context, pitelService, deviceToken);
+    try {
+      final deviceToken = await PushVoipNotif.getDeviceToken();
+      handleRegisterBase(context, pitelService, deviceToken);
+    } catch (e) {}
   }
 
   @override

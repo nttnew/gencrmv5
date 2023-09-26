@@ -137,14 +137,16 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
 
   @override
   void initState() {
-    _showFaceId();
-    callInit();
-    GetInforAccBloc.of(context).add(InitGetInforAcc());
-    GetNotificationBloc.of(context).add(CheckNotification());
-    GetNotificationBloc.of(context)
-        .add(InitGetListUnReadNotificationEvent(BASE_URL.PAGE_DEFAULT));
-    getMenu();
-    LoginBloc.of(context).getListMenuFlash();
+    try {
+      _showFaceId();
+      callInit();
+      GetInforAccBloc.of(context).add(InitGetInforAcc());
+      GetNotificationBloc.of(context).add(CheckNotification());
+      GetNotificationBloc.of(context)
+          .add(InitGetListUnReadNotificationEvent(BASE_URL.PAGE_DEFAULT));
+      getMenu();
+      LoginBloc.of(context).getListMenuFlash();
+    } catch (e) {}
     super.initState();
   }
 
@@ -197,10 +199,12 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   }
 
   Future<void> _getDeviceToken() async {
-    final deviceToken = await PushVoipNotif.getDeviceToken();
-    shareLocal.putString(PreferencesKey.DEVICE_TOKEN, deviceToken);
-    handleRegisterBase(context, pitelService, deviceToken);
-    _registerDeviceToken(deviceToken);
+    try {
+      final deviceToken = await PushVoipNotif.getDeviceToken();
+      shareLocal.putString(PreferencesKey.DEVICE_TOKEN, deviceToken);
+      handleRegisterBase(context, pitelService, deviceToken);
+      _registerDeviceToken(deviceToken);
+    } catch (e) {}
   }
 
   Future<void> _registerDeviceToken(String deviceToken) async {
