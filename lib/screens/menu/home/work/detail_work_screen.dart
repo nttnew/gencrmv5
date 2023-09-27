@@ -81,7 +81,8 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
               builder: (BuildContext context) {
                 return DialogCall(
                   sdt: diDong.toString(),
-                  title: diDong.toString(),
+                  routerName: ROUTE_NAMES.WORK,
+                  moduleMy: ModuleMy.CONG_VIEC,
                 );
               },
             );

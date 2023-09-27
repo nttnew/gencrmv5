@@ -33,60 +33,61 @@ class ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        GestureDetector(
-            onLongPress: onLongPress,
-            onTap: onPressed,
-            child: Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                color: fillColor ?? (checked ? Colors.blue : COLORS.WHITE),
-                shape: BoxShape.circle,
-              ),
-              child: number
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                          Text(
-                            title,
-                            style: titleStyle,
-                          ),
-                          Text(
-                            subTitle.toUpperCase(),
-                            style: subTitleStyle,
-                          )
-                        ])
-                  : Icon(
-                      icon,
-                      size: 34.0,
-                      color: iconColor ??
-                          (fillColor != null
-                              ? COLORS.WHITE
-                              : (checked ? COLORS.WHITE : Colors.green)),
-                    ),
-            )),
-        number
-            ? Container(
-                margin:
-                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0))
-            : Container(
-                margin:
-                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                child: (number || title != '')
-                    ? null
-                    : Text(
-                        title,
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          color: fillColor ?? Colors.grey[500],
+    return GestureDetector(
+      onLongPress: onLongPress,
+      onTap: onPressed,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.all(20.0),
+            decoration: BoxDecoration(
+              color: fillColor ?? (checked ? Colors.blue : COLORS.WHITE),
+              shape: BoxShape.circle,
+            ),
+            child: number
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                        Text(
+                          title,
+                          style: titleStyle,
                         ),
-                      ),
-              )
-      ],
+                        Text(
+                          subTitle.toUpperCase(),
+                          style: subTitleStyle,
+                        )
+                      ])
+                : Icon(
+                    icon,
+                    size: 34.0,
+                    color: iconColor ??
+                        (fillColor != null
+                            ? COLORS.WHITE
+                            : (checked ? COLORS.WHITE : Colors.green)),
+                  ),
+          ),
+          number
+              ? Container(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0))
+              : Container(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                  child: (number || title != '')
+                      ? null
+                      : Text(
+                          title,
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            color: fillColor ?? Colors.grey[500],
+                          ),
+                        ),
+                )
+        ],
+      ),
     );
   }
 }

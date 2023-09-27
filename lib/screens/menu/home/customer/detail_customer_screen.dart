@@ -71,7 +71,8 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
               builder: (BuildContext context) {
                 return DialogCall(
                   sdt: _bloc.sdt.toString(),
-                  title: title,
+                  routerName: ROUTE_NAMES.CUSTOMER,
+                  moduleMy: ModuleMy.CUSTOMER,
                 );
               },
             );

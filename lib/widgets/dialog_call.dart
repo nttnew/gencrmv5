@@ -16,11 +16,14 @@ import '../storages/share_local.dart';
 
 class DialogCall extends StatefulWidget {
   final String sdt;
-  final String title;
+  final String routerName;
+  final String moduleMy;
+
   const DialogCall({
     Key? key,
     required this.sdt,
-    required this.title,
+    required this.routerName,
+    required this.moduleMy,
   }) : super(key: key);
 
   @override
@@ -86,8 +89,11 @@ class _DialogCallState extends State<DialogCall>
     pitelCall.setCallCurrent(callId);
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => CallScreenWidget(
-              modelScreen: ROUTE_NAMES.CUSTOMER,
-              title: widget.title,
+              modelScreen: widget.routerName,
+              title: ModuleMy.getNameModuleMy(
+                widget.moduleMy,
+                isTitle: true,
+              ),
             )));
   }
 
@@ -96,8 +102,11 @@ class _DialogCallState extends State<DialogCall>
     pitelCall.setCallCurrent(callId);
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => CallScreenWidget(
-              modelScreen: ROUTE_NAMES.CUSTOMER,
-              title: widget.title,
+              modelScreen: widget.routerName,
+              title: ModuleMy.getNameModuleMy(
+                widget.moduleMy,
+                isTitle: true,
+              ),
             )));
   }
 

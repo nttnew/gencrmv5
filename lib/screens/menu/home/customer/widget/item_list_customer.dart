@@ -59,8 +59,7 @@ class ItemCustomer extends StatelessWidget {
                         ? '${data.danh_xung ?? ''}' + ' ' + '${data.name ?? ''}'
                         : AppLocalizations.of(Get.context!)?.not_yet ?? '',
                     style: AppStyle.DEFAULT_18.copyWith(
-                        color: COLORS.ff006CB1,
-                        fontWeight: FontWeight.w700),
+                        color: COLORS.ff006CB1, fontWeight: FontWeight.w700),
                   ),
                 ),
                 SizedBox(
@@ -108,7 +107,8 @@ class ItemCustomer extends StatelessWidget {
                           builder: (BuildContext context) {
                             return DialogCall(
                               sdt: "${data.phone?.val}",
-                              title: title,
+                              routerName: ROUTE_NAMES.CUSTOMER,
+                              moduleMy: ModuleMy.CUSTOMER,
                             );
                           },
                         );
