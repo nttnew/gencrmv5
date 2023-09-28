@@ -268,9 +268,8 @@ class _ItemProductState extends State<ItemProduct> {
                   onTap: () {
                     _priceController.text = widget.data.sell_price != '' &&
                             widget.data.sell_price != null
-                        ? double.parse(widget.data.sell_price ?? '0')
-                            .toInt()
-                            .toString()
+                        ? AppValue.format_money(widget.data.sell_price ?? '0',
+                            isD: false)
                         : '';
                     onClickPrice(context, _priceController, (v) {
                       if (v != '') {
@@ -366,7 +365,9 @@ class _ItemProductState extends State<ItemProduct> {
                     GestureDetector(
                       onTap: () {
                         if (double.parse(widget.model?.giamGia ?? '0') > 0) {
-                          _giamGiaController.text = widget.model?.giamGia ?? '';
+                          _giamGiaController.text = AppValue.format_money(
+                              widget.model?.giamGia ?? '0',
+                              isD: false);
                         } else {
                           _giamGiaController.text = '';
                         }
@@ -399,8 +400,9 @@ class _ItemProductState extends State<ItemProduct> {
                     GestureDetector(
                       onTap: () {
                         if (intoMoney > 0) {
-                          _intoMoneyController.text =
-                              intoMoney.toStringAsFixed(0);
+                          _intoMoneyController.text = AppValue.format_money(
+                              intoMoney.toStringAsFixed(0),
+                              isD: false);
                         } else {
                           _intoMoneyController.text = '';
                         }
@@ -408,7 +410,6 @@ class _ItemProductState extends State<ItemProduct> {
                           if (double.parse(v) >= 0) {
                             intoMoney = (double.parse(v));
                             _getNewPrice();
-                            // widget.onPay!(intoMoney.value);
                           } else {
                             _intoMoneyController.text =
                                 intoMoney.toStringAsFixed(0);

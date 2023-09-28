@@ -1,7 +1,7 @@
 name: gen_crm
 description: A new Flutter application.
 publish_to: 'none'
-version: 2.1.3+213
+version: 2.1.4+214
 
 environment:
   sdk: ">=2.16.0 <3.0.0"
@@ -74,6 +74,7 @@ dependencies:
   location: 4.4.0
   pretty_dio_logger: any
   flutter_webrtc: 0.9.17
+  currency_text_input_formatter:
 
 dev_dependencies:
   flutter_test:

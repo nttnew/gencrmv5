@@ -49,6 +49,7 @@ void onClickGiamGia(
                                 Border.all(width: 1, color: COLORS.GREY_400),
                             borderRadius: BorderRadius.circular(15)),
                         child: TextField(
+                          inputFormatters: isType ? AppStyle.inputPrice : null,
                           controller: controller,
                           decoration: InputDecoration(
                               contentPadding:
@@ -88,7 +89,11 @@ void onClickGiamGia(
                       ),
                       GestureDetector(
                         onTap: () {
-                          onClick(isType, controller.text);
+                          onClick(
+                              isType,
+                              isType
+                                  ? controller.text.replaceAll('.', '')
+                                  : controller.text);
                         },
                         child: Container(
                           decoration: BoxDecoration(

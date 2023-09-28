@@ -50,6 +50,7 @@ void onClickIntoMoney(
                                 Border.all(width: 1, color: COLORS.GREY_400),
                             borderRadius: BorderRadius.circular(15)),
                         child: TextField(
+                          inputFormatters: AppStyle.inputPrice,
                           controller: controller,
                           decoration: InputDecoration(
                               contentPadding:
@@ -66,7 +67,7 @@ void onClickIntoMoney(
                       ),
                       GestureDetector(
                         onTap: () {
-                          onClick(controller.text);
+                          onClick(controller.text.replaceAll('.', ''));
                         },
                         child: Container(
                           decoration: BoxDecoration(

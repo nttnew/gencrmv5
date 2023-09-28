@@ -1,4 +1,6 @@
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gen_crm/src/color.dart';
 import 'package:gen_crm/src/values.dart';
 
@@ -131,4 +133,13 @@ class AppStyle {
   static final PRODUCT_SALE_PRICE_DETAIL = DEFAULT_16.copyWith(
     color: Color(0xFF960909),
   );
+
+  static final List<TextInputFormatter> inputPrice = <TextInputFormatter>[
+    CurrencyTextInputFormatter(
+      locale: 'vi',
+      decimalDigits: 0,
+      symbol: '',
+    ),
+  ];
+
 }
