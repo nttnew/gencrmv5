@@ -91,7 +91,7 @@ class _ItemProductState extends State<ItemProduct> {
       widget.onDVT!(widget.data.dvt, dvt);
       widget.onVAT!(widget.data.vat, vat);
     }
-    _getIntoMoney();
+    intoMoney = widget.model?.intoMoney ?? 0;
     super.initState();
   }
 
