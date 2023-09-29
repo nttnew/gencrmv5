@@ -109,6 +109,8 @@ class _ItemProductState extends State<ItemProduct> {
         isTypeGiamGIa = typeWidget;
       }
       widget.onReload();
+      if (intoMoney != (widget.model?.intoMoney ?? 0))
+        intoMoney = widget.model?.intoMoney ?? 0;
     }
     super.didUpdateWidget(oldWidget);
   }
