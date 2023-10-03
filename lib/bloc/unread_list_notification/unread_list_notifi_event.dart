@@ -9,8 +9,12 @@ abstract class ListUnReadNotificationEvent extends Equatable {
 
 class InitGetListUnReadNotificationEvent extends ListUnReadNotificationEvent {
   final int page;
+  final bool isLoading;
 
-  InitGetListUnReadNotificationEvent(this.page);
+  InitGetListUnReadNotificationEvent(
+    this.page, {
+    this.isLoading = true,
+  });
   @override
   List<Object?> get props => [page];
 }

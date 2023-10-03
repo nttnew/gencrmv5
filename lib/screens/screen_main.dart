@@ -142,8 +142,9 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
       callInit();
       GetInforAccBloc.of(context).add(InitGetInforAcc());
       GetNotificationBloc.of(context).add(CheckNotification());
-      GetNotificationBloc.of(context)
-          .add(InitGetListUnReadNotificationEvent(BASE_URL.PAGE_DEFAULT));
+      GetNotificationBloc.of(context).add(InitGetListUnReadNotificationEvent(
+          BASE_URL.PAGE_DEFAULT,
+          isLoading: false));
       getMenu();
       LoginBloc.of(context).getListMenuFlash();
     } catch (e) {}

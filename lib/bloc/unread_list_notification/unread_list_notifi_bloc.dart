@@ -32,7 +32,7 @@ class GetNotificationBloc
   Stream<NotificationState> mapEventToState(
       ListUnReadNotificationEvent event) async* {
     if (event is InitGetListUnReadNotificationEvent) {
-      yield* _getListNotification(page: event.page);
+      yield* _getListNotification(page: event.page, isLoading: event.isLoading);
     } else if (event is DeleteUnReadListNotificationEvent) {
       yield* _deleteNotification(id: event.id, type: event.type);
     } else if (event is ReadNotificationEvent) {
@@ -55,8 +55,11 @@ class GetNotificationBloc
     }
   }
 
-  Stream<NotificationState> _getListNotification({required int page}) async* {
-    LoadingApi().pushLoading();
+  Stream<NotificationState> _getListNotification({
+    required int page,
+    bool isLoading = true,
+  }) async* {
+    if (isLoading) LoadingApi().pushLoading();
     try {
       final response = await userRepository.getListUnReadNotification(page);
       if ((response.code == BASE_URL.SUCCESS) ||
