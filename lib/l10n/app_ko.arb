@@ -187,8 +187,8 @@
 "turn_on_login_with_finger_print_faceid": "다음에 로그인하려면 로그인해야 합니다.",
 "you_did_not_enter_a_number_phone": "전화번호를 입력하지 않았습니다.i",
 "enter_the_quantity":"계속 입력",
-"search":"Search",
-"into_money":"Thành tiền",
-"count_product_validate":"Số lượng phải lớn hơn 0",
-"already_exist":"đã tồn tại"
+"search":"찾다",
+"into_money":"돈으로",
+"count_product_validate":"수량은 0보다 커야 합니다",
+"already_exist":"이미 존재한다"
 }
