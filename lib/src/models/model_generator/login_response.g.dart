@@ -72,6 +72,9 @@ LoginData _$LoginDataFromJson(Map<String, dynamic> json) => LoginData(
       outbound_mobile: json['outbound_mobile'] as String?,
       port_mobile: json['port_mobile'] as String?,
       transport_mobile: json['transport_mobile'] as String?,
+      languages: (json['languages'] as List<dynamic>?)
+          ?.map((e) => LanguagesResponse.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$LoginDataToJson(LoginData instance) => <String, dynamic>{
@@ -85,6 +88,7 @@ Map<String, dynamic> _$LoginDataToJson(LoginData instance) => <String, dynamic>{
       'port_mobile': instance.port_mobile,
       'transport_mobile': instance.transport_mobile,
       'systemversion': instance.systemversion,
+      'languages': instance.languages,
     };
 
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
@@ -139,4 +143,22 @@ Map<String, dynamic> _$InfoSetupCallcenterResToJson(
       'api_url': instance.api_url,
       'domain_mobile': instance.domain_mobile,
       'type_call': instance.type_call,
+    };
+
+LanguagesResponse _$LanguagesResponseFromJson(Map<String, dynamic> json) =>
+    LanguagesResponse(
+      label: json['label'] as String?,
+      defaultLanguages: json['default'] as int?,
+      flag: json['flag'] as String?,
+      name: json['name'] as String?,
+      localeMy: json['localeMy'] as Locale?,
+    );
+
+Map<String, dynamic> _$LanguagesResponseToJson(LanguagesResponse instance) =>
+    <String, dynamic>{
+      'label': instance.label,
+      'default': instance.defaultLanguages,
+      'flag': instance.flag,
+      'name': instance.name,
+      'localeMy': instance.localeMy,
     };

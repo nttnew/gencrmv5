@@ -1,14 +1,18 @@
 import 'dart:convert';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/blocs.dart';
+import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/widgets/widget_button.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../bloc/get_infor_acc/get_infor_acc_bloc.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../../models/button_menu_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../storages/share_local.dart';
 import '../../../../widgets/widget_text.dart';
@@ -29,11 +33,13 @@ class _MainDrawerState extends State<MainDrawer> {
   late final BehaviorSubject<bool> supportBiometric;
   late final BehaviorSubject<bool> fingerPrintIsCheck;
   String? canLoginWithFingerPrint;
+  List<LanguagesResponse> resultLanguage = [];
   late final LocalAuthentication auth;
 
   @override
   void initState() {
     getMenu();
+    getListLanguagesBE();
     auth = LocalAuthentication();
     fingerPrintIsCheck = BehaviorSubject();
     supportBiometric = BehaviorSubject();
@@ -95,6 +101,16 @@ class _MainDrawerState extends State<MainDrawer> {
       }
     } catch (e) {
       return;
+    }
+  }
+
+  void getListLanguagesBE() {
+    String data = shareLocal.getString(PreferencesKey.LANGUAGE_BE) ?? "";
+    if (data != '' && resultLanguage != []) {
+      final result = json.decode(data) as List<dynamic>;
+      resultLanguage =
+          result.map((e) => LanguagesResponse.fromJson(e)).toList();
+      LoginBloc.of(context).getLanguage();
     }
   }
 
@@ -170,97 +186,193 @@ class _MainDrawerState extends State<MainDrawer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-              padding: EdgeInsets.only(top: 35, left: 10),
-              color: COLORS.SECONDS_COLOR,
-              height: AppValue.heights * 0.18,
-              child: BlocBuilder<GetInforAccBloc, GetInforAccState>(
-                builder: (context, state) {
-                  if (state is UpdateGetInforAccState) {
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        WidgetNetworkImage(
-                          isAvatar: true,
-                          image: state.inforAcc.avatar ?? "",
-                          width: 75,
-                          height: 75,
-                          borderRadius: 75,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: Container(
-                            height: 75,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                WidgetText(
-                                  title: state.inforAcc.fullname ?? '',
-                                  style: AppStyle.DEFAULT_16_BOLD.copyWith(
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                AppValue.vSpaceTiny,
-                                WidgetText(
-                                  title: state.inforAcc.department_name ?? '',
-                                  style: AppStyle.DEFAULT_16.copyWith(
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              ],
+            padding: EdgeInsets.only(
+              top: 35,
+              left: 10,
+              right: 10,
+            ),
+            color: COLORS.SECONDS_COLOR,
+            height: AppValue.heights * 0.18,
+            child: Row(
+              children: [
+                Expanded(
+                  child: BlocBuilder<GetInforAccBloc, GetInforAccState>(
+                    builder: (context, state) {
+                      if (state is UpdateGetInforAccState) {
+                        return Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            WidgetNetworkImage(
+                              isAvatar: true,
+                              image: state.inforAcc.avatar ?? "",
+                              width: 75,
+                              height: 75,
+                              borderRadius: 75,
                             ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                      ],
-                    );
-                  } else {
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        WidgetNetworkImage(
-                          isAvatar: true,
-                          image: "",
-                          width: 75,
-                          height: 75,
-                          borderRadius: 75,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          height: 75,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              WidgetText(
-                                title: '',
-                                style: AppStyle.DEFAULT_16_BOLD.copyWith(
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w600),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Container(
+                                height: 75,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    WidgetText(
+                                      title: state.inforAcc.fullname ?? '',
+                                      style: AppStyle.DEFAULT_16_BOLD.copyWith(
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    AppValue.vSpaceTiny,
+                                    WidgetText(
+                                      title:
+                                          state.inforAcc.department_name ?? '',
+                                      style: AppStyle.DEFAULT_16.copyWith(
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              AppValue.vSpaceTiny,
-                              WidgetText(
-                                title: '',
-                                style: AppStyle.DEFAULT_16.copyWith(
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w400),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                          ],
+                        );
+                      } else {
+                        return Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            WidgetNetworkImage(
+                              isAvatar: true,
+                              image: "",
+                              width: 75,
+                              height: 75,
+                              borderRadius: 75,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              height: 75,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  WidgetText(
+                                    title: '',
+                                    style: AppStyle.DEFAULT_16_BOLD.copyWith(
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  AppValue.vSpaceTiny,
+                                  WidgetText(
+                                    title: '',
+                                    style: AppStyle.DEFAULT_16.copyWith(
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                      ],
-                    );
-                  }
-                },
-              )),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                          ],
+                        );
+                      }
+                    },
+                  ),
+                ),
+                Container(
+                  height: 36,
+                  padding: EdgeInsets.symmetric(horizontal: 6),
+                  decoration: BoxDecoration(
+                      color: COLORS.BLACK.withOpacity(0.1),
+                      borderRadius: BorderRadius.all(Radius.circular(
+                        6,
+                      ))),
+                  child: Center(
+                    child: DropdownButton2<LanguagesResponse>(
+                      hint: StreamBuilder<LanguagesResponse>(
+                          stream: LoginBloc.of(context).localeLocal,
+                          builder: (context, snapshot) {
+                            final languagesSnap = snapshot.data;
+
+                            return languagesSnap != null
+                                ? Row(
+                                    children: [
+                                      Container(
+                                        child: Image.network(
+                                          getFlagCountry(
+                                            languagesSnap.flag ?? '',
+                                          ),
+                                          fit: BoxFit.contain,
+                                        ),
+                                        height: 24,
+                                        width: 24,
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      SizedBox(
+                                        width: 20,
+                                        child: Text(
+                                          L10n.getLocale(
+                                                  languagesSnap.name ?? '')
+                                              .toString()
+                                              .toLowerCase(),
+                                          style: AppStyle.DEFAULT_14_BOLD,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : SizedBox();
+                          }),
+                      icon: Container(),
+                      underline: Container(),
+                      onChanged: (LanguagesResponse? value) {},
+                      dropdownWidth: 90,
+                      barrierColor: Colors.grey.withOpacity(0.4),
+                      items: resultLanguage
+                          .map((items) => DropdownMenuItem<LanguagesResponse>(
+                                onTap: () {
+                                  LoginBloc.of(context).setLanguage(items);
+                                },
+                                value: items,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      child: Image.network(
+                                        getFlagCountry(
+                                          items.flag ?? '',
+                                        ),
+                                        fit: BoxFit.contain,
+                                      ),
+                                      height: 24,
+                                      width: 24,
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      L10n.getLocale(items.name ?? '')
+                                          .toString()
+                                          .toLowerCase(),
+                                      style: AppStyle.DEFAULT_14_BOLD,
+                                    ),
+                                  ],
+                                ),
+                              ))
+                          .toList(),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
           SizedBox(
             height: 10,
           ),
@@ -379,7 +491,7 @@ class _MainDrawerState extends State<MainDrawer> {
           AppValue.vSpaceTiny,
           Center(
             child: WidgetText(
-              title: 'Version: 2.1.6',
+              title: 'Version: 2.1.8',
               style: AppStyle.DEFAULT_16.copyWith(
                   fontFamily: 'Montserrat', fontWeight: FontWeight.w400),
             ),

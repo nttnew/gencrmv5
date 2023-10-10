@@ -364,12 +364,8 @@ class Debounce {
   }
 }
 
-String getFlagCountry(String locole) {
-  if (locole == 'vi') {
-    return ICONS.IC_FLAG_VI;
-  } else if (locole == 'en') {
-    return ICONS.IC_FLAG_EN;
-  } else {
-    return ICONS.IC_FLAG_KO;
-  }
+String getFlagCountry(String flag) {
+  String domain = shareLocal.getString(PreferencesKey.URL_BASE);
+  //link gan flag : domain + modules/xlanguage/images + {flag}
+  return domain + 'modules/xlanguage/images/' + flag;
 }

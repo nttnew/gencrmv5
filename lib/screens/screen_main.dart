@@ -55,6 +55,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   final _key = GlobalKey<ExpandableFabState>();
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   List<ButtonMenuModel> listMenu = [];
+
   void getMenu() async {
     String menu = await shareLocal.getString(PreferencesKey.MENU);
     List listM = jsonDecode(menu);

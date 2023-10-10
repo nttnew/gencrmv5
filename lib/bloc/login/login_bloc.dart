@@ -8,7 +8,6 @@ import 'package:formz/formz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gen_crm/api_resfull/dio_provider.dart';
 import 'package:gen_crm/api_resfull/user_repository.dart';
-import 'package:gen_crm/l10n/l10n.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/event_repository_storage.dart';
@@ -25,7 +24,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
   final EventRepositoryStorage localRepository;
   late List<ItemMenu> listMenuFlash = [];
-  BehaviorSubject<Locale> locale = BehaviorSubject.seeded(L10n.all.first);
+  BehaviorSubject<LanguagesResponse> localeLocal = BehaviorSubject();
   static const String UNREGISTER = 'UNREGISTER';
   static const String REGISTERED = 'REGISTERED';
   LoginData? loginData;
@@ -141,7 +140,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 await shareLocal.getString(PreferencesKey.USER_NAME);
             if (userName != state.email.value.trim()) {
               shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "false");
-              shareLocal.putString(PreferencesKey.SHOW_LOGIN_FINGER_PRINT, "true");
+              shareLocal.putString(
+                  PreferencesKey.SHOW_LOGIN_FINGER_PRINT, "true");
             }
             await shareLocal.putString(
                 PreferencesKey.USER_NAME, state.email.value);
@@ -234,6 +234,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         PreferencesKey.ID_USER, response.data?.info_user?.user_id ?? "");
     await shareLocal.putString(
         PreferencesKey.MONEY, response.data?.tien_te ?? "");
+    await shareLocal.putString(
+        PreferencesKey.LANGUAGE_BE, jsonEncode(response.data?.languages ?? []));
+    for (final value in response.data?.languages ?? []) {
+      if (value.defaultLanguages == 1) {
+        final lang = await shareLocal.getString(PreferencesKey.LANGUAGE) ?? '';
+        if (lang == '') setLanguage(value);
+      }
+    }
+  }
+
+  void getLanguage() {
+    LanguagesResponse language = LanguagesResponse.fromJson(
+        jsonDecode(shareLocal.getString(PreferencesKey.LANGUAGE) ?? ''));
+    localeLocal.add(language);
+  }
+
+  void setLanguage(LanguagesResponse language) {
+    shareLocal.putString(PreferencesKey.LANGUAGE, jsonEncode(language));
+    localeLocal.add(language);
   }
 
   static LoginBloc of(BuildContext context) =>

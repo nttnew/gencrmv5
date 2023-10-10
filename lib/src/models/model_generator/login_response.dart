@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'login_response.g.dart';
@@ -52,6 +54,7 @@ class LoginData {
   final List<ItemMenu>? quick;
   final String? outbound_mobile, port_mobile, transport_mobile;
   final int? systemversion;
+  final List<LanguagesResponse>? languages;
 
   LoginData({
     this.tien_te,
@@ -64,6 +67,7 @@ class LoginData {
     this.outbound_mobile,
     this.port_mobile,
     this.transport_mobile,
+    this.languages,
   });
 
   factory LoginData.fromJson(Map<String, dynamic> json) =>
@@ -117,4 +121,26 @@ class InfoSetupCallcenterRes {
   factory InfoSetupCallcenterRes.fromJson(Map<String, dynamic> json) =>
       _$InfoSetupCallcenterResFromJson(json);
   Map<String, dynamic> toJson() => _$InfoSetupCallcenterResToJson(this);
+}
+
+@JsonSerializable()
+class LanguagesResponse {
+  String? label;
+  @JsonKey(name: 'default')
+  int? defaultLanguages;
+  String? flag;
+  String? name;
+  Locale? localeMy;
+
+  LanguagesResponse({
+    this.label,
+    this.defaultLanguages,
+    this.flag,
+    this.name,
+    this.localeMy,
+  });
+
+  factory LanguagesResponse.fromJson(Map<String, dynamic> json) =>
+      _$LanguagesResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$LanguagesResponseToJson(this);
 }

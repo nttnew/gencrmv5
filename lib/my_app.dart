@@ -22,6 +22,7 @@ import 'package:gen_crm/screens/menu/home/product_customer/detail_product_custom
 import 'package:gen_crm/screens/menu/home/product_customer/product_customer.dart';
 import 'package:gen_crm/screens/menu/home/report/report_screen.dart';
 import 'package:gen_crm/screens/menu/form/checkin_screen.dart';
+import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/screens/forgot_password/forgot_password_otp_screen.dart';
 import 'package:gen_crm/screens/screens.dart';
@@ -130,11 +131,11 @@ class _MyAppState extends State<MyApp> {
         systemNavigationBarIconBrightness: Brightness.dark,
       ));
     }
-    return StreamBuilder<Locale>(
-        stream: LoginBloc.of(context).locale,
+    return StreamBuilder<LanguagesResponse>(
+        stream: LoginBloc.of(context).localeLocal,
         builder: (context, snapshot) {
           return GetMaterialApp(
-            locale: snapshot.data,
+            locale: L10n.all.last,
             localizationsDelegates: [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,

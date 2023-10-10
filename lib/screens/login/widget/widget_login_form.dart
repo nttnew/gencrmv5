@@ -70,7 +70,8 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         context.read<LoginBloc>().add(PasswordUnfocused());
       }
     });
-    if (canAuthenticate &&
+    if (widget.isLogin &&
+        canAuthenticate &&
         shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT) == "true" &&
         shareLocal.getString(PreferencesKey.USER) != "" &&
         shareLocal.getString(PreferencesKey.USER) != null) {
@@ -180,7 +181,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
           });
         },
         child: Text(
-          AppLocalizations.of(Get.context!)?.change_address_application??'',
+          AppLocalizations.of(Get.context!)?.change_address_application ?? '',
           style: AppStyle.DEFAULT_14W500.copyWith(
             color: COLORS.ff006CB1,
             decoration: TextDecoration.underline,
@@ -327,8 +328,9 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
     final LocalAuthentication auth = LocalAuthentication();
     try {
       final didAuthenticate = await auth.authenticate(
-          localizedReason:
-              AppLocalizations.of(Get.context!)?.login_with_fingerprint_face_id??'',
+          localizedReason: AppLocalizations.of(Get.context!)
+                  ?.login_with_fingerprint_face_id ??
+              '',
           options: const AuthenticationOptions(biometricOnly: true));
       if (didAuthenticate) {
         LoginBloc.of(context)
