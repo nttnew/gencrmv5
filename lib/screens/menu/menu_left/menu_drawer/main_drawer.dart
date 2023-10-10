@@ -40,6 +40,7 @@ class _MainDrawerState extends State<MainDrawer> {
   void initState() {
     getMenu();
     getListLanguagesBE();
+    LoginBloc.of(context).getMenuMain();
     auth = LocalAuthentication();
     fingerPrintIsCheck = BehaviorSubject();
     supportBiometric = BehaviorSubject();
@@ -115,6 +116,7 @@ class _MainDrawerState extends State<MainDrawer> {
   }
 
   getMenu() async {
+    _elements = [];
     _elements.add({
       'id': '1',
       'title': AppLocalizations.of(Get.context!)?.home_page ?? '',
@@ -337,9 +339,11 @@ class _MainDrawerState extends State<MainDrawer> {
                       barrierColor: Colors.grey.withOpacity(0.4),
                       items: resultLanguage
                           .map((items) => DropdownMenuItem<LanguagesResponse>(
-                                onTap: () {
+                                onTap: () async {
+                                  // GetInforAccBloc.of(context).add(InitGetInforAcc()); //todo
                                   LoginBloc.of(context).setLanguage(items);
-                                  setState(() {});
+                                  await LoginBloc.of(context).getMenuMain();
+                                  await getMenu();
                                 },
                                 value: items,
                                 child: Row(
@@ -413,43 +417,12 @@ class _MainDrawerState extends State<MainDrawer> {
                                         child: Row(
                                           children: [
                                             Expanded(
-                                              child: Row(
-                                                children: [
-                                                  WidgetText(
-                                                      title:
-                                                          "${AppLocalizations.of(Get.context!)?.login_with_fingerprint_face_id}: ",
-                                                      style: AppStyle.DEFAULT_16
-                                                          .copyWith(
-                                                              color:
-                                                                  COLORS.GREY)),
-                                                  !(snapshot.data ??
-                                                          false)
-                                                      ? WidgetText(
-                                                          title:
-                                                              AppLocalizations.of(Get
-                                                                      .context!)
-                                                                  ?.no,
-                                                          style: AppStyle
-                                                              .DEFAULT_16
-                                                              .copyWith(
-                                                                  fontFamily:
-                                                                      'Quicksand',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600))
-                                                      : WidgetText(
-                                                          title: AppLocalizations.of(
-                                                                  Get.context!)
-                                                              ?.yes,
-                                                          style: AppStyle.DEFAULT_16
-                                                              .copyWith(
-                                                                  fontFamily:
-                                                                      'Quicksand',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600)),
-                                                ],
-                                              ),
+                                              child: WidgetText(
+                                                  title:
+                                                      "${AppLocalizations.of(Get.context!)?.login_with_fingerprint_face_id}: ",
+                                                  style: AppStyle.DEFAULT_16
+                                                      .copyWith(
+                                                          color: COLORS.GREY)),
                                             ),
                                             Switch(
                                               value: snapshot.data ?? false,

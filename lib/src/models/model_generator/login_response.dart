@@ -31,25 +31,10 @@ class InfoUserLogin {
 }
 
 @JsonSerializable()
-class ItemMenu {
-  final String? id, name;
-  final bool? isallow;
-
-  ItemMenu(this.id, this.name,
-      this.isallow); //static const empty =  InfoUserLogin('', '', '', '', '', '', '', 0);
-
-  factory ItemMenu.fromJson(Map<String, dynamic> json) =>
-      _$ItemMenuFromJson(json);
-  Map<String, dynamic> toJson() => _$ItemMenuToJson(this);
-}
-
-@JsonSerializable()
 class LoginData {
   final String? tien_te;
   final InfoUserLogin? info_user;
   final String? token, session_id;
-  final List<ItemMenu>? menu;
-  final List<ItemMenu>? quick;
   final String? outbound_mobile, port_mobile, transport_mobile;
   final int? systemversion;
   final List<LanguagesResponse>? languages;
@@ -59,8 +44,6 @@ class LoginData {
     this.info_user,
     this.token,
     this.session_id,
-    this.menu,
-    this.quick,
     this.systemversion,
     this.outbound_mobile,
     this.port_mobile,

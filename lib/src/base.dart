@@ -182,11 +182,13 @@ class BASE_URL {
   static const GET_ADDRESS_CUSTOMER = 'modules/genmobile2/customer/getAddress';
   static const GET_SERVICE_PACK = 'modules/genmobile2/product/getServicePack';
   static const GET_PRODUCT_SERVICE_PACK = 'modules/genmobile2/product/getProductInServicePack';
+  static const GET_MENU = 'modules/genmobile2/profile/getMenu';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';
   static const int connectionTimeout = 45000;
   static const content_type = 'Content-Type';
+  static const language = 'language';
   static const application_json = 'application/json';
   static const PHPSESSID = 'PHPSESSID';
   static const AUTHORIZATION = 'Authorization';

@@ -43,18 +43,6 @@ Map<String, dynamic> _$InfoUserLoginToJson(InfoUserLogin instance) =>
       'group': instance.group,
     };
 
-ItemMenu _$ItemMenuFromJson(Map<String, dynamic> json) => ItemMenu(
-      json['id'] as String?,
-      json['name'] as String?,
-      json['isallow'] as bool?,
-    );
-
-Map<String, dynamic> _$ItemMenuToJson(ItemMenu instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'isallow': instance.isallow,
-    };
-
 LoginData _$LoginDataFromJson(Map<String, dynamic> json) => LoginData(
       tien_te: json['tien_te'] as String?,
       info_user: json['info_user'] == null
@@ -62,12 +50,6 @@ LoginData _$LoginDataFromJson(Map<String, dynamic> json) => LoginData(
           : InfoUserLogin.fromJson(json['info_user'] as Map<String, dynamic>),
       token: json['token'] as String?,
       session_id: json['session_id'] as String?,
-      menu: (json['menu'] as List<dynamic>?)
-          ?.map((e) => ItemMenu.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      quick: (json['quick'] as List<dynamic>?)
-          ?.map((e) => ItemMenu.fromJson(e as Map<String, dynamic>))
-          .toList(),
       systemversion: json['systemversion'] as int?,
       outbound_mobile: json['outbound_mobile'] as String?,
       port_mobile: json['port_mobile'] as String?,
@@ -82,8 +64,6 @@ Map<String, dynamic> _$LoginDataToJson(LoginData instance) => <String, dynamic>{
       'info_user': instance.info_user,
       'token': instance.token,
       'session_id': instance.session_id,
-      'menu': instance.menu,
-      'quick': instance.quick,
       'outbound_mobile': instance.outbound_mobile,
       'port_mobile': instance.port_mobile,
       'transport_mobile': instance.transport_mobile,
