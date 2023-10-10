@@ -24,7 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    LoginBloc.of(context).getLanguage();
     shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.UNREGISTER);
     scrollController = ScrollController();
     isLogin = Get.arguments == 'login';

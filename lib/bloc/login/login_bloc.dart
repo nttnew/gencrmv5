@@ -8,6 +8,7 @@ import 'package:formz/formz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gen_crm/api_resfull/dio_provider.dart';
 import 'package:gen_crm/api_resfull/user_repository.dart';
+import 'package:gen_crm/l10n/l10n.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/event_repository_storage.dart';
@@ -24,7 +25,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
   final EventRepositoryStorage localRepository;
   late List<ItemMenu> listMenuFlash = [];
-  BehaviorSubject<LanguagesResponse> localeLocal = BehaviorSubject();
+  BehaviorSubject<Locale> localeLocal = BehaviorSubject.seeded(L10n.all.first);
+  BehaviorSubject<LanguagesResponse> localeLocalSelect = BehaviorSubject();
   static const String UNREGISTER = 'UNREGISTER';
   static const String REGISTERED = 'REGISTERED';
   LoginData? loginData;
@@ -244,15 +246,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  void getLanguage() {
-    LanguagesResponse language = LanguagesResponse.fromJson(
-        jsonDecode(shareLocal.getString(PreferencesKey.LANGUAGE) ?? ''));
-    localeLocal.add(language);
+  void getLanguage() async {
+    final lang = await shareLocal.getString(PreferencesKey.LANGUAGE) ?? '';
+    if (lang != '') {
+      LanguagesResponse language = LanguagesResponse.fromJson(
+          jsonDecode(shareLocal.getString(PreferencesKey.LANGUAGE) ?? ''));
+      addLocalLang(language);
+      localeLocalSelect.add(language);
+    }
+  }
+
+  void addLocalLang(LanguagesResponse langRes) {
+    Locale locale = L10n.getLocale(langRes.name ?? '');
+    localeLocal.add(locale);
   }
 
   void setLanguage(LanguagesResponse language) {
     shareLocal.putString(PreferencesKey.LANGUAGE, jsonEncode(language));
-    localeLocal.add(language);
+    localeLocalSelect.add(language);
+    addLocalLang(language);
   }
 
   static LoginBloc of(BuildContext context) =>

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'login_response.g.dart';
@@ -130,14 +128,12 @@ class LanguagesResponse {
   int? defaultLanguages;
   String? flag;
   String? name;
-  Locale? localeMy;
 
   LanguagesResponse({
     this.label,
     this.defaultLanguages,
     this.flag,
     this.name,
-    this.localeMy,
   });
 
   factory LanguagesResponse.fromJson(Map<String, dynamic> json) =>

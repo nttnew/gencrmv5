@@ -151,7 +151,6 @@ LanguagesResponse _$LanguagesResponseFromJson(Map<String, dynamic> json) =>
       defaultLanguages: json['default'] as int?,
       flag: json['flag'] as String?,
       name: json['name'] as String?,
-      localeMy: json['localeMy'] as Locale?,
     );
 
 Map<String, dynamic> _$LanguagesResponseToJson(LanguagesResponse instance) =>
@@ -160,5 +159,4 @@ Map<String, dynamic> _$LanguagesResponseToJson(LanguagesResponse instance) =>
       'default': instance.defaultLanguages,
       'flag': instance.flag,
       'name': instance.name,
-      'localeMy': instance.localeMy,
     };

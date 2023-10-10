@@ -297,10 +297,9 @@ class _MainDrawerState extends State<MainDrawer> {
                   child: Center(
                     child: DropdownButton2<LanguagesResponse>(
                       hint: StreamBuilder<LanguagesResponse>(
-                          stream: LoginBloc.of(context).localeLocal,
+                          stream: LoginBloc.of(context).localeLocalSelect,
                           builder: (context, snapshot) {
                             final languagesSnap = snapshot.data;
-
                             return languagesSnap != null
                                 ? Row(
                                     children: [
@@ -340,6 +339,7 @@ class _MainDrawerState extends State<MainDrawer> {
                           .map((items) => DropdownMenuItem<LanguagesResponse>(
                                 onTap: () {
                                   LoginBloc.of(context).setLanguage(items);
+                                  setState(() {});
                                 },
                                 value: items,
                                 child: Row(
