@@ -31,11 +31,23 @@ class _ChanceScreenState extends State<ChanceScreen> {
   String idFilter = "";
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   String search = '';
-  String title = Get.arguments ?? '';
+  String title = ModuleMy.getNameModuleMy(
+    ModuleMy.LICH_HEN,
+    isTitle: true,
+  );
   String ids = '';
   ScrollController _scrollController = ScrollController();
   late final ManagerBloc managerBloc;
   late final GetListChanceBloc _bloc;
+
+  _reloadLanguage() async {
+    await _research();
+    title = ModuleMy.getNameModuleMy(
+      ModuleMy.LICH_HEN,
+      isTitle: true,
+    );
+    setState(() {});
+  }
 
   @override
   void initState() {
@@ -72,7 +84,12 @@ class _ChanceScreenState extends State<ChanceScreen> {
     return Scaffold(
       key: _drawerKey,
       resizeToAvoidBottomInset: false,
-      drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
+      drawer: MainDrawer(
+        onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+        onReload: () async {
+          await _reloadLanguage();
+        },
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       appBar: AppbarBase(_drawerKey, title),
       body: Column(
@@ -82,7 +99,8 @@ class _ChanceScreenState extends State<ChanceScreen> {
               stream: managerBloc.managerTrees,
               builder: (context, snapshot) {
                 return SearchBase(
-                  hint: "${AppLocalizations.of(Get.context!)?.find} ${title.toLowerCase()}",
+                  hint:
+                      "${AppLocalizations.of(Get.context!)?.find} ${title.toLowerCase()}",
                   leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                   endIcon: (snapshot.data ?? []).isNotEmpty
                       ? SvgPicture.asset(
@@ -165,7 +183,9 @@ class _ChanceScreenState extends State<ChanceScreen> {
             child: FloatingActionButton(
               backgroundColor: COLORS.ff1AA928,
               onPressed: () {
-                AppNavigator.navigateFormAdd('${AppLocalizations.of(Get.context!)?.add} ${title.toLowerCase()}', ADD_CHANCE);
+                AppNavigator.navigateFormAdd(
+                    '${AppLocalizations.of(Get.context!)?.add} ${title.toLowerCase()}',
+                    ADD_CHANCE);
               },
               child: Icon(Icons.add, size: 40),
             ),

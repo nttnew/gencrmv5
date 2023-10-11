@@ -160,9 +160,7 @@ class _FormAddContractState extends State<FormAddContract> {
                   Get.back();
                   Get.back();
                   ContractBloc.of(context).add(InitGetContractEvent());
-                  if (product != null)
-                    AppNavigator.navigateContract(
-                        ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG));
+                  if (product != null) AppNavigator.navigateContract();
                 },
               );
             }
@@ -488,7 +486,7 @@ class _FormAddContractState extends State<FormAddContract> {
                                                     final dataResult = result
                                                             .first
                                                         as Map<String, dynamic>;
-                                                    //todo data
+                                                    // data
                                                     dataRes = [
                                                       '',
                                                       dataResult['bien_so'],

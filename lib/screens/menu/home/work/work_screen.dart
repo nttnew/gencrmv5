@@ -48,7 +48,10 @@ class _WorkScreenState extends State<WorkScreen> {
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.CONG_VIEC);
-    title = Get.arguments ?? '';
+    title = ModuleMy.getNameModuleMy(
+      ModuleMy.CONG_VIEC,
+      isTitle: true,
+    );
     GetNotificationBloc.of(context).add(CheckNotification());
     _bloc.add(InitGetListWorkEvent());
     _scrollController.addListener(() {
@@ -77,12 +80,30 @@ class _WorkScreenState extends State<WorkScreen> {
     ));
   }
 
+  _reloadLanguage() async {
+    await _research();
+    title = ModuleMy.getNameModuleMy(
+      ModuleMy.CONG_VIEC,
+      isTitle: true,
+    );
+    listAdd = [
+      '${AppLocalizations.of(Get.context!)?.add} ${AppLocalizations.of(Get.context!)?.check_in}',
+      '${AppLocalizations.of(Get.context!)?.add} ${title.toLowerCase()}'
+    ];
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
       resizeToAvoidBottomInset: false,
-      drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
+      drawer: MainDrawer(
+        onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+        onReload: () async {
+          await _reloadLanguage();
+        },
+      ),
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
         key: _key,
@@ -176,7 +197,7 @@ class _WorkScreenState extends State<WorkScreen> {
                 builder: (context, snapshot) {
                   return SearchBase(
                     hint:
-                        "${AppLocalizations.of(Get.context!)?.find} ${title.toLowerCase()}",
+                        "${AppLocalizations.of(context)?.find} ${title.toLowerCase()}",
                     leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                     endIcon: (snapshot.data ?? []).isNotEmpty
                         ? SvgPicture.asset(

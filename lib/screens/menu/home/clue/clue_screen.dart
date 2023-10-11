@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/drop_down_base.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:get/get.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
@@ -26,21 +25,25 @@ class ClueScreen extends StatefulWidget {
 }
 
 class _ClueScreenState extends State<ClueScreen> {
-  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  late final GlobalKey<ScaffoldState> _drawerKey;
+  late final ManagerBloc managerBloc;
+  late final GetListClueBloc _bloc;
   int page = BASE_URL.PAGE_DEFAULT;
   int total = 0;
   int length = 0;
   List<ClueData> listClue = [];
   String idFilter = '';
   String ids = '';
-  String title = Get.arguments ?? '';
+  String title = ModuleMy.getNameModuleMy(
+    ModuleMy.DAU_MOI,
+    isTitle: true,
+  );
   String search = '';
   ScrollController _scrollController = ScrollController();
-  late final ManagerBloc managerBloc;
-  late final GetListClueBloc _bloc;
 
   @override
   void initState() {
+    _drawerKey = GlobalKey();
     _bloc = GetListClueBloc.of(context);
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
@@ -68,12 +71,27 @@ class _ClueScreenState extends State<ClueScreen> {
     ));
   }
 
+  _reloadLanguage() async {
+    await _research();
+    title = ModuleMy.getNameModuleMy(
+      ModuleMy.DAU_MOI,
+      isTitle: true,
+    );
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
       resizeToAvoidBottomInset: false,
-      drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
+      appBar: AppbarBase(_drawerKey, title),
+      drawer: MainDrawer(
+        onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+        onReload: () async {
+          await _reloadLanguage();
+        },
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 20),
@@ -81,12 +99,11 @@ class _ClueScreenState extends State<ClueScreen> {
           backgroundColor: COLORS.ff1AA928,
           onPressed: () {
             AppNavigator.navigateFormAdd(
-                '${AppLocalizations.of(Get.context!)?.add} ${title}', ADD_CLUE);
+                '${AppLocalizations.of(context)?.add} ${title}', ADD_CLUE);
           },
           child: Icon(Icons.add, size: 40),
         ),
       ),
-      appBar: AppbarBase(_drawerKey, title),
       body: BlocBuilder<GetListClueBloc, ClueState>(builder: (context, state) {
         if (state is UpdateGetListClueState) {
           listClue = state.listClue;
@@ -100,7 +117,7 @@ class _ClueScreenState extends State<ClueScreen> {
                   builder: (context, snapshot) {
                     return SearchBase(
                       hint:
-                          '${AppLocalizations.of(Get.context!)?.find} ${title.toLowerCase()}',
+                          '${AppLocalizations.of(context)?.find} ${title.toLowerCase()}',
                       leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                       endIcon: (snapshot.data ?? []).isNotEmpty
                           ? SvgPicture.asset(
@@ -197,9 +214,8 @@ class _ClueScreenState extends State<ClueScreen> {
           children: [
             itemTextIcon(
               paddingTop: 0,
-              text: clueData.name ??
-                  AppLocalizations.of(Get.context!)?.not_yet ??
-                  '',
+              text:
+                  clueData.name ?? AppLocalizations.of(context)?.not_yet ?? '',
               icon: ICONS.IC_CHANCE_3X_PNG,
               isSVG: false,
               styleText:
@@ -207,14 +223,14 @@ class _ClueScreenState extends State<ClueScreen> {
             ),
             itemTextIcon(
               text: clueData.customer?.name ??
-                  AppLocalizations.of(Get.context!)?.not_yet ??
+                  AppLocalizations.of(context)?.not_yet ??
                   '',
               icon: ICONS.IC_USER2_SVG,
               colorIcon: COLORS.GREY,
             ),
             itemTextIcon(
               text: clueData.email?.val ??
-                  AppLocalizations.of(Get.context!)?.not_yet ??
+                  AppLocalizations.of(context)?.not_yet ??
                   '',
               icon: ICONS.IC_MAIL_SVG,
               colorIcon: COLORS.GREY,
@@ -227,7 +243,7 @@ class _ClueScreenState extends State<ClueScreen> {
                     child: itemTextIcon(
                       paddingTop: 0,
                       text: clueData.phone?.val ??
-                          AppLocalizations.of(Get.context!)?.not_yet ??
+                          AppLocalizations.of(context)?.not_yet ??
                           '',
                       icon: ICONS.IC_CALL_SVG,
                       styleText: AppStyle.DEFAULT_LABEL_PRODUCT
@@ -243,7 +259,7 @@ class _ClueScreenState extends State<ClueScreen> {
                   ),
                   WidgetText(
                     title: clueData.total_note ??
-                        AppLocalizations.of(Get.context!)?.not_yet ??
+                        AppLocalizations.of(context)?.not_yet ??
                         '',
                     style: TextStyle(
                       color: HexColor("#0052B4"),

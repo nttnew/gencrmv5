@@ -18,8 +18,6 @@ import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart' as GET;
-
-import '../../src/app_const.dart';
 import '../../widgets/loading_api.dart';
 
 part 'login_event.dart';
@@ -259,11 +257,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         await shareLocal.putString(PreferencesKey.LIST_MENU_FLASH,
             jsonEncode(response.data?.quickMenu));
       } else {
-        loginSessionExpired();
+        // loginSessionExpired();
       }
     } catch (e) {
-      LoadingApi().popLoading();
-      loginSessionExpired();
+      // LoadingApi().popLoading();
+      // loginSessionExpired();
     }
   }
 

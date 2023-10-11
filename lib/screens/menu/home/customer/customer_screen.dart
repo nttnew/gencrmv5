@@ -32,21 +32,27 @@ class _CustomerScreenState extends State<CustomerScreen> {
   int length = 0;
   List<CustomerData> listCustomer = [];
   String idFilter = '';
-  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  final _key = GlobalKey<ExpandableFabState>();
+  late final GlobalKey<ScaffoldState> _drawerKey;
+  late final _key;
   String search = '';
   String ids = '';
-  final String title = Get.arguments ?? '';
+  String title = ModuleMy.getNameModuleMy(
+    ModuleMy.CUSTOMER,
+    isTitle: true,
+  );
   ScrollController _scrollController = ScrollController();
-  List<String> listAdd = [
-    '${Get.arguments} ${AppLocalizations.of(Get.context!)?.organization}',
-    '${Get.arguments} ${AppLocalizations.of(Get.context!)?.individual}',
-  ];
+  List<String> listAdd = [];
   late final ManagerBloc managerBloc;
   late final GetListCustomerBloc _bloc;
 
   @override
   void initState() {
+    _drawerKey = GlobalKey();
+    _key = GlobalKey<ExpandableFabState>();
+    listAdd = [
+      '$title ${AppLocalizations.of(Get.context!)?.organization}',
+      '$title ${AppLocalizations.of(Get.context!)?.individual}',
+    ];
     if (LoginBloc.of(context).checkRegisterSuccess())
       listAdd.add(AppLocalizations.of(Get.context!)?.call_operator ?? '');
     _bloc = GetListCustomerBloc.of(context);
@@ -90,13 +96,31 @@ class _CustomerScreenState extends State<CustomerScreen> {
     }
   }
 
+  _reloadLanguage() async {
+    await _research();
+    title = ModuleMy.getNameModuleMy(
+      ModuleMy.CUSTOMER,
+      isTitle: true,
+    );
+    listAdd = [
+      '${title} ${AppLocalizations.of(Get.context!)?.organization}',
+      '${title} ${AppLocalizations.of(Get.context!)?.individual}',
+    ];
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
       appBar: AppbarBase(_drawerKey, title),
       resizeToAvoidBottomInset: false,
-      drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
+      drawer: MainDrawer(
+        onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+        onReload: () async {
+          _reloadLanguage();
+        },
+      ),
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
         childrenOffset: Offset(0, 0),
@@ -196,7 +220,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   builder: (context, snapshot) {
                     return SearchBase(
                       hint:
-                          "${AppLocalizations.of(Get.context!)?.find} ${title.toLowerCase()}",
+                          "${AppLocalizations.of(context)?.find} ${title.toLowerCase()}",
                       leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                       endIcon: (snapshot.data ?? []).isNotEmpty
                           ? SvgPicture.asset(

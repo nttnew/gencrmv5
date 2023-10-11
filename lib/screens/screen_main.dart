@@ -57,6 +57,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   List<ButtonMenuModel> listMenu = [];
 
   void getMenu() async {
+    listMenu = [];
     String menu = await shareLocal.getString(PreferencesKey.MENU);
     List listM = jsonDecode(menu);
     for (final value in listM) {
@@ -76,21 +77,21 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
             backgroundColor: ModuleMy.getColor(id),
             onTap: () {
               if (id == ModuleMy.LICH_HEN) {
-                AppNavigator.navigateChance(name);
+                AppNavigator.navigateChance();
               } else if (id == ModuleMy.CONG_VIEC) {
-                AppNavigator.navigateWork(name);
+                AppNavigator.navigateWork();
               } else if (id == ModuleMy.HOP_DONG) {
-                AppNavigator.navigateContract(name);
+                AppNavigator.navigateContract();
               } else if (id == ModuleMy.CSKH) {
-                AppNavigator.navigateSupport(name);
+                AppNavigator.navigateSupport();
               } else if (id == ModuleMy.CUSTOMER) {
-                AppNavigator.navigateCustomer(name);
+                AppNavigator.navigateCustomer();
               } else if (id == ModuleMy.DAU_MOI) {
-                AppNavigator.navigateClue(name);
+                AppNavigator.navigateClue();
               } else if (id == ModuleMy.SAN_PHAM) {
-                AppNavigator.navigateProduct(name);
+                AppNavigator.navigateProduct();
               } else if (id == ModuleMy.SAN_PHAM_KH) {
-                AppNavigator.navigateProductCustomer(name);
+                AppNavigator.navigateProductCustomer();
               }
             }),
       );
@@ -138,17 +139,15 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
 
   @override
   void initState() {
-    try {
-      _showFaceId();
-      callInit();
-      GetInforAccBloc.of(context).add(InitGetInforAcc());
-      GetNotificationBloc.of(context).add(CheckNotification());
-      GetNotificationBloc.of(context).add(InitGetListUnReadNotificationEvent(
-          BASE_URL.PAGE_DEFAULT,
-          isLoading: false));
-      getMenu();
-      LoginBloc.of(context).getListMenuFlash();
-    } catch (e) {}
+    _showFaceId();
+    callInit();
+    GetInforAccBloc.of(context).add(InitGetInforAcc());
+    GetNotificationBloc.of(context).add(CheckNotification());
+    GetNotificationBloc.of(context).add(InitGetListUnReadNotificationEvent(
+        BASE_URL.PAGE_DEFAULT,
+        isLoading: false));
+    getMenu();
+    LoginBloc.of(context).getListMenuFlash();
     super.initState();
   }
 
@@ -311,7 +310,13 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
-      drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
+      drawer: MainDrawer(
+        onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+        onReload: () {
+          getMenu();
+          LoginBloc.of(context).getListMenuFlash();
+        },
+      ),
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: LoginBloc.of(context).listMenuFlash.isNotEmpty
           ? ExpandableFab(

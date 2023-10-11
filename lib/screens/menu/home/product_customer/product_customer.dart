@@ -38,7 +38,10 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.SAN_PHAM_KH);
-    title = Get.arguments ?? '';
+    title = ModuleMy.getNameModuleMy(
+      ModuleMy.CUSTOMER,
+      isTitle: true,
+    );
     GetNotificationBloc.of(context).add(CheckNotification());
     _scrollController = ScrollController();
     _bloc = ProductCustomerModuleBloc.of(context);
@@ -88,19 +91,32 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
     super.dispose();
   }
 
+  _reloadLanguage() async {
+    await _research();
+    title = ModuleMy.getNameModuleMy(
+      ModuleMy.CUSTOMER,
+      isTitle: true,
+    );
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: _drawerKey,
         resizeToAvoidBottomInset: false,
-        drawer:
-            MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
+        drawer: MainDrawer(
+          onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+          onReload: () async {
+            await _reloadLanguage();
+          },
+        ),
         appBar: AppbarBase(_drawerKey, title),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
           backgroundColor: COLORS.ff1AA928,
           onPressed: () => AppNavigator.navigateFormAdd(
-              '${AppLocalizations.of(Get.context!)?.add} $title',
+              '${AppLocalizations.of(context)?.add} $title',
               PRODUCT_CUSTOMER_TYPE),
           child: Icon(Icons.add, size: 40),
         ),
@@ -109,8 +125,7 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
             children: [
               AppValue.vSpaceSmall,
               SearchBase(
-                hint: AppLocalizations.of(Get.context!)
-                    ?.enter_name_barcode_qr_code,
+                hint: AppLocalizations.of(context)?.enter_name_barcode_qr_code,
                 leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                 endIcon: GestureDetector(
                   onTap: () {
@@ -128,11 +143,9 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                           );
                         } else {
                           ShowDialogCustom.showDialogBase(
-                            title:
-                                AppLocalizations.of(Get.context!)?.notification,
+                            title: AppLocalizations.of(context)?.notification,
                             content:
-                                AppLocalizations.of(Get.context!)?.no_data ??
-                                    '',
+                                AppLocalizations.of(context)?.no_data ?? '',
                           );
                         }
                       }
@@ -264,8 +277,7 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                   children: [
                     Center(
                       child: WidgetText(
-                        title:
-                            AppLocalizations.of(Get.context!)?.select_filter,
+                        title: AppLocalizations.of(context)?.select_filter,
                         textAlign: TextAlign.center,
                         style: AppStyle.DEFAULT_16_BOLD,
                       ),

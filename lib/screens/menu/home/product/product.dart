@@ -28,7 +28,7 @@ class _ProductScreenState extends State<ProductScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   late final ProductModuleBloc _bloc;
   late final ScrollController _scrollController;
-  late final String title;
+  String title = '';
   late final ManagerBloc managerBloc;
 
   @override
@@ -37,7 +37,10 @@ class _ProductScreenState extends State<ProductScreen> {
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.PRODUCT);
     GetNotificationBloc.of(context).add(CheckNotification());
-    title = Get.arguments ?? '';
+    title = ModuleMy.getNameModuleMy(
+      ModuleMy.SAN_PHAM,
+      isTitle: true,
+    );
     _scrollController = ScrollController();
     _bloc = ProductModuleBloc.of(context);
     getDataFirst();
@@ -73,6 +76,15 @@ class _ProductScreenState extends State<ProductScreen> {
     ));
   }
 
+  _reloadLanguage() async {
+    await _research();
+    title = ModuleMy.getNameModuleMy(
+      ModuleMy.SAN_PHAM,
+      isTitle: true,
+    );
+    setState(() {});
+  }
+
   getDataFirst() {
     _bloc.add(InitGetListProductModuleEvent());
   }
@@ -93,14 +105,18 @@ class _ProductScreenState extends State<ProductScreen> {
     return Scaffold(
         key: _drawerKey,
         resizeToAvoidBottomInset: false,
-        drawer:
-            MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
+        drawer: MainDrawer(
+          onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+          onReload: () async {
+            await _reloadLanguage();
+          },
+        ),
         appBar: AppbarBase(_drawerKey, title),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
           backgroundColor: COLORS.ff1AA928,
           onPressed: () => AppNavigator.navigateFormAdd(
-              '${AppLocalizations.of(Get.context!)?.add} $title', PRODUCT_TYPE),
+              '${AppLocalizations.of(context)?.add} $title', PRODUCT_TYPE),
           child: Icon(Icons.add, size: 40),
         ),
         body: Container(
@@ -108,9 +124,9 @@ class _ProductScreenState extends State<ProductScreen> {
             children: [
               AppValue.vSpaceSmall,
               SearchBase(
-                hint: AppLocalizations.of(Get.context!)
-                        ?.enter_name_barcode_qr_code ??
-                    '',
+                hint:
+                    AppLocalizations.of(context)?.enter_name_barcode_qr_code ??
+                        '',
                 leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                 endIcon: GestureDetector(
                   onTap: () {

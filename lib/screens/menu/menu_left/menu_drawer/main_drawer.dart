@@ -19,9 +19,13 @@ import '../../../../widgets/widget_text.dart';
 import 'widget_item_list_menu.dart';
 
 class MainDrawer extends StatefulWidget {
-  final Function? onPress;
+  final Function onPress;
+  final Function onReload;
 
-  const MainDrawer({this.onPress});
+  const MainDrawer({
+    required this.onPress,
+    required this.onReload,
+  });
 
   @override
   State<MainDrawer> createState() => _MainDrawerState();
@@ -35,12 +39,12 @@ class _MainDrawerState extends State<MainDrawer> {
   String? canLoginWithFingerPrint;
   List<LanguagesResponse> resultLanguage = [];
   late final LocalAuthentication auth;
+  bool isReload = false;
 
   @override
   void initState() {
     getMenu();
     getListLanguagesBE();
-    LoginBloc.of(context).getMenuMain();
     auth = LocalAuthentication();
     fingerPrintIsCheck = BehaviorSubject();
     supportBiometric = BehaviorSubject();
@@ -57,6 +61,12 @@ class _MainDrawerState extends State<MainDrawer> {
     }
     checkBiometricEnable();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (isReload) widget.onReload();
+    super.dispose();
   }
 
   Future<void> checkBiometricEnable() async {
@@ -340,7 +350,10 @@ class _MainDrawerState extends State<MainDrawer> {
                       items: resultLanguage
                           .map((items) => DropdownMenuItem<LanguagesResponse>(
                                 onTap: () async {
-                                  // GetInforAccBloc.of(context).add(InitGetInforAcc()); //todo
+                                  isReload = items.name !=
+                                      (shareLocal.getString(
+                                              PreferencesKey.LANGUAGE_NAME) ??
+                                          '');
                                   LoginBloc.of(context).setLanguage(items);
                                   await LoginBloc.of(context).getMenuMain();
                                   await getMenu();
@@ -392,7 +405,7 @@ class _MainDrawerState extends State<MainDrawer> {
                                   children: [
                                     InkWell(
                                       onTap: () =>
-                                          widget.onPress!(_elements[index]),
+                                          widget.onPress(_elements[index]),
                                       child: WidgetItemListMenu(
                                         icon: _elements[index]['image'],
                                         title: _elements[index]['title'],

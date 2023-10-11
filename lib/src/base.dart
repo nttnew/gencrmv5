@@ -13,7 +13,7 @@ class BASE_URL {
   static const int PAGE_DEFAULT = 1;
   static const URL_DEMO = 'https://demo.gencrm.com/';
   static const GET_INFO_USER = 'api/user/profile';
-  static const LOGIN = 'loginmobile.php';//todo 2
+  static const LOGIN = 'loginmobile.php';
   static const LOGOUT = 'lougoutmobile.php';
   static const REGISTER = 'api/user/register-user';
   static const PROFILE = 'api/user/profile';
@@ -129,7 +129,7 @@ class BASE_URL {
   static const GET_INFOR = 'modules/genmobile2/app/getinfo';
   static const UPDATE_PASS = 'modules/genmobile2/profile/changepass';
   static const CHANGE_INFOR_ACC = 'modules/genmobile2/profile/update';
-  static const LIST_UNREAD_NOTIFICATION =//todo 1
+  static const LIST_UNREAD_NOTIFICATION =
       'modules/genmobile2/notification/list';
   static const LIST_READED_NOTIFICATION =
       'modules/genmobile2/notification/listRead';

@@ -189,27 +189,27 @@ handleOnPressItemMenu(_drawerKey, value) async {
       break;
     case 'opportunity':
       _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateChance(value['title']);
+      AppNavigator.navigateChance();
       break;
     case 'job':
       _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateWork(value['title']);
+      AppNavigator.navigateWork();
       break;
     case 'contract':
       _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateContract(value['title']);
+      AppNavigator.navigateContract();
       break;
     case 'support':
       _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateSupport(value['title']);
+      AppNavigator.navigateSupport();
       break;
     case 'customer':
       _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateCustomer(value['title']);
+      AppNavigator.navigateCustomer();
       break;
     case 'contact':
       _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateClue(value['title']);
+      AppNavigator.navigateClue();
       break;
     case 'report':
       _drawerKey.currentState!.openEndDrawer();
@@ -218,11 +218,11 @@ handleOnPressItemMenu(_drawerKey, value) async {
       break;
     case 'product':
       _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateProduct(value['title']);
+      AppNavigator.navigateProduct();
       break;
     case 'sanphamkh':
       _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateProductCustomer(value['title']);
+      AppNavigator.navigateProductCustomer();
       break;
     case '2':
       _drawerKey.currentState!.openEndDrawer();
