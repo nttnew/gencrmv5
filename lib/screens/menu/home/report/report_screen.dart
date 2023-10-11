@@ -56,9 +56,9 @@ class _ReportScreenState extends State<ReportScreen> {
   String _range = '';
   String? timeFrom;
   String? timeTo;
-  late final List<Map<String, dynamic>> typeReport;
-  late final List<String> items;
-  late String select;
+  List<Map<String, dynamic>> typeReport = [];
+  List<String> items = [];
+  String select = '';
 
   List<Map<String, dynamic>> typeDoanhSo = [
     {
@@ -88,6 +88,12 @@ class _ReportScreenState extends State<ReportScreen> {
 
   @override
   void initState() {
+    init();
+    scroll();
+    super.initState();
+  }
+
+  init() {
     final nameReport = shareLocal.getString(PreferencesKey.NAME_REPORT);
     typeReport = [
       {
@@ -110,8 +116,6 @@ class _ReportScreenState extends State<ReportScreen> {
     timeFilter = 0;
     GetNotificationBloc.of(context).add(CheckNotification());
     ReportBloc.of(context).add(InitReportEvent());
-    scroll();
-    super.initState();
   }
 
   scroll() {
@@ -171,8 +175,12 @@ class _ReportScreenState extends State<ReportScreen> {
     return Scaffold(
         backgroundColor: COLORS.WHITE,
         key: _drawerKey,
-        drawer:
-            MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
+        drawer: MainDrawer(
+          onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+          onReload: () {
+            init();
+          },
+        ),
         appBar: AppbarBase(
             _drawerKey, AppLocalizations.of(Get.context!)?.report ?? ''),
         body: Padding(

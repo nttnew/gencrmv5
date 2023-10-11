@@ -29,7 +29,10 @@ class _SupportScreenState extends State<SupportScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   final _key = GlobalKey<ExpandableFabState>();
   String search = '';
-  String title = Get.arguments ?? '';
+  String title = ModuleMy.getNameModuleMy(
+    ModuleMy.CSKH,
+    isTitle: true,
+  );
   String idFilter = '';
   ScrollController _scrollController = ScrollController();
   int length = 0;
@@ -79,12 +82,30 @@ class _SupportScreenState extends State<SupportScreen> {
     ));
   }
 
+  _reloadLanguage() async {
+    await _research();
+    listAdd = [
+      '${AppLocalizations.of(Get.context!)?.add} ${AppLocalizations.of(Get.context!)?.check_in}',
+      '${AppLocalizations.of(Get.context!)?.add} ${title.toLowerCase()}'
+    ];
+    title = ModuleMy.getNameModuleMy(
+      ModuleMy.CSKH,
+      isTitle: true,
+    );
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
       resizeToAvoidBottomInset: false,
-      drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
+      drawer: MainDrawer(
+        onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+        onReload: () async {
+          await _reloadLanguage();
+        },
+      ),
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
         key: _key,
@@ -180,7 +201,7 @@ class _SupportScreenState extends State<SupportScreen> {
                   builder: (context, snapshot) {
                     return SearchBase(
                       hint:
-                          "${AppLocalizations.of(Get.context!)?.find} ${title.toLowerCase()}",
+                          "${AppLocalizations.of(context)?.find} ${title.toLowerCase()}",
                       leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                       endIcon: (snapshot.data ?? []).isNotEmpty
                           ? SvgPicture.asset(

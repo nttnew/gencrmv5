@@ -43,4 +43,6 @@ class PreferencesKey {
   static const String NAME_REPORT = "nameReport";
   static const String NAME_CUSTOMER = "nameCustomer";
   static const String LANGUAGE = "language";
+  static const String LANGUAGE_BE = "LANGUAGE_BE";
+  static const String LANGUAGE_NAME = "LANGUAGE_NAME";
 }

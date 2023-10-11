@@ -750,7 +750,7 @@ class _FormAddDataState extends State<FormAddData> {
                   })
                 : ServiceVoucherBloc.of(context).getInput(data.field_name ?? '')
                     ? StreamBuilder<String>(
-                      stream: ServiceVoucherBloc.of(context).loaiXe,//todo getdata selectcar local
+                      stream: ServiceVoucherBloc.of(context).loaiXe,// getdata selectcar local
                       builder: (context, snapshot) {
                         return fieldCar(data, indexParent, indexChild, context,
                             value: ServiceVoucherBloc.of(context)

@@ -42,6 +42,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
+    LoginBloc.of(context).getLanguage();
     _handleMessFirebase();
     super.initState();
   }
@@ -131,7 +132,7 @@ class _MyAppState extends State<MyApp> {
       ));
     }
     return StreamBuilder<Locale>(
-        stream: LoginBloc.of(context).locale,
+        stream: LoginBloc.of(context).localeLocal,
         builder: (context, snapshot) {
           return GetMaterialApp(
             locale: snapshot.data,

@@ -16,6 +16,8 @@ class DioProvider {
       ..options.receiveTimeout =
           Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds
       ..options.headers = {
+        BASE_URL.language:
+            shareLocal.getString(PreferencesKey.LANGUAGE_NAME) ?? '',
         BASE_URL.content_type: BASE_URL.application_json,
         BASE_URL.auth_type: sess != null ? '${BASE_URL.PHPSESSID}=$sess' : '',
         BASE_URL.AUTHORIZATION: token != null ? token : ''

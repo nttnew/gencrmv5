@@ -111,11 +111,9 @@ class AppNavigator {
   static navigateReport(String money) async =>
       await Get.toNamed(ROUTE_NAMES.REPORT, arguments: money);
 
-  static navigateCustomer(String name) async =>
-      await Get.toNamed(ROUTE_NAMES.CUSTOMER, arguments: name);
+  static navigateCustomer() async => await Get.toNamed(ROUTE_NAMES.CUSTOMER);
 
-  static navigateClue(String name) async =>
-      await Get.toNamed(ROUTE_NAMES.CLUE, arguments: name);
+  static navigateClue() async => await Get.toNamed(ROUTE_NAMES.CLUE);
 
   static navigateInfoClue(String id, String name) async =>
       await Get.toNamed(ROUTE_NAMES.INFO_CLUE, arguments: [id, name]);
@@ -125,8 +123,8 @@ class AppNavigator {
   static navigateCall({required String title}) async =>
       await Get.toNamed(ROUTE_NAMES.CALL, arguments: title);
 
-  static navigateContract(String name) async =>
-      await Get.toNamed(ROUTE_NAMES.CONTRACT, arguments: name);
+  static navigateContract() async =>
+      await Get.toNamed(ROUTE_NAMES.CONTRACT);
 
   static navigateAddContract({
     String? id,
@@ -143,11 +141,9 @@ class AppNavigator {
   static navigateInfoContract(String id, String name) async =>
       await Get.toNamed(ROUTE_NAMES.INFO_CONTRACT, arguments: [id, name]);
 
-  static navigateSupport(String name) async =>
-      await Get.toNamed(ROUTE_NAMES.SUPPORT, arguments: name);
+  static navigateSupport() async => await Get.toNamed(ROUTE_NAMES.SUPPORT);
 
-  static navigateChance(String name) async =>
-      await Get.toNamed(ROUTE_NAMES.CHANCE, arguments: name);
+  static navigateChance() async => await Get.toNamed(ROUTE_NAMES.CHANCE);
 
   static navigateAddChance(String id) async =>
       await Get.toNamed(ROUTE_NAMES.ADD_CHANCE, arguments: id);
@@ -155,8 +151,9 @@ class AppNavigator {
   static navigateInfoChance(String id, String name) async =>
       await Get.toNamed(ROUTE_NAMES.INFO_CHANCE, arguments: [id, name]);
 
-  static navigateWork(String name) async =>
-      await Get.toNamed(ROUTE_NAMES.WORK, arguments: name);
+  static navigateWork() async => await Get.toNamed(
+        ROUTE_NAMES.WORK,
+      );
 
   static navigateAboutUs() async => await Get.toNamed(ROUTE_NAMES.ABOUT_US);
 
@@ -212,8 +209,9 @@ class AppNavigator {
       await Get.toNamed(ROUTE_NAMES.ADD_PRODUCT,
           arguments: [add, reload, data, group]);
 
-  static navigateProduct(String title) async =>
-      await Get.toNamed(ROUTE_NAMES.PRODUCT, arguments: title);
+  static navigateProduct() async => await Get.toNamed(
+        ROUTE_NAMES.PRODUCT,
+      );
 
   static navigateDetailProduct(String title, String id) async =>
       await Get.toNamed(ROUTE_NAMES.DETAIL_PRODUCT, arguments: [title, id]);
@@ -225,8 +223,9 @@ class AppNavigator {
         if (onRefresh != null) onRefresh();
       });
 
-  static navigateProductCustomer(String title) async =>
-      await Get.toNamed(ROUTE_NAMES.PRODUCT_CUSTOMER, arguments: title);
+  static navigateProductCustomer() async => await Get.toNamed(
+        ROUTE_NAMES.PRODUCT_CUSTOMER,
+      );
 
   static navigateDetailProductCustomer(String title, String id) async =>
       await Get.toNamed(ROUTE_NAMES.DETAIL_PRODUCT_CUSTOMER,

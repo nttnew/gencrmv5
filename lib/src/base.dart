@@ -13,7 +13,7 @@ class BASE_URL {
   static const int PAGE_DEFAULT = 1;
   static const URL_DEMO = 'https://demo.gencrm.com/';
   static const GET_INFO_USER = 'api/user/profile';
-  static const LOGIN = 'loginmobile.php';//todo 2
+  static const LOGIN = 'loginmobile.php';
   static const LOGOUT = 'lougoutmobile.php';
   static const REGISTER = 'api/user/register-user';
   static const PROFILE = 'api/user/profile';
@@ -129,7 +129,7 @@ class BASE_URL {
   static const GET_INFOR = 'modules/genmobile2/app/getinfo';
   static const UPDATE_PASS = 'modules/genmobile2/profile/changepass';
   static const CHANGE_INFOR_ACC = 'modules/genmobile2/profile/update';
-  static const LIST_UNREAD_NOTIFICATION =//todo 1
+  static const LIST_UNREAD_NOTIFICATION =
       'modules/genmobile2/notification/list';
   static const LIST_READED_NOTIFICATION =
       'modules/genmobile2/notification/listRead';
@@ -182,11 +182,13 @@ class BASE_URL {
   static const GET_ADDRESS_CUSTOMER = 'modules/genmobile2/customer/getAddress';
   static const GET_SERVICE_PACK = 'modules/genmobile2/product/getServicePack';
   static const GET_PRODUCT_SERVICE_PACK = 'modules/genmobile2/product/getProductInServicePack';
+  static const GET_MENU = 'modules/genmobile2/profile/getMenu';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';
   static const int connectionTimeout = 45000;
   static const content_type = 'Content-Type';
+  static const language = 'language';
   static const application_json = 'application/json';
   static const PHPSESSID = 'PHPSESSID';
   static const AUTHORIZATION = 'Authorization';

@@ -47,6 +47,7 @@ import '../src/models/model_generator/list_cv_customer_response.dart';
 import '../src/models/model_generator/list_hd_product_customer_response.dart';
 import '../src/models/model_generator/list_ht_product_customer_response.dart';
 import '../src/models/model_generator/list_product_response.dart';
+import '../src/models/model_generator/main_menu_response.dart';
 import '../src/models/model_generator/note.dart';
 import '../src/models/model_generator/param_del_notif.dart';
 import '../src/models/model_generator/param_read_notifi.dart';
@@ -877,6 +878,9 @@ class UserRepository {
   }) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .getProductServicePack(id);
+
+  Future<MainMenuResponse> getMenuMain() async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getMenuMain();
 
   //////////////////////
 

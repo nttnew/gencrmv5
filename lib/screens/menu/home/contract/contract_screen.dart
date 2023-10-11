@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/bloc/contract/contract_bloc.dart';
-import 'package:get/get.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import '../../../../src/app_const.dart';
@@ -45,7 +44,10 @@ class _ContractScreenState extends State<ContractScreen> {
     managerBloc.getManager(module: Module.HOP_DONG);
     GetNotificationBloc.of(context).add(CheckNotification());
     _bloc.add(InitGetContractEvent());
-    title = Get.arguments ?? '';
+    title = ModuleMy.getNameModuleMy(
+      ModuleMy.HOP_DONG,
+      isTitle: true,
+    );
     _scrollController.addListener(() {
       if (_scrollController.offset ==
               _scrollController.position.maxScrollExtent &&
@@ -68,20 +70,36 @@ class _ContractScreenState extends State<ContractScreen> {
     ));
   }
 
+  _reloadLanguage() async {
+    await _research();
+    title = ModuleMy.getNameModuleMy(
+      ModuleMy.HOP_DONG,
+      isTitle: true,
+    );
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
       resizeToAvoidBottomInset: false,
       appBar: AppbarBase(_drawerKey, title),
-      drawer: MainDrawer(onPress: (v) => handleOnPressItemMenu(_drawerKey, v)),
+      drawer: MainDrawer(
+        onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+        onReload: () async {
+          await _reloadLanguage();
+        },
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 20),
         child: FloatingActionButton(
           backgroundColor: COLORS.ff1AA928,
           onPressed: () {
-            AppNavigator.navigateAddContract(title: '${AppLocalizations.of(Get.context!)?.add} ${title.toLowerCase()}');
+            AppNavigator.navigateAddContract(
+                title:
+                    '${AppLocalizations.of(context)?.add} ${title.toLowerCase()}');
           },
           child: Icon(Icons.add, size: 40),
         ),
@@ -93,7 +111,8 @@ class _ContractScreenState extends State<ContractScreen> {
               stream: managerBloc.managerTrees,
               builder: (context, snapshot) {
                 return SearchBase(
-                  hint: "${AppLocalizations.of(Get.context!)?.find} ${title.toLowerCase()}",
+                  hint:
+                      "${AppLocalizations.of(context)?.find} ${title.toLowerCase()}",
                   leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                   endIcon: (snapshot.data ?? []).isNotEmpty
                       ? SvgPicture.asset(

@@ -48,6 +48,7 @@ import '../models/model_generator/list_hd_product_customer_response.dart';
 import '../models/model_generator/list_ht_product_customer_response.dart';
 import '../models/model_generator/list_product_customer_response.dart';
 import '../models/model_generator/list_product_response.dart';
+import '../models/model_generator/main_menu_response.dart';
 import '../models/model_generator/policy.dart';
 import '../models/model_generator/product_customer_save_response.dart';
 import '../models/model_generator/product_response.dart';
@@ -829,4 +830,7 @@ abstract class RestClient {
   Future<ProductServicePackResponse> getProductServicePack(
     @Query('id') String id,
   );
+
+  @GET(BASE_URL.GET_MENU)
+  Future<MainMenuResponse> getMenuMain();
 }

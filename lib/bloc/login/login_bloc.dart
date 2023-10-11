@@ -10,6 +10,7 @@ import 'package:gen_crm/api_resfull/dio_provider.dart';
 import 'package:gen_crm/api_resfull/user_repository.dart';
 import 'package:gen_crm/l10n/l10n.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
+import 'package:gen_crm/src/models/model_generator/main_menu_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/event_repository_storage.dart';
 import 'package:gen_crm/storages/share_local.dart';
@@ -17,6 +18,7 @@ import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart' as GET;
+import '../../widgets/loading_api.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -24,8 +26,9 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
   final EventRepositoryStorage localRepository;
-  late List<ItemMenu> listMenuFlash = [];
-  BehaviorSubject<Locale> locale = BehaviorSubject.seeded(L10n.all.first);
+  late List<QuickMenu> listMenuFlash = [];
+  BehaviorSubject<Locale> localeLocal = BehaviorSubject.seeded(L10n.all.first);
+  BehaviorSubject<LanguagesResponse> localeLocalSelect = BehaviorSubject();
   static const String UNREGISTER = 'UNREGISTER';
   static const String REGISTERED = 'REGISTERED';
   LoginData? loginData;
@@ -84,8 +87,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     String data = shareLocal.getString(PreferencesKey.LIST_MENU_FLASH) ?? "";
     if (data != '') {
       final result = json.decode(data);
-      final resultHangXe = result.map((e) => ItemMenu.fromJson(e)).toList();
-      final Set<ItemMenu> list = {};
+      final resultHangXe = result.map((e) => QuickMenu.fromJson(e)).toList();
+      final Set<QuickMenu> list = {};
       for (final obj in resultHangXe) {
         list.add(obj);
       }
@@ -141,7 +144,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 await shareLocal.getString(PreferencesKey.USER_NAME);
             if (userName != state.email.value.trim()) {
               shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "false");
-              shareLocal.putString(PreferencesKey.SHOW_LOGIN_FINGER_PRINT, "true");
+              shareLocal.putString(
+                  PreferencesKey.SHOW_LOGIN_FINGER_PRINT, "true");
             }
             await shareLocal.putString(
                 PreferencesKey.USER_NAME, state.email.value);
@@ -204,10 +208,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Future<void> _saveData(LoginResponse response) async {
-    listMenuFlash = [];
-    listMenuFlash.addAll(response.data?.quick ?? []);
-    await shareLocal.putString(
-        PreferencesKey.LIST_MENU_FLASH, jsonEncode(response.data?.quick));
     await shareLocal.putString(
         PreferencesKey.DATA_CALL, jsonEncode(response.data));
     await localRepository.saveUser(jsonEncode(response.data));
@@ -215,8 +215,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         PreferencesKey.SESS, response.data?.session_id ?? '');
     await shareLocal.putString(
         PreferencesKey.TOKEN, response.data?.token ?? '');
-    await shareLocal.putString(
-        PreferencesKey.MENU, jsonEncode(response.data?.menu ?? ''));
     await shareLocal.putBools(PreferencesKey.FIRST_TIME, true);
     await shareLocal.putString(
         dotenv.env[PreferencesKey.TOKEN] ?? '', response.data?.token ?? '');
@@ -234,6 +232,64 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         PreferencesKey.ID_USER, response.data?.info_user?.user_id ?? "");
     await shareLocal.putString(
         PreferencesKey.MONEY, response.data?.tien_te ?? "");
+    await shareLocal.putString(
+        PreferencesKey.LANGUAGE_BE, jsonEncode(response.data?.languages ?? []));
+    for (final value in response.data?.languages ?? []) {
+      if (value.defaultLanguages == 1) {
+        final lang = await shareLocal.getString(PreferencesKey.LANGUAGE) ?? '';
+        if (lang == '') setLanguage(value);
+      }
+    }
+    LoadingApi().pushLoading();
+    await getMenuMain();
+    LoadingApi().popLoading();
+  }
+
+  Future<void> getMenuMain() async {
+    try {
+      final response = await userRepository.getMenuMain();
+      if ((response.code == BASE_URL.SUCCESS) ||
+          (response.code == BASE_URL.SUCCESS_200)) {
+        await shareLocal.putString(
+            PreferencesKey.MENU, jsonEncode(response.data?.mainMenu));
+        listMenuFlash = [];
+        listMenuFlash.addAll(response.data?.quickMenu ?? []);
+        await shareLocal.putString(PreferencesKey.LIST_MENU_FLASH,
+            jsonEncode(response.data?.quickMenu));
+      } else {
+        // loginSessionExpired();
+      }
+    } catch (e) {
+      // LoadingApi().popLoading();
+      // loginSessionExpired();
+    }
+  }
+
+  void getLanguage() async {
+    final lang = await shareLocal.getString(PreferencesKey.LANGUAGE) ?? '';
+    if (lang != '') {
+      LanguagesResponse language = LanguagesResponse.fromJson(
+          jsonDecode(shareLocal.getString(PreferencesKey.LANGUAGE) ?? ''));
+      addLocalLang(language);
+      localeLocalSelect.add(language);
+    }
+  }
+
+  void addLocalLang(LanguagesResponse langRes) {
+    Locale locale = L10n.getLocale(langRes.name ?? '');
+    localeLocal.add(locale);
+    if (shareLocal.getString(PreferencesKey.TOKEN) != '' ||
+        shareLocal.getString(PreferencesKey.TOKEN) != null)
+      DioProvider.instance(
+          token: shareLocal.getString(PreferencesKey.TOKEN),
+          sess: shareLocal.getString(PreferencesKey.SESS));
+  }
+
+  void setLanguage(LanguagesResponse language) {
+    shareLocal.putString(PreferencesKey.LANGUAGE, jsonEncode(language));
+    shareLocal.putString(PreferencesKey.LANGUAGE_NAME, language.name ?? '');
+    localeLocalSelect.add(language);
+    addLocalLang(language);
   }
 
   static LoginBloc of(BuildContext context) =>

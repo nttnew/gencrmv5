@@ -31,39 +31,24 @@ class InfoUserLogin {
 }
 
 @JsonSerializable()
-class ItemMenu {
-  final String? id, name;
-  final bool? isallow;
-
-  ItemMenu(this.id, this.name,
-      this.isallow); //static const empty =  InfoUserLogin('', '', '', '', '', '', '', 0);
-
-  factory ItemMenu.fromJson(Map<String, dynamic> json) =>
-      _$ItemMenuFromJson(json);
-  Map<String, dynamic> toJson() => _$ItemMenuToJson(this);
-}
-
-@JsonSerializable()
 class LoginData {
   final String? tien_te;
   final InfoUserLogin? info_user;
   final String? token, session_id;
-  final List<ItemMenu>? menu;
-  final List<ItemMenu>? quick;
   final String? outbound_mobile, port_mobile, transport_mobile;
   final int? systemversion;
+  final List<LanguagesResponse>? languages;
 
   LoginData({
     this.tien_te,
     this.info_user,
     this.token,
     this.session_id,
-    this.menu,
-    this.quick,
     this.systemversion,
     this.outbound_mobile,
     this.port_mobile,
     this.transport_mobile,
+    this.languages,
   });
 
   factory LoginData.fromJson(Map<String, dynamic> json) =>
@@ -117,4 +102,24 @@ class InfoSetupCallcenterRes {
   factory InfoSetupCallcenterRes.fromJson(Map<String, dynamic> json) =>
       _$InfoSetupCallcenterResFromJson(json);
   Map<String, dynamic> toJson() => _$InfoSetupCallcenterResToJson(this);
+}
+
+@JsonSerializable()
+class LanguagesResponse {
+  String? label;
+  @JsonKey(name: 'default')
+  int? defaultLanguages;
+  String? flag;
+  String? name;
+
+  LanguagesResponse({
+    this.label,
+    this.defaultLanguages,
+    this.flag,
+    this.name,
+  });
+
+  factory LanguagesResponse.fromJson(Map<String, dynamic> json) =>
+      _$LanguagesResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$LanguagesResponseToJson(this);
 }
