@@ -206,6 +206,7 @@ class _MainDrawerState extends State<MainDrawer> {
             color: COLORS.SECONDS_COLOR,
             height: AppValue.heights * 0.18,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
                   child: BlocBuilder<GetInforAccBloc, GetInforAccState>(
@@ -298,27 +299,90 @@ class _MainDrawerState extends State<MainDrawer> {
                     },
                   ),
                 ),
-                Container(
-                  height: 36,
-                  padding: EdgeInsets.symmetric(horizontal: 6),
-                  decoration: BoxDecoration(
-                      color: COLORS.BLACK.withOpacity(0.1),
-                      borderRadius: BorderRadius.all(Radius.circular(
-                        6,
-                      ))),
-                  child: Center(
-                    child: DropdownButton2<LanguagesResponse>(
-                      hint: StreamBuilder<LanguagesResponse>(
-                          stream: LoginBloc.of(context).localeLocalSelect,
-                          builder: (context, snapshot) {
-                            final languagesSnap = snapshot.data;
-                            return languagesSnap != null
-                                ? Row(
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    margin: EdgeInsets.only(
+                      top: 35,
+                    ),
+                    height: 36,
+                    padding: EdgeInsets.symmetric(horizontal: 6),
+                    decoration: BoxDecoration(
+                        color: COLORS.WHITE,
+                        border: Border.all(color: COLORS.GREY_400, width: 0.5),
+                        borderRadius: BorderRadius.all(Radius.circular(
+                          12,
+                        ))),
+                    child: Center(
+                      child: DropdownButton2<LanguagesResponse>(
+                        hint: StreamBuilder<LanguagesResponse>(
+                            stream: LoginBloc.of(context).localeLocalSelect,
+                            builder: (context, snapshot) {
+                              final languagesSnap = snapshot.data;
+                              return languagesSnap != null
+                                  ? Row(
+                                      children: [
+                                        Container(
+                                          child: Image.network(
+                                            getFlagCountry(
+                                              languagesSnap.flag ?? '',
+                                            ),
+                                            fit: BoxFit.contain,
+                                          ),
+                                          height: 24,
+                                          width: 24,
+                                        ),
+                                        SizedBox(
+                                          width: 4,
+                                        ),
+                                        SizedBox(
+                                            width: 15,
+                                            child: FractionallySizedBox(
+                                              widthFactor:
+                                                  1.0, // Giữ nguyên chiều rộng
+                                              heightFactor:
+                                                  1.0, // Giữ nguyên chiều cao
+                                              child: FittedBox(
+                                                fit: BoxFit
+                                                    .scaleDown, // Giúp thu nhỏ nếu vượt quá kích thước cha
+                                                child: Text(
+                                                  L10n.getLocale(
+                                                          languagesSnap.name ??
+                                                              '')
+                                                      .toString()
+                                                      .toLowerCase(),
+                                                  style:
+                                                      AppStyle.DEFAULT_14_BOLD,
+                                                ),
+                                              ),
+                                            )),
+                                      ],
+                                    )
+                                  : SizedBox();
+                            }),
+                        icon: Container(),
+                        underline: Container(),
+                        onChanged: (LanguagesResponse? value) {},
+                        dropdownWidth: 90,
+                        barrierColor: Colors.grey.withOpacity(0.4),
+                        items: resultLanguage
+                            .map((items) => DropdownMenuItem<LanguagesResponse>(
+                                  onTap: () async {
+                                    isReload = items.name !=
+                                        (shareLocal.getString(
+                                                PreferencesKey.LANGUAGE_NAME) ??
+                                            '');
+                                    LoginBloc.of(context).setLanguage(items);
+                                    await LoginBloc.of(context).getMenuMain();
+                                    await getMenu();
+                                  },
+                                  value: items,
+                                  child: Row(
                                     children: [
                                       Container(
                                         child: Image.network(
                                           getFlagCountry(
-                                            languagesSnap.flag ?? '',
+                                            items.flag ?? '',
                                           ),
                                           fit: BoxFit.contain,
                                         ),
@@ -328,62 +392,17 @@ class _MainDrawerState extends State<MainDrawer> {
                                       SizedBox(
                                         width: 4,
                                       ),
-                                      SizedBox(
-                                        width: 20,
-                                        child: Text(
-                                          L10n.getLocale(
-                                                  languagesSnap.name ?? '')
-                                              .toString()
-                                              .toLowerCase(),
-                                          style: AppStyle.DEFAULT_14_BOLD,
-                                        ),
+                                      Text(
+                                        L10n.getLocale(items.name ?? '')
+                                            .toString()
+                                            .toLowerCase(),
+                                        style: AppStyle.DEFAULT_14_BOLD,
                                       ),
                                     ],
-                                  )
-                                : SizedBox();
-                          }),
-                      icon: Container(),
-                      underline: Container(),
-                      onChanged: (LanguagesResponse? value) {},
-                      dropdownWidth: 90,
-                      barrierColor: Colors.grey.withOpacity(0.4),
-                      items: resultLanguage
-                          .map((items) => DropdownMenuItem<LanguagesResponse>(
-                                onTap: () async {
-                                  isReload = items.name !=
-                                      (shareLocal.getString(
-                                              PreferencesKey.LANGUAGE_NAME) ??
-                                          '');
-                                  LoginBloc.of(context).setLanguage(items);
-                                  await LoginBloc.of(context).getMenuMain();
-                                  await getMenu();
-                                },
-                                value: items,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      child: Image.network(
-                                        getFlagCountry(
-                                          items.flag ?? '',
-                                        ),
-                                        fit: BoxFit.contain,
-                                      ),
-                                      height: 24,
-                                      width: 24,
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text(
-                                      L10n.getLocale(items.name ?? '')
-                                          .toString()
-                                          .toLowerCase(),
-                                      style: AppStyle.DEFAULT_14_BOLD,
-                                    ),
-                                  ],
-                                ),
-                              ))
-                          .toList(),
+                                  ),
+                                ))
+                            .toList(),
+                      ),
                     ),
                   ),
                 ),
