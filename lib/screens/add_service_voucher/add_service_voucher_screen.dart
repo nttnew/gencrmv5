@@ -5,8 +5,7 @@ import 'package:gen_crm/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../bloc/add_service_voucher/add_service_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../l10n/key_text.dart';
 import '../../widgets/appbar_base.dart';
 
 class AddServiceVoucherScreen extends StatefulWidget {
@@ -47,8 +46,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
                 children: [
                   AppValue.vSpaceSmall,
                   WidgetText(
-                      title: AppLocalizations.of(Get.context!)
-                          ?.enter_number_phone_or_license_plates,
+                      title: getT(KeyT.enter_number_phone_or_license_plates),
                       style: TextStyle(
                         color: COLORS.BLACK,
                         fontFamily: "Montserrat",
@@ -56,17 +54,12 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
                         fontSize: 16,
                       )),
                   AppValue.vSpaceSmall,
-                  _fieldInputCustomer(
-                      AppLocalizations.of(Get.context!)?.phone??'',
-                      TextInputType.number,
-                      AppLocalizations.of(Get.context!)?.enter_phone??'', (v) {
+                  _fieldInputCustomer(getT(KeyT.phone), TextInputType.number,
+                      getT(KeyT.enter_phone), (v) {
                     sdt = v;
                   }),
-                  _fieldInputCustomer(
-                      AppLocalizations.of(Get.context!)?.license_plates??'',
-                      TextInputType.text,
-                      AppLocalizations.of(Get.context!)?.enter_license_plates??'',
-                      (v) {
+                  _fieldInputCustomer(getT(KeyT.license_plates),
+                      TextInputType.text, getT(KeyT.enter_license_plates), (v) {
                     bienSo = v;
                   }),
                   AppValue.vSpaceTiny,
@@ -75,10 +68,9 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
                       FocusManager.instance.primaryFocus?.unfocus();
                       if (sdt.trim() == '' && bienSo.trim() == '') {
                         ShowDialogCustom.showDialogBase(
-                          title:
-                              AppLocalizations.of(Get.context!)?.notification,
-                          content: AppLocalizations.of(Get.context!)
-                              ?.you_must_enter_your_phone_number_or_license_plates,
+                          title:getT(KeyT.notification),
+                          content: getT(KeyT
+                              .you_must_enter_your_phone_number_or_license_plates),
                         );
                       } else {
                         ServiceVoucherBloc.of(context).add(
@@ -90,10 +82,11 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
                       color: HexColor("#D0F1EB"),
                     ),
                     textStyle: TextStyle(
-                        fontFamily: "Quicksand",
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                    text: AppLocalizations.of(Get.context!)?.check,
+                      fontFamily: "Quicksand",
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                    text: getT(KeyT.check),
                   ),
                 ],
               ),

@@ -4,7 +4,7 @@ import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/blocs.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/listview_loadmore_base.dart';
@@ -44,12 +44,12 @@ class _InfoChancePageState extends State<InfoChancePage> {
   getThaoTac() {
     list.add(ModuleThaoTac(
       title:
-          "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
+          "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateFormAdd(
-            "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
+            "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
             ADD_CHANCE_JOB,
             id: int.parse(id), onRefresh: () {
           _bloc.controllerCV.reloadData();
@@ -58,7 +58,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
     ));
 
     list.add(ModuleThaoTac(
-      title: AppLocalizations.of(Get.context!)?.add_discuss ?? '',
+      title: getT(KeyT.add_discuss),
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
@@ -69,7 +69,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
     ));
 
     list.add(ModuleThaoTac(
-      title: AppLocalizations.of(Get.context!)?.see_attachment ?? '',
+      title: getT(KeyT.see_attachment),
       icon: ICONS.IC_ATTACK_SVG,
       onThaoTac: () async {
         Get.back();
@@ -82,7 +82,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
     ));
 
     list.add(ModuleThaoTac(
-      title: AppLocalizations.of(Get.context!)?.edit ?? '',
+      title: getT(KeyT.edit),
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
@@ -93,14 +93,12 @@ class _InfoChancePageState extends State<InfoChancePage> {
     ));
 
     list.add(ModuleThaoTac(
-      title: AppLocalizations.of(Get.context!)?.delete ?? '',
+      title: getT(KeyT.delete),
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
             onTap2: () => _bloc.add(InitDeleteChanceEvent(id)),
-            content: AppLocalizations.of(Get.context!)
-                    ?.are_you_sure_you_want_to_delete ??
-                '');
+            content: getT(KeyT.are_you_sure_you_want_to_delete));
       },
     ));
   }
@@ -113,8 +111,8 @@ class _InfoChancePageState extends State<InfoChancePage> {
           if (state is SuccessDeleteChanceState) {
             LoadingApi().popLoading();
             ShowDialogCustom.showDialogBase(
-              title: AppLocalizations.of(Get.context!)?.notification,
-              content: AppLocalizations.of(Get.context!)?.success ?? '',
+              title: getT(KeyT.notification),
+              content: getT(KeyT.success),
               onTap1: () {
                 Get.back();
                 Get.back();
@@ -127,9 +125,9 @@ class _InfoChancePageState extends State<InfoChancePage> {
           } else if (state is ErrorDeleteChanceState) {
             LoadingApi().popLoading();
             ShowDialogCustom.showDialogBase(
-              title: AppLocalizations.of(Get.context!)?.notification,
+              title: getT(KeyT.notification),
               content: state.msg,
-              textButton1: AppLocalizations.of(Get.context!)?.come_back ?? '',
+              textButton1: getT(KeyT.come_back),
               onTap1: () {
                 Get.back();
                 Get.back();
@@ -162,11 +160,13 @@ class _InfoChancePageState extends State<InfoChancePage> {
                           labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
                           tabs: [
                             Tab(
-                              text: AppLocalizations.of(Get.context!)?.information,
+                              text: getT(KeyT.information),
                             ),
                             Tab(
-                              text: ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC,
-                                  isTitle: true),
+                              text: ModuleMy.getNameModuleMy(
+                                ModuleMy.CONG_VIEC,
+                                isTitle: true,
+                              ),
                             )
                           ],
                         ),

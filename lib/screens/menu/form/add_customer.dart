@@ -9,7 +9,7 @@ import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../l10n/key_text.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/models/model_generator/add_customer.dart';
 import '../../../widgets/pick_file_image.dart';
@@ -62,9 +62,8 @@ class _AddCustomerState extends State<AddCustomer> {
           listener: (context, state) async {
             if (state is SuccessAddCustomerIndividualState) {
               ShowDialogCustom.showDialogBase(
-                title: AppLocalizations.of(Get.context!)?.notification,
-                content: AppLocalizations.of(Get.context!)
-                    ?.new_data_added_successfully,
+                title: getT(KeyT.notification),
+                content: getT(KeyT.new_data_added_successfully),
                 onTap1: () {
                   Get.back();
                   if (isResultData) {
@@ -78,7 +77,7 @@ class _AddCustomerState extends State<AddCustomer> {
             }
             if (state is ErrorAddCustomerIndividualState) {
               ShowDialogCustom.showDialogBase(
-                title: AppLocalizations.of(Get.context!)?.notification,
+                title: getT(KeyT.notification),
                 content: state.message,
               );
             }
@@ -327,9 +326,9 @@ class _AddCustomerState extends State<AddCustomer> {
     }
     if (check == true) {
       ShowDialogCustom.showDialogBase(
-        title: AppLocalizations.of(Get.context!)?.notification,
+        title: getT(KeyT.notification),
         content:
-            AppLocalizations.of(Get.context!)?.please_enter_all_required_fields,
+            getT(KeyT.please_enter_all_required_fields),
       );
     } else {
       GetListCustomerBloc.of(context).add(AddCustomerIndividualEvent(data,

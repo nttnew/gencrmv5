@@ -3,8 +3,7 @@ import 'package:formz/formz.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/widgets/widget_button.dart';
 import 'package:gen_crm/widgets/widget_input.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../src/src_index.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../widgets/appbar_base.dart';
@@ -57,8 +56,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
   Widget build(BuildContext context) {
     final bloc = ChangePasswordBloc.of(context);
     return Scaffold(
-      appBar:
-          AppbarBaseNormal(AppLocalizations.of(Get.context!)?.change_password),
+      appBar: AppbarBaseNormal(getT(KeyT.change_password)),
       body: Container(
         padding: EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 30),
         color: COLORS.WHITE,
@@ -68,7 +66,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
               GetSnackBarUtils.removeSnackBar();
               ShowDialogCustom.showDialogBase(
                 onTap1: () => {AppNavigator.navigateLogin()},
-                title: AppLocalizations.of(Get.context!)?.success,
+                title: getT(KeyT.success),
                 content: state.message,
               );
             }
@@ -78,7 +76,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
             if (state.status.isSubmissionFailure) {
               GetSnackBarUtils.removeSnackBar();
               ShowDialogCustom.showDialogBase(
-                title: AppLocalizations.of(Get.context!)?.notification,
+                title:getT(KeyT.notification),
                 content: state.message,
               );
             }
@@ -99,16 +97,14 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
                     state.status.isValidated
                         ? bloc.add(FormChangePasswordSubmitted())
                         : ShowDialogCustom.showDialogBase(
-                            title:
-                                AppLocalizations.of(Get.context!)?.notification,
-                            content: AppLocalizations.of(Get.context!)
-                                ?.check_the_information,
+                            title:getT(KeyT.notification),
+                            content: getT(KeyT.check_the_information),
                           );
                   },
                   height: 45,
                   padding: EdgeInsets.all(0),
                   backgroundColor: COLORS.SECONDS_COLOR,
-                  text: AppLocalizations.of(Get.context!)?.completed,
+                  text: getT(KeyT.completed),
                   textColor: COLORS.BLACK,
                 );
               })
@@ -129,8 +125,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
           obscureText: obscurePassword,
           focusNode: _passwordFocusNode,
           errorText: state.oldPassword.invalid
-              ? AppLocalizations.of(Get.context!)
-                  ?.password_must_be_at_least_6_characters
+              ? getT(KeyT.password_must_be_at_least_6_characters)
               : null,
           onChanged: (value) =>
               bloc.add(OldPasswordChanged(oldPassword: value)),
@@ -143,7 +138,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
                   Border.all(width: 1, color: COLORS.GREY.withOpacity(0.8))),
           inputType: TextInputType.text,
           hintStyle: AppStyle.DEFAULT_16.copyWith(color: Colors.grey),
-          hint: AppLocalizations.of(Get.context!)?.enter_current_password,
+          hint: getT(KeyT.enter_current_password),
           textLabel: Container(
             width: 150,
             height: 20,
@@ -162,7 +157,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
                       ),
                     ),
                     height: 11),
-                Text(AppLocalizations.of(Get.context!)?.current_password ?? '',
+                Text(getT(KeyT.current_password),
                     style: AppStyle.DEFAULT_16_BOLD),
               ],
             ),
@@ -182,8 +177,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
           obscureText: obscureNewPassword,
           focusNode: _newPasswordFocusNode,
           errorText: state.newPassword.invalid
-              ? AppLocalizations.of(Get.context!)
-                  ?.password_must_be_at_least_6_characters
+              ? getT(KeyT.password_must_be_at_least_6_characters)
               : null,
           onChanged: (value) =>
               bloc.add(NewPasswordChanged(newPassword: value)),
@@ -196,7 +190,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
                   Border.all(width: 1, color: COLORS.GREY.withOpacity(0.8))),
           inputType: TextInputType.text,
           hintStyle: AppStyle.DEFAULT_16.copyWith(color: Colors.grey),
-          hint: AppLocalizations.of(Get.context!)?.enter_your_new_password,
+          hint: getT(KeyT.enter_your_new_password),
           textLabel: Container(
             width: 150,
             height: 20,
@@ -215,8 +209,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
                       ),
                     ),
                     height: 11),
-                Text(AppLocalizations.of(Get.context!)?.new_password ?? '',
-                    style: AppStyle.DEFAULT_16_BOLD),
+                Text(getT(KeyT.new_password), style: AppStyle.DEFAULT_16_BOLD),
               ],
             ),
           ),
@@ -235,7 +228,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
           obscureText: obscureConfirmPassword,
           focusNode: _confirmPassFocusNode,
           errorText: state.repeatPassword.invalid
-              ? AppLocalizations.of(Get.context!)?.password_not_match
+              ? getT(KeyT.password_not_match)
               : null,
           onChanged: (value) {
             bloc.add(RepeatPasswordChanged(repeatPassword: value));
@@ -249,7 +242,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
                   Border.all(width: 1, color: COLORS.GREY.withOpacity(0.8))),
           inputType: TextInputType.text,
           hintStyle: AppStyle.DEFAULT_16.copyWith(color: Colors.grey),
-          hint: AppLocalizations.of(Get.context!)?.enter_password_again,
+          hint: getT(KeyT.enter_password_again),
           textLabel: Container(
             width: 150,
             height: 20,
@@ -268,9 +261,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
                       ),
                     ),
                     height: 11),
-                Text(
-                    AppLocalizations.of(Get.context!)?.enter_password_again ??
-                        '',
+                Text(getT(KeyT.enter_password_again),
                     style: AppStyle.DEFAULT_16_BOLD),
               ],
             ),

@@ -8,8 +8,7 @@ import 'package:gen_crm/src/models/validate_form/confirm_password.dart';
 import 'package:gen_crm/src/models/validate_form/new_password.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/share_local.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart' as GET;
+import '../../l10n/key_text.dart';
 
 part 'change_password_event.dart';
 part 'change_password_state.dart';
@@ -106,7 +105,7 @@ class ChangePasswordBloc
           yield state.copyWith(
               status: FormzStatus.submissionFailure,
               message:
-                  AppLocalizations.of(GET.Get.context!)?.an_error_occurred);
+                  getT(KeyT.an_error_occurred));
           throw e;
         }
       }

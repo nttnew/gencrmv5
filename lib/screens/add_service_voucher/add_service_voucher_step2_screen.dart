@@ -9,7 +9,7 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../bloc/contract/attack_bloc.dart';
 import '../../bloc/contract/total_bloc.dart';
 import '../../models/model_data_add.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../l10n/key_text.dart';
 import 'package:get/get.dart';
 import '../../widgets/widget_input_date.dart';
 import '../../src/models/model_generator/add_customer.dart';
@@ -106,8 +106,8 @@ class _AddServiceVoucherStepTwoScreenState
           listener: (context, state) async {
             if (state is SaveServiceVoucherState) {
               ShowDialogCustom.showDialogBase(
-                  title: AppLocalizations.of(Get.context!)?.notification,
-                  content: AppLocalizations.of(Get.context!)?.add_success,
+                  title: getT(KeyT.notification),
+                  content: getT(KeyT.add_success),
                   onTap1: () {
                     Navigator.of(context)
                       ..pop()
@@ -117,7 +117,7 @@ class _AddServiceVoucherStepTwoScreenState
             }
             if (state is ErrorGetServiceVoucherState) {
               ShowDialogCustom.showDialogBase(
-                title: AppLocalizations.of(Get.context!)?.notification,
+                title: getT(KeyT.notification),
                 content: state.msg,
               );
             }
@@ -434,9 +434,9 @@ class _AddServiceVoucherStepTwoScreenState
     }
     if (check == true) {
       ShowDialogCustom.showDialogBase(
-        title: AppLocalizations.of(Get.context!)?.notification,
+        title: getT(KeyT.notification),
         content:
-            AppLocalizations.of(Get.context!)?.please_enter_all_required_fields,
+            getT(KeyT.please_enter_all_required_fields),
       );
     } else {
       if (_bloc.listProduct.length > 0) {
@@ -722,7 +722,7 @@ Widget TypeCarBase(
                       child: WidgetText(
                         title: (_bloc.loaiXe.value != ''
                             ? _bloc.loaiXe.value
-                            : '---${AppLocalizations.of(Get.context!)?.select}---'),
+                            : '---${getT(KeyT.select)}---'),
                         style: AppStyle.DEFAULT_14,
                       ),
                     ),

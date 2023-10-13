@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/policy/policy_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
@@ -18,7 +17,7 @@ class _PolicyScreenState extends State<PolicyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppbarBaseNormal(
-          AppLocalizations.of(Get.context!)?.policy_terms ?? ''),
+          getT(KeyT.policy_terms)),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
         child:

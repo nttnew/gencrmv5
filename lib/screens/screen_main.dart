@@ -24,7 +24,7 @@ import 'package:plugin_pitel/sip/src/sip_ua_helper.dart';
 import 'package:plugin_pitel/voip_push/push_notif.dart';
 import 'package:plugin_pitel/sip/sip_ua.dart';
 import '../bloc/login/login_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../l10n/key_text.dart';
 import '../src/app_const.dart';
 import '../storages/share_local.dart';
 import '../widgets/item_menu.dart';
@@ -65,7 +65,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
       String name = value['name'];
       if (id == ModuleMy.HOP_DONG) {
         String titleReport =
-            name + ' ${AppLocalizations.of(Get.context!)?.doing}';
+            name + ' ${getT(KeyT.doing)}';
         shareLocal.putString(PreferencesKey.NAME_REPORT, titleReport);
       } else if (id == ModuleMy.CUSTOMER) {
         shareLocal.putString(PreferencesKey.NAME_CUSTOMER, name);
@@ -98,7 +98,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     }
     listMenu.add(
       ButtonMenuModel(
-          title: AppLocalizations.of(Get.context!)?.report ?? '',
+          title: getT(KeyT.report),
           image: ICONS.IC_REPORT_PNG,
           backgroundColor: COLORS.ff5D5FEF,
           onTap: () async {
@@ -112,8 +112,8 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
   _handelRouterMenuPlus(String id, String name) {
     if (ModuleText.CUSTOMER == id) {
       AppNavigator.navigateAddCustomer(
-          '${AppLocalizations.of(Get.context!)?.add}'
-          ' ${name.toLowerCase()} ${AppLocalizations.of(Get.context!)?.individual}');
+          '${getT(KeyT.add)}'
+          ' ${name.toLowerCase()} ${getT(KeyT.individual)}');
     } else if (ModuleText.DAU_MOI == id) {
       AppNavigator.navigateFormAdd(name, ADD_CLUE);
     } else if (ModuleText.LICH_HEN == id) {
@@ -159,8 +159,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     if (showDialogFaceID) {
       shareLocal.putString(PreferencesKey.SHOW_LOGIN_FINGER_PRINT, 'false');
       ShowDialogCustom.showDialogBase(
-        content: AppLocalizations.of(Get.context!)
-            ?.turn_on_login_with_finger_print_faceid,
+        content: getT(KeyT.turn_on_login_with_finger_print_faceid),
         child: WidgetFingerPrint(),
       );
     }
@@ -408,7 +407,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
           content: Text(
-            AppLocalizations.of(Get.context!)?.press_again_to_exit ?? '',
+            getT(KeyT.press_again_to_exit ),
             style: AppStyle.DEFAULT_16.copyWith(color: COLORS.WHITE),
           ),
         ),

@@ -5,10 +5,8 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import '../../../../bloc/detail_product/detail_product_bloc.dart';
 import '../../../../bloc/product_module/product_module_bloc.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../models/product_model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
-
 import '../../home/product/scanner_qrcode.dart';
 import 'item_product.dart';
 
@@ -117,8 +115,7 @@ class _ProductContractState extends State<ProductContract> {
             spacing: 10, // Khoảng cách giữa các item theo chiều ngang
             runSpacing: 10, // Khoảng cách giữa các dòng
             children: [
-              itemBtnWrap(
-                  AppLocalizations.of(Get.context!)?.select_product ?? '', () {
+              itemBtnWrap(getT(KeyT.select_product), () {
                 AppNavigator.navigateAddProduct(
                     widget.addProduct, reload, productData);
               }),
@@ -140,10 +137,8 @@ class _ProductContractState extends State<ProductContract> {
                         setState(() {});
                       } else {
                         ShowDialogCustom.showDialogBase(
-                          title:
-                              AppLocalizations.of(Get.context!)?.notification,
-                          content:
-                              AppLocalizations.of(Get.context!)?.no_data ?? '',
+                          title:getT(KeyT.notification),
+                          content: getT(KeyT.no_data),
                         );
                       }
                     }

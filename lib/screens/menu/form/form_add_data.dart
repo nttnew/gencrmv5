@@ -30,8 +30,8 @@ import '../../../bloc/contract/total_bloc.dart';
 import '../../../bloc/detail_product_customer/detail_product_customer_bloc.dart';
 import '../../../bloc/support/support_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
+import '../../../l10n/key_text.dart';
 import '../../../models/model_data_add.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../models/product_model.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/models/model_generator/login_response.dart';
@@ -81,15 +81,15 @@ class _FormAddDataState extends State<FormAddData> {
     listCustomerForChance = [
       [
         CA_NHAN,
-        '${AppLocalizations.of(Get.context!)?.begin}'
+        '${getT(KeyT.begin)}'
             ' ${nameCustomerScreen.toString().toLowerCase()} '
-            '${AppLocalizations.of(Get.context!)?.individual}'
+            '${getT(KeyT.individual)}'
       ],
       [
         TO_CHUC,
-        '${AppLocalizations.of(Get.context!)?.begin}'
+        '${getT(KeyT.begin)}'
             ' ${nameCustomerScreen.toString().toLowerCase()} '
-            '${AppLocalizations.of(Get.context!)?.organization}'
+            '${getT(KeyT.organization)}'
       ]
     ];
     controllerNote = TextEditingController();
@@ -218,8 +218,7 @@ class _FormAddDataState extends State<FormAddData> {
                     child: Row(
                       children: [
                         WidgetText(
-                            title: AppLocalizations.of(Get.context!)
-                                ?.your_position,
+                            title: getT(KeyT.your_position),
                             style: AppStyle.DEFAULT_18_BOLD),
                         WidgetText(
                             title: '*',
@@ -281,7 +280,7 @@ class _FormAddDataState extends State<FormAddData> {
                               color: COLORS.TEXT_COLOR,
                             )),
                         child: WidgetText(
-                            title: AppLocalizations.of(Get.context!)?.check_in,
+                            title: getT(KeyT.check_in),
                             style: TextStyle(
                                 fontFamily: "Quicksand",
                                 fontSize: 14,
@@ -307,8 +306,7 @@ class _FormAddDataState extends State<FormAddData> {
                                   color: COLORS.TEXT_COLOR,
                                 )),
                             child: WidgetText(
-                                title: AppLocalizations.of(Get.context!)
-                                    ?.check_in_again,
+                                title: getT(KeyT.check_in_again),
                                 style: TextStyle(
                                   fontFamily: "Quicksand",
                                   fontSize: 14,
@@ -334,8 +332,7 @@ class _FormAddDataState extends State<FormAddData> {
                                   color: COLORS.RED,
                                 )),
                             child: WidgetText(
-                                title:
-                                    AppLocalizations.of(Get.context!)?.delete,
+                                title: getT(KeyT.delete),
                                 style: TextStyle(
                                     fontFamily: "Quicksand",
                                     fontSize: 14,
@@ -354,7 +351,7 @@ class _FormAddDataState extends State<FormAddData> {
                       child: RichText(
                         textScaleFactor: MediaQuery.of(context).textScaleFactor,
                         text: TextSpan(
-                          text: AppLocalizations.of(Get.context!)?.location,
+                          text: getT(KeyT.location),
                           style: AppStyle.DEFAULT_14W600,
                           children: <TextSpan>[
                             TextSpan(
@@ -435,9 +432,8 @@ class _FormAddDataState extends State<FormAddData> {
               listener: (context, state) async {
                 if (state is SuccessAddCustomerOrState) {
                   ShowDialogCustom.showDialogBase(
-                    title: AppLocalizations.of(Get.context!)?.notification,
-                    content: AppLocalizations.of(Get.context!)
-                        ?.new_data_added_successfully,
+                    title:getT(KeyT.notification),
+                    content: getT(KeyT.new_data_added_successfully),
                     onTap1: () {
                       Get.back();
                       Get.back();
@@ -451,7 +447,7 @@ class _FormAddDataState extends State<FormAddData> {
                   );
                 } else if (state is ErrorAddCustomerOrState) {
                   ShowDialogCustom.showDialogBase(
-                      title: AppLocalizations.of(Get.context!)?.notification,
+                      title:getT(KeyT.notification),
                       content: state.msg,
                       onTap1: () {
                         Get.back();
@@ -459,9 +455,8 @@ class _FormAddDataState extends State<FormAddData> {
                       });
                 } else if (state is SuccessAddContactCustomerState) {
                   ShowDialogCustom.showDialogBase(
-                    title: AppLocalizations.of(Get.context!)?.notification,
-                    content: AppLocalizations.of(Get.context!)
-                        ?.new_data_added_successfully,
+                    title:getT(KeyT.notification),
+                    content: getT(KeyT.new_data_added_successfully),
                     onTap1: () {
                       Get.back();
                       Get.back();
@@ -503,7 +498,7 @@ class _FormAddDataState extends State<FormAddData> {
                   );
                 } else if (state is ErrorAddContactCustomerState) {
                   ShowDialogCustom.showDialogBase(
-                    title: AppLocalizations.of(Get.context!)?.notification,
+                    title:getT(KeyT.notification),
                     content: state.msg,
                   );
                 }
@@ -750,13 +745,14 @@ class _FormAddDataState extends State<FormAddData> {
                   })
                 : ServiceVoucherBloc.of(context).getInput(data.field_name ?? '')
                     ? StreamBuilder<String>(
-                      stream: ServiceVoucherBloc.of(context).loaiXe,// getdata selectcar local
-                      builder: (context, snapshot) {
-                        return fieldCar(data, indexParent, indexChild, context,
-                            value: ServiceVoucherBloc.of(context)
-                                .getDataSelectCar(data.field_name ?? ''));
-                      }
-                    )
+                        stream: ServiceVoucherBloc.of(context)
+                            .loaiXe, // getdata selectcar local
+                        builder: (context, snapshot) {
+                          return fieldCar(
+                              data, indexParent, indexChild, context,
+                              value: ServiceVoucherBloc.of(context)
+                                  .getDataSelectCar(data.field_name ?? ''));
+                        })
                     : _fieldInputCustomer(data, indexParent, indexChild,
                         noEdit: true))
             : data.field_type == "SELECT"
@@ -1001,9 +997,8 @@ class _FormAddDataState extends State<FormAddData> {
     //
     if (check == true) {
       ShowDialogCustom.showDialogBase(
-        title: AppLocalizations.of(Get.context!)?.notification,
-        content:
-            AppLocalizations.of(Get.context!)?.please_enter_all_required_fields,
+        title:getT(KeyT.notification),
+        content: getT(KeyT.please_enter_all_required_fields),
       );
     } else {
       if (listProduct.length > 0) {
@@ -1095,9 +1090,8 @@ class _FormAddDataState extends State<FormAddData> {
               await ServiceVoucherBloc.of(context).checkHasCar(data['bien_so']);
           if (check) {
             ShowDialogCustom.showDialogBase(
-              title: AppLocalizations.of(Get.context!)?.notification,
-              content:
-                  '${data['bien_so']} ${AppLocalizations.of(Get.context!)?.already_exist}',
+              title:getT(KeyT.notification),
+              content: '${data['bien_so']} ${getT(KeyT.already_exist)}',
             );
           } else {
             Navigator.of(context).pop([

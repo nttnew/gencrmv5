@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../api_resfull/user_repository.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../l10n/key_text.dart';
 import '../../../src/app_const.dart';
 import '../../../src/base.dart';
 import '../../../widgets/loading_api.dart';
@@ -40,15 +40,13 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
             1, null, response.data!.thoi_gian_mac_dinh!));
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
-      } else{
+      } else {
         LoadingApi().popLoading();
         yield ErrorReportWorkState(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorReportWorkState(AppLocalizations.of(Get.context!)?.
-
-an_error_occurred??'');
+      yield ErrorReportWorkState(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();

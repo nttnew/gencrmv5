@@ -10,8 +10,7 @@ import 'package:plugin_pitel/services/models/pn_push_params.dart';
 import 'package:plugin_pitel/services/pitel_service.dart';
 import 'package:plugin_pitel/services/sip_info_data.dart';
 import '../bloc/login/login_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../l10n/key_text.dart';
 import '../storages/share_local.dart';
 import '../widgets/loading_api.dart';
 import '../widgets/widget_text.dart';
@@ -58,9 +57,8 @@ class TypeCheckIn {
 void loginSessionExpired() {
   LoadingApi().popLoading();
   ShowDialogCustom.showDialogBase(
-    title: AppLocalizations.of(Get.context!)?.notification,
-    content: AppLocalizations.of(Get.context!)
-        ?.login_session_expired_please_login_again,
+    title: getT(KeyT.notification),
+    content: getT(KeyT.login_session_expired_please_login_again),
     onTap1: () {
       AppNavigator.navigateLogout();
     },
@@ -70,7 +68,7 @@ void loginSessionExpired() {
 Widget noData() => Align(
       alignment: Alignment.center,
       child: WidgetText(
-        title: AppLocalizations.of(Get.context!)?.no_data ?? '',
+        title: getT(KeyT.no_data),
         style: AppStyle.DEFAULT_18_BOLD,
       ),
     );

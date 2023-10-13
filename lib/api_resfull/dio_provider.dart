@@ -9,8 +9,9 @@ class DioProvider {
   static final Dio dio = Dio();
   static void instance({String? token, String? sess, String? baseUrl}) {
     dio
-      ..options.baseUrl =
-          baseUrl ?? shareLocal.getString(PreferencesKey.URL_BASE) ?? ''
+      ..options.baseUrl = baseUrl ??
+          shareLocal.getString(PreferencesKey.URL_BASE) ??
+          BASE_URL.URL_DEMO5
       ..options.connectTimeout =
           Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds
       ..options.receiveTimeout =

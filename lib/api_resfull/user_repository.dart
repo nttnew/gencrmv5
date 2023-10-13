@@ -882,6 +882,9 @@ class UserRepository {
   Future<MainMenuResponse> getMenuMain() async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getMenuMain();
 
+  Future<dynamic> getLanguage() async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getLanguage();
+
   //////////////////////
 
   Stream<AuthenticationStatus> get status async* {

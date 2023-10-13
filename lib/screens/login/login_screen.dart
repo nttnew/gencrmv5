@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import '../../storages/share_local.dart';
 import '../../widgets/rounder_bootom_appbar.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../l10n/key_text.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
           content: Text(
-            AppLocalizations.of(Get.context!)?.press_again_to_exit ?? '',
+            getT(KeyT.press_again_to_exit),
             style: AppStyle.DEFAULT_16.copyWith(color: COLORS.WHITE),
           ),
         ),
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        AppLocalizations.of(Get.context!)?.login ?? '',
+                        getT(KeyT.login),
                         style: AppStyle.DEFAULT_18_BOLD,
                       )
                     ],

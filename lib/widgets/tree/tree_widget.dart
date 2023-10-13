@@ -6,7 +6,7 @@ import '../../bloc/manager_filter/manager_bloc.dart';
 import '../../src/color.dart';
 import '../../src/styles.dart';
 import 'tree_view.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../l10n/key_text.dart';
 
 void showManagerFilter(BuildContext context, ManagerBloc bloc,
         Function(String ids) funFilter) =>
@@ -129,8 +129,7 @@ class _TreeWidgetState extends State<TreeWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         WidgetText(
-                          title: AppLocalizations.of(Get.context!)
-                              ?.select_filter,
+                          title: getT(KeyT.select_filter),
                           style: AppStyle.DEFAULT_TITLE_APPBAR,
                         ),
                         GestureDetector(
@@ -148,7 +147,7 @@ class _TreeWidgetState extends State<TreeWidget> {
                               vertical: 4,
                             ),
                             child: WidgetText(
-                              title: AppLocalizations.of(Get.context!)?.all,
+                              title: getT(KeyT.all),
                               style: AppStyle.DEFAULT_LABEL_PRODUCT,
                             ),
                           ),
@@ -195,9 +194,7 @@ class _TreeWidgetState extends State<TreeWidget> {
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Center(
                                   child: Text(
-                                    AppLocalizations.of(Get.context!)
-                                            ?.close ??
-                                        '',
+                                    getT(KeyT.close),
                                     style: AppStyle.DEFAULT_16_BOLD,
                                   ),
                                 ),
@@ -220,8 +217,7 @@ class _TreeWidgetState extends State<TreeWidget> {
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Center(
                                   child: Text(
-                                    AppLocalizations.of(Get.context!)?.find ??
-                                        '',
+                                    getT(KeyT.find),
                                     style: AppStyle.DEFAULT_16_BOLD,
                                   ),
                                 ),

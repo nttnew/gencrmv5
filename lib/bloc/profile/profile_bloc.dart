@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/api_resfull/api.dart';
 import 'package:gen_crm/src/src_index.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../l10n/key_text.dart';
 
 part 'profile_state.dart';
 part 'profile_event.dart';
@@ -35,11 +34,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         } else
           yield FalseProfileState(
               error: response.message ??
-                  AppLocalizations.of(Get.context!)?.an_error_occurred ??
-                  '');
+                  getT(KeyT.an_error_occurred));
       } catch (e) {
         yield FalseProfileState(
-            error: AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
+            error:getT(KeyT.an_error_occurred));
         throw e;
       }
     } else {
@@ -59,11 +57,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         } else
           yield FalseProfileState(
               error: response.message ??
-                  AppLocalizations.of(Get.context!)?.an_error_occurred ??
-                  '');
+                  getT(KeyT.an_error_occurred ));
       } catch (e) {
         yield FalseProfileState(
-            error: AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
+            error:getT(KeyT.an_error_occurred));
         throw e;
       }
     }

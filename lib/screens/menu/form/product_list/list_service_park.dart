@@ -3,7 +3,7 @@ import 'package:gen_crm/bloc/product/product_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/widgets/listview_loadmore_base.dart';
 import 'package:get/get.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../models/product_model.dart';
 import '../../../../src/models/model_generator/product_service_pack_response.dart';
 import '../../../../src/models/model_generator/service_pack_response.dart';
@@ -35,8 +35,7 @@ class _ListServiceParkState extends State<ListServicePark> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarBaseNormal(
-          '${AppLocalizations.of(Get.context!)?.select ?? ''} ${title.toLowerCase()}'),
+      appBar: AppbarBaseNormal('${getT(KeyT.select)} ${title.toLowerCase()}'),
       body: Column(
         children: [
           AppValue.vSpaceSmall,
@@ -54,8 +53,7 @@ class _ListServiceParkState extends State<ListServicePark> {
                   child: TextField(
                     controller: _searchController,
                     decoration: InputDecoration(
-                      hintText:
-                          '${AppLocalizations.of(Get.context!)?.search ?? ''} ${title.toLowerCase()}',
+                      hintText: '${getT(KeyT.search)} ${title.toLowerCase()}',
                       border: InputBorder.none,
                       disabledBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
@@ -75,7 +73,7 @@ class _ListServiceParkState extends State<ListServicePark> {
                         color: COLORS.PRIMARY_COLOR,
                         borderRadius: BorderRadius.circular(20)),
                     child: WidgetText(
-                      title: AppLocalizations.of(Get.context!)?.find ?? '',
+                      title: getT(KeyT.find),
                       style: AppStyle.DEFAULT_16,
                       textAlign: TextAlign.center,
                     ),
@@ -217,19 +215,19 @@ class _ListServiceParkState extends State<ListServicePark> {
                       Get.back();
                     } else {
                       ShowDialogCustom.showDialogBase(
-                        title: AppLocalizations.of(Get.context!)?.notification,
+                        title:getT(KeyT.notification),
                         content: 'Bạn chưa chọn $title',
                       );
                     }
                   } else {
                     ShowDialogCustom.showDialogBase(
-                      title: AppLocalizations.of(Get.context!)?.notification,
+                      title:getT(KeyT.notification),
                       content: result['mess'],
                     );
                   }
                 } else {
                   ShowDialogCustom.showDialogBase(
-                    title: AppLocalizations.of(Get.context!)?.notification,
+                    title:getT(KeyT.notification),
                     content: 'Bạn chưa chọn $title',
                   );
                 }
@@ -241,7 +239,7 @@ class _ListServiceParkState extends State<ListServicePark> {
                     color: COLORS.PRIMARY_COLOR,
                     borderRadius: BorderRadius.circular(20)),
                 child: WidgetText(
-                  title: AppLocalizations.of(Get.context!)?.select ?? '',
+                  title: getT(KeyT.select),
                   style: AppStyle.DEFAULT_16,
                   textAlign: TextAlign.center,
                 ),

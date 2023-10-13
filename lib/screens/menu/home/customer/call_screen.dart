@@ -7,8 +7,8 @@ import 'package:plugin_pitel/component/pitel_call_state.dart';
 import 'package:plugin_pitel/component/sip_pitel_helper_listener.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:plugin_pitel/sip/src/sip_ua_helper.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../bloc/login/login_bloc.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../src/src_index.dart';
 import '../../../../storages/share_local.dart';
 import '../../../call/action_button.dart';
@@ -116,9 +116,7 @@ class _CallScreenState extends State<CallScreen>
   void _handleCall(BuildContext context, [bool voiceonly = false]) {
     var dest = _controller.text;
     if (dest.isEmpty) {
-      showToast(
-          AppLocalizations.of(Get.context!)?.you_did_not_enter_a_number_phone ??
-              '');
+      showToast(getT(KeyT.you_did_not_enter_a_number_phone));
     } else {
       pitelClient.call(dest, voiceonly).then((value) => value.fold(
           (succ) => {},
@@ -132,8 +130,7 @@ class _CallScreenState extends State<CallScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarBaseNormal(
-          AppLocalizations.of(Get.context!)?.call_operator ?? ''),
+      appBar: AppbarBaseNormal(getT(KeyT.call_operator)),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Column(

@@ -3,7 +3,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart' as myLocation;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../l10n/key_text.dart';
 import 'show_dialog.dart';
 
 Future<Position?> determinePosition(BuildContext context) async {
@@ -39,10 +39,10 @@ Future<Position?> determinePosition(BuildContext context) async {
 void showDialogPermissionLocation(BuildContext context,
         {bool isDevice = false}) =>
     ShowDialogCustom.showDialogBase(
-      title: AppLocalizations.of(Get.context!)?.notification,
+      title:getT(KeyT.notification),
       content:
-          AppLocalizations.of(Get.context!)?.have_not_granted_location_access,
-      textButton2: AppLocalizations.of(Get.context!)?.go_to_setting,
+          getT(KeyT.have_not_granted_location_access),
+      textButton2: getT(KeyT.go_to_setting),
       onTap2: () async {
         if (isDevice) {
           await Geolocator.openLocationSettings();
@@ -57,7 +57,7 @@ Future<String> getLocationName(double latitude, double longitude) async {
       await placemarkFromCoordinates(latitude, longitude);
   print(placemarks.toString());
   print('$latitude+' + '+$longitude');
-  return checkData('${AppLocalizations.of(Get.context!)?.number}',
+  return checkData('${getT(KeyT.number)}',
           '${placemarks.first.name},') +
       checkData('', '${placemarks.first.thoroughfare},') +
       checkData('', '${placemarks.first.subAdministrativeArea},') +

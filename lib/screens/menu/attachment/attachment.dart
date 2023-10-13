@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../../src/src_index.dart';
 import '../../../bloc/contract/detail_contract_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../l10n/key_text.dart';
 import '../../../src/models/model_generator/file_response.dart';
 import '../../../widgets/appbar_base.dart';
 import '../../../widgets/cupertino_loading.dart';
@@ -33,10 +33,7 @@ class Attachment extends StatefulWidget {
 class _AttachmentState extends State<Attachment> {
   late final String id;
   late final String typeModule;
-  static final List<String> pickOptions = [
-    AppLocalizations.of(Get.context!)?.begin ?? '',
-    AppLocalizations.of(Get.context!)?.after ?? ''
-  ];
+  static final List<String> pickOptions = [getT(KeyT.begin), getT(KeyT.after)];
 
   @override
   void initState() {
@@ -92,7 +89,7 @@ class _AttachmentState extends State<Attachment> {
         context: Get.context!,
         builder: (context) => CupertinoActionSheet(
                 cancelButton: CupertinoActionSheetAction(
-                  child: Text(AppLocalizations.of(Get.context!)?.cancel ?? ''),
+                  child: Text(getT(KeyT.cancel)),
                   onPressed: () {
                     AppNavigator.navigateBack();
                   },
@@ -103,34 +100,28 @@ class _AttachmentState extends State<Attachment> {
                       Get.back();
                       _getImageCamera(isAfter: isAfter);
                     },
-                    child: Text(
-                        AppLocalizations.of(Get.context!)?.new_photo_shoot ??
-                            ''),
+                    child: Text(getT(KeyT.new_photo_shoot)),
                   ),
                   CupertinoActionSheetAction(
                     onPressed: () async {
                       Get.back();
                       _getImageVideo(isAfter: isAfter);
                     },
-                    child: Text(
-                        AppLocalizations.of(Get.context!)?.new_video_recoding ??
-                            ''),
+                    child: Text(getT(KeyT.new_video_recoding)),
                   ),
                   CupertinoActionSheetAction(
                     onPressed: () async {
                       Get.back();
                       _pickFile(isAfter: isAfter);
                     },
-                    child: Text(
-                        AppLocalizations.of(Get.context!)?.pick_file ?? ''),
+                    child: Text(getT(KeyT.pick_file)),
                   ),
                   CupertinoActionSheetAction(
                     onPressed: () async {
                       Get.back();
                       _getImage(isAfter: isAfter);
                     },
-                    child: Text(
-                        AppLocalizations.of(Get.context!)?.pick_photo ?? ''),
+                    child: Text(getT(KeyT.pick_photo)),
                   ),
                 ]));
   }
@@ -184,9 +175,8 @@ class _AttachmentState extends State<Attachment> {
       }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(
-                '${AppLocalizations.of(Get.context!)?.add_attachment} '
-                '${value == true ? AppLocalizations.of(Get.context!)?.success.toLowerCase() : AppLocalizations.of(Get.context!)?.fail.toLowerCase()}!')),
+            content: Text('${getT(KeyT.add_attachment)} '
+                '${value == true ? getT(KeyT.success.toLowerCase()) : getT(KeyT.fail.toLowerCase())}!')),
       );
     });
   }
@@ -223,9 +213,8 @@ class _AttachmentState extends State<Attachment> {
       }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(
-                '${AppLocalizations.of(Get.context!)?.delete_attachment} '
-                '${value == true ? AppLocalizations.of(Get.context!)?.success.toLowerCase() : AppLocalizations.of(Get.context!)?.fail.toLowerCase()}!')),
+            content: Text('${getT(KeyT.delete_attachment)} '
+                '${value == true ? getT(KeyT.success.toLowerCase()) : getT(KeyT.fail.toLowerCase())}!')),
       );
     });
   }
@@ -235,15 +224,14 @@ class _AttachmentState extends State<Attachment> {
     return Scaffold(
       backgroundColor: COLORS.WHITE,
       floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
-      appBar:
-          AppbarBaseNormal(AppLocalizations.of(Get.context!)?.see_attachment),
+      appBar: AppbarBaseNormal(getT(KeyT.see_attachment)),
       body: Container(
         padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             WidgetText(
-                title: AppLocalizations.of(Get.context!)?.select_attachment,
+                title: getT(KeyT.select_attachment),
                 style: AppStyle.DEFAULT_16.copyWith(
                     fontWeight: FontWeight.w700, color: COLORS.TEXT_COLOR)),
             GridView.builder(
@@ -306,9 +294,7 @@ class _AttachmentState extends State<Attachment> {
                         child: Align(
                             alignment: Alignment.topCenter,
                             child: WidgetText(
-                                title: AppLocalizations.of(Get.context!)
-                                        ?.no_data ??
-                                    '',
+                                title: getT(KeyT.no_data),
                                 style: AppStyle.DEFAULT_16.copyWith(
                                   fontWeight: FontWeight.w700,
                                   color: COLORS.BLACK,
@@ -328,16 +314,8 @@ class _AttachmentState extends State<Attachment> {
                             margin: EdgeInsets.only(bottom: 36),
                             child: Column(
                               children: [
-                                viewPickFile(
-                                    list,
-                                    AppLocalizations.of(Get.context!)?.begin ??
-                                        '',
-                                    IS_BEFORE),
-                                viewPickFile(
-                                    list,
-                                    AppLocalizations.of(Get.context!)?.after ??
-                                        '',
-                                    IS_AFTER),
+                                viewPickFile(list, getT(KeyT.begin), IS_BEFORE),
+                                viewPickFile(list, getT(KeyT.after), IS_AFTER),
                               ],
                             ),
                           ),

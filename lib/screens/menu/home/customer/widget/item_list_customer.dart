@@ -4,11 +4,10 @@ import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/models/model_generator/customer.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../../../l10n/key_text.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/dialog_call.dart';
 import '../../../../../widgets/widget_text.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
 
 class ItemCustomer extends StatelessWidget {
   const ItemCustomer(
@@ -57,7 +56,7 @@ class ItemCustomer extends StatelessWidget {
                                 .trim() !=
                             '')
                         ? '${data.danh_xung ?? ''}' + ' ' + '${data.name ?? ''}'
-                        : AppLocalizations.of(Get.context!)?.not_yet ?? '',
+                        : getT(KeyT.not_yet),
                     style: AppStyle.DEFAULT_18.copyWith(
                         color: COLORS.ff006CB1, fontWeight: FontWeight.w700),
                   ),
@@ -77,11 +76,12 @@ class ItemCustomer extends StatelessWidget {
               ],
             ),
             itemTextIcon(
-                text: ((data.address == null || data.address == "")
-                        ? AppLocalizations.of(Get.context!)?.not_yet ?? ''
-                        : data.address)
-                    .toString(),
-                icon: ICONS.IC_LOCATION_PNG),
+              text: ((data.address == null || data.address == "")
+                      ? getT(KeyT.not_yet)
+                      : data.address)
+                  .toString(),
+              icon: ICONS.IC_LOCATION_PNG,
+            ),
             itemTextIcon(
               onTap: () {
                 if ((data.email?.val != null && data.email?.val != '') &&
@@ -89,9 +89,7 @@ class ItemCustomer extends StatelessWidget {
                   launchUrl(Uri(scheme: "mailto", path: "${data.email?.val}"));
                 }
               },
-              text: data.email?.val ??
-                  AppLocalizations.of(Get.context!)?.not_yet ??
-                  '',
+              text: data.email?.val ?? getT(KeyT.not_yet),
               icon: ICONS.IC_MAIL_CUSTOMER_SVG,
               colorIcon: COLORS.GREY,
             ),
@@ -114,9 +112,7 @@ class ItemCustomer extends StatelessWidget {
                         );
                       }
                     },
-                    text: data.phone?.val ??
-                        AppLocalizations.of(Get.context!)?.not_yet ??
-                        '',
+                    text: data.phone?.val ?? getT(KeyT.not_yet),
                     styleText: AppStyle.DEFAULT_14.copyWith(
                         fontWeight: FontWeight.w400,
                         color: HexColor("#0052B4")),

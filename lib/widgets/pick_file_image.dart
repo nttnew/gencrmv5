@@ -13,7 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../../../src/src_index.dart';
 import '../bloc/contract/attack_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../l10n/key_text.dart';
 import '../screens/add_service_voucher/preview_image.dart';
 
 Widget FileDinhKemUiBase(
@@ -181,7 +181,7 @@ Widget FileLuuBase(BuildContext context, Function() onTap,
                   borderRadius: BorderRadius.circular(20.5)),
               child: Center(
                   child: Text(
-                AppLocalizations.of(Get.context!)?.save ?? '',
+                getT(KeyT.save),
                 style: TextStyle(color: COLORS.WHITE),
               )),
             ),
@@ -194,10 +194,9 @@ Future<List<File>> onDinhKemBase(BuildContext context) async {
   if (await Permission.storage.request().isGranted) {
     if (Platform.isAndroid) {
       ShowDialogCustom.showDialogBase(
-        title: AppLocalizations.of(Get.context!)?.notification,
-        content: AppLocalizations.of(Get.context!)
-            ?.you_have_not_granted_access_to_photos,
-        textButton2: AppLocalizations.of(Get.context!)?.go_to_setting,
+        title:getT(KeyT.notification),
+        content: getT(KeyT.you_have_not_granted_access_to_photos),
+        textButton2: getT(KeyT.go_to_setting),
         onTap2: () {
           openAppSettings();
           Get.back();
@@ -218,7 +217,7 @@ Future<List<File>> pickFileDialog() async {
       context: Get.context!,
       builder: (context) => CupertinoActionSheet(
               cancelButton: CupertinoActionSheetAction(
-                child: Text(AppLocalizations.of(Get.context!)?.cancel ?? ''),
+                child: Text(getT(KeyT.cancel)),
                 onPressed: () {
                   AppNavigator.navigateBack();
                 },
@@ -231,7 +230,8 @@ Future<List<File>> pickFileDialog() async {
                     Get.back();
                   },
                   child: Text(
-                      AppLocalizations.of(Get.context!)?.new_photo_shoot ?? ''),
+                    getT(KeyT.new_photo_shoot),
+                  ),
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
@@ -240,8 +240,8 @@ Future<List<File>> pickFileDialog() async {
                     Get.back();
                   },
                   child: Text(
-                      AppLocalizations.of(Get.context!)?.new_video_recoding ??
-                          ''),
+                    getT(KeyT.new_video_recoding),
+                  ),
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
@@ -249,8 +249,9 @@ Future<List<File>> pickFileDialog() async {
                     if (files != null) listFile.addAll(files);
                     Get.back();
                   },
-                  child:
-                      Text(AppLocalizations.of(Get.context!)?.pick_file ?? ''),
+                  child: Text(
+                    getT(KeyT.pick_file),
+                  ),
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
@@ -258,8 +259,9 @@ Future<List<File>> pickFileDialog() async {
                     if (files != null) listFile.addAll(files);
                     Get.back();
                   },
-                  child:
-                      Text(AppLocalizations.of(Get.context!)?.pick_photo ?? ''),
+                  child: Text(
+                    getT(KeyT.pick_photo),
+                  ),
                 ),
               ]));
   return listFile;

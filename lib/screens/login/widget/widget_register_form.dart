@@ -5,8 +5,7 @@ import 'package:formz/formz.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../../l10n/key_text.dart';
 
 class WidgetRegisterForm extends StatefulWidget {
   @override
@@ -55,8 +54,8 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
         if (state.status.isSubmissionSuccess) {
           GetSnackBarUtils.removeSnackBar();
           ShowDialogCustom.showDialogBase(
-            title: AppLocalizations.of(Get.context!)?.notification,
-            content: AppLocalizations.of(Get.context!)?.success,
+            title:getT(KeyT.notification),
+            content: getT(KeyT.success),
             onTap1: () => AppNavigator.navigateLogout(),
           );
         }
@@ -66,7 +65,7 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
         if (state.status.isSubmissionFailure) {
           GetSnackBarUtils.removeSnackBar();
           ShowDialogCustom.showDialogBase(
-            title: AppLocalizations.of(Get.context!)?.notification,
+            title:getT(KeyT.notification),
             content: state.message,
           );
         }
@@ -80,21 +79,21 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                AppLocalizations.of(Get.context!)?.full_name ?? '',
+                getT(KeyT.full_name),
                 style: AppStyle.DEFAULT_16_BOLD,
               ),
               AppValue.vSpaceSmall,
               _buildTextFieldFullName(bloc),
               AppValue.vSpaceSmall,
               Text(
-                AppLocalizations.of(Get.context!)?.email ?? '',
+                getT(KeyT.email),
                 style: AppStyle.DEFAULT_16_BOLD,
               ),
               AppValue.vSpaceSmall,
               _buildTextFieldEmail(bloc),
               AppValue.vSpaceSmall,
               Text(
-                AppLocalizations.of(Get.context!)?.password ?? '',
+                getT(KeyT.password),
                 style: AppStyle.DEFAULT_16_BOLD,
               ),
               AppValue.vSpaceSmall,
@@ -118,7 +117,7 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
                 : null,
             enable: state.status.isValidated,
             backgroundColor: COLORS.PRIMARY_COLOR,
-            text: AppLocalizations.of(Get.context!)?.register,
+            text: getT(KeyT.register),
           );
         });
   }
@@ -129,14 +128,13 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
         onChanged: (value) =>
             bloc.add(PasswordRegisterChanged(password: value)),
         errorText: state.password.invalid
-            ? AppLocalizations.of(Get.context!)
-                ?.password_must_be_at_least_6_characters
+            ? getT(KeyT.password_must_be_at_least_6_characters)
             : null,
         obscureText: obscurePassword,
         focusNode: _passwordFocusNode,
         boxDecoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25), color: COLORS.WHITE),
-        hint: AppLocalizations.of(Get.context!)?.enter_your_password,
+        hint: getT(KeyT.enter_your_password),
         endIcon: GestureDetector(
           onTap: () => setState(() => obscurePassword = !obscurePassword),
           child: Icon(
@@ -159,9 +157,9 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
         focusNode: _emailFocusNode,
         boxDecoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25), color: COLORS.WHITE),
-        hint: AppLocalizations.of(Get.context!)?.enter_your_email,
+        hint: getT(KeyT.enter_your_email),
         errorText: state.email.invalid
-            ? AppLocalizations.of(Get.context!)?.this_account_is_invalid
+            ? getT(KeyT.this_account_is_invalid)
             : null,
       );
     });
@@ -176,9 +174,9 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
         focusNode: _fullNameFocusNode,
         boxDecoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25), color: COLORS.WHITE),
-        hint: AppLocalizations.of(Get.context!)?.enter_full_name,
+        hint: getT(KeyT.enter_full_name),
         errorText: state.fullName.invalid
-            ? AppLocalizations.of(Get.context!)?.name_cannot_be_left_blank
+            ? getT(KeyT.name_cannot_be_left_blank)
             : null,
       );
     });

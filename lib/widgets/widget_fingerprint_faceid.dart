@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../l10n/key_text.dart';
 import '../src/color.dart';
 import '../src/preferences_key.dart';
 import '../src/styles.dart';
@@ -64,8 +63,7 @@ class _WidgetFingerPrintState extends State<WidgetFingerPrint> {
     }
     try {
       final String reason =
-          AppLocalizations.of(Get.context!)?.login_with_fingerprint_face_id ??
-              '';
+          getT(KeyT.login_with_fingerprint_face_id);
       final bool didAuthenticate = await auth.authenticate(
         localizedReason: reason,
         options: const AuthenticationOptions(
@@ -78,10 +76,9 @@ class _WidgetFingerPrintState extends State<WidgetFingerPrint> {
         shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "true");
       } else {
         ShowDialogCustom.showDialogBase(
-          title: AppLocalizations.of(Get.context!)?.notification,
+          title:getT(KeyT.notification),
           content:
-              AppLocalizations.of(Get.context!)?.login_fail_please_try_again ??
-                  '',
+              getT(KeyT.login_fail_please_try_again),
         );
       }
     } catch (e) {
@@ -106,17 +103,17 @@ class _WidgetFingerPrintState extends State<WidgetFingerPrint> {
                     children: [
                       WidgetText(
                           title:
-                              "${AppLocalizations.of(Get.context!)?.login_with_fingerprint_face_id}: ",
+                              "${getT(KeyT.login_with_fingerprint_face_id)}: ",
                           style:
                               AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY)),
                       !(snapshot.data ?? false)
                           ? WidgetText(
-                              title: AppLocalizations.of(Get.context!)?.no,
+                              title: getT(KeyT.no),
                               style: AppStyle.DEFAULT_16.copyWith(
                                   fontFamily: 'Quicksand',
                                   fontWeight: FontWeight.w600))
                           : WidgetText(
-                              title: AppLocalizations.of(Get.context!)?.yes,
+                              title: getT(KeyT.yes),
                               style: AppStyle.DEFAULT_16.copyWith(
                                   fontFamily: 'Quicksand',
                                   fontWeight: FontWeight.w600)),
@@ -128,9 +125,8 @@ class _WidgetFingerPrintState extends State<WidgetFingerPrint> {
                       if (!(supportBiometric.data ?? false)) {
                         ShowDialogCustom.showDialogBase(
                           title:
-                              AppLocalizations.of(Get.context!)?.notification,
-                          content: AppLocalizations.of(Get.context!)
-                              ?.the_device_has_not_setup_fingerprint_face,
+                              getT(KeyT.notification),
+                          content: getT(KeyT.the_device_has_not_setup_fingerprint_face),
                         );
                       } else {
                         useBiometric(value: value);

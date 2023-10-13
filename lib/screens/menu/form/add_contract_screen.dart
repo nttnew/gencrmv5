@@ -17,8 +17,8 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../bloc/contract/attack_bloc.dart';
 import '../../../bloc/contract/contract_bloc.dart';
+import '../../../l10n/key_text.dart';
 import '../../../models/product_model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/app_const.dart';
 import '../../../src/models/model_generator/login_response.dart';
@@ -61,15 +61,15 @@ class _FormAddContractState extends State<FormAddContract> {
     listCustomerForChance = [
       [
         CA_NHAN,
-        '${AppLocalizations.of(Get.context!)?.begin}'
+        '${getT(KeyT.begin)}'
             ' ${nameCustomerScreen.toString().toLowerCase()} '
-            '${AppLocalizations.of(Get.context!)?.individual}'
+            '${getT(KeyT.individual)}'
       ],
       [
         TO_CHUC,
-        '${AppLocalizations.of(Get.context!)?.begin}'
+        '${getT(KeyT.begin)}'
             ' ${nameCustomerScreen.toString().toLowerCase()} '
-            '${AppLocalizations.of(Get.context!)?.organization}'
+            '${getT(KeyT.organization)}'
       ]
     ];
     if (product != null) {
@@ -135,9 +135,8 @@ class _FormAddContractState extends State<FormAddContract> {
           listener: (context, state) async {
             if (state is SuccessAddCustomerOrState) {
               ShowDialogCustom.showDialogBase(
-                title: AppLocalizations.of(Get.context!)?.notification,
-                content: AppLocalizations.of(Get.context!)
-                    ?.new_data_added_successfully,
+                title:getT(KeyT.notification),
+                content: getT(KeyT.new_data_added_successfully),
                 onTap1: () {
                   Get.back();
                   Get.back();
@@ -147,15 +146,14 @@ class _FormAddContractState extends State<FormAddContract> {
             }
             if (state is ErrorAddCustomerOrState) {
               ShowDialogCustom.showDialogBase(
-                title: AppLocalizations.of(Get.context!)?.notification,
+                title:getT(KeyT.notification),
                 content: state.msg,
               );
             }
             if (state is SuccessAddContactCustomerState) {
               ShowDialogCustom.showDialogBase(
-                title: AppLocalizations.of(Get.context!)?.notification,
-                content: AppLocalizations.of(Get.context!)
-                    ?.new_data_added_successfully,
+                title:getT(KeyT.notification),
+                content: getT(KeyT.new_data_added_successfully),
                 onTap1: () {
                   Get.back();
                   Get.back();
@@ -166,7 +164,7 @@ class _FormAddContractState extends State<FormAddContract> {
             }
             if (state is ErrorAddContactCustomerState) {
               ShowDialogCustom.showDialogBase(
-                title: AppLocalizations.of(Get.context!)?.notification,
+                title:getT(KeyT.notification),
                 content: state.msg,
               );
             }
@@ -478,7 +476,7 @@ class _FormAddContractState extends State<FormAddContract> {
                                                   final List<dynamic>? result =
                                                       await AppNavigator
                                                           .navigateFormAdd(
-                                                    '${AppLocalizations.of(Get.context!)?.add} ${data.field_label}',
+                                                    '${getT(KeyT.add)} ${data.field_label}',
                                                     PRODUCT_CUSTOMER_TYPE,
                                                     isGetData: true,
                                                   );
@@ -837,12 +835,10 @@ class _FormAddContractState extends State<FormAddContract> {
     }
     if (check == true) {
       ShowDialogCustom.showDialogBase(
-        title: AppLocalizations.of(Get.context!)?.notification,
+        title:getT(KeyT.notification),
         content: TotalBloc.of(context).unpaidStream.value < 0
-            ? AppLocalizations.of(Get.context!)
-                ?.the_amount_paid_cannot_be_greater_than_the_total_amount
-            : AppLocalizations.of(Get.context!)
-                ?.please_enter_all_required_fields,
+            ? getT(KeyT.the_amount_paid_cannot_be_greater_than_the_total_amount)
+            : getT(KeyT.please_enter_all_required_fields),
       );
     } else {
       if (listProduct.length > 0) {

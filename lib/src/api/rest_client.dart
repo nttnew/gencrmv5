@@ -833,4 +833,7 @@ abstract class RestClient {
 
   @GET(BASE_URL.GET_MENU)
   Future<MainMenuResponse> getMenuMain();
+
+  @GET(BASE_URL.GET_LANGUAGES)
+  Future<dynamic> getLanguage();
 }

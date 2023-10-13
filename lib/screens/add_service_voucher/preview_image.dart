@@ -5,8 +5,7 @@ import 'package:photo_view/photo_view.dart';
 import '../../src/color.dart';
 import '../../widgets/appbar_base.dart';
 import '../../widgets/item_download.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../l10n/key_text.dart';
 
 class PreviewImage extends StatefulWidget {
   const PreviewImage({
@@ -27,7 +26,7 @@ class _PreviewImageState extends State<PreviewImage> {
     return Scaffold(
       backgroundColor: COLORS.BLACK,
       appBar:
-          AppbarBaseNormal(AppLocalizations.of(Get.context!)?.preview_image),
+          AppbarBaseNormal(getT(KeyT.preview_image)),
       body: Center(
         child: Stack(
           children: [

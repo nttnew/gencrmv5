@@ -5,7 +5,8 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../src/src_index.dart';
 
-PreferredSizeWidget AppbarBaseNormal(String? title) => AppBar(
+PreferredSizeWidget AppbarBaseNormal(String? title, {Function? onBack}) =>
+    AppBar(
       toolbarHeight: AppValue.heights * 0.1,
       backgroundColor: HexColor("#D0F1EB"),
       title: Text(title ?? '',
@@ -16,7 +17,11 @@ PreferredSizeWidget AppbarBaseNormal(String? title) => AppBar(
               fontSize: 16)),
       leading: IconButton(
         onPressed: () {
-          AppNavigator.navigateBack();
+          if (onBack != null) {
+            onBack();
+          } else {
+            AppNavigator.navigateBack();
+          }
         },
         icon: Image.asset(
           ICONS.IC_BACK_PNG,

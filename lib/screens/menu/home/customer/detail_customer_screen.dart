@@ -10,7 +10,7 @@ import 'package:gen_crm/screens/menu/home/customer/widget/item/work_card_widget.
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
@@ -62,7 +62,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       list.add(
         ModuleThaoTac(
           isSvg: false,
-          title: AppLocalizations.of(Get.context!)?.call ?? '',
+          title: getT(KeyT.call),
           icon: ICONS.IC_PHONE_PNG,
           onThaoTac: () {
             Get.back();
@@ -83,12 +83,12 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     list.add(
       ModuleThaoTac(
         title:
-            "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}",
+            "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}",
         icon: ICONS.IC_ADD_CLUE_SVG,
         onThaoTac: () {
           Get.back();
           AppNavigator.navigateFormAdd(
-              "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}",
+              "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}",
               ADD_CLUE_CUSTOMER,
               id: int.parse(id), onRefresh: () {
             _bloc.controllerDM.reloadData();
@@ -99,12 +99,12 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
 
     list.add(ModuleThaoTac(
       title:
-          "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}",
+          "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}",
       icon: ICONS.IC_ADD_CHANCE_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateFormAdd(
-            "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}",
+            "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}",
             ADD_CHANCE_CUSTOMER,
             id: int.parse(id), onRefresh: () {
           _bloc.controllerCH.reloadData();
@@ -114,14 +114,14 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
 
     list.add(ModuleThaoTac(
       title:
-          "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}",
+          "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}",
       icon: ICONS.IC_ADD_CONTRACT_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateAddContract(
             customer_id: id,
             title:
-                "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}",
+                "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}",
             onRefresh: () {
               _bloc.controllerHD.reloadData();
             });
@@ -131,12 +131,12 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
 
     list.add(ModuleThaoTac(
       title:
-          "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
+          "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateFormAdd(
-            "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
+            "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
             ADD_JOB_CUSTOMER,
             id: int.parse(id), onRefresh: () {
           _bloc.controllerCV.reloadData();
@@ -146,12 +146,12 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
 
     list.add(ModuleThaoTac(
       title:
-          "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
+          "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
       icon: ICONS.IC_ADD_SUPPORT_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateFormAdd(
-            "${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
+            "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
             ADD_SUPPORT_CUSTOMER,
             id: int.parse(id), onRefresh: () {
           _bloc.controllerHT.reloadData();
@@ -160,7 +160,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     ));
 
     list.add(ModuleThaoTac(
-      title: AppLocalizations.of(Get.context!)?.add_discuss ?? '',
+      title: getT(KeyT.add_discuss),
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
@@ -172,7 +172,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     ));
 
     list.add(ModuleThaoTac(
-      title: AppLocalizations.of(Get.context!)?.see_attachment ?? '',
+      title: getT(KeyT.see_attachment),
       icon: ICONS.IC_ATTACK_SVG,
       onThaoTac: () async {
         Get.back();
@@ -185,7 +185,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     ));
 
     list.add(ModuleThaoTac(
-      title: AppLocalizations.of(Get.context!)?.edit ?? '',
+      title: getT(KeyT.edit),
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
@@ -196,14 +196,12 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     ));
 
     list.add(ModuleThaoTac(
-      title: AppLocalizations.of(Get.context!)?.delete ?? '',
+      title: getT(KeyT.delete),
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
           onTap2: () => _bloc.add(DeleteCustomerEvent(int.parse(id))),
-          content: AppLocalizations.of(Get.context!)
-                  ?.are_you_sure_you_want_to_delete ??
-              '',
+          content: getT(KeyT.are_you_sure_you_want_to_delete),
         );
       },
     ));
@@ -219,8 +217,8 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
             if (state is SuccessDeleteCustomerState) {
               LoadingApi().popLoading();
               ShowDialogCustom.showDialogBase(
-                title: AppLocalizations.of(Get.context!)?.notification,
-                content: AppLocalizations.of(Get.context!)?.success ?? '',
+                title: getT(KeyT.notification),
+                content: getT(KeyT.success),
                 onTap1: () {
                   Get.back();
                   Get.back();
@@ -232,9 +230,9 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
             } else if (state is ErrorDeleteCustomerState) {
               LoadingApi().popLoading();
               ShowDialogCustom.showDialogBase(
-                title: AppLocalizations.of(Get.context!)?.notification,
+                title: getT(KeyT.notification),
                 content: state.msg,
-                textButton1: AppLocalizations.of(Get.context!)?.come_back,
+                textButton1: getT(KeyT.come_back),
                 onTap1: () {
                   Get.back();
                   Get.back();
@@ -260,7 +258,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
               indicatorColor: COLORS.ff006CB1,
               tabs: <Widget>[
                 Tab(
-                  text: AppLocalizations.of(Get.context!)?.information ?? '',
+                  text: getT(KeyT.information),
                 ),
                 Tab(
                   text:

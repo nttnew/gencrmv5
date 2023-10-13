@@ -11,7 +11,8 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../../l10n/key_text.dart';
 
 class WidgetLoginForm extends StatefulWidget {
   WidgetLoginForm({
@@ -120,7 +121,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         if (state.status.isSubmissionFailure) {
           GetSnackBarUtils.removeSnackBar();
           ShowDialogCustom.showDialogBase(
-            title: AppLocalizations.of(Get.context!)?.notification,
+            title: getT(KeyT.notification),
             content: state.message,
           );
         }
@@ -181,7 +182,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
           });
         },
         child: Text(
-          AppLocalizations.of(Get.context!)?.change_address_application ?? '',
+          getT(KeyT.change_address_application),
           style: AppStyle.DEFAULT_14W500.copyWith(
             color: COLORS.ff006CB1,
             decoration: TextDecoration.underline,
@@ -197,7 +198,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
       child: InkWell(
         onTap: () => AppNavigator.navigateForgotPassword(),
         child: Text(
-          AppLocalizations.of(Get.context!)?.forgot_password ?? '' + "?",
+          getT(KeyT.forgot_password),
           style: TextStyle(
               fontFamily: "Quicksand",
               fontWeight: FontWeight.w500,
@@ -217,15 +218,14 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
                   await shareLocal.getString(PreferencesKey.URL_BASE) ?? '';
               if (baseUrl == '' || baseUrl == 'null') {
                 shareLocal.putString(
-                    PreferencesKey.URL_BASE, BASE_URL.URL_DEMO);
-                DioProvider.instance(baseUrl: BASE_URL.URL_DEMO);
+                    PreferencesKey.URL_BASE, BASE_URL.URL_DEMO5);
+                DioProvider.instance(baseUrl: BASE_URL.URL_DEMO5);
               }
               state.status.isValidated
                   ? bloc.add(FormSubmitted(device_token: tokenFirebase ?? ''))
                   : ShowDialogCustom.showDialogBase(
-                      title: AppLocalizations.of(Get.context!)?.notification,
-                      content: AppLocalizations.of(Get.context!)
-                          ?.check_the_information,
+                      title: getT(KeyT.notification),
+                      content: getT(KeyT.check_the_information),
                     );
             },
             boxDecoration: BoxDecoration(
@@ -234,7 +234,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
             ),
             enable: state.status.isValidated,
             textStyle: AppStyle.DEFAULT_18_BOLD,
-            text: AppLocalizations.of(Get.context!)?.login,
+            text: getT(KeyT.login),
           );
         });
   }
@@ -244,15 +244,14 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
       return WidgetInput(
         colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
         textLabel: WidgetText(
-            title: AppLocalizations.of(Get.context!)?.password,
+            title: getT(KeyT.password),
             style: TextStyle(
                 fontFamily: "Quicksand",
                 fontWeight: FontWeight.w600,
                 fontSize: 14)),
         onChanged: (value) => bloc.add(PasswordChanged(password: value)),
         errorText: state.password.invalid
-            ? AppLocalizations.of(Get.context!)
-                ?.password_must_be_at_least_6_characters
+            ? getT(KeyT.password_must_be_at_least_6_characters)
             : null,
         obscureText: obscurePassword,
         focusNode: _passwordFocusNode,
@@ -276,11 +275,10 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
           border: Border.all(color: HexColor("#838A91")),
         ),
         inputController: _unameController,
-        errorText: state.email.invalid
-            ? AppLocalizations.of(Get.context!)?.this_account_is_invalid
-            : null,
+        errorText:
+            state.email.invalid ? getT(KeyT.this_account_is_invalid) : null,
         textLabel: WidgetText(
-            title: AppLocalizations.of(Get.context!)?.account,
+            title: getT(KeyT.account),
             style: TextStyle(
                 fontFamily: "Quicksand",
                 fontWeight: FontWeight.w600,
@@ -310,8 +308,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
                     width: 8,
                   ),
                   WidgetText(
-                    title:
-                        AppLocalizations.of(Get.context!)?.print_finger_face_id,
+                    title: getT(KeyT.print_finger_face_id),
                     style: TextStyle(
                         fontFamily: "Quicksand",
                         fontWeight: FontWeight.w500,
@@ -328,9 +325,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
     final LocalAuthentication auth = LocalAuthentication();
     try {
       final didAuthenticate = await auth.authenticate(
-          localizedReason: AppLocalizations.of(Get.context!)
-                  ?.login_with_fingerprint_face_id ??
-              '',
+          localizedReason: getT(KeyT.login_with_fingerprint_face_id),
           options: const AuthenticationOptions(biometricOnly: true));
       if (didAuthenticate) {
         LoginBloc.of(context)

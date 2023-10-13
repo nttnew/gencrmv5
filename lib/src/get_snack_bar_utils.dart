@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/src/color.dart';
 import 'package:gen_crm/widgets/widget_handle.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../l10n/key_text.dart';
 
 class GetSnackBarUtils {
   static SnackStyle _snackStyle = SnackStyle.FLOATING;
@@ -24,8 +24,8 @@ class GetSnackBarUtils {
       Get.back();
     }
     Get.rawSnackbar(
-        title: AppLocalizations.of(Get.context!)?.processing_the_request,
-        message: AppLocalizations.of(Get.context!)?.please_wait_a_moment,
+        title: getT(KeyT.processing_the_request),
+        message: getT(KeyT.please_wait_a_moment),
         icon: Center(child: WidgetCircleProgress()),
         duration: _progressDuration,
         backgroundColor: _backgroundColor,
@@ -39,10 +39,10 @@ class GetSnackBarUtils {
       Get.back();
     }
     Get.rawSnackbar(
-        title: AppLocalizations.of(Get.context!)?.processing_the_request,
+        title: getT(KeyT.processing_the_request),
         message: message != null && message.isNotEmpty
             ? message
-            : AppLocalizations.of(Get.context!)?.success,
+            : getT(KeyT.success),
         icon: Center(
             child: Icon(
           Icons.check,
@@ -61,10 +61,10 @@ class GetSnackBarUtils {
       Get.back();
     }
     Get.rawSnackbar(
-        title: AppLocalizations.of(Get.context!)?.fail,
+        title: getT(KeyT.fail),
         message: message != null && message.isNotEmpty
             ? message
-            : AppLocalizations.of(Get.context!)?.fail,
+            : getT(KeyT.fail),
         icon: Center(
             child: Icon(
           Icons.error,
@@ -82,10 +82,10 @@ class GetSnackBarUtils {
       Get.back();
     }
     Get.rawSnackbar(
-        title: AppLocalizations.of(Get.context!)?.notification,
+        title: getT(KeyT.notification),
         message: message != null && message.isNotEmpty
             ? message
-            : AppLocalizations.of(Get.context!)?.fail,
+            : getT(KeyT.fail),
         icon: Center(
             child: Icon(
           Icons.error,
@@ -103,10 +103,10 @@ class GetSnackBarUtils {
       Get.back();
     }
     Get.rawSnackbar(
-        title: AppLocalizations.of(Get.context!)?.warning,
+        title: getT(KeyT.warning),
         message: message != null && message.isNotEmpty
             ? message
-            : AppLocalizations.of(Get.context!)?.warning,
+            : getT(KeyT.warning),
         icon: Center(
             child: Icon(
           Icons.warning,
@@ -124,10 +124,10 @@ class GetSnackBarUtils {
       Get.back();
     }
     Get.rawSnackbar(
-        title: AppLocalizations.of(Get.context!)?.notification,
+        title: getT(KeyT.notification),
         message: message != null && message.isNotEmpty
             ? message
-            : AppLocalizations.of(Get.context!)?.notification,
+            : getT(KeyT.notification),
         icon: Center(
             child: Icon(
           Icons.notifications,

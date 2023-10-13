@@ -13,10 +13,7 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
-
+import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/models/model_generator/customer.dart';
@@ -68,10 +65,8 @@ class ServiceVoucherBloc
   String canXe = '';
   String kieuDang = '';
   String soCho = '';
-  static final String KHONG_XAC_DINH =
-      AppLocalizations.of(Get.context!)?.unknown ?? '';
-  static final String THEM_MOI_XE =
-      AppLocalizations.of(Get.context!)?.add_new_car ?? '';
+  static final String KHONG_XAC_DINH = getT(KeyT.unknown);
+  static final String THEM_MOI_XE = getT(KeyT.add_new_car);
   final List<ProductModel> listProduct = [];
   double total = 0;
 
@@ -91,7 +86,7 @@ class ServiceVoucherBloc
 
   String getDataSelectCar(String fieldName) {
     switch (fieldName) {
-      case 'hang_xe'://fieldName theo api
+      case 'hang_xe': //fieldName theo api
         return canXe;
       case 'nam_san_xuat':
         return namSanXuat;
@@ -106,9 +101,9 @@ class ServiceVoucherBloc
     }
   }
 
-bool getInput(String fieldName) {
+  bool getInput(String fieldName) {
     switch (fieldName) {
-      case 'hang_xe'://fieldName theo api
+      case 'hang_xe': //fieldName theo api
       case 'nam_san_xuat':
       case 'kieu_dang':
       case 'dong_xe':
@@ -347,8 +342,7 @@ bool getInput(String fieldName) {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetServiceVoucherState(
-          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
+      yield ErrorGetServiceVoucherState(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
@@ -437,7 +431,7 @@ bool getInput(String fieldName) {
     } catch (e) {
       LoadingApi().popLoading();
       yield ErrorGetServiceVoucherState(
-          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
+          getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();

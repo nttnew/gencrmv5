@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/product/product_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/widgets/widgets.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../models/product_model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
@@ -94,7 +94,7 @@ class _ListProductState extends State<ListProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppbarBaseNormal(
-          AppLocalizations.of(Get.context!)?.select_product ?? ''),
+          getT(KeyT.select_product)),
       body: BlocBuilder<ProductBloc, ProductState>(
           bloc: _bloc,
           builder: (context, state) {
@@ -124,9 +124,7 @@ class _ListProductState extends State<ListProduct> {
                             child: TextField(
                               controller: _editingController,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(Get.context!)
-                                        ?.find_product ??
-                                    '',
+                                hintText: getT(KeyT.find_product ),
                                 border: InputBorder.none,
                                 disabledBorder: InputBorder.none,
                                 enabledBorder: InputBorder.none,
@@ -145,8 +143,7 @@ class _ListProductState extends State<ListProduct> {
                                   borderRadius: BorderRadius.circular(20)),
                               child: WidgetText(
                                 title:
-                                    AppLocalizations.of(Get.context!)?.find ??
-                                        '',
+                                    getT(KeyT.find ),
                                 style: AppStyle.DEFAULT_16,
                                 textAlign: TextAlign.center,
                               ),
@@ -211,7 +208,7 @@ class _ListProductState extends State<ListProduct> {
                               borderRadius: BorderRadius.circular(20)),
                           child: WidgetText(
                             title:
-                                AppLocalizations.of(Get.context!)?.select ?? '',
+                                getT(KeyT.select ),
                             style: AppStyle.DEFAULT_16,
                             textAlign: TextAlign.center,
                           ),

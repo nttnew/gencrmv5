@@ -11,7 +11,7 @@ import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../bloc/checkin_bloc/checkin_bloc.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/btn_thao_tac.dart';
@@ -72,7 +72,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       list.add(
         ModuleThaoTac(
           isSvg: false,
-          title: AppLocalizations.of(Get.context!)?.call ?? '',
+          title: getT(KeyT.call),
           icon: ICONS.IC_PHONE_PNG,
           onThaoTac: () {
             Get.back();
@@ -91,7 +91,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       );
 
     list.add(ModuleThaoTac(
-      title: AppLocalizations.of(Get.context!)?.add_discuss ?? '',
+      title: getT(KeyT.add_discuss),
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
@@ -104,7 +104,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
     if (!isCheckDone) {
       if (location != 1) {
         list.add(ModuleThaoTac(
-          title: AppLocalizations.of(Get.context!)?.check_in ?? '',
+          title: getT(KeyT.check_in),
           icon: ICONS.IC_LOCATION_SVG,
           onThaoTac: () {
             Get.back();
@@ -119,7 +119,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
         ));
       } else {
         list.add(ModuleThaoTac(
-          title: AppLocalizations.of(Get.context!)?.check_out ?? '',
+          title: getT(KeyT.check_out),
           icon: ICONS.IC_LOCATION_SVG,
           onThaoTac: () {
             Get.back();
@@ -140,7 +140,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
     }
 
     list.add(ModuleThaoTac(
-      title: AppLocalizations.of(Get.context!)?.see_attachment ?? '',
+      title: getT(KeyT.see_attachment),
       icon: ICONS.IC_ATTACK_SVG,
       onThaoTac: () async {
         Get.back();
@@ -153,7 +153,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
     ));
 
     list.add(ModuleThaoTac(
-      title: AppLocalizations.of(Get.context!)?.edit ?? '',
+      title: getT(KeyT.edit),
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
@@ -166,14 +166,12 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
     ));
 
     list.add(ModuleThaoTac(
-      title: AppLocalizations.of(Get.context!)?.delete ?? '',
+      title: getT(KeyT.delete),
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
           onTap2: () => _bloc.add(InitDeleteWorkEvent(id)),
-          content: AppLocalizations.of(Get.context!)
-                  ?.are_you_sure_you_want_to_delete ??
-              '',
+          content: getT(KeyT.are_you_sure_you_want_to_delete),
         );
       },
     ));
@@ -189,7 +187,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
             _bloc.add(InitGetDetailWorkEvent(id));
           } else if (state is ErrorCheckInState) {
             ShowDialogCustom.showDialogBase(
-              title: AppLocalizations.of(Get.context!)?.notification,
+              title:getT(KeyT.notification),
               content: state.msg,
             );
           }
@@ -200,8 +198,8 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
             if (state is SuccessDeleteWorkState) {
               LoadingApi().popLoading();
               ShowDialogCustom.showDialogBase(
-                title: AppLocalizations.of(Get.context!)?.notification,
-                content: AppLocalizations.of(Get.context!)?.success ?? '',
+                title:getT(KeyT.notification),
+                content: getT(KeyT.success),
                 onTap1: () {
                   Get.back();
                   Get.back();
@@ -213,9 +211,9 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
             } else if (state is ErrorDeleteWorkState) {
               LoadingApi().popLoading();
               ShowDialogCustom.showDialogBase(
-                title: AppLocalizations.of(Get.context!)?.notification,
+                title:getT(KeyT.notification),
                 content: state.msg,
-                textButton1: AppLocalizations.of(Get.context!)?.come_back ?? '',
+                textButton1: getT(KeyT.come_back),
                 onTap1: () {
                   Get.back();
                   Get.back();

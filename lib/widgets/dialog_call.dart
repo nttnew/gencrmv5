@@ -9,9 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../bloc/login/login_bloc.dart';
 import '../screens/call/call_screen.dart';
 import '../src/src_index.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
-
+import '../../l10n/key_text.dart';
 import '../storages/share_local.dart';
 
 class DialogCall extends StatefulWidget {
@@ -161,12 +159,11 @@ class _DialogCallState extends State<DialogCall>
                       ),
                     ).then((_) {
                       showToast(
-                          AppLocalizations.of(Get.context!)?.copy_success ??
-                              '');
+                          getT(KeyT.copy_success));
                     });
                   },
                   child: WidgetText(
-                      title: AppLocalizations.of(Get.context!)?.copy,
+                      title: getT(KeyT.copy),
                       style: AppStyle.DEFAULT_18_BOLD
                           .copyWith(fontSize: 24, fontWeight: FontWeight.w600)),
                 ),
@@ -178,7 +175,7 @@ class _DialogCallState extends State<DialogCall>
                     launchUrl(Uri(scheme: "tel", path: widget.sdt));
                   },
                   child: WidgetText(
-                      title: AppLocalizations.of(Get.context!)?.call,
+                      title: getT(KeyT.call),
                       style: AppStyle.DEFAULT_18_BOLD
                           .copyWith(fontSize: 24, fontWeight: FontWeight.w600)),
                 ),
@@ -191,7 +188,7 @@ class _DialogCallState extends State<DialogCall>
                       _handleCall(context, true);
                     },
                     child: WidgetText(
-                        title: AppLocalizations.of(Get.context!)?.call_operator,
+                        title: getT(KeyT.call_operator),
                         style: AppStyle.DEFAULT_18_BOLD.copyWith(
                             fontSize: 24, fontWeight: FontWeight.w600)),
                   ),

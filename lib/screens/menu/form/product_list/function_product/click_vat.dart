@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../../../l10n/key_text.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/widget_text.dart';
 
@@ -25,7 +25,7 @@ void onClickVAT(
               Container(
                 width: Get.width,
                 child: WidgetText(
-                  title: AppLocalizations.of(Get.context!)?.select ?? '',
+                  title: getT(KeyT.select),
                   style: AppStyle.DEFAULT_16_BOLD,
                   textAlign: TextAlign.center,
                 ),

@@ -3,8 +3,7 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../models/model_data_add.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../l10n/key_text.dart';
 import '../src/src_index.dart';
 
 class SelectMulti extends StatefulWidget {
@@ -83,9 +82,9 @@ class _SelectMultiState extends State<SelectMulti> {
                 values.removeRange(
                     int.parse(widget.maxLength) - 1, values.length - 1);
                 ShowDialogCustom.showDialogBase(
-                  title: AppLocalizations.of(Get.context!)?.notification,
+                  title:getT(KeyT.notification),
                   content:
-                      "${AppLocalizations.of(Get.context!)?.you_can_only_choose} ${widget.maxLength} ${AppLocalizations.of(Get.context!)?.value}",
+                      "${getT(KeyT.you_can_only_choose)} ${widget.maxLength} ${getT(KeyT.value)}",
                 );
               } else {
                 List<String> res = [];

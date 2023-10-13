@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/customer.dart';
@@ -86,7 +85,7 @@ class ContactByCustomerBloc
         yield ErrorGetContactByCustomerState(response.msg ?? '');
     } catch (e) {
       yield ErrorGetContactByCustomerState(
-          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
+          getT(KeyT.an_error_occurred));
       throw e;
     }
   }
@@ -107,7 +106,7 @@ class ContactByCustomerBloc
         yield ErrorGetContactByCustomerState(response.msg ?? '');
     } catch (e) {
       yield ErrorGetContactByCustomerState(
-          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
+          getT(KeyT.an_error_occurred));
       throw e;
     }
   }

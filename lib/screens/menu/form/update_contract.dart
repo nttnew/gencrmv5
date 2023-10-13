@@ -19,8 +19,8 @@ import '../../../bloc/contract/contract_bloc.dart';
 import '../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../bloc/contract/phone_bloc.dart';
 import '../../../bloc/contract/total_bloc.dart';
+import '../../../l10n/key_text.dart';
 import '../../../models/product_model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/models/model_generator/login_response.dart';
 import '../../../widgets/pick_file_image.dart';
@@ -105,14 +105,14 @@ class _EditContractState extends State<EditContract> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppbarBaseNormal(
-            AppLocalizations.of(Get.context!)?.edit_information ?? ''),
+            getT(KeyT.edit_information)),
         body: BlocListener<AddDataBloc, AddDataState>(
           listener: (context, state) async {
             if (state is SuccessAddContactCustomerState) {
               ShowDialogCustom.showDialogBase(
-                title: AppLocalizations.of(Get.context!)?.notification,
+                title:getT(KeyT.notification),
                 content:
-                    AppLocalizations.of(Get.context!)?.update_data_successfully,
+                    getT(KeyT.update_data_successfully),
                 onTap1: () {
                   Get.back();
                   Get.back();
@@ -123,7 +123,7 @@ class _EditContractState extends State<EditContract> {
               );
             } else if (state is ErrorAddContactCustomerState) {
               ShowDialogCustom.showDialogBase(
-                title: AppLocalizations.of(Get.context!)?.notification,
+                title:getT(KeyT.notification),
                 content: state.msg,
               );
             }

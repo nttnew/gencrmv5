@@ -6,7 +6,7 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:signature/signature.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../l10n/key_text.dart';
 import '../src/models/model_generator/add_customer.dart';
 
 class KyNhan extends StatefulWidget {
@@ -48,9 +48,7 @@ class _KyNhanState extends State<KyNhan> {
     if (_controller.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(Get.context!)
-                  ?.you_have_not_done_the_sign_yet ??
-              ''),
+          content: Text(getT(KeyT.you_have_not_done_the_sign_yet)),
         ),
       );
       return;
@@ -99,7 +97,7 @@ class _KyNhanState extends State<KyNhan> {
             ),
             child: WidgetText(
               title:
-                  '${AppLocalizations.of(Get.context!)?.electronic_signature}: ${widget.data?.nhanhienthi}',
+                  '${getT(KeyT.electronic_signature)}: ${widget.data?.nhanhienthi}',
               style: AppStyle.DEFAULT_18_BOLD,
             ),
           ),
@@ -122,19 +120,19 @@ class _KyNhanState extends State<KyNhan> {
           children: <Widget>[
             //SHOW EXPORTED IMAGE IN NEW ROUTE
             _buttonKyNhan(() => exportImage(context),
-                '${AppLocalizations.of(Get.context!)?.done}',
+                '${getT(KeyT.done)}',
                 color: COLORS.TEXT_COLOR, textColor: COLORS.WHITE),
             _buttonKyNhan(
               () {
                 setState(() => _controller.clear());
               },
-              '${AppLocalizations.of(Get.context!)?.sign_again}',
+              '${getT(KeyT.sign_again)}',
               textColor: COLORS.WHITE,
               color: COLORS.RED,
             ),
             _buttonKyNhan(() {
               setState(() => Get.back());
-            }, '${AppLocalizations.of(Get.context!)?.close}'),
+            }, '${getT(KeyT.close)}'),
           ],
         ),
       ],

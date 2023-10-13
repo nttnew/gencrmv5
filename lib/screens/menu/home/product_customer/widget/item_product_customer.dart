@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/models/model_generator/list_product_customer_response.dart';
+import '../../../../../l10n/key_text.dart';
 import '../../../../../src/app_const.dart';
 import '../../../../../src/src_index.dart';
-import 'package:get/get.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ItemProductCustomer extends StatelessWidget {
   const ItemProductCustomer(
@@ -22,23 +21,23 @@ class ItemProductCustomer extends StatelessWidget {
           children: [
             itemTextIcon(
               paddingTop: 0,
-              text: productModule.name ?? AppLocalizations.of(Get.context!)?.not_yet ?? '',
+              text: productModule.name ?? getT(KeyT.not_yet),
               icon: ICONS.IC_CHANCE_3X_PNG,
               isSVG: false,
               styleText: AppStyle.DEFAULT_18.copyWith(
                   color: COLORS.ff006CB1, fontWeight: FontWeight.w700),
             ),
             itemTextIcon(
-              text: productModule.customer?.name ??  AppLocalizations.of(Get.context!)?.not_yet ?? '',
+              text: productModule.customer?.name ??  getT(KeyT.not_yet),
               icon: ICONS.IC_USER2_SVG,
             ),
             itemTextIcon(
-              text: productModule.trangThai ?? AppLocalizations.of(Get.context!)?.not_yet ?? '',
+              text: productModule.trangThai ?? getT(KeyT.not_yet),
               icon: ICONS.IC_DANG_XU_LY_SVG,
               colorIcon: COLORS.GREY,
             ),
             itemTextIcon(
-              text: productModule.loai ??  AppLocalizations.of(Get.context!)?.not_yet ?? '',
+              text: productModule.loai ??  getT(KeyT.not_yet),
               icon: Icon(
                 Icons.insert_drive_file_outlined,
                 color: COLORS.GREY,

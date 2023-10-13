@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gen_crm/bloc/blocs.dart';
-import 'package:gen_crm/l10n/l10n.dart';
+// import 'package:gen_crm/l10n/l10n.dart';
 import 'package:gen_crm/screens/call/init_app_call.dart';
 import 'package:gen_crm/screens/add_service_voucher/add_service_voucher_step2_screen.dart';
 import 'package:gen_crm/screens/menu/form/form_edit.dart';
@@ -132,7 +132,7 @@ class _MyAppState extends State<MyApp> {
       ));
     }
     return StreamBuilder<Locale>(
-        stream: LoginBloc.of(context).localeLocal,
+        // stream: LoginBloc.of(context).localeLocal,
         builder: (context, snapshot) {
           return GetMaterialApp(
             locale: snapshot.data,
@@ -142,7 +142,7 @@ class _MyAppState extends State<MyApp> {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            supportedLocales: L10n.all,
+            // supportedLocales: L10n.all,
             debugShowCheckedModeBanner: false,
             theme: ThemeData(fontFamily: 'NunitoSans'),
             initialRoute: ROUTE_NAMES.SPLASH,

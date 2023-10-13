@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/screens/menu/home/notification/widget/unread_list.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
 import 'widget/index.dart';
-import 'package:get/get.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({Key? key}) : super(key: key);
@@ -13,7 +12,7 @@ class NotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppbarBaseNormal(
-          AppLocalizations.of(Get.context!)?.notification ?? '',
+         getT(KeyT.notification),
         ),
         body: DefaultTabController(
           initialIndex: 0,
@@ -28,10 +27,10 @@ class NotificationScreen extends StatelessWidget {
                 indicatorColor: COLORS.ff006CB1,
                 tabs: <Widget>[
                   Tab(
-                    text: AppLocalizations.of(Get.context!)?.unread ?? '',
+                    text: getT(KeyT.unread),
                   ),
                   Tab(
-                    text: AppLocalizations.of(Get.context!)?.readed ?? '',
+                    text: getT(KeyT.readed),
                   ),
                 ],
               ),

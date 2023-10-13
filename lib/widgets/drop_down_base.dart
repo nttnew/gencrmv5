@@ -3,8 +3,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import '../src/src_index.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../l10n/key_text.dart';
 
 class DropDownBase extends StatefulWidget {
   const DropDownBase({
@@ -58,11 +57,8 @@ class _DropDownBaseState extends State<DropDownBase> {
                               Text(
                                 filter ??
                                     (!widget.isName
-                                        ? AppLocalizations.of(Get.context!)
-                                            ?.select_type
-                                        : AppLocalizations.of(Get.context!)
-                                            ?.select_filter) ??
-                                    '',
+                                        ? getT(KeyT.select_type)
+                                        : getT(KeyT.select_filter)),
                                 style: AppStyle.DEFAULT_16
                                     .copyWith(fontWeight: FontWeight.w600),
                               ),

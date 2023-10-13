@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:hexcolor/hexcolor.dart';
+import '../../../../../../l10n/key_text.dart';
 import '../../../../../../src/models/model_generator/chance_customer.dart';
 import '../../../../../../src/src_index.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
 
 class ChanceCardWidget extends StatefulWidget {
   ChanceCardWidget({Key? key, required this.data}) : super(key: key);
@@ -29,7 +28,7 @@ class _ChanceCardWidgetState extends State<ChanceCardWidget> {
                 child: Padding(
                   padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                   child: WidgetText(
-                    title: widget.data?.name ?? AppLocalizations.of(Get.context!)?.not_yet ?? '',
+                    title: widget.data?.name ?? getT(KeyT.not_yet),
                     style: AppStyle.DEFAULT_18_BOLD
                         .copyWith(color: COLORS.TEXT_COLOR),
                     maxLine: 1,
@@ -60,7 +59,7 @@ class _ChanceCardWidgetState extends State<ChanceCardWidget> {
                 child: WidgetText(
                   title: (widget.data!.customer_name == "" ||
                           widget.data!.customer_name == null)
-                      ?AppLocalizations.of(Get.context!)?.not_yet ?? ''
+                      ? getT(KeyT.not_yet)
                       : widget.data!.customer_name,
                   style: AppStyle.DEFAULT_18_BOLD
                       .copyWith(color: COLORS.TEXT_COLOR),
@@ -77,7 +76,7 @@ class _ChanceCardWidgetState extends State<ChanceCardWidget> {
                 child: SizedBox(
                     width: AppValue.widths * 0.5,
                     child: WidgetText(
-                      title: widget.data!.status ?? AppLocalizations.of(Get.context!)?.not_yet ?? '',
+                      title: widget.data!.status ?? getT(KeyT.not_yet),
                       style: AppStyle.DEFAULT_14.copyWith(
                           fontWeight: FontWeight.w400, color: COLORS.TEXT_RED),
                     )),
@@ -93,7 +92,7 @@ class _ChanceCardWidgetState extends State<ChanceCardWidget> {
                 child: SizedBox(
                     width: AppValue.widths * 0.5,
                     child: WidgetText(
-                        title: widget.data!.date ?? AppLocalizations.of(Get.context!)?.not_yet ?? '',
+                        title: widget.data!.date ?? getT(KeyT.not_yet),
                         style: AppStyle.DEFAULT_14.copyWith(
                             fontWeight: FontWeight.w400,
                             color: COLORS.TEXT_COLOR))),

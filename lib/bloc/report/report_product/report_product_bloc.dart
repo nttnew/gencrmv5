@@ -2,8 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../api_resfull/user_repository.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../../l10n/key_text.dart';
 import '../../../src/app_const.dart';
 import '../../../src/base.dart';
 import '../../../src/models/model_generator/report_product.dart';
@@ -46,7 +45,7 @@ class ReportProductBloc extends Bloc<ReportProductEvent, ReportProductState> {
     } catch (e) {
       LoadingApi().popLoading();
       yield ErrorReportProductState(
-          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
+          getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
@@ -86,7 +85,7 @@ class ReportSelectProductBloc
         yield ErrorReportSelectProductState(response.msg ?? '');
     } catch (e) {
       yield ErrorReportSelectProductState(
-          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
+         getT(KeyT.an_error_occurred));
       throw e;
     }
   }

@@ -3,10 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/product_module/product_module_bloc.dart';
 import 'package:gen_crm/screens/menu/home/product/scanner_qrcode.dart';
-import 'package:get/get.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
@@ -116,7 +115,7 @@ class _ProductScreenState extends State<ProductScreen> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: COLORS.ff1AA928,
           onPressed: () => AppNavigator.navigateFormAdd(
-              '${AppLocalizations.of(context)?.add} $title', PRODUCT_TYPE),
+              '${getT(KeyT.add)} $title', PRODUCT_TYPE),
           child: Icon(Icons.add, size: 40),
         ),
         body: Container(
@@ -124,9 +123,7 @@ class _ProductScreenState extends State<ProductScreen> {
             children: [
               AppValue.vSpaceSmall,
               SearchBase(
-                hint:
-                    AppLocalizations.of(context)?.enter_name_barcode_qr_code ??
-                        '',
+                hint: getT(KeyT.enter_name_barcode_qr_code),
                 leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                 endIcon: GestureDetector(
                   onTap: () {
@@ -144,11 +141,8 @@ class _ProductScreenState extends State<ProductScreen> {
                           );
                         } else {
                           ShowDialogCustom.showDialogBase(
-                            title:
-                                AppLocalizations.of(Get.context!)?.notification,
-                            content:
-                                AppLocalizations.of(Get.context!)?.no_data ??
-                                    '',
+                            title:getT(KeyT.notification),
+                            content: getT(KeyT.no_data),
                           );
                         }
                       }

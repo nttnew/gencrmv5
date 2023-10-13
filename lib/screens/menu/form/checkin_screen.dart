@@ -6,7 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../l10n/key_text.dart';
 import '../../../src/app_const.dart';
 import '../../../src/src_index.dart';
 import '../../../widgets/appbar_base.dart';
@@ -58,9 +58,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
         if (state is SuccessCheckInState) {
           LoadingApi().popLoading();
           ShowDialogCustom.showDialogBase(
-            title: AppLocalizations.of(Get.context!)?.notification,
-            content:
-                AppLocalizations.of(Get.context!)?.new_data_added_successfully,
+            title:getT(KeyT.notification),
+            content: getT(KeyT.new_data_added_successfully),
             onTap1: () {
               Get.back();
               Get.back();
@@ -69,7 +68,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
         } else if (state is ErrorCheckInState) {
           LoadingApi().popLoading();
           ShowDialogCustom.showDialogBase(
-            title: AppLocalizations.of(Get.context!)?.notification,
+            title:getT(KeyT.notification),
             content: state.msg,
           );
         }
@@ -81,9 +80,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
           onTap: () {
             if (controllerNote.text.trim() == '') {
               ShowDialogCustom.showDialogBase(
-                title: AppLocalizations.of(Get.context!)?.notification,
-                content: AppLocalizations.of(Get.context!)
-                    ?.please_enter_all_required_fields,
+                title:getT(KeyT.notification),
+                content: getT(KeyT.please_enter_all_required_fields),
               );
             } else {
               CheckInBloc.of(context).add(SaveCheckIn(
@@ -103,13 +101,13 @@ class _CheckInScreenState extends State<CheckInScreen> {
                 borderRadius: BorderRadius.circular(20.5)),
             child: Center(
                 child: Text(
-              AppLocalizations.of(Get.context!)?.save ?? '',
+              getT(KeyT.save),
               style: TextStyle(color: COLORS.WHITE),
             )),
           ),
         ),
         appBar: AppbarBaseNormal(
-          AppLocalizations.of(Get.context!)?.check_in,
+          getT(KeyT.check_in),
         ),
         body: Container(
             padding: EdgeInsets.all(16),
@@ -124,13 +122,15 @@ class _CheckInScreenState extends State<CheckInScreen> {
                         child: Row(
                           children: [
                             WidgetText(
-                                title: AppLocalizations.of(Get.context!)
-                                    ?.your_position,
-                                style: AppStyle.DEFAULT_18_BOLD),
+                              title: getT(KeyT.your_position),
+                              style: AppStyle.DEFAULT_18_BOLD,
+                            ),
                             WidgetText(
-                                title: '*',
-                                style: AppStyle.DEFAULT_18_BOLD
-                                    .copyWith(color: COLORS.RED)),
+                              title: '*',
+                              style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                                color: COLORS.RED,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -188,13 +188,14 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                   color: COLORS.TEXT_COLOR,
                                 )),
                             child: WidgetText(
-                                title:
-                                    AppLocalizations.of(Get.context!)?.check_in,
-                                style: TextStyle(
-                                    fontFamily: "Quicksand",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: COLORS.WHITE)),
+                              title: getT(KeyT.check_in),
+                              style: TextStyle(
+                                fontFamily: "Quicksand",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: COLORS.WHITE,
+                              ),
+                            ),
                           ),
                         ),
                       if (location != '')
@@ -215,8 +216,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                       color: COLORS.TEXT_COLOR,
                                     )),
                                 child: WidgetText(
-                                    title: AppLocalizations.of(Get.context!)
-                                        ?.check_in_again,
+                                    title: getT(KeyT.check_in_again),
                                     style: TextStyle(
                                       fontFamily: "Quicksand",
                                       fontSize: 14,
@@ -242,8 +242,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                       color: COLORS.RED,
                                     )),
                                 child: WidgetText(
-                                    title: AppLocalizations.of(Get.context!)
-                                        ?.delete,
+                                    title: getT(KeyT.delete),
                                     style: TextStyle(
                                         fontFamily: "Quicksand",
                                         fontSize: 14,
@@ -263,7 +262,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                             textScaleFactor:
                                 MediaQuery.of(context).textScaleFactor,
                             text: TextSpan(
-                              text: AppLocalizations.of(Get.context!)?.location,
+                              text: getT(KeyT.location),
                               style: AppStyle.DEFAULT_14W600,
                               children: <TextSpan>[
                                 TextSpan(

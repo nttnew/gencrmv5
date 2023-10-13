@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
+import '../../../../../l10n/key_text.dart';
 import '../../../../../src/app_const.dart';
 import '../../../../../src/models/model_generator/contract.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/widget_text.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
 
 class ItemContract extends StatelessWidget {
   const ItemContract({Key? key, required this.data}) : super(key: key);
@@ -16,7 +15,7 @@ class ItemContract extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         AppNavigator.navigateInfoContract(data.id ?? '',
-            data.name ?? AppLocalizations.of(Get.context!)?.not_yet ?? '');
+            data.name ?? getT(KeyT.not_yet));
       },
       child: Container(
         margin: EdgeInsets.only(left: 25, right: 25, bottom: 20),
@@ -42,8 +41,7 @@ class ItemContract extends StatelessWidget {
                   child: itemTextIcon(
                       paddingTop: 0,
                       text: data.name ??
-                          AppLocalizations.of(Get.context!)?.not_yet ??
-                          '',
+                          getT(KeyT.not_yet),
                       icon: ICONS.IC_CONTRACT_3X_PNG,
                       styleText: AppStyle.DEFAULT_TITLE_PRODUCT
                           .copyWith(color: COLORS.TEXT_COLOR),
@@ -62,8 +60,7 @@ class ItemContract extends StatelessWidget {
             ),
             itemTextIcon(
               text: data.customer?.name?.trim() ??
-                  AppLocalizations.of(Get.context!)?.not_yet ??
-                  '',
+                  getT(KeyT.not_yet ),
               icon: ICONS.IC_USER2_SVG,
               colorIcon: Color(0xffE75D18),
             ),
@@ -91,7 +88,7 @@ class ItemContract extends StatelessWidget {
                       colorIcon: COLORS.GREY,
                       paddingTop: 0,
                       text:
-                          '${AppLocalizations.of(Get.context!)?.total_amount}: ' +
+                          '${getT(KeyT.total_amount)}: ' +
                               '${data.price.toString()}' +
                               'đ',
                       icon: ICONS.IC_MAIL_SVG,

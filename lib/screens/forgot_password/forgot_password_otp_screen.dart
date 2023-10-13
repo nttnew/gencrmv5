@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../bloc/forgot_password/forgot_password_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../l10n/key_text.dart';
 import '../../src/src_index.dart';
 import '../../widgets/rounder_bootom_appbar.dart';
 
@@ -53,7 +53,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
         if (state is ErrorForgotOtp) {
           GetSnackBarUtils.removeSnackBar();
           ShowDialogCustom.showDialogBase(
-            title: AppLocalizations.of(Get.context!)?.notification,
+            title: getT(KeyT.notification),
             content: state.msg,
           );
         }
@@ -77,8 +77,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
                           Column(
                             children: [
                               Text(
-                                AppLocalizations.of(Get.context!)
-                                    ?.account_verification??'',
+                                getT(KeyT.account_verification),
                                 style: TextStyle(
                                     fontFamily: "Quicksand",
                                     fontWeight: FontWeight.bold,
@@ -88,8 +87,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
                                 height: 5,
                               ),
                               Text(
-                                AppLocalizations.of(Get.context!)
-                                    ?.please_enter_the_otp_sent_to_the_email??'',
+                                getT(KeyT.please_enter_the_otp_sent_to_the_email),
                                 style: AppStyle.DEFAULT_14W500,
                               ),
                               SizedBox(
@@ -130,7 +128,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
       child: RichText(
         textScaleFactor: MediaQuery.of(context).textScaleFactor,
         text: TextSpan(
-          text: AppLocalizations.of(Get.context!)?.have_not_received_the_code,
+          text: getT(KeyT.have_not_received_the_code),
           style: TextStyle(
               fontFamily: "Quicksand",
               fontWeight: FontWeight.w500,
@@ -142,7 +140,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
                 ..onTap = () {
                   bloc.add(FormForgotPasswordSubmitted());
                 },
-              text: AppLocalizations.of(Get.context!)?.send_again,
+              text: getT(KeyT.send_again),
               style: TextStyle(
                   fontFamily: "Quicksand",
                   fontWeight: FontWeight.w500,
@@ -171,7 +169,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
               fontFamily: "Quicksand",
               fontWeight: FontWeight.w600,
               fontSize: 14),
-          text: AppLocalizations.of(Get.context!)?.confirm);
+          text: getT(KeyT.confirm));
     });
   }
 
@@ -187,7 +185,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: HexColor("#838A91")),
         ),
-        textLabel: Text(AppLocalizations.of(Get.context!)?.verification_codes ?? '',
+        textLabel: Text(getT(KeyT.verification_codes),
             style: TextStyle(
                 fontFamily: "Quicksand",
                 fontWeight: FontWeight.w600,

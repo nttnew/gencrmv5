@@ -5,7 +5,7 @@ import 'package:gen_crm/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../l10n/key_text.dart';
 import '../../widgets/rounder_bootom_appbar.dart';
 
 class ForgotPasswordResetScreen extends StatefulWidget {
@@ -46,9 +46,8 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
       listener: (context, state) {
         if (state is ResetPassSuccess) {
           ShowDialogCustom.showDialogBase(
-            title: AppLocalizations.of(Get.context!)?.notification,
-            content:
-                AppLocalizations.of(Get.context!)?.update_password_successful,
+            title: getT(KeyT.notification),
+            content: getT(KeyT.update_password_successful),
             onTap1: () {
               AppNavigator.navigateLogin();
             },
@@ -74,9 +73,7 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
                           Column(
                             children: [
                               Text(
-                                AppLocalizations.of(Get.context!)
-                                        ?.update_password ??
-                                    '',
+                                getT(KeyT.update_password),
                                 style: TextStyle(
                                     fontFamily: "Quicksand",
                                     fontWeight: FontWeight.bold,
@@ -86,9 +83,8 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
                                 height: 5,
                               ),
                               Text(
-                                AppLocalizations.of(Get.context!)
-                                        ?.enter_a_new_password_to_log_into_your_account ??
-                                    '',
+                                getT(KeyT
+                                    .enter_a_new_password_to_log_into_your_account),
                                 style: TextStyle(
                                     fontFamily: "Quicksand",
                                     fontWeight: FontWeight.w400,
@@ -124,17 +120,15 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
             if (cfPass == newPass) {
               if (cfPass.length < 6 || newPass.length < 6) {
                 ShowDialogCustom.showDialogBase(
-                    title: AppLocalizations.of(Get.context!)?.notification,
-                    content: AppLocalizations.of(Get.context!)
-                        ?.password_must_be_at_least_6_characters);
+                    title: getT(KeyT.notification),
+                    content: getT(KeyT.password_must_be_at_least_6_characters));
               } else
                 bloc.add(FormResetPasswordSubmitted(
                     newPass: newPass, username: username, email: email));
             } else
               ShowDialogCustom.showDialogBase(
-                  title: AppLocalizations.of(Get.context!)?.notification,
-                  content:
-                      AppLocalizations.of(Get.context!)?.password_not_match);
+                  title: getT(KeyT.notification),
+                  content: getT(KeyT.password_not_match));
           },
           boxDecoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -144,7 +138,7 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
               fontFamily: "Quicksand",
               fontWeight: FontWeight.w600,
               fontSize: 14),
-          text: AppLocalizations.of(Get.context!)?.completed);
+          text: getT(KeyT.completed));
     });
   }
 
@@ -156,7 +150,7 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
         focusNode: _newPassFocusNode,
         inputType: TextInputType.text,
         colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
-        textLabel: Text(AppLocalizations.of(Get.context!)?.password ?? '',
+        textLabel: Text(getT(KeyT.password),
             style: TextStyle(
                 fontFamily: "Quicksand",
                 fontWeight: FontWeight.w600,
@@ -178,11 +172,14 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
       focusNode: _cfPassFocusNode,
       inputType: TextInputType.text,
       colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
-      textLabel: Text(AppLocalizations.of(Get.context!)?.enter_password_again ?? '',
-          style: TextStyle(
-              fontFamily: "Quicksand",
-              fontWeight: FontWeight.w600,
-              fontSize: 14)),
+      textLabel: Text(
+        getT(KeyT.enter_password_again),
+        style: TextStyle(
+          fontFamily: "Quicksand",
+          fontWeight: FontWeight.w600,
+          fontSize: 14,
+        ),
+      ),
       obscureText: true,
       boxDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),

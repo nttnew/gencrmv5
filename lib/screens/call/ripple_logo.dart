@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_call.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../l10n/key_text.dart';
 import '../../src/src_index.dart';
 
 class RippleLogo extends StatefulWidget {
@@ -99,7 +98,7 @@ class _RippleLogoState extends State<RippleLogo>
     String txt =
         '${(widget.pitelCall.remoteIdentity?.length ?? 0) < 10 ? '0' + widget.pitelCall.remoteIdentity.toString() : widget.pitelCall.remoteIdentity}';
     if (txt == "0null") {
-      return AppLocalizations.of(Get.context!)?.call_ended ?? '';
+      return getT(KeyT.call_ended );
     }
     return txt;
   }

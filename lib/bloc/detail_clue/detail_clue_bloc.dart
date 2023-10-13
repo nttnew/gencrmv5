@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/api_resfull/api.dart';
 import 'package:gen_crm/src/models/model_generator/clue_detail.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../widgets/listview_loadmore_base.dart';
@@ -53,7 +52,7 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
     } catch (e) {
       LoadingApi().popLoading();
       yield ErrorGetDetailClueState(
-          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
+         getT(KeyT.an_error_occurred));
       throw (e);
     }
     LoadingApi().popLoading();
@@ -74,7 +73,7 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
     } catch (e) {
       LoadingApi().popLoading();
       yield ErrorDeleteClueState(
-          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
+         getT(KeyT.an_error_occurred));
       throw (e);
     }
     LoadingApi().popLoading();

@@ -8,7 +8,7 @@ import 'package:formz/formz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gen_crm/api_resfull/dio_provider.dart';
 import 'package:gen_crm/api_resfull/user_repository.dart';
-import 'package:gen_crm/l10n/l10n.dart';
+// import 'package:gen_crm/l10n/l10n.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/models/model_generator/main_menu_response.dart';
 import 'package:gen_crm/src/src_index.dart';
@@ -16,8 +16,7 @@ import 'package:gen_crm/storages/event_repository_storage.dart';
 import 'package:gen_crm/storages/share_local.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart' as GET;
+import '../../l10n/key_text.dart';
 import '../../widgets/loading_api.dart';
 
 part 'login_event.dart';
@@ -27,7 +26,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
   final EventRepositoryStorage localRepository;
   late List<QuickMenu> listMenuFlash = [];
-  BehaviorSubject<Locale> localeLocal = BehaviorSubject.seeded(L10n.all.first);
+  // BehaviorSubject<Locale> localeLocal = BehaviorSubject.seeded(L10n.all.first);
   BehaviorSubject<LanguagesResponse> localeLocalSelect = BehaviorSubject();
   static const String UNREGISTER = 'UNREGISTER';
   static const String REGISTERED = 'REGISTERED';
@@ -167,7 +166,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } catch (e) {
         yield state.copyWith(
             status: FormzStatus.submissionFailure,
-            message: AppLocalizations.of(GET.Get.context!)?.an_error_occurred);
+            message: getT(KeyT.an_error_occurred));
         throw e;
       }
     } else {
@@ -199,8 +198,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         } catch (e) {
           yield state.copyWith(
               status: FormzStatus.submissionFailure,
-              message:
-                  AppLocalizations.of(GET.Get.context!)?.an_error_occurred);
+              message: getT(KeyT.an_error_occurred));
           throw e;
         }
       }
@@ -240,6 +238,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if (lang == '') setLanguage(value);
       }
     }
+    await getLanguageAPI();
     LoadingApi().pushLoading();
     await getMenuMain();
     LoadingApi().popLoading();
@@ -275,14 +274,35 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
+  Future<void> getLanguageAPI() async {
+    try {
+      final response = await userRepository.getLanguage();
+      if ((response['error'] == BASE_URL.SUCCESS_200)) {
+        await shareLocal.putString(
+            PreferencesKey.LANGUAGE_BE_ALL, jsonEncode(response['data']));
+      } else {
+        // loginSessionExpired();
+      }
+    } catch (e) {
+      // LoadingApi().popLoading();
+      // loginSessionExpired();
+    }
+  }
+
   void addLocalLang(LanguagesResponse langRes) {
-    Locale locale = L10n.getLocale(langRes.name ?? '');
-    localeLocal.add(locale);
+    // Locale locale = L10n.getLocale(langRes.name ?? '');
+    // localeLocal.add(locale);
     if (shareLocal.getString(PreferencesKey.TOKEN) != '' ||
         shareLocal.getString(PreferencesKey.TOKEN) != null)
       DioProvider.instance(
           token: shareLocal.getString(PreferencesKey.TOKEN),
           sess: shareLocal.getString(PreferencesKey.SESS));
+  }
+
+  Future<void> reloadLang() async {
+    LoadingApi().pushLoading();
+    await getLanguageAPI();
+    LoadingApi().popLoading();
   }
 
   void setLanguage(LanguagesResponse language) {

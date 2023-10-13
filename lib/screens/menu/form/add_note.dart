@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/list_note/add_note_bloc.dart';
 import 'package:gen_crm/bloc/list_note/list_note_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
+import '../../../l10n/key_text.dart';
 import '../../../src/app_const.dart';
 import '../../../src/src_index.dart';
 import 'package:rxdart/rxdart.dart';
@@ -43,7 +43,7 @@ class _AddNoteState extends State<AddNote> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppbarBaseNormal(AppLocalizations.of(Get.context!)?.discuss),
+        appBar: AppbarBaseNormal(getT(KeyT.discuss)),
         body: Container(
           child: BlocListener<AddNoteBloc, AddNoteState>(
             listener: (context, state) async {
@@ -55,16 +55,16 @@ class _AddNoteState extends State<AddNote> {
               } else if (state is ErrorAddNoteState) {
                 LoadingApi().popLoading();
                 ShowDialogCustom.showDialogBase(
-                  title: AppLocalizations.of(Get.context!)?.notification,
+                  title: getT(KeyT.notification),
                   content: state.msg,
-                  textButton1: AppLocalizations.of(Get.context!)?.ok,
+                  textButton1: getT(KeyT.ok),
                 );
               } else if (state is ErrorDeleteNoteState) {
                 LoadingApi().popLoading();
                 ShowDialogCustom.showDialogBase(
-                  title: AppLocalizations.of(Get.context!)?.notification,
+                  title: getT(KeyT.notification),
                   content: state.msg,
-                  textButton1: AppLocalizations.of(Get.context!)?.come_back,
+                  textButton1: getT(KeyT.come_back),
                 );
               }
             },
@@ -120,8 +120,7 @@ class _AddNoteState extends State<AddNote> {
                             controller: _editingController,
                             focusNode: _focusNode,
                             decoration: InputDecoration(
-                                hintText: AppLocalizations.of(Get.context!)
-                                    ?.enter_content,
+                                hintText: getT(KeyT.enter_content),
                                 contentPadding: EdgeInsets.zero,
                                 enabledBorder: InputBorder.none,
                                 border: InputBorder.none,
@@ -325,7 +324,7 @@ class LoadMoreControllerReverse<T> {
       final result = await functionInit!(page, isInit);
       if (result.runtimeType == String) {
         ShowDialogCustom.showDialogBase(
-          title: AppLocalizations.of(Get.context!)?.notification,
+          title: getT(KeyT.notification),
           content: result,
         );
       } else {

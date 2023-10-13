@@ -6,8 +6,7 @@ import '../../bloc/add_service_voucher/add_service_bloc.dart';
 import '../../src/models/model_generator/list_car_response.dart';
 import '../../src/src_index.dart';
 import '../../widgets/widget_text.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../l10n/key_text.dart';
 
 class SelectCar extends StatefulWidget {
   const SelectCar({Key? key}) : super(key: key);
@@ -18,17 +17,17 @@ class SelectCar extends StatefulWidget {
 
 class _SelectCarState extends State<SelectCar> {
   late final ServiceVoucherBloc _bloc;
-  ScrollController _controller =ScrollController();
+  ScrollController _controller = ScrollController();
 
-  void _scrollLate(){
+  void _scrollLate() {
     Timer(Duration(milliseconds: 200), () {
       _controller.animateTo(
-        _controller.position.maxScrollExtent, // Vị trí đầu trang (điểm xuất phát)
+        _controller
+            .position.maxScrollExtent, // Vị trí đầu trang (điểm xuất phát)
         duration: Duration(milliseconds: 500), // Thời gian cuộn (milliseconds)
         curve: Curves.easeOut, // Loại hiệu ứng cuộn
       );
     });
-
   }
 
   @override
@@ -60,7 +59,7 @@ class _SelectCarState extends State<SelectCar> {
                     height: 16,
                   ),
                   WidgetText(
-                    title: AppLocalizations.of(Get.context!)?.car_brand,
+                    title: getT(KeyT.car_brand),
                     style: AppStyle.DEFAULT_16.copyWith(
                         color: HexColor("0079B5"), fontWeight: FontWeight.w700),
                   ),
@@ -113,8 +112,8 @@ class _SelectCarState extends State<SelectCar> {
                 ],
               ),
               if (isHang)
-                _baseSelect(AppLocalizations.of(Get.context!)?.car_series??'',
-                    _bloc.dongXe, _bloc.listDongXe, (v) {
+                _baseSelect(
+                    getT(KeyT.car_series), _bloc.dongXe, _bloc.listDongXe, (v) {
                   _bloc.dongXe = v;
                   _bloc.phienBan = '';
                   _bloc.namSanXuat = '';
@@ -126,8 +125,9 @@ class _SelectCarState extends State<SelectCar> {
                   setState(() {});
                 }),
               if (isHang && isDong)
-                _baseSelect(AppLocalizations.of(Get.context!)?.version??'',
-                    _bloc.phienBan, _bloc.listPhienBan, (v) {
+                _baseSelect(
+                    getT(KeyT.version), _bloc.phienBan, _bloc.listPhienBan,
+                    (v) {
                   _bloc.phienBan = v;
                   _bloc.namSanXuat = '';
                   _bloc.canXe = '';
@@ -141,25 +141,23 @@ class _SelectCarState extends State<SelectCar> {
                   setState(() {});
                 }),
               if (isHang && isDong && isPhienBan) ...[
-                _baseSelect(
-                    AppLocalizations.of(Get.context!)?.year_of_manufacture??'',
-                    _bloc.namSanXuat,
+                _baseSelect(getT(KeyT.year_of_manufacture), _bloc.namSanXuat,
                     _bloc.listNamSanXuat, (v) {
                   _bloc.namSanXuat = v;
                   setState(() {});
                 }),
-                _baseSelect(AppLocalizations.of(Get.context!)?.car_class??'',
-                    _bloc.canXe, _bloc.listCanXe, (v) {
+                _baseSelect(getT(KeyT.car_class), _bloc.canXe, _bloc.listCanXe,
+                    (v) {
                   _bloc.canXe = v;
                   setState(() {});
                 }),
-                _baseSelect(AppLocalizations.of(Get.context!)?.style??'',
-                    _bloc.kieuDang, _bloc.listKieuDang, (v) {
+                _baseSelect(
+                    getT(KeyT.style), _bloc.kieuDang, _bloc.listKieuDang, (v) {
                   _bloc.kieuDang = v;
                   setState(() {});
                 }),
-                _baseSelect(AppLocalizations.of(Get.context!)?.number_seats??'',
-                    _bloc.soCho, _bloc.listSoCho, (v) {
+                _baseSelect(
+                    getT(KeyT.number_seats), _bloc.soCho, _bloc.listSoCho, (v) {
                   _bloc.soCho = v;
                   setState(() {});
                 }),
@@ -190,7 +188,7 @@ class _SelectCarState extends State<SelectCar> {
                                   BorderRadius.all(Radius.circular(17))),
                           child: Center(
                             child: WidgetText(
-                              title: AppLocalizations.of(Get.context!)?.select,
+                              title: getT(KeyT.select),
                               style: AppStyle.DEFAULT_16.copyWith(
                                   color: HexColor("130F26"),
                                   fontWeight: FontWeight.w700),
@@ -212,7 +210,7 @@ class _SelectCarState extends State<SelectCar> {
                                   BorderRadius.all(Radius.circular(17))),
                           child: Center(
                             child: WidgetText(
-                              title: AppLocalizations.of(Get.context!)?.close,
+                              title: getT(KeyT.close),
                               style: AppStyle.DEFAULT_16.copyWith(
                                   color: HexColor("130F26"),
                                   fontWeight: FontWeight.w700),

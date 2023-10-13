@@ -4,8 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gen_crm/api_resfull/user_repository.dart';
 import 'package:gen_crm/src/src_index.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart' as GET;
+import '../../l10n/key_text.dart';
 
 part 'reset_password_event.dart';
 part 'reset_password_state.dart';
@@ -39,7 +38,7 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
           yield ErrorReset(response.msg ?? '');
       } catch (e) {
         yield ErrorReset(
-            AppLocalizations.of(GET.Get.context!)?.an_error_occurred ?? '');
+            getT(KeyT.an_error_occurred));
         throw e;
       }
     }

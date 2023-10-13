@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/src/app_const.dart';
+import '../../../../../l10n/key_text.dart';
 import '../../../../../src/src_index.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
 
 class WidgetItemChance extends StatelessWidget {
   final ListChanceData listChanceData;
@@ -42,14 +41,16 @@ class WidgetItemChance extends StatelessWidget {
                 Expanded(
                   child: itemTextIcon(
                     paddingTop: 0,
-                    text: listChanceData.name ?? AppLocalizations.of(Get.context!)?.not_yet ?? '',
+                    text: listChanceData.name ?? getT(KeyT.not_yet),
                     icon: ICONS.IC_CHANCE_3X_PNG,
                     isSVG: false,
                     styleText: AppStyle.DEFAULT_TITLE_PRODUCT
                         .copyWith(color: COLORS.TEXT_COLOR),
                   ),
                 ),
-                SizedBox(width: 8,),
+                SizedBox(
+                  width: 8,
+                ),
                 Container(
                   decoration: BoxDecoration(
                       color: COLORS.RED,
@@ -80,12 +81,13 @@ class WidgetItemChance extends StatelessWidget {
                     child: itemTextIcon(
                       isSVG: false,
                       paddingTop: 0,
-                      text: listChanceData.dateNextCare ?? AppLocalizations.of(Get.context!)?.not_yet ?? '',
+                      text: listChanceData.dateNextCare ?? getT(KeyT.not_yet),
                       icon: ICONS.IC_DATE_PNG,
                     ),
                   ),
-                  SizedBox(width: 8,),
-
+                  SizedBox(
+                    width: 8,
+                  ),
                   SvgPicture.asset(ICONS.IC_MESS),
                 ],
               ),

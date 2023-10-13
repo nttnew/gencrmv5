@@ -4,7 +4,7 @@ import 'package:gen_crm/bloc/detail_product_customer/detail_product_customer_blo
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../../src/src_index.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/contract.dart';
 import '../../../../src/models/model_generator/detail_product_customer_response.dart';
@@ -194,7 +194,7 @@ class _DetailProductCustomerScreenState
       ));
     }
     _list.add(ModuleThaoTac(
-      title:  AppLocalizations.of(Get.context!)?.see_attachment ?? '',
+      title: getT(KeyT.see_attachment),
       icon: ICONS.IC_ATTACK_SVG,
       onThaoTac: () async {
         Get.back();
@@ -207,7 +207,7 @@ class _DetailProductCustomerScreenState
     ));
 
     _list.add(ModuleThaoTac(
-      title:  AppLocalizations.of(Get.context!)?.edit ?? '',
+      title: getT(KeyT.edit),
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
@@ -216,14 +216,15 @@ class _DetailProductCustomerScreenState
     ));
 
     _list.add(ModuleThaoTac(
-      title: AppLocalizations.of(Get.context!)?.delete ?? '',
+      title: getT(KeyT.delete),
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
-            onTap2: () async {
-              _bloc.add(DeleteProductEvent(id));
-            },
-            content:  AppLocalizations.of(Get.context!)?.are_you_sure_you_want_to_delete ?? '',);
+          onTap2: () async {
+            _bloc.add(DeleteProductEvent(id));
+          },
+          content: getT(KeyT.are_you_sure_you_want_to_delete),
+        );
       },
     ));
   }
@@ -237,8 +238,8 @@ class _DetailProductCustomerScreenState
           if (state is SuccessDeleteProductState) {
             LoadingApi().popLoading();
             ShowDialogCustom.showDialogBase(
-              title: AppLocalizations.of(Get.context!)?.notification,
-              content: AppLocalizations.of(Get.context!)?.delete_success ?? '',
+              title:getT(KeyT.notification),
+              content: getT(KeyT.delete_success),
               onTap1: () {
                 Navigator.pushNamedAndRemoveUntil(context,
                     ROUTE_NAMES.PRODUCT_CUSTOMER, ModalRoute.withName('/'),
@@ -248,9 +249,9 @@ class _DetailProductCustomerScreenState
           } else if (state is ErrorDeleteProductState) {
             LoadingApi().popLoading();
             ShowDialogCustom.showDialogBase(
-              title: AppLocalizations.of(Get.context!)?.notification,
+              title:getT(KeyT.notification),
               content: state.msg,
-              textButton1:AppLocalizations.of(Get.context!)?.come_back ?? '',
+              textButton1: getT(KeyT.come_back),
               onTap1: () {
                 Get.back();
                 Get.back();
@@ -268,7 +269,10 @@ class _DetailProductCustomerScreenState
             if (state is GetDetailProductCustomerState) {
               if (_listTab.isEmpty) {
                 _listTab = [
-                  ...[Tabs(module: 'thong_tin_chung', name: AppLocalizations.of(Get.context!)?.information ?? '')],
+                  ...[
+                    Tabs(
+                        module: 'thong_tin_chung', name: getT(KeyT.information))
+                  ],
                   ...state.productInfo.tabs ?? []
                 ];
                 _tabController =

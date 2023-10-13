@@ -6,8 +6,8 @@ import 'package:gen_crm/screens/menu/home/product_customer/widget/item_product_c
 import 'package:gen_crm/widgets/tree/tree_node_model.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/list_product_customer_response.dart';
 import '../../../../src/src_index.dart';
@@ -116,8 +116,7 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: COLORS.ff1AA928,
           onPressed: () => AppNavigator.navigateFormAdd(
-              '${AppLocalizations.of(context)?.add} $title',
-              PRODUCT_CUSTOMER_TYPE),
+              '${getT(KeyT.add)} $title', PRODUCT_CUSTOMER_TYPE),
           child: Icon(Icons.add, size: 40),
         ),
         body: Container(
@@ -125,7 +124,7 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
             children: [
               AppValue.vSpaceSmall,
               SearchBase(
-                hint: AppLocalizations.of(context)?.enter_name_barcode_qr_code,
+                hint: getT(KeyT.enter_name_barcode_qr_code),
                 leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                 endIcon: GestureDetector(
                   onTap: () {
@@ -143,9 +142,8 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                           );
                         } else {
                           ShowDialogCustom.showDialogBase(
-                            title: AppLocalizations.of(context)?.notification,
-                            content:
-                                AppLocalizations.of(context)?.no_data ?? '',
+                            title: getT(KeyT.notification),
+                            content: getT(KeyT.no_data),
                           );
                         }
                       }
@@ -277,7 +275,7 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                   children: [
                     Center(
                       child: WidgetText(
-                        title: AppLocalizations.of(context)?.select_filter,
+                        title: getT(KeyT.select_filter),
                         textAlign: TextAlign.center,
                         style: AppStyle.DEFAULT_16_BOLD,
                       ),

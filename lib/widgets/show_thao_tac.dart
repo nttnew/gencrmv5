@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../l10n/key_text.dart';
 import '../src/app_const.dart';
 import 'btn_thao_tac.dart';
 
@@ -57,9 +56,7 @@ Future showThaoTac(
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: ButtonThaoTac(
-                  title: AppLocalizations.of(Get.context!)
-                      ?.close ??
-                      '',
+                  title: getT(KeyT.close),
                   onTap: () {
                     Navigator.of(context).pop();
                   }),

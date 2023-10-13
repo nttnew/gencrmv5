@@ -37,6 +37,7 @@ class ICONS {
   static const String IC_PHONE_PNG = 'assets/icons/phone.png';
   static const String IC_COPY_PNG = 'assets/icons/copy.png';
   static const String IC_PASTE_PNG = 'assets/icons/paste.png';
+  static const String IC_RELOAD_PNG = 'assets/icons/reload.png';
 
   static const String IC_CUSTOMER_3X_PNG = 'assets/icons/Custumer_3x.png';
   static const String IC_CLUE_3X_PNG = 'assets/icons/Clue_3x.png';

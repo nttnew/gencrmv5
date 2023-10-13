@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:gen_crm/src/preferences_key.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../l10n/key_text.dart';
 import '../storages/share_local.dart';
 import 'icon_constants.dart';
 import 'navigator.dart';
@@ -11,7 +10,7 @@ class BASE_URL {
   BASE_URL._();
   static const int SIZE_DEFAULT = 10;
   static const int PAGE_DEFAULT = 1;
-  static const URL_DEMO = 'https://demo.gencrm.com/';
+  static const URL_DEMO5 = 'https://demo5.gencrm.com/';
   static const GET_INFO_USER = 'api/user/profile';
   static const LOGIN = 'loginmobile.php';
   static const LOGOUT = 'lougoutmobile.php';
@@ -183,6 +182,7 @@ class BASE_URL {
   static const GET_SERVICE_PACK = 'modules/genmobile2/product/getServicePack';
   static const GET_PRODUCT_SERVICE_PACK = 'modules/genmobile2/product/getProductInServicePack';
   static const GET_MENU = 'modules/genmobile2/profile/getMenu';
+  static const GET_LANGUAGES = 'modules/api/getdata/dataLanguages';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';
@@ -207,7 +207,7 @@ class BASE_URL {
 
   static const ACTIVE = 1;
   static const LOCK = 0;
-  static final KHACH_HANG = AppLocalizations.of(Get.context!)?.client ?? '';
+  static final KHACH_HANG = getT(KeyT.client);
   static const NOTE_ID = 'noteid';
   static const ID = 'id';
   static const CONTENT = 'content';

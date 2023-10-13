@@ -8,8 +8,7 @@ import 'package:gen_crm/bloc/profile/profile_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/storages.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../l10n/key_text.dart';
 
 part 'info_user_event.dart';
 part 'info_user_state.dart';
@@ -58,7 +57,7 @@ class InfoUserBloc extends Bloc<InfoUserEvent, InfoUserState> {
       }
     } catch (e) {
       yield LoginExpiredState(
-          message: AppLocalizations.of(Get.context!)?.login_has_expired ?? '');
+          message: getT(KeyT.login_has_expired));
       throw e;
     }
   }
@@ -67,7 +66,7 @@ class InfoUserBloc extends Bloc<InfoUserEvent, InfoUserState> {
       File file, ProfileBloc bloc) async* {
     try {} catch (e) {
       await GetSnackBarUtils.createFailure(
-          message: AppLocalizations.of(Get.context!)?.an_error_occurred);
+          message: getT(KeyT.an_error_occurred));
       throw e;
     }
   }

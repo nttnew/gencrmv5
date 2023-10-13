@@ -18,13 +18,13 @@ import '../../../../bloc/car_list_report/car_list_report_bloc.dart';
 import '../../../../bloc/car_report/car_report_bloc.dart';
 import '../../../../bloc/report/report_employee/report_employee_bloc.dart';
 import '../../../../bloc/report/report_option/report_bloc.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/report_general.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/image_default.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({Key? key}) : super(key: key);
@@ -62,17 +62,11 @@ class _ReportScreenState extends State<ReportScreen> {
 
   List<Map<String, dynamic>> typeDoanhSo = [
     {
-      "name": AppLocalizations.of(Get.context!)?.sales ?? '',
+      "name": getT(KeyT.sales),
       "gt": 'doanh_so'
     }, // label is required and unique
-    {
-      "name": AppLocalizations.of(Get.context!)?.real_revenue ?? '',
-      "gt": 'thuc_thu'
-    },
-    {
-      "name": AppLocalizations.of(Get.context!)?.number_contract ?? '',
-      "gt": 'so_hop_dong'
-    },
+    {"name": getT(KeyT.real_revenue), "gt": 'thuc_thu'},
+    {"name": getT(KeyT.number_contract), "gt": 'so_hop_dong'},
   ];
 
   String checkDataDoanhSo(DataList data, String gt) {
@@ -97,20 +91,14 @@ class _ReportScreenState extends State<ReportScreen> {
     final nameReport = shareLocal.getString(PreferencesKey.NAME_REPORT);
     typeReport = [
       {
-        "name": AppLocalizations.of(Get.context!)?.turn_over ?? '',
+        "name": getT(KeyT.turn_over),
         "index": 1
       }, // label is required and unique
-      {
-        "name": AppLocalizations.of(Get.context!)?.sales_product ?? '',
-        "index": 2
-      },
-      {
-        "name": AppLocalizations.of(Get.context!)?.employee_turnover ?? '',
-        "index": 3
-      },
+      {"name": getT(KeyT.sales_product), "index": 2},
+      {"name": getT(KeyT.employee_turnover), "index": 3},
       {"name": nameReport.toString(), "index": 4},
     ];
-    items = [AppLocalizations.of(Get.context!)?.all_company ?? ''];
+    items = [getT(KeyT.all_company)];
     select = typeReport[0]['name'];
     timeInit = 0;
     timeFilter = 0;
@@ -181,8 +169,7 @@ class _ReportScreenState extends State<ReportScreen> {
             init();
           },
         ),
-        appBar: AppbarBase(
-            _drawerKey, AppLocalizations.of(Get.context!)?.report ?? ''),
+        appBar: AppbarBase(_drawerKey, getT(KeyT.report)),
         body: Padding(
           padding: EdgeInsets.only(
               left: 15, right: 15, top: AppValue.heights * 0.02),
@@ -588,7 +575,7 @@ class _ReportScreenState extends State<ReportScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(AppLocalizations.of(Get.context!)?.hide_details ?? '',
+          Text(getT(KeyT.hide_details),
               style:
                   AppStyle.DEFAULT_14.copyWith(color: COLORS.TEXT_BLUE_BOLD)),
           Icon(Icons.arrow_drop_down_sharp, color: COLORS.TEXT_BLUE_BOLD)
@@ -701,10 +688,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                               child: WidgetText(
                                                 title: state.data[index]
                                                         .customer?.name ??
-                                                    AppLocalizations.of(
-                                                            Get.context!)
-                                                        ?.not_yet ??
-                                                    '',
+                                                    getT(KeyT.not_yet),
                                                 style: AppStyle
                                                     .DEFAULT_LABEL_PRODUCT,
                                               ),
@@ -756,11 +740,10 @@ class _ReportScreenState extends State<ReportScreen> {
                                               width: 10,
                                             ),
                                             WidgetText(
-                                              title:
-                                                  '${AppLocalizations.of(Get.context!)?.sales}: ' +
-                                                      state.data[index].price
-                                                          .toString() +
-                                                      (money ?? ''),
+                                              title: '${getT(KeyT.sales)}: ' +
+                                                  state.data[index].price
+                                                      .toString() +
+                                                  (money ?? ''),
                                               style: AppStyle
                                                   .DEFAULT_LABEL_PRODUCT
                                                   .copyWith(color: COLORS.GREY),
@@ -837,17 +820,14 @@ class _ReportScreenState extends State<ReportScreen> {
                                         children: [
                                           Text(
                                             state.list[index].name ??
-                                                AppLocalizations.of(
-                                                        Get.context!)
-                                                    ?.not_yet ??
-                                                '',
+                                                getT(KeyT.not_yet),
                                             style: AppStyle.DEFAULT_16_BOLD
                                                 .copyWith(
                                                     color:
                                                         COLORS.TEXT_BLUE_BOLD),
                                           ),
                                           Text(
-                                              "${state.list[index].doanh_so ?? AppLocalizations.of(Get.context!)?.not_yet ?? ''}$money")
+                                              "${state.list[index].doanh_so ?? getT(KeyT.not_yet)}$money")
                                         ],
                                       ),
                                     ),
@@ -903,16 +883,13 @@ class _ReportScreenState extends State<ReportScreen> {
                                             EdgeInsets.symmetric(vertical: 4),
                                         child: Text(
                                             state.listSelect[index].name ??
-                                                AppLocalizations.of(
-                                                        Get.context!)
-                                                    ?.undefined ??
-                                                '',
+                                                getT(KeyT.undefined),
                                             style: AppStyle.DEFAULT_18))),
                                 SizedBox(
                                   width: 5,
                                 ),
                                 Text(
-                                  "${state.listSelect[index].doanh_so ?? AppLocalizations.of(Get.context!)?.undefined ?? ''}$money",
+                                  "${state.listSelect[index].doanh_so ?? getT(KeyT.undefined)}$money",
                                   style: AppStyle.DEFAULT_16,
                                 )
                               ],
@@ -984,17 +961,14 @@ class _ReportScreenState extends State<ReportScreen> {
                                           children: [
                                             Text(
                                               state.data[index].name ??
-                                                  AppLocalizations.of(
-                                                          Get.context!)
-                                                      ?.not_yet ??
-                                                  '',
+                                                  getT(KeyT.not_yet),
                                               style: AppStyle.DEFAULT_18_BOLD
                                                   .copyWith(
                                                       color: COLORS
                                                           .TEXT_BLUE_BOLD),
                                             ),
                                             Text(
-                                                "${state.data[index].total_contract ?? "0"} ${AppLocalizations.of(Get.context!)?.contract ?? ''}")
+                                                "${state.data[index].total_contract ?? "0"} ${getT(KeyT.contract)}")
                                           ],
                                         ),
                                       ),
@@ -1084,10 +1058,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                               width: AppValue.widths * 0.5,
                                               child: WidgetText(
                                                 title: state.data[index].name ??
-                                                    AppLocalizations.of(
-                                                            Get.context!)
-                                                        ?.not_yet ??
-                                                    '',
+                                                    getT(KeyT.not_yet),
                                                 style: AppStyle
                                                     .DEFAULT_TITLE_PRODUCT
                                                     .copyWith(
@@ -1126,10 +1097,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                             child: WidgetText(
                                               title: state.data[index].customer!
                                                       .name ??
-                                                  AppLocalizations.of(
-                                                          Get.context!)
-                                                      ?.not_yet ??
-                                                  '',
+                                                  getT(KeyT.not_yet),
                                               style: AppStyle
                                                   .DEFAULT_LABEL_PRODUCT,
                                             ),
@@ -1180,11 +1148,10 @@ class _ReportScreenState extends State<ReportScreen> {
                                             width: 10,
                                           ),
                                           WidgetText(
-                                            title:
-                                                '${AppLocalizations.of(Get.context!)?.sales ?? ''}: ' +
-                                                    state.data[index].price
-                                                        .toString() +
-                                                    money!,
+                                            title: '${getT(KeyT.sales)}: ' +
+                                                state.data[index].price
+                                                    .toString() +
+                                                money!,
                                             style: AppStyle
                                                 .DEFAULT_LABEL_PRODUCT
                                                 .copyWith(color: COLORS.GREY),
@@ -1255,7 +1222,7 @@ class _ReportScreenState extends State<ReportScreen> {
                             ));
                 });
               },
-              text: AppLocalizations.of(Get.context!)?.done ?? '',
+              text: getT(KeyT.done),
               backgroundColor: COLORS.BLUE,
             ),
           )
@@ -1312,8 +1279,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                                       fontWeight:
                                                           FontWeight.w600)),
                                           TextSpan(
-                                              text:
-                                                  ' ${AppLocalizations.of(Get.context!)?.car}',
+                                              text: ' ${getT(KeyT.car)}',
                                               style: AppStyle.DEFAULT_18
                                                   .copyWith(
                                                       fontSize: 24,
@@ -1518,7 +1484,7 @@ class _ReportScreenState extends State<ReportScreen> {
               colorText: data.color != "" ? HexColor(data.color!) : COLORS.RED,
             ),
             itemTextIcon(
-                text: '${AppLocalizations.of(Get.context!)?.total_amount}: ' +
+                text: '${getT(KeyT.total_amount)}: ' +
                     '${data.giaTriHopDong ?? 0}' +
                     'đ',
                 icon: ICONS.IC_MAIL_SVG,

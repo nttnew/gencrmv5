@@ -9,7 +9,7 @@ import 'package:gen_crm/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 import 'package:formz/formz.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
 
@@ -91,7 +91,7 @@ class _InformationAccountState extends State<InformationAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppbarBaseNormal(
-          AppLocalizations.of(Get.context!)?.account_information ?? ''),
+          getT(KeyT.account_information)),
       body: SingleChildScrollView(
           child: BlocListener<InforAccBloc, InforAccState>(
         listener: (context, state) {
@@ -102,7 +102,7 @@ class _InformationAccountState extends State<InformationAccount> {
                 GetInforAccBloc.of(context).add(InitGetInforAcc());
                 AppNavigator.navigateBack();
               },
-              title: AppLocalizations.of(Get.context!)?.success,
+              title: getT(KeyT.success),
               content: state.message,
             );
           }
@@ -112,7 +112,7 @@ class _InformationAccountState extends State<InformationAccount> {
           if (state.status.isSubmissionFailure) {
             GetSnackBarUtils.removeSnackBar();
             ShowDialogCustom.showDialogBase(
-              title: AppLocalizations.of(Get.context!)?.notification,
+              title:getT(KeyT.notification),
               content: state.message,
             );
           }
@@ -138,14 +138,10 @@ class _InformationAccountState extends State<InformationAccount> {
                       showCupertinoModalPopup(
                           context: Get.context!,
                           builder: (context) => CupertinoActionSheet(
-                                  title: Text(AppLocalizations.of(Get.context!)
-                                          ?.avatar ??
-                                      ''),
+                                  title: Text(getT(KeyT.avatar)),
                                   cancelButton: CupertinoActionSheetAction(
                                     child: Text(
-                                        AppLocalizations.of(Get.context!)
-                                                ?.cancel ??
-                                            ''),
+                                        getT(KeyT.cancel)),
                                     onPressed: () {
                                       AppNavigator.navigateBack();
                                     },
@@ -157,9 +153,7 @@ class _InformationAccountState extends State<InformationAccount> {
                                         getImage();
                                       },
                                       child: Text(
-                                          AppLocalizations.of(Get.context!)
-                                                  ?.pick_photo ??
-                                              ''),
+                                          getT(KeyT.pick_photo ),),
                                     ),
                                     CupertinoActionSheetAction(
                                       onPressed: () async {
@@ -167,9 +161,7 @@ class _InformationAccountState extends State<InformationAccount> {
                                         getImageCamera();
                                       },
                                       child: Text(
-                                          AppLocalizations.of(Get.context!)
-                                                  ?.new_photo_shoot ??
-                                              ''),
+                                          getT(KeyT.new_photo_shoot)),
                                     )
                                   ]));
                     },
@@ -221,7 +213,7 @@ class _InformationAccountState extends State<InformationAccount> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          AppLocalizations.of(Get.context!)?.full_name ?? '',
+                          getT(KeyT.full_name),
                           style:
                               AppStyle.DEFAULT_16.copyWith(color: COLORS.GREY),
                         ),
@@ -231,8 +223,7 @@ class _InformationAccountState extends State<InformationAccount> {
                         _buildFullNameField(bloc),
                         AppValue.vSpaceSmall,
                         Text(
-                            AppLocalizations.of(Get.context!)?.number_phone ??
-                                '',
+                            getT(KeyT.number_phone ),
                             style: AppStyle.DEFAULT_16
                                 .copyWith(color: COLORS.GREY)),
                         SizedBox(
@@ -240,7 +231,7 @@ class _InformationAccountState extends State<InformationAccount> {
                         ),
                         _buildPhoneField(bloc),
                         AppValue.vSpaceSmall,
-                        Text(AppLocalizations.of(Get.context!)?.email ?? '',
+                        Text(getT(KeyT.email),
                             style: AppStyle.DEFAULT_16
                                 .copyWith(color: COLORS.GREY)),
                         SizedBox(
@@ -248,7 +239,7 @@ class _InformationAccountState extends State<InformationAccount> {
                         ),
                         _buildEmailField(bloc),
                         AppValue.vSpaceSmall,
-                        Text(AppLocalizations.of(Get.context!)?.address ?? '',
+                        Text(getT(KeyT.address),
                             style: AppStyle.DEFAULT_16
                                 .copyWith(color: COLORS.GREY)),
                         SizedBox(
@@ -275,10 +266,8 @@ class _InformationAccountState extends State<InformationAccount> {
                                 }
                               } else {
                                 ShowDialogCustom.showDialogBase(
-                                  title: AppLocalizations.of(Get.context!)
-                                      ?.notification,
-                                  content: AppLocalizations.of(Get.context!)
-                                      ?.check_the_information,
+                                  title:getT(KeyT.notification),
+                                  content: getT(KeyT.check_the_information),
                                 );
                               }
                             },
@@ -288,7 +277,7 @@ class _InformationAccountState extends State<InformationAccount> {
                                 right: 20,
                                 bottom: 20,
                                 top: AppValue.heights * 0.1),
-                            text: AppLocalizations.of(Get.context!)?.save,
+                            text: getT(KeyT.save),
                             textStyle: AppStyle.DEFAULT_14.copyWith(
                                 fontWeight: FontWeight.w700,
                                 color: COLORS.WHITE),
@@ -299,7 +288,7 @@ class _InformationAccountState extends State<InformationAccount> {
             } else if (state is Error) {
               return Center(
                 child: WidgetText(
-                  title: AppLocalizations.of(Get.context!)?.an_error_occurred,
+                  title: getT(KeyT.an_error_occurred),
                   style: AppStyle.DEFAULT_18_BOLD,
                 ),
               );
@@ -344,7 +333,7 @@ class _InformationAccountState extends State<InformationAccount> {
             onChanged: (value) => bloc.add(PhoneChanged(value)),
             decoration: InputDecoration(
                 errorText: state.phone.invalid
-                    ? AppLocalizations.of(Get.context!)?.invalid_phone_number
+                    ? getT(KeyT.invalid_phone_number)
                     : null),
             focusNode: _phoneFocusNode,
             textInputAction: TextInputAction.next,
@@ -366,7 +355,7 @@ class _InformationAccountState extends State<InformationAccount> {
           child: TextFormField(
             decoration: InputDecoration(
               errorText: state.email.invalid
-                  ? AppLocalizations.of(Get.context!)?.this_account_is_invalid
+                  ? getT(KeyT.this_account_is_invalid)
                   : null,
             ),
             onChanged: (value) => bloc.add(EmailChanged(value)),

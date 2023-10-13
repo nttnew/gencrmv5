@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../l10n/key_text.dart';
 import '../src/app_const.dart';
 import '../src/src_index.dart';
 
@@ -113,7 +112,7 @@ class LoadMoreController<T> {
       final result = await functionInit!(page, isInit);
       if (result.runtimeType == String) {
         ShowDialogCustom.showDialogBase(
-          title: AppLocalizations.of(Get.context!)?.notification,
+          title:getT(KeyT.notification),
           content: result,
         );
       } else {

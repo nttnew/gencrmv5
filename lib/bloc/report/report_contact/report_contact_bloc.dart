@@ -2,8 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../api_resfull/user_repository.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../../l10n/key_text.dart';
 import '../../../src/app_const.dart';
 import '../../../src/base.dart';
 import '../../../src/models/model_generator/report_contact.dart';
@@ -53,8 +52,7 @@ class ReportContactBloc extends Bloc<ReportContactEvent, ReportContactState> {
         yield ErrorReportContactState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorReportContactState(
-          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
+      yield ErrorReportContactState(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();

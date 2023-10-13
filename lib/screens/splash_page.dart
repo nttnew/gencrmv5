@@ -51,6 +51,7 @@ class _LogoAppState extends State<SplashPage>
 
   @override
   void initState() {
+    LoginBloc.of(context).getLanguageAPI();
     super.initState();
     getBaseUrl();
     loadUser();
@@ -69,7 +70,7 @@ class _LogoAppState extends State<SplashPage>
 
   loadUser() async {
     final response = await shareLocal.getString(PreferencesKey.USER);
-    if (response != null) {
+    if (response != null && response != '') {
       setState(() {
         user = LoginData.fromJson(jsonDecode(response));
       });

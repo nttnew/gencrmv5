@@ -17,8 +17,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:signature/signature.dart';
 import '../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../../src/src_index.dart';
+import '../../../l10n/key_text.dart';
 import '../../../models/model_data_add.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../widgets/pick_file_image.dart';
 import '../../../widgets/field_input_select_multi.dart';
@@ -106,9 +106,8 @@ class _FormAddSignState extends State<FormAddSign> {
               listener: (context, state) async {
                 if (state is SuccessAddCustomerOrState) {
                   ShowDialogCustom.showDialogBase(
-                    title: AppLocalizations.of(Get.context!)?.notification,
-                    content: AppLocalizations.of(Get.context!)
-                        ?.new_data_added_successfully,
+                    title: getT(KeyT.notification),
+                    content: getT(KeyT.new_data_added_successfully),
                     onTap1: () {
                       Get.back();
                       Get.back();
@@ -119,15 +118,14 @@ class _FormAddSignState extends State<FormAddSign> {
                 }
                 if (state is ErrorAddCustomerOrState) {
                   ShowDialogCustom.showDialogBase(
-                    title: AppLocalizations.of(Get.context!)?.notification,
+                    title: getT(KeyT.notification),
                     content: state.msg,
                   );
                 }
                 if (state is SuccessAddContactCustomerState) {
                   ShowDialogCustom.showDialogBase(
-                    title: AppLocalizations.of(Get.context!)?.notification,
-                    content: AppLocalizations.of(Get.context!)
-                        ?.new_data_added_successfully,
+                    title: getT(KeyT.notification),
+                    content: getT(KeyT.new_data_added_successfully),
                     onTap1: () {
                       Get.back();
                       Get.back();
@@ -136,7 +134,7 @@ class _FormAddSignState extends State<FormAddSign> {
                 }
                 if (state is ErrorAddContactCustomerState) {
                   ShowDialogCustom.showDialogBase(
-                    title: AppLocalizations.of(Get.context!)?.notification,
+                    title: getT(KeyT.notification),
                     content: state.msg,
                   );
                 }
@@ -553,8 +551,7 @@ class _FormAddSignState extends State<FormAddSign> {
                         width: MediaQuery.of(context).size.width,
                         child: Center(
                           child: WidgetText(
-                            title: AppLocalizations.of(Get.context!)?.click_to_sign ??
-                                '',
+                            title: getT(KeyT.click_to_sign),
                             style: AppStyle.DEFAULT_14.copyWith(
                               color: COLORS.TEXT_COLOR,
                             ),
@@ -680,7 +677,7 @@ class _FormAddSignState extends State<FormAddSign> {
             RichText(
               textScaleFactor: MediaQuery.of(context).textScaleFactor,
               text: TextSpan(
-                text: '${AppLocalizations.of(Get.context!)?.unpaid}:',
+                text: '${getT(KeyT.unpaid)}:',
                 style: AppStyle.DEFAULT_14W600,
                 children: <TextSpan>[
                   TextSpan(
@@ -903,14 +900,13 @@ class _FormAddSignState extends State<FormAddSign> {
     //
     if (check == true) {
       ShowDialogCustom.showDialogBase(
-        title: AppLocalizations.of(Get.context!)?.notification,
+        title: getT(KeyT.notification),
         content: isCheckMoney
-            ? AppLocalizations.of(Get.context!)
-                ?.the_amount_cannot_be_greater_than_the_outstanding_amount
+            ? getT(
+                KeyT.the_amount_cannot_be_greater_than_the_outstanding_amount)
             : isCheckRate
-                ? AppLocalizations.of(Get.context!)?.rate_star_please
-                : AppLocalizations.of(Get.context!)
-                    ?.please_enter_all_required_fields,
+                ? getT(KeyT.rate_star_please)
+                : getT(KeyT.please_enter_all_required_fields),
       );
     } else {
       AddDataBloc.of(context).add(SignEvent(data));

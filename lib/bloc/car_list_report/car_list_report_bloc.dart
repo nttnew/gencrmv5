@@ -4,8 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/response_bao_cao.dart';
@@ -71,7 +70,7 @@ class CarListReportBloc extends Bloc<CarListReportEvent, CarListReportState> {
       }
     } catch (e) {
       yield ErrorGetListCarListReportState(
-          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
+          getT(KeyT.an_error_occurred));
       LoadingApi().popLoading();
       throw e;
     }

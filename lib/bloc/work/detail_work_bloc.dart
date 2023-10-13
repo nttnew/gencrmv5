@@ -2,8 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/api_resfull/api.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../l10n/key_text.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/work.dart';
 import '../../widgets/loading_api.dart';
@@ -40,7 +39,7 @@ class DetailWorkBloc extends Bloc<DetailWorkEvent, DetailWorkState> {
     } catch (e) {
       LoadingApi().popLoading();
       yield ErrorGetDetailWorkState(
-          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
+          getT(KeyT.an_error_occurred));
       throw (e);
     }
     LoadingApi().popLoading();
@@ -60,7 +59,7 @@ class DetailWorkBloc extends Bloc<DetailWorkEvent, DetailWorkState> {
     } catch (e) {
       LoadingApi().popLoading();
       yield ErrorDeleteWorkState(
-          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
+          getT(KeyT.an_error_occurred));
       throw (e);
     }
     LoadingApi().popLoading();

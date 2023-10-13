@@ -6,6 +6,7 @@ import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.da
 import 'package:gen_crm/bloc/support/support_bloc.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
@@ -16,7 +17,6 @@ import '../../../../widgets/tree/tree_widget.dart';
 import '../../../../widgets/widget_text.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 import 'widget/item_support.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SupportScreen extends StatefulWidget {
   const SupportScreen({Key? key}) : super(key: key);
@@ -40,8 +40,8 @@ class _SupportScreenState extends State<SupportScreen> {
   int page = BASE_URL.PAGE_DEFAULT;
   String ids = '';
   List<String> listAdd = [
-    '${AppLocalizations.of(Get.context!)?.add} ${AppLocalizations.of(Get.context!)?.check_in}',
-    '${AppLocalizations.of(Get.context!)?.add} ${(Get.arguments ?? '').toLowerCase()}'
+    '${getT(KeyT.add)} ${getT(KeyT.check_in)}',
+    '${getT(KeyT.add)} ${(Get.arguments ?? '').toLowerCase()}'
   ];
   late final ManagerBloc managerBloc;
   late final SupportBloc _bloc;
@@ -85,8 +85,8 @@ class _SupportScreenState extends State<SupportScreen> {
   _reloadLanguage() async {
     await _research();
     listAdd = [
-      '${AppLocalizations.of(Get.context!)?.add} ${AppLocalizations.of(Get.context!)?.check_in}',
-      '${AppLocalizations.of(Get.context!)?.add} ${title.toLowerCase()}'
+      '${getT(KeyT.add)} ${getT(KeyT.check_in)}',
+      '${getT(KeyT.add)} ${title.toLowerCase()}'
     ];
     title = ModuleMy.getNameModuleMy(
       ModuleMy.CSKH,
@@ -201,7 +201,7 @@ class _SupportScreenState extends State<SupportScreen> {
                   builder: (context, snapshot) {
                     return SearchBase(
                       hint:
-                          "${AppLocalizations.of(context)?.find} ${title.toLowerCase()}",
+                          "${getT(KeyT.find)} ${title.toLowerCase()}",
                       leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                       endIcon: (snapshot.data ?? []).isNotEmpty
                           ? SvgPicture.asset(

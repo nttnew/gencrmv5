@@ -6,9 +6,9 @@ import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/tree/tree_node_model.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
-import 'package:get/get.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/customer.dart';
 import '../../../../src/src_index.dart';
@@ -17,7 +17,6 @@ import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 import 'widget/item_list_customer.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomerScreen extends StatefulWidget {
   const CustomerScreen({Key? key}) : super(key: key);
@@ -50,11 +49,11 @@ class _CustomerScreenState extends State<CustomerScreen> {
     _drawerKey = GlobalKey();
     _key = GlobalKey<ExpandableFabState>();
     listAdd = [
-      '$title ${AppLocalizations.of(Get.context!)?.organization}',
-      '$title ${AppLocalizations.of(Get.context!)?.individual}',
+      '$title ${getT(KeyT.organization)}',
+      '$title ${getT(KeyT.individual)}',
     ];
     if (LoginBloc.of(context).checkRegisterSuccess())
-      listAdd.add(AppLocalizations.of(Get.context!)?.call_operator ?? '');
+      listAdd.add(getT(KeyT.call_operator));
     _bloc = GetListCustomerBloc.of(context);
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
@@ -86,11 +85,11 @@ class _CustomerScreenState extends State<CustomerScreen> {
   _handleRouter(String value) {
     if (listAdd[0] == value) {
       AppNavigator.navigateFormAddCustomerGroup(
-          "${AppLocalizations.of(Get.context!)?.add} ${value.toLowerCase()}",
+          "${getT(KeyT.add)} ${value.toLowerCase()}",
           ADD_CUSTOMER);
     } else if (listAdd[1] == value) {
       AppNavigator.navigateAddCustomer(
-          "${AppLocalizations.of(Get.context!)?.add} ${value.toLowerCase()}");
+          "${getT(KeyT.add)} ${value.toLowerCase()}");
     } else {
       AppNavigator.navigateCall(title: title);
     }
@@ -103,8 +102,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
       isTitle: true,
     );
     listAdd = [
-      '${title} ${AppLocalizations.of(Get.context!)?.organization}',
-      '${title} ${AppLocalizations.of(Get.context!)?.individual}',
+      '${title} ${getT(KeyT.organization)}',
+      '${title} ${getT(KeyT.individual)}',
     ];
     setState(() {});
   }
@@ -220,7 +219,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   builder: (context, snapshot) {
                     return SearchBase(
                       hint:
-                          "${AppLocalizations.of(context)?.find} ${title.toLowerCase()}",
+                          "${getT(KeyT.find)} ${title.toLowerCase()}",
                       leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                       endIcon: (snapshot.data ?? []).isNotEmpty
                           ? SvgPicture.asset(

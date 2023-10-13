@@ -25,7 +25,7 @@ import '../../../bloc/product_customer_module/product_customer_module_bloc.dart'
 import '../../../bloc/product_module/product_module_bloc.dart';
 import '../../../bloc/support/support_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../l10n/key_text.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/models/model_generator/add_customer.dart';
 import '../../../widgets/pick_file_image.dart';
@@ -125,9 +125,9 @@ class _FormEditState extends State<FormEdit> {
 
   showLog(String mess) {
     ShowDialogCustom.showDialogBase(
-      title: AppLocalizations.of(Get.context!)?.notification,
+      title: getT(KeyT.notification),
       content: mess,
-      textButton1: AppLocalizations.of(Get.context!)?.come_back,
+      textButton1: getT(KeyT.come_back),
       onTap1: () {
         Get.back();
         Get.back();
@@ -142,16 +142,15 @@ class _FormEditState extends State<FormEdit> {
         Scaffold(
             backgroundColor: COLORS.WHITE,
             appBar: AppbarBaseNormal(
-                AppLocalizations.of(Get.context!)?.edit_information ?? ''),
+                getT(KeyT.edit_information)),
             body: BlocListener<AddDataBloc, AddDataState>(
               listener: (context, state) async {
                 if (state is SuccessEditCustomerState) {
                   LoadingApi().popLoading();
                   ShowDialogCustom.showDialogBase(
-                    title: AppLocalizations.of(Get.context!)?.notification,
-                    content: AppLocalizations.of(Get.context!)
-                            ?.update_data_successfully ??
-                        '',
+                    title: getT(KeyT.notification),
+                    content: getT(KeyT.update_data_successfully)
+                    ,
                     onTap1: () {
                       if (type == EDIT_CUSTOMER)
                         GetListCustomerBloc.of(context)
@@ -164,15 +163,14 @@ class _FormEditState extends State<FormEdit> {
                 if (state is ErrorEditCustomerState) {
                   LoadingApi().popLoading();
                   ShowDialogCustom.showDialogBase(
-                    title: AppLocalizations.of(Get.context!)?.notification,
+                    title: getT(KeyT.notification),
                     content: state.msg,
                   );
                 }
                 if (state is SuccessAddContactCustomerState) {
                   ShowDialogCustom.showDialogBase(
-                    title: AppLocalizations.of(Get.context!)?.notification,
-                    content: AppLocalizations.of(Get.context!)
-                        ?.update_data_successfully,
+                    title: getT(KeyT.notification),
+                    content: getT(KeyT.update_data_successfully),
                     onTap1: () {
                       Get.back();
                       Get.back();
@@ -213,7 +211,7 @@ class _FormEditState extends State<FormEdit> {
                 }
                 if (state is ErrorAddContactCustomerState) {
                   ShowDialogCustom.showDialogBase(
-                    title: AppLocalizations.of(Get.context!)?.notification,
+                    title: getT(KeyT.notification),
                     content: state.msg,
                   );
                 }
@@ -631,9 +629,9 @@ class _FormEditState extends State<FormEdit> {
     }
     if (check == true) {
       ShowDialogCustom.showDialogBase(
-        title: AppLocalizations.of(Get.context!)?.notification,
+        title: getT(KeyT.notification),
         content:
-            AppLocalizations.of(Get.context!)?.please_enter_all_required_fields,
+            getT(KeyT.please_enter_all_required_fields),
       );
     } else {
       data["id"] = id;

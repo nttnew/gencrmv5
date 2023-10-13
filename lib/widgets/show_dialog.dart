@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../l10n/key_text.dart';
 
 class ShowDialogCustom {
   static showLoading() {
@@ -66,10 +66,7 @@ class ShowDialogCustom {
                         ),
                       ],
                       Text(
-                        content ??
-                            AppLocalizations.of(Get.context!)
-                                ?.are_you_sure_you_want_to_sign_out ??
-                            '',
+                        content ?? getT(KeyT.are_you_sure_you_want_to_sign_out),
                         style: title != null
                             ? AppStyle.DEFAULT_14
                             : AppStyle.DEFAULT_18_BOLD,
@@ -97,14 +94,8 @@ class ShowDialogCustom {
                                     child: Text(
                                       textButton1 ??
                                           (onTap2 != null
-                                              ? AppLocalizations.of(
-                                                          Get.context!)
-                                                      ?.cancel ??
-                                                  ''
-                                              : AppLocalizations.of(
-                                                          Get.context!)
-                                                      ?.ok ??
-                                                  ''),
+                                              ? getT(KeyT.cancel)
+                                              : getT(KeyT.ok)),
                                       style: AppStyle.DEFAULT_16_BOLD.copyWith(
                                           color:
                                               txtColorButton1 ?? COLORS.BLACK),
@@ -128,10 +119,7 @@ class ShowDialogCustom {
                                             BorderRadius.circular(10)),
                                     child: Center(
                                       child: Text(
-                                        textButton2 ??
-                                            AppLocalizations.of(Get.context!)
-                                                ?.agree ??
-                                            '',
+                                        textButton2 ?? getT(KeyT.agree),
                                         style: AppStyle.DEFAULT_16_BOLD
                                             .copyWith(
                                                 color: txtColorButton1 ??
@@ -214,11 +202,7 @@ class ShowDialogCustom {
                       SizedBox(
                         height: 10,
                       ),
-                      Text(
-                          title ??
-                              AppLocalizations.of(Get.context!)
-                                  ?.enter_address_application_below ??
-                              '',
+                      Text(title ?? getT(KeyT.enter_address_application_below),
                           style: AppStyle.DEFAULT_16.copyWith(fontSize: 14)),
                       SizedBox(
                         height: 15,
@@ -260,10 +244,7 @@ class ShowDialogCustom {
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Center(
                                     child: Text(
-                                      textButton1 ??
-                                          AppLocalizations.of(Get.context!)
-                                              ?.cancel ??
-                                          '',
+                                      textButton1 ?? getT(KeyT.cancel),
                                       style: AppStyle.DEFAULT_16_BOLD.copyWith(
                                           color: colorButton1 ?? COLORS.BLACK),
                                     ),
@@ -287,10 +268,7 @@ class ShowDialogCustom {
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Center(
                                     child: Text(
-                                      textButton2 ??
-                                          AppLocalizations.of(Get.context!)
-                                              ?.agree ??
-                                          '',
+                                      textButton2 ?? getT(KeyT.agree),
                                       style: AppStyle.DEFAULT_16_BOLD.copyWith(
                                           color: colorButton1 ?? COLORS.BLACK),
                                     ),

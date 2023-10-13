@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import '../../api_resfull/user_repository.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
 
@@ -56,7 +55,7 @@ class CustomerContractBloc
     } catch (e) {
       LoadingApi().popLoading();
       yield ErrorGetContractCustomerState(
-          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
+         getT(KeyT.an_error_occurred ));
       throw e;
     }
     LoadingApi().popLoading();
@@ -78,7 +77,7 @@ class CustomerContractBloc
     } catch (e) {
       LoadingApi().popLoading();
       yield ErrorGetContractCustomerState(
-          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
+         getT(KeyT.an_error_occurred ));
       throw e;
     }
     LoadingApi().popLoading();

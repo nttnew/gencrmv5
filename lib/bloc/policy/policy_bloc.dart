@@ -2,8 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../api_resfull/user_repository.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
+import '../../l10n/key_text.dart';
 import '../../src/base.dart';
 import '../../widgets/loading_api.dart';
 
@@ -36,7 +35,7 @@ class GetPolicyBloc extends Bloc<GetPolicyEvent, PolicyState> {
     } catch (e) {
       LoadingApi().popLoading();
       yield ErrorGetPolicyState(
-          AppLocalizations.of(Get.context!)?.an_error_occurred ?? '');
+         getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();

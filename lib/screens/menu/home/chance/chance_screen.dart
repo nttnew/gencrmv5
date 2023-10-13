@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
-import 'package:get/get.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
@@ -14,7 +14,6 @@ import '../../../../widgets/tree/tree_node_model.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 import 'widget/widget_chance_item.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChanceScreen extends StatefulWidget {
   const ChanceScreen({Key? key}) : super(key: key);
@@ -100,7 +99,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
               builder: (context, snapshot) {
                 return SearchBase(
                   hint:
-                      "${AppLocalizations.of(Get.context!)?.find} ${title.toLowerCase()}",
+                      "${getT(KeyT.find)} ${title.toLowerCase()}",
                   leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                   endIcon: (snapshot.data ?? []).isNotEmpty
                       ? SvgPicture.asset(
@@ -184,7 +183,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
               backgroundColor: COLORS.ff1AA928,
               onPressed: () {
                 AppNavigator.navigateFormAdd(
-                    '${AppLocalizations.of(Get.context!)?.add} ${title.toLowerCase()}',
+                    '${getT(KeyT.add)} ${title.toLowerCase()}',
                     ADD_CHANCE);
               },
               child: Icon(Icons.add, size: 40),

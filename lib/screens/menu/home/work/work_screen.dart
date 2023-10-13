@@ -7,8 +7,8 @@ import 'package:gen_crm/bloc/work/work_bloc.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/screens/menu/home/work/widget/index.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
-import 'package:get/get.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/drop_down_base.dart';
@@ -16,7 +16,6 @@ import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_node_model.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WorkScreen extends StatefulWidget {
   const WorkScreen({Key? key}) : super(key: key);
@@ -34,24 +33,18 @@ class _WorkScreenState extends State<WorkScreen> {
   String idFilter = "";
   String title = '';
   String ids = '';
-  List<String> listAdd = [
-    '${AppLocalizations.of(Get.context!)?.add} ${AppLocalizations.of(Get.context!)?.check_in}',
-    '${AppLocalizations.of(Get.context!)?.add} ${(Get.arguments ?? '').toLowerCase()}'
-  ];
+  List<String> listAdd = [];
   final _key = GlobalKey<ExpandableFabState>();
   late final ManagerBloc managerBloc;
   late final WorkBloc _bloc;
 
   @override
   void initState() {
+    _getDataFirst();
     _bloc = WorkBloc.of(context);
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.CONG_VIEC);
-    title = ModuleMy.getNameModuleMy(
-      ModuleMy.CONG_VIEC,
-      isTitle: true,
-    );
     GetNotificationBloc.of(context).add(CheckNotification());
     _bloc.add(InitGetListWorkEvent());
     _scrollController.addListener(() {
@@ -80,16 +73,20 @@ class _WorkScreenState extends State<WorkScreen> {
     ));
   }
 
-  _reloadLanguage() async {
-    await _research();
+  _getDataFirst() {
     title = ModuleMy.getNameModuleMy(
       ModuleMy.CONG_VIEC,
       isTitle: true,
     );
     listAdd = [
-      '${AppLocalizations.of(Get.context!)?.add} ${AppLocalizations.of(Get.context!)?.check_in}',
-      '${AppLocalizations.of(Get.context!)?.add} ${title.toLowerCase()}'
+      '${getT(KeyT.add)} ${getT(KeyT.check_in)}',
+      '${getT(KeyT.add)} ${title.toLowerCase()}'
     ];
+  }
+
+  _reloadLanguage() async {
+    await _research();
+    _getDataFirst();
     setState(() {});
   }
 
@@ -196,8 +193,7 @@ class _WorkScreenState extends State<WorkScreen> {
                 stream: managerBloc.managerTrees,
                 builder: (context, snapshot) {
                   return SearchBase(
-                    hint:
-                        "${AppLocalizations.of(context)?.find} ${title.toLowerCase()}",
+                    hint: "${getT(KeyT.find)} ${title.toLowerCase()}",
                     leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                     endIcon: (snapshot.data ?? []).isNotEmpty
                         ? SvgPicture.asset(

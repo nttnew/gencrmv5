@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../../../l10n/key_text.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/widget_text.dart';
 
@@ -30,7 +30,7 @@ void onClickPrice(
                   Container(
                     width: Get.width,
                     child: WidgetText(
-                      title: AppLocalizations.of(Get.context!)?.enter_price,
+                      title: getT(KeyT.enter_price),
                       style: AppStyle.DEFAULT_16_BOLD,
                       textAlign: TextAlign.center,
                     ),
@@ -73,7 +73,7 @@ void onClickPrice(
                           padding:
                               EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           child: WidgetText(
-                            title: AppLocalizations.of(Get.context!)?.enter,
+                            title: getT(KeyT.enter),
                             style: AppStyle.DEFAULT_16,
                           ),
                         ),

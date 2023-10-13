@@ -8,7 +8,7 @@ import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../bloc/detail_product/detail_product_bloc.dart';
 import '../../../../bloc/product_module/product_module_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../models/product_model.dart';
 import '../../../../src/app_const.dart';
 import '../../../../widgets/appbar_base.dart';
@@ -45,20 +45,20 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
     list = [];
     list.add(ModuleThaoTac(
       title:
-          '${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
+          '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
       icon: ICONS.IC_ADD_CONTRACT_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateAddContract(
           title:
-              '${AppLocalizations.of(Get.context!)?.add} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
+              '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
           product: (product?.id ?? '') != '' ? product : null,
         );
       },
     ));
 
     list.add(ModuleThaoTac(
-      title: AppLocalizations.of(Get.context!)?.see_attachment ?? '',
+      title: getT(KeyT.see_attachment),
       icon: ICONS.IC_ATTACK_SVG,
       onThaoTac: () async {
         Get.back();
@@ -71,7 +71,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
     ));
 
     list.add(ModuleThaoTac(
-      title: AppLocalizations.of(Get.context!)?.edit ?? '',
+      title: getT(KeyT.edit),
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
@@ -83,16 +83,14 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
     ));
 
     list.add(ModuleThaoTac(
-      title: AppLocalizations.of(Get.context!)?.delete ?? '',
+      title: getT(KeyT.delete),
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
           onTap2: () async {
             _bloc.add(DeleteProductEvent(id));
           },
-          content: AppLocalizations.of(Get.context!)
-                  ?.are_you_sure_you_want_to_delete ??
-              '',
+          content: getT(KeyT.are_you_sure_you_want_to_delete),
         );
       },
     ));
@@ -108,8 +106,8 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
           if (state is SuccessDeleteProductState) {
             LoadingApi().popLoading();
             ShowDialogCustom.showDialogBase(
-              title: AppLocalizations.of(Get.context!)?.notification,
-              content: AppLocalizations.of(Get.context!)?.delete_success ?? '',
+              title:getT(KeyT.notification),
+              content: getT(KeyT.delete_success),
               onTap1: () {
                 ProductModuleBloc.of(context)
                     .add(InitGetListProductModuleEvent());
@@ -121,9 +119,9 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
           } else if (state is ErrorDeleteProductState) {
             LoadingApi().popLoading();
             ShowDialogCustom.showDialogBase(
-              title: AppLocalizations.of(Get.context!)?.notification,
+              title:getT(KeyT.notification),
               content: state.msg,
-              textButton1: AppLocalizations.of(Get.context!)?.come_back ?? '',
+              textButton1: getT(KeyT.come_back),
               onTap1: () {
                 Get.back();
                 Get.back();

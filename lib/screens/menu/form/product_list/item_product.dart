@@ -3,8 +3,8 @@ import 'package:gen_crm/screens/menu/form/product_list/function_product/click_so
 import 'package:gen_crm/screens/menu/form/product_list/function_product/click_vat.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/widgets/widgets.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../models/product_model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import '../../../../src/src_index.dart';
 import 'function_product/click_dvt.dart';
@@ -108,7 +108,7 @@ class _ItemProductState extends State<ItemProduct> {
         typeGiamGiaDefault = typeWidget;
         isTypeGiamGIa = typeWidget;
       }
-      if (intoMoney != (widget.model?.intoMoney ?? 0)){
+      if (intoMoney != (widget.model?.intoMoney ?? 0)) {
         intoMoney = widget.model?.intoMoney ?? 0;
       }
       widget.onReload();
@@ -258,9 +258,8 @@ class _ItemProductState extends State<ItemProduct> {
                   ),
                 ],
                 WidgetText(
-                  title:
-                      "${AppLocalizations.of(Get.context!)?.code_product}: " +
-                          "${widget.data.product_code ?? ''}",
+                  title: "${getT(KeyT.code_product)}: " +
+                      "${widget.data.product_code ?? ''}",
                   style: AppStyle.DEFAULT_14_BOLD
                       .copyWith(color: COLORS.TEXT_GREY),
                 ),
@@ -291,7 +290,7 @@ class _ItemProductState extends State<ItemProduct> {
                           borderRadius: BorderRadius.circular(7)),
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: WidgetText(
-                        title: "${AppLocalizations.of(Get.context!)?.price}: " +
+                        title: "${getT(KeyT.price)}: " +
                             "${AppValue.format_money(price)}",
                         style: AppStyle.DEFAULT_14_BOLD
                             .copyWith(color: COLORS.TEXT_GREY),
@@ -321,9 +320,7 @@ class _ItemProductState extends State<ItemProduct> {
                                 borderRadius: BorderRadius.circular(7)),
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             child: WidgetText(
-                              title:
-                                  "${AppLocalizations.of(Get.context!)?.dvt}: " +
-                                      "${dvt}",
+                              title: "${getT(KeyT.dvt)}: " + "${dvt}",
                               style: AppStyle.DEFAULT_14
                                   .copyWith(color: COLORS.BLUE),
                               maxLine: 4,
@@ -351,9 +348,8 @@ class _ItemProductState extends State<ItemProduct> {
                                 borderRadius: BorderRadius.circular(7)),
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             child: WidgetText(
-                              title:
-                                  "${AppLocalizations.of(Get.context!)?.vat}: " +
-                                      "${vat == '' ? '0' : vat}",
+                              title: "${getT(KeyT.vat)}: " +
+                                  "${vat == '' ? '0' : vat}",
                               style: AppStyle.DEFAULT_14
                                   .copyWith(color: COLORS.BLUE),
                               maxLine: 4,
@@ -386,12 +382,11 @@ class _ItemProductState extends State<ItemProduct> {
                             borderRadius: BorderRadius.circular(7)),
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         child: WidgetText(
-                          title:
-                              "${AppLocalizations.of(Get.context!)?.sale}: " +
-                                  (isTypeGiamGIa
-                                      ? AppValue.format_money(giamGia)
-                                      : giamGia.trim()) +
-                                  "${isTypeGiamGIa ? '' : '%'}",
+                          title: "${getT(KeyT.sale)}: " +
+                              (isTypeGiamGIa
+                                  ? AppValue.format_money(giamGia)
+                                  : giamGia.trim()) +
+                              "${isTypeGiamGIa ? '' : '%'}",
                           style:
                               AppStyle.DEFAULT_14.copyWith(color: COLORS.BLUE),
                         ),
@@ -427,7 +422,7 @@ class _ItemProductState extends State<ItemProduct> {
                             borderRadius: BorderRadius.circular(7)),
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         child: WidgetText(
-                          title: "${AppLocalizations.of(Get.context!)?.into_money}: " +
+                          title: "${getT(KeyT.into_money)}: " +
                               "${AppValue.format_money(intoMoney.toStringAsFixed(0))}",
                           style:
                               AppStyle.DEFAULT_14.copyWith(color: COLORS.BLUE),
@@ -450,19 +445,17 @@ class _ItemProductState extends State<ItemProduct> {
     if (isTypeGiamGIa &&
         (double.parse(txt) > double.parse(widget.data.sell_price ?? '0'))) {
       ShowDialogCustom.showDialogBase(
-        title: AppLocalizations.of(Get.context!)?.notification,
-        content: AppLocalizations.of(Get.context!)
-                ?.you_cannot_enter_a_discount_greater_than_the_price_of_the_product ??
-            '',
+        title:getT(KeyT.notification),
+        content: getT(KeyT
+            .you_cannot_enter_a_discount_greater_than_the_price_of_the_product),
         onTap1: () {
           Get.back();
         },
       );
     } else if (!isTypeGiamGIa && (double.parse(txt) > 100)) {
       ShowDialogCustom.showDialogBase(
-        title: AppLocalizations.of(Get.context!)?.notification,
-        content:
-            AppLocalizations.of(Get.context!)?.you_cannot_enter_more_than_100,
+        title:getT(KeyT.notification),
+        content: getT(KeyT.you_cannot_enter_more_than_100),
         onTap1: () {
           Get.back();
         },

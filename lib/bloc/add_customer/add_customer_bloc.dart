@@ -3,12 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
-
 import '../../api_resfull/user_repository.dart';
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
-
+import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/models/model_generator/customer.dart';
@@ -50,9 +46,7 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetAddCustomerState(AppLocalizations.of(Get.context!)?.
-
-an_error_occurred??'');
+      yield ErrorGetAddCustomerState(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
@@ -62,10 +56,10 @@ an_error_occurred??'');
     LoadingApi().pushLoading();
     try {
       yield LoadingGetEditCustomerState();
-      final response = await userRepository.getUpdateCustomer(id??'');
+      final response = await userRepository.getUpdateCustomer(id ?? '');
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        yield SuccessGetEditCustomerState(response.data??[]);
+        yield SuccessGetEditCustomerState(response.data ?? []);
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
@@ -74,9 +68,7 @@ an_error_occurred??'');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetEditCustomerState(AppLocalizations.of(Get.context!)?.
-
-an_error_occurred??'');
+      yield ErrorGetEditCustomerState(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
