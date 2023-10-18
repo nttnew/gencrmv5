@@ -111,7 +111,7 @@ class _WidgetInputState extends State<WidgetInput> {
               ),
             ),
         SizedBox(
-          height: 8,
+          height: 4,
         ),
         Container(
           height: widget.height,

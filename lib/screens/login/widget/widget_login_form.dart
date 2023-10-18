@@ -9,9 +9,7 @@ import 'package:formz/formz.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
-import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
-
 import '../../../l10n/key_text.dart';
 
 class WidgetLoginForm extends StatefulWidget {
@@ -30,10 +28,12 @@ class WidgetLoginForm extends StatefulWidget {
 
 class _WidgetLoginFormState extends State<WidgetLoginForm> {
   final _emailFocusNode = FocusNode();
+  final _domainFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
   bool obscurePassword = true;
   late LoginData user;
   TextEditingController _unameController = TextEditingController();
+  TextEditingController _domainController = TextEditingController();
   String baseUrl = "";
   String? tokenFirebase;
 
@@ -66,6 +66,11 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         context.read<LoginBloc>().add(EmailUnfocused());
       }
     });
+    _domainFocusNode.addListener(() {
+      if (!_domainFocusNode.hasFocus) {
+        context.read<LoginBloc>().add(DomainUnfocused());
+      }
+    });
     _passwordFocusNode.addListener(() {
       if (!_passwordFocusNode.hasFocus) {
         context.read<LoginBloc>().add(PasswordUnfocused());
@@ -96,12 +101,15 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
   void dispose() {
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
+    _domainFocusNode.dispose();
     super.dispose();
   }
 
   getUname() async {
     _unameController.text =
         await shareLocal.getString(PreferencesKey.USER_NAME) ?? "";
+    _domainController.text =
+        await shareLocal.getString(PreferencesKey.URL_BASE_FORMAT) ?? "";
     if (_unameController.text != "")
       LoginBloc.of(context).add(EmailChanged(email: _unameController.text));
   }
@@ -133,6 +141,8 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppValue.vSpaceSmall,
+              _buildTextFieldDomain(bloc),
+              AppValue.vSpaceSmall,
               _buildTextFieldUsername(bloc),
               AppValue.vSpaceSmall,
               _buildTextFieldPassword(bloc),
@@ -147,7 +157,6 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
               AppValue.vSpaceSmall,
               _buildButtonLogin(bloc),
               AppValue.vSpaceMedium,
-              _buildChangeAddressApplication(),
             ],
           ),
         ),
@@ -155,41 +164,21 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
     );
   }
 
-  _buildChangeAddressApplication() {
-    return Align(
-      alignment: Alignment.center,
-      child: InkWell(
-        onTap: () {
-          ShowDialogCustom.showDialogTwoButtonAddress(onTap2: (String text) {
-            if (text != "") {
-              String urlBase = '';
-              if (text.split('/').length == 1) {
-                urlBase = 'https://$text/';
-              } else if (text.split('/').length == 2) {
-                urlBase = 'https://$text';
-              } else if (text.contains('https://') &&
-                  text.split('/').length < 4) {
-                urlBase = '$text/';
-              } else {
-                urlBase = text;
-              }
-              shareLocal.putString(PreferencesKey.URL_BASE, urlBase);
-              DioProvider.instance(baseUrl: urlBase);
-              Get.back();
-              widget.reload();
-            } else
-              Get.back();
-          });
-        },
-        child: Text(
-          getT(KeyT.change_address_application),
-          style: AppStyle.DEFAULT_14W500.copyWith(
-            color: COLORS.ff006CB1,
-            decoration: TextDecoration.underline,
-          ),
-        ),
-      ),
-    );
+  _getDataDomain() {
+    final text = _domainController.text;
+    shareLocal.putString(PreferencesKey.URL_BASE_FORMAT, text);
+    String urlBase = '';
+    if (text.split('/').length == 1) {
+      urlBase = 'https://$text/';
+    } else if (text.split('/').length == 2) {
+      urlBase = 'https://$text';
+    } else if (text.contains('https://') && text.split('/').length < 4) {
+      urlBase = '$text/';
+    } else {
+      urlBase = text;
+    }
+    shareLocal.putString(PreferencesKey.URL_BASE, urlBase);
+    DioProvider.instance(baseUrl: urlBase);
   }
 
   _buildForgotPassword() {
@@ -214,19 +203,15 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         builder: (context, state) {
           return WidgetButton(
             onTap: () async {
-              final baseUrl =
-                  await shareLocal.getString(PreferencesKey.URL_BASE) ?? '';
-              if (baseUrl == '' || baseUrl == 'null') {
-                shareLocal.putString(
-                    PreferencesKey.URL_BASE, BASE_URL.URL_DEMO5);
-                DioProvider.instance(baseUrl: BASE_URL.URL_DEMO5);
+              if (state.status.isValidated) {
+                _getDataDomain();
+                bloc.add(FormSubmitted(device_token: tokenFirebase ?? ''));
+              } else {
+                ShowDialogCustom.showDialogBase(
+                  title: getT(KeyT.notification),
+                  content: getT(KeyT.check_the_information),
+                );
               }
-              state.status.isValidated
-                  ? bloc.add(FormSubmitted(device_token: tokenFirebase ?? ''))
-                  : ShowDialogCustom.showDialogBase(
-                      title: getT(KeyT.notification),
-                      content: getT(KeyT.check_the_information),
-                    );
             },
             boxDecoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
@@ -239,16 +224,42 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         });
   }
 
+  _buildTextFieldDomain(LoginBloc bloc) {
+    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+      return WidgetInput(
+        colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
+        onChanged: (value) => bloc.add(DomainChanged(domain: value)),
+        focusNode: _domainFocusNode,
+        boxDecoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: COLORS.ff838A91),
+        ),
+        inputController: _domainController,
+        errorText:
+            state.domain.invalid ? getT(KeyT.this_account_is_invalid) : null,
+        textLabel: WidgetText(
+            title: getT(KeyT.change_address_application),
+            style: TextStyle(
+              fontFamily: "Quicksand",
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
+            )),
+      );
+    });
+  }
+
   _buildTextFieldPassword(LoginBloc bloc) {
     return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
       return WidgetInput(
         colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
         textLabel: WidgetText(
-            title: getT(KeyT.password),
-            style: TextStyle(
-                fontFamily: "Quicksand",
-                fontWeight: FontWeight.w600,
-                fontSize: 14)),
+          title: getT(KeyT.password),
+          style: TextStyle(
+            fontFamily: "Quicksand",
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+          ),
+        ),
         onChanged: (value) => bloc.add(PasswordChanged(password: value)),
         errorText: state.password.invalid
             ? getT(KeyT.password_must_be_at_least_6_characters)
@@ -257,7 +268,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         focusNode: _passwordFocusNode,
         boxDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: HexColor("#838A91")),
+          border: Border.all(color: COLORS.ff838A91),
         ),
       );
     });
@@ -272,7 +283,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         focusNode: _emailFocusNode,
         boxDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: HexColor("#838A91")),
+          border: Border.all(color: COLORS.ff838A91),
         ),
         inputController: _unameController,
         errorText:

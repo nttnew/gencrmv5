@@ -23,6 +23,12 @@ class _LoginScreenState extends State<LoginScreen> {
   late bool isLogin;
 
   @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.UNREGISTER);
     scrollController = ScrollController();
@@ -44,8 +50,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      drawerEnableOpenDragGesture: false,
+      // resizeToAvoidBottomInset: true,
+      // drawerEnableOpenDragGesture: false,
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
           content: Text(
@@ -54,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         child: SingleChildScrollView(
-          controller: scrollController,
+          // controller: scrollController,
           child: Padding(
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -62,17 +68,18 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 children: [
                   RoundedAppBar(),
-                  AppValue.vSpaceSmall,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        getT(KeyT.login),
-                        style: AppStyle.DEFAULT_18_BOLD,
-                      )
-                    ],
-                  ),
-                  AppValue.vSpaceSmall,
+                  AppValue.vSpaceTiny,
+                  // AppValue.vSpaceSmall,
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Text(
+                  //       getT(KeyT.login),
+                  //       style: AppStyle.DEFAULT_18_BOLD,
+                  //     )
+                  //   ],
+                  // ),
+                  // AppValue.vSpaceSmall,
                   WidgetLoginForm(
                     reload: reload,
                     isLogin: isLogin,

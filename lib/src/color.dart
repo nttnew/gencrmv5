@@ -34,6 +34,7 @@ class COLORS {
   static const ff1AA928 = Color(0xff1AA928);
   static final ff006CB1 = HexColor("#006CB1");
   static final ff697077 = HexColor("#697077");
-  static final ff89F0DD = HexColor("89F0DD");
-  static final ffC5EDFF = HexColor("C5EDFF");
+  static final ff89F0DD = HexColor("#89F0DD");
+  static final ffC5EDFF = HexColor("#C5EDFF");
+  static final ff838A91 = HexColor("#838A91");
 }

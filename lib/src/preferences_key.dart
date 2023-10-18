@@ -7,6 +7,7 @@ class PreferencesKey {
   static const String INFOR_USER = "INFOR_USER";
   static const String MONEY = "MONEY";
   static const String URL_BASE = "URL_BASE";
+  static const String URL_BASE_FORMAT = "URL_BASE_FORMAT";
   static const String TITLE = 'title';
   static const String POST_PAYMENT = 'POST_PAYMENT';
   static const String ORDER_PAYMENT = 'ORDER_PAYMENT';

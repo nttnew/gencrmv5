@@ -33,7 +33,7 @@
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>To take user profile image</string>
+	<string>We need access to your camera to use Qrcode to scan codes to search.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>using face id genCRM</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>

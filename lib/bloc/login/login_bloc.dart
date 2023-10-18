@@ -17,6 +17,8 @@ import 'package:gen_crm/storages/share_local.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../l10n/key_text.dart';
+import '../../src/app_const.dart';
+import '../../src/models/validate_form/no_data.dart';
 import '../../widgets/loading_api.dart';
 
 part 'login_event.dart';
@@ -36,12 +38,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     required this.userRepository,
     required this.localRepository,
   }) : super(LoginState(
-            email: UserName.pure(),
-            password: Password.pure(),
-            status: FormzStatus.invalid,
-            message: '',
-            user: LoginData(),
-            device_token: ''));
+          email: UserName.pure(),
+          domain: NoData.pure(),
+          password: Password.pure(),
+          status: FormzStatus.invalid,
+          message: '',
+          user: LoginData(),
+          device_token: '',
+        ));
 
   @override
   void onTransition(Transition<LoginEvent, LoginState> transition) {
@@ -105,29 +109,41 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    if (event is EmailChanged) {
+    if (event is DomainChanged) {
+      final domain = NoData.dirty(event.domain);
+      yield state.copyWith(
+        domain: domain.valid ? domain : NoData.pure(event.domain),
+        status: Formz.validate([domain, state.email, state.password]),
+      );
+    } else if (event is EmailChanged) {
       final email = UserName.dirty(event.email);
       yield state.copyWith(
         email: email.valid ? email : UserName.pure(event.email),
-        status: Formz.validate([email, state.password]),
+        status: Formz.validate([state.domain, email, state.password]),
       );
     } else if (event is PasswordChanged) {
       final password = Password.dirty(event.password);
       yield state.copyWith(
         password: password.valid ? password : Password.pure(event.password),
-        status: Formz.validate([state.email, password]),
+        status: Formz.validate([state.domain, state.email, password]),
+      );
+    } else if (event is DomainUnfocused) {
+      final domain = NoData.dirty(state.domain.value);
+      yield state.copyWith(
+        domain: domain,
+        status: Formz.validate([domain, state.email, state.password]),
       );
     } else if (event is EmailUnfocused) {
       final email = UserName.dirty(state.email.value);
       yield state.copyWith(
         email: email,
-        status: Formz.validate([email, state.password]),
+        status: Formz.validate([state.domain, email, state.password]),
       );
     } else if (event is PasswordUnfocused) {
       final password = Password.dirty(state.password.value);
       yield state.copyWith(
         password: password,
-        status: Formz.validate([state.email, password]),
+        status: Formz.validate([state.domain, state.email, password]),
       );
     } else if (event is FormSubmitted) {
       try {
@@ -239,9 +255,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     }
     await getLanguageAPI();
-    LoadingApi().pushLoading();
     await getMenuMain();
-    LoadingApi().popLoading();
   }
 
   Future<void> getMenuMain() async {
@@ -256,11 +270,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         await shareLocal.putString(PreferencesKey.LIST_MENU_FLASH,
             jsonEncode(response.data?.quickMenu));
       } else {
-        // loginSessionExpired();
+        loginSessionExpired();
       }
     } catch (e) {
-      // LoadingApi().popLoading();
-      // loginSessionExpired();
+      loginSessionExpired();
     }
   }
 

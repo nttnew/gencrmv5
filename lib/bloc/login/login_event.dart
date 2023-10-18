@@ -16,7 +16,18 @@ class EmailChanged extends LoginEvent {
   List<Object> get props => [email];
 }
 
+class DomainChanged extends LoginEvent {
+  const DomainChanged({required this.domain});
+
+  final String domain;
+
+  @override
+  List<Object> get props => [domain];
+}
+
 class EmailUnfocused extends LoginEvent {}
+
+class DomainUnfocused extends LoginEvent {}
 
 class PasswordChanged extends LoginEvent {
   const PasswordChanged({required this.password});
