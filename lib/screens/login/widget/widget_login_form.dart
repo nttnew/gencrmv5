@@ -141,11 +141,11 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppValue.vSpaceSmall,
-              _buildTextFieldDomain(bloc),
-              AppValue.vSpaceSmall,
               _buildTextFieldUsername(bloc),
               AppValue.vSpaceSmall,
               _buildTextFieldPassword(bloc),
+              AppValue.vSpaceSmall,
+              _buildTextFieldDomain(bloc),
               AppValue.vSpaceSmall,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
