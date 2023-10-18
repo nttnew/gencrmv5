@@ -107,10 +107,12 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
 
   getUname() async {
     _unameController.text =
-        await shareLocal.getString(PreferencesKey.USER_NAME) ?? "";
+        await shareLocal.getString(PreferencesKey.USER_NAME) ?? '';
     _domainController.text =
-        await shareLocal.getString(PreferencesKey.URL_BASE_FORMAT) ?? "";
-    if (_unameController.text != "")
+        await shareLocal.getString(PreferencesKey.URL_BASE_FORMAT) ?? '';
+    if (_domainController.text != '')
+      LoginBloc.of(context).add(DomainChanged(domain: _domainController.text));
+    if (_unameController.text != '')
       LoginBloc.of(context).add(EmailChanged(email: _unameController.text));
   }
 
@@ -236,7 +238,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         ),
         inputController: _domainController,
         errorText:
-            state.domain.invalid ? getT(KeyT.this_account_is_invalid) : null,
+            state.domain.invalid ? getT(KeyT.validate_address_app) : null,
         textLabel: WidgetText(
             title: getT(KeyT.change_address_application),
             style: TextStyle(

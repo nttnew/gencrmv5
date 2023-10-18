@@ -226,4 +226,5 @@ class KeyT {
   static const String into_money = "into_money";
   static const String count_product_validate = "count_product_validate";
   static const String already_exist = "already_exist";
+  static const String validate_address_app = "validate_address_app";
 }
