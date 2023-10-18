@@ -68,7 +68,7 @@ import '../models/model_generator/support_customer.dart';
 
 part 'rest_client.g.dart';
 
-@RestApi(baseUrl: "https://demo.gencrm.com/")
+@RestApi(baseUrl: "https://demo5.gencrm.com/")
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
   // ================================> GET <===================================
