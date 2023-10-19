@@ -37,11 +37,11 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>using face id genCRM</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This application requires location services to work</string>
+	<string>This application genCRM requires location services to use the check-in and check-out features included in the app</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This application requires location services to work</string>
+	<string>This application genCRM requires location services to use the check-in and check-out features included in the app</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This application requires location services to work</string>
+	<string>This application genCRM requires location services to use the check-in and check-out features included in the app</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Use microphone to make calls</string>
 	<key>NSPhotoLibraryUsageDescription</key>

@@ -168,9 +168,9 @@ class _CallScreenState extends State<CallScreen>
                         await Clipboard.getData(Clipboard.kTextPlain);
                     if (clipboardData != null &&
                         int.tryParse(clipboardData.text ?? '') != null) {
-                      if ((clipboardData.text?.length ?? 0) > 10) {
+                      if ((clipboardData.text?.length ?? 0) > 12) {
                         _controller.text =
-                            clipboardData.text.toString().substring(0, 10);
+                            clipboardData.text.toString().substring(0, 12);
                       } else {
                         _controller.text = clipboardData.text ?? '';
                       }
@@ -285,7 +285,7 @@ class _CallScreenState extends State<CallScreen>
   }
 
   void insertTextAtPosition(int position, String text) {
-    if (_controller.text.length < 10) if (position >= 0 &&
+    if (_controller.text.length < 12) if (position >= 0 &&
         position <= _controller.text.length) {
       final currentText = _controller.text;
       final newText = currentText.replaceRange(position, position, text);
