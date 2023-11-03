@@ -3,14 +3,13 @@ description: A new Flutter application.
 publish_to: 'none'
 version: 2.2.2+222
 #versionNew
+#flutter/3.7.6
 
 environment:
   sdk: ">=2.16.0 <3.0.0"
 
 dependencies:
   flutter:
-    sdk: flutter
-  flutter_localizations:
     sdk: flutter
   intl: any
 

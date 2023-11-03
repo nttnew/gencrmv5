@@ -14,32 +14,4 @@ class L10n {
   static const Locale CODE_JA = Locale('ja');
   static const Locale CODE_MY = Locale('my');
   static const Locale CODE_ZH = Locale('zh');
-
-  // static final all = [
-  //   const Locale('vi'),
-  //   const Locale('ko'),
-  //   const Locale('en'),
-  //   const Locale('ja'),
-  //   const Locale('my'),
-  //   const Locale('zh'),
-  // ];
-
-  // static Locale getLocale(String name) {
-  //   switch (name) {
-  //     case VN:
-  //       return CODE_VN;
-  //     case KO:
-  //       return CODE_KO;
-  //     case EN:
-  //       return CODE_EN;
-  //     case JA:
-  //       return CODE_JA;
-  //     case MY:
-  //       return CODE_MY;
-  //     case ZH:
-  //       return CODE_ZH;
-  //     default:
-  //       return CODE_VN;
-  //   }
-  // }
 }
