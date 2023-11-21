@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:gen_crm/l10n/l10n.dart';
 import '../src/preferences_key.dart';
 import '../storages/share_local.dart';
 
@@ -7,7 +7,7 @@ String getT(String key) {
   final dataLang =
       jsonDecode(shareLocal.getString(PreferencesKey.LANGUAGE_BE_ALL));
   final lang = shareLocal.getString(PreferencesKey.LANGUAGE_NAME) ??
-      'english'; //default build app
+      L10n.VN; //default build app
   return dataLang[lang][key];
 }
 

@@ -5,6 +5,7 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../../../../l10n/key_text.dart';
 import '../../../../../../src/models/model_generator/contract_customer.dart';
 import '../../../../../../src/src_index.dart';
+import '../../../../../../storages/share_local.dart';
 
 class ConstractCardWidget extends StatefulWidget {
   ConstractCardWidget({Key? key, required this.data}) : super(key: key);
@@ -95,9 +96,9 @@ class _ConstractCardWidgetState extends State<ConstractCardWidget> {
                 child: SizedBox(
                     width: AppValue.widths * 0.5,
                     child: WidgetText(
-                      title: "${getT(KeyT.total_amount)}: " +
-                          "${widget.data!.total_value ?? ''}" +
-                          "đ",
+                      title: '${getT(KeyT.total_amount)}: ' +
+                          '${widget.data!.total_value ?? ''}' +
+                          shareLocal.getString(PreferencesKey.MONEY),
                       style: OrtherInforCustomerStyle(),
                     )),
               ),

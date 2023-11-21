@@ -7,6 +7,7 @@ import '../../../../l10n/key_text.dart';
 import '../../../../models/product_model.dart';
 import 'package:get/get.dart';
 import '../../../../src/src_index.dart';
+import '../../../../storages/share_local.dart';
 import 'function_product/click_dvt.dart';
 import 'function_product/click_giam_gia.dart';
 import 'function_product/click_into_money.dart';
@@ -470,7 +471,7 @@ class _ItemProductState extends State<ItemProduct> {
 
       widget.onGiamGia!(
         txt,
-        isTypeGiamGIa ? "đ" : "%",
+        isTypeGiamGIa ? shareLocal.getString(PreferencesKey.MONEY) ?? '' : '%',
       );
       _getIntoMoney();
       Get.back();
