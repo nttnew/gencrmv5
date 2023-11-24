@@ -102,6 +102,17 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
     }
 
     list.add(ModuleThaoTac(
+      title: getT(KeyT.sign),
+      icon: ICONS.IC_ELECTRIC_SIGN_PNG,
+      isSvg: false,
+      onThaoTac: () {
+        //todo
+        Get.back();
+        AppNavigator.navigateFormSign(getT(KeyT.sign), id, type: 'support');
+      },
+    ));
+
+    list.add(ModuleThaoTac(
       title: getT(KeyT.add_discuss),
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
@@ -176,7 +187,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                       if (state is SuccessDeleteSupportState) {
                         LoadingApi().popLoading();
                         ShowDialogCustom.showDialogBase(
-                          title:getT(KeyT.notification),
+                          title: getT(KeyT.notification),
                           content: getT(KeyT.success),
                           onTap1: () {
                             Get.back();
@@ -189,7 +200,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                       } else if (state is ErrorDeleteSupportState) {
                         LoadingApi().popLoading();
                         ShowDialogCustom.showDialogBase(
-                          title:getT(KeyT.notification),
+                          title: getT(KeyT.notification),
                           content: state.msg,
                           textButton1: getT(KeyT.come_back),
                           onTap1: () {

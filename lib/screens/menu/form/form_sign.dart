@@ -34,6 +34,7 @@ class FormAddSign extends StatefulWidget {
 class _FormAddSignState extends State<FormAddSign> {
   String title = Get.arguments[0];
   String id = Get.arguments[1] != null ? Get.arguments[1].toString() : "";
+  String type = Get.arguments[2] ?? '';
   List<ChuKyModelResponse> chuKyModelResponse = [];
   List data = [];
   List<ModelItemAdd> addData = [];
@@ -54,7 +55,7 @@ class _FormAddSignState extends State<FormAddSign> {
     starStream = BehaviorSubject.seeded(-1);
     scrollController = ScrollController();
     isMaxScroll = BehaviorSubject.seeded(false);
-    _bloc.add(InitFormAddSignEvent(id));
+    _bloc.add(InitFormAddSignEvent(id, type));
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Future.delayed(Duration(seconds: 1));
       if (scrollController.position.maxScrollExtent > 7) {
@@ -181,14 +182,14 @@ class _FormAddSignState extends State<FormAddSign> {
                                               .data?[j].field_require,
                                         ));
                                   }
+                                }
 
-                                  if (state.chuKyResponse != null &&
-                                      chuKyModelResponse.isEmpty) {
-                                    for (final ChuKyModelResponse value
-                                        in (state.chuKyResponse?.first.data ??
-                                            [])) {
-                                      chuKyModelResponse.add(value);
-                                    }
+                                if (state.chuKyResponse != null &&
+                                    chuKyModelResponse.isEmpty) {
+                                  for (final ChuKyModelResponse value
+                                      in (state.chuKyResponse?.first.data ??
+                                          [])) {
+                                    chuKyModelResponse.add(value);
                                   }
                                 }
                               }
@@ -490,14 +491,17 @@ class _FormAddSignState extends State<FormAddSign> {
                       height: AppValue.heights * 0.02,
                     ),
                     ListView.builder(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: e.data?.length ?? 0,
-                        itemBuilder: (context, index) =>
-                            _signature(e.data?[index], (v) {
-                              chuKyModelResponse[index] = v;
-                            })),
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: e.data?.length ?? 0,
+                      itemBuilder: (context, index) => _signature(
+                        e.data?[index],
+                        (v) {
+                          chuKyModelResponse[index] = v;
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -909,7 +913,7 @@ class _FormAddSignState extends State<FormAddSign> {
                 : getT(KeyT.please_enter_all_required_fields),
       );
     } else {
-      AddDataBloc.of(context).add(SignEvent(data));
+      AddDataBloc.of(context).add(SignEvent(data, type));
     }
   }
 }

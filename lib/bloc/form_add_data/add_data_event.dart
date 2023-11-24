@@ -97,8 +97,10 @@ class EditProductCustomerEvent extends AddDataEvent {
 
 class SignEvent extends AddDataEvent {
   final Map<String, dynamic> data;
+  final String type;
 
   SignEvent(
     this.data,
+    this.type,
   );
 }

@@ -123,8 +123,7 @@ class AppNavigator {
   static navigateCall({required String title}) async =>
       await Get.toNamed(ROUTE_NAMES.CALL, arguments: title);
 
-  static navigateContract() async =>
-      await Get.toNamed(ROUTE_NAMES.CONTRACT);
+  static navigateContract() async => await Get.toNamed(ROUTE_NAMES.CONTRACT);
 
   static navigateAddContract({
     String? id,
@@ -233,9 +232,10 @@ class AppNavigator {
 
   static navigateFormSign(
     String title,
-    String id,
-  ) async =>
-      await Get.toNamed(ROUTE_NAMES.FORM_SIGN, arguments: [title, id]);
+    String id, {
+    String type = '',
+  }) async =>
+      await Get.toNamed(ROUTE_NAMES.FORM_SIGN, arguments: [title, id, type]);
 
   static navigateListServicePark(Function add, Function reload,
           List<ProductModel> data, String title) async =>
