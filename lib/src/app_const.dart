@@ -211,8 +211,8 @@ handleOnPressItemMenu(_drawerKey, value) async {
       break;
     case 'report':
       _drawerKey.currentState!.openEndDrawer();
-      String? money = await shareLocal.getString(PreferencesKey.MONEY);
-      AppNavigator.navigateReport(money ?? "đ");
+      AppNavigator.navigateReport(
+          shareLocal.getString(PreferencesKey.MONEY) ?? '');
       break;
     case 'product':
       _drawerKey.currentState!.openEndDrawer();

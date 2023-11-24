@@ -64,8 +64,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
       String id = value['id'];
       String name = value['name'];
       if (id == ModuleMy.HOP_DONG) {
-        String titleReport =
-            name + ' ${getT(KeyT.doing)}';
+        String titleReport = name + ' ${getT(KeyT.doing)}';
         shareLocal.putString(PreferencesKey.NAME_REPORT, titleReport);
       } else if (id == ModuleMy.CUSTOMER) {
         shareLocal.putString(PreferencesKey.NAME_CUSTOMER, name);
@@ -101,9 +100,8 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
           title: getT(KeyT.report),
           image: ICONS.IC_REPORT_PNG,
           backgroundColor: COLORS.ff5D5FEF,
-          onTap: () async {
-            String? money = await shareLocal.getString(PreferencesKey.MONEY);
-            AppNavigator.navigateReport(money ?? "đ");
+          onTap: ()  {
+            AppNavigator.navigateReport(shareLocal.getString(PreferencesKey.MONEY) ?? '');
           }),
     );
     setState(() {});
@@ -111,8 +109,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
 
   _handelRouterMenuPlus(String id, String name) {
     if (ModuleText.CUSTOMER == id) {
-      AppNavigator.navigateAddCustomer(
-          '${getT(KeyT.add)}'
+      AppNavigator.navigateAddCustomer('${getT(KeyT.add)}'
           ' ${name.toLowerCase()} ${getT(KeyT.individual)}');
     } else if (ModuleText.DAU_MOI == id) {
       AppNavigator.navigateFormAdd(name, ADD_CLUE);
@@ -143,9 +140,12 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
     callInit();
     GetInforAccBloc.of(context).add(InitGetInforAcc());
     GetNotificationBloc.of(context).add(CheckNotification());
-    GetNotificationBloc.of(context).add(InitGetListUnReadNotificationEvent(
+    GetNotificationBloc.of(context).add(
+      InitGetListUnReadNotificationEvent(
         BASE_URL.PAGE_DEFAULT,
-        isLoading: false));
+        isLoading: false,
+      ),
+    );
     getMenu();
     LoginBloc.of(context).getListMenuFlash();
     super.initState();
@@ -407,7 +407,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
           content: Text(
-            getT(KeyT.press_again_to_exit ),
+            getT(KeyT.press_again_to_exit),
             style: AppStyle.DEFAULT_16.copyWith(color: COLORS.WHITE),
           ),
         ),

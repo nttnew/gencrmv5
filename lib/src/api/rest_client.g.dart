@@ -3939,4 +3939,52 @@ class _RestClient implements RestClient {
     }
     return requestOptions;
   }
+
+  @override
+  Future<AddCustomerIndividual> getFormSignSupport(String id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'id': id};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AddCustomerIndividual>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/support/formChuky',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AddCustomerIndividual.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ResponseSaveProductCustomer> saveSignatureSupport(
+      Map<String, dynamic> map) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(map);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ResponseSaveProductCustomer>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/support/saveChuky',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ResponseSaveProductCustomer.fromJson(_result.data!);
+    return value;
+  }
 }

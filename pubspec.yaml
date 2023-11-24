@@ -1,7 +1,7 @@
 name: gen_crm
 description: A new Flutter application.
 publish_to: 'none'
-version: 2.2.2+222
+version: 2.2.3+223
 #versionNew
 #flutter/3.7.6
 
@@ -51,7 +51,7 @@ dependencies:
   firebase_messaging: ^14.4.0
   firebase_core: ^2.9.0
   flutter_local_notifications: ^13.0.0
-  flutter_datetime_picker: ^1.5.1
+#  flutter_datetime_picker: ^1.5.1
   local_auth: 2.1.6
   permission_handler: ^10.2.0
   rxdart: ^0.27.7

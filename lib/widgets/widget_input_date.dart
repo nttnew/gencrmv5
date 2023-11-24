@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:hexcolor/hexcolor.dart';
-
+import '../l10n/l10n.dart';
 import '../src/models/model_generator/add_customer.dart';
 import '../src/src_index.dart';
+import '../storages/share_local.dart';
+import 'date_time_picker/flutter_datetime_picker.dart';
+import 'date_time_picker/src/i18n_model.dart';
 import 'widget_text.dart';
 
 class WidgetInputDate extends StatefulWidget {
@@ -42,6 +44,26 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
       widget.onInit(widget.dateText);
     }
     super.initState();
+  }
+
+  LocaleType _checkLocaleType() {
+    final lang = shareLocal.getString(PreferencesKey.LANGUAGE_NAME) ?? L10n.VN;
+    switch (lang) {
+      case L10n.VN:
+        return LocaleType.vi;
+      case L10n.MY:
+        return LocaleType.my;
+      case L10n.JA:
+        return LocaleType.jp;
+      case L10n.ZH:
+        return LocaleType.zh;
+      case L10n.KO:
+        return LocaleType.ko;
+      case L10n.EN:
+        return LocaleType.en;
+      default:
+        return LocaleType.vi;
+    }
   }
 
   @override
@@ -90,7 +112,7 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
                         widget.onSelect(time);
                       },
                       currentTime: DateTime.now(),
-                      locale: LocaleType.vi,
+                      locale: _checkLocaleType(),
                     )
                   : DatePicker.showDateTimePicker(
                       context,
@@ -104,9 +126,8 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
                         widget.onSelect(time);
                       },
                       currentTime: DateTime.now(),
-                      locale: LocaleType.vi,
+                      locale: _checkLocaleType(),
                     );
-              ;
             },
             child: Container(
               // width: Get.width,

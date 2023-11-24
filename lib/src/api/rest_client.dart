@@ -766,6 +766,16 @@ abstract class RestClient {
     @Body() Map<String, dynamic> map,
   );
 
+  @GET(BASE_URL.GET_FORM_SIGN_SUPPORT)
+  Future<AddCustomerIndividual> getFormSignSupport(
+    @Query('id') String id,
+  );
+
+  @POST(BASE_URL.SAVE_SIGN_SUPPORT)
+  Future<ResponseSaveProductCustomer> saveSignatureSupport(
+    @Body() Map<String, dynamic> map,
+  );
+
   @GET(BASE_URL.GET_LIST_CH_PRODUCT_CUSTOMER)
   Future<ListCHProductCustomerResponse> getListCHProductCustomer(
     @Query('spkh') int spkh,

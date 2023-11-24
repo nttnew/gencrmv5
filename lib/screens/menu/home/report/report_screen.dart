@@ -602,164 +602,162 @@ class _ReportScreenState extends State<ReportScreen> {
                             .add(LoadingReportContactEvent());
                       }),
                       Expanded(
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              controller: _scrollController,
-                              itemCount: state.data.length,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    AppNavigator.navigateInfoContract(
-                                        state.data[index].id ?? '',
-                                        state.data[index].name ?? '');
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(
-                                        left: 4, right: 4, bottom: 20, top: 10),
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 15, horizontal: 15),
-                                    decoration: BoxDecoration(
-                                      color: COLORS.WHITE,
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                          width: 1, color: COLORS.WHITE),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: COLORS.BLACK.withOpacity(0.1),
-                                          spreadRadius: 1,
-                                          blurRadius: 5,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          controller: _scrollController,
+                          itemCount: state.data.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                AppNavigator.navigateInfoContract(
+                                    state.data[index].id ?? '',
+                                    state.data[index].name ?? '');
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    left: 4, right: 4, bottom: 20, top: 10),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 15),
+                                decoration: BoxDecoration(
+                                  color: COLORS.WHITE,
+                                  borderRadius: BorderRadius.circular(20),
+                                  border:
+                                      Border.all(width: 1, color: COLORS.WHITE),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: COLORS.BLACK.withOpacity(0.1),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                    )
+                                  ],
+                                ),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        ImageBaseDefault(
+                                            icon: ICONS.IC_CONTRACT_3X_PNG),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        SizedBox(
+                                            width: AppValue.widths * 0.5,
+                                            child: WidgetText(
+                                              title:
+                                                  state.data[index].name ?? '',
+                                              style: AppStyle
+                                                  .DEFAULT_TITLE_PRODUCT
+                                                  .copyWith(
+                                                      color: COLORS.TEXT_COLOR),
+                                            )),
+                                        Spacer(),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: state.data[index]
+                                                        .status_color !=
+                                                    ''
+                                                ? HexColor(state
+                                                    .data[index].status_color!)
+                                                : COLORS.RED,
+                                            borderRadius: BorderRadius.circular(
+                                              99,
+                                            ),
+                                          ),
+                                          width: AppValue.widths * 0.08,
+                                          height: AppValue.heights * 0.02,
                                         )
                                       ],
                                     ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                    Row(
                                       children: [
-                                        Row(
-                                          children: [
-                                            ImageBaseDefault(
-                                                icon: ICONS.IC_CONTRACT_3X_PNG),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            SizedBox(
-                                                width: AppValue.widths * 0.5,
-                                                child: WidgetText(
-                                                  title:
-                                                      state.data[index].name ??
-                                                          "",
-                                                  style: AppStyle
-                                                      .DEFAULT_TITLE_PRODUCT
-                                                      .copyWith(
-                                                          color: COLORS
-                                                              .TEXT_COLOR),
-                                                )),
-                                            Spacer(),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                  color: state.data[index]
-                                                              .status_color !=
-                                                          ""
-                                                      ? HexColor(state
-                                                          .data[index]
-                                                          .status_color!)
-                                                      : COLORS.RED,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          99)),
-                                              width: AppValue.widths * 0.08,
-                                              height: AppValue.heights * 0.02,
-                                            )
-                                          ],
+                                        SvgPicture.asset(
+                                          ICONS.IC_USER2_SVG,
+                                          color: Color(0xffE75D18),
                                         ),
                                         SizedBox(
-                                          height: 8,
+                                          width: 10,
                                         ),
-                                        Row(
-                                          children: [
-                                            SvgPicture.asset(
-                                              ICONS.IC_USER2_SVG,
-                                              color: Color(0xffE75D18),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Expanded(
-                                              child: WidgetText(
-                                                title: state.data[index]
-                                                        .customer?.name ??
-                                                    getT(KeyT.not_yet),
-                                                style: AppStyle
-                                                    .DEFAULT_LABEL_PRODUCT,
-                                              ),
-                                            ),
-                                          ],
+                                        Expanded(
+                                          child: WidgetText(
+                                            title: state.data[index].customer
+                                                    ?.name ??
+                                                getT(KeyT.not_yet),
+                                            style:
+                                                AppStyle.DEFAULT_LABEL_PRODUCT,
+                                          ),
                                         ),
-                                        SizedBox(
-                                          height: 8,
-                                        ),
-                                        Row(
-                                          children: [
-                                            SvgPicture.asset(
-                                              ICONS.IC_DANG_XU_LY_SVG,
-                                              color: state.data[index]
-                                                          .status_color !=
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                          ICONS.IC_DANG_XU_LY_SVG,
+                                          color:
+                                              state.data[index].status_color !=
                                                       ''
                                                   ? HexColor(state.data[index]
                                                       .status_color!)
                                                   : COLORS.RED,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            WidgetText(
-                                                title: state.data[index].status,
-                                                style: AppStyle
-                                                    .DEFAULT_LABEL_PRODUCT
-                                                    .copyWith(
-                                                  color: state.data[index]
-                                                              .status_color !=
-                                                          ''
-                                                      ? HexColor(state
-                                                          .data[index]
-                                                          .status_color!)
-                                                      : COLORS.RED,
-                                                )),
-                                          ],
                                         ),
                                         SizedBox(
-                                          height: 8,
+                                          width: 10,
                                         ),
-                                        Row(
-                                          children: [
-                                            SvgPicture.asset(
-                                              ICONS.IC_MAIL_SVG,
-                                              color: Colors.grey,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            WidgetText(
-                                              title: '${getT(KeyT.sales)}: ' +
-                                                  state.data[index].price
-                                                      .toString() +
-                                                  (money ?? ''),
-                                              style: AppStyle
-                                                  .DEFAULT_LABEL_PRODUCT
-                                                  .copyWith(color: COLORS.GREY),
-                                            ),
-                                            Spacer(),
-                                          ],
+                                        WidgetText(
+                                          title: state.data[index].status,
+                                          style: AppStyle.DEFAULT_LABEL_PRODUCT
+                                              .copyWith(
+                                            color: state.data[index]
+                                                        .status_color !=
+                                                    ''
+                                                ? HexColor(state
+                                                    .data[index].status_color!)
+                                                : COLORS.RED,
+                                          ),
                                         ),
-                                        SizedBox(
-                                          height: 8,
-                                        ),
-                                        AppValue.hSpaceTiny,
                                       ],
                                     ),
-                                  ),
-                                );
-                              })),
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                          ICONS.IC_MAIL_SVG,
+                                          color: Colors.grey,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        WidgetText(
+                                          title: '${getT(KeyT.sales)}: ' +
+                                              state.data[index].price
+                                                  .toString() +
+                                              (money ?? ''),
+                                          style: AppStyle.DEFAULT_LABEL_PRODUCT
+                                              .copyWith(color: COLORS.GREY),
+                                        ),
+                                        Spacer(),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                    AppValue.hSpaceTiny,
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 );
@@ -1486,7 +1484,7 @@ class _ReportScreenState extends State<ReportScreen> {
             itemTextIcon(
                 text: '${getT(KeyT.total_amount)}: ' +
                     '${data.giaTriHopDong ?? 0}' +
-                    'đ',
+                    shareLocal.getString(PreferencesKey.MONEY),
                 icon: ICONS.IC_MAIL_SVG,
                 colorIcon: Colors.grey,
                 colorText: Colors.grey),

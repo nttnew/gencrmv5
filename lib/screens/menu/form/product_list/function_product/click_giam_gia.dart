@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../l10n/key_text.dart';
 import '../../../../../src/src_index.dart';
+import '../../../../../storages/share_local.dart';
 import '../../../../../widgets/widget_text.dart';
 
 void onClickGiamGia(
@@ -31,8 +32,7 @@ void onClickGiamGia(
                   Container(
                     width: Get.width,
                     child: WidgetText(
-                      title:
-                          getT(KeyT.enter_price_sale),
+                      title: getT(KeyT.enter_price_sale),
                       style: AppStyle.DEFAULT_16_BOLD,
                       textAlign: TextAlign.center,
                     ),
@@ -79,7 +79,9 @@ void onClickGiamGia(
                           width: 45,
                           child: WidgetText(
                             textAlign: TextAlign.center,
-                            title: isType ? "đ" : "%",
+                            title: isType
+                                ? shareLocal.getString(PreferencesKey.MONEY) ?? ''
+                                : '%',
                             style: AppStyle.DEFAULT_14,
                           ),
                         ),

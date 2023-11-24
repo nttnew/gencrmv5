@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:ui';
 import 'dart:io' show File, Platform;
 import 'package:flutter/material.dart';
+import 'package:gen_crm/src/preferences_key.dart';
 import 'package:intl/intl.dart';
+import '../storages/share_local.dart';
 
 class AppValue {
   AppValue._();
@@ -124,7 +126,7 @@ class AppValue {
     try {
       result = currencyFormatter.format(double.parse(money));
     } catch (e) {}
-    return result + (isD ? 'đ' : '');
+    return result + (isD ? shareLocal.getString(PreferencesKey.MONEY)??'' : '');
   }
 
   static bool checkTypeImage(String fileExt) {

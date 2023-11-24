@@ -800,6 +800,17 @@ class UserRepository {
   }) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).saveSignature(data);
 
+  Future<AddCustomerIndividual> getFormAddSignSupport(
+          {required String id}) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getFormSignSupport(id);
+
+  Future<ResponseSaveProductCustomer> saveSignatureSupport({
+    required Map<String, dynamic> data,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .saveSignatureSupport(data);
+
   Future<ListHDProductCustomerResponse> getListHDProductCustomer({
     required int spkh,
     required int page,

@@ -59,9 +59,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     } else if (event is InitFormAddProductCustomerEvent) {
       yield* _getFormAddProductCustomer();
     } else if (event is InitFormAddSignEvent) {
-      yield* _getFormAddSign(id: event.id ?? '');
-    } else if (event is InitFormAddSignEvent) {
-      yield* _getFormAddSign(id: event.id ?? '');
+      yield* _getFormAddSign(id: event.id ?? '', type: event.type);
     } else if (event is InitFormAddCVProductCustomerEvent) {
       yield* _getFormAddCVProductCustomer(id: event.id);
     } else if (event is InitFormAddHDProductCustomerEvent) {
@@ -435,11 +433,14 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
 
   Stream<FormAddState> _getFormAddSign({
     required String id,
+    required String type,
   }) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingFormAddCustomerOrState();
-      final response = await userRepository.getFormAddSign(id: id);
+      final response = await (type == '' // =='' contract
+          ? userRepository.getFormAddSign(id: id)
+          : userRepository.getFormAddSignSupport(id: id));
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         yield SuccessFormAddCustomerOrState(

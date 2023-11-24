@@ -132,8 +132,12 @@ class InitFormAddProductCustomerEvent extends FormAddEvent {
 
 class InitFormAddSignEvent extends FormAddEvent {
   final String? id;
+  final String type;
 
-  InitFormAddSignEvent(this.id);
+  InitFormAddSignEvent(
+    this.id,
+    this.type,
+  );
 
   @override
   List<Object?> get props => [id];
