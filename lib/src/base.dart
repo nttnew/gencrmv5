@@ -188,7 +188,7 @@ class BASE_URL {
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';
-  static const int connectionTimeout = 45000;
+  static const int connectionTimeout = 15000;
   static const content_type = 'Content-Type';
   static const language = 'language';
   static const application_json = 'application/json';

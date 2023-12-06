@@ -11,6 +11,7 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:local_auth/local_auth.dart';
 import '../../../l10n/key_text.dart';
+import '../../../widgets/form_input/form_input.dart';
 
 class WidgetLoginForm extends StatefulWidget {
   WidgetLoginForm({
@@ -27,6 +28,8 @@ class WidgetLoginForm extends StatefulWidget {
 }
 
 class _WidgetLoginFormState extends State<WidgetLoginForm> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final _emailFocusNode = FocusNode();
   final _domainFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
@@ -139,15 +142,49 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Form(
+          key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppValue.vSpaceSmall,
-              _buildTextFieldUsername(bloc),
+              FormInputBase(
+                controller: _unameController,
+                textInputAction: TextInputAction.next,
+                title: getT(KeyT.account),
+                onChange: (value) => bloc.add(EmailChanged(email: value)),
+                validateFun: (v) {
+                  if (v.trim() == '') {
+                    return getT(KeyT.this_account_is_invalid);
+                  }
+                  return null;
+                },
+              ),
               AppValue.vSpaceSmall,
-              _buildTextFieldPassword(bloc),
+              FormInputBase(
+                isPass: true,
+                textInputAction: TextInputAction.next,
+                title: getT(KeyT.password),
+                onChange: (value) => bloc.add(PasswordChanged(password: value)),
+                validateFun: (v) {
+                  if (v.trim() == '') {
+                    return getT(KeyT.password_must_be_at_least_6_characters);
+                  }
+                  return null;
+                },
+              ),
               AppValue.vSpaceSmall,
-              _buildTextFieldDomain(bloc),
+              FormInputBase(
+                controller: _domainController,
+                textInputAction: TextInputAction.done,
+                title: getT(KeyT.change_address_application),
+                onChange: (value) => bloc.add(DomainChanged(domain: value)),
+                validateFun: (v) {
+                  if (v.trim() == '') {
+                    return getT(KeyT.validate_address_app);
+                  }
+                  return null;
+                },
+              ),
               AppValue.vSpaceSmall,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -200,30 +237,20 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
   }
 
   _buildButtonLogin(LoginBloc bloc) {
-    return BlocBuilder<LoginBloc, LoginState>(
-        buildWhen: (previous, current) => previous.status != current.status,
-        builder: (context, state) {
-          return WidgetButton(
-            onTap: () async {
-              if (state.status.isValidated) {
-                _getDataDomain();
-                bloc.add(FormSubmitted(device_token: tokenFirebase ?? ''));
-              } else {
-                ShowDialogCustom.showDialogBase(
-                  title: getT(KeyT.notification),
-                  content: getT(KeyT.check_the_information),
-                );
-              }
-            },
-            boxDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: HexColor("#D0F1EB"),
-            ),
-            enable: state.status.isValidated,
-            textStyle: AppStyle.DEFAULT_18_BOLD,
-            text: getT(KeyT.login),
-          );
-        });
+    return WidgetButton(
+      onTap: () async {
+        if ((_formKey.currentState?.validate() ?? false)) {
+          _getDataDomain();
+          bloc.add(FormSubmitted(device_token: tokenFirebase ?? ''));
+        }
+      },
+      boxDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: HexColor("#D0F1EB"),
+      ),
+      textStyle: AppStyle.DEFAULT_18_BOLD,
+      text: getT(KeyT.login),
+    );
   }
 
   _buildTextFieldDomain(LoginBloc bloc) {

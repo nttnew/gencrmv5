@@ -28,7 +28,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
   final EventRepositoryStorage localRepository;
   late List<QuickMenu> listMenuFlash = [];
-  // BehaviorSubject<Locale> localeLocal = BehaviorSubject.seeded(L10n.all.first);
   BehaviorSubject<LanguagesResponse> localeLocalSelect = BehaviorSubject();
   static const String UNREGISTER = 'UNREGISTER';
   static const String REGISTERED = 'REGISTERED';
@@ -293,18 +292,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if ((response['error'] == BASE_URL.SUCCESS_200)) {
         await shareLocal.putString(
             PreferencesKey.LANGUAGE_BE_ALL, jsonEncode(response['data']));
-      } else {
-        // loginSessionExpired();
-      }
-    } catch (e) {
-      // LoadingApi().popLoading();
-      // loginSessionExpired();
-    }
+      } else {}
+    } catch (e) {}
   }
 
   void addLocalLang(LanguagesResponse langRes) {
-    // Locale locale = L10n.getLocale(langRes.name ?? '');
-    // localeLocal.add(locale);
     if (shareLocal.getString(PreferencesKey.TOKEN) != '' ||
         shareLocal.getString(PreferencesKey.TOKEN) != null)
       DioProvider.instance(

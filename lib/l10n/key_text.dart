@@ -8,7 +8,7 @@ String getT(String key) {
       jsonDecode(shareLocal.getString(PreferencesKey.LANGUAGE_BE_ALL));
   final lang = shareLocal.getString(PreferencesKey.LANGUAGE_NAME) ??
       L10n.VN; //default build app
-  return dataLang[lang][key];
+  return dataLang[lang][key] ?? '';
 }
 
 class KeyT {
