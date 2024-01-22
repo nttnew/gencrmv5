@@ -4,6 +4,7 @@ import 'package:gen_crm/models/call_history_model.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:plugin_pitel/component/pitel_call_state.dart';
 import 'package:plugin_pitel/component/sip_pitel_helper_listener.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
@@ -466,10 +467,17 @@ class _CallScreenState extends State<CallScreen>
       );
 
   List<String> getSdt(String phone, String phoneSearch) {
-    int indexOf = phone.indexOf(phoneSearch);
-    List<String> listPhone = phone.split(phoneSearch);
-    listPhone.insert(indexOf, phoneSearch);
-    return listPhone;
+    List<String> result = [];
+
+    int indexOfTex = phone.indexOf(phoneSearch);
+
+    if (indexOfTex >= 0) {
+      result.add(phone.substring(0, indexOfTex));
+      result.add(phoneSearch);
+      result.add(phone.substring(indexOfTex + phoneSearch.length));
+    }
+
+    return result;
   }
 
   _itemSearch(
