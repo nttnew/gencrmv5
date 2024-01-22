@@ -70,9 +70,10 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
               context: context,
               builder: (BuildContext context) {
                 return DialogCall(
-                  sdt: _bloc.sdt.toString(),
+                  phone: _bloc.sdt ?? '',
                   routerName: ROUTE_NAMES.CUSTOMER,
                   moduleMy: ModuleMy.CUSTOMER,
+                  name: _bloc.name ?? '',
                 );
               },
             );
@@ -98,8 +99,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     );
 
     list.add(ModuleThaoTac(
-      title:
-          "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}",
+      title: "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}",
       icon: ICONS.IC_ADD_CHANCE_SVG,
       onThaoTac: () {
         Get.back();
@@ -113,8 +113,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     ));
 
     list.add(ModuleThaoTac(
-      title:
-          "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}",
+      title: "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}",
       icon: ICONS.IC_ADD_CONTRACT_SVG,
       onThaoTac: () {
         Get.back();
@@ -145,8 +144,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     ));
 
     list.add(ModuleThaoTac(
-      title:
-          "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
+      title: "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
       icon: ICONS.IC_ADD_SUPPORT_SVG,
       onThaoTac: () {
         Get.back();

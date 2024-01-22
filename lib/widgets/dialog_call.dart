@@ -7,19 +7,22 @@ import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:plugin_pitel/sip/src/sip_ua_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../bloc/login/login_bloc.dart';
+import '../models/call_history_model.dart';
 import '../screens/call/call_screen.dart';
 import '../src/src_index.dart';
 import '../../l10n/key_text.dart';
 import '../storages/share_local.dart';
 
 class DialogCall extends StatefulWidget {
-  final String sdt;
+  final String phone;
+  final String name;
   final String routerName;
   final String moduleMy;
 
   const DialogCall({
     Key? key,
-    required this.sdt,
+    required this.phone,
+    required this.name,
     required this.routerName,
     required this.moduleMy,
   }) : super(key: key);
@@ -114,7 +117,7 @@ class _DialogCallState extends State<DialogCall>
   }
 
   void _handleCall(BuildContext context, [bool voiceonly = false]) {
-    var dest = widget.sdt;
+    var dest = widget.phone;
     if (dest.isEmpty) {
     } else {
       pitelClient.call(dest, voiceonly).then((value) => value.fold(
@@ -139,7 +142,7 @@ class _DialogCallState extends State<DialogCall>
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 WidgetText(
-                    title: widget.sdt,
+                    title: widget.phone,
                     style: AppStyle.DEFAULT_18_BOLD.copyWith(fontSize: 32)),
                 SizedBox(
                   height: 16,
@@ -155,11 +158,10 @@ class _DialogCallState extends State<DialogCall>
                   onTap: () {
                     Clipboard.setData(
                       ClipboardData(
-                        text: widget.sdt,
+                        text: widget.phone,
                       ),
                     ).then((_) {
-                      showToast(
-                          getT(KeyT.copy_success));
+                      showToast(getT(KeyT.copy_success));
                     });
                   },
                   child: WidgetText(
@@ -172,7 +174,7 @@ class _DialogCallState extends State<DialogCall>
                 ),
                 GestureDetector(
                   onTap: () {
-                    launchUrl(Uri(scheme: "tel", path: widget.sdt));
+                    launchUrl(Uri(scheme: "tel", path: widget.phone));
                   },
                   child: WidgetText(
                       title: getT(KeyT.call),
@@ -185,6 +187,13 @@ class _DialogCallState extends State<DialogCall>
                   ),
                   GestureDetector(
                     onTap: () {
+                      saveHistoryCall(
+                        CallHistoryModel(
+                          phone: widget.phone,
+                          name: widget.name,
+                          time: DateTime.now().toString(),
+                        ),
+                      );
                       _handleCall(context, true);
                     },
                     child: WidgetText(

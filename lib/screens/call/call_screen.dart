@@ -24,6 +24,7 @@ class CallScreenWidget extends ConsumerStatefulWidget {
     this.modelScreen,
     this.title,
   }) : super(key: key);
+
   final PitelCall _pitelCall = PitelClient.getInstance().pitelCall;
   final bool receivedBackground;
   final String? modelScreen;
@@ -266,10 +267,10 @@ class _MyCallScreenWidget extends ConsumerState<CallScreenWidget>
 
     if (voiceOnly) {
       basicActions.add(ActionButton(
-        iconColor: Colors.black.withOpacity(0.6),
+        iconColor: _speakerOn ? COLORS.GREEN : Colors.black.withOpacity(0.6),
         fillColor: Colors.black.withOpacity(0.1),
         title: _speakerOn ? 'speaker off' : 'speaker on',
-        icon: _speakerOn ? Icons.volume_off : Icons.volume_up,
+        icon: _speakerOn ? Icons.volume_up : Icons.volume_up_outlined,
         checked: _speakerOn,
         onPressed: () => _toggleSpeaker(),
       ));

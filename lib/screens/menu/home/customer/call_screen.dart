@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gen_crm/models/call_history_model.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:plugin_pitel/component/pitel_call_state.dart';
 import 'package:plugin_pitel/component/sip_pitel_helper_listener.dart';
 import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:plugin_pitel/sip/src/sip_ua_helper.dart';
+import 'package:rxdart/rxdart.dart';
 import '../../../../bloc/login/login_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/src_index.dart';
@@ -28,9 +30,13 @@ class _CallScreenState extends State<CallScreen>
   late final TextEditingController _controller;
   final String nameModule = Get.arguments;
   late final FocusNode _focusNode;
+  late final List<CallHistoryModel> listCallHistory;
+  BehaviorSubject<Set<CallHistoryModel>> listSearchCallHistory =
+      BehaviorSubject.seeded({});
 
   @override
   void initState() {
+    listCallHistory = getListHistoryCall();
     pitelCall = PitelClient.getInstance().pitelCall;
     _controller = TextEditingController();
     pitelClient = PitelClient.getInstance();
@@ -38,6 +44,14 @@ class _CallScreenState extends State<CallScreen>
     super.initState();
     _focusNode = FocusNode();
     _focusNode.requestFocus();
+    _controller.addListener(() {
+      if (_controller.text.length > 2) {
+        final listData = searchListHistory(_controller.text);
+        listSearchCallHistory.add(listData.toSet());
+      } else {
+        listSearchCallHistory.add({});
+      }
+    });
   }
 
   @override
@@ -118,6 +132,12 @@ class _CallScreenState extends State<CallScreen>
     if (dest.isEmpty) {
       showToast(getT(KeyT.you_did_not_enter_a_number_phone));
     } else {
+      saveHistoryCall(
+        CallHistoryModel(
+          phone: dest,
+          time: DateTime.now().toString(),
+        ),
+      );
       pitelClient.call(dest, voiceonly).then((value) => value.fold(
           (succ) => {},
           (err) => {
@@ -136,10 +156,67 @@ class _CallScreenState extends State<CallScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            StreamBuilder<Set<CallHistoryModel>>(
+                stream: listSearchCallHistory,
+                builder: (context, snapshot) {
+                  final listSearch = snapshot.data ?? {};
+                  return listSearch.length > 0
+                      ? Expanded(
+                          child: Container(
+                            child: ListView.builder(
+                              itemCount: listSearch.length,
+                              itemBuilder: (context, index) => _itemSearch(
+                                () {
+                                  _controller.text =
+                                      listSearch.elementAt(index).phone;
+                                },
+                                listSearch.elementAt(index),
+                                _controller.text,
+                              ),
+                            ),
+                          ),
+                        )
+                      : SizedBox();
+                }),
             Row(
               children: [
-                SizedBox(
-                  width: 20,
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      isDismissible: true,
+                      constraints: BoxConstraints(
+                        maxHeight: MediaQuery.of(context).size.height * 0.7,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(30),
+                          topLeft: Radius.circular(30),
+                        ),
+                      ),
+                      builder: (context) => Container(
+                        margin: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 32,
+                        ),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: listCallHistory.length,
+                          itemBuilder: (context, index) => _itemHistory(() {
+                            _controller.text = listCallHistory[index].phone;
+                            Get.back();
+                          }, listCallHistory[index],
+                              (index + 1) == listCallHistory.length),
+                        ),
+                      ),
+                    );
+                  },
+                  child: Image.asset(
+                    ICONS.IC_HISTORY_CALL_PNG,
+                    height: 24,
+                    width: 24,
+                  ),
                 ),
                 Expanded(
                   child: TextFormField(
@@ -316,6 +393,138 @@ class _CallScreenState extends State<CallScreen>
     fontSize: 40,
     color: Colors.black,
   );
+
+  _itemHistory(
+    Function onTap,
+    CallHistoryModel callHistoryModel,
+    bool isLine,
+  ) =>
+      InkWell(
+        onTap: () {
+          onTap();
+        },
+        child: Container(
+          margin: EdgeInsets.only(
+            top: 16,
+          ),
+          padding: EdgeInsets.only(
+            bottom: 16,
+          ),
+          decoration: isLine
+              ? null
+              : BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: COLORS.GREY_400,
+                    ),
+                  ),
+                ),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 16,
+                ),
+                child: Image.asset(
+                  ICONS.IC_PHONE_CALL_PNG,
+                  height: 20,
+                  width: 20,
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (callHistoryModel.name != '' ||
+                        getName(callHistoryModel.phone) != '')
+                      Text(
+                        callHistoryModel.name != ''
+                            ? callHistoryModel.name
+                            : getName(callHistoryModel.phone),
+                        style: AppStyle.DEFAULT_24_BOLD,
+                      ),
+                    Text(
+                      callHistoryModel.phone,
+                      style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                        fontSize: callHistoryModel.name != '' ||
+                                getName(callHistoryModel.phone) != ''
+                            ? 18
+                            : 24,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (callHistoryModel.time != '')
+                Text(
+                  AppValue.formatDateHour(callHistoryModel.time),
+                  style: AppStyle.DEFAULT_16_T,
+                ),
+            ],
+          ),
+        ),
+      );
+
+  List<String> getSdt(String phone, String phoneSearch) {
+    int indexOf = phone.indexOf(phoneSearch);
+    List<String> listPhone = phone.split(phoneSearch);
+    listPhone.insert(indexOf, phoneSearch);
+    return listPhone;
+  }
+
+  _itemSearch(
+    Function onTap,
+    CallHistoryModel callHistoryModel,
+    String phoneSearch,
+  ) =>
+      InkWell(
+        onTap: () {
+          onTap();
+        },
+        child: Container(
+          margin: EdgeInsets.symmetric(
+            vertical: 12,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              if (callHistoryModel.name != '' ||
+                  getName(callHistoryModel.phone) != '')
+                Text(
+                  callHistoryModel.name != ''
+                      ? callHistoryModel.name
+                      : getName(callHistoryModel.phone),
+                  style: AppStyle.DEFAULT_20_BOLD,
+                ),
+              RichText(
+                textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                text: TextSpan(
+                  style: AppStyle.DEFAULT_18_BOLD,
+                  children: [
+                    ...getSdt(
+                      callHistoryModel.phone,
+                      phoneSearch,
+                    )
+                        .map(
+                          (e) => TextSpan(
+                            text: e,
+                            style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                              color: e == phoneSearch ? COLORS.BLUE : null,
+                              fontSize: (callHistoryModel.name != '' ||
+                                      getName(callHistoryModel.phone) != '')
+                                  ? 18
+                                  : 24,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
 
   Future<void> showToast(String message) async {
     ScaffoldMessenger.of(context)

@@ -17,6 +17,7 @@ class DetailCustomerBloc
     extends Bloc<DetailCustomerEvent, DetailCustomerState> {
   final UserRepository userRepository;
   String? sdt;
+  String? name;
   List<CustomerData>? listCus;
   LoadMoreController controllerDM = LoadMoreController();
   LoadMoreController controllerCH = LoadMoreController();
@@ -88,7 +89,21 @@ class DetailCustomerBloc
                         0,
                         false,
                       ));
+          CustomerInfoItem? itemName =
+              response.data?.customer_info?.first.data?.firstWhere(
+            (element) => element.id == 'ten_khach_hang',
+            orElse: () => CustomerInfoItem(
+              '',
+              '',
+              '',
+              '',
+              0,
+              false,
+            ),
+          );
           if (item != null && item.id != '') sdt = item.value_field.toString();
+          if (itemName != null && itemName.id != '')
+            name = itemName.value_field.toString();
         } catch (e) {
           throw e;
         }

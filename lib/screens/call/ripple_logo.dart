@@ -60,7 +60,7 @@ class _RippleLogoState extends State<RippleLogo>
                 _buildContainer(250 * _controller.value),
               ],
               Positioned(
-                bottom: 0,
+                bottom: -50,
                 child: Column(
                   children: [
                     Padding(

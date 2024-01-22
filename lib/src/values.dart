@@ -95,6 +95,9 @@ class AppValue {
   static String formatDate(String dateString) =>
       DATE_FORMAT.format(DateTime.parse(dateString));
 
+  static String formatDateHour(String dateString) =>
+      APP_DATE_FORMAT.format(DateTime.parse(dateString));
+
   static String formatIntDateTime(int dateString) => DATE_TIME_FORMAT
       .format(DateTime.fromMillisecondsSinceEpoch(dateString * 1000));
 
@@ -126,7 +129,8 @@ class AppValue {
     try {
       result = currencyFormatter.format(double.parse(money));
     } catch (e) {}
-    return result + (isD ? shareLocal.getString(PreferencesKey.MONEY)??'' : '');
+    return result +
+        (isD ? shareLocal.getString(PreferencesKey.MONEY) ?? '' : '');
   }
 
   static bool checkTypeImage(String fileExt) {
