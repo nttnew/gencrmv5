@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:gen_crm/src/preferences_key.dart';
-import '../../l10n/key_text.dart';
 import '../storages/share_local.dart';
 import 'icon_constants.dart';
 import 'navigator.dart';
@@ -209,7 +208,6 @@ class BASE_URL {
 
   static const ACTIVE = 1;
   static const LOCK = 0;
-  static final KHACH_HANG = getT(KeyT.client);
   static const NOTE_ID = 'noteid';
   static const ID = 'id';
   static const CONTENT = 'content';

@@ -94,63 +94,50 @@ class _GeneralInfoState extends State<GeneralInfo>
               height: 16,
             ),
             Column(
-              children: List.generate(
-                  detailClue.data?.length ?? 0,
-                  (index) => detailClue.data?[index].value_field != ''
-                      ? Container(
-                          margin: EdgeInsets.only(bottom: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                detailClue.data?[index].label_field ?? '',
-                                style: AppStyle.DEFAULT_14.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: COLORS.TEXT_GREY),
+              children: List.generate(detailClue.data?.length ?? 0, (index) {
+                bool isKH = detailClue.data?[index].id == 'khach_hang_id_dm' &&
+                    (detailClue.data?[index].is_link ?? false);
+                if (detailClue.data?[index].value_field != '')
+                  return Container(
+                    margin: EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          detailClue.data?[index].label_field ?? '',
+                          style: AppStyle.DEFAULT_14.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: COLORS.TEXT_GREY),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              if (isKH) {
+                                AppNavigator.navigateDetailCustomer(
+                                    detailClue.data?[index].link ?? '',
+                                    detailClue.data?[index].value_field ?? '');
+                              }
+                            },
+                            child: Text(
+                              detailClue.data?[index].value_field ?? '',
+                              textAlign: TextAlign.right,
+                              style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                                color:
+                                    isKH ? Colors.blue : COLORS.TEXT_GREY_BOLD,
+                                decoration:
+                                    isKH ? TextDecoration.underline : null,
                               ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    if (detailClue.data?[index].label_field ==
-                                            BASE_URL.KHACH_HANG &&
-                                        (detailClue.data?[index].is_link ??
-                                            false)) {
-                                      AppNavigator.navigateDetailCustomer(
-                                          detailClue.data?[index].link ?? '',
-                                          detailClue.data?[index].value_field ??
-                                              '');
-                                    }
-                                  },
-                                  child: Text(
-                                      detailClue.data?[index].value_field ?? '',
-                                      textAlign: TextAlign.right,
-                                      style: AppStyle.DEFAULT_14_BOLD.copyWith(
-                                        color: (detailClue.data?[index]
-                                                        .label_field ==
-                                                    BASE_URL.KHACH_HANG &&
-                                                (detailClue
-                                                        .data?[index].is_link ??
-                                                    false))
-                                            ? Colors.blue
-                                            : COLORS.TEXT_GREY_BOLD,
-                                        decoration: (detailClue.data?[index]
-                                                        .label_field ==
-                                                    BASE_URL.KHACH_HANG &&
-                                                (detailClue
-                                                        .data?[index].is_link ??
-                                                    false))
-                                            ? TextDecoration.underline
-                                            : null,
-                                      )),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
-                        )
-                      : SizedBox()),
+                        ),
+                      ],
+                    ),
+                  );
+                return SizedBox();
+              }),
             ),
             const SizedBox(
               height: 8,

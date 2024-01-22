@@ -39,7 +39,7 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.SAN_PHAM_KH);
     title = ModuleMy.getNameModuleMy(
-      ModuleMy.CUSTOMER,
+      ModuleMy.SAN_PHAM_KH,
       isTitle: true,
     );
     GetNotificationBloc.of(context).add(CheckNotification());

@@ -187,7 +187,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
             _bloc.add(InitGetDetailWorkEvent(id));
           } else if (state is ErrorCheckInState) {
             ShowDialogCustom.showDialogBase(
-              title:getT(KeyT.notification),
+              title: getT(KeyT.notification),
               content: state.msg,
             );
           }
@@ -198,7 +198,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
             if (state is SuccessDeleteWorkState) {
               LoadingApi().popLoading();
               ShowDialogCustom.showDialogBase(
-                title:getT(KeyT.notification),
+                title: getT(KeyT.notification),
                 content: getT(KeyT.success),
                 onTap1: () {
                   Get.back();
@@ -211,7 +211,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
             } else if (state is ErrorDeleteWorkState) {
               LoadingApi().popLoading();
               ShowDialogCustom.showDialogBase(
-                title:getT(KeyT.notification),
+                title: getT(KeyT.notification),
                 content: state.msg,
                 textButton1: getT(KeyT.come_back),
                 onTap1: () {
@@ -275,72 +275,92 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                                 ),
                                                 Column(
                                                   children: List.generate(
-                                                      state.data_list[index]
-                                                          .data!.length,
-                                                      (index1) => state
-                                                                  .data_list[
-                                                                      index]
-                                                                  .data![index1]
-                                                                  .value_field !=
-                                                              ''
-                                                          ? Column(
-                                                              children: [
-                                                                Row(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    WidgetText(
-                                                                      title: state
-                                                                          .data_list[
-                                                                              index]
-                                                                          .data![
-                                                                              index1]
-                                                                          .label_field,
-                                                                      style:
-                                                                          LabelStyle(),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      width: 8,
-                                                                    ),
-                                                                    Expanded(
-                                                                      child:
-                                                                          GestureDetector(
-                                                                        onTap:
-                                                                            () {
-                                                                          if (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG &&
-                                                                              (state.data_list[index].data?[index1].is_link ?? false)) {
-                                                                            AppNavigator.navigateDetailCustomer(state.data_list[index].data?[index1].link ?? '',
-                                                                                state.data_list[index].data![index1].value_field ?? '');
-                                                                          }
-                                                                        },
-                                                                        child:
-                                                                            SizedBox(
-                                                                          child: state.data_list[index].data![index1].type != 'text_area'
-                                                                              ? WidgetText(
-                                                                                  title: state.data_list[index].data![index1].value_field,
-                                                                                  textAlign: TextAlign.right,
-                                                                                  style: ValueStyle().copyWith(
-                                                                                    decoration: (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG && (state.data_list[index].data?[index1].is_link ?? false)) ? TextDecoration.underline : null,
-                                                                                    color: (state.data_list[index].data?[index1].label_field == BASE_URL.KHACH_HANG && (state.data_list[index].data?[index1].is_link ?? false)) ? Colors.blue : null,
-                                                                                  ),
-                                                                                )
-                                                                              : Html(
-                                                                                  data: state.data_list[index].data![index1].value_field,
-                                                                                ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
+                                                      state
+                                                          .data_list[index]
+                                                          .data!
+                                                          .length, (index1) {
+                                                    bool isKH = state
+                                                                .data_list[
+                                                                    index]
+                                                                .data?[index1]
+                                                                .id ==
+                                                            'cv_kh' &&
+                                                        (state
+                                                                .data_list[
+                                                                    index]
+                                                                .data?[index1]
+                                                                .is_link ??
+                                                            false);
+                                                    if (state
+                                                            .data_list[index]
+                                                            .data![index1]
+                                                            .value_field !=
+                                                        '')
+                                                      return Column(
+                                                        children: [
+                                                          Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              WidgetText(
+                                                                title: state
+                                                                    .data_list[
+                                                                        index]
+                                                                    .data![
+                                                                        index1]
+                                                                    .label_field,
+                                                                style:
+                                                                    LabelStyle(),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 8,
+                                                              ),
+                                                              Expanded(
+                                                                child:
+                                                                    GestureDetector(
+                                                                  onTap: () {
+                                                                    if (isKH) {
+                                                                      AppNavigator.navigateDetailCustomer(
+                                                                          state.data_list[index].data?[index1].link ??
+                                                                              '',
+                                                                          state.data_list[index].data![index1].value_field ??
+                                                                              '');
+                                                                    }
+                                                                  },
+                                                                  child:
+                                                                      SizedBox(
+                                                                    child: state.data_list[index].data![index1].type !=
+                                                                            'text_area'
+                                                                        ? WidgetText(
+                                                                            title:
+                                                                                state.data_list[index].data![index1].value_field,
+                                                                            textAlign:
+                                                                                TextAlign.right,
+                                                                            style:
+                                                                                ValueStyle().copyWith(
+                                                                              decoration: isKH ? TextDecoration.underline : null,
+                                                                              color: isKH ? Colors.blue : null,
+                                                                            ),
+                                                                          )
+                                                                        : Html(
+                                                                            data:
+                                                                                state.data_list[index].data![index1].value_field,
+                                                                          ),
+                                                                  ),
                                                                 ),
-                                                                SizedBox(
-                                                                  height: AppValue
-                                                                          .heights *
-                                                                      0.02,
-                                                                ),
-                                                              ],
-                                                            )
-                                                          : SizedBox()),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            height: AppValue
+                                                                    .heights *
+                                                                0.02,
+                                                          ),
+                                                        ],
+                                                      );
+                                                    return SizedBox();
+                                                  }),
                                                 ),
                                                 LineHorizontal(),
                                               ],

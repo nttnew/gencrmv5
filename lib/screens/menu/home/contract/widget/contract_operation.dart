@@ -107,6 +107,8 @@ class _ContractOperationState extends State<ContractOperation>
             children: List.generate(
               data.data!.length,
               (index) {
+                bool isKH = data.data?[index].id == 'col131' &&
+                    (data.data?[index].is_link ?? false);
                 if (data.data![index].field_type == "LINE") {
                   return Container(
                       margin: EdgeInsets.symmetric(vertical: 3),
@@ -120,7 +122,6 @@ class _ContractOperationState extends State<ContractOperation>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                flex: 1,
                                 child: WidgetText(
                                   title: data.data![index].label_field ?? "",
                                   style: AppStyle.DEFAULT_14
@@ -128,40 +129,27 @@ class _ContractOperationState extends State<ContractOperation>
                                 ),
                               ),
                               Expanded(
-                                  flex: 2,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      if (data.data?[index].label_field ==
-                                              BASE_URL.KHACH_HANG &&
-                                          (data.data?[index].is_link ??
-                                              false)) {
-                                        AppNavigator.navigateDetailCustomer(
-                                            data.data?[index].link ?? '',
-                                            data.data?[index].value_field ??
-                                                '');
-                                      }
-                                    },
-                                    child: WidgetText(
-                                        title:
-                                            data.data![index].value_field ?? '',
-                                        textAlign: TextAlign.right,
-                                        style: AppStyle.DEFAULT_14.copyWith(
-                                          decoration: (data.data?[index]
-                                                          .label_field ==
-                                                      BASE_URL.KHACH_HANG &&
-                                                  (data.data?[index].is_link ??
-                                                      false))
-                                              ? TextDecoration.underline
-                                              : null,
-                                          color: (data.data?[index]
-                                                          .label_field ==
-                                                      BASE_URL.KHACH_HANG &&
-                                                  (data.data?[index].is_link ??
-                                                      false))
-                                              ? Colors.blue
-                                              : null,
-                                        )),
-                                  ))
+                                flex: 2,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (isKH) {
+                                      AppNavigator.navigateDetailCustomer(
+                                          data.data?[index].link ?? '',
+                                          data.data?[index].value_field ?? '');
+                                    }
+                                  },
+                                  child: WidgetText(
+                                    title: data.data![index].value_field ?? '',
+                                    textAlign: TextAlign.right,
+                                    style: AppStyle.DEFAULT_14.copyWith(
+                                      decoration: isKH
+                                          ? TextDecoration.underline
+                                          : null,
+                                      color: isKH ? Colors.blue : null,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         )

@@ -132,15 +132,14 @@ class _CallScreenState extends State<CallScreen>
     return Scaffold(
       appBar: AppbarBaseNormal(getT(KeyT.call_operator)),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Row(
               children: [
                 SizedBox(
-                  width: 40,
-                  height: 40,
+                  width: 20,
                 ),
                 Expanded(
                   child: TextFormField(
@@ -149,7 +148,7 @@ class _CallScreenState extends State<CallScreen>
                     textAlign: TextAlign.center,
                     showCursor: true,
                     readOnly: true,
-                    style: styleNumber.copyWith(fontSize: 50),
+                    style: styleNumber.copyWith(fontSize: 45),
                     decoration: InputDecoration(
                       enabledBorder: InputBorder.none,
                       border: InputBorder.none,
@@ -157,10 +156,6 @@ class _CallScreenState extends State<CallScreen>
                       errorBorder: InputBorder.none,
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 20,
-                  height: 20,
                 ),
                 GestureDetector(
                   onTap: () async {
@@ -300,24 +295,25 @@ class _CallScreenState extends State<CallScreen>
   }
 
   Widget numberText(int title) => Expanded(
-          child: GestureDetector(
-        onTap: () {
-          insertTextAtPosition(_controller.selection.extentOffset, '$title');
-        },
-        child: Container(
-          color: Colors.transparent,
-          height: MediaQuery.of(context).size.width / 5.5,
-          child: Center(
-            child: WidgetText(
-              title: title.toString(),
-              style: styleNumber,
+        child: GestureDetector(
+          onTap: () {
+            insertTextAtPosition(_controller.selection.extentOffset, '$title');
+          },
+          child: Container(
+            color: Colors.transparent,
+            height: MediaQuery.of(context).size.width / 5.5,
+            child: Center(
+              child: WidgetText(
+                title: title.toString(),
+                style: styleNumber,
+              ),
             ),
           ),
         ),
-      ));
+      );
 
   TextStyle styleNumber = AppStyle.DEFAULT_TITLE_PRODUCT.copyWith(
-    fontSize: 45,
+    fontSize: 40,
     color: Colors.black,
   );
 

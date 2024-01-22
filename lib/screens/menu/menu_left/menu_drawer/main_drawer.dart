@@ -470,7 +470,7 @@ class _MainDrawerState extends State<MainDrawer> {
           AppValue.vSpaceTiny,
           Center(
             child: WidgetText(
-              title: 'Version: 2.3.2',
+              title: 'Version: 2.3.3',
               style: AppStyle.DEFAULT_16.copyWith(
                   fontFamily: 'Montserrat', fontWeight: FontWeight.w400),
             ),

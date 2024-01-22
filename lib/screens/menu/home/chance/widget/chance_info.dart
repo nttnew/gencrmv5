@@ -79,98 +79,86 @@ class _ChanceInfoState extends State<ChanceInfo>
                                     AppValue.vSpaceTiny,
                                     Column(
                                       children: List.generate(
-                                        state.data[index].data!.length,
-                                        (index1) =>
-                                            state.data[index].data![index1]
-                                                        .value_field !=
-                                                    ''
-                                                ? Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 5),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Expanded(
-                                                            flex: 1,
-                                                            child: WidgetText(
-                                                              title: state
-                                                                      .data[
-                                                                          index]
-                                                                      .data![
-                                                                          index1]
-                                                                      .label_field ??
-                                                                  '',
-                                                              style: AppStyle
-                                                                  .DEFAULT_14
-                                                                  .copyWith(
-                                                                      color: Colors
-                                                                          .grey),
-                                                            )),
-                                                        Expanded(
-                                                            flex: 2,
-                                                            child:
-                                                                GestureDetector(
-                                                              onTap: () {
-                                                                if (state
-                                                                            .data[
-                                                                                index]
-                                                                            .data?[
-                                                                                index1]
-                                                                            .label_field ==
-                                                                        BASE_URL
-                                                                            .KHACH_HANG &&
-                                                                    (state
-                                                                            .data[index]
-                                                                            .data?[index1]
-                                                                            .is_link ??
-                                                                        false)) {
-                                                                  AppNavigator.navigateDetailCustomer(
-                                                                      state.data[index].data?[index1].link ??
-                                                                          '',
-                                                                      state.data[index].data?[index1]
-                                                                              .value_field ??
-                                                                          '');
-                                                                }
-                                                              },
-                                                              child: WidgetText(
-                                                                  title: state
-                                                                          .data[
-                                                                              index]
-                                                                          .data![
-                                                                              index1]
-                                                                          .value_field ??
-                                                                      '',
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .right,
-                                                                  style: AppStyle
-                                                                      .DEFAULT_14
-                                                                      .copyWith(
-                                                                    decoration: (state.data[index].data?[index1].label_field == BASE_URL.KHACH_HANG &&
-                                                                            (state.data[index].data?[index1].is_link ??
-                                                                                false))
-                                                                        ? TextDecoration
-                                                                            .underline
-                                                                        : null,
-                                                                    color: (state.data[index].data?[index1].label_field == BASE_URL.KHACH_HANG &&
-                                                                            (state.data[index].data?[index1].is_link ??
-                                                                                false))
-                                                                        ? Colors
-                                                                            .blue
-                                                                        : null,
-                                                                  )),
-                                                            ))
-                                                      ],
+                                          state.data[index].data!.length,
+                                          (index1) {
+                                        bool isKH = state.data[index]
+                                                    .data?[index1].id ==
+                                                'col121' &&
+                                            (state.data[index].data?[index1]
+                                                    .is_link ??
+                                                false);
+                                        if (state.data[index].data![index1]
+                                                .value_field !=
+                                            '')
+                                          return Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 5),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: WidgetText(
+                                                      title: state
+                                                              .data[index]
+                                                              .data![index1]
+                                                              .label_field ??
+                                                          '',
+                                                      style: AppStyle.DEFAULT_14
+                                                          .copyWith(
+                                                              color:
+                                                                  Colors.grey),
+                                                    )),
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      if (isKH) {
+                                                        AppNavigator.navigateDetailCustomer(
+                                                            state
+                                                                    .data[index]
+                                                                    .data?[
+                                                                        index1]
+                                                                    .link ??
+                                                                '',
+                                                            state
+                                                                    .data[index]
+                                                                    .data?[
+                                                                        index1]
+                                                                    .value_field ??
+                                                                '');
+                                                      }
+                                                    },
+                                                    child: WidgetText(
+                                                      title: state
+                                                              .data[index]
+                                                              .data![index1]
+                                                              .value_field ??
+                                                          '',
+                                                      textAlign:
+                                                          TextAlign.right,
+                                                      style: AppStyle.DEFAULT_14
+                                                          .copyWith(
+                                                        decoration: isKH
+                                                            ? TextDecoration
+                                                                .underline
+                                                            : null,
+                                                        color: isKH
+                                                            ? Colors.blue
+                                                            : null,
+                                                      ),
                                                     ),
-                                                  )
-                                                : SizedBox(),
-                                      ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        return SizedBox();
+                                      }),
                                     ),
                                     AppValue.vSpaceTiny,
                                     AppValue.vSpaceTiny,
