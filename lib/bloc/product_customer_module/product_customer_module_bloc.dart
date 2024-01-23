@@ -8,6 +8,7 @@ import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/group_product_response.dart';
 import '../../src/models/model_generator/list_product_customer_response.dart';
+import '../../widgets/listview/list_load_infinity.dart';
 import '../../widgets/loading_api.dart';
 
 part 'product_customer_module_state.dart';
@@ -16,9 +17,6 @@ part 'product_customer_module_event.dart';
 class ProductCustomerModuleBloc
     extends Bloc<ProductCustomerModuleEvent, ProductCustomerModuleState> {
   final UserRepository userRepository;
-  List<ProductCustomerResponse>? dataList;
-  bool isLength = true;
-  int page = 1;
   String? querySearch;
   String? ids;
   String? filter;
@@ -26,23 +24,11 @@ class ProductCustomerModuleBloc
   BehaviorSubject<List<Cats>> listType = BehaviorSubject.seeded([]);
   BehaviorSubject<List<DataFilter>> listFilter = BehaviorSubject.seeded([]);
   BehaviorSubject<String?> typeStream = BehaviorSubject.seeded(null);
+  LoadMoreController loadMoreController = LoadMoreController();
 
   ProductCustomerModuleBloc({required UserRepository userRepository})
       : userRepository = userRepository,
         super(InitGetListProductCustomerModuleState());
-
-  @override
-  Stream<ProductCustomerModuleState> mapEventToState(
-      ProductCustomerModuleEvent event) async* {
-    if (event is GetProductCustomerModuleEvent) {
-      yield* _getListProduct(
-        page: event.page,
-        filter: event.filter,
-        querySearch: event.querySearch,
-        ids: event.ids,
-      );
-    }
-  }
 
   void getFilter() async {
     final response = await userRepository.getGroupProduct();
@@ -52,19 +38,12 @@ class ProductCustomerModuleBloc
     }
   }
 
-  Stream<ProductCustomerModuleState> _getListProduct({
-    int? page,
-    String? querySearch,
-    String? filter,
-    String? ids,
-  }) async* {
+  Future<dynamic> getListProduct({
+    int page = BASE_URL.PAGE_DEFAULT,
+  }) async {
     LoadingApi().pushLoading();
-    if (page == null) {
-      page = BASE_URL.PAGE_DEFAULT;
-    }
+    dynamic resDynamic = '';
     try {
-      if (querySearch != "" && page == 1)
-        yield LoadingGetListProductCustomerModuleState();
       final response = await userRepository.getListProductCustomer(
         txt: querySearch,
         page: page.toString(),
@@ -75,25 +54,17 @@ class ProductCustomerModuleBloc
         if (listFilter.value.isEmpty) {
           listFilter.add(response.data?.dataFilter ?? []);
         }
-        if (page == 1) {
-          isLength = true;
-          yield SuccessGetListProductCustomerModuleState(
-              response.data?.lists ?? []);
-        } else {
-          yield SuccessGetListProductCustomerModuleState(
-              [...dataList ?? [], ...response.data?.lists ?? []]);
-        }
+        resDynamic = response.data?.lists ?? [];
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
-        yield ErrorGetListProductCustomerModuleState(response.msg ?? '');
+        resDynamic = response.msg ?? '';
     } catch (e) {
-      LoadingApi().popLoading();
-      yield ErrorGetListProductCustomerModuleState(
-          getT(KeyT.an_error_occurred ),);
+      resDynamic = getT(KeyT.an_error_occurred);
       throw e;
     }
     LoadingApi().popLoading();
+    return resDynamic;
   }
 
   Future<ListProductCustomerResponse?> getListProductCustomer({
@@ -120,9 +91,6 @@ class ProductCustomerModuleBloc
   void dispose() {
     listType.add([]);
     typeStream.add(null);
-    isLength = true;
-    page = BASE_URL.PAGE_DEFAULT;
-    dataList = null;
     querySearch = null;
     filter = null;
     type = null;

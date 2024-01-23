@@ -9,12 +9,15 @@ PreferredSizeWidget AppbarBaseNormal(String? title, {Function? onBack}) =>
     AppBar(
       toolbarHeight: AppValue.heights * 0.1,
       backgroundColor: HexColor("#D0F1EB"),
-      title: Text(title ?? '',
-          style: TextStyle(
-              color: COLORS.BLACK,
-              fontFamily: "Montserrat",
-              fontWeight: FontWeight.w700,
-              fontSize: 16)),
+      title: Text(
+        title ?? '',
+        style: TextStyle(
+          color: COLORS.BLACK,
+          fontFamily: "Montserrat",
+          fontWeight: FontWeight.w700,
+          fontSize: 16,
+        ),
+      ),
       leading: IconButton(
         onPressed: () {
           if (onBack != null) {
@@ -66,7 +69,7 @@ PreferredSizeWidget AppbarBase(
           ),
           rightAppBar(),
           SizedBox(
-            width: 9,
+            width: 8,
           ),
         ],
       ),
@@ -78,17 +81,18 @@ PreferredSizeWidget AppbarBase(
           }
         },
         child: Container(
-            padding: EdgeInsets.only(left: 25),
-            child: Container(
-              child: SvgPicture.asset(
-                ICONS.IC_MENU_SVG,
-                fit: BoxFit.contain,
-                width: 24,
-                height: 24,
-              ),
-            )),
+          padding: EdgeInsets.only(left: 24),
+          child: Container(
+            child: SvgPicture.asset(
+              ICONS.IC_MENU_SVG,
+              fit: BoxFit.contain,
+              width: 24,
+              height: 24,
+            ),
+          ),
+        ),
       ),
-      leadingWidth: 49,
+      leadingWidth: 48,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(15),

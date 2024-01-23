@@ -14,8 +14,16 @@ void showManagerFilter(BuildContext context, ManagerBloc bloc,
       context: context,
       isScrollControlled: true,
       constraints: BoxConstraints(maxHeight: Get.height * 0.7),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-      builder: (context) => TreeWidget(bloc: bloc, funFilter: funFilter),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30),
+          topLeft: Radius.circular(30),
+        ),
+      ),
+      builder: (context) => TreeWidget(
+        bloc: bloc,
+        funFilter: funFilter,
+      ),
     );
 
 class TreeWidget extends StatefulWidget {
@@ -46,33 +54,18 @@ class _TreeWidgetState extends State<TreeWidget> {
   }) {
     for (int i = 0; i < result.length; i++) {
       if (isTree) {
-        //todo isTree
         result[i].checked = isCheck;
         if (result[i].children.isNotEmpty) {
           _setTreeData(node, result[i].children, isCheck, isTree: true);
         }
-        //todo isTree
       } else if (isParent) {
-        //todo isParent
-
-        // todo isParent
+        /// isParent
       } else {
         if (node == result[i]) {
           result[i].checked = isCheck;
-          //todo isTree
           if (result[i].children.isNotEmpty) {
             _setTreeData(node, result[i].children, isCheck, isTree: true);
-            //todo isTree
           }
-          // else if (p != null && isCheck == false) {
-          //   // todo isParent
-          //   for (int i = 0; i < (listParent?.length ?? 0); i++) {
-          //     if (p == listParent?[i]) {
-          //       listParent?[i].checked = false;
-          //     }
-          //   }
-          // }
-          // todo isParent
         } else {
           _setTreeData(
             node,
@@ -124,7 +117,9 @@ class _TreeWidgetState extends State<TreeWidget> {
               body: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(25),
+                    padding: const EdgeInsets.all(
+                      24,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -148,7 +143,9 @@ class _TreeWidgetState extends State<TreeWidget> {
                             ),
                             child: WidgetText(
                               title: getT(KeyT.all),
-                              style: AppStyle.DEFAULT_LABEL_PRODUCT,
+                              style: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ),
@@ -186,42 +183,49 @@ class _TreeWidgetState extends State<TreeWidget> {
                       children: [
                         Expanded(
                           child: GestureDetector(
-                              onTap: () => Get.back(),
-                              child: Container(
-                                padding: EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                    color: COLORS.GREY.withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Center(
-                                  child: Text(
-                                    getT(KeyT.close),
-                                    style: AppStyle.DEFAULT_16_BOLD,
-                                  ),
+                            onTap: () => Get.back(),
+                            child: Container(
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                  color: COLORS.GREY.withOpacity(0.5),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Center(
+                                child: Text(
+                                  getT(KeyT.close),
+                                  style: AppStyle.DEFAULT_16_BOLD,
                                 ),
-                              )),
+                              ),
+                            ),
+                          ),
                         ),
                         SizedBox(
-                          width: 25,
+                          width: 16,
                         ),
                         Expanded(
                           child: GestureDetector(
-                              onTap: () {
-                                widget.bloc.save();
-                                widget.funFilter(widget.bloc.ids);
-                                Get.back();
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                    color: COLORS.SECONDS_COLOR,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Center(
-                                  child: Text(
-                                    getT(KeyT.find),
-                                    style: AppStyle.DEFAULT_16_BOLD,
-                                  ),
+                            onTap: () {
+                              widget.bloc.save();
+                              widget.funFilter(widget.bloc.ids);
+                              Get.back();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(
+                                15,
+                              ),
+                              decoration: BoxDecoration(
+                                color: COLORS.SECONDS_COLOR,
+                                borderRadius: BorderRadius.circular(
+                                  10,
                                 ),
-                              )),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  getT(KeyT.find),
+                                  style: AppStyle.DEFAULT_16_BOLD,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),

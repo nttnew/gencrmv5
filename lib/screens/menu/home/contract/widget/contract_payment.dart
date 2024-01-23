@@ -29,6 +29,7 @@ class _ContractPaymentState extends State<ContractPayment>
         await _init();
       },
       child: SingleChildScrollView(
+        padding: EdgeInsets.zero,
         physics: AlwaysScrollableScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +41,7 @@ class _ContractPaymentState extends State<ContractPayment>
                       0) >
                   0)
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 25),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   child: _buildContent1(state.listPaymentContract),
                 );
               else {

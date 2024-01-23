@@ -113,8 +113,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                 id.toString(), ModuleMy.CONG_VIEC, TypeCheckIn.CHECK_IN,
                 onRefresh: () {
               _bloc.add(InitGetDetailWorkEvent(id));
-
-              WorkBloc.of(context).add(InitGetListWorkEvent());
+              WorkBloc.of(context).loadMoreController.reloadData();
             });
           },
         ));
@@ -160,7 +159,8 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
         Get.back();
         AppNavigator.navigateEditDataScreen(id.toString(), EDIT_JOB,
             onRefresh: () {
-          WorkBloc.of(context).add(InitGetListWorkEvent());
+          WorkBloc.of(context).loadMoreController.reloadData();
+
           _bloc.add(InitGetDetailWorkEvent(id));
         });
       },
@@ -206,7 +206,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                   Get.back();
                   Get.back();
                   Get.back();
-                  WorkBloc.of(context).add(InitGetListWorkEvent());
+                  WorkBloc.of(context).loadMoreController.reloadData();
                 },
               );
             } else if (state is ErrorDeleteWorkState) {
@@ -243,9 +243,13 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                               if (state is SuccessDetailWorkState) {
                                 checkLocation(state);
                                 getThaoTac();
-                                return Padding(
+                                return Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 25),
+                                    horizontal: 16,
+                                  ),
+                                  margin: EdgeInsets.only(
+                                    top: 24,
+                                  ),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -255,10 +259,6 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                SizedBox(
-                                                  height:
-                                                      AppValue.heights * 0.04,
-                                                ),
                                                 WidgetText(
                                                   title: state.data_list[index]
                                                           .group_name ??
@@ -384,13 +384,10 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: ButtonThaoTac(
-                  onTap: () {
-                    showThaoTac(context, list);
-                  },
-                ),
+              ButtonThaoTac(
+                onTap: () {
+                  showThaoTac(context, list);
+                },
               )
             ],
           ),
@@ -398,12 +395,6 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       ),
     );
   }
-
-  TextStyle styleTitleBottomSheet() => TextStyle(
-      color: HexColor("#0069CD"),
-      fontFamily: "Quicksand",
-      fontWeight: FontWeight.w700,
-      fontSize: 20);
 
   TextStyle ValueStyle([String? color]) => TextStyle(
       fontFamily: "Quicksand",

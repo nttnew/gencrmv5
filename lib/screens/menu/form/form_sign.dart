@@ -112,8 +112,8 @@ class _FormAddSignState extends State<FormAddSign> {
                     onTap1: () {
                       Get.back();
                       Get.back();
-                      GetListCustomerBloc.of(context)
-                          .add(InitGetListOrderEvent());
+                      GetListCustomerBloc.of(context).loadMoreController.reloadData();
+
                     },
                   );
                 }

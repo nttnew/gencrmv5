@@ -7,7 +7,7 @@ import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/customer.dart';
-import '../../src/models/model_generator/support.dart';
+import '../../widgets/listview/list_load_infinity.dart';
 
 part 'support_event.dart';
 part 'support_state.dart';
@@ -15,58 +15,47 @@ part 'support_state.dart';
 class SupportBloc extends Bloc<SupportEvent, SupportState> {
   final UserRepository userRepository;
   BehaviorSubject<List<FilterData>> listType = BehaviorSubject.seeded([]);
+  LoadMoreController loadMoreController = LoadMoreController();
+  String idFilter = '';
+  String search = '';
+  String ids = '';
+
+  init() {
+    idFilter = '';
+    search = '';
+    ids = '';
+  }
 
   SupportBloc({required UserRepository userRepository})
       : userRepository = userRepository,
         super(InitGetSupport());
 
-  @override
-  Stream<SupportState> mapEventToState(SupportEvent event) async* {
-    if (event is InitGetSupportEvent) {
-      yield* _getListSupport(
-        filter: event.filter ?? '',
-        page: event.page ?? BASE_URL.PAGE_DEFAULT,
-        search: event.search ?? '',
-        ids: event.ids ?? '',
-      );
-    }
-  }
-
-  List<SupportItemData>? list;
-
-  Stream<SupportState> _getListSupport({
-    required String filter,
-    required String ids,
-    required int page,
-    required String search,
-  }) async* {
+  Future<dynamic> getListSupport({
+    int page = BASE_URL.PAGE_DEFAULT,
+  }) async {
     LoadingApi().pushLoading();
+    dynamic resDynamic = '';
     try {
-      final response =
-          await userRepository.getListSupport(page, search, filter, ids);
+      final response = await userRepository.getListSupport(
+        page,
+        search,
+        idFilter,
+        ids,
+      );
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        listType.add(response.data.filter ?? []);
-        if (page == 1) {
-          list = response.data.list;
-          yield SuccessGetSupportState(response.data.list ?? [],
-              response.data.total ?? '0', response.data.filter ?? []);
-        } else {
-          list = [...list ?? [], ...response.data.list ?? []];
-          yield SuccessGetSupportState(list ?? [], response.data.total ?? '0',
-              response.data.filter ?? []);
-        }
+        if (page == BASE_URL.PAGE_DEFAULT)
+          listType.add(response.data.filter ?? []);
+        resDynamic = response.data.list ?? [];
       } else {
-        LoadingApi().popLoading();
-        yield ErrorGetSupportState(response.msg ?? '');
+        resDynamic = response.msg ?? '';
       }
     } catch (e) {
-      LoadingApi().popLoading();
-      yield ErrorGetSupportState(
-          getT(KeyT.an_error_occurred));
+      resDynamic = getT(KeyT.an_error_occurred);
       throw e;
     }
     LoadingApi().popLoading();
+    return resDynamic;
   }
 
   static SupportBloc of(BuildContext context) =>

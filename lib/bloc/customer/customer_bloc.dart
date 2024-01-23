@@ -9,77 +9,70 @@ import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/customer.dart';
+import '../../widgets/listview/list_load_infinity.dart';
 
 part 'customer_event.dart';
 part 'customer_state.dart';
 
 class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
   final UserRepository userRepository;
-  List<CustomerData>? listCus;
   BehaviorSubject<List<FilterData>> listType = BehaviorSubject.seeded([]);
-
+  LoadMoreController loadMoreController = LoadMoreController();
+  String idFilter = '';
+  String search = '';
+  String ids = '';
   GetListCustomerBloc({required UserRepository userRepository})
       : userRepository = userRepository,
         super(InitGetListCustomer());
 
   @override
   Stream<CustomerState> mapEventToState(GetListCustomerEvent event) async* {
-    if (event is InitGetListOrderEvent) {
-      yield* _getListCustomer(
-          filter: event.filter ?? '',
-          page: event.page ?? BASE_URL.PAGE_DEFAULT,
-          search: event.search ?? '',
-          isLoadMore: event.isLoadMore,
-          ids: event.ids ?? '');
-    } else if (event is AddCustomerIndividualEvent) {
+    if (event is AddCustomerIndividualEvent) {
       yield* _AddCustomerIndividual(data: event.data, files: event.files);
     }
   }
 
-  Stream<CustomerState> _getListCustomer({
-    required String filter,
-    required int page,
-    required String search,
-    required String ids,
-    bool? isLoadMore = false,
-  }) async* {
+  init() {
+    idFilter = '';
+    search = '';
+    ids = '';
+  }
+
+  Future<dynamic> getListCustomer({
+    int page = BASE_URL.PAGE_DEFAULT,
+  }) async {
     LoadingApi().pushLoading();
+    dynamic resDynamic = '';
     try {
       final response = await userRepository.getListCustomer(
         page,
-        filter,
+        idFilter,
         search,
         ids,
       );
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        if (page == 1) {
-          listCus = response.data?.list ?? [];
+        if (page == BASE_URL.PAGE_DEFAULT)
           listType.add(response.data?.filter ?? []);
-          yield UpdateGetListCustomerState(
-              response.data?.list ?? [], response.data?.total ?? 0);
-        } else {
-          yield UpdateGetListCustomerState(
-              [...listCus ?? [], ...response.data?.list ?? []],
-              response.data?.total ?? 0);
-          listCus?.addAll(response.data?.list ?? []);
-        }
+
+        resDynamic = response.data?.list ?? [];
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
-        yield ErrorGetListCustomerState(response.msg ?? '');
+        resDynamic = response.msg ?? '';
       }
     } catch (e) {
-      LoadingApi().popLoading();
-      yield ErrorGetListCustomerState(getT(KeyT.an_error_occurred));
+      resDynamic = getT(KeyT.an_error_occurred);
       throw e;
     }
     LoadingApi().popLoading();
+    return resDynamic;
   }
 
-  Stream<CustomerState> _AddCustomerIndividual(
-      {required Map<String, dynamic> data, List<File>? files}) async* {
+  Stream<CustomerState> _AddCustomerIndividual({
+    required Map<String, dynamic> data,
+    List<File>? files,
+  }) async* {
     yield LoadingListCustomerState();
     LoadingApi().pushLoading();
     try {

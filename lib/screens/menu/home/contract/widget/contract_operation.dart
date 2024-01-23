@@ -58,7 +58,11 @@ class _ContractOperationState extends State<ContractOperation>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(25),
+                      padding: const EdgeInsets.only(
+                        top: 16,
+                        left: 16,
+                        right: 16,
+                      ),
                       child: Column(
                         children: [
                           Column(

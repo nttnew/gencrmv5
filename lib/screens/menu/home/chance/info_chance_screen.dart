@@ -7,10 +7,10 @@ import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/listview_loadmore_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
-import '../../../../widgets/widget_appbar.dart';
 import '../../attachment/attachment.dart';
 import '../clue/widget/work_card_widget.dart';
 import 'widget/chance_info.dart';
@@ -118,8 +118,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                 Get.back();
                 Get.back();
                 Get.back();
-                GetListChanceBloc.of(context)
-                    .add(InitGetListOrderEventChance());
+                GetListChanceBloc.of(context).loadMoreController.reloadData();
               },
             );
           } else if (state is ErrorDeleteChanceState) {
@@ -139,10 +138,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
         },
         child: Column(
           children: [
-            WidgetAppbar(
-              title: name,
-              left: _buildBack(),
-            ),
+            AppbarBaseNormal(name),
             AppValue.vSpaceTiny,
             Expanded(
               child: DefaultTabController(
@@ -171,6 +167,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                           ],
                         ),
                       ),
+                      AppValue.hSpaceTiny,
                       Expanded(
                         child: TabBarView(
                           children: [
@@ -180,8 +177,9 @@ class _InfoChancePageState extends State<InfoChancePage> {
                               bloc: _bloc,
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 25),
+                              padding: EdgeInsets.only(
+                                top: 8,
+                              ),
                               child: ListViewLoadMoreBase(
                                 functionInit: (page, isInit) {
                                   return _bloc.getJobChance(
@@ -217,28 +215,11 @@ class _InfoChancePageState extends State<InfoChancePage> {
                     ],
                   )),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: ButtonThaoTac(onTap: () {
-                showThaoTac(context, list);
-              }),
-            ),
+            ButtonThaoTac(onTap: () {
+              showThaoTac(context, list);
+            }),
           ],
         ),
-      ),
-    );
-  }
-
-  _buildBack() {
-    return IconButton(
-      onPressed: () {
-        AppNavigator.navigateBack();
-      },
-      icon: Image.asset(
-        ICONS.IC_BACK_PNG,
-        height: 28,
-        width: 28,
-        color: COLORS.BLACK,
       ),
     );
   }

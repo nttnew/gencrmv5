@@ -60,67 +60,73 @@ class _DetailProductCustomerScreenState
         listWidget.add(InfoTabProductCustomer());
       } else if (value.module == 'opportunity') {
         //cơ hội
-        listWidget.add(ListViewLoadMoreBase(
-          functionInit: (page, isInit) {
-            return _bloc.getListCHProductCustomer(
-                page: page, isInit: isInit, id: idM);
-          },
-          itemWidget: (int index, data) {
-            return WidgetItemChance(
-              listChanceData: ListChanceData(
-                  data.id,
-                  data.name,
-                  data.price,
-                  data.trangThai,
-                  null,
-                  null,
-                  DataCustomer(data.customer.id, data.customer.name, null)),
-            );
-          },
-          controller: _bloc.controllerCh,
+        listWidget.add(Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: ListViewLoadMoreBase(
+            functionInit: (page, isInit) {
+              return _bloc.getListCHProductCustomer(
+                  page: page, isInit: isInit, id: idM);
+            },
+            itemWidget: (int index, data) {
+              return WidgetItemChance(
+                listChanceData: ListChanceData(
+                    data.id,
+                    data.name,
+                    data.price,
+                    data.trangThai,
+                    null,
+                    null,
+                    DataCustomer(data.customer.id, data.customer.name, null)),
+              );
+            },
+            controller: _bloc.controllerCh,
+          ),
         ));
       } else if (value.module == 'contract') {
         //hợp đồng
-        listWidget.add(ListViewLoadMoreBase(
-          functionInit: (page, isInit) {
-            return _bloc.getListHDProductCustomer(
-                page: page, isInit: isInit, id: idM);
-          },
-          itemWidget: (int index, data) {
-            return ItemContract(
-              data: ContractItemData(
-                data.id,
-                data.name,
-                data.price,
-                data.status,
-                null, //data.status_edit,
-                data.color,
-                null, //data.avatar,
-                CustomerContract(
-                  data.customer.id,
-                  data.customer.name,
+        listWidget.add(Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: ListViewLoadMoreBase(
+            functionInit: (page, isInit) {
+              return _bloc.getListHDProductCustomer(
+                  page: page, isInit: isInit, id: idM);
+            },
+            itemWidget: (int index, data) {
+              return ItemContract(
+                data: ContractItemData(
+                  data.id,
+                  data.name,
+                  data.price,
+                  data.status,
+                  null, //data.status_edit,
+                  data.color,
+                  null, //data.avatar,
+                  CustomerContract(
+                    data.customer.id,
+                    data.customer.name,
+                  ),
+                  null, //data.total_note,
+                  data.conlai,
                 ),
-                null, //data.total_note,
-                data.conlai,
-              ),
-            );
-          },
-          controller: _bloc.controllerHd,
+              );
+            },
+            controller: _bloc.controllerHd,
+          ),
         ));
       } else if (value.module == 'job') {
-        listWidget.add(ListViewLoadMoreBase(
-          functionInit: (page, isInit) {
-            return _bloc.getListCVProductCustomer(
-                page: page, isInit: isInit, id: idM);
-          },
-          itemWidget: (int index, data) {
-            return GestureDetector(
-              onTap: () {
-                AppNavigator.navigateDetailWork(
-                    int.parse(data.id ?? '0'), data.nameJob ?? '');
-              },
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25),
+        listWidget.add(Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: ListViewLoadMoreBase(
+            functionInit: (page, isInit) {
+              return _bloc.getListCVProductCustomer(
+                  page: page, isInit: isInit, id: idM);
+            },
+            itemWidget: (int index, data) {
+              return GestureDetector(
+                onTap: () {
+                  AppNavigator.navigateDetailWork(
+                      int.parse(data.id ?? '0'), data.nameJob ?? '');
+                },
                 child: WorkCardWidget(
                   nameCustomer: data.customer.name,
                   nameJob: data.nameJob,
@@ -129,35 +135,38 @@ class _DetailProductCustomerScreenState
                   totalComment: data.totalNote,
                   color: data.color,
                 ),
-              ),
-            );
-          },
-          controller: _bloc.controllerCv,
+              );
+            },
+            controller: _bloc.controllerCv,
+          ),
         ));
       } else if (value.module == 'support') {
-        listWidget.add(ListViewLoadMoreBase(
-          functionInit: (page, isInit) {
-            return _bloc.getListHTProductCustomer(
-                page: page, isInit: isInit, id: idM);
-          },
-          itemWidget: (int index, data) {
-            return ItemSupport(
-              data: SupportItemData(
-                data.id,
-                data.tenHoTro,
-                data.createdDate,
-                data.trangThai,
-                data.color,
-                data.totalNote,
-                CustomerData(
-                  data.customer.id,
-                  data.customer.name,
+        listWidget.add(Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: ListViewLoadMoreBase(
+            functionInit: (page, isInit) {
+              return _bloc.getListHTProductCustomer(
+                  page: page, isInit: isInit, id: idM);
+            },
+            itemWidget: (int index, data) {
+              return ItemSupport(
+                data: SupportItemData(
+                  data.id,
+                  data.tenHoTro,
+                  data.createdDate,
+                  data.trangThai,
+                  data.color,
+                  data.totalNote,
+                  CustomerData(
+                    data.customer.id,
+                    data.customer.name,
+                  ),
+                  null,
                 ),
-                null,
-              ),
-            );
-          },
-          controller: _bloc.controllerHt,
+              );
+            },
+            controller: _bloc.controllerHt,
+          ),
         ));
       }
     }
@@ -175,20 +184,28 @@ class _DetailProductCustomerScreenState
           Get.back();
           if (ModuleMy.LICH_HEN == module) {
             AppNavigator.navigateFormAdd(
-                value.name ?? '', CH_PRODUCT_CUSTOMER_TYPE,
-                id: int.parse(id));
+                value.name ?? '', CH_PRODUCT_CUSTOMER_TYPE, id: int.parse(id),
+                onRefresh: () {
+              _bloc.controllerCh.reloadData();
+            });
           } else if (ModuleMy.HOP_DONG == module) {
             AppNavigator.navigateFormAdd(
-                value.name ?? '', HD_PRODUCT_CUSTOMER_TYPE,
-                id: int.parse(id));
+                value.name ?? '', HD_PRODUCT_CUSTOMER_TYPE, id: int.parse(id),
+                onRefresh: () {
+              _bloc.controllerHd.reloadData();
+            });
           } else if (ModuleMy.CONG_VIEC == module) {
             AppNavigator.navigateFormAdd(
-                value.name ?? '', CV_PRODUCT_CUSTOMER_TYPE,
-                id: int.parse(id));
+                value.name ?? '', CV_PRODUCT_CUSTOMER_TYPE, id: int.parse(id),
+                onRefresh: () {
+              _bloc.controllerCv.reloadData();
+            });
           } else if (ModuleMy.CSKH == module) {
             AppNavigator.navigateFormAdd(
-                value.name ?? '', HT_PRODUCT_CUSTOMER_TYPE,
-                id: int.parse(id));
+                value.name ?? '', HT_PRODUCT_CUSTOMER_TYPE, id: int.parse(id),
+                onRefresh: () {
+              _bloc.controllerHt.reloadData();
+            });
           }
         },
       ));
@@ -238,7 +255,7 @@ class _DetailProductCustomerScreenState
           if (state is SuccessDeleteProductState) {
             LoadingApi().popLoading();
             ShowDialogCustom.showDialogBase(
-              title:getT(KeyT.notification),
+              title: getT(KeyT.notification),
               content: getT(KeyT.delete_success),
               onTap1: () {
                 Navigator.pushNamedAndRemoveUntil(context,
@@ -249,7 +266,7 @@ class _DetailProductCustomerScreenState
           } else if (state is ErrorDeleteProductState) {
             LoadingApi().popLoading();
             ShowDialogCustom.showDialogBase(
-              title:getT(KeyT.notification),
+              title: getT(KeyT.notification),
               content: state.msg,
               textButton1: getT(KeyT.come_back),
               onTap1: () {
@@ -281,7 +298,7 @@ class _DetailProductCustomerScreenState
               }
               return Scaffold(
                 appBar: TabBar(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
+                  padding: EdgeInsets.symmetric(horizontal: 16),
                   isScrollable: true,
                   controller: _tabController,
                   labelColor: COLORS.ff006CB1,
@@ -302,16 +319,14 @@ class _DetailProductCustomerScreenState
                 body: Column(
                   children: [
                     Expanded(
-                        child: TabBarView(
-                      controller: _tabController,
-                      children: listBody(state, _listTab),
-                    )),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 25),
-                      child: ButtonThaoTac(onTap: () {
-                        showThaoTac(context, _list);
-                      }),
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: listBody(state, _listTab),
+                      ),
                     ),
+                    ButtonThaoTac(onTap: () {
+                      showThaoTac(context, _list);
+                    }),
                   ],
                 ),
               );

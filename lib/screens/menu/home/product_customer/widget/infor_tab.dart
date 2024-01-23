@@ -30,7 +30,9 @@ class _InfoTabProductCustomerState extends State<InfoTabProductCustomer>
         builder: (context, state) {
       if (state is GetDetailProductCustomerState)
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25),
+          padding: EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +42,7 @@ class _InfoTabProductCustomerState extends State<InfoTabProductCustomer>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: AppValue.heights * 0.04,
+                      height: 24,
                     ),
                     WidgetText(
                       title:

@@ -7,6 +7,7 @@ import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/clue.dart';
+import '../../widgets/listview/list_load_infinity.dart';
 import '../../widgets/loading_api.dart';
 
 part 'clue_state.dart';
@@ -14,61 +15,49 @@ part 'clue_event.dart';
 
 class GetListClueBloc extends Bloc<GetListClueEvent, ClueState> {
   final UserRepository userRepository;
-  List<ClueData>? listClueData;
   BehaviorSubject<List<FilterData>> listType = BehaviorSubject.seeded([]);
+  LoadMoreController loadMoreController = LoadMoreController();
+  String idFilter = '';
+  String search = '';
+  String ids = '';
 
   GetListClueBloc({required UserRepository userRepository})
       : userRepository = userRepository,
         super(InitGetListClue());
 
-  @override
-  Stream<ClueState> mapEventToState(GetListClueEvent event) async* {
-    if (event is InitGetListClueEvent) {
-      yield* _getListClue(
-        filter: event.filter ?? '',
-        page: event.page ?? BASE_URL.PAGE_DEFAULT,
-        search: event.search ?? '',
-        ids: event.ids ?? '',
-      );
-    }
+  init() {
+    idFilter = '';
+    search = '';
+    ids = '';
   }
 
-  Stream<ClueState> _getListClue({
-    required String filter,
-    required int page,
-    required String search,
-    required String ids,
-  }) async* {
+  Future<dynamic> getListClue({
+    int page = BASE_URL.PAGE_DEFAULT,
+  }) async {
     LoadingApi().pushLoading();
+    dynamic resDynamic = '';
     try {
       final response = await userRepository.getListClue(
         page,
-        filter,
+        idFilter,
         search,
         ids,
       );
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        listType.add(response.data?.filter ?? []);
-        if (page == 1) {
-          listClueData = [];
-          yield UpdateGetListClueState(
-              response.data?.list ?? [], response.data?.total ?? '0');
-        }
-        yield UpdateGetListClueState(
-            [...listClueData ?? [], ...response.data?.list ?? []],
-            response.data?.total ?? '0');
-        listClueData?.addAll(response.data?.list ?? []);
+        if (page == BASE_URL.PAGE_DEFAULT)
+          listType.add(response.data?.filter ?? []);
+        resDynamic = response.data?.list ?? [];
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
-        yield ErrorGetListClueState(response.msg ?? '');
+        resDynamic = response.msg ?? '';
     } catch (e) {
-      LoadingApi().popLoading();
-      yield ErrorGetListClueState(getT(KeyT.an_error_occurred));
+      resDynamic = getT(KeyT.an_error_occurred);
       throw e;
     }
     LoadingApi().popLoading();
+    return resDynamic;
   }
 
   static GetListClueBloc of(BuildContext context) =>

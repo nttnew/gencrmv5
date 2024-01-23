@@ -224,9 +224,13 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Padding(
+                                  Container(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 25),
+                                      horizontal: 16,
+                                    ),
+                                    margin: EdgeInsets.only(
+                                      top: 24,
+                                    ),
                                     child: Column(
                                       children: List.generate(
                                         state.dataDetailSupport.length,
@@ -234,9 +238,6 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            SizedBox(
-                                              height: AppValue.heights * 0.04,
-                                            ),
                                             WidgetText(
                                               title: state
                                                       .dataDetailSupport[index]
@@ -363,12 +364,9 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25),
-                          child: ButtonThaoTac(onTap: () {
-                            showThaoTac(context, list);
-                          }),
-                        ),
+                        ButtonThaoTac(onTap: () {
+                          showThaoTac(context, list);
+                        }),
                       ],
                     ),
                   );

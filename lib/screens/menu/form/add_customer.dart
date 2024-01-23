@@ -71,7 +71,8 @@ class _AddCustomerState extends State<AddCustomer> {
                   } else {
                     Get.back();
                   }
-                  GetListCustomerBloc.of(context).add(InitGetListOrderEvent());
+                  GetListCustomerBloc.of(context).loadMoreController.reloadData();
+
                 },
               );
             }

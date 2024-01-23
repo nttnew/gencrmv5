@@ -432,7 +432,7 @@ class _FormAddDataState extends State<FormAddData> {
               listener: (context, state) async {
                 if (state is SuccessAddCustomerOrState) {
                   ShowDialogCustom.showDialogBase(
-                    title:getT(KeyT.notification),
+                    title: getT(KeyT.notification),
                     content: getT(KeyT.new_data_added_successfully),
                     onTap1: () {
                       Get.back();
@@ -442,12 +442,13 @@ class _FormAddDataState extends State<FormAddData> {
                           result: state.result,
                         );
                       GetListCustomerBloc.of(context)
-                          .add(InitGetListOrderEvent());
+                          .loadMoreController
+                          .reloadData();
                     },
                   );
                 } else if (state is ErrorAddCustomerOrState) {
                   ShowDialogCustom.showDialogBase(
-                      title:getT(KeyT.notification),
+                      title: getT(KeyT.notification),
                       content: state.msg,
                       onTap1: () {
                         Get.back();
@@ -455,28 +456,33 @@ class _FormAddDataState extends State<FormAddData> {
                       });
                 } else if (state is SuccessAddContactCustomerState) {
                   ShowDialogCustom.showDialogBase(
-                    title:getT(KeyT.notification),
+                    title: getT(KeyT.notification),
                     content: getT(KeyT.new_data_added_successfully),
                     onTap1: () {
                       Get.back();
                       Get.back();
-                      if (type == ADD_CLUE)
-                        GetListClueBloc.of(context).add(InitGetListClueEvent());
-                      else if (type == ADD_CHANCE) {
+                      if (type == ADD_CLUE) {
+                        GetListClueBloc.of(context)
+                            .loadMoreController
+                            .reloadData();
+                      } else if (type == ADD_CHANCE) {
                         GetListChanceBloc.of(context)
-                            .add(InitGetListOrderEventChance());
+                            .loadMoreController
+                            .reloadData();
                       } else if (type == 4) {
                         ContractBloc.of(context).add(InitGetContractEvent());
                       } else if (type == ADD_JOB) {
-                        WorkBloc.of(context).add(InitGetListWorkEvent());
+                        WorkBloc.of(context).loadMoreController.reloadData();
                       } else if (type == ADD_SUPPORT) {
                         SupportBloc.of(context).add(InitGetSupportEvent());
                       } else if (type == PRODUCT_TYPE) {
                         ProductModuleBloc.of(context)
-                            .add(InitGetListProductModuleEvent());
+                            .loadMoreController
+                            .reloadData();
                       } else if (type == PRODUCT_CUSTOMER_TYPE) {
                         ProductCustomerModuleBloc.of(context)
-                            .add(GetProductCustomerModuleEvent());
+                            .loadMoreController
+                            .reloadData();
                       } else if (type == CV_PRODUCT_CUSTOMER_TYPE) {
                         DetailProductCustomerBloc.of(context)
                             .controllerCv
@@ -498,7 +504,7 @@ class _FormAddDataState extends State<FormAddData> {
                   );
                 } else if (state is ErrorAddContactCustomerState) {
                   ShowDialogCustom.showDialogBase(
-                    title:getT(KeyT.notification),
+                    title: getT(KeyT.notification),
                     content: state.msg,
                   );
                 }
@@ -997,7 +1003,7 @@ class _FormAddDataState extends State<FormAddData> {
     //
     if (check == true) {
       ShowDialogCustom.showDialogBase(
-        title:getT(KeyT.notification),
+        title: getT(KeyT.notification),
         content: getT(KeyT.please_enter_all_required_fields),
       );
     } else {
@@ -1090,7 +1096,7 @@ class _FormAddDataState extends State<FormAddData> {
               await ServiceVoucherBloc.of(context).checkHasCar(data['bien_so']);
           if (check) {
             ShowDialogCustom.showDialogBase(
-              title:getT(KeyT.notification),
+              title: getT(KeyT.notification),
               content: '${data['bien_so']} ${getT(KeyT.already_exist)}',
             );
           } else {

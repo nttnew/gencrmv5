@@ -22,6 +22,17 @@ class DropDownBase extends StatefulWidget {
 
 class _DropDownBaseState extends State<DropDownBase> {
   BehaviorSubject<String?> typeStream = BehaviorSubject.seeded(null);
+  BehaviorSubject itemStream = BehaviorSubject();
+
+  @override
+  void initState() {
+    itemStream.listen((value) {
+      if (value != null) {
+        widget.onTap(value);
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,56 +45,67 @@ class _DropDownBaseState extends State<DropDownBase> {
                   stream: typeStream,
                   builder: (context, snapshot) {
                     final filter = snapshot.data;
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        DropdownButton2(
-                          isExpanded: true,
-                          buttonPadding: EdgeInsets.symmetric(
-                            horizontal: 10,
-                          ),
-                          buttonDecoration: BoxDecoration(
+                    return Container(
+                      padding: const EdgeInsets.only(
+                        left: 16,
+                        right: 16,
+                        bottom: 16,
+                      ),
+                      alignment: Alignment.centerLeft,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          DropdownButton2(
+                            isExpanded: true,
+                            buttonPadding: EdgeInsets.symmetric(
+                              horizontal: 10,
+                            ),
+                            buttonDecoration: BoxDecoration(
                               border: Border.all(
                                 color: COLORS.GREY_400,
                               ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(4))),
-                          dropdownMaxHeight:
-                              MediaQuery.of(context).size.height / 2,
-                          hint: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Text(
-                                filter ??
-                                    (!widget.isName
-                                        ? getT(KeyT.select_type)
-                                        : getT(KeyT.select_filter)),
-                                style: AppStyle.DEFAULT_16
-                                    .copyWith(fontWeight: FontWeight.w600),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(6),
                               ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Transform.rotate(
+                            ),
+                            dropdownMaxHeight:
+                                MediaQuery.of(context).size.height / 2,
+                            hint: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Text(
+                                  filter ??
+                                      (!widget.isName
+                                          ? getT(KeyT.select_type)
+                                          : getT(KeyT.select_filter)),
+                                  style: AppStyle.DEFAULT_16
+                                      .copyWith(fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Transform.rotate(
                                   angle: -4.5 * pi,
                                   child: Icon(
                                     Icons.arrow_back_ios_new_sharp,
                                     size: 16,
                                     // color: COLORS.TEXT_COLOR,
-                                  ))
-                            ],
-                          ),
-                          icon: Container(),
-                          underline: Container(),
-                          onChanged: (String? value) {},
-                          items: listFilter
-                              .map((items) => DropdownMenuItem<String>(
+                                  ),
+                                )
+                              ],
+                            ),
+                            icon: Container(),
+                            underline: Container(),
+                            onChanged: (String? value) {},
+                            items: listFilter
+                                .map(
+                                  (items) => DropdownMenuItem<String>(
                                     onTap: () {
                                       typeStream.add(widget.isName
                                           ? items.name
                                           : items.label ?? '');
-                                      widget.onTap(items);
+                                      itemStream.add(items);
                                     },
                                     value: widget.isName
                                         ? items.name
@@ -94,10 +116,12 @@ class _DropDownBaseState extends State<DropDownBase> {
                                           : items.label ?? '',
                                       style: AppStyle.DEFAULT_16_BOLD,
                                     ),
-                                  ))
-                              .toList(),
-                        ),
-                      ],
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ],
+                      ),
                     );
                   })
               : SizedBox();

@@ -7,9 +7,12 @@ class ButtonThaoTac extends StatelessWidget {
     Key? key,
     required this.onTap,
     this.title,
+    this.marginHorizontal,
   }) : super(key: key);
+
   final Function() onTap;
   final String? title;
+  final double? marginHorizontal;
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +20,14 @@ class ButtonThaoTac extends StatelessWidget {
       onTap: () => onTap(),
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(15),
-        margin: EdgeInsets.symmetric(vertical: 15),
+        padding: EdgeInsets.all(16),
+        margin: EdgeInsets.symmetric(
+          vertical: 16,
+          horizontal: marginHorizontal ?? 16,
+        ),
         decoration: BoxDecoration(
           color: HexColor("#D0F1EB"),
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Center(
           child: Text(

@@ -17,8 +17,30 @@ class ItemSupport extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => AppNavigator.navigateDetailSupport(
-          data.id.toString(), data.ten_ho_tro ?? ''),
+        data.id.toString(),
+        data.ten_ho_tro ?? '',
+      ),
       child: Container(
+        margin: EdgeInsets.only(
+          left: 16,
+          right: 16,
+          bottom: 16,
+        ),
+        padding: EdgeInsets.all(
+          16,
+        ),
+        decoration: BoxDecoration(
+          color: COLORS.WHITE,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 3,
+              blurRadius: 5,
+              offset: Offset(0, 0), // changes position of shadow
+            ),
+          ],
+        ),
         child: Column(
           children: [
             Row(
@@ -103,25 +125,6 @@ class ItemSupport extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
-        margin: EdgeInsets.only(
-          left: 25,
-          right: 25,
-          bottom: 10,
-          top: 10,
-        ),
-        padding: EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: COLORS.WHITE,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              spreadRadius: 3,
-              blurRadius: 5,
-              offset: Offset(0, 0), // changes position of shadow
             ),
           ],
         ),

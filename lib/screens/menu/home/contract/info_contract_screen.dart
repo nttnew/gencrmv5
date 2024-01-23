@@ -15,10 +15,10 @@ import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/job_chance.dart';
 import '../../../../src/models/model_generator/support.dart';
 import '../../../../src/src_index.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/listview_loadmore_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
-import '../../../../widgets/widget_appbar.dart';
 import '../../../../widgets/widget_text.dart';
 import '../../attachment/attachment.dart';
 import '../support/widget/item_support.dart';
@@ -172,10 +172,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
         },
         child: Column(
           children: [
-            WidgetAppbar(
-              title: name,
-              left: _buildBack(),
-            ),
+            AppbarBaseNormal(name),
             AppValue.vSpaceTiny,
             Expanded(
               child: DefaultTabController(
@@ -220,8 +217,9 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                             ),
                             ContractPayment(id: int.parse(id)),
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 25),
+                              padding: const EdgeInsets.only(
+                                top: 8,
+                              ),
                               child: ListViewLoadMoreBase(
                                 functionInit: (page, isInit) {
                                   return _bloc.getJobContract(
@@ -243,42 +241,44 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                                 controller: _bloc.controllerCV,
                               ),
                             ),
-                            ListViewLoadMoreBase(
-                              functionInit: (page, isInit) {
-                                return _bloc.getSupportContract(
-                                  id: int.parse(id),
-                                  page: page,
-                                  isInit: isInit,
-                                );
-                              },
-                              itemWidget: (int index, data) {
-                                return ItemSupport(
-                                  data: SupportItemData(
-                                    data.id,
-                                    data.name,
-                                    data.created_date,
-                                    data.status,
-                                    data.color,
-                                    data.total_note,
-                                    CustomerData(
-                                      data.khach_hang,
-                                      data.khach_hang,
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 8,
+                              ),
+                              child: ListViewLoadMoreBase(
+                                functionInit: (page, isInit) {
+                                  return _bloc.getSupportContract(
+                                    id: int.parse(id),
+                                    page: page,
+                                    isInit: isInit,
+                                  );
+                                },
+                                itemWidget: (int index, data) {
+                                  return ItemSupport(
+                                    data: SupportItemData(
+                                      data.id,
+                                      data.name,
+                                      data.created_date,
+                                      data.status,
+                                      data.color,
+                                      data.total_note,
+                                      CustomerData(
+                                        data.khach_hang,
+                                        data.khach_hang,
+                                      ),
+                                      null,
                                     ),
-                                    null,
-                                  ),
-                                );
-                              },
-                              controller: _bloc.controllerHT,
+                                  );
+                                },
+                                controller: _bloc.controllerHT,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
-                        child: ButtonThaoTac(onTap: () {
-                          showThaoTac(context, list);
-                        }),
-                      ),
+                      ButtonThaoTac(onTap: () {
+                        showThaoTac(context, list);
+                      }),
                     ],
                   )),
             )
@@ -290,11 +290,15 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
 
   _tabBarWork(DataFormAdd data) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      margin: EdgeInsets.only(
+        bottom: 16,
+        left: 16,
+        right: 16,
+      ),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: COLORS.WHITE,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(10),
         border: Border.all(width: 1, color: COLORS.WHITE),
         boxShadow: [
           BoxShadow(
@@ -397,20 +401,6 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  _buildBack() {
-    return IconButton(
-      onPressed: () {
-        AppNavigator.navigateBack();
-      },
-      icon: Image.asset(
-        ICONS.IC_BACK_PNG,
-        height: 28,
-        width: 28,
-        color: COLORS.BLACK,
       ),
     );
   }

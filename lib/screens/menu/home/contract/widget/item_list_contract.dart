@@ -11,6 +11,7 @@ import '../../../../../widgets/widget_text.dart';
 class ItemContract extends StatelessWidget {
   const ItemContract({Key? key, required this.data}) : super(key: key);
   final ContractItemData data;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -19,11 +20,17 @@ class ItemContract extends StatelessWidget {
             data.id ?? '', data.name ?? getT(KeyT.not_yet));
       },
       child: Container(
-        margin: EdgeInsets.only(left: 25, right: 25, bottom: 20),
-        padding: EdgeInsets.all(15),
+        margin: EdgeInsets.only(
+          left: 16,
+          right: 16,
+          bottom: 16,
+        ),
+        padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: COLORS.WHITE,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(
+            10,
+          ),
           border: Border.all(width: 1, color: COLORS.WHITE),
           boxShadow: [
             BoxShadow(

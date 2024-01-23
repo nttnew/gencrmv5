@@ -58,7 +58,10 @@ class WidgetAppbar extends StatelessWidget {
                     ? Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
-                            padding: EdgeInsets.only(left: 25), child: left),
+                            padding: EdgeInsets.only(
+                              left: 24,
+                            ),
+                            child: left),
                       )
                     : AppValue.kEmptyWidget,
                 Align(
@@ -83,7 +86,10 @@ class WidgetAppbar extends StatelessWidget {
                     ? Align(
                         alignment: Alignment.centerRight,
                         child: Container(
-                            padding: EdgeInsets.only(right: 25), child: right),
+                            padding: EdgeInsets.only(
+                              right: 24,
+                            ),
+                            child: right),
                       )
                     : AppValue.kEmptyWidget,
               ],

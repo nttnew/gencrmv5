@@ -141,20 +141,20 @@ class _FormEditState extends State<FormEdit> {
       children: [
         Scaffold(
             backgroundColor: COLORS.WHITE,
-            appBar: AppbarBaseNormal(
-                getT(KeyT.edit_information)),
+            appBar: AppbarBaseNormal(getT(KeyT.edit_information)),
             body: BlocListener<AddDataBloc, AddDataState>(
               listener: (context, state) async {
                 if (state is SuccessEditCustomerState) {
                   LoadingApi().popLoading();
                   ShowDialogCustom.showDialogBase(
                     title: getT(KeyT.notification),
-                    content: getT(KeyT.update_data_successfully)
-                    ,
+                    content: getT(KeyT.update_data_successfully),
                     onTap1: () {
                       if (type == EDIT_CUSTOMER)
                         GetListCustomerBloc.of(context)
-                            .add(InitGetListOrderEvent());
+                            .loadMoreController
+                            .reloadData();
+
                       Get.back();
                       Get.back();
                     },
@@ -175,16 +175,19 @@ class _FormEditState extends State<FormEdit> {
                       Get.back();
                       Get.back();
                       if (type == EDIT_CLUE) {
-                        GetListClueBloc.of(context).add(InitGetListClueEvent());
+                        GetListClueBloc.of(context)
+                            .loadMoreController
+                            .reloadData();
                       }
                       if (type == EDIT_CHANCE) {
                         GetListDetailChanceBloc.of(context)
                             .add(InitGetListDetailEvent(int.parse(id)));
                         GetListChanceBloc.of(context)
-                            .add(InitGetListOrderEventChance());
+                            .loadMoreController
+                            .reloadData();
                       }
                       if (type == EDIT_JOB) {
-                        WorkBloc.of(context).add(InitGetListWorkEvent());
+                        WorkBloc.of(context).loadMoreController.reloadData();
                       }
                       if (type == 4) {
                         ContractBloc.of(context).add(InitGetContractEvent());
@@ -196,13 +199,12 @@ class _FormEditState extends State<FormEdit> {
                       }
                       if (type == PRODUCT_TYPE) {
                         ProductModuleBloc.of(context)
-                            .add(InitGetListProductModuleEvent());
+                            .loadMoreController.reloadData();
                         DetailProductBloc.of(context)
                             .add(InitGetDetailProductEvent(id));
                       }
                       if (type == PRODUCT_CUSTOMER_TYPE) {
-                        ProductCustomerModuleBloc.of(context)
-                            .add(GetProductCustomerModuleEvent());
+                        ProductCustomerModuleBloc.of(context).loadMoreController.reloadData();
                         DetailProductCustomerBloc.of(context)
                             .add(InitGetDetailProductCustomerEvent(id));
                       }
@@ -630,8 +632,7 @@ class _FormEditState extends State<FormEdit> {
     if (check == true) {
       ShowDialogCustom.showDialogBase(
         title: getT(KeyT.notification),
-        content:
-            getT(KeyT.please_enter_all_required_fields),
+        content: getT(KeyT.please_enter_all_required_fields),
       );
     } else {
       data["id"] = id;

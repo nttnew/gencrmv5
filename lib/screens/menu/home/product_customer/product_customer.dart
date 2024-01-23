@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/product_customer_module/product_customer_module_bloc.dart';
 import 'package:gen_crm/screens/menu/home/product_customer/widget/item_product_customer.dart';
 import 'package:gen_crm/widgets/tree/tree_node_model.dart';
-import 'package:get/get.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import '../../../../l10n/key_text.dart';
@@ -13,9 +11,9 @@ import '../../../../src/models/model_generator/list_product_customer_response.da
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/drop_down_base.dart';
+import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_widget.dart';
-import '../../../../widgets/widget_text.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 import '../product/scanner_qrcode.dart';
 
@@ -29,7 +27,6 @@ class ProductCustomerScreen extends StatefulWidget {
 class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   late final ProductCustomerModuleBloc _bloc;
-  late final ScrollController _scrollController;
   late final String title;
   late final ManagerBloc managerBloc;
 
@@ -43,41 +40,9 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
       isTitle: true,
     );
     GetNotificationBloc.of(context).add(CheckNotification());
-    _scrollController = ScrollController();
     _bloc = ProductCustomerModuleBloc.of(context);
-    getDataFirst();
-    listenerLoadMore();
     _bloc.getFilter();
     super.initState();
-  }
-
-  listenerLoadMore() {
-    _scrollController.addListener(() {
-      if (_scrollController.offset ==
-              _scrollController.position.maxScrollExtent &&
-          _bloc.isLength) {
-        _bloc.page = _bloc.page + 1;
-        _bloc.add(GetProductCustomerModuleEvent(
-          page: _bloc.page,
-          filter: _bloc.filter,
-          querySearch: _bloc.querySearch,
-          ids: _bloc.ids,
-        ));
-      } else {}
-    });
-  }
-
-  _research() {
-    _bloc.add(GetProductCustomerModuleEvent(
-      page: BASE_URL.PAGE_DEFAULT,
-      filter: _bloc.filter,
-      querySearch: _bloc.querySearch,
-      ids: _bloc.ids,
-    ));
-  }
-
-  getDataFirst() {
-    _bloc.add(GetProductCustomerModuleEvent());
   }
 
   @override
@@ -92,7 +57,7 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
   }
 
   _reloadLanguage() async {
-    await _research();
+    await _bloc.loadMoreController.reloadData();
     title = ModuleMy.getNameModuleMy(
       ModuleMy.CUSTOMER,
       isTitle: true,
@@ -103,23 +68,25 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _drawerKey,
-        resizeToAvoidBottomInset: false,
-        drawer: MainDrawer(
-          onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
-          onReload: () async {
-            await _reloadLanguage();
-          },
-        ),
-        appBar: AppbarBase(_drawerKey, title),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: COLORS.ff1AA928,
-          onPressed: () => AppNavigator.navigateFormAdd(
-              '${getT(KeyT.add)} $title', PRODUCT_CUSTOMER_TYPE),
-          child: Icon(Icons.add, size: 40),
-        ),
-        body: Container(
+      key: _drawerKey,
+      resizeToAvoidBottomInset: false,
+      drawer: MainDrawer(
+        onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+        onReload: () async {
+          await _reloadLanguage();
+        },
+      ),
+      appBar: AppbarBase(_drawerKey, title),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: COLORS.ff1AA928,
+        onPressed: () => AppNavigator.navigateFormAdd(
+            '${getT(KeyT.add)} $title', PRODUCT_CUSTOMER_TYPE),
+        child: Icon(Icons.add, size: 40),
+      ),
+      body: ViewLoadMoreBase(
+        isShowAll: _bloc.listType,
+        child: SingleChildScrollView(
           child: Column(
             children: [
               AppValue.vSpaceSmall,
@@ -156,175 +123,83 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                 ),
                 onSubmit: (String v) {
                   _bloc.querySearch = v;
-                  _research();
+                  _bloc.loadMoreController.reloadData();
                 },
               ),
-              SizedBox(
-                height: 6,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: DropDownBase(
-                        isName: true,
-                        stream: _bloc.listFilter,
-                        onTap: (item) {
-                          _bloc.filter = item.id.toString();
-                          _research();
-                        },
-                      ),
+              AppValue.vSpaceTiny,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: DropDownBase(
+                      isName: true,
+                      stream: _bloc.listFilter,
+                      onTap: (item) {
+                        _bloc.filter = item.id.toString();
+                        _bloc.loadMoreController.reloadData();
+                      },
                     ),
-                    StreamBuilder<List<TreeNodeData>>(
-                        stream: managerBloc.managerTrees,
-                        builder: (context, snapshot) {
-                          if (snapshot.data?.isNotEmpty ?? false)
-                            return Padding(
-                              padding: const EdgeInsets.only(left: 6.0),
-                              child: GestureDetector(
-                                  onTap: () {
-                                    showManagerFilter(context, managerBloc,
-                                        (v) {
-                                      _bloc.ids = v;
-                                      _research();
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(14),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: COLORS.GREY_400,
-                                        ),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(4))),
-                                    child: SvgPicture.asset(
-                                      ICONS.IC_FILL_SVG,
-                                      width: 20,
-                                      height: 20,
-                                      fit: BoxFit.contain,
-                                    ),
-                                  )),
-                            );
-                          return SizedBox();
-                        }),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 6,
-              ),
-              Expanded(child: BlocBuilder<ProductCustomerModuleBloc,
-                  ProductCustomerModuleState>(
-                builder: (BuildContext context, state) {
-                  if (state is SuccessGetListProductCustomerModuleState) {
-                    _bloc.dataList = state.list;
-                    final list = state.list;
-                    if (list.length < BASE_URL.SIZE_DEFAULT) {
-                      _bloc.isLength = false;
-                    }
-                    return Container(
-                      height: MediaQuery.of(context).size.height,
-                      child: RefreshIndicator(
-                        onRefresh: () async {
-                          await getDataFirst();
-                        },
-                        child: ListView.builder(
-                            physics: ClampingScrollPhysics(
-                                parent: AlwaysScrollableScrollPhysics()),
-                            padding: EdgeInsets.only(top: 10, bottom: 10),
-                            controller: _scrollController,
-                            itemCount: list.length,
-                            itemBuilder: (context, i) => ItemProductCustomer(
-                                  productModule: list[i],
-                                  onTap: () {
-                                    AppNavigator.navigateDetailProductCustomer(
-                                        list[i].name ?? '', list[i].id ?? '');
-                                  },
-                                )),
-                      ),
-                    );
-                  }
-                  return Container();
-                },
-              ))
-            ],
-          ),
-        ));
-  }
-
-  showBotomSheet(List<DataFilter> dataFilter) {
-    showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-        ),
-        elevation: 2,
-        context: context,
-        isScrollControlled: true,
-        constraints: BoxConstraints(maxHeight: Get.height * 0.7),
-        builder: (context) {
-          return StatefulBuilder(
-            builder: (context, setState) {
-              return Container(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: WidgetText(
-                        title: getT(KeyT.select_filter),
-                        textAlign: TextAlign.center,
-                        style: AppStyle.DEFAULT_16_BOLD,
-                      ),
-                    ),
-                    Column(
-                      children: List.generate(
-                          dataFilter.length,
-                          (index) => GestureDetector(
+                  ),
+                  StreamBuilder<List<TreeNodeData>>(
+                      stream: managerBloc.managerTrees,
+                      builder: (context, snapshot) {
+                        if (snapshot.data?.isNotEmpty ?? false)
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 6.0),
+                            child: GestureDetector(
                                 onTap: () {
-                                  _bloc.filter =
-                                      dataFilter[index].id.toString();
-                                  Get.back();
-                                  _research();
+                                  showManagerFilter(context, managerBloc, (v) {
+                                    _bloc.ids = v;
+                                    _bloc.loadMoreController.reloadData();
+                                  });
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 8),
+                                  padding: EdgeInsets.all(14),
                                   decoration: BoxDecoration(
-                                      border: Border(
-                                          bottom: BorderSide(
-                                              width: 1,
-                                              color: COLORS.LIGHT_GREY))),
-                                  child: Row(
-                                    children: [
-                                      SvgPicture.asset(
-                                        ICONS.IC_FILTER_SVG,
-                                        width: 20,
-                                        height: 20,
-                                        fit: BoxFit.contain,
+                                    border: Border.all(
+                                      color: COLORS.GREY_400,
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                        4,
                                       ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Expanded(
-                                          child: Container(
-                                        child: WidgetText(
-                                          title: dataFilter[index].name ?? '',
-                                          style: AppStyle.DEFAULT_16,
-                                        ),
-                                      )),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              )),
-                    )
-                  ],
-                ),
+                                  child: SvgPicture.asset(
+                                    ICONS.IC_FILL_SVG,
+                                    width: 20,
+                                    height: 20,
+                                    fit: BoxFit.contain,
+                                  ),
+                                )),
+                          );
+                        return SizedBox();
+                      }),
+                ],
+              ),
+            ],
+          ),
+        ),
+        isInit: true,
+        functionInit: (page, isInit) {
+          return _bloc.getListProduct(
+            page: page,
+          );
+        },
+        itemWidget: (int index, data) {
+          ProductCustomerResponse snap = data;
+          return ItemProductCustomer(
+            productModule: snap,
+            onTap: () {
+              AppNavigator.navigateDetailProductCustomer(
+                snap.name ?? '',
+                snap.id ?? '',
               );
             },
           );
-        });
+        },
+        controller: _bloc.loadMoreController,
+      ),
+    );
   }
 }

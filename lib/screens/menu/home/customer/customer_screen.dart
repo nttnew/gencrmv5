@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
@@ -13,6 +12,7 @@ import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/customer.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/drop_down_base.dart';
+import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
@@ -26,20 +26,12 @@ class CustomerScreen extends StatefulWidget {
 }
 
 class _CustomerScreenState extends State<CustomerScreen> {
-  int page = BASE_URL.PAGE_DEFAULT;
-  int total = 0;
-  int length = 0;
-  List<CustomerData> listCustomer = [];
-  String idFilter = '';
   late final GlobalKey<ScaffoldState> _drawerKey;
   late final _key;
-  String search = '';
-  String ids = '';
   String title = ModuleMy.getNameModuleMy(
     ModuleMy.CUSTOMER,
     isTitle: true,
   );
-  ScrollController _scrollController = ScrollController();
   List<String> listAdd = [];
   late final ManagerBloc managerBloc;
   late final GetListCustomerBloc _bloc;
@@ -59,34 +51,13 @@ class _CustomerScreenState extends State<CustomerScreen> {
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.KHACH_HANG);
     GetNotificationBloc.of(context).add(CheckNotification());
-    _bloc.add(InitGetListOrderEvent());
-    _scrollController.addListener(() {
-      if (_scrollController.offset ==
-              _scrollController.position.maxScrollExtent &&
-          length < total) {
-        page = page + 1;
-        _research(isLoadMore: true, pageNew: page);
-      }
-    });
     super.initState();
-  }
-
-  _research({int? pageNew, bool? isLoadMore}) {
-    page = pageNew ?? BASE_URL.PAGE_DEFAULT;
-    _bloc.add(InitGetListOrderEvent(
-      filter: idFilter,
-      page: page,
-      ids: ids,
-      search: search,
-      isLoadMore: isLoadMore,
-    ));
   }
 
   _handleRouter(String value) {
     if (listAdd[0] == value) {
       AppNavigator.navigateFormAddCustomerGroup(
-          "${getT(KeyT.add)} ${value.toLowerCase()}",
-          ADD_CUSTOMER);
+          "${getT(KeyT.add)} ${value.toLowerCase()}", ADD_CUSTOMER);
     } else if (listAdd[1] == value) {
       AppNavigator.navigateAddCustomer(
           "${getT(KeyT.add)} ${value.toLowerCase()}");
@@ -96,7 +67,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
   }
 
   _reloadLanguage() async {
-    await _research();
+    await _bloc.loadMoreController.reloadData();
+
     title = ModuleMy.getNameModuleMy(
       ModuleMy.CUSTOMER,
       isTitle: true,
@@ -109,11 +81,16 @@ class _CustomerScreenState extends State<CustomerScreen> {
   }
 
   @override
+  void dispose() {
+    _bloc.init();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
       appBar: AppbarBase(_drawerKey, title),
-      resizeToAvoidBottomInset: false,
       drawer: MainDrawer(
         onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
         onReload: () async {
@@ -205,21 +182,18 @@ class _CustomerScreenState extends State<CustomerScreen> {
             )
             .toList(),
       ),
-      body: BlocBuilder<GetListCustomerBloc, CustomerState>(
-          builder: (context, state) {
-        if (state is UpdateGetListCustomerState) {
-          total = state.total;
-          length = state.listCustomer.length;
-          listCustomer = state.listCustomer;
-          return Column(
+      body: ViewLoadMoreBase(
+        isShowAll: _bloc.listType,
+        isInit: true,
+        child: SingleChildScrollView(
+          child: Column(
             children: [
               AppValue.vSpaceSmall,
               StreamBuilder<List<TreeNodeData>>(
                   stream: managerBloc.managerTrees,
                   builder: (context, snapshot) {
                     return SearchBase(
-                      hint:
-                          "${getT(KeyT.find)} ${title.toLowerCase()}",
+                      hint: '${getT(KeyT.find)} ${title.toLowerCase()}',
                       leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                       endIcon: (snapshot.data ?? []).isNotEmpty
                           ? SvgPicture.asset(
@@ -231,70 +205,46 @@ class _CustomerScreenState extends State<CustomerScreen> {
                           : null,
                       onClickRight: () {
                         showManagerFilter(context, managerBloc, (v) {
-                          ids = v;
-                          _research();
+                          _bloc.ids = v;
+                          _bloc.loadMoreController.reloadData();
                         });
                       },
                       onSubmit: (String v) {
-                        search = v;
-                        _research();
+                        _bloc.search = v;
+                        _bloc.loadMoreController.reloadData();
                       },
                     );
                   }),
-              SizedBox(
-                height: 6,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: DropDownBase(
-                    isName: true,
-                    stream: _bloc.listType,
-                    onTap: (item) {
-                      idFilter = item.id.toString();
-                      _research();
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 6,
-              ),
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: () =>
-                      Future.delayed(Duration(microseconds: 300), () {
-                    _research();
-                  }),
-                  child: SingleChildScrollView(
-                    physics: ClampingScrollPhysics(
-                        parent: AlwaysScrollableScrollPhysics()),
-                    controller: _scrollController,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: Column(
-                        children: List.generate(
-                            state.listCustomer.length,
-                            (index) => ItemCustomer(
-                                  data: state.listCustomer[index],
-                                  onTap: () => AppNavigator.navigateDetailCustomer(
-                                      state.listCustomer[index].id ?? '',
-                                      '${state.listCustomer[index].danh_xung ?? ''}' +
-                                          ' ' +
-                                          '${state.listCustomer[index].name ?? ''}'),
-                                  title: title,
-                                )),
-                      ),
-                    ),
-                  ),
-                ),
+              AppValue.vSpaceTiny,
+              DropDownBase(
+                isName: true,
+                stream: _bloc.listType,
+                onTap: (item) {
+                  if (_bloc.idFilter != item.id.toString()) {
+                    _bloc.idFilter = item.id.toString();
+                    _bloc.loadMoreController.reloadData();
+                  }
+                },
               ),
             ],
+          ),
+        ),
+        functionInit: (page, isInit) {
+          return _bloc.getListCustomer(
+            page: page,
           );
-        } else
-          return noData();
-      }),
+        },
+        itemWidget: (int index, data) {
+          CustomerData snap = data;
+          return ItemCustomer(
+            data: snap,
+            onTap: () => AppNavigator.navigateDetailCustomer(snap.id ?? '',
+                '${snap.danh_xung ?? ''}' + ' ' + '${snap.name ?? ''}'),
+            title: title,
+          );
+        },
+        controller: _bloc.loadMoreController,
+      ),
     );
   }
 }

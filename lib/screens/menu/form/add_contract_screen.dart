@@ -140,7 +140,7 @@ class _FormAddContractState extends State<FormAddContract> {
                 onTap1: () {
                   Get.back();
                   Get.back();
-                  GetListCustomerBloc.of(context).add(InitGetListOrderEvent());
+                  GetListCustomerBloc.of(context).loadMoreController.reloadData();
                 },
               );
             }

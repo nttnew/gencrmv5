@@ -18,6 +18,13 @@ class ItemMenu extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: data.backgroundColor,
+        boxShadow: [
+          BoxShadow(
+            color: COLORS.BLACK.withOpacity(0.15),
+            spreadRadius: 1,
+            blurRadius: 1,
+          ),
+        ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

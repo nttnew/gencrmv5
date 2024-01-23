@@ -60,26 +60,41 @@ class _SearchBaseState extends State<SearchBase> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 25),
+      margin: EdgeInsets.symmetric(
+        horizontal: 16,
+      ),
       decoration: BoxDecoration(
-          border: Border.all(
-            color: COLORS.GREY_400,
+        border: Border.all(
+          color: COLORS.GREY_400,
+        ),
+        borderRadius: BorderRadius.all(
+          Radius.circular(
+            6,
           ),
-          borderRadius: BorderRadius.all(Radius.circular(4))),
+        ),
+      ),
       child: Row(
         crossAxisAlignment: widget.crossAxisAlignment,
         children: [
           widget.leadIcon != null
               ? Padding(
-                  padding: EdgeInsets.only(left: 15),
+                  padding: EdgeInsets.only(
+                    left: 16,
+                  ),
                   child: Center(
-                      child: Container(
-                          height: 25, width: 25, child: widget.leadIcon)),
+                    child: Container(
+                      height: 20,
+                      width: 20,
+                      child: widget.leadIcon,
+                    ),
+                  ),
                 )
               : Container(),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8,
+              ),
               child: TextFormField(
                 controller: widget.inputController,
                 onChanged: (v) {
@@ -107,12 +122,15 @@ class _SearchBaseState extends State<SearchBase> {
                       AppStyle.DEFAULT_14.copyWith(color: COLORS.PRIMARY_COLOR),
                   hintText: widget.hint,
                   hintStyle: TextStyle(
-                      fontFamily: "Quicksand",
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: HexColor("#707070")),
+                    fontFamily: "Quicksand",
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: HexColor("#707070"),
+                  ),
                   errorText: widget.errorText,
-                  errorStyle: AppStyle.DEFAULT_14.copyWith(color: COLORS.RED),
+                  errorStyle: AppStyle.DEFAULT_14.copyWith(
+                    color: COLORS.RED,
+                  ),
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   disabledBorder: InputBorder.none,
@@ -124,19 +142,22 @@ class _SearchBaseState extends State<SearchBase> {
               ? GestureDetector(
                   onTap: () => widget.onClickRight!(),
                   child: Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 16,
-                        horizontal: 15,
+                    padding: EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 16,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        left: BorderSide(
+                          color: COLORS.GREY_400,
+                          width: 1,
+                        ),
                       ),
-                      decoration: BoxDecoration(
-                          border: Border(
-                              left: BorderSide(
-                        color: COLORS.GREY_400,
-                        width: 1,
-                      ))),
-                      child: widget.endIcon),
+                    ),
+                    child: widget.endIcon,
+                  ),
                 )
-              : Container(),
+              : SizedBox.shrink(),
         ],
       ),
     );

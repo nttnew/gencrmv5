@@ -44,8 +44,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
   getThaoTac(ProductModel? product) {
     list = [];
     list.add(ModuleThaoTac(
-      title:
-          '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
+      title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
       icon: ICONS.IC_ADD_CONTRACT_SVG,
       onThaoTac: () {
         Get.back();
@@ -77,7 +76,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
         Get.back();
         AppNavigator.navigateEditDataScreen(id, PRODUCT_TYPE, onRefresh: () {
           _bloc.add(InitGetDetailProductEvent(id));
-          ProductModuleBloc.of(context).add(InitGetListProductModuleEvent());
+          ProductModuleBloc.of(context).loadMoreController.reloadData();
         });
       },
     ));
@@ -106,11 +105,10 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
           if (state is SuccessDeleteProductState) {
             LoadingApi().popLoading();
             ShowDialogCustom.showDialogBase(
-              title:getT(KeyT.notification),
+              title: getT(KeyT.notification),
               content: getT(KeyT.delete_success),
               onTap1: () {
-                ProductModuleBloc.of(context)
-                    .add(InitGetListProductModuleEvent());
+                ProductModuleBloc.of(context).loadMoreController.reloadData();
                 Navigator.pushNamedAndRemoveUntil(
                     context, ROUTE_NAMES.PRODUCT, ModalRoute.withName('/'),
                     arguments: title);
@@ -119,7 +117,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
           } else if (state is ErrorDeleteProductState) {
             LoadingApi().popLoading();
             ShowDialogCustom.showDialogBase(
-              title:getT(KeyT.notification),
+              title: getT(KeyT.notification),
               content: state.msg,
               textButton1: getT(KeyT.come_back),
               onTap1: () {
@@ -147,7 +145,11 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                           height: MediaQuery.of(context).size.height,
                           width: MediaQuery.of(context).size.width,
                           child: SingleChildScrollView(
-                            padding: EdgeInsets.symmetric(horizontal: 25),
+                            padding: EdgeInsets.only(
+                              left: 16,
+                              right: 16,
+                              top: 24,
+                            ),
                             physics: AlwaysScrollableScrollPhysics(),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,9 +159,6 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          SizedBox(
-                                            height: AppValue.heights * 0.04,
-                                          ),
                                           WidgetText(
                                             title: (state.productInfo?.data ??
                                                         [])[index]
@@ -251,11 +250,14 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                   }),
               Positioned(
                 bottom: 0,
-                right: 25,
-                left: 25,
-                child: ButtonThaoTac(onTap: () {
-                  showThaoTac(context, list);
-                }),
+                right: 16,
+                left: 16,
+                child: ButtonThaoTac(
+                  onTap: () {
+                    showThaoTac(context, list);
+                  },
+                  marginHorizontal: 0,
+                ),
               ),
             ],
           ),

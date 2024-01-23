@@ -4,16 +4,16 @@ import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
 
-class SupportCardWidget extends StatefulWidget {
-  SupportCardWidget({Key? key, required this.data}) : super(key: key);
+class SupportCardWidget extends StatelessWidget {
+  SupportCardWidget({
+    Key? key,
+    required this.data,
+    required this.onTap,
+  }) : super(key: key);
 
   final dynamic data;
+  final Function onTap;
 
-  @override
-  State<SupportCardWidget> createState() => _SupportCardWidgetState();
-}
-
-class _SupportCardWidgetState extends State<SupportCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,17 +25,16 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
               SizedBox(
                 width: AppValue.widths * 0.5,
                 child: WidgetText(
-                  title: widget.data.name ?? '',
+                  title: data.name ?? '',
                   style: NameCustomerStyle(),
                 ),
               ),
               Spacer(),
               Container(
                 decoration: BoxDecoration(
-                    color:
-                        (widget.data.color != "" && widget.data.color != null)
-                            ? HexColor(widget.data.color!)
-                            : COLORS.PRIMARY_COLOR,
+                    color: (data.color != "" && data.color != null)
+                        ? HexColor(data.color!)
+                        : COLORS.PRIMARY_COLOR,
                     borderRadius: BorderRadius.circular(99)),
                 width: AppValue.widths * 0.1,
                 height: AppValue.heights * 0.02,
@@ -43,14 +42,14 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
             ],
           ),
           SizedBox(height: AppValue.heights * 0.01),
-          if (widget.data.user_handling != '') ...[
+          if (data.user_handling != '') ...[
             Row(
               children: [
                 SvgPicture.asset(ICONS.IC_AVATAR_SVG),
                 Padding(
                   padding: EdgeInsets.only(left: AppValue.widths * 0.03),
                   child: WidgetText(
-                    title: widget.data.user_handling ?? '',
+                    title: data.user_handling ?? '',
                     style: NameCustomerStyle(),
                   ),
                 ),
@@ -58,13 +57,13 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
             ),
             SizedBox(height: AppValue.heights * 0.01),
           ],
-          if (widget.data.status != '') ...[
+          if (data.status != '') ...[
             Row(
               children: [
                 SvgPicture.asset(
                   ICONS.IC_ICON3_SVG,
-                  color: (widget.data.color != "" && widget.data.color != null)
-                      ? HexColor(widget.data.color!)
+                  color: (data.color != "" && data.color != null)
+                      ? HexColor(data.color!)
                       : COLORS.PRIMARY_COLOR,
                 ),
                 Padding(
@@ -72,11 +71,10 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
                   child: SizedBox(
                       width: AppValue.widths * 0.5,
                       child: WidgetText(
-                        title: widget.data.status ?? '',
+                        title: data.status ?? '',
                         style: AppStyle.DEFAULT_14.copyWith(
-                            color: (widget.data.color != "" &&
-                                    widget.data.color != null)
-                                ? HexColor(widget.data.color!)
+                            color: (data.color != "" && data.color != null)
+                                ? HexColor(data.color!)
                                 : COLORS.PRIMARY_COLOR),
                       )),
                 ),
@@ -92,9 +90,7 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
                 child: SizedBox(
                     width: AppValue.widths * 0.5,
                     child: WidgetText(
-                        title: widget.data.start_date != ""
-                            ? widget.data.start_date!
-                            : "",
+                        title: data.start_date != "" ? data.start_date! : "",
                         style: OrtherInforCustomerStyle())),
               ),
               Spacer(),
@@ -103,7 +99,7 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
                 width: AppValue.widths * 0.01,
               ),
               WidgetText(
-                title: widget.data.total_note ?? '',
+                title: data.total_note ?? '',
                 style: TextStyle(
                   color: HexColor("#0052B4"),
                 ),
@@ -112,20 +108,11 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
           ),
         ],
       ),
-      margin: EdgeInsets.only(
-          left: 5, top: AppValue.heights * 0.01, right: 5, bottom: 5),
-      padding: EdgeInsets.only(
-          left: AppValue.widths * 0.05,
-          top: AppValue.heights * 0.02,
-          right: AppValue.widths * 0.05,
-          bottom: AppValue.widths * 0.05),
+      margin: EdgeInsets.only(left: 16, right: 16, bottom: 16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: COLORS.WHITE,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10)),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.3),
@@ -140,12 +127,6 @@ class _SupportCardWidgetState extends State<SupportCardWidget> {
 
   TextStyle OrtherInforCustomerStyle() => TextStyle(
       color: HexColor("#263238"),
-      fontFamily: "Quicksand",
-      fontWeight: FontWeight.w400,
-      fontSize: 14);
-
-  TextStyle LocationCustomerStyle() => TextStyle(
-      color: COLORS.BLACK,
       fontFamily: "Quicksand",
       fontWeight: FontWeight.w400,
       fontSize: 14);

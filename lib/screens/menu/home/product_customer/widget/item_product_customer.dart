@@ -28,7 +28,7 @@ class ItemProductCustomer extends StatelessWidget {
                   color: COLORS.ff006CB1, fontWeight: FontWeight.w700),
             ),
             itemTextIcon(
-              text: productModule.customer?.name ??  getT(KeyT.not_yet),
+              text: productModule.customer?.name ?? getT(KeyT.not_yet),
               icon: ICONS.IC_USER2_SVG,
             ),
             itemTextIcon(
@@ -37,7 +37,7 @@ class ItemProductCustomer extends StatelessWidget {
               colorIcon: COLORS.GREY,
             ),
             itemTextIcon(
-              text: productModule.loai ??  getT(KeyT.not_yet),
+              text: productModule.loai ?? getT(KeyT.not_yet),
               icon: Icon(
                 Icons.insert_drive_file_outlined,
                 color: COLORS.GREY,
@@ -46,8 +46,14 @@ class ItemProductCustomer extends StatelessWidget {
             ),
           ],
         ),
-        margin: EdgeInsets.only(left: 25, right: 25, bottom: 20),
-        padding: EdgeInsets.all(15),
+        margin: EdgeInsets.only(
+          left: 16,
+          right: 16,
+          bottom: 16,
+        ),
+        padding: EdgeInsets.all(
+          16,
+        ),
         decoration: BoxDecoration(
           color: COLORS.WHITE,
           borderRadius: BorderRadius.all(Radius.circular(10)),

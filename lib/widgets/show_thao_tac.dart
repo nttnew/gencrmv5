@@ -34,14 +34,16 @@ Future showThaoTac(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListView(
-              padding: EdgeInsets.symmetric(vertical: 15),
+              padding: EdgeInsets.symmetric(
+                vertical: 16,
+              ),
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               children: list
                   .map(
                     (e) => Padding(
                       padding: const EdgeInsets.only(
-                        top: 15,
+                        top: 16,
                       ),
                       child: itemIcon(
                         e.title,
@@ -53,17 +55,12 @@ Future showThaoTac(
                   )
                   .toList(),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: ButtonThaoTac(
-                  title: getT(KeyT.close),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  }),
-            ),
+            ButtonThaoTac(
+                title: getT(KeyT.close),
+                onTap: () {
+                  Navigator.of(context).pop();
+                }),
           ],
         );
       });
 }
-
-

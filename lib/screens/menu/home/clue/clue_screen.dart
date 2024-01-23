@@ -1,4 +1,3 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/drop_down_base.dart';
@@ -11,6 +10,7 @@ import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/clue.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
+import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_node_model.dart';
 import '../../../../widgets/tree/tree_widget.dart';
@@ -28,18 +28,10 @@ class _ClueScreenState extends State<ClueScreen> {
   late final GlobalKey<ScaffoldState> _drawerKey;
   late final ManagerBloc managerBloc;
   late final GetListClueBloc _bloc;
-  int page = BASE_URL.PAGE_DEFAULT;
-  int total = 0;
-  int length = 0;
-  List<ClueData> listClue = [];
-  String idFilter = '';
-  String ids = '';
   String title = ModuleMy.getNameModuleMy(
     ModuleMy.DAU_MOI,
     isTitle: true,
   );
-  String search = '';
-  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -49,35 +41,22 @@ class _ClueScreenState extends State<ClueScreen> {
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.DAU_MOI);
     GetNotificationBloc.of(context).add(CheckNotification());
-    _bloc.add(InitGetListClueEvent());
-    _scrollController.addListener(() {
-      if (_scrollController.offset ==
-              _scrollController.position.maxScrollExtent &&
-          length < total) {
-        page = page + 1;
-        _research(pageNew: page);
-      }
-    });
     super.initState();
   }
 
-  _research({int? pageNew}) {
-    page = pageNew ?? BASE_URL.PAGE_DEFAULT;
-    _bloc.add(InitGetListClueEvent(
-      filter: idFilter,
-      page: page,
-      ids: ids,
-      search: search,
-    ));
-  }
-
   _reloadLanguage() async {
-    await _research();
+    await _bloc.loadMoreController.reloadData();
     title = ModuleMy.getNameModuleMy(
       ModuleMy.DAU_MOI,
       isTitle: true,
     );
     setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _bloc.init();
+    super.dispose();
   }
 
   @override
@@ -104,12 +83,10 @@ class _ClueScreenState extends State<ClueScreen> {
           child: Icon(Icons.add, size: 40),
         ),
       ),
-      body: BlocBuilder<GetListClueBloc, ClueState>(builder: (context, state) {
-        if (state is UpdateGetListClueState) {
-          listClue = state.listClue;
-          length = state.listClue.length;
-          total = int.parse(state.total);
-          return Column(
+      body: ViewLoadMoreBase(
+        isShowAll: _bloc.listType,
+        child: SingleChildScrollView(
+          child: Column(
             children: [
               AppValue.vSpaceSmall,
               StreamBuilder<List<TreeNodeData>>(
@@ -128,81 +105,72 @@ class _ClueScreenState extends State<ClueScreen> {
                           : null,
                       onClickRight: () {
                         showManagerFilter(context, managerBloc, (v) {
-                          ids = v;
-                          _research();
+                          _bloc.ids = v;
+                          _bloc.loadMoreController.reloadData();
                         });
                       },
                       onSubmit: (String v) {
-                        search = v;
-                        _research();
+                        _bloc.search = v;
+                        _bloc.loadMoreController.reloadData();
                       },
                     );
                   }),
-              SizedBox(
-                height: 6,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: DropDownBase(
-                    isName: true,
-                    stream: _bloc.listType,
-                    onTap: (item) {
-                      idFilter = item.id.toString();
-                      _research();
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 6,
-              ),
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: () =>
-                      Future.delayed(Duration(microseconds: 300), () {
-                    _research();
-                  }),
-                  child: ListView.separated(
-                    physics: ClampingScrollPhysics(
-                        parent: AlwaysScrollableScrollPhysics()),
-                    padding: EdgeInsets.only(top: 16),
-                    controller: _scrollController,
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: length,
-                    itemBuilder: (context, index) {
-                      return _buildCustomer(listClue[index]);
-                    },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const SizedBox(),
-                  ),
-                ),
+              AppValue.vSpaceTiny,
+              DropDownBase(
+                isName: true,
+                stream: _bloc.listType,
+                onTap: (item) {
+                  _bloc.idFilter = item.id.toString();
+                  _bloc.loadMoreController.reloadData();
+                },
               ),
             ],
+          ),
+        ),
+        isInit: true,
+        functionInit: (page, isInit) {
+          return _bloc.getListClue(
+            page: page,
           );
-        } else
-          return noData();
-      }),
+        },
+        itemWidget: (int index, data) {
+          ClueData snap = data;
+          return _buildCustomer(snap);
+        },
+        controller: _bloc.loadMoreController,
+      ),
     );
   }
 
   _buildCustomer(ClueData clueData) {
     return InkWell(
       onTap: () {
-        AppNavigator.navigateInfoClue(clueData.id ?? '', clueData.name ?? '');
+        AppNavigator.navigateInfoClue(
+          clueData.id ?? '',
+          clueData.name ?? '',
+        );
       },
       child: Container(
-        margin: EdgeInsets.only(left: 25, right: 25, bottom: 20),
-        padding: EdgeInsets.all(15),
+        margin: EdgeInsets.only(
+          left: 16,
+          right: 16,
+          bottom: 16,
+        ),
+        padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: COLORS.WHITE,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(width: 1, color: COLORS.WHITE),
+          borderRadius: BorderRadius.circular(
+            10,
+          ),
+          border: Border.all(
+            width: 1,
+            color: COLORS.WHITE,
+          ),
           boxShadow: [
             BoxShadow(
-              color: COLORS.BLACK.withOpacity(0.1),
+              color: COLORS.BLACK.withOpacity(
+                0.1,
+              ),
               spreadRadius: 1,
               blurRadius: 5,
             )

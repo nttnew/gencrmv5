@@ -104,15 +104,18 @@ class WidgetNetworkImage extends StatelessWidget {
             loadingBuilder: (context, child, loadingProgress) {
               if (loadingProgress == null) return child;
               return Container(
-                  width: width,
-                  height: height,
-                  child: Center(
-                      child: Container(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ))));
+                width: width,
+                height: height,
+                child: Center(
+                  child: Container(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  ),
+                ),
+              );
             },
           ),
         ),

@@ -10,10 +10,10 @@ import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
+import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/listview_loadmore_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
-import '../../../../widgets/widget_appbar.dart';
 import '../../attachment/attachment.dart';
 
 class DetailInfoClue extends StatefulWidget {
@@ -110,20 +110,20 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
           if (state is SuccessDeleteClueState) {
             LoadingApi().popLoading();
             ShowDialogCustom.showDialogBase(
-              title:getT(KeyT.notification),
+              title: getT(KeyT.notification),
               content: getT(KeyT.success),
               onTap1: () {
                 Get.back();
                 Get.back();
                 Get.back();
                 Get.back();
-                GetListClueBloc.of(context).add(InitGetListClueEvent());
+                GetListClueBloc.of(context).loadMoreController.reloadData();
               },
             );
           } else if (state is ErrorDeleteClueState) {
             LoadingApi().popLoading();
             ShowDialogCustom.showDialogBase(
-              title:getT(KeyT.notification),
+              title: getT(KeyT.notification),
               content: state.msg,
               textButton1: getT(KeyT.come_back),
               onTap1: () {
@@ -137,10 +137,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
         },
         child: Column(
           children: [
-            WidgetAppbar(
-              title: name,
-              left: _buildBack(),
-            ),
+            AppbarBaseNormal(name),
             AppValue.vSpaceTiny,
             Expanded(
               child: DefaultTabController(
@@ -151,7 +148,9 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: TabBar(
-                          padding: EdgeInsets.symmetric(horizontal: 25),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                          ),
                           isScrollable: true,
                           indicatorColor: COLORS.TEXT_COLOR,
                           labelColor: COLORS.TEXT_COLOR,
@@ -168,6 +167,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                           ],
                         ),
                       ),
+                      AppValue.hSpaceTiny,
                       Expanded(
                         child: TabBarView(
                           children: [
@@ -177,8 +177,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                               bloc: _bloc,
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 25),
+                              padding: const EdgeInsets.only(top: 8.0),
                               child: ListViewLoadMoreBase(
                                 functionInit: (page, isInit) {
                                   return _bloc.getWorkClue(
@@ -213,30 +212,13 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                     ],
                   )),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: ButtonThaoTac(
-                onTap: () {
-                  showThaoTac(context, list);
-                },
-              ),
+            ButtonThaoTac(
+              onTap: () {
+                showThaoTac(context, list);
+              },
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  _buildBack() {
-    return IconButton(
-      onPressed: () {
-        AppNavigator.navigateBack();
-      },
-      icon: Image.asset(
-        ICONS.IC_BACK_PNG,
-        height: 28,
-        width: 28,
-        color: COLORS.BLACK,
       ),
     );
   }

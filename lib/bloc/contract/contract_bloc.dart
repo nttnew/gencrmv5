@@ -9,72 +9,56 @@ import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/contract.dart';
 import '../../src/models/model_generator/customer.dart';
+import '../../widgets/listview/list_load_infinity.dart';
 
 part 'contract_event.dart';
 part 'contract_state.dart';
 
 class ContractBloc extends Bloc<ContractEvent, ContractState> {
   final UserRepository userRepository;
-  List<ContractItemData>? list;
   BehaviorSubject<List<FilterData>> listType = BehaviorSubject.seeded([]);
+  LoadMoreController loadMoreController = LoadMoreController();
+  String idFilter = '';
+  String search = '';
+  String ids = '';
+
+  init() {
+    idFilter = '';
+    search = '';
+    ids = '';
+  }
 
   ContractBloc({required UserRepository userRepository})
       : userRepository = userRepository,
         super(InitGetContract());
 
-  @override
-  Stream<ContractState> mapEventToState(ContractEvent event) async* {
-    if (event is InitGetContractEvent) {
-      yield* _getListContract(
-        filter: event.filter ?? '',
-        page: event.page ?? BASE_URL.PAGE_DEFAULT,
-        search: event.search ?? '',
-        isLoadMore: event.isLoadMore,
-        ids: event.ids ?? '',
-      );
-    }
-  }
-
-  Stream<ContractState> _getListContract({
-    required String ids,
-    required String filter,
-    required int page,
-    required String search,
-    bool? isLoadMore = false,
-  }) async* {
+  Future<dynamic> getListContract({
+    int page = BASE_URL.PAGE_DEFAULT,
+  }) async {
     LoadingApi().pushLoading();
-    if (isLoadMore == false) yield LoadingContractState();
+    dynamic resDynamic = '';
     try {
       final response = await userRepository.getListContract(
         page,
         search,
-        filter,
+        idFilter,
         ids,
       );
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        listType.add(response.data.filter ?? []);
-        if (page == BASE_URL.PAGE_DEFAULT) {
-          list = response.data.list;
-          yield UpdateGetContractState(
-            response.data.list ?? [],
-            response.data.total ?? '0',
-          );
-        } else {
-          list = [...list ?? [], ...response.data.list ?? []];
-          yield UpdateGetContractState(list ?? [], response.data.total ?? '0');
-        }
+        if (page == BASE_URL.PAGE_DEFAULT)
+          listType.add(response.data.filter ?? []);
+        resDynamic = response.data.list ?? [];
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
-        yield ErrorGetContractState(response.msg ?? '');
+        resDynamic = response.msg ?? '';
     } catch (e) {
-      LoadingApi().popLoading();
-      yield ErrorGetContractState(
-          getT(KeyT.an_error_occurred));
+      resDynamic = getT(KeyT.an_error_occurred);
       throw e;
     }
     LoadingApi().popLoading();
+    return resDynamic;
   }
 
   static ContractBloc of(BuildContext context) =>

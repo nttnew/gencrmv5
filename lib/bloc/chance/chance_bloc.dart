@@ -8,6 +8,7 @@ import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/chance.dart';
+import '../../widgets/listview/list_load_infinity.dart';
 
 part 'chance_event.dart';
 part 'chance_state.dart';
@@ -15,67 +16,48 @@ part 'chance_state.dart';
 class GetListChanceBloc extends Bloc<GetListChanceEvent, ChanceState> {
   final UserRepository userRepository;
   BehaviorSubject<List<FilterChance>> listType = BehaviorSubject.seeded([]);
+  LoadMoreController loadMoreController = LoadMoreController();
+  String idFilter = '';
+  String search = '';
+  String ids = '';
+
+  init() {
+    idFilter = '';
+    search = '';
+    ids = '';
+  }
 
   GetListChanceBloc({required UserRepository userRepository})
       : userRepository = userRepository,
         super(InitGetListChance());
 
-  @override
-  Stream<ChanceState> mapEventToState(GetListChanceEvent event) async* {
-    if (event is InitGetListOrderEventChance) {
-      yield* _getListChance(
-        ids: event.ids ?? '',
-        filter: event.filter ?? '',
-        page: event.page ?? BASE_URL.PAGE_DEFAULT,
-        search: event.search ?? '',
-        isLoadMore: event.isLoadMore,
-      );
-    }
-  }
-
-  List<ListChanceData>? listChance;
-
-  Stream<ChanceState> _getListChance({
-    required String filter,
-    required String ids,
-    required int page,
-    required String search,
-    bool? isLoadMore = false,
-  }) async* {
+  Future<dynamic> getListChance({
+    int page = BASE_URL.PAGE_DEFAULT,
+  }) async {
     LoadingApi().pushLoading();
+    dynamic resDynamic = '';
     try {
       final response = await userRepository.getListChance(
         page,
-        filter,
+        idFilter,
         search,
         ids,
       );
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        listType.add(response.data?.filter ?? []);
-        if (page == BASE_URL.PAGE_DEFAULT) {
-          listChance = response.data?.list ?? [];
-          yield UpdateGetListChanceState(
-            response.data?.list ?? [],
-            response.data?.total ?? '0',
-          );
-        } else {
-          yield UpdateGetListChanceState(
-              [...listChance ?? [], ...response.data?.list ?? []],
-              response.data?.total ?? '0');
-          listChance?.addAll(response.data?.list ?? []);
-        }
+        if (page == BASE_URL.PAGE_DEFAULT)
+          listType.add(response.data?.filter ?? []);
+        resDynamic = response.data?.list ?? [];
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
-        yield ErrorGetListChanceState(response.msg ?? '');
+        resDynamic = response.msg ?? '';
     } catch (e) {
-      LoadingApi().popLoading();
-      yield ErrorGetListChanceState(
-          getT(KeyT.an_error_occurred));
+      resDynamic = getT(KeyT.an_error_occurred);
       throw e;
     }
     LoadingApi().popLoading();
+    return resDynamic;
   }
 
   static GetListChanceBloc of(BuildContext context) =>

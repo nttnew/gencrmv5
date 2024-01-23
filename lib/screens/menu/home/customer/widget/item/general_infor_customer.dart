@@ -55,7 +55,7 @@ class _TabInfoCustomerState extends State<TabInfoCustomer>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AppValue.vSpaceSmall,
+            AppValue.vSpaceTiny,
             BlocBuilder<DetailCustomerBloc, DetailCustomerState>(
                 bloc: _bloc,
                 builder: (context, state) {
@@ -80,7 +80,7 @@ class _TabInfoCustomerState extends State<TabInfoCustomer>
 
   Widget _renderInfo(CustomerInfoData data) {
     return (Container(
-      padding: EdgeInsets.symmetric(horizontal: 25),
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

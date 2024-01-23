@@ -8,6 +8,7 @@ import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/group_product_response.dart';
+import '../../widgets/listview/list_load_infinity.dart';
 import '../../widgets/loading_api.dart';
 
 part 'product_module_state.dart';
@@ -15,9 +16,7 @@ part 'product_module_event.dart';
 
 class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
   final UserRepository userRepository;
-  List<ProductModule>? dataList;
-  bool isLength = true;
-  int page = 1;
+  LoadMoreController loadMoreController = LoadMoreController();
   String? querySearch;
   String? filter;
   String? type;
@@ -29,18 +28,6 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
       : userRepository = userRepository,
         super(InitGetListProductModuleState());
 
-  @override
-  Stream<ProductModuleState> mapEventToState(ProductModuleEvent event) async* {
-    if (event is InitGetListProductModuleEvent) {
-      yield* _getListProduct(
-        page: event.page,
-        filter: event.filter,
-        querySearch: event.querySearch,
-        typeProduct: event.typeProduct,
-      );
-    }
-  }
-
   void getFilter() async {
     final response = await userRepository.getGroupProduct();
     if ((response.code == BASE_URL.SUCCESS) ||
@@ -49,20 +36,15 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
     }
   }
 
-  Stream<ProductModuleState> _getListProduct(
-      {int? page,
-      String? querySearch,
-      String? filter,
-      String? typeProduct}) async* {
+  Future<dynamic> getListProductMain({
+    int page = BASE_URL.PAGE_DEFAULT,
+  }) async {
     LoadingApi().pushLoading();
-    if (page == null) {
-      page = BASE_URL.PAGE_DEFAULT;
-    }
+    dynamic resDynamic = '';
+
     try {
-      if (querySearch != "" && page == 1)
-        yield LoadingGetListProductModuleState();
       final response = await userRepository.getListProductModule(
-        typeProduct: typeProduct,
+        typeProduct: type,
         txt: querySearch,
         page: page.toString(),
         filter: filter,
@@ -72,24 +54,18 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
         if (listFilter.value.isEmpty) {
           listFilter.add(response.data?.dataFilter ?? []);
         }
-        if (page == 1) {
-          isLength = true;
-          yield SuccessGetListProductModuleState(response.data?.lists ?? []);
-        } else {
-          yield SuccessGetListProductModuleState(
-              [...dataList ?? [], ...response.data?.lists ?? []]);
-        }
+        resDynamic = response.data?.lists ?? [];
       } else if (response.code == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else
-        yield ErrorGetListProductModuleState(response.msg ?? '');
+        resDynamic = response.msg ?? '';
     } catch (e) {
-      LoadingApi().popLoading();
-      yield ErrorGetListProductModuleState(
-          getT(KeyT.an_error_occurred));
+      resDynamic = getT(KeyT.an_error_occurred);
+
       throw e;
     }
     LoadingApi().popLoading();
+    return resDynamic;
   }
 
   Future<ListProductResponse?> getListProduct({
@@ -115,9 +91,6 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
 
   void dispose() {
     listType.add([]);
-    isLength = true;
-    page = BASE_URL.PAGE_DEFAULT;
-    dataList = null;
     querySearch = null;
     filter = null;
     type = null;

@@ -49,7 +49,9 @@ class _GeneralInfoState extends State<GeneralInfo>
                     return SizedBox();
                   } else {
                     return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16,
+                      ),
                       child: Column(
                         children: List.generate(state.list!.length,
                             (index) => _buildContent(state.list![index])),

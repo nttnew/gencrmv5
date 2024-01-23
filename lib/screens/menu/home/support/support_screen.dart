@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'package:gen_crm/bloc/support/support_bloc.dart';
+import 'package:gen_crm/src/models/model_generator/support.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../l10n/key_text.dart';
@@ -11,6 +11,7 @@ import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/drop_down_base.dart';
+import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_node_model.dart';
 import '../../../../widgets/tree/tree_widget.dart';
@@ -28,17 +29,10 @@ class SupportScreen extends StatefulWidget {
 class _SupportScreenState extends State<SupportScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   final _key = GlobalKey<ExpandableFabState>();
-  String search = '';
   String title = ModuleMy.getNameModuleMy(
     ModuleMy.CSKH,
     isTitle: true,
   );
-  String idFilter = '';
-  ScrollController _scrollController = ScrollController();
-  int length = 0;
-  int total = 0;
-  int page = BASE_URL.PAGE_DEFAULT;
-  String ids = '';
   List<String> listAdd = [
     '${getT(KeyT.add)} ${getT(KeyT.check_in)}',
     '${getT(KeyT.add)} ${(Get.arguments ?? '').toLowerCase()}'
@@ -52,15 +46,6 @@ class _SupportScreenState extends State<SupportScreen> {
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.HO_TRO);
-    _bloc.add(InitGetSupportEvent());
-    _scrollController.addListener(() {
-      if (_scrollController.offset ==
-              _scrollController.position.maxScrollExtent &&
-          length < total) {
-        page = page + 1;
-        _research(pageNew: page);
-      } else {}
-    });
     GetNotificationBloc.of(context).add(CheckNotification());
     super.initState();
   }
@@ -70,20 +55,8 @@ class _SupportScreenState extends State<SupportScreen> {
         isCheckIn: listAdd.first == value);
   }
 
-  _research({
-    int? pageNew,
-  }) {
-    page = pageNew ?? BASE_URL.PAGE_DEFAULT;
-    _bloc.add(InitGetSupportEvent(
-      filter: idFilter,
-      page: page,
-      ids: ids,
-      search: search,
-    ));
-  }
-
   _reloadLanguage() async {
-    await _research();
+    await _bloc.loadMoreController.reloadData();
     listAdd = [
       '${getT(KeyT.add)} ${getT(KeyT.check_in)}',
       '${getT(KeyT.add)} ${title.toLowerCase()}'
@@ -93,6 +66,12 @@ class _SupportScreenState extends State<SupportScreen> {
       isTitle: true,
     );
     setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _bloc.init();
+    super.dispose();
   }
 
   @override
@@ -189,19 +168,17 @@ class _SupportScreenState extends State<SupportScreen> {
             .toList(),
       ),
       appBar: AppbarBase(_drawerKey, title),
-      body: BlocBuilder<SupportBloc, SupportState>(builder: (context, state) {
-        if (state is SuccessGetSupportState) {
-          length = state.listSupport.length;
-          total = int.parse(state.total);
-          return Column(
+      body: ViewLoadMoreBase(
+        isShowAll: _bloc.listType,
+        child: SingleChildScrollView(
+          child: Column(
             children: [
               AppValue.vSpaceSmall,
               StreamBuilder<List<TreeNodeData>>(
                   stream: managerBloc.managerTrees,
                   builder: (context, snapshot) {
                     return SearchBase(
-                      hint:
-                          "${getT(KeyT.find)} ${title.toLowerCase()}",
+                      hint: "${getT(KeyT.find)} ${title.toLowerCase()}",
                       leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                       endIcon: (snapshot.data ?? []).isNotEmpty
                           ? SvgPicture.asset(
@@ -213,60 +190,42 @@ class _SupportScreenState extends State<SupportScreen> {
                           : null,
                       onClickRight: () {
                         showManagerFilter(context, managerBloc, (v) {
-                          ids = v;
-                          _research();
+                          _bloc.ids = v;
+                          _bloc.loadMoreController.reloadData();
                         });
                       },
                       onSubmit: (String v) {
-                        search = v;
-                        _research();
+                        _bloc.search = v;
+                        _bloc.loadMoreController.reloadData();
                       },
                     );
                   }),
-              SizedBox(
-                height: 6,
+              AppValue.vSpaceTiny,
+              DropDownBase(
+                isName: true,
+                stream: _bloc.listType,
+                onTap: (item) {
+                  _bloc.idFilter = item.id.toString();
+                  _bloc.loadMoreController.reloadData();
+                },
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: DropDownBase(
-                    isName: true,
-                    stream: _bloc.listType,
-                    onTap: (item) {
-                      idFilter = item.id.toString();
-                      _research();
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 6,
-              ),
-              Expanded(
-                  child: RefreshIndicator(
-                onRefresh: () =>
-                    Future.delayed(Duration(milliseconds: 300), () {
-                  _research();
-                }),
-                child: ListView.separated(
-                  physics: ClampingScrollPhysics(
-                      parent: AlwaysScrollableScrollPhysics()),
-                  shrinkWrap: true,
-                  controller: _scrollController,
-                  itemBuilder: (context, index) => ItemSupport(
-                    data: state.listSupport[index],
-                  ),
-                  itemCount: state.listSupport.length,
-                  separatorBuilder: (BuildContext context, int index) =>
-                      SizedBox(),
-                ),
-              ))
             ],
+          ),
+        ),
+        isInit: true,
+        functionInit: (page, isInit) {
+          return _bloc.getListSupport(
+            page: page,
           );
-        } else
-          return Container();
-      }),
+        },
+        itemWidget: (int index, data) {
+          SupportItemData snap = data;
+          return ItemSupport(
+            data: snap,
+          );
+        },
+        controller: _bloc.loadMoreController,
+      ),
     );
   }
 }

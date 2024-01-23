@@ -57,7 +57,11 @@ class _ChanceInfoState extends State<ChanceInfo>
                 builder: (context, state) {
                   if (state is UpdateGetListDetailChanceState) {
                     return Padding(
-                      padding: EdgeInsets.all(25),
+                      padding: EdgeInsets.only(
+                        left: 16,
+                        right: 16,
+                        top: 8,
+                      ),
                       child: ListView.separated(
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,

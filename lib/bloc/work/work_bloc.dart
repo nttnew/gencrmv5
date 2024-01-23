@@ -6,6 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../l10n/key_text.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/work.dart';
+import '../../widgets/listview/list_load_infinity.dart';
 import '../../widgets/loading_api.dart';
 
 part 'work_event.dart';
@@ -13,67 +14,51 @@ part 'work_state.dart';
 
 class WorkBloc extends Bloc<WorkEvent, WorkState> {
   UserRepository userRepository;
-  List<WorkItemData> list = [];
   BehaviorSubject<List<FilterData>> listType = BehaviorSubject.seeded([]);
+  LoadMoreController loadMoreController = LoadMoreController();
+  String idFilter = '';
+  String search = '';
+  String ids = '';
+
+  init() {
+    idFilter = '';
+    search = '';
+    ids = '';
+  }
 
   WorkBloc({required UserRepository userRepository})
       : userRepository = userRepository,
         super(InitGetListWorkState());
-  @override
-  Stream<WorkState> mapEventToState(WorkEvent event) async* {
-    if (event is InitGetListWorkEvent) {
-      yield* _getListWork(
-        ids: event.ids ?? '',
-        page: (event.page ?? BASE_URL.PAGE_DEFAULT).toString(),
-        search: event.search ?? '',
-        filter: event.filter ?? '',
-      );
-    }
-  }
 
-  Stream<WorkState> _getListWork({
-    required String ids,
-    required String page,
-    required String search,
-    required String filter,
-  }) async* {
+  Future<dynamic> getListWork({
+    int page = BASE_URL.PAGE_DEFAULT,
+  }) async {
     LoadingApi().pushLoading();
+    dynamic resDynamic = '';
+
     try {
       final response = await userRepository.getListJob(
-        page,
+        page.toString(),
         search,
-        filter,
+        idFilter,
         ids,
       );
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
-        listType.add(
-          response.data?.data_filter ?? [],
-        );
-        if (int.parse(page) == BASE_URL.PAGE_DEFAULT) {
-          list.addAll(response.data?.data_list ?? []);
-          yield SuccessGetListWorkState(
-            response.data?.data_list ?? [],
-            response.data?.pageCount ?? 0,
+        if (page == BASE_URL.PAGE_DEFAULT)
+          listType.add(
+            response.data?.data_filter ?? [],
           );
-        } else {
-          yield SuccessGetListWorkState(
-            [...list, ...response.data?.data_list ?? []],
-            response.data?.pageCount ?? 0,
-          );
-          list.addAll(response.data?.data_list ?? []);
-        }
+        resDynamic = response.data?.data_list ?? [];
       } else {
-        LoadingApi().popLoading();
-        yield ErrorGetListWorkState(response.msg ?? '');
+        resDynamic = response.msg ?? '';
       }
     } catch (e) {
-      LoadingApi().popLoading();
-      yield ErrorGetListWorkState(
-          getT(KeyT.an_error_occurred ));
+      resDynamic = getT(KeyT.an_error_occurred);
       throw (e);
     }
     LoadingApi().popLoading();
+    return resDynamic;
   }
 
   static WorkBloc of(BuildContext context) =>
