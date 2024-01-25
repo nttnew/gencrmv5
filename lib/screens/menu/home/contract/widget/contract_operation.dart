@@ -74,7 +74,7 @@ class _ContractOperationState extends State<ContractOperation>
                                 return _buildContent1(
                                     state.listDetailContract[index]);
                               } else
-                                return Container();
+                                return SizedBox.shrink();
                             }),
                           ),
                         ],
@@ -88,7 +88,7 @@ class _ContractOperationState extends State<ContractOperation>
                   ],
                 );
               else
-                return Container();
+                return SizedBox.shrink();
             }),
       ),
     );

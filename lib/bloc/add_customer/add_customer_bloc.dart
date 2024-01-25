@@ -35,10 +35,9 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState> {
     try {
       yield LoadingAddCustomerState();
       final response = await userRepository.getAddCustomer(isIndividual);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield UpdateGetAddCustomerState(response.data ?? []);
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -57,10 +56,9 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState> {
     try {
       yield LoadingGetEditCustomerState();
       final response = await userRepository.getUpdateCustomer(id ?? '');
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessGetEditCustomerState(response.data ?? []);
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();

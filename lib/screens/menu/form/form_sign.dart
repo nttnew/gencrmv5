@@ -154,7 +154,7 @@ class _FormAddSignState extends State<FormAddSign> {
                             if (state is LoadingFormAddCustomerOrState) {
                               addData = [];
                               data = [];
-                              return Container();
+                              return SizedBox.shrink();
                             } else if (state is SuccessFormAddCustomerOrState) {
                               soTien = state.soTien ?? 0;
                               if (addData.isEmpty) {
@@ -239,7 +239,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                 ],
                               );
                             } else
-                              return Container();
+                              return SizedBox.shrink();
                           }),
                     ],
                   ),
@@ -321,7 +321,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                   },
                                 )
                               : data.field_type == "HIDDEN"
-                                  ? Container()
+                                  ? SizedBox.shrink()
                                   : data.field_type == "TEXT_MULTI_NEW"
                                       ? InputMultipleWidget(
                                           data: data,
@@ -486,7 +486,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                 title: e.group_name ?? '',
                                 style: AppStyle.DEFAULT_18_BOLD),
                           )
-                        : Container(),
+                        : SizedBox.shrink(),
                     SizedBox(
                       height: AppValue.heights * 0.02,
                     ),

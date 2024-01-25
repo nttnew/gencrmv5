@@ -76,8 +76,7 @@ class DetailCustomerBloc
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getDetailCustomer(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         try {
           CustomerInfoItem? item = response.data?.customer_info?.first.data
               ?.firstWhere((element) => element.id == 'di_dong',
@@ -109,7 +108,7 @@ class DetailCustomerBloc
         }
         yield UpdateGetDetailCustomerState(
             response.data?.customer_info ?? [], response.data!.customer_note!);
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -127,10 +126,9 @@ class DetailCustomerBloc
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.deleteCustomer({"id": id});
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessDeleteCustomerState();
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         yield ErrorDeleteCustomerState(response.msg ?? '');
@@ -152,11 +150,10 @@ class DetailCustomerBloc
     }
     try {
       final response = await userRepository.getClueCustomer(id, page);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         LoadingApi().popLoading();
         loginSessionExpired();
       } else {
@@ -177,11 +174,10 @@ class DetailCustomerBloc
     }
     try {
       final response = await userRepository.getChanceCustomer(id, page);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -201,11 +197,10 @@ class DetailCustomerBloc
     }
     try {
       final response = await userRepository.getContractCustomer(id, page);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -225,11 +220,10 @@ class DetailCustomerBloc
     }
     try {
       final response = await userRepository.getSupportCustomer(id, page);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -249,11 +243,10 @@ class DetailCustomerBloc
     }
     try {
       final response = await userRepository.getJobCustomer(id, page);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();

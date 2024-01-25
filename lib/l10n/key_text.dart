@@ -230,16 +230,11 @@ class KeyT {
   static const String treasury_book = "treasury_book";
   static String nam_tai_chinh = 'nam_tai_chinh';
   static String ky_ke_toan = 'ky_ke_toan';
-  static String thang_1 = 'thang_1';
-  static String thang_2 = 'thang_2';
-  static String thang_3 = 'thang_3';
-  static String thang_4 = 'thang_4';
-  static String thang_5 = 'thang_5';
-  static String thang_6 = 'thang_6';
-  static String thang_7 = 'thang_7';
-  static String thang_8 = 'thang_8';
-  static String thang_9 = 'thang_9';
-  static String thang_10 = 'thang_10';
-  static String thang_11 = 'thang_11';
-  static String thang_12 = 'thang_12';
+  static String first_period = 'first_period';
+  static String total_expenditure = 'total_expenditure';
+  static String total_revenue = 'total_revenue';
+  static String current_balance = 'current_balance';
+  static String choose_time = 'choose_time';
+  static String expenses = 'expenses';
+  static String income = 'income';
 }

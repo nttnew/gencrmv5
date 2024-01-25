@@ -31,14 +31,13 @@ class PaymentContractBloc
     try {
       yield LoadingPaymentContractState();
       final response = await userRepository.getPaymentContract(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (response.data!.length == 0) {
           yield SuccessPaymentContractState([]);
         } else {
           yield SuccessPaymentContractState(response.data);
         }
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else
         yield ErrorPaymentContractState(response.msg ?? '');

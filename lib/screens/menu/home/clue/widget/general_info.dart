@@ -77,7 +77,7 @@ class _GeneralInfoState extends State<GeneralInfo>
     if (detailClue.group_name == null &&
         detailClue.mup == null &&
         detailClue.data == null) {
-      return Container();
+      return SizedBox.shrink();
     } else {
       return Container(
         padding: EdgeInsets.only(bottom: 10),

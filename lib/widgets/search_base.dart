@@ -89,7 +89,7 @@ class _SearchBaseState extends State<SearchBase> {
                     ),
                   ),
                 )
-              : Container(),
+              : SizedBox.shrink(),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(

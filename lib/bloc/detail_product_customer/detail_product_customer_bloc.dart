@@ -40,10 +40,9 @@ class DetailProductCustomerBloc
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getDetailProductCustomer(id: id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield GetDetailProductCustomerState(response);
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -67,11 +66,10 @@ class DetailProductCustomerBloc
     try {
       final response =
           await userRepository.getListCVProductCustomer(spkh: id, page: page);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         return response.data?.data?.dataList ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -92,11 +90,10 @@ class DetailProductCustomerBloc
     try {
       final response =
           await userRepository.getListCHProductCustomer(spkh: id, page: page);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         return response.data?.lists ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -117,11 +114,10 @@ class DetailProductCustomerBloc
     try {
       final response =
           await userRepository.getListHDProductCustomer(spkh: id, page: page);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -142,11 +138,10 @@ class DetailProductCustomerBloc
     try {
       final response =
           await userRepository.getListHTProductCustomer(spkh: id, page: page);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();

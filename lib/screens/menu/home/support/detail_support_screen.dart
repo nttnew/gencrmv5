@@ -371,7 +371,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                     ),
                   );
                 } else
-                  return Container();
+                  return SizedBox.shrink();
               }),
         ));
   }

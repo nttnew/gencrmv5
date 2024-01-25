@@ -58,8 +58,7 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
         id,
         page,
       );
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessGetNoteOppState(response.data?.notes ?? []);
       } else {
         LoadingApi().popLoading();
@@ -90,11 +89,10 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
         id,
         page,
       );
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         return response.data?.notes ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         LoadingApi().popLoading();
         return response.msg ?? '';
       } else {

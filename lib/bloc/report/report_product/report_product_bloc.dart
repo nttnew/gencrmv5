@@ -26,17 +26,26 @@ class ReportProductBloc extends Bloc<ReportProductEvent, ReportProductState> {
     }
   }
 
-  Stream<ReportProductState> _getReportGeneral(int time, String location,
-      int? cl, String? timeFrom, String? timeTo) async* {
+  Stream<ReportProductState> _getReportGeneral(
+    int time,
+    String location,
+    int? cl,
+    String? timeFrom,
+    String? timeTo,
+  ) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingReportProductState();
       final response = await userRepository.reportProduct(
-          time, location, cl, timeFrom, timeTo);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+        time,
+        location,
+        cl,
+        timeFrom,
+        timeTo,
+      );
+      if (isSuccess(response.code)) {
         yield SuccessReportProductState(response.data!.list);
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -44,8 +53,7 @@ class ReportProductBloc extends Bloc<ReportProductEvent, ReportProductState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorReportProductState(
-          getT(KeyT.an_error_occurred));
+      yield ErrorReportProductState(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
@@ -53,43 +61,4 @@ class ReportProductBloc extends Bloc<ReportProductEvent, ReportProductState> {
 
   static ReportProductBloc of(BuildContext context) =>
       BlocProvider.of<ReportProductBloc>(context);
-}
-
-class ReportSelectProductBloc
-    extends Bloc<ReportProductEvent, ReportProductState> {
-  final UserRepository userRepository;
-
-  ReportSelectProductBloc({required UserRepository userRepository})
-      : userRepository = userRepository,
-        super(InitReportSelectProductState());
-
-  @override
-  Stream<ReportProductState> mapEventToState(ReportProductEvent event) async* {
-    if (event is SelectReportProductEvent) {
-      yield* _getReportGeneralSelect(
-          event.time!, event.location!, event.cl, event.timeFrom, event.timeTo);
-    }
-  }
-
-  Stream<ReportProductState> _getReportGeneralSelect(int time, String location,
-      int? cl, String? timeFrom, String? timeTo) async* {
-    try {
-      final response = await userRepository.reportProduct(
-          time, location, cl, timeFrom, timeTo);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
-        yield SuccessReportSelectState(response.data!.list);
-      } else if (response.code == BASE_URL.SUCCESS_999) {
-        loginSessionExpired();
-      } else
-        yield ErrorReportSelectProductState(response.msg ?? '');
-    } catch (e) {
-      yield ErrorReportSelectProductState(
-         getT(KeyT.an_error_occurred));
-      throw e;
-    }
-  }
-
-  static ReportSelectProductBloc of(BuildContext context) =>
-      BlocProvider.of<ReportSelectProductBloc>(context);
 }

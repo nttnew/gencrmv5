@@ -294,7 +294,7 @@ class _AddServiceVoucherStepTwoScreenState
                                                                     },
                                                                   )
                                                                 : fieldType == "HIDDEN"
-                                                                    ? Container()
+                                                                    ? SizedBox.shrink()
                                                                     : fieldType == "TEXT_MULTI_NEW"
                                                                         ? InputMultipleWidget(
                                                                             data: data,
@@ -347,7 +347,7 @@ class _AddServiceVoucherStepTwoScreenState
                         );
                       });
                 } else
-                  return Container();
+                  return SizedBox.shrink();
               }),
             ),
           ),

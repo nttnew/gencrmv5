@@ -37,10 +37,9 @@ class ReportEmployeeBloc
       yield LoadingReportEmployeeState();
       final response =
           await userRepository.reportEmployee(time!, diemBan, timeFrom, timeTo);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessReportEmployeeState(response.data?.list ?? []);
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();

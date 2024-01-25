@@ -91,7 +91,7 @@ class _ListNoteState extends State<ListNote> {
               ],
             );
           } else
-            return Container();
+            return SizedBox.shrink();
         });
   }
 }

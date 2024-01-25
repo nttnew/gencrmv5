@@ -50,13 +50,12 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
         search,
         ids,
       );
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (page == BASE_URL.PAGE_DEFAULT)
           listType.add(response.data?.filter ?? []);
 
         resDynamic = response.data?.list ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         resDynamic = response.msg ?? '';
@@ -78,8 +77,7 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
     try {
       final response = await userRepository.addIndividualCustomer(data: data);
 
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (files != null) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: response.data!.id.toString(),
@@ -99,7 +97,7 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
           yield SuccessAddCustomerIndividualState(
               ['${response.id}', '${response.name}']);
         }
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();

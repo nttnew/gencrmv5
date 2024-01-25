@@ -3578,6 +3578,53 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<AddCustomerIndividual> getFormSignSupport(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'id': id};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AddCustomerIndividual>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/support/formChuky',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AddCustomerIndividual.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ResponseSaveProductCustomer> saveSignatureSupport(map) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(map);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ResponseSaveProductCustomer>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/support/saveChuky',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ResponseSaveProductCustomer.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<ListCHProductCustomerResponse> getListCHProductCustomer(
     spkh,
     page,
@@ -3864,13 +3911,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ProductServicePackResponse> getProductServicePack(id) async {
+  Future<ProductServicePackModel> getProductServicePack(id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'id': id};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ProductServicePackResponse>(Options(
+        _setStreamType<ProductServicePackModel>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -3882,13 +3929,14 @@ class _RestClient implements RestClient {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ProductServicePackResponse.fromJson(_result.data!);
+    final value = ProductServicePackModel.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<MainMenuResponse> getMenuMain() async {
     const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio
@@ -3900,6 +3948,7 @@ class _RestClient implements RestClient {
             .compose(
               _dio.options,
               'modules/genmobile2/profile/getMenu',
+              queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
@@ -3910,21 +3959,79 @@ class _RestClient implements RestClient {
   @override
   Future<dynamic> getLanguage() async {
     const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result =
-        await _dio.fetch<Map<String, dynamic>>(_setStreamType<dynamic>(Options(
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'modules/api/getdata/dataLanguages',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<NTCFilterModel> getNTCFilter() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<NTCFilterModel>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              'modules/api/getdata/dataLanguages',
+              'modules/genmobile2/dashboard/getNTCFilter',
+              queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    return _result.data;
+    final value = NTCFilterModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaoCaoSoQuy> getBaoCaoSoQuy(
+    nam,
+    kyTaiChinh,
+    chiNhanh,
+    page,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'nam': nam,
+      r'kytc': kyTaiChinh,
+      r'chinhanh': chiNhanh,
+      r'p': page,
+    };
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaoCaoSoQuy>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/dashboard/getBaocaoSoquy',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaoCaoSoQuy.fromJson(_result.data!);
+    return value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
@@ -3938,53 +4045,5 @@ class _RestClient implements RestClient {
       }
     }
     return requestOptions;
-  }
-
-  @override
-  Future<AddCustomerIndividual> getFormSignSupport(String id) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'id': id};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AddCustomerIndividual>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/support/formChuky',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = AddCustomerIndividual.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<ResponseSaveProductCustomer> saveSignatureSupport(
-      Map<String, dynamic> map) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(map);
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ResponseSaveProductCustomer>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/support/saveChuky',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ResponseSaveProductCustomer.fromJson(_result.data!);
-    return value;
   }
 }

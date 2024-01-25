@@ -41,10 +41,9 @@ class GetListDetailChanceBloc
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getListDetailChance(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield UpdateGetListDetailChanceState(response.data ?? []);
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         yield ErrorGetListDetailChanceState(response.msg ?? '');
@@ -63,8 +62,7 @@ class GetListDetailChanceBloc
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.deleteChance({BASE_URL.ID: id});
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessDeleteChanceState();
       } else {
         yield ErrorDeleteChanceState(response.msg ?? '');
@@ -86,11 +84,10 @@ class GetListDetailChanceBloc
     }
     try {
       final response = await userRepository.getJobChance(id, page);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         LoadingApi().popLoading();
         loginSessionExpired();
       } else {

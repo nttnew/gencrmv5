@@ -162,7 +162,7 @@ class _LineSpinFadeLoaderState extends State<LineSpinFadeLoader>
       builder: (ctx, constraint) {
         final circleSize = constraint.maxWidth / 3;
 
-        final widgets = List<Widget>.filled(_kLineSize, Container());
+        final widgets = List<Widget>.filled(_kLineSize, SizedBox.shrink());
         final center =
             Offset(constraint.maxWidth / 2, constraint.maxHeight / 2);
         for (int i = 0; i < widgets.length; i++) {

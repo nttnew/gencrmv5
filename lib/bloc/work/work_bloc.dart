@@ -43,8 +43,7 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
         idFilter,
         ids,
       );
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (page == BASE_URL.PAGE_DEFAULT)
           listType.add(
             response.data?.data_filter ?? [],

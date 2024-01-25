@@ -40,8 +40,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         querySearch,
         group,
       );
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (page == "1") {
           data = response.data!.product;
           yield SuccessGetListProductState(
@@ -59,8 +58,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         yield ErrorGetListProductState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetListProductState(
-         getT(KeyT.an_error_occurred));
+      yield ErrorGetListProductState(getT(KeyT.an_error_occurred));
     }
     LoadingApi().popLoading();
   }
@@ -73,11 +71,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       final response =
           await userRepository.getServicePack(txt: txt, page: page.toString());
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -96,13 +93,12 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     };
     try {
       final response = await userRepository.getProductServicePack(id: id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         result['mess'] = '';
         result['list'] = response.data;
         //data
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         LoadingApi().popLoading();
         loginSessionExpired();
       } else {

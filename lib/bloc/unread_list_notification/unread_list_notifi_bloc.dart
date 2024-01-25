@@ -44,8 +44,7 @@ class GetNotificationBloc
   Future<void> getVersionInfoCar() async {
     try {
       final response = await userRepository.getVersionInfoCar();
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         await shareLocal.putString(
             PreferencesKey.INFO_VERSION, jsonEncode(response.data));
       } else {}
@@ -61,8 +60,7 @@ class GetNotificationBloc
     if (isLoading) LoadingApi().pushLoading();
     try {
       final response = await userRepository.getListUnReadNotification(page);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         total.add(int.parse(response.data.total ?? '0'));
         int page = int.parse(response.data.page!);
         if (page == 1) {
@@ -93,8 +91,7 @@ class GetNotificationBloc
       {required int id, required String type}) async* {
     try {
       final response = await userRepository.deleteNotification(id, type);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield DeleteNotificationState();
       } else {
         LoadingApi().popLoading();
@@ -113,8 +110,7 @@ class GetNotificationBloc
     try {
       final response =
           await userRepository.readNotification(id: id, type: type);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield ReadNotificationState();
       } else {
         LoadingApi().popLoading();
@@ -131,8 +127,7 @@ class GetNotificationBloc
   Stream<NotificationState> _checkNotification() async* {
     try {
       final response = await userRepository.getListUnReadNotification(1);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (response.data.list!.length > 0) {
           total.add(int.parse(response.data.total ?? '0'));
           LoadingApi().popLoading();

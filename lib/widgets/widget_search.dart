@@ -67,7 +67,7 @@ class WidgetSearch extends StatelessWidget {
                   child: Center(
                       child: Container(height: 25, width: 25, child: leadIcon)),
                 )
-              : Container(),
+              : SizedBox.shrink(),
           Expanded(
             flex: 7,
             child: Padding(
@@ -108,7 +108,7 @@ class WidgetSearch extends StatelessWidget {
           ),
           endIcon != null
               ? Container(height: height, width: 1, color: HexColor("#DBDBDB"))
-              : Container(),
+              : SizedBox.shrink(),
           endIcon != null
               ? GestureDetector(
                   onTap: () => onClickRight!(),
@@ -119,7 +119,7 @@ class WidgetSearch extends StatelessWidget {
                             Container(height: 20, width: 20, child: endIcon)),
                   ),
                 )
-              : Container(),
+              : SizedBox.shrink(),
           if (endIconFinal != null)
             Container(
               child: endIconFinal,

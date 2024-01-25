@@ -28,8 +28,7 @@ class GetInforAccBloc extends Bloc<GetInforAccEvent, GetInforAccState> {
     try {
       yield LoadingInforAccState();
       final response = await userRepository.getInfoAcc();
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         yield UpdateGetInforAccState(response.data!);
       } else {

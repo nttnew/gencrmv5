@@ -352,8 +352,7 @@ class ServiceVoucherBloc
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.postAddServiceVoucher('', bienSoXe);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         final list = response.data?.data ?? [];
         for (final value in list) {
@@ -382,8 +381,7 @@ class ServiceVoucherBloc
       yield LoadingServiceVoucherState();
       final response =
           await userRepository.postAddServiceVoucher(sdt, bienSoXe);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         final List<AddCustomerIndividualData> list = response.data?.data
                 ?.map(
                   (e) => AddCustomerIndividualData(
@@ -422,7 +420,7 @@ class ServiceVoucherBloc
                 .toList() ??
             [];
         yield GetServiceVoucherState(list);
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();

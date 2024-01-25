@@ -95,8 +95,8 @@ class _DropDownBaseState extends State<DropDownBase> {
                                 )
                               ],
                             ),
-                            icon: Container(),
-                            underline: Container(),
+                            icon: SizedBox.shrink(),
+                            underline: SizedBox.shrink(),
                             onChanged: (String? value) {},
                             items: listFilter
                                 .map(

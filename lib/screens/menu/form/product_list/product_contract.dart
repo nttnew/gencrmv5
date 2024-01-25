@@ -43,8 +43,7 @@ class _ProductContractState extends State<ProductContract> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final response = await userRepository.getListProduct(
           BASE_URL.PAGE_DEFAULT.toString(), '', null);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (listVAT.isEmpty) {
           listVAT = response.data?.vats ?? [];
         }

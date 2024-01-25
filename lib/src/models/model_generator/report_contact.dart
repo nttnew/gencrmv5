@@ -30,16 +30,17 @@ class DataListContact {
   final String? conlai;
 
   DataListContact(
-      this.id,
-      this.name,
-      this.customer,
-      this.status,
-      this.status_edit,
-      this.status_color,
-      this.avatar,
-      this.total_note,
-      this.conlai,
-      this.price);
+    this.id,
+    this.name,
+    this.customer,
+    this.status,
+    this.status_edit,
+    this.status_color,
+    this.avatar,
+    this.total_note,
+    this.conlai,
+    this.price,
+  );
 
   factory DataListContact.fromJson(Map<String, dynamic> json) =>
       _$DataListContactFromJson(json);
@@ -49,13 +50,19 @@ class DataListContact {
 
 @JsonSerializable()
 class DataContactReport {
-  final int? page;
+  final dynamic page;
   final int? limit;
   final String? total;
   final List<DataListContact>? list;
   final String? tien_te;
 
-  DataContactReport(this.page, this.limit, this.total, this.list, this.tien_te);
+  DataContactReport(
+    this.page,
+    this.limit,
+    this.total,
+    this.list,
+    this.tien_te,
+  );
 
   factory DataContactReport.fromJson(Map<String, dynamic> json) =>
       _$DataContactReportFromJson(json);
@@ -82,12 +89,13 @@ class RequestBodyReport {
   final int? time;
   final int? page;
 
-  RequestBodyReport(
-      {required this.id,
-      required this.diem_ban,
-      required this.time,
-      required this.page,
-      this.gt});
+  RequestBodyReport({
+    required this.id,
+    required this.diem_ban,
+    required this.time,
+    required this.page,
+    this.gt,
+  });
 
   factory RequestBodyReport.fromJson(Map<String, dynamic> json) =>
       _$RequestBodyReportFromJson(json);

@@ -59,8 +59,10 @@ import '../models/model_generator/report_general.dart';
 import '../models/model_generator/report_option.dart';
 import '../models/model_generator/report_product.dart';
 import '../models/model_generator/response_bao_cao.dart';
+import '../models/model_generator/response_bao_cao_so_quy.dart';
 import '../models/model_generator/response_car_dashboard.dart';
 import '../models/model_generator/response_edit_product.dart';
+import '../models/model_generator/response_ntc_filter.dart';
 import '../models/model_generator/response_save_product.dart';
 import '../models/model_generator/save_checkin_response.dart';
 import '../models/model_generator/service_pack_response.dart';
@@ -837,7 +839,7 @@ abstract class RestClient {
   );
 
   @GET(BASE_URL.GET_PRODUCT_SERVICE_PACK)
-  Future<ProductServicePackResponse> getProductServicePack(
+  Future<ProductServicePackModel> getProductServicePack(
     @Query('id') String id,
   );
 
@@ -846,4 +848,15 @@ abstract class RestClient {
 
   @GET(BASE_URL.GET_LANGUAGES)
   Future<dynamic> getLanguage();
+
+  @GET(BASE_URL.GET_NTC_FILTER)
+  Future<NTCFilterModel> getNTCFilter();
+
+  @GET(BASE_URL.GET_BAO_CAO_SO_QUY)
+  Future<BaoCaoSoQuy> getBaoCaoSoQuy(
+    @Query('nam') String nam,
+    @Query('kytc') String kyTaiChinh,
+    @Query('chinhanh') String chiNhanh,
+    @Query('p') String page,
+  );
 }

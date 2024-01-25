@@ -32,10 +32,9 @@ class PhoneBloc extends Bloc<PhoneEvent, PhoneState> {
     try {
       yield LoadingPhoneState();
       final response = await userRepository.getPhoneCus(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessPhoneState(response.data ?? '');
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else
         yield ErrorPhoneState(response.msg ?? '');
@@ -52,15 +51,14 @@ class PhoneBloc extends Bloc<PhoneEvent, PhoneState> {
     try {
       yield LoadingPhoneState();
       final response = await userRepository.getPhoneAgency(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (response.data != "" && response.data != null) {
           phone = response.data!;
           yield SuccessPhoneState(response.data!);
         } else {
           yield SuccessPhoneState(phone);
         }
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else
         yield ErrorPhoneState(response.msg ?? '');

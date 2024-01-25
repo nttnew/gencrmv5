@@ -53,8 +53,7 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
         content: content,
         module: getURLModule(module),
       );
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         yield SuccessAddNoteState();
       } else {
@@ -83,8 +82,7 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
         noteId: noteId,
         module: getURLModule(module),
       );
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessAddNoteState();
       } else {
         yield ErrorAddNoteState(response.msg ?? '');
@@ -112,8 +110,7 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
         id,
         getURLModule(module),
       );
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessAddNoteState();
       } else {
         yield ErrorDeleteNoteState(response.msg ?? '');

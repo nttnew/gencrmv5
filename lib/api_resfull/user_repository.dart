@@ -60,8 +60,10 @@ import '../src/models/model_generator/report_general.dart';
 import '../src/models/model_generator/report_option.dart';
 import '../src/models/model_generator/report_product.dart';
 import '../src/models/model_generator/response_bao_cao.dart';
+import '../src/models/model_generator/response_bao_cao_so_quy.dart';
 import '../src/models/model_generator/response_car_dashboard.dart';
 import '../src/models/model_generator/response_edit_product.dart';
+import '../src/models/model_generator/response_ntc_filter.dart';
 import '../src/models/model_generator/response_save_product.dart';
 import '../src/models/model_generator/save_checkin_response.dart';
 import '../src/models/model_generator/service_pack_response.dart';
@@ -884,7 +886,7 @@ class UserRepository {
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .getServicePack(txt, page);
 
-  Future<ProductServicePackResponse> getProductServicePack({
+  Future<ProductServicePackModel> getProductServicePack({
     required String id,
   }) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
@@ -895,6 +897,18 @@ class UserRepository {
 
   Future<dynamic> getLanguage() async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getLanguage();
+
+  Future<NTCFilterModel> getNTCFilter() async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getNTCFilter();
+
+  Future<BaoCaoSoQuy> getBaoCaoSoQuy(
+    String nam,
+    String kyTaiChinh,
+    String chiNhanh,
+    String page,
+  ) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl)
+          .getBaoCaoSoQuy(nam, kyTaiChinh, chiNhanh, page);
 
   //////////////////////
 

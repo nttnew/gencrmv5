@@ -48,10 +48,9 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
         module: module,
         type: type,
       );
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessCheckInState();
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         yield ErrorCheckInState(response.msg ?? '');

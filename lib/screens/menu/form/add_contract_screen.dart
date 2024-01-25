@@ -179,7 +179,7 @@ class _FormAddContractState extends State<FormAddContract> {
                     if (state is LoadingFormAddCustomerOrState) {
                       addData = [];
                       data = [];
-                      return Container();
+                      return SizedBox.shrink();
                     } else if (state is SuccessFormAddCustomerOrState) {
                       if (addData.isEmpty) {
                         for (int i = 0; i < state.listAddData.length; i++) {
@@ -232,7 +232,7 @@ class _FormAddContractState extends State<FormAddContract> {
                                                       '',
                                                   style:
                                                       AppStyle.DEFAULT_18_BOLD)
-                                              : Container(),
+                                              : SizedBox.shrink(),
                                           SizedBox(
                                             height: AppValue.heights * 0.01,
                                           ),
@@ -251,7 +251,7 @@ class _FormAddContractState extends State<FormAddContract> {
                                           )
                                         ],
                                       )
-                                    : Container()),
+                                    : SizedBox.shrink()),
                           ),
                           FileDinhKemUiBase(
                             context: context,
@@ -260,7 +260,7 @@ class _FormAddContractState extends State<FormAddContract> {
                         ],
                       );
                     } else
-                      return Container();
+                      return SizedBox.shrink();
                   }),
             ),
           ),
@@ -280,7 +280,7 @@ class _FormAddContractState extends State<FormAddContract> {
                   return _fieldInputCustomer(data, indexParent, indexChild,
                       noEdit: true, value: stateA.phone);
                 } else
-                  return Container();
+                  return SizedBox.shrink();
               })
             : data.field_name == 'chi_tiet_xe'
                 ? StreamBuilder<String>(
@@ -585,7 +585,7 @@ class _FormAddContractState extends State<FormAddContract> {
                             },
                           )
                         : data.field_type == 'HIDDEN'
-                            ? Container()
+                            ? SizedBox.shrink()
                             : data.field_type == 'TEXT_MULTI_NEW'
                                 ? InputMultipleWidget(
                                     data: data,

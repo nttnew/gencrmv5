@@ -50,6 +50,9 @@ class ICONS {
   static const String IC_SUPPORT_3X_PNG = 'assets/icons/Support_3x.png';
   static const String IC_REPORT_PNG = 'assets/icons/insights.png';
   static const String IC_DELETE_TEXT_PNG = 'assets/icons/delete_text.png';
+  static const String IC_CLOSE_PNG = 'assets/icons/close.png';
+  static const String IC_WALLET_PNG = 'assets/icons/wallet.png';
+  static const String IC_CIRCLE_SMALL_PNG = 'assets/icons/circle_small.png';
 
   static const String IC_FLAG_VI = 'assets/icons/vietnam.png';
   static const String IC_FLAG_KO = 'assets/icons/south-korea.png';

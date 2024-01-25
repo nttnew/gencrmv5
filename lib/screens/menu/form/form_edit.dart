@@ -228,7 +228,7 @@ class _FormEditState extends State<FormEdit> {
                     if (state is LoadingFormEditState) {
                       addData = [];
                       data = [];
-                      return Container();
+                      return SizedBox.shrink();
                     } else if (state is SuccessFormEditState) {
                       if (addData.isNotEmpty) {
                       } else {
@@ -275,7 +275,7 @@ class _FormEditState extends State<FormEdit> {
                                                         .group_name ??
                                                     '',
                                                 style: AppStyle.DEFAULT_18_BOLD)
-                                            : Container(),
+                                            : SizedBox.shrink(),
                                         SizedBox(
                                           height: AppValue.heights * 0.01,
                                         ),
@@ -305,9 +305,9 @@ class _FormEditState extends State<FormEdit> {
                     } else if (state is ErrorFormEditState) {
                       WidgetsBinding.instance
                           .addPostFrameCallback((_) => showLog(state.msg));
-                      return Container();
+                      return SizedBox.shrink();
                     } else
-                      return Container();
+                      return SizedBox.shrink();
                   }),
                 ),
               ),
@@ -354,7 +354,7 @@ class _FormEditState extends State<FormEdit> {
                         value: stateA.phone,
                       );
                     } else if (stateA is LoadingPhoneState)
-                      return Container();
+                      return SizedBox.shrink();
                     else {
                       return _fieldInputCustomer(
                         data,
@@ -405,7 +405,7 @@ class _FormEditState extends State<FormEdit> {
                                 : '',
                           );
                         else if (stateA is LoadingContactByCustomerState) {
-                          return Container();
+                          return SizedBox.shrink();
                         } else
                           return InputDropdown(
                             typeScreen: type,
@@ -457,7 +457,7 @@ class _FormEditState extends State<FormEdit> {
                         },
                       )
                     : data.field_type == "HIDDEN"
-                        ? Container()
+                        ? SizedBox.shrink()
                         : data.field_type == "TEXT_MULTI_NEW"
                             ? InputMultipleWidget(
                                 data: data,

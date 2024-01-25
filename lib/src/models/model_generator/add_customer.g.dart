@@ -134,12 +134,12 @@ Map<String, dynamic> _$ProductItemContractToJson(
       'vat': instance.vat,
       'vat_name': instance.vat_name,
       'unit_name': instance.unit_name,
+      'ten_combo': instance.ten_combo,
+      'combo_id': instance.combo_id,
       'id': instance.id,
       'id_product': instance.id_product,
       'unit': instance.unit,
       'sale_off': instance.sale_off,
-      'combo_id': instance.combo_id,
-      'ten_combo': instance.ten_combo,
     };
 
 SaleOff _$SaleOffFromJson(Map<String, dynamic> json) => SaleOff(

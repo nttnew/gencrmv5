@@ -35,8 +35,7 @@ class DetailSupportBloc extends Bloc<DetailSupportEvent, DetailSupportState> {
     try {
       yield LoadingDetailSupportState();
       final response = await userRepository.getDetailSupport(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessGetDetailSupportState(
             response.data ?? [], response.location);
       } else {
@@ -56,8 +55,7 @@ class DetailSupportBloc extends Bloc<DetailSupportEvent, DetailSupportState> {
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.deleteSupport({"id": id});
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessDeleteSupportState();
       } else {
         LoadingApi().popLoading();

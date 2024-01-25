@@ -50,7 +50,7 @@ Map<String, dynamic> _$DataListContactToJson(DataListContact instance) =>
 
 DataContactReport _$DataContactReportFromJson(Map<String, dynamic> json) =>
     DataContactReport(
-      json['page'] as int?,
+      json['page'],
       json['limit'] as int?,
       json['total'] as String?,
       (json['list'] as List<dynamic>?)

@@ -34,8 +34,7 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getDetailProduct(id: id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield UpdateGetDetailProductState(
             response,
             ProductModel(
@@ -54,7 +53,7 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
                 response.info?.nameDvt ?? '',
                 response.info?.nameVat ?? '',
                 ''));
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();

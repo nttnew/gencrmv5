@@ -4,7 +4,12 @@ class MainMenuResponse {
   int? code;
   Data? data;
 
-  MainMenuResponse({this.success, this.msg, this.code, this.data});
+  MainMenuResponse({
+    this.success,
+    this.msg,
+    this.code,
+    this.data,
+  });
 
   MainMenuResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
@@ -29,7 +34,10 @@ class Data {
   List<MainMenu>? mainMenu;
   List<QuickMenu>? quickMenu;
 
-  Data({this.mainMenu, this.quickMenu});
+  Data({
+    this.mainMenu,
+    this.quickMenu,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json['main_menu'] != null) {
@@ -84,7 +92,10 @@ class QuickMenu {
   String? id;
   String? name;
 
-  QuickMenu({this.id, this.name});
+  QuickMenu({
+    this.id,
+    this.name,
+  });
 
   QuickMenu.fromJson(Map<String, dynamic> json) {
     id = json['id'];

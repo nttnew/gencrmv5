@@ -27,8 +27,7 @@ class GetInforBloc extends Bloc<GetInforEvent, InforState> {
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getInfor();
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield UpdateGetInforState(response.data!.gioi_thieu);
       } else
         yield ErrorGetInforState(response.msg ?? '');

@@ -293,7 +293,7 @@ class _InformationAccountState extends State<InformationAccount> {
                 ),
               );
             } else {
-              return Container();
+              return SizedBox.shrink();
             }
           },
         ),

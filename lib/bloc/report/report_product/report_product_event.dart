@@ -14,8 +14,13 @@ class InitReportProductEvent extends ReportProductEvent {
   final String? timeFrom;
   final String? timeTo;
 
-  const InitReportProductEvent(
-      {this.timeFrom, this.timeTo, this.cl, this.location, this.time});
+  const InitReportProductEvent({
+    this.timeFrom,
+    this.timeTo,
+    this.cl,
+    this.location,
+    this.time,
+  });
 
   @override
   List<Object> get props => [];

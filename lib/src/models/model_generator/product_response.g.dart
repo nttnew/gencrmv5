@@ -14,6 +14,8 @@ ProductItem _$ProductItemFromJson(Map<String, dynamic> json) => ProductItem(
       json['dvt'] as String?,
       json['vat'] as String?,
       json['sell_price'] as String?,
+      ten_combo: json['ten_combo'] as String?,
+      combo_id: json['combo_id'] as String?,
     );
 
 Map<String, dynamic> _$ProductItemToJson(ProductItem instance) =>
@@ -25,6 +27,8 @@ Map<String, dynamic> _$ProductItemToJson(ProductItem instance) =>
       'dvt': instance.dvt,
       'vat': instance.vat,
       'sell_price': instance.sell_price,
+      'ten_combo': instance.ten_combo,
+      'combo_id': instance.combo_id,
     };
 
 ProductData _$ProductDataFromJson(Map<String, dynamic> json) => ProductData(

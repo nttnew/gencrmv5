@@ -174,7 +174,7 @@ class _ChanceInfoState extends State<ChanceInfo>
                                 ),
                               );
                             else
-                              return Container();
+                              return SizedBox.shrink();
                           },
                           separatorBuilder: (context, index) {
                             return SizedBox();
@@ -182,7 +182,7 @@ class _ChanceInfoState extends State<ChanceInfo>
                           itemCount: state.data.length),
                     );
                   } else
-                    return Container();
+                    return SizedBox.shrink();
                 }),
             ListNote(
               module: Module.CO_HOI_BH,

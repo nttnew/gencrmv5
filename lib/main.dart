@@ -6,7 +6,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_crm/bloc/add_job_chance/add_job_chance_bloc.dart';
 import 'package:gen_crm/bloc/add_service_voucher/add_service_bloc.dart';
-import 'package:gen_crm/bloc/car_report/car_report_bloc.dart';
 import 'package:gen_crm/bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import 'package:gen_crm/bloc/contract/attack_bloc.dart';
 import 'package:gen_crm/bloc/contract/contract_bloc.dart';
@@ -34,7 +33,6 @@ import 'package:plugin_pitel/voip_push/push_notif.dart';
 import 'api_resfull/api.dart';
 import 'bloc/add_customer/add_customer_bloc.dart';
 import 'bloc/blocs.dart';
-import 'bloc/car_list_report/car_list_report_bloc.dart';
 import 'bloc/checkin_bloc/checkin_bloc.dart';
 import 'bloc/clue/clue_bloc.dart';
 import 'bloc/contract/customer_contract_bloc.dart';
@@ -47,10 +45,11 @@ import 'bloc/manager_filter/manager_bloc.dart';
 import 'bloc/product_customer_module/product_customer_module_bloc.dart';
 import 'bloc/product_module/product_module_bloc.dart';
 import 'bloc/readed_list_notification/readed_list_notifi_bloc.dart';
-import 'bloc/report/report_contact/report_contact_bloc.dart';
+import 'bloc/report/car_report/car_report_bloc.dart';
+import 'bloc/report/quy_so_report/quy_so_report_bloc.dart';
 import 'bloc/report/report_employee/report_employee_bloc.dart';
 import 'bloc/report/report_option/option_bloc.dart';
-import 'bloc/report/report_option/report_bloc.dart';
+import 'bloc/report/report_bloc/report_bloc.dart';
 import 'bloc/report/report_product/report_product_bloc.dart';
 import 'bloc/work/detail_work_bloc.dart';
 import 'bloc/work/work_bloc.dart';
@@ -135,10 +134,6 @@ Future main() async {
           BlocProvider<ReportProductBloc>(
             create: (context) =>
                 ReportProductBloc(userRepository: userRepository),
-          ),
-          BlocProvider<ReportSelectProductBloc>(
-            create: (context) =>
-                ReportSelectProductBloc(userRepository: userRepository),
           ),
           BlocProvider<GetListDetailChanceBloc>(
             create: (context) =>
@@ -258,10 +253,6 @@ Future main() async {
           BlocProvider<ReportBloc>(
             create: (context) => ReportBloc(userRepository: userRepository),
           ),
-          BlocProvider<ReportContactBloc>(
-            create: (context) =>
-                ReportContactBloc(userRepository: userRepository),
-          ),
           BlocProvider<ReportGeneralBloc>(
             create: (context) =>
                 ReportGeneralBloc(userRepository: userRepository),
@@ -277,10 +268,6 @@ Future main() async {
           BlocProvider<CarReportBloc>(
             create: (context) => CarReportBloc(userRepository: userRepository),
           ),
-          BlocProvider<CarListReportBloc>(
-            create: (context) =>
-                CarListReportBloc(userRepository: userRepository),
-          ),
           BlocProvider<CheckInBloc>(
             create: (context) => CheckInBloc(userRepository: userRepository),
           ),
@@ -294,6 +281,9 @@ Future main() async {
           ),
           BlocProvider<ManagerBloc>(
             create: (context) => ManagerBloc(userRepository: userRepository),
+          ),
+          BlocProvider<QuySoReportBloc>(
+            create: (context) => QuySoReportBloc(userRepository: userRepository),
           ),
         ],
         child: ProviderScope(child: const MyApp()),

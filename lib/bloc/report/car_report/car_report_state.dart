@@ -8,21 +8,11 @@ abstract class CarReportState extends Equatable {
 
 class InitGetListCarReport extends CarReportState {}
 
-class LoadingListCarReportState extends CarReportState {}
-
 class SuccessCarReportState extends CarReportState {
   final DataCarDashboard? responseCarDashboard;
   SuccessCarReportState(this.responseCarDashboard);
   @override
   List<Object?> get props => [responseCarDashboard];
-}
-
-
-class SuccessGetListCarReportState extends CarReportState {
-  final List<ItemResponseReportCar>? itemResponseReportCars;
-  SuccessGetListCarReportState(this.itemResponseReportCars);
-  @override
-  List<Object?> get props => [itemResponseReportCars];
 }
 
 class ErrorGetListCarReportState extends CarReportState {

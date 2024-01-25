@@ -353,8 +353,8 @@ class _MainDrawerState extends State<MainDrawer> {
                                                             languagesSnap)
                                                         : SizedBox();
                                                   }),
-                                              icon: Container(),
-                                              underline: Container(),
+                                              icon: SizedBox.shrink(),
+                                              underline: SizedBox.shrink(),
                                               dropdownWidth: 150,
                                               dropdownMaxHeight: 200,
                                               onChanged:
@@ -390,6 +390,8 @@ class _MainDrawerState extends State<MainDrawer> {
                                         GestureDetector(
                                             onTap: () async {
                                               await getMenu();
+                                              await LoginBloc.of(context)
+                                                  .getMenuMain();
                                               await LoginBloc.of(context)
                                                   .reloadLang();
                                               setState(() {});

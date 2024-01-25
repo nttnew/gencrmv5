@@ -37,4 +37,5 @@ class COLORS {
   static final ff89F0DD = HexColor("#89F0DD");
   static final ffC5EDFF = HexColor("#C5EDFF");
   static final ff838A91 = HexColor("#838A91");
+  static final ffFCF1D4 = HexColor("#FCF1D4");
 }

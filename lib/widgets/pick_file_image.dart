@@ -146,7 +146,7 @@ Widget FileDinhKemUiBase(
               ],
             );
           else
-            return Container();
+            return SizedBox.shrink();
           else
             return const SizedBox.shrink();
         }),

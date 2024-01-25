@@ -141,7 +141,7 @@ class _EditContractState extends State<EditContract> {
                   addData = [];
                   data = [];
                   listProduct = [];
-                  return Container();
+                  return SizedBox.shrink();
                 } else if (state is SuccessFormEditState) {
                   if (addData.isEmpty) {
                     for (int i = 0; i < state.listEditData.length; i++) {
@@ -232,7 +232,7 @@ class _EditContractState extends State<EditContract> {
                                                       .group_name ??
                                                   '',
                                               style: AppStyle.DEFAULT_18_BOLD)
-                                          : Container(),
+                                          : SizedBox.shrink(),
                                       SizedBox(
                                         height: AppValue.heights * 0.01,
                                       ),
@@ -251,7 +251,7 @@ class _EditContractState extends State<EditContract> {
                                       ),
                                     ],
                                   )
-                                : Container()),
+                                : SizedBox.shrink()),
                       ),
                       FileDinhKemUiBase(
                         context: context,
@@ -260,7 +260,7 @@ class _EditContractState extends State<EditContract> {
                     ],
                   );
                 } else
-                  return Container();
+                  return SizedBox.shrink();
               }),
             ),
           ),
@@ -280,7 +280,7 @@ class _EditContractState extends State<EditContract> {
                       return _fieldNoEdit(data, indexParent, indexChild,
                           value: stateA.phone);
                     } else
-                      return Container();
+                      return SizedBox.shrink();
                   })
                 : data.field_name == 'chi_tiet_xe'
                     ? StreamBuilder<String>(
@@ -323,7 +323,7 @@ class _EditContractState extends State<EditContract> {
                                   },
                                   value: data.field_value ?? '');
                             else
-                              return Container();
+                              return SizedBox.shrink();
                           })
                         : data.field_name == 'hdsan_pham_kh'
                             ? StreamBuilder<List<List<dynamic>>>(
@@ -393,7 +393,7 @@ class _EditContractState extends State<EditContract> {
                             },
                           )
                         : data.field_type == "HIDDEN"
-                            ? Container()
+                            ? SizedBox.shrink()
                             : data.field_type == "TEXT_MULTI_NEW"
                                 ? InputMultipleWidget(
                                     data: data,

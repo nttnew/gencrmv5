@@ -100,7 +100,7 @@ class _ListProductState extends State<ListProduct> {
           builder: (context, state) {
             if (state is LoadingGetListProductState) {
               listUI = [];
-              return Container();
+              return SizedBox.shrink();
             } else if (state is SuccessGetListProductState) {
               _handleDataSelect(state);
               return Container(

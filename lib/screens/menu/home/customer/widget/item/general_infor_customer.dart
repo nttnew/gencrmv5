@@ -65,7 +65,7 @@ class _TabInfoCustomerState extends State<TabInfoCustomer>
                           (index) => _renderInfo(state.customerInfo[index])),
                     );
                   else
-                    return Container();
+                    return SizedBox.shrink();
                 }),
             ListNote(
               module: Module.KHACH_HANG,

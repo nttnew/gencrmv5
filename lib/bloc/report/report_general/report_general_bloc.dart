@@ -32,10 +32,9 @@ class ReportGeneralBloc extends Bloc<ReportGeneralEvent, ReportGeneralState> {
       yield LoadingReportGeneralState();
       final response = await userRepository.reportGeneral(
           time, location == '' ? null : location, page);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessReportGeneralState(response.data);
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else
         yield ErrorReportGeneralState(response.msg ?? '');

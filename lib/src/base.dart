@@ -181,9 +181,13 @@ class BASE_URL {
   static const GET_LIST_MANAGER_FILTER = 'modules/genmobile2/settings/nql';
   static const GET_ADDRESS_CUSTOMER = 'modules/genmobile2/customer/getAddress';
   static const GET_SERVICE_PACK = 'modules/genmobile2/product/getServicePack';
-  static const GET_PRODUCT_SERVICE_PACK = 'modules/genmobile2/product/getProductInServicePack';
+  static const GET_PRODUCT_SERVICE_PACK =
+      'modules/genmobile2/product/getProductInServicePack';
   static const GET_MENU = 'modules/genmobile2/profile/getMenu';
   static const GET_LANGUAGES = 'modules/api/getdata/dataLanguages';
+  static const GET_NTC_FILTER = 'modules/genmobile2/dashboard/getNTCFilter';
+  static const GET_BAO_CAO_SO_QUY =
+      'modules/genmobile2/dashboard/getBaocaoSoquy';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';
@@ -388,3 +392,9 @@ class ModuleText {
     return ICONS.IC_WORK_3X_PNG;
   }
 }
+
+bool isSuccess(int? code) =>
+    code == BASE_URL.SUCCESS || code == BASE_URL.SUCCESS_200;
+
+bool isFail(int? code) =>
+    code == BASE_URL.SUCCESS_999;

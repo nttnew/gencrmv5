@@ -28,8 +28,7 @@ class DetailWorkBloc extends Bloc<DetailWorkEvent, DetailWorkState> {
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.detailJob(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessDetailWorkState(
             response.data ?? [], response.location, response.di_dong);
       } else {
@@ -49,8 +48,7 @@ class DetailWorkBloc extends Bloc<DetailWorkEvent, DetailWorkState> {
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.deleteJob({"id": id});
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessDeleteWorkState();
       } else {
         LoadingApi().popLoading();

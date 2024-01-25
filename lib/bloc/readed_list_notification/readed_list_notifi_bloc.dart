@@ -44,8 +44,7 @@ class GetListReadedNotifiBloc
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getListReadNotification(page);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         int page = int.parse(response.data.page!);
         if (page == 1) {
           listNotifi = response.data.list;

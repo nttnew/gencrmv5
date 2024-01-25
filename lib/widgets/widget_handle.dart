@@ -132,15 +132,16 @@ class WidgetNetworkCacheImage extends StatelessWidget {
   final BoxFit? fit;
   final GestureTapCallback? onTap;
 
-  const WidgetNetworkCacheImage(
-      {this.width,
-      this.height,
-      this.borderRadius,
-      this.borderRadiusCustom,
-      required this.image,
-      this.boxDecoration,
-      this.onTap,
-      this.fit = BoxFit.fill});
+  const WidgetNetworkCacheImage({
+    this.width,
+    this.height,
+    this.borderRadius,
+    this.borderRadiusCustom,
+    required this.image,
+    this.boxDecoration,
+    this.onTap,
+    this.fit = BoxFit.fill,
+  });
 
   @override
   Widget build(BuildContext context) {

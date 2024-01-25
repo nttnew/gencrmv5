@@ -27,8 +27,7 @@ class GetPolicyBloc extends Bloc<GetPolicyEvent, PolicyState> {
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getPolicy();
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield UpdateGetPolicyState(response.data!.chinh_sach);
       } else
         yield ErrorGetPolicyState(response.msg ?? '');

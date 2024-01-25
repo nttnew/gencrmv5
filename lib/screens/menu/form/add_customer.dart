@@ -91,7 +91,7 @@ class _AddCustomerState extends State<AddCustomer> {
                 if (state is LoadingAddCustomerState) {
                   data = [];
                   addData = [];
-                  return Container();
+                  return SizedBox.shrink();
                 } else if (state is UpdateGetAddCustomerState) {
                   if (addData.isEmpty)
                     for (int i = 0; i < state.listAddData.length; i++) {
@@ -130,7 +130,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                                     .group_name ??
                                                 '',
                                             style: AppStyle.DEFAULT_18_BOLD)
-                                        : Container(),
+                                        : SizedBox.shrink(),
                                     SizedBox(
                                       height: AppValue.heights * 0.01,
                                     ),
@@ -156,7 +156,7 @@ class _AddCustomerState extends State<AddCustomer> {
                     ],
                   );
                 } else
-                  return Container();
+                  return SizedBox.shrink();
               }),
             ),
           ),
@@ -190,7 +190,7 @@ class _AddCustomerState extends State<AddCustomer> {
                     },
                   )
                 : data.field_type == "HIDDEN"
-                    ? Container()
+                    ? SizedBox.shrink()
                     : data.field_type == "TEXT_MULTI_NEW"
                         ? InputMultipleWidget(
                             data: data,

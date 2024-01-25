@@ -37,8 +37,7 @@ class CustomerContractBloc
       if (page == BASE_URL.PAGE_DEFAULT.toString())
         yield LoadingContractCustomerState();
       final response = await userRepository.getCustomerContract(page, search);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (page == BASE_URL.PAGE_DEFAULT.toString()) {
           list = response.data;
           yield SuccessGetContractCustomerState(response.data!);
@@ -48,7 +47,7 @@ class CustomerContractBloc
             yield SuccessGetContractCustomerState(list!);
           }
         }
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else
         yield ErrorGetContractCustomerState(response.msg ?? '');
@@ -67,10 +66,9 @@ class CustomerContractBloc
     try {
       yield LoadingContractCustomerState();
       final response = await userRepository.getContactByCustomer(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessGetContractCustomerState(response.data!);
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else
         yield ErrorGetContractCustomerState(response.msg ?? '');

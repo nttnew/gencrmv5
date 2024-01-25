@@ -54,8 +54,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     yield LoadingAddCustomerOrState();
     try {
       final response = await userRepository.addOrganizationCustomer(data: data);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (files != null) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: response.data!.id.toString(),
@@ -93,8 +92,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     try {
       yield LoadingEditCustomerState();
       final response = await userRepository.editCustomer(data: data);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (files != null) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: response.idkh.toString(),
@@ -126,8 +124,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     try {
       yield LoadingAddContactCustomerState();
       final response = await userRepository.addContactCus(data: data);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (files != null) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: response.data?.id.toString() ?? '',
@@ -163,8 +160,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     try {
       yield LoadingAddContactCustomerState();
       final response = await userRepository.addOpportunity(data: data);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (files != null) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: response.data!.id.toString(),
@@ -200,8 +196,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     try {
       yield LoadingAddContactCustomerState();
       final response = await userRepository.addContract(data: data);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (files != null) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: response.data!.id.toString(),
@@ -237,8 +232,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     try {
       yield LoadingAddContactCustomerState();
       final response = await userRepository.addJob(data: data);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (files != null) {
           final responseUpload = await userRepository.uploadMultiFileBase(
             id: response.data!.id.toString(),
@@ -275,8 +269,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     try {
       yield LoadingAddContactCustomerState();
       final response = await userRepository.addSupport(data: data);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (files != null) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: response.data!.id.toString(),
@@ -312,8 +305,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     try {
       yield LoadingAddContactCustomerState();
       final response = await userRepository.editJob(data: data);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (files != null) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: response.data!.id.toString(),
@@ -349,8 +341,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     try {
       yield LoadingAddContactCustomerState();
       final response = await userRepository.addProduct(data: data);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (files != null) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: response.id.toString(),
@@ -386,8 +377,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     try {
       yield LoadingAddContactCustomerState();
       final response = await userRepository.saveAddProductCustomer(data: data);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (files != null) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: response.id.toString(),
@@ -423,8 +413,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     try {
       yield LoadingAddContactCustomerState();
       final response = await userRepository.editProduct(data: data, id: id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (files != null) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: response.data?.id.toString() ?? '',
@@ -460,8 +449,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     try {
       yield LoadingAddContactCustomerState();
       final response = await userRepository.saveEditProductCustomer(data: data);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (files != null) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: response.data?.id.toString() ?? '',
@@ -501,8 +489,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       final response = await (type == ''
           ? userRepository.saveSignature(data: data)
           : userRepository.saveSignatureSupport(data: data));
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         yield SuccessAddContactCustomerState();
       } else {

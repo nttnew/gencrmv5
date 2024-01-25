@@ -126,7 +126,7 @@ class _WidgetInputState extends State<WidgetInput> {
                           child: Container(
                               height: 25, width: 25, child: widget.leadIcon)),
                     )
-                  : Container(),
+                  : SizedBox.shrink(),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -205,7 +205,7 @@ class _WidgetInputState extends State<WidgetInput> {
                         child: widget.endIcon,
                       ),
                     )
-                  : Container()
+                  : SizedBox.shrink()
             ],
           ),
         ),

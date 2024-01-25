@@ -524,7 +524,7 @@ class _FormAddDataState extends State<FormAddData> {
                             if (state is LoadingFormAddCustomerOrState) {
                               addData = [];
                               data = [];
-                              return Container();
+                              return SizedBox.shrink();
                             } else if (state is SuccessFormAddCustomerOrState) {
                               if (addData.isEmpty) {
                                 for (int i = 0;
@@ -583,7 +583,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                               '',
                                                           style: AppStyle
                                                               .DEFAULT_18_BOLD)
-                                                      : Container(),
+                                                      : SizedBox.shrink(),
                                                   SizedBox(
                                                     height:
                                                         AppValue.heights * 0.01,
@@ -607,7 +607,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                   )
                                                 ],
                                               )
-                                            : Container()),
+                                            : SizedBox.shrink()),
                                   ),
                                   if (!isGetData)
                                     FileDinhKemUiBase(
@@ -621,7 +621,7 @@ class _FormAddDataState extends State<FormAddData> {
                                 ],
                               );
                             } else
-                              return Container();
+                              return SizedBox.shrink();
                           }),
                     ],
                   ),
@@ -659,7 +659,7 @@ class _FormAddDataState extends State<FormAddData> {
       {bool noEdit = false, String value = ""}) {
     if ((type == ADD_CLUE_JOB && data.field_name == "so_dien_thoai") ||
         (type == ADD_CHANCE_JOB && data.field_name == "so_dien_thoai")) {
-      return Container();
+      return SizedBox.shrink();
     } else {
       return Container(
         margin: EdgeInsets.only(bottom: 16),
@@ -747,7 +747,7 @@ class _FormAddDataState extends State<FormAddData> {
                       return _fieldInputCustomer(data, indexParent, indexChild,
                           noEdit: true, value: stateA.phone);
                     } else
-                      return Container();
+                      return SizedBox.shrink();
                   })
                 : ServiceVoucherBloc.of(context).getInput(data.field_name ?? '')
                     ? StreamBuilder<String>(
@@ -786,7 +786,7 @@ class _FormAddDataState extends State<FormAddData> {
                                   value: data.field_value ?? '');
                             } else if (stateA
                                 is LoadingContactByCustomerState) {
-                              return Container();
+                              return SizedBox.shrink();
                             } else {
                               return InputDropdown(
                                   typeScreen: type,
@@ -879,7 +879,7 @@ class _FormAddDataState extends State<FormAddData> {
                         },
                       )
                     : data.field_type == "HIDDEN"
-                        ? Container()
+                        ? SizedBox.shrink()
                         : data.field_special == 'url'
                             ? ProductContract(
                                 listBtn: data.button,

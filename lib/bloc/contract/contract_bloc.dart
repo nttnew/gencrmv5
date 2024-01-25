@@ -44,12 +44,11 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
         idFilter,
         ids,
       );
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (page == BASE_URL.PAGE_DEFAULT)
           listType.add(response.data.filter ?? []);
         resDynamic = response.data.list ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';

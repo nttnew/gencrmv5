@@ -1,12 +1,12 @@
-class ProductServicePackResponse {
+class ProductServicePackModel {
   bool? success;
   int? code;
   String? msg;
   List<DataProductServicePack>? data;
 
-  ProductServicePackResponse({this.success, this.code, this.msg, this.data});
+  ProductServicePackModel({this.success, this.code, this.msg, this.data});
 
-  ProductServicePackResponse.fromJson(Map<String, dynamic> json) {
+  ProductServicePackModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     code = json['code'];
     msg = json['msg'];

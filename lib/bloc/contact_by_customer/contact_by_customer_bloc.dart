@@ -76,10 +76,9 @@ class ContactByCustomerBloc
     try {
       yield LoadingContactByCustomerState();
       final response = await userRepository.getContactByCustomer(customer_id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield UpdateGetContacBytCustomerState(response.data!);
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else
         yield ErrorGetContactByCustomerState(response.msg ?? '');
@@ -97,10 +96,9 @@ class ContactByCustomerBloc
     try {
       yield LoadingContactByCustomerState();
       final response = await userRepository.getCustomerContract(page, search);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         success(response);
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else
         yield ErrorGetContactByCustomerState(response.msg ?? '');

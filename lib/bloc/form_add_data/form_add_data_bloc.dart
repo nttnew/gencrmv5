@@ -96,8 +96,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getAddCusOr();
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
         LoadingApi().popLoading();
@@ -116,8 +115,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormAddContactCus(customer_id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
         LoadingApi().popLoading();
@@ -136,8 +134,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormAddOppCus(customer_id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
         LoadingApi().popLoading();
@@ -156,8 +153,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormAddContractCus(customer_id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
         LoadingApi().popLoading();
@@ -176,8 +172,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormAddJobCus(customer_id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
         LoadingApi().popLoading();
@@ -196,8 +191,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormAddSupportCus(customer_id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
         LoadingApi().popLoading();
@@ -216,8 +210,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormAddAgency(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
         LoadingApi().popLoading();
@@ -236,8 +229,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormAddChance(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
         LoadingApi().popLoading();
@@ -256,8 +248,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormAddContract(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
         yield ErrorFormAddCustomerOrState(response.msg ?? '');
@@ -276,8 +267,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormAddJob(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
         LoadingApi().popLoading();
@@ -296,8 +286,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormAddSupport(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
         LoadingApi().popLoading();
@@ -316,8 +305,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormAddJobOpp(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
         LoadingApi().popLoading();
@@ -336,8 +324,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormAddJobChance(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
         LoadingApi().popLoading();
@@ -356,8 +343,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormAddSupportContract(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
         LoadingApi().popLoading();
@@ -376,8 +362,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormAddJobContract(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(response.data!);
       } else {
         LoadingApi().popLoading();
@@ -396,8 +381,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormAddProduct();
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(response.data ?? []);
       } else {
         LoadingApi().popLoading();
@@ -416,8 +400,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormAddProductCustomer();
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(response.data ?? []);
       } else {
         LoadingApi().popLoading();
@@ -441,8 +424,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       final response = await (type == '' // =='' contract
           ? userRepository.getFormAddSign(id: id)
           : userRepository.getFormAddSignSupport(id: id));
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(
           response.data ?? [],
           chuKyResponse: response.chu_ky,
@@ -468,8 +450,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormCHProductCustomer(id: id);
       print(response);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(
           response.data ?? [],
         );
@@ -492,8 +473,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormCVProductCustomer(id: id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(
           response.data ?? [],
         );
@@ -516,8 +496,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormHDProductCustomer(id: id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(
           response.data ?? [],
         );
@@ -540,8 +519,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingFormAddCustomerOrState();
       final response = await userRepository.getFormHTProductCustomer(id: id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormAddCustomerOrState(
           response.data ?? [],
         );

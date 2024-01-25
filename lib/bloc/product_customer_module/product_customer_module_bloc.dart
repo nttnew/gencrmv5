@@ -49,13 +49,12 @@ class ProductCustomerModuleBloc
         page: page.toString(),
         filter: filter,
       );
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         if (listFilter.value.isEmpty) {
           listFilter.add(response.data?.dataFilter ?? []);
         }
         resDynamic = response.data?.lists ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';
@@ -76,8 +75,7 @@ class ProductCustomerModuleBloc
         txt: querySearch,
         page: BASE_URL.PAGE_DEFAULT.toString(),
       );
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         return response;
       }

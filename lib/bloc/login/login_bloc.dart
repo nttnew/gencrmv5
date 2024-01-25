@@ -154,6 +154,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               platform: Platform.isIOS ? 'iOS' : 'Android',
               device_token: event.device_token);
           if (response.code == BASE_URL.SUCCESS) {
+            DioProvider.instance(
+              sess: response.data?.session_id,
+              token: response.data?.token,
+            );
             final userName =
                 await shareLocal.getString(PreferencesKey.USER_NAME);
             if (userName != state.email.value.trim()) {
@@ -166,8 +170,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             await _saveData(response);
             await shareLocal.putString(
                 PreferencesKey.USER_PASSWORD, state.password.value);
-            DioProvider.instance(
-                sess: response.data?.session_id, token: response.data?.token);
             yield state.copyWith(
                 status: FormzStatus.submissionSuccess,
                 message: response.msg ?? '',
@@ -198,9 +200,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               platform: Platform.isIOS ? 'iOS' : 'Android',
               device_token: event.device_token);
           if (response.code == BASE_URL.SUCCESS) {
-            await _saveData(response);
             DioProvider.instance(
-                sess: response.data?.session_id, token: response.data?.token);
+              sess: response.data?.session_id,
+              token: response.data?.token,
+            );
+            await _saveData(response);
             yield state.copyWith(
                 status: FormzStatus.submissionSuccess,
                 message: response.msg ?? '',
@@ -260,14 +264,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<void> getMenuMain() async {
     try {
       final response = await userRepository.getMenuMain();
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         await shareLocal.putString(
-            PreferencesKey.MENU, jsonEncode(response.data?.mainMenu));
+          PreferencesKey.MENU,
+          jsonEncode(response.data?.mainMenu),
+        );
         listMenuFlash = [];
         listMenuFlash.addAll(response.data?.quickMenu ?? []);
-        await shareLocal.putString(PreferencesKey.LIST_MENU_FLASH,
-            jsonEncode(response.data?.quickMenu));
+        await shareLocal.putString(
+          PreferencesKey.LIST_MENU_FLASH,
+          jsonEncode(response.data?.quickMenu),
+        );
       } else {
         loginSessionExpired();
       }

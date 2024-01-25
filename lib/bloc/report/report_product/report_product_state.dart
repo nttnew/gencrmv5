@@ -19,14 +19,6 @@ class SuccessReportProductState extends ReportProductState {
   List<Object> get props => [list];
 }
 
-class SuccessReportSelectState extends ReportProductState {
-  final List<ListReportProduct> listSelect;
-
-  SuccessReportSelectState(this.listSelect);
-  @override
-  List<Object> get props => [listSelect];
-}
-
 class LoadingReportProductState extends ReportProductState {}
 
 class LoadingReportSelectProductState extends ReportProductState {}

@@ -1,29 +1,33 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:gen_crm/bloc/report/report_contact/report_contact_bloc.dart';
 import 'package:gen_crm/bloc/report/report_general/report_general_bloc.dart';
 import 'package:gen_crm/bloc/report/report_option/option_bloc.dart';
 import 'package:gen_crm/bloc/report/report_product/report_product_bloc.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
-import 'package:gen_crm/src/models/model_generator/response_bao_cao.dart';
+import 'package:gen_crm/screens/menu/home/report/widget/body_report_one.dart';
+import 'package:gen_crm/screens/menu/home/report/widget/body_report_two.dart';
+import 'package:gen_crm/screens/menu/home/report/widget/body_step_five.dart';
+import 'package:gen_crm/screens/menu/home/report/widget/body_step_four.dart';
+import 'package:gen_crm/screens/menu/home/report/widget/select_ky_tai_chinh.dart';
 import 'package:gen_crm/storages/share_local.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import '../../../../bloc/car_list_report/car_list_report_bloc.dart';
-import '../../../../bloc/car_report/car_report_bloc.dart';
+import '../../../../bloc/report/car_report/car_report_bloc.dart';
+import '../../../../bloc/report/quy_so_report/quy_so_report_bloc.dart';
+import '../../../../bloc/report/report_bloc/report_event.dart';
+import '../../../../bloc/report/report_bloc/report_state.dart';
 import '../../../../bloc/report/report_employee/report_employee_bloc.dart';
-import '../../../../bloc/report/report_option/report_bloc.dart';
+import '../../../../bloc/report/report_bloc/report_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/report_general.dart';
+import '../../../../src/models/model_generator/response_bao_cao_so_quy.dart';
+import '../../../../src/models/model_generator/response_ntc_filter.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
-import '../../../../widgets/image_default.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 
 class ReportScreen extends StatefulWidget {
@@ -41,24 +45,19 @@ class _ReportScreenState extends State<ReportScreen> {
   String locationInitFinal = '';
   int length = 0;
   int page = 1;
-  int? _id;
-  ScrollController _scrollController = ScrollController();
-  ScrollController _scrollController1 = ScrollController();
-  ScrollController _scrollCarController = ScrollController();
   late int timeInit;
   late int timeFilter;
   bool isFirst = false;
-  String? gt;
   String valueTime = '';
   String? valueLocation;
   int step = 1;
-  String location = "";
   String _range = '';
   String? timeFrom;
   String? timeTo;
   List<Map<String, dynamic>> typeReport = [];
   List<String> items = [];
   String select = '';
+  late final ReportBloc _bloc;
 
   List<Map<String, dynamic>> typeDoanhSo = [
     {
@@ -83,11 +82,11 @@ class _ReportScreenState extends State<ReportScreen> {
   @override
   void initState() {
     init();
-    scroll();
     super.initState();
   }
 
   init() {
+    _bloc = ReportBloc.of(context);
     final nameReport = shareLocal.getString(PreferencesKey.NAME_REPORT);
     typeReport = [
       {
@@ -97,47 +96,15 @@ class _ReportScreenState extends State<ReportScreen> {
       {"name": getT(KeyT.sales_product), "index": 2},
       {"name": getT(KeyT.employee_turnover), "index": 3},
       {"name": nameReport.toString(), "index": 4},
+      {"name": getT(KeyT.treasury_book), "index": 5},
     ];
     items = [getT(KeyT.all_company)];
     select = typeReport[0]['name'];
     timeInit = 0;
     timeFilter = 0;
     GetNotificationBloc.of(context).add(CheckNotification());
-    ReportBloc.of(context).add(InitReportEvent());
-  }
-
-  scroll() {
-    _scrollController.addListener(() {
-      if (_scrollController.offset ==
-              _scrollController.position.maxScrollExtent &&
-          length < int.parse(total)) {
-        ReportContactBloc.of(context).add(InitReportContactEvent(
-            gt: gt, page: page + 1, location: location, time: timeFilter));
-        page = page + 1;
-      }
-    });
-    _scrollController1.addListener(() {
-      if (_scrollController1.offset ==
-          _scrollController1.position.maxScrollExtent) {
-        ReportContactBloc.of(context).add(InitReportContactEvent(
-            id: _id, page: page + 1, location: location, time: timeFilter));
-        page = page + 1;
-      }
-    });
-    _scrollCarController.addListener(() {
-      if (_scrollCarController.offset ==
-              _scrollCarController.position.maxScrollExtent &&
-          CarListReportBloc.of(context).isTotal) {
-        CarListReportBloc.of(context).page += 1;
-        CarListReportBloc.of(context).add(GetListReportCar(
-            time: timeFilter.toString(),
-            timeFrom: timeFrom,
-            timeTo: timeTo,
-            diemBan: location,
-            page: (CarListReportBloc.of(context).page).toString(),
-            trangThai: ReportBloc.of(context).selectReport.value));
-      }
-    });
+    _bloc.init();
+    _bloc.add(InitReportEvent());
   }
 
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
@@ -154,8 +121,76 @@ class _ReportScreenState extends State<ReportScreen> {
 
   @override
   void didChangeDependencies() {
-    ReportBloc.of(context).selectReport.add('');
+    _bloc.selectReport.add('');
     super.didChangeDependencies();
+  }
+
+  _showBodyReportOne() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30),
+          topLeft: Radius.circular(30),
+        ),
+      ),
+      builder: (context) => BodyReportOne(
+        money: money ?? '',
+        bloc: _bloc,
+      ),
+    );
+  }
+
+  _showBodyReportFive() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30),
+          topLeft: Radius.circular(30),
+        ),
+      ),
+      builder: (context) => BodyReportFive(
+        money: money ?? '',
+        bloc: _bloc,
+      ),
+    );
+  }
+
+  _showBodyReportFour() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30),
+          topLeft: Radius.circular(30),
+        ),
+      ),
+      builder: (context) => BodyReportFour(
+        money: money ?? '',
+        bloc: _bloc,
+      ),
+    );
+  }
+
+  _showBodyReportTwo() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30),
+          topLeft: Radius.circular(30),
+        ),
+      ),
+      builder: (context) => BodyReportTwo(
+        money: money ?? '',
+        bloc: _bloc,
+      ),
+    );
   }
 
   @override
@@ -172,7 +207,10 @@ class _ReportScreenState extends State<ReportScreen> {
         appBar: AppbarBase(_drawerKey, getT(KeyT.report)),
         body: Padding(
           padding: EdgeInsets.only(
-              left: 15, right: 15, top: AppValue.heights * 0.02),
+            left: 16,
+            right: 16,
+            top: 8,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -184,7 +222,9 @@ class _ReportScreenState extends State<ReportScreen> {
                       ? _step2()
                       : step == 3
                           ? _step3()
-                          : _step4()
+                          : step == 4
+                              ? _step4()
+                              : _step5(),
             ],
           ),
         ));
@@ -198,7 +238,7 @@ class _ReportScreenState extends State<ReportScreen> {
           value: select,
           icon: const Icon(Icons.arrow_drop_down_outlined),
           dropdownWidth: Get.width / 2,
-          underline: Container(),
+          underline: SizedBox.shrink(),
           onChanged: (String? value) {
             setState(() {
               select = value!;
@@ -208,21 +248,23 @@ class _ReportScreenState extends State<ReportScreen> {
               .map((items) => DropdownMenuItem<String>(
                     onTap: () {
                       valueLocation = locationInitFinal;
-                      location = '';
+                      _bloc.location = '';
                       step = items['index'];
                       valueTime = timeInitFinal;
                       timeFrom = timeTo = null;
                       _range = "";
                       isFirst = false;
-                      ReportBloc.of(context).selectReport.add('');
+                      _bloc.selectReport.add('');
                       if (step == 1) {
-                        ReportBloc.of(context).add(InitReportEvent());
+                        _bloc.add(InitReportEvent());
                       } else if (step == 2) {
                         OptionBloc.of(context).add(InitOptionEvent(1));
                       } else if (step == 3) {
                         OptionBloc.of(context).add(InitOptionEvent(2));
                       } else if (step == 4) {
                         OptionBloc.of(context).add(InitOptionEvent(4));
+                      } else if (step == 5) {
+                        OptionBloc.of(context).add(InitOptionEvent(5));
                       }
                     },
                     value: items['name'],
@@ -233,135 +275,201 @@ class _ReportScreenState extends State<ReportScreen> {
                   ))
               .toList(),
         ),
-        (step == 1)
-            ? BlocBuilder<ReportBloc, ReportState>(
-                builder: (context, state) {
-                  if (state is SuccessReportWorkState) {
-                    for (int i = 0; i < state.dataTime.length; i++) {
-                      if (state.dataTime[i][0] ==
-                              state.thoi_gian_mac_dinh.toString() &&
-                          isFirst == false) {
-                        timeInitFinal = state.dataTime.first[1];
-                        valueTime = state.dataTime[i][1];
-                        timeInit = state.thoi_gian_mac_dinh;
-                        timeFilter = timeInit;
-                        isFirst = true;
-                        break;
-                      }
-                    }
-                    return DropdownButton2(
-                      alignment: Alignment.centerRight,
-                      value: valueTime,
-                      dropdownWidth: 150,
-                      dropdownMaxHeight: 275,
-                      itemHeight: 40,
-                      icon: const Icon(Icons.arrow_drop_down_outlined),
-                      underline: Container(),
-                      onChanged: (String? value) {
-                        setState(() {
-                          valueTime = value!;
-                        });
-                      },
-                      items: state.dataTime
-                          .map((items) => DropdownMenuItem<String>(
-                                onTap: () {
-                                  if (items[0] == "") {
-                                    timeFilter = 0;
-                                  } else {
-                                    timeFilter = int.parse(items[0]);
-                                  }
-                                  ReportBloc.of(context).selectReport.add('');
-                                  ReportGeneralBloc.of(context).add(
-                                      SelectReportGeneralEvent(
-                                          page, location, timeFilter));
-                                },
-                                value: items[1],
-                                child: Text(
-                                  items[1],
-                                  style: AppStyle.DEFAULT_14,
-                                ),
-                              ))
-                          .toList(),
-                    );
-                  } else {
-                    return Container();
-                  }
-                },
-              )
-            : BlocBuilder<OptionBloc, OptionState>(
-                builder: (context, state) {
-                  if (state is SuccessOptionState) {
-                    for (int i = 0; i < state.dataTime.length; i++) {
-                      if (state.dataTime[i][0] ==
-                              state.thoi_gian_mac_dinh.toString() &&
-                          isFirst == false) {
-                        timeInitFinal = state.dataTime.first[1];
-                        valueTime = state.dataTime[i][1];
-                        timeInit = state.thoi_gian_mac_dinh;
-                        timeFilter = timeInit;
-                        isFirst = true;
-                        break;
-                      }
-                    }
-                    return DropdownButton2(
-                      alignment: Alignment.centerRight,
-                      value: valueTime,
-                      dropdownWidth: 150,
-                      dropdownMaxHeight: 275,
-                      itemHeight: 40,
-                      icon: const Icon(Icons.arrow_drop_down_outlined),
-                      underline: Container(),
-                      onChanged: (String? value) {
-                        setState(() {
-                          valueTime = value!;
-                        });
-                        if (timeFilter == 6) {
-                          Get.dialog(_dateRangeSelect());
+        (step == 5)
+            ? _pickDateStep5()
+            : (step == 1)
+                ? BlocBuilder<ReportBloc, ReportState>(
+                    builder: (context, state) {
+                      if (state is SuccessReportWorkState) {
+                        for (int i = 0; i < state.dataTime.length; i++) {
+                          if (state.dataTime[i][0] ==
+                                  state.thoi_gian_mac_dinh.toString() &&
+                              isFirst == false) {
+                            timeInitFinal = state.dataTime.first[1];
+                            valueTime = state.dataTime[i][1];
+                            timeInit = state.thoi_gian_mac_dinh;
+                            timeFilter = timeInit;
+                            isFirst = true;
+                            break;
+                          }
                         }
-                      },
-                      items: state.dataTime
-                          .map((items) => DropdownMenuItem<String>(
-                                onTap: () {
-                                  if (items[0] == "") {
-                                    timeFilter = 0;
-                                  } else {
-                                    timeFilter = int.parse(items[0]);
-                                  }
-                                  ReportBloc.of(context).selectReport.add('');
-                                  if (step == 2 && timeFilter != 6) {
-                                    ReportProductBloc.of(context).add(
-                                        InitReportProductEvent(
-                                            location: location,
-                                            time: timeFilter));
-                                  } else if (step == 3 && timeFilter != 6) {
-                                    ReportEmployeeBloc.of(context).add(
-                                        InitReportEmployeeEvent(
-                                            diemBan: location == ''
-                                                ? null
-                                                : int.parse(location),
-                                            time: timeFilter));
-                                  } else if (step == 4) {
-                                    CarReportBloc.of(context).add(
-                                        GetDashboardCar(
-                                            time: timeFilter.toString(),
-                                            diemBan: location));
-                                  }
-                                },
-                                value: items[1],
-                                child: Text(
-                                  items[1],
-                                  style: AppStyle.DEFAULT_14,
-                                ),
-                              ))
-                          .toList(),
-                    );
-                  } else {
-                    return Container();
-                  }
-                },
-              ),
+                        return DropdownButton2(
+                          alignment: Alignment.centerRight,
+                          value: valueTime,
+                          dropdownWidth: 150,
+                          dropdownMaxHeight: 275,
+                          itemHeight: 40,
+                          icon: const Icon(Icons.arrow_drop_down_outlined),
+                          underline: SizedBox.shrink(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              valueTime = value!;
+                            });
+                          },
+                          items: state.dataTime
+                              .map((items) => DropdownMenuItem<String>(
+                                    onTap: () {
+                                      if (items[0] == "") {
+                                        timeFilter = 0;
+                                      } else {
+                                        timeFilter = int.parse(items[0]);
+                                      }
+                                      _bloc.selectReport.add('');
+                                      ReportGeneralBloc.of(context).add(
+                                          SelectReportGeneralEvent(page,
+                                              _bloc.location, timeFilter));
+                                    },
+                                    value: items[1],
+                                    child: Text(
+                                      items[1],
+                                      style: AppStyle.DEFAULT_14,
+                                    ),
+                                  ))
+                              .toList(),
+                        );
+                      } else {
+                        return SizedBox.shrink();
+                      }
+                    },
+                  )
+                : BlocBuilder<OptionBloc, OptionState>(
+                    builder: (context, state) {
+                      if (state is SuccessOptionState) {
+                        for (int i = 0; i < state.dataTime.length; i++) {
+                          if (state.dataTime[i][0] ==
+                                  state.thoi_gian_mac_dinh.toString() &&
+                              isFirst == false) {
+                            timeInitFinal = state.dataTime.first[1];
+                            valueTime = state.dataTime[i][1];
+                            timeInit = state.thoi_gian_mac_dinh;
+                            timeFilter = timeInit;
+                            isFirst = true;
+                            break;
+                          }
+                        }
+                        return DropdownButton2(
+                          alignment: Alignment.centerRight,
+                          value: valueTime,
+                          dropdownWidth: 150,
+                          dropdownMaxHeight: 275,
+                          itemHeight: 40,
+                          icon: const Icon(Icons.arrow_drop_down_outlined),
+                          underline: SizedBox.shrink(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              valueTime = value!;
+                            });
+                            if (timeFilter == 6) {
+                              Get.dialog(_dateRangeSelect());
+                            }
+                          },
+                          items: state.dataTime
+                              .map((items) => DropdownMenuItem<String>(
+                                    onTap: () {
+                                      if (items[0] == "") {
+                                        timeFilter = 0;
+                                      } else {
+                                        timeFilter = int.parse(items[0]);
+                                      }
+                                      _bloc.selectReport.add('');
+                                      if (step == 2 && timeFilter != 6) {
+                                        ReportProductBloc.of(context).add(
+                                            InitReportProductEvent(
+                                                location: _bloc.location,
+                                                time: timeFilter));
+                                      } else if (step == 3 && timeFilter != 6) {
+                                        ReportEmployeeBloc.of(context).add(
+                                            InitReportEmployeeEvent(
+                                                diemBan: _bloc.location == ''
+                                                    ? null
+                                                    : int.parse(_bloc.location),
+                                                time: timeFilter));
+                                      } else if (step == 4) {
+                                        CarReportBloc.of(context).add(
+                                            GetDashboardCar(
+                                                time: timeFilter.toString(),
+                                                diemBan: _bloc.location));
+                                      }
+                                    },
+                                    value: items[1],
+                                    child: Text(
+                                      items[1],
+                                      style: AppStyle.DEFAULT_14,
+                                    ),
+                                  ))
+                              .toList(),
+                        );
+                      } else {
+                        return SizedBox.shrink();
+                      }
+                    },
+                  ),
       ],
     );
+  }
+
+  _pickDateStep5() {
+    return StreamBuilder<List<DataNTCFilter>>(
+        stream: _bloc.filterSoQuyStream,
+        builder: (context, snapshot) {
+          final soQuy = snapshot.data ?? [];
+          if (soQuy.length > 0) {
+            return GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(30),
+                        topLeft: Radius.circular(30),
+                      ),
+                    ),
+                    builder: (BuildContext context) {
+                      return SelectKyTaiChinh(
+                        soQuy: soQuy,
+                        kyTaiChinhSelect: _bloc.kyTaiChinh,
+                        yearSelect: _bloc.ntcFilter,
+                        onSelect:
+                            (DataNTCFilter ntcFilter, KyTaiChinh? kyTaiChinh) {
+                          _bloc.kyTaiChinh = kyTaiChinh;
+                          _bloc.ntcFilter = ntcFilter;
+                          _bloc.textNtcFilter.add(
+                              '${kyTaiChinh?.name ?? ''} ${ntcFilter.nam}');
+                          QuySoReportBloc.of(context).add(
+                            GetDashboardQuySo(
+                              nam: _bloc.ntcFilter?.nam ?? '',
+                              kyTaiChinh: _bloc.kyTaiChinh?.id ?? '',
+                              location: _bloc.location,
+                            ),
+                          );
+                          Get.back();
+                        },
+                      );
+                    });
+              },
+              child: StreamBuilder<String>(
+                  stream: _bloc.textNtcFilter,
+                  builder: (context, snapshot) {
+                    return Row(
+                      children: [
+                        Text(
+                          snapshot.data ?? '',
+                          style: AppStyle.DEFAULT_14,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 4,
+                          ),
+                          child: Icon(Icons.arrow_drop_down_outlined),
+                        ),
+                      ],
+                    );
+                  }),
+            );
+          }
+          return SizedBox();
+        });
   }
 
   _filterRow2() {
@@ -379,7 +487,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       return DropdownButton2(
                           value: valueLocation ?? state.dataLocation[0][1],
                           icon: const Icon(Icons.arrow_drop_down_outlined),
-                          underline: Container(),
+                          underline: SizedBox.shrink(),
                           dropdownWidth: 150,
                           dropdownMaxHeight: 250,
                           onChanged: (String? value) {
@@ -390,13 +498,11 @@ class _ReportScreenState extends State<ReportScreen> {
                               ? state.dataLocation
                                   .map((items) => DropdownMenuItem<String>(
                                         onTap: () {
-                                          location = items[0];
-                                          ReportBloc.of(context)
-                                              .selectReport
-                                              .add('');
+                                          _bloc.location = items[0];
+                                          _bloc.selectReport.add('');
                                           ReportGeneralBloc.of(context).add(
-                                              SelectReportGeneralEvent(
-                                                  page, location, timeFilter));
+                                              SelectReportGeneralEvent(page,
+                                                  _bloc.location, timeFilter));
                                         },
                                         value: items[1],
                                         child: Text(
@@ -417,7 +523,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     } else
                       return SizedBox();
                   } else {
-                    return Container();
+                    return SizedBox.shrink();
                   }
                 },
               )
@@ -429,69 +535,86 @@ class _ReportScreenState extends State<ReportScreen> {
                         locationInitFinal = state.dataLocation.first[1];
                       }
                       return DropdownButton2(
-                          value: valueLocation ?? state.dataLocation[0][1],
-                          icon: const Icon(Icons.arrow_drop_down_outlined),
-                          underline: Container(),
-                          dropdownWidth: 150,
-                          dropdownMaxHeight: 250,
-                          onChanged: (String? value) {
-                            valueLocation = value ?? '';
-                            setState(() {});
-                          },
-                          items: state.dataLocation.isNotEmpty
-                              ? state.dataLocation
-                                  .map((items) => DropdownMenuItem<String>(
-                                        onTap: () {
-                                          location = items[0];
-                                          ReportBloc.of(context)
-                                              .selectReport
-                                              .add('');
-                                          if (step == 2) {
-                                            ReportProductBloc.of(context).add(
-                                                InitReportProductEvent(
-                                                    location: location,
-                                                    time: timeFilter));
-                                          } else if (step == 3) {
-                                            ReportEmployeeBloc.of(context).add(
-                                                InitReportEmployeeEvent(
-                                                    time: timeFilter,
-                                                    diemBan: location == ''
-                                                        ? null
-                                                        : int.parse(location)));
-                                          } else if (step == 4) {
-                                            CarReportBloc.of(context)
-                                                .add(GetDashboardCar(
+                        value: valueLocation ?? state.dataLocation[0][1],
+                        icon: const Icon(Icons.arrow_drop_down_outlined),
+                        underline: SizedBox.shrink(),
+                        dropdownWidth: 150,
+                        dropdownMaxHeight: 250,
+                        onChanged: (String? value) {
+                          valueLocation = value ?? '';
+                          setState(() {});
+                        },
+                        items: state.dataLocation.isNotEmpty
+                            ? state.dataLocation
+                                .map((items) => DropdownMenuItem<String>(
+                                      onTap: () {
+                                        _bloc.location = items.first;
+                                        _bloc.selectReport.add('');
+                                        if (step == 2) {
+                                          ReportProductBloc.of(context).add(
+                                            InitReportProductEvent(
+                                              location: _bloc.location,
+                                              time: timeFilter,
+                                            ),
+                                          );
+                                        } else if (step == 3) {
+                                          ReportEmployeeBloc.of(context).add(
+                                            InitReportEmployeeEvent(
+                                              time: timeFilter,
+                                              diemBan: _bloc.location == ''
+                                                  ? null
+                                                  : int.parse(
+                                                      _bloc.location,
+                                                    ),
+                                            ),
+                                          );
+                                        } else if (step == 4) {
+                                          CarReportBloc.of(context).add(
+                                            GetDashboardCar(
                                               time: timeFilter.toString(),
-                                              diemBan: location,
-                                            ));
-                                          }
-                                        },
-                                        value: items[1],
-                                        child: Text(
-                                          items[1],
-                                          style: AppStyle.DEFAULT_16_BOLD,
-                                        ),
-                                      ))
-                                  .toList()
-                              : items
-                                  .map((items) => DropdownMenuItem<String>(
-                                        value: items,
-                                        child: Text(
-                                          items,
-                                          style: AppStyle.DEFAULT_16_BOLD,
-                                        ),
-                                      ))
-                                  .toList());
+                                              diemBan: _bloc.location,
+                                            ),
+                                          );
+                                        } else if (step == 5) {
+                                          QuySoReportBloc.of(context).add(
+                                            GetDashboardQuySo(
+                                              nam: _bloc.ntcFilter?.nam ?? '',
+                                              kyTaiChinh:
+                                                  _bloc.kyTaiChinh?.id ?? '',
+                                              location: _bloc.location,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      value: items[1],
+                                      child: Text(
+                                        items[1],
+                                        style: AppStyle.DEFAULT_16_BOLD,
+                                      ),
+                                    ))
+                                .toList()
+                            : items
+                                .map(
+                                  (items) => DropdownMenuItem<String>(
+                                    value: items,
+                                    child: Text(
+                                      items,
+                                      style: AppStyle.DEFAULT_16_BOLD,
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                      );
                     } else
                       return SizedBox();
                   } else {
-                    return Container();
+                    return SizedBox.shrink();
                   }
                 },
               ),
         (timeFilter == 6 && _range != '')
             ? Padding(padding: EdgeInsets.only(right: 10), child: Text(_range))
-            : Container(),
+            : SizedBox.shrink(),
       ],
     );
   }
@@ -501,271 +624,68 @@ class _ReportScreenState extends State<ReportScreen> {
         builder: (context, state) {
       if (state is SuccessReportGeneralState) {
         return StreamBuilder<String>(
-            stream: ReportBloc.of(context).selectReport,
+            stream: _bloc.selectReport,
             builder: (context, snapshot) {
               final selectDoanhSoChung = snapshot.data ?? '';
               return Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: ListView(
-                        children: typeDoanhSo
-                            .map(
-                              (e) => Container(
-                                padding: EdgeInsets.only(bottom: 8),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    gt = e['gt'];
-                                    ReportBloc.of(context)
-                                        .selectReport
-                                        .add(gt ?? '');
-                                    page = BASE_URL.PAGE_DEFAULT;
-                                    ReportContactBloc.of(context)
-                                        .add(InitReportContactEvent(
-                                      page: page,
-                                      location: location,
-                                      time: timeFilter,
-                                      gt: gt,
-                                    ));
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 10),
-                                    decoration: BoxDecoration(
-                                        color: selectDoanhSoChung == e['gt']
-                                            ? Color(0xffFDEEC8)
-                                            : Color(0xffC8E5FD),
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(e['name'],
-                                            style: AppStyle.DEFAULT_18_BOLD
-                                                .copyWith(
-                                                    color:
-                                                        COLORS.TEXT_BLUE_BOLD)),
-                                        Text(checkDataDoanhSo(
-                                            state.data!.list!, e['gt']))
-                                      ],
-                                    ),
-                                  ),
+                child: ListView(
+                  padding: EdgeInsets.only(
+                    top: 8,
+                  ),
+                  children: typeDoanhSo
+                      .map(
+                        (e) => Container(
+                          padding: EdgeInsets.only(
+                            bottom: 8,
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              _bloc.gt = e['gt'];
+                              _bloc.selectReport.add(_bloc.gt ?? '');
+                              _bloc.time = timeFilter;
+                              _showBodyReportOne();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: selectDoanhSoChung == e['gt']
+                                    ? Color(0xffFDEEC8)
+                                    : Color(0xffC8E5FD),
+                                borderRadius: BorderRadius.circular(
+                                  10,
                                 ),
                               ),
-                            )
-                            .toList(),
-                      ),
-                    ),
-                    if (selectDoanhSoChung != '') _bodyStep1()
-                  ],
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    e['name'],
+                                    style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                                      color: COLORS.TEXT_BLUE_BOLD,
+                                    ),
+                                  ),
+                                  Text(
+                                    checkDataDoanhSo(
+                                      state.data!.list!,
+                                      e['gt'],
+                                    ),
+                                    style: AppStyle.DEFAULT_16,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
                 ),
               );
             });
       } else {
-        return Container();
+        return SizedBox.shrink();
       }
     });
-  }
-
-  _hideDetail(Function() onTap) {
-    return GestureDetector(
-      onTap: () => onTap(),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(getT(KeyT.hide_details),
-              style:
-                  AppStyle.DEFAULT_14.copyWith(color: COLORS.TEXT_BLUE_BOLD)),
-          Icon(Icons.arrow_drop_down_sharp, color: COLORS.TEXT_BLUE_BOLD)
-        ],
-      ),
-    );
-  }
-
-  _bodyStep1() {
-    return BlocBuilder<ReportContactBloc, ReportContactState>(
-      builder: (context, state) {
-        if (state is SuccessReportContactState) {
-          total = state.total;
-          length = state.data.length;
-          return length == 0
-              ? SizedBox()
-              : Expanded(
-                  flex: 2,
-                  child: Column(
-                    children: [
-                      _hideDetail(() {
-                        ReportBloc.of(context).selectReport.add('');
-                        ReportContactBloc.of(context)
-                            .add(LoadingReportContactEvent());
-                      }),
-                      Expanded(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          controller: _scrollController,
-                          itemCount: state.data.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                AppNavigator.navigateInfoContract(
-                                    state.data[index].id ?? '',
-                                    state.data[index].name ?? '');
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                    left: 4, right: 4, bottom: 20, top: 10),
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 15, horizontal: 15),
-                                decoration: BoxDecoration(
-                                  color: COLORS.WHITE,
-                                  borderRadius: BorderRadius.circular(20),
-                                  border:
-                                      Border.all(width: 1, color: COLORS.WHITE),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: COLORS.BLACK.withOpacity(0.1),
-                                      spreadRadius: 1,
-                                      blurRadius: 5,
-                                    )
-                                  ],
-                                ),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        ImageBaseDefault(
-                                            icon: ICONS.IC_CONTRACT_3X_PNG),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        SizedBox(
-                                            width: AppValue.widths * 0.5,
-                                            child: WidgetText(
-                                              title:
-                                                  state.data[index].name ?? '',
-                                              style: AppStyle
-                                                  .DEFAULT_TITLE_PRODUCT
-                                                  .copyWith(
-                                                      color: COLORS.TEXT_COLOR),
-                                            )),
-                                        Spacer(),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: state.data[index]
-                                                        .status_color !=
-                                                    ''
-                                                ? HexColor(state
-                                                    .data[index].status_color!)
-                                                : COLORS.RED,
-                                            borderRadius: BorderRadius.circular(
-                                              99,
-                                            ),
-                                          ),
-                                          width: AppValue.widths * 0.08,
-                                          height: AppValue.heights * 0.02,
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                          ICONS.IC_USER2_SVG,
-                                          color: Color(0xffE75D18),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Expanded(
-                                          child: WidgetText(
-                                            title: state.data[index].customer
-                                                    ?.name ??
-                                                getT(KeyT.not_yet),
-                                            style:
-                                                AppStyle.DEFAULT_LABEL_PRODUCT,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                          ICONS.IC_DANG_XU_LY_SVG,
-                                          color:
-                                              state.data[index].status_color !=
-                                                      ''
-                                                  ? HexColor(state.data[index]
-                                                      .status_color!)
-                                                  : COLORS.RED,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        WidgetText(
-                                          title: state.data[index].status,
-                                          style: AppStyle.DEFAULT_LABEL_PRODUCT
-                                              .copyWith(
-                                            color: state.data[index]
-                                                        .status_color !=
-                                                    ''
-                                                ? HexColor(state
-                                                    .data[index].status_color!)
-                                                : COLORS.RED,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                          ICONS.IC_MAIL_SVG,
-                                          color: Colors.grey,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        WidgetText(
-                                          title: '${getT(KeyT.sales)}: ' +
-                                              state.data[index].price
-                                                  .toString() +
-                                              (money ?? ''),
-                                          style: AppStyle.DEFAULT_LABEL_PRODUCT
-                                              .copyWith(color: COLORS.GREY),
-                                        ),
-                                        Spacer(),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    AppValue.hSpaceTiny,
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-        } else {
-          return Container();
-        }
-      },
-    );
   }
 
   _step2() {
@@ -773,137 +693,69 @@ class _ReportScreenState extends State<ReportScreen> {
         builder: (context, state) {
       if (state is SuccessReportProductState) {
         return StreamBuilder<String>(
-            stream: ReportBloc.of(context).selectReport,
+            stream: _bloc.selectReport,
             builder: (context, snapshot) {
               final indexSelect = snapshot.data ?? '';
               return Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppValue.vSpaceTiny,
-                  Expanded(
-                    flex: 2,
-                    child: state.list.length > 0
-                        ? ListView.builder(
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      ReportBloc.of(context)
-                                          .selectReport
-                                          .add('$index');
-                                      ReportSelectProductBloc.of(context).add(
-                                          SelectReportProductEvent(
-                                              cl: state.list[index].id,
-                                              location: location,
-                                              time: timeFilter,
-                                              timeFrom: timeFrom,
-                                              timeTo: timeTo));
-                                    },
-                                    child: Container(
-                                      // height: 45,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 11),
-                                      decoration: BoxDecoration(
-                                          color: indexSelect == index
-                                              ? Colors.lime
-                                              : Colors.blue.withOpacity(0.4),
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            state.list[index].name ??
-                                                getT(KeyT.not_yet),
-                                            style: AppStyle.DEFAULT_16_BOLD
-                                                .copyWith(
-                                                    color:
-                                                        COLORS.TEXT_BLUE_BOLD),
-                                          ),
-                                          Text(
-                                              "${state.list[index].doanh_so ?? getT(KeyT.not_yet)}$money")
-                                        ],
-                                      ),
+                child: state.list.length > 0
+                    ? ListView.builder(
+                        padding: EdgeInsets.only(
+                          top: 8,
+                        ),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  _bloc.cl = state.list[index].id;
+                                  _bloc.time = timeFilter;
+                                  _bloc.timeFrom = timeFrom;
+                                  _bloc.timeTo = timeTo;
+                                  _bloc.selectReport.add('$index');
+                                  _showBodyReportTwo();
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: indexSelect == index
+                                        ? Colors.lime
+                                        : Colors.blue.withOpacity(0.4),
+                                    borderRadius: BorderRadius.circular(
+                                      10,
                                     ),
                                   ),
-                                  AppValue.vSpaceTiny,
-                                ],
-                              );
-                            },
-                            itemCount: state.list.length,
-                          )
-                        : noData(),
-                  ),
-                  if (indexSelect != '') _bodyStep2()
-                ],
-              ));
-            });
-      } else {
-        return Container();
-      }
-    });
-  }
-
-  _bodyStep2() {
-    return BlocBuilder<ReportSelectProductBloc, ReportProductState>(
-        builder: (context, state) {
-      if (state is SuccessReportSelectState) {
-        return state.listSelect.length == 0
-            ? SizedBox()
-            : Expanded(
-                flex: 4,
-                child: Column(
-                  children: [
-                    _hideDetail(() {
-                      ReportBloc.of(context).selectReport.add('');
-                    }),
-                    Expanded(
-                        child: Padding(
-                      padding: EdgeInsets.only(bottom: 8),
-                      child: ListView.separated(
-                        itemCount: state.listSelect.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            padding: EdgeInsets.symmetric(horizontal: 12),
-                            decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                    child: Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 4),
-                                        child: Text(
-                                            state.listSelect[index].name ??
-                                                getT(KeyT.undefined),
-                                            style: AppStyle.DEFAULT_18))),
-                                SizedBox(
-                                  width: 5,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        state.list[index].name ??
+                                            getT(KeyT.not_yet),
+                                        style:
+                                            AppStyle.DEFAULT_18_BOLD.copyWith(
+                                          color: COLORS.TEXT_BLUE_BOLD,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${state.list[index].doanh_so ?? getT(KeyT.not_yet)}$money',
+                                        style: AppStyle.DEFAULT_16,
+                                      )
+                                    ],
+                                  ),
                                 ),
-                                Text(
-                                  "${state.listSelect[index].doanh_so ?? getT(KeyT.undefined)}$money",
-                                  style: AppStyle.DEFAULT_16,
-                                )
-                              ],
-                            ),
+                              ),
+                              AppValue.vSpaceTiny,
+                            ],
                           );
                         },
-                        separatorBuilder: (context, index) {
-                          return Container(height: 10);
-                        },
-                      ),
-                    )),
-                  ],
-                ),
+                        itemCount: state.list.length,
+                      )
+                    : noData(),
               );
+            });
       } else {
-        return Container();
+        return SizedBox.shrink();
       }
     });
   }
@@ -913,266 +765,82 @@ class _ReportScreenState extends State<ReportScreen> {
         builder: (context, state) {
       if (state is SuccessReportEmployeeState) {
         return StreamBuilder<String>(
-            stream: ReportBloc.of(context).selectReport,
+            stream: _bloc.selectReport,
             builder: (context, snapshot) {
               final indexSelect = snapshot.data ?? '';
               return Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AppValue.vSpaceSmall,
-                    Expanded(
-                      flex: 2,
-                      child: state.data.length > 0
-                          ? ListView.builder(
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        ReportBloc.of(context)
-                                            .selectReport
-                                            .add('$index');
-                                        _id = int.parse(state.data[index].id!);
-                                        page = BASE_URL.PAGE_DEFAULT;
-                                        ReportContactBloc.of(context).add(
-                                            InitReportContactEvent(
-                                                id: _id,
-                                                page: page,
-                                                location: location,
-                                                time: timeFilter));
-                                      },
-                                      child: Container(
-                                        height: 45,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 12),
-                                        decoration: BoxDecoration(
-                                            color: indexSelect == index
-                                                ? Colors.lime
-                                                : Colors.blue.withOpacity(0.4),
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              state.data[index].name ??
-                                                  getT(KeyT.not_yet),
-                                              style: AppStyle.DEFAULT_18_BOLD
-                                                  .copyWith(
-                                                      color: COLORS
-                                                          .TEXT_BLUE_BOLD),
-                                            ),
-                                            Text(
-                                                "${state.data[index].total_contract ?? "0"} ${getT(KeyT.contract)}")
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    AppValue.vSpaceTiny,
-                                    Row(
-                                      children: [
-                                        Spacer(),
-                                        Text(
-                                            "${state.data[index].total_sales ?? "0"}$money",
-                                            style: AppStyle.DEFAULT_18_BOLD),
-                                      ],
-                                    ),
-                                    AppValue.vSpaceSmall,
-                                  ],
-                                );
-                              },
-                              itemCount: state.data.length,
-                            )
-                          : noData(),
-                    ),
-                    if (indexSelect != '') _bodyStep3()
-                  ],
-                ),
-              );
-            });
-      } else {
-        return Container();
-      }
-    });
-  }
-
-  _bodyStep3() {
-    return BlocBuilder<ReportContactBloc, ReportContactState>(
-        builder: (context, state) {
-      if (state is SuccessReportContactState) {
-        return state.data.length == 0
-            ? SizedBox()
-            : Expanded(
-                flex: 4,
-                child: Column(
-                  children: [
-                    _hideDetail(() {
-                      ReportBloc.of(context).selectReport.add('');
-                    }),
-                    Expanded(
-                        child: ListView.builder(
-                            controller: _scrollController1,
-                            itemCount: state.data.length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
+                child: state.data.length > 0
+                    ? ListView.builder(
+                        padding: EdgeInsets.only(
+                          top: 8,
+                        ),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              GestureDetector(
                                 onTap: () {
-                                  AppNavigator.navigateInfoContract(
-                                      state.data[index].id!,
-                                      state.data[index].name!);
+                                  _bloc.selectReport.add('$index');
+                                  _bloc.id =
+                                      int.parse(state.data[index].id ?? '0');
+                                  page = BASE_URL.PAGE_DEFAULT;
+                                  _bloc.time = timeFilter;
+                                  _showBodyReportOne();
                                 },
                                 child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 4, right: 4, bottom: 20, top: 10),
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
+                                  padding: EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    color: COLORS.WHITE,
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(
-                                        width: 1, color: COLORS.WHITE),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: COLORS.BLACK.withOpacity(0.1),
-                                        spreadRadius: 1,
-                                        blurRadius: 5,
-                                      )
-                                    ],
+                                    color: indexSelect == index
+                                        ? Colors.lime
+                                        : Colors.blue.withOpacity(0.4),
+                                    borderRadius: BorderRadius.circular(
+                                      10,
+                                    ),
                                   ),
-                                  child: Column(
+                                  child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(
-                                        children: [
-                                          ImageBaseDefault(
-                                              icon: ICONS.IC_CONTRACT_3X_PNG),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          SizedBox(
-                                              width: AppValue.widths * 0.5,
-                                              child: WidgetText(
-                                                title: state.data[index].name ??
-                                                    getT(KeyT.not_yet),
-                                                style: AppStyle
-                                                    .DEFAULT_TITLE_PRODUCT
-                                                    .copyWith(
-                                                        color:
-                                                            COLORS.TEXT_COLOR),
-                                              )),
-                                          Spacer(),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                color: state.data[index]
-                                                            .status_color !=
-                                                        ""
-                                                    ? HexColor(state.data[index]
-                                                        .status_color!)
-                                                    : COLORS.RED,
-                                                borderRadius:
-                                                    BorderRadius.circular(99)),
-                                            width: AppValue.widths * 0.08,
-                                            height: AppValue.heights * 0.02,
-                                          )
-                                        ],
+                                      Text(
+                                        state.data[index].name ??
+                                            getT(KeyT.not_yet),
+                                        style:
+                                            AppStyle.DEFAULT_18_BOLD.copyWith(
+                                          color: COLORS.TEXT_BLUE_BOLD,
+                                        ),
                                       ),
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      Row(
-                                        children: [
-                                          SvgPicture.asset(
-                                            ICONS.IC_USER2_SVG,
-                                            color: Color(0xffE75D18),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(
-                                            child: WidgetText(
-                                              title: state.data[index].customer!
-                                                      .name ??
-                                                  getT(KeyT.not_yet),
-                                              style: AppStyle
-                                                  .DEFAULT_LABEL_PRODUCT,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      Row(
-                                        children: [
-                                          SvgPicture.asset(
-                                            ICONS.IC_DANG_XU_LY_SVG,
-                                            color: state.data[index]
-                                                        .status_color !=
-                                                    ""
-                                                ? HexColor(state
-                                                    .data[index].status_color!)
-                                                : COLORS.RED,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          WidgetText(
-                                              title: state.data[index].status,
-                                              style: AppStyle
-                                                  .DEFAULT_LABEL_PRODUCT
-                                                  .copyWith(
-                                                color: state.data[index]
-                                                            .status_color !=
-                                                        ''
-                                                    ? HexColor(state.data[index]
-                                                        .status_color!)
-                                                    : COLORS.RED,
-                                              )),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      Row(
-                                        children: [
-                                          SvgPicture.asset(
-                                            ICONS.IC_MAIL_SVG,
-                                            color: Colors.grey,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          WidgetText(
-                                            title: '${getT(KeyT.sales)}: ' +
-                                                state.data[index].price
-                                                    .toString() +
-                                                money!,
-                                            style: AppStyle
-                                                .DEFAULT_LABEL_PRODUCT
-                                                .copyWith(color: COLORS.GREY),
-                                          ),
-                                          Spacer(),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      AppValue.hSpaceTiny,
+                                      Text(
+                                        "${state.data[index].total_contract ?? "0"} ${getT(KeyT.contract)}",
+                                        style: AppStyle.DEFAULT_16,
+                                      )
                                     ],
                                   ),
                                 ),
-                              );
-                            })),
-                  ],
-                ),
+                              ),
+                              AppValue.vSpaceTiny,
+                              if (state.data[index].total_sales != '') ...[
+                                Row(
+                                  children: [
+                                    Spacer(),
+                                    Text(
+                                      '${state.data[index].total_sales ?? '0'}$money',
+                                      style: AppStyle.DEFAULT_16_BOLD,
+                                    ),
+                                  ],
+                                ),
+                                AppValue.vSpaceSmall,
+                              ],
+                            ],
+                          );
+                        },
+                        itemCount: state.data.length,
+                      )
+                    : noData(),
               );
-      } else if (state is LoadingReportContactState) {
-        return SizedBox();
-      } else
-        return SizedBox();
+            });
+      } else {
+        return SizedBox.shrink();
+      }
     });
   }
 
@@ -1200,24 +868,29 @@ class _ReportScreenState extends State<ReportScreen> {
                   step == 2
                       ? ReportProductBloc.of(context).add(
                           InitReportProductEvent(
-                              location: location,
-                              time: timeFilter,
-                              timeFrom: timeFrom,
-                              timeTo: timeTo))
+                            location: _bloc.location,
+                            time: timeFilter,
+                            timeFrom: timeFrom,
+                            timeTo: timeTo,
+                          ),
+                        )
                       : step == 3
-                          ? ReportEmployeeBloc.of(context)
-                              .add(InitReportEmployeeEvent(
-                              time: timeFilter,
-                              timeFrom: timeFrom,
-                              timeTo: timeTo,
-                              diemBan: int.parse(location),
-                            ))
-                          : CarReportBloc.of(context).add(GetDashboardCar(
-                              time: timeFilter.toString(),
-                              timeFrom: timeFrom,
-                              timeTo: timeTo,
-                              diemBan: location,
-                            ));
+                          ? ReportEmployeeBloc.of(context).add(
+                              InitReportEmployeeEvent(
+                                time: timeFilter,
+                                timeFrom: timeFrom,
+                                timeTo: timeTo,
+                                diemBan: int.parse(_bloc.location),
+                              ),
+                            )
+                          : CarReportBloc.of(context).add(
+                              GetDashboardCar(
+                                time: timeFilter.toString(),
+                                timeFrom: timeFrom,
+                                timeTo: timeTo,
+                                diemBan: _bloc.location,
+                              ),
+                            );
                 });
               },
               text: getT(KeyT.done),
@@ -1236,265 +909,181 @@ class _ReportScreenState extends State<ReportScreen> {
         if (state is SuccessCarReportState) {
           return state.responseCarDashboard != null
               ? StreamBuilder<String>(
-                  stream: ReportBloc.of(context).selectReport,
+                  stream: _bloc.selectReport,
                   builder: (context, snapshot) {
                     final statusCar = snapshot.data ?? '';
-                    return Column(
-                      children: [
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height:
-                                      MediaQuery.of(context).size.height / 6,
-                                  child: Center(
-                                    child: Image.asset(
-                                      IMAGES.IMAGE_CAR_REPORT,
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  child: Center(
-                                    child: RichText(
-                                      textAlign: TextAlign.center,
-                                      textScaleFactor: MediaQuery.of(context)
-                                          .textScaleFactor,
-                                      text: TextSpan(
-                                        style: TextStyle(
-                                            color: COLORS.BLACK, fontSize: 20),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              text:
-                                                  '${state.responseCarDashboard?.total ?? '0'}',
-                                              style: AppStyle.DEFAULT_18_BOLD
-                                                  .copyWith(
-                                                      color:
-                                                          COLORS.TEXT_BLUE_BOLD,
-                                                      fontSize: 36,
-                                                      fontWeight:
-                                                          FontWeight.w600)),
-                                          TextSpan(
-                                              text: ' ${getT(KeyT.car)}',
-                                              style: AppStyle.DEFAULT_18
-                                                  .copyWith(
-                                                      fontSize: 24,
-                                                      fontWeight:
-                                                          FontWeight.w500)),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    padding: EdgeInsets.only(top: 16),
-                                    itemCount: state
-                                        .responseCarDashboard?.status?.length,
-                                    itemBuilder: (context, index) =>
-                                        GestureDetector(
-                                          onTap: () {
-                                            String? id = state
-                                                .responseCarDashboard
-                                                ?.status?[index]
-                                                .id
-                                                .toString();
-                                            ReportBloc.of(context)
-                                                .selectReport
-                                                .add(id ?? '');
-                                            CarListReportBloc.of(context).add(
-                                                GetListReportCar(
-                                                    time: timeFilter.toString(),
-                                                    timeFrom: timeFrom,
-                                                    timeTo: timeTo,
-                                                    diemBan: location,
-                                                    page: BASE_URL.PAGE_DEFAULT
-                                                        .toString(),
-                                                    trangThai:
-                                                        ReportBloc.of(context)
-                                                            .selectReport
-                                                            .value));
-                                          },
-                                          child: Container(
-                                            margin: EdgeInsets.only(
-                                              bottom: 16,
-                                            ),
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width -
-                                                30,
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 12,
-                                              vertical: 10,
-                                            ),
-                                            decoration: BoxDecoration(
-                                                color: statusCar ==
-                                                        state
-                                                            .responseCarDashboard
-                                                            ?.status?[index]
-                                                            .id
-                                                            .toString()
-                                                    ? Color(0xffFDEEC8)
-                                                    : Color(0xffC8E5FD),
-                                                borderRadius:
-                                                    BorderRadius.circular(15)),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  state
-                                                          .responseCarDashboard
-                                                          ?.status?[index]
-                                                          .name ??
-                                                      '',
-                                                ),
-                                                Text(
-                                                  (state
-                                                              .responseCarDashboard
-                                                              ?.status?[index]
-                                                              .total ??
-                                                          0)
-                                                      .toString(),
-                                                  style: AppStyle
-                                                      .DEFAULT_18_BOLD
-                                                      .copyWith(
-                                                          color: COLORS
-                                                              .TEXT_BLUE_BOLD),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        )),
-                              ],
+                    return SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                              bottom: 10,
+                              top: 10,
+                            ),
+                            height: MediaQuery.of(context).size.height / 6,
+                            child: Center(
+                              child: Image.asset(
+                                IMAGES.IMAGE_CAR_REPORT,
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
-                        ),
-                        if (statusCar != '') _bodyStep4()
-                      ],
+                          Center(
+                            child: RichText(
+                              textAlign: TextAlign.center,
+                              textScaleFactor:
+                                  MediaQuery.of(context).textScaleFactor,
+                              text: TextSpan(
+                                style: AppStyle.DEFAULT_18,
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text:
+                                        '${state.responseCarDashboard?.total ?? '0'}',
+                                    style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                                      color: COLORS.TEXT_BLUE_BOLD,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: ' ${getT(KeyT.car)}',
+                                    style: AppStyle.DEFAULT_18.copyWith(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.only(top: 16),
+                            itemCount:
+                                state.responseCarDashboard?.status?.length,
+                            itemBuilder: (context, index) => GestureDetector(
+                              onTap: () {
+                                String? id = state
+                                    .responseCarDashboard?.status?[index].id
+                                    .toString();
+                                _bloc.selectReport.add(id ?? '');
+
+                                _bloc.time = timeFilter;
+                                _bloc.timeTo = timeTo;
+                                _bloc.timeFrom = timeFrom;
+                                _showBodyReportFour();
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                  bottom: 16,
+                                ),
+                                width: MediaQuery.of(context).size.width - 32,
+                                padding: EdgeInsets.all(
+                                  10,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: statusCar ==
+                                          state.responseCarDashboard
+                                              ?.status?[index].id
+                                              .toString()
+                                      ? Color(0xffFDEEC8)
+                                      : Color(0xffC8E5FD),
+                                  borderRadius: BorderRadius.circular(
+                                    10,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      state.responseCarDashboard?.status?[index]
+                                              .name ??
+                                          '',
+                                    ),
+                                    Text(
+                                      (state.responseCarDashboard
+                                                  ?.status?[index].total ??
+                                              0)
+                                          .toString(),
+                                      style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                                        color: COLORS.TEXT_BLUE_BOLD,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   })
               : noData();
         } else {
-          return Container();
+          return SizedBox.shrink();
         }
       }),
     );
   }
 
-  _bodyStep4() {
-    return Expanded(
-      flex: 2,
-      child: Column(
-        children: [
-          _hideDetail(() {
-            ReportBloc.of(context).selectReport.add('');
-          }),
-          BlocBuilder<CarListReportBloc, CarListReportState>(
-              builder: (context, state) {
-            if (state is SuccessGetCarListReportState) {
-              return Expanded(
-                child: ListView.builder(
-                    controller: _scrollCarController,
-                    shrinkWrap: true,
-                    padding: EdgeInsets.zero,
-                    itemCount: state.itemResponseReportCars.length,
-                    itemBuilder: (context, index) =>
-                        _buildCustomer(state.itemResponseReportCars[index])),
-              );
-            }
-            return SizedBox();
-          }),
-        ],
-      ),
-    );
-  }
-
-  _buildCustomer(ItemResponseReportCar data) {
-    return GestureDetector(
-      onTap: () {
-        AppNavigator.navigateInfoContract(data.id!, data.name!);
-      },
-      child: Container(
-        margin: EdgeInsets.only(left: 16, right: 16, bottom: 20),
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-        decoration: BoxDecoration(
-          color: COLORS.WHITE,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(width: 1, color: COLORS.WHITE),
-          boxShadow: [
-            BoxShadow(
-              color: COLORS.BLACK.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 5,
-            )
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
+  _step5() {
+    return BlocBuilder<QuySoReportBloc, QuySoReportState>(
+        builder: (context, state) {
+      if (state is SuccessQuySoReportState) {
+        final dataSoQuy = state.dataQuySo ?? DataBaoCaoSoQuy();
+        return GestureDetector(
+          onTap: () {
+            _showBodyReportFive();
+          },
+          child: Container(
+            margin: EdgeInsets.only(
+              top: 8,
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: COLORS.ffFCF1D4,
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+            ),
+            child: Column(
               children: [
-                ImageBaseDefault(
-                  icon: ICONS.IC_CONTRACT_3X_PNG,
-                  width: 36,
-                  height: 36,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                SizedBox(
-                    width: AppValue.widths * 0.5,
-                    child: WidgetText(
-                      title: data.name ?? '',
-                      style: AppStyle.DEFAULT_TITLE_PRODUCT
-                          .copyWith(color: COLORS.TEXT_COLOR),
-                    )),
-                Spacer(),
-                Container(
-                  decoration: BoxDecoration(
-                      color:
-                          data.color != "" ? HexColor(data.color!) : COLORS.RED,
-                      borderRadius: BorderRadius.circular(99)),
-                  width: AppValue.widths * 0.08,
-                  height: AppValue.heights * 0.02,
-                )
+                AppValue.vSpaceTiny,
+                _rowText(getT(KeyT.first_period), dataSoQuy.dauKy ?? ''),
+                _rowText(getT(KeyT.total_revenue), dataSoQuy.tongThu ?? ''),
+                _rowText(getT(KeyT.total_expenditure), dataSoQuy.tongChi ?? ''),
+                _rowText(
+                    getT(KeyT.current_balance), dataSoQuy.tongDuCuoi ?? ''),
               ],
             ),
-            itemTextIcon(
-              text: data.customer?.name?.trim() ?? '',
-              icon: ICONS.IC_USER2_SVG,
-              colorIcon: HexColor('E75D18'),
-            ),
-            itemTextIcon(
-              isSVG: false,
-              text: data.bienSo?.trim() ?? '',
-              icon: ICONS.IC_LICENSE_PLATE_PNG,
-            ),
-            itemTextIcon(
-              text: data.status?.trim() ?? '',
-              icon: ICONS.IC_DANG_XU_LY_SVG,
-              colorIcon: data.color != "" ? HexColor(data.color!) : COLORS.RED,
-              colorText: data.color != "" ? HexColor(data.color!) : COLORS.RED,
-            ),
-            itemTextIcon(
-                text: '${getT(KeyT.total_amount)}: ' +
-                    '${data.giaTriHopDong ?? 0}' +
-                    shareLocal.getString(PreferencesKey.MONEY),
-                icon: ICONS.IC_MAIL_SVG,
-                colorIcon: Colors.grey,
-                colorText: Colors.grey),
-            SizedBox(
-              height: 8,
-            ),
-            AppValue.hSpaceTiny,
-          ],
-        ),
-      ),
-    );
+          ),
+        );
+      }
+      return SizedBox.shrink();
+    });
   }
+
+  Widget _rowText(
+    String title,
+    String content,
+  ) =>
+      content == ''
+          ? SizedBox.shrink()
+          : Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    title,
+                    style: AppStyle.DEFAULT_16,
+                  ),
+                  Text(AppValue.format_money(content),
+                      style: AppStyle.DEFAULT_18_BOLD),
+                ],
+              ),
+            );
 }

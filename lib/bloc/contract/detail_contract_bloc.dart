@@ -54,10 +54,9 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
     try {
       yield LoadingDetailContractState();
       final response = await userRepository.getDetailContract(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessDetailContractState(response.data ?? []);
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else
         yield ErrorDetailContractState(response.msg ?? '');
@@ -75,10 +74,9 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
     try {
       yield LoadingDeleteContractState();
       final response = await userRepository.deleteContract({"id": id});
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessDeleteContractState();
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else
         yield ErrorDeleteContractState(response.msg ?? '');
@@ -152,11 +150,10 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
     }
     try {
       final response = await userRepository.getSupportContract(id, page);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();
@@ -176,11 +173,10 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
     }
     try {
       final response = await userRepository.getJobContract(id, page);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         LoadingApi().popLoading();

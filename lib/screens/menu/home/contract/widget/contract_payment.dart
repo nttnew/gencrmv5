@@ -51,7 +51,7 @@ class _ContractPaymentState extends State<ContractPayment>
                 );
               }
               else
-                return Container();
+                return SizedBox.shrink();
             })
           ],
         ),
@@ -88,7 +88,7 @@ class _ContractPaymentState extends State<ContractPayment>
                             ),
                           );
                         else
-                          return Container();
+                          return SizedBox.shrink();
                       }),
                     ),
                     WidgetLine(

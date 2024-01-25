@@ -369,7 +369,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                   ),
                                 );
                               } else
-                                return Container();
+                                return SizedBox.shrink();
                             }),
                         SizedBox(
                           height: 16,

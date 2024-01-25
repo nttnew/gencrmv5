@@ -88,11 +88,10 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
     }
     try {
       final response = await userRepository.getWorkClue(id, page);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         return response.data ?? [];
-      } else if (response.code == BASE_URL.SUCCESS_999) {
+      } else if (isFail(response.code)) {
         LoadingApi().popLoading();
         loginSessionExpired();
       } else {

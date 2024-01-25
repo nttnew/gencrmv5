@@ -18,7 +18,7 @@ class WidgetItemListMenu extends StatelessWidget {
                     width: 20,
                     height: 20,
                   )
-                : Container(),
+                : SizedBox.shrink(),
             AppValue.hSpaceTiny,
             Text(
               title!,

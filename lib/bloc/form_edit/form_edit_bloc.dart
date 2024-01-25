@@ -53,8 +53,7 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
     try {
       yield LoadingFormEditState();
       final response = await userRepository.getUpdateCustomer(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormEditState(response.data!);
       } else {
         LoadingApi().popLoading();
@@ -74,8 +73,7 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
     try {
       yield LoadingFormEditState();
       final response = await userRepository.getFormEditClue(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormEditState(response.data!);
       } else {
         yield ErrorFormEditState(response.msg ?? '');
@@ -95,8 +93,7 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
     try {
       yield LoadingFormEditState();
       final response = await userRepository.getFormAddChance(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormEditState(response.data!);
       } else {
         yield ErrorFormEditState(response.msg ?? '');
@@ -116,8 +113,7 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
     try {
       yield LoadingFormEditState();
       final response = await userRepository.getFormAddJob(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormEditState(response.data!);
       } else {
         yield ErrorFormEditState(response.msg ?? '');
@@ -137,8 +133,7 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
     try {
       yield LoadingFormEditState();
       final response = await userRepository.getFormEditSupport(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormEditState(response.data!);
       } else {
         yield ErrorFormEditState(response.msg ?? '');
@@ -158,8 +153,7 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
     try {
       yield LoadingFormEditState();
       final response = await userRepository.getFormEditContract(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormEditState(response.data!);
       } else {
         yield ErrorFormEditState(response.msg ?? '');
@@ -179,8 +173,7 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
     try {
       yield LoadingFormEditState();
       final response = await userRepository.getEditProduct(id: id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormEditState(response.data!);
       } else {
         yield ErrorFormEditState(response.msg ?? '');
@@ -200,8 +193,7 @@ class FormEditBloc extends Bloc<FormEditEvent, FormEditState> {
     try {
       yield LoadingFormEditState();
       final response = await userRepository.getFormEditProductCustomer(id: id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield SuccessFormEditState(response.data!);
       } else {
         yield ErrorFormEditState(response.msg ?? '');
