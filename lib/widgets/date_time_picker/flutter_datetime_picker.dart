@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/date_time_picker/src/date_model.dart';
-import 'package:gen_crm/widgets/date_time_picker/src/datetime_picker_theme.dart';
 import 'package:gen_crm/widgets/date_time_picker/src/i18n_model.dart';
+import 'package:flutter/foundation.dart';
 
 typedef DateChangedCallback(DateTime time);
 typedef DateCancelledCallback();
@@ -15,13 +15,13 @@ class DatePicker {
   ///
   static Future<DateTime?> showDatePicker(
     BuildContext context, {
-    bool showTitleActions: true,
+    bool showTitleActions = true,
     DateTime? minTime,
     DateTime? maxTime,
     DateChangedCallback? onChanged,
     DateChangedCallback? onConfirm,
     DateCancelledCallback? onCancel,
-    locale: LocaleType.en,
+    locale = LocaleType.en,
     DateTime? currentTime,
     DatePickerTheme? theme,
   }) async {
@@ -51,11 +51,11 @@ class DatePicker {
   ///
   static Future<DateTime?> showTime12hPicker(
     BuildContext context, {
-    bool showTitleActions: true,
+    bool showTitleActions = true,
     DateChangedCallback? onChanged,
     DateChangedCallback? onConfirm,
     DateCancelledCallback? onCancel,
-    locale: LocaleType.en,
+    locale = LocaleType.en,
     DateTime? currentTime,
     DatePickerTheme? theme,
   }) async {
@@ -83,13 +83,13 @@ class DatePicker {
   ///
   static Future<DateTime?> showDateTimePicker(
     BuildContext context, {
-    bool showTitleActions: true,
+    bool showTitleActions = true,
     DateTime? minTime,
     DateTime? maxTime,
     DateChangedCallback? onChanged,
     DateChangedCallback? onConfirm,
     DateCancelledCallback? onCancel,
-    locale: LocaleType.en,
+    locale = LocaleType.en,
     DateTime? currentTime,
     DatePickerTheme? theme,
   }) async {
@@ -119,11 +119,11 @@ class DatePicker {
   ///
   static Future<DateTime?> showPicker(
     BuildContext context, {
-    bool showTitleActions: true,
+    bool showTitleActions = true,
     DateChangedCallback? onChanged,
     DateChangedCallback? onConfirm,
     DateCancelledCallback? onCancel,
-    locale: LocaleType.en,
+    locale = LocaleType.en,
     BasePickerModel? pickerModel,
     DatePickerTheme? theme,
   }) async {
@@ -494,13 +494,11 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
   _BottomPickerLayout(
     this.progress,
     this.theme, {
-    this.itemCount,
     this.showTitleActions,
     this.bottomPadding = 0,
   });
 
   final double progress;
-  final int? itemCount;
   final bool? showTitleActions;
   final DatePickerTheme theme;
   final double bottomPadding;
@@ -530,4 +528,27 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
   bool shouldRelayout(_BottomPickerLayout oldDelegate) {
     return progress != oldDelegate.progress;
   }
+}
+
+class DatePickerTheme with DiagnosticableTreeMixin {
+  final TextStyle cancelStyle;
+  final TextStyle doneStyle;
+  final TextStyle itemStyle;
+  final Color backgroundColor;
+  final Color? headerColor;
+
+  final double containerHeight;
+  final double titleHeight;
+  final double itemHeight;
+
+  const DatePickerTheme({
+    this.cancelStyle = const TextStyle(color: Colors.black54, fontSize: 16),
+    this.doneStyle = const TextStyle(color: Colors.blue, fontSize: 16),
+    this.itemStyle = const TextStyle(color: Color(0xFF000046), fontSize: 18),
+    this.backgroundColor = Colors.white,
+    this.headerColor,
+    this.containerHeight = 210.0,
+    this.titleHeight = 44.0,
+    this.itemHeight = 36.0,
+  });
 }
