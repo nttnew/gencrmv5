@@ -69,11 +69,19 @@ class BodyReportFour extends StatelessWidget {
         AppNavigator.navigateInfoContract(data.id!, data.name!);
       },
       child: Container(
-        margin: EdgeInsets.only(left: 16, right: 16, bottom: 20),
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+        margin: EdgeInsets.only(
+          left: 16,
+          right: 16,
+          bottom: 16,
+        ),
+        padding: EdgeInsets.all(
+          16,
+        ),
         decoration: BoxDecoration(
           color: COLORS.WHITE,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(
+            10,
+          ),
           border: Border.all(width: 1, color: COLORS.WHITE),
           boxShadow: [
             BoxShadow(
@@ -90,19 +98,19 @@ class BodyReportFour extends StatelessWidget {
               children: [
                 ImageBaseDefault(
                   icon: ICONS.IC_CONTRACT_3X_PNG,
-                  width: 36,
-                  height: 36,
+                  width: 16,
+                  height: 16,
                 ),
                 SizedBox(
-                  width: 10,
+                  width: 8,
                 ),
-                SizedBox(
-                    width: AppValue.widths * 0.5,
-                    child: WidgetText(
-                      title: data.name ?? '',
-                      style: AppStyle.DEFAULT_TITLE_PRODUCT
-                          .copyWith(color: COLORS.TEXT_COLOR),
-                    )),
+                Expanded(
+                  child: WidgetText(
+                    title: data.name ?? '',
+                    style: AppStyle.DEFAULT_TITLE_PRODUCT
+                        .copyWith(color: COLORS.TEXT_COLOR),
+                  ),
+                ),
                 Spacer(),
                 Container(
                   decoration: BoxDecoration(
@@ -131,14 +139,12 @@ class BodyReportFour extends StatelessWidget {
               colorText: data.color != "" ? HexColor(data.color!) : COLORS.RED,
             ),
             itemTextIcon(
-                text: '${getT(KeyT.total_amount)}: ' +
-                    '${data.giaTriHopDong ?? 0}' +
-                    money,
-                icon: ICONS.IC_MAIL_SVG,
-                colorIcon: Colors.grey,
-                colorText: Colors.grey),
-            SizedBox(
-              height: 8,
+              text: '${getT(KeyT.total_amount)}: ' +
+                  '${data.giaTriHopDong ?? 0}' +
+                  money,
+              icon: ICONS.IC_MAIL_SVG,
+              colorIcon: Colors.grey,
+              colorText: Colors.grey,
             ),
             AppValue.hSpaceTiny,
           ],

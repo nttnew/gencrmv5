@@ -97,17 +97,19 @@ class BodyReportOne extends StatelessWidget {
                 children: [
                   ImageBaseDefault(
                     icon: ICONS.IC_CONTRACT_3X_PNG,
+                    width: 16,
+                    height: 16,
                   ),
                   SizedBox(
-                    width: 10,
+                    width: 8,
                   ),
-                  SizedBox(
-                      width: AppValue.widths * 0.5,
-                      child: WidgetText(
-                        title: dataContact.name ?? '',
-                        style: AppStyle.DEFAULT_TITLE_PRODUCT
-                            .copyWith(color: COLORS.TEXT_COLOR),
-                      )),
+                  Expanded(
+                    child: WidgetText(
+                      title: dataContact.name ?? '',
+                      style: AppStyle.DEFAULT_TITLE_PRODUCT
+                          .copyWith(color: COLORS.TEXT_COLOR),
+                    ),
+                  ),
                   Spacer(),
                   Container(
                     decoration: BoxDecoration(
@@ -188,9 +190,6 @@ class BodyReportOne extends StatelessWidget {
                   ),
                   Spacer(),
                 ],
-              ),
-              SizedBox(
-                height: 8,
               ),
               AppValue.hSpaceTiny,
             ],
