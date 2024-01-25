@@ -239,4 +239,5 @@ class KeyT {
   static String income = 'income';
   static String user_manager = 'user_manager';
   static String click = 'click';
+  static String uncheck_all = 'uncheck_all';
 }

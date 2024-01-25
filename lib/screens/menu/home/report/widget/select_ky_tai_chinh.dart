@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../../../../l10n/key_text.dart';
 import '../../../../../src/models/model_generator/response_ntc_filter.dart';
 import '../../../../../src/src_index.dart';
@@ -47,11 +48,43 @@ class _SelectKyTaiChinhState extends State<SelectKyTaiChinh> {
         SizedBox(
           height: 8,
         ),
-        Padding(
+        Container(
           padding: const EdgeInsets.all(16),
-          child: Text(
-            getT(KeyT.nam_tai_chinh),
-            style: AppStyle.DEFAULT_18_BOLD,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                getT(KeyT.nam_tai_chinh),
+                style: AppStyle.DEFAULT_18_BOLD,
+              ),
+              GestureDetector(
+                onTap: () {
+                  kyTaiChinhSelect = null;
+                  setState(() {});
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: COLORS.LIGHT_BLUE,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(
+                        4,
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    getT(KeyT.uncheck_all),
+                    style: AppStyle.DEFAULT_14.copyWith(
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         SizedBox(
@@ -122,7 +155,11 @@ class _SelectKyTaiChinhState extends State<SelectKyTaiChinh> {
             itemBuilder: (BuildContext context, int i) {
               return GestureDetector(
                 onTap: () {
-                  kyTaiChinhSelect = yearSelect?.kyTaiChinh?[i];
+                  if (kyTaiChinhSelect == yearSelect?.kyTaiChinh?[i]) {
+                    kyTaiChinhSelect = null;
+                  } else {
+                    kyTaiChinhSelect = yearSelect?.kyTaiChinh?[i];
+                  }
                   setState(() {});
                 },
                 child: Container(
@@ -159,7 +196,11 @@ class _SelectKyTaiChinhState extends State<SelectKyTaiChinh> {
         ),
         ButtonThaoTac(
           onTap: () {
-            widget.onSelect(yearSelect, kyTaiChinhSelect);
+            if (yearSelect != null) {
+              widget.onSelect(yearSelect, kyTaiChinhSelect);
+            } else {
+              Get.back();
+            }
           },
           title: getT(KeyT.select),
           marginHorizontal: 16,
