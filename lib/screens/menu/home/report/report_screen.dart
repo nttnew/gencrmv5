@@ -264,7 +264,10 @@ class _ReportScreenState extends State<ReportScreen> {
                       } else if (step == 4) {
                         OptionBloc.of(context).add(InitOptionEvent(4));
                       } else if (step == 5) {
-                        OptionBloc.of(context).add(InitOptionEvent(5));
+                        OptionBloc.of(context).add(InitOptionEvent(
+                          5,
+                          kyDf: _bloc.kyTaiChinh?.id,
+                        ));
                       }
                     },
                     value: items['name'],
@@ -316,8 +319,12 @@ class _ReportScreenState extends State<ReportScreen> {
                                       }
                                       _bloc.selectReport.add('');
                                       ReportGeneralBloc.of(context).add(
-                                          SelectReportGeneralEvent(page,
-                                              _bloc.location, timeFilter));
+                                        SelectReportGeneralEvent(
+                                          page,
+                                          _bloc.location,
+                                          timeFilter,
+                                        ),
+                                      );
                                     },
                                     value: items[1],
                                     child: Text(
@@ -364,39 +371,43 @@ class _ReportScreenState extends State<ReportScreen> {
                             }
                           },
                           items: state.dataTime
-                              .map((items) => DropdownMenuItem<String>(
-                                    onTap: () {
-                                      if (items[0] == "") {
-                                        timeFilter = 0;
-                                      } else {
-                                        timeFilter = int.parse(items[0]);
-                                      }
-                                      _bloc.selectReport.add('');
-                                      if (step == 2 && timeFilter != 6) {
-                                        ReportProductBloc.of(context).add(
-                                            InitReportProductEvent(
-                                                location: _bloc.location,
-                                                time: timeFilter));
-                                      } else if (step == 3 && timeFilter != 6) {
-                                        ReportEmployeeBloc.of(context).add(
-                                            InitReportEmployeeEvent(
-                                                diemBan: _bloc.location == ''
-                                                    ? null
-                                                    : int.parse(_bloc.location),
-                                                time: timeFilter));
-                                      } else if (step == 4) {
-                                        CarReportBloc.of(context).add(
-                                            GetDashboardCar(
-                                                time: timeFilter.toString(),
-                                                diemBan: _bloc.location));
-                                      }
-                                    },
-                                    value: items[1],
-                                    child: Text(
-                                      items[1],
-                                      style: AppStyle.DEFAULT_14,
-                                    ),
-                                  ))
+                              .map(
+                                (items) => DropdownMenuItem<String>(
+                                  onTap: () {
+                                    if (items[0] == "") {
+                                      timeFilter = 0;
+                                    } else {
+                                      timeFilter = int.parse(items[0]);
+                                    }
+                                    _bloc.selectReport.add('');
+                                    if (step == 2 && timeFilter != 6) {
+                                      ReportProductBloc.of(context).add(
+                                          InitReportProductEvent(
+                                              location: _bloc.location,
+                                              time: timeFilter));
+                                    } else if (step == 3 && timeFilter != 6) {
+                                      ReportEmployeeBloc.of(context).add(
+                                          InitReportEmployeeEvent(
+                                              diemBan: _bloc.location == ''
+                                                  ? null
+                                                  : int.parse(_bloc.location),
+                                              time: timeFilter));
+                                    } else if (step == 4) {
+                                      CarReportBloc.of(context).add(
+                                        GetDashboardCar(
+                                          time: timeFilter.toString(),
+                                          diemBan: _bloc.location,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  value: items[1],
+                                  child: Text(
+                                    items[1],
+                                    style: AppStyle.DEFAULT_14,
+                                  ),
+                                ),
+                              )
                               .toList(),
                         );
                       } else {
@@ -496,29 +507,37 @@ class _ReportScreenState extends State<ReportScreen> {
                           },
                           items: state.dataLocation.isNotEmpty
                               ? state.dataLocation
-                                  .map((items) => DropdownMenuItem<String>(
-                                        onTap: () {
-                                          _bloc.location = items[0];
-                                          _bloc.selectReport.add('');
-                                          ReportGeneralBloc.of(context).add(
-                                              SelectReportGeneralEvent(page,
-                                                  _bloc.location, timeFilter));
-                                        },
-                                        value: items[1],
-                                        child: Text(
-                                          items[1],
-                                          style: AppStyle.DEFAULT_16_BOLD,
-                                        ),
-                                      ))
+                                  .map(
+                                    (items) => DropdownMenuItem<String>(
+                                      onTap: () {
+                                        _bloc.location = items[0];
+                                        _bloc.selectReport.add('');
+                                        ReportGeneralBloc.of(context).add(
+                                          SelectReportGeneralEvent(
+                                            page,
+                                            _bloc.location,
+                                            timeFilter,
+                                          ),
+                                        );
+                                      },
+                                      value: items[1],
+                                      child: Text(
+                                        items[1],
+                                        style: AppStyle.DEFAULT_16_BOLD,
+                                      ),
+                                    ),
+                                  )
                                   .toList()
                               : items
-                                  .map((items) => DropdownMenuItem<String>(
-                                        value: items,
-                                        child: Text(
-                                          items,
-                                          style: AppStyle.DEFAULT_16_BOLD,
-                                        ),
-                                      ))
+                                  .map(
+                                    (items) => DropdownMenuItem<String>(
+                                      value: items,
+                                      child: Text(
+                                        items,
+                                        style: AppStyle.DEFAULT_16_BOLD,
+                                      ),
+                                    ),
+                                  )
                                   .toList());
                     } else
                       return SizedBox();

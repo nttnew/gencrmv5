@@ -25,11 +25,14 @@ class OptionBloc extends Bloc<OptionEvent, OptionState> {
   @override
   Stream<OptionState> mapEventToState(OptionEvent event) async* {
     if (event is InitOptionEvent) {
-      yield* _getReportGeneral(event.type);
+      yield* _getReportGeneral(
+        event.type,
+        kyDf: event.kyDf,
+      );
     }
   }
 
-  Stream<OptionState> _getReportGeneral(int type) async* {
+  Stream<OptionState> _getReportGeneral(int type, {String? kyDf}) async* {
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getReportOption2();
@@ -60,7 +63,9 @@ class OptionBloc extends Bloc<OptionEvent, OptionState> {
           );
         else if (type == 5)
           QuySoReportBloc.of(Get.context!).add(
-            GetDashboardQuySo(),
+            GetDashboardQuySo(
+              kyTaiChinh: kyDf,
+            ),
           );
       } else if (isFail(response.code)) {
         loginSessionExpired();

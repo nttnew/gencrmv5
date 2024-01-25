@@ -9,7 +9,11 @@ abstract class OptionEvent extends Equatable {
 
 class InitOptionEvent extends OptionEvent {
   final int type;
-  InitOptionEvent(this.type);
+  final String? kyDf;
+  InitOptionEvent(
+    this.type, {
+    this.kyDf,
+  });
 
   @override
   List<Object> get props => [type];
