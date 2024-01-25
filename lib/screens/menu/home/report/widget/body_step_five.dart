@@ -120,7 +120,7 @@ class BodyReportFive extends StatelessWidget {
               colorIcon: COLORS.GREY,
             ),
             itemTextIcon(
-              text: data.hinhThucTt ?? '',
+              text: (data.hinhThucTt ?? '') + ' (${data.ngay ?? ''})',
               icon: ICONS.IC_CIRCLE_SMALL_PNG,
               isSVG: false,
               colorIcon: COLORS.GREY,

@@ -2,7 +2,7 @@ class NTCFilterModel {
   bool? success;
   int? code;
   String? msg;
-  List<DataNTCFilter>? data;
+  Data? data;
 
   NTCFilterModel({
     this.success,
@@ -15,12 +15,7 @@ class NTCFilterModel {
     success = json['success'];
     code = json['code'];
     msg = json['msg'];
-    if (json['data'] != null) {
-      data = <DataNTCFilter>[];
-      json['data'].forEach((v) {
-        data!.add(DataNTCFilter.fromJson(v));
-      });
-    }
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -29,7 +24,44 @@ class NTCFilterModel {
     data['code'] = this.code;
     data['msg'] = this.msg;
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
+}
+
+class Data {
+  String? namDf;
+  String? kyDf;
+  String? tenKyDf;
+  List<DataNTCFilter>? dataNTC;
+
+  Data({
+    this.namDf,
+    this.kyDf,
+    this.tenKyDf,
+    this.dataNTC,
+  });
+
+  Data.fromJson(Map<String, dynamic> json) {
+    namDf = json['namdf'];
+    kyDf = json['kydf'];
+    tenKyDf = json['tenkydf'];
+    if (json['dataNTC'] != null) {
+      dataNTC = <DataNTCFilter>[];
+      json['dataNTC'].forEach((v) {
+        dataNTC!.add(DataNTCFilter.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['namdf'] = this.namDf;
+    data['kydf'] = this.kyDf;
+    data['tenkydf'] = this.tenKyDf;
+    if (this.dataNTC != null) {
+      data['dataNTC'] = this.dataNTC!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -72,12 +104,10 @@ class DataNTCFilter {
       identical(this, other) ||
       other is DataNTCFilter &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
-          nam == other.nam &&
-          kyTaiChinh == other.kyTaiChinh;
+          nam == other.nam;
 
   @override
-  int get hashCode => id.hashCode ^ nam.hashCode ^ kyTaiChinh.hashCode;
+  int get hashCode => nam.hashCode;
 }
 
 class KyTaiChinh {
@@ -100,4 +130,15 @@ class KyTaiChinh {
     data['name'] = this.name;
     return data;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is KyTaiChinh &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name;
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode;
 }

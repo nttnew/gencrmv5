@@ -94,7 +94,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
                       leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                       endIcon: (snapshot.data ?? []).isNotEmpty
                           ? SvgPicture.asset(
-                              ICONS.IC_FILL_SVG,
+                              ICONS.IC_USER2_SVG,
                               width: 16,
                               height: 16,
                               fit: BoxFit.contain,

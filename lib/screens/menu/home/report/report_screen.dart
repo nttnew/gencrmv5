@@ -431,11 +431,11 @@ class _ReportScreenState extends State<ReportScreen> {
                         kyTaiChinhSelect: _bloc.kyTaiChinh,
                         yearSelect: _bloc.ntcFilter,
                         onSelect:
-                            (DataNTCFilter ntcFilter, KyTaiChinh? kyTaiChinh) {
+                            (DataNTCFilter? ntcFilter, KyTaiChinh? kyTaiChinh) {
                           _bloc.kyTaiChinh = kyTaiChinh;
                           _bloc.ntcFilter = ntcFilter;
                           _bloc.textNtcFilter.add(
-                              '${kyTaiChinh?.name ?? ''} ${ntcFilter.nam}');
+                              '${kyTaiChinh?.name ?? ''} ${ntcFilter?.nam}');
                           QuySoReportBloc.of(context).add(
                             GetDashboardQuySo(
                               nam: _bloc.ntcFilter?.nam ?? '',
@@ -740,7 +740,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                       Text(
                                         '${state.list[index].doanh_so ?? getT(KeyT.not_yet)}$money',
                                         style: AppStyle.DEFAULT_16,
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -1034,32 +1034,60 @@ class _ReportScreenState extends State<ReportScreen> {
         builder: (context, state) {
       if (state is SuccessQuySoReportState) {
         final dataSoQuy = state.dataQuySo ?? DataBaoCaoSoQuy();
-        return GestureDetector(
-          onTap: () {
-            _showBodyReportFive();
-          },
-          child: Container(
-            margin: EdgeInsets.only(
-              top: 8,
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: COLORS.ffFCF1D4,
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
+        return Column(
+          children: [
+            GestureDetector(
+              onTap: () {
+                _showBodyReportFive();
+              },
+              child: Container(
+                margin: EdgeInsets.only(
+                  top: 8,
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: COLORS.ffFCF1D4,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    AppValue.vSpaceTiny,
+                    _rowText(getT(KeyT.first_period), dataSoQuy.dauKy ?? ''),
+                    _rowText(getT(KeyT.total_revenue), dataSoQuy.tongThu ?? ''),
+                    _rowText(
+                        getT(KeyT.total_expenditure), dataSoQuy.tongChi ?? ''),
+                    _rowText(
+                        getT(KeyT.current_balance), dataSoQuy.tongDuCuoi ?? ''),
+                  ],
+                ),
               ),
             ),
-            child: Column(
-              children: [
-                AppValue.vSpaceTiny,
-                _rowText(getT(KeyT.first_period), dataSoQuy.dauKy ?? ''),
-                _rowText(getT(KeyT.total_revenue), dataSoQuy.tongThu ?? ''),
-                _rowText(getT(KeyT.total_expenditure), dataSoQuy.tongChi ?? ''),
-                _rowText(
-                    getT(KeyT.current_balance), dataSoQuy.tongDuCuoi ?? ''),
-              ],
+            Container(
+              alignment: Alignment.centerRight,
+              padding: EdgeInsets.only(
+                top: 10,
+                right: 16,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  WidgetText(
+                    title: getT(KeyT.click),
+                    style: AppStyle.DEFAULT_14,
+                  ),
+                  AppValue.hSpaceTiny,
+                  Image.asset(
+                    ICONS.IC_CLICK_PNG,
+                    color: COLORS.BLACK,
+                    height: 24,
+                    width: 24,
+                  ),
+                ],
+              ),
             ),
-          ),
+          ],
         );
       }
       return SizedBox.shrink();

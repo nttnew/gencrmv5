@@ -13,7 +13,7 @@ class SelectKyTaiChinh extends StatefulWidget {
     this.kyTaiChinhSelect,
   }) : super(key: key);
   final List<DataNTCFilter> soQuy;
-  final Function(DataNTCFilter, KyTaiChinh?) onSelect;
+  final Function(DataNTCFilter?, KyTaiChinh?) onSelect;
   final DataNTCFilter? yearSelect;
   final KyTaiChinh? kyTaiChinhSelect;
 
@@ -22,15 +22,19 @@ class SelectKyTaiChinh extends StatefulWidget {
 }
 
 class _SelectKyTaiChinhState extends State<SelectKyTaiChinh> {
-  late DataNTCFilter yearSelect;
+  DataNTCFilter? yearSelect;
   late List<DataNTCFilter> soQuy;
   KyTaiChinh? kyTaiChinhSelect;
 
   @override
   void initState() {
     soQuy = widget.soQuy;
-    yearSelect = widget.yearSelect ?? soQuy.first;
-    kyTaiChinhSelect = widget.kyTaiChinhSelect ?? soQuy.first.kyTaiChinh?.first;
+    soQuy.forEach((element) {
+      if (element == widget.yearSelect) {
+        yearSelect = element;
+      }
+    });
+    if (yearSelect != null) kyTaiChinhSelect = widget.kyTaiChinhSelect;
     super.initState();
   }
 
@@ -62,7 +66,7 @@ class _SelectKyTaiChinhState extends State<SelectKyTaiChinh> {
             itemBuilder: (context, i) => GestureDetector(
               onTap: () {
                 yearSelect = soQuy[i];
-                kyTaiChinhSelect = yearSelect.kyTaiChinh?.first;
+                kyTaiChinhSelect = yearSelect?.kyTaiChinh?.first;
                 setState(() {});
               },
               child: Container(
@@ -77,8 +81,8 @@ class _SelectKyTaiChinhState extends State<SelectKyTaiChinh> {
                     ),
                   ),
                   border: Border.all(
-                    width: yearSelect.nam == soQuy[i].nam ? 2 : 1,
-                    color: yearSelect.nam == soQuy[i].nam
+                    width: yearSelect?.nam == soQuy[i].nam ? 2 : 1,
+                    color: yearSelect?.nam == soQuy[i].nam
                         ? COLORS.BLUE
                         : COLORS.GREY_400,
                   ),
@@ -93,7 +97,7 @@ class _SelectKyTaiChinhState extends State<SelectKyTaiChinh> {
             ),
           ),
         ),
-        if ((yearSelect.kyTaiChinh?.length ?? 0) > 0) ...[
+        if ((yearSelect?.kyTaiChinh?.length ?? 0) > 0) ...[
           Padding(
             padding: const EdgeInsets.all(16),
             child: Text(
@@ -110,18 +114,19 @@ class _SelectKyTaiChinhState extends State<SelectKyTaiChinh> {
             physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-              crossAxisSpacing: 24,
+              crossAxisSpacing: 16,
               mainAxisSpacing: 16,
               mainAxisExtent: 35,
             ),
-            itemCount: yearSelect.kyTaiChinh?.length,
+            itemCount: yearSelect?.kyTaiChinh?.length,
             itemBuilder: (BuildContext context, int i) {
               return GestureDetector(
                 onTap: () {
-                  kyTaiChinhSelect = yearSelect.kyTaiChinh?[i];
+                  kyTaiChinhSelect = yearSelect?.kyTaiChinh?[i];
                   setState(() {});
                 },
                 child: Container(
+                  alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
                       Radius.circular(
@@ -129,17 +134,19 @@ class _SelectKyTaiChinhState extends State<SelectKyTaiChinh> {
                       ),
                     ),
                     border: Border.all(
-                      width:
-                          kyTaiChinhSelect == yearSelect.kyTaiChinh?[i] ? 2 : 1,
-                      color: kyTaiChinhSelect == yearSelect.kyTaiChinh?[i]
+                      width: kyTaiChinhSelect == yearSelect?.kyTaiChinh?[i]
+                          ? 2
+                          : 1,
+                      color: kyTaiChinhSelect == yearSelect?.kyTaiChinh?[i]
                           ? COLORS.BLUE
                           : COLORS.GREY_400,
                     ),
                   ),
-                  child: Center(
+                  child: FittedBox(
                     child: Text(
-                      yearSelect.kyTaiChinh?[i].name ?? '',
+                      yearSelect?.kyTaiChinh?[i].name ?? '',
                       style: AppStyle.DEFAULT_14W600,
+                      maxLines: 1,
                     ),
                   ),
                 ),

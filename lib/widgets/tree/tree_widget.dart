@@ -124,7 +124,7 @@ class _TreeWidgetState extends State<TreeWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         WidgetText(
-                          title: getT(KeyT.select_filter),
+                          title: getT(KeyT.user_manager),
                           style: AppStyle.DEFAULT_TITLE_APPBAR,
                         ),
                         GestureDetector(

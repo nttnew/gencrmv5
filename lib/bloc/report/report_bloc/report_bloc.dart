@@ -142,7 +142,11 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
     try {
       final response = await userRepository.getNTCFilter();
       if (isSuccess(response.code)) {
-        filterSoQuyStream.add(response.data ?? []);
+        ntcFilter = DataNTCFilter(nam: response.data?.namDf);
+        kyTaiChinh =
+            KyTaiChinh(name: response.data?.tenKyDf, id: response.data?.kyDf);
+        textNtcFilter.add('${kyTaiChinh?.name ?? ''} ${ntcFilter?.nam}');
+        filterSoQuyStream.add(response.data?.dataNTC ?? []);
       }
     } catch (e) {
       throw e;

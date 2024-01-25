@@ -81,6 +81,7 @@ class DataListSoQuy {
   int? thu;
   String? soTien;
   String? hinhThucTt;
+  String? ngay;
 
   DataListSoQuy({
     this.soPhieu,
@@ -88,6 +89,7 @@ class DataListSoQuy {
     this.thu,
     this.soTien,
     this.hinhThucTt,
+    this.ngay,
   });
 
   DataListSoQuy.fromJson(Map<String, dynamic> json) {
@@ -96,6 +98,7 @@ class DataListSoQuy {
     thu = json['thu'];
     soTien = json['so_tien'];
     hinhThucTt = json['hinh_thuc_tt'];
+    ngay = json['ngay'];
   }
 
   Map<String, dynamic> toJson() {
@@ -105,6 +108,7 @@ class DataListSoQuy {
     data['thu'] = this.thu;
     data['so_tien'] = this.soTien;
     data['hinh_thuc_tt'] = this.hinhThucTt;
+    data['ngay'] = this.ngay;
     return data;
   }
 }

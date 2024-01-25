@@ -237,4 +237,6 @@ class KeyT {
   static String choose_time = 'choose_time';
   static String expenses = 'expenses';
   static String income = 'income';
+  static String user_manager = 'user_manager';
+  static String click = 'click';
 }
