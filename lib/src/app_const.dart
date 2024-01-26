@@ -197,6 +197,7 @@ getSipInfo() {
     "accountName": "${user}",
     "displayName": "${user}@${domain}",
     "dialPlan": null,
+    "port": 50061,
     "randomPort": null,
     "voicemail": null,
     "wssUrl": wssMobile,
