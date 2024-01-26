@@ -14,7 +14,7 @@ import 'package:gen_crm/src/models/model_generator/main_menu_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/event_repository_storage.dart';
 import 'package:gen_crm/storages/share_local.dart';
-import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
+// import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
@@ -59,7 +59,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     shareLocal.putString(PreferencesKey.REGISTER_CALL, 'true');
     shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.UNREGISTER);
     _removeDeviceToken(context);
-    PitelClient.getInstance().pitelCall.unregister();
+    // PitelClient.getInstance().pitelCall.unregister();
   }
 
   Future<void> _removeDeviceToken(BuildContext context) async {
@@ -76,11 +76,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     String deviceToken =
         await shareLocal.getString(PreferencesKey.DEVICE_TOKEN) ?? '';
 
-    await PitelClient.getInstance().removeDeviceToken(
-      deviceToken: deviceToken, // Device token
-      domain: domain,
-      extension: user,
-    );
+    // await PitelClient.getInstance().removeDeviceToken(
+    //   deviceToken: deviceToken, // Device token
+    //   domain: domain,
+    //   extension: user,
+    // );
 
     await shareLocal.putString(PreferencesKey.DEVICE_TOKEN, '');
   }

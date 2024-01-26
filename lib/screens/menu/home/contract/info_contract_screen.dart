@@ -182,7 +182,9 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: TabBar(
-                          padding: EdgeInsets.symmetric(horizontal: 25),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                          ),
                           isScrollable: true,
                           automaticIndicatorColorAdjustment: true,
                           indicatorColor: COLORS.TEXT_COLOR,
