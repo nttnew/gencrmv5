@@ -52,7 +52,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   bool checkRegisterSuccess() {
-    return shareLocal.getString(PreferencesKey.REGISTER_MSG) == REGISTERED;
+    return shareLocal
+            .getString(PreferencesKey.REGISTER_MSG)
+            .toString()
+            .toUpperCase() ==
+        REGISTERED;
   }
 
   void logout(BuildContext context) {

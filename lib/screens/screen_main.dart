@@ -172,7 +172,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
         (shareLocal.getString(PreferencesKey.REGISTER_CALL) ?? "true") ==
             "true";
     state = pitelCall.getRegisterState();
-    shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.UNREGISTER);
+    shareLocal.putString(PreferencesKey.REGISTER_MSG, state);
     _bindEventListeners();
     if (isRegister) {
       shareLocal.putString(PreferencesKey.REGISTER_CALL, 'false');
@@ -204,6 +204,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
       shareLocal.putString(PreferencesKey.DEVICE_TOKEN, deviceToken);
       handleRegisterBase(context, pitelService, deviceToken);
       _registerDeviceToken(deviceToken);
+      print('fuck-${DateTime.now().toString()}');
     } catch (e) {}
   }
 
