@@ -100,8 +100,9 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
           title: getT(KeyT.report),
           image: ICONS.IC_REPORT_PNG,
           backgroundColor: COLORS.ff5D5FEF,
-          onTap: ()  {
-            AppNavigator.navigateReport(shareLocal.getString(PreferencesKey.MONEY) ?? '');
+          onTap: () {
+            AppNavigator.navigateReport(
+                shareLocal.getString(PreferencesKey.MONEY) ?? '');
           }),
     );
     setState(() {});
@@ -204,7 +205,6 @@ class _ScreenMainState extends ConsumerState<ScreenMain>
       shareLocal.putString(PreferencesKey.DEVICE_TOKEN, deviceToken);
       handleRegisterBase(context, pitelService, deviceToken);
       _registerDeviceToken(deviceToken);
-      print('fuck-${DateTime.now().toString()}');
     } catch (e) {}
   }
 
