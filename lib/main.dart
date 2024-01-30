@@ -30,7 +30,6 @@ import 'package:gen_crm/bloc/support/support_bloc.dart';
 import 'package:gen_crm/my_app.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/storages.dart';
-// import 'package:plugin_pitel/voip_push/push_notif.dart';
 import 'api_resfull/api.dart';
 import 'bloc/add_customer/add_customer_bloc.dart';
 import 'bloc/blocs.dart';
@@ -62,7 +61,7 @@ Future main() async {
   shareLocal = await ShareLocal.getInstance();
   WidgetsFlutterBinding.ensureInitialized();
   UserRepository userRepository = UserRepository();
-  // await PushNotifAndroid.initFirebase(DefaultFirebaseOptions.currentPlatform);
+  await PushNotifAndroid.initFirebase(DefaultFirebaseOptions.currentPlatform);
   await Firebase.initializeApp(
     name: "app",
     options: DefaultFirebaseOptions.currentPlatform,

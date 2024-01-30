@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_pitel_voip/flutter_pitel_voip.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/screens/call/init_app_call.dart';
@@ -22,13 +21,10 @@ import 'package:gen_crm/screens/menu/home/product_customer/detail_product_custom
 import 'package:gen_crm/screens/menu/home/product_customer/product_customer.dart';
 import 'package:gen_crm/screens/menu/home/report/report_screen.dart';
 import 'package:gen_crm/screens/menu/form/checkin_screen.dart';
-import 'package:gen_crm/src/app_const.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/screens/forgot_password/forgot_password_otp_screen.dart';
 import 'package:gen_crm/screens/screens.dart';
 import 'package:gen_crm/src/src_index.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'screens/menu/form/product_list/list_service_park.dart';
 import 'screens/menu/home/customer/call_screen.dart';
@@ -39,10 +35,6 @@ class MyApp extends ConsumerStatefulWidget {
   @override
   ConsumerState<MyApp> createState() => _MyAppState();
 }
-
-final callStateController =
-    StateProvider<PitelCallStateEnum>((ref) => PitelCallStateEnum.NONE);
-final pitelSettingProvider = StateProvider<PitelSettings?>((ref) => null);
 
 class _MyAppState extends ConsumerState<MyApp> {
   @override
@@ -121,48 +113,6 @@ class _MyAppState extends ConsumerState<MyApp> {
     });
   }
 
-  ///
-  final pitelService = PitelServiceImpl();
-  final PitelCall pitelCall = PitelClient.getInstance().pitelCall;
-  bool haveCall = false;
-
-  void registerFunc() async {
-    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
-    final PushNotifParams pushNotifParams = PushNotifParams(
-      teamId: TEAM_ID,
-      bundleId: packageInfo.packageName,
-    );
-
-    final pitelClient = PitelServiceImpl();
-
-    final pitelSetting =
-        await pitelClient.setExtensionInfo(getSipInfo(), pushNotifParams);
-
-    ref.read(pitelSettingProvider.notifier).state = pitelSetting;
-  }
-
-  void handleRegister() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool? isLoggedIn = prefs.getBool("IS_LOGGED_IN");
-
-    if (isLoggedIn != null && isLoggedIn) {
-      registerFunc();
-    }
-  }
-
-  void handleRegisterCall() async {
-    final PitelSettings? pitelSetting = ref.watch(pitelSettingProvider);
-    if (pitelSetting != null) {
-      pitelCall.register(pitelSetting);
-    } else {
-      registerFunc();
-    }
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("ACCEPT_CALL", true);
-  }
-
-  ///
   @override
   Widget build(BuildContext context) {
     if (!Platform.isAndroid) {
@@ -178,174 +128,169 @@ class _MyAppState extends ConsumerState<MyApp> {
         systemNavigationBarIconBrightness: Brightness.dark,
       ));
     }
-    return PitelVoip(
-      handleRegister: handleRegister,
-      handleRegisterCall: handleRegisterCall,
-      child: GetMaterialApp(
-        builder: EasyLoading.init(),
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(fontFamily: 'NunitoSans'),
-        initialRoute: ROUTE_NAMES.SPLASH,
-        getPages: [
-          GetPage(
-            name: ROUTE_NAMES.MAIN,
-            page: () => InitCallApp(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.SPLASH,
-            page: () => SplashPage(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.LOGIN,
-            page: () => LoginScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.INFORMATION_ACCOUNT,
-            page: () => InformationAccount(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.CHANCE,
-            page: () => ChanceScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.INFO_CHANCE,
-            page: () => InfoChancePage(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.CUSTOMER,
-            page: () => CustomerScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.REPORT,
-            page: () => ReportScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.PRODUCT,
-            page: () => ProductScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.CLUE,
-            page: () => ClueScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.INFO_CLUE,
-            page: () => DetailInfoClue(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.WORK,
-            page: () => WorkScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.CONTRACT,
-            page: () => ContractScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.DETAIL_WORK,
-            page: () => DetailWorkScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.DETAIL_SUPPORT,
-            page: () => DetailSupportScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.INFO_CONTRACT,
-            page: () => DetailInfoContract(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.ADD_CONTRACT,
-            page: () => FormAddContract(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.SUPPORT,
-            page: () => SupportScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.ABOUT_US,
-            page: () => AboutUsScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.POLICY,
-            page: () => PolicyScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.CHANGE_PASSWORD,
-            page: () => ChangePassWordPage(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.FORGOT_PASSWORD,
-            page: () => ForgotPasswordScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.FORGOT_PASSWORD_OTP,
-            page: () => ForgotPasswordOTPScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.FORGOT_PASSWORD_RESET,
-            page: () => ForgotPasswordResetScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.DETAIL_CUSTOMER,
-            page: () => DetailCustomerScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.ADD_CUSTOMER,
-            page: () => AddCustomer(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.ADD_SERVICE_VOUCHER_STEP_TWO,
-            page: () => AddServiceVoucherStepTwoScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.NOTIFICATION,
-            page: () => NotificationScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.FORM_ADD,
-            page: () => FormAddData(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.FORM_ADD_CUSTOMER_GROUP,
-            page: () => FormAddData(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.FORM_EDIT,
-            page: () => FormEdit(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.ADD_NOTE,
-            page: () => AddNote(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.ADD_PRODUCT,
-            page: () => ListProduct(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.EDIT_CONTRACT,
-            page: () => EditContract(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.DETAIL_PRODUCT,
-            page: () => DetailProductScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.CHECK_IN,
-            page: () => CheckInScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.PRODUCT_CUSTOMER,
-            page: () => ProductCustomerScreen(),
-          ),
-          GetPage(
-            name: ROUTE_NAMES.DETAIL_PRODUCT_CUSTOMER,
-            page: () => DetailProductCustomerScreen(),
-          ),
-          GetPage(name: ROUTE_NAMES.FORM_SIGN, page: () => FormAddSign()),
-          // GetPage(name: ROUTE_NAMES.CALL, page: () => CallScreen()),
-          GetPage(
-              name: ROUTE_NAMES.LIST_SERVICE_PARK,
-              page: () => ListServicePark()),
-        ],
-      ),
+    return GetMaterialApp(
+      builder: EasyLoading.init(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: 'NunitoSans'),
+      initialRoute: ROUTE_NAMES.SPLASH,
+      getPages: [
+        GetPage(
+          name: ROUTE_NAMES.MAIN,
+          page: () => InitCallApp(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.SPLASH,
+          page: () => SplashPage(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.LOGIN,
+          page: () => LoginScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.INFORMATION_ACCOUNT,
+          page: () => InformationAccount(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.CHANCE,
+          page: () => ChanceScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.INFO_CHANCE,
+          page: () => InfoChancePage(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.CUSTOMER,
+          page: () => CustomerScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.REPORT,
+          page: () => ReportScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.PRODUCT,
+          page: () => ProductScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.CLUE,
+          page: () => ClueScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.INFO_CLUE,
+          page: () => DetailInfoClue(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.WORK,
+          page: () => WorkScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.CONTRACT,
+          page: () => ContractScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.DETAIL_WORK,
+          page: () => DetailWorkScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.DETAIL_SUPPORT,
+          page: () => DetailSupportScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.INFO_CONTRACT,
+          page: () => DetailInfoContract(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.ADD_CONTRACT,
+          page: () => FormAddContract(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.SUPPORT,
+          page: () => SupportScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.ABOUT_US,
+          page: () => AboutUsScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.POLICY,
+          page: () => PolicyScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.CHANGE_PASSWORD,
+          page: () => ChangePassWordPage(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.FORGOT_PASSWORD,
+          page: () => ForgotPasswordScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.FORGOT_PASSWORD_OTP,
+          page: () => ForgotPasswordOTPScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.FORGOT_PASSWORD_RESET,
+          page: () => ForgotPasswordResetScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.DETAIL_CUSTOMER,
+          page: () => DetailCustomerScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.ADD_CUSTOMER,
+          page: () => AddCustomer(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.ADD_SERVICE_VOUCHER_STEP_TWO,
+          page: () => AddServiceVoucherStepTwoScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.NOTIFICATION,
+          page: () => NotificationScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.FORM_ADD,
+          page: () => FormAddData(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.FORM_ADD_CUSTOMER_GROUP,
+          page: () => FormAddData(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.FORM_EDIT,
+          page: () => FormEdit(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.ADD_NOTE,
+          page: () => AddNote(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.ADD_PRODUCT,
+          page: () => ListProduct(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.EDIT_CONTRACT,
+          page: () => EditContract(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.DETAIL_PRODUCT,
+          page: () => DetailProductScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.CHECK_IN,
+          page: () => CheckInScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.PRODUCT_CUSTOMER,
+          page: () => ProductCustomerScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.DETAIL_PRODUCT_CUSTOMER,
+          page: () => DetailProductCustomerScreen(),
+        ),
+        GetPage(name: ROUTE_NAMES.FORM_SIGN, page: () => FormAddSign()),
+        GetPage(name: ROUTE_NAMES.CALL, page: () => CallGencrmScreen()),
+        GetPage(
+            name: ROUTE_NAMES.LIST_SERVICE_PARK, page: () => ListServicePark()),
+      ],
     );
   }
 }

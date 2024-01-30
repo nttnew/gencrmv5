@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pitel_voip/services/sip_info_data.dart';
@@ -8,9 +7,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-// import 'package:plugin_pitel/services/models/pn_push_params.dart';
-// import 'package:plugin_pitel/services/pitel_service.dart';
-// import 'package:plugin_pitel/services/sip_info_data.dart';
 import '../bloc/login/login_bloc.dart';
 import '../../l10n/key_text.dart';
 import '../storages/share_local.dart';
@@ -75,76 +71,6 @@ Widget noData() => Align(
       ),
     );
 
-void handleRegisterBase(
-  BuildContext context,
-  // PitelServiceImpl pitelService,
-  String deviceToken,
-) {
-  final int user =
-      int.parse(LoginBloc.of(context).loginData?.info_user?.extension ?? '0');
-  Codec<String, String> stringToBase64 = utf8.fuse(base64);
-
-  final String pass = stringToBase64.decode(
-      LoginBloc.of(context).loginData?.info_user?.password_extension ?? '');
-
-  final String domain = LoginBloc.of(context)
-          .loginData
-          ?.info_user
-          ?.info_setup_callcenter
-          ?.domain_mobile ??
-      '';
-
-  final String portApp = LoginBloc.of(context)
-          .loginData
-          ?.info_user
-          ?.info_setup_callcenter
-          ?.port_app ??
-      '';
-
-  final String outboundProxy = LoginBloc.of(context)
-          .loginData
-          ?.info_user
-          ?.info_setup_callcenter
-          ?.outbound_server ??
-      '';
-
-  final String wssMobile = LoginBloc.of(context)
-          .loginData
-          ?.info_user
-          ?.info_setup_callcenter
-          ?.wss_mobile ??
-      '';
-
-  final String apiDomain = LoginBloc.of(context)
-          .loginData
-          ?.info_user
-          ?.info_setup_callcenter
-          ?.api_url ??
-      '';
-
-  // final sipInfo = SipInfoData.fromJson({
-  //   "authPass": pass,
-  //   "registerServer": domain + (portApp != '' ? ':' + portApp : ''),
-  //   "outboundServer": outboundProxy,
-  //   "userID": user,
-  //   "authID": user,
-  //   "accountName": "${user}",
-  //   "displayName": "${user}@${domain}",
-  //   "dialPlan": null,
-  //   "randomPort": null,
-  //   "voicemail": null,
-  //   "wssUrl": wssMobile,
-  //   "userName": "${user}@${domain}",
-  //   "apiDomain": apiDomain, //apiDomain,
-  // });
-  // final pnPushParams = PnPushParams(
-  //   pnProvider: Platform.isAndroid ? 'fcm' : 'apns',
-  //   pnParam: Platform.isAndroid ? PACKAGE_ID : '${TEAM_ID}.${BUNDLE_ID}.voip',
-  //   pnPrid: '${deviceToken}',
-  // );
-  // pitelService.setExtensionInfo(sipInfo, pnPushParams);
-}
-
 getSipInfo() {
   final context = Get.context!;
   final String user =
@@ -189,7 +115,7 @@ getSipInfo() {
           ?.api_url ??
       '';
   final sipInfo = SipInfoData.fromJson({
-    "authPass": pass,
+    "authPass": pass, // pass,
     "registerServer": domain + (portApp != '' ? ':' + portApp : ''),
     "outboundServer": outboundProxy,
     "userID": user,
@@ -204,10 +130,6 @@ getSipInfo() {
     "userName": "${user}@${domain}",
     "apiDomain": apiDomain, //apiDomain,
   });
-
-  print('fuck$sipInfo');
-  print('fuck${sipInfo.toString()}');
-  print('fuck${sipInfo.toJson().toString()}');
   return sipInfo;
 }
 

@@ -240,4 +240,9 @@ class KeyT {
   static String user_manager = 'user_manager';
   static String click = 'click';
   static String uncheck_all = 'uncheck_all';
+  static String txt_outgoing = 'txtOutgoing';
+  static String txt_incoming = 'txtIncoming';
+  static String txt_speaker = 'txtSpeaker';
+  static String txt_mute = 'txtMute';
+  static String txt_waiting = 'txtWaiting';
 }

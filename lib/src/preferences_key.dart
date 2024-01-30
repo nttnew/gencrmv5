@@ -48,4 +48,5 @@ class PreferencesKey {
   static const String LANGUAGE_NAME = "LANGUAGE_NAME";
   static const String LANGUAGE_BE_ALL = "LANGUAGE_BE_ALL";
   static const String HISTORY_CALL = "HISTORY_CALL";
+  static const String IS_LOGGED_IN = "IS_LOGGED_IN";
 }

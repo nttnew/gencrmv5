@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_pitel_voip/pitel_sdk/pitel_call.dart';
+import 'package:flutter_pitel_voip/pitel_sdk/pitel_client.dart';
+import 'package:flutter_pitel_voip/services/models/push_notif_params.dart';
+import 'package:flutter_pitel_voip/services/pitel_service.dart';
+import 'package:flutter_pitel_voip/sip/src/sip_ua_helper.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
-// import 'package:plugin_pitel/component/pitel_call_state.dart';
-// import 'package:plugin_pitel/component/sip_pitel_helper_listener.dart';
-// import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
-// import 'package:plugin_pitel/sip/src/sip_ua_helper.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../bloc/login/login_bloc.dart';
 import '../models/call_history_model.dart';
-import '../screens/call/call_screen.dart';
+import '../screens/call/init_app_call.dart';
 import '../src/src_index.dart';
 import '../../l10n/key_text.dart';
-import '../storages/share_local.dart';
 
-class DialogCall extends StatefulWidget {
+class DialogCall extends ConsumerStatefulWidget {
   final String phone;
   final String name;
   final String routerName;
@@ -28,105 +32,45 @@ class DialogCall extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<DialogCall> createState() => _DialogCallState();
+  ConsumerState<DialogCall> createState() => _DialogCallState();
 }
 
-class _DialogCallState extends State<DialogCall>
-    // implements SipPitelHelperListener
-{
-  // late final pitelCall;
-  // late final pitelClient;
-  // @override
-  // void initState() {
-  //   pitelCall = PitelClient.getInstance().pitelCall;
-  //   pitelClient = PitelClient.getInstance();
-  //   _bindEventListeners();
-  //   super.initState();
-  // }
-  //
-  // // STATUS: check register status
-  // @override
-  // void registrationStateChanged(PitelRegistrationState state) {
-  //   switch (state.state) {
-  //     case PitelRegistrationStateEnum.REGISTRATION_FAILED:
-  //       break;
-  //     case PitelRegistrationStateEnum.NONE:
-  //     case PitelRegistrationStateEnum.UNREGISTERED:
-  //     case PitelRegistrationStateEnum.REGISTERED:
-  //       shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.REGISTERED);
-  //       break;
-  //   }
-  // }
-  //
-  // void _bindEventListeners() {
-  //   pitelCall.addListener(this);
-  // }
-  //
-  // @override
-  // void deactivate() {
-  //   super.deactivate();
-  //   _removeEventListeners();
-  // }
-  //
-  // void _removeEventListeners() {
-  //   pitelCall.removeListener(this);
-  // }
-  //
-  // // ACTION: call device if register success
-  // // Flow: Register (with sipInfoData) -> Register success REGISTERED -> Start Call
-  // @override
-  // void onNewMessage(PitelSIPMessageRequest msg) {
-  //   var msgBody = msg.request.body as String;
-  //   shareLocal.putString(PreferencesKey.REGISTER_MSG, msgBody);
-  // }
-  //
-  // @override
-  // void callStateChanged(String callId, PitelCallState state) {}
-  //
-  // @override
-  // void transportStateChanged(PitelTransportState state) {}
-  //
-  // @override
-  // void onCallReceived(String callId) {
-  //   pitelCall.setCallCurrent(callId);
-  //   Navigator.of(context).push(MaterialPageRoute(
-  //       builder: (context) => CallScreenWidget(
-  //             modelScreen: widget.routerName,
-  //             title: ModuleMy.getNameModuleMy(
-  //               widget.moduleMy,
-  //               isTitle: true,
-  //             ),
-  //           )));
-  // }
-  //
-  // @override
-  // void onCallInitiated(String callId) {
-  //   pitelCall.setCallCurrent(callId);
-  //   Navigator.of(context).push(MaterialPageRoute(
-  //       builder: (context) => CallScreenWidget(
-  //             modelScreen: widget.routerName,
-  //             title: ModuleMy.getNameModuleMy(
-  //               widget.moduleMy,
-  //               isTitle: true,
-  //             ),
-  //           )));
-  // }
-  //
-  // void goBack() {
-  //   pitelClient.release();
-  //   Navigator.of(context).pop();
-  // }
+class _DialogCallState extends ConsumerState<DialogCall> {
+  final PitelCall pitelCall = PitelClient.getInstance().pitelCall;
+
+  void registerFunc() async {
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    final PushNotifParams pushNotifParams = PushNotifParams(
+      teamId: TEAM_ID,
+      bundleId: packageInfo.packageName,
+    );
+
+    final pitelClient = PitelServiceImpl();
+    final pitelSetting =
+        await pitelClient.setExtensionInfo(getSipInfo(), pushNotifParams);
+    ref.read(pitelSettingProvider.notifier).state = pitelSetting;
+  }
+
+  void _handleRegisterCall() async {
+    final PitelSettings? pitelSetting = ref.watch(pitelSettingProvider);
+    if (pitelSetting != null) {
+      pitelCall.register(pitelSetting);
+    } else {
+      registerFunc();
+    }
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("ACCEPT_CALL", true);
+  }
 
   void _handleCall(BuildContext context, [bool voiceonly = false]) {
     var dest = widget.phone;
     if (dest.isEmpty) {
     } else {
-      // pitelClient.call(dest, voiceonly).then((value) => value.fold(
-      //     (succ) => {},
-      //     (err) => {
-      //           shareLocal.putString(
-      //               PreferencesKey.REGISTER_MSG, err.toString())
-      //         }));
+      pitelCall.outGoingCall(
+        phoneNumber: dest,
+        handleRegisterCall: _handleRegisterCall,
+      );
     }
   }
 
