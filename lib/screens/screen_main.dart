@@ -154,9 +154,8 @@ class _ScreenMainState extends ConsumerState<ScreenMain> {
     /// HANDEL CALL
 
     final PushNotifParams pushNotifParams = PushNotifParams(
-      teamId: '${TEAM_ID}',
-      bundleId:
-          Platform.isAndroid ? PACKAGE_ID : '${TEAM_ID}.${BUNDLE_ID}.voip',
+      teamId: TEAM_ID,
+      bundleId: Platform.isAndroid ? PACKAGE_ID : BUNDLE_ID,
     );
 
     final pitelClient = PitelServiceImpl();

@@ -90,8 +90,7 @@ class _InitCallAppState extends ConsumerState<InitCallApp> {
       handleRegister: handleRegister,
       handleRegisterCall: handleRegisterCall,
       child: PitelVoipCall(
-        bundleId:
-            Platform.isAndroid ? PACKAGE_ID : '${TEAM_ID}.${BUNDLE_ID}.voip',
+        bundleId: Platform.isAndroid ? PACKAGE_ID : BUNDLE_ID,
         appMode: 'production', // dev or production
         sipInfoData: getSipInfo(),
         goBack: () {
