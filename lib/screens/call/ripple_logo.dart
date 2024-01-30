@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
-// import 'package:plugin_pitel/pitel_sdk/pitel_call.dart';
-import '../../l10n/key_text.dart';
 import '../../src/src_index.dart';
 
 class RippleLogo extends StatefulWidget {
