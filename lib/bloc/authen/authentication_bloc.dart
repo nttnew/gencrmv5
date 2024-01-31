@@ -42,7 +42,7 @@ class AuthenticationBloc
       await shareLocal.putString(PreferencesKey.TOKEN, '');
       await shareLocal.putString(PreferencesKey.USER_CODE, '');
       await shareLocal.putString(PreferencesKey.USER_EMAIL, '');
-      await _localRepository.saveUserID("");
+      await _localRepository.saveUserID('');
       _userRepository.logOut();
 
       final deviceToken =

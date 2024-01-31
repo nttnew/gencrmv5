@@ -90,10 +90,11 @@ class _UnReadListState extends State<UnReadList>
         onTap: () {
           ModuleMy.getNavigate(
               item.record_id ?? '', item.title ?? '', item.module ?? '');
-          GetNotificationBloc.of(context)
-              .add(ReadNotificationEvent(item.id ?? '', item.type ?? ''));
+          GetNotificationBloc.of(context).add(
+            ReadNotificationEvent(item.id ?? '', item.type ?? ''),
+          );
         },
-        contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 4),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         title: WidgetText(
           title: item.title ?? '',
           style: AppStyle.DEFAULT_16.copyWith(fontWeight: FontWeight.w600),

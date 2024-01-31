@@ -19,7 +19,7 @@ class NotificationScreen extends StatelessWidget {
           length: 2,
           child: Scaffold(
               appBar: TabBar(
-                padding: EdgeInsets.symmetric(horizontal: 25),
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 isScrollable: true,
                 labelColor: COLORS.ff006CB1,
                 unselectedLabelColor: COLORS.ff697077,
@@ -47,7 +47,7 @@ class NotificationScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-              )),
-        ));
+              ),),
+        ),);
   }
 }

@@ -1,34 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_pitel_voip/pitel_sdk/pitel_call.dart';
+import 'package:flutter_pitel_voip/pitel_sdk/pitel_client.dart';
+import 'package:flutter_pitel_voip/services/models/push_notif_params.dart';
+import 'package:flutter_pitel_voip/services/pitel_service.dart';
+import 'package:flutter_pitel_voip/sip/src/sip_ua_helper.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_crm/models/call_history_model.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
-import 'package:plugin_pitel/component/pitel_call_state.dart';
-import 'package:plugin_pitel/component/sip_pitel_helper_listener.dart';
-import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
-import 'package:plugin_pitel/sip/src/sip_ua_helper.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:rxdart/rxdart.dart';
-import '../../../../bloc/login/login_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/src_index.dart';
-import '../../../../storages/share_local.dart';
 import '../../../call/action_button.dart';
-import '../../../call/call_screen.dart';
+import '../../../call/init_app_call.dart';
 
-class CallScreen extends StatefulWidget {
-  const CallScreen({Key? key}) : super(key: key);
+class CallGencrmScreen extends ConsumerStatefulWidget {
+  const CallGencrmScreen({Key? key}) : super(key: key);
 
   @override
-  State<CallScreen> createState() => _CallScreenState();
+  ConsumerState<CallGencrmScreen> createState() => _CallGencrmScreenState();
 }
 
-class _CallScreenState extends State<CallScreen>
-    implements SipPitelHelperListener {
-  late final pitelCall;
-  late final pitelClient;
+class _CallGencrmScreenState extends ConsumerState<CallGencrmScreen> {
+  void registerFunc() async {
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    final PushNotifParams pushNotifParams = PushNotifParams(
+      teamId: TEAM_ID,
+      bundleId: packageInfo.packageName,
+    );
+
+    final pitelClient = PitelServiceImpl();
+    final pitelSetting =
+        await pitelClient.setExtensionInfo(getSipInfo(), pushNotifParams);
+    ref.read(pitelSettingProvider.notifier).state = pitelSetting;
+  }
+
+  void _handleRegisterCall() async {
+    final PitelSettings? pitelSetting = ref.watch(pitelSettingProvider);
+    if (pitelSetting != null) {
+      pitelCall.register(pitelSetting);
+    } else {
+      registerFunc();
+    }
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("ACCEPT_CALL", true);
+  }
+
+  final PitelCall pitelCall = PitelClient.getInstance().pitelCall;
   late final TextEditingController _controller;
-  final String nameModule = Get.arguments;
   late final FocusNode _focusNode;
   late final List<CallHistoryModel> listCallHistory;
   BehaviorSubject<Set<CallHistoryModel>> listSearchCallHistory =
@@ -37,10 +62,7 @@ class _CallScreenState extends State<CallScreen>
   @override
   void initState() {
     listCallHistory = getListHistoryCall();
-    pitelCall = PitelClient.getInstance().pitelCall;
     _controller = TextEditingController();
-    pitelClient = PitelClient.getInstance();
-    _bindEventListeners();
     super.initState();
     _focusNode = FocusNode();
     _focusNode.requestFocus();
@@ -58,93 +80,6 @@ class _CallScreenState extends State<CallScreen>
   void dispose() {
     _focusNode.dispose(); // Giải phóng FocusNode khi widget bị hủy
     super.dispose();
-  }
-
-  // STATUS: check register status
-  @override
-  void registrationStateChanged(PitelRegistrationState state) {
-    switch (state.state) {
-      case PitelRegistrationStateEnum.REGISTRATION_FAILED:
-        break;
-      case PitelRegistrationStateEnum.NONE:
-      case PitelRegistrationStateEnum.UNREGISTERED:
-      case PitelRegistrationStateEnum.REGISTERED:
-        shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.REGISTERED);
-        break;
-    }
-  }
-
-  void _bindEventListeners() {
-    pitelCall.addListener(this);
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
-    _removeEventListeners();
-  }
-
-  void _removeEventListeners() {
-    pitelCall.removeListener(this);
-  }
-
-  // ACTION: call device if register success
-  // Flow: Register (with sipInfoData) -> Register success REGISTERED -> Start Call
-  @override
-  void onNewMessage(PitelSIPMessageRequest msg) {
-    var msgBody = msg.request.body as String;
-    shareLocal.putString(PreferencesKey.REGISTER_MSG, msgBody);
-  }
-
-  @override
-  void callStateChanged(String callId, PitelCallState state) {}
-
-  @override
-  void transportStateChanged(PitelTransportState state) {}
-
-  @override
-  void onCallReceived(String callId) {
-    pitelCall.setCallCurrent(callId);
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => CallScreenWidget(
-              modelScreen: ROUTE_NAMES.CUSTOMER,
-              title: nameModule,
-            )));
-  }
-
-  @override
-  void onCallInitiated(String callId) {
-    pitelCall.setCallCurrent(callId);
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => CallScreenWidget(
-              modelScreen: ROUTE_NAMES.CUSTOMER,
-              title: nameModule,
-            )));
-  }
-
-  void goBack() {
-    pitelClient.release();
-    Navigator.of(context).pop();
-  }
-
-  void _handleCall(BuildContext context, [bool voiceonly = false]) {
-    var dest = _controller.text;
-    if (dest.isEmpty) {
-      showToast(getT(KeyT.you_did_not_enter_a_number_phone));
-    } else {
-      saveHistoryCall(
-        CallHistoryModel(
-          phone: dest,
-          time: DateTime.now().toString(),
-        ),
-      );
-      pitelClient.call(dest, voiceonly).then((value) => value.fold(
-          (succ) => {},
-          (err) => {
-                shareLocal.putString(
-                    PreferencesKey.REGISTER_MSG, err.toString())
-              }));
-    }
   }
 
   @override
@@ -287,7 +222,11 @@ class _CallScreenState extends State<CallScreen>
                 ActionButton(
                   title: "hangup",
                   onPressed: () {
-                    _handleCall(context, true);
+                    pitelCall.outGoingCall(
+                      phoneNumber: _controller.text,
+                      handleRegisterCall: _handleRegisterCall,
+                    );
+                    // _handleCall(context, true);
                   },
                   icon: Icons.call,
                   fillColor: COLORS.GREEN,

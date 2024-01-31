@@ -255,9 +255,7 @@ class FormInputBaseState extends State<FormInputBase> {
       return widget.iconWidget;
     }
     if (widget.isClose) {
-      // return CloseTextBase(
-      //   textEditingController: textEditingController,
-      // );
+      return null;
     } else if (widget.isPass) {
       return StreamBuilder<bool>(
           stream: active,

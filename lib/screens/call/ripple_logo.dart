@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
-import 'package:plugin_pitel/pitel_sdk/pitel_call.dart';
-import '../../l10n/key_text.dart';
 import '../../src/src_index.dart';
 
 class RippleLogo extends StatefulWidget {
   const RippleLogo({
     Key? key,
-    required this.pitelCall,
+    // required this.pitelCall,
     required this.timeLabel,
     required this.isCall,
   }) : super(key: key);
-  final PitelCall pitelCall;
+  // final PitelCall pitelCall;
   final String timeLabel;
   final bool isCall;
 
@@ -95,12 +93,12 @@ class _RippleLogoState extends State<RippleLogo>
   }
 
   String getText() {
-    String txt =
-        '${(widget.pitelCall.remoteIdentity?.length ?? 0) < 10 ? '0' + widget.pitelCall.remoteIdentity.toString() : widget.pitelCall.remoteIdentity}';
-    if (txt == "0null") {
-      return getT(KeyT.call_ended );
-    }
-    return txt;
+    // String txt =
+    //     '${(widget.pitelCall.remoteIdentity?.length ?? 0) < 10 ? '0' + widget.pitelCall.remoteIdentity.toString() : widget.pitelCall.remoteIdentity}';
+    // if (txt == "0null") {
+    //   return getT(KeyT.call_ended );
+    // }
+    return 'txt';
   }
 
   Widget _buildContainer(double radius) {

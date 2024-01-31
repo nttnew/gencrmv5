@@ -10,6 +10,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   geolocator_windows
   local_auth_windows
   nb_utils
+  network_info_plus
   permission_handler_windows
   url_launcher_windows
 )

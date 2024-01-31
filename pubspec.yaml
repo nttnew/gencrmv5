@@ -3,10 +3,9 @@ description: A new Flutter application.
 publish_to: 'none'
 version: 2.3.4+234
 #versionNew
-#flutter/3.7.6
 
 environment:
-  sdk: ">=2.16.0 <3.0.0"
+  sdk: '>=3.1.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -57,14 +56,10 @@ dependencies:
   quiver: ^3.2.1
   photo_view: ^0.14.0
   dartx: ^1.1.0
-  plugin_pitel:
-    git:
-      url: https://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@github.com/tel4vn/flutter-pitel-voip.git
-      ref: main
-  flutter_riverpod: ^2.3.4
+  flutter_pitel_voip: ^1.0.7+7
+  flutter_riverpod: ^2.4.9
   qr_code_scanner: ^1.0.1
   is_lock_screen: ^2.0.0
-  flutter_callkit_incoming: ^1.0.3+3
   geolocator: 9.0.2
   geocoding: 2.1.0
   wakelock: ^0.6.2
@@ -72,8 +67,10 @@ dependencies:
   signature: 5.3.2
   location: 4.4.0
   pretty_dio_logger: any
-  flutter_webrtc: 0.9.17 #cách fix https://pub.dev/packages/flutter_pitel_voip
+  flutter_webrtc: 0.9.40 #cách fix https://pub.dev/packages/flutter_pitel_voip
   watcher: 1.0.2
+  flutter_easyloading: ^3.0.5
+  package_info_plus: ^3.1.2
   currency_text_input_formatter:
 
 dependency_overrides:

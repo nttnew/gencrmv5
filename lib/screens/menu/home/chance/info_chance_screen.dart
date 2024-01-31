@@ -148,7 +148,9 @@ class _InfoChancePageState extends State<InfoChancePage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: TabBar(
-                          padding: EdgeInsets.symmetric(horizontal: 25),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                          ),
                           isScrollable: true,
                           indicatorColor: COLORS.TEXT_COLOR,
                           labelColor: COLORS.TEXT_COLOR,

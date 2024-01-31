@@ -2,7 +2,9 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/screens/call/init_app_call.dart';
 import 'package:gen_crm/screens/add_service_voucher/add_service_voucher_step2_screen.dart';
@@ -26,15 +28,16 @@ import 'package:gen_crm/src/src_index.dart';
 import 'bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'screens/menu/form/product_list/list_service_park.dart';
 import 'screens/menu/home/customer/call_screen.dart';
+import 'storages/share_local.dart';
 
-class MyApp extends StatefulWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  ConsumerState<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
     LoginBloc.of(context).getLanguage();
@@ -127,9 +130,13 @@ class _MyAppState extends State<MyApp> {
       ));
     }
     return GetMaterialApp(
+      builder: EasyLoading.init(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'NunitoSans'),
-      initialRoute: ROUTE_NAMES.SPLASH,
+      initialRoute: (shareLocal.getString(PreferencesKey.TOKEN) != '' &&
+              shareLocal.getString(PreferencesKey.TOKEN) != null)
+          ? ROUTE_NAMES.MAIN
+          : ROUTE_NAMES.SPLASH,
       getPages: [
         GetPage(
           name: ROUTE_NAMES.MAIN,
@@ -284,7 +291,7 @@ class _MyAppState extends State<MyApp> {
           page: () => DetailProductCustomerScreen(),
         ),
         GetPage(name: ROUTE_NAMES.FORM_SIGN, page: () => FormAddSign()),
-        GetPage(name: ROUTE_NAMES.CALL, page: () => CallScreen()),
+        GetPage(name: ROUTE_NAMES.CALL, page: () => CallGencrmScreen()),
         GetPage(
             name: ROUTE_NAMES.LIST_SERVICE_PARK, page: () => ListServicePark()),
       ],

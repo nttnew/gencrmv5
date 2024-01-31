@@ -4,18 +4,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_pitel_voip/pitel_sdk/pitel_client.dart';
 import 'package:formz/formz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gen_crm/api_resfull/dio_provider.dart';
 import 'package:gen_crm/api_resfull/user_repository.dart';
-// import 'package:gen_crm/l10n/l10n.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/models/model_generator/main_menu_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/event_repository_storage.dart';
 import 'package:gen_crm/storages/share_local.dart';
-import 'package:plugin_pitel/pitel_sdk/pitel_client.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/models/validate_form/no_data.dart';
@@ -59,34 +59,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         REGISTERED;
   }
 
-  void logout(BuildContext context) {
-    shareLocal.putString(PreferencesKey.REGISTER_CALL, 'true');
+  void logout(BuildContext context) async {
     shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.UNREGISTER);
-    _removeDeviceToken(context);
-    PitelClient.getInstance().pitelCall.unregister();
-  }
-
-  Future<void> _removeDeviceToken(BuildContext context) async {
-    final String domain = LoginBloc.of(context)
-            .loginData
-            ?.info_user
-            ?.info_setup_callcenter
-            ?.domain_mobile ??
-        '';
-
-    final String user =
-        LoginBloc.of(context).loginData?.info_user?.extension ?? '0';
-
-    String deviceToken =
-        await shareLocal.getString(PreferencesKey.DEVICE_TOKEN) ?? '';
-
-    await PitelClient.getInstance().removeDeviceToken(
-      deviceToken: deviceToken, // Device token
-      domain: domain,
-      extension: user,
-    );
-
-    await shareLocal.putString(PreferencesKey.DEVICE_TOKEN, '');
+    PitelClient.getInstance().logoutExtension(getSipInfo());
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(PreferencesKey.IS_LOGGED_IN, false);
   }
 
   void getListMenuFlash() {
