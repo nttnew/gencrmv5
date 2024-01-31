@@ -36,8 +36,9 @@ class _InitCallAppState extends ConsumerState<InitCallApp> {
 
   @override
   void initState() {
-    super.initState();
     LoginBloc.of(context).getDataCall();
+    super.initState();
+    _registerCall();
   }
 
   void _onRegisterState(String registerState) async {
@@ -82,6 +83,19 @@ class _InitCallAppState extends ConsumerState<InitCallApp> {
     }
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("ACCEPT_CALL", true);
+  }
+
+  _registerCall() async {
+    /// HANDEL CALL
+    final PushNotifParams pushNotifParams = PushNotifParams(
+      teamId: TEAM_ID,
+      bundleId: Platform.isAndroid ? PACKAGE_ID : BUNDLE_ID,
+    );
+
+    final pitelClient = PitelServiceImpl();
+    final pitelSetting =
+    await pitelClient.setExtensionInfo(getSipInfo(), pushNotifParams);
+    ref.read(pitelSettingProvider.notifier).state = pitelSetting;
   }
 
   @override

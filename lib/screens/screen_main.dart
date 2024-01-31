@@ -1,14 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
-import 'package:flutter_pitel_voip/pitel_sdk/pitel_call.dart';
-import 'package:flutter_pitel_voip/pitel_sdk/pitel_client.dart';
-import 'package:flutter_pitel_voip/services/models/push_notif_params.dart';
-import 'package:flutter_pitel_voip/services/pitel_service.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_crm/bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'package:gen_crm/widgets/widget_appbar.dart';
@@ -23,19 +17,14 @@ import '../storages/share_local.dart';
 import '../widgets/item_menu.dart';
 import '../widgets/widget_fingerprint_faceid.dart';
 import 'add_service_voucher/add_service_voucher_screen.dart';
-import 'call/init_app_call.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
 
-class ScreenMain extends ConsumerStatefulWidget {
-  final PitelCall _pitelCall = PitelClient.getInstance().pitelCall;
+class ScreenMain extends StatefulWidget {
   @override
   _ScreenMainState createState() => _ScreenMainState();
 }
 
-class _ScreenMainState extends ConsumerState<ScreenMain> {
-  PitelCall get pitelCall => widget._pitelCall;
-
-  ///////////////// UI
+class _ScreenMainState extends State<ScreenMain> {
   final _key = GlobalKey<ExpandableFabState>();
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   List<ButtonMenuModel> listMenu = [];
@@ -122,7 +111,6 @@ class _ScreenMainState extends ConsumerState<ScreenMain> {
   @override
   void initState() {
     _showFaceId();
-    _registerCall();
     GetInforAccBloc.of(context).add(InitGetInforAcc());
     GetNotificationBloc.of(context).add(CheckNotification());
     GetNotificationBloc.of(context).add(
@@ -148,20 +136,6 @@ class _ScreenMainState extends ConsumerState<ScreenMain> {
         child: WidgetFingerPrint(),
       );
     }
-  }
-
-  _registerCall() async {
-    /// HANDEL CALL
-
-    final PushNotifParams pushNotifParams = PushNotifParams(
-      teamId: TEAM_ID,
-      bundleId: Platform.isAndroid ? PACKAGE_ID : BUNDLE_ID,
-    );
-
-    final pitelClient = PitelServiceImpl();
-    final pitelSetting =
-        await pitelClient.setExtensionInfo(getSipInfo(), pushNotifParams);
-    ref.read(pitelSettingProvider.notifier).state = pitelSetting;
   }
 
   @override
@@ -334,8 +308,7 @@ class _ScreenMainState extends ConsumerState<ScreenMain> {
                         itemCount: listMenu.length % 2 != 0
                             ? listMenu.length - 1
                             : listMenu.length,
-                        gridDelegate:
-                            SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           crossAxisSpacing: 25,
                           mainAxisSpacing: 25,
@@ -350,14 +323,14 @@ class _ScreenMainState extends ConsumerState<ScreenMain> {
                       GestureDetector(
                         onTap: listMenu.last.onTap,
                         child: Container(
-                            margin: EdgeInsets.only(top: 25),
-                            width: (MediaQuery.of(context).size.width - 50),
-                            height:
-                                (MediaQuery.of(context).size.width - 75) / 2,
-                            child: ItemMenu(
-                              data: listMenu.last,
-                              isLast: true,
-                            )),
+                          margin: EdgeInsets.only(top: 25),
+                          width: (MediaQuery.of(context).size.width - 50),
+                          height: (MediaQuery.of(context).size.width - 75) / 2,
+                          child: ItemMenu(
+                            data: listMenu.last,
+                            isLast: true,
+                          ),
+                        ),
                       ),
                     SizedBox(
                       height: 25,
