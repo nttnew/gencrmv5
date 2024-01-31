@@ -334,7 +334,8 @@ class _ScreenMainState extends ConsumerState<ScreenMain> {
                         itemCount: listMenu.length % 2 != 0
                             ? listMenu.length - 1
                             : listMenu.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           crossAxisSpacing: 25,
                           mainAxisSpacing: 25,

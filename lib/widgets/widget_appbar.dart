@@ -31,10 +31,12 @@ class WidgetAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: AppValue.heights * 0.1,
-      padding: EdgeInsets.symmetric(
-        horizontal: 24,
+      padding: EdgeInsets.only(
+        left: 24,
+        right: 24,
+        top: MediaQuery.of(context).padding.top,
       ),
+      height: AppValue.heights * 0.1 + MediaQuery.of(context).padding.top,
       decoration: BoxDecoration(
         color: COLORS.PRIMARY_COLOR,
         boxShadow: [
