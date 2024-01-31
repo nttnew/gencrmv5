@@ -28,6 +28,7 @@ import 'package:gen_crm/src/src_index.dart';
 import 'bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'screens/menu/form/product_list/list_service_park.dart';
 import 'screens/menu/home/customer/call_screen.dart';
+import 'storages/share_local.dart';
 
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -132,7 +133,10 @@ class _MyAppState extends ConsumerState<MyApp> {
       builder: EasyLoading.init(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'NunitoSans'),
-      initialRoute: ROUTE_NAMES.SPLASH,
+      initialRoute: (shareLocal.getString(PreferencesKey.TOKEN) != '' &&
+              shareLocal.getString(PreferencesKey.TOKEN) != null)
+          ? ROUTE_NAMES.MAIN
+          : ROUTE_NAMES.SPLASH,
       getPages: [
         GetPage(
           name: ROUTE_NAMES.MAIN,
