@@ -130,10 +130,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if (state.status.isValidated) {
           yield state.copyWith(status: FormzStatus.submissionInProgress);
           var response = await userRepository.loginApp(
-              email: state.email.value,
-              password: state.password.value,
-              platform: Platform.isIOS ? 'iOS' : 'Android',
-              device_token: event.device_token);
+            email: state.email.value,
+            password: state.password.value,
+            platform: Platform.isIOS ? 'iOS' : 'Android',
+            device_token: event.device_token,
+          );
+          shareLocal.putString(PreferencesKey.DEVICE_TOKEN, event.device_token);
           if (response.code == BASE_URL.SUCCESS) {
             DioProvider.instance(
               sess: response.data?.session_id,
@@ -176,10 +178,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           String password =
               shareLocal.getString(PreferencesKey.USER_PASSWORD) ?? "";
           var response = await userRepository.loginApp(
-              email: userName,
-              password: password,
-              platform: Platform.isIOS ? 'iOS' : 'Android',
-              device_token: event.device_token);
+            email: userName,
+            password: password,
+            platform: Platform.isIOS ? 'iOS' : 'Android',
+            device_token: event.device_token,
+          );
+          shareLocal.putString(PreferencesKey.DEVICE_TOKEN, event.device_token);
           if (response.code == BASE_URL.SUCCESS) {
             DioProvider.instance(
               sess: response.data?.session_id,

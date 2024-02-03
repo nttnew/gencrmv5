@@ -48,6 +48,7 @@ class AuthenticationBloc
       final deviceToken =
           await shareLocal.getString(PreferencesKey.DEVICE_TOKEN);
       await userRepository.logout(device_token: deviceToken);
+      shareLocal.putString(PreferencesKey.DEVICE_TOKEN, '');
     }
   }
 
