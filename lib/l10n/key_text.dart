@@ -249,4 +249,5 @@ class KeyT {
   static String WARD_COMMUNE = 'WARD_COMMUNE';
   static String PROVINCE_CITY = 'PROVINCE_CITY';
   static String not_select = 'not_select';
+  static String setting = 'setting';
 }

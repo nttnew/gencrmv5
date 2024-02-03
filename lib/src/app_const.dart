@@ -215,22 +215,6 @@ handleOnPressItemMenu(_drawerKey, value) async {
       _drawerKey.currentState!.openEndDrawer();
       AppNavigator.navigateProductCustomer();
       break;
-    case '2':
-      _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateInformationAccount();
-      break;
-    case '3':
-      _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateAboutUs();
-      break;
-    case '4':
-      _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigatePolicy();
-      break;
-    case '5':
-      _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateChangePassword();
-      break;
     default:
       break;
   }

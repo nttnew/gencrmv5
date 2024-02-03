@@ -42,6 +42,7 @@ class ICONS {
   static const String IC_HISTORY_CALL_PNG = 'assets/icons/history_call.png';
   static const String IC_SUCCESS_PNG = 'assets/icons/ic_success.png';
   static const String IC_CLICK_PNG = 'assets/icons/click.png';
+  static const String IC_SETTING_PNG = 'assets/icons/setting.png';
 
   static const String IC_CUSTOMER_3X_PNG = 'assets/icons/Custumer_3x.png';
   static const String IC_CLUE_3X_PNG = 'assets/icons/Clue_3x.png';
