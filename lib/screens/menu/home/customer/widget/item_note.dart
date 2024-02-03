@@ -36,7 +36,10 @@ class _ItemNoteState extends State<ItemNote> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+      margin: EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 8,
+      ),
       width: MediaQuery.of(context).size.width,
       child: Row(
         textDirection: isOwner ? TextDirection.rtl : null,

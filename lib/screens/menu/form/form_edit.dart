@@ -10,11 +10,10 @@ import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
 import 'package:gen_crm/bloc/form_edit/form_edit_bloc.dart';
 import 'package:gen_crm/models/model_data_add.dart';
 import 'package:gen_crm/models/model_item_add.dart';
+import 'package:gen_crm/screens/menu/form/widget/location_select.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:rxdart/rxdart.dart';
 import '../../../api_resfull/user_repository.dart';
 import '../../../bloc/add_service_voucher/add_service_bloc.dart';
 import '../../../bloc/clue/clue_bloc.dart';
@@ -56,13 +55,8 @@ class _FormEditState extends State<FormEdit> {
   File? fileUpload;
   final UserRepository userRepository = UserRepository();
 
-  late final BehaviorSubject<bool> isMaxScroll;
-  late final ScrollController scrollController;
-
   @override
   void initState() {
-    isMaxScroll = BehaviorSubject.seeded(false);
-    scrollController = ScrollController();
     AttackBloc.of(context).add(LoadingAttackEvent());
     if (type == EDIT_CUSTOMER)
       FormEditBloc.of(context).add(InitFormEditCusEvent(id));
@@ -81,23 +75,7 @@ class _FormEditState extends State<FormEdit> {
     } else if (type == PRODUCT_CUSTOMER_TYPE) {
       FormEditBloc.of(context).add(InitFormEditProductCustomerEvent(id));
     }
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Future.delayed(const Duration(seconds: 1));
-      if (scrollController.position.maxScrollExtent > 7) {
-        scrollHandle();
-      } else {
-        isMaxScroll.add(true);
-      }
-    });
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    scrollController.dispose();
-    isMaxScroll.close();
-    super.dispose();
   }
 
   @override
@@ -106,21 +84,6 @@ class _FormEditState extends State<FormEdit> {
     ServiceVoucherBloc.of(context).resetDataCarVerison();
     AttackBloc.of(context).add(RemoveAllAttackEvent());
     super.deactivate();
-  }
-
-  void scrollHandle() {
-    scrollController.addListener(() {
-      if (scrollController.offset >=
-          scrollController.position.maxScrollExtent) {
-        if (!isMaxScroll.value) {
-          isMaxScroll.add(true);
-        }
-      } else {
-        if (isMaxScroll.value) {
-          isMaxScroll.add(false);
-        }
-      }
-    });
   }
 
   showLog(String mess) {
@@ -137,202 +100,164 @@ class _FormEditState extends State<FormEdit> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-            backgroundColor: COLORS.WHITE,
-            appBar: AppbarBaseNormal(getT(KeyT.edit_information)),
-            body: BlocListener<AddDataBloc, AddDataState>(
-              listener: (context, state) async {
-                if (state is SuccessEditCustomerState) {
-                  LoadingApi().popLoading();
-                  ShowDialogCustom.showDialogBase(
-                    title: getT(KeyT.notification),
-                    content: getT(KeyT.update_data_successfully),
-                    onTap1: () {
-                      if (type == EDIT_CUSTOMER)
-                        GetListCustomerBloc.of(context)
-                            .loadMoreController
-                            .reloadData();
+    return Scaffold(
+      backgroundColor: COLORS.WHITE,
+      appBar: AppbarBaseNormal(getT(KeyT.edit_information)),
+      body: BlocListener<AddDataBloc, AddDataState>(
+        listener: (context, state) async {
+          if (state is SuccessEditCustomerState) {
+            LoadingApi().popLoading();
+            ShowDialogCustom.showDialogBase(
+              title: getT(KeyT.notification),
+              content: getT(KeyT.update_data_successfully),
+              onTap1: () {
+                Get.back();
+                Get.back();
 
-                      Get.back();
-                      Get.back();
-                    },
-                  );
+                if (type == EDIT_CUSTOMER)
+                  GetListCustomerBloc.of(context)
+                      .loadMoreController
+                      .reloadData();
+              },
+            );
+          } else if (state is ErrorEditCustomerState) {
+            LoadingApi().popLoading();
+            ShowDialogCustom.showDialogBase(
+              title: getT(KeyT.notification),
+              content: state.msg,
+            );
+          } else if (state is SuccessAddContactCustomerState) {
+            ShowDialogCustom.showDialogBase(
+              title: getT(KeyT.notification),
+              content: getT(KeyT.update_data_successfully),
+              onTap1: () {
+                Get.back();
+                Get.back();
+                if (type == EDIT_CLUE) {
+                  GetListClueBloc.of(context).loadMoreController.reloadData();
                 }
-                if (state is ErrorEditCustomerState) {
-                  LoadingApi().popLoading();
-                  ShowDialogCustom.showDialogBase(
-                    title: getT(KeyT.notification),
-                    content: state.msg,
-                  );
+                if (type == EDIT_CHANCE) {
+                  GetListDetailChanceBloc.of(context)
+                      .add(InitGetListDetailEvent(int.parse(id)));
+                  GetListChanceBloc.of(context).loadMoreController.reloadData();
                 }
-                if (state is SuccessAddContactCustomerState) {
-                  ShowDialogCustom.showDialogBase(
-                    title: getT(KeyT.notification),
-                    content: getT(KeyT.update_data_successfully),
-                    onTap1: () {
-                      Get.back();
-                      Get.back();
-                      if (type == EDIT_CLUE) {
-                        GetListClueBloc.of(context)
-                            .loadMoreController
-                            .reloadData();
-                      }
-                      if (type == EDIT_CHANCE) {
-                        GetListDetailChanceBloc.of(context)
-                            .add(InitGetListDetailEvent(int.parse(id)));
-                        GetListChanceBloc.of(context)
-                            .loadMoreController
-                            .reloadData();
-                      }
-                      if (type == EDIT_JOB) {
-                        WorkBloc.of(context).loadMoreController.reloadData();
-                      }
-                      if (type == 4) {
-                        ContractBloc.of(context).add(InitGetContractEvent());
-                        DetailContractBloc.of(context)
-                            .add(InitGetDetailContractEvent(int.parse(id)));
-                      }
-                      if (type == EDIT_SUPPORT) {
-                        SupportBloc.of(context).add(InitGetSupportEvent());
-                      }
-                      if (type == PRODUCT_TYPE) {
-                        ProductModuleBloc.of(context)
-                            .loadMoreController.reloadData();
-                        DetailProductBloc.of(context)
-                            .add(InitGetDetailProductEvent(id));
-                      }
-                      if (type == PRODUCT_CUSTOMER_TYPE) {
-                        ProductCustomerModuleBloc.of(context).loadMoreController.reloadData();
-                        DetailProductCustomerBloc.of(context)
-                            .add(InitGetDetailProductCustomerEvent(id));
-                      }
-                    },
-                  );
+                if (type == EDIT_JOB) {
+                  WorkBloc.of(context).loadMoreController.reloadData();
                 }
-                if (state is ErrorAddContactCustomerState) {
-                  ShowDialogCustom.showDialogBase(
-                    title: getT(KeyT.notification),
-                    content: state.msg,
-                  );
+                if (type == 4) {
+                  ContractBloc.of(context).add(InitGetContractEvent());
+                  DetailContractBloc.of(context)
+                      .add(InitGetDetailContractEvent(int.parse(id)));
+                }
+                if (type == EDIT_SUPPORT) {
+                  SupportBloc.of(context).add(InitGetSupportEvent());
+                }
+                if (type == PRODUCT_TYPE) {
+                  ProductModuleBloc.of(context).loadMoreController.reloadData();
+                  DetailProductBloc.of(context)
+                      .add(InitGetDetailProductEvent(id));
+                }
+                if (type == PRODUCT_CUSTOMER_TYPE) {
+                  ProductCustomerModuleBloc.of(context)
+                      .loadMoreController
+                      .reloadData();
+                  DetailProductCustomerBloc.of(context)
+                      .add(InitGetDetailProductCustomerEvent(id));
                 }
               },
-              child: Container(
-                color: COLORS.WHITE,
-                padding: EdgeInsets.all(25),
-                child: SingleChildScrollView(
-                  controller: scrollController,
-                  child: BlocBuilder<FormEditBloc, FormEditState>(
-                      builder: (context, state) {
-                    if (state is LoadingFormEditState) {
-                      addData = [];
-                      data = [];
-                      return SizedBox.shrink();
-                    } else if (state is SuccessFormEditState) {
-                      if (addData.isNotEmpty) {
-                      } else {
-                        for (int i = 0; i < state.listEditData.length; i++) {
-                          addData.add(ModelItemAdd(
-                              group_name:
-                                  state.listEditData[i].group_name ?? '',
-                              data: []));
-                          for (int j = 0;
-                              j < state.listEditData[i].data!.length;
-                              j++) {
-                            addData[i].data.add(ModelDataAdd(
-                                label:
-                                    state.listEditData[i].data![j].field_name,
-                                value: state
-                                    .listEditData[i].data![j].field_set_value
-                                    .toString(),
-                                required: state
-                                    .listEditData[i].data![j].field_require));
-                          }
-                        }
-                      }
-                      return Column(
+            );
+          } else if (state is ErrorAddContactCustomerState) {
+            ShowDialogCustom.showDialogBase(
+              title: getT(KeyT.notification),
+              content: state.msg,
+            );
+          }
+        },
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(16),
+          child: BlocBuilder<FormEditBloc, FormEditState>(
+              builder: (context, state) {
+            if (state is LoadingFormEditState) {
+              addData = [];
+              data = [];
+              return SizedBox.shrink();
+            } else if (state is SuccessFormEditState) {
+              if (addData.isNotEmpty) {
+              } else {
+                for (int i = 0; i < state.listEditData.length; i++) {
+                  addData.add(ModelItemAdd(
+                      group_name: state.listEditData[i].group_name ?? '',
+                      data: []));
+                  for (int j = 0; j < state.listEditData[i].data!.length; j++) {
+                    addData[i].data.add(
+                          ModelDataAdd(
+                            label: state.listEditData[i].data![j].field_name,
+                            value: state
+                                .listEditData[i].data![j].field_set_value
+                                .toString(),
+                            required:
+                                state.listEditData[i].data![j].field_require,
+                          ),
+                        );
+                  }
+                }
+              }
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: List.generate(
+                      state.listEditData.length,
+                      (indexParent) => Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: List.generate(
-                                state.listEditData.length,
-                                (indexParent) => Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: AppValue.heights * 0.01,
-                                        ),
-                                        state.listEditData[indexParent]
-                                                    .group_name !=
-                                                null
-                                            ? WidgetText(
-                                                title: state
-                                                        .listEditData[
-                                                            indexParent]
-                                                        .group_name ??
-                                                    '',
-                                                style: AppStyle.DEFAULT_18_BOLD)
-                                            : SizedBox.shrink(),
-                                        SizedBox(
-                                          height: AppValue.heights * 0.01,
-                                        ),
-                                        Column(
-                                          children: List.generate(
-                                            (state.listEditData[indexParent]
-                                                    .data?.length ??
-                                                0),
-                                            (indexChild) => _getBody(
-                                              state.listEditData[indexParent]
-                                                  .data![indexChild],
-                                              indexParent,
-                                              indexChild,
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    )),
-                          ),
-                          FileDinhKemUiBase(
-                              context: context, onTap: () {}, isSave: false),
                           SizedBox(
-                            height: 25,
+                            height: AppValue.heights * 0.01,
+                          ),
+                          state.listEditData[indexParent].group_name != null
+                              ? WidgetText(
+                                  title: state.listEditData[indexParent]
+                                          .group_name ??
+                                      '',
+                                  style: AppStyle.DEFAULT_18_BOLD)
+                              : SizedBox.shrink(),
+                          SizedBox(
+                            height: AppValue.heights * 0.01,
+                          ),
+                          Column(
+                            children: List.generate(
+                              (state.listEditData[indexParent].data?.length ??
+                                  0),
+                              (indexChild) => _getBody(
+                                state.listEditData[indexParent]
+                                    .data![indexChild],
+                                indexParent,
+                                indexChild,
+                              ),
+                            ),
                           )
                         ],
-                      );
-                    } else if (state is ErrorFormEditState) {
-                      WidgetsBinding.instance
-                          .addPostFrameCallback((_) => showLog(state.msg));
-                      return SizedBox.shrink();
-                    } else
-                      return SizedBox.shrink();
-                  }),
-                ),
-              ),
-            )),
-        Positioned(
-            left: 0,
-            bottom: 0,
-            child: StreamBuilder<bool>(
-                stream: isMaxScroll,
-                builder: (context, snapshot) {
-                  return Visibility(
-                    visible: snapshot.data ?? false,
-                    child: Container(
-                      color: COLORS.WHITE,
-                      height: AppValue.widths * 0.1 + 10,
-                      width: AppValue.widths,
-                      padding: EdgeInsets.only(
-                          left: AppValue.widths * 0.05,
-                          right: AppValue.widths * 0.05,
-                          bottom: 5),
-                      child: FileLuuBase(context, () => onClickSave()),
+                      ),
                     ),
-                  );
-                }))
-      ],
+                  ),
+                  FileDinhKemUiBase(
+                      context: context, onTap: () {}, isSave: false),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  FileLuuBase(context, () => onClickSave()),
+                ],
+              );
+            } else if (state is ErrorFormEditState) {
+              WidgetsBinding.instance
+                  .addPostFrameCallback((_) => showLog(state.msg));
+              return SizedBox.shrink();
+            } else
+              return SizedBox.shrink();
+          }),
+        ),
+      ),
     );
   }
 
@@ -343,8 +268,7 @@ class _FormEditState extends State<FormEdit> {
     return data.field_hidden != "1"
         ? data.field_special == "none-edit"
             ? (data.field_name == "so_dien_thoai"
-                ? BlocBuilder<PhoneBloc, PhoneState>(
-                    builder: (context, stateA) {
+                ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
                     if (stateA is SuccessPhoneState) {
                       return _fieldInputCustomer(
                         data,
@@ -425,22 +349,33 @@ class _FormEditState extends State<FormEdit> {
                                 : '',
                           );
                       })
-                    : InputDropdown(
-                        dropdownItemList: data.field_datasource ?? [],
-                        data: data,
-                        onSuccess: (data) {
-                          addData[indexParent].data[indexChild].value = data;
-                          if (data.field_name == "cv_kh" ||
-                              data.field_name == "col121") {
-                            ContactByCustomerBloc.of(context)
-                                .add(InitGetContactByCustomerrEvent(data));
-                            PhoneBloc.of(context).add(InitPhoneEvent(data));
-                          }
-                        },
-                        value: ((data.field_set_value_datasource != null &&
-                                data.field_set_value_datasource!.length > 0)
-                            ? data.field_set_value_datasource![0][1].toString()
-                            : '')))
+                    : data.field_name == 'dia_chi_chung_text'
+                        ? LocationWidget(
+                            data: data,
+                            onSuccess: (data) {
+                              addData[indexParent].data[indexChild].value =
+                                  data;
+                            },
+                            initData: data.field_value,
+                          )
+                        : InputDropdown(
+                            dropdownItemList: data.field_datasource ?? [],
+                            data: data,
+                            onSuccess: (data) {
+                              addData[indexParent].data[indexChild].value =
+                                  data;
+                              if (data.field_name == "cv_kh" ||
+                                  data.field_name == "col121") {
+                                ContactByCustomerBloc.of(context)
+                                    .add(InitGetContactByCustomerrEvent(data));
+                                PhoneBloc.of(context).add(InitPhoneEvent(data));
+                              }
+                            },
+                            value: ((data.field_set_value_datasource != null &&
+                                    data.field_set_value_datasource!.length > 0)
+                                ? data.field_set_value_datasource![0][1]
+                                    .toString()
+                                : '')))
                 : data.field_type == "TEXT_MULTI"
                     ? SelectMulti(
                         dropdownItemList: data.field_datasource ?? [],
@@ -519,8 +454,7 @@ class _FormEditState extends State<FormEdit> {
                                                       .value = text;
                                                 },
                                               )
-                                            : data.field_name ==
-                                                        'chi_tiet_xe' &&
+                                            : data.field_name == 'chi_tiet_xe' &&
                                                     data.field_type == 'TEXT'
                                                 ? TypeCarBase(
                                                     data,
@@ -535,8 +469,8 @@ class _FormEditState extends State<FormEdit> {
                                                           .value = v;
                                                     },
                                                   )
-                                                : _fieldInputCustomer(data,
-                                                    indexParent, indexChild,
+                                                : _fieldInputCustomer(
+                                                    data, indexParent, indexChild,
                                                     value: data.field_set_value
                                                         .toString())
         : SizedBox();
@@ -576,7 +510,7 @@ class _FormEditState extends State<FormEdit> {
             decoration: BoxDecoration(
                 color: noEdit == true ? COLORS.LIGHT_GREY : COLORS.WHITE,
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: HexColor("#BEB4B4"))),
+                border: Border.all(color: COLORS.ffBEB4B4)),
             child: Padding(
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
@@ -711,19 +645,22 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: TextStyle(
-                  fontFamily: "Quicksand",
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: COLORS.BLACK),
+                fontFamily: "Quicksand",
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: COLORS.BLACK,
+              ),
               children: <TextSpan>[
                 widget.data.field_require == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Quicksand",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: COLORS.RED))
+                          fontFamily: "Quicksand",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: COLORS.RED,
+                        ),
+                      )
                     : TextSpan(),
               ],
             ),

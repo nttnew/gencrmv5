@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/widgets.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
 
 class WidgetTotalSum extends StatefulWidget {
@@ -40,7 +39,7 @@ class _WidgetTotalSumState extends State<WidgetTotalSum> {
             decoration: BoxDecoration(
                 color: COLORS.LIGHT_GREY,
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: HexColor("#BEB4B4"))),
+                border: Border.all(color: COLORS.ffBEB4B4)),
             child: Padding(
               padding: EdgeInsets.only(left: 10, top: 14, bottom: 14),
               child: Container(

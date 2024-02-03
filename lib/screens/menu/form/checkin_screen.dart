@@ -58,7 +58,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
         if (state is SuccessCheckInState) {
           LoadingApi().popLoading();
           ShowDialogCustom.showDialogBase(
-            title:getT(KeyT.notification),
+            title: getT(KeyT.notification),
             content: getT(KeyT.new_data_added_successfully),
             onTap1: () {
               Get.back();
@@ -68,7 +68,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
         } else if (state is ErrorCheckInState) {
           LoadingApi().popLoading();
           ShowDialogCustom.showDialogBase(
-            title:getT(KeyT.notification),
+            title: getT(KeyT.notification),
             content: state.msg,
           );
         }
@@ -80,99 +80,135 @@ class _CheckInScreenState extends State<CheckInScreen> {
           onTap: () {
             if (controllerNote.text.trim() == '') {
               ShowDialogCustom.showDialogBase(
-                title:getT(KeyT.notification),
+                title: getT(KeyT.notification),
                 content: getT(KeyT.please_enter_all_required_fields),
               );
             } else {
-              CheckInBloc.of(context).add(SaveCheckIn(
+              CheckInBloc.of(context).add(
+                SaveCheckIn(
                   '${position?.longitude ?? ''}',
                   '${position?.latitude ?? ''}',
                   controllerNote.text,
                   id,
                   module,
-                  type));
+                  type,
+                ),
+              );
             }
           },
           child: Container(
             height: AppValue.widths * 0.1,
             width: AppValue.widths * 0.25,
             decoration: BoxDecoration(
-                color: HexColor("#F1A400"),
-                borderRadius: BorderRadius.circular(20.5)),
+              color: HexColor("#F1A400"),
+              borderRadius: BorderRadius.circular(
+                20.5,
+              ),
+            ),
             child: Center(
-                child: Text(
-              getT(KeyT.save),
-              style: TextStyle(color: COLORS.WHITE),
-            )),
+              child: Text(
+                getT(KeyT.save),
+                style: TextStyle(color: COLORS.WHITE),
+              ),
+            ),
           ),
         ),
         appBar: AppbarBaseNormal(
           getT(KeyT.check_in),
         ),
         body: Container(
-            padding: EdgeInsets.all(16),
-            child: StreamBuilder<String>(
-                stream: nameLocation,
-                builder: (context, snapshot) {
-                  final location = snapshot.data ?? '';
-                  return Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Row(
-                          children: [
-                            WidgetText(
-                              title: getT(KeyT.your_position),
-                              style: AppStyle.DEFAULT_18_BOLD,
-                            ),
-                            WidgetText(
-                              title: '*',
-                              style: AppStyle.DEFAULT_18_BOLD.copyWith(
-                                color: COLORS.RED,
-                              ),
-                            ),
-                          ],
+          padding: EdgeInsets.all(16),
+          child: StreamBuilder<String>(
+            stream: nameLocation,
+            builder: (context, snapshot) {
+              final location = snapshot.data ?? '';
+              return Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      children: [
+                        WidgetText(
+                          title: getT(KeyT.your_position),
+                          style: AppStyle.DEFAULT_18_BOLD,
                         ),
-                      ),
-                      if (location != '') ...[
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              height: 16,
-                              width: 16,
-                              child: SvgPicture.asset(
-                                ICONS.IC_LOCATION_SVG,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            location != LOADING
-                                ? Expanded(
-                                    child: WidgetText(
-                                        title: location,
-                                        style: TextStyle(
-                                            fontFamily: "Quicksand",
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: COLORS.BLACK)))
-                                : SizedBox(
-                                    height: 12,
-                                    width: 12,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 1.4,
-                                    )),
-                          ],
+                        WidgetText(
+                          title: '*',
+                          style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                            color: COLORS.RED,
+                          ),
                         ),
                       ],
-                      SizedBox(
-                        height: 16,
+                    ),
+                  ),
+                  if (location != '') ...[
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          height: 16,
+                          width: 16,
+                          child: SvgPicture.asset(
+                            ICONS.IC_LOCATION_SVG,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        location != LOADING
+                            ? Expanded(
+                                child: WidgetText(
+                                    title: location,
+                                    style: TextStyle(
+                                        fontFamily: "Quicksand",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: COLORS.BLACK)))
+                            : SizedBox(
+                                height: 12,
+                                width: 12,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 1.4,
+                                ),
+                              ),
+                      ],
+                    ),
+                  ],
+                  SizedBox(
+                    height: 16,
+                  ),
+                  if (location == '')
+                    GestureDetector(
+                      onTap: () async {
+                        await getNameLocation();
+                      },
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(
+                            color: COLORS.TEXT_COLOR,
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                            border: Border.all(
+                              color: COLORS.TEXT_COLOR,
+                            )),
+                        child: WidgetText(
+                          title: getT(KeyT.check_in),
+                          style: TextStyle(
+                            fontFamily: "Quicksand",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: COLORS.WHITE,
+                          ),
+                        ),
                       ),
-                      if (location == '')
+                    ),
+                  if (location != '')
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                         GestureDetector(
                           onTap: () async {
                             await getNameLocation();
@@ -181,135 +217,127 @@ class _CheckInScreenState extends State<CheckInScreen> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 8),
                             decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                              border: Border.all(
                                 color: COLORS.TEXT_COLOR,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(16)),
-                                border: Border.all(
-                                  color: COLORS.TEXT_COLOR,
-                                )),
+                              ),
+                            ),
                             child: WidgetText(
-                              title: getT(KeyT.check_in),
+                              title: getT(KeyT.check_in_again),
                               style: TextStyle(
                                 fontFamily: "Quicksand",
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: COLORS.WHITE,
+                                color: COLORS.TEXT_COLOR,
                               ),
-                            ),
-                          ),
-                        ),
-                      if (location != '')
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: () async {
-                                await getNameLocation();
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 8),
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(16)),
-                                    border: Border.all(
-                                      color: COLORS.TEXT_COLOR,
-                                    )),
-                                child: WidgetText(
-                                    title: getT(KeyT.check_in_again),
-                                    style: TextStyle(
-                                      fontFamily: "Quicksand",
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: COLORS.TEXT_COLOR,
-                                    )),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                nameLocation.add('');
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 8),
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(16)),
-                                    border: Border.all(
-                                      color: COLORS.RED,
-                                    )),
-                                child: WidgetText(
-                                    title: getT(KeyT.delete),
-                                    style: TextStyle(
-                                        fontFamily: "Quicksand",
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: COLORS.RED)),
-                              ),
-                            ),
-                          ],
-                        ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      if (location != '') ...[
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: RichText(
-                            textScaleFactor:
-                                MediaQuery.of(context).textScaleFactor,
-                            text: TextSpan(
-                              text: getT(KeyT.location),
-                              style: AppStyle.DEFAULT_14W600,
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text: '*',
-                                    style: TextStyle(
-                                        fontFamily: "Quicksand",
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: COLORS.RED))
-                              ],
                             ),
                           ),
                         ),
                         SizedBox(
-                          height: 8,
+                          width: 16,
                         ),
-                        Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: HexColor("#BEB4B4"))),
-                          child: Padding(
-                            padding:
-                                EdgeInsets.only(left: 10, top: 5, bottom: 5),
-                            child: Container(
-                              child: TextFormField(
-                                controller: controllerNote,
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w500),
-                                onChanged: (text) {},
-                                decoration: InputDecoration(
-                                  focusedBorder: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
-                                  isDense: true,
+                        GestureDetector(
+                          onTap: () async {
+                            nameLocation.add('');
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(
+                                  16,
                                 ),
+                              ),
+                              border: Border.all(
+                                color: COLORS.RED,
+                              ),
+                            ),
+                            child: WidgetText(
+                              title: getT(KeyT.delete),
+                              style: TextStyle(
+                                fontFamily: "Quicksand",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: COLORS.RED,
                               ),
                             ),
                           ),
                         ),
                       ],
-                      SizedBox(
-                        height: 16,
+                    ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  if (location != '') ...[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: RichText(
+                        textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                        text: TextSpan(
+                          text: getT(KeyT.location),
+                          style: AppStyle.DEFAULT_14W600,
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: '*',
+                              style: TextStyle(
+                                fontFamily: "Quicksand",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: COLORS.RED,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  );
-                })),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          color: COLORS.ffBEB4B4,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: 10,
+                          top: 5,
+                          bottom: 5,
+                        ),
+                        child: Container(
+                          child: TextFormField(
+                            controller: controllerNote,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            onChanged: (text) {},
+                            decoration: InputDecoration(
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              isDense: true,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                  SizedBox(
+                    height: 16,
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
       ),
     );
   }

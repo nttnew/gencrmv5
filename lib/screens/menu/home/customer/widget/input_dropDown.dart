@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gen_crm/bloc/contract/phone_bloc.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import '../../../../../src/app_const.dart';
 import '../../../../../src/models/model_generator/add_customer.dart';
@@ -268,7 +267,7 @@ class _InputDropdownState extends State<InputDropdown> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: HexColor("#BEB4B4"))),
+                      border: Border.all(color: COLORS.ffBEB4B4)),
                   child: Padding(
                     padding: EdgeInsets.only(
                         left: 10, top: 10, bottom: 10, right: 10),

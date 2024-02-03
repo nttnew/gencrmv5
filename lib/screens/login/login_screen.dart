@@ -7,7 +7,6 @@ import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
 import '../../storages/share_local.dart';
 import '../../widgets/rounder_bootom_appbar.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import '../../l10n/key_text.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -19,27 +18,12 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   String? tokenFirebase;
-  late final ScrollController scrollController;
   late bool isLogin;
-
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
-  }
 
   @override
   void initState() {
     shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.UNREGISTER);
-    scrollController = ScrollController();
     isLogin = Get.arguments == 'login';
-    KeyboardVisibilityController().onChange.listen((visible) {
-      if (visible) {
-        scrollController.jumpTo(150);
-      } else {
-        scrollController.jumpTo(0);
-      }
-    });
     super.initState();
   }
 
@@ -50,8 +34,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomInset: true,
-      // drawerEnableOpenDragGesture: false,
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
           content: Text(
@@ -59,33 +41,17 @@ class _LoginScreenState extends State<LoginScreen> {
             style: AppStyle.DEFAULT_16.copyWith(color: COLORS.WHITE),
           ),
         ),
-        child: SingleChildScrollView(
-          // controller: scrollController,
-          child: Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: WidgetTouchHideKeyBoard(
-              child: Column(
-                children: [
-                  RoundedAppBar(),
-                  AppValue.vSpaceTiny,
-                  // AppValue.vSpaceSmall,
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     Text(
-                  //       getT(KeyT.login),
-                  //       style: AppStyle.DEFAULT_18_BOLD,
-                  //     )
-                  //   ],
-                  // ),
-                  // AppValue.vSpaceSmall,
-                  WidgetLoginForm(
-                    reload: reload,
-                    isLogin: isLogin,
-                  ),
-                ],
-              ),
+        child: WidgetTouchHideKeyBoard(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                RoundedAppBar(),
+                AppValue.vSpaceTiny,
+                WidgetLoginForm(
+                  reload: reload,
+                  isLogin: isLogin,
+                ),
+              ],
             ),
           ),
         ),

@@ -79,8 +79,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  void getDataCall() {
-    String data = shareLocal.getString(PreferencesKey.DATA_CALL) ?? "";
+  Future<void> getDataCall() async {
+    String data = await shareLocal.getString(PreferencesKey.DATA_CALL) ?? "";
     if (data != '') {
       final result = json.decode(data);
       loginData = LoginData.fromJson(result);

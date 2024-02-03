@@ -36,9 +36,13 @@ class _InitCallAppState extends ConsumerState<InitCallApp> {
 
   @override
   void initState() {
-    LoginBloc.of(context).getDataCall();
+    _init();
     super.initState();
-    _registerCall();
+  }
+
+  _init() async {
+    await LoginBloc.of(context).getDataCall();
+    await _registerCall();
   }
 
   void _onRegisterState(String registerState) async {
@@ -94,7 +98,7 @@ class _InitCallAppState extends ConsumerState<InitCallApp> {
 
     final pitelClient = PitelServiceImpl();
     final pitelSetting =
-    await pitelClient.setExtensionInfo(getSipInfo(), pushNotifParams);
+        await pitelClient.setExtensionInfo(getSipInfo(), pushNotifParams);
     ref.read(pitelSettingProvider.notifier).state = pitelSetting;
   }
 

@@ -106,9 +106,12 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
       icon: ICONS.IC_ELECTRIC_SIGN_PNG,
       isSvg: false,
       onThaoTac: () {
-        //todo
         Get.back();
-        AppNavigator.navigateFormSign(getT(KeyT.sign), id, type: 'support');
+        AppNavigator.navigateFormSign(
+          getT(KeyT.sign),
+          id,
+          type: ModuleMy.CSKH,
+        );
       },
     ));
 

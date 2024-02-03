@@ -6,13 +6,13 @@ import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
+import 'package:gen_crm/screens/menu/form/widget/location_select.dart';
 import 'package:gen_crm/screens/menu/home/customer/widget/input_dropDown.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/ky_nhan_widget.dart';
 import 'package:gen_crm/widgets/widget_field_input_percent.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:signature/signature.dart';
 import '../../../../../../src/models/model_generator/add_customer.dart';
@@ -99,180 +99,150 @@ class _FormAddSignState extends State<FormAddSign> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-            appBar: AppbarBaseNormal(title.toUpperCase().capitalizeFirst ?? ''),
-            body: BlocListener<AddDataBloc, AddDataState>(
-              listener: (context, state) async {
-                if (state is SuccessAddCustomerOrState) {
-                  ShowDialogCustom.showDialogBase(
-                    title: getT(KeyT.notification),
-                    content: getT(KeyT.new_data_added_successfully),
-                    onTap1: () {
-                      Get.back();
-                      Get.back();
-                      GetListCustomerBloc.of(context).loadMoreController.reloadData();
-
-                    },
-                  );
-                }
-                if (state is ErrorAddCustomerOrState) {
-                  ShowDialogCustom.showDialogBase(
-                    title: getT(KeyT.notification),
-                    content: state.msg,
-                  );
-                }
-                if (state is SuccessAddContactCustomerState) {
-                  ShowDialogCustom.showDialogBase(
-                    title: getT(KeyT.notification),
-                    content: getT(KeyT.new_data_added_successfully),
-                    onTap1: () {
-                      Get.back();
-                      Get.back();
-                    },
-                  );
-                }
-                if (state is ErrorAddContactCustomerState) {
-                  ShowDialogCustom.showDialogBase(
-                    title: getT(KeyT.notification),
-                    content: state.msg,
-                  );
-                }
-              },
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                padding: EdgeInsets.all(25),
-                color: COLORS.WHITE,
-                child: SingleChildScrollView(
-                  controller: scrollController,
-                  child: Column(
-                    children: [
-                      BlocBuilder<FormAddBloc, FormAddState>(
-                          bloc: _bloc,
-                          builder: (context, state) {
-                            if (state is LoadingFormAddCustomerOrState) {
-                              addData = [];
-                              data = [];
-                              return SizedBox.shrink();
-                            } else if (state is SuccessFormAddCustomerOrState) {
-                              soTien = state.soTien ?? 0;
-                              if (addData.isEmpty) {
-                                for (int i = 0;
-                                    i < state.listAddData.length;
-                                    i++) {
-                                  addData.add(ModelItemAdd(
-                                      group_name:
-                                          state.listAddData[i].group_name ?? '',
-                                      data: []));
-                                  for (int j = 0;
-                                      j <
-                                          (state.listAddData[i].data?.length ??
-                                              0);
-                                      j++) {
-                                    addData[i].data.add(ModelDataAdd(
-                                          parent: state
-                                              .listAddData[i].data?[j].parent,
-                                          label: state.listAddData[i].data?[j]
-                                              .field_name,
-                                          value: state.listAddData[i].data?[j]
-                                              .field_set_value
-                                              .toString(),
-                                          required: state.listAddData[i]
-                                              .data?[j].field_require,
-                                        ));
-                                  }
-                                }
-
-                                if (state.chuKyResponse != null &&
-                                    chuKyModelResponse.isEmpty) {
-                                  for (final ChuKyModelResponse value
-                                      in (state.chuKyResponse?.first.data ??
-                                          [])) {
-                                    chuKyModelResponse.add(value);
-                                  }
-                                }
+    return Scaffold(
+        appBar: AppbarBaseNormal(title.toUpperCase().capitalizeFirst ?? ''),
+        body: BlocListener<AddDataBloc, AddDataState>(
+          listener: (context, state) async {
+            if (state is SuccessAddCustomerOrState) {
+              ShowDialogCustom.showDialogBase(
+                title: getT(KeyT.notification),
+                content: getT(KeyT.new_data_added_successfully),
+                onTap1: () {
+                  Get.back();
+                  Get.back();
+                  GetListCustomerBloc.of(context)
+                      .loadMoreController
+                      .reloadData();
+                },
+              );
+            }
+            if (state is ErrorAddCustomerOrState) {
+              ShowDialogCustom.showDialogBase(
+                title: getT(KeyT.notification),
+                content: state.msg,
+              );
+            }
+            if (state is SuccessAddContactCustomerState) {
+              ShowDialogCustom.showDialogBase(
+                title: getT(KeyT.notification),
+                content: getT(KeyT.new_data_added_successfully),
+                onTap1: () {
+                  Get.back();
+                  Get.back();
+                },
+              );
+            }
+            if (state is ErrorAddContactCustomerState) {
+              ShowDialogCustom.showDialogBase(
+                title: getT(KeyT.notification),
+                content: state.msg,
+              );
+            }
+          },
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            padding: EdgeInsets.all(16),
+            color: COLORS.WHITE,
+            child: SingleChildScrollView(
+              controller: scrollController,
+              child: Column(
+                children: [
+                  BlocBuilder<FormAddBloc, FormAddState>(
+                      bloc: _bloc,
+                      builder: (context, state) {
+                        if (state is LoadingFormAddCustomerOrState) {
+                          addData = [];
+                          data = [];
+                          return SizedBox.shrink();
+                        } else if (state is SuccessFormAddCustomerOrState) {
+                          soTien = state.soTien ?? 0;
+                          if (addData.isEmpty) {
+                            for (int i = 0; i < state.listAddData.length; i++) {
+                              addData.add(ModelItemAdd(
+                                  group_name:
+                                      state.listAddData[i].group_name ?? '',
+                                  data: []));
+                              for (int j = 0;
+                                  j < (state.listAddData[i].data?.length ?? 0);
+                                  j++) {
+                                addData[i].data.add(ModelDataAdd(
+                                      parent:
+                                          state.listAddData[i].data?[j].parent,
+                                      label: state
+                                          .listAddData[i].data?[j].field_name,
+                                      value: state.listAddData[i].data?[j]
+                                          .field_set_value
+                                          .toString(),
+                                      required: state.listAddData[i].data?[j]
+                                          .field_require,
+                                    ));
                               }
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    padding: EdgeInsets.zero,
-                                    itemCount: state.listAddData.length,
-                                    itemBuilder: (context, indexParent) {
-                                      return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: 25,
-                                          ),
-                                          if (state.listAddData[indexParent]
-                                                  .group_name !=
-                                              null)
-                                            WidgetText(
-                                              title: state
-                                                      .listAddData[indexParent]
-                                                      .group_name ??
-                                                  '',
-                                              style: AppStyle.DEFAULT_18_BOLD,
-                                            ),
-                                          SizedBox(
-                                            height: 25,
-                                          ),
-                                          _itemField(
-                                            state.listAddData[indexParent]
-                                                    .data ??
-                                                [],
-                                            indexParent,
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                  _signatureUi(state.chuKyResponse),
-                                  SizedBox(
-                                    height: 25,
-                                  )
-                                ],
-                              );
-                            } else
-                              return SizedBox.shrink();
-                          }),
-                    ],
-                  ),
-                ),
+                            }
+
+                            if (state.chuKyResponse != null &&
+                                chuKyModelResponse.isEmpty) {
+                              for (final ChuKyModelResponse value
+                                  in (state.chuKyResponse?.first.data ?? [])) {
+                                chuKyModelResponse.add(value);
+                              }
+                            }
+                          }
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.zero,
+                                itemCount: state.listAddData.length,
+                                itemBuilder: (context, indexParent) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 25,
+                                      ),
+                                      if (state.listAddData[indexParent]
+                                              .group_name !=
+                                          null)
+                                        WidgetText(
+                                          title: state.listAddData[indexParent]
+                                                  .group_name ??
+                                              '',
+                                          style: AppStyle.DEFAULT_18_BOLD,
+                                        ),
+                                      SizedBox(
+                                        height: 25,
+                                      ),
+                                      _itemField(
+                                        state.listAddData[indexParent].data ??
+                                            [],
+                                        indexParent,
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                              _signatureUi(state.chuKyResponse),
+                              SizedBox(
+                                height: 25,
+                              ),
+                              FileLuuBase(
+                                context,
+                                () => onClickSave(),
+                                isAttack: false,
+                              ),
+                            ],
+                          );
+                        } else
+                          return SizedBox.shrink();
+                      }),
+                ],
               ),
-            )),
-        Positioned(
-          left: 0,
-          bottom: 0,
-          child: StreamBuilder<bool>(
-              stream: isMaxScroll,
-              builder: (context, snapshot) {
-                return Visibility(
-                  visible: snapshot.data ?? false,
-                  child: Container(
-                    color: COLORS.WHITE,
-                    height: AppValue.widths * 0.1 + 10,
-                    width: AppValue.widths,
-                    padding: EdgeInsets.only(
-                        left: AppValue.widths * 0.05,
-                        right: AppValue.widths * 0.05,
-                        bottom: 5),
-                    child: FileLuuBase(
-                      context,
-                      () => onClickSave(),
-                      isAttack: false,
-                    ),
-                  ),
-                );
-              }),
-        )
-      ],
-    );
+            ),
+          ),
+        ));
   }
 
   Widget _itemField(List<CustomerIndividualItemData> list, int indexParent) {
@@ -289,20 +259,32 @@ class _FormAddSignState extends State<FormAddSign> {
                       ? _fieldInputCustomer(data, indexParent, indexChild,
                           noEdit: true)
                       : data.field_type == "SELECT"
-                          ? InputDropdown(
-                              dropdownItemList: data.field_datasource ?? [],
-                              data: data,
-                              onSuccess: (data) {
-                                addData[indexParent].data[indexChild].value =
-                                    data;
-                              },
-                              value: (data.field_set_value_datasource
-                                          ?.isNotEmpty ??
-                                      false)
-                                  ? (data.field_set_value_datasource?[0][1] ??
-                                      '')
-                                  : '',
-                            )
+                          ? data.field_name == 'dia_chi_chung_text'
+                              ? LocationWidget(
+                                  data: data,
+                                  onSuccess: (data) {
+                                    addData[indexParent]
+                                        .data[indexChild]
+                                        .value = data;
+                                  },
+                                  initData: data.field_value,
+                                )
+                              : InputDropdown(
+                                  dropdownItemList: data.field_datasource ?? [],
+                                  data: data,
+                                  onSuccess: (data) {
+                                    addData[indexParent]
+                                        .data[indexChild]
+                                        .value = data;
+                                  },
+                                  value: (data.field_set_value_datasource
+                                              ?.isNotEmpty ??
+                                          false)
+                                      ? (data.field_set_value_datasource?[0]
+                                              [1] ??
+                                          '')
+                                      : '',
+                                )
                           : data.field_type == "TEXT_MULTI"
                               ? SelectMulti(
                                   dropdownItemList: data.field_datasource ?? [],
@@ -542,7 +524,7 @@ class _FormAddSignState extends State<FormAddSign> {
                 final data = snapshot.data ?? '';
                 return Container(
                   decoration: BoxDecoration(
-                      border: Border.all(color: HexColor("#BEB4B4")),
+                      border: Border.all(color: COLORS.ffBEB4B4),
                       borderRadius: BorderRadius.all(Radius.circular(6))),
                   height: 300,
                   padding: EdgeInsets.all(15),
@@ -572,7 +554,7 @@ class _FormAddSignState extends State<FormAddSign> {
           Container(
             decoration: BoxDecoration(
                 color: COLORS.WHITE,
-                border: Border.all(color: HexColor("#BEB4B4")),
+                border: Border.all(color: COLORS.ffBEB4B4),
                 borderRadius: BorderRadius.all(Radius.circular(6))),
             height: 300,
             // padding: EdgeInsets.all(15),
@@ -635,7 +617,7 @@ class _FormAddSignState extends State<FormAddSign> {
             decoration: BoxDecoration(
                 color: noEdit == true ? COLORS.LIGHT_GREY : COLORS.WHITE,
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: HexColor("#BEB4B4"))),
+                border: Border.all(color: COLORS.ffBEB4B4)),
             child: Padding(
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
@@ -713,7 +695,7 @@ class _FormAddSignState extends State<FormAddSign> {
             decoration: BoxDecoration(
                 color: noEdit == true ? COLORS.LIGHT_GREY : COLORS.WHITE,
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: HexColor("#BEB4B4"))),
+                border: Border.all(color: COLORS.ffBEB4B4)),
             child: Padding(
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(

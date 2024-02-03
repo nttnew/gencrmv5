@@ -92,7 +92,8 @@ class _ScreenMainState extends State<ScreenMain> {
     } else if (ModuleText.HOP_DONG_FLASH == id) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => AddServiceVoucherScreen(
-              title: name.toUpperCase().capitalizeFirst ?? '')));
+                title: name.toUpperCase().capitalizeFirst ?? '',
+              )));
     } else if (ModuleText.HOP_DONG == id) {
       AppNavigator.navigateAddContract(
           title: name.toUpperCase().capitalizeFirst ?? '');

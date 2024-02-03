@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../models/model_data_add.dart';
 import '../../l10n/key_text.dart';
@@ -114,7 +113,7 @@ class _SelectMultiState extends State<SelectMulti> {
             ),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: HexColor("#BEB4B4"))),
+                border: Border.all(color: COLORS.ffBEB4B4)),
             buttonIcon: Icon(
               Icons.arrow_drop_down,
               size: 25,

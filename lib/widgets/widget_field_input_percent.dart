@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
-import 'package:hexcolor/hexcolor.dart';
-
 import '../src/models/model_generator/add_customer.dart';
 
 class FieldInputPercent extends StatefulWidget {
@@ -58,7 +56,7 @@ class _FieldInputPercentState extends State<FieldInputPercent> {
             decoration: BoxDecoration(
                 color: COLORS.WHITE,
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: HexColor("#BEB4B4"))),
+                border: Border.all(color: COLORS.ffBEB4B4)),
             child: Padding(
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 16),
               child: Row(

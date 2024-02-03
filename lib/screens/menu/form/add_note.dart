@@ -44,109 +44,109 @@ class _AddNoteState extends State<AddNote> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppbarBaseNormal(getT(KeyT.discuss)),
-        body: Container(
-          child: BlocListener<AddNoteBloc, AddNoteState>(
-            listener: (context, state) async {
-              if (state is SuccessAddNoteState) {
-                isEdit = false;
-                _editingController.text = '';
-                FocusManager.instance.primaryFocus?.unfocus();
-                _controllerNote.reloadData();
-              } else if (state is ErrorAddNoteState) {
-                LoadingApi().popLoading();
-                ShowDialogCustom.showDialogBase(
-                  title: getT(KeyT.notification),
-                  content: state.msg,
-                  textButton1: getT(KeyT.ok),
-                );
-              } else if (state is ErrorDeleteNoteState) {
-                LoadingApi().popLoading();
-                ShowDialogCustom.showDialogBase(
-                  title: getT(KeyT.notification),
-                  content: state.msg,
-                  textButton1: getT(KeyT.come_back),
-                );
-              }
-            },
-            child: Column(
-              children: [
-                Expanded(
-                  child: ListNote(
-                    module: module,
-                    id: id,
-                    isAdd: true,
-                    onEdit: (uid, content) {
-                      _editingController.text = content;
-                      noteId = uid.toString();
-                      _focusNode.requestFocus();
-                      isEdit = true;
-                    },
-                    onDelete: (id) {
-                      this.onDeleteNote(id);
-                    },
-                    controllerNote: _controllerNote,
-                  ),
+        body: BlocListener<AddNoteBloc, AddNoteState>(
+          listener: (context, state) async {
+            if (state is SuccessAddNoteState) {
+              isEdit = false;
+              _editingController.text = '';
+              FocusManager.instance.primaryFocus?.unfocus();
+              _controllerNote.reloadData();
+            } else if (state is ErrorAddNoteState) {
+              LoadingApi().popLoading();
+              ShowDialogCustom.showDialogBase(
+                title: getT(KeyT.notification),
+                content: state.msg,
+                textButton1: getT(KeyT.ok),
+              );
+            } else if (state is ErrorDeleteNoteState) {
+              LoadingApi().popLoading();
+              ShowDialogCustom.showDialogBase(
+                title: getT(KeyT.notification),
+                content: state.msg,
+                textButton1: getT(KeyT.come_back),
+              );
+            }
+          },
+          child: Column(
+            children: [
+              Expanded(
+                child: ListNote(
+                  module: module,
+                  id: id,
+                  isAdd: true,
+                  onEdit: (uid, content) {
+                    _editingController.text = content;
+                    noteId = uid.toString();
+                    _focusNode.requestFocus();
+                    isEdit = true;
+                  },
+                  onDelete: (id) {
+                    this.onDeleteNote(id);
+                  },
+                  controllerNote: _controllerNote,
                 ),
-                Container(
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: COLORS.WHITE,
+                  boxShadow: [
+                    BoxShadow(
+                      color: COLORS.BLACK.withOpacity(0.1),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                    )
+                  ],
+                ),
+                child: Container(
                   decoration: BoxDecoration(
-                    color: COLORS.WHITE,
-                    boxShadow: [
-                      BoxShadow(
-                        color: COLORS.BLACK.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 5,
+                    border: Border.all(width: 1, color: COLORS.GREY),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  padding: EdgeInsets.only(
+                    left: 8,
+                  ),
+                  margin: EdgeInsets.only(
+                    left: 25,
+                    right: 25,
+                    bottom: 25,
+                    top: 15,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          textCapitalization: TextCapitalization.sentences,
+                          textInputAction: TextInputAction.send,
+                          controller: _editingController,
+                          focusNode: _focusNode,
+                          decoration: InputDecoration(
+                            hintText: getT(KeyT.enter_content),
+                            contentPadding: EdgeInsets.zero,
+                            enabledBorder: InputBorder.none,
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: this.onSend,
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          child: WidgetContainerImage(
+                            image: ICONS.IC_SEND_PNG,
+                            width: 25,
+                            height: 25,
+                            fit: BoxFit.contain,
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
                       )
                     ],
                   ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: COLORS.GREY),
-                        borderRadius: BorderRadius.circular(15)),
-                    padding: EdgeInsets.only(
-                      left: 8,
-                    ),
-                    margin: EdgeInsets.only(
-                      left: 25,
-                      right: 25,
-                      bottom: 25,
-                      top: 15,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            textCapitalization: TextCapitalization.sentences,
-                            textInputAction: TextInputAction.send,
-                            controller: _editingController,
-                            focusNode: _focusNode,
-                            decoration: InputDecoration(
-                                hintText: getT(KeyT.enter_content),
-                                contentPadding: EdgeInsets.zero,
-                                enabledBorder: InputBorder.none,
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                errorBorder: InputBorder.none),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: this.onSend,
-                          child: Container(
-                            padding: EdgeInsets.all(8),
-                            child: WidgetContainerImage(
-                              image: ICONS.IC_SEND_PNG,
-                              width: 25,
-                              height: 25,
-                              fit: BoxFit.contain,
-                              borderRadius: BorderRadius.circular(0),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ));
   }

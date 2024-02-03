@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../l10n/l10n.dart';
 import '../src/models/model_generator/add_customer.dart';
 import '../src/src_index.dart';
@@ -133,7 +132,7 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
               // width: Get.width,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: HexColor("#BEB4B4"))),
+                  border: Border.all(color: COLORS.ffBEB4B4)),
               child: Row(
                 children: [
                   Expanded(

@@ -10,6 +10,7 @@ import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
 import 'package:gen_crm/models/model_data_add.dart';
 import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/menu/form/product_list/product_contract.dart';
+import 'package:gen_crm/screens/menu/form/widget/location_select.dart';
 import 'package:gen_crm/screens/menu/home/contract/widget/widget_total_sum.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
@@ -47,8 +48,8 @@ class _FormAddContractState extends State<FormAddContract> {
   double total = 0;
   late final FormAddBloc _bloc;
   late final List<List<dynamic>> listCustomerForChance;
-  String? id_first = Get.arguments[0];
-  String? id_two = Get.arguments[1];
+  String? idFirst = Get.arguments[0];
+  String? idTwo = Get.arguments[1];
   String title = Get.arguments[2] ?? '';
   ProductModel? product = Get.arguments[3];
 
@@ -75,13 +76,21 @@ class _FormAddContractState extends State<FormAddContract> {
     if (product != null) {
       addProduct(product!);
     }
-    AttackBloc.of(context).add(LoadingAttackEvent());
-    if (id_first != null)
-      _bloc.add(InitFormAddContractEvent(id: id_first));
-    else if (id_two != null) {
-      _bloc.add(InitFormAddContractCusEvent(id_two));
+    AttackBloc.of(context).add(
+      LoadingAttackEvent(),
+    );
+    if (idFirst != null)
+      _bloc.add(
+        InitFormAddContractEvent(id: idFirst),
+      );
+    else if (idTwo != null) {
+      _bloc.add(
+        InitFormAddContractCusEvent(idTwo),
+      );
     } else {
-      _bloc.add(InitFormAddContractEvent());
+      _bloc.add(
+        InitFormAddContractEvent(),
+      );
     }
     super.initState();
   }
@@ -128,143 +137,142 @@ class _FormAddContractState extends State<FormAddContract> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppbarBaseNormal(
-          title,
-        ),
-        body: BlocListener<AddDataBloc, AddDataState>(
-          listener: (context, state) async {
-            if (state is SuccessAddCustomerOrState) {
-              ShowDialogCustom.showDialogBase(
-                title:getT(KeyT.notification),
-                content: getT(KeyT.new_data_added_successfully),
-                onTap1: () {
-                  Get.back();
-                  Get.back();
-                  GetListCustomerBloc.of(context).loadMoreController.reloadData();
-                },
-              );
-            }
-            if (state is ErrorAddCustomerOrState) {
-              ShowDialogCustom.showDialogBase(
-                title:getT(KeyT.notification),
-                content: state.msg,
-              );
-            }
-            if (state is SuccessAddContactCustomerState) {
-              ShowDialogCustom.showDialogBase(
-                title:getT(KeyT.notification),
-                content: getT(KeyT.new_data_added_successfully),
-                onTap1: () {
-                  Get.back();
-                  Get.back();
-                  ContractBloc.of(context).add(InitGetContractEvent());
-                  if (product != null) AppNavigator.navigateContract();
-                },
-              );
-            }
-            if (state is ErrorAddContactCustomerState) {
-              ShowDialogCustom.showDialogBase(
-                title:getT(KeyT.notification),
-                content: state.msg,
-              );
-            }
-          },
-          child: Container(
-            padding: EdgeInsets.all(25),
-            color: COLORS.WHITE,
-            child: SingleChildScrollView(
-              child: BlocBuilder<FormAddBloc, FormAddState>(
-                  bloc: _bloc,
-                  builder: (context, state) {
-                    if (state is LoadingFormAddCustomerOrState) {
-                      addData = [];
-                      data = [];
-                      return SizedBox.shrink();
-                    } else if (state is SuccessFormAddCustomerOrState) {
-                      if (addData.isEmpty) {
-                        for (int i = 0; i < state.listAddData.length; i++) {
-                          addData.add(ModelItemAdd(
-                              group_name: state.listAddData[i].group_name ?? '',
-                              data: []));
-                          for (int j = 0;
-                              j < state.listAddData[i].data!.length;
-                              j++) {
-                            addData[i].data.add(ModelDataAdd(
-                                  label:
-                                      state.listAddData[i].data![j].field_name,
-                                  value: state
-                                      .listAddData[i].data![j].field_set_value
-                                      .toString(),
-                                  required: state
-                                      .listAddData[i].data![j].field_require,
-                                ));
-                          }
+      appBar: AppbarBaseNormal(
+        title,
+      ),
+      body: BlocListener<AddDataBloc, AddDataState>(
+        listener: (context, state) async {
+          if (state is SuccessAddCustomerOrState) {
+            ShowDialogCustom.showDialogBase(
+              title: getT(KeyT.notification),
+              content: getT(KeyT.new_data_added_successfully),
+              onTap1: () {
+                Get.back();
+                Get.back();
+                GetListCustomerBloc.of(context).loadMoreController.reloadData();
+              },
+            );
+          }
+          if (state is ErrorAddCustomerOrState) {
+            ShowDialogCustom.showDialogBase(
+              title: getT(KeyT.notification),
+              content: state.msg,
+            );
+          }
+          if (state is SuccessAddContactCustomerState) {
+            ShowDialogCustom.showDialogBase(
+              title: getT(KeyT.notification),
+              content: getT(KeyT.new_data_added_successfully),
+              onTap1: () {
+                Get.back();
+                Get.back();
+                ContractBloc.of(context).add(InitGetContractEvent());
+                if (product != null) AppNavigator.navigateContract();
+              },
+            );
+          }
+          if (state is ErrorAddContactCustomerState) {
+            ShowDialogCustom.showDialogBase(
+              title: getT(KeyT.notification),
+              content: state.msg,
+            );
+          }
+        },
+        child: Container(
+          padding: EdgeInsets.all(16),
+          color: COLORS.WHITE,
+          child: SingleChildScrollView(
+            child: BlocBuilder<FormAddBloc, FormAddState>(
+                bloc: _bloc,
+                builder: (context, state) {
+                  if (state is LoadingFormAddCustomerOrState) {
+                    addData = [];
+                    data = [];
+                    return SizedBox.shrink();
+                  } else if (state is SuccessFormAddCustomerOrState) {
+                    if (addData.isEmpty) {
+                      for (int i = 0; i < state.listAddData.length; i++) {
+                        addData.add(ModelItemAdd(
+                            group_name: state.listAddData[i].group_name ?? '',
+                            data: []));
+                        for (int j = 0;
+                            j < state.listAddData[i].data!.length;
+                            j++) {
+                          addData[i].data.add(ModelDataAdd(
+                                label: state.listAddData[i].data![j].field_name,
+                                value: state
+                                    .listAddData[i].data![j].field_set_value
+                                    .toString(),
+                                required:
+                                    state.listAddData[i].data![j].field_require,
+                              ));
                         }
                       }
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: List.generate(
-                                state.listAddData.length,
-                                (indexParent) => (state.listAddData[indexParent]
-                                                .data !=
-                                            null &&
-                                        state.listAddData[indexParent].data!
-                                                .length >
-                                            0)
-                                    ? Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: AppValue.heights * 0.01,
-                                          ),
-                                          state.listAddData[indexParent]
-                                                      .group_name !=
-                                                  null
-                                              ? WidgetText(
-                                                  title: state
-                                                          .listAddData[
-                                                              indexParent]
-                                                          .group_name ??
-                                                      '',
-                                                  style:
-                                                      AppStyle.DEFAULT_18_BOLD)
-                                              : SizedBox.shrink(),
-                                          SizedBox(
-                                            height: AppValue.heights * 0.01,
-                                          ),
-                                          Column(
-                                            children: List.generate(
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: List.generate(
+                              state.listAddData.length,
+                              (indexParent) => (state
+                                              .listAddData[indexParent].data !=
+                                          null &&
+                                      state.listAddData[indexParent].data!
+                                              .length >
+                                          0)
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: AppValue.heights * 0.01,
+                                        ),
+                                        state.listAddData[indexParent]
+                                                    .group_name !=
+                                                null
+                                            ? WidgetText(
+                                                title: state
+                                                        .listAddData[
+                                                            indexParent]
+                                                        .group_name ??
+                                                    '',
+                                                style: AppStyle.DEFAULT_18_BOLD)
+                                            : SizedBox.shrink(),
+                                        SizedBox(
+                                          height: AppValue.heights * 0.01,
+                                        ),
+                                        Column(
+                                          children: List.generate(
+                                            state.listAddData[indexParent].data
+                                                    ?.length ??
+                                                0,
+                                            (indexChild) => _getBody(
                                               state.listAddData[indexParent]
-                                                      .data?.length ??
-                                                  0,
-                                              (indexChild) => _getBody(
-                                                state.listAddData[indexParent]
-                                                    .data![indexChild],
-                                                indexParent,
-                                                indexChild,
-                                              ),
+                                                  .data![indexChild],
+                                              indexParent,
+                                              indexChild,
                                             ),
-                                          )
-                                        ],
-                                      )
-                                    : SizedBox.shrink()),
-                          ),
-                          FileDinhKemUiBase(
-                            context: context,
-                            onTap: () => onClickSave(),
-                          ),
-                        ],
-                      );
-                    } else
-                      return SizedBox.shrink();
-                  }),
-            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  : SizedBox.shrink()),
+                        ),
+                        FileDinhKemUiBase(
+                          context: context,
+                          onTap: () => onClickSave(),
+                        ),
+                      ],
+                    );
+                  } else
+                    return SizedBox.shrink();
+                }),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget _getBody(
@@ -333,57 +341,15 @@ class _FormAddContractState extends State<FormAddContract> {
                     canDelete: true,
                   )
                 : data.field_type == 'SELECT'
-                    ? data.field_name == 'col131'
-                        ? StreamBuilder<List<dynamic>>(
-                            stream: _bloc.customerNewStream,
-                            builder: (context, snapshot) {
-                              final list = snapshot.data ?? [];
-                              return InputDropdown(
-                                isAddList: true,
-                                dropdownItemList: listCustomerForChance,
-                                data: data,
-                                onSuccess: (data) async {
-                                  List<dynamic>? result = [];
-                                  if (data == CA_NHAN) {
-                                    result =
-                                        await AppNavigator.navigateAddCustomer(
-                                            listCustomerForChance.first[1],
-                                            isResultData: true);
-                                  } else if (data == TO_CHUC) {
-                                    result = await AppNavigator
-                                        .navigateFormAddCustomerGroup(
-                                      listCustomerForChance.last[1],
-                                      ADD_CUSTOMER,
-                                      isResultData: true,
-                                    );
-                                  }
-                                  if (result != null && result.isNotEmpty) {
-                                    data = result.first;
-                                    _bloc.customerNewStream.add(result);
-                                  } else if (result == null) {
-                                    data = '';
-                                    _bloc.customerNewStream
-                                        .add(['null', 'null']);
-                                  }
-                                  addData[indexParent].data[indexChild].value =
-                                      data;
-                                  _bloc.getAddressCustomer(data);
-                                  ContactByCustomerBloc.of(context)
-                                      .chiTietXe
-                                      .add('');
-                                  ContactByCustomerBloc.of(context)
-                                      .add(InitGetContactByCustomerrEvent(
-                                    data,
-                                    isAddNewCar: true,
-                                  ));
-                                  PhoneBloc.of(context)
-                                      .add(InitPhoneEvent(data));
-                                },
-                                value: list.isNotEmpty
-                                    ? list.last
-                                    : data.field_value ?? '',
-                              );
-                            })
+                    ? data.field_name == 'dia_chi_chung_text'
+                        ? LocationWidget(
+                            data: data,
+                            onSuccess: (data) {
+                              addData[indexParent].data[indexChild].value =
+                                  data;
+                            },
+                            initData: data.field_value,
+                          )
                         : data.field_name == 'col131'
                             ? StreamBuilder<List<dynamic>>(
                                 stream: _bloc.customerNewStream,
@@ -699,16 +665,20 @@ class _FormAddContractState extends State<FormAddContract> {
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-                color: COLORS.LIGHT_GREY,
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: HexColor('#BEB4B4'))),
+              color: COLORS.LIGHT_GREY,
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                color: HexColor('#BEB4B4'),
+              ),
+            ),
             child: Padding(
               padding: EdgeInsets.all(15),
               child: Container(
-                  child: WidgetText(
-                title: '$value',
-                style: AppStyle.DEFAULT_14,
-              )),
+                child: WidgetText(
+                  title: '$value',
+                  style: AppStyle.DEFAULT_14,
+                ),
+              ),
             ),
           ),
         ],
@@ -835,7 +805,7 @@ class _FormAddContractState extends State<FormAddContract> {
     }
     if (check == true) {
       ShowDialogCustom.showDialogBase(
-        title:getT(KeyT.notification),
+        title: getT(KeyT.notification),
         content: TotalBloc.of(context).unpaidStream.value < 0
             ? getT(KeyT.the_amount_paid_cannot_be_greater_than_the_total_amount)
             : getT(KeyT.please_enter_all_required_fields),

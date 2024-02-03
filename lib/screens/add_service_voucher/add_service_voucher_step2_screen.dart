@@ -5,7 +5,6 @@ import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/add_service_voucher/select_car.dart';
 import 'package:gen_crm/src/models/request/voucher_service_request.dart';
 import 'package:gen_crm/widgets/pick_file_image.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../bloc/contract/attack_bloc.dart';
 import '../../bloc/contract/total_bloc.dart';
 import '../../models/model_data_add.dart';
@@ -562,7 +561,7 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
                     ? COLORS.LIGHT_GREY
                     : COLORS.WHITE,
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: HexColor("#BEB4B4"))),
+                border: Border.all(color: COLORS.ffBEB4B4)),
             child: Padding(
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
@@ -636,7 +635,7 @@ Widget fieldCar(
           decoration: BoxDecoration(
               color: noEdit == true ? COLORS.LIGHT_GREY : COLORS.WHITE,
               borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: HexColor("#BEB4B4"))),
+              border: Border.all(color: COLORS.ffBEB4B4)),
           child: Padding(
             padding: EdgeInsets.only(
               left: 10,
@@ -715,7 +714,7 @@ Widget TypeCarBase(
                   decoration: BoxDecoration(
                       color: COLORS.WHITE,
                       borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: HexColor("#BEB4B4"))),
+                      border: Border.all(color: COLORS.ffBEB4B4)),
                   child: Padding(
                     padding: EdgeInsets.only(left: 10, top: 15, bottom: 15),
                     child: Container(

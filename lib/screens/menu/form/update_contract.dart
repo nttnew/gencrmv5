@@ -7,12 +7,12 @@ import 'package:gen_crm/bloc/form_edit/form_edit_bloc.dart';
 import 'package:gen_crm/models/model_data_add.dart';
 import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/menu/form/product_list/product_contract.dart';
+import 'package:gen_crm/screens/menu/form/widget/location_select.dart';
 import 'package:gen_crm/screens/menu/home/contract/widget/widget_total_sum.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../../../../../src/models/model_generator/add_customer.dart';
 import '../../../bloc/contract/attack_bloc.dart';
 import '../../../bloc/contract/contract_bloc.dart';
@@ -104,15 +104,13 @@ class _EditContractState extends State<EditContract> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppbarBaseNormal(
-            getT(KeyT.edit_information)),
+        appBar: AppbarBaseNormal(getT(KeyT.edit_information)),
         body: BlocListener<AddDataBloc, AddDataState>(
           listener: (context, state) async {
             if (state is SuccessAddContactCustomerState) {
               ShowDialogCustom.showDialogBase(
-                title:getT(KeyT.notification),
-                content:
-                    getT(KeyT.update_data_successfully),
+                title: getT(KeyT.notification),
+                content: getT(KeyT.update_data_successfully),
                 onTap1: () {
                   Get.back();
                   Get.back();
@@ -123,16 +121,15 @@ class _EditContractState extends State<EditContract> {
               );
             } else if (state is ErrorAddContactCustomerState) {
               ShowDialogCustom.showDialogBase(
-                title:getT(KeyT.notification),
+                title: getT(KeyT.notification),
                 content: state.msg,
               );
             }
           },
           child: Container(
-            padding: EdgeInsets.only(
-                left: AppValue.widths * 0.05,
-                right: AppValue.widths * 0.05,
-                top: AppValue.heights * 0.02),
+            padding: EdgeInsets.all(
+              16,
+            ),
             color: COLORS.WHITE,
             child: SingleChildScrollView(
               child: BlocBuilder<FormEditBloc, FormEditState>(
@@ -195,11 +192,15 @@ class _EditContractState extends State<EditContract> {
                                       .sale_off.type!));
                             }
                         } else
-                          addData[i].data.add(ModelDataAdd(
-                              label: state.listEditData[i].data![j].field_name,
-                              value: state
-                                  .listEditData[i].data![j].field_set_value
-                                  .toString()));
+                          addData[i].data.add(
+                                ModelDataAdd(
+                                  label:
+                                      state.listEditData[i].data![j].field_name,
+                                  value: state
+                                      .listEditData[i].data![j].field_set_value
+                                      .toString(),
+                                ),
+                              );
                       }
                     }
                   }
@@ -306,76 +307,90 @@ class _EditContractState extends State<EditContract> {
                     canDelete: true,
                   )
                 : data.field_type == "SELECT"
-                    ? (data.field_name == 'col141'
-                        ? BlocBuilder<ContactByCustomerBloc,
-                            ContactByCustomerState>(builder: (context, stateA) {
-                            if (stateA is UpdateGetContacBytCustomerState)
-                              return InputDropdown(
-                                  dropdownItemList:
-                                      stateA.listContactByCustomer,
-                                  data: data,
-                                  onSuccess: (data) {
-                                    addData[indexParent]
-                                        .data[indexChild]
-                                        .value = data;
-                                    PhoneBloc.of(context)
-                                        .add(InitAgencyPhoneEvent(data));
-                                  },
-                                  value: data.field_value ?? '');
-                            else
-                              return SizedBox.shrink();
-                          })
-                        : data.field_name == 'hdsan_pham_kh'
-                            ? StreamBuilder<List<List<dynamic>>>(
-                                stream:
-                                    ContactByCustomerBloc.of(context).listXe,
-                                builder: (context, snapshot) {
-                                  final list = snapshot.data;
+                    ? data.field_name == 'dia_chi_chung_text'
+                        ? LocationWidget(
+                            data: data,
+                            onSuccess: (data) {
+                              addData[indexParent].data[indexChild].value =
+                                  data;
+                            },
+                            initData: data.field_value,
+                          )
+                        : (data.field_name == 'col141'
+                            ? BlocBuilder<ContactByCustomerBloc,
+                                    ContactByCustomerState>(
+                                builder: (context, stateA) {
+                                if (stateA is UpdateGetContacBytCustomerState)
                                   return InputDropdown(
-                                      isUpdate: true,
-                                      isUpdateList: true,
                                       dropdownItemList:
-                                          list ?? data.field_datasource ?? [],
+                                          stateA.listContactByCustomer,
                                       data: data,
                                       onSuccess: (data) {
                                         addData[indexParent]
                                             .data[indexChild]
                                             .value = data;
-                                        ContactByCustomerBloc.of(context)
-                                            .getCar(data);
+                                        PhoneBloc.of(context)
+                                            .add(InitAgencyPhoneEvent(data));
                                       },
-                                      onUpdate: (data) {
-                                        addData[indexParent]
-                                            .data[indexChild]
-                                            .value = data;
-                                        ContactByCustomerBloc.of(context)
-                                            .getCar(data);
-                                      },
-                                      value: ContactByCustomerBloc.of(context)
-                                              .checkXeKhach(
-                                        addData[indexParent]
-                                            .data[indexChild]
-                                            .value,
-                                        list,
-                                      )
-                                          ? ''
-                                          : data.field_value ?? '');
-                                })
-                            : InputDropdown(
-                                dropdownItemList: data.field_datasource ?? [],
-                                data: data,
-                                onSuccess: (data) {
-                                  addData[indexParent].data[indexChild].value =
-                                      data;
-                                  if (data.field_name == 'col131') {
-                                    PhoneBloc.of(context)
-                                        .add(InitPhoneEvent(data.toString()));
-                                    ContactByCustomerBloc.of(context).add(
-                                        InitGetContactByCustomerrEvent(
-                                            data.toString()));
-                                  }
-                                },
-                                value: data.field_value ?? ''))
+                                      value: data.field_value ?? '');
+                                else
+                                  return SizedBox.shrink();
+                              })
+                            : data.field_name == 'hdsan_pham_kh'
+                                ? StreamBuilder<List<List<dynamic>>>(
+                                    stream: ContactByCustomerBloc.of(context)
+                                        .listXe,
+                                    builder: (context, snapshot) {
+                                      final list = snapshot.data;
+                                      return InputDropdown(
+                                          isUpdate: true,
+                                          isUpdateList: true,
+                                          dropdownItemList: list ??
+                                              data.field_datasource ??
+                                              [],
+                                          data: data,
+                                          onSuccess: (data) {
+                                            addData[indexParent]
+                                                .data[indexChild]
+                                                .value = data;
+                                            ContactByCustomerBloc.of(context)
+                                                .getCar(data);
+                                          },
+                                          onUpdate: (data) {
+                                            addData[indexParent]
+                                                .data[indexChild]
+                                                .value = data;
+                                            ContactByCustomerBloc.of(context)
+                                                .getCar(data);
+                                          },
+                                          value:
+                                              ContactByCustomerBloc.of(context)
+                                                      .checkXeKhach(
+                                            addData[indexParent]
+                                                .data[indexChild]
+                                                .value,
+                                            list,
+                                          )
+                                                  ? ''
+                                                  : data.field_value ?? '');
+                                    })
+                                : InputDropdown(
+                                    dropdownItemList:
+                                        data.field_datasource ?? [],
+                                    data: data,
+                                    onSuccess: (data) {
+                                      addData[indexParent]
+                                          .data[indexChild]
+                                          .value = data;
+                                      if (data.field_name == 'col131') {
+                                        PhoneBloc.of(context).add(
+                                            InitPhoneEvent(data.toString()));
+                                        ContactByCustomerBloc.of(context).add(
+                                            InitGetContactByCustomerrEvent(
+                                                data.toString()));
+                                      }
+                                    },
+                                    value: data.field_value ?? ''))
                     : data.field_type == "TEXT_MULTI"
                         ? SelectMulti(
                             dropdownItemList: data.field_datasource ?? [],
@@ -501,7 +516,7 @@ class _EditContractState extends State<EditContract> {
             decoration: BoxDecoration(
                 color: COLORS.LIGHT_GREY,
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: HexColor("#BEB4B4"))),
+                border: Border.all(color: COLORS.ffBEB4B4)),
             child: Padding(
               padding: EdgeInsets.all(15),
               child: Container(
@@ -548,11 +563,18 @@ class _EditContractState extends State<EditContract> {
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-                color: noEdit == true ? COLORS.LIGHT_GREY : COLORS.WHITE,
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: HexColor("#BEB4B4"))),
+              color: noEdit == true ? COLORS.LIGHT_GREY : COLORS.WHITE,
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                color: COLORS.ffBEB4B4,
+              ),
+            ),
             child: Padding(
-              padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
+              padding: EdgeInsets.only(
+                left: 10,
+                top: 5,
+                bottom: 5,
+              ),
               child: Container(
                 child: TextFormField(
                   minLines: data.field_type == 'TEXTAREA' ? 2 : 1,

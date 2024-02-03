@@ -184,6 +184,9 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
                   }
                   return null;
                 },
+                onSubmit: () {
+                  _onLogin(bloc);
+                },
               ),
               AppValue.vSpaceSmall,
               Row(
@@ -236,13 +239,17 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
     );
   }
 
+  _onLogin(bloc) {
+    if ((_formKey.currentState?.validate() ?? false)) {
+      _getDataDomain();
+      bloc.add(FormSubmitted(device_token: tokenFirebase ?? ''));
+    }
+  }
+
   _buildButtonLogin(LoginBloc bloc) {
     return WidgetButton(
       onTap: () async {
-        if ((_formKey.currentState?.validate() ?? false)) {
-          _getDataDomain();
-          bloc.add(FormSubmitted(device_token: tokenFirebase ?? ''));
-        }
+        _onLogin(bloc);
       },
       boxDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
@@ -251,80 +258,6 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
       textStyle: AppStyle.DEFAULT_18_BOLD,
       text: getT(KeyT.login),
     );
-  }
-
-  _buildTextFieldDomain(LoginBloc bloc) {
-    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-      return WidgetInput(
-        colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
-        onChanged: (value) => bloc.add(DomainChanged(domain: value)),
-        focusNode: _domainFocusNode,
-        boxDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: COLORS.ff838A91),
-        ),
-        inputController: _domainController,
-        errorText:
-            state.domain.invalid ? getT(KeyT.validate_address_app) : null,
-        textLabel: WidgetText(
-            title: getT(KeyT.change_address_application),
-            style: TextStyle(
-              fontFamily: "Quicksand",
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-            )),
-      );
-    });
-  }
-
-  _buildTextFieldPassword(LoginBloc bloc) {
-    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-      return WidgetInput(
-        colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
-        textLabel: WidgetText(
-          title: getT(KeyT.password),
-          style: TextStyle(
-            fontFamily: "Quicksand",
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-          ),
-        ),
-        onChanged: (value) => bloc.add(PasswordChanged(password: value)),
-        errorText: state.password.invalid
-            ? getT(KeyT.password_must_be_at_least_6_characters)
-            : null,
-        obscureText: obscurePassword,
-        focusNode: _passwordFocusNode,
-        boxDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: COLORS.ff838A91),
-        ),
-      );
-    });
-  }
-
-  _buildTextFieldUsername(LoginBloc bloc) {
-    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-      return WidgetInput(
-        colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
-        onChanged: (value) => bloc.add(EmailChanged(email: value)),
-        // inputType: TextInputType.emailAddress,
-        focusNode: _emailFocusNode,
-        boxDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: COLORS.ff838A91),
-        ),
-        inputController: _unameController,
-        errorText:
-            state.email.invalid ? getT(KeyT.this_account_is_invalid) : null,
-        textLabel: WidgetText(
-            title: getT(KeyT.account),
-            style: TextStyle(
-                fontFamily: "Quicksand",
-                fontWeight: FontWeight.w600,
-                fontSize: 14)),
-      );
-    });
   }
 
   _buildFingerPrintButton() {

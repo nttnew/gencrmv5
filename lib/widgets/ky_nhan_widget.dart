@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:signature/signature.dart';
 import '../../l10n/key_text.dart';
 import '../src/models/model_generator/add_customer.dart';
@@ -105,7 +104,7 @@ class _KyNhanState extends State<KyNhan> {
         Container(
           decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.1),
-              border: Border.all(color: HexColor("#BEB4B4")),
+              border: Border.all(color: COLORS.ffBEB4B4),
               borderRadius: BorderRadius.all(Radius.circular(6))),
           child: Signature(
             key: const Key('signature'),

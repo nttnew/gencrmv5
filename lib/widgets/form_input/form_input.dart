@@ -36,6 +36,8 @@ class FormInputBase extends StatefulWidget {
     this.isWrap = false,
     this.isBorder = true,
     this.colorTitle,
+    this.hint,
+    this.onSubmit,
   }) : super(key: key);
 
   final bool isClose;
@@ -59,6 +61,7 @@ class FormInputBase extends StatefulWidget {
   final bool enabled;
   final bool required;
   final Function()? onTap;
+  final Function()? onSubmit;
   final int? maxLine;
   final TextInputAction? textInputAction;
   final Color? colorBorder;
@@ -66,6 +69,7 @@ class FormInputBase extends StatefulWidget {
   final Color? colorTitle;
   final bool isWrap;
   final bool isBorder;
+  final String? hint;
 
   @override
   FormInputBaseState createState() => FormInputBaseState();
@@ -171,7 +175,11 @@ class FormInputBaseState extends State<FormInputBase> {
                   textAlignVertical: TextAlignVertical.center,
                   obscureText: isPass,
                   maxLines: widget.maxLine == null ? 1 : null,
+                  onFieldSubmitted: (v) {
+                    if (widget.onSubmit != null) widget.onSubmit!();
+                  },
                   decoration: InputDecoration(
+                    hintText: widget.hint,
                     contentPadding: EdgeInsets.only(
                       top: 16,
                       bottom: 16,
