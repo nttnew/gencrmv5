@@ -188,6 +188,7 @@ class BASE_URL {
   static const GET_NTC_FILTER = 'modules/genmobile2/dashboard/getNTCFilter';
   static const GET_BAO_CAO_SO_QUY =
       'modules/genmobile2/dashboard/getBaocaoSoquy';
+  static const GET_DATA_LOCATION = 'modules/api/getdata/dataLocation';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';
@@ -396,5 +397,4 @@ class ModuleText {
 bool isSuccess(int? code) =>
     code == BASE_URL.SUCCESS || code == BASE_URL.SUCCESS_200;
 
-bool isFail(int? code) =>
-    code == BASE_URL.SUCCESS_999;
+bool isFail(int? code) => code == BASE_URL.SUCCESS_999;

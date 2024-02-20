@@ -6,14 +6,14 @@ import 'cupertino_loading.dart';
 class LoadingApi {
   RxInt loading = RxInt(0);
 
-  pushLoading() {
+  pushLoading({isLogin = false}) {
     loading.value++;
     if (isLoading() && Get.isDialogOpen != true) {
       Get.dialog(Container(
         color: Colors.transparent,
         child: GestureDetector(
           onTap: () {},
-          child: Center(child: CupertinoLoading()),
+          child: Center(child: isLogin ? SizedBox() : CupertinoLoading()),
         ),
       ));
     }

@@ -12,6 +12,7 @@ import 'package:gen_crm/widgets/widgets.dart';
 import 'package:local_auth/local_auth.dart';
 import '../../../l10n/key_text.dart';
 import '../../../widgets/form_input/form_input.dart';
+import '../../../widgets/loading_api.dart';
 
 class WidgetLoginForm extends StatefulWidget {
   WidgetLoginForm({
@@ -134,9 +135,11 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         if (state.status.isSubmissionFailure) {
           GetSnackBarUtils.removeSnackBar();
           ShowDialogCustom.showDialogBase(
-            title: getT(KeyT.notification),
-            content: state.message,
-          );
+              title: getT(KeyT.notification),
+              content: state.message,
+              onWhen: () {
+                LoadingApi().popLoading();
+              });
         }
       },
       child: Container(

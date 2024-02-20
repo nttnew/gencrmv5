@@ -141,9 +141,9 @@ class _FormAddSignState extends State<FormAddSign> {
           },
           child: Container(
             height: MediaQuery.of(context).size.height,
-            padding: EdgeInsets.all(16),
             color: COLORS.WHITE,
             child: SingleChildScrollView(
+              padding: EdgeInsets.all(16),
               controller: scrollController,
               child: Column(
                 children: [

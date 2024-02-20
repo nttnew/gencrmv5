@@ -859,4 +859,7 @@ abstract class RestClient {
     @Query('chinhanh') String chiNhanh,
     @Query('p') String page,
   );
+
+  @GET(BASE_URL.GET_DATA_LOCATION)
+  Future<dynamic> getDataLocation();
 }

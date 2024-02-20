@@ -127,11 +127,11 @@ class _EditContractState extends State<EditContract> {
             }
           },
           child: Container(
-            padding: EdgeInsets.all(
-              16,
-            ),
             color: COLORS.WHITE,
             child: SingleChildScrollView(
+              padding: EdgeInsets.all(
+                16,
+              ),
               child: BlocBuilder<FormEditBloc, FormEditState>(
                   builder: (context, state) {
                 if (state is LoadingFormEditState) {
@@ -378,16 +378,16 @@ class _EditContractState extends State<EditContract> {
                                     dropdownItemList:
                                         data.field_datasource ?? [],
                                     data: data,
-                                    onSuccess: (data) {
+                                    onSuccess: (value) {
                                       addData[indexParent]
                                           .data[indexChild]
-                                          .value = data;
+                                          .value = value;
                                       if (data.field_name == 'col131') {
                                         PhoneBloc.of(context).add(
-                                            InitPhoneEvent(data.toString()));
+                                            InitPhoneEvent(value.toString()));
                                         ContactByCustomerBloc.of(context).add(
                                             InitGetContactByCustomerrEvent(
-                                                data.toString()));
+                                                value.toString()));
                                       }
                                     },
                                     value: data.field_value ?? ''))

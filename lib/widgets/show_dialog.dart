@@ -22,17 +22,19 @@ class ShowDialogCustom {
     Get.back();
   }
 
-  static showDialogBase(
-      {String? title,
-      String? content,
-      String? textButton1,
-      Color? txtColorButton1,
-      VoidCallback? onTap1,
-      String? textButton2,
-      Color? colorButton2,
-      Color? colorButton1,
-      Widget? child,
-      VoidCallback? onTap2}) {
+  static showDialogBase({
+    String? title,
+    String? content,
+    String? textButton1,
+    Color? txtColorButton1,
+    VoidCallback? onTap1,
+    String? textButton2,
+    Color? colorButton2,
+    Color? colorButton1,
+    Widget? child,
+    VoidCallback? onTap2,
+    Function? onWhen,
+  }) {
     showDialog<void>(
       context: Get.context!,
       barrierDismissible: false, // user must tap button!
@@ -41,7 +43,9 @@ class ShowDialogCustom {
           backgroundColor: Colors.transparent,
           body: SafeArea(
             child: BackdropFilter(
-              filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              filter: onWhen == null
+                  ? ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0)
+                  : ImageFilter.blur(),
               child: Center(
                 child: Container(
                   decoration: BoxDecoration(
@@ -139,7 +143,9 @@ class ShowDialogCustom {
           ),
         );
       },
-    );
+    ).whenComplete(() {
+      if (onWhen != null) onWhen();
+    });
   }
 
   static showDialogScreenBase({required Widget child}) async {

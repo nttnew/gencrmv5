@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import '../../../../l10n/key_text.dart';
-import '../../../../src/constants_location/quan_huyen.dart';
-import '../../../../src/constants_location/tinh_thanh.dart';
+import '../../../../src/location.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/form_input/form_input.dart';
@@ -170,19 +168,19 @@ class _SelectLocationBottomSheetState extends State<SelectLocationBottomSheet> {
   void initState() {
     if (widget.init != null) {
       tinhThanh = {
-        'name': widget.init?.tinhThanh,
-        'id': widget.init?.tinhThanhId,
-        'code': widget.init?.tinhThanhCode,
+        NAME: widget.init?.tinhThanh,
+        ID: widget.init?.tinhThanhId,
+        CODE: widget.init?.tinhThanhCode,
       };
       quanHuyen = {
-        'name': widget.init?.quanHuyen,
-        'id': widget.init?.quanHuyenId,
-        'code': widget.init?.quanHuyenCode,
+        NAME: widget.init?.quanHuyen,
+        ID: widget.init?.quanHuyenId,
+        CODE: widget.init?.quanHuyenCode,
       };
       phuongXa = {
-        'name': widget.init?.phuongXa,
-        'id': widget.init?.phuongXaId,
-        'code': widget.init?.phuongXaCode,
+        NAME: widget.init?.phuongXa,
+        ID: widget.init?.phuongXaId,
+        CODE: widget.init?.phuongXaCode,
       };
       setState(() {});
     }
@@ -207,7 +205,7 @@ class _SelectLocationBottomSheetState extends State<SelectLocationBottomSheet> {
         SelectTypeLocation(
           title: getT(KeyT.PROVINCE_CITY),
           text: checkTitle(
-            tinhThanh?['name'],
+            tinhThanh?[NAME],
             getT(KeyT.PROVINCE_CITY),
           ),
           onSelect: (dataS) {
@@ -218,17 +216,17 @@ class _SelectLocationBottomSheetState extends State<SelectLocationBottomSheet> {
               setState(() {});
             }
           },
-          validate: tinhThanh?['name'],
+          validate: tinhThanh?[NAME],
         ),
         AppValue.vSpaceSmall,
         SelectTypeLocation(
           title: getT(KeyT.DISTRICT),
           text: checkTitle(
-            quanHuyen?['name'],
+            quanHuyen?[NAME],
             getT(KeyT.DISTRICT),
           ),
-          code: tinhThanh?['code'],
-          isHide: tinhThanh == null || tinhThanh?['name'] == '',
+          code: tinhThanh?[CODE],
+          isHide: tinhThanh == null || tinhThanh?[NAME] == '',
           onSelect: (dataS) {
             if (quanHuyen != dataS) {
               quanHuyen = dataS;
@@ -236,52 +234,52 @@ class _SelectLocationBottomSheetState extends State<SelectLocationBottomSheet> {
               setState(() {});
             }
           },
-          validate: quanHuyen?['name'],
+          validate: quanHuyen?[NAME],
         ),
         AppValue.vSpaceSmall,
         SelectTypeLocation(
           isQuanHuyen: false,
           title: getT(KeyT.WARD_COMMUNE),
-          code: quanHuyen?['code'],
+          code: quanHuyen?[CODE],
           text: checkTitle(
-            phuongXa?['name'],
+            phuongXa?[NAME],
             getT(KeyT.WARD_COMMUNE),
           ),
-          isHide: quanHuyen == null || quanHuyen?['name'] == '',
+          isHide: quanHuyen == null || quanHuyen?[NAME] == '',
           onSelect: (dataS) {
             if (phuongXa != dataS) {
               phuongXa = dataS;
               setState(() {});
             }
           },
-          validate: phuongXa?['name'],
+          validate: phuongXa?[NAME],
         ),
         AppValue.vSpaceMedium,
         AppValue.vSpaceMedium,
         ButtonThaoTac(
           onTap: () {
-            if (tinhThanh?['name'] == '') {
+            if (tinhThanh?[NAME] == '') {
               tinhThanh = null;
             }
-            if (quanHuyen?['name'] == '') {
+            if (quanHuyen?[NAME] == '') {
               quanHuyen = null;
             }
-            if (phuongXa?['name'] == '') {
+            if (phuongXa?[NAME] == '') {
               phuongXa = null;
             }
             setState(() {});
             if (phuongXa != null && quanHuyen != null && tinhThanh != null) {
               Navigator.of(context).pop(
                 LocationModel(
-                  tinhThanh: tinhThanh?['name'],
-                  tinhThanhId: tinhThanh?['id'],
-                  tinhThanhCode: tinhThanh?['code'],
-                  quanHuyen: quanHuyen?['name'],
-                  quanHuyenId: quanHuyen?['id'],
-                  quanHuyenCode: quanHuyen?['code'],
-                  phuongXa: phuongXa?['name'],
-                  phuongXaId: phuongXa?['id'],
-                  phuongXaCode: phuongXa?['code'],
+                  tinhThanh: tinhThanh?[NAME],
+                  tinhThanhId: tinhThanh?[ID],
+                  tinhThanhCode: tinhThanh?[CODE],
+                  quanHuyen: quanHuyen?[NAME],
+                  quanHuyenId: quanHuyen?[ID],
+                  quanHuyenCode: quanHuyen?[CODE],
+                  phuongXa: phuongXa?[NAME],
+                  phuongXaId: phuongXa?[ID],
+                  phuongXaCode: phuongXa?[CODE],
                 ),
               );
             }
@@ -338,7 +336,7 @@ class _SelectTypeLocationState extends State<SelectTypeLocation> {
     validate = widget.validate;
     final String? code = widget.code;
     if (code == null) {
-      listData = DATA_TINH_THANH;
+      listData = getTinhThanh();
     } else if (widget.isQuanHuyen) {
       listData = getQuanHuyen(code);
     } else {
@@ -365,7 +363,7 @@ class _SelectTypeLocationState extends State<SelectTypeLocation> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (title != (data?['name'] ?? widget.text))
+        if (title != (data?[NAME] ?? widget.text))
           Padding(
             padding: EdgeInsets.only(
               left: widget.shinkWrap ? 0 : 16,
@@ -430,7 +428,7 @@ class _SelectTypeLocationState extends State<SelectTypeLocation> {
                 children: [
                   Expanded(
                     child: Text(
-                      !isHide ? (data?['name'] ?? widget.text) : widget.text,
+                      !isHide ? (data?[NAME] ?? widget.text) : widget.text,
                       style: AppStyle.DEFAULT_14.copyWith(
                         color: _getColor(isText: true),
                       ),
@@ -544,12 +542,12 @@ class _ListLocationState extends State<ListLocation> {
                         horizontal: 16,
                       ),
                       decoration: BoxDecoration(
-                        color: widget.text == listUi[index]['name']
+                        color: widget.text == listUi[index][NAME]
                             ? COLORS.PRIMARY_COLOR
                             : COLORS.WHITE,
                       ),
                       child: Text(
-                        listUi[index]['name'],
+                        listUi[index][NAME],
                         style: AppStyle.DEFAULT_16_T,
                       ),
                     ),
@@ -559,59 +557,5 @@ class _ListLocationState extends State<ListLocation> {
         ],
       ),
     );
-  }
-}
-
-class LocationModel {
-  String? tinhThanh;
-  String? quanHuyen;
-  String? phuongXa;
-  String? tinhThanhId;
-  String? quanHuyenId;
-  String? phuongXaId;
-  String? phuongXaCode;
-  String? tinhThanhCode;
-  String? quanHuyenCode;
-
-  LocationModel({
-    this.tinhThanh,
-    this.quanHuyen,
-    this.phuongXa,
-    this.tinhThanhId,
-    this.quanHuyenId,
-    this.phuongXaId,
-    this.phuongXaCode,
-    this.tinhThanhCode,
-    this.quanHuyenCode,
-  });
-
-  LocationModel.fromJson(Map<String, dynamic> json) {
-    this.tinhThanh = json['tinhThanh'];
-    this.quanHuyen = json['quanHuyen'];
-    this.phuongXa = json['phuongXa'];
-    this.tinhThanhId = json['tinhThanhId'];
-    this.quanHuyenId = json['quanHuyenId'];
-    this.phuongXaId = json['phuongXaId'];
-    this.tinhThanhCode = json['tinhThanhCode'];
-    this.phuongXaCode = json['phuongXaCode'];
-    this.quanHuyenCode = json['quanHuyenCode'];
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'tinhThanh': this.tinhThanh,
-      'quanHuyen': this.quanHuyen,
-      'phuongXa': this.phuongXa,
-      'tinhThanhId': this.tinhThanhId,
-      'quanHuyenId': this.quanHuyenId,
-      'phuongXaId': this.phuongXaId,
-      'tinhThanhCode': this.tinhThanhCode,
-      'quanHuyenCode': this.quanHuyenCode,
-      'phuongXaCode': this.phuongXaCode,
-    };
-  }
-
-  String getTitle() {
-    return '$phuongXa, $quanHuyen, $tinhThanh';
   }
 }

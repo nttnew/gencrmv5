@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/product/product_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
-import 'package:gen_crm/widgets/widgets.dart';
+import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../models/product_model.dart';
 import 'package:get/get.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
+import '../../../../widgets/search_base.dart';
 import 'item_product.dart';
 
 class ListProduct extends StatefulWidget {
@@ -93,8 +95,7 @@ class _ListProductState extends State<ListProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarBaseNormal(
-          getT(KeyT.select_product)),
+      appBar: AppbarBaseNormal(getT(KeyT.select_product)),
       body: BlocBuilder<ProductBloc, ProductState>(
           bloc: _bloc,
           builder: (context, state) {
@@ -103,120 +104,102 @@ class _ListProductState extends State<ListProduct> {
               return SizedBox.shrink();
             } else if (state is SuccessGetListProductState) {
               _handleDataSelect(state);
-              return Container(
-                margin: EdgeInsets.only(top: 8, bottom: 8),
-                height: Get.height,
-                color: COLORS.WHITE,
-                child: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 1, color: COLORS.GREY_400),
-                                borderRadius: BorderRadius.circular(10)),
-                            padding: EdgeInsets.symmetric(horizontal: 8),
-                            margin: EdgeInsets.only(right: 8),
-                            child: TextField(
-                              controller: _editingController,
-                              decoration: InputDecoration(
-                                hintText: getT(KeyT.find_product ),
-                                border: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                errorBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                              ),
-                            ),
-                          )),
-                          GestureDetector(
-                            onTap: this.onClickSearch,
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 16),
-                              decoration: BoxDecoration(
-                                  color: COLORS.PRIMARY_COLOR,
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: WidgetText(
-                                title:
-                                    getT(KeyT.find ),
-                                style: AppStyle.DEFAULT_16,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          )
-                        ],
+              return Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(
+                      top: 16,
+                      bottom: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: COLORS.WHITE,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: Offset(0, 0), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: SearchBase(
+                      inputController: _editingController,
+                      hint: getT(KeyT.find_product),
+                      onSubmit: (v) {
+                        _onClickSearch();
+                      },
+                      leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                    ),
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.only(
+                        top: 8,
+                        bottom: 16,
+                        right: 16,
+                        left: 16,
+                      ),
+                      controller: _scrollController,
+                      child: Column(
+                        children: List.generate(listUI.length, (index) {
+                          return ItemProduct(
+                            neverHidden: false,
+                            data: listUI[index].item,
+                            listDvt: state.listDvt,
+                            listVat: state.listVat,
+                            onChangeQuantity: (soLuong) {
+                              listUI[index].soLuong = double.parse(soLuong);
+                            },
+                            onDVT: (id, name) {
+                              listUI[index].nameDvt = name;
+                              listUI[index].item.dvt = id;
+                            },
+                            onVAT: (id, name) {
+                              listUI[index].nameVat = name;
+                              listUI[index].item.vat = id;
+                              // }
+                            },
+                            onGiamGia: (so, type) {
+                              listUI[index].giamGia = so;
+                              listUI[index].typeGiamGia = type;
+                            },
+                            onPrice: (price) {
+                              listUI[index].item.sell_price = price;
+                            },
+                            onIntoMoney: (intoMoney) {
+                              listUI[index].intoMoney = intoMoney;
+                            },
+                            model: listUI[index],
+                            onReload: () {
+                              reload();
+                            },
+                          );
+                        }),
                       ),
                     ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        controller: _scrollController,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            children: List.generate(listUI.length, (index) {
-                              return ItemProduct(
-                                neverHidden: false,
-                                data: listUI[index].item,
-                                listDvt: state.listDvt,
-                                listVat: state.listVat,
-                                onChangeQuantity: (soLuong) {
-                                  listUI[index].soLuong = double.parse(soLuong);
-                                },
-                                onDVT: (id, name) {
-                                  listUI[index].nameDvt = name;
-                                  listUI[index].item.dvt = id;
-                                },
-                                onVAT: (id, name) {
-                                  listUI[index].nameVat = name;
-                                  listUI[index].item.vat = id;
-                                  // }
-                                },
-                                onGiamGia: (so, type) {
-                                  listUI[index].giamGia = so;
-                                  listUI[index].typeGiamGia = type;
-                                },
-                                onPrice: (price) {
-                                  listUI[index].item.sell_price = price;
-                                },
-                                onIntoMoney: (intoMoney) {
-                                  listUI[index].intoMoney = intoMoney;
-                                },
-                                model: listUI[index],
-                                onReload: () {
-                                  reload();
-                                },
-                              );
-                            }),
-                          ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: Offset(0, 0), // changes position of shadow
                         ),
-                      ),
+                      ],
+                      color: COLORS.WHITE,
                     ),
-                    Container(
-                      padding: EdgeInsets.only(top: 8, bottom: 8),
-                      child: GestureDetector(
-                        onTap: this.onClickSelect,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 8),
-                          width: Get.width * 0.5,
-                          decoration: BoxDecoration(
-                              color: COLORS.PRIMARY_COLOR,
-                              borderRadius: BorderRadius.circular(20)),
-                          child: WidgetText(
-                            title:
-                                getT(KeyT.select ),
-                            style: AppStyle.DEFAULT_16,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                    child: ButtonThaoTac(
+                      marginHorizontal: 30,
+                      title: getT(KeyT.select),
+                      onTap: () {
+                        _onClickSelect();
+                      },
+                    ),
+                  ),
+                ],
               );
             } else
               return noData();
@@ -224,7 +207,7 @@ class _ListProductState extends State<ListProduct> {
     );
   }
 
-  void onClickSelect() {
+  void _onClickSelect() {
     for (int i = 0; i < listUI.length; i++) {
       if (listUI[i].soLuong > 0) {
         addProduct(listUI[i]);
@@ -234,7 +217,7 @@ class _ListProductState extends State<ListProduct> {
     Get.back();
   }
 
-  void onClickSearch() {
+  void _onClickSearch() {
     _bloc.add(
         InitGetListProductEvent('1', _editingController.text, group: group));
   }

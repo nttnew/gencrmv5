@@ -128,6 +128,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else if (event is FormSubmitted) {
       try {
         if (state.status.isValidated) {
+          LoadingApi().pushLoading(isLogin: true);
+
           yield state.copyWith(status: FormzStatus.submissionInProgress);
           var response = await userRepository.loginApp(
             email: state.email.value,
@@ -153,17 +155,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             await _saveData(response);
             await shareLocal.putString(
                 PreferencesKey.USER_PASSWORD, state.password.value);
+            LoadingApi().popLoading();
+
             yield state.copyWith(
                 status: FormzStatus.submissionSuccess,
                 message: response.msg ?? '',
                 user: response.data!);
           } else {
+            LoadingApi().popLoading();
+
             yield state.copyWith(
                 status: FormzStatus.submissionFailure,
                 message: response.msg ?? '');
           }
         }
       } catch (e) {
+        LoadingApi().popLoading();
         yield state.copyWith(
             status: FormzStatus.submissionFailure,
             message: getT(KeyT.an_error_occurred));
@@ -171,6 +178,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     } else {
       if (event is LoginWithFingerPrint) {
+        LoadingApi().pushLoading(isLogin: true);
         yield state.copyWith(status: FormzStatus.submissionInProgress);
         try {
           String userName =
@@ -190,16 +198,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               token: response.data?.token,
             );
             await _saveData(response);
+            LoadingApi().popLoading();
             yield state.copyWith(
                 status: FormzStatus.submissionSuccess,
                 message: response.msg ?? '',
                 user: response.data!);
           } else {
+            LoadingApi().popLoading();
             yield state.copyWith(
                 status: FormzStatus.submissionFailure,
                 message: response.msg ?? '');
           }
         } catch (e) {
+          LoadingApi().popLoading();
           yield state.copyWith(
               status: FormzStatus.submissionFailure,
               message: getT(KeyT.an_error_occurred));
@@ -243,6 +254,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     }
     await getLanguageAPI();
+    await getLocationApi();
     await getMenuMain();
   }
 
@@ -284,7 +296,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if ((response['error'] == BASE_URL.SUCCESS_200)) {
         await shareLocal.putString(
             PreferencesKey.LANGUAGE_BE_ALL, jsonEncode(response['data']));
-      } else {}
+      }
+    } catch (e) {}
+  }
+
+  Future<void> getLocationApi() async {
+    try {
+      final response = await userRepository.getDataLocation();
+      if (response != null && response != '') {
+        await shareLocal.putString(
+            PreferencesKey.LOCATION, jsonEncode(response));
+      }
     } catch (e) {}
   }
 
@@ -299,6 +321,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<void> reloadLang() async {
     LoadingApi().pushLoading();
     await getLanguageAPI();
+    await getLocationApi();
     LoadingApi().popLoading();
   }
 

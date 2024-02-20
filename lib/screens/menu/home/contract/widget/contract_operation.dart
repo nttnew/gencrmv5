@@ -113,6 +113,10 @@ class _ContractOperationState extends State<ContractOperation>
               (index) {
                 bool isKH = data.data?[index].id == 'col131' &&
                     (data.data?[index].is_link ?? false);
+                bool isSPKH = data.data?[index].id == 'hdsan_pham_kh' &&
+                    (data.data?[index].link != '' &&
+                        data.data?[index].link != null);
+                bool isNameSP = data.data?[index].name_field == 'name';
                 if (data.data![index].field_type == "LINE") {
                   return Container(
                       margin: EdgeInsets.symmetric(vertical: 3),
@@ -140,16 +144,26 @@ class _ContractOperationState extends State<ContractOperation>
                                       AppNavigator.navigateDetailCustomer(
                                           data.data?[index].link ?? '',
                                           data.data?[index].value_field ?? '');
+                                    } else if (isSPKH) {
+                                      AppNavigator
+                                          .navigateDetailProductCustomer(
+                                        data.data?[index].label_field ?? '',
+                                        data.data?[index].link ?? '',
+                                      );
                                     }
                                   },
                                   child: WidgetText(
                                     title: data.data![index].value_field ?? '',
                                     textAlign: TextAlign.right,
                                     style: AppStyle.DEFAULT_14.copyWith(
-                                      decoration: isKH
+                                      decoration: isKH || isSPKH
                                           ? TextDecoration.underline
                                           : null,
-                                      color: isKH ? Colors.blue : null,
+                                      color: isKH || isSPKH
+                                          ? Colors.blue
+                                          : isNameSP
+                                              ? COLORS.ORANGE_IMAGE
+                                              : null,
                                     ),
                                   ),
                                 ),

@@ -178,98 +178,93 @@ class _FormAddContractState extends State<FormAddContract> {
             );
           }
         },
-        child: Container(
+        child: SingleChildScrollView(
           padding: EdgeInsets.all(16),
-          color: COLORS.WHITE,
-          child: SingleChildScrollView(
-            child: BlocBuilder<FormAddBloc, FormAddState>(
-                bloc: _bloc,
-                builder: (context, state) {
-                  if (state is LoadingFormAddCustomerOrState) {
-                    addData = [];
-                    data = [];
-                    return SizedBox.shrink();
-                  } else if (state is SuccessFormAddCustomerOrState) {
-                    if (addData.isEmpty) {
-                      for (int i = 0; i < state.listAddData.length; i++) {
-                        addData.add(ModelItemAdd(
-                            group_name: state.listAddData[i].group_name ?? '',
-                            data: []));
-                        for (int j = 0;
-                            j < state.listAddData[i].data!.length;
-                            j++) {
-                          addData[i].data.add(ModelDataAdd(
-                                label: state.listAddData[i].data![j].field_name,
-                                value: state
-                                    .listAddData[i].data![j].field_set_value
-                                    .toString(),
-                                required:
-                                    state.listAddData[i].data![j].field_require,
-                              ));
-                        }
+          child: BlocBuilder<FormAddBloc, FormAddState>(
+              bloc: _bloc,
+              builder: (context, state) {
+                if (state is LoadingFormAddCustomerOrState) {
+                  addData = [];
+                  data = [];
+                  return SizedBox.shrink();
+                } else if (state is SuccessFormAddCustomerOrState) {
+                  if (addData.isEmpty) {
+                    for (int i = 0; i < state.listAddData.length; i++) {
+                      addData.add(ModelItemAdd(
+                          group_name: state.listAddData[i].group_name ?? '',
+                          data: []));
+                      for (int j = 0;
+                          j < state.listAddData[i].data!.length;
+                          j++) {
+                        addData[i].data.add(ModelDataAdd(
+                              label: state.listAddData[i].data![j].field_name,
+                              value: state
+                                  .listAddData[i].data![j].field_set_value
+                                  .toString(),
+                              required:
+                                  state.listAddData[i].data![j].field_require,
+                            ));
                       }
                     }
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: List.generate(
-                              state.listAddData.length,
-                              (indexParent) => (state
-                                              .listAddData[indexParent].data !=
-                                          null &&
-                                      state.listAddData[indexParent].data!
-                                              .length >
-                                          0)
-                                  ? Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: AppValue.heights * 0.01,
-                                        ),
-                                        state.listAddData[indexParent]
-                                                    .group_name !=
-                                                null
-                                            ? WidgetText(
-                                                title: state
-                                                        .listAddData[
-                                                            indexParent]
-                                                        .group_name ??
-                                                    '',
-                                                style: AppStyle.DEFAULT_18_BOLD)
-                                            : SizedBox.shrink(),
-                                        SizedBox(
-                                          height: AppValue.heights * 0.01,
-                                        ),
-                                        Column(
-                                          children: List.generate(
-                                            state.listAddData[indexParent].data
-                                                    ?.length ??
-                                                0,
-                                            (indexChild) => _getBody(
-                                              state.listAddData[indexParent]
-                                                  .data![indexChild],
-                                              indexParent,
-                                              indexChild,
-                                            ),
+                  }
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: List.generate(
+                            state.listAddData.length,
+                            (indexParent) => (state
+                                            .listAddData[indexParent].data !=
+                                        null &&
+                                    state.listAddData[indexParent].data!
+                                            .length >
+                                        0)
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: AppValue.heights * 0.01,
+                                      ),
+                                      state.listAddData[indexParent].group_name !=
+                                              null
+                                          ? WidgetText(
+                                              title: state
+                                                      .listAddData[indexParent]
+                                                      .group_name ??
+                                                  '',
+                                              style: AppStyle.DEFAULT_18_BOLD)
+                                          : SizedBox.shrink(),
+                                      SizedBox(
+                                        height: AppValue.heights * 0.01,
+                                      ),
+                                      Column(
+                                        children: List.generate(
+                                          state.listAddData[indexParent].data
+                                                  ?.length ??
+                                              0,
+                                          (indexChild) => _getBody(
+                                            state.listAddData[indexParent]
+                                                .data![indexChild],
+                                            indexParent,
+                                            indexChild,
                                           ),
-                                        )
-                                      ],
-                                    )
-                                  : SizedBox.shrink()),
-                        ),
-                        FileDinhKemUiBase(
-                          context: context,
-                          onTap: () => onClickSave(),
-                        ),
-                      ],
-                    );
-                  } else
-                    return SizedBox.shrink();
-                }),
-          ),
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                : SizedBox.shrink()),
+                      ),
+                      FileDinhKemUiBase(
+                        context: context,
+                        onTap: () => onClickSave(),
+                      ),
+                    ],
+                  );
+                } else
+                  return SizedBox.shrink();
+              }),
         ),
       ),
     );
@@ -515,25 +510,26 @@ class _FormAddContractState extends State<FormAddContract> {
                                         dropdownItemList:
                                             data.field_datasource ?? [],
                                         data: data,
-                                        onSuccess: (data) {
+                                        onSuccess: (value) {
                                           addData[indexParent]
                                               .data[indexChild]
-                                              .value = data;
+                                              .value = value;
                                           if (data.field_name == 'col131') {
-                                            _bloc.getAddressCustomer(data);
+                                            _bloc.getAddressCustomer(value);
                                             ContactByCustomerBloc.of(context)
                                                 .chiTietXe
                                                 .add('');
                                             ContactByCustomerBloc.of(context).add(
                                                 InitGetContactByCustomerrEvent(
-                                              data,
+                                              value,
                                               isAddNewCar: true,
                                             ));
                                             PhoneBloc.of(context)
-                                                .add(InitPhoneEvent(data));
+                                                .add(InitPhoneEvent(value));
                                           }
                                         },
-                                        value: data.field_value ?? ''))
+                                        value: data.field_value ?? '',
+                                      ))
                     : data.field_type == 'TEXT_MULTI'
                         ? SelectMulti(
                             dropdownItemList: data.field_datasource ?? [],

@@ -136,7 +136,7 @@ class _ProductContractState extends State<ProductContract> {
                         setState(() {});
                       } else {
                         ShowDialogCustom.showDialogBase(
-                          title:getT(KeyT.notification),
+                          title: getT(KeyT.notification),
                           content: getT(KeyT.no_data),
                         );
                       }
@@ -154,26 +154,29 @@ class _ProductContractState extends State<ProductContract> {
               ),
               ...(widget.listBtn ?? [])
                   .map(
-                    (item) => itemBtnWrap(item.field_label ?? '', () {
-                      if (item.field_type == 'service') {
-                        AppNavigator.navigateListServicePark(
-                          widget.addProduct,
-                          reload,
-                          productData,
-                          item.field_label ?? '',
-                        );
-                      } else {
-                        AppNavigator.navigateAddProduct(
-                          widget.addProduct,
-                          reload,
-                          productData,
-                          group: item.field_url,
-                        );
-                      }
-                    },
-                        color: item.field_type == 'service'
-                            ? COLORS.ORANGE
-                            : COLORS.TEXT_GREY_BOLD),
+                    (item) => itemBtnWrap(
+                      item.field_label ?? '',
+                      () {
+                        if (item.field_type == 'service') {
+                          AppNavigator.navigateListServicePark(
+                            widget.addProduct,
+                            reload,
+                            productData,
+                            item.field_label ?? '',
+                          );
+                        } else {
+                          AppNavigator.navigateAddProduct(
+                            widget.addProduct,
+                            reload,
+                            productData,
+                            group: item.field_url,
+                          );
+                        }
+                      },
+                      color: item.field_type == 'service'
+                          ? COLORS.ORANGE
+                          : COLORS.TEXT_GREY_BOLD,
+                    ),
                   )
                   .toList()
             ],

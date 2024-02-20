@@ -64,6 +64,13 @@ class _ItemProductState extends State<ItemProduct> {
   TextEditingController _priceController = TextEditingController();
   TextEditingController _soLuongController = TextEditingController();
   TextEditingController _intoMoneyController = TextEditingController();
+  String priceInit = '';
+  String countInit = '0';
+  String dvtInit = '';
+  String vatInit = '';
+  String saleInit = '0';
+  double intoMoneyInit = 0;
+  bool isTypeGiamGIaInit = true;
 
   @override
   void initState() {
@@ -71,13 +78,27 @@ class _ItemProductState extends State<ItemProduct> {
         widget.listDvt.indexWhere((element) => element[0] == widget.data.dvt);
     int indexVat =
         widget.listVat.indexWhere((element) => element[0] == widget.data.vat);
-    price = widget.data.sell_price ?? "";
+    price = widget.data.sell_price ?? '';
+
+    /// init set color
+    priceInit = widget.data.sell_price ?? '';
+
+    ///
     if (widget.model != null && widget.model!.soLuong != 0) {
       setState(() {
+        /// init set color
+        priceInit = widget.model!.item.sell_price!;
+        countInit = widget.model!.soLuong.toString();
+        dvtInit = widget.model!.nameDvt;
+        vatInit = widget.model!.nameVat;
+        saleInit = widget.model!.giamGia;
+        isTypeGiamGIaInit = widget.model!.typeGiamGia == '%' ? false : true;
+
+        ///
         dvt = widget.model!.nameDvt;
         vat = widget.model!.nameVat;
         giamGia = widget.model!.giamGia;
-        isTypeGiamGIa = widget.model!.typeGiamGia == "%" ? false : true;
+        isTypeGiamGIa = widget.model!.typeGiamGia == '%' ? false : true;
         soLuong = widget.model!.soLuong.toString();
         price = widget.model!.item.sell_price!;
       });
@@ -85,20 +106,32 @@ class _ItemProductState extends State<ItemProduct> {
       widget.onVAT!(widget.model!.item.vat, vat);
     } else {
       setState(() {
-        dvt = index != -1 ? widget.listDvt[index][1] : "";
-        vat = indexVat != -1 ? widget.listVat[indexVat][1] : "0";
+        dvt = index != -1 ? widget.listDvt[index][1] : '';
+        vat = indexVat != -1 ? widget.listVat[indexVat][1] : '0';
         soLuong = '0';
+
+        /// init set color
+        dvtInit = index != -1 ? widget.listDvt[index][1] : '';
+        vatInit = indexVat != -1 ? widget.listVat[indexVat][1] : '0';
+        countInit = '0';
+
+        ///
       });
       widget.onDVT!(widget.data.dvt, dvt);
       widget.onVAT!(widget.data.vat, vat);
     }
+
+    /// init set color
+    intoMoneyInit = widget.model?.intoMoney ?? 0;
+
+    ///
     intoMoney = widget.model?.intoMoney ?? 0;
     super.initState();
   }
 
   @override
   void didUpdateWidget(covariant ItemProduct oldWidget) {
-    final typeWidget = (widget.model!.typeGiamGia == "%" ? false : true);
+    final typeWidget = (widget.model!.typeGiamGia == '%' ? false : true);
     if (oldWidget != widget) {
       soLuong = (widget.model?.soLuong ?? 0).toString();
       price = widget.model?.item.sell_price ?? '';
@@ -200,39 +233,28 @@ class _ItemProductState extends State<ItemProduct> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(width: 1, color: COLORS.GREY_400))),
+        border: Border(
+          bottom: BorderSide(
+            width: 1,
+            color: COLORS.GREY_400,
+          ),
+        ),
+      ),
       margin: EdgeInsets.only(
         top: 8,
       ),
       padding: EdgeInsets.only(bottom: 16),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          widget.canDelete == false
-              ? WidgetContainerImage(
-                  image: ICONS.IC_CART_PNG,
-                  width: 25,
-                  height: 25,
-                  fit: BoxFit.contain,
-                  borderRadius: BorderRadius.circular(0),
-                  colorImage: COLORS.BLUE,
-                )
-              : GestureDetector(
-                  onTap: () {
-                    widget.onDelete!(widget.model!);
-                  },
-                  child: Icon(Icons.delete),
-                ),
-          SizedBox(
-            width: 8,
-          ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 WidgetText(
                   title: widget.data.product_name ?? '',
-                  style:
-                      AppStyle.DEFAULT_14_BOLD.copyWith(color: COLORS.ORANGE),
+                  style: AppStyle.DEFAULT_16_BOLD,
                 ),
                 SizedBox(
                   height: 3,
@@ -247,8 +269,13 @@ class _ItemProductState extends State<ItemProduct> {
                       vertical: 3,
                     ),
                     decoration: BoxDecoration(
-                        color: COLORS.GREY.withOpacity(0.2),
-                        borderRadius: BorderRadius.all(Radius.circular(4))),
+                      color: COLORS.GREY.withOpacity(0.2),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(
+                          4,
+                        ),
+                      ),
+                    ),
                     child: WidgetText(
                       title: widget.data.ten_combo ?? '',
                       style: AppStyle.DEFAULT_14.copyWith(
@@ -259,21 +286,28 @@ class _ItemProductState extends State<ItemProduct> {
                   ),
                 ],
                 WidgetText(
-                  title: "${getT(KeyT.code_product)}: " +
-                      "${widget.data.product_code ?? ''}",
+                  title: '${getT(KeyT.code_product)}: ' +
+                      '${widget.data.product_code ?? ''}',
                   style: AppStyle.DEFAULT_14_BOLD
                       .copyWith(color: COLORS.TEXT_GREY),
                 ),
                 SizedBox(
                   height: 3,
                 ),
-                GestureDetector(
+                itemClick(
+                  colorDF: COLORS.GREY,
+                  title: '${getT(KeyT.price)}: ' +
+                      '${AppValue.format_money(price)}',
+                  isChange:
+                      !(double.tryParse(price) == double.tryParse(priceInit)),
                   onTap: () {
-                    _priceController.text = widget.data.sell_price != '' &&
-                            widget.data.sell_price != null
-                        ? AppValue.format_money(widget.data.sell_price ?? '0',
-                            isD: false)
-                        : '';
+                    _priceController.text = AppValue.format_money(
+                                widget.data.sell_price ?? '0',
+                                isD: false) ==
+                            '0'
+                        ? ''
+                        : AppValue.format_money(widget.data.sell_price ?? '0',
+                            isD: false);
                     onClickPrice(context, _priceController, (v) {
                       if (v != '') {
                         price = v;
@@ -285,153 +319,94 @@ class _ItemProductState extends State<ItemProduct> {
                       Get.back();
                     });
                   },
-                  child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: COLORS.TEXT_GREY),
-                          borderRadius: BorderRadius.circular(7)),
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: WidgetText(
-                        title: "${getT(KeyT.price)}: " +
-                            "${AppValue.format_money(price)}",
-                        style: AppStyle.DEFAULT_14_BOLD
-                            .copyWith(color: COLORS.TEXT_GREY),
-                      )),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                SizedBox(
+                  height: 5,
+                ),
+                Row(
                   children: [
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            onClickDVT(context, widget.listDvt, (v) {
-                              dvt = v[1];
-                              widget.onDVT!(v[0], v[1]);
-                              setState(() {});
-                              Get.back();
-                            });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 1, color: COLORS.BLUE),
-                                borderRadius: BorderRadius.circular(7)),
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: WidgetText(
-                              title: "${getT(KeyT.dvt)}: " + "${dvt}",
-                              style: AppStyle.DEFAULT_14
-                                  .copyWith(color: COLORS.BLUE),
-                              maxLine: 4,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            onClickVAT(context, widget.listVat, (v) {
-                              vat = v[1];
-                              widget.onVAT!(v[0], v[1]);
-                              _getIntoMoney();
-                              Get.back();
-                            });
-                          },
-                          child: Container(
-                            constraints: BoxConstraints(
-                                maxWidth: AppValue.widths * 0.28),
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 1, color: COLORS.BLUE),
-                                borderRadius: BorderRadius.circular(7)),
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: WidgetText(
-                              title: "${getT(KeyT.vat)}: " +
-                                  "${vat == '' ? '0' : vat}",
-                              style: AppStyle.DEFAULT_14
-                                  .copyWith(color: COLORS.BLUE),
-                              maxLine: 4,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    GestureDetector(
+                    itemClick(
+                      title: '${getT(KeyT.dvt)}: ' + '${dvt}',
+                      isChange: dvt != dvtInit,
                       onTap: () {
-                        if (double.parse(widget.model?.giamGia ?? '0') > 0) {
-                          _giamGiaController.text = AppValue.format_money(
-                              widget.model?.giamGia ?? '0',
-                              isD: false);
-                        } else {
-                          _giamGiaController.text = '';
-                        }
-                        onClickGiamGia(
-                            context, isTypeGiamGIa, _giamGiaController,
-                            (isGiam, txt) {
-                          _onClickGiamGia(isGiam, txt);
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(width: 1, color: COLORS.BLUE),
-                            borderRadius: BorderRadius.circular(7)),
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: WidgetText(
-                          title: "${getT(KeyT.sale)}: " +
-                              (isTypeGiamGIa
-                                  ? AppValue.format_money(giamGia)
-                                  : giamGia.trim()) +
-                              "${isTypeGiamGIa ? '' : '%'}",
-                          style:
-                              AppStyle.DEFAULT_14.copyWith(color: COLORS.BLUE),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        if (intoMoney > 0) {
-                          _intoMoneyController.text = AppValue.format_money(
-                              intoMoney.toStringAsFixed(0),
-                              isD: false);
-                        } else {
-                          _intoMoneyController.text = '';
-                        }
-                        onClickIntoMoney(context, _intoMoneyController, (v) {
-                          if (double.parse(v) >= 0) {
-                            intoMoney = (double.parse(v));
-                            _getNewPrice();
-                          } else {
-                            _intoMoneyController.text =
-                                intoMoney.toStringAsFixed(0);
-                          }
-                          widget.onReload();
+                        onClickDVT(context, widget.listDvt, (v) {
+                          dvt = v[1];
+                          widget.onDVT!(v[0], v[1]);
+                          setState(() {});
                           Get.back();
                         });
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(width: 1, color: COLORS.BLUE),
-                            borderRadius: BorderRadius.circular(7)),
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: WidgetText(
-                          title: "${getT(KeyT.into_money)}: " +
-                              "${AppValue.format_money(intoMoney.toStringAsFixed(0))}",
-                          style:
-                              AppStyle.DEFAULT_14.copyWith(color: COLORS.BLUE),
-                        ),
-                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    itemClick(
+                      title: '${getT(KeyT.vat)}: ' + '${vat == '' ? '0' : vat}',
+                      isChange: vat != vatInit,
+                      onTap: () {
+                        onClickVAT(context, widget.listVat, (v) {
+                          vat = v[1];
+                          widget.onVAT!(v[0], v[1]);
+                          _getIntoMoney();
+                          Get.back();
+                        });
+                      },
                     ),
                   ],
-                )
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                itemClick(
+                  title: '${getT(KeyT.sale)}: ' +
+                      (isTypeGiamGIa
+                          ? AppValue.format_money(giamGia)
+                          : giamGia.trim()) +
+                      '${isTypeGiamGIa ? '' : '%'}',
+                  isChange: isTypeGiamGIa != isTypeGiamGIaInit ||
+                      double.tryParse(giamGia) != double.tryParse(saleInit),
+                  onTap: () {
+                    if (double.parse(widget.model?.giamGia ?? '0') > 0) {
+                      _giamGiaController.text = AppValue.format_money(
+                          widget.model?.giamGia ?? '0',
+                          isD: false);
+                    } else {
+                      _giamGiaController.text = '';
+                    }
+                    onClickGiamGia(context, isTypeGiamGIa, _giamGiaController,
+                        (isGiam, txt) {
+                      _onClickGiamGia(isGiam, txt);
+                    });
+                  },
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                itemClick(
+                  title: '${getT(KeyT.into_money)}: ' +
+                      '${AppValue.format_money(intoMoney.toStringAsFixed(0))}',
+                  isChange: intoMoney != intoMoneyInit,
+                  onTap: () {
+                    if (intoMoney > 0) {
+                      _intoMoneyController.text = AppValue.format_money(
+                          intoMoney.toStringAsFixed(0),
+                          isD: false);
+                    } else {
+                      _intoMoneyController.text = '';
+                    }
+                    onClickIntoMoney(context, _intoMoneyController, (v) {
+                      if (double.parse(v) >= 0) {
+                        intoMoney = (double.parse(v));
+                        _getNewPrice();
+                      } else {
+                        _intoMoneyController.text =
+                            intoMoney.toStringAsFixed(0);
+                      }
+                      widget.onReload();
+                      Get.back();
+                    });
+                  },
+                ),
               ],
             ),
           ),
@@ -446,7 +421,7 @@ class _ItemProductState extends State<ItemProduct> {
     if (isTypeGiamGIa &&
         (double.parse(txt) > double.parse(widget.data.sell_price ?? '0'))) {
       ShowDialogCustom.showDialogBase(
-        title:getT(KeyT.notification),
+        title: getT(KeyT.notification),
         content: getT(KeyT
             .you_cannot_enter_a_discount_greater_than_the_price_of_the_product),
         onTap1: () {
@@ -455,7 +430,7 @@ class _ItemProductState extends State<ItemProduct> {
       );
     } else if (!isTypeGiamGIa && (double.parse(txt) > 100)) {
       ShowDialogCustom.showDialogBase(
-        title:getT(KeyT.notification),
+        title: getT(KeyT.notification),
         content: getT(KeyT.you_cannot_enter_more_than_100),
         onTap1: () {
           Get.back();
@@ -483,7 +458,7 @@ class _ItemProductState extends State<ItemProduct> {
         children: [
           GestureDetector(
             onTap: () {
-              if (double.parse(soLuong) >= 1) {
+              if (double.parse(soLuong) > 1) {
                 soLuong = (double.parse(soLuong) - 1).toString();
               } else {
                 soLuong = '0';
@@ -494,8 +469,8 @@ class _ItemProductState extends State<ItemProduct> {
             },
             child: WidgetContainerImage(
               image: ICONS.IC_MINUS_PNG,
-              width: 20,
-              height: 20,
+              width: 24,
+              height: 24,
               fit: BoxFit.contain,
               borderRadius: BorderRadius.circular(0),
               colorImage: COLORS.GRAY_IMAGE,
@@ -516,7 +491,7 @@ class _ItemProductState extends State<ItemProduct> {
                   number = double.parse(text);
                 } catch (e) {
                   if (text.split(',').length <= 2) {
-                    number = double.parse(text.replaceAll(",", "."));
+                    number = double.parse(text.replaceAll(',', '.'));
                   }
                   //khong phai kieu double
                 }
@@ -534,7 +509,11 @@ class _ItemProductState extends State<ItemProduct> {
               padding: EdgeInsets.symmetric(vertical: 16),
               child: WidgetText(
                 title: double.parse(soLuong).toStringAsFixed(2),
-                style: AppStyle.DEFAULT_16_BOLD.copyWith(color: COLORS.BLUE),
+                style: AppStyle.DEFAULT_16_BOLD.copyWith(
+                  color: getColor(
+                    double.tryParse(soLuong) != double.tryParse(countInit),
+                  ),
+                ),
               ),
             ),
           ),
@@ -547,13 +526,78 @@ class _ItemProductState extends State<ItemProduct> {
             },
             child: WidgetContainerImage(
               image: ICONS.IC_PLUS_PNG,
-              width: 20,
-              height: 20,
+              width: 24,
+              height: 24,
               fit: BoxFit.contain,
               borderRadius: BorderRadius.circular(0),
               colorImage: COLORS.GRAY_IMAGE,
             ),
-          )
+          ),
+          widget.canDelete == false
+              ? SizedBox()
+              : GestureDetector(
+                  onTap: () {
+                    widget.onDelete!(widget.model!);
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(
+                      top: 20,
+                    ),
+                    child: WidgetText(
+                      textAlign: TextAlign.end,
+                      title: getT(KeyT.delete),
+                      style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                        color: COLORS.RED,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
+                ),
         ],
       );
+
+  Widget itemClick({
+    required String title,
+    required bool isChange,
+    required Function onTap,
+    Color? colorDF,
+  }) {
+    return GestureDetector(
+      onTap: () {
+        onTap();
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: getColor(
+              isChange,
+              colorDF: colorDF,
+            ),
+          ),
+          borderRadius: BorderRadius.circular(
+            6,
+          ),
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 8,
+          vertical: 2,
+        ),
+        child: WidgetText(
+          title: title,
+          style: AppStyle.DEFAULT_14_BOLD.copyWith(
+            color: getColor(
+              isChange,
+              colorDF: colorDF,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Color getColor(
+    bool isChange, {
+    Color? colorDF,
+  }) =>
+      isChange ? COLORS.ORANGE_IMAGE : colorDF ?? COLORS.BLUE;
 }

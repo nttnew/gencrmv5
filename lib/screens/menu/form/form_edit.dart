@@ -315,12 +315,12 @@ class _FormEditState extends State<FormEdit> {
                             typeScreen: type,
                             dropdownItemList: stateA.listContactByCustomer,
                             data: data,
-                            onSuccess: (data) {
+                            onSuccess: (value) {
                               addData[indexParent].data[indexChild].value =
-                                  data;
+                                  value;
                               if (data.field_name != "cv_kh")
                                 PhoneBloc.of(context)
-                                    .add(InitAgencyPhoneEvent(data));
+                                    .add(InitAgencyPhoneEvent(value));
                             },
                             value: (data.field_set_value_datasource != null &&
                                     data.field_set_value_datasource!.length > 0)
@@ -335,12 +335,12 @@ class _FormEditState extends State<FormEdit> {
                             typeScreen: type,
                             dropdownItemList: data.field_datasource ?? [],
                             data: data,
-                            onSuccess: (data) {
+                            onSuccess: (value) {
                               addData[indexParent].data[indexChild].value =
-                                  data;
+                                  value;
                               if (data.field_name != "cv_kh")
                                 PhoneBloc.of(context)
-                                    .add(InitAgencyPhoneEvent(data));
+                                    .add(InitAgencyPhoneEvent(value));
                             },
                             value: (data.field_set_value_datasource != null &&
                                     data.field_set_value_datasource!.length > 0)
@@ -361,14 +361,14 @@ class _FormEditState extends State<FormEdit> {
                         : InputDropdown(
                             dropdownItemList: data.field_datasource ?? [],
                             data: data,
-                            onSuccess: (data) {
+                            onSuccess: (value) {
                               addData[indexParent].data[indexChild].value =
-                                  data;
+                                  value;
                               if (data.field_name == "cv_kh" ||
                                   data.field_name == "col121") {
                                 ContactByCustomerBloc.of(context)
-                                    .add(InitGetContactByCustomerrEvent(data));
-                                PhoneBloc.of(context).add(InitPhoneEvent(data));
+                                    .add(InitGetContactByCustomerrEvent(value));
+                                PhoneBloc.of(context).add(InitPhoneEvent(value));
                               }
                             },
                             value: ((data.field_set_value_datasource != null &&

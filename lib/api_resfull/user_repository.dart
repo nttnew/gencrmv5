@@ -910,6 +910,9 @@ class UserRepository {
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .getBaoCaoSoQuy(nam, kyTaiChinh, chiNhanh, page);
 
+  Future<dynamic> getDataLocation() async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getDataLocation();
+
   //////////////////////
 
   Stream<AuthenticationStatus> get status async* {

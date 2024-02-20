@@ -175,7 +175,7 @@ class _FormAddDataState extends State<FormAddData> {
     }
   }
 
-  location() {
+  _location() {
     return isCheckIn
         ? StreamBuilder<String>(
             stream: nameLocation,
@@ -524,12 +524,13 @@ class _FormAddDataState extends State<FormAddData> {
             },
             child: Container(
               height: MediaQuery.of(context).size.height,
-              padding: EdgeInsets.all(16),
-              color: COLORS.WHITE,
               child: SingleChildScrollView(
+                padding: EdgeInsets.all(
+                  16,
+                ),
                 child: Column(
                   children: [
-                    location(),
+                    _location(),
                     BlocBuilder<FormAddBloc, FormAddState>(
                         bloc: _bloc,
                         builder: (context, state) {
@@ -785,13 +786,13 @@ class _FormAddDataState extends State<FormAddData> {
                                       dropdownItemList:
                                           stateA.listContactByCustomer,
                                       data: data,
-                                      onSuccess: (data) {
+                                      onSuccess: (value) {
                                         addData[indexParent]
                                             .data[indexChild]
-                                            .value = data;
+                                            .value = value;
                                         if (data.field_name != "cv_kh")
                                           PhoneBloc.of(context)
-                                              .add(InitAgencyPhoneEvent(data));
+                                              .add(InitAgencyPhoneEvent(value));
                                       },
                                       value: data.field_value ?? '');
                                 } else if (stateA
@@ -803,13 +804,13 @@ class _FormAddDataState extends State<FormAddData> {
                                       dropdownItemList:
                                           data.field_datasource ?? [],
                                       data: data,
-                                      onSuccess: (data) {
+                                      onSuccess: (value) {
                                         addData[indexParent]
                                             .data[indexChild]
-                                            .value = data;
+                                            .value = value;
                                         if (data.field_name != "cv_kh")
                                           PhoneBloc.of(context)
-                                              .add(InitAgencyPhoneEvent(data));
+                                              .add(InitAgencyPhoneEvent(value));
                                       },
                                       value: data.field_value ?? '');
                                 }
@@ -867,20 +868,21 @@ class _FormAddDataState extends State<FormAddData> {
                                     dropdownItemList:
                                         data.field_datasource ?? [],
                                     data: data,
-                                    onSuccess: (data) {
+                                    onSuccess: (value) {
                                       addData[indexParent]
                                           .data[indexChild]
-                                          .value = data;
+                                          .value = value;
                                       if (data.field_name == "cv_kh" ||
                                           data.field_name == "col121") {
                                         ContactByCustomerBloc.of(context).add(
                                             InitGetContactByCustomerrEvent(
-                                                data));
+                                                value));
                                         PhoneBloc.of(context)
-                                            .add(InitPhoneEvent(data));
+                                            .add(InitPhoneEvent(value));
                                       }
                                     },
-                                    value: data.field_value ?? ''))
+                                    value: data.field_value ?? '',
+                                  ))
                 : data.field_type == "TEXT_MULTI"
                     ? SelectMulti(
                         dropdownItemList: data.field_datasource ?? [],
