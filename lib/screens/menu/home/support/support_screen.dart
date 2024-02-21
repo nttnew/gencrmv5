@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'package:gen_crm/bloc/support/support_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/support.dart';
-import 'package:get/get.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
@@ -34,8 +33,11 @@ class _SupportScreenState extends State<SupportScreen> {
     isTitle: true,
   );
   List<String> listAdd = [
-    '${getT(KeyT.add)} ${getT(KeyT.check_in)}',
-    '${getT(KeyT.add)} ${(Get.arguments ?? '').toLowerCase()}'
+    '${getT(KeyT.add)} ${getT(KeyT.check_in).toLowerCase()}',
+    '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(
+      ModuleMy.CSKH,
+      isTitle: true,
+    ).toLowerCase()}'
   ];
   late final ManagerBloc managerBloc;
   late final SupportBloc _bloc;

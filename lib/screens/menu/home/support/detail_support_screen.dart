@@ -268,6 +268,12 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                                                             .data?[index1]
                                                             .is_link ??
                                                         false);
+                                                final isSPKH = state
+                                                        .dataDetailSupport[
+                                                            index]
+                                                        .data?[index1]
+                                                        .id ==
+                                                    'htsan_pham_kh';
                                                 if (state
                                                         .dataDetailSupport[
                                                             index]
@@ -310,6 +316,20 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                                                                       state.dataDetailSupport[index].data![index1]
                                                                               .value_field ??
                                                                           '');
+                                                                } else if (isSPKH) {
+                                                                  AppNavigator
+                                                                      .navigateDetailProductCustomer(
+                                                                    state
+                                                                            .dataDetailSupport[index]
+                                                                            .data?[index1]
+                                                                            .label_field ??
+                                                                        '',
+                                                                    state
+                                                                            .dataDetailSupport[index]
+                                                                            .data?[index1]
+                                                                            .link ??
+                                                                        '',
+                                                                  );
                                                                 }
                                                               },
                                                               child: WidgetText(
@@ -326,11 +346,13 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                                                                 style:
                                                                     ValueStyle()
                                                                         .copyWith(
-                                                                  decoration: isKH
+                                                                  decoration: isSPKH ||
+                                                                          isKH
                                                                       ? TextDecoration
                                                                           .underline
                                                                       : null,
-                                                                  color: isKH
+                                                                  color: isSPKH ||
+                                                                          isKH
                                                                       ? Colors
                                                                           .blue
                                                                       : null,

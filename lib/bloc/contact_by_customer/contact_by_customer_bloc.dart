@@ -39,7 +39,7 @@ class ContactByCustomerBloc
   bool checkXeKhach(String id, List<List<dynamic>>? list) {
     if (list != null) {
       for (final value in listXe.value) {
-        if (value[0] == id) {
+        if (value.first != id) {
           return false;
         }
       }
@@ -83,8 +83,7 @@ class ContactByCustomerBloc
       } else
         yield ErrorGetContactByCustomerState(response.msg ?? '');
     } catch (e) {
-      yield ErrorGetContactByCustomerState(
-          getT(KeyT.an_error_occurred));
+      yield ErrorGetContactByCustomerState(getT(KeyT.an_error_occurred));
       throw e;
     }
   }
@@ -103,8 +102,7 @@ class ContactByCustomerBloc
       } else
         yield ErrorGetContactByCustomerState(response.msg ?? '');
     } catch (e) {
-      yield ErrorGetContactByCustomerState(
-          getT(KeyT.an_error_occurred));
+      yield ErrorGetContactByCustomerState(getT(KeyT.an_error_occurred));
       throw e;
     }
   }

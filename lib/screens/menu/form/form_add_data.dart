@@ -159,6 +159,9 @@ class _FormAddDataState extends State<FormAddData> {
 
   @override
   void deactivate() {
+    ContactByCustomerBloc.of(context).chiTietXe.add('');
+    ContactByCustomerBloc.of(context).listXe.add([]);
+    PhoneBloc.of(context).add(InitPhoneEvent(''));
     AttackBloc.of(context).add(RemoveAllAttackEvent());
     ServiceVoucherBloc.of(context).loaiXe.add('');
     ServiceVoucherBloc.of(context).resetDataCarVerison();
@@ -487,7 +490,7 @@ class _FormAddDataState extends State<FormAddData> {
                     } else if (type == ADD_JOB) {
                       WorkBloc.of(context).loadMoreController.reloadData();
                     } else if (type == ADD_SUPPORT) {
-                      SupportBloc.of(context).add(InitGetSupportEvent());
+                      SupportBloc.of(context).loadMoreController.reloadData();
                     } else if (type == PRODUCT_TYPE) {
                       ProductModuleBloc.of(context)
                           .loadMoreController
@@ -663,6 +666,9 @@ class _FormAddDataState extends State<FormAddData> {
         (type == ADD_CHANCE_JOB && data.field_name == "so_dien_thoai")) {
       return SizedBox.shrink();
     } else {
+      if (value != '' && noEdit) {
+        addData[indexParent].data[indexChild].value = value;
+      }
       return Container(
         margin: EdgeInsets.only(bottom: 16),
         child: Column(
@@ -764,7 +770,9 @@ class _FormAddDataState extends State<FormAddData> {
                     : _fieldInputCustomer(data, indexParent, indexChild,
                         noEdit: true))
             : data.field_type == "SELECT"
-                ? data.field_name == 'cvsan_pham_kh'
+                ? (data.field_name == 'cvsan_pham_kh' ||
+                        data.field_name == 'htsan_pham_kh' ||
+                        data.field_name == 'san_pham_kh')
                     ? StreamBuilder<List<List<dynamic>>>(
                         stream: ContactByCustomerBloc.of(context).listXe,
                         builder: (context, snapshot) {
@@ -775,22 +783,68 @@ class _FormAddDataState extends State<FormAddData> {
                               dropdownItemList:
                                   list ?? data.field_datasource ?? [],
                               data: data,
-                              onSuccess: (data) {
-                                addData[indexParent].data[indexChild].value =
-                                    data;
-                                ContactByCustomerBloc.of(context).getCar(data);
+                              onSuccess: (dataRes) async {
+                                ///
+                                ///
+                                if (dataRes == ADD_NEW_CAR) {
+                                  final List<dynamic>? result =
+                                      await AppNavigator.navigateFormAdd(
+                                    '${getT(KeyT.add)} ${data.field_label}',
+                                    PRODUCT_CUSTOMER_TYPE,
+                                    isGetData: true,
+                                  );
+                                  if (result != null) {
+                                    final dataResult =
+                                        result.first as Map<String, dynamic>;
+                                    // data
+                                    dataRes = [
+                                      '',
+                                      dataResult['bien_so'],
+                                      dataResult['bien_so'],
+                                      ADD_NEW_CAR,
+                                    ];
+
+                                    //remove data truoc đó
+                                    for (final value in (list ?? [])) {
+                                      if (value.last == ADD_NEW_CAR) {
+                                        list?.remove(value);
+                                        break;
+                                      }
+                                    }
+                                    list?.add(dataRes);
+                                    ContactByCustomerBloc.of(context)
+                                        .listXe
+                                        .add(list ?? []);
+                                    //
+                                    addData[indexParent]
+                                        .data[indexChild]
+                                        .value = ADD_NEW_CAR;
+
+                                    ContactByCustomerBloc.of(context)
+                                        .dataCarNew = dataResult;
+                                  }
+                                  /////////
+                                  ///// ///
+                                } else {
+                                  addData[indexParent].data[indexChild].value =
+                                      dataRes;
+                                  ContactByCustomerBloc.of(context)
+                                      .getCar(dataRes);
+                                }
+                                //// // /
+                                /// /// //
                               },
-                              onUpdate: (data) {
-                                addData[indexParent].data[indexChild].value =
-                                    data;
-                                ContactByCustomerBloc.of(context).getCar(data);
+                              onUpdate: (dataRes) {
+                                if (ContactByCustomerBloc.of(context)
+                                        .dataCarNew !=
+                                    [])
+                                  addData[indexParent].data[indexChild].value =
+                                      dataRes;
+                                ContactByCustomerBloc.of(context)
+                                    .getCar(dataRes);
                               },
-                              value: ContactByCustomerBloc.of(context)
-                                      .checkXeKhach(
-                                addData[indexParent].data[indexChild].value,
-                                list,
-                              )
-                                  ? ''
+                              value: (list ?? []).isNotEmpty
+                                  ? list![list.length - 1][1]
                                   : data.field_value ?? '');
                         })
                     : data.field_name == 'dia_chi_chung_text'
@@ -911,7 +965,8 @@ class _FormAddDataState extends State<FormAddData> {
                                               .data[indexChild]
                                               .value = value;
                                           if (data.field_name == "cv_kh" ||
-                                              data.field_name == "col121") {
+                                              data.field_name == "col121" ||
+                                              data.field_name == 'khach_hang') {
                                             ContactByCustomerBloc.of(context).add(
                                                 InitGetContactByCustomerrEvent(
                                                     value));

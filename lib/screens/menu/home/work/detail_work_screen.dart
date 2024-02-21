@@ -292,6 +292,11 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                                                 .data?[index1]
                                                                 .is_link ??
                                                             false);
+                                                    bool isSPKH = state
+                                                            .data_list[index]
+                                                            .data?[index1]
+                                                            .id ==
+                                                        'cvsan_pham_kh';
                                                     if (state
                                                             .data_list[index]
                                                             .data![index1]
@@ -327,6 +332,14 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                                                               '',
                                                                           state.data_list[index].data![index1].value_field ??
                                                                               '');
+                                                                    } else if (isSPKH) {
+                                                                      AppNavigator
+                                                                          .navigateDetailProductCustomer(
+                                                                        state.data_list[index].data?[index1].label_field ??
+                                                                            '',
+                                                                        state.data_list[index].data?[index1].link ??
+                                                                            '',
+                                                                      );
                                                                     }
                                                                   },
                                                                   child:
@@ -340,8 +353,8 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                                                                 TextAlign.right,
                                                                             style:
                                                                                 ValueStyle().copyWith(
-                                                                              decoration: isKH ? TextDecoration.underline : null,
-                                                                              color: isKH ? Colors.blue : null,
+                                                                              decoration: isKH || isSPKH ? TextDecoration.underline : null,
+                                                                              color: isKH || isSPKH ? Colors.blue : null,
                                                                             ),
                                                                           )
                                                                         : Html(
