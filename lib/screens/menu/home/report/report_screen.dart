@@ -499,7 +499,6 @@ class _ReportScreenState extends State<ReportScreen> {
                           value: valueLocation ?? state.dataLocation[0][1],
                           icon: const Icon(Icons.arrow_drop_down_outlined),
                           underline: SizedBox.shrink(),
-                          dropdownWidth: 150,
                           dropdownMaxHeight: 250,
                           onChanged: (String? value) {
                             valueLocation = value ?? '';
@@ -521,9 +520,11 @@ class _ReportScreenState extends State<ReportScreen> {
                                         );
                                       },
                                       value: items[1],
-                                      child: Text(
-                                        items[1],
-                                        style: AppStyle.DEFAULT_16_BOLD,
+                                      child: FittedBox(
+                                        child: Text(
+                                          items[1],
+                                          style: AppStyle.DEFAULT_14_BOLD,
+                                        ),
                                       ),
                                     ),
                                   )
@@ -557,7 +558,6 @@ class _ReportScreenState extends State<ReportScreen> {
                         value: valueLocation ?? state.dataLocation[0][1],
                         icon: const Icon(Icons.arrow_drop_down_outlined),
                         underline: SizedBox.shrink(),
-                        dropdownWidth: 150,
                         dropdownMaxHeight: 250,
                         onChanged: (String? value) {
                           valueLocation = value ?? '';

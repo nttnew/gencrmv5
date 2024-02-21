@@ -35,8 +35,12 @@ class LoginData {
   final String? tien_te;
   final InfoUserLogin? info_user;
   final String? token, session_id;
-  final String? outbound_mobile, port_mobile, transport_mobile;
-  final int? systemversion;
+  final String? outbound_mobile,
+      port_mobile,
+      transport_mobile,
+      ten_cong_ty,
+      ten_viet_tat;
+  final int? systemversion, carCRM;
   final List<LanguagesResponse>? languages;
 
   LoginData({
@@ -45,9 +49,12 @@ class LoginData {
     this.token,
     this.session_id,
     this.systemversion,
+    this.carCRM,
     this.outbound_mobile,
     this.port_mobile,
     this.transport_mobile,
+    this.ten_cong_ty,
+    this.ten_viet_tat,
     this.languages,
   });
 

@@ -14,6 +14,8 @@ InfoAcc _$InfoAccFromJson(Map<String, dynamic> json) => InfoAcc(
       json['avatar'] as String?,
       json['address'] as String?,
       json['department_name'] as String?,
+      json['ten_cong_ty'] as String?,
+      json['ten_viet_tat'] as String?,
     );
 
 Map<String, dynamic> _$InfoAccToJson(InfoAcc instance) => <String, dynamic>{
@@ -24,6 +26,8 @@ Map<String, dynamic> _$InfoAccToJson(InfoAcc instance) => <String, dynamic>{
       'avatar': instance.avatar,
       'address': instance.address,
       'department_name': instance.department_name,
+      'ten_cong_ty': instance.ten_cong_ty,
+      'ten_viet_tat': instance.ten_viet_tat,
     };
 
 InfoAccResponse _$InfoAccResponseFromJson(Map<String, dynamic> json) =>

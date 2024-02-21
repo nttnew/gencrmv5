@@ -286,9 +286,10 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
                   WidgetText(
                     title: getT(KeyT.print_finger_face_id),
                     style: TextStyle(
-                        fontFamily: "Quicksand",
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14),
+                      fontFamily: "Quicksand",
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                    ),
                   )
                 ],
               ),

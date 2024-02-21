@@ -251,7 +251,9 @@ class _ScreenMainState extends State<ScreenMain> {
                 builder: (context, state) {
               if (state is UpdateGetInforAccState) {
                 return WidgetAppbar(
-                  title: state.inforAcc.fullname,
+                  title: LoginBloc.of(context).isCarCRM
+                      ? state.inforAcc.ten_viet_tat
+                      : state.inforAcc.fullname,
                   textColor: COLORS.BLACK,
                   right: rightAppBar(),
                   left: GestureDetector(
@@ -293,53 +295,58 @@ class _ScreenMainState extends State<ScreenMain> {
                 );
               }
             }),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 25,
-                    ),
-                    GridView.builder(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 25,
-                        ),
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: listMenu.length % 2 != 0
-                            ? listMenu.length - 1
-                            : listMenu.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 25,
-                          mainAxisSpacing: 25,
-                        ),
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: listMenu[index].onTap,
-                            child: ItemMenu(data: listMenu[index]),
-                          );
-                        }),
-                    if (listMenu.length % 2 != 0)
-                      GestureDetector(
-                        onTap: listMenu.last.onTap,
-                        child: Container(
-                          margin: EdgeInsets.only(top: 25),
-                          width: (MediaQuery.of(context).size.width - 50),
-                          height: (MediaQuery.of(context).size.width - 75) / 2,
-                          child: ItemMenu(
-                            data: listMenu.last,
-                            isLast: true,
+            LoginBloc.of(context).isCarCRM
+                ? Container()
+                : Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 25,
                           ),
-                        ),
+                          GridView.builder(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 25,
+                              ),
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: listMenu.length % 2 != 0
+                                  ? listMenu.length - 1
+                                  : listMenu.length,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 25,
+                                mainAxisSpacing: 25,
+                              ),
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: listMenu[index].onTap,
+                                  child: ItemMenu(data: listMenu[index]),
+                                );
+                              }),
+                          if (listMenu.length % 2 != 0)
+                            GestureDetector(
+                              onTap: listMenu.last.onTap,
+                              child: Container(
+                                margin: EdgeInsets.only(top: 25),
+                                width: (MediaQuery.of(context).size.width - 50),
+                                height:
+                                    (MediaQuery.of(context).size.width - 75) /
+                                        2,
+                                child: ItemMenu(
+                                  data: listMenu.last,
+                                  isLast: true,
+                                ),
+                              ),
+                            ),
+                          SizedBox(
+                            height: 25,
+                          ),
+                        ],
                       ),
-                    SizedBox(
-                      height: 25,
                     ),
-                  ],
-                ),
-              ),
-            )
+                  )
           ],
         ),
       ),

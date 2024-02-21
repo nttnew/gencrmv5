@@ -116,7 +116,9 @@ class _MainDrawerState extends State<MainDrawer> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               WidgetText(
-                                title: state.inforAcc.fullname ?? '',
+                                title: LoginBloc.of(context).isCarCRM
+                                    ? state.inforAcc.ten_viet_tat
+                                    : state.inforAcc.fullname ?? '',
                                 style: AppStyle.DEFAULT_16_BOLD.copyWith(
                                     fontFamily: 'Montserrat',
                                     fontWeight: FontWeight.w600),

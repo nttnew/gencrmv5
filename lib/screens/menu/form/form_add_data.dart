@@ -764,125 +764,163 @@ class _FormAddDataState extends State<FormAddData> {
                     : _fieldInputCustomer(data, indexParent, indexChild,
                         noEdit: true))
             : data.field_type == "SELECT"
-                ? data.field_name == 'dia_chi_chung_text'
-                    ? LocationWidget(
-                        data: data,
-                        onSuccess: (data) {
-                          addData[indexParent].data[indexChild].value = data;
-                        },
-                        initData: data.field_value,
-                      )
-                    : (data.field_name == 'khach_hang_sp' &&
-                            isGetData) //getdata cho spkh
-                        ? SizedBox()
-                        : ((data.field_name == 'cv_nguoiLienHe' ||
-                                data.field_name == 'col131')
-                            ? BlocBuilder<ContactByCustomerBloc,
-                                    ContactByCustomerState>(
-                                builder: (context, stateA) {
-                                if (stateA is UpdateGetContacBytCustomerState) {
-                                  return InputDropdown(
-                                      typeScreen: type,
-                                      dropdownItemList:
-                                          stateA.listContactByCustomer,
-                                      data: data,
-                                      onSuccess: (value) {
-                                        addData[indexParent]
-                                            .data[indexChild]
-                                            .value = value;
-                                        if (data.field_name != "cv_kh")
-                                          PhoneBloc.of(context)
-                                              .add(InitAgencyPhoneEvent(value));
-                                      },
-                                      value: data.field_value ?? '');
-                                } else if (stateA
-                                    is LoadingContactByCustomerState) {
-                                  return SizedBox.shrink();
-                                } else {
-                                  return InputDropdown(
-                                      typeScreen: type,
-                                      dropdownItemList:
-                                          data.field_datasource ?? [],
-                                      data: data,
-                                      onSuccess: (value) {
-                                        addData[indexParent]
-                                            .data[indexChild]
-                                            .value = value;
-                                        if (data.field_name != "cv_kh")
-                                          PhoneBloc.of(context)
-                                              .add(InitAgencyPhoneEvent(value));
-                                      },
-                                      value: data.field_value ?? '');
-                                }
-                              })
-                            : (data.field_name == 'col121' &&
-                                    type == ADD_CHANCE)
-                                ? StreamBuilder<List<dynamic>>(
-                                    stream: _bloc.customerNewStream,
-                                    builder: (context, snapshot) {
-                                      final list = snapshot.data ?? [];
+                ? data.field_name == 'cvsan_pham_kh'
+                    ? StreamBuilder<List<List<dynamic>>>(
+                        stream: ContactByCustomerBloc.of(context).listXe,
+                        builder: (context, snapshot) {
+                          final list = snapshot.data;
+                          return InputDropdown(
+                              isUpdate: true,
+                              isUpdateList: true,
+                              dropdownItemList:
+                                  list ?? data.field_datasource ?? [],
+                              data: data,
+                              onSuccess: (data) {
+                                addData[indexParent].data[indexChild].value =
+                                    data;
+                                ContactByCustomerBloc.of(context).getCar(data);
+                              },
+                              onUpdate: (data) {
+                                addData[indexParent].data[indexChild].value =
+                                    data;
+                                ContactByCustomerBloc.of(context).getCar(data);
+                              },
+                              value: ContactByCustomerBloc.of(context)
+                                      .checkXeKhach(
+                                addData[indexParent].data[indexChild].value,
+                                list,
+                              )
+                                  ? ''
+                                  : data.field_value ?? '');
+                        })
+                    : data.field_name == 'dia_chi_chung_text'
+                        ? LocationWidget(
+                            data: data,
+                            onSuccess: (data) {
+                              addData[indexParent].data[indexChild].value =
+                                  data;
+                            },
+                            initData: data.field_value,
+                          )
+                        : (data.field_name == 'khach_hang_sp' &&
+                                isGetData) //getdata cho spkh
+                            ? SizedBox()
+                            : ((data.field_name == 'cv_nguoiLienHe' ||
+                                    data.field_name == 'col131')
+                                ? BlocBuilder<ContactByCustomerBloc,
+                                        ContactByCustomerState>(
+                                    builder: (context, stateA) {
+                                    if (stateA
+                                        is UpdateGetContacBytCustomerState) {
                                       return InputDropdown(
-                                        isAddList: true,
-                                        dropdownItemList: listCustomerForChance,
+                                          typeScreen: type,
+                                          dropdownItemList:
+                                              stateA.listContactByCustomer,
+                                          data: data,
+                                          onSuccess: (value) {
+                                            addData[indexParent]
+                                                .data[indexChild]
+                                                .value = value;
+                                            ContactByCustomerBloc.of(context).add(
+                                                InitGetContactByCustomerrEvent(
+                                              value,
+                                              isAddNewCar: true,
+                                            ));
+                                            if (data.field_name != "cv_kh")
+                                              PhoneBloc.of(context).add(
+                                                  InitAgencyPhoneEvent(value));
+                                          },
+                                          value: data.field_value ?? '');
+                                    } else if (stateA
+                                        is LoadingContactByCustomerState) {
+                                      return SizedBox.shrink();
+                                    } else {
+                                      return InputDropdown(
+                                          typeScreen: type,
+                                          dropdownItemList:
+                                              data.field_datasource ?? [],
+                                          data: data,
+                                          onSuccess: (value) {
+                                            addData[indexParent]
+                                                .data[indexChild]
+                                                .value = value;
+                                            if (data.field_name != "cv_kh")
+                                              PhoneBloc.of(context).add(
+                                                  InitAgencyPhoneEvent(value));
+                                          },
+                                          value: data.field_value ?? '');
+                                    }
+                                  })
+                                : (data.field_name == 'col121' &&
+                                        type == ADD_CHANCE)
+                                    ? StreamBuilder<List<dynamic>>(
+                                        stream: _bloc.customerNewStream,
+                                        builder: (context, snapshot) {
+                                          final list = snapshot.data ?? [];
+                                          return InputDropdown(
+                                            isAddList: true,
+                                            dropdownItemList:
+                                                listCustomerForChance,
+                                            data: data,
+                                            onSuccess: (data) async {
+                                              List<dynamic>? result = [];
+                                              if (data == CA_NHAN) {
+                                                result = await AppNavigator
+                                                    .navigateAddCustomer(
+                                                        listCustomerForChance
+                                                            .first[1],
+                                                        isResultData: true);
+                                              } else if (data == TO_CHUC) {
+                                                result = await AppNavigator
+                                                    .navigateFormAddCustomerGroup(
+                                                  listCustomerForChance.last[1],
+                                                  ADD_CUSTOMER,
+                                                  isResultData: true,
+                                                );
+                                              }
+                                              if (result != null &&
+                                                  result.isNotEmpty) {
+                                                data = result.first;
+                                                _bloc.customerNewStream
+                                                    .add(result);
+                                              } else if (result == null) {
+                                                data = '';
+                                                _bloc.customerNewStream
+                                                    .add(['null', 'null']);
+                                              }
+                                              addData[indexParent]
+                                                  .data[indexChild]
+                                                  .value = data;
+                                              ContactByCustomerBloc.of(context).add(
+                                                  InitGetContactByCustomerrEvent(
+                                                      data));
+                                              PhoneBloc.of(context)
+                                                  .add(InitPhoneEvent(data));
+                                            },
+                                            value: list.isNotEmpty
+                                                ? list.last
+                                                : data.field_value ?? '',
+                                          );
+                                        })
+                                    : InputDropdown(
+                                        dropdownItemList:
+                                            data.field_datasource ?? [],
                                         data: data,
-                                        onSuccess: (data) async {
-                                          List<dynamic>? result = [];
-                                          if (data == CA_NHAN) {
-                                            result = await AppNavigator
-                                                .navigateAddCustomer(
-                                                    listCustomerForChance
-                                                        .first[1],
-                                                    isResultData: true);
-                                          } else if (data == TO_CHUC) {
-                                            result = await AppNavigator
-                                                .navigateFormAddCustomerGroup(
-                                              listCustomerForChance.last[1],
-                                              ADD_CUSTOMER,
-                                              isResultData: true,
-                                            );
-                                          }
-                                          if (result != null &&
-                                              result.isNotEmpty) {
-                                            data = result.first;
-                                            _bloc.customerNewStream.add(result);
-                                          } else if (result == null) {
-                                            data = '';
-                                            _bloc.customerNewStream
-                                                .add(['null', 'null']);
-                                          }
+                                        onSuccess: (value) {
                                           addData[indexParent]
                                               .data[indexChild]
-                                              .value = data;
-                                          ContactByCustomerBloc.of(context).add(
-                                              InitGetContactByCustomerrEvent(
-                                                  data));
-                                          PhoneBloc.of(context)
-                                              .add(InitPhoneEvent(data));
+                                              .value = value;
+                                          if (data.field_name == "cv_kh" ||
+                                              data.field_name == "col121") {
+                                            ContactByCustomerBloc.of(context).add(
+                                                InitGetContactByCustomerrEvent(
+                                                    value));
+                                            PhoneBloc.of(context)
+                                                .add(InitPhoneEvent(value));
+                                          }
                                         },
-                                        value: list.isNotEmpty
-                                            ? list.last
-                                            : data.field_value ?? '',
-                                      );
-                                    })
-                                : InputDropdown(
-                                    dropdownItemList:
-                                        data.field_datasource ?? [],
-                                    data: data,
-                                    onSuccess: (value) {
-                                      addData[indexParent]
-                                          .data[indexChild]
-                                          .value = value;
-                                      if (data.field_name == "cv_kh" ||
-                                          data.field_name == "col121") {
-                                        ContactByCustomerBloc.of(context).add(
-                                            InitGetContactByCustomerrEvent(
-                                                value));
-                                        PhoneBloc.of(context)
-                                            .add(InitPhoneEvent(value));
-                                      }
-                                    },
-                                    value: data.field_value ?? '',
-                                  ))
+                                        value: data.field_value ?? '',
+                                      ))
                 : data.field_type == "TEXT_MULTI"
                     ? SelectMulti(
                         dropdownItemList: data.field_datasource ?? [],

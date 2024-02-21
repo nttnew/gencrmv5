@@ -51,9 +51,12 @@ LoginData _$LoginDataFromJson(Map<String, dynamic> json) => LoginData(
       token: json['token'] as String?,
       session_id: json['session_id'] as String?,
       systemversion: json['systemversion'] as int?,
+      carCRM: json['carCRM'] as int?,
       outbound_mobile: json['outbound_mobile'] as String?,
       port_mobile: json['port_mobile'] as String?,
       transport_mobile: json['transport_mobile'] as String?,
+      ten_cong_ty: json['ten_cong_ty'] as String?,
+      ten_viet_tat: json['ten_viet_tat'] as String?,
       languages: (json['languages'] as List<dynamic>?)
           ?.map((e) => LanguagesResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -67,7 +70,10 @@ Map<String, dynamic> _$LoginDataToJson(LoginData instance) => <String, dynamic>{
       'outbound_mobile': instance.outbound_mobile,
       'port_mobile': instance.port_mobile,
       'transport_mobile': instance.transport_mobile,
+      'ten_cong_ty': instance.ten_cong_ty,
+      'ten_viet_tat': instance.ten_viet_tat,
       'systemversion': instance.systemversion,
+      'carCRM': instance.carCRM,
       'languages': instance.languages,
     };
 

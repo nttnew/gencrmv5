@@ -33,6 +33,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   static const String REGISTERED = 'REGISTERED';
   LoginData? loginData;
 
+  /// CAR_CRM 1 = true
+  bool isCarCRM = false;
+  static const int CAR_CRM = 0;
+
   LoginBloc({
     required this.userRepository,
     required this.localRepository,
@@ -139,6 +143,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           );
           shareLocal.putString(PreferencesKey.DEVICE_TOKEN, event.device_token);
           if (response.code == BASE_URL.SUCCESS) {
+            isCarCRM = response.data?.carCRM == CAR_CRM;
+
+            /// 1 = true
             DioProvider.instance(
               sess: response.data?.session_id,
               token: response.data?.token,
@@ -193,6 +200,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           );
           shareLocal.putString(PreferencesKey.DEVICE_TOKEN, event.device_token);
           if (response.code == BASE_URL.SUCCESS) {
+            isCarCRM = response.data?.carCRM == CAR_CRM;
             DioProvider.instance(
               sess: response.data?.session_id,
               token: response.data?.token,
