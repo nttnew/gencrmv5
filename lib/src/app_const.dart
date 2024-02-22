@@ -12,6 +12,8 @@ import '../../l10n/key_text.dart';
 import '../storages/share_local.dart';
 import '../widgets/loading_api.dart';
 import '../widgets/widget_text.dart';
+import 'location.dart';
+import 'models/model_generator/add_customer.dart';
 
 const int IS_AFTER = 1;
 const int IS_BEFORE = 0;
@@ -344,3 +346,6 @@ String getFlagCountry(String flag) {
   //link gan flag : domain + modules/xlanguage/images + {flag}
   return domain + 'modules/xlanguage/images/' + flag;
 }
+
+bool checkLocation(CustomerIndividualItemData data) =>
+    data.field_name == 'dia_chi_chung_text' && getTinhThanh().length > 0;

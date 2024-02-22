@@ -10,6 +10,7 @@ import 'package:gen_crm/screens/menu/form/widget/location_select.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import '../../../l10n/key_text.dart';
+import '../../../src/app_const.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/models/model_generator/add_customer.dart';
 import '../../../widgets/pick_file_image.dart';
@@ -92,6 +93,11 @@ class _AddCustomerState extends State<AddCustomer> {
               data = [];
               addData = [];
               return SizedBox.shrink();
+            } else if (state is ErrorGetAddCustomerState) {
+              return Text(
+                state.msg,
+                style: AppStyle.DEFAULT_16_T,
+              );
             } else if (state is UpdateGetAddCustomerState) {
               if (addData.isEmpty)
                 for (int i = 0; i < state.listAddData.length; i++) {
@@ -113,6 +119,7 @@ class _AddCustomerState extends State<AddCustomer> {
                         );
                   }
                 }
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -169,7 +176,7 @@ class _AddCustomerState extends State<AddCustomer> {
       CustomerIndividualItemData data, int indexParent, int indexChild) {
     return data.field_hidden != "1"
         ? data.field_type == "SELECT"
-            ? data.field_name == 'dia_chi_chung_text'
+            ? checkLocation(data)
                 ? LocationWidget(
                     data: data,
                     onSuccess: (data) {

@@ -8,6 +8,7 @@ import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/menu/form/widget/location_select.dart';
 import 'package:gen_crm/screens/menu/home/customer/widget/input_dropDown.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/ky_nhan_widget.dart';
 import 'package:gen_crm/widgets/widget_field_input_percent.dart';
@@ -154,6 +155,11 @@ class _FormAddSignState extends State<FormAddSign> {
                           addData = [];
                           data = [];
                           return SizedBox.shrink();
+                        } else if (state is ErrorFormAddCustomerOrState) {
+                          return Text(
+                            state.msg,
+                            style: AppStyle.DEFAULT_16_T,
+                          );
                         } else if (state is SuccessFormAddCustomerOrState) {
                           soTien = state.soTien ?? 0;
                           if (addData.isEmpty) {
@@ -259,7 +265,7 @@ class _FormAddSignState extends State<FormAddSign> {
                       ? _fieldInputCustomer(data, indexParent, indexChild,
                           noEdit: true)
                       : data.field_type == "SELECT"
-                          ? data.field_name == 'dia_chi_chung_text'
+                          ? checkLocation(data)
                               ? LocationWidget(
                                   data: data,
                                   onSuccess: (data) {

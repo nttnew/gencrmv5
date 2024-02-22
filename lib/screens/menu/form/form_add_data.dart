@@ -525,132 +525,130 @@ class _FormAddDataState extends State<FormAddData> {
                 );
               }
             },
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(
-                  16,
-                ),
-                child: Column(
-                  children: [
-                    _location(),
-                    BlocBuilder<FormAddBloc, FormAddState>(
-                        bloc: _bloc,
-                        builder: (context, state) {
-                          if (state is LoadingFormAddCustomerOrState) {
-                            addData = [];
-                            data = [];
-                            return SizedBox.shrink();
-                          } else if (state is SuccessFormAddCustomerOrState) {
-                            if (addData.isEmpty) {
-                              for (int i = 0;
-                                  i < state.listAddData.length;
-                                  i++) {
-                                addData.add(
-                                  ModelItemAdd(
-                                    group_name:
-                                        state.listAddData[i].group_name ?? '',
-                                    data: [],
-                                  ),
-                                );
-                                for (int j = 0;
-                                    j < state.listAddData[i].data!.length;
-                                    j++) {
-                                  addData[i].data.add(
-                                        ModelDataAdd(
-                                          label: state.listAddData[i].data![j]
-                                              .field_name,
-                                          value: state.listAddData[i].data![j]
-                                              .field_set_value
-                                              .toString(),
-                                          required: state.listAddData[i]
-                                              .data![j].field_require,
-                                        ),
-                                      );
-                                }
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(
+                16,
+              ),
+              child: Column(
+                children: [
+                  _location(),
+                  BlocBuilder<FormAddBloc, FormAddState>(
+                      bloc: _bloc,
+                      builder: (context, state) {
+                        if (state is LoadingFormAddCustomerOrState) {
+                          addData = [];
+                          data = [];
+                          return SizedBox.shrink();
+                        } else if (state is ErrorFormAddCustomerOrState) {
+                          return Text(
+                            state.msg,
+                            style: AppStyle.DEFAULT_16_T,
+                          );
+                        } else if (state is SuccessFormAddCustomerOrState) {
+                          if (addData.isEmpty) {
+                            for (int i = 0; i < state.listAddData.length; i++) {
+                              addData.add(
+                                ModelItemAdd(
+                                  group_name:
+                                      state.listAddData[i].group_name ?? '',
+                                  data: [],
+                                ),
+                              );
+                              for (int j = 0;
+                                  j < state.listAddData[i].data!.length;
+                                  j++) {
+                                addData[i].data.add(
+                                      ModelDataAdd(
+                                        label: state
+                                            .listAddData[i].data![j].field_name,
+                                        value: state.listAddData[i].data![j]
+                                            .field_set_value
+                                            .toString(),
+                                        required: state.listAddData[i].data![j]
+                                            .field_require,
+                                      ),
+                                    );
                               }
                             }
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: List.generate(
-                                      state.listAddData.length,
-                                      (indexParent) => (state
-                                                      .listAddData[indexParent]
-                                                      .data !=
-                                                  null &&
+                          }
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: List.generate(
+                                    state.listAddData.length,
+                                    (indexParent) => (state
+                                                    .listAddData[indexParent]
+                                                    .data !=
+                                                null &&
+                                            state.listAddData[indexParent].data!
+                                                    .length >
+                                                0)
+                                        ? Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                height: AppValue.heights * 0.01,
+                                              ),
                                               state.listAddData[indexParent]
-                                                      .data!.length >
-                                                  0)
-                                          ? Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  height:
-                                                      AppValue.heights * 0.01,
-                                                ),
-                                                state.listAddData[indexParent]
-                                                            .group_name !=
-                                                        null
-                                                    ? WidgetText(
-                                                        title: state
-                                                                .listAddData[
-                                                                    indexParent]
-                                                                .group_name ??
-                                                            '',
-                                                        style: AppStyle
-                                                            .DEFAULT_18_BOLD,
-                                                      )
-                                                    : SizedBox.shrink(),
-                                                SizedBox(
-                                                  height:
-                                                      AppValue.heights * 0.01,
-                                                ),
-                                                Column(
-                                                  children: List.generate(
-                                                      state
+                                                          .group_name !=
+                                                      null
+                                                  ? WidgetText(
+                                                      title: state
                                                               .listAddData[
                                                                   indexParent]
-                                                              .data
-                                                              ?.length ??
-                                                          0, (indexChild) {
-                                                    return _getBody(
-                                                        state
+                                                              .group_name ??
+                                                          '',
+                                                      style: AppStyle
+                                                          .DEFAULT_18_BOLD,
+                                                    )
+                                                  : SizedBox.shrink(),
+                                              SizedBox(
+                                                height: AppValue.heights * 0.01,
+                                              ),
+                                              Column(
+                                                children: List.generate(
+                                                    state
                                                             .listAddData[
                                                                 indexParent]
-                                                            .data![indexChild],
-                                                        indexParent,
-                                                        indexChild);
-                                                  }),
-                                                )
-                                              ],
-                                            )
-                                          : SizedBox.shrink()),
+                                                            .data
+                                                            ?.length ??
+                                                        0, (indexChild) {
+                                                  return _getBody(
+                                                      state
+                                                          .listAddData[
+                                                              indexParent]
+                                                          .data![indexChild],
+                                                      indexParent,
+                                                      indexChild);
+                                                }),
+                                              )
+                                            ],
+                                          )
+                                        : SizedBox.shrink()),
+                              ),
+                              if (!isGetData)
+                                FileDinhKemUiBase(
+                                  context: context,
+                                  onTap: () {},
+                                  isSave: false,
                                 ),
-                                if (!isGetData)
-                                  FileDinhKemUiBase(
-                                    context: context,
-                                    onTap: () {},
-                                    isSave: false,
-                                  ),
-                                SizedBox(
-                                  height: AppValue.widths * 0.1 + 10,
-                                ),
-                                FileLuuBase(
-                                  context,
-                                  () => onClickSave(),
-                                  isAttack: !isGetData,
-                                ),
-                              ],
-                            );
-                          } else
-                            return SizedBox.shrink();
-                        }),
-                  ],
-                ),
+                              SizedBox(
+                                height: AppValue.widths * 0.1 + 10,
+                              ),
+                              FileLuuBase(
+                                context,
+                                () => onClickSave(),
+                                isAttack: !isGetData,
+                              ),
+                            ],
+                          );
+                        } else
+                          return SizedBox.shrink();
+                      }),
+                ],
               ),
             ),
           ),
@@ -847,7 +845,7 @@ class _FormAddDataState extends State<FormAddData> {
                                   ? list![list.length - 1][1]
                                   : data.field_value ?? '');
                         })
-                    : data.field_name == 'dia_chi_chung_text'
+                    : checkLocation(data)
                         ? LocationWidget(
                             data: data,
                             onSuccess: (data) {

@@ -262,6 +262,11 @@ class _FormAddContractState extends State<FormAddContract> {
                       ),
                     ],
                   );
+                } else if (state is ErrorFormAddCustomerOrState) {
+                  return Text(
+                    state.msg,
+                    style: AppStyle.DEFAULT_16_T,
+                  );
                 } else
                   return SizedBox.shrink();
               }),
@@ -336,7 +341,7 @@ class _FormAddContractState extends State<FormAddContract> {
                     canDelete: true,
                   )
                 : data.field_type == 'SELECT'
-                    ? data.field_name == 'dia_chi_chung_text'
+                    ? checkLocation(data)
                         ? LocationWidget(
                             data: data,
                             onSuccess: (data) {

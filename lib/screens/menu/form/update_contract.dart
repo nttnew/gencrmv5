@@ -9,6 +9,7 @@ import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/menu/form/product_list/product_contract.dart';
 import 'package:gen_crm/screens/menu/form/widget/location_select.dart';
 import 'package:gen_crm/screens/menu/home/contract/widget/widget_total_sum.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
@@ -126,144 +127,144 @@ class _EditContractState extends State<EditContract> {
               );
             }
           },
-          child: Container(
-            color: COLORS.WHITE,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(
-                16,
-              ),
-              child: BlocBuilder<FormEditBloc, FormEditState>(
-                  builder: (context, state) {
-                if (state is LoadingFormEditState) {
-                  addData = [];
-                  data = [];
-                  listProduct = [];
-                  return SizedBox.shrink();
-                } else if (state is SuccessFormEditState) {
-                  if (addData.isEmpty) {
-                    for (int i = 0; i < state.listEditData.length; i++) {
-                      addData.add(ModelItemAdd(
-                          group_name: state.listEditData[i].group_name ?? '',
-                          data: []));
-                      for (int j = 0;
-                          j < state.listEditData[i].data!.length;
-                          j++) {
-                        if (state.listEditData[i].data![j].field_special ==
-                            "url") {
-                          if (state.listEditData[i].data![j].products != null)
-                            for (int k = 0;
-                                k <
-                                    state.listEditData[i].data![j].products!
-                                        .length;
-                                k++) {
-                              listProduct.add(ProductModel(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(
+              16,
+            ),
+            child: BlocBuilder<FormEditBloc, FormEditState>(
+                builder: (context, state) {
+              if (state is LoadingFormEditState) {
+                addData = [];
+                data = [];
+                listProduct = [];
+                return SizedBox.shrink();
+              } else if (state is ErrorFormEditState) {
+                return Text(
+                  state.msg,
+                  style: AppStyle.DEFAULT_16_T,
+                );
+              } else if (state is SuccessFormEditState) {
+                if (addData.isEmpty) {
+                  for (int i = 0; i < state.listEditData.length; i++) {
+                    addData.add(ModelItemAdd(
+                        group_name: state.listEditData[i].group_name ?? '',
+                        data: []));
+                    for (int j = 0;
+                        j < state.listEditData[i].data!.length;
+                        j++) {
+                      if (state.listEditData[i].data![j].field_special ==
+                          "url") {
+                        if (state.listEditData[i].data![j].products != null)
+                          for (int k = 0;
+                              k <
+                                  state.listEditData[i].data![j].products!
+                                      .length;
+                              k++) {
+                            listProduct.add(ProductModel(
+                                state.listEditData[i].data![j].products![k]
+                                    .id_product
+                                    .toString(),
+                                double.parse(state.listEditData[i].data![j]
+                                    .products![k].quantity!),
+                                ProductItem(
                                   state.listEditData[i].data![j].products![k]
                                       .id_product
                                       .toString(),
-                                  double.parse(state.listEditData[i].data![j]
-                                      .products![k].quantity!),
-                                  ProductItem(
-                                    state.listEditData[i].data![j].products![k]
-                                        .id_product
-                                        .toString(),
-                                    "",
-                                    "",
-                                    state.listEditData[i].data![j].products![k]
-                                        .name_product,
-                                    state.listEditData[i].data![j].products![k]
-                                        .unit
-                                        .toString(),
-                                    state.listEditData[i].data![j].products![k]
-                                        .vat,
-                                    state.listEditData[i].data![j].products![k]
-                                        .price,
-                                    ten_combo: state.listEditData[i].data![j]
-                                        .products![k].ten_combo,
-                                    combo_id: state.listEditData[i].data![j]
-                                        .products![k].combo_id,
-                                  ),
+                                  "",
+                                  "",
                                   state.listEditData[i].data![j].products![k]
-                                      .sale_off.value!,
+                                      .name_product,
                                   state.listEditData[i].data![j].products![k]
-                                      .unit_name!,
-                                  state.listEditData[i].data![j].products![k]
-                                      .vat_name!,
-                                  state.listEditData[i].data![j].products![k]
-                                      .sale_off.type!));
-                            }
-                        } else
-                          addData[i].data.add(
-                                ModelDataAdd(
-                                  label:
-                                      state.listEditData[i].data![j].field_name,
-                                  value: state
-                                      .listEditData[i].data![j].field_set_value
+                                      .unit
                                       .toString(),
+                                  state.listEditData[i].data![j].products![k]
+                                      .vat,
+                                  state.listEditData[i].data![j].products![k]
+                                      .price,
+                                  ten_combo: state.listEditData[i].data![j]
+                                      .products![k].ten_combo,
+                                  combo_id: state.listEditData[i].data![j]
+                                      .products![k].combo_id,
                                 ),
-                              );
-                      }
+                                state.listEditData[i].data![j].products![k]
+                                    .sale_off.value!,
+                                state.listEditData[i].data![j].products![k]
+                                    .unit_name!,
+                                state.listEditData[i].data![j].products![k]
+                                    .vat_name!,
+                                state.listEditData[i].data![j].products![k]
+                                    .sale_off.type!));
+                          }
+                      } else
+                        addData[i].data.add(
+                              ModelDataAdd(
+                                label:
+                                    state.listEditData[i].data![j].field_name,
+                                value: state
+                                    .listEditData[i].data![j].field_set_value
+                                    .toString(),
+                              ),
+                            );
                     }
                   }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: List.generate(
-                            state.listEditData.length,
-                            (indexParent) => (state
-                                            .listEditData[indexParent].data !=
-                                        null &&
-                                    state.listEditData[indexParent].data!
-                                            .length >
-                                        0)
-                                ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: AppValue.heights * 0.01,
-                                      ),
-                                      state.listEditData[indexParent]
-                                                  .group_name !=
-                                              null
-                                          ? WidgetText(
-                                              title: state
-                                                      .listEditData[indexParent]
-                                                      .group_name ??
-                                                  '',
-                                              style: AppStyle.DEFAULT_18_BOLD)
-                                          : SizedBox.shrink(),
-                                      SizedBox(
-                                        height: AppValue.heights * 0.01,
-                                      ),
-                                      Column(
-                                        children: List.generate(
-                                          state.listEditData[indexParent].data
-                                                  ?.length ??
-                                              0,
-                                          (indexChild) => _getBody(
-                                            state.listEditData[indexParent]
-                                                .data![indexChild],
-                                            indexParent,
-                                            indexChild,
-                                          ),
+                }
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(
+                          state.listEditData.length,
+                          (indexParent) => (state
+                                          .listEditData[indexParent].data !=
+                                      null &&
+                                  state.listEditData[indexParent].data!.length >
+                                      0)
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: AppValue.heights * 0.01,
+                                    ),
+                                    state.listEditData[indexParent]
+                                                .group_name !=
+                                            null
+                                        ? WidgetText(
+                                            title: state
+                                                    .listEditData[indexParent]
+                                                    .group_name ??
+                                                '',
+                                            style: AppStyle.DEFAULT_18_BOLD)
+                                        : SizedBox.shrink(),
+                                    SizedBox(
+                                      height: AppValue.heights * 0.01,
+                                    ),
+                                    Column(
+                                      children: List.generate(
+                                        state.listEditData[indexParent].data
+                                                ?.length ??
+                                            0,
+                                        (indexChild) => _getBody(
+                                          state.listEditData[indexParent]
+                                              .data![indexChild],
+                                          indexParent,
+                                          indexChild,
                                         ),
                                       ),
-                                    ],
-                                  )
-                                : SizedBox.shrink()),
-                      ),
-                      FileDinhKemUiBase(
-                        context: context,
-                        onTap: () => onClickSave(),
-                      ),
-                    ],
-                  );
-                } else
-                  return SizedBox.shrink();
-              }),
-            ),
+                                    ),
+                                  ],
+                                )
+                              : SizedBox.shrink()),
+                    ),
+                    FileDinhKemUiBase(
+                      context: context,
+                      onTap: () => onClickSave(),
+                    ),
+                  ],
+                );
+              } else
+                return SizedBox.shrink();
+            }),
           ),
         ));
   }
@@ -307,7 +308,7 @@ class _EditContractState extends State<EditContract> {
                     canDelete: true,
                   )
                 : data.field_type == "SELECT"
-                    ? data.field_name == 'dia_chi_chung_text'
+                    ? checkLocation(data)
                         ? LocationWidget(
                             data: data,
                             onSuccess: (data) {

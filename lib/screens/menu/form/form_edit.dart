@@ -181,6 +181,11 @@ class _FormEditState extends State<FormEdit> {
               addData = [];
               data = [];
               return SizedBox.shrink();
+            } else if (state is ErrorFormEditState) {
+              return Text(
+                state.msg,
+                style: AppStyle.DEFAULT_16_T,
+              );
             } else if (state is SuccessFormEditState) {
               if (addData.isNotEmpty) {
               } else {
@@ -349,7 +354,7 @@ class _FormEditState extends State<FormEdit> {
                                 : '',
                           );
                       })
-                    : data.field_name == 'dia_chi_chung_text'
+                    : checkLocation(data)
                         ? LocationWidget(
                             data: data,
                             onSuccess: (data) {
@@ -368,7 +373,8 @@ class _FormEditState extends State<FormEdit> {
                                   data.field_name == "col121") {
                                 ContactByCustomerBloc.of(context)
                                     .add(InitGetContactByCustomerrEvent(value));
-                                PhoneBloc.of(context).add(InitPhoneEvent(value));
+                                PhoneBloc.of(context)
+                                    .add(InitPhoneEvent(value));
                               }
                             },
                             value: ((data.field_set_value_datasource != null &&
