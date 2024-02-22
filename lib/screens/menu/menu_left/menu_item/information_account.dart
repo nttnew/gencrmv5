@@ -75,8 +75,6 @@ class _InformationAccountState extends State<InformationAccount> {
       }
     });
 
-
-
     super.initState();
   }
 
@@ -90,8 +88,7 @@ class _InformationAccountState extends State<InformationAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarBaseNormal(
-          getT(KeyT.account_information)),
+      appBar: AppbarBaseNormal(getT(KeyT.account_information)),
       body: SingleChildScrollView(
           child: BlocListener<InforAccBloc, InforAccState>(
         listener: (context, state) {
@@ -112,7 +109,7 @@ class _InformationAccountState extends State<InformationAccount> {
           if (state.status.isSubmissionFailure) {
             GetSnackBarUtils.removeSnackBar();
             ShowDialogCustom.showDialogBase(
-              title:getT(KeyT.notification),
+              title: getT(KeyT.notification),
               content: state.message,
             );
           }
@@ -140,8 +137,7 @@ class _InformationAccountState extends State<InformationAccount> {
                           builder: (context) => CupertinoActionSheet(
                                   title: Text(getT(KeyT.avatar)),
                                   cancelButton: CupertinoActionSheetAction(
-                                    child: Text(
-                                        getT(KeyT.cancel)),
+                                    child: Text(getT(KeyT.cancel)),
                                     onPressed: () {
                                       AppNavigator.navigateBack();
                                     },
@@ -153,15 +149,15 @@ class _InformationAccountState extends State<InformationAccount> {
                                         getImage();
                                       },
                                       child: Text(
-                                          getT(KeyT.pick_photo ),),
+                                        getT(KeyT.pick_photo),
+                                      ),
                                     ),
                                     CupertinoActionSheetAction(
                                       onPressed: () async {
                                         Get.back();
                                         getImageCamera();
                                       },
-                                      child: Text(
-                                          getT(KeyT.new_photo_shoot)),
+                                      child: Text(getT(KeyT.new_photo_shoot)),
                                     )
                                   ]));
                     },
@@ -222,8 +218,7 @@ class _InformationAccountState extends State<InformationAccount> {
                         ),
                         _buildFullNameField(bloc),
                         AppValue.vSpaceSmall,
-                        Text(
-                            getT(KeyT.number_phone ),
+                        Text(getT(KeyT.number_phone),
                             style: AppStyle.DEFAULT_16
                                 .copyWith(color: COLORS.GREY)),
                         SizedBox(
@@ -250,9 +245,9 @@ class _InformationAccountState extends State<InformationAccount> {
                     ),
                   ),
                   Align(
-                      alignment: Alignment.bottomRight,
-                      child: BlocBuilder<InforAccBloc, InforAccState>(
-                          builder: (context, state) {
+                    alignment: Alignment.bottomRight,
+                    child: BlocBuilder<InforAccBloc, InforAccState>(
+                      builder: (context, state) {
                         return WidgetButton(
                             onTap: () async {
                               print('$image!, $name, $address');
@@ -266,7 +261,7 @@ class _InformationAccountState extends State<InformationAccount> {
                                 }
                               } else {
                                 ShowDialogCustom.showDialogBase(
-                                  title:getT(KeyT.notification),
+                                  title: getT(KeyT.notification),
                                   content: getT(KeyT.check_the_information),
                                 );
                               }
@@ -282,7 +277,9 @@ class _InformationAccountState extends State<InformationAccount> {
                                 fontWeight: FontWeight.w700,
                                 color: COLORS.WHITE),
                             backgroundColor: Color(0xffF1A400));
-                      }))
+                      },
+                    ),
+                  )
                 ],
               );
             } else if (state is Error) {

@@ -23,6 +23,7 @@ import 'package:gen_crm/src/models/model_generator/report_employee.dart';
 import 'package:gen_crm/src/models/model_generator/support.dart';
 import 'package:gen_crm/src/models/model_generator/work_clue.dart';
 import 'package:gen_crm/src/models/model_generator/work.dart';
+import 'package:gen_crm/src/models/model_generator/xe_dich_vu_response.dart';
 import 'package:gen_crm/src/models/request/voucher_service_request.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/share_local.dart';
@@ -912,6 +913,17 @@ class UserRepository {
 
   Future<dynamic> getDataLocation() async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getDataLocation();
+
+  Future<XeDichVuResponse> postXeDichVu(
+    String page,
+    String trangThai,
+    String chiNhanh,
+  ) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).postXeDichVu(
+        page,
+        trangThai,
+        chiNhanh,
+      );
 
   //////////////////////
 

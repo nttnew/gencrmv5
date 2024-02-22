@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/checkin_bloc/checkin_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../l10n/key_text.dart';
 import '../../../src/app_const.dart';
@@ -96,22 +95,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
               );
             }
           },
-          child: Container(
-            height: AppValue.widths * 0.1,
-            width: AppValue.widths * 0.25,
-            decoration: BoxDecoration(
-              color: HexColor("#F1A400"),
-              borderRadius: BorderRadius.circular(
-                20.5,
-              ),
-            ),
-            child: Center(
-              child: Text(
-                getT(KeyT.save),
-                style: TextStyle(color: COLORS.WHITE),
-              ),
-            ),
-          ),
+          child: widgetSave(),
         ),
         appBar: AppbarBaseNormal(
           getT(KeyT.check_in),
@@ -161,12 +145,15 @@ class _CheckInScreenState extends State<CheckInScreen> {
                         location != LOADING
                             ? Expanded(
                                 child: WidgetText(
-                                    title: location,
-                                    style: TextStyle(
-                                        fontFamily: "Quicksand",
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: COLORS.BLACK)))
+                                  title: location,
+                                  style: TextStyle(
+                                    fontFamily: "Quicksand",
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: COLORS.BLACK,
+                                  ),
+                                ),
+                              )
                             : SizedBox(
                                 height: 12,
                                 width: 12,
@@ -186,11 +173,17 @@ class _CheckInScreenState extends State<CheckInScreen> {
                         await getNameLocation();
                       },
                       child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         decoration: BoxDecoration(
                             color: COLORS.TEXT_COLOR,
-                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                16,
+                              ),
+                            ),
                             border: Border.all(
                               color: COLORS.TEXT_COLOR,
                             )),
@@ -215,10 +208,15 @@ class _CheckInScreenState extends State<CheckInScreen> {
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
                             decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(
+                                  16,
+                                ),
+                              ),
                               border: Border.all(
                                 color: COLORS.TEXT_COLOR,
                               ),

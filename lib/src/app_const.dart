@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pitel_voip/services/sip_info_data.dart';
 import 'package:flutter_svg/svg.dart';
@@ -349,3 +348,35 @@ String getFlagCountry(String flag) {
 
 bool checkLocation(CustomerIndividualItemData data) =>
     data.field_name == 'dia_chi_chung_text' && getTinhThanh().length > 0;
+
+/// CAR_CRM 1 = true
+const String CAR_CRM = '1';
+bool isCarCrm() {
+  return CAR_CRM ==
+      shareLocal.getString(
+        PreferencesKey.CAR_CRM,
+      );
+}
+
+Widget widgetSave() => Material(
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: 34,
+          vertical: 10,
+        ),
+        decoration: BoxDecoration(
+          color: HexColor("#F1A400"),
+          borderRadius: BorderRadius.circular(
+            20,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            getT(KeyT.save),
+            style: AppStyle.DEFAULT_16_BOLD.copyWith(
+              color: COLORS.WHITE,
+            ),
+          ),
+        ),
+      ),
+    );

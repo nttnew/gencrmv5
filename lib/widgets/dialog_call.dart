@@ -20,15 +20,11 @@ import '../../l10n/key_text.dart';
 class DialogCall extends ConsumerStatefulWidget {
   final String phone;
   final String name;
-  final String routerName;
-  final String moduleMy;
 
   const DialogCall({
     Key? key,
     required this.phone,
     required this.name,
-    required this.routerName,
-    required this.moduleMy,
   }) : super(key: key);
 
   @override

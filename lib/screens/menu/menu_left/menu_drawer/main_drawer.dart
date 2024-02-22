@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/screens/menu/menu_left/setting/setting_screen.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/widget_button.dart';
 import '../../../../bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import '../../../../l10n/key_text.dart';
@@ -116,7 +117,7 @@ class _MainDrawerState extends State<MainDrawer> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               WidgetText(
-                                title: LoginBloc.of(context).isCarCRM
+                                title: isCarCrm()
                                     ? state.inforAcc.ten_viet_tat
                                     : state.inforAcc.fullname ?? '',
                                 style: AppStyle.DEFAULT_16_BOLD.copyWith(

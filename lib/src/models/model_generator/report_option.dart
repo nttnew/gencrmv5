@@ -45,12 +45,34 @@ class FilterResponse extends BaseResponse {
 class FilterReport {
   final List<List<String>>? diem_ban;
   final List<List<String>>? thoi_gian;
+  final List<TrangThaiHDReport>? trangthaihd;
   final int? thoi_gian_mac_dinh;
 
-  FilterReport(this.diem_ban, this.thoi_gian, this.thoi_gian_mac_dinh);
+  FilterReport(
+    this.diem_ban,
+    this.thoi_gian,
+    this.trangthaihd,
+    this.thoi_gian_mac_dinh,
+  );
 
   factory FilterReport.fromJson(Map<String, dynamic> json) =>
       _$FilterReportFromJson(json);
 
   Map<String, dynamic> toJson() => _$FilterReportToJson(this);
+}
+
+@JsonSerializable()
+class TrangThaiHDReport {
+  final String? id;
+  final String? label;
+
+  TrangThaiHDReport(
+    this.id,
+    this.label,
+  );
+
+  factory TrangThaiHDReport.fromJson(Map<String, dynamic> json) =>
+      _$TrangThaiHDReportFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TrangThaiHDReportToJson(this);
 }

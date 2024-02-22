@@ -105,8 +105,6 @@ class ItemCustomer extends StatelessWidget {
                           builder: (BuildContext context) {
                             return DialogCall(
                               phone: '${data.phone?.val}',
-                              routerName: ROUTE_NAMES.CUSTOMER,
-                              moduleMy: ModuleMy.CUSTOMER,
                               name: '${data.name}',
                             );
                           },

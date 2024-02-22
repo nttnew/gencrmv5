@@ -8,13 +8,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../../../src/src_index.dart';
 import '../bloc/contract/attack_bloc.dart';
 import '../../l10n/key_text.dart';
 import '../screens/add_service_voucher/preview_image.dart';
+import '../src/app_const.dart';
 
 Widget FileDinhKemUiBase(
         {required BuildContext context,
@@ -172,20 +172,7 @@ Widget FileLuuBase(BuildContext context, Function() onTap,
         Spacer(),
         GestureDetector(
           onTap: () => onTap(),
-          child: Material(
-            child: Container(
-              height: AppValue.widths * 0.1,
-              width: AppValue.widths * 0.25,
-              decoration: BoxDecoration(
-                  color: HexColor("#F1A400"),
-                  borderRadius: BorderRadius.circular(20.5)),
-              child: Center(
-                  child: Text(
-                getT(KeyT.save),
-                style: TextStyle(color: COLORS.WHITE),
-              )),
-            ),
-          ),
+          child: widgetSave(),
         ),
       ],
     );
@@ -194,7 +181,7 @@ Future<List<File>> onDinhKemBase(BuildContext context) async {
   if (await Permission.storage.request().isGranted) {
     if (Platform.isAndroid) {
       ShowDialogCustom.showDialogBase(
-        title:getT(KeyT.notification),
+        title: getT(KeyT.notification),
         content: getT(KeyT.you_have_not_granted_access_to_photos),
         textButton2: getT(KeyT.go_to_setting),
         onTap2: () {

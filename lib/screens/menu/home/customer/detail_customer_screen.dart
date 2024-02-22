@@ -71,8 +71,6 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
               builder: (BuildContext context) {
                 return DialogCall(
                   phone: _bloc.sdt ?? '',
-                  routerName: ROUTE_NAMES.CUSTOMER,
-                  moduleMy: ModuleMy.CUSTOMER,
                   name: _bloc.name ?? '',
                 );
               },

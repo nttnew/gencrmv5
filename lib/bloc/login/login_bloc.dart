@@ -11,6 +11,7 @@ import 'package:gen_crm/api_resfull/dio_provider.dart';
 import 'package:gen_crm/api_resfull/user_repository.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/models/model_generator/main_menu_response.dart';
+import 'package:gen_crm/src/models/model_generator/report_option.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/event_repository_storage.dart';
 import 'package:gen_crm/storages/share_local.dart';
@@ -19,6 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/models/validate_form/no_data.dart';
+import '../../widgets/listview_loadmore_base.dart';
 import '../../widgets/loading_api.dart';
 
 part 'login_event.dart';
@@ -32,10 +34,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   static const String UNREGISTER = 'UNREGISTER';
   static const String REGISTERED = 'REGISTERED';
   LoginData? loginData;
-
-  /// CAR_CRM 1 = true
-  bool isCarCRM = false;
-  static const int CAR_CRM = 0;
+  BehaviorSubject<FilterResponse> locationTimeStream = BehaviorSubject();
+  String? valueLocation;
+  String? location;
+  TrangThaiHDReport? valueTrangThai;
+  LoadMoreController loadMoreControllerCar = LoadMoreController();
 
   LoginBloc({
     required this.userRepository,
@@ -55,6 +58,28 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     super.onTransition(transition);
   }
 
+  Future<dynamic> getXeDichVu({
+    int page = BASE_URL.PAGE_DEFAULT,
+  }) async {
+    LoadingApi().pushLoading();
+    dynamic resDynamic = '';
+    try {
+      final response = await userRepository.postXeDichVu(
+          page.toString(), valueTrangThai?.id ?? '', location ?? '',);
+      if (isSuccess(response.code)) {
+        resDynamic = response.data?.dataHD ?? [];
+      } else if (isFail(response.code)) {
+        loginSessionExpired();
+      } else
+        resDynamic = response.msg ?? '';
+    } catch (e) {
+      resDynamic = getT(KeyT.an_error_occurred);
+      throw e;
+    }
+    LoadingApi().popLoading();
+    return resDynamic;
+  }
+
   bool checkRegisterSuccess() {
     return shareLocal
             .getString(PreferencesKey.REGISTER_MSG)
@@ -68,6 +93,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     PitelClient.getInstance().logoutExtension(getSipInfo());
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(PreferencesKey.IS_LOGGED_IN, false);
+  }
+
+  Future<void> getChiNhanh() async {
+    try {
+      final response = await userRepository.getReportOption2();
+      if (isSuccess(response.code)) {
+        locationTimeStream.add(response);
+      }
+    } catch (e) {}
   }
 
   void getListMenuFlash() {
@@ -143,7 +177,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           );
           shareLocal.putString(PreferencesKey.DEVICE_TOKEN, event.device_token);
           if (response.code == BASE_URL.SUCCESS) {
-            isCarCRM = response.data?.carCRM == CAR_CRM;
+            shareLocal.putString(
+                PreferencesKey.CAR_CRM, response.data?.carCRM.toString() ?? '');
 
             /// 1 = true
             DioProvider.instance(
@@ -200,7 +235,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           );
           shareLocal.putString(PreferencesKey.DEVICE_TOKEN, event.device_token);
           if (response.code == BASE_URL.SUCCESS) {
-            isCarCRM = response.data?.carCRM == CAR_CRM;
+            shareLocal.putString(
+                PreferencesKey.CAR_CRM, response.data?.carCRM.toString() ?? '');
             DioProvider.instance(
               sess: response.data?.session_id,
               token: response.data?.token,

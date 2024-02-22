@@ -65,6 +65,9 @@ FilterReport _$FilterReportFromJson(Map<String, dynamic> json) => FilterReport(
       (json['thoi_gian'] as List<dynamic>?)
           ?.map((e) => (e as List<dynamic>).map((e) => e as String).toList())
           .toList(),
+      (json['trangthaihd'] as List<dynamic>?)
+          ?.map((e) => TrangThaiHDReport.fromJson(e as Map<String, dynamic>))
+          .toList(),
       json['thoi_gian_mac_dinh'] as int?,
     );
 
@@ -72,5 +75,18 @@ Map<String, dynamic> _$FilterReportToJson(FilterReport instance) =>
     <String, dynamic>{
       'diem_ban': instance.diem_ban,
       'thoi_gian': instance.thoi_gian,
+      'trangthaihd': instance.trangthaihd,
       'thoi_gian_mac_dinh': instance.thoi_gian_mac_dinh,
+    };
+
+TrangThaiHDReport _$TrangThaiHDReportFromJson(Map<String, dynamic> json) =>
+    TrangThaiHDReport(
+      json['id'] as String?,
+      json['label'] as String?,
+    );
+
+Map<String, dynamic> _$TrangThaiHDReportToJson(TrangThaiHDReport instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'label': instance.label,
     };

@@ -189,6 +189,7 @@ class BASE_URL {
   static const GET_BAO_CAO_SO_QUY =
       'modules/genmobile2/dashboard/getBaocaoSoquy';
   static const GET_DATA_LOCATION = 'modules/api/getdata/dataLocation';
+  static const POST_XE_DICH_VU = 'modules/genmobile2/dashboard/getXedichvu';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';

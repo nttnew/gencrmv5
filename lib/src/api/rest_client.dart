@@ -67,6 +67,7 @@ import '../models/model_generator/response_save_product.dart';
 import '../models/model_generator/save_checkin_response.dart';
 import '../models/model_generator/service_pack_response.dart';
 import '../models/model_generator/support_customer.dart';
+import '../models/model_generator/xe_dich_vu_response.dart';
 
 part 'rest_client.g.dart';
 
@@ -862,4 +863,11 @@ abstract class RestClient {
 
   @GET(BASE_URL.GET_DATA_LOCATION)
   Future<dynamic> getDataLocation();
+
+  @POST(BASE_URL.POST_XE_DICH_VU)
+  Future<XeDichVuResponse> postXeDichVu(
+    @Field('p') String page,
+    @Field('tthd') String trangThai,
+    @Field('chinhanh') String chiNhanh,
+  );
 }
