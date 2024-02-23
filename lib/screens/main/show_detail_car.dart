@@ -303,6 +303,9 @@ class _DetailCarState extends State<DetailCar> {
                                   _blocLogin.trangThaiDichVu = data?.last;
                                   setState(() {});
                                   Navigator.of(context).pop();
+                                  LoginBloc.of(context)
+                                      .loadMoreControllerCar
+                                      .reloadData();
                                 }
                               },
                             );
