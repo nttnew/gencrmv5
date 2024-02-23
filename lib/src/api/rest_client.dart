@@ -36,6 +36,7 @@ import '../models/model_generator/detail_contract.dart';
 import '../models/model_generator/clue.dart';
 import '../models/model_generator/clue_detail.dart';
 import '../models/model_generator/detail_product_customer_response.dart';
+import '../models/model_generator/detail_xe_dich_vu.dart';
 import '../models/model_generator/file_response.dart';
 import '../models/model_generator/get_xe_response.dart';
 import '../models/model_generator/group_product_response.dart';
@@ -869,5 +870,23 @@ abstract class RestClient {
     @Field('p') String page,
     @Field('tthd') String trangThai,
     @Field('chinhanh') String chiNhanh,
+  );
+
+  @POST(BASE_URL.POST_DETAIL_XE_DICH_VU)
+  Future<DetailXeDichVuResponse> postDetailXeDichVu(
+    @Field('hopdongid') String id,
+  );
+
+  @POST(BASE_URL.POST_UPDATE_TDNTH)
+  Future<dynamic> postUpdateTDNTH(
+    @Field('idct') String id,
+    @Field('tiendo') String idTienDo,
+    @Field('nguoithuchien') String idNTH,
+  );
+
+  @POST(BASE_URL.POST_UPDATE_TTHD)
+  Future<dynamic> postUpdateTTHD(
+    @Field('hopdongid') String id,
+    @Field('tthd') String idTT,
   );
 }

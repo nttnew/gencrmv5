@@ -96,8 +96,7 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
       final statusCode =
           (response as Map<String, dynamic>).getOrElse('code', () => -1);
       final msg = response.getOrElse('msg', () => -1);
-      if ((statusCode == BASE_URL.SUCCESS) ||
-          (statusCode == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(statusCode)) {
         yield SuccessDeleteProductState();
       } else if (statusCode == BASE_URL.SUCCESS_999) {
         loginSessionExpired();

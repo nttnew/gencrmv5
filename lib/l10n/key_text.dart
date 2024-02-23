@@ -250,4 +250,14 @@ class KeyT {
   static String PROVINCE_CITY = 'PROVINCE_CITY';
   static String not_select = 'not_select';
   static String setting = 'setting';
+  static String so_phieu = 'so_phieu';
+  static String ngay_ra = 'ngay_ra';
+  static String ngay_vao = 'ngay_vao';
+  static String tien_do = 'tien_do';
+  static String nguoi_lam = 'nguoi_lam';
+  static String phan_cong = 'phan_cong';
+  static String cap_nhat_trang_thai = 'cap_nhat_trang_thai';
+  static String cap_nhat_tien_do = 'cap_nhat_tien_do';
+  static String chua_phan_cong = 'chua_phan_cong';
+  static String chua_bat_dau = 'chua_bat_dau';
 }

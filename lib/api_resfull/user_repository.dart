@@ -38,6 +38,7 @@ import '../src/models/model_generator/contract.dart';
 import '../src/models/model_generator/contract_customer.dart';
 import '../src/models/model_generator/detail_product_customer_response.dart';
 import '../src/models/model_generator/detail_product_module_response.dart';
+import '../src/models/model_generator/detail_xe_dich_vu.dart';
 import '../src/models/model_generator/get_infor.dart';
 import '../src/models/model_generator/get_phone_cus.dart';
 import '../src/models/model_generator/get_xe_response.dart';
@@ -923,6 +924,33 @@ class UserRepository {
         page,
         trangThai,
         chiNhanh,
+      );
+
+  Future<DetailXeDichVuResponse> postDetailXeDichVu(
+    String id,
+  ) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).postDetailXeDichVu(
+        id,
+      );
+
+  Future<dynamic> postUpdateTDNTH(
+    String id,
+    String idTienDo,
+    String idNTH,
+  ) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).postUpdateTDNTH(
+        id,
+        idTienDo,
+        idNTH,
+      );
+
+  Future<dynamic> postUpdateTTHD(
+    String id,
+    String idTT,
+  ) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).postUpdateTTHD(
+        id,
+        idTT,
       );
 
   //////////////////////

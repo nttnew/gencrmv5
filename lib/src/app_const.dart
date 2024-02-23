@@ -134,8 +134,13 @@ getSipInfo() {
   return sipInfo;
 }
 
-Widget itemIcon(String title, String icon, Function() click,
-    {Widget? iconWidget, bool isSvg = true}) {
+Widget itemIcon(
+  String title,
+  String icon,
+  Function() click, {
+  Widget? iconWidget,
+  bool isSvg = true,
+}) {
   return GestureDetector(
     onTap: () => click(),
     child: Row(
@@ -221,12 +226,47 @@ handleOnPressItemMenu(_drawerKey, value) async {
   }
 }
 
+Widget widgetTextClick(
+  String title,
+  String content,
+  Function onClick, {
+  String? contentNull,
+  String contentValueNull = '',
+  Color? color,
+}) {
+  return Row(
+    children: [
+      Expanded(
+          child: Text(
+        title,
+        style: AppStyle.DEFAULT_14,
+      )),
+      Expanded(
+        child: GestureDetector(
+          onTap: () {
+            onClick();
+          },
+          child: Text(
+            content == contentValueNull && contentNull != null ? contentNull : content,
+            style: AppStyle.DEFAULT_14.copyWith(
+              color: color ?? COLORS.ORANGE,
+              decoration: TextDecoration.underline,
+            ),
+            textAlign: TextAlign.end,
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
 Widget itemTextIcon({
   Color? colorText,
   Color? colorIcon,
   TextStyle? styleText,
   required String text,
   required icon,
+  String? textPlus,
   bool isSVG = true,
   Function? onTap,
   double? paddingTop,
@@ -264,7 +304,7 @@ Widget itemTextIcon({
                     ),
                     Expanded(
                       child: WidgetText(
-                        title: text,
+                        title: (textPlus != null ? '$textPlus: ' : '') + text,
                         style: styleText ??
                             AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
                               color:
@@ -305,7 +345,7 @@ Widget itemTextIcon({
                   ),
                   Expanded(
                     child: WidgetText(
-                      title: text,
+                      title: (textPlus != null ? '$textPlus: ' : '') + text,
                       style: styleText ??
                           AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
                             color: colorText != null ? colorText : COLORS.BLACK,

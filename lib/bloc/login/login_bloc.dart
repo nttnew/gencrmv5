@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -19,6 +20,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
+import '../../src/models/model_generator/xe_dich_vu_response.dart';
 import '../../src/models/validate_form/no_data.dart';
 import '../../widgets/listview_loadmore_base.dart';
 import '../../widgets/loading_api.dart';
@@ -35,10 +37,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   static const String REGISTERED = 'REGISTERED';
   LoginData? loginData;
   BehaviorSubject<FilterResponse> locationTimeStream = BehaviorSubject();
+  BehaviorSubject<dynamic> responseDetailXeDichVuStream = BehaviorSubject();
   String? valueLocation;
   String? location;
   TrangThaiHDReport? valueTrangThai;
   LoadMoreController loadMoreControllerCar = LoadMoreController();
+  XeDichVu? xeDichVu;
+  String? trangThaiDichVu;
 
   LoginBloc({
     required this.userRepository,
@@ -58,6 +63,75 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     super.onTransition(transition);
   }
 
+  Future<dynamic> getDetailXeDichVu() async {
+    dynamic resDynamic = '';
+    try {
+      final response = await userRepository.postDetailXeDichVu(
+        xeDichVu?.id ?? '',
+      );
+      if (isSuccess(response.code)) {
+        resDynamic = response.data;
+      } else if (isFail(response.code)) {
+        loginSessionExpired();
+      } else
+        resDynamic = response.msg ?? '';
+    } catch (e) {
+      resDynamic = getT(KeyT.an_error_occurred);
+      throw e;
+    }
+    responseDetailXeDichVuStream.add(resDynamic);
+  }
+
+  Future<dynamic> postUpdateTTHD({
+    required String id,
+    required String idTT,
+  }) async {
+    try {
+      final response = await userRepository.postUpdateTTHD(
+        xeDichVu?.id ?? '',
+        idTT,
+      );
+      final statusCode =
+          (response as Map<String, dynamic>).getOrElse('code', () => -1);
+      final msg = response.getOrElse('msg', () => -1);
+      if (isSuccess(statusCode)) {
+        return '';
+      } else if (statusCode == BASE_URL.SUCCESS_999) {
+        loginSessionExpired();
+      } else {
+        return msg;
+      }
+    } catch (e) {
+      return getT(KeyT.an_error_occurred);
+    }
+  }
+
+  Future<dynamic> postUpdateTDNTH({
+    required String id,
+    required String idTD,
+    required String idNTH,
+  }) async {
+    try {
+      final response = await userRepository.postUpdateTDNTH(
+        id,
+        idTD,
+        idNTH,
+      );
+      final statusCode =
+          (response as Map<String, dynamic>).getOrElse('code', () => -1);
+      final msg = response.getOrElse('msg', () => -1);
+      if (isSuccess(statusCode)) {
+        return '';
+      } else if (statusCode == BASE_URL.SUCCESS_999) {
+        loginSessionExpired();
+      } else {
+        return msg;
+      }
+    } catch (e) {
+      return getT(KeyT.an_error_occurred);
+    }
+  }
+
   Future<dynamic> getXeDichVu({
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
@@ -65,7 +139,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     dynamic resDynamic = '';
     try {
       final response = await userRepository.postXeDichVu(
-          page.toString(), valueTrangThai?.id ?? '', location ?? '',);
+        page.toString(),
+        valueTrangThai?.id ?? '',
+        location ?? '',
+      );
       if (isSuccess(response.code)) {
         resDynamic = response.data?.dataHD ?? [];
       } else if (isFail(response.code)) {

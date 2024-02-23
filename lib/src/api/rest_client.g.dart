@@ -4087,6 +4087,87 @@ class _RestClient implements RestClient {
     return value;
   }
 
+  @override
+  Future<DetailXeDichVuResponse> postDetailXeDichVu(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {'hopdongid': id};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<DetailXeDichVuResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/dashboard/getChitietXedichvu',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DetailXeDichVuResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<dynamic> postUpdateTDNTH(
+    id,
+    idTienDo,
+    idNTH,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'idct': id,
+      'tiendo': idTienDo,
+      'nguoithuchien': idNTH,
+    };
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'modules/genmobile2/dashboard/updateTDNTH',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<dynamic> postUpdateTTHD(
+    id,
+    idTT,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'hopdongid': id,
+      'tthd': idTT,
+    };
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'modules/genmobile2/dashboard/updateTTHD',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data;
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

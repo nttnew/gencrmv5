@@ -43,3 +43,39 @@ class ButtonThaoTac extends StatelessWidget {
     );
   }
 }
+
+class ButtonBaseSmall extends StatelessWidget {
+  const ButtonBaseSmall({
+    Key? key,
+    required this.onTap,
+    this.title,
+  }) : super(key: key);
+
+  final Function() onTap;
+  final String? title;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onTap(),
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: HexColor("#D0F1EB"),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Center(
+          child: Text(
+            title ?? getT(KeyT.action),
+            style: TextStyle(
+              fontFamily: "Quicksand",
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

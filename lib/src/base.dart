@@ -190,6 +190,9 @@ class BASE_URL {
       'modules/genmobile2/dashboard/getBaocaoSoquy';
   static const GET_DATA_LOCATION = 'modules/api/getdata/dataLocation';
   static const POST_XE_DICH_VU = 'modules/genmobile2/dashboard/getXedichvu';
+  static const POST_DETAIL_XE_DICH_VU = 'modules/genmobile2/dashboard/getChitietXedichvu';
+  static const POST_UPDATE_TTHD = 'modules/genmobile2/dashboard/updateTTHD';
+  static const POST_UPDATE_TDNTH = 'modules/genmobile2/dashboard/updateTDNTH';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';

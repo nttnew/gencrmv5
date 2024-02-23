@@ -81,6 +81,7 @@ class AppValue {
 
   static Widget vSpace(double height) => SizedBox(height: height);
   static const Widget vSpaceTiny = SizedBox(height: 8.0);
+  static const Widget vSpace10 = SizedBox(height: 10);
   static const Widget vSpaceSmall = SizedBox(height: 16.0);
   static const Widget vSpace24 = SizedBox(height: 24);
   static const Widget vSpaceMedium = SizedBox(height: 32.0);
