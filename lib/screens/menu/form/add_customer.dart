@@ -297,6 +297,7 @@ class _AddCustomerState extends State<AddCustomer> {
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
                 child: TextField(
+                  textCapitalization: TextCapitalization.sentences,
                   minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
                   maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),

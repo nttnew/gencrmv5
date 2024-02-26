@@ -63,6 +63,7 @@ class _FieldInputPercentState extends State<FieldInputPercent> {
                 children: [
                   Expanded(
                     child: TextField(
+                      textCapitalization: TextCapitalization.sentences,
                       style:
                           TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                       keyboardType: TextInputType.number,

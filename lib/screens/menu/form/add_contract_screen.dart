@@ -62,13 +62,13 @@ class _FormAddContractState extends State<FormAddContract> {
     listCustomerForChance = [
       [
         CA_NHAN,
-        '${getT(KeyT.begin)}'
+        '${getT(KeyT.add)}'
             ' ${nameCustomerScreen.toString().toLowerCase()} '
             '${getT(KeyT.individual)}'
       ],
       [
         TO_CHUC,
-        '${getT(KeyT.begin)}'
+        '${getT(KeyT.add)}'
             ' ${nameCustomerScreen.toString().toLowerCase()} '
             '${getT(KeyT.organization)}'
       ]
@@ -730,6 +730,7 @@ class _FormAddContractState extends State<FormAddContract> {
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
                 child: TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
                   minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
                   maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),

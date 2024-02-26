@@ -97,6 +97,7 @@ class _InputMultipleWidgetState extends State<InputMultipleWidget> {
                   }
                 },
                 child: TextField(
+                  textCapitalization: TextCapitalization.sentences,
                   controller: _editingController,
                   onEditingComplete: () {
                     if (_editingController.text != "") {

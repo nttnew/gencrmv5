@@ -22,7 +22,7 @@ import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/models/model_generator/xe_dich_vu_response.dart';
 import '../../src/models/validate_form/no_data.dart';
-import '../../widgets/listview_loadmore_base.dart';
+import '../../widgets/listview/list_load_infinity.dart';
 import '../../widgets/loading_api.dart';
 
 part 'login_event.dart';
@@ -36,7 +36,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   static const String UNREGISTER = 'UNREGISTER';
   static const String REGISTERED = 'REGISTERED';
   LoginData? loginData;
-  BehaviorSubject<FilterResponse> locationTimeStream = BehaviorSubject();
+  BehaviorSubject<FilterResponse> locationStatusStream = BehaviorSubject();
   BehaviorSubject<dynamic> responseDetailXeDichVuStream = BehaviorSubject();
   String? valueLocation;
   String? location;
@@ -44,6 +44,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoadMoreController loadMoreControllerCar = LoadMoreController();
   XeDichVu? xeDichVu;
   String? trangThaiDichVu;
+
+  initController() async {
+    final dataCv = await getXeDichVu(
+      page: BASE_URL.PAGE_DEFAULT,
+    );
+    await loadMoreControllerCar.initData(dataCv);
+  }
 
   LoginBloc({
     required this.userRepository,
@@ -77,7 +84,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         resDynamic = response.msg ?? '';
     } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      throw e;
     }
     responseDetailXeDichVuStream.add(resDynamic);
   }
@@ -176,7 +182,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       final response = await userRepository.getReportOption2();
       if (isSuccess(response.code)) {
-        locationTimeStream.add(response);
+        locationStatusStream.add(response);
       }
     } catch (e) {}
   }

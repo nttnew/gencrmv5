@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gen_crm/screens/main/widget/item_detail_sp.dart';
+import 'package:gen_crm/screens/main/widget/select_body.dart';
+import 'package:gen_crm/screens/main/widget/select_multi_body.dart';
 import 'package:gen_crm/src/models/model_generator/xe_dich_vu_response.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/showToastM.dart';
@@ -229,7 +232,7 @@ class _DetailCarState extends State<DetailCar> {
                               shrinkWrap: true,
                               itemCount: listNhanCong.length,
                               itemBuilder: (context, i) {
-                                return itemDichVu(
+                                return _itemDichVu(
                                   context,
                                   listNhanCong[i],
                                   dataDetail,
@@ -268,16 +271,17 @@ class _DetailCarState extends State<DetailCar> {
                       AppValue.hSpaceSmall,
                       Expanded(
                         child: ButtonBaseSmall(
-                            title: ModuleMy.getNameModuleMy(
-                              ModuleMy.HOP_DONG,
-                              isTitle: true,
-                            ),
-                            onTap: () {
-                              AppNavigator.navigateAddContract(
-                                title: ModuleMy.getNameModuleMy(
+                            title: getT(KeyT.edit) +
+                                ' ' +
+                                ModuleMy.getNameModuleMy(
                                   ModuleMy.HOP_DONG,
-                                  isTitle: true,
                                 ),
+                            onTap: () {
+                              AppNavigator.navigateEditContractScreen(
+                                _blocLogin.xeDichVu?.id ?? '',
+                                onRefresh: () {
+                                  _blocLogin.getDetailXeDichVu();
+                                },
                               );
                             }),
                       ),
@@ -323,7 +327,7 @@ class _DetailCarState extends State<DetailCar> {
   }
 }
 
-itemDichVu(
+_itemDichVu(
   BuildContext context,
   CTDichVu dataDV,
   DetailXeDichVuData dataDetail,
@@ -359,25 +363,11 @@ itemDichVu(
           getT(KeyT.nguoi_lam),
           '${dataDV.nguoiThucHien}',
           () {
-            showModalSelect(
+            _clickShow(
               context,
-              getT(KeyT.nguoi_lam),
-              dataDetail.listNguoiThucHien ?? [],
-              init: dataDV.nguoiThucHien,
-              (data) async {
-                final res = await blocLogin.postUpdateTDNTH(
-                  id: dataDV.idct ?? '',
-                  idTD: dataDV.idTienDo ?? '',
-                  idNTH: '${data?.first}',
-                );
-
-                if (res != '') {
-                  showToastM(context, title: res);
-                } else {
-                  blocLogin.getDetailXeDichVu();
-                  Navigator.pop(context);
-                }
-              },
+              blocLogin,
+              dataDetail,
+              dataDV,
             );
           },
           contentNull: getT(KeyT.chua_phan_cong),
@@ -389,25 +379,11 @@ itemDichVu(
           '${dataDV.tienDo}',
           contentValueNull: '',
           () {
-            showModalSelect(
+            _clickShow(
               context,
-              getT(KeyT.cap_nhat_tien_do),
-              dataDetail.listTienDo ?? [],
-              init: dataDV.tienDo,
-              (data) async {
-                final res = await blocLogin.postUpdateTDNTH(
-                  id: dataDV.idct ?? '',
-                  idNTH: dataDV.idNguoiThucHien ?? '',
-                  idTD: '${data?.first}',
-                );
-
-                if (res != '') {
-                  showToastM(context, title: res);
-                } else {
-                  blocLogin.getDetailXeDichVu();
-                  Navigator.pop(context);
-                }
-              },
+              blocLogin,
+              dataDetail,
+              dataDV,
             );
           },
           contentNull: getT(KeyT.chua_bat_dau),
@@ -417,6 +393,39 @@ itemDichVu(
     ),
   );
 }
+
+_clickShow(
+  BuildContext context,
+  blocLogin,
+  DetailXeDichVuData dataDetail,
+  CTDichVu dataDV,
+) =>
+    showModalSelectMulti(
+      context,
+      [
+        getT(KeyT.nguoi_lam),
+        getT(KeyT.cap_nhat_tien_do),
+      ],
+      [dataDetail.listNguoiThucHien ?? [], dataDetail.listTienDo ?? []],
+      init: [dataDV.nguoiThucHien, dataDV.tienDo],
+      (data) async {
+        String idNTH = data?.first.first ?? dataDV.idNguoiThucHien ?? '';
+        String idTD = data?.last.first ?? dataDV.idTienDo ?? '';
+
+        final res = await blocLogin.postUpdateTDNTH(
+          id: dataDV.idct ?? '',
+          idNTH: idNTH,
+          idTD: idTD,
+        );
+
+        if (res != '') {
+          showToastM(context, title: res);
+        } else {
+          blocLogin.getDetailXeDichVu();
+          Navigator.pop(context);
+        }
+      },
+    );
 
 Color getColor(String tienDo) {
   if (tienDo.length > 0) {
@@ -438,151 +447,4 @@ Color getColor(String tienDo) {
   }
 
   return COLORS.RED;
-}
-
-showModalSelect(
-  BuildContext context,
-  String title,
-  List<List<dynamic>> listData,
-  Function(List<dynamic>?) onTap, {
-  String? init,
-}) {
-  return showModalBottomSheet(
-    isScrollControlled: true,
-    context: context,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topRight: Radius.circular(30),
-        topLeft: Radius.circular(30),
-      ),
-    ),
-    backgroundColor: COLORS.WHITE,
-    builder: (context) => SelectBody(
-      init: init,
-      title: title,
-      listData: listData,
-      onTap: onTap,
-    ),
-  );
-}
-
-class SelectBody extends StatefulWidget {
-  const SelectBody({
-    Key? key,
-    required this.init,
-    required this.title,
-    required this.listData,
-    required this.onTap,
-  }) : super(key: key);
-  final String? init;
-  final String title;
-  final List<List<dynamic>> listData;
-  final Function(List<dynamic>?) onTap;
-
-  @override
-  State<SelectBody> createState() => _SelectBodyState();
-}
-
-class _SelectBodyState extends State<SelectBody> {
-  List<dynamic>? dataSelect;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 4),
-      padding: EdgeInsets.symmetric(
-        vertical: 20,
-        horizontal: 16,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            widget.title,
-            style: AppStyle.DEFAULT_18_BOLD.copyWith(
-              color: COLORS.TEXT_BLUE_BOLD,
-            ),
-          ),
-          AppValue.vSpace24,
-          Wrap(
-            spacing: 16,
-            runSpacing: 16,
-            children: widget.listData.asMap().entries.map((entry) {
-              final e = entry.value;
-              return GestureDetector(
-                onTap: () {
-                  widget.onTap(e);
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: widget.init == e[1]
-                        ? COLORS.ORANGE.withOpacity(0.5)
-                        : COLORS.LIGHT_GREY,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(
-                        12,
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    e[1],
-                    style: AppStyle.DEFAULT_16_T,
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-          AppValue.vSpaceMedium,
-        ],
-      ),
-    );
-  }
-}
-
-class ItemSanPham extends StatelessWidget {
-  const ItemSanPham({
-    Key? key,
-    required this.dataDV,
-  }) : super(key: key);
-  final CTDichVu dataDV;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(
-        top: 16,
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 10,
-            height: 10,
-            margin: EdgeInsets.only(right: 10),
-            decoration: BoxDecoration(
-              color: COLORS.GREY,
-              shape: BoxShape.circle,
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Text(
-              dataDV.tenSanPham ?? '',
-              style: AppStyle.DEFAULT_14_BOLD,
-            ),
-          ),
-          Expanded(
-            child: Text(
-              '${dataDV.soLuong} ${dataDV.donViTinh}',
-              style: AppStyle.DEFAULT_14_BOLD,
-              textAlign: TextAlign.end,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

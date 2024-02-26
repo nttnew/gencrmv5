@@ -3,7 +3,6 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../bloc/add_service_voucher/add_service_bloc.dart';
 import '../../l10n/key_text.dart';
 import '../../widgets/appbar_base.dart';
@@ -25,74 +24,73 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: COLORS.WHITE,
-        appBar: AppbarBaseNormal(widget.title),
-        body: BlocListener<ServiceVoucherBloc, ServiceVoucherState>(
-          listener: (context, state) {
-            if (state is GetServiceVoucherState) {
-              LoadingApi().popLoading();
-              AppNavigator.navigateAddServiceVoucherStepTwo(widget.title);
-            }
-          },
-          child: Container(
-            padding: EdgeInsets.only(
-              left: 25,
-              right: 25,
-              top: 20,
-            ),
-            color: COLORS.WHITE,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  AppValue.vSpaceSmall,
-                  WidgetText(
-                      title: getT(KeyT.enter_number_phone_or_license_plates),
-                      style: TextStyle(
-                        color: COLORS.BLACK,
-                        fontFamily: "Montserrat",
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
-                      )),
-                  AppValue.vSpaceSmall,
-                  _fieldInputCustomer(getT(KeyT.phone), TextInputType.number,
-                      getT(KeyT.enter_phone), (v) {
-                    sdt = v;
-                  }),
-                  _fieldInputCustomer(getT(KeyT.license_plates),
-                      TextInputType.text, getT(KeyT.enter_license_plates), (v) {
-                    bienSo = v;
-                  }),
-                  AppValue.vSpaceTiny,
-                  WidgetButton(
-                    onTap: () {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      if (sdt.trim() == '' && bienSo.trim() == '') {
-                        ShowDialogCustom.showDialogBase(
-                          title:getT(KeyT.notification),
-                          content: getT(KeyT
-                              .you_must_enter_your_phone_number_or_license_plates),
-                        );
-                      } else {
-                        ServiceVoucherBloc.of(context).add(
-                            PostServiceVoucherEvent(sdt.trim(), bienSo.trim()));
-                      }
-                    },
-                    boxDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(17),
-                      color: HexColor("#D0F1EB"),
-                    ),
-                    textStyle: TextStyle(
-                      fontFamily: "Quicksand",
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                    text: getT(KeyT.check),
-                  ),
-                ],
-              ),
-            ),
+      backgroundColor: COLORS.WHITE,
+      appBar: AppbarBaseNormal(widget.title),
+      body: BlocListener<ServiceVoucherBloc, ServiceVoucherState>(
+        listener: (context, state) {
+          if (state is GetServiceVoucherState) {
+            LoadingApi().popLoading();
+            AppNavigator.navigateAddServiceVoucherStepTwo(widget.title);
+          }
+        },
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(
+            left: 16,
+            right: 16,
+            top: 20,
           ),
-        ));
+          child: Column(
+            children: [
+              AppValue.vSpaceSmall,
+              WidgetText(
+                title: getT(KeyT.enter_number_phone_or_license_plates),
+                style: TextStyle(
+                  color: COLORS.BLACK,
+                  fontFamily: "Montserrat",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                ),
+              ),
+              AppValue.vSpaceSmall,
+              _fieldInputCustomer(getT(KeyT.phone), TextInputType.number,
+                  getT(KeyT.enter_phone), (v) {
+                sdt = v;
+              }),
+              _fieldInputCustomer(getT(KeyT.license_plates), TextInputType.text,
+                  getT(KeyT.enter_license_plates), (v) {
+                bienSo = v;
+              }),
+              AppValue.vSpaceTiny,
+              WidgetButton(
+                onTap: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  if (sdt.trim() == '' && bienSo.trim() == '') {
+                    ShowDialogCustom.showDialogBase(
+                      title: getT(KeyT.notification),
+                      content: getT(KeyT
+                          .you_must_enter_your_phone_number_or_license_plates),
+                    );
+                  } else {
+                    ServiceVoucherBloc.of(context).add(
+                      PostServiceVoucherEvent(
+                        sdt.trim(),
+                        bienSo.trim(),
+                      ),
+                    );
+                  }
+                },
+                textStyle: TextStyle(
+                  fontFamily: "Quicksand",
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+                text: getT(KeyT.check),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _fieldInputCustomer(String label, TextInputType textInputType,
@@ -115,22 +113,33 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen> {
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: COLORS.ffBEB4B4)),
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                color: COLORS.ffBEB4B4,
+              ),
+            ),
             child: Padding(
-              padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
+              padding: EdgeInsets.only(
+                left: 10,
+                top: 5,
+                bottom: 5,
+              ),
               child: Container(
                 child: TextField(
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                   keyboardType: textInputType,
                   onChanged: (v) => onChange(v),
                   decoration: InputDecoration(
-                      hintText: prefixText,
-                      hintStyle: AppStyle.DEFAULT_14W500,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      isDense: true),
+                    hintText: prefixText,
+                    hintStyle: AppStyle.DEFAULT_14W500,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    isDense: true,
+                  ),
                 ),
               ),
             ),

@@ -398,25 +398,23 @@ bool isCarCrm() {
       );
 }
 
-Widget widgetSave() => Material(
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 34,
-          vertical: 10,
-        ),
-        decoration: BoxDecoration(
-          color: HexColor("#F1A400"),
-          borderRadius: BorderRadius.circular(
-            20,
-          ),
-        ),
-        child: Center(
-          child: Text(
-            getT(KeyT.save),
-            style: AppStyle.DEFAULT_16_BOLD.copyWith(
-              color: COLORS.WHITE,
-            ),
-          ),
-        ),
+Widget widgetSave() => Container(
+  padding: EdgeInsets.symmetric(
+    horizontal: 34,
+    vertical: 10,
+  ),
+  decoration: BoxDecoration(
+    color: HexColor("#F1A400"),
+    borderRadius: BorderRadius.circular(
+      20,
+    ),
+  ),
+  child: Center(
+    child: Text(
+      getT(KeyT.save),
+      style: AppStyle.DEFAULT_16_BOLD.copyWith(
+        color: COLORS.WHITE,
       ),
-    );
+    ),
+  ),
+);

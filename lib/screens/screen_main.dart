@@ -257,6 +257,7 @@ class _ScreenMainState extends State<ScreenMain> {
                 builder: (context, state) {
               if (state is UpdateGetInforAccState) {
                 return WidgetAppbar(
+                  isShaDow: !isCarCrm(),
                   title: isCarCrm()
                       ? state.inforAcc.ten_viet_tat
                       : state.inforAcc.fullname,
@@ -280,6 +281,7 @@ class _ScreenMainState extends State<ScreenMain> {
                 );
               } else {
                 return WidgetAppbar(
+                  isShaDow: !isCarCrm(),
                   title: '',
                   textColor: COLORS.BLACK,
                   right: rightAppBar(),

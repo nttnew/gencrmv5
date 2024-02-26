@@ -78,13 +78,13 @@ class _FormAddDataState extends State<FormAddData> {
     listCustomerForChance = [
       [
         CA_NHAN,
-        '${getT(KeyT.begin)}'
+        '${getT(KeyT.add)}'
             ' ${nameCustomerScreen.toString().toLowerCase()} '
             '${getT(KeyT.individual)}'
       ],
       [
         TO_CHUC,
-        '${getT(KeyT.begin)}'
+        '${getT(KeyT.add)}'
             ' ${nameCustomerScreen.toString().toLowerCase()} '
             '${getT(KeyT.organization)}'
       ]
@@ -390,6 +390,7 @@ class _FormAddDataState extends State<FormAddData> {
                         ),
                         child: Container(
                           child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
                             controller: controllerNote,
                             style: TextStyle(
                               fontSize: 14,
@@ -727,11 +728,13 @@ class _FormAddDataState extends State<FormAddData> {
                                 ? data.field_set_value.toString()
                                 : null,
                     decoration: InputDecoration(
-                        hintStyle: AppStyle.DEFAULT_14W500,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                        isDense: true),
+                      hintStyle: AppStyle.DEFAULT_14W500,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      isDense: true,
+                    ),
+                    textCapitalization: TextCapitalization.sentences,
                   ),
                 ),
               ),

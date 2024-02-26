@@ -63,31 +63,54 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
           physics: AlwaysScrollableScrollPhysics(),
           controller: _controller.controller,
           slivers: <Widget>[
-            // SliverApps
-            StreamBuilder<List<dynamic>>(
-                stream: widget.isShowAll,
-                builder: (context, snapshot) {
-                  return SliverAppBar(
-                    backgroundColor: Colors.transparent,
-                    automaticallyImplyLeading: false,
-                    snap: true,
-                    floating: true,
-                    expandedHeight: (snapshot.data ?? []).length > 0 ? 135 : 75,
-                    flexibleSpace: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0xff333333).withOpacity(0.2),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
-                          )
-                        ],
+            if (widget.isShowAll != null)
+              // SliverApps
+              StreamBuilder<List<dynamic>>(
+                  stream: widget.isShowAll,
+                  builder: (context, snapshot) {
+                    return SliverAppBar(
+                      backgroundColor: Colors.transparent,
+                      automaticallyImplyLeading: false,
+                      snap: true,
+                      floating: true,
+                      expandedHeight:
+                          (snapshot.data ?? []).length > 0 ? 135 : 75,
+                      flexibleSpace: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xff333333).withOpacity(0.2),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            )
+                          ],
+                        ),
+                        child: widget.child,
                       ),
-                      child: widget.child,
-                    ),
-                  );
-                }),
+                    );
+                  }),
+            if (widget.isShowAll == null)
+              SliverAppBar(
+                backgroundColor: Colors.transparent,
+                automaticallyImplyLeading: false,
+                snap: true,
+                floating: true,
+                expandedHeight: 75,
+                flexibleSpace: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0xff333333).withOpacity(0.2),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      )
+                    ],
+                  ),
+                  child: widget.child,
+                ),
+              ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
@@ -213,7 +236,8 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
             );
 }
 
-class LoadMoreController<T> {//tpdp
+class LoadMoreController<T> {
+  //tpdp
   final BehaviorSubject<List<dynamic>?> streamList = BehaviorSubject();
   final ScrollController controller = ScrollController();
   bool isLoadMore = false;

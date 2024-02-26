@@ -9,8 +9,10 @@ import '../../src/models/model_generator/xe_dich_vu_response.dart';
 import '../../src/src_index.dart';
 import '../../storages/share_local.dart';
 import '../../widgets/dialog_call.dart';
-import '../../widgets/listview_loadmore_base.dart';
+import '../../widgets/listview/list_load_infinity.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
+
+import '../../widgets/loading_api.dart';
 
 class MainCar extends StatefulWidget {
   const MainCar({Key? key}) : super(key: key);
@@ -21,16 +23,36 @@ class MainCar extends StatefulWidget {
 
 class _MainCarState extends State<MainCar> {
   @override
+  void initState() {
+    LoginBloc _blocLogin = LoginBloc.of(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Thực hiện hành động sau khi build hoàn thành
+      context.visitChildElements((element) {
+        LoadingApi().pushLoading();
+      });
+    });
+    _blocLogin.locationStatusStream.listen((value) {
+      final listTrangThai = value.data?.trangthaihd ?? [];
+      if (_blocLogin.valueTrangThai == null && listTrangThai.length > 0) {
+        _blocLogin.valueTrangThai = listTrangThai.firstOrNull;
+        _blocLogin.initController();
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     LoginBloc _blocLogin = LoginBloc.of(context);
     return Expanded(
-      child: Column(
-        children: [
-          StreamBuilder<FilterResponse>(
-              stream: _blocLogin.locationTimeStream,
+      child: ViewLoadMoreBase(
+        child: SingleChildScrollView(
+          child: StreamBuilder<FilterResponse>(
+              stream: _blocLogin.locationStatusStream,
               builder: (context, snapshot) {
                 final listLocation = snapshot.data?.data?.diem_ban ?? [];
                 final listTrangThai = snapshot.data?.data?.trangthaihd ?? [];
+
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -119,51 +141,40 @@ class _MainCarState extends State<MainCar> {
                           itemCount: listTrangThai.length,
                           itemBuilder: (context, i) {
                             final itemData = listTrangThai[i];
-                            return Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: COLORS.GRAY_IMAGE,
-                                  ),
-                                ),
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  _blocLogin.valueTrangThai =
-                                      itemData == _blocLogin.valueTrangThai
-                                          ? null
-                                          : itemData;
-                                  _blocLogin.loadMoreControllerCar.reloadData();
+                            return GestureDetector(
+                              onTap: () {
+                                _blocLogin.valueTrangThai =
+                                    itemData == _blocLogin.valueTrangThai
+                                        ? null
+                                        : itemData;
+                                _blocLogin.loadMoreControllerCar.reloadData();
 
-                                  setState(() {});
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                    right: 16,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    border:
+                                setState(() {});
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                  right: 16,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: _blocLogin.valueTrangThai == itemData
+                                      ? Border(
+                                          bottom: BorderSide(
+                                            color: COLORS.RED,
+                                            width: 3,
+                                          ),
+                                        )
+                                      : null,
+                                ),
+                                child: Text(
+                                  itemData.label ?? '',
+                                  style: AppStyle.DEFAULT_16_T.copyWith(
+                                    fontWeight:
                                         _blocLogin.valueTrangThai == itemData
-                                            ? Border(
-                                                bottom: BorderSide(
-                                                  color: COLORS.RED,
-                                                  width: 3,
-                                                ),
-                                              )
+                                            ? FontWeight.w700
                                             : null,
-                                  ),
-                                  child: Text(
-                                    itemData.label ?? '',
-                                    style: AppStyle.DEFAULT_16_T.copyWith(
-                                      fontWeight:
-                                          _blocLogin.valueTrangThai == itemData
-                                              ? FontWeight.w700
-                                              : null,
-                                      color:
-                                          _blocLogin.valueTrangThai == itemData
-                                              ? null
-                                              : null,
-                                    ),
+                                    color: _blocLogin.valueTrangThai == itemData
+                                        ? null
+                                        : null,
                                   ),
                                 ),
                               ),
@@ -173,26 +184,21 @@ class _MainCarState extends State<MainCar> {
                   ],
                 );
               }),
-          Expanded(
-            child: ListViewLoadMoreBase(
-              isInit: true,
-              functionInit: (page, isInit) {
-                return _blocLogin.getXeDichVu(
-                  page: page,
-                );
-              },
-              itemWidget: (int index, data) {
-                return ItemCar(
-                  data: data,
-                  onTap: () {
-                    showDetailCar(context, data);
-                  },
-                );
-              },
-              controller: _blocLogin.loadMoreControllerCar,
-            ),
-          ),
-        ],
+        ),
+        functionInit: (page, isInit) {
+          return _blocLogin.getXeDichVu(
+            page: page,
+          );
+        },
+        itemWidget: (int index, data) {
+          return ItemCar(
+            data: data,
+            onTap: () {
+              showDetailCar(context, data);
+            },
+          );
+        },
+        controller: _blocLogin.loadMoreControllerCar,
       ),
     );
   }

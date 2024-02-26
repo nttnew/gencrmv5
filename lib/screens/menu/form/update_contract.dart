@@ -578,6 +578,7 @@ class _EditContractState extends State<EditContract> {
               ),
               child: Container(
                 child: TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
                   minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
                   maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
                   style: AppStyle.DEFAULT_14W600,

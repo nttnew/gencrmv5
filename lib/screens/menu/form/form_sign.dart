@@ -628,6 +628,7 @@ class _FormAddSignState extends State<FormAddSign> {
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
                 child: TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
                   minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
                   maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
@@ -706,6 +707,7 @@ class _FormAddSignState extends State<FormAddSign> {
               padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Container(
                 child: TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
                   minLines: 2,
                   maxLines: 99,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
