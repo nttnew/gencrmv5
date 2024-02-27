@@ -7,7 +7,7 @@ abstract class CarReportEvent extends Equatable {
 }
 
 class GetDashboardCar extends CarReportEvent {
-  final String? time;
+  final int? time;
   final String? timeTo;
   final String? timeFrom;
   final String? diemBan;

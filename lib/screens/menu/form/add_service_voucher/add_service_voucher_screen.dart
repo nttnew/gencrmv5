@@ -3,9 +3,9 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import '../../bloc/add_service_voucher/add_service_bloc.dart';
-import '../../l10n/key_text.dart';
-import '../../widgets/appbar_base.dart';
+import '../../../../bloc/add_service_voucher/add_service_bloc.dart';
+import '../../../../l10n/key_text.dart';
+import '../../../../widgets/appbar_base.dart';
 
 class AddServiceVoucherScreen extends StatefulWidget {
   const AddServiceVoucherScreen({Key? key, required this.title})

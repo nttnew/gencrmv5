@@ -13,8 +13,12 @@ class InitReportEmployeeEvent extends ReportEmployeeEvent {
   final int? diemBan;
   final String? timeFrom;
 
-  const InitReportEmployeeEvent(
-      {this.time, this.timeTo, this.diemBan, this.timeFrom});
+  const InitReportEmployeeEvent({
+    this.time,
+    this.timeTo,
+    this.diemBan,
+    this.timeFrom,
+  });
 
   @override
   List<Object> get props => [];

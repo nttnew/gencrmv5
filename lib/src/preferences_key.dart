@@ -51,4 +51,5 @@ class PreferencesKey {
   static const String IS_LOGGED_IN = "IS_LOGGED_IN";
   static const String LOCATION = "LOCATION";
   static const String CAR_CRM = "CAR_CRM";
+  static const String TIME_REPORT = "TIME_REPORT";
 }

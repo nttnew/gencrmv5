@@ -21,17 +21,26 @@ class ReportGeneralBloc extends Bloc<ReportGeneralEvent, ReportGeneralState> {
   @override
   Stream<ReportGeneralState> mapEventToState(ReportGeneralEvent event) async* {
     if (event is SelectReportGeneralEvent) {
-      yield* _getReportContact(event.time, event.location, event.page);
+      yield* _getReportContact(
+        event.time,
+        event.location,
+      );
     }
   }
 
   Stream<ReportGeneralState> _getReportContact(
-      int? time, String? location, int? page) async* {
+    int? time,
+    String? location, {
+    int? page = BASE_URL.PAGE_DEFAULT,
+  }) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingReportGeneralState();
       final response = await userRepository.reportGeneral(
-          time, location == '' ? null : location, page);
+        time,
+        location,
+        page,
+      );
       if (isSuccess(response.code)) {
         yield SuccessReportGeneralState(response.data);
       } else if (isFail(response.code)) {
@@ -40,8 +49,7 @@ class ReportGeneralBloc extends Bloc<ReportGeneralEvent, ReportGeneralState> {
         yield ErrorReportGeneralState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorReportGeneralState(
-          getT(KeyT.an_error_occurred));
+      yield ErrorReportGeneralState(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();

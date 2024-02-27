@@ -137,6 +137,13 @@ class LocationModel {
   }
 
   String getTitle() {
-    return '$phuongXa, $quanHuyen, $tinhThanh';
+    return '${getData(phuongXa)}${getData(quanHuyen)}$tinhThanh';
+  }
+
+  String? getData(String? data){
+    if(data!=''&&data!=null){
+      return '${data}, ';
+    }
+    return '';
   }
 }

@@ -40,16 +40,8 @@ class ReportScreen extends StatefulWidget {
 class _ReportScreenState extends State<ReportScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   String? money = Get.arguments;
-  String total = "0";
-  String timeInitFinal = '';
-  String locationInitFinal = '';
-  int length = 0;
-  int page = 1;
-  late int timeInit;
-  late int timeFilter;
-  bool isFirst = false;
-  String valueTime = '';
-  String? valueLocation;
+  String? _labelTime;
+  String? _labelLocation;
   int step = 1;
   String _range = '';
   String? timeFrom;
@@ -61,11 +53,17 @@ class _ReportScreenState extends State<ReportScreen> {
 
   List<Map<String, dynamic>> typeDoanhSo = [
     {
-      "name": getT(KeyT.sales),
-      "gt": 'doanh_so'
+      'name': getT(KeyT.sales),
+      'gt': 'doanh_so',
     }, // label is required and unique
-    {"name": getT(KeyT.real_revenue), "gt": 'thuc_thu'},
-    {"name": getT(KeyT.number_contract), "gt": 'so_hop_dong'},
+    {
+      'name': getT(KeyT.real_revenue),
+      'gt': 'thuc_thu',
+    },
+    {
+      'name': getT(KeyT.number_contract),
+      'gt': 'so_hop_dong',
+    },
   ];
 
   String checkDataDoanhSo(DataList data, String gt) {
@@ -90,21 +88,31 @@ class _ReportScreenState extends State<ReportScreen> {
     final nameReport = shareLocal.getString(PreferencesKey.NAME_REPORT);
     typeReport = [
       {
-        "name": getT(KeyT.turn_over),
-        "index": 1
+        'name': getT(KeyT.turn_over),
+        'index': 1,
       }, // label is required and unique
-      {"name": getT(KeyT.sales_product), "index": 2},
-      {"name": getT(KeyT.employee_turnover), "index": 3},
-      {"name": nameReport.toString(), "index": 4},
-      {"name": getT(KeyT.treasury_book), "index": 5},
+      {
+        'name': getT(KeyT.sales_product),
+        'index': 2,
+      },
+      {
+        'name': getT(KeyT.employee_turnover),
+        'index': 3,
+      },
+      {
+        'name': nameReport.toString(),
+        'index': 4,
+      },
+      {
+        'name': getT(KeyT.treasury_book),
+        'index': 5,
+      },
     ];
     items = [getT(KeyT.all_company)];
     select = typeReport[0]['name'];
-    timeInit = 0;
-    timeFilter = 0;
     GetNotificationBloc.of(context).add(CheckNotification());
     _bloc.init();
-    _bloc.add(InitReportEvent());
+    _initApiTime();
   }
 
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
@@ -247,28 +255,18 @@ class _ReportScreenState extends State<ReportScreen> {
           items: typeReport
               .map((items) => DropdownMenuItem<String>(
                     onTap: () {
-                      valueLocation = locationInitFinal;
-                      _bloc.location = '';
                       step = items['index'];
-                      valueTime = timeInitFinal;
                       timeFrom = timeTo = null;
-                      _range = "";
-                      isFirst = false;
+                      _range = '';
                       _bloc.selectReport.add('');
-                      if (step == 1) {
-                        _bloc.add(InitReportEvent());
-                      } else if (step == 2) {
-                        OptionBloc.of(context).add(InitOptionEvent(1));
-                      } else if (step == 3) {
-                        OptionBloc.of(context).add(InitOptionEvent(2));
-                      } else if (step == 4) {
-                        OptionBloc.of(context).add(InitOptionEvent(4));
-                      } else if (step == 5) {
-                        OptionBloc.of(context).add(InitOptionEvent(
-                          5,
+                      OptionBloc.of(context).add(
+                        InitOptionEvent(
+                          step,
                           kyDf: _bloc.kyTaiChinh?.id,
-                        ));
-                      }
+                          time: _bloc.time,
+                          location: _bloc.location,
+                        ),
+                      );
                     },
                     value: items['name'],
                     child: Text(
@@ -280,143 +278,116 @@ class _ReportScreenState extends State<ReportScreen> {
         ),
         (step == 5)
             ? _pickDateStep5()
-            : (step == 1)
-                ? BlocBuilder<ReportBloc, ReportState>(
-                    builder: (context, state) {
-                      if (state is SuccessReportWorkState) {
-                        for (int i = 0; i < state.dataTime.length; i++) {
-                          if (state.dataTime[i][0] ==
-                                  state.thoi_gian_mac_dinh.toString() &&
-                              isFirst == false) {
-                            timeInitFinal = state.dataTime.first[1];
-                            valueTime = state.dataTime[i][1];
-                            timeInit = state.thoi_gian_mac_dinh;
-                            timeFilter = timeInit;
-                            isFirst = true;
-                            break;
-                          }
-                        }
-                        return DropdownButton2(
-                          alignment: Alignment.centerRight,
-                          value: valueTime,
-                          dropdownWidth: 150,
-                          dropdownMaxHeight: 275,
-                          itemHeight: 40,
-                          icon: const Icon(Icons.arrow_drop_down_outlined),
-                          underline: SizedBox.shrink(),
-                          onChanged: (String? value) {
-                            setState(() {
-                              valueTime = value!;
-                            });
-                          },
-                          items: state.dataTime
-                              .map((items) => DropdownMenuItem<String>(
-                                    onTap: () {
-                                      if (items[0] == "") {
-                                        timeFilter = 0;
-                                      } else {
-                                        timeFilter = int.parse(items[0]);
-                                      }
-                                      _bloc.selectReport.add('');
-                                      ReportGeneralBloc.of(context).add(
-                                        SelectReportGeneralEvent(
-                                          page,
-                                          _bloc.location,
-                                          timeFilter,
-                                        ),
-                                      );
-                                    },
-                                    value: items[1],
-                                    child: Text(
-                                      items[1],
-                                      style: AppStyle.DEFAULT_14,
+            : BlocBuilder<ReportBloc, ReportState>(
+                builder: (context, state) {
+                  if (state is SuccessReportWorkState) {
+                    if (state.dataTime.length > 0) _initTime(state);
+                    return DropdownButton2<String?>(
+                      alignment: Alignment.centerRight,
+                      value: _labelTime,
+                      dropdownWidth: 150,
+                      dropdownMaxHeight: 275,
+                      itemHeight: 40,
+                      icon: const Icon(Icons.arrow_drop_down_outlined),
+                      underline: SizedBox.shrink(),
+                      onChanged: (String? value) {
+                        setState(() {
+                          _labelTime = value;
+                        });
+                      },
+                      items: state.dataTime
+                          .map(
+                            (items) => DropdownMenuItem<String?>(
+                              onTap: () {
+                                _bloc.time = int.tryParse(items.first) ?? 0;
+                                shareLocal.putString(PreferencesKey.TIME_REPORT,
+                                    _bloc.time.toString());
+
+                                _bloc.selectReport.add('');
+                                if (_bloc.time == 6) {
+                                  Get.dialog(_dateRangeSelect());
+                                } else if (items.first != 6) if (step == 1) {
+                                  ReportGeneralBloc.of(context).add(
+                                    SelectReportGeneralEvent(
+                                      _bloc.location,
+                                      _bloc.time,
                                     ),
-                                  ))
-                              .toList(),
-                        );
-                      } else {
-                        return SizedBox.shrink();
-                      }
-                    },
-                  )
-                : BlocBuilder<OptionBloc, OptionState>(
-                    builder: (context, state) {
-                      if (state is SuccessOptionState) {
-                        for (int i = 0; i < state.dataTime.length; i++) {
-                          if (state.dataTime[i][0] ==
-                                  state.thoi_gian_mac_dinh.toString() &&
-                              isFirst == false) {
-                            timeInitFinal = state.dataTime.first[1];
-                            valueTime = state.dataTime[i][1];
-                            timeInit = state.thoi_gian_mac_dinh;
-                            timeFilter = timeInit;
-                            isFirst = true;
-                            break;
-                          }
-                        }
-                        return DropdownButton2(
-                          alignment: Alignment.centerRight,
-                          value: valueTime,
-                          dropdownWidth: 150,
-                          dropdownMaxHeight: 275,
-                          itemHeight: 40,
-                          icon: const Icon(Icons.arrow_drop_down_outlined),
-                          underline: SizedBox.shrink(),
-                          onChanged: (String? value) {
-                            setState(() {
-                              valueTime = value!;
-                            });
-                            if (timeFilter == 6) {
-                              Get.dialog(_dateRangeSelect());
-                            }
-                          },
-                          items: state.dataTime
-                              .map(
-                                (items) => DropdownMenuItem<String>(
-                                  onTap: () {
-                                    if (items[0] == "") {
-                                      timeFilter = 0;
-                                    } else {
-                                      timeFilter = int.parse(items[0]);
-                                    }
-                                    _bloc.selectReport.add('');
-                                    if (step == 2 && timeFilter != 6) {
-                                      ReportProductBloc.of(context).add(
-                                          InitReportProductEvent(
-                                              location: _bloc.location,
-                                              time: timeFilter));
-                                    } else if (step == 3 && timeFilter != 6) {
-                                      ReportEmployeeBloc.of(context).add(
-                                          InitReportEmployeeEvent(
-                                              diemBan: _bloc.location == ''
-                                                  ? null
-                                                  : int.parse(_bloc.location),
-                                              time: timeFilter));
-                                    } else if (step == 4) {
-                                      CarReportBloc.of(context).add(
-                                        GetDashboardCar(
-                                          time: timeFilter.toString(),
-                                          diemBan: _bloc.location,
-                                        ),
-                                      );
-                                    }
-                                  },
-                                  value: items[1],
-                                  child: Text(
-                                    items[1],
-                                    style: AppStyle.DEFAULT_14,
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        );
-                      } else {
-                        return SizedBox.shrink();
-                      }
-                    },
-                  ),
+                                  );
+                                } else if (step == 2) {
+                                  ReportProductBloc.of(context).add(
+                                    InitReportProductEvent(
+                                      location: _bloc.location,
+                                      time: _bloc.time,
+                                    ),
+                                  );
+                                } else if (step == 3) {
+                                  ReportEmployeeBloc.of(context).add(
+                                    InitReportEmployeeEvent(
+                                      diemBan: _bloc.location == ''
+                                          ? null
+                                          : int.parse(_bloc.location),
+                                      time: _bloc.time,
+                                    ),
+                                  );
+                                } else if (step == 4) {
+                                  CarReportBloc.of(context).add(
+                                    GetDashboardCar(
+                                      time: _bloc.time,
+                                      diemBan: _bloc.location,
+                                    ),
+                                  );
+                                }
+                              },
+                              value: items[1],
+                              child: Text(
+                                items[1],
+                                style: AppStyle.DEFAULT_14,
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
+              ),
       ],
     );
+  }
+
+  _initApiTime() {
+    final dataTimeLocal = shareLocal.getString(PreferencesKey.TIME_REPORT);
+    _bloc.add(
+      InitReportEvent(
+        int.tryParse(dataTimeLocal ?? ''),
+      ),
+    );
+  }
+
+  _initTime(SuccessReportWorkState state) {
+    if (_labelTime == null) {
+      String? dataTimeLocal = shareLocal.getString(PreferencesKey.TIME_REPORT);
+      _setTimeDefault(
+        state,
+        timeDF: dataTimeLocal == 'null' ? null : dataTimeLocal,
+      );
+    }
+  }
+
+  _setTimeDefault(
+    SuccessReportWorkState state, {
+    String? timeDF,
+  }) {
+    for (int i = 0; i < state.dataTime.length; i++) {
+      if (state.dataTime[i].first ==
+          (timeDF ?? state.thoi_gian_mac_dinh.toString())) {
+        _labelTime = state.dataTime[i][1];
+        _bloc.time = int.tryParse(state.dataTime[i].first);
+        shareLocal.putString(PreferencesKey.TIME_REPORT, _bloc.time.toString());
+        break;
+      }
+    }
   }
 
   _pickDateStep5() {
@@ -487,151 +458,87 @@ class _ReportScreenState extends State<ReportScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        (step == 1)
-            ? BlocBuilder<ReportBloc, ReportState>(
-                builder: (context, state) {
-                  if (state is SuccessReportWorkState) {
-                    if (state.dataLocation.isNotEmpty) {
-                      if (state.dataLocation.isNotEmpty) {
-                        locationInitFinal = state.dataLocation.first[1];
-                      }
-                      return DropdownButton2(
-                          value: valueLocation ?? state.dataLocation[0][1],
-                          icon: const Icon(Icons.arrow_drop_down_outlined),
-                          underline: SizedBox.shrink(),
-                          dropdownMaxHeight: 250,
-                          onChanged: (String? value) {
-                            valueLocation = value ?? '';
-                            setState(() {});
-                          },
-                          items: state.dataLocation.isNotEmpty
-                              ? state.dataLocation
-                                  .map(
-                                    (items) => DropdownMenuItem<String>(
-                                      onTap: () {
-                                        _bloc.location = items[0];
-                                        _bloc.selectReport.add('');
-                                        ReportGeneralBloc.of(context).add(
-                                          SelectReportGeneralEvent(
-                                            page,
-                                            _bloc.location,
-                                            timeFilter,
-                                          ),
-                                        );
-                                      },
-                                      value: items[1],
-                                      child: FittedBox(
-                                        child: Text(
-                                          items[1],
-                                          style: AppStyle.DEFAULT_14_BOLD,
+        BlocBuilder<ReportBloc, ReportState>(builder: (context, state) {
+          if (state is SuccessReportWorkState) {
+            if (state.dataLocation.isNotEmpty) {
+              if (_labelLocation == null) {
+                _labelLocation = state.dataLocation.first[1];
+                _bloc.location = state.dataLocation.first[0];
+              }
+              return DropdownButton2<String?>(
+                  value: _labelLocation,
+                  icon: const Icon(Icons.arrow_drop_down_outlined),
+                  underline: SizedBox.shrink(),
+                  dropdownMaxHeight: 250,
+                  onChanged: (String? value) {
+                    _labelLocation = value;
+                    setState(() {});
+                  },
+                  items: state.dataLocation
+                      .map(
+                        (items) => DropdownMenuItem<String?>(
+                          onTap: () {
+                            _bloc.location = items.first;
+                            _bloc.selectReport.add('');
+                            if (step == 1) {
+                              ReportGeneralBloc.of(context).add(
+                                SelectReportGeneralEvent(
+                                  _bloc.location,
+                                  _bloc.time,
+                                ),
+                              );
+                            } else if (step == 2) {
+                              ReportProductBloc.of(context).add(
+                                InitReportProductEvent(
+                                  location: _bloc.location,
+                                  time: _bloc.time,
+                                ),
+                              );
+                            } else if (step == 3) {
+                              ReportEmployeeBloc.of(context).add(
+                                InitReportEmployeeEvent(
+                                  time: _bloc.time,
+                                  diemBan: _bloc.location == ''
+                                      ? null
+                                      : int.parse(
+                                          _bloc.location,
                                         ),
-                                      ),
-                                    ),
-                                  )
-                                  .toList()
-                              : items
-                                  .map(
-                                    (items) => DropdownMenuItem<String>(
-                                      value: items,
-                                      child: Text(
-                                        items,
-                                        style: AppStyle.DEFAULT_16_BOLD,
-                                      ),
-                                    ),
-                                  )
-                                  .toList());
-                    } else
-                      return SizedBox();
-                  } else {
-                    return SizedBox.shrink();
-                  }
-                },
-              )
-            : BlocBuilder<OptionBloc, OptionState>(
-                builder: (context, state) {
-                  if (state is SuccessOptionState) {
-                    if (state.dataLocation.isNotEmpty) {
-                      if (state.dataLocation.isNotEmpty) {
-                        locationInitFinal = state.dataLocation.first[1];
-                      }
-                      return DropdownButton2(
-                        value: valueLocation ?? state.dataLocation[0][1],
-                        icon: const Icon(Icons.arrow_drop_down_outlined),
-                        underline: SizedBox.shrink(),
-                        dropdownMaxHeight: 250,
-                        onChanged: (String? value) {
-                          valueLocation = value ?? '';
-                          setState(() {});
-                        },
-                        items: state.dataLocation.isNotEmpty
-                            ? state.dataLocation
-                                .map((items) => DropdownMenuItem<String>(
-                                      onTap: () {
-                                        _bloc.location = items.first;
-                                        _bloc.selectReport.add('');
-                                        if (step == 2) {
-                                          ReportProductBloc.of(context).add(
-                                            InitReportProductEvent(
-                                              location: _bloc.location,
-                                              time: timeFilter,
-                                            ),
-                                          );
-                                        } else if (step == 3) {
-                                          ReportEmployeeBloc.of(context).add(
-                                            InitReportEmployeeEvent(
-                                              time: timeFilter,
-                                              diemBan: _bloc.location == ''
-                                                  ? null
-                                                  : int.parse(
-                                                      _bloc.location,
-                                                    ),
-                                            ),
-                                          );
-                                        } else if (step == 4) {
-                                          CarReportBloc.of(context).add(
-                                            GetDashboardCar(
-                                              time: timeFilter.toString(),
-                                              diemBan: _bloc.location,
-                                            ),
-                                          );
-                                        } else if (step == 5) {
-                                          QuySoReportBloc.of(context).add(
-                                            GetDashboardQuySo(
-                                              nam: _bloc.ntcFilter?.nam ?? '',
-                                              kyTaiChinh:
-                                                  _bloc.kyTaiChinh?.id ?? '',
-                                              location: _bloc.location,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      value: items[1],
-                                      child: Text(
-                                        items[1],
-                                        style: AppStyle.DEFAULT_16_BOLD,
-                                      ),
-                                    ))
-                                .toList()
-                            : items
-                                .map(
-                                  (items) => DropdownMenuItem<String>(
-                                    value: items,
-                                    child: Text(
-                                      items,
-                                      style: AppStyle.DEFAULT_16_BOLD,
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                      );
-                    } else
-                      return SizedBox();
-                  } else {
-                    return SizedBox.shrink();
-                  }
-                },
-              ),
-        (timeFilter == 6 && _range != '')
+                                ),
+                              );
+                            } else if (step == 4) {
+                              CarReportBloc.of(context).add(
+                                GetDashboardCar(
+                                  time: _bloc.time,
+                                  diemBan: _bloc.location,
+                                ),
+                              );
+                            } else if (step == 5) {
+                              QuySoReportBloc.of(context).add(
+                                GetDashboardQuySo(
+                                  nam: _bloc.ntcFilter?.nam ?? '',
+                                  kyTaiChinh: _bloc.kyTaiChinh?.id ?? '',
+                                  location: _bloc.location,
+                                ),
+                              );
+                            }
+                          },
+                          value: items[1],
+                          child: FittedBox(
+                            child: Text(
+                              items[1],
+                              style: AppStyle.DEFAULT_14_BOLD,
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList());
+            } else
+              return SizedBox();
+          } else {
+            return SizedBox.shrink();
+          }
+        }),
+        (_bloc.time == 6 && _range != '')
             ? Padding(padding: EdgeInsets.only(right: 10), child: Text(_range))
             : SizedBox.shrink(),
       ],
@@ -661,7 +568,6 @@ class _ReportScreenState extends State<ReportScreen> {
                             onTap: () {
                               _bloc.gt = e['gt'];
                               _bloc.selectReport.add(_bloc.gt ?? '');
-                              _bloc.time = timeFilter;
                               _showBodyReportOne();
                             },
                             child: Container(
@@ -701,6 +607,11 @@ class _ReportScreenState extends State<ReportScreen> {
                 ),
               );
             });
+      } else if (state is ErrorReportGeneralState) {
+        return Text(
+          state.msg,
+          style: AppStyle.DEFAULT_16_T,
+        );
       } else {
         return SizedBox.shrink();
       }
@@ -728,7 +639,6 @@ class _ReportScreenState extends State<ReportScreen> {
                               GestureDetector(
                                 onTap: () {
                                   _bloc.cl = state.list[index].id;
-                                  _bloc.time = timeFilter;
                                   _bloc.timeFrom = timeFrom;
                                   _bloc.timeTo = timeTo;
                                   _bloc.selectReport.add('$index');
@@ -773,9 +683,13 @@ class _ReportScreenState extends State<ReportScreen> {
                     : noData(),
               );
             });
-      } else {
+      } else if (state is ErrorReportProductState) {
+        return Text(
+          state.msg,
+          style: AppStyle.DEFAULT_16_T,
+        );
+      } else
         return SizedBox.shrink();
-      }
     });
   }
 
@@ -802,8 +716,6 @@ class _ReportScreenState extends State<ReportScreen> {
                                   _bloc.selectReport.add('$index');
                                   _bloc.id =
                                       int.parse(state.data[index].id ?? '0');
-                                  page = BASE_URL.PAGE_DEFAULT;
-                                  _bloc.time = timeFilter;
                                   _showBodyReportOne();
                                 },
                                 child: Container(
@@ -829,7 +741,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                         ),
                                       ),
                                       Text(
-                                        "${state.data[index].total_contract ?? "0"} ${getT(KeyT.contract)}",
+                                        '${state.data[index].total_contract ?? '0'} ${getT(KeyT.contract)}',
                                         style: AppStyle.DEFAULT_16,
                                       )
                                     ],
@@ -857,6 +769,11 @@ class _ReportScreenState extends State<ReportScreen> {
                     : noData(),
               );
             });
+      } else if (state is ErrorReportEmployeeState) {
+        return Text(
+          state.msg,
+          style: AppStyle.DEFAULT_16_T,
+        );
       } else {
         return SizedBox.shrink();
       }
@@ -888,7 +805,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       ? ReportProductBloc.of(context).add(
                           InitReportProductEvent(
                             location: _bloc.location,
-                            time: timeFilter,
+                            time: _bloc.time,
                             timeFrom: timeFrom,
                             timeTo: timeTo,
                           ),
@@ -896,7 +813,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       : step == 3
                           ? ReportEmployeeBloc.of(context).add(
                               InitReportEmployeeEvent(
-                                time: timeFilter,
+                                time: _bloc.time,
                                 timeFrom: timeFrom,
                                 timeTo: timeTo,
                                 diemBan: int.parse(_bloc.location),
@@ -904,7 +821,7 @@ class _ReportScreenState extends State<ReportScreen> {
                             )
                           : CarReportBloc.of(context).add(
                               GetDashboardCar(
-                                time: timeFilter.toString(),
+                                time: _bloc.time,
                                 timeFrom: timeFrom,
                                 timeTo: timeTo,
                                 diemBan: _bloc.location,
@@ -988,8 +905,6 @@ class _ReportScreenState extends State<ReportScreen> {
                                     .responseCarDashboard?.status?[index].id
                                     .toString();
                                 _bloc.selectReport.add(id ?? '');
-
-                                _bloc.time = timeFilter;
                                 _bloc.timeTo = timeTo;
                                 _bloc.timeFrom = timeFrom;
                                 _showBodyReportFour();
@@ -1041,6 +956,11 @@ class _ReportScreenState extends State<ReportScreen> {
                     );
                   })
               : noData();
+        } else if (state is ErrorGetListCarReportState) {
+          return Text(
+            state.msg,
+            style: AppStyle.DEFAULT_16_T,
+          );
         } else {
           return SizedBox.shrink();
         }
@@ -1107,6 +1027,11 @@ class _ReportScreenState extends State<ReportScreen> {
               ),
             ),
           ],
+        );
+      } else if (state is ErrorGetListQuySoReportState) {
+        return Text(
+          state.msg,
+          style: AppStyle.DEFAULT_16_T,
         );
       }
       return SizedBox.shrink();

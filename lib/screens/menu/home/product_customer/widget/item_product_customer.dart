@@ -27,15 +27,28 @@ class ItemProductCustomer extends StatelessWidget {
               styleText: AppStyle.DEFAULT_18.copyWith(
                   color: COLORS.ff006CB1, fontWeight: FontWeight.w700),
             ),
-            itemTextIcon(
-              text: productModule.customer?.name ?? getT(KeyT.not_yet),
-              icon: ICONS.IC_USER2_SVG,
+            GestureDetector(
+              onTap: () {
+                if (productModule.customer?.id != null &&
+                    productModule.customer?.id != '')
+                  AppNavigator.navigateDetailCustomer(
+                      productModule.customer?.id ?? '',
+                      productModule.customer?.name ?? '');
+              },
+              child: itemTextIcon(
+                text: productModule.customer?.name ?? getT(KeyT.not_yet),
+                icon: ICONS.IC_USER2_SVG,
+                styleText: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                  color: COLORS.TEXT_BLUE_BOLD,
+                  fontSize: 14,
+                ),
+              ),
             ),
-            itemTextIcon(
-              text: productModule.trangThai ?? getT(KeyT.not_yet),
-              icon: ICONS.IC_DANG_XU_LY_SVG,
-              colorIcon: COLORS.GREY,
-            ),
+            // itemTextIcon(
+            //   text: productModule.trangThai ?? getT(KeyT.not_yet),
+            //   icon: ICONS.IC_PHONE_CUSTOMER_SVG,//todo thêm phone
+            //   colorIcon: COLORS.GREY,
+            // ),
             itemTextIcon(
               text: productModule.loai ?? getT(KeyT.not_yet),
               icon: Icon(

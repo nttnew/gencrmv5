@@ -26,7 +26,11 @@ class ReportEmployeeBloc
       ReportEmployeeEvent event) async* {
     if (event is InitReportEmployeeEvent) {
       yield* _getReportContact(
-          event.time, event.timeFrom, event.timeTo, event.diemBan);
+        event.time,
+        event.timeFrom,
+        event.timeTo,
+        event.diemBan,
+      );
     }
   }
 
@@ -47,8 +51,7 @@ class ReportEmployeeBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorReportEmployeeState(
-          getT(KeyT.an_error_occurred));
+      yield ErrorReportEmployeeState(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();

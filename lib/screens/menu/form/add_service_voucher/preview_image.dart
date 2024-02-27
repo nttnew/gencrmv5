@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/models/model_generator/file_response.dart';
 import 'package:photo_view/photo_view.dart';
-import '../../src/color.dart';
-import '../../widgets/appbar_base.dart';
-import '../../widgets/item_download.dart';
-import '../../l10n/key_text.dart';
+import '../../../../l10n/key_text.dart';
+import '../../../../src/color.dart';
+import '../../../../widgets/appbar_base.dart';
+import '../../../../widgets/item_download.dart';
 
 class PreviewImage extends StatefulWidget {
   const PreviewImage({
@@ -25,8 +25,7 @@ class _PreviewImageState extends State<PreviewImage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: COLORS.BLACK,
-      appBar:
-          AppbarBaseNormal(getT(KeyT.preview_image)),
+      appBar: AppbarBaseNormal(getT(KeyT.preview_image)),
       body: Center(
         child: Stack(
           children: [
@@ -39,11 +38,12 @@ class _PreviewImageState extends State<PreviewImage> {
             ),
             if (widget.isNetwork)
               Positioned(
-                  right: 26,
-                  bottom: 50,
-                  child: ItemDownload(
-                    file: FileDataResponse(link: widget.file.path),
-                  )),
+                right: 26,
+                bottom: 50,
+                child: ItemDownload(
+                  file: FileDataResponse(link: widget.file.path),
+                ),
+              ),
           ],
         ),
       ),

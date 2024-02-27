@@ -24,7 +24,7 @@ class CarReportBloc extends Bloc<CarReportEvent, CarReportState> {
       yield* _getCarReport(
         timeTo: event.timeTo,
         timeFrom: event.timeFrom,
-        time: event.time,
+        time: event.time.toString(),
         diemBan: event.diemBan,
       );
     }

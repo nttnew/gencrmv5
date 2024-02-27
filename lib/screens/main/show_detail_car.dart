@@ -146,10 +146,24 @@ class _DetailCarState extends State<DetailCar> {
                                     ),
                                   ],
                                 ),
-                                itemTextIcon(
-                                  text: _blocLogin.xeDichVu?.tenKhachHang ?? '',
-                                  icon: ICONS.IC_USER2_SVG,
-                                  colorIcon: COLORS.GREY,
+                                GestureDetector(
+                                  onTap: () {
+                                    AppNavigator.navigateDetailCustomer(
+                                        _blocLogin.xeDichVu?.khachHangId ?? '',
+                                        _blocLogin.xeDichVu?.tenKhachHang ??
+                                            '');
+                                  },
+                                  child: itemTextIcon(
+                                    text:
+                                        _blocLogin.xeDichVu?.tenKhachHang ?? '',
+                                    icon: ICONS.IC_USER2_SVG,
+                                    colorIcon: COLORS.GREY,
+                                    styleText:
+                                        AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                                      color: COLORS.TEXT_BLUE_BOLD,
+                                      fontSize: 14,
+                                    ),
+                                  ),
                                 ),
                                 itemTextIcon(
                                   onTap: () {

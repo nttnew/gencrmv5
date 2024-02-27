@@ -8,8 +8,8 @@ abstract class ReportEvent extends Equatable {
 }
 
 class InitReportEvent extends ReportEvent {
-  const InitReportEvent();
-
+  const InitReportEvent(this.time);
+  final int? time;
   @override
   List<Object> get props => [];
 }

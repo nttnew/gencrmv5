@@ -29,9 +29,11 @@ class SelectMulti extends StatefulWidget {
 
 class _SelectMultiState extends State<SelectMulti> {
   late final List<ModelDataAdd> _dropdown;
+  List<String>? init = [];
 
   @override
   void initState() {
+    init = widget.initValue;
     _dropdown = [];
     for (int i = 0; i < widget.dropdownItemList.length; i++) {
       _dropdown.add(ModelDataAdd(
@@ -75,15 +77,29 @@ class _SelectMultiState extends State<SelectMulti> {
             items: _dropdown
                 .map((e) => MultiSelectItem(e, e.label ?? ''))
                 .toList(),
+            cancelText: Text(
+              getT(KeyT.cancel),
+              style: AppStyle.DEFAULT_16_BOLD.copyWith(
+                color: COLORS.BLUE,
+              ),
+            ),
+            confirmText: Text(
+              getT(KeyT.select),
+              style: AppStyle.DEFAULT_16_BOLD.copyWith(
+                color: COLORS.BLUE,
+              ),
+            ),
             onConfirm: (values) {
               if (widget.maxLength != '' &&
                   values.length > int.parse(widget.maxLength)) {
                 values.removeRange(
                     int.parse(widget.maxLength) - 1, values.length - 1);
                 ShowDialogCustom.showDialogBase(
-                  title:getT(KeyT.notification),
+                  title: getT(KeyT.notification),
                   content:
-                      "${getT(KeyT.you_can_only_choose)} ${widget.maxLength} ${getT(KeyT.value)}",
+                      "${getT(KeyT.you_can_only_choose)} ${getT(KeyT.max)} "
+                      "${widget.maxLength} ${getT(KeyT.value)}"
+                      "\n(${getT(KeyT.press_once_more_to_cancel_selection)})",
                 );
               } else {
                 List<String> res = [];
@@ -91,13 +107,6 @@ class _SelectMultiState extends State<SelectMulti> {
                   res.add('${values[i].value}');
                 }
                 widget.onChange(res.join(","));
-              }
-            },
-            onSelectionChanged: (values) {
-              if (widget.maxLength != "" &&
-                  values.length > int.parse(widget.maxLength)) {
-                values.removeRange(
-                    int.parse(widget.maxLength) - 1, values.length - 1);
               }
             },
             searchable: true,
@@ -119,7 +128,7 @@ class _SelectMultiState extends State<SelectMulti> {
               size: 25,
             ),
             initialValue: _dropdown.where((element) {
-              for (final value in widget.initValue ?? []) {
+              for (final value in init ?? []) {
                 if ('$value' == '${element.value}') {
                   return true;
                 }

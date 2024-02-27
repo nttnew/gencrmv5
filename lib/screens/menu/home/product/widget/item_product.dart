@@ -84,7 +84,9 @@ class _ItemProductModuleState extends State<ItemProductModule> {
                         style: AppStyle.DEFAULT_18_BOLD,
                       ),
                       TextSpan(
-                        text: ' (${widget.productModule.maSanPham})',
+                        text: widget.productModule.maSanPham != null
+                            ? ' (${widget.productModule.maSanPham})'
+                            : '',
                         style: AppStyle.DEFAULT_16_BOLD.copyWith(
                           color: Colors.grey,
                         ),

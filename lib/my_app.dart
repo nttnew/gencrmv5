@@ -7,7 +7,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/screens/call/init_app_call.dart';
-import 'package:gen_crm/screens/add_service_voucher/add_service_voucher_step2_screen.dart';
+import 'package:gen_crm/screens/menu/form/add_service_voucher/add_service_voucher_step2_screen.dart';
 import 'package:gen_crm/screens/menu/form/form_edit.dart';
 import 'package:gen_crm/screens/menu/form/form_sign.dart';
 import 'package:gen_crm/screens/menu/form/product_list/list_product.dart';

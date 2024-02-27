@@ -209,12 +209,16 @@ class _SelectLocationBottomSheetState extends State<SelectLocationBottomSheet> {
             getT(KeyT.PROVINCE_CITY),
           ),
           onSelect: (dataS) {
-            if (dataS != tinhThanh) {
+            if (dataS != tinhThanh && dataS != null) {
               tinhThanh = dataS;
               quanHuyen = empty;
               phuongXa = empty;
-              setState(() {});
+            } else {
+              tinhThanh = empty;
+              quanHuyen = empty;
+              phuongXa = empty;
             }
+            setState(() {});
           },
           validate: tinhThanh?[NAME],
         ),
@@ -228,13 +232,16 @@ class _SelectLocationBottomSheetState extends State<SelectLocationBottomSheet> {
           code: tinhThanh?[CODE],
           isHide: tinhThanh == null || tinhThanh?[NAME] == '',
           onSelect: (dataS) {
-            if (quanHuyen != dataS) {
+            if (quanHuyen != dataS && dataS != null) {
               quanHuyen = dataS;
               phuongXa = empty;
-              setState(() {});
+            } else {
+              quanHuyen = empty;
+              phuongXa = empty;
             }
+            setState(() {});
           },
-          validate: quanHuyen?[NAME],
+          validate: '',
         ),
         AppValue.vSpaceSmall,
         SelectTypeLocation(
@@ -247,12 +254,14 @@ class _SelectLocationBottomSheetState extends State<SelectLocationBottomSheet> {
           ),
           isHide: quanHuyen == null || quanHuyen?[NAME] == '',
           onSelect: (dataS) {
-            if (phuongXa != dataS) {
+            if (dataS != null) {
               phuongXa = dataS;
-              setState(() {});
+            } else {
+              phuongXa = empty;
             }
+            setState(() {});
           },
-          validate: phuongXa?[NAME],
+          validate: '',
         ),
         AppValue.vSpaceMedium,
         AppValue.vSpaceMedium,
@@ -261,14 +270,8 @@ class _SelectLocationBottomSheetState extends State<SelectLocationBottomSheet> {
             if (tinhThanh?[NAME] == '') {
               tinhThanh = null;
             }
-            if (quanHuyen?[NAME] == '') {
-              quanHuyen = null;
-            }
-            if (phuongXa?[NAME] == '') {
-              phuongXa = null;
-            }
             setState(() {});
-            if (phuongXa != null && quanHuyen != null && tinhThanh != null) {
+            if (tinhThanh != null) {
               Navigator.of(context).pop(
                 LocationModel(
                   tinhThanh: tinhThanh?[NAME],
@@ -311,7 +314,7 @@ class SelectTypeLocation extends StatefulWidget {
   final bool isHide;
   final bool isQuanHuyen;
   final String? validate;
-  final Function(Map<String, dynamic>) onSelect;
+  final Function(Map<String, dynamic>?) onSelect;
 
   @override
   State<SelectTypeLocation> createState() => _SelectTypeLocationState();
@@ -404,11 +407,9 @@ class _SelectTypeLocationState extends State<SelectTypeLocation> {
                     text: widget.text,
                   ),
                 );
-                if (result != null) {
-                  data = result;
-                  widget.onSelect(result);
-                  setState(() {});
-                }
+                data = result;
+                widget.onSelect(result);
+                setState(() {});
               }
             },
             child: Container(
@@ -507,9 +508,38 @@ class _ListLocationState extends State<ListLocation> {
         children: [
           Padding(
             padding: const EdgeInsets.all(16),
-            child: Text(
-              widget.title,
-              style: AppStyle.DEFAULT_18_BOLD,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    widget.title,
+                    style: AppStyle.DEFAULT_18_BOLD,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: COLORS.PRIMARY_COLOR,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(
+                          4,
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      getT(KeyT.unselect),
+                      style: AppStyle.DEFAULT_14,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Padding(

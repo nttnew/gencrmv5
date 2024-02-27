@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/add_service_voucher/add_service_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
-import 'package:gen_crm/screens/add_service_voucher/select_car.dart';
+import 'package:gen_crm/screens/menu/form/add_service_voucher/select_car.dart';
 import 'package:gen_crm/src/models/request/voucher_service_request.dart';
 import 'package:gen_crm/widgets/pick_file_image.dart';
-import '../../bloc/contract/attack_bloc.dart';
-import '../../bloc/contract/total_bloc.dart';
-import '../../models/model_data_add.dart';
-import '../../l10n/key_text.dart';
+import '../../../../bloc/contract/attack_bloc.dart';
+import '../../../../bloc/contract/total_bloc.dart';
+import '../../../../l10n/key_text.dart';
+import '../../../../models/model_data_add.dart';
+import '../../../../src/app_const.dart';
+import '../../../../src/models/model_generator/add_customer.dart';
+import '../../../../src/src_index.dart';
+import '../../../../widgets/appbar_base.dart';
+import '../../../../widgets/field_input_select_multi.dart';
+import '../../../../widgets/multiple_widget.dart';
+import '../../../../widgets/widget_field_input_percent.dart';
+import '../../../../widgets/widget_input_date.dart';
+import '../../../../widgets/widget_text.dart';
+import '../../home/customer/widget/input_dropDown.dart';
 import 'package:get/get.dart';
-import '../../src/app_const.dart';
-import '../../widgets/widget_input_date.dart';
-import '../../src/models/model_generator/add_customer.dart';
-import '../../src/src_index.dart';
-import '../../widgets/appbar_base.dart';
-import '../../widgets/field_input_select_multi.dart';
-import '../../widgets/multiple_widget.dart';
-import '../../widgets/widget_field_input_percent.dart';
-import '../../widgets/widget_text.dart';
-import '../menu/form/product_list/product_contract.dart';
-import '../menu/form/widget/location_select.dart';
-import '../menu/home/customer/widget/input_dropDown.dart';
+import '../product_list/product_contract.dart';
+import '../widget/location_select.dart';
 
 class AddServiceVoucherStepTwoScreen extends StatefulWidget {
   const AddServiceVoucherStepTwoScreen({Key? key}) : super(key: key);
@@ -478,8 +478,10 @@ class _AddServiceVoucherStepTwoScreenState
       }
       VoucherServiceRequest voucherServiceRequest =
           VoucherServiceRequest.fromJson(data);
-      _bloc.add(SaveVoucherServiceEvent(
-          voucherServiceRequest, AttackBloc.of(context).listFile));
+      _bloc.add(
+        SaveVoucherServiceEvent(
+            voucherServiceRequest, AttackBloc.of(context).listFile),
+      );
     }
   }
 }

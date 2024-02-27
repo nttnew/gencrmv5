@@ -50,6 +50,7 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
   Stream<ReportState> mapEventToState(ReportEvent event) async* {
     if (event is InitReportEvent) {
       getNTCFilter();
+      time = event.time;
       yield* _getReportGeneral();
     }
   }
@@ -187,10 +188,13 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
         yield SuccessReportWorkState(
           response.data!.thoi_gian!,
           response.data!.diem_ban!,
-          response.data!.thoi_gian_mac_dinh!,
+          time ?? response.data!.thoi_gian_mac_dinh!,
         );
         ReportGeneralBloc.of(Get.context!).add(
-          SelectReportGeneralEvent(1, null, response.data!.thoi_gian_mac_dinh!),
+          SelectReportGeneralEvent(
+            null,
+            time ?? response.data!.thoi_gian_mac_dinh!,
+          ),
         );
       } else if (isFail(response.code)) {
         loginSessionExpired();

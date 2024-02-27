@@ -66,6 +66,13 @@ class _MainDrawerState extends State<MainDrawer> {
       ..._elements,
       ...[
         {
+          'id': 'report',
+          'title': getT(KeyT.report),
+          'image': ICONS.IC_REPORT_PNG,
+          'group': '1',
+          'isAdmin': false
+        },
+        {
           'id': 'setting',
           'title': getT(KeyT.setting),
           'image': ICONS.IC_SETTING_PNG,

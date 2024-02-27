@@ -260,4 +260,7 @@ class KeyT {
   static String cap_nhat_tien_do = 'cap_nhat_tien_do';
   static String chua_phan_cong = 'chua_phan_cong';
   static String chua_bat_dau = 'chua_bat_dau';
+  static String max = 'max';
+  static String press_once_more_to_cancel_selection = 'press_once_more_to_cancel_selection';
+  static String unselect = 'unselect';
 }

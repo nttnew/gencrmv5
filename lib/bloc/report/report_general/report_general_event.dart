@@ -19,11 +19,10 @@ class InitReportGeneralEvent extends ReportGeneralEvent {
 }
 
 class SelectReportGeneralEvent extends ReportGeneralEvent {
-  final int? page;
   final String? location;
   final int? time;
 
-  const SelectReportGeneralEvent(this.page, this.location, this.time);
+  const SelectReportGeneralEvent(this.location, this.time);
 
   @override
   List<Object> get props => [];

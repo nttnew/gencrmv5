@@ -34,7 +34,7 @@ class SelectReportProductEvent extends ReportProductEvent {
   final String? timeTo;
 
   const SelectReportProductEvent(
-      {this.timeFrom, this.timeTo, this.cl, this.location, this.time});
+      {this.timeFrom, this.timeTo, this.cl, this.location, this.time,});
 
   @override
   List<Object> get props => [];

@@ -22,12 +22,17 @@ class ReportProductBloc extends Bloc<ReportProductEvent, ReportProductState> {
   Stream<ReportProductState> mapEventToState(ReportProductEvent event) async* {
     if (event is InitReportProductEvent) {
       yield* _getReportGeneral(
-          event.time!, event.location!, event.cl, event.timeFrom, event.timeTo);
+        event.time,
+        event.location!,
+        event.cl,
+        event.timeFrom,
+        event.timeTo,
+      );
     }
   }
 
   Stream<ReportProductState> _getReportGeneral(
-    int time,
+    int? time,
     String location,
     int? cl,
     String? timeFrom,
@@ -37,7 +42,7 @@ class ReportProductBloc extends Bloc<ReportProductEvent, ReportProductState> {
     try {
       yield LoadingReportProductState();
       final response = await userRepository.reportProduct(
-        time,
+        time ?? 0,
         location,
         cl,
         timeFrom,

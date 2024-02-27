@@ -15,7 +15,7 @@ import '../../../src/models/model_generator/file_response.dart';
 import '../../../widgets/appbar_base.dart';
 import '../../../widgets/cupertino_loading.dart';
 import '../../../widgets/item_file.dart';
-import '../../add_service_voucher/preview_image.dart';
+import '../form/add_service_voucher/preview_image.dart';
 
 class Attachment extends StatefulWidget {
   Attachment({

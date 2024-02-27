@@ -13,7 +13,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../../../../src/src_index.dart';
 import '../bloc/contract/attack_bloc.dart';
 import '../../l10n/key_text.dart';
-import '../screens/add_service_voucher/preview_image.dart';
+import '../screens/menu/form/add_service_voucher/preview_image.dart';
 import '../src/app_const.dart';
 
 Widget FileDinhKemUiBase(

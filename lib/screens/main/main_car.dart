@@ -101,7 +101,7 @@ class _MainCarState extends State<MainCar> {
                               },
                               child: Container(
                                 margin: EdgeInsets.only(
-                                  right: 16,
+                                  left: 16,
                                 ),
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 12,
@@ -156,7 +156,8 @@ class _MainCarState extends State<MainCar> {
                                   right: 16,
                                 ),
                                 decoration: BoxDecoration(
-                                  border: _blocLogin.valueTrangThai == itemData
+                                  border: _blocLogin.valueTrangThai?.id ==
+                                          itemData.id
                                       ? Border(
                                           bottom: BorderSide(
                                             color: COLORS.RED,
@@ -291,10 +292,20 @@ class ItemCar extends StatelessWidget {
                 ),
               ],
             ),
-            itemTextIcon(
-              text: data.tenKhachHang ?? '',
-              icon: ICONS.IC_USER2_SVG,
-              colorIcon: COLORS.GREY,
+            GestureDetector(
+              onTap: () {
+                AppNavigator.navigateDetailCustomer(
+                    data.khachHangId ?? '', data.tenKhachHang ?? '');
+              },
+              child: itemTextIcon(
+                text: data.tenKhachHang ?? '',
+                icon: ICONS.IC_USER2_SVG,
+                colorIcon: COLORS.GREY,
+                styleText: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                  color: COLORS.TEXT_BLUE_BOLD,
+                  fontSize: 14,
+                ),
+              ),
             ),
             itemTextIcon(
               onTap: () {
