@@ -193,6 +193,7 @@ class BASE_URL {
   static const POST_DETAIL_XE_DICH_VU = 'modules/genmobile2/dashboard/getChitietXedichvu';
   static const POST_UPDATE_TTHD = 'modules/genmobile2/dashboard/updateTTHD';
   static const POST_UPDATE_TDNTH = 'modules/genmobile2/dashboard/updateTDNTH';
+  static const QUICK_CREATE_SEARCH = 'modules/genmobile2/quickCreate/search';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';

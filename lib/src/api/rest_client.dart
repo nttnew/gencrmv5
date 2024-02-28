@@ -54,6 +54,7 @@ import '../models/model_generator/policy.dart';
 import '../models/model_generator/product_customer_save_response.dart';
 import '../models/model_generator/product_response.dart';
 import '../models/model_generator/product_service_pack_response.dart';
+import '../models/model_generator/quick_create_response.dart';
 import '../models/model_generator/report_contact.dart';
 import '../models/model_generator/report_employee.dart';
 import '../models/model_generator/report_general.dart';
@@ -888,5 +889,12 @@ abstract class RestClient {
   Future<dynamic> postUpdateTTHD(
     @Field('hopdongid') String id,
     @Field('tthd') String idTT,
+  );
+
+  @GET(BASE_URL.QUICK_CREATE_SEARCH)
+  Future<QuickCreateResponse> getSearchQuickCreate(
+    @Query('page') String page,
+    @Query('bienso') String? bienSo,
+    @Query('dienthoai') String? dienThoai,
   );
 }

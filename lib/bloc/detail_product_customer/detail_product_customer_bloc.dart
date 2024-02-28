@@ -77,6 +77,7 @@ class DetailProductCustomerBloc
       }
     } catch (e) {
       if (isInit) LoadingApi().popLoading();
+      return getT(KeyT.an_error_occurred);
     }
   }
 
@@ -101,6 +102,7 @@ class DetailProductCustomerBloc
       }
     } catch (e) {
       if (isInit) LoadingApi().popLoading();
+      return getT(KeyT.an_error_occurred);
     }
   }
 
@@ -125,6 +127,7 @@ class DetailProductCustomerBloc
       }
     } catch (e) {
       if (isInit) LoadingApi().popLoading();
+      return getT(KeyT.an_error_occurred);
     }
   }
 
@@ -149,11 +152,13 @@ class DetailProductCustomerBloc
       }
     } catch (e) {
       if (isInit) LoadingApi().popLoading();
+      return getT(KeyT.an_error_occurred);
     }
   }
 
-  Stream<DetailProductCustomerState> _deleteProduct(
-      {required String id}) async* {
+  Stream<DetailProductCustomerState> _deleteProduct({
+    required String id,
+  }) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingDeleteProductState();
@@ -171,7 +176,6 @@ class DetailProductCustomerBloc
     } catch (e) {
       LoadingApi().popLoading();
       yield ErrorDeleteProductState(getT(KeyT.an_error_occurred));
-      throw e;
     }
     LoadingApi().popLoading();
   }

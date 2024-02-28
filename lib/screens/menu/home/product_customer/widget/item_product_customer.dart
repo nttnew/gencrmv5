@@ -6,9 +6,11 @@ import '../../../../../src/src_index.dart';
 import '../../../../../widgets/dialog_call.dart';
 
 class ItemProductCustomer extends StatelessWidget {
-  const ItemProductCustomer(
-      {Key? key, required this.productModule, required this.onTap})
-      : super(key: key);
+  const ItemProductCustomer({
+    Key? key,
+    required this.productModule,
+    required this.onTap,
+  }) : super(key: key);
   final ProductCustomerResponse productModule;
   final Function() onTap;
 

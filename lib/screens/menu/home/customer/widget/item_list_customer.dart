@@ -10,11 +10,12 @@ import '../../../../../widgets/dialog_call.dart';
 import '../../../../../widgets/widget_text.dart';
 
 class ItemCustomer extends StatelessWidget {
-  const ItemCustomer(
-      {Key? key, required this.data, required this.onTap, required this.title})
-      : super(key: key);
+  const ItemCustomer({
+    Key? key,
+    required this.data,
+    required this.onTap,
+  }) : super(key: key);
   final CustomerData data;
-  final String title;
   final Function() onTap;
 
   @override
@@ -32,14 +33,14 @@ class ItemCustomer extends StatelessWidget {
                   child: data.is_company == true
                       ? SvgPicture.asset(
                           ICONS.IC_BUILD_SVG,
-                          color: data.tong_so_hop_dong! > 0
+                          color: (data.tong_so_hop_dong ?? 0) > 0
                               ? COLORS.ORANGE_IMAGE
                               : COLORS.GREY,
                           fit: BoxFit.contain,
                         )
                       : SvgPicture.asset(
                           ICONS.IC_AVATAR_SVG,
-                          color: data.tong_so_hop_dong! > 0
+                          color: (data.tong_so_hop_dong ?? 0) > 0
                               ? COLORS.ORANGE_IMAGE
                               : COLORS.GREY,
                           fit: BoxFit.contain,
@@ -66,10 +67,13 @@ class ItemCustomer extends StatelessWidget {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                      color: data.color == null
-                          ? COLORS.PRIMARY_COLOR
-                          : HexColor(data.color!),
-                      borderRadius: BorderRadius.circular(99)),
+                    color: data.color == null
+                        ? COLORS.PRIMARY_COLOR
+                        : HexColor(data.color ?? '#006CB1'),
+                    borderRadius: BorderRadius.circular(
+                      99,
+                    ),
+                  ),
                   width: AppValue.widths * 0.1,
                   height: AppValue.heights * 0.02,
                 )

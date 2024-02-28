@@ -159,6 +159,7 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       }
     } catch (e) {
       if (isInit) LoadingApi().popLoading();
+      return getT(KeyT.an_error_occurred);
     }
   }
 
@@ -182,6 +183,7 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       }
     } catch (e) {
       if (isInit) LoadingApi().popLoading();
+      return getT(KeyT.an_error_occurred);
     }
   }
 

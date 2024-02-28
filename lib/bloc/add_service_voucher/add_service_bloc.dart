@@ -19,6 +19,7 @@ import '../../src/models/model_generator/add_customer.dart';
 import '../../src/models/model_generator/customer.dart';
 import '../../src/models/model_generator/list_car_response.dart';
 import '../../storages/share_local.dart';
+import '../../widgets/listview_loadmore_base.dart';
 
 part 'add_service_event.dart';
 part 'add_service_state.dart';
@@ -67,6 +68,8 @@ class ServiceVoucherBloc
   static final String THEM_MOI_XE = getT(KeyT.add_new_car);
   final List<ProductModel> listProduct = [];
   double total = 0;
+  LoadMoreController loadMoreControllerPhone = LoadMoreController();
+  LoadMoreController loadMoreControllerBienSo = LoadMoreController();
 
   void addProduct(ProductModel data) {
     bool check = false;
@@ -444,13 +447,40 @@ class ServiceVoucherBloc
     LoadingApi().popLoading();
   }
 
+  Future<dynamic> getSearchQuickCreate({
+    int page = BASE_URL.PAGE_DEFAULT,
+    bool isPhone = true,
+    String? bienSoSearch,
+    String? phoneSearch,
+  }) async {
+    LoadingApi().pushLoading();
+    dynamic resDynamic = '';
+    try {
+      final response = await userRepository.getSearchQuickCreate(
+        page.toString(),
+        bienSo: isPhone ? null : bienSoSearch,
+        phone: isPhone ? phoneSearch : null,
+      );
+      if (isSuccess(response.code)) {
+        resDynamic =
+            !isPhone ? response.data?.cars : response.data?.customers ?? [];
+      } else if (isFail(response.code)) {
+        loginSessionExpired();
+      } else
+        resDynamic = response.msg ?? '';
+    } catch (e) {
+      resDynamic = getT(KeyT.an_error_occurred);
+      LoadingApi().popLoading();
+      return resDynamic;
+    }
+    LoadingApi().popLoading();
+    return resDynamic;
+  }
+
   void disposeService() {
     listAddData.add([]);
     addData = [];
-    // listFile = [];
-    // listImage = [];
     loaiXe.add('');
-    // listFileAllStream.add(null);
     resetDataCarVerison();
     infoCar.add(InfoCar(
       soKilomet: '',

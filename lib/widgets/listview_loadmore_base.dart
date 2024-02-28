@@ -11,11 +11,13 @@ class ListViewLoadMoreBase extends StatefulWidget {
     required this.itemWidget,
     required this.controller,
     this.isInit = false,
+    this.nodataWidget,
   }) : super(key: key);
   final Future<dynamic> Function(int page, bool isInit) functionInit;
   final Function(int index, dynamic data) itemWidget;
   final LoadMoreController controller;
   final bool isInit;
+  final Widget? nodataWidget;
 
   @override
   State<ListViewLoadMoreBase> createState() => _ListViewLoadMoreBaseState();
@@ -65,7 +67,7 @@ class _ListViewLoadMoreBaseState extends State<ListViewLoadMoreBase>
               ),
             );
           } else {
-            return noData();
+            return widget.nodataWidget ?? noData();
           }
         });
   }
@@ -112,7 +114,7 @@ class LoadMoreController<T> {
       final result = await functionInit!(page, isInit);
       if (result.runtimeType == String) {
         ShowDialogCustom.showDialogBase(
-          title:getT(KeyT.notification),
+          title: getT(KeyT.notification),
           content: result,
         );
       } else {
@@ -123,7 +125,7 @@ class LoadMoreController<T> {
         }
         if (page == BASE_URL.PAGE_DEFAULT) {
           isLoadMore = true;
-          streamList.add(result);
+          streamList.add(result ?? []);
         } else {
           streamList.add([...streamList.value, ...result]);
         }

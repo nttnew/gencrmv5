@@ -238,9 +238,10 @@ class _CustomerScreenState extends State<CustomerScreen> {
           CustomerData snap = data;
           return ItemCustomer(
             data: snap,
-            onTap: () => AppNavigator.navigateDetailCustomer(snap.id ?? '',
-                '${snap.danh_xung ?? ''}' + ' ' + '${snap.name ?? ''}'),
-            title: title,
+            onTap: () => AppNavigator.navigateDetailCustomer(
+              snap.id ?? '',
+              '${snap.danh_xung ?? ''}' + ' ' + '${snap.name ?? ''}',
+            ),
           );
         },
         controller: _bloc.loadMoreController,

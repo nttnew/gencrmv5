@@ -1,11 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gen_crm/src/models/model_generator/customer.dart';
+import 'package:gen_crm/src/models/model_generator/list_product_customer_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
+import 'package:gen_crm/widgets/listview_loadmore_base.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:flutter/material.dart';
 import '../../../../bloc/add_service_voucher/add_service_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../widgets/appbar_base.dart';
+import '../../home/customer/widget/item_list_customer.dart';
+import '../../home/product_customer/widget/item_product_customer.dart';
 
 class AddServiceVoucherScreen extends StatefulWidget {
   const AddServiceVoucherScreen({
@@ -23,6 +28,22 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
     with AutomaticKeepAliveClientMixin {
   TextEditingController _txtPhone = TextEditingController();
   TextEditingController _txtBienSo = TextEditingController();
+  late final ServiceVoucherBloc _bloc;
+  bool isDataPhone = true;
+  bool isDataCar = true;
+
+  @override
+  void initState() {
+    _bloc = ServiceVoucherBloc.of(context);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _bloc.loadMoreControllerBienSo.dispose();
+    _bloc.loadMoreControllerPhone.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,21 +81,24 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
                   )
                 ],
               ),
-              AppValue.vSpaceMedium,
               Expanded(
                 child: TabBarView(
                   children: [
-                    _fieldInputCustomer(
+                    _tabBody(
                       getT(KeyT.phone),
                       TextInputType.number,
                       getT(KeyT.enter_phone),
                       _txtPhone,
+                      _bloc.loadMoreControllerPhone,
+                      true,
                     ),
-                    _fieldInputCustomer(
+                    _tabBody(
                       getT(KeyT.license_plates),
                       TextInputType.text,
                       getT(KeyT.enter_license_plates),
                       _txtBienSo,
+                      _bloc.loadMoreControllerBienSo,
+                      false,
                     ),
                   ],
                 ),
@@ -86,46 +110,49 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
     );
   }
 
+  _onTap(bool isPhone) {
+    if (_txtPhone.text.trim() == '' && isPhone ||
+        _txtBienSo.text.trim() == '' && !isPhone) {
+      ShowDialogCustom.showDialogBase(
+        title: getT(KeyT.notification),
+        content: getT(KeyT.you_must_enter_your_phone_number_or_license_plates),
+      );
+    } else {
+      if (isPhone) {
+        isDataPhone = false;
+        _bloc.loadMoreControllerPhone.reloadData();
+      } else {
+        isDataCar = false;
+        _bloc.loadMoreControllerBienSo.reloadData();
+      }
+    }
+  }
+
   _button(bool isPhone) => ButtonThaoTac(
-        marginHorizontal: 0,
         onTap: () {
           FocusManager.instance.primaryFocus?.unfocus();
-          if (_txtPhone.text.trim() == '' && isPhone ||
-              _txtBienSo.text.trim() == '' && !isPhone) {
-            ShowDialogCustom.showDialogBase(
-              title: getT(KeyT.notification),
-              content:
-                  getT(KeyT.you_must_enter_your_phone_number_or_license_plates),
-            );
-          } else {
-            ServiceVoucherBloc.of(context).add(
-              PostServiceVoucherEvent(
-                isPhone ? _txtPhone.text.trim() : '',
-                isPhone ? '' : _txtBienSo.text.trim(),
-              ),
-            );
-          }
+          _onTap(isPhone);
         },
         title: getT(KeyT.check),
       );
 
-  Widget _fieldInputCustomer(
+  Widget _tabBody(
     String label,
     TextInputType textInputType,
     String hintText,
     TextEditingController textEditingController,
+    LoadMoreController loadMoreController,
+    bool isPhone,
   ) {
-    bool isPhone = getT(KeyT.phone) == label;
-    return Container(
-      margin: EdgeInsets.only(
-        bottom: 16,
-        right: 16,
-        left: 16,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 8,
+          ),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RichText(
@@ -153,7 +180,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
                     bottom: 5,
                   ),
                   child: Container(
-                    child: TextField(
+                    child: TextFormField(
                       controller: textEditingController,
                       style: TextStyle(
                         fontSize: 14,
@@ -174,9 +201,66 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
               ),
             ],
           ),
-          _button(isPhone),
-        ],
-      ),
+        ),
+        Expanded(
+          child: ListViewLoadMoreBase(
+            nodataWidget: isPhone
+                ? isDataPhone
+                    ? SizedBox()
+                    : null
+                : isDataCar
+                    ? SizedBox()
+                    : null,
+            functionInit: (page, isInit) {
+              return _bloc.getSearchQuickCreate(
+                page: page,
+                isPhone: isPhone,
+                bienSoSearch: _txtBienSo.text,
+                phoneSearch: _txtPhone.text,
+              );
+            },
+            itemWidget: (int index, data) {
+              final CustomerData item = data as CustomerData;
+              return isPhone
+                  ? ItemCustomer(
+                      data: item,
+                      onTap: () {
+                        ServiceVoucherBloc.of(context).add(
+                          PostServiceVoucherEvent(
+                            item.phone?.val ?? '',
+                            '',
+                          ),
+                        );
+                      },
+                    )
+                  : ItemProductCustomer(
+                      productModule: ProductCustomerResponse(
+                        name: item.name,
+                        customer: Customer(
+                          name: item.customer?.name,
+                          id: item.customer?.id,
+                        ),
+                        phone: PhoneModel(
+                          val: item.phone?.val,
+                          action: item.phone?.action,
+                        ),
+                        loai: item.loai,
+                      ),
+                      onTap: () {
+                        ServiceVoucherBloc.of(context).add(
+                          PostServiceVoucherEvent(
+                            '',
+                            item.name ?? '',
+                          ),
+                        );
+                      },
+                    );
+            },
+            controller: loadMoreController,
+          ),
+        ),
+        _button(isPhone),
+      ],
     );
   }
 

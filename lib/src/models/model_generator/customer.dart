@@ -13,28 +13,33 @@ class CustomerData {
       cap_khach_hang,
       muc_do_tiem_nang,
       address,
-      avatar;
+      avatar,
+      loai;
   final bool? is_company;
   final int? rank_max_level, rank_value, total_comment, tong_so_hop_dong;
   final ActionData? phone, email;
+  final FilterData? customer;
 
   CustomerData(
-      this.id,
-      this.name,
-      this.phone,
-      this.rank_type,
-      this.danh_xung,
-      this.color,
-      this.cap_khach_hang,
-      this.muc_do_tiem_nang,
-      this.address,
-      this.avatar,
-      this.is_company,
-      this.rank_max_level,
-      this.rank_value,
-      this.total_comment,
-      this.email,
-      this.tong_so_hop_dong);
+    this.id,
+    this.name,
+    this.phone,
+    this.rank_type,
+    this.danh_xung,
+    this.color,
+    this.cap_khach_hang,
+    this.muc_do_tiem_nang,
+    this.address,
+    this.avatar,
+    this.loai,
+    this.is_company,
+    this.rank_max_level,
+    this.rank_value,
+    this.total_comment,
+    this.email,
+    this.tong_so_hop_dong,
+    this.customer,
+  );
 
   factory CustomerData.fromJson(Map<String, dynamic> json) =>
       _$CustomerDataFromJson(json);

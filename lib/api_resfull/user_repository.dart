@@ -57,6 +57,7 @@ import '../src/models/model_generator/post_info_car_response.dart';
 import '../src/models/model_generator/product_customer_edit_response.dart';
 import '../src/models/model_generator/product_customer_save_response.dart';
 import '../src/models/model_generator/product_service_pack_response.dart';
+import '../src/models/model_generator/quick_create_response.dart';
 import '../src/models/model_generator/report_contact.dart';
 import '../src/models/model_generator/report_general.dart';
 import '../src/models/model_generator/report_option.dart';
@@ -951,6 +952,17 @@ class UserRepository {
       await RestClient(dio, baseUrl: dio.options.baseUrl).postUpdateTTHD(
         id,
         idTT,
+      );
+
+  Future<QuickCreateResponse> getSearchQuickCreate(
+    String page, {
+    String? bienSo,
+    String? phone,
+  }) async =>
+      await RestClient(dio, baseUrl: dio.options.baseUrl).getSearchQuickCreate(
+        page,
+        bienSo,
+        phone,
       );
 
   //////////////////////

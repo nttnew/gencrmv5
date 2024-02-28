@@ -98,6 +98,7 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
       }
     } catch (e) {
       if (isInit) LoadingApi().popLoading();
+      return getT(KeyT.an_error_occurred);
     }
   }
 

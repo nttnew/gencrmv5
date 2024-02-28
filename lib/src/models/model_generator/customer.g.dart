@@ -19,6 +19,7 @@ CustomerData _$CustomerDataFromJson(Map<String, dynamic> json) => CustomerData(
       json['muc_do_tiem_nang'] as String?,
       json['address'] as String?,
       json['avatar'] as String?,
+      json['loai'] as String?,
       json['is_company'] as bool?,
       json['rank_max_level'] as int?,
       json['rank_value'] as int?,
@@ -27,6 +28,9 @@ CustomerData _$CustomerDataFromJson(Map<String, dynamic> json) => CustomerData(
           ? null
           : ActionData.fromJson(json['email'] as Map<String, dynamic>),
       json['tong_so_hop_dong'] as int?,
+      json['customer'] == null
+          ? null
+          : FilterData.fromJson(json['customer'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$CustomerDataToJson(CustomerData instance) =>
@@ -40,6 +44,7 @@ Map<String, dynamic> _$CustomerDataToJson(CustomerData instance) =>
       'muc_do_tiem_nang': instance.muc_do_tiem_nang,
       'address': instance.address,
       'avatar': instance.avatar,
+      'loai': instance.loai,
       'is_company': instance.is_company,
       'rank_max_level': instance.rank_max_level,
       'rank_value': instance.rank_value,
@@ -47,6 +52,7 @@ Map<String, dynamic> _$CustomerDataToJson(CustomerData instance) =>
       'tong_so_hop_dong': instance.tong_so_hop_dong,
       'phone': instance.phone,
       'email': instance.email,
+      'customer': instance.customer,
     };
 
 ActionData _$ActionDataFromJson(Map<String, dynamic> json) => ActionData(
