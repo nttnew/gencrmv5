@@ -28,7 +28,10 @@ class DeleteUnReadListNotificationEvent extends ListUnReadNotificationEvent {
   List<Object?> get props => [id, type];
 }
 
-class CheckNotification extends ListUnReadNotificationEvent {}
+class CheckNotification extends ListUnReadNotificationEvent {
+  final bool? isLoading;
+  CheckNotification({this.isLoading});
+}
 
 class ReadNotificationEvent extends ListUnReadNotificationEvent {
   final String id;

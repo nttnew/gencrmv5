@@ -127,7 +127,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                       child: WidgetText(
                                         title: location,
                                         style: TextStyle(
-                                          fontFamily: "Quicksand",
+                                          fontFamily: 'Quicksand',
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,
                                           color: COLORS.BLACK,
@@ -170,7 +170,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                               child: WidgetText(
                                 title: getT(KeyT.check_in),
                                 style: TextStyle(
-                                  fontFamily: "Quicksand",
+                                  fontFamily: 'Quicksand',
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                   color: COLORS.WHITE,
@@ -204,7 +204,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                   child: WidgetText(
                                     title: getT(KeyT.check_in_again),
                                     style: TextStyle(
-                                      fontFamily: "Quicksand",
+                                      fontFamily: 'Quicksand',
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                       color: COLORS.TEXT_COLOR,
@@ -237,7 +237,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                   child: WidgetText(
                                     title: getT(KeyT.delete),
                                     style: TextStyle(
-                                      fontFamily: "Quicksand",
+                                      fontFamily: 'Quicksand',
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                       color: COLORS.RED,
@@ -263,7 +263,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                   TextSpan(
                                     text: '*',
                                     style: TextStyle(
-                                      fontFamily: "Quicksand",
+                                      fontFamily: 'Quicksand',
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                       color: COLORS.RED,

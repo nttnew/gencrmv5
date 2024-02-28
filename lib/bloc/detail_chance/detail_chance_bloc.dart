@@ -50,8 +50,7 @@ class GetListDetailChanceBloc
         LoadingApi().popLoading();
       }
     } catch (e) {
-      yield ErrorGetListDetailChanceState(
-         getT(KeyT.an_error_occurred));
+      yield ErrorGetListDetailChanceState(getT(KeyT.an_error_occurred));
       LoadingApi().popLoading();
       throw e;
     }
@@ -68,8 +67,7 @@ class GetListDetailChanceBloc
         yield ErrorDeleteChanceState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorDeleteChanceState(
-         getT(KeyT.an_error_occurred));
+      yield ErrorDeleteChanceState(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
@@ -85,17 +83,17 @@ class GetListDetailChanceBloc
     try {
       final response = await userRepository.getJobChance(id, page);
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         return response.data ?? [];
       } else if (isFail(response.code)) {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      if (isInit) LoadingApi().popLoading();
     }
   }
 

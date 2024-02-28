@@ -35,7 +35,7 @@ class _ProductScreenState extends State<ProductScreen> {
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.PRODUCT);
-    GetNotificationBloc.of(context).add(CheckNotification());
+    GetNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     title = ModuleMy.getNameModuleMy(
       ModuleMy.SAN_PHAM,
       isTitle: true,

@@ -56,7 +56,7 @@ class Data2 {
   int? fieldRequire;
   String? fieldHidden;
   List<List<dynamic>>? fieldDatasource;
-  // int? fieldReadOnly;
+  int? fieldReadOnly;
   dynamic fieldSetValue;
   String? fieldValue;
   List<List<dynamic>>? fieldSetValueDatasource;
@@ -75,9 +75,9 @@ class Data2 {
     this.fieldLabel,
     this.fieldType,
     this.fieldRequire,
+    this.fieldReadOnly,
     this.fieldHidden,
     this.fieldDatasource,
-    // this.fieldReadOnly,
     this.fieldSetValue,
     this.fieldValue,
     this.fieldSetValueDatasource,
@@ -104,7 +104,7 @@ class Data2 {
         fieldDatasource!.add(v);
       });
     }
-    // fieldReadOnly = json['field_read_only'];
+    fieldReadOnly = json['field_read_only'];
     fieldSetValue = json['field_set_value'];
     fieldValue = json['field_value'];
     if (json['field_set_value_datasource'] != null) {
@@ -135,20 +135,6 @@ class Data2 {
     }
   }
 }
-
-// class FieldDatasource {
-//
-//
-//   FieldDatasource({});
-//
-// FieldDatasource.fromJson(Map<String, dynamic> json) {
-// }
-//
-// Map<String, dynamic> toJson() {
-//   final Map<String, dynamic> data = new Map<String, dynamic>();
-//   return data;
-// }
-// }
 
 class TriggerData {
   String? url;

@@ -49,9 +49,9 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
   void initState() {
     _bloc = DetailCustomerBloc(
         userRepository: DetailCustomerBloc.of(context).userRepository);
-    _bloc.initController(id);
     _blocNote =
         ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
+    _bloc.initController(id);
     _tabController = TabController(length: 6, vsync: this);
     super.initState();
   }

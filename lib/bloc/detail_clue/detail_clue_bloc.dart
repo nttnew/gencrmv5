@@ -51,9 +51,7 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetDetailClueState(
-         getT(KeyT.an_error_occurred));
-      throw (e);
+      yield ErrorGetDetailClueState(getT(KeyT.an_error_occurred));
     }
     LoadingApi().popLoading();
   }
@@ -72,34 +70,34 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorDeleteClueState(
-         getT(KeyT.an_error_occurred));
+      yield ErrorDeleteClueState(getT(KeyT.an_error_occurred));
       throw (e);
     }
     LoadingApi().popLoading();
   }
 
-  Future<dynamic> getWorkClue(
-      {required String id,
-      int page = BASE_URL.PAGE_DEFAULT,
-      bool isInit = true}) async {
+  Future<dynamic> getWorkClue({
+    required String id,
+    int page = BASE_URL.PAGE_DEFAULT,
+    bool isInit = true,
+  }) async {
     if (isInit) {
       LoadingApi().pushLoading();
     }
     try {
       final response = await userRepository.getWorkClue(id, page);
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         return response.data ?? [];
       } else if (isFail(response.code)) {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      if (isInit) LoadingApi().popLoading();
     }
   }
 

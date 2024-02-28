@@ -562,7 +562,7 @@ class _FormAddContractState extends State<FormAddContract> {
                                           .value = data.join(',');
                                     },
                                   )
-                                : data.field_type == "DATE"
+                                : data.field_type == 'DATE'
                                     ? WidgetInputDate(
                                         data: data,
                                         dateText: data.field_set_value,
@@ -577,7 +577,7 @@ class _FormAddContractState extends State<FormAddContract> {
                                               .value = v;
                                         },
                                       )
-                                    : data.field_type == "DATETIME"
+                                    : data.field_type == 'DATETIME'
                                         ? WidgetInputDate(
                                             isDate: false,
                                             data: data,

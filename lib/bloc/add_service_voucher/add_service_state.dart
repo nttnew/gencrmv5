@@ -16,7 +16,11 @@ class GetServiceVoucherState extends ServiceVoucherState {
 }
 
 class SaveServiceVoucherState extends ServiceVoucherState {
-  const SaveServiceVoucherState();
+  final String msg;
+
+  const SaveServiceVoucherState(this.msg);
+  @override
+  List<Object> get props => [msg];
 }
 
 class LoadingServiceVoucherState extends ServiceVoucherState {}

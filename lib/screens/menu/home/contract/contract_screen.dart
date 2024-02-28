@@ -35,7 +35,7 @@ class _ContractScreenState extends State<ContractScreen> {
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.HOP_DONG);
-    GetNotificationBloc.of(context).add(CheckNotification());
+    GetNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     _bloc.add(InitGetContractEvent());
     title = ModuleMy.getNameModuleMy(
       ModuleMy.HOP_DONG,

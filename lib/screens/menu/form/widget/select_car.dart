@@ -33,6 +33,7 @@ class _SelectCarState extends State<SelectCar> {
   @override
   void initState() {
     _bloc = ServiceVoucherBloc.of(context);
+    _bloc.getVersionCarInfo();
     super.initState();
   }
 
@@ -61,7 +62,9 @@ class _SelectCarState extends State<SelectCar> {
                   WidgetText(
                     title: getT(KeyT.car_brand),
                     style: AppStyle.DEFAULT_16.copyWith(
-                        color: HexColor("0079B5"), fontWeight: FontWeight.w700),
+                      color: HexColor('0079B5'),
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   SizedBox(
                     height: 16,
@@ -91,14 +94,14 @@ class _SelectCarState extends State<SelectCar> {
                                         decoration: BoxDecoration(
                                           color: _bloc.hangXe != e.name
                                               ? COLORS.WHITE
-                                              : HexColor("0079B5")
+                                              : HexColor('0079B5')
                                                   .withOpacity(0.2),
                                           borderRadius:
                                               BorderRadius.circular(20),
                                           border: Border.all(
                                             color: _bloc.hangXe != e.name
                                                 ? Colors.grey
-                                                : HexColor("0079B5"),
+                                                : HexColor('0079B5'),
                                             width: 2,
                                           ),
                                         ),
@@ -190,7 +193,7 @@ class _SelectCarState extends State<SelectCar> {
                             child: WidgetText(
                               title: getT(KeyT.select),
                               style: AppStyle.DEFAULT_16.copyWith(
-                                  color: HexColor("130F26"),
+                                  color: HexColor('130F26'),
                                   fontWeight: FontWeight.w700),
                             ),
                           ),
@@ -212,7 +215,7 @@ class _SelectCarState extends State<SelectCar> {
                             child: WidgetText(
                               title: getT(KeyT.close),
                               style: AppStyle.DEFAULT_16.copyWith(
-                                  color: HexColor("130F26"),
+                                  color: HexColor('130F26'),
                                   fontWeight: FontWeight.w700),
                             ),
                           ),
@@ -241,7 +244,7 @@ class _SelectCarState extends State<SelectCar> {
         WidgetText(
           title: title,
           style: AppStyle.DEFAULT_16
-              .copyWith(color: HexColor("0079B5"), fontWeight: FontWeight.w700),
+              .copyWith(color: HexColor('0079B5'), fontWeight: FontWeight.w700),
         ),
         SizedBox(
           height: 16,
@@ -259,21 +262,22 @@ class _SelectCarState extends State<SelectCar> {
                             function(e);
                           },
                           child: Container(
-                              decoration: BoxDecoration(
+                            decoration: BoxDecoration(
+                              color: select != e
+                                  ? COLORS.WHITE
+                                  : HexColor('0079B5').withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
                                 color: select != e
-                                    ? COLORS.WHITE
-                                    : HexColor("0079B5").withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color: select != e
-                                      ? Colors.grey
-                                      : HexColor("0079B5"),
-                                  width: 2,
-                                ),
+                                    ? Colors.grey
+                                    : HexColor('0079B5'),
+                                width: 2,
                               ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              child: Text(e)),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            child: Text(e),
+                          ),
                         ))
                     .toList(),
               );

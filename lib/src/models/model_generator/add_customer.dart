@@ -14,7 +14,7 @@ class CustomerIndividualItemData {
       field_maxlength,
       field_hidden,
       parent;
-  final int? field_require;
+  final int? field_require,field_read_only;
   final dynamic field_set_value;
   final List<List<dynamic>>? field_datasource;
   final List<List<dynamic>>? field_set_value_datasource;
@@ -33,6 +33,7 @@ class CustomerIndividualItemData {
     this.field_hidden,
     this.parent,
     this.field_require,
+    this.field_read_only,
     this.field_set_value,
     this.field_datasource,
     this.field_special,

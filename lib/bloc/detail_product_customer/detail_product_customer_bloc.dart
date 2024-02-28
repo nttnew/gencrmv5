@@ -56,99 +56,99 @@ class DetailProductCustomerBloc
     LoadingApi().popLoading();
   }
 
-  Future<dynamic> getListCVProductCustomer(
-      {required int id,
-      int page = BASE_URL.PAGE_DEFAULT,
-      bool isInit = true}) async {
-    if (isInit) {
-      LoadingApi().pushLoading();
-    }
+  Future<dynamic> getListCVProductCustomer({
+    required int id,
+    int page = BASE_URL.PAGE_DEFAULT,
+    bool isInit = true,
+  }) async {
+    if (isInit) LoadingApi().pushLoading();
+
     try {
       final response =
           await userRepository.getListCVProductCustomer(spkh: id, page: page);
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         return response.data?.data?.dataList ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      if (isInit) LoadingApi().popLoading();
     }
   }
 
-  Future<dynamic> getListCHProductCustomer(
-      {required int id,
-      int page = BASE_URL.PAGE_DEFAULT,
-      bool isInit = true}) async {
-    if (isInit) {
-      LoadingApi().pushLoading();
-    }
+  Future<dynamic> getListCHProductCustomer({
+    required int id,
+    int page = BASE_URL.PAGE_DEFAULT,
+    bool isInit = true,
+  }) async {
+    if (isInit) LoadingApi().pushLoading();
+
     try {
       final response =
           await userRepository.getListCHProductCustomer(spkh: id, page: page);
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         return response.data?.lists ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      if (isInit) LoadingApi().popLoading();
     }
   }
 
-  Future<dynamic> getListHDProductCustomer(
-      {required int id,
-      int page = BASE_URL.PAGE_DEFAULT,
-      bool isInit = true}) async {
-    if (isInit) {
-      LoadingApi().pushLoading();
-    }
+  Future<dynamic> getListHDProductCustomer({
+    required int id,
+    int page = BASE_URL.PAGE_DEFAULT,
+    bool isInit = true,
+  }) async {
+    if (isInit) LoadingApi().pushLoading();
+
     try {
       final response =
           await userRepository.getListHDProductCustomer(spkh: id, page: page);
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         return response.data ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      if (isInit) LoadingApi().popLoading();
     }
   }
 
-  Future<dynamic> getListHTProductCustomer(
-      {required int id,
-      int page = BASE_URL.PAGE_DEFAULT,
-      bool isInit = true}) async {
-    if (isInit) {
-      LoadingApi().pushLoading();
-    }
+  Future<dynamic> getListHTProductCustomer({
+    required int id,
+    int page = BASE_URL.PAGE_DEFAULT,
+    bool isInit = true,
+  }) async {
+    if (isInit) LoadingApi().pushLoading();
+
     try {
       final response =
           await userRepository.getListHTProductCustomer(spkh: id, page: page);
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         return response.data ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      if (isInit) LoadingApi().popLoading();
     }
   }
 

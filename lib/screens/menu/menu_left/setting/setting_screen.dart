@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -235,6 +236,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 GestureDetector(
                   onTap: () async {
                     await LoginBloc.of(context).getMenuMain();
+                    await LoginBloc.of(context).getVersionInfoCar();
                     await LoginBloc.of(context).reloadLang();
                     widget.onSelectLang();
                     setState(() {});

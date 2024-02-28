@@ -62,8 +62,7 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
         yield ErrorDetailContractState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorDetailContractState(
-          getT(KeyT.an_error_occurred));
+      yield ErrorDetailContractState(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
@@ -82,8 +81,7 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
         yield ErrorDeleteContractState(response.msg ?? '');
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorDeleteContractState(
-         getT(KeyT.an_error_occurred));
+      yield ErrorDeleteContractState(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
@@ -151,16 +149,16 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
     try {
       final response = await userRepository.getSupportContract(id, page);
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         return response.data ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      if (isInit) LoadingApi().popLoading();
     }
   }
 
@@ -174,16 +172,16 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
     try {
       final response = await userRepository.getJobContract(id, page);
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         return response.data ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
+        if (isInit) LoadingApi().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      if (isInit) LoadingApi().popLoading();
     }
   }
 

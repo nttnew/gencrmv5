@@ -61,16 +61,15 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
       if (isSuccess(response.code)) {
         yield SuccessGetNoteOppState(response.data?.notes ?? []);
       } else {
-        LoadingApi().popLoading();
+        if (isAdd) LoadingApi().popLoading();
         yield ErrorGetNoteOppState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
-      yield ErrorGetNoteOppState(
-          getT(KeyT.an_error_occurred));
+      if (isAdd) LoadingApi().popLoading();
+      yield ErrorGetNoteOppState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    if (isAdd) LoadingApi().popLoading();
   }
 
   Future<dynamic> getListNote({

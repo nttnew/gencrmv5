@@ -10,40 +10,40 @@ import '../../widgets/loading_api.dart';
 part 'get_infor_acc_event.dart';
 part 'get_infor_acc_state.dart';
 
-class GetInforAccBloc extends Bloc<GetInforAccEvent, GetInforAccState> {
+class GetInfoAccBloc extends Bloc<GetInforAccEvent, GetInforAccState> {
   final UserRepository userRepository;
 
-  GetInforAccBloc({required UserRepository userRepository})
+  GetInfoAccBloc({required UserRepository userRepository})
       : userRepository = userRepository,
         super(InitGetInforAccState());
 
   @override
   Stream<GetInforAccState> mapEventToState(GetInforAccEvent event) async* {
     if (event is InitGetInforAcc) {
-      yield* _getInfoAcc();
+      yield* _getInfoAcc(event.isLoading ?? true);
     }
   }
 
-  Stream<GetInforAccState> _getInfoAcc() async* {
+  Stream<GetInforAccState> _getInfoAcc(bool isLoading) async* {
     try {
+      if (isLoading) LoadingApi().pushLoading();
       yield LoadingInforAccState();
       final response = await userRepository.getInfoAcc();
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        if (isLoading) LoadingApi().popLoading();
         yield UpdateGetInforAccState(response.data!);
       } else {
-        LoadingApi().popLoading();
-        yield ErrorGetInForAccState(response.msg ?? "");
+        if (isLoading) LoadingApi().popLoading();
+        yield ErrorGetInForAccState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      if (isLoading) LoadingApi().popLoading();
       yield ErrorGetInForAccState(
-          getT(KeyT.an_error_occurred ),);
-      throw e;
+        getT(KeyT.an_error_occurred),
+      );
     }
-    LoadingApi().popLoading();
   }
 
-  static GetInforAccBloc of(BuildContext context) =>
-      BlocProvider.of<GetInforAccBloc>(context);
+  static GetInfoAccBloc of(BuildContext context) =>
+      BlocProvider.of<GetInfoAccBloc>(context);
 }

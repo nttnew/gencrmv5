@@ -24,7 +24,7 @@ class _AddNoteState extends State<AddNote> {
   TextEditingController _editingController = TextEditingController();
   bool isEdit = false;
   late FocusNode _focusNode;
-  String noteId = "";
+  String noteId = '';
   late final LoadMoreControllerReverse _controllerNote;
 
   @override

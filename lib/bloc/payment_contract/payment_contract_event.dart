@@ -9,6 +9,7 @@ abstract class PaymentContractEvent extends Equatable {
 
 class InitGetPaymentContractEvent extends PaymentContractEvent {
   final int id;
+  final bool? isLoad;
 
-  InitGetPaymentContractEvent(this.id);
+  InitGetPaymentContractEvent(this.id,{this.isLoad,});
 }

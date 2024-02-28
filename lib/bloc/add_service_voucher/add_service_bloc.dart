@@ -27,9 +27,7 @@ class ServiceVoucherBloc
     extends Bloc<AddServiceVoucherEvent, ServiceVoucherState> {
   ServiceVoucherBloc({required UserRepository userRepository})
       : userRepository = userRepository,
-        super(InitGetServiceVoucher()) {
-    getVersionCarInfo();
-  }
+        super(InitGetServiceVoucher());
 
   @override
   Stream<ServiceVoucherState> mapEventToState(
@@ -123,7 +121,7 @@ class ServiceVoucherBloc
       }
     }
     final listXe = list;
-    listXe?.add(["", THEM_MOI_XE, "", ""]);
+    listXe?.add(['', THEM_MOI_XE, '', '']);
     return listXe ?? null;
   }
 
@@ -277,7 +275,10 @@ class ServiceVoucherBloc
     }
   }
 
-  String? getTextInit({String? name, List<dynamic>? list}) {
+  String? getTextInit({
+    String? name,
+    List<dynamic>? list,
+  }) {
     if (name == 'chi_tiet_xe') {
       return infoCar.value?.chiTietXe;
     } else if (name == 'bien_so') {
@@ -293,10 +294,26 @@ class ServiceVoucherBloc
             return data[1];
           }
         }
-        return '';
+        return null;
       } else {
         return null;
       }
+    } else {
+      return null;
+    }
+  }
+
+  String? getName({
+    List<dynamic>? list,
+    String? id,
+  }) {
+    if (list != null) {
+      for (final data in list) {
+        if (data.first == id) {
+          return data[1];
+        }
+      }
+      return null;
     } else {
       return null;
     }
@@ -313,39 +330,31 @@ class ServiceVoucherBloc
           await userRepository.saveServiceVoucher(voucherServiceRequest);
       final statusCode =
           (response as Map<String, dynamic>).getOrElse('code', () => -1);
-      final data = (response).getOrElse('data', () => -1);
-      if ((statusCode == BASE_URL.SUCCESS) ||
-          (statusCode == BASE_URL.SUCCESS_200)) {
+      final msg = response.getOrElse('msg', () => -1);
+      final data = response.getOrElse('data', () => -1);
+      if (isSuccess(statusCode)) {
         if (listFile?.isNotEmpty ?? false) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: data['recordId'].toString(),
               files: listFile ?? [],
               module: getURLModule(Module.HOP_DONG));
-          if ((responseUpload.code == BASE_URL.SUCCESS) ||
-              (responseUpload.code == BASE_URL.SUCCESS_200)) {
-            LoadingApi().popLoading();
-            yield SaveServiceVoucherState();
+          if (isSuccess(responseUpload.code)) {
+            yield SaveServiceVoucherState(responseUpload.msg ?? '');
           } else {
-            LoadingApi().popLoading();
             yield ErrorGetServiceVoucherState(responseUpload.msg ?? '');
           }
         } else {
-          LoadingApi().popLoading();
-          yield SaveServiceVoucherState();
+          yield SaveServiceVoucherState(msg);
         }
       } else if (statusCode == BASE_URL.SUCCESS_999) {
         loginSessionExpired();
       } else {
         yield ErrorGetServiceVoucherState(
             (response).getOrElse('msg', () => -1) ?? '');
-        LoadingApi().popLoading();
       }
     } catch (e) {
-      LoadingApi().popLoading();
       yield ErrorGetServiceVoucherState(getT(KeyT.an_error_occurred));
-      throw e;
     }
-    LoadingApi().popLoading();
   }
 
   Future<bool> checkHasCar(String bienSoXe) async {
@@ -397,6 +406,7 @@ class ServiceVoucherBloc
                             f.fieldHidden,
                             null,
                             f.fieldRequire,
+                            f.fieldReadOnly,
                             f.fieldSetValue,
                             f.fieldName == 'hdsan_pham_kh' //theem xe
                                 ? listThemXe(f.fieldDatasource, bienSoXe)
@@ -428,14 +438,13 @@ class ServiceVoucherBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetServiceVoucherState(
-          getT(KeyT.an_error_occurred));
+      yield ErrorGetServiceVoucherState(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
   }
 
-  void dispose() {
+  void disposeService() {
     listAddData.add([]);
     addData = [];
     // listFile = [];

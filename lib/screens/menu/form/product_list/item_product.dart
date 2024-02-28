@@ -20,32 +20,32 @@ class ItemProduct extends StatefulWidget {
     required this.listDvt,
     required this.listVat,
     required this.neverHidden,
-    this.onChangeQuantity,
-    this.onDVT,
-    this.onVAT,
-    this.onGiamGia,
-    this.onPrice,
-    this.model,
+    required this.onChangeQuantity,
+    required this.onDVT,
+    required this.onVAT,
+    required this.onGiamGia,
+    required this.onPrice,
+    required this.model,
     this.canDelete = false,
-    this.onDelete,
-    this.onIntoMoney,
+    required this.onDelete,
+    required this.onIntoMoney,
     required this.onReload,
   }) : super(key: key);
 
   final ProductItem data;
   final List<List<dynamic>> listDvt;
   final List<List<dynamic>> listVat;
-  final Function? onChangeQuantity;
-  final Function? onDVT;
-  final Function? onVAT;
-  final Function? onGiamGia;
-  final Function? onPrice;
-  final Function(double)? onIntoMoney;
+  final Function onChangeQuantity;
+  final Function onDVT;
+  final Function onVAT;
+  final Function onGiamGia;
+  final Function onPrice;
+  final Function(double) onIntoMoney;
   final Function() onReload;
-  final ProductModel? model;
+  final ProductModel model;
   final bool neverHidden;
   final bool canDelete;
-  final Function(ProductModel productModel)? onDelete;
+  final Function(ProductModel productModel) onDelete;
 
   @override
   State<ItemProduct> createState() => _ItemProductState();
@@ -84,26 +84,26 @@ class _ItemProductState extends State<ItemProduct> {
     priceInit = widget.data.sell_price ?? '';
 
     ///
-    if (widget.model != null && widget.model!.soLuong != 0) {
+    if (widget.model.soLuong != 0) {
       setState(() {
         /// init set color
-        priceInit = widget.model!.item.sell_price!;
-        countInit = widget.model!.soLuong.toString();
-        dvtInit = widget.model!.nameDvt;
-        vatInit = widget.model!.nameVat;
-        saleInit = widget.model!.giamGia;
-        isTypeGiamGIaInit = widget.model!.typeGiamGia == '%' ? false : true;
+        priceInit = widget.model.item.sell_price ?? '';
+        countInit = widget.model.soLuong.toString();
+        dvtInit = widget.model.nameDvt;
+        vatInit = widget.model.nameVat;
+        saleInit = widget.model.giamGia;
+        isTypeGiamGIaInit = widget.model.typeGiamGia == '%' ? false : true;
 
         ///
-        dvt = widget.model!.nameDvt;
-        vat = widget.model!.nameVat;
-        giamGia = widget.model!.giamGia;
-        isTypeGiamGIa = widget.model!.typeGiamGia == '%' ? false : true;
-        soLuong = widget.model!.soLuong.toString();
-        price = widget.model!.item.sell_price!;
+        dvt = widget.model.nameDvt;
+        vat = widget.model.nameVat;
+        giamGia = widget.model.giamGia;
+        isTypeGiamGIa = widget.model.typeGiamGia == '%' ? false : true;
+        soLuong = widget.model.soLuong.toString();
+        price = widget.model.item.sell_price ?? '';
       });
-      widget.onDVT!(widget.model!.item.dvt, dvt);
-      widget.onVAT!(widget.model!.item.vat, vat);
+      widget.onDVT(widget.model.item.dvt, dvt);
+      widget.onVAT(widget.model.item.vat, vat);
     } else {
       setState(() {
         dvt = index != -1 ? widget.listDvt[index][1] : '';
@@ -117,33 +117,33 @@ class _ItemProductState extends State<ItemProduct> {
 
         ///
       });
-      widget.onDVT!(widget.data.dvt, dvt);
-      widget.onVAT!(widget.data.vat, vat);
+      widget.onDVT(widget.data.dvt, dvt);
+      widget.onVAT(widget.data.vat, vat);
     }
 
     /// init set color
-    intoMoneyInit = widget.model?.intoMoney ?? 0;
+    intoMoneyInit = widget.model.intoMoney ?? 0;
 
     ///
-    intoMoney = widget.model?.intoMoney ?? 0;
+    intoMoney = widget.model.intoMoney ?? 0;
     super.initState();
   }
 
   @override
   void didUpdateWidget(covariant ItemProduct oldWidget) {
-    final typeWidget = (widget.model!.typeGiamGia == '%' ? false : true);
+    final typeWidget = (widget.model.typeGiamGia == '%' ? false : true);
     if (oldWidget != widget) {
-      soLuong = (widget.model?.soLuong ?? 0).toString();
-      price = widget.model?.item.sell_price ?? '';
-      dvt = widget.model!.nameDvt;
-      vat = widget.model!.nameVat;
-      giamGia = widget.model!.giamGia;
+      soLuong = widget.model.soLuong.toString();
+      price = widget.model.item.sell_price ?? '';
+      dvt = widget.model.nameDvt;
+      vat = widget.model.nameVat;
+      giamGia = widget.model.giamGia;
       if (typeGiamGiaDefault != typeWidget) {
         typeGiamGiaDefault = typeWidget;
         isTypeGiamGIa = typeWidget;
       }
-      if (intoMoney != (widget.model?.intoMoney ?? 0)) {
-        intoMoney = widget.model?.intoMoney ?? 0;
+      if (intoMoney != (widget.model.intoMoney ?? 0)) {
+        intoMoney = widget.model.intoMoney ?? 0;
       }
       widget.onReload();
     }
@@ -181,7 +181,7 @@ class _ItemProductState extends State<ItemProduct> {
     double money = 0;
     money = (priceProduct + vatProduct - discount) * countProduct;
     intoMoney = money;
-    widget.onIntoMoney!(money);
+    widget.onIntoMoney(money);
     widget.onReload();
     setState(() {});
   }
@@ -220,11 +220,11 @@ class _ItemProductState extends State<ItemProduct> {
 
       price = newPrice.toStringAsFixed(0);
       _priceController.text = price;
-      widget.onPrice!(price);
-      widget.onIntoMoney!(intoMoney);
+      widget.onPrice(price);
+      widget.onIntoMoney(intoMoney);
     } else {
       intoMoney = 0;
-      widget.onIntoMoney!(0);
+      widget.onIntoMoney(0);
     }
     setState(() {});
   }
@@ -311,7 +311,7 @@ class _ItemProductState extends State<ItemProduct> {
                     onClickPrice(context, _priceController, (v) {
                       if (v != '') {
                         price = v;
-                        widget.onPrice!(price);
+                        widget.onPrice(price);
                         _getIntoMoney();
                       } else {
                         _priceController.text = price;
@@ -331,7 +331,7 @@ class _ItemProductState extends State<ItemProduct> {
                       onTap: () {
                         onClickDVT(context, widget.listDvt, (v) {
                           dvt = v[1];
-                          widget.onDVT!(v[0], v[1]);
+                          widget.onDVT(v[0], v[1]);
                           setState(() {});
                           Get.back();
                         });
@@ -346,7 +346,7 @@ class _ItemProductState extends State<ItemProduct> {
                       onTap: () {
                         onClickVAT(context, widget.listVat, (v) {
                           vat = v[1];
-                          widget.onVAT!(v[0], v[1]);
+                          widget.onVAT(v[0], v[1]);
                           _getIntoMoney();
                           Get.back();
                         });
@@ -366,17 +366,22 @@ class _ItemProductState extends State<ItemProduct> {
                   isChange: isTypeGiamGIa != isTypeGiamGIaInit ||
                       double.tryParse(giamGia) != double.tryParse(saleInit),
                   onTap: () {
-                    if (double.parse(widget.model?.giamGia ?? '0') > 0) {
+                    if (double.parse(widget.model.giamGia) > 0) {
                       _giamGiaController.text = AppValue.format_money(
-                          widget.model?.giamGia ?? '0',
-                          isD: false);
+                        widget.model.giamGia,
+                        isD: false,
+                      );
                     } else {
                       _giamGiaController.text = '';
                     }
-                    onClickGiamGia(context, isTypeGiamGIa, _giamGiaController,
-                        (isGiam, txt) {
-                      _onClickGiamGia(isGiam, txt);
-                    });
+                    onClickGiamGia(
+                      context,
+                      isTypeGiamGIa,
+                      _giamGiaController,
+                      (isGiam, txt) {
+                        _onClickGiamGia(isGiam, txt);
+                      },
+                    );
                   },
                 ),
                 SizedBox(
@@ -389,8 +394,9 @@ class _ItemProductState extends State<ItemProduct> {
                   onTap: () {
                     if (intoMoney > 0) {
                       _intoMoneyController.text = AppValue.format_money(
-                          intoMoney.toStringAsFixed(0),
-                          isD: false);
+                        intoMoney.toStringAsFixed(0),
+                        isD: false,
+                      );
                     } else {
                       _intoMoneyController.text = '';
                     }
@@ -444,7 +450,7 @@ class _ItemProductState extends State<ItemProduct> {
         giamGia = txt;
       }
 
-      widget.onGiamGia!(
+      widget.onGiamGia(
         txt,
         isTypeGiamGIa ? shareLocal.getString(PreferencesKey.MONEY) ?? '' : '%',
       );
@@ -462,9 +468,9 @@ class _ItemProductState extends State<ItemProduct> {
                 soLuong = (double.parse(soLuong) - 1).toString();
               } else {
                 soLuong = '0';
+                widget.onDelete(widget.model);
               }
-              widget
-                  .onChangeQuantity!(double.parse(soLuong).toStringAsFixed(2));
+              widget.onChangeQuantity(double.parse(soLuong).toStringAsFixed(2));
               _getIntoMoney();
             },
             child: WidgetContainerImage(
@@ -498,7 +504,7 @@ class _ItemProductState extends State<ItemProduct> {
 
                 if (number > 0) {
                   soLuong = number.toString();
-                  widget.onChangeQuantity!(
+                  widget.onChangeQuantity(
                       number.toStringAsFixed(2)); // change data quantity
                   _getIntoMoney();
                   Get.back();
@@ -520,8 +526,7 @@ class _ItemProductState extends State<ItemProduct> {
           GestureDetector(
             onTap: () {
               soLuong = (double.parse(soLuong) + 1).toString();
-              widget
-                  .onChangeQuantity!(double.parse(soLuong).toStringAsFixed(2));
+              widget.onChangeQuantity(double.parse(soLuong).toStringAsFixed(2));
               _getIntoMoney();
             },
             child: WidgetContainerImage(
@@ -537,7 +542,7 @@ class _ItemProductState extends State<ItemProduct> {
               ? SizedBox()
               : GestureDetector(
                   onTap: () {
-                    widget.onDelete!(widget.model!);
+                    widget.onDelete(widget.model);
                   },
                   child: Container(
                     margin: const EdgeInsets.only(

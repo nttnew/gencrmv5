@@ -1,8 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/add_service_voucher/add_service_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
-import 'package:gen_crm/screens/menu/form/add_service_voucher/select_car.dart';
 import 'package:gen_crm/src/models/request/voucher_service_request.dart';
 import 'package:gen_crm/widgets/pick_file_image.dart';
 import '../../../../bloc/contract/attack_bloc.dart';
@@ -22,6 +23,7 @@ import '../../home/customer/widget/input_dropDown.dart';
 import 'package:get/get.dart';
 import '../product_list/product_contract.dart';
 import '../widget/location_select.dart';
+import '../widget/type_car.dart';
 
 class AddServiceVoucherStepTwoScreen extends StatefulWidget {
   const AddServiceVoucherStepTwoScreen({Key? key}) : super(key: key);
@@ -35,30 +37,28 @@ class _AddServiceVoucherStepTwoScreenState
     extends State<AddServiceVoucherStepTwoScreen> {
   late final ServiceVoucherBloc _bloc;
   String title = Get.arguments;
-
-  void dispose() {
-    _bloc.dispose();
-    super.dispose();
-  }
-
+  late final StreamSubscription subscription;
   @override
   void initState() {
     _bloc = ServiceVoucherBloc.of(context);
     _bloc.idCar.listen((value) {
       _bloc.getCar(value);
     });
-    _bloc.infoCar.listen((value) {
+    subscription = _bloc.infoCar.listen((value) {
       if (value != null) {
         _bloc.loaiXe.add(value.chiTietXe ?? '');
         _bloc.listAddData.add(_bloc.listAddData.value);
       }
     });
+
     super.initState();
   }
 
   @override
   void deactivate() {
     TotalBloc.of(context).add(ReloadTotalEvent());
+    subscription.cancel();
+    _bloc.disposeService();
     super.deactivate();
   }
 
@@ -108,9 +108,10 @@ class _AddServiceVoucherStepTwoScreenState
             if (state is SaveServiceVoucherState) {
               ShowDialogCustom.showDialogBase(
                   title: getT(KeyT.notification),
-                  content: getT(KeyT.add_success),
+                  content: state.msg == '' ? getT(KeyT.add_success) : state.msg,
                   onTap1: () {
                     Navigator.of(context)
+                      ..pop()
                       ..pop()
                       ..pop()
                       ..pop();
@@ -169,13 +170,13 @@ class _AddServiceVoucherStepTwoScreenState
                                       final isHidden = listAddData[indexParent]
                                               .data?[indexChild]
                                               .field_hidden !=
-                                          "1";
+                                          '1';
                                       final isURL = (state
                                                   .listAddData[indexParent]
                                                   .data?[indexChild]
                                                   .field_special ??
                                               '') ==
-                                          "url";
+                                          'url';
                                       final fieldName = listAddData[indexParent]
                                               .data?[indexChild]
                                               .field_name ??
@@ -208,111 +209,149 @@ class _AddServiceVoucherStepTwoScreenState
                                                           .data[indexChild]
                                                           .value = v;
                                                     })
-                                                  : fieldName == 'col131' &&
-                                                          data.field_set_value_datasource !=
-                                                              []
-                                                      ? fieldInputCustomer(
-                                                          data: data,
-                                                          indexParent:
-                                                              indexParent,
-                                                          indexChild:
-                                                              indexChild)
-                                                      : fieldType == "SELECT"
-                                                          ? checkLocation(data)
-                                                              ? LocationWidget(
-                                                                  data: data,
-                                                                  onSuccess:
-                                                                      (data) {
-                                                                    addData[indexParent]
-                                                                        .data[
-                                                                            indexChild]
-                                                                        .value = data;
-                                                                  },
-                                                                  initData: data
-                                                                      .field_value,
-                                                                )
-                                                              : InputDropdown(
-                                                                  onUpdate:
-                                                                      (data) {
-                                                                    addData[indexParent]
-                                                                        .data[
-                                                                            indexChild]
-                                                                        .value = data;
-                                                                  },
-                                                                  isUpdate: _bloc.getTextInit(name: fieldName, list: data.field_datasource) !=
+                                                  : fieldType == 'SELECT'
+                                                      ? checkLocation(data)
+                                                          ? LocationWidget(
+                                                              data: data,
+                                                              onSuccess:
+                                                                  (value) {
+                                                                addData[indexParent]
+                                                                    .data[
+                                                                        indexChild]
+                                                                    .value = value;
+                                                              },
+                                                              initData: data
+                                                                  .field_value,
+                                                            )
+                                                          : InputDropdown(
+                                                              isEdit: data.field_read_only ==
+                                                                      0 ||
+                                                                  data.field_read_only ==
+                                                                      null,
+                                                              onUpdate:
+                                                                  (value) {
+                                                                addData[indexParent]
+                                                                    .data[
+                                                                        indexChild]
+                                                                    .value = value;
+                                                              },
+                                                              isUpdate: _bloc.getTextInit(
+                                                                          name:
+                                                                              fieldName,
+                                                                          list: data
+                                                                              .field_datasource) !=
+                                                                      null &&
+                                                                  fieldName !=
+                                                                      'hdsan_pham_kh',
+                                                              dropdownItemList:
+                                                                  data.field_datasource ??
+                                                                      [],
+                                                              data: data,
+                                                              onSuccess:
+                                                                  (value) {
+                                                                addData[indexParent]
+                                                                    .data[
+                                                                        indexChild]
+                                                                    .value = value;
+                                                                if (fieldName ==
+                                                                    'hdsan_pham_kh') {
+                                                                  if (value !=
+                                                                      ServiceVoucherBloc
+                                                                          .THEM_MOI_XE) {
+                                                                    _bloc.idCar
+                                                                        .add(
+                                                                            value);
+                                                                  }
+                                                                }
+                                                              },
+                                                              value: _bloc.infoCar.value !=
                                                                           null &&
                                                                       fieldName !=
-                                                                          'hdsan_pham_kh',
-                                                                  dropdownItemList:
-                                                                      data.field_datasource ??
-                                                                          [],
-                                                                  data: data,
-                                                                  onSuccess:
-                                                                      (data) {
-                                                                    addData[indexParent]
-                                                                        .data[
-                                                                            indexChild]
-                                                                        .value = data;
-                                                                    if (fieldName ==
-                                                                        'hdsan_pham_kh') {
-                                                                      if (data !=
-                                                                          ServiceVoucherBloc
-                                                                              .THEM_MOI_XE) {
-                                                                        _bloc
-                                                                            .idCar
-                                                                            .add(data);
-                                                                      }
-                                                                    }
-                                                                  },
-                                                                  value: _bloc.infoCar.value != null &&
-                                                                          fieldName !=
-                                                                              'hdsan_pham_kh'
-                                                                      ? _bloc.getTextInit(name: fieldName, list: data.field_datasource) ??
-                                                                          ''
-                                                                      : data.field_value ??
-                                                                          '')
+                                                                          'hdsan_pham_kh'
+                                                                  ? _bloc
+                                                                          .getName(
+                                                                        list: data
+                                                                            .field_datasource,
+                                                                        id: addData[indexParent]
+                                                                            .data[indexChild]
+                                                                            .value,
+                                                                      ) ??
+                                                                      _bloc.getTextInit(
+                                                                          name:
+                                                                              fieldName,
+                                                                          list: data
+                                                                              .field_datasource) ??
+                                                                      ''
+                                                                  : data.field_value ??
+                                                                      '',
+                                                            )
+                                                      : fieldType ==
+                                                              'TEXT_MULTI'
+                                                          ? SelectMulti(
+                                                              dropdownItemList:
+                                                                  data.field_datasource ??
+                                                                      [],
+                                                              label:
+                                                                  data.field_label ??
+                                                                      '',
+                                                              required:
+                                                                  data.field_require ??
+                                                                      0,
+                                                              maxLength:
+                                                                  data.field_maxlength ??
+                                                                      '',
+                                                              initValue: addData[
+                                                                      indexParent]
+                                                                  .data[
+                                                                      indexChild]
+                                                                  .value
+                                                                  .toString()
+                                                                  .split(','),
+                                                              onChange:
+                                                                  (value) {
+                                                                addData[indexParent]
+                                                                    .data[
+                                                                        indexChild]
+                                                                    .value = value;
+                                                              },
+                                                            )
                                                           : fieldType ==
-                                                                  "TEXT_MULTI"
-                                                              ? SelectMulti(
-                                                                  dropdownItemList:
-                                                                      data.field_datasource ??
-                                                                          [],
-                                                                  label:
-                                                                      data.field_label ??
-                                                                          '',
-                                                                  required:
-                                                                      data.field_require ??
-                                                                          0,
-                                                                  maxLength:
-                                                                      data.field_maxlength ??
-                                                                          '',
-                                                                  initValue: addData[
-                                                                          indexParent]
-                                                                      .data[
-                                                                          indexChild]
-                                                                      .value
-                                                                      .toString()
-                                                                      .split(
-                                                                          ','),
-                                                                  onChange:
-                                                                      (data) {
-                                                                    addData[indexParent]
-                                                                        .data[
-                                                                            indexChild]
-                                                                        .value = data;
-                                                                  },
-                                                                )
-                                                              : fieldType == "HIDDEN"
-                                                                  ? SizedBox.shrink()
-                                                                  : fieldType == "TEXT_MULTI_NEW"
-                                                                      ? InputMultipleWidget(
-                                                                          data: data,
-                                                                          onSelect: (data) {
+                                                                  'HIDDEN'
+                                                              ? SizedBox
+                                                                  .shrink()
+                                                              : fieldType ==
+                                                                      'TEXT_MULTI_NEW'
+                                                                  ? InputMultipleWidget(
+                                                                      data:
+                                                                          data,
+                                                                      onSelect:
+                                                                          (value) {
+                                                                        addData[indexParent]
+                                                                            .data[indexChild]
+                                                                            .value = value.join(',');
+                                                                      })
+                                                                  : data.field_type ==
+                                                                          'DATE'
+                                                                      ? WidgetInputDate(
+                                                                          data:
+                                                                              data,
+                                                                          dateText:
+                                                                              data.field_set_value,
+                                                                          onSelect:
+                                                                              (int date) {
                                                                             addData[indexParent].data[indexChild].value =
-                                                                                data.join(",");
-                                                                          })
-                                                                      : data.field_type == "DATE"
+                                                                                date;
+                                                                          },
+                                                                          onInit:
+                                                                              (v) {
+                                                                            addData[indexParent].data[indexChild].value =
+                                                                                v;
+                                                                          },
+                                                                        )
+                                                                      : fieldType ==
+                                                                              'DATETIME'
                                                                           ? WidgetInputDate(
+                                                                              isDate: false,
                                                                               data: data,
                                                                               dateText: data.field_set_value,
                                                                               onSelect: (int date) {
@@ -322,28 +361,20 @@ class _AddServiceVoucherStepTwoScreenState
                                                                                 addData[indexParent].data[indexChild].value = v;
                                                                               },
                                                                             )
-                                                                          : data.field_type == "DATETIME"
-                                                                              ? WidgetInputDate(
-                                                                                  isDate: false,
+                                                                          : fieldType == 'PERCENTAGE'
+                                                                              ? FieldInputPercent(
                                                                                   data: data,
-                                                                                  dateText: data.field_set_value,
-                                                                                  onSelect: (int date) {
-                                                                                    addData[indexParent].data[indexChild].value = date;
-                                                                                  },
-                                                                                  onInit: (v) {
-                                                                                    addData[indexParent].data[indexChild].value = v;
+                                                                                  onChanged: (text) {
+                                                                                    addData[indexParent].data[indexChild].value = text;
                                                                                   },
                                                                                 )
-                                                                              : fieldType == "PERCENTAGE"
-                                                                                  ? FieldInputPercent(
+                                                                              : fieldType == 'CHECK'
+                                                                                  ? _check(data, indexParent, indexChild)
+                                                                                  : fieldInputCustomer(
                                                                                       data: data,
-                                                                                      onChanged: (text) {
-                                                                                        addData[indexParent].data[indexChild].value = text;
-                                                                                      },
+                                                                                      indexParent: indexParent,
+                                                                                      indexChild: indexChild,
                                                                                     )
-                                                                                  : fieldType == "CHECK"
-                                                                                      ? _check(data, indexParent, indexChild)
-                                                                                      : fieldInputCustomer(data: data, indexParent: indexParent, indexChild: indexChild)
                                           : SizedBox();
                                     }),
                                   )
@@ -391,7 +422,7 @@ class _AddServiceVoucherStepTwoScreenState
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                          fontFamily: "Quicksand",
+                          fontFamily: 'Quicksand',
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: COLORS.RED,
@@ -437,17 +468,17 @@ class _AddServiceVoucherStepTwoScreenState
     for (int i = 0; i < addData.length; i++) {
       for (int j = 0; j < addData[i].data.length; j++) {
         if ((addData[i].data[j].value == null ||
-                addData[i].data[j].value == "null" ||
-                addData[i].data[j].value == "") &&
+                addData[i].data[j].value == 'null' ||
+                addData[i].data[j].value == '') &&
             addData[i].data[j].required == 1) {
           check = true;
           break;
         } else if (addData[i].data[j].value != null &&
-            addData[i].data[j].value != "null")
-          data["${addData[i].data[j].label}"] =
+            addData[i].data[j].value != 'null')
+          data['${addData[i].data[j].label}'] =
               addData[i].data[j].value.toString();
         else {
-          data["${addData[i].data[j].label}"] = "";
+          data['${addData[i].data[j].label}'] = '';
         }
       }
     }
@@ -461,16 +492,16 @@ class _AddServiceVoucherStepTwoScreenState
         List product = [];
         for (int i = 0; i < _bloc.listProduct.length; i++) {
           product.add({
-            "id": _bloc.listProduct[i].id,
-            "price": _bloc.listProduct[i].item.sell_price,
-            "quantity": _bloc.listProduct[i].soLuong,
-            "vat": _bloc.listProduct[i].item.vat,
-            "unit": _bloc.listProduct[i].item.dvt,
+            'id': _bloc.listProduct[i].id,
+            'price': _bloc.listProduct[i].item.sell_price,
+            'quantity': _bloc.listProduct[i].soLuong,
+            'vat': _bloc.listProduct[i].item.vat,
+            'unit': _bloc.listProduct[i].item.dvt,
             'ten_combo': _bloc.listProduct[i].item.ten_combo,
             'combo_id': _bloc.listProduct[i].item.combo_id,
-            "sale_off": {
-              "value": _bloc.listProduct[i].giamGia,
-              "type": _bloc.listProduct[i].typeGiamGia,
+            'sale_off': {
+              'value': _bloc.listProduct[i].giamGia,
+              'type': _bloc.listProduct[i].typeGiamGia,
             }
           });
         }
@@ -507,6 +538,7 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
   late final int indexParent;
   late final bool isEdit;
   late final TextEditingController _controller;
+  late final StreamSubscription subscription;
 
   @override
   void initState() {
@@ -529,7 +561,7 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
             _bloc.addData[indexParent].data[indexChild].value ??
             '';
     isEdit = data.field_name == 'col131' || data.field_name == 'col121';
-    _bloc.infoCar.listen((value) {
+    subscription = _bloc.infoCar.listen((value) {
       _controller.text = _bloc.getTextInit(name: data.field_name) ??
           ((data.field_set_value ?? '').trim() != ''
               ? data.field_set_value
@@ -545,6 +577,12 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
               '';
     });
     super.initState();
+  }
+
+  @override
+  void deactivate() {
+    subscription.cancel();
+    super.deactivate();
   }
 
   @override
@@ -564,10 +602,12 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Quicksand",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: COLORS.RED))
+                          fontFamily: 'Quicksand',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: COLORS.RED,
+                        ),
+                      )
                     : TextSpan(),
               ],
             ),
@@ -591,11 +631,11 @@ class _fieldInputCustomerState extends State<fieldInputCustomer> {
                   controller: _controller,
                   enabled: !isEdit,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                  keyboardType: data.field_special == "default"
+                  keyboardType: data.field_special == 'default'
                       ? TextInputType.text
-                      : data.field_special == "numberic"
+                      : data.field_special == 'numberic'
                           ? TextInputType.number
-                          : data.field_special == "email-address"
+                          : data.field_special == 'email-address'
                               ? TextInputType.emailAddress
                               : TextInputType.text,
                   onChanged: (text) {
@@ -624,7 +664,7 @@ Widget fieldCar(
   int indexChild,
   BuildContext context, {
   bool noEdit = true,
-  String value = "",
+  String value = '',
 }) {
   return Container(
     margin: EdgeInsets.only(bottom: 16),
@@ -641,10 +681,12 @@ Widget fieldCar(
                   ? TextSpan(
                       text: '*',
                       style: TextStyle(
-                          fontFamily: "Quicksand",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: COLORS.RED))
+                        fontFamily: 'Quicksand',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: COLORS.RED,
+                      ),
+                    )
                   : TextSpan(),
             ],
           ),
@@ -665,105 +707,15 @@ Widget fieldCar(
               bottom: 16,
             ),
             child: Container(
-              child: Text('${value != '' ? value : (data.field_value ?? '')}',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+              child: Text(
+                '${value != '' ? value : (data.field_value ?? '')}',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
           ),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget TypeCarBase(
-  CustomerIndividualItemData data,
-  int indexParent,
-  int indexChild,
-  BuildContext context,
-  dynamic _bloc,
-  Function(String v) function,
-) {
-  if (data.field_set_value != '' && data.field_set_value != null) {
-    _bloc.loaiXe.add(data.field_set_value);
-  }
-  return Container(
-    margin: EdgeInsets.only(bottom: 16),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RichText(
-          textScaleFactor: MediaQuery.of(context).textScaleFactor,
-          text: TextSpan(
-            text: data.field_label ?? '',
-            style: AppStyle.DEFAULT_14W600,
-            children: <TextSpan>[
-              data.field_require == 1
-                  ? TextSpan(
-                      text: '*',
-                      style: TextStyle(
-                          fontFamily: "Quicksand",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: COLORS.RED))
-                  : TextSpan(),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 8,
-        ),
-        GestureDetector(
-          onTap: () {
-            showModalBottomSheet(
-                isDismissible: false,
-                enableDrag: false,
-                isScrollControlled: true,
-                context: context,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(
-                      30,
-                    ),
-                  ),
-                ),
-                builder: (BuildContext context) {
-                  return SelectCar();
-                });
-          },
-          child: StreamBuilder<String>(
-              stream: _bloc.loaiXe,
-              builder: (context, snapshot) {
-                if (_bloc.loaiXe.value.trim() != '') {
-                  function(_bloc.loaiXe.value);
-                }
-                return Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: COLORS.WHITE,
-                    borderRadius: BorderRadius.circular(
-                      5,
-                    ),
-                    border: Border.all(
-                      color: COLORS.ffBEB4B4,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: 10,
-                      top: 16,
-                      bottom: 16,
-                    ),
-                    child: Container(
-                      child: WidgetText(
-                        title: (_bloc.loaiXe.value != ''
-                            ? _bloc.loaiXe.value
-                            : '---${getT(KeyT.select)}---'),
-                        style: AppStyle.DEFAULT_14,
-                      ),
-                    ),
-                  ),
-                );
-              }),
         ),
       ],
     ),

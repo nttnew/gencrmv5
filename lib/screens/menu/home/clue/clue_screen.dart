@@ -40,7 +40,7 @@ class _ClueScreenState extends State<ClueScreen> {
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.DAU_MOI);
-    GetNotificationBloc.of(context).add(CheckNotification());
+    GetNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     super.initState();
   }
 

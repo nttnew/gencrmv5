@@ -41,7 +41,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
   void initState() {
     getThaoTac();
     PaymentContractBloc.of(context)
-        .add(InitGetPaymentContractEvent(int.parse(id)));
+        .add(InitGetPaymentContractEvent(int.parse(id), isLoad: false));
     _bloc = DetailContractBloc(
         userRepository: DetailContractBloc.of(context).userRepository);
     _blocNote =

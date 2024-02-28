@@ -63,7 +63,7 @@ class _InformationAccountState extends State<InformationAccount> {
 
   @override
   void initState() {
-    GetInforAccBloc.of(context).add(InitGetInforAcc());
+    GetInfoAccBloc.of(context).add(InitGetInforAcc());
     _phoneFocusNode.addListener(() {
       if (!_phoneFocusNode.hasFocus) {
         context.read<InforAccBloc>().add(PhoneUnfocused());
@@ -96,7 +96,7 @@ class _InformationAccountState extends State<InformationAccount> {
             GetSnackBarUtils.removeSnackBar();
             ShowDialogCustom.showDialogBase(
               onTap1: () {
-                GetInforAccBloc.of(context).add(InitGetInforAcc());
+                GetInfoAccBloc.of(context).add(InitGetInforAcc());
                 AppNavigator.navigateBack();
               },
               title: getT(KeyT.success),
@@ -114,7 +114,7 @@ class _InformationAccountState extends State<InformationAccount> {
             );
           }
         },
-        child: BlocBuilder<GetInforAccBloc, GetInforAccState>(
+        child: BlocBuilder<GetInfoAccBloc, GetInforAccState>(
           builder: (context, state) {
             if (state is UpdateGetInforAccState) {
               final bloc = InforAccBloc.of(context);

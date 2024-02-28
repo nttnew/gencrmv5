@@ -49,7 +49,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final dataCv = await getXeDichVu(
       page: BASE_URL.PAGE_DEFAULT,
     );
-    await loadMoreControllerCar.initData(dataCv);
+    await loadMoreControllerCar.initData(dataCv ?? []);
   }
 
   LoginBloc({
@@ -140,8 +140,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Future<dynamic> getXeDichVu({
     int page = BASE_URL.PAGE_DEFAULT,
+    bool isInit = true,
   }) async {
-    LoadingApi().pushLoading();
+    if (isInit) LoadingApi().pushLoading();
     dynamic resDynamic = '';
     try {
       final response = await userRepository.postXeDichVu(
@@ -159,8 +160,31 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       resDynamic = getT(KeyT.an_error_occurred);
       throw e;
     }
-    LoadingApi().popLoading();
+    if (isInit) LoadingApi().popLoading();
     return resDynamic;
+  }
+
+  Future<void> getVersionInfoCar({isCheck = false}) async {
+    if (isCheck) {
+      if ((shareLocal.getString(PreferencesKey.INFO_VERSION) == null ||
+          shareLocal.getString(PreferencesKey.INFO_VERSION) == '' ||
+          shareLocal.getString(PreferencesKey.INFO_VERSION) == []))
+        getVersionCar();
+    } else {
+      getVersionCar();
+    }
+  }
+
+  getVersionCar() async {
+    try {
+      final response = await userRepository.getVersionInfoCar();
+      if (isSuccess(response.code)) {
+        await shareLocal.putString(
+            PreferencesKey.INFO_VERSION, jsonEncode(response.data));
+      } else {}
+    } catch (e) {
+      throw e;
+    }
   }
 
   bool checkRegisterSuccess() {

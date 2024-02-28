@@ -48,7 +48,7 @@ class _SupportScreenState extends State<SupportScreen> {
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.HO_TRO);
-    GetNotificationBloc.of(context).add(CheckNotification());
+    GetNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     super.initState();
   }
 

@@ -100,7 +100,7 @@ class _MainDrawerState extends State<MainDrawer> {
             ),
             color: COLORS.SECONDS_COLOR,
             height: AppValue.heights * 0.18,
-            child: BlocBuilder<GetInforAccBloc, GetInforAccState>(
+            child: BlocBuilder<GetInfoAccBloc, GetInforAccState>(
               builder: (context, state) {
                 if (state is UpdateGetInforAccState) {
                   return Row(

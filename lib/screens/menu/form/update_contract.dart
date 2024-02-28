@@ -153,7 +153,7 @@ class _EditContractState extends State<EditContract> {
                         j < state.listEditData[i].data!.length;
                         j++) {
                       if (state.listEditData[i].data![j].field_special ==
-                          "url") {
+                          'url') {
                         if (state.listEditData[i].data![j].products != null)
                           for (int k = 0;
                               k <
@@ -170,8 +170,8 @@ class _EditContractState extends State<EditContract> {
                                   state.listEditData[i].data![j].products![k]
                                       .id_product
                                       .toString(),
-                                  "",
-                                  "",
+                                  '',
+                                  '',
                                   state.listEditData[i].data![j].products![k]
                                       .name_product,
                                   state.listEditData[i].data![j].products![k]
@@ -271,8 +271,8 @@ class _EditContractState extends State<EditContract> {
 
   Widget _getBody(
       CustomerIndividualItemData data, int indexParent, int indexChild) {
-    return data.field_hidden != "1"
-        ? data.field_special == "none-edit"
+    return data.field_hidden != '1'
+        ? data.field_special == 'none-edit'
             ? (data.field_name == 'so_dien_thoai'
                 ? BlocBuilder<PhoneBloc, PhoneState>(
                     builder: (context, stateA) {
@@ -298,7 +298,7 @@ class _EditContractState extends State<EditContract> {
                         })
                     : _fieldInputCustomer(data, indexParent, indexChild,
                         noEdit: true, value: data.field_set_value ?? ''))
-            : data.field_special == "url"
+            : data.field_special == 'url'
                 ? ProductContract(
                     listBtn: data.button,
                     data: listProduct,
@@ -307,7 +307,7 @@ class _EditContractState extends State<EditContract> {
                     neverHidden: true,
                     canDelete: true,
                   )
-                : data.field_type == "SELECT"
+                : data.field_type == 'SELECT'
                     ? checkLocation(data)
                         ? LocationWidget(
                             data: data,
@@ -392,7 +392,7 @@ class _EditContractState extends State<EditContract> {
                                       }
                                     },
                                     value: data.field_value ?? ''))
-                    : data.field_type == "TEXT_MULTI"
+                    : data.field_type == 'TEXT_MULTI'
                         ? SelectMulti(
                             dropdownItemList: data.field_datasource ?? [],
                             label: data.field_label ?? '',
@@ -408,18 +408,18 @@ class _EditContractState extends State<EditContract> {
                                   data;
                             },
                           )
-                        : data.field_type == "HIDDEN"
+                        : data.field_type == 'HIDDEN'
                             ? SizedBox.shrink()
-                            : data.field_type == "TEXT_MULTI_NEW"
+                            : data.field_type == 'TEXT_MULTI_NEW'
                                 ? InputMultipleWidget(
                                     data: data,
                                     onSelect: (data) {
                                       addData[indexParent]
                                           .data[indexChild]
-                                          .value = data.join(",");
+                                          .value = data.join(',');
                                     },
                                   )
-                                : data.field_type == "DATE"
+                                : data.field_type == 'DATE'
                                     ? WidgetInputDate(
                                         data: data,
                                         dateText: data.field_set_value,
@@ -434,7 +434,7 @@ class _EditContractState extends State<EditContract> {
                                               .value = v;
                                         },
                                       )
-                                    : data.field_type == "DATETIME"
+                                    : data.field_type == 'DATETIME'
                                         ? WidgetInputDate(
                                             isDate: false,
                                             data: data,
@@ -474,7 +474,7 @@ class _EditContractState extends State<EditContract> {
                                                       value: data.field_value);
                                                 }
                                               })
-                                            : data.field_type == "PERCENTAGE"
+                                            : data.field_type == 'PERCENTAGE'
                                                 ? FieldInputPercent(
                                                     data: data,
                                                     onChanged: (text) {
@@ -490,7 +490,7 @@ class _EditContractState extends State<EditContract> {
 
   Widget _fieldNoEdit(
       CustomerIndividualItemData data, int indexParent, int indexChild,
-      {String value = ""}) {
+      {String value = ''}) {
     addData[indexParent].data[indexChild].value = value;
     return Container(
       margin: EdgeInsets.only(bottom: 16),
@@ -534,7 +534,7 @@ class _EditContractState extends State<EditContract> {
 
   Widget _fieldInputCustomer(
       CustomerIndividualItemData data, int indexParent, int indexChild,
-      {bool noEdit = false, String value = ""}) {
+      {bool noEdit = false, String value = ''}) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Column(
@@ -550,7 +550,7 @@ class _EditContractState extends State<EditContract> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Quicksand",
+                            fontFamily: 'Quicksand',
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                             color: COLORS.RED))
@@ -582,28 +582,28 @@ class _EditContractState extends State<EditContract> {
                   minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
                   maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
                   style: AppStyle.DEFAULT_14W600,
-                  keyboardType: data.field_type == "TEXT_NUMERIC"
+                  keyboardType: data.field_type == 'TEXT_NUMERIC'
                       ? TextInputType.number
-                      : data.field_special == "default"
+                      : data.field_special == 'default'
                           ? TextInputType.text
-                          : (data.field_special == "numberic")
+                          : (data.field_special == 'numberic')
                               ? TextInputType.number
-                              : data.field_special == "email-address"
+                              : data.field_special == 'email-address'
                                   ? TextInputType.emailAddress
                                   : TextInputType.text,
                   onChanged: (text) {
                     addData[indexParent].data[indexChild].value = text;
                   },
                   readOnly: noEdit,
-                  initialValue: value != ""
+                  initialValue: value != ''
                       ? value
                       : noEdit == true
                           ? data.field_value
-                          : (data.field_type == "MONEY" &&
+                          : (data.field_type == 'MONEY' &&
                                   data.field_set_value != null)
                               ? data.field_set_value
-                                  .replaceAll(",", "")
-                                  .replaceAll(".", "")
+                                  .replaceAll(',', '')
+                                  .replaceAll('.', '')
                                   .toString()
                               : data.field_set_value != null
                                   ? data.field_set_value.toString()
@@ -628,10 +628,10 @@ class _EditContractState extends State<EditContract> {
     for (int i = 0; i < addData.length; i++) {
       for (int j = 0; j < addData[i].data.length; j++) {
         if (addData[i].data[j].value != null &&
-            addData[i].data[j].value != "null")
-          data["${addData[i].data[j].label}"] = addData[i].data[j].value;
+            addData[i].data[j].value != 'null')
+          data['${addData[i].data[j].label}'] = addData[i].data[j].value;
         else {
-          data["${addData[i].data[j].label}"] = "";
+          data['${addData[i].data[j].label}'] = '';
         }
       }
     }
@@ -639,16 +639,16 @@ class _EditContractState extends State<EditContract> {
       List product = [];
       for (int i = 0; i < listProduct.length; i++) {
         product.add({
-          "id": listProduct[i].id,
-          "price": listProduct[i].item.sell_price,
-          "quantity": listProduct[i].soLuong,
-          "vat": listProduct[i].item.vat,
-          "unit": listProduct[i].item.dvt,
+          'id': listProduct[i].id,
+          'price': listProduct[i].item.sell_price,
+          'quantity': listProduct[i].soLuong,
+          'vat': listProduct[i].item.vat,
+          'unit': listProduct[i].item.dvt,
           'ten_combo': listProduct[i].item.ten_combo,
           'combo_id': listProduct[i].item.combo_id,
-          "sale_off": {
-            "value": listProduct[i].giamGia,
-            "type": listProduct[i].typeGiamGia
+          'sale_off': {
+            'value': listProduct[i].giamGia,
+            'type': listProduct[i].typeGiamGia
           }
         });
       }

@@ -19,6 +19,7 @@ CustomerIndividualItemData _$CustomerIndividualItemDataFromJson(
       json['field_hidden'] as String?,
       json['parent'] as String?,
       json['field_require'] as int?,
+      json['field_read_only'] as int?,
       json['field_set_value'],
       (json['field_datasource'] as List<dynamic>?)
           ?.map((e) => e as List<dynamic>)
@@ -49,6 +50,7 @@ Map<String, dynamic> _$CustomerIndividualItemDataToJson(
       'field_hidden': instance.field_hidden,
       'parent': instance.parent,
       'field_require': instance.field_require,
+      'field_read_only': instance.field_read_only,
       'field_set_value': instance.field_set_value,
       'field_datasource': instance.field_datasource,
       'field_set_value_datasource': instance.field_set_value_datasource,

@@ -34,7 +34,7 @@ class FormAddSign extends StatefulWidget {
 
 class _FormAddSignState extends State<FormAddSign> {
   String title = Get.arguments[0];
-  String id = Get.arguments[1] != null ? Get.arguments[1].toString() : "";
+  String id = Get.arguments[1] != null ? Get.arguments[1].toString() : '';
   String type = Get.arguments[2] ?? '';
   List<ChuKyModelResponse> chuKyModelResponse = [];
   List data = [];
@@ -259,12 +259,12 @@ class _FormAddSignState extends State<FormAddSign> {
         itemCount: list.length,
         itemBuilder: (context, indexChild) {
           final data = list[indexChild];
-          return data.field_hidden != "1"
+          return data.field_hidden != '1'
               ? _checkHide(data.parent)
-                  ? (data.field_special ?? '') == "none-edit"
+                  ? (data.field_special ?? '') == 'none-edit'
                       ? _fieldInputCustomer(data, indexParent, indexChild,
                           noEdit: true)
-                      : data.field_type == "SELECT"
+                      : data.field_type == 'SELECT'
                           ? checkLocation(data)
                               ? LocationWidget(
                                   data: data,
@@ -291,7 +291,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                           '')
                                       : '',
                                 )
-                          : data.field_type == "TEXT_MULTI"
+                          : data.field_type == 'TEXT_MULTI'
                               ? SelectMulti(
                                   dropdownItemList: data.field_datasource ?? [],
                                   label: data.field_label ?? '',
@@ -308,18 +308,18 @@ class _FormAddSignState extends State<FormAddSign> {
                                         .value = data;
                                   },
                                 )
-                              : data.field_type == "HIDDEN"
+                              : data.field_type == 'HIDDEN'
                                   ? SizedBox.shrink()
-                                  : data.field_type == "TEXT_MULTI_NEW"
+                                  : data.field_type == 'TEXT_MULTI_NEW'
                                       ? InputMultipleWidget(
                                           data: data,
                                           onSelect: (data) {
                                             addData[indexParent]
                                                 .data[indexChild]
-                                                .value = data.join(",");
+                                                .value = data.join(',');
                                           },
                                         )
-                                      : data.field_type == "DATE"
+                                      : data.field_type == 'DATE'
                                           ? WidgetInputDate(
                                               data: data,
                                               dateText: data.field_set_value,
@@ -334,7 +334,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                                     .value = v;
                                               },
                                             )
-                                          : data.field_type == "DATETIME"
+                                          : data.field_type == 'DATETIME'
                                               ? WidgetInputDate(
                                                   isDate: false,
                                                   data: data,
@@ -351,7 +351,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                                         .value = v;
                                                   },
                                                 )
-                                              : data.field_type == "CHECK"
+                                              : data.field_type == 'CHECK'
                                                   ? RenderCheckBox(
                                                       onChange: (check) {
                                                         addData[indexParent]
@@ -362,7 +362,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                                       data: data,
                                                     )
                                                   : data.field_type ==
-                                                          "PERCENTAGE"
+                                                          'PERCENTAGE'
                                                       ? FieldInputPercent(
                                                           data: data,
                                                           onChanged: (text) {
@@ -373,7 +373,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                                           },
                                                         )
                                                       : data.field_type ==
-                                                              "SWITCH"
+                                                              'SWITCH'
                                                           ? SwitchBase(
                                                               isHide: soTien ==
                                                                       0 &&
@@ -400,7 +400,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                                               data: data,
                                                             )
                                                           : data.field_type ==
-                                                                  "RATE"
+                                                                  'RATE'
                                                               ? _rateWidget(
                                                                   data,
                                                                   indexParent,
@@ -411,10 +411,10 @@ class _FormAddSignState extends State<FormAddSign> {
                                                                   noEdit: data.field_set_value !=
                                                                           null &&
                                                                       data.field_set_value !=
-                                                                          "0",
+                                                                          '0',
                                                                 )
                                                               : data.field_type ==
-                                                                      "TEXTAREA"
+                                                                      'TEXTAREA'
                                                                   ? _fieldInputTextarea(
                                                                       data,
                                                                       indexParent,
@@ -567,7 +567,7 @@ class _FormAddSignState extends State<FormAddSign> {
             width: MediaQuery.of(context).size.width,
             child: Center(
                 child: Html(shrinkWrap: true, data: dataSign?.chuky, style: {
-              "img": Style(),
+              'img': Style(),
             })),
           ),
         SizedBox(
@@ -585,7 +585,7 @@ class _FormAddSignState extends State<FormAddSign> {
 
   Widget _fieldInputCustomer(
       CustomerIndividualItemData data, int indexParent, int indexChild,
-      {bool noEdit = false, String value = ""}) {
+      {bool noEdit = false, String value = ''}) {
     if (data.field_name == 'hd_sotien' &&
             addData[indexParent].data[indexChild].value == null ||
         addData[indexParent].data[indexChild].value == '' ||
@@ -607,7 +607,7 @@ class _FormAddSignState extends State<FormAddSign> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Quicksand",
+                            fontFamily: 'Quicksand',
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: COLORS.RED))
@@ -632,20 +632,20 @@ class _FormAddSignState extends State<FormAddSign> {
                   minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
                   maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                  keyboardType: data.field_type == "TEXT_NUMERIC"
+                  keyboardType: data.field_type == 'TEXT_NUMERIC'
                       ? TextInputType.number
-                      : data.field_special == "default"
+                      : data.field_special == 'default'
                           ? TextInputType.text
-                          : (data.field_special == "numberic")
+                          : (data.field_special == 'numberic')
                               ? TextInputType.number
-                              : data.field_special == "email-address"
+                              : data.field_special == 'email-address'
                                   ? TextInputType.emailAddress
                                   : TextInputType.text,
                   onChanged: (text) {
                     addData[indexParent].data[indexChild].value = text;
                   },
                   readOnly: noEdit,
-                  initialValue: value != ""
+                  initialValue: value != ''
                       ? value
                       : noEdit == true
                           ? data.field_value
@@ -674,9 +674,9 @@ class _FormAddSignState extends State<FormAddSign> {
                 style: AppStyle.DEFAULT_14W600,
                 children: <TextSpan>[
                   TextSpan(
-                      text: " ${AppValue.format_money(soTien.toString())}",
+                      text: ' ${AppValue.format_money(soTien.toString())}',
                       style: TextStyle(
-                          fontFamily: "Quicksand",
+                          fontFamily: 'Quicksand',
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: COLORS.TEXT_COLOR)),
@@ -691,7 +691,7 @@ class _FormAddSignState extends State<FormAddSign> {
 
   Widget _fieldInputTextarea(
       CustomerIndividualItemData data, int indexParent, int indexChild,
-      {bool noEdit = false, String value = ""}) {
+      {bool noEdit = false, String value = ''}) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Column(
@@ -711,20 +711,20 @@ class _FormAddSignState extends State<FormAddSign> {
                   minLines: 2,
                   maxLines: 99,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                  keyboardType: data.field_type == "TEXT_NUMERIC"
+                  keyboardType: data.field_type == 'TEXT_NUMERIC'
                       ? TextInputType.number
-                      : data.field_special == "default"
+                      : data.field_special == 'default'
                           ? TextInputType.text
-                          : (data.field_special == "numberic")
+                          : (data.field_special == 'numberic')
                               ? TextInputType.number
-                              : data.field_special == "email-address"
+                              : data.field_special == 'email-address'
                                   ? TextInputType.emailAddress
                                   : TextInputType.text,
                   onChanged: (text) {
                     addData[indexParent].data[indexChild].value = text;
                   },
                   readOnly: noEdit,
-                  initialValue: value != ""
+                  initialValue: value != ''
                       ? value
                       : noEdit == true
                           ? data.field_value
@@ -772,7 +772,7 @@ class _FormAddSignState extends State<FormAddSign> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Quicksand",
+                            fontFamily: 'Quicksand',
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: COLORS.RED))
@@ -837,24 +837,24 @@ class _FormAddSignState extends State<FormAddSign> {
     for (int i = 0; i < addData.length; i++) {
       for (int j = 0; j < addData[i].data.length; j++) {
         if ((addData[i].data[j].value == null ||
-                addData[i].data[j].value == "null" ||
-                addData[i].data[j].value == "") &&
+                addData[i].data[j].value == 'null' ||
+                addData[i].data[j].value == '') &&
             addData[i].data[j].required == 1) {
           check = true;
           break;
         } else if (addData[i].data[j].value != null &&
-            addData[i].data[j].value != "null") {
+            addData[i].data[j].value != 'null') {
           if (_checkHide(addData[i].data[j].parent)) {
-            data["${addData[i].data[j].label}"] = addData[i].data[j].value;
+            data['${addData[i].data[j].label}'] = addData[i].data[j].value;
           }
         } else {
-          data["${addData[i].data[j].label}"] = "";
+          data['${addData[i].data[j].label}'] = '';
         }
       }
     }
     final isCheckMoney = double.parse(
-            data["hd_so_tien"] != '' && data["hd_so_tien"] != null
-                ? data["hd_so_tien"]
+            data['hd_so_tien'] != '' && data['hd_so_tien'] != null
+                ? data['hd_so_tien']
                 : '0') >
         soTien;
     if (isCheckMoney) {
@@ -862,7 +862,7 @@ class _FormAddSignState extends State<FormAddSign> {
     }
 
     final isCheckRate =
-        data["kh_danh_gia_nd"] != '' && data["kh_danh_gia_diem"] == '0';
+        data['kh_danh_gia_nd'] != '' && data['kh_danh_gia_diem'] == '0';
 
     if (isCheckRate) {
       check = true;
@@ -890,7 +890,7 @@ class _FormAddSignState extends State<FormAddSign> {
       }
       data['chuky'] = chukys;
     }
-    data["id"] = id;
+    data['id'] = id;
     //
     if (check == true) {
       ShowDialogCustom.showDialogBase(
@@ -946,7 +946,7 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: TextStyle(
-                  fontFamily: "Quicksand",
+                  fontFamily: 'Quicksand',
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: COLORS.BLACK),
@@ -955,7 +955,7 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Quicksand",
+                            fontFamily: 'Quicksand',
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                             color: COLORS.RED))
@@ -1004,7 +1004,7 @@ class _SwitchBaseState extends State<SwitchBase> {
               text: TextSpan(
                 text: widget.data.field_label ?? '',
                 style: TextStyle(
-                    fontFamily: "Quicksand",
+                    fontFamily: 'Quicksand',
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: COLORS.BLACK),
@@ -1013,7 +1013,7 @@ class _SwitchBaseState extends State<SwitchBase> {
                       ? TextSpan(
                           text: '*',
                           style: TextStyle(
-                              fontFamily: "Quicksand",
+                              fontFamily: 'Quicksand',
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                               color: COLORS.RED))

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,8 +7,6 @@ import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/list_notification.dart';
-import '../../src/preferences_key.dart';
-import '../../storages/share_local.dart';
 import '../../widgets/loading_api.dart';
 
 part 'unread_list_notifi_event.dart';
@@ -23,9 +20,7 @@ class GetNotificationBloc
 
   GetNotificationBloc({required UserRepository userRepository})
       : userRepository = userRepository,
-        super(InitGetNotificationState()) {
-    unawaited(getVersionInfoCar());
-  }
+        super(InitGetNotificationState());
 
   @override
   Stream<NotificationState> mapEventToState(
@@ -37,19 +32,7 @@ class GetNotificationBloc
     } else if (event is ReadNotificationEvent) {
       yield* _readNotification(id: event.id, type: event.type);
     } else if (event is CheckNotification) {
-      yield* _checkNotification();
-    }
-  }
-
-  Future<void> getVersionInfoCar() async {
-    try {
-      final response = await userRepository.getVersionInfoCar();
-      if (isSuccess(response.code)) {
-        await shareLocal.putString(
-            PreferencesKey.INFO_VERSION, jsonEncode(response.data));
-      } else {}
-    } catch (e) {
-      throw e;
+      yield* _checkNotification(event.isLoading ?? true);
     }
   }
 
@@ -68,23 +51,20 @@ class GetNotificationBloc
         } else {
           listNotification!.addAll(response.data.list!);
         }
-        LoadingApi().popLoading();
+        if (isLoading) LoadingApi().popLoading();
         yield UpdateNotificationState(
             list: listNotification!,
             total: response.data.total!,
             limit: response.data.limit!,
             page: page);
       } else {
-        LoadingApi().popLoading();
-        yield ErrorGetNotificationState(response.msg ?? "");
+        if (isLoading) LoadingApi().popLoading();
+        yield ErrorGetNotificationState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
-      yield ErrorGetNotificationState(
-          getT(KeyT.an_error_occurred));
-      throw e;
+      if (isLoading) LoadingApi().popLoading();
+      yield ErrorGetNotificationState(getT(KeyT.an_error_occurred));
     }
-    LoadingApi().popLoading();
   }
 
   Stream<NotificationState> _deleteNotification(
@@ -95,12 +75,11 @@ class GetNotificationBloc
         yield DeleteNotificationState();
       } else {
         LoadingApi().popLoading();
-        yield ErrorDeleteNotificationState(response.msg ?? "");
+        yield ErrorDeleteNotificationState(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorDeleteNotificationState(
-         getT(KeyT.an_error_occurred));
+      yield ErrorDeleteNotificationState(getT(KeyT.an_error_occurred));
       throw e;
     }
   }
@@ -114,34 +93,31 @@ class GetNotificationBloc
         yield ReadNotificationState();
       } else {
         LoadingApi().popLoading();
-        yield ErrorNotificationState(response.msg ?? "");
+        yield ErrorNotificationState(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorNotificationState(
-         getT(KeyT.an_error_occurred));
-      throw e;
+      yield ErrorNotificationState(getT(KeyT.an_error_occurred));
     }
   }
 
-  Stream<NotificationState> _checkNotification() async* {
+  Stream<NotificationState> _checkNotification(bool isLoading) async* {
     try {
+      if (isLoading) LoadingApi().pushLoading();
       final response = await userRepository.getListUnReadNotification(1);
       if (isSuccess(response.code)) {
+        if (isLoading) LoadingApi().popLoading();
         if (response.data.list!.length > 0) {
           total.add(int.parse(response.data.total ?? '0'));
-          LoadingApi().popLoading();
           yield NotificationNeedRead();
         }
       } else {
-        LoadingApi().popLoading();
-        yield ErrorGetNotificationState(response.msg ?? "");
+        if (isLoading) LoadingApi().popLoading();
+        yield ErrorGetNotificationState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
-      yield ErrorGetNotificationState(
-         getT(KeyT.an_error_occurred));
-      throw e;
+      if (isLoading) LoadingApi().popLoading();
+      yield ErrorGetNotificationState(getT(KeyT.an_error_occurred));
     }
   }
 

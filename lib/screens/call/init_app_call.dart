@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_pitel_voip/pitel_sdk/pitel_call.dart';
@@ -43,6 +44,7 @@ class _InitCallAppState extends ConsumerState<InitCallApp> {
   _init() async {
     await LoginBloc.of(context).getDataCall();
     await _registerCall();
+    unawaited(LoginBloc.of(context).getVersionInfoCar(isCheck: true));
   }
 
   void _onRegisterState(String registerState) async {

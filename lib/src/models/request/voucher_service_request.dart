@@ -77,13 +77,19 @@ class VoucherServiceRequest {
 class Products {
   String? id;
   String? price;
-  int? quantity;
+  double? quantity;
   String? vat;
   String? unit;
   SaleOff? saleOff;
 
-  Products(
-      {this.id, this.price, this.quantity, this.vat, this.unit, this.saleOff});
+  Products({
+    this.id,
+    this.price,
+    this.quantity,
+    this.vat,
+    this.unit,
+    this.saleOff,
+  });
 
   Products.fromJson(Map<String, dynamic> json) {
     id = json['id'];

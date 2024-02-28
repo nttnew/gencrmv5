@@ -11,6 +11,7 @@ import 'package:gen_crm/bloc/form_edit/form_edit_bloc.dart';
 import 'package:gen_crm/models/model_data_add.dart';
 import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/menu/form/widget/location_select.dart';
+import 'package:gen_crm/screens/menu/form/widget/type_car.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
@@ -51,7 +52,7 @@ class _FormEditState extends State<FormEdit> {
   List<ModelItemAdd> addData = [];
   List<List<dynamic>> dataDauMoi = [];
   bool firstTime = true;
-  String customer_id = "";
+  String customer_id = '';
   File? fileUpload;
   final UserRepository userRepository = UserRepository();
 
@@ -268,12 +269,13 @@ class _FormEditState extends State<FormEdit> {
 
   Widget _getBody(
       CustomerIndividualItemData data, int indexParent, int indexChild) {
-    if (data.field_name == "col131")
+    if (data.field_name == 'col131')
       customer_id = data.field_set_value.toString();
-    return data.field_hidden != "1"
-        ? data.field_special == "none-edit"
-            ? (data.field_name == "so_dien_thoai"
-                ? BlocBuilder<PhoneBloc, PhoneState>(builder: (context, stateA) {
+    return data.field_hidden != '1'
+        ? data.field_special == 'none-edit'
+            ? (data.field_name == 'so_dien_thoai'
+                ? BlocBuilder<PhoneBloc, PhoneState>(
+                    builder: (context, stateA) {
                     if (stateA is SuccessPhoneState) {
                       return _fieldInputCustomer(
                         data,
@@ -310,11 +312,11 @@ class _FormEditState extends State<FormEdit> {
                         indexChild,
                         noEdit: true,
                       ))
-            : data.field_type == "SELECT"
+            : data.field_type == 'SELECT'
                 ? ((data.field_name == 'cv_nguoiLienHe' ||
                         data.field_name == 'col131')
-                    ? BlocBuilder<ContactByCustomerBloc, ContactByCustomerState>(
-                        builder: (context, stateA) {
+                    ? BlocBuilder<ContactByCustomerBloc,
+                        ContactByCustomerState>(builder: (context, stateA) {
                         if (stateA is UpdateGetContacBytCustomerState)
                           return InputDropdown(
                             typeScreen: type,
@@ -323,7 +325,7 @@ class _FormEditState extends State<FormEdit> {
                             onSuccess: (value) {
                               addData[indexParent].data[indexChild].value =
                                   value;
-                              if (data.field_name != "cv_kh")
+                              if (data.field_name != 'cv_kh')
                                 PhoneBloc.of(context)
                                     .add(InitAgencyPhoneEvent(value));
                             },
@@ -343,7 +345,7 @@ class _FormEditState extends State<FormEdit> {
                             onSuccess: (value) {
                               addData[indexParent].data[indexChild].value =
                                   value;
-                              if (data.field_name != "cv_kh")
+                              if (data.field_name != 'cv_kh')
                                 PhoneBloc.of(context)
                                     .add(InitAgencyPhoneEvent(value));
                             },
@@ -369,8 +371,8 @@ class _FormEditState extends State<FormEdit> {
                             onSuccess: (value) {
                               addData[indexParent].data[indexChild].value =
                                   value;
-                              if (data.field_name == "cv_kh" ||
-                                  data.field_name == "col121") {
+                              if (data.field_name == 'cv_kh' ||
+                                  data.field_name == 'col121') {
                                 ContactByCustomerBloc.of(context)
                                     .add(InitGetContactByCustomerrEvent(value));
                                 PhoneBloc.of(context)
@@ -382,7 +384,7 @@ class _FormEditState extends State<FormEdit> {
                                 ? data.field_set_value_datasource![0][1]
                                     .toString()
                                 : '')))
-                : data.field_type == "TEXT_MULTI"
+                : data.field_type == 'TEXT_MULTI'
                     ? SelectMulti(
                         dropdownItemList: data.field_datasource ?? [],
                         label: data.field_label ?? '',
@@ -397,21 +399,21 @@ class _FormEditState extends State<FormEdit> {
                           addData[indexParent].data[indexChild].value = data;
                         },
                       )
-                    : data.field_type == "HIDDEN"
+                    : data.field_type == 'HIDDEN'
                         ? SizedBox.shrink()
-                        : data.field_type == "TEXT_MULTI_NEW"
+                        : data.field_type == 'TEXT_MULTI_NEW'
                             ? InputMultipleWidget(
                                 data: data,
                                 onSelect: (data) {
                                   addData[indexParent].data[indexChild].value =
-                                      data.join(",");
+                                      data.join(',');
                                 },
                                 value: (data.field_set_value != null &&
-                                        data.field_set_value != "")
-                                    ? data.field_set_value.split(",")
+                                        data.field_set_value != '')
+                                    ? data.field_set_value.split(',')
                                     : [],
                               )
-                            : data.field_type == "DATE"
+                            : data.field_type == 'DATE'
                                 ? WidgetInputDate(
                                     data: data,
                                     dateText: data.field_set_value,
@@ -426,7 +428,7 @@ class _FormEditState extends State<FormEdit> {
                                           .value = v;
                                     },
                                   )
-                                : data.field_type == "DATETIME"
+                                : data.field_type == 'DATETIME'
                                     ? WidgetInputDate(
                                         isDate: false,
                                         data: data,
@@ -442,7 +444,7 @@ class _FormEditState extends State<FormEdit> {
                                               .value = v;
                                         },
                                       )
-                                    : data.field_type == "CHECK"
+                                    : data.field_type == 'CHECK'
                                         ? RenderCheckBox(
                                             onChange: (check) {
                                               addData[indexParent]
@@ -451,7 +453,7 @@ class _FormEditState extends State<FormEdit> {
                                             },
                                             data: data,
                                           )
-                                        : data.field_type == "PERCENTAGE"
+                                        : data.field_type == 'PERCENTAGE'
                                             ? FieldInputPercent(
                                                 data: data,
                                                 onChanged: (text) {
@@ -460,7 +462,8 @@ class _FormEditState extends State<FormEdit> {
                                                       .value = text;
                                                 },
                                               )
-                                            : data.field_name == 'chi_tiet_xe' &&
+                                            : data.field_name ==
+                                                        'chi_tiet_xe' &&
                                                     data.field_type == 'TEXT'
                                                 ? TypeCarBase(
                                                     data,
@@ -476,15 +479,22 @@ class _FormEditState extends State<FormEdit> {
                                                     },
                                                   )
                                                 : _fieldInputCustomer(
-                                                    data, indexParent, indexChild,
+                                                    data,
+                                                    indexParent,
+                                                    indexChild,
                                                     value: data.field_set_value
-                                                        .toString())
-        : SizedBox();
+                                                        .toString(),
+                                                  )
+        : SizedBox.shrink();
   }
 
   Widget _fieldInputCustomer(
-      CustomerIndividualItemData data, int indexParent, int indexChild,
-      {bool noEdit = false, String value = ""}) {
+    CustomerIndividualItemData data,
+    int indexParent,
+    int indexChild, {
+    bool noEdit = false,
+    String value = '',
+  }) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Column(
@@ -500,7 +510,7 @@ class _FormEditState extends State<FormEdit> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Quicksand",
+                            fontFamily: 'Quicksand',
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: COLORS.RED))
@@ -525,18 +535,18 @@ class _FormEditState extends State<FormEdit> {
                   minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
                   maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                  keyboardType: data.field_special == "default"
+                  keyboardType: data.field_special == 'default'
                       ? TextInputType.text
-                      : data.field_special == "numberic"
+                      : data.field_special == 'numberic'
                           ? TextInputType.number
-                          : data.field_special == "email-address"
+                          : data.field_special == 'email-address'
                               ? TextInputType.emailAddress
                               : TextInputType.text,
                   onChanged: (text) {
                     addData[indexParent].data[indexChild].value = text;
                   },
                   readOnly: noEdit,
-                  initialValue: value == "null" ? "" : value,
+                  initialValue: value == 'null' ? '' : value,
                   decoration: InputDecoration(
                       hintStyle: AppStyle.DEFAULT_14W500,
                       focusedBorder: InputBorder.none,
@@ -559,15 +569,15 @@ class _FormEditState extends State<FormEdit> {
       for (int j = 0; j < addData[i].data.length; j++) {
         if ((addData[i].data[j].value == null ||
                 addData[i].data[j].value == 'null' ||
-                addData[i].data[j].value == "") &&
+                addData[i].data[j].value == '') &&
             addData[i].data[j].required == 1) {
           check = true;
           break;
         } else if (addData[i].data[j].value != null &&
             addData[i].data[j].value != 'null') {
-          data["${addData[i].data[j].label}"] = addData[i].data[j].value;
+          data['${addData[i].data[j].label}'] = addData[i].data[j].value;
         } else
-          data["${addData[i].data[j].label}"] = "";
+          data['${addData[i].data[j].label}'] = '';
       }
     }
     if (check == true) {
@@ -576,7 +586,7 @@ class _FormEditState extends State<FormEdit> {
         content: getT(KeyT.please_enter_all_required_fields),
       );
     } else {
-      data["id"] = id;
+      data['id'] = id;
       if (type == EDIT_CUSTOMER) {
         AddDataBloc.of(context).add(
             EditCustomerEvent(data, files: AttackBloc.of(context).listFile));
@@ -624,7 +634,7 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
   void initState() {
     super.initState();
     setState(() {
-      isCheck = widget.data.field_set_value == "1" ? true : false;
+      isCheck = widget.data.field_set_value == '1' ? true : false;
     });
   }
 
@@ -652,7 +662,7 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: TextStyle(
-                fontFamily: "Quicksand",
+                fontFamily: 'Quicksand',
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: COLORS.BLACK,
@@ -662,7 +672,7 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                          fontFamily: "Quicksand",
+                          fontFamily: 'Quicksand',
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: COLORS.RED,

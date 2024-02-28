@@ -173,6 +173,7 @@ class _ListProductState extends State<ListProduct> {
                             onReload: () {
                               reload();
                             },
+                            onDelete: (ProductModel productModel) {},
                           );
                         }),
                       ),

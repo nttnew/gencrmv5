@@ -115,8 +115,8 @@ class _ScreenMainState extends State<ScreenMain> {
   void initState() {
     _blocLogin = LoginBloc.of(context);
     _showFaceId();
-    GetInforAccBloc.of(context).add(InitGetInforAcc());
-    GetNotificationBloc.of(context).add(CheckNotification());
+    GetInfoAccBloc.of(context).add(InitGetInforAcc(isLoading: false));
+    GetNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     GetNotificationBloc.of(context).add(
       InitGetListUnReadNotificationEvent(
         BASE_URL.PAGE_DEFAULT,
@@ -253,7 +253,7 @@ class _ScreenMainState extends State<ScreenMain> {
         ),
         child: Column(
           children: [
-            BlocBuilder<GetInforAccBloc, GetInforAccState>(
+            BlocBuilder<GetInfoAccBloc, GetInforAccState>(
                 builder: (context, state) {
               if (state is UpdateGetInforAccState) {
                 return WidgetAppbar(

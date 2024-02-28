@@ -21,13 +21,18 @@ class PaymentContractBloc
   Stream<PaymentContractState> mapEventToState(
       PaymentContractEvent event) async* {
     if (event is InitGetPaymentContractEvent) {
-      yield* _getListPaymentContract(id: event.id);
+      yield* _getListPaymentContract(
+        id: event.id,
+        isLoad: event.isLoad ?? true,
+      );
     }
   }
 
-  Stream<PaymentContractState> _getListPaymentContract(
-      {required int id}) async* {
-    LoadingApi().pushLoading();
+  Stream<PaymentContractState> _getListPaymentContract({
+    required int id,
+    required bool isLoad,
+  }) async* {
+    if (isLoad) LoadingApi().pushLoading();
     try {
       yield LoadingPaymentContractState();
       final response = await userRepository.getPaymentContract(id);
@@ -42,11 +47,10 @@ class PaymentContractBloc
       } else
         yield ErrorPaymentContractState(response.msg ?? '');
     } catch (e) {
-      yield ErrorPaymentContractState(
-         getT(KeyT.an_error_occurred));
+      yield ErrorPaymentContractState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    if (isLoad) LoadingApi().popLoading();
   }
 
   static PaymentContractBloc of(BuildContext context) =>

@@ -174,8 +174,8 @@ class _AddCustomerState extends State<AddCustomer> {
 
   Widget _getBody(
       CustomerIndividualItemData data, int indexParent, int indexChild) {
-    return data.field_hidden != "1"
-        ? data.field_type == "SELECT"
+    return data.field_hidden != '1'
+        ? data.field_type == 'SELECT'
             ? checkLocation(data)
                 ? LocationWidget(
                     data: data,
@@ -193,7 +193,7 @@ class _AddCustomerState extends State<AddCustomer> {
                     },
                     value: data.field_value ?? '',
                   )
-            : data.field_type == "TEXT_MULTI"
+            : data.field_type == 'TEXT_MULTI'
                 ? SelectMulti(
                     dropdownItemList: data.field_datasource ?? [],
                     label: data.field_label ?? '',
@@ -208,16 +208,16 @@ class _AddCustomerState extends State<AddCustomer> {
                       addData[indexParent].data[indexChild].value = data;
                     },
                   )
-                : data.field_type == "HIDDEN"
+                : data.field_type == 'HIDDEN'
                     ? SizedBox.shrink()
-                    : data.field_type == "TEXT_MULTI_NEW"
+                    : data.field_type == 'TEXT_MULTI_NEW'
                         ? InputMultipleWidget(
                             data: data,
                             onSelect: (data) {
                               addData[indexParent].data[indexChild].value =
-                                  data.join(",");
+                                  data.join(',');
                             })
-                        : data.field_type == "DATE"
+                        : data.field_type == 'DATE'
                             ? WidgetInputDate(
                                 data: data,
                                 dateText: data.field_set_value,
@@ -230,7 +230,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                       v;
                                 },
                               )
-                            : data.field_type == "DATETIME"
+                            : data.field_type == 'DATETIME'
                                 ? WidgetInputDate(
                                     isDate: false,
                                     data: data,
@@ -246,7 +246,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                           .value = v;
                                     },
                                   )
-                                : data.field_type == "PERCENTAGE"
+                                : data.field_type == 'PERCENTAGE'
                                     ? FieldInputPercent(
                                         data: data,
                                         onChanged: (text) {
@@ -277,7 +277,7 @@ class _AddCustomerState extends State<AddCustomer> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Quicksand",
+                            fontFamily: 'Quicksand',
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: COLORS.RED))
@@ -301,11 +301,11 @@ class _AddCustomerState extends State<AddCustomer> {
                   minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
                   maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                  keyboardType: data.field_special == "default"
+                  keyboardType: data.field_special == 'default'
                       ? TextInputType.text
-                      : data.field_special == "numberic"
+                      : data.field_special == 'numberic'
                           ? TextInputType.number
-                          : data.field_special == "email-address"
+                          : data.field_special == 'email-address'
                               ? TextInputType.emailAddress
                               : TextInputType.text,
                   onChanged: (text) {
@@ -332,16 +332,16 @@ class _AddCustomerState extends State<AddCustomer> {
     for (int i = 0; i < addData.length; i++) {
       for (int j = 0; j < addData[i].data.length; j++) {
         if ((addData[i].data[j].value == null ||
-                addData[i].data[j].value == "null" ||
-                addData[i].data[j].value == "") &&
+                addData[i].data[j].value == 'null' ||
+                addData[i].data[j].value == '') &&
             addData[i].data[j].required == 1) {
           check = true;
           break;
         } else if (addData[i].data[j].value != null &&
-            addData[i].data[j].value != "null")
-          data["${addData[i].data[j].label}"] = addData[i].data[j].value;
+            addData[i].data[j].value != 'null')
+          data['${addData[i].data[j].label}'] = addData[i].data[j].value;
         else {
-          data["${addData[i].data[j].label}"] = "";
+          data['${addData[i].data[j].label}'] = '';
         }
       }
     }

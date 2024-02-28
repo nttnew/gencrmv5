@@ -11,6 +11,7 @@ import 'package:gen_crm/bloc/product_customer_module/product_customer_module_blo
 import 'package:gen_crm/bloc/product_module/product_module_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/menu/form/widget/location_select.dart';
+import 'package:gen_crm/screens/menu/form/widget/type_car.dart';
 import 'package:gen_crm/screens/menu/home/customer/widget/input_dropDown.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
@@ -53,7 +54,7 @@ class FormAddData extends StatefulWidget {
 class _FormAddDataState extends State<FormAddData> {
   String title = Get.arguments[0];
   int type = Get.arguments[1];
-  String id = Get.arguments[2] != null ? Get.arguments[2].toString() : "";
+  String id = Get.arguments[2] != null ? Get.arguments[2].toString() : '';
   bool isCheckIn = Get.arguments[3];
   String typeCheckIn = Get.arguments[4];
   bool isResultData = Get.arguments[5];
@@ -225,7 +226,7 @@ class _FormAddDataState extends State<FormAddData> {
                                 child: WidgetText(
                                   title: location,
                                   style: TextStyle(
-                                    fontFamily: "Quicksand",
+                                    fontFamily: 'Quicksand',
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: COLORS.BLACK,
@@ -269,7 +270,7 @@ class _FormAddDataState extends State<FormAddData> {
                         child: WidgetText(
                           title: getT(KeyT.check_in),
                           style: TextStyle(
-                            fontFamily: "Quicksand",
+                            fontFamily: 'Quicksand',
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: COLORS.WHITE,
@@ -303,7 +304,7 @@ class _FormAddDataState extends State<FormAddData> {
                             child: WidgetText(
                               title: getT(KeyT.check_in_again),
                               style: TextStyle(
-                                fontFamily: "Quicksand",
+                                fontFamily: 'Quicksand',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 color: COLORS.TEXT_COLOR,
@@ -336,7 +337,7 @@ class _FormAddDataState extends State<FormAddData> {
                             child: WidgetText(
                               title: getT(KeyT.delete),
                               style: TextStyle(
-                                fontFamily: "Quicksand",
+                                fontFamily: 'Quicksand',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 color: COLORS.RED,
@@ -361,7 +362,7 @@ class _FormAddDataState extends State<FormAddData> {
                             TextSpan(
                               text: '*',
                               style: TextStyle(
-                                fontFamily: "Quicksand",
+                                fontFamily: 'Quicksand',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 color: COLORS.RED,
@@ -660,9 +661,9 @@ class _FormAddDataState extends State<FormAddData> {
 
   Widget _fieldInputCustomer(
       CustomerIndividualItemData data, int indexParent, int indexChild,
-      {bool noEdit = false, String value = ""}) {
-    if ((type == ADD_CLUE_JOB && data.field_name == "so_dien_thoai") ||
-        (type == ADD_CHANCE_JOB && data.field_name == "so_dien_thoai")) {
+      {bool noEdit = false, String value = ''}) {
+    if ((type == ADD_CLUE_JOB && data.field_name == 'so_dien_thoai') ||
+        (type == ADD_CHANCE_JOB && data.field_name == 'so_dien_thoai')) {
       return SizedBox.shrink();
     } else {
       if (value != '' && noEdit) {
@@ -683,7 +684,7 @@ class _FormAddDataState extends State<FormAddData> {
                       ? TextSpan(
                           text: '*',
                           style: TextStyle(
-                              fontFamily: "Quicksand",
+                              fontFamily: 'Quicksand',
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                               color: COLORS.RED))
@@ -707,20 +708,20 @@ class _FormAddDataState extends State<FormAddData> {
                     minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
                     maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                    keyboardType: data.field_type == "TEXT_NUMERIC"
+                    keyboardType: data.field_type == 'TEXT_NUMERIC'
                         ? TextInputType.number
-                        : data.field_special == "default"
+                        : data.field_special == 'default'
                             ? TextInputType.text
-                            : (data.field_special == "numberic")
+                            : (data.field_special == 'numberic')
                                 ? TextInputType.number
-                                : data.field_special == "email-address"
+                                : data.field_special == 'email-address'
                                     ? TextInputType.emailAddress
                                     : TextInputType.text,
                     onChanged: (text) {
                       addData[indexParent].data[indexChild].value = text;
                     },
                     readOnly: noEdit,
-                    initialValue: value != ""
+                    initialValue: value != ''
                         ? value
                         : noEdit == true
                             ? data.field_value
@@ -747,9 +748,9 @@ class _FormAddDataState extends State<FormAddData> {
 
   Widget _getBody(
       CustomerIndividualItemData data, int indexParent, int indexChild) {
-    return data.field_hidden != "1"
-        ? data.field_special == "none-edit"
-            ? ((data.field_name == "so_dien_thoai")
+    return data.field_hidden != '1'
+        ? data.field_special == 'none-edit'
+            ? ((data.field_name == 'so_dien_thoai')
                 ? BlocBuilder<PhoneBloc, PhoneState>(
                     builder: (context, stateA) {
                     if (stateA is SuccessPhoneState) {
@@ -770,7 +771,7 @@ class _FormAddDataState extends State<FormAddData> {
                         })
                     : _fieldInputCustomer(data, indexParent, indexChild,
                         noEdit: true))
-            : data.field_type == "SELECT"
+            : data.field_type == 'SELECT'
                 ? (data.field_name == 'cvsan_pham_kh' ||
                         data.field_name == 'htsan_pham_kh' ||
                         data.field_name == 'san_pham_kh')
@@ -881,7 +882,7 @@ class _FormAddDataState extends State<FormAddData> {
                                               value,
                                               isAddNewCar: true,
                                             ));
-                                            if (data.field_name != "cv_kh")
+                                            if (data.field_name != 'cv_kh')
                                               PhoneBloc.of(context).add(
                                                   InitAgencyPhoneEvent(value));
                                           },
@@ -899,7 +900,7 @@ class _FormAddDataState extends State<FormAddData> {
                                             addData[indexParent]
                                                 .data[indexChild]
                                                 .value = value;
-                                            if (data.field_name != "cv_kh")
+                                            if (data.field_name != 'cv_kh')
                                               PhoneBloc.of(context).add(
                                                   InitAgencyPhoneEvent(value));
                                           },
@@ -965,8 +966,8 @@ class _FormAddDataState extends State<FormAddData> {
                                           addData[indexParent]
                                               .data[indexChild]
                                               .value = value;
-                                          if (data.field_name == "cv_kh" ||
-                                              data.field_name == "col121" ||
+                                          if (data.field_name == 'cv_kh' ||
+                                              data.field_name == 'col121' ||
                                               data.field_name == 'khach_hang') {
                                             ContactByCustomerBloc.of(context).add(
                                                 InitGetContactByCustomerrEvent(
@@ -977,7 +978,7 @@ class _FormAddDataState extends State<FormAddData> {
                                         },
                                         value: data.field_value ?? '',
                                       ))
-                : data.field_type == "TEXT_MULTI"
+                : data.field_type == 'TEXT_MULTI'
                     ? SelectMulti(
                         dropdownItemList: data.field_datasource ?? [],
                         label: data.field_label ?? '',
@@ -992,7 +993,7 @@ class _FormAddDataState extends State<FormAddData> {
                           addData[indexParent].data[indexChild].value = data;
                         },
                       )
-                    : data.field_type == "HIDDEN"
+                    : data.field_type == 'HIDDEN'
                         ? SizedBox.shrink()
                         : data.field_special == 'url'
                             ? ProductContract(
@@ -1003,16 +1004,16 @@ class _FormAddDataState extends State<FormAddData> {
                                 neverHidden: true,
                                 canDelete: true,
                               )
-                            : data.field_type == "TEXT_MULTI_NEW"
+                            : data.field_type == 'TEXT_MULTI_NEW'
                                 ? InputMultipleWidget(
                                     data: data,
                                     onSelect: (data) {
                                       addData[indexParent]
                                           .data[indexChild]
-                                          .value = data.join(",");
+                                          .value = data.join(',');
                                     },
                                   )
-                                : data.field_type == "DATE"
+                                : data.field_type == 'DATE'
                                     ? WidgetInputDate(
                                         data: data,
                                         dateText: data.field_set_value,
@@ -1027,7 +1028,7 @@ class _FormAddDataState extends State<FormAddData> {
                                               .value = v;
                                         },
                                       )
-                                    : data.field_type == "DATETIME"
+                                    : data.field_type == 'DATETIME'
                                         ? WidgetInputDate(
                                             isDate: false,
                                             data: data,
@@ -1043,7 +1044,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                   .value = v;
                                             },
                                           )
-                                        : data.field_type == "CHECK"
+                                        : data.field_type == 'CHECK'
                                             ? RenderCheckBox(
                                                 onChange: (check) {
                                                   addData[indexParent]
@@ -1052,7 +1053,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                 },
                                                 data: data,
                                               )
-                                            : data.field_type == "PERCENTAGE"
+                                            : data.field_type == 'PERCENTAGE'
                                                 ? FieldInputPercent(
                                                     data: data,
                                                     onChanged: (text) {
@@ -1089,17 +1090,17 @@ class _FormAddDataState extends State<FormAddData> {
     for (int i = 0; i < addData.length; i++) {
       for (int j = 0; j < addData[i].data.length; j++) {
         if ((addData[i].data[j].value == null ||
-                addData[i].data[j].value == "null" ||
-                addData[i].data[j].value == "") &&
+                addData[i].data[j].value == 'null' ||
+                addData[i].data[j].value == '') &&
             addData[i].data[j].required == 1 &&
             !(isGetData && addData[i].data[j].label == 'khach_hang_sp')) {
           check = true;
           break;
         } else if (addData[i].data[j].value != null &&
-            addData[i].data[j].value != "null")
-          data["${addData[i].data[j].label}"] = addData[i].data[j].value;
+            addData[i].data[j].value != 'null')
+          data['${addData[i].data[j].label}'] = addData[i].data[j].value;
         else {
-          data["${addData[i].data[j].label}"] = "";
+          data['${addData[i].data[j].label}'] = '';
         }
       }
     }
@@ -1144,24 +1145,24 @@ class _FormAddDataState extends State<FormAddData> {
         AddDataBloc.of(context).add(
             AddCustomerOrEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == ADD_CLUE_CUSTOMER) {
-        data["customer_id"] = id;
+        data['customer_id'] = id;
         AddDataBloc.of(context).add(AddContactCustomerEvent(data,
             files: AttackBloc.of(context).listFile));
       } else if (type == ADD_CHANCE_CUSTOMER) {
-        data["customer_id"] = id;
+        data['customer_id'] = id;
         AddDataBloc.of(context).add(
             AddOpportunityEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 13) {
-        data["customer_id"] = id;
+        data['customer_id'] = id;
         AddDataBloc.of(context).add(
             AddContractEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == ADD_JOB_CUSTOMER) {
-        data["customer_id"] = id;
+        data['customer_id'] = id;
         AddDataBloc.of(context)
             .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == ADD_SUPPORT_CUSTOMER) {
-        data["customer_id"] = id;
-        data["nguoi_xu_lht"] = id_user;
+        data['customer_id'] = id;
+        data['nguoi_xu_lht'] = id_user;
         AddDataBloc.of(context)
             .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == ADD_CLUE) {
@@ -1171,31 +1172,31 @@ class _FormAddDataState extends State<FormAddData> {
         AddDataBloc.of(context).add(
             AddOpportunityEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == 4) {
-        data["customer_id"] = id;
+        data['customer_id'] = id;
         AddDataBloc.of(context).add(
             AddContractEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == ADD_JOB) {
         AddDataBloc.of(context)
             .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == ADD_SUPPORT) {
-        data["nguoi_xu_lht"] = id_user;
+        data['nguoi_xu_lht'] = id_user;
         AddDataBloc.of(context)
             .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == ADD_CLUE_JOB) {
-        data["daumoi_id"] = id;
+        data['daumoi_id'] = id;
         AddDataBloc.of(context)
             .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == ADD_CHANCE_JOB) {
-        data["cohoi_id"] = id;
+        data['cohoi_id'] = id;
         AddDataBloc.of(context)
             .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == ADD_SUPPORT_CONTRACT) {
-        data["hopdong_id"] = id;
-        data["nguoi_xu_lht"] = id_user;
+        data['hopdong_id'] = id;
+        data['nguoi_xu_lht'] = id_user;
         AddDataBloc.of(context)
             .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == ADD_JOB_CONTRACT) {
-        data["hopdong_id"] = id;
+        data['hopdong_id'] = id;
         AddDataBloc.of(context)
             .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == PRODUCT_TYPE) {
@@ -1226,20 +1227,20 @@ class _FormAddDataState extends State<FormAddData> {
         }
         ////
       } else if (type == CV_PRODUCT_CUSTOMER_TYPE) {
-        data["customer_id"] = id;
+        data['customer_id'] = id;
         AddDataBloc.of(context)
             .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == HT_PRODUCT_CUSTOMER_TYPE) {
-        data["customer_id"] = id;
-        data["nguoi_xu_lht"] = id_user;
+        data['customer_id'] = id;
+        data['nguoi_xu_lht'] = id_user;
         AddDataBloc.of(context)
             .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == HD_PRODUCT_CUSTOMER_TYPE) {
-        data["customer_id"] = id;
+        data['customer_id'] = id;
         AddDataBloc.of(context).add(
             AddContractEvent(data, files: AttackBloc.of(context).listFile));
       } else if (type == CH_PRODUCT_CUSTOMER_TYPE) {
-        data["customer_id"] = id;
+        data['customer_id'] = id;
         AddDataBloc.of(context).add(
             AddOpportunityEvent(data, files: AttackBloc.of(context).listFile));
       }
@@ -1285,7 +1286,7 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
             text: TextSpan(
               text: widget.data.field_label ?? '',
               style: TextStyle(
-                  fontFamily: "Quicksand",
+                  fontFamily: 'Quicksand',
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: COLORS.BLACK),
@@ -1294,7 +1295,7 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                          fontFamily: "Quicksand",
+                          fontFamily: 'Quicksand',
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: COLORS.RED,
