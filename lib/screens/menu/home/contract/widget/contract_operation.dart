@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/contract/detail_contract_bloc.dart';
+import 'package:gen_crm/l10n/key_text.dart';
 import 'package:gen_crm/screens/menu/home/customer/widget/list_note.dart';
 import 'package:gen_crm/widgets/line_horizontal_widget.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
@@ -107,74 +108,99 @@ class _ContractOperationState extends State<ContractOperation>
             title: data.group_name,
             style: AppStyle.DEFAULT_16_BOLD,
           ),
-          Column(
-            children: List.generate(
-              data.data!.length,
-              (index) {
-                bool isKH = data.data?[index].id == 'col131' &&
-                    (data.data?[index].is_link ?? false);
-                bool isSPKH = data.data?[index].id == 'hdsan_pham_kh' &&
-                    (data.data?[index].link != '' &&
-                        data.data?[index].link != null);
-                bool isNameSP = data.data?[index].name_field == 'name';
-                if (data.data![index].field_type == "LINE") {
-                  return Container(
-                      margin: EdgeInsets.symmetric(vertical: 3),
-                      child: LineHorizontal());
-                } else
-                  return data.data![index].value_field != ''
-                      ? Container(
-                          padding: EdgeInsets.only(top: 3, bottom: 3),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: WidgetText(
-                                  title: data.data![index].label_field ?? "",
-                                  style: AppStyle.DEFAULT_14
-                                      .copyWith(color: Colors.grey),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    if (isKH) {
-                                      AppNavigator.navigateDetailCustomer(
-                                          data.data?[index].link ?? '',
-                                          data.data?[index].value_field ?? '');
-                                    } else if (isSPKH) {
-                                      AppNavigator
-                                          .navigateDetailProductCustomer(
-                                        data.data?[index].label_field ?? '',
-                                        data.data?[index].link ?? '',
-                                      );
-                                    }
-                                  },
-                                  child: WidgetText(
-                                    title: data.data![index].value_field ?? '',
-                                    textAlign: TextAlign.right,
-                                    style: AppStyle.DEFAULT_14.copyWith(
-                                      decoration: isKH || isSPKH
-                                          ? TextDecoration.underline
-                                          : null,
-                                      color: isKH || isSPKH
-                                          ? Colors.blue
-                                          : isNameSP
-                                              ? COLORS.ORANGE_IMAGE
-                                              : null,
+          ((data.data
+                          ?.where((e) =>
+                              e.value_field != '' && e.value_field != null)
+                          .toList()
+                          .length ??
+                      0) >
+                  0)
+              ? Column(
+                  children: List.generate(
+                    data.data?.length ?? 0,
+                    (index) {
+                      bool isKH = data.data?[index].id == 'col131' &&
+                          (data.data?[index].is_link ?? false);
+                      bool isSPKH = data.data?[index].id == 'hdsan_pham_kh' &&
+                          (data.data?[index].link != '' &&
+                              data.data?[index].link != null);
+                      bool isNameSP = data.data?[index].name_field == 'name';
+                      if (data.data![index].field_type == "LINE") {
+                        return Container(
+                            margin: EdgeInsets.symmetric(vertical: 3),
+                            child: LineHorizontal());
+                      } else
+                        return data.data![index].value_field != ''
+                            ? Container(
+                                padding: EdgeInsets.only(top: 3, bottom: 3),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: WidgetText(
+                                        title:
+                                            data.data![index].label_field ?? "",
+                                        style: AppStyle.DEFAULT_14
+                                            .copyWith(color: Colors.grey),
+                                      ),
                                     ),
-                                  ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (isKH) {
+                                            AppNavigator.navigateDetailCustomer(
+                                                data.data?[index].link ?? '',
+                                                data.data?[index].value_field ??
+                                                    '');
+                                          } else if (isSPKH) {
+                                            AppNavigator
+                                                .navigateDetailProductCustomer(
+                                              data.data?[index].label_field ??
+                                                  '',
+                                              data.data?[index].link ?? '',
+                                            );
+                                          }
+                                        },
+                                        child: WidgetText(
+                                          title:
+                                              data.data![index].value_field ??
+                                                  '',
+                                          textAlign: TextAlign.right,
+                                          style: AppStyle.DEFAULT_14.copyWith(
+                                            decoration: isKH || isSPKH
+                                                ? TextDecoration.underline
+                                                : null,
+                                            color: isKH || isSPKH
+                                                ? Colors.blue
+                                                : isNameSP
+                                                    ? COLORS.ORANGE_IMAGE
+                                                    : null,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : SizedBox();
-              },
-            ),
-          )
+                              )
+                            : SizedBox();
+                    },
+                  ),
+                )
+              : Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(
+                    vertical: 10,
+                  ),
+                  child: WidgetText(
+                    title: getT(KeyT.no_data),
+                    style: AppStyle.DEFAULT_14.copyWith(
+                      color: COLORS.GREY,
+                    ),
+                  ),
+                ),
         ],
       ),
     );
