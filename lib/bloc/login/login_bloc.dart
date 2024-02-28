@@ -45,7 +45,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   XeDichVu? xeDichVu;
   String? trangThaiDichVu;
 
-  initController() async {
+  initData() async {
     final dataCv = await getXeDichVu(
       page: BASE_URL.PAGE_DEFAULT,
     );

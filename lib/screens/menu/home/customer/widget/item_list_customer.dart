@@ -81,7 +81,7 @@ class ItemCustomer extends StatelessWidget {
                       : data.address)
                   .toString(),
               icon: ICONS.IC_LOCATION_PNG,
-            ),
+            ),//todo
             itemTextIcon(
               onTap: () {
                 if ((data.email?.val != null && data.email?.val != '') &&
