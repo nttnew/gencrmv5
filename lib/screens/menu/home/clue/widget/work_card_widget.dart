@@ -122,7 +122,7 @@ class WorkCardWidget extends StatelessWidget {
               Text(
                 totalComment.toString(),
                 style: TextStyle(
-                  color: HexColor("#0052B4"),
+                  color: COLORS.TEXT_BLUE_BOLD,
                 ),
               ),
             ],

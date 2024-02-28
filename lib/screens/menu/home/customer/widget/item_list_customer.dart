@@ -81,7 +81,7 @@ class ItemCustomer extends StatelessWidget {
                       : data.address)
                   .toString(),
               icon: ICONS.IC_LOCATION_PNG,
-            ),//todo
+            ),
             itemTextIcon(
               onTap: () {
                 if ((data.email?.val != null && data.email?.val != '') &&
@@ -114,7 +114,7 @@ class ItemCustomer extends StatelessWidget {
                     text: data.phone?.val ?? getT(KeyT.not_yet),
                     styleText: AppStyle.DEFAULT_14.copyWith(
                         fontWeight: FontWeight.w400,
-                        color: HexColor("#0052B4")),
+                        color: COLORS.TEXT_BLUE_BOLD),
                     icon: ICONS.IC_PHONE_CUSTOMER_SVG,
                   ),
                 ),
@@ -128,7 +128,7 @@ class ItemCustomer extends StatelessWidget {
                 Text(
                   data.total_comment.toString(),
                   style: TextStyle(
-                    color: HexColor("#0052B4"),
+                    color: COLORS.TEXT_BLUE_BOLD,
                   ),
                 ),
               ],

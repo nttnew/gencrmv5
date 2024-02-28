@@ -1,7 +1,6 @@
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/drop_down_base.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
@@ -220,7 +219,7 @@ class _ClueScreenState extends State<ClueScreen> {
                   WidgetText(
                     title: clueData.total_note ?? getT(KeyT.not_yet),
                     style: TextStyle(
-                      color: HexColor("#0052B4"),
+                      color: COLORS.TEXT_BLUE_BOLD,
                     ),
                   ),
                 ],

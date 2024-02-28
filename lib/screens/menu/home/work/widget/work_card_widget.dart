@@ -120,7 +120,7 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
                   WidgetText(
                     title: widget.item.total_comment.toString(),
                     style: TextStyle(
-                      color: HexColor("#0052B4"),
+                      color: COLORS.TEXT_BLUE_BOLD,
                     ),
                   ),
                 ],

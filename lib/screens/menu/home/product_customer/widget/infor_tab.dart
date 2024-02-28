@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import '../../../../../bloc/detail_product_customer/detail_product_customer_bloc.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/line_horizontal_widget.dart';
@@ -48,10 +47,11 @@ class _InfoTabProductCustomerState extends State<InfoTabProductCustomer>
                       title:
                           (state.productInfo.data ?? [])[index].groupName ?? '',
                       style: TextStyle(
-                          fontFamily: "Quicksand",
-                          color: HexColor("#263238"),
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14),
+                        fontFamily: "Quicksand",
+                        color: HexColor("#263238"),
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                      ),
                     ),
                     SizedBox(
                       height: AppValue.heights * 0.02,

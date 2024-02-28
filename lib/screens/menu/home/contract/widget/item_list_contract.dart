@@ -111,7 +111,7 @@ class ItemContract extends StatelessWidget {
                   WidgetText(
                     title: data.total_note ?? '0',
                     style: TextStyle(
-                      color: HexColor("#0052B4"),
+                      color: COLORS.TEXT_BLUE_BOLD,
                     ),
                   ),
                 ],

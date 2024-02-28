@@ -22,7 +22,7 @@ class ProductCustomerModuleBloc
   String? filter;
   String? type;
   BehaviorSubject<List<Cats>> listType = BehaviorSubject.seeded([]);
-  BehaviorSubject<List<DataFilter>> listFilter = BehaviorSubject.seeded([]);
+  BehaviorSubject<List<Customer>> listFilter = BehaviorSubject.seeded([]);
   BehaviorSubject<String?> typeStream = BehaviorSubject.seeded(null);
   LoadMoreController loadMoreController = LoadMoreController();
 

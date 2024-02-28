@@ -105,7 +105,7 @@ class SupportCardWidget extends StatelessWidget {
                 WidgetText(
                   title: data.total_note ?? '',
                   style: TextStyle(
-                    color: HexColor("#0052B4"),
+                    color: COLORS.TEXT_BLUE_BOLD,
                   ),
                 ),
               ],

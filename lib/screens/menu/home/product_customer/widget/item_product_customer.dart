@@ -3,6 +3,7 @@ import 'package:gen_crm/src/models/model_generator/list_product_customer_respons
 import '../../../../../l10n/key_text.dart';
 import '../../../../../src/app_const.dart';
 import '../../../../../src/src_index.dart';
+import '../../../../../widgets/dialog_call.dart';
 
 class ItemProductCustomer extends StatelessWidget {
   const ItemProductCustomer(
@@ -44,11 +45,29 @@ class ItemProductCustomer extends StatelessWidget {
                 ),
               ),
             ),
-            // itemTextIcon(
-            //   text: productModule.trangThai ?? getT(KeyT.not_yet),
-            //   icon: ICONS.IC_PHONE_CUSTOMER_SVG,//todo thêm phone
-            //   colorIcon: COLORS.GREY,
-            // ),
+            itemTextIcon(
+              onTap: () {
+                if ((productModule.phone?.val != null &&
+                        productModule.phone?.val != "") &&
+                    productModule.phone?.action != null) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return DialogCall(
+                        phone: '${productModule.phone?.val}',
+                        name: '${productModule.name}',
+                      );
+                    },
+                  );
+                }
+              },
+              text: productModule.phone?.val ?? getT(KeyT.not_yet),
+              styleText: AppStyle.DEFAULT_14.copyWith(
+                fontWeight: FontWeight.w400,
+                color: COLORS.TEXT_BLUE_BOLD,
+              ),
+              icon: ICONS.IC_PHONE_CUSTOMER_SVG,
+            ),
             itemTextIcon(
               text: productModule.loai ?? getT(KeyT.not_yet),
               icon: Icon(
