@@ -5,6 +5,7 @@ import 'package:gen_crm/api_resfull/api.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../l10n/key_text.dart';
 import '../../src/base.dart';
+import '../../src/models/model_generator/customer_clue.dart';
 import '../../src/models/model_generator/work.dart';
 import '../../widgets/listview/list_load_infinity.dart';
 import '../../widgets/loading_api.dart';
@@ -14,7 +15,7 @@ part 'work_state.dart';
 
 class WorkBloc extends Bloc<WorkEvent, WorkState> {
   UserRepository userRepository;
-  BehaviorSubject<List<FilterData>> listType = BehaviorSubject.seeded([]);
+  BehaviorSubject<List<Customer>> listType = BehaviorSubject.seeded([]);
   LoadMoreController loadMoreController = LoadMoreController();
   String idFilter = '';
   String search = '';
@@ -54,7 +55,8 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
       }
     } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      throw (e);
+      LoadingApi().popLoading();
+      return resDynamic;
     }
     LoadingApi().popLoading();
     return resDynamic;

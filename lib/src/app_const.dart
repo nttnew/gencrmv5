@@ -247,13 +247,92 @@ Widget widgetTextClick(
             onClick();
           },
           child: Text(
-            content == contentValueNull && contentNull != null ? contentNull : content,
+            content == contentValueNull && contentNull != null
+                ? contentNull
+                : content,
             style: AppStyle.DEFAULT_14.copyWith(
               color: color ?? COLORS.ORANGE,
               decoration: TextDecoration.underline,
             ),
             textAlign: TextAlign.end,
           ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget itemTextIconStart({
+  required String title,
+  required String icon,
+  required String? color,
+  Color? colorDF,
+  bool isSVG = true,
+}) {
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      Expanded(
+        child: itemTextIcon(
+          paddingTop: 0,
+          text: title,
+          icon: icon,
+          isSVG: isSVG,
+          styleText: AppStyle.DEFAULT_16_BOLD.copyWith(
+            color: COLORS.TEXT_COLOR,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
+      AppValue.hSpace4,
+      Container(
+        decoration: BoxDecoration(
+          color: color != null && color != ''
+              ? HexColor(color)
+              : colorDF ?? COLORS.PRIMARY_COLOR,
+          borderRadius: BorderRadius.circular(
+            99,
+          ),
+        ),
+        width: AppValue.widths * 0.1,
+        height: AppValue.heights * 0.02,
+      )
+    ],
+  );
+}
+
+Widget itemTextEnd({
+  required String title,
+  required String content,
+  required String icon,
+  Color? colorTitle,
+  Function? onTapTitle,
+  bool isSvg = true,
+}) {
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      Expanded(
+        child: itemTextIcon(
+          isSVG: isSvg,
+          text: title,
+          icon: icon,
+          colorText: colorTitle,
+          onTap: onTapTitle,
+        ),
+      ),
+      SizedBox(
+        width: 8,
+      ),
+      SvgPicture.asset(ICONS.IC_QUESTION_SVG),
+      SizedBox(
+        width: 4,
+      ),
+      WidgetText(
+        title: content,
+        style: AppStyle.DEFAULT_14.copyWith(
+          color: COLORS.TEXT_BLUE_BOLD,
+          fontWeight: FontWeight.w500,
         ),
       ),
     ],
@@ -399,22 +478,22 @@ bool isCarCrm() {
 }
 
 Widget widgetSave() => Container(
-  padding: EdgeInsets.symmetric(
-    horizontal: 34,
-    vertical: 10,
-  ),
-  decoration: BoxDecoration(
-    color: HexColor("#F1A400"),
-    borderRadius: BorderRadius.circular(
-      20,
-    ),
-  ),
-  child: Center(
-    child: Text(
-      getT(KeyT.save),
-      style: AppStyle.DEFAULT_16_BOLD.copyWith(
-        color: COLORS.WHITE,
+      padding: EdgeInsets.symmetric(
+        horizontal: 34,
+        vertical: 10,
       ),
-    ),
-  ),
-);
+      decoration: BoxDecoration(
+        color: HexColor("#F1A400"),
+        borderRadius: BorderRadius.circular(
+          20,
+        ),
+      ),
+      child: Center(
+        child: Text(
+          getT(KeyT.save),
+          style: AppStyle.DEFAULT_16_BOLD.copyWith(
+            color: COLORS.WHITE,
+          ),
+        ),
+      ),
+    );

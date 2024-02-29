@@ -1,5 +1,5 @@
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
-import 'package:gen_crm/src/models/model_generator/customer.dart';
+import 'package:gen_crm/src/models/model_generator/customer_clue.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'contract.g.dart';
@@ -9,19 +9,21 @@ class ContractItemData {
   final String? id, name, status;
   final String? status_edit, status_color, avatar, total_note, conlai;
   final dynamic price;
-  final CustomerContract? customer;
+  final Customer? customer, product_customer;
 
   ContractItemData(
-      this.id,
-      this.name,
-      this.price,
-      this.status,
-      this.status_edit,
-      this.status_color,
-      this.avatar,
-      this.customer,
-      this.total_note,
-      this.conlai);
+    this.id,
+    this.name,
+    this.price,
+    this.status,
+    this.status_edit,
+    this.status_color,
+    this.avatar,
+    this.customer,
+    this.product_customer,
+    this.total_note,
+    this.conlai,
+  );
 
   factory ContractItemData.fromJson(Map<String, dynamic> json) =>
       _$ContractItemDataFromJson(json);
@@ -30,21 +32,9 @@ class ContractItemData {
 }
 
 @JsonSerializable()
-class CustomerContract {
-  final String? id, name;
-
-  CustomerContract(this.id, this.name);
-
-  factory CustomerContract.fromJson(Map<String, dynamic> json) =>
-      _$CustomerContractFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CustomerContractToJson(this);
-}
-
-@JsonSerializable()
 class ContractData {
   final List<ContractItemData>? list;
-  final List<FilterData>? filter;
+  final List<Customer>? filter;
   final String? page, total;
   final int? limit;
 

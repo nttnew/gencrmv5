@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/src_index.dart';
-import 'package:hexcolor/hexcolor.dart';
+import '../../../../../src/models/model_generator/customer_clue.dart';
 
 class WorkCardWidget extends StatelessWidget {
-  final String nameCustomer;
-  final String nameJob;
-  final String statusJob;
-  final String startDate;
-  final int totalComment;
-  final String color;
+  final String? nameCustomer;
+  final String? nameJob;
+  final String? statusJob;
+  final String? startDate;
+  final int? totalComment;
+  final String? color;
+  final Customer? productCustomer;
 
   WorkCardWidget({
     required this.color,
@@ -18,6 +19,7 @@ class WorkCardWidget extends StatelessWidget {
     required this.statusJob,
     required this.startDate,
     required this.totalComment,
+    required this.productCustomer,
   });
 
   @override
@@ -47,106 +49,38 @@ class WorkCardWidget extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: AppValue.widths * 0.5,
-                child: Text(
-                  nameJob,
-                  style: NameCustomerStyle(),
-                ),
-              ),
-              Spacer(),
-              Container(
-                decoration: BoxDecoration(
-                    color:
-                        (color == '') ? COLORS.PRIMARY_COLOR : HexColor(color),
-                    borderRadius: BorderRadius.circular(99)),
-                width: AppValue.widths * 0.1,
-                height: AppValue.heights * 0.02,
-              )
-            ],
+          itemTextIconStart(
+            title: nameJob ?? '',
+            icon: ICONS.IC_CLUE_3X_PNG,
+            isSVG: false,
+            color: color,
           ),
-          SizedBox(height: AppValue.heights * 0.01),
-          if (nameCustomer != '') ...[
-            Row(
-              children: [
-                SvgPicture.asset(ICONS.IC_AVATAR_SVG),
-                Padding(
-                  padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                  child: Text(
-                    nameCustomer,
-                    style: NameCustomerStyle(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: AppValue.heights * 0.01),
-          ],
-          if (statusJob != '') ...[
-            Row(
-              children: [
-                SvgPicture.asset(ICONS.IC_ICON3_SVG),
-                Padding(
-                  padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                  child: SizedBox(
-                      width: AppValue.widths * 0.5,
-                      child: Text(
-                        statusJob,
-                        style: OrtherInforCustomerStyle(),
-                      )),
-                ),
-              ],
-            ),
-            SizedBox(height: AppValue.heights * 0.01),
-          ],
-          Row(
-            children: [
-              SvgPicture.asset(ICONS.IC_ICON4_SVG),
-              Padding(
-                padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                child: SizedBox(
-                  width: AppValue.widths * 0.5,
-                  child: Text(
-                    startDate,
-                    style: OrtherInforCustomerStyle(),
-                  ),
-                ),
-              ),
-              Spacer(),
-              SvgPicture.asset(ICONS.IC_QUESTION_SVG),
-              SizedBox(
-                width: AppValue.widths * 0.01,
-              ),
-              Text(
-                totalComment.toString(),
-                style: TextStyle(
-                  color: COLORS.TEXT_BLUE_BOLD,
-                ),
-              ),
-            ],
+          itemTextIcon(
+            text: nameCustomer ?? '',
+            icon: ICONS.IC_AVATAR_SVG,
+          ),
+          itemTextIcon(
+              text: productCustomer?.name ?? '',
+              icon: ICONS.IC_CHANCE_3X_PNG,
+              isSVG: false,
+              colorText: COLORS.TEXT_BLUE_BOLD,
+              onTap: () {
+                if (productCustomer?.id != '' && productCustomer?.id != null)
+                  AppNavigator.navigateDetailProductCustomer2(
+                    productCustomer,
+                  );
+              }),
+          itemTextIcon(
+            text: statusJob ?? '',
+            icon: ICONS.IC_ICON3_SVG,
+          ),
+          itemTextEnd(
+            title: startDate ?? '',
+            content: totalComment.toString(),
+            icon: ICONS.IC_ICON4_SVG,
           ),
         ],
       ),
     );
   }
-
-  TextStyle OrtherInforCustomerStyle() => TextStyle(
-      color: HexColor("#263238"),
-      fontFamily: "Quicksand",
-      fontWeight: FontWeight.w400,
-      fontSize: 14);
-
-  TextStyle LocationCustomerStyle() => TextStyle(
-      color: COLORS.BLACK,
-      fontFamily: "Quicksand",
-      fontWeight: FontWeight.w400,
-      fontSize: 14);
-
-  TextStyle NameCustomerStyle() => TextStyle(
-      color: COLORS.ff006CB1,
-      fontFamily: "Quicksand",
-      fontWeight: FontWeight.w700,
-      fontSize: 18);
 }

@@ -1,7 +1,6 @@
-import './phone_clue.dart';
+import './action_model.dart';
 import './customer_clue.dart';
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
-import 'package:gen_crm/src/models/model_generator/position_clue.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'clue.g.dart';
@@ -19,9 +18,9 @@ class Email {
 @JsonSerializable(explicitToJson: true)
 class ClueData {
   final String? id, name;
-  final Phone? phone;
+  final ActionModel? phone;
   final Email? email;
-  final Position? position;
+  final Customer? position;
   final Customer? customer;
   final String? created_date;
   final String? avatar;

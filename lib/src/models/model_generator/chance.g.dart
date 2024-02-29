@@ -6,19 +6,6 @@ part of 'chance.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-DataCustomer _$DataCustomerFromJson(Map<String, dynamic> json) => DataCustomer(
-      json['id'] as String?,
-      json['name'] as String?,
-      json['danh_xung'] as String?,
-    );
-
-Map<String, dynamic> _$DataCustomerToJson(DataCustomer instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'danh_xung': instance.danh_xung,
-    };
-
 ListChanceData _$ListChanceDataFromJson(Map<String, dynamic> json) =>
     ListChanceData(
       json['id'] as String?,
@@ -29,7 +16,10 @@ ListChanceData _$ListChanceDataFromJson(Map<String, dynamic> json) =>
       json['dateNextCare'] as String?,
       json['customer'] == null
           ? null
-          : DataCustomer.fromJson(json['customer'] as Map<String, dynamic>),
+          : Customer.fromJson(json['customer'] as Map<String, dynamic>),
+      json['product_customer'] == null
+          ? null
+          : Customer.fromJson(json['product_customer'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ListChanceDataToJson(ListChanceData instance) =>
@@ -41,17 +31,7 @@ Map<String, dynamic> _$ListChanceDataToJson(ListChanceData instance) =>
       'status': instance.status,
       'avatar': instance.avatar,
       'customer': instance.customer,
-    };
-
-FilterChance _$FilterChanceFromJson(Map<String, dynamic> json) => FilterChance(
-      json['id'] as String?,
-      json['name'] as String?,
-    );
-
-Map<String, dynamic> _$FilterChanceToJson(FilterChance instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
+      'product_customer': instance.product_customer,
     };
 
 DataChance _$DataChanceFromJson(Map<String, dynamic> json) => DataChance(
@@ -59,7 +39,7 @@ DataChance _$DataChanceFromJson(Map<String, dynamic> json) => DataChance(
       json['limit'] as int?,
       json['total'] as String?,
       (json['filter'] as List<dynamic>?)
-          ?.map((e) => FilterChance.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Customer.fromJson(e as Map<String, dynamic>))
           .toList(),
       (json['list'] as List<dynamic>?)
           ?.map((e) => ListChanceData.fromJson(e as Map<String, dynamic>))

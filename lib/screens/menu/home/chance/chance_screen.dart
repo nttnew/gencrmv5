@@ -133,7 +133,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
         itemWidget: (int index, data) {
           ListChanceData snap = data;
           return WidgetItemChance(
-            listChanceData: snap,
+            data: snap,
           );
         },
         controller: _bloc.loadMoreController,

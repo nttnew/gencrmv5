@@ -74,6 +74,7 @@ class AppValue {
   static const Widget kEmptyWidget = SizedBox();
 
   static Widget hSpace(double width) => SizedBox(width: width);
+  static const Widget hSpace4 = SizedBox(width: 4.0);
   static const Widget hSpaceTiny = SizedBox(width: 8.0);
   static const Widget hSpaceSmall = SizedBox(width: 16.0);
   static const Widget hSpaceMedium = SizedBox(width: 32.0);

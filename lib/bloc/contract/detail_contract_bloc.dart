@@ -49,7 +49,9 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
     await controllerHT.initData(dataHT);
   }
 
-  Stream<DetailContractState> _getDetailContract({required int id}) async* {
+  Stream<DetailContractState> _getDetailContract({
+    required int id,
+  }) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingDetailContractState();
@@ -61,11 +63,8 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       } else
         yield ErrorDetailContractState(response.msg ?? '');
     } catch (e) {
-      LoadingApi().popLoading();
       yield ErrorDetailContractState(getT(KeyT.an_error_occurred));
-      throw e;
     }
-    LoadingApi().popLoading();
   }
 
   Stream<DetailContractState> _deleteContract({required int id}) async* {

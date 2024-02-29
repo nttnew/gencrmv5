@@ -22,6 +22,8 @@ WorkItemData _$WorkItemDataFromJson(Map<String, dynamic> json) => WorkItemData(
       json['start_date'] as String?,
       json['location'] as String?,
       json['di_dong'] as String?,
+      Customer.fromJson(json['customer'] as Map<String, dynamic>),
+      Customer.fromJson(json['product_customer'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$WorkItemDataToJson(WorkItemData instance) =>
@@ -41,17 +43,8 @@ Map<String, dynamic> _$WorkItemDataToJson(WorkItemData instance) =>
       'start_date': instance.start_date,
       'location': instance.location,
       'di_dong': instance.di_dong,
-    };
-
-FilterData _$FilterDataFromJson(Map<String, dynamic> json) => FilterData(
-      json['id'] as String?,
-      json['name'] as String?,
-    );
-
-Map<String, dynamic> _$FilterDataToJson(FilterData instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
+      'customer': instance.customer,
+      'product_customer': instance.product_customer,
     };
 
 WorkData _$WorkDataFromJson(Map<String, dynamic> json) => WorkData(
@@ -60,7 +53,7 @@ WorkData _$WorkDataFromJson(Map<String, dynamic> json) => WorkData(
           .toList(),
       json['pageCount'] as int?,
       (json['data_filter'] as List<dynamic>?)
-          ?.map((e) => FilterData.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Customer.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

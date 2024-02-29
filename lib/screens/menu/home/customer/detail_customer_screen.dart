@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
+import '../../../../src/models/model_generator/job_customer.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/dialog_call.dart';
@@ -355,11 +356,14 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                           );
                         },
                         itemWidget: (int index, data) {
+                          JobCustomerData item = data as JobCustomerData;
                           return WorkCardWidget(
-                            data: data,
+                            data: item,
                             onTap: () {
                               AppNavigator.navigateDetailWork(
-                                  int.parse(data.id ?? '0'), data.name ?? '');
+                                int.tryParse(item.id ?? '') ?? 0,
+                                item.name ?? '',
+                              );
                             },
                           );
                         },

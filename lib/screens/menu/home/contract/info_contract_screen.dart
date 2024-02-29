@@ -1,17 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/contract/contract_bloc.dart';
 import 'package:gen_crm/bloc/contract/detail_contract_bloc.dart';
 import 'package:gen_crm/screens/menu/home/contract/widget/contract_operation.dart';
 import 'package:gen_crm/screens/menu/home/contract/widget/contract_payment.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../bloc/payment_contract/payment_contract_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
+import '../../../../src/models/model_generator/customer_clue.dart';
+import '../../../../src/models/model_generator/detail_contract.dart';
 import '../../../../src/models/model_generator/job_chance.dart';
 import '../../../../src/models/model_generator/support.dart';
 import '../../../../src/src_index.dart';
@@ -19,8 +19,8 @@ import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/listview_loadmore_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
-import '../../../../widgets/widget_text.dart';
 import '../../attachment/attachment.dart';
+import '../clue/widget/work_card_widget.dart';
 import '../support/widget/item_support.dart';
 
 class DetailInfoContract extends StatefulWidget {
@@ -40,8 +40,12 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
   @override
   void initState() {
     getThaoTac();
-    PaymentContractBloc.of(context)
-        .add(InitGetPaymentContractEvent(int.parse(id), isLoad: false));
+    PaymentContractBloc.of(context).add(
+      InitGetPaymentContractEvent(
+        int.parse(id),
+        isLoad: false,
+      ),
+    );
     _bloc = DetailContractBloc(
         userRepository: DetailContractBloc.of(context).userRepository);
     _blocNote =
@@ -231,13 +235,22 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                                   );
                                 },
                                 itemWidget: (int index, data) {
+                                  final DataFormAdd item = data as DataFormAdd;
                                   return GestureDetector(
                                     onTap: () {
                                       AppNavigator.navigateDetailWork(
                                           int.parse(data.id ?? ''),
                                           data.name_job ?? '');
                                     },
-                                    child: _tabBarWork(data),
+                                    child: WorkCardWidget(
+                                      color: item.color,
+                                      nameCustomer: item.name_customer,
+                                      nameJob: item.name_job,
+                                      statusJob: item.status_job,
+                                      startDate: item.start_date,
+                                      totalComment: item.total_comment,
+                                      productCustomer: item.product_customer,
+                                    ),
                                   );
                                 },
                                 controller: _bloc.controllerCV,
@@ -256,18 +269,22 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                                   );
                                 },
                                 itemWidget: (int index, data) {
+                                  final SupportContractData item =
+                                      data as SupportContractData;
                                   return ItemSupport(
                                     data: SupportItemData(
-                                      data.id,
-                                      data.name,
-                                      data.created_date,
-                                      data.status,
-                                      data.color,
-                                      data.total_note,
-                                      CustomerData(
+                                      item.id,
+                                      item.name,
+                                      item.created_date,
+                                      item.status,
+                                      item.color,
+                                      item.total_note,
+                                      Customer(
+                                        '',
                                         data.khach_hang,
-                                        data.khach_hang,
+                                        '',
                                       ),
+                                      item.product_customer,
                                       null,
                                     ),
                                   );
@@ -286,123 +303,6 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
             )
           ],
         ),
-      ),
-    );
-  }
-
-  _tabBarWork(DataFormAdd data) {
-    return Container(
-      margin: EdgeInsets.only(
-        bottom: 16,
-        left: 16,
-        right: 16,
-      ),
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: COLORS.WHITE,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(width: 1, color: COLORS.WHITE),
-        boxShadow: [
-          BoxShadow(
-            color: COLORS.BLACK.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 5,
-          )
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                child: WidgetText(
-                  title: data.name_job ?? "",
-                  style: AppStyle.DEFAULT_TITLE_PRODUCT
-                      .copyWith(color: COLORS.TEXT_COLOR),
-                ),
-                width: AppValue.widths * 0.7,
-              ),
-              Image.asset(
-                ICONS.IC_RED_PNG,
-                color: (data.color != null && data.color != "")
-                    ? HexColor(data.color!)
-                    : COLORS.PRIMARY_COLOR,
-              )
-            ],
-          ),
-          AppValue.vSpaceTiny,
-          if (data.name_customer?.isNotEmpty ?? false) ...[
-            Row(
-              children: [
-                SvgPicture.asset(
-                  ICONS.IC_USER2_SVG,
-                  color: Color(0xffE75D18),
-                ),
-                AppValue.hSpaceTiny,
-                WidgetText(
-                    title: data.name_customer ?? "",
-                    style: AppStyle.DEFAULT_LABEL_PRODUCT),
-              ],
-            ),
-            AppValue.vSpaceTiny,
-          ],
-          if (data.status_job?.isNotEmpty ?? false) ...[
-            Row(
-              children: [
-                SvgPicture.asset(
-                  ICONS.IC_DANG_XU_LY_SVG,
-                  color: (data.color != null && data.color != "")
-                      ? HexColor(data.color!)
-                      : COLORS.PRIMARY_COLOR,
-                ),
-                AppValue.hSpaceTiny,
-                WidgetText(
-                  title: data.status_job ?? '',
-                  style: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
-                      color: (data.color != null && data.color != "")
-                          ? HexColor(data.color ?? 'fff-fff')
-                          : COLORS.PRIMARY_COLOR),
-                ),
-              ],
-            ),
-            AppValue.vSpaceTiny,
-          ],
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Image.asset(
-                    ICONS.IC_DATE_PNG,
-                    height: 20,
-                    width: 20,
-                  ),
-                  AppValue.hSpaceTiny,
-                  WidgetText(
-                      title: data.start_date ?? "",
-                      style: AppStyle.DEFAULT_LABEL_PRODUCT
-                          .copyWith(color: COLORS.GREY_400)),
-                ],
-              ),
-              Row(
-                children: [
-                  SvgPicture.asset(ICONS.IC_MESS),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  WidgetText(
-                    title: data.total_comment.toString(),
-                    style: AppStyle.DEFAULT_14
-                        .copyWith(color: COLORS.TEXT_BLUE_BOLD),
-                  )
-                ],
-              )
-            ],
-          ),
-        ],
       ),
     );
   }

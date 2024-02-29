@@ -35,8 +35,9 @@ class DetailProductCustomerBloc
     }
   }
 
-  Stream<DetailProductCustomerState> _getDetailProduct(
-      {required String id}) async* {
+  Stream<DetailProductCustomerState> _getDetailProduct({
+    required String id,
+  }) async* {
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getDetailProductCustomer(id: id);
@@ -51,7 +52,6 @@ class DetailProductCustomerBloc
     } catch (e) {
       LoadingApi().popLoading();
       yield ErrorGetDetailProductCustomerState(getT(KeyT.an_error_occurred));
-      throw e;
     }
     LoadingApi().popLoading();
   }

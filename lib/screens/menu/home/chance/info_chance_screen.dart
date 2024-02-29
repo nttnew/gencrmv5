@@ -6,6 +6,7 @@ import '../../../../bloc/blocs.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
+import '../../../../src/models/model_generator/job_chance.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/listview_loadmore_base.dart';
@@ -191,20 +192,22 @@ class _InfoChancePageState extends State<InfoChancePage> {
                                   );
                                 },
                                 itemWidget: (int index, data) {
+                                  final DataFormAdd item = data as DataFormAdd;
                                   return GestureDetector(
                                     onTap: () {
                                       AppNavigator.navigateDetailWork(
-                                        int.parse(data.id ?? '0'),
-                                        data.name_job ?? '',
+                                        int.tryParse(item.id ?? '') ?? 0,
+                                        item.name_job ?? '',
                                       );
                                     },
                                     child: WorkCardWidget(
-                                      color: data.color,
-                                      nameCustomer: data.name_customer,
-                                      nameJob: data.name_job,
-                                      statusJob: data.status_job,
-                                      startDate: data.start_date,
-                                      totalComment: data.total_comment,
+                                      color: item.color,
+                                      nameCustomer: item.name_customer,
+                                      nameJob: item.name_job,
+                                      statusJob: item.status_job,
+                                      startDate: item.start_date,
+                                      totalComment: item.total_comment,
+                                      productCustomer: item.product_customer,
                                     ),
                                   );
                                 },

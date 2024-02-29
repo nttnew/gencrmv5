@@ -6,25 +6,13 @@ part of 'report_contact.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-CustomerContact _$CustomerContactFromJson(Map<String, dynamic> json) =>
-    CustomerContact(
-      json['id'] as String?,
-      json['name'] as String?,
-    );
-
-Map<String, dynamic> _$CustomerContactToJson(CustomerContact instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-    };
-
 DataListContact _$DataListContactFromJson(Map<String, dynamic> json) =>
     DataListContact(
       json['id'] as String?,
       json['name'] as String?,
       json['customer'] == null
           ? null
-          : CustomerContact.fromJson(json['customer'] as Map<String, dynamic>),
+          : Customer.fromJson(json['customer'] as Map<String, dynamic>),
       json['status'] as String?,
       json['status_edit'] as String?,
       json['status_color'] as String?,

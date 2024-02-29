@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gen_crm/widgets/widget_text.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../../../../../l10n/key_text.dart';
+import '../../../../../../src/app_const.dart';
 import '../../../../../../src/models/model_generator/chance_customer.dart';
 import '../../../../../../src/src_index.dart';
 
@@ -48,91 +46,48 @@ class ChanceCardWidget extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Row(
-              children: [
-                SvgPicture.asset(ICONS.IC_ICON1_SVG),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                    child: WidgetText(
-                      title: data.name ?? getT(KeyT.not_yet),
-                      style: AppStyle.DEFAULT_18_BOLD
-                          .copyWith(color: COLORS.TEXT_COLOR),
-                      maxLine: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      color: data.color != null ? HexColor(data.color!) : null,
-                      borderRadius: BorderRadius.circular(99)),
-                  width: AppValue.widths * 0.1,
-                  height: AppValue.heights * 0.02,
-                )
-              ],
+            itemTextIconStart(
+              title: data.name ?? getT(KeyT.not_yet),
+              icon: ICONS.IC_ICON1_SVG,
+              color: data.color,
             ),
-            SizedBox(height: AppValue.heights * 0.01),
-            Row(
-              children: [
-                SvgPicture.asset(
-                  ICONS.IC_AVATAR_SVG,
-                  color: COLORS.GRAY_IMAGE,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                  child: WidgetText(
-                    title:
-                        (data.customer_name == "" || data.customer_name == null)
-                            ? getT(KeyT.not_yet)
-                            : data.customer_name,
-                    style: AppStyle.DEFAULT_18_BOLD
-                        .copyWith(color: COLORS.TEXT_COLOR),
-                  ),
-                ),
-              ],
+            itemTextIcon(
+              text: (data.customer_name == '' || data.customer_name == null)
+                  ? getT(KeyT.not_yet)
+                  : data.customer_name ?? '',
+              icon: ICONS.IC_AVATAR_SVG,
+              colorIcon: COLORS.GRAY_IMAGE,
+              styleText: AppStyle.DEFAULT_14.copyWith(
+                color: COLORS.TEXT_COLOR,
+              ),
             ),
-            SizedBox(height: AppValue.heights * 0.01),
-            Row(
-              children: [
-                SvgPicture.asset(ICONS.IC_ICON3_SVG),
-                Padding(
-                  padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                  child: SizedBox(
-                      width: AppValue.widths * 0.5,
-                      child: WidgetText(
-                        title: data.status ?? getT(KeyT.not_yet),
-                        style: AppStyle.DEFAULT_14.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: COLORS.TEXT_RED),
-                      )),
-                ),
-              ],
-            ),
-            SizedBox(height: AppValue.heights * 0.01),
-            Row(
-              children: [
-                SvgPicture.asset(ICONS.IC_ICON4_SVG),
-                Padding(
-                  padding: EdgeInsets.only(left: AppValue.widths * 0.03),
-                  child: SizedBox(
-                      width: AppValue.widths * 0.5,
-                      child: WidgetText(
-                          title: data.date ?? getT(KeyT.not_yet),
-                          style: AppStyle.DEFAULT_14.copyWith(
-                              fontWeight: FontWeight.w400,
-                              color: COLORS.TEXT_COLOR))),
-                ),
-                Spacer(),
-                SvgPicture.asset(ICONS.IC_QUESTION_SVG),
-                SizedBox(
-                  width: AppValue.widths * 0.01,
-                ),
-                WidgetText(
-                    title: data.total_note,
-                    style:
-                        AppStyle.DEFAULT_14.copyWith(color: COLORS.TEXT_COLOR)),
-              ],
+            itemTextIcon(
+                text: data.product_customer?.name ?? '',
+                icon: ICONS.IC_CHANCE_3X_PNG,
+                isSVG: false,
+                colorText: COLORS.TEXT_BLUE_BOLD,
+                onTap: () {
+                  if (data.product_customer?.id != '' &&
+                      data.product_customer?.id != null)
+                    AppNavigator.navigateDetailProductCustomer2(
+                      data.product_customer,
+                    );
+                }),
+            itemTextIcon(
+                text: data.status ?? getT(KeyT.not_yet),
+                icon: ICONS.IC_ICON3_SVG,
+                colorText: COLORS.TEXT_RED,
+                onTap: () {
+                  if (data.product_customer?.id != '' &&
+                      data.product_customer?.id != null)
+                    AppNavigator.navigateDetailProductCustomer2(
+                      data.product_customer,
+                    );
+                }),
+            itemTextEnd(
+              title: data.date ?? getT(KeyT.not_yet),
+              content: data.total_note ?? '',
+              icon: ICONS.IC_ICON4_SVG,
             ),
           ],
         ),

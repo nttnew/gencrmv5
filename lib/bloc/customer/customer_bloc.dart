@@ -9,6 +9,7 @@ import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/customer.dart';
+import '../../src/models/model_generator/customer_clue.dart';
 import '../../widgets/listview/list_load_infinity.dart';
 
 part 'customer_event.dart';
@@ -16,7 +17,7 @@ part 'customer_state.dart';
 
 class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
   final UserRepository userRepository;
-  BehaviorSubject<List<FilterData>> listType = BehaviorSubject.seeded([]);
+  BehaviorSubject<List<Customer>> listType = BehaviorSubject.seeded([]);
   LoadMoreController loadMoreController = LoadMoreController();
   String idFilter = '';
   String search = '';
@@ -62,7 +63,8 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
       }
     } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      throw e;
+      LoadingApi().popLoading();
+      return resDynamic;
     }
     LoadingApi().popLoading();
     return resDynamic;

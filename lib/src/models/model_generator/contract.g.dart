@@ -17,7 +17,10 @@ ContractItemData _$ContractItemDataFromJson(Map<String, dynamic> json) =>
       json['avatar'] as String?,
       json['customer'] == null
           ? null
-          : CustomerContract.fromJson(json['customer'] as Map<String, dynamic>),
+          : Customer.fromJson(json['customer'] as Map<String, dynamic>),
+      json['product_customer'] == null
+          ? null
+          : Customer.fromJson(json['product_customer'] as Map<String, dynamic>),
       json['total_note'] as String?,
       json['conlai'] as String?,
     );
@@ -34,18 +37,7 @@ Map<String, dynamic> _$ContractItemDataToJson(ContractItemData instance) =>
       'conlai': instance.conlai,
       'price': instance.price,
       'customer': instance.customer,
-    };
-
-CustomerContract _$CustomerContractFromJson(Map<String, dynamic> json) =>
-    CustomerContract(
-      json['id'] as String?,
-      json['name'] as String?,
-    );
-
-Map<String, dynamic> _$CustomerContractToJson(CustomerContract instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
+      'product_customer': instance.product_customer,
     };
 
 ContractData _$ContractDataFromJson(Map<String, dynamic> json) => ContractData(
@@ -56,7 +48,7 @@ ContractData _$ContractDataFromJson(Map<String, dynamic> json) => ContractData(
       json['total'] as String?,
       json['limit'] as int?,
       (json['filter'] as List<dynamic>?)
-          ?.map((e) => FilterData.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Customer.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

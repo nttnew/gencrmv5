@@ -14,8 +14,8 @@ class CustomerIndividualItemData {
       field_maxlength,
       field_hidden,
       parent;
-  final int? field_require,field_read_only;
-  final dynamic field_set_value;
+  final int? field_require;
+  final dynamic field_set_value, field_read_only;
   final List<List<dynamic>>? field_datasource;
   final List<List<dynamic>>? field_set_value_datasource;
   final String? field_special, field_value;

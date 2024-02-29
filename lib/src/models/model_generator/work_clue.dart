@@ -1,6 +1,8 @@
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'customer_clue.dart';
+
 part 'work_clue.g.dart';
 
 @JsonSerializable(explicitToJson: true)
@@ -17,20 +19,23 @@ class WorkClueData {
       user_work_avatar,
       color;
   int? total_comment;
+  final Customer? product_customer;
 
-  WorkClueData(
-      {this.id,
-      this.id_customer,
-      this.name_customer,
-      this.name_job,
-      this.status_job,
-      this.start_date,
-      this.content_job,
-      this.user_work_id,
-      this.user_work_name,
-      this.user_work_avatar,
-      this.total_comment,
-      this.color});
+  WorkClueData({
+    this.id,
+    this.id_customer,
+    this.name_customer,
+    this.name_job,
+    this.status_job,
+    this.start_date,
+    this.content_job,
+    this.user_work_id,
+    this.user_work_name,
+    this.user_work_avatar,
+    this.total_comment,
+    this.color,
+    this.product_customer,
+  });
 
   factory WorkClueData.fromJson(Map<String, dynamic> json) =>
       _$WorkClueDataFromJson(json);

@@ -16,7 +16,10 @@ SupportItemData _$SupportItemDataFromJson(Map<String, dynamic> json) =>
       json['total_note'] as String?,
       json['customer'] == null
           ? null
-          : CustomerData.fromJson(json['customer'] as Map<String, dynamic>),
+          : Customer.fromJson(json['customer'] as Map<String, dynamic>),
+      json['product_customer'] == null
+          ? null
+          : Customer.fromJson(json['product_customer'] as Map<String, dynamic>),
       json['location'] as String?,
     );
 
@@ -30,17 +33,7 @@ Map<String, dynamic> _$SupportItemDataToJson(SupportItemData instance) =>
       'total_note': instance.total_note,
       'location': instance.location,
       'customer': instance.customer,
-    };
-
-CustomerData _$CustomerDataFromJson(Map<String, dynamic> json) => CustomerData(
-      json['id'] as String?,
-      json['name'] as String?,
-    );
-
-Map<String, dynamic> _$CustomerDataToJson(CustomerData instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
+      'product_customer': instance.product_customer,
     };
 
 SupportData _$SupportDataFromJson(Map<String, dynamic> json) => SupportData(
@@ -51,7 +44,7 @@ SupportData _$SupportDataFromJson(Map<String, dynamic> json) => SupportData(
           ?.map((e) => SupportItemData.fromJson(e as Map<String, dynamic>))
           .toList(),
       (json['filter'] as List<dynamic>?)
-          ?.map((e) => FilterData.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Customer.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

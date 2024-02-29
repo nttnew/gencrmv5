@@ -1,26 +1,15 @@
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'customer_clue.dart';
+
 part 'report_contact.g.dart';
-
-@JsonSerializable()
-class CustomerContact {
-  final String? id;
-  final String? name;
-
-  CustomerContact(this.id, this.name);
-
-  factory CustomerContact.fromJson(Map<String, dynamic> json) =>
-      _$CustomerContactFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CustomerContactToJson(this);
-}
 
 @JsonSerializable()
 class DataListContact {
   final String? id;
   final String? name;
-  final CustomerContact? customer;
+  final Customer? customer;
   final dynamic price;
   final String? status;
   final String? status_edit;

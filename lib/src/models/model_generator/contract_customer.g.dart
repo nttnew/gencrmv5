@@ -17,6 +17,9 @@ ContractCustomerData _$ContractCustomerDataFromJson(
       json['customer_name'] as String?,
       json['color'] as String?,
       json['total_note'] as String?,
+      json['product_customer'] == null
+          ? null
+          : Customer.fromJson(json['product_customer'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ContractCustomerDataToJson(
@@ -30,6 +33,7 @@ Map<String, dynamic> _$ContractCustomerDataToJson(
       'customer_name': instance.customer_name,
       'color': instance.color,
       'total_note': instance.total_note,
+      'product_customer': instance.product_customer,
     };
 
 ContractCustomerResponse _$ContractCustomerResponseFromJson(

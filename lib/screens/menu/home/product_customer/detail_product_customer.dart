@@ -8,6 +8,9 @@ import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/contract.dart';
 import '../../../../src/models/model_generator/detail_product_customer_response.dart';
+import '../../../../src/models/model_generator/list_ch_product_customer_response.dart';
+import '../../../../src/models/model_generator/list_hd_product_customer_response.dart';
+import '../../../../src/models/model_generator/list_ht_product_customer_response.dart';
 import '../../../../src/models/model_generator/support.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/listview_loadmore_base.dart';
@@ -68,15 +71,18 @@ class _DetailProductCustomerScreenState
                   page: page, isInit: isInit, id: idM);
             },
             itemWidget: (int index, data) {
+              final CHProductCustomer item = data as CHProductCustomer;
               return WidgetItemChance(
-                listChanceData: ListChanceData(
-                    data.id,
-                    data.name,
-                    data.price,
-                    data.trangThai,
-                    null,
-                    null,
-                    DataCustomer(data.customer.id, data.customer.name, null)),
+                data: ListChanceData(
+                  item.id,
+                  item.name,
+                  item.price,
+                  item.trangThai,
+                  null,
+                  null,
+                  item.customer,
+                  item.product_customer,
+                ),
               );
             },
             controller: _bloc.controllerCh,
@@ -89,24 +95,26 @@ class _DetailProductCustomerScreenState
           child: ListViewLoadMoreBase(
             functionInit: (page, isInit) {
               return _bloc.getListHDProductCustomer(
-                  page: page, isInit: isInit, id: idM);
+                page: page,
+                isInit: isInit,
+                id: idM,
+              );
             },
             itemWidget: (int index, data) {
+              final ListHDProductCustomer item = data as ListHDProductCustomer;
               return ItemContract(
                 data: ContractItemData(
-                  data.id,
-                  data.name,
-                  data.price,
-                  data.status,
+                  item.id,
+                  item.name,
+                  item.price,
+                  item.status,
                   null, //data.status_edit,
-                  data.color,
+                  item.color,
                   null, //data.avatar,
-                  CustomerContract(
-                    data.customer.id,
-                    data.customer.name,
-                  ),
+                  item.customer,
+                  item.product_customer,
                   null, //data.total_note,
-                  data.conlai,
+                  item.conlai,
                 ),
               );
             },
@@ -128,6 +136,7 @@ class _DetailProductCustomerScreenState
                       int.parse(data.id ?? '0'), data.nameJob ?? '');
                 },
                 child: WorkCardWidget(
+                  productCustomer: null,//todo
                   nameCustomer: data.customer.name,
                   nameJob: data.nameJob,
                   startDate: data.startDate,
@@ -149,18 +158,17 @@ class _DetailProductCustomerScreenState
                   page: page, isInit: isInit, id: idM);
             },
             itemWidget: (int index, data) {
+              final DataHTProductCustomer item = data as DataHTProductCustomer;
               return ItemSupport(
                 data: SupportItemData(
-                  data.id,
-                  data.tenHoTro,
-                  data.createdDate,
-                  data.trangThai,
-                  data.color,
-                  data.totalNote,
-                  CustomerData(
-                    data.customer.id,
-                    data.customer.name,
-                  ),
+                  item.id,
+                  item.tenHoTro,
+                  item.createdDate,
+                  item.trangThai,
+                  item.color,
+                  item.totalNote,
+                  item.customer,
+                  item.product_customer,
                   null,
                 ),
               );
@@ -329,6 +337,11 @@ class _DetailProductCustomerScreenState
                     }),
                   ],
                 ),
+              );
+            } else if (state is ErrorGetDetailProductCustomerState) {
+              return Text(
+                state.msg,
+                style: AppStyle.DEFAULT_16_T,
               );
             } else
               return SizedBox();

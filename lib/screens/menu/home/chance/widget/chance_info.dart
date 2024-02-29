@@ -85,6 +85,9 @@ class _ChanceInfoState extends State<ChanceInfo>
                                       children: List.generate(
                                           state.data[index].data!.length,
                                           (index1) {
+                                        bool isSPKH = state
+                                                .data[index].data?[index1].id ==
+                                            'chsan_pham_kh';
                                         bool isKH = state.data[index]
                                                     .data?[index1].id ==
                                                 'col121' &&
@@ -105,36 +108,40 @@ class _ChanceInfoState extends State<ChanceInfo>
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Expanded(
-                                                    flex: 1,
-                                                    child: WidgetText(
-                                                      title: state
-                                                              .data[index]
-                                                              .data![index1]
-                                                              .label_field ??
-                                                          '',
-                                                      style: AppStyle.DEFAULT_14
-                                                          .copyWith(
-                                                              color:
-                                                                  Colors.grey),
-                                                    )),
+                                                  flex: 1,
+                                                  child: WidgetText(
+                                                    title: state
+                                                            .data[index]
+                                                            .data![index1]
+                                                            .label_field ??
+                                                        '',
+                                                    style: AppStyle.DEFAULT_14
+                                                        .copyWith(
+                                                            color: Colors.grey),
+                                                  ),
+                                                ),
                                                 Expanded(
                                                   flex: 2,
                                                   child: GestureDetector(
                                                     onTap: () {
+                                                      String id = state
+                                                              .data[index]
+                                                              .data?[index1]
+                                                              .link ??
+                                                          '';
+                                                      String title = state
+                                                              .data[index]
+                                                              .data?[index1]
+                                                              .value_field ??
+                                                          '';
                                                       if (isKH) {
-                                                        AppNavigator.navigateDetailCustomer(
-                                                            state
-                                                                    .data[index]
-                                                                    .data?[
-                                                                        index1]
-                                                                    .link ??
-                                                                '',
-                                                            state
-                                                                    .data[index]
-                                                                    .data?[
-                                                                        index1]
-                                                                    .value_field ??
-                                                                '');
+                                                        AppNavigator
+                                                            .navigateDetailCustomer(
+                                                                id, title);
+                                                      } else if (isSPKH) {
+                                                        AppNavigator
+                                                            .navigateDetailProductCustomer(
+                                                                title, id);
                                                       }
                                                     },
                                                     child: WidgetText(
@@ -147,11 +154,12 @@ class _ChanceInfoState extends State<ChanceInfo>
                                                           TextAlign.right,
                                                       style: AppStyle.DEFAULT_14
                                                           .copyWith(
-                                                        decoration: isKH
-                                                            ? TextDecoration
-                                                                .underline
-                                                            : null,
-                                                        color: isKH
+                                                        decoration:
+                                                            isSPKH || isKH
+                                                                ? TextDecoration
+                                                                    .underline
+                                                                : null,
+                                                        color: isSPKH || isKH
                                                             ? Colors.blue
                                                             : null,
                                                       ),

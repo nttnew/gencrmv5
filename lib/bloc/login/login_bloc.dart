@@ -11,7 +11,6 @@ import 'package:equatable/equatable.dart';
 import 'package:gen_crm/api_resfull/dio_provider.dart';
 import 'package:gen_crm/api_resfull/user_repository.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
-import 'package:gen_crm/src/models/model_generator/main_menu_response.dart';
 import 'package:gen_crm/src/models/model_generator/report_option.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/event_repository_storage.dart';
@@ -20,6 +19,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
+import '../../src/models/model_generator/customer_clue.dart';
 import '../../src/models/model_generator/xe_dich_vu_response.dart';
 import '../../src/models/validate_form/no_data.dart';
 import '../../widgets/listview/list_load_infinity.dart';
@@ -31,7 +31,7 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
   final EventRepositoryStorage localRepository;
-  late List<QuickMenu> listMenuFlash = [];
+  late List<Customer> listMenuFlash = [];
   BehaviorSubject<LanguagesResponse> localeLocalSelect = BehaviorSubject();
   static const String UNREGISTER = 'UNREGISTER';
   static const String REGISTERED = 'REGISTERED';
@@ -84,6 +84,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         resDynamic = response.msg ?? '';
     } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
+      responseDetailXeDichVuStream.add(resDynamic);
     }
     responseDetailXeDichVuStream.add(resDynamic);
   }
@@ -156,9 +157,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';
-    } catch (e) {
+    }  catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      throw e;
+      if (isInit) LoadingApi().popLoading();
+      return resDynamic;
     }
     if (isInit) LoadingApi().popLoading();
     return resDynamic;
@@ -215,8 +217,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     String data = shareLocal.getString(PreferencesKey.LIST_MENU_FLASH) ?? "";
     if (data != '') {
       final result = json.decode(data);
-      final resultHangXe = result.map((e) => QuickMenu.fromJson(e)).toList();
-      final Set<QuickMenu> list = {};
+      final resultHangXe = result.map((e) => Customer.fromJson(e)).toList();
+      final Set<Customer> list = {};
       for (final obj in resultHangXe) {
         list.add(obj);
       }

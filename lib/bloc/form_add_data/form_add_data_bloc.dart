@@ -409,7 +409,6 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     } catch (e) {
       LoadingApi().popLoading();
       yield ErrorFormAddCustomerOrState(getT(KeyT.an_error_occurred));
-      throw e;
     }
     LoadingApi().popLoading();
   }

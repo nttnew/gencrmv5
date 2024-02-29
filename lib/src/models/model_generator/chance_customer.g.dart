@@ -16,6 +16,9 @@ ChanceCustomerData _$ChanceCustomerDataFromJson(Map<String, dynamic> json) =>
       json['color'] as String?,
       json['customer_name'] as String?,
       json['date'] as String?,
+      json['product_customer'] == null
+          ? null
+          : Customer.fromJson(json['product_customer'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ChanceCustomerDataToJson(ChanceCustomerData instance) =>
@@ -28,6 +31,7 @@ Map<String, dynamic> _$ChanceCustomerDataToJson(ChanceCustomerData instance) =>
       'color': instance.color,
       'customer_name': instance.customer_name,
       'date': instance.date,
+      'product_customer': instance.product_customer,
     };
 
 ChanceCustomerResponse _$ChanceCustomerResponseFromJson(

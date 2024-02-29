@@ -1,3 +1,5 @@
+import 'customer_clue.dart';
+
 class ListCVProductCustomerResponse {
   bool? success;
   int? code;
@@ -144,21 +146,3 @@ class DataList {
   }
 }
 
-class Customer {
-  String? id;
-  String? name;
-
-  Customer({this.id, this.name});
-
-  Customer.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    return data;
-  }
-}

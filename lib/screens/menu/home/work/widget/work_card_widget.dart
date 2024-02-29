@@ -74,7 +74,10 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
                 Expanded(
                   child: WidgetText(
                     title: widget.item.name_job ?? '',
-                    style: NameCustomerStyle(),
+                    style: AppStyle.DEFAULT_16_BOLD.copyWith(
+                      color: COLORS.TEXT_COLOR,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
                 Container(
@@ -99,43 +102,26 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
                   ? HexColor(widget.item.status_color!)
                   : COLORS.PRIMARY_COLOR,
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: itemTextIcon(
-                      paddingTop: 0,
-                      text: widget.item.start_date ?? '',
-                      icon: ICONS.IC_ICON4_SVG,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  SvgPicture.asset(ICONS.IC_QUESTION_SVG),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  WidgetText(
-                    title: widget.item.total_comment.toString(),
-                    style: TextStyle(
-                      color: COLORS.TEXT_BLUE_BOLD,
-                    ),
-                  ),
-                ],
-              ),
+            itemTextIcon(
+                text: widget.item.product_customer.name ?? '',
+                icon: ICONS.IC_CHANCE_3X_PNG,
+                isSVG: false,
+                colorText: COLORS.TEXT_BLUE_BOLD,
+                onTap: () {
+                  if (widget.item.product_customer.id != '' &&
+                      widget.item.product_customer.id != null)
+                    AppNavigator.navigateDetailProductCustomer2(
+                      widget.item.product_customer,
+                    );
+                }),
+            itemTextEnd(
+              title: widget.item.start_date ?? '',
+              content: widget.item.total_comment.toString(),
+              icon: ICONS.IC_ICON4_SVG,
             ),
           ],
         ),
       ),
     );
   }
-
-  TextStyle NameCustomerStyle() => TextStyle(
-        color: COLORS.ff006CB1,
-        fontFamily: "Quicksand",
-        fontWeight: FontWeight.w700,
-        fontSize: 18,
-      );
 }

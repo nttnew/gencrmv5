@@ -1,6 +1,7 @@
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
-import 'package:gen_crm/src/models/model_generator/customer.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'action_model.dart';
 
 part 'clue_customer.g.dart';
 
@@ -8,7 +9,7 @@ part 'clue_customer.g.dart';
 class ClueCustomerData {
   final String? id, name, danh_xung, total_note;
   final Position? position;
-  final ActionData? phone, email;
+  final ActionModel? phone, email;
 
   ClueCustomerData(this.id, this.name, this.phone, this.danh_xung,
       this.position, this.email, this.total_note);

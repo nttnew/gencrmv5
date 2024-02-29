@@ -1,3 +1,7 @@
+import 'package:gen_crm/src/models/model_generator/action_model.dart';
+
+import 'customer_clue.dart';
+
 class ListProductCustomerResponse {
   bool? success;
   int? code;
@@ -67,7 +71,7 @@ class ProductCustomerResponse {
   String? trangThai;
   String? loai;
   String? id;
-  PhoneModel? phone;
+  ActionModel? phone;
 
   ProductCustomerResponse({
     this.name,
@@ -85,7 +89,7 @@ class ProductCustomerResponse {
     trangThai = json['trang_thai'];
     loai = json['loai'];
     id = json['id'];
-    phone = json['phone'] != null ? PhoneModel.fromJson(json['phone']) : null;
+    phone = json['phone'] != null ? ActionModel.fromJson(json['phone']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -100,47 +104,6 @@ class ProductCustomerResponse {
     if (this.phone != null) {
       data['phone'] = this.phone!.toJson();
     }
-    return data;
-  }
-}
-
-class Customer {
-  String? id;
-  String? name;
-
-  Customer({this.id, this.name,});
-
-  Customer.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    return data;
-  }
-}
-
-class PhoneModel {
-  String? val;
-  int? action;
-
-  PhoneModel({
-    this.val,
-    this.action,
-  });
-
-  PhoneModel.fromJson(Map<String, dynamic> json) {
-    val = json['val'];
-    action = json['action'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['val'] = this.val;
-    data['action'] = this.action;
     return data;
   }
 }

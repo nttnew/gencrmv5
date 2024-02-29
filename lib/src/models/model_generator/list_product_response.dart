@@ -1,3 +1,5 @@
+import 'customer_clue.dart';
+
 class ListProductResponse {
   bool? success;
   int? code;
@@ -10,11 +12,11 @@ class ListProductResponse {
     success = json['success'];
     code = json['code'];
     msg = json['msg'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ?  Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['success'] = this.success;
     data['code'] = this.code;
     data['msg'] = this.msg;
@@ -28,7 +30,7 @@ class ListProductResponse {
 class Data {
   List<ProductModule>? lists;
   String? t;
-  List<DataFilter>? dataFilter;
+  List<Customer>? dataFilter;
 
   Data({this.lists, this.t, this.dataFilter});
 
@@ -36,20 +38,20 @@ class Data {
     if (json['lists'] != null) {
       lists = <ProductModule>[];
       json['lists'].forEach((v) {
-        lists!.add(new ProductModule.fromJson(v));
+        lists!.add( ProductModule.fromJson(v));
       });
     }
     t = json['t'];
     if (json['data_filter'] != null) {
-      dataFilter = <DataFilter>[];
+      dataFilter = <Customer>[];
       json['data_filter'].forEach((v) {
-        dataFilter!.add(new DataFilter.fromJson(v));
+        dataFilter!.add( Customer.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     if (this.lists != null) {
       data['lists'] = this.lists!.map((v) => v.toJson()).toList();
     }
@@ -96,7 +98,7 @@ class ProductModule {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['ton_kho'] = this.tonKho;
     data['gia_ban'] = this.giaBan;
     data['gia_nhap'] = this.giaNhap;
@@ -110,21 +112,3 @@ class ProductModule {
   }
 }
 
-class DataFilter {
-  String? id;
-  String? name;
-
-  DataFilter({this.id, this.name});
-
-  DataFilter.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    return data;
-  }
-}

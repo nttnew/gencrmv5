@@ -7,6 +7,7 @@ import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
+import '../../src/models/model_generator/customer_clue.dart';
 import '../../src/models/model_generator/group_product_response.dart';
 import '../../widgets/listview/list_load_infinity.dart';
 import '../../widgets/loading_api.dart';
@@ -22,7 +23,7 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
   String? type;
   String? ids;
   BehaviorSubject<List<Cats>> listType = BehaviorSubject.seeded([]);
-  BehaviorSubject<List<DataFilter>> listFilter = BehaviorSubject.seeded([]);
+  BehaviorSubject<List<Customer>> listFilter = BehaviorSubject.seeded([]);
 
   ProductModuleBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -60,8 +61,8 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
         resDynamic = response.msg ?? '';
     } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-
-      throw e;
+      LoadingApi().popLoading();
+      return resDynamic;
     }
     LoadingApi().popLoading();
     return resDynamic;

@@ -236,14 +236,8 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
                   : ItemProductCustomer(
                       productModule: ProductCustomerResponse(
                         name: item.name,
-                        customer: Customer(
-                          name: item.customer?.name,
-                          id: item.customer?.id,
-                        ),
-                        phone: PhoneModel(
-                          val: item.phone?.val,
-                          action: item.phone?.action,
-                        ),
+                        customer: item.customer,
+                        phone: item.phone,
                         loai: item.loai,
                       ),
                       onTap: () {

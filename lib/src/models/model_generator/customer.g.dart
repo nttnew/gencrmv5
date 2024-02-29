@@ -11,7 +11,7 @@ CustomerData _$CustomerDataFromJson(Map<String, dynamic> json) => CustomerData(
       json['name'] as String?,
       json['phone'] == null
           ? null
-          : ActionData.fromJson(json['phone'] as Map<String, dynamic>),
+          : ActionModel.fromJson(json['phone'] as Map<String, dynamic>),
       json['rank_type'] as String?,
       json['danh_xung'] as String?,
       json['color'] as String?,
@@ -26,11 +26,11 @@ CustomerData _$CustomerDataFromJson(Map<String, dynamic> json) => CustomerData(
       json['total_comment'] as int?,
       json['email'] == null
           ? null
-          : ActionData.fromJson(json['email'] as Map<String, dynamic>),
+          : ActionModel.fromJson(json['email'] as Map<String, dynamic>),
       json['tong_so_hop_dong'] as int?,
       json['customer'] == null
           ? null
-          : FilterData.fromJson(json['customer'] as Map<String, dynamic>),
+          : Customer.fromJson(json['customer'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$CustomerDataToJson(CustomerData instance) =>
@@ -55,28 +55,6 @@ Map<String, dynamic> _$CustomerDataToJson(CustomerData instance) =>
       'customer': instance.customer,
     };
 
-ActionData _$ActionDataFromJson(Map<String, dynamic> json) => ActionData(
-      json['val'] as String?,
-      json['action'] as int?,
-    );
-
-Map<String, dynamic> _$ActionDataToJson(ActionData instance) =>
-    <String, dynamic>{
-      'val': instance.val,
-      'action': instance.action,
-    };
-
-FilterData _$FilterDataFromJson(Map<String, dynamic> json) => FilterData(
-      json['id'] as String?,
-      json['name'] as String?,
-    );
-
-Map<String, dynamic> _$FilterDataToJson(FilterData instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-    };
-
 ListCustomerData _$ListCustomerDataFromJson(Map<String, dynamic> json) =>
     ListCustomerData(
       json['page'] as String?,
@@ -86,7 +64,7 @@ ListCustomerData _$ListCustomerDataFromJson(Map<String, dynamic> json) =>
           ?.map((e) => CustomerData.fromJson(e as Map<String, dynamic>))
           .toList(),
       (json['filter'] as List<dynamic>?)
-          ?.map((e) => FilterData.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Customer.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

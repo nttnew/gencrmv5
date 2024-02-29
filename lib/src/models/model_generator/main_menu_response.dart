@@ -1,3 +1,5 @@
+import 'customer_clue.dart';
+
 class MainMenuResponse {
   bool? success;
   String? msg;
@@ -32,7 +34,7 @@ class MainMenuResponse {
 
 class Data {
   List<MainMenu>? mainMenu;
-  List<QuickMenu>? quickMenu;
+  List<Customer>? quickMenu;
 
   Data({
     this.mainMenu,
@@ -47,9 +49,9 @@ class Data {
       });
     }
     if (json['quick_menu'] != null) {
-      quickMenu = <QuickMenu>[];
+      quickMenu = <Customer>[];
       json['quick_menu'].forEach((v) {
-        quickMenu!.add(QuickMenu.fromJson(v));
+        quickMenu!.add(Customer.fromJson(v));
       });
     }
   }
@@ -83,28 +85,6 @@ class MainMenu {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['isallow'] = this.isallow;
-    data['name'] = this.name;
-    return data;
-  }
-}
-
-class QuickMenu {
-  String? id;
-  String? name;
-
-  QuickMenu({
-    this.id,
-    this.name,
-  });
-
-  QuickMenu.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = this.id;
     data['name'] = this.name;
     return data;
   }

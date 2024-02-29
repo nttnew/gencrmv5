@@ -84,47 +84,36 @@ class ItemSupport extends StatelessWidget {
               ],
             ),
             itemTextIcon(
-                text: data.customer?.name ?? '', icon: ICONS.IC_AVATAR_SVG),
+              text: data.customer?.name ?? '',
+              icon: ICONS.IC_AVATAR_SVG,
+            ),
             itemTextIcon(
-                text: data.trang_thai ?? '',
-                styleText: AppStyle.DEFAULT_14.copyWith(
-                    color: data.color != ""
-                        ? HexColor(data.color!)
-                        : COLORS.PRIMARY_COLOR),
-                colorIcon: data.color != ""
-                    ? HexColor(data.color!)
-                    : COLORS.PRIMARY_COLOR,
-                icon: ICONS.IC_ICON3_SVG),
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: itemTextIcon(
-                        paddingTop: 0,
-                        text: data.created_date ?? '',
-                        styleText: TextStyle(
-                            color: HexColor("#263238"),
-                            fontFamily: "Quicksand",
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14),
-                        icon: ICONS.IC_ICON4_SVG),
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  SvgPicture.asset(ICONS.IC_QUESTION_SVG),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  WidgetText(
-                    title: data.total_note ?? '',
-                    style: TextStyle(
-                      color: COLORS.TEXT_BLUE_BOLD,
-                    ),
-                  ),
-                ],
-              ),
+                text: data.product_customer?.name ?? '',
+                icon: ICONS.IC_CHANCE_3X_PNG,
+                isSVG: false,
+                colorText: COLORS.TEXT_BLUE_BOLD,
+                onTap: () {
+                  if (data.product_customer?.id != '' &&
+                      data.product_customer?.id != null)
+                    AppNavigator.navigateDetailProductCustomer2(
+                      data.product_customer,
+                    );
+                }),
+            itemTextIcon(
+              text: data.trang_thai ?? '',
+              styleText: AppStyle.DEFAULT_14.copyWith(
+                  color: data.color != ""
+                      ? HexColor(data.color!)
+                      : COLORS.PRIMARY_COLOR),
+              colorIcon: data.color != ""
+                  ? HexColor(data.color!)
+                  : COLORS.PRIMARY_COLOR,
+              icon: ICONS.IC_ICON3_SVG,
+            ),
+            itemTextEnd(
+              title: data.created_date ?? '',
+              content: data.total_note ?? '',
+              icon: ICONS.IC_ICON4_SVG,
             ),
           ],
         ),

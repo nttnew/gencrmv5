@@ -1,28 +1,35 @@
+import 'customer_clue.dart';
+
 class ListHDProductCustomerResponse {
   bool? success;
   int? code;
   String? msg;
-  List<Data>? data;
+  List<ListHDProductCustomer>? data;
   String? total;
 
-  ListHDProductCustomerResponse(
-      {this.success, this.code, this.msg, this.data, this.total});
+  ListHDProductCustomerResponse({
+    this.success,
+    this.code,
+    this.msg,
+    this.data,
+    this.total,
+  });
 
   ListHDProductCustomerResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     code = json['code'];
     msg = json['msg'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <ListHDProductCustomer>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(ListHDProductCustomer.fromJson(v));
       });
     }
     total = json['total'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['success'] = this.success;
     data['code'] = this.code;
     data['msg'] = this.msg;
@@ -34,29 +41,33 @@ class ListHDProductCustomerResponse {
   }
 }
 
-class Data {
+class ListHDProductCustomer {
   String? id;
   String? name;
-  Customer? customer;
+  Customer? customer, product_customer;
   String? price;
   String? status;
   String? color;
   String? conlai;
 
-  Data(
-      {this.id,
-        this.name,
-        this.customer,
-        this.price,
-        this.status,
-        this.color,
-        this.conlai});
+  ListHDProductCustomer({
+    this.id,
+    this.name,
+    this.customer,
+    this.product_customer,
+    this.price,
+    this.status,
+    this.color,
+    this.conlai,
+  });
 
-  Data.fromJson(Map<String, dynamic> json) {
+  ListHDProductCustomer.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    customer = json['customer'] != null
-        ? new Customer.fromJson(json['customer'])
+    customer =
+        json['customer'] != null ? Customer.fromJson(json['customer']) : null;
+    product_customer = json['product_customer'] != null
+        ? Customer.fromJson(json['product_customer'])
         : null;
     price = json['price'];
     status = json['status'];
@@ -65,35 +76,19 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
     if (this.customer != null) {
       data['customer'] = this.customer!.toJson();
     }
+    if (this.product_customer != null) {
+      data['product_customer'] = this.product_customer!.toJson();
+    }
     data['price'] = this.price;
     data['status'] = this.status;
     data['color'] = this.color;
     data['conlai'] = this.conlai;
-    return data;
-  }
-}
-
-class Customer {
-  String? id;
-  String? name;
-
-  Customer({this.id, this.name});
-
-  Customer.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
     return data;
   }
 }

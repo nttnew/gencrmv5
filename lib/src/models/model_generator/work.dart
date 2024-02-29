@@ -1,6 +1,8 @@
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'customer_clue.dart';
+
 part 'work.g.dart';
 
 @JsonSerializable()
@@ -20,6 +22,7 @@ class WorkItemData {
       start_date,
       location,
       di_dong;
+  final Customer customer, product_customer;
 
   WorkItemData(
     this.id,
@@ -37,6 +40,8 @@ class WorkItemData {
     this.start_date,
     this.location,
     this.di_dong,
+    this.customer,
+    this.product_customer,
   );
 
   factory WorkItemData.fromJson(Map<String, dynamic> json) =>
@@ -46,24 +51,16 @@ class WorkItemData {
 }
 
 @JsonSerializable()
-class FilterData {
-  final String? id, name;
-
-  FilterData(this.id, this.name);
-
-  factory FilterData.fromJson(Map<String, dynamic> json) =>
-      _$FilterDataFromJson(json);
-
-  Map<String, dynamic> toJson() => _$FilterDataToJson(this);
-}
-
-@JsonSerializable()
 class WorkData {
   final List<WorkItemData>? data_list;
   final int? pageCount;
-  final List<FilterData>? data_filter;
+  final List<Customer>? data_filter;
 
-  WorkData(this.data_list, this.pageCount, this.data_filter);
+  WorkData(
+    this.data_list,
+    this.pageCount,
+    this.data_filter,
+  );
 
   factory WorkData.fromJson(Map<String, dynamic> json) =>
       _$WorkDataFromJson(json);

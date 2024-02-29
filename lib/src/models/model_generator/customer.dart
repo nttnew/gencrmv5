@@ -1,6 +1,9 @@
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'action_model.dart';
+import 'customer_clue.dart';
+
 part 'customer.g.dart';
 
 @JsonSerializable()
@@ -17,8 +20,8 @@ class CustomerData {
       loai;
   final bool? is_company;
   final int? rank_max_level, rank_value, total_comment, tong_so_hop_dong;
-  final ActionData? phone, email;
-  final FilterData? customer;
+  final ActionModel? phone, email;
+  final Customer? customer;
 
   CustomerData(
     this.id,
@@ -48,37 +51,11 @@ class CustomerData {
 }
 
 @JsonSerializable()
-class ActionData {
-  final String? val;
-  final int? action;
-
-  ActionData(this.val, this.action);
-
-  factory ActionData.fromJson(Map<String, dynamic> json) =>
-      _$ActionDataFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ActionDataToJson(this);
-}
-
-@JsonSerializable()
-class FilterData {
-  final String? id;
-  final String? name;
-
-  FilterData(this.id, this.name);
-
-  factory FilterData.fromJson(Map<String, dynamic> json) =>
-      _$FilterDataFromJson(json);
-
-  Map<String, dynamic> toJson() => _$FilterDataToJson(this);
-}
-
-@JsonSerializable()
 class ListCustomerData {
   final String? page;
   final int? total, limit;
   final List<CustomerData>? list;
-  final List<FilterData>? filter;
+  final List<Customer>? filter;
 
   ListCustomerData(this.page, this.total, this.limit, this.list, this.filter);
 

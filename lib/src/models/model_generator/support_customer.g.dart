@@ -16,6 +16,9 @@ SupportCustomerData _$SupportCustomerDataFromJson(Map<String, dynamic> json) =>
       json['user_handling'] as String?,
       json['color'] as String?,
       json['total_note'] as String?,
+      json['product_customer'] == null
+          ? null
+          : Customer.fromJson(json['product_customer'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SupportCustomerDataToJson(
@@ -29,6 +32,7 @@ Map<String, dynamic> _$SupportCustomerDataToJson(
       'user_handling': instance.user_handling,
       'color': instance.color,
       'total_note': instance.total_note,
+      'product_customer': instance.product_customer,
     };
 
 SupportCustomerResponse _$SupportCustomerResponseFromJson(

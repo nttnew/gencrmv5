@@ -1,30 +1,27 @@
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'customer_clue.dart';
+
 part 'chance.g.dart';
-
-@JsonSerializable()
-class DataCustomer {
-  final String? id;
-  final String? name, danh_xung;
-
-  DataCustomer(this.id, this.name, this.danh_xung);
-
-  factory DataCustomer.fromJson(Map<String, dynamic> json) =>
-      _$DataCustomerFromJson(json);
-
-  Map<String, dynamic> toJson() => _$DataCustomerToJson(this);
-}
 
 @JsonSerializable()
 class ListChanceData {
   final String? id;
   final String? dateNextCare;
   final String? name, price, status, avatar;
-  final DataCustomer? customer;
+  final Customer? customer, product_customer;
 
-  ListChanceData(this.id, this.name, this.price, this.status, this.avatar,
-      this.dateNextCare, this.customer);
+  ListChanceData(
+    this.id,
+    this.name,
+    this.price,
+    this.status,
+    this.avatar,
+    this.dateNextCare,
+    this.customer,
+    this.product_customer,
+  );
 
   factory ListChanceData.fromJson(Map<String, dynamic> json) =>
       _$ListChanceDataFromJson(json);
@@ -33,24 +30,11 @@ class ListChanceData {
 }
 
 @JsonSerializable()
-class FilterChance {
-  String? id;
-  String? name;
-
-  FilterChance(this.id, this.name);
-
-  factory FilterChance.fromJson(Map<String, dynamic> json) =>
-      _$FilterChanceFromJson(json);
-
-  Map<String, dynamic> toJson() => _$FilterChanceToJson(this);
-}
-
-@JsonSerializable()
 class DataChance {
   final String? total, page;
   final int? limit;
   final List<ListChanceData>? list;
-  final List<FilterChance>? filter;
+  final List<Customer>? filter;
 
   DataChance(this.page, this.limit, this.total, this.filter, this.list);
 

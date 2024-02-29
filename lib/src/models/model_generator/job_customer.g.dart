@@ -16,6 +16,9 @@ JobCustomerData _$JobCustomerDataFromJson(Map<String, dynamic> json) =>
       json['user'] as String?,
       json['color'] as String?,
       json['total_note'] as String?,
+      json['product_customer'] == null
+          ? null
+          : Customer.fromJson(json['product_customer'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$JobCustomerDataToJson(JobCustomerData instance) =>
@@ -28,6 +31,7 @@ Map<String, dynamic> _$JobCustomerDataToJson(JobCustomerData instance) =>
       'user': instance.user,
       'color': instance.color,
       'total_note': instance.total_note,
+      'product_customer': instance.product_customer,
     };
 
 JobCustomerResponse _$JobCustomerResponseFromJson(Map<String, dynamic> json) =>

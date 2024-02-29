@@ -1,3 +1,4 @@
+import 'package:gen_crm/src/models/model_generator/customer_clue.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/src/router.dart';
 
@@ -229,6 +230,12 @@ class AppNavigator {
   static navigateDetailProductCustomer(String title, String id) async =>
       await Get.toNamed(ROUTE_NAMES.DETAIL_PRODUCT_CUSTOMER,
           arguments: [title, id]);
+
+  static navigateDetailProductCustomer2(Customer? customer) async =>
+      await Get.toNamed(ROUTE_NAMES.DETAIL_PRODUCT_CUSTOMER, arguments: [
+        customer?.name ?? '',
+        customer?.id ?? '',
+      ]);
 
   static navigateFormSign(
     String title,

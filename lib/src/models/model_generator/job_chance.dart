@@ -1,6 +1,8 @@
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'customer_clue.dart';
+
 part 'job_chance.g.dart';
 
 @JsonSerializable()
@@ -15,6 +17,7 @@ class DataFormAdd {
       status_job,
       start_date,
       color;
+  final Customer product_customer;
 
   DataFormAdd(
       this.id,
@@ -26,7 +29,9 @@ class DataFormAdd {
       this.name_customer,
       this.status_job,
       this.start_date,
-      this.color);
+      this.color,
+      this.product_customer,
+      );
 
   factory DataFormAdd.fromJson(Map<String, dynamic> json) =>
       _$DataFormAddFromJson(json);

@@ -1,17 +1,18 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'phone_clue.dart';
+part of 'action_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Phone _$PhoneFromJson(Map<String, dynamic> json) => Phone(
+ActionModel _$ActionModelFromJson(Map<String, dynamic> json) => ActionModel(
       json['val'] as String?,
       json['action'] as int?,
     );
 
-Map<String, dynamic> _$PhoneToJson(Phone instance) => <String, dynamic>{
+Map<String, dynamic> _$ActionModelToJson(ActionModel instance) =>
+    <String, dynamic>{
       'val': instance.val,
       'action': instance.action,
     };

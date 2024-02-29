@@ -1,6 +1,8 @@
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'customer_clue.dart';
+
 part 'job_customer.g.dart';
 
 @JsonSerializable()
@@ -13,9 +15,19 @@ class JobCustomerData {
       user,
       color,
       total_note;
+  final Customer? product_customer;
 
-  JobCustomerData(this.id, this.name, this.status, this.status_id,
-      this.start_date, this.user, this.color, this.total_note);
+  JobCustomerData(
+    this.id,
+    this.name,
+    this.status,
+    this.status_id,
+    this.start_date,
+    this.user,
+    this.color,
+    this.total_note,
+    this.product_customer,
+  );
 
   factory JobCustomerData.fromJson(Map<String, dynamic> json) =>
       _$JobCustomerDataFromJson(json);

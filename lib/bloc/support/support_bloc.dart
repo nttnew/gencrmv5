@@ -6,7 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
 import '../../src/base.dart';
-import '../../src/models/model_generator/customer.dart';
+import '../../src/models/model_generator/customer_clue.dart';
 import '../../widgets/listview/list_load_infinity.dart';
 
 part 'support_event.dart';
@@ -14,7 +14,7 @@ part 'support_state.dart';
 
 class SupportBloc extends Bloc<SupportEvent, SupportState> {
   final UserRepository userRepository;
-  BehaviorSubject<List<FilterData>> listType = BehaviorSubject.seeded([]);
+  BehaviorSubject<List<Customer>> listType = BehaviorSubject.seeded([]);
   LoadMoreController loadMoreController = LoadMoreController();
   String idFilter = '';
   String search = '';
@@ -49,9 +49,10 @@ class SupportBloc extends Bloc<SupportEvent, SupportState> {
       } else {
         resDynamic = response.msg ?? '';
       }
-    } catch (e) {
+    }  catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      throw e;
+      LoadingApi().popLoading();
+      return resDynamic;
     }
     LoadingApi().popLoading();
     return resDynamic;

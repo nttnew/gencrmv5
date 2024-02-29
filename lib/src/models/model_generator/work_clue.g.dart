@@ -19,6 +19,9 @@ WorkClueData _$WorkClueDataFromJson(Map<String, dynamic> json) => WorkClueData(
       user_work_avatar: json['user_work_avatar'] as String?,
       total_comment: json['total_comment'] as int?,
       color: json['color'] as String?,
+      product_customer: json['product_customer'] == null
+          ? null
+          : Customer.fromJson(json['product_customer'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$WorkClueDataToJson(WorkClueData instance) =>
@@ -35,6 +38,7 @@ Map<String, dynamic> _$WorkClueDataToJson(WorkClueData instance) =>
       'user_work_avatar': instance.user_work_avatar,
       'color': instance.color,
       'total_comment': instance.total_comment,
+      'product_customer': instance.product_customer?.toJson(),
     };
 
 WorkClueResponse _$WorkClueResponseFromJson(Map<String, dynamic> json) =>

@@ -1,16 +1,32 @@
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
-import 'package:gen_crm/src/models/model_generator/customer.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'customer_clue.dart';
 
 part 'support.g.dart';
 
 @JsonSerializable()
 class SupportItemData {
-  final String? id, ten_ho_tro, created_date, trang_thai, color, total_note,location;
-  final CustomerData? customer;
+  final String? id,
+      ten_ho_tro,
+      created_date,
+      trang_thai,
+      color,
+      total_note,
+      location;
+  final Customer? customer, product_customer;
 
-  SupportItemData(this.id, this.ten_ho_tro, this.created_date, this.trang_thai,
-      this.color, this.total_note, this.customer, this.location);
+  SupportItemData(
+    this.id,
+    this.ten_ho_tro,
+    this.created_date,
+    this.trang_thai,
+    this.color,
+    this.total_note,
+    this.customer,
+    this.product_customer,
+    this.location,
+  );
 
   factory SupportItemData.fromJson(Map<String, dynamic> json) =>
       _$SupportItemDataFromJson(json);
@@ -19,25 +35,19 @@ class SupportItemData {
 }
 
 @JsonSerializable()
-class CustomerData {
-  final String? id, name;
-
-  CustomerData(this.id, this.name);
-
-  factory CustomerData.fromJson(Map<String, dynamic> json) =>
-      _$CustomerDataFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CustomerDataToJson(this);
-}
-
-@JsonSerializable()
 class SupportData {
   final String? page, total;
   final int? limit;
   final List<SupportItemData>? list;
-  final List<FilterData>? filter;
+  final List<Customer>? filter;
 
-  SupportData(this.page, this.total, this.limit, this.list, this.filter);
+  SupportData(
+    this.page,
+    this.total,
+    this.limit,
+    this.list,
+    this.filter,
+  );
 
   factory SupportData.fromJson(Map<String, dynamic> json) =>
       _$SupportDataFromJson(json);

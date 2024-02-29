@@ -21,7 +21,7 @@ ClueData _$ClueDataFromJson(Map<String, dynamic> json) => ClueData(
       json['name'] as String?,
       json['position'] == null
           ? null
-          : Position.fromJson(json['position'] as Map<String, dynamic>),
+          : Customer.fromJson(json['position'] as Map<String, dynamic>),
       json['email'] == null
           ? null
           : Email.fromJson(json['email'] as Map<String, dynamic>),
@@ -30,7 +30,7 @@ ClueData _$ClueDataFromJson(Map<String, dynamic> json) => ClueData(
           : Customer.fromJson(json['customer'] as Map<String, dynamic>),
       json['phone'] == null
           ? null
-          : Phone.fromJson(json['phone'] as Map<String, dynamic>),
+          : ActionModel.fromJson(json['phone'] as Map<String, dynamic>),
       json['created_date'] as String?,
       json['avatar'] as String?,
       json['total_note'] as String?,

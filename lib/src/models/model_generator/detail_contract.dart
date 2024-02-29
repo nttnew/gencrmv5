@@ -2,6 +2,8 @@ import 'package:gen_crm/src/models/model_generator/attach_file.dart';
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'customer_clue.dart';
+
 part 'detail_contract.g.dart';
 
 @JsonSerializable()
@@ -33,7 +35,7 @@ class PaymentContractResponse extends BaseResponse {
 
 @JsonSerializable()
 class DetailContractItem {
-  final String? label_field, id, value_field, field_type, link,name_field;
+  final String? label_field, id, value_field, field_type, link, name_field;
   final bool? is_link;
 
   DetailContractItem(
@@ -90,17 +92,20 @@ class SupportContractData {
       total_note,
       nguoi_tao,
       khach_hang;
+  final Customer product_customer;
 
   SupportContractData(
-      this.id,
-      this.name,
-      this.status,
-      this.content,
-      this.created_date,
-      this.color,
-      this.total_note,
-      this.nguoi_tao,
-      this.khach_hang);
+    this.id,
+    this.name,
+    this.status,
+    this.content,
+    this.created_date,
+    this.color,
+    this.total_note,
+    this.nguoi_tao,
+    this.khach_hang,
+    this.product_customer,
+  );
 
   factory SupportContractData.fromJson(Map<String, dynamic> json) =>
       _$SupportContractDataFromJson(json);

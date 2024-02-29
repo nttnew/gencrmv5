@@ -5,8 +5,13 @@ part 'customer_clue.g.dart';
 class Customer {
   String? id;
   String? name;
+  String? danh_xung;
 
-  Customer(this.id, this.name);
+  Customer(
+    this.id,
+    this.name,
+    this.danh_xung,
+  );
 
   factory Customer.fromJson(Map<String, dynamic> json) =>
       _$CustomerFromJson(json);

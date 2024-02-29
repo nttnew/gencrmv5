@@ -12,14 +12,14 @@ ClueCustomerData _$ClueCustomerDataFromJson(Map<String, dynamic> json) =>
       json['name'] as String?,
       json['phone'] == null
           ? null
-          : ActionData.fromJson(json['phone'] as Map<String, dynamic>),
+          : ActionModel.fromJson(json['phone'] as Map<String, dynamic>),
       json['danh_xung'] as String?,
       json['position'] == null
           ? null
           : Position.fromJson(json['position'] as Map<String, dynamic>),
       json['email'] == null
           ? null
-          : ActionData.fromJson(json['email'] as Map<String, dynamic>),
+          : ActionModel.fromJson(json['email'] as Map<String, dynamic>),
       json['total_note'] as String?,
     );
 

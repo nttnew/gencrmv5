@@ -51,9 +51,10 @@ class GetListClueBloc extends Bloc<GetListClueEvent, ClueState> {
         loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';
-    } catch (e) {
+    }  catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      throw e;
+      LoadingApi().popLoading();
+      return resDynamic;
     }
     LoadingApi().popLoading();
     return resDynamic;

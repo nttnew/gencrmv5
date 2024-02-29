@@ -6,6 +6,7 @@ import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
+import '../../src/models/model_generator/customer_clue.dart';
 import '../../src/models/model_generator/group_product_response.dart';
 import '../../src/models/model_generator/list_product_customer_response.dart';
 import '../../widgets/listview/list_load_infinity.dart';
@@ -58,9 +59,10 @@ class ProductCustomerModuleBloc
         loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';
-    } catch (e) {
+    }  catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      throw e;
+      LoadingApi().popLoading();
+      return resDynamic;
     }
     LoadingApi().popLoading();
     return resDynamic;

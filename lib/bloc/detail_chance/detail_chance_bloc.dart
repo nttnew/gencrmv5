@@ -73,10 +73,11 @@ class GetListDetailChanceBloc
     LoadingApi().popLoading();
   }
 
-  Future<dynamic> getJobChance(
-      {required int id,
-      int page = BASE_URL.PAGE_DEFAULT,
-      bool isInit = true}) async {
+  Future<dynamic> getJobChance({
+    required int id,
+    int page = BASE_URL.PAGE_DEFAULT,
+    bool isInit = true,
+  }) async {
     if (isInit) {
       LoadingApi().pushLoading();
     }

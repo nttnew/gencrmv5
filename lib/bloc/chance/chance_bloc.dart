@@ -7,7 +7,7 @@ import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/models/model_generator/chance.dart';
+import '../../src/models/model_generator/customer_clue.dart';
 import '../../widgets/listview/list_load_infinity.dart';
 
 part 'chance_event.dart';
@@ -15,7 +15,7 @@ part 'chance_state.dart';
 
 class GetListChanceBloc extends Bloc<GetListChanceEvent, ChanceState> {
   final UserRepository userRepository;
-  BehaviorSubject<List<FilterChance>> listType = BehaviorSubject.seeded([]);
+  BehaviorSubject<List<Customer>> listType = BehaviorSubject.seeded([]);
   LoadMoreController loadMoreController = LoadMoreController();
   String idFilter = '';
   String search = '';
@@ -53,7 +53,8 @@ class GetListChanceBloc extends Bloc<GetListChanceEvent, ChanceState> {
         resDynamic = response.msg ?? '';
     } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      throw e;
+      LoadingApi().popLoading();
+      return resDynamic;
     }
     LoadingApi().popLoading();
     return resDynamic;

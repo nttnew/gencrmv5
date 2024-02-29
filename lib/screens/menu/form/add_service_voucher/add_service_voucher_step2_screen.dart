@@ -224,10 +224,13 @@ class _AddServiceVoucherStepTwoScreenState
                                                                   .field_value,
                                                             )
                                                           : InputDropdown(
-                                                              isEdit: data.field_read_only ==
-                                                                      0 ||
+                                                              isEdit: data.field_read_only
+                                                                          .toString() ==
+                                                                      '0' ||
                                                                   data.field_read_only ==
-                                                                      null,
+                                                                      null ||
+                                                                  data.field_read_only ==
+                                                                      'null',
                                                               onUpdate:
                                                                   (value) {
                                                                 addData[indexParent]

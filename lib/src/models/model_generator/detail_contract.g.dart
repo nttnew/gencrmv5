@@ -123,6 +123,7 @@ SupportContractData _$SupportContractDataFromJson(Map<String, dynamic> json) =>
       json['total_note'] as String?,
       json['nguoi_tao'] as String?,
       json['khach_hang'] as String?,
+      Customer.fromJson(json['product_customer'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SupportContractDataToJson(
@@ -137,6 +138,7 @@ Map<String, dynamic> _$SupportContractDataToJson(
       'total_note': instance.total_note,
       'nguoi_tao': instance.nguoi_tao,
       'khach_hang': instance.khach_hang,
+      'product_customer': instance.product_customer,
     };
 
 SupportContractResponse _$SupportContractResponseFromJson(
