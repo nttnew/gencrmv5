@@ -61,12 +61,17 @@ class _TabInfoCustomerState extends State<TabInfoCustomer>
             BlocBuilder<DetailCustomerBloc, DetailCustomerState>(
                 bloc: _bloc,
                 builder: (context, state) {
-                  if (state is UpdateGetDetailCustomerState)
+                  if (state is UpdateGetDetailCustomerState) {
                     return Column(
                       children: List.generate(state.customerInfo.length,
                           (index) => _renderInfo(state.customerInfo[index])),
                     );
-                  else
+                  } else if (state is ErrorGetDetailCustomerState) {
+                    return Text(
+                      state.msg,
+                      style: AppStyle.DEFAULT_16_T,
+                    );
+                  } else
                     return SizedBox.shrink();
                 }),
             ListNote(

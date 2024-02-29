@@ -57,12 +57,16 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       yield LoadingDetailContractState();
       final response = await userRepository.getDetailContract(id);
       if (isSuccess(response.code)) {
+        LoadingApi().popLoading();
         yield SuccessDetailContractState(response.data ?? []);
       } else if (isFail(response.code)) {
         loginSessionExpired();
-      } else
+      } else {
+        LoadingApi().popLoading();
         yield ErrorDetailContractState(response.msg ?? '');
+      }
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorDetailContractState(getT(KeyT.an_error_occurred));
     }
   }

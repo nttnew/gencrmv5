@@ -54,7 +54,7 @@ class _ContractOperationState extends State<ContractOperation>
         child: BlocBuilder<DetailContractBloc, DetailContractState>(
             bloc: _bloc,
             builder: (context, state) {
-              if (state is SuccessDetailContractState)
+              if (state is SuccessDetailContractState) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -88,7 +88,12 @@ class _ContractOperationState extends State<ContractOperation>
                     )
                   ],
                 );
-              else
+              } else if (state is ErrorDetailContractState) {
+                return Text(
+                  state.msg,
+                  style: AppStyle.DEFAULT_16_T,
+                );
+              } else
                 return SizedBox.shrink();
             }),
       ),

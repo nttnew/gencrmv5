@@ -379,6 +379,11 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                             )),
                                   ),
                                 );
+                              } else if (state is ErrorDeleteWorkState) {
+                                return Text(
+                                  state.msg,
+                                  style: AppStyle.DEFAULT_16_T,
+                                );
                               } else
                                 return SizedBox.shrink();
                             }),

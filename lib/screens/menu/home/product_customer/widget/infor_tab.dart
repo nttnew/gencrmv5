@@ -27,7 +27,7 @@ class _InfoTabProductCustomerState extends State<InfoTabProductCustomer>
     super.build(context);
     return BlocBuilder<DetailProductCustomerBloc, DetailProductCustomerState>(
         builder: (context, state) {
-      if (state is GetDetailProductCustomerState)
+      if (state is GetDetailProductCustomerState) {
         return Padding(
           padding: EdgeInsets.symmetric(
             horizontal: 16,
@@ -128,6 +128,12 @@ class _InfoTabProductCustomerState extends State<InfoTabProductCustomer>
             ),
           ),
         );
+      } else if (state is ErrorGetDetailProductCustomerState) {
+        return Text(
+          state.msg,
+          style: AppStyle.DEFAULT_16_T,
+        );
+      }
       return SizedBox();
     });
   }

@@ -395,6 +395,11 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                       ],
                     ),
                   );
+                } else if (state is ErrorGetDetailSupportState) {
+                  return Text(
+                    state.msg,
+                    style: AppStyle.DEFAULT_16_T,
+                  );
                 } else
                   return SizedBox.shrink();
               }),

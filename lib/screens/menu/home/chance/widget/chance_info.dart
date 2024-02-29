@@ -181,13 +181,18 @@ class _ChanceInfoState extends State<ChanceInfo>
                                   ],
                                 ),
                               );
-                            else
-                              return SizedBox.shrink();
+
+                            return SizedBox.shrink();
                           },
                           separatorBuilder: (context, index) {
                             return SizedBox();
                           },
                           itemCount: state.data.length),
+                    );
+                  } else if (state is ErrorGetListDetailChanceState) {
+                    return Text(
+                      state.msg,
+                      style: AppStyle.DEFAULT_16_T,
                     );
                   } else
                     return SizedBox.shrink();

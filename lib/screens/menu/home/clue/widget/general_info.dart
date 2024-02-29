@@ -58,6 +58,11 @@ class _GeneralInfoState extends State<GeneralInfo>
                       ),
                     );
                   }
+                } else if (state is ErrorGetDetailClueState) {
+                  return Text(
+                    state.msg,
+                    style: AppStyle.DEFAULT_16_T,
+                  );
                 } else {
                   return SizedBox();
                 }

@@ -245,6 +245,11 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                           ),
                         ),
                       );
+                    } else if (state is ErrorGetDetailProductState) {
+                      return Text(
+                        state.msg,
+                        style: AppStyle.DEFAULT_16_T,
+                      );
                     } else
                       return SizedBox();
                   }),
