@@ -14,7 +14,7 @@ class WidgetItemChance extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AppNavigator.navigateInfoChance(
+        AppNavigator.navigateDetailChance(
           data.id ?? '',
           data.name ?? '',
         );

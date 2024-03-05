@@ -4,7 +4,6 @@ import 'package:dartx/dartx.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gen_crm/src/models/model_generator/detail_contract.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
@@ -12,6 +11,7 @@ import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/contract.dart';
+import '../../src/models/model_generator/detail_customer.dart';
 import '../../src/models/model_generator/file_response.dart';
 import '../../widgets/listview_loadmore_base.dart';
 

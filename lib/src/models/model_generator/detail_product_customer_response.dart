@@ -1,8 +1,10 @@
+import 'detail_customer.dart';
+
 class DetailProductCustomerResponse {
   bool? success;
   int? code;
   String? msg;
-  List<DataResponse>? data;
+  List<InfoDataModel>? data;
   List<Tabs>? tabs;
   List<Tabs>? actions;
 
@@ -20,27 +22,27 @@ class DetailProductCustomerResponse {
     code = json['code'];
     msg = json['msg'];
     if (json['data'] != null) {
-      data = <DataResponse>[];
+      data = <InfoDataModel>[];
       json['data'].forEach((v) {
-        data!.add(new DataResponse.fromJson(v));
+        data!.add(InfoDataModel.fromJson(v));
       });
     }
     if (json['tabs'] != null) {
       tabs = <Tabs>[];
       json['tabs'].forEach((v) {
-        tabs!.add(new Tabs.fromJson(v));
+        tabs!.add(Tabs.fromJson(v));
       });
     }
     if (json['actions'] != null) {
       actions = <Tabs>[];
       json['actions'].forEach((v) {
-        actions!.add(new Tabs.fromJson(v));
+        actions!.add(Tabs.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['success'] = this.success;
     data['code'] = this.code;
     data['msg'] = this.msg;
@@ -57,65 +59,14 @@ class DetailProductCustomerResponse {
   }
 }
 
-class DataResponse {
-  String? groupName;
-  int? mup;
-  List<Data>? data;
-
-  DataResponse({this.groupName, this.mup, this.data});
-
-  DataResponse.fromJson(Map<String, dynamic> json) {
-    groupName = json['group_name'];
-    mup = json['mup'];
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['group_name'] = this.groupName;
-    data['mup'] = this.mup;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Data {
-  String? labelField;
-  String? id;
-  String? link;
-  String? valueField;
-
-  Data({this.labelField, this.id, this.link, this.valueField});
-
-  Data.fromJson(Map<String, dynamic> json) {
-    labelField = json['label_field'];
-    id = json['id'];
-    link = json['link'];
-    valueField = json['value_field'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['label_field'] = this.labelField;
-    data['id'] = this.id;
-    data['link'] = this.link;
-    data['value_field'] = this.valueField;
-    return data;
-  }
-}
-
 class Tabs {
   String? module;
   String? name;
 
-  Tabs({this.module, this.name});
+  Tabs({
+    this.module,
+    this.name,
+  });
 
   Tabs.fromJson(Map<String, dynamic> json) {
     module = json['module'];
@@ -123,7 +74,7 @@ class Tabs {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['module'] = this.module;
     data['name'] = this.name;
     return data;

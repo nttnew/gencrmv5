@@ -24,7 +24,7 @@ class ErrorDeleteContractState extends DetailContractState {
 class LoadingDetailContractState extends DetailContractState {}
 
 class SuccessDetailContractState extends DetailContractState {
-  final List<DetailContractData> listDetailContract;
+  final List<InfoDataModel> listDetailContract;
   const SuccessDetailContractState(this.listDetailContract);
   @override
   List<Object> get props => [listDetailContract];

@@ -9,7 +9,7 @@ abstract class DetailCustomerState extends Equatable {
 class InitGetDetailCustomer extends DetailCustomerState {}
 
 class UpdateGetDetailCustomerState extends DetailCustomerState {
-  final List<CustomerInfoData> customerInfo;
+  final List<InfoDataModel> customerInfo;
   final CustomerNote customerNote;
   const UpdateGetDetailCustomerState(this.customerInfo, this.customerNote);
   @override

@@ -6,6 +6,7 @@ import '../../../../bloc/blocs.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
+import '../../../../src/models/model_generator/detail_customer.dart';
 import '../../../../src/models/model_generator/job_chance.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
@@ -24,7 +25,7 @@ class InfoChancePage extends StatefulWidget {
 }
 
 class _InfoChancePageState extends State<InfoChancePage> {
-  List<DataDetailChance> dataChance = [];
+  List<InfoDataModel> dataChance = [];
   String id = Get.arguments[0] ?? '';
   String name = Get.arguments[1] ?? '';
   List<ModuleThaoTac> list = [];
@@ -114,6 +115,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<GetListDetailChanceBloc, DetailChanceState>(
+        bloc: _bloc,
         listener: (context, state) async {
           if (state is SuccessDeleteChanceState) {
             LoadingApi().popLoading();

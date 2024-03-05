@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/api_resfull/api.dart';
 import '../../l10n/key_text.dart';
 import '../../src/base.dart';
-import '../../src/models/model_generator/work.dart';
+import '../../src/models/model_generator/detail_customer.dart';
 import '../../widgets/loading_api.dart';
 
 part 'detail_work_event.dart';

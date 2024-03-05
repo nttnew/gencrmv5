@@ -6,8 +6,9 @@ import 'package:gen_crm/screens/menu/home/customer/widget/list_note.dart';
 import 'package:gen_crm/widgets/line_horizontal_widget.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import '../../../../../bloc/list_note/list_note_bloc.dart';
-import '../../../../../src/models/model_generator/detail_contract.dart';
+import '../../../../../src/models/model_generator/detail_customer.dart';
 import '../../../../../src/src_index.dart';
+import '../../../widget/information.dart';
 
 class ContractOperation extends StatefulWidget {
   ContractOperation({
@@ -61,24 +62,10 @@ class _ContractOperationState extends State<ContractOperation>
                     Padding(
                       padding: const EdgeInsets.only(
                         top: 16,
-                        left: 16,
-                        right: 16,
                       ),
-                      child: Column(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: List.generate(
-                                state.listDetailContract.length, (index) {
-                              if (state.listDetailContract[index].data !=
-                                  null) {
-                                return _buildContent1(
-                                    state.listDetailContract[index]);
-                              } else
-                                return SizedBox.shrink();
-                            }),
-                          ),
-                        ],
+                      child: InfoBase(
+                        listData: state.listDetailContract,
+                        isLine: false,
                       ),
                     ),
                     ListNote(
@@ -100,7 +87,7 @@ class _ContractOperationState extends State<ContractOperation>
     );
   }
 
-  _buildContent1(DetailContractData data) {
+  _buildContent1(InfoDataModel data) {
     return Container(
       padding: EdgeInsets.only(
         bottom: 15,

@@ -114,6 +114,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<GetDetailClueBloc, DetailClueState>(
+        bloc: _bloc,
         listener: (context, state) async {
           if (state is SuccessDeleteClueState) {
             LoadingApi().popLoading();

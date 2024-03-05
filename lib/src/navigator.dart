@@ -98,7 +98,7 @@ class AppNavigator {
 
   static navigateClue() async => await Get.toNamed(ROUTE_NAMES.CLUE);
 
-  static navigateInfoClue(String id, String name) async =>
+  static navigateDetailClue(String id, String name) async =>
       await Get.toNamed(ROUTE_NAMES.INFO_CLUE, arguments: [id, name]);
 
   static navigateAddClue() async => await Get.toNamed(ROUTE_NAMES.ADD_CLUE);
@@ -108,7 +108,7 @@ class AppNavigator {
 
   static navigateContract() async => await Get.toNamed(ROUTE_NAMES.CONTRACT);
 
-  static navigateInfoContract(String id, String name) async =>
+  static navigateDetailContract(String id, String name) async =>
       await Get.toNamed(ROUTE_NAMES.INFO_CONTRACT, arguments: [id, name]);
 
   static navigateSupport() async => await Get.toNamed(ROUTE_NAMES.SUPPORT);
@@ -118,7 +118,7 @@ class AppNavigator {
   static navigateAddChance(String id) async =>
       await Get.toNamed(ROUTE_NAMES.ADD_CHANCE, arguments: id);
 
-  static navigateInfoChance(String id, String name) async =>
+  static navigateDetailChance(String id, String name) async =>
       await Get.toNamed(ROUTE_NAMES.INFO_CHANCE, arguments: [id, name]);
 
   static navigateWork() async => await Get.toNamed(

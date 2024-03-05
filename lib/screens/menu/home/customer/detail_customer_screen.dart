@@ -59,7 +59,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
 
   getThaoTac() {
     list = [];
-    if (_bloc.sdt != null)
+    if (_bloc.sdt != null && _bloc.sdt != '')
       list.add(
         ModuleThaoTac(
           isSvg: false,
@@ -321,7 +321,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                           return ClueCardWidget(
                             data: data,
                             onTap: () {
-                              AppNavigator.navigateInfoClue(
+                              AppNavigator.navigateDetailClue(
                                   data.id ?? '', data.name ?? '');
                             },
                           );
@@ -337,7 +337,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                           return ChanceCardWidget(
                             data: data,
                             onTap: () {
-                              AppNavigator.navigateInfoChance(
+                              AppNavigator.navigateDetailChance(
                                   data.id ?? '', data.name ?? '');
                             },
                           );
@@ -356,7 +356,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                           return ConstractCardWidget(
                             data: data,
                             onTap: () {
-                              AppNavigator.navigateInfoContract(
+                              AppNavigator.navigateDetailContract(
                                   data.id ?? '', data.name ?? '');
                             },
                           );

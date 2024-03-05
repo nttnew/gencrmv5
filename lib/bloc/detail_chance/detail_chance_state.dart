@@ -9,7 +9,7 @@ abstract class DetailChanceState extends Equatable {
 class InitGetListDetailChance extends DetailChanceState {}
 
 class UpdateGetListDetailChanceState extends DetailChanceState {
-  final List<DataDetailChance> data;
+  final List<InfoDataModel> data;
 
   const UpdateGetListDetailChanceState(this.data);
   @override

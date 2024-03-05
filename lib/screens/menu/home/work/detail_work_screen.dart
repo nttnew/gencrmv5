@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:gen_crm/bloc/work/detail_work_bloc.dart';
 import 'package:gen_crm/bloc/work/work_bloc.dart';
 import 'package:gen_crm/screens/menu/home/customer/widget/list_note.dart';
-import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
-import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../bloc/checkin_bloc/checkin_bloc.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../l10n/key_text.dart';
@@ -19,6 +15,7 @@ import '../../../../widgets/dialog_call.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
+import '../../widget/information.dart';
 
 class DetailWorkScreen extends StatefulWidget {
   const DetailWorkScreen({Key? key}) : super(key: key);
@@ -36,9 +33,11 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   List<ModuleThaoTac> list = [];
   late final ListNoteBloc _blocNote;
   late final DetailWorkBloc _bloc;
+  late final CheckInBloc _blocCheckIn;
 
   @override
   void initState() {
+    _blocCheckIn = CheckInBloc.of(context);
     _bloc = DetailWorkBloc(
         userRepository: DetailWorkBloc.of(context).userRepository);
     _blocNote =
@@ -55,8 +54,8 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   checkLocation(SuccessDetailWorkState state) {
     location = state.location;
     diDong = state.diDong;
-    if (state.data_list.isNotEmpty) {
-      final listLocation = (state.data_list.first.data ?? [])
+    if (state.dataList.isNotEmpty) {
+      final listLocation = (state.dataList.first.data ?? [])
           .where((element) => element.id == 'checkout')
           .toList();
       if (listLocation.isNotEmpty) {
@@ -121,7 +120,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
           icon: ICONS.IC_LOCATION_SVG,
           onThaoTac: () {
             Get.back();
-            CheckInBloc.of(context).add(
+            _blocCheckIn.add(
               SaveCheckIn(
                 '',
                 '',
@@ -183,6 +182,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
     return Scaffold(
       appBar: AppbarBaseNormal(title),
       body: BlocListener<CheckInBloc, CheckInState>(
+        bloc: _blocCheckIn,
         listener: (context, state) {
           if (state is SuccessCheckInState) {
             _bloc.add(InitGetDetailWorkEvent(id));
@@ -243,142 +243,12 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                               if (state is SuccessDetailWorkState) {
                                 checkLocation(state);
                                 getThaoTac();
-                                return Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                  ),
-                                  margin: EdgeInsets.only(
+                                return Padding(
+                                  padding: const EdgeInsets.only(
                                     top: 24,
                                   ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: List.generate(
-                                        state.data_list.length,
-                                        (index) => Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                WidgetText(
-                                                  title: state.data_list[index]
-                                                          .group_name ??
-                                                      '',
-                                                  style: TextStyle(
-                                                    fontFamily: "Quicksand",
-                                                    color: HexColor("#263238"),
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: 14,
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height:
-                                                      AppValue.heights * 0.02,
-                                                ),
-                                                Column(
-                                                  children: List.generate(
-                                                      state
-                                                          .data_list[index]
-                                                          .data!
-                                                          .length, (index1) {
-                                                    bool isKH = state
-                                                                .data_list[
-                                                                    index]
-                                                                .data?[index1]
-                                                                .id ==
-                                                            'cv_kh' &&
-                                                        (state
-                                                                .data_list[
-                                                                    index]
-                                                                .data?[index1]
-                                                                .is_link ??
-                                                            false);
-                                                    bool isSPKH = state
-                                                            .data_list[index]
-                                                            .data?[index1]
-                                                            .id ==
-                                                        'cvsan_pham_kh';
-                                                    if (state
-                                                            .data_list[index]
-                                                            .data![index1]
-                                                            .value_field !=
-                                                        '')
-                                                      return Column(
-                                                        children: [
-                                                          Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              WidgetText(
-                                                                title: state
-                                                                    .data_list[
-                                                                        index]
-                                                                    .data![
-                                                                        index1]
-                                                                    .label_field,
-                                                                style:
-                                                                    LabelStyle(),
-                                                              ),
-                                                              SizedBox(
-                                                                width: 8,
-                                                              ),
-                                                              Expanded(
-                                                                child:
-                                                                    GestureDetector(
-                                                                  onTap: () {
-                                                                    if (isKH) {
-                                                                      AppNavigator.navigateDetailCustomer(
-                                                                          state.data_list[index].data?[index1].link ??
-                                                                              '',
-                                                                          state.data_list[index].data![index1].value_field ??
-                                                                              '');
-                                                                    } else if (isSPKH) {
-                                                                      AppNavigator
-                                                                          .navigateDetailProductCustomer(
-                                                                        state.data_list[index].data?[index1].label_field ??
-                                                                            '',
-                                                                        state.data_list[index].data?[index1].link ??
-                                                                            '',
-                                                                      );
-                                                                    }
-                                                                  },
-                                                                  child:
-                                                                      SizedBox(
-                                                                    child: state.data_list[index].data![index1].type !=
-                                                                            'text_area'
-                                                                        ? WidgetText(
-                                                                            title:
-                                                                                state.data_list[index].data![index1].value_field,
-                                                                            textAlign:
-                                                                                TextAlign.right,
-                                                                            style:
-                                                                                ValueStyle().copyWith(
-                                                                              decoration: isKH || isSPKH ? TextDecoration.underline : null,
-                                                                              color: isKH || isSPKH ? Colors.blue : null,
-                                                                            ),
-                                                                          )
-                                                                        : Html(
-                                                                            data:
-                                                                                state.data_list[index].data![index1].value_field,
-                                                                          ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          SizedBox(
-                                                            height: AppValue
-                                                                    .heights *
-                                                                0.02,
-                                                          ),
-                                                        ],
-                                                      );
-                                                    return SizedBox();
-                                                  }),
-                                                ),
-                                                LineHorizontal(),
-                                              ],
-                                            )),
+                                  child: InfoBase(
+                                    listData: state.dataList,
                                   ),
                                 );
                               } else if (state is ErrorDeleteWorkState) {
@@ -413,16 +283,4 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       ),
     );
   }
-
-  TextStyle ValueStyle([String? color]) => TextStyle(
-      fontFamily: "Quicksand",
-      color: color == null ? HexColor("#263238") : HexColor(color),
-      fontWeight: FontWeight.w700,
-      fontSize: 14);
-
-  TextStyle LabelStyle() => TextStyle(
-      fontFamily: "Quicksand",
-      color: COLORS.GREY,
-      fontWeight: FontWeight.w600,
-      fontSize: 14);
 }

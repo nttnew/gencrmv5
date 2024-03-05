@@ -275,6 +275,7 @@ class _DetailProductCustomerScreenState
     return Scaffold(
       appBar: AppbarBaseNormal(title),
       body: BlocListener<DetailProductCustomerBloc, DetailProductCustomerState>(
+        bloc: _bloc,
         listener: (context, state) async {
           if (state is SuccessDeleteProductState) {
             LoadingApi().popLoading();
@@ -282,9 +283,12 @@ class _DetailProductCustomerScreenState
               title: getT(KeyT.notification),
               content: getT(KeyT.delete_success),
               onTap1: () {
-                Navigator.pushNamedAndRemoveUntil(context,
-                    ROUTE_NAMES.PRODUCT_CUSTOMER, ModalRoute.withName('/'),
-                    arguments: title);
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  ROUTE_NAMES.PRODUCT_CUSTOMER,
+                  ModalRoute.withName('/'),
+                  arguments: title,
+                );
               },
             );
           } else if (state is ErrorDeleteProductState) {
@@ -306,62 +310,65 @@ class _DetailProductCustomerScreenState
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: BlocBuilder<DetailProductCustomerBloc,
-              DetailProductCustomerState>(builder: (context, state) {
-            if (state is GetDetailProductCustomerState) {
-              if (_listTab.isEmpty) {
-                _listTab = [
-                  ...[
-                    Tabs(
-                        module: 'thong_tin_chung', name: getT(KeyT.information))
-                  ],
-                  ...state.productInfo.tabs ?? []
-                ];
-                _tabController =
-                    TabController(length: _listTab.length, vsync: this);
-                getThaoTac(state.productInfo.actions ?? []);
-              }
-              return Scaffold(
-                appBar: TabBar(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  isScrollable: true,
-                  controller: _tabController,
-                  labelColor: COLORS.ff006CB1,
-                  unselectedLabelColor: COLORS.ff697077,
-                  labelStyle: TextStyle(
-                      fontFamily: "Quicksand",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700),
-                  indicatorColor: COLORS.ff006CB1,
-                  tabs: _listTab
-                      .map(
-                        (e) => Tab(
-                          text: e.name,
-                        ),
-                      )
-                      .toList(),
-                ),
-                body: Column(
-                  children: [
-                    Expanded(
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: listBody(state, _listTab),
-                      ),
+                  DetailProductCustomerState>(
+              bloc: _bloc,
+              builder: (context, state) {
+                if (state is GetDetailProductCustomerState) {
+                  if (_listTab.isEmpty) {
+                    _listTab = [
+                      ...[
+                        Tabs(
+                            module: 'thong_tin_chung',
+                            name: getT(KeyT.information))
+                      ],
+                      ...state.productInfo.tabs ?? []
+                    ];
+                    _tabController =
+                        TabController(length: _listTab.length, vsync: this);
+                    getThaoTac(state.productInfo.actions ?? []);
+                  }
+                  return Scaffold(
+                    appBar: TabBar(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      isScrollable: true,
+                      controller: _tabController,
+                      labelColor: COLORS.ff006CB1,
+                      unselectedLabelColor: COLORS.ff697077,
+                      labelStyle: TextStyle(
+                          fontFamily: "Quicksand",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700),
+                      indicatorColor: COLORS.ff006CB1,
+                      tabs: _listTab
+                          .map(
+                            (e) => Tab(
+                              text: e.name,
+                            ),
+                          )
+                          .toList(),
                     ),
-                    ButtonThaoTac(onTap: () {
-                      showThaoTac(context, _list);
-                    }),
-                  ],
-                ),
-              );
-            } else if (state is ErrorGetDetailProductCustomerState) {
-              return Text(
-                state.msg,
-                style: AppStyle.DEFAULT_16_T,
-              );
-            } else
-              return SizedBox();
-          }),
+                    body: Column(
+                      children: [
+                        Expanded(
+                          child: TabBarView(
+                            controller: _tabController,
+                            children: listBody(state, _listTab),
+                          ),
+                        ),
+                        ButtonThaoTac(onTap: () {
+                          showThaoTac(context, _list);
+                        }),
+                      ],
+                    ),
+                  );
+                } else if (state is ErrorGetDetailProductCustomerState) {
+                  return Text(
+                    state.msg,
+                    style: AppStyle.DEFAULT_16_T,
+                  );
+                } else
+                  return SizedBox();
+              }),
         ),
       ),
     );

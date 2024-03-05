@@ -10,12 +10,12 @@ abstract class DetailWorkState extends Equatable {
 class InitGetDetailWorkState extends DetailWorkState {}
 
 class SuccessDetailWorkState extends DetailWorkState {
-  final List<DetailWorkData> data_list;
+  final List<InfoDataModel> dataList;
   final int? location;
   final String? diDong;
-  SuccessDetailWorkState(this.data_list, this.location, this.diDong);
+  SuccessDetailWorkState(this.dataList, this.location, this.diDong);
   @override
-  List<Object?> get props => [data_list, location];
+  List<Object?> get props => [dataList, location];
 }
 
 class LoadingDetailWorkState extends DetailWorkState {}

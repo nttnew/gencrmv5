@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
-import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
-import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../bloc/detail_product/detail_product_bloc.dart';
 import '../../../../bloc/product_module/product_module_bloc.dart';
 import '../../../../l10n/key_text.dart';
@@ -15,6 +12,7 @@ import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
+import '../../widget/information.dart';
 
 class DetailProductScreen extends StatefulWidget {
   const DetailProductScreen({Key? key}) : super(key: key);
@@ -151,101 +149,11 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                           width: MediaQuery.of(context).size.width,
                           child: SingleChildScrollView(
                             padding: EdgeInsets.only(
-                              left: 16,
-                              right: 16,
                               top: 24,
                             ),
                             physics: AlwaysScrollableScrollPhysics(),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: List.generate(
-                                  (state.productInfo?.data ?? []).length,
-                                  (index) => Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          WidgetText(
-                                            title: (state.productInfo?.data ??
-                                                        [])[index]
-                                                    .groupName ??
-                                                '',
-                                            style: TextStyle(
-                                                fontFamily: "Quicksand",
-                                                color: HexColor("#263238"),
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 14),
-                                          ),
-                                          SizedBox(
-                                            height: AppValue.heights * 0.02,
-                                          ),
-                                          Column(
-                                            children: List.generate(
-                                                (state.productInfo?.data?[index]
-                                                            .data ??
-                                                        [])
-                                                    .length,
-                                                (index1) => state
-                                                                .productInfo
-                                                                ?.data?[index]
-                                                                .data?[index1]
-                                                                .valueField !=
-                                                            null &&
-                                                        state
-                                                                .productInfo
-                                                                ?.data?[index]
-                                                                .data?[index1]
-                                                                .valueField !=
-                                                            ''
-                                                    ? Column(
-                                                        children: [
-                                                          Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              WidgetText(
-                                                                title: state
-                                                                    .productInfo
-                                                                    ?.data?[
-                                                                        index]
-                                                                    .data?[
-                                                                        index1]
-                                                                    .labelField,
-                                                                style:
-                                                                    LabelStyle(),
-                                                              ),
-                                                              SizedBox(
-                                                                width: 8,
-                                                              ),
-                                                              Expanded(
-                                                                child: WidgetText(
-                                                                    title: state
-                                                                        .productInfo
-                                                                        ?.data?[
-                                                                            index]
-                                                                        .data?[
-                                                                            index1]
-                                                                        .valueField,
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .right,
-                                                                    style:
-                                                                        ValueStyle()),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          SizedBox(
-                                                            height: AppValue
-                                                                    .heights *
-                                                                0.02,
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : SizedBox()),
-                                          ),
-                                          LineHorizontal(),
-                                        ],
-                                      )),
+                            child: InfoBase(
+                              listData: state.productInfo?.data ?? [],
                             ),
                           ),
                         ),
@@ -275,16 +183,4 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
       ),
     );
   }
-
-  TextStyle ValueStyle([String? color]) => TextStyle(
-      fontFamily: "Quicksand",
-      color: color == null ? HexColor("#263238") : HexColor(color),
-      fontWeight: FontWeight.w700,
-      fontSize: 14);
-
-  TextStyle LabelStyle() => TextStyle(
-      fontFamily: "Quicksand",
-      color: COLORS.GREY,
-      fontWeight: FontWeight.w600,
-      fontSize: 14);
 }

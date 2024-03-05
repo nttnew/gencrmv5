@@ -312,17 +312,17 @@ class ModuleMy {
         title,
       );
     } else if (ModuleMy.DAU_MOI == module) {
-      AppNavigator.navigateInfoClue(
+      AppNavigator.navigateDetailClue(
         id,
         title,
       );
     } else if (ModuleMy.LICH_HEN == module) {
-      AppNavigator.navigateInfoChance(
+      AppNavigator.navigateDetailChance(
         id,
         title,
       );
     } else if (ModuleMy.HOP_DONG == module) {
-      AppNavigator.navigateInfoContract(
+      AppNavigator.navigateDetailContract(
         id,
         title,
       );

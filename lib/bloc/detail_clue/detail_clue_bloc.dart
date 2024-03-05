@@ -2,10 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/api_resfull/api.dart';
-import 'package:gen_crm/src/models/model_generator/clue_detail.dart';
 import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
+import '../../src/models/model_generator/detail_customer.dart';
 import '../../widgets/listview_loadmore_base.dart';
 import '../../widgets/loading_api.dart';
 

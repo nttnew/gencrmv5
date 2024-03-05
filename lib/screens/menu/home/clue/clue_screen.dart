@@ -146,7 +146,7 @@ class _ClueScreenState extends State<ClueScreen> {
   _buildCustomer(ClueData clueData) {
     return InkWell(
       onTap: () {
-        AppNavigator.navigateInfoClue(
+        AppNavigator.navigateDetailClue(
           clueData.id ?? '',
           clueData.name ?? '',
         );

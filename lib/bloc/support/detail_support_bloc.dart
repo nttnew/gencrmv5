@@ -5,7 +5,7 @@ import 'package:gen_crm/widgets/loading_api.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
 import '../../src/base.dart';
-import '../../src/models/index.dart';
+import '../../src/models/model_generator/detail_customer.dart';
 import '../../src/models/model_generator/support.dart';
 
 part 'detail_support_event.dart';

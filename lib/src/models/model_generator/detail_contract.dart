@@ -1,8 +1,7 @@
-import 'package:gen_crm/src/models/model_generator/attach_file.dart';
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
-
 import 'customer_clue.dart';
+import 'detail_customer.dart';
 
 part 'detail_contract.g.dart';
 
@@ -34,44 +33,8 @@ class PaymentContractResponse extends BaseResponse {
 }
 
 @JsonSerializable()
-class DetailContractItem {
-  final String? label_field, id, value_field, field_type, link, name_field;
-  final bool? is_link;
-
-  DetailContractItem(
-    this.label_field,
-    this.id,
-    this.value_field,
-    this.is_link,
-    this.field_type,
-    this.link,
-    this.name_field,
-  );
-
-  factory DetailContractItem.fromJson(Map<String, dynamic> json) =>
-      _$DetailContractItemFromJson(json);
-
-  Map<String, dynamic> toJson() => _$DetailContractItemToJson(this);
-}
-
-@JsonSerializable()
-class DetailContractData {
-  final String? group_name;
-  final int? mup;
-  final List<DetailContractItem>? data;
-  final List<AttachFile>? listFile;
-
-  DetailContractData(this.group_name, this.mup, this.data, this.listFile);
-
-  factory DetailContractData.fromJson(Map<String, dynamic> json) =>
-      _$DetailContractDataFromJson(json);
-
-  Map<String, dynamic> toJson() => _$DetailContractDataToJson(this);
-}
-
-@JsonSerializable()
 class DetailContractResponse extends BaseResponse {
-  final List<DetailContractData>? data;
+  final List<InfoDataModel>? data;
 
   DetailContractResponse(this.data);
 

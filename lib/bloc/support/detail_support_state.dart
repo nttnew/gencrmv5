@@ -9,7 +9,7 @@ abstract class DetailSupportState extends Equatable {
 class InitGetDetailSupport extends DetailSupportState {}
 
 class SuccessGetDetailSupportState extends DetailSupportState {
-  final List<DataDetailChance> dataDetailSupport;
+  final List<InfoDataModel> dataDetailSupport;
   final int? location;
   const SuccessGetDetailSupportState(this.dataDetailSupport, this.location);
   @override

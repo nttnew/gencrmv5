@@ -6,7 +6,7 @@ import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/models/model_generator/detail_chance.dart';
+import '../../src/models/model_generator/detail_customer.dart';
 import '../../widgets/listview_loadmore_base.dart';
 
 part 'detail_chance_event.dart';

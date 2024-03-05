@@ -4,11 +4,8 @@ import 'package:gen_crm/bloc/support/detail_support_bloc.dart';
 import 'package:gen_crm/screens/menu/home/customer/widget/list_note.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
-import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/src_index.dart';
-import '../../../../../widgets/line_horizontal_widget.dart';
 import '../../../../bloc/checkin_bloc/checkin_bloc.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../bloc/support/support_bloc.dart';
@@ -17,6 +14,7 @@ import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
+import '../../widget/information.dart';
 
 class DetailSupportScreen extends StatefulWidget {
   const DetailSupportScreen({Key? key}) : super(key: key);
@@ -33,9 +31,11 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
   bool isCheckDone = false;
   late final ListNoteBloc _blocNote;
   late final DetailSupportBloc _bloc;
+  late final CheckInBloc _blocCheckIn;
 
   @override
   void initState() {
+    _blocCheckIn = CheckInBloc.of(context);
     _bloc = DetailSupportBloc(
         userRepository: DetailSupportBloc.of(context).userRepository);
     _blocNote =
@@ -86,7 +86,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
           icon: ICONS.IC_LOCATION_SVG,
           onThaoTac: () {
             Get.back();
-            CheckInBloc.of(context).add(
+            _blocCheckIn.add(
               SaveCheckIn(
                 '',
                 '',
@@ -171,6 +171,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
     return Scaffold(
         appBar: AppbarBaseNormal(title),
         body: BlocListener<CheckInBloc, CheckInState>(
+          bloc: _blocCheckIn,
           listener: (context, state) {
             if (state is SuccessCheckInState) {
               SupportBloc.of(context).add(InitGetSupportEvent());
@@ -231,158 +232,15 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                    ),
-                                    margin: EdgeInsets.only(
+                                  Padding(
+                                    padding: const EdgeInsets.only(
                                       top: 24,
                                     ),
-                                    child: Column(
-                                      children: List.generate(
-                                        state.dataDetailSupport.length,
-                                        (index) => Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            WidgetText(
-                                              title: state
-                                                      .dataDetailSupport[index]
-                                                      .group_name ??
-                                                  '',
-                                              style: TextStyle(
-                                                  fontFamily: "Quicksand",
-                                                  color: HexColor("#263238"),
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 14),
-                                            ),
-                                            Column(
-                                              children: List.generate(
-                                                  state.dataDetailSupport[index]
-                                                      .data!.length, (index1) {
-                                                final isKH = state
-                                                            .dataDetailSupport[
-                                                                index]
-                                                            .data?[index1]
-                                                            .id ==
-                                                        'khach_hang' &&
-                                                    (state
-                                                            .dataDetailSupport[
-                                                                index]
-                                                            .data?[index1]
-                                                            .is_link ??
-                                                        false);
-                                                final isSPKH = state
-                                                        .dataDetailSupport[
-                                                            index]
-                                                        .data?[index1]
-                                                        .id ==
-                                                    'htsan_pham_kh';
-                                                if (state
-                                                        .dataDetailSupport[
-                                                            index]
-                                                        .data![index1]
-                                                        .value_field !=
-                                                    '')
-                                                  return Column(
-                                                    children: [
-                                                      SizedBox(
-                                                        height:
-                                                            AppValue.heights *
-                                                                0.02,
-                                                      ),
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          WidgetText(
-                                                            title: state
-                                                                    .dataDetailSupport[
-                                                                        index]
-                                                                    .data![
-                                                                        index1]
-                                                                    .label_field ??
-                                                                '',
-                                                            style: LabelStyle(),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 8,
-                                                          ),
-                                                          Expanded(
-                                                            child:
-                                                                GestureDetector(
-                                                              onTap: () {
-                                                                if (isKH) {
-                                                                  AppNavigator.navigateDetailCustomer(
-                                                                      state.dataDetailSupport[index].data?[index1].link ??
-                                                                          '',
-                                                                      state.dataDetailSupport[index].data![index1]
-                                                                              .value_field ??
-                                                                          '');
-                                                                } else if (isSPKH) {
-                                                                  AppNavigator
-                                                                      .navigateDetailProductCustomer(
-                                                                    state
-                                                                            .dataDetailSupport[index]
-                                                                            .data?[index1]
-                                                                            .label_field ??
-                                                                        '',
-                                                                    state
-                                                                            .dataDetailSupport[index]
-                                                                            .data?[index1]
-                                                                            .link ??
-                                                                        '',
-                                                                  );
-                                                                }
-                                                              },
-                                                              child: WidgetText(
-                                                                title: state
-                                                                        .dataDetailSupport[
-                                                                            index]
-                                                                        .data![
-                                                                            index1]
-                                                                        .value_field ??
-                                                                    '',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .right,
-                                                                style:
-                                                                    ValueStyle()
-                                                                        .copyWith(
-                                                                  decoration: isSPKH ||
-                                                                          isKH
-                                                                      ? TextDecoration
-                                                                          .underline
-                                                                      : null,
-                                                                  color: isSPKH ||
-                                                                          isKH
-                                                                      ? Colors
-                                                                          .blue
-                                                                      : null,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  );
-                                                return SizedBox();
-                                              }),
-                                            ),
-                                            SizedBox(
-                                              height: AppValue.heights * 0.02,
-                                            ),
-                                            LineHorizontal(),
-                                          ],
-                                        ),
-                                      ),
+                                    child: InfoBase(
+                                      listData: state.dataDetailSupport,
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: AppValue.heights * 0.02,
-                                  ),
+                                  AppValue.vSpaceTiny,
                                   ListNote(
                                     module: Module.HO_TRO,
                                     id: id,
@@ -409,18 +267,4 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
               }),
         ));
   }
-
-  TextStyle ValueStyle([String? color]) => TextStyle(
-        fontFamily: "Quicksand",
-        color: color == null ? HexColor("#263238") : HexColor(color),
-        fontWeight: FontWeight.w700,
-        fontSize: 14,
-      );
-
-  TextStyle LabelStyle() => TextStyle(
-        fontFamily: "Quicksand",
-        color: COLORS.GREY,
-        fontWeight: FontWeight.w600,
-        fontSize: 14,
-      );
 }

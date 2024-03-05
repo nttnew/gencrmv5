@@ -50,53 +50,11 @@ Map<String, dynamic> _$PaymentContractResponseToJson(
       'data': instance.data,
     };
 
-DetailContractItem _$DetailContractItemFromJson(Map<String, dynamic> json) =>
-    DetailContractItem(
-      json['label_field'] as String?,
-      json['id'] as String?,
-      json['value_field'] as String?,
-      json['is_link'] as bool?,
-      json['field_type'] as String?,
-      json['link'] as String?,
-      json['name_field'] as String?,
-    );
-
-Map<String, dynamic> _$DetailContractItemToJson(DetailContractItem instance) =>
-    <String, dynamic>{
-      'label_field': instance.label_field,
-      'id': instance.id,
-      'value_field': instance.value_field,
-      'field_type': instance.field_type,
-      'link': instance.link,
-      'name_field': instance.name_field,
-      'is_link': instance.is_link,
-    };
-
-DetailContractData _$DetailContractDataFromJson(Map<String, dynamic> json) =>
-    DetailContractData(
-      json['group_name'] as String?,
-      json['mup'] as int?,
-      (json['data'] as List<dynamic>?)
-          ?.map((e) => DetailContractItem.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      (json['listFile'] as List<dynamic>?)
-          ?.map((e) => AttachFile.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$DetailContractDataToJson(DetailContractData instance) =>
-    <String, dynamic>{
-      'group_name': instance.group_name,
-      'mup': instance.mup,
-      'data': instance.data,
-      'listFile': instance.listFile,
-    };
-
 DetailContractResponse _$DetailContractResponseFromJson(
         Map<String, dynamic> json) =>
     DetailContractResponse(
       (json['data'] as List<dynamic>?)
-          ?.map((e) => DetailContractData.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => InfoDataModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     )
       ..success = json['success'] as bool?

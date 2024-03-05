@@ -79,27 +79,13 @@ class DetailCustomerBloc
       final response = await userRepository.getDetailCustomer(id);
       if (isSuccess(response.code)) {
         try {
-          CustomerInfoItem? item = response.data?.customer_info?.first.data
-              ?.firstWhere((element) => element.id == 'di_dong',
-                  orElse: () => CustomerInfoItem(
-                        '',
-                        '',
-                        '',
-                        '',
-                        0,
-                        false,
-                      ));
-          CustomerInfoItem? itemName =
+          InfoItem? item =
+              response.data?.customer_info?.first.data?.firstWhere(
+            (element) => element.id == 'di_dong',
+          );
+          InfoItem? itemName =
               response.data?.customer_info?.first.data?.firstWhere(
             (element) => element.id == 'ten_khach_hang',
-            orElse: () => CustomerInfoItem(
-              '',
-              '',
-              '',
-              '',
-              0,
-              false,
-            ),
           );
           if (item != null && item.id != '') sdt = item.value_field.toString();
           if (itemName != null && itemName.id != '')

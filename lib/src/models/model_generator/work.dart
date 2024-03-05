@@ -2,6 +2,7 @@ import 'package:gen_crm/src/models/model_generator/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'customer_clue.dart';
+import 'detail_customer.dart';
 
 part 'work.g.dart';
 
@@ -81,42 +82,8 @@ class WorkResponse extends BaseResponse {
 }
 
 @JsonSerializable()
-class DetailWorkItemData {
-  final String? label_field, id, value_field, type, link;
-  final bool? is_link;
-
-  DetailWorkItemData(
-    this.label_field,
-    this.id,
-    this.value_field,
-    this.type,
-    this.link,
-    this.is_link,
-  );
-
-  factory DetailWorkItemData.fromJson(Map<String, dynamic> json) =>
-      _$DetailWorkItemDataFromJson(json);
-
-  Map<String, dynamic> toJson() => _$DetailWorkItemDataToJson(this);
-}
-
-@JsonSerializable()
-class DetailWorkData {
-  final String? group_name;
-  final int? mup;
-  final List<DetailWorkItemData>? data;
-
-  DetailWorkData(this.group_name, this.mup, this.data);
-
-  factory DetailWorkData.fromJson(Map<String, dynamic> json) =>
-      _$DetailWorkDataFromJson(json);
-
-  Map<String, dynamic> toJson() => _$DetailWorkDataToJson(this);
-}
-
-@JsonSerializable()
 class DetailWorkResponse extends BaseResponse {
-  final List<DetailWorkData>? data;
+  final List<InfoDataModel>? data;
   final int? location;
   final String? di_dong;
 

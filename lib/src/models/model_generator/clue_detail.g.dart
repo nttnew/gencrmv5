@@ -6,48 +6,9 @@ part of 'clue_detail.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-DataClueGroupName _$DataClueGroupNameFromJson(Map<String, dynamic> json) =>
-    DataClueGroupName(
-      json['label_field'] as String?,
-      json['id'] as String?,
-      json['link'] as String?,
-      json['value_field'] as String?,
-      json['is_link'] as bool?,
-    );
-
-Map<String, dynamic> _$DataClueGroupNameToJson(DataClueGroupName instance) =>
-    <String, dynamic>{
-      'label_field': instance.label_field,
-      'id': instance.id,
-      'link': instance.link,
-      'is_link': instance.is_link,
-      'value_field': instance.value_field,
-    };
-
-DetailClueGroupName _$DetailClueGroupNameFromJson(Map<String, dynamic> json) =>
-    DetailClueGroupName(
-      json['group_name'] as String?,
-      json['mup'] as int?,
-      (json['data'] as List<dynamic>?)
-          ?.map((e) => DataClueGroupName.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      json['main_id'] as String?,
-      json['avatar'] as String?,
-    );
-
-Map<String, dynamic> _$DetailClueGroupNameToJson(
-        DetailClueGroupName instance) =>
-    <String, dynamic>{
-      'group_name': instance.group_name,
-      'mup': instance.mup,
-      'data': instance.data,
-      'main_id': instance.main_id,
-      'avatar': instance.avatar,
-    };
-
 DetailClue _$DetailClueFromJson(Map<String, dynamic> json) => DetailClue(
       (json['data'] as List<dynamic>?)
-          ?.map((e) => DetailClueGroupName.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => InfoDataModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     )
       ..success = json['success'] as bool?

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../../bloc/detail_chance/detail_chance_bloc.dart';
 import '../../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../../src/src_index.dart';
-import '../../../../../widgets/widget_line.dart';
-import '../../../../../widgets/widget_text.dart';
+import '../../../widget/information.dart';
 import '../../customer/widget/list_note.dart';
 
 class ChanceInfo extends StatefulWidget {
@@ -58,136 +56,12 @@ class _ChanceInfoState extends State<ChanceInfo>
                   if (state is UpdateGetListDetailChanceState) {
                     return Padding(
                       padding: EdgeInsets.only(
-                        left: 16,
-                        right: 16,
-                        top: 8,
+                        top: 16,
                       ),
-                      child: ListView.separated(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            if (state.data[index].data != null)
-                              return Container(
-                                padding: EdgeInsets.only(bottom: 10),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    AppValue.vSpaceTiny,
-                                    WidgetText(
-                                      title: state.data[index].group_name ?? "",
-                                      style: AppStyle.DEFAULT_16_BOLD,
-                                    ),
-                                    AppValue.vSpaceTiny,
-                                    Column(
-                                      children: List.generate(
-                                          state.data[index].data!.length,
-                                          (index1) {
-                                        bool isSPKH = state
-                                                .data[index].data?[index1].id ==
-                                            'chsan_pham_kh';
-                                        bool isKH = state.data[index]
-                                                    .data?[index1].id ==
-                                                'col121' &&
-                                            (state.data[index].data?[index1]
-                                                    .is_link ??
-                                                false);
-                                        if (state.data[index].data![index1]
-                                                .value_field !=
-                                            '')
-                                          return Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 5),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: WidgetText(
-                                                    title: state
-                                                            .data[index]
-                                                            .data![index1]
-                                                            .label_field ??
-                                                        '',
-                                                    style: AppStyle.DEFAULT_14
-                                                        .copyWith(
-                                                            color: Colors.grey),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  flex: 2,
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      String id = state
-                                                              .data[index]
-                                                              .data?[index1]
-                                                              .link ??
-                                                          '';
-                                                      String title = state
-                                                              .data[index]
-                                                              .data?[index1]
-                                                              .value_field ??
-                                                          '';
-                                                      if (isKH) {
-                                                        AppNavigator
-                                                            .navigateDetailCustomer(
-                                                                id, title);
-                                                      } else if (isSPKH) {
-                                                        AppNavigator
-                                                            .navigateDetailProductCustomer(
-                                                                title, id);
-                                                      }
-                                                    },
-                                                    child: WidgetText(
-                                                      title: state
-                                                              .data[index]
-                                                              .data![index1]
-                                                              .value_field ??
-                                                          '',
-                                                      textAlign:
-                                                          TextAlign.right,
-                                                      style: AppStyle.DEFAULT_14
-                                                          .copyWith(
-                                                        decoration:
-                                                            isSPKH || isKH
-                                                                ? TextDecoration
-                                                                    .underline
-                                                                : null,
-                                                        color: isSPKH || isKH
-                                                            ? Colors.blue
-                                                            : null,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        return SizedBox();
-                                      }),
-                                    ),
-                                    AppValue.vSpaceTiny,
-                                    AppValue.vSpaceTiny,
-                                    AppValue.vSpaceTiny,
-                                    WidgetLine(
-                                      color: Colors.grey,
-                                    )
-                                  ],
-                                ),
-                              );
-
-                            return SizedBox.shrink();
-                          },
-                          separatorBuilder: (context, index) {
-                            return SizedBox();
-                          },
-                          itemCount: state.data.length),
+                      child: InfoBase(
+                        listData: state.data,
+                        isLine: false,
+                      ),
                     );
                   } else if (state is ErrorGetListDetailChanceState) {
                     return Text(

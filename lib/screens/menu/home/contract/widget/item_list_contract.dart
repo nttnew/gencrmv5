@@ -14,7 +14,7 @@ class ItemContract extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AppNavigator.navigateInfoContract(
+        AppNavigator.navigateDetailContract(
             data.id ?? '', data.name ?? getT(KeyT.not_yet));
       },
       child: Container(

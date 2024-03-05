@@ -1,36 +1,63 @@
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'attach_file.dart';
+
 part 'detail_customer.g.dart';
 
 @JsonSerializable()
-class CustomerInfoData {
-  final String? group_name;
+class InfoDataModel {
+  final String? group_name, main_id, avatar;
   final int? mup;
-  final List<CustomerInfoItem>? data;
+  final List<InfoItem>? data;
+  final List<AttachFile>? listFile;
 
-  CustomerInfoData(this.group_name, this.mup, this.data);
+  InfoDataModel(
+    this.group_name,
+    this.main_id,
+    this.avatar,
+    this.mup,
+    this.data,
+    this.listFile,
+  );
 
-  factory CustomerInfoData.fromJson(Map<String, dynamic> json) =>
+  factory InfoDataModel.fromJson(Map<String, dynamic> json) =>
       _$CustomerInfoDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$CustomerInfoDataToJson(this);
 }
 
 @JsonSerializable()
-class CustomerInfoItem {
-  final String? label_field, id, value_field;
-  final String? link;
+class InfoItem {
+  final String? label_field,
+      id,
+      value_field,
+      field_type,
+      link,
+      name_field,
+      field_name,
+      is_type;
   final int? action;
-  final bool? is_call;
+  final bool? is_call, is_link;
 
-  CustomerInfoItem(this.label_field, this.id, this.value_field, this.link,
-      this.action, this.is_call);
+  InfoItem(
+    this.label_field,
+    this.id,
+    this.value_field,
+    this.field_type,
+    this.link,
+    this.name_field,
+    this.field_name,
+    this.is_type,
+    this.action,
+    this.is_call,
+    this.is_link,
+  );
 
-  factory CustomerInfoItem.fromJson(Map<String, dynamic> json) =>
-      _$CustomerInfoItemFromJson(json);
+  factory InfoItem.fromJson(Map<String, dynamic> json) =>
+      _$InfoItemFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CustomerInfoItemToJson(this);
+  Map<String, dynamic> toJson() => _$InfoItemToJson(this);
 }
 
 @JsonSerializable()
@@ -64,8 +91,14 @@ class CustomerNoteData {
   final String? id, user_create_name, avatar_user, content, time;
   final int? user_create_id;
 
-  CustomerNoteData(this.id, this.user_create_name, this.avatar_user,
-      this.content, this.time, this.user_create_id);
+  CustomerNoteData(
+    this.id,
+    this.user_create_name,
+    this.avatar_user,
+    this.content,
+    this.time,
+    this.user_create_id,
+  );
 
   factory CustomerNoteData.fromJson(Map<String, dynamic> json) =>
       _$CustomerNoteDataFromJson(json);
@@ -76,12 +109,16 @@ class CustomerNoteData {
 @JsonSerializable()
 class DetailCustomerData {
   final String? avatar;
-  final List<CustomerInfoData>? customer_info;
+  final List<InfoDataModel>? customer_info;
   final CustomerSale? customer_sale;
   final CustomerNote? customer_note;
 
   DetailCustomerData(
-      this.avatar, this.customer_info, this.customer_sale, this.customer_note);
+    this.avatar,
+    this.customer_info,
+    this.customer_sale,
+    this.customer_note,
+  );
 
   factory DetailCustomerData.fromJson(Map<String, dynamic> json) =>
       _$DetailCustomerDataFromJson(json);
@@ -93,7 +130,9 @@ class DetailCustomerData {
 class DetailCustomerResponse extends BaseResponse {
   final DetailCustomerData? data;
 
-  DetailCustomerResponse(this.data);
+  DetailCustomerResponse(
+    this.data,
+  );
 
   factory DetailCustomerResponse.fromJson(Map<String, dynamic> json) =>
       _$DetailCustomerResponseFromJson(json);

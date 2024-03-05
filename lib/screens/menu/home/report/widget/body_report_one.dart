@@ -67,7 +67,7 @@ class BodyReportOne extends StatelessWidget {
 
   _item(DataListContact dataContact) => GestureDetector(
         onTap: () {
-          AppNavigator.navigateInfoContract(
+          AppNavigator.navigateDetailContract(
             dataContact.id ?? '',
             dataContact.name ?? '',
           );

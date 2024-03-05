@@ -80,46 +80,10 @@ Map<String, dynamic> _$WorkResponseToJson(WorkResponse instance) =>
       'data': instance.data,
     };
 
-DetailWorkItemData _$DetailWorkItemDataFromJson(Map<String, dynamic> json) =>
-    DetailWorkItemData(
-      json['label_field'] as String?,
-      json['id'] as String?,
-      json['value_field'] as String?,
-      json['type'] as String?,
-      json['link'] as String?,
-      json['is_link'] as bool?,
-    );
-
-Map<String, dynamic> _$DetailWorkItemDataToJson(DetailWorkItemData instance) =>
-    <String, dynamic>{
-      'label_field': instance.label_field,
-      'id': instance.id,
-      'value_field': instance.value_field,
-      'type': instance.type,
-      'link': instance.link,
-      'is_link': instance.is_link,
-    };
-
-DetailWorkData _$DetailWorkDataFromJson(Map<String, dynamic> json) =>
-    DetailWorkData(
-      json['group_name'] as String?,
-      json['mup'] as int?,
-      (json['data'] as List<dynamic>?)
-          ?.map((e) => DetailWorkItemData.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$DetailWorkDataToJson(DetailWorkData instance) =>
-    <String, dynamic>{
-      'group_name': instance.group_name,
-      'mup': instance.mup,
-      'data': instance.data,
-    };
-
 DetailWorkResponse _$DetailWorkResponseFromJson(Map<String, dynamic> json) =>
     DetailWorkResponse(
       (json['data'] as List<dynamic>?)
-          ?.map((e) => DetailWorkData.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => InfoDataModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       json['location'] as int?,
       json['di_dong'] as String?,
