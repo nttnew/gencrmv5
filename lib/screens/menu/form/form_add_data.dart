@@ -61,7 +61,7 @@ class _FormAddDataState extends State<FormAddData> {
   String title = Get.arguments[0];
   String type = Get.arguments[1] ?? '';
   String id = Get.arguments[2] != null ? Get.arguments[2].toString() : '';
-  bool isCheckIn = Get.arguments[3];
+  bool isCheckIn = Get.arguments[3] ?? false;
   String typeCheckIn = Get.arguments[4];
   bool isResultData = Get.arguments[5] ?? false;
   bool isGetData = Get.arguments[6] ?? false;

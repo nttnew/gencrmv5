@@ -199,10 +199,6 @@ class _MyAppState extends ConsumerState<MyApp> {
           name: ROUTE_NAMES.INFO_CONTRACT,
           page: () => DetailInfoContract(),
         ),
-        // GetPage(
-        //   name: ROUTE_NAMES.ADD_CONTRACT,
-        //   page: () => FormAddContract(),
-        // ),
         GetPage(
           name: ROUTE_NAMES.SUPPORT,
           page: () => SupportScreen(),
@@ -235,14 +231,6 @@ class _MyAppState extends ConsumerState<MyApp> {
           name: ROUTE_NAMES.DETAIL_CUSTOMER,
           page: () => DetailCustomerScreen(),
         ),
-        // GetPage(
-        //   name: ROUTE_NAMES.ADD_CUSTOMER,
-        //   page: () => AddCustomer(),
-        // ),
-        // GetPage(
-        //   name: ROUTE_NAMES.ADD_SERVICE_VOUCHER_STEP_TWO,
-        //   page: () => AddServiceVoucherStepTwoScreen(),
-        // ),
         GetPage(
           name: ROUTE_NAMES.NOTIFICATION,
           page: () => NotificationScreen(),
@@ -251,10 +239,6 @@ class _MyAppState extends ConsumerState<MyApp> {
           name: ROUTE_NAMES.FORM_ADD,
           page: () => FormAddData(),
         ),
-        // GetPage(
-        //   name: ROUTE_NAMES.FORM_EDIT,
-        //   page: () => FormEdit(),
-        // ),
         GetPage(
           name: ROUTE_NAMES.ADD_NOTE,
           page: () => AddNote(),
@@ -263,10 +247,6 @@ class _MyAppState extends ConsumerState<MyApp> {
           name: ROUTE_NAMES.ADD_PRODUCT,
           page: () => ListProduct(),
         ),
-        // GetPage(
-        //   name: ROUTE_NAMES.EDIT_CONTRACT,
-        //   page: () => EditContract(),
-        // ),
         GetPage(
           name: ROUTE_NAMES.DETAIL_PRODUCT,
           page: () => DetailProductScreen(),
@@ -283,10 +263,18 @@ class _MyAppState extends ConsumerState<MyApp> {
           name: ROUTE_NAMES.DETAIL_PRODUCT_CUSTOMER,
           page: () => DetailProductCustomerScreen(),
         ),
-        GetPage(name: ROUTE_NAMES.FORM_SIGN, page: () => FormAddSign()),
-        GetPage(name: ROUTE_NAMES.CALL, page: () => CallGencrmScreen()),
         GetPage(
-            name: ROUTE_NAMES.LIST_SERVICE_PARK, page: () => ListServicePark()),
+          name: ROUTE_NAMES.FORM_SIGN,
+          page: () => FormAddSign(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.CALL,
+          page: () => CallGencrmScreen(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.LIST_SERVICE_PARK,
+          page: () => ListServicePark(),
+        ),
       ],
     );
   }
