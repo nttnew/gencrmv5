@@ -8,36 +8,6 @@ abstract class AddDataState extends Equatable {
 
 class InitAddDataState extends AddDataState {}
 
-// class LoadingAddCustomerOrState extends AddDataState {}
-//
-// class SuccessAddCustomerOrState extends AddDataState {
-//   final List<String> result;
-//
-//   SuccessAddCustomerOrState(this.result);
-//   @override
-//   List<Object> get props => [result];
-// }
-//
-// class ErrorAddCustomerOrState extends AddDataState {
-//   final String msg;
-//
-//   ErrorAddCustomerOrState(this.msg);
-//   @override
-//   List<Object> get props => [msg];
-// }
-
-// class LoadingEditCustomerState extends AddDataState {}
-//
-// class SuccessEditCustomerState extends AddDataState {}
-//
-// class ErrorEditCustomerState extends AddDataState {
-//   final String msg;
-//
-//   ErrorEditCustomerState(this.msg);
-//   @override
-//   List<Object> get props => [msg];
-// }
-
 class LoadingAddData extends AddDataState {}
 
 class SuccessAddData extends AddDataState {
@@ -45,8 +15,6 @@ class SuccessAddData extends AddDataState {
   final String? idKH;
   final List<String>? result;
   final bool isEdit;
-
-
 
   SuccessAddData({
     this.dataSPKH,

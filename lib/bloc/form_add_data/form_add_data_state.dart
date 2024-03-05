@@ -31,8 +31,6 @@ class ErrorForm extends FormAddState {
   List<Object> get props => [msg];
 }
 
-//form_add_contact_customer
-
 class LoadingFormAddContactCustomerState extends FormAddState {}
 
 class SuccessFormAddContactCustomerState extends FormAddState {
