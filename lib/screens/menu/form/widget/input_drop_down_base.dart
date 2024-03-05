@@ -31,19 +31,23 @@ class InputDropdownBase extends StatefulWidget {
 }
 
 class _InputDropdownState extends State<InputDropdownBase> {
-  BehaviorSubject<List<dynamic>> dataSelectStream =
+  BehaviorSubject<List<dynamic>> _selectStream =
       BehaviorSubject.seeded(['', '']);
-  BehaviorSubject<List<List<dynamic>>?> listStream = BehaviorSubject.seeded([]);
-  String idDF = '';
+  BehaviorSubject<List<List<dynamic>>?> _listSelectStream =
+      BehaviorSubject.seeded([]);
+  dynamic _idDF = '';
 
   void getId() {
     final List<ModelItemAdd> dataSelect = widget.addData;
     dataSelect.forEach((element) {
       element.data.forEach((value) {
         if (value.label == widget.data.field_parent?.field_value) {
-          if (value.value != null && value.value != '' && idDF != value.value) {
-            dataSelectStream.add(['', '']);
+          if (value.value != null &&
+              value.value != '' &&
+              _idDF != value.value) {
+            _selectStream.add(['', '']);
             _onChangeMain(''); //reset select
+            _idDF = value.value;
             getDataApi(value.value.toString());
           }
         }
@@ -52,7 +56,6 @@ class _InputDropdownState extends State<InputDropdownBase> {
   }
 
   Future<void> getDataApi(String id) async {
-    idDF = id;
     try {
       var headers = {
         'Authorization': shareLocal.getString(PreferencesKey.TOKEN),
@@ -80,12 +83,20 @@ class _InputDropdownState extends State<InputDropdownBase> {
           final List<List<dynamic>> res =
               dataRes.map((e) => e as List<dynamic>).toList();
           if (res.length == 1) {
-            dataSelectStream.add(res.first);
-            widget.onChange(res.first.first);
+            _selectStream.add(res.first);
+            _onChangeMain(res.first.first);
+          } else {
+            res.forEach((element) {
+              if (element.first ==
+                  widget.data.field_set_value_datasource?.first.first) {
+                _selectStream.add(res.first);
+                _onChangeMain(res.first.first);
+              }
+            });
+            _listSelectStream.add(res);
           }
-          listStream.add(res);
         } else {
-          listStream.add([]);
+          _listSelectStream.add([]);
         }
       }
     } catch (e) {
@@ -120,9 +131,9 @@ class _InputDropdownState extends State<InputDropdownBase> {
           final List<dynamic> dataRes = response.data['data'] as List<dynamic>;
           final List<List<dynamic>> res =
               dataRes.map((e) => e as List<dynamic>).toList();
-          listStream.add(res);
+          _listSelectStream.add(res);
         } else {
-          listStream.add([]);
+          _listSelectStream.add([]);
         }
       }
     } catch (e) {}
@@ -132,13 +143,15 @@ class _InputDropdownState extends State<InputDropdownBase> {
   void initState() {
     final CustomerIndividualItemData data = widget.data;
     if (data.field_datasource != null) {
-      listStream.add(data.field_datasource);
+      _listSelectStream.add(data.field_datasource);
     }
 
     if (data.field_set_value_datasource != null &&
         (data.field_set_value_datasource?.length ?? 0) > 0) {
-      dataSelectStream.add(data.field_set_value_datasource?.first ?? ['', '']);
-      _onChangeMain(data.field_set_value_datasource?.first.first);
+      _selectStream.add(data.field_set_value_datasource?.first ?? ['', '']);
+      _onChangeMain(
+        data.field_set_value_datasource?.first.first,
+      );
     }
     super.initState();
   }
@@ -155,8 +168,8 @@ class _InputDropdownState extends State<InputDropdownBase> {
 
   @override
   void dispose() {
-    dataSelectStream.close();
-    listStream.close();
+    _selectStream.close();
+    _listSelectStream.close();
     super.dispose();
   }
 
@@ -189,20 +202,20 @@ class _InputDropdownState extends State<InputDropdownBase> {
       if (result != null && result.isNotEmpty) {
         if (v.first == ADD_NEW_CAR) {
           if (result.length > 1) {
-            dataSelectStream.add(result.first);
+            _selectStream.add(result.first);
             _onChangeMain(result.first[0]);
             Navigator.pop(context);
             getDataApi(result.last.toString());
           }
         } else {
-          dataSelectStream.add(result);
+          _selectStream.add(result);
           _onChangeMain(result.first);
           Navigator.pop(context);
           getList();
         }
       }
     } else {
-      dataSelectStream.add(v);
+      _selectStream.add(v);
       _onChangeMain(v.first);
       Navigator.pop(context);
     }
@@ -240,14 +253,13 @@ class _InputDropdownState extends State<InputDropdownBase> {
             height: 8,
           ),
           StreamBuilder<List<List<dynamic>>?>(
-              stream: listStream,
+              stream: _listSelectStream,
               builder: (context, snapshot) {
                 final List<List<dynamic>>? listData = snapshot.data;
                 return GestureDetector(
                   onTap: () {
                     if (!isReadOnly)
                       showModalBottomSheet(
-                          // enableDrag: false,
                           isScrollControlled: true,
                           context: context,
                           constraints: BoxConstraints(
@@ -292,7 +304,7 @@ class _InputDropdownState extends State<InputDropdownBase> {
                             children: [
                               Expanded(
                                 child: StreamBuilder<List<dynamic>>(
-                                    stream: dataSelectStream,
+                                    stream: _selectStream,
                                     builder: (context, snapshot) {
                                       final List<dynamic> listSnap =
                                           snapshot.data ?? [];

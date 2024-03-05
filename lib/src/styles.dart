@@ -51,6 +51,14 @@ class AppStyle {
     height: 1.4,
   );
 
+  static const DEFAULT_14_TEXT_BLUE = TextStyle(
+    fontFamily: 'Quicksand',
+    fontSize: AppValue.FONT_SIZE_14,
+    color: COLORS.TEXT_BLUE_BOLD,
+    fontWeight: FontWeight.w400,
+    height: 1.4,
+  );
+
   static const DEFAULT_16 = TextStyle(
       fontFamily: 'Quicksand',
       fontSize: AppValue.FONT_SIZE_16,

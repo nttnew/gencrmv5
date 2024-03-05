@@ -96,6 +96,7 @@ class ItemCustomer extends StatelessWidget {
               text: data.email?.val ?? getT(KeyT.not_yet),
               icon: ICONS.IC_MAIL_CUSTOMER_SVG,
               colorIcon: COLORS.GREY,
+              styleText: AppStyle.DEFAULT_14_TEXT_BLUE,
             ),
             Row(
               children: [
@@ -116,9 +117,7 @@ class ItemCustomer extends StatelessWidget {
                       }
                     },
                     text: data.phone?.val ?? getT(KeyT.not_yet),
-                    styleText: AppStyle.DEFAULT_14.copyWith(
-                        fontWeight: FontWeight.w400,
-                        color: COLORS.TEXT_BLUE_BOLD),
+                    styleText: AppStyle.DEFAULT_14_TEXT_BLUE,
                     icon: ICONS.IC_PHONE_CUSTOMER_SVG,
                   ),
                 ),
