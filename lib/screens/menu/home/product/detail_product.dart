@@ -48,9 +48,10 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
       icon: ICONS.IC_ADD_CONTRACT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddContract(
+        AppNavigator.navigateForm(
           title:
               '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
+          type: ADD_CONTRACT,
           product: (product?.id ?? '') != '' ? product : null,
         );
       },
@@ -74,10 +75,14 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditDataScreen(id, PRODUCT_TYPE, onRefresh: () {
-          _bloc.add(InitGetDetailProductEvent(id));
-          ProductModuleBloc.of(context).loadMoreController.reloadData();
-        });
+        AppNavigator.navigateForm(
+          type: PRODUCT_TYPE,
+          id: int.tryParse(id),
+          onRefresh: () {
+            _bloc.add(InitGetDetailProductEvent(id));
+            ProductModuleBloc.of(context).loadMoreController.reloadData();
+          },
+        );
       },
     ));
 

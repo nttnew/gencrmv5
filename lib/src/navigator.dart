@@ -2,6 +2,7 @@ import 'package:gen_crm/src/models/model_generator/customer_clue.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/src/router.dart';
 
+import '../l10n/key_text.dart';
 import '../models/product_model.dart';
 import 'app_const.dart';
 
@@ -24,57 +25,49 @@ class AppNavigator {
   ) async =>
       await Get.toNamed(ROUTE_NAMES.DETAIL_WORK, arguments: [id, title]);
 
-  static navigateAddCustomer(
-    String title, {
-    bool isResultData = false,
-  }) async =>
-      await Get.toNamed(ROUTE_NAMES.ADD_CUSTOMER,
-          arguments: [title, isResultData]);
+  // static navigateAddCustomer(
+  //   String title, {
+  //   bool isResultData = false,
+  // }) async =>
+  //     await Get.toNamed(ROUTE_NAMES.ADD_CUSTOMER,
+  //         arguments: [title, isResultData]);
 
-  static navigateAddServiceVoucherStepTwo(String title) async =>
-      await Get.toNamed(ROUTE_NAMES.ADD_SERVICE_VOUCHER_STEP_TWO,
-          arguments: title);
+  // static navigateAddServiceVoucherStepTwo(String title) async =>
+  //     await Get.toNamed(ROUTE_NAMES.ADD_SERVICE_VOUCHER_STEP_TWO,
+  //         arguments: title);
 
-  static navigateFormAdd(
-    String title,
-    int type, {
+  static navigateForm({
+    String? title,
+    required String type,
     int? id,
+    String? sdt,
+    String? bienSo,
     bool isCheckIn = false,
     String typeCheckIn = TypeCheckIn.CHECK_IN,
     bool isResultData = false,
     bool isGetData = false, //getdata cho khsp
     Function? onRefresh,
+    bool isPreventDuplicates = false,
+    ProductModel? product,
   }) async =>
-      await Get.toNamed(ROUTE_NAMES.FORM_ADD, arguments: [
-        title,
-        type,
-        id,
-        isCheckIn,
-        typeCheckIn,
-        isResultData,
-        isGetData,
-      ])?.whenComplete(() {
-        if (onRefresh != null) onRefresh();
-      });
-
-  static navigateFormAddCustomerGroup(
-    String title,
-    int type, {
-    int? id,
-    bool isCheckIn = false,
-    String typeCheckIn = TypeCheckIn.CHECK_IN,
-    bool isResultData = false,
-    bool isGetData = false, //getdata cho khsp
-  }) async =>
-      await Get.toNamed(ROUTE_NAMES.FORM_ADD_CUSTOMER_GROUP, arguments: [
-        title,
-        type,
-        id,
-        isCheckIn,
-        typeCheckIn,
-        isResultData,
-        isGetData,
-      ]);
+      await Get.toNamed(ROUTE_NAMES.FORM_ADD,
+          preventDuplicates: isPreventDuplicates,
+          arguments: [
+            title ?? getT(KeyT.edit_information),
+            type,
+            id,
+            isCheckIn,
+            typeCheckIn,
+            isResultData,
+            isGetData,
+            product,
+            sdt,
+            bienSo,
+          ])?.whenComplete(
+        () {
+          if (onRefresh != null) onRefresh();
+        },
+      );
 
   static navigateAddWork() async => await Get.toNamed(ROUTE_NAMES.ADD_WORK);
 
@@ -126,17 +119,17 @@ class AppNavigator {
 
   static navigateContract() async => await Get.toNamed(ROUTE_NAMES.CONTRACT);
 
-  static navigateAddContract({
-    String? id,
-    String? customer_id,
-    required String title,
-    Function? onRefresh,
-    ProductModel? product,
-  }) async =>
-      await Get.toNamed(ROUTE_NAMES.ADD_CONTRACT,
-          arguments: [id, customer_id, title, product])?.whenComplete(() {
-        if (onRefresh != null) onRefresh();
-      });
+  // static navigateAddContract({
+  //   String? id,
+  //   String? customer_id,
+  //   required String title,
+  //   Function? onRefresh,
+  //   ProductModel? product,
+  // }) async =>
+  //     await Get.toNamed(ROUTE_NAMES.ADD_CONTRACT,
+  //         arguments: [id, customer_id, title, product])?.whenComplete(() {
+  //       if (onRefresh != null) onRefresh();
+  //     });
 
   static navigateInfoContract(String id, String name) async =>
       await Get.toNamed(ROUTE_NAMES.INFO_CONTRACT, arguments: [id, name]);
@@ -180,18 +173,18 @@ class AppNavigator {
   static navigateBuyCourseScreen(arguments) async =>
       await Get.toNamed(ROUTE_NAMES.BUY_COURSE, arguments: arguments);
 
-  static navigateEditDataScreen(String id, int type,
-          {Function? onRefresh}) async =>
-      await Get.toNamed(ROUTE_NAMES.FORM_EDIT, arguments: [id, type])
-          ?.whenComplete(() {
-        if (onRefresh != null) onRefresh();
-      });
-
-  static navigateEditContractScreen(String id, {Function? onRefresh}) async =>
-      await Get.toNamed(ROUTE_NAMES.EDIT_CONTRACT, arguments: id)
-          ?.whenComplete(() {
-        if (onRefresh != null) onRefresh();
-      });
+  // static navigateEditDataScreen(String id, int type,
+  //         {Function? onRefresh}) async =>
+  //     await Get.toNamed(ROUTE_NAMES.FORM_EDIT, arguments: [id, type])
+  //         ?.whenComplete(() {
+  //       if (onRefresh != null) onRefresh();
+  //     });
+  //
+  // static navigateEditContractScreen(String id, {Function? onRefresh}) async =>
+  //     await Get.toNamed(ROUTE_NAMES.EDIT_CONTRACT, arguments: id)
+  //         ?.whenComplete(() {
+  //       if (onRefresh != null) onRefresh();
+  //     });
 
   static navigateAddNoteScreen(String module, String id,
           {Function? onRefresh}) async =>

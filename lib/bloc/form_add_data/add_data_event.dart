@@ -17,6 +17,13 @@ class AddCustomerOrEvent extends AddDataEvent {
   AddCustomerOrEvent(this.data, {this.files});
 }
 
+class AddCustomerEvent extends AddDataEvent {
+  final Map<String, dynamic> data;
+  final List<File>? files;
+
+  AddCustomerEvent(this.data, {this.files});
+}
+
 class EditCustomerEvent extends AddDataEvent {
   final Map<String, dynamic> data;
   final List<File>? files;
@@ -27,22 +34,25 @@ class EditCustomerEvent extends AddDataEvent {
 class AddContactCustomerEvent extends AddDataEvent {
   final Map<String, dynamic> data;
   final List<File>? files;
+  final bool isEdit;
 
-  AddContactCustomerEvent(this.data, {this.files});
+  AddContactCustomerEvent(this.data, {this.files, this.isEdit = false});
 }
 
 class AddOpportunityEvent extends AddDataEvent {
   final Map<String, dynamic> data;
   final List<File>? files;
+  final bool isEdit;
 
-  AddOpportunityEvent(this.data, {this.files});
+  AddOpportunityEvent(this.data, {this.files, this.isEdit = false});
 }
 
 class AddContractEvent extends AddDataEvent {
   final Map<String, dynamic> data;
   final List<File>? files;
+  final bool isEdit;
 
-  AddContractEvent(this.data, {this.files});
+  AddContractEvent(this.data, {this.files, this.isEdit = false});
 }
 
 class AddJobEvent extends AddDataEvent {
@@ -55,8 +65,9 @@ class AddJobEvent extends AddDataEvent {
 class AddSupportEvent extends AddDataEvent {
   final Map<String, dynamic> data;
   final List<File>? files;
+  final bool isEdit;
 
-  AddSupportEvent(this.data, {this.files});
+  AddSupportEvent(this.data, {this.files, this.isEdit = false});
 }
 
 class EditJobEvent extends AddDataEvent {
@@ -102,5 +113,15 @@ class SignEvent extends AddDataEvent {
   SignEvent(
     this.data,
     this.type,
+  );
+}
+
+class QuickContractSaveEvent extends AddDataEvent {
+  final Map<String, dynamic> data;
+  final List<File>? files;
+
+  QuickContractSaveEvent(
+    this.data,
+    this.files,
   );
 }

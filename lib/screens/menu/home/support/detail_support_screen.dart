@@ -144,9 +144,13 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditDataScreen(id, EDIT_SUPPORT, onRefresh: () {
-          _bloc.add(InitGetDetailSupportEvent(id));
-        });
+        AppNavigator.navigateForm(
+          type: EDIT_SUPPORT,
+          id: int.tryParse(id),
+          onRefresh: () {
+            _bloc.add(InitGetDetailSupportEvent(id));
+          },
+        );
       },
     ));
 

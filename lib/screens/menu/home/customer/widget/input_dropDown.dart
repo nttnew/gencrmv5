@@ -14,7 +14,7 @@ class InputDropdown extends StatefulWidget {
     Key? key,
     required this.dropdownItemList,
     required this.data,
-    required this.onSuccess,
+    required this.onChange,
     required this.value,
     this.isUpdate = false,
     this.onUpdate,
@@ -25,7 +25,7 @@ class InputDropdown extends StatefulWidget {
   }) : super(key: key);
   final List<List<dynamic>> dropdownItemList;
   final CustomerIndividualItemData data;
-  final Function onSuccess;
+  final Function onChange;
   final String value;
   final bool isUpdate;
   final bool isUpdateList;
@@ -251,7 +251,7 @@ class _InputDropdownState extends State<InputDropdown> {
                                 }
 
                                 Get.back();
-                                widget.onSuccess(data);
+                                widget.onChange(data);
                               },
                               onTabSearch: (search) {
                                 getCustomer(1,

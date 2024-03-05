@@ -21,6 +21,8 @@ class CustomerIndividualItemData {
   final String? field_special, field_value;
   final List<ProductItemContract>? products;
   final List<ButtonRes>? button;
+  final FieldParent? field_parent, field_search;
+  final bool? is_load;
 
   CustomerIndividualItemData(
     this.field_id,
@@ -41,6 +43,9 @@ class CustomerIndividualItemData {
     this.field_value,
     this.products,
     this.button,
+    this.field_parent,
+    this.field_search,
+    this.is_load,
   );
 
   factory CustomerIndividualItemData.fromJson(Map<String, dynamic> json) =>
@@ -177,4 +182,24 @@ class ButtonRes {
       _$ButtonResFromJson(json);
 
   Map<String, dynamic> toJson() => _$ButtonResToJson(this);
+}
+
+@JsonSerializable()
+class FieldParent {
+  final String? field_value;
+  final String? field_keyparam;
+  final String? keysearch;
+  final String? field_url;
+
+  FieldParent(
+    this.field_value,
+    this.field_keyparam,
+    this.keysearch,
+    this.field_url,
+  );
+
+  factory FieldParent.fromJson(Map<String, dynamic> json) =>
+      _$FieldParentFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FieldParentToJson(this);
 }

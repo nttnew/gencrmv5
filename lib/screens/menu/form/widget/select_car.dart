@@ -47,8 +47,11 @@ class _SelectCarState extends State<SelectCar> {
         _bloc.phienBan != ServiceVoucherBloc.KHONG_XAC_DINH;
     return Container(
         height: MediaQuery.of(context).size.height * 0.9,
-        padding: EdgeInsets.symmetric(vertical: 25, horizontal: 16),
+        padding: EdgeInsets.only(
+          top: 25,
+        ),
         child: SingleChildScrollView(
+          padding: EdgeInsets.only(left: 16, right: 16),
           controller: _controller,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

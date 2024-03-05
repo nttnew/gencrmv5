@@ -4,15 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
-import 'package:gen_crm/bloc/contract/phone_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
 import 'package:gen_crm/bloc/product_customer_module/product_customer_module_bloc.dart';
 import 'package:gen_crm/bloc/product_module/product_module_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
+import 'package:gen_crm/screens/menu/form/widget/field_text.dart';
+import 'package:gen_crm/screens/menu/form/widget/field_text_api.dart';
+import 'package:gen_crm/screens/menu/form/widget/field_text_car_view.dart';
 import 'package:gen_crm/screens/menu/form/widget/location_select.dart';
+import 'package:gen_crm/screens/menu/form/widget/render_check_box.dart';
 import 'package:gen_crm/screens/menu/form/widget/type_car.dart';
-import 'package:gen_crm/screens/menu/home/customer/widget/input_dropDown.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/field_input_select_multi.dart';
@@ -26,13 +28,16 @@ import '../../../bloc/clue/clue_bloc.dart';
 import '../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import '../../../bloc/contract/attack_bloc.dart';
 import '../../../bloc/contract/contract_bloc.dart';
+import '../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../bloc/contract/total_bloc.dart';
+import '../../../bloc/detail_product/detail_product_bloc.dart';
 import '../../../bloc/detail_product_customer/detail_product_customer_bloc.dart';
 import '../../../bloc/support/support_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
 import '../../../l10n/key_text.dart';
 import '../../../models/model_data_add.dart';
 import '../../../models/product_model.dart';
+import '../../../widgets/loading_api.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/models/model_generator/login_response.dart';
 import '../../../widgets/pick_file_image.dart';
@@ -41,8 +46,9 @@ import '../../../storages/share_local.dart';
 import '../../../widgets/location_base.dart';
 import 'package:geolocator/geolocator.dart' show Position;
 import '../../../widgets/multiple_widget.dart';
-import 'add_service_voucher/add_service_voucher_step2_screen.dart';
+import '../home/contract/widget/widget_total_sum.dart';
 import 'product_list/product_contract.dart';
+import 'widget/input_drop_down_base.dart';
 
 class FormAddData extends StatefulWidget {
   const FormAddData({Key? key}) : super(key: key);
@@ -53,59 +59,65 @@ class FormAddData extends StatefulWidget {
 
 class _FormAddDataState extends State<FormAddData> {
   String title = Get.arguments[0];
-  int type = Get.arguments[1];
+  String type = Get.arguments[1] ?? '';
   String id = Get.arguments[2] != null ? Get.arguments[2].toString() : '';
   bool isCheckIn = Get.arguments[3];
   String typeCheckIn = Get.arguments[4];
-  bool isResultData = Get.arguments[5];
-  bool isGetData = Get.arguments[6];
-  List data = [];
+  bool isResultData = Get.arguments[5] ?? false;
+  bool isGetData = Get.arguments[6] ?? false;
+  ProductModel? product = Get.arguments[7];
+  String sdt = Get.arguments[8] ?? '';
+  String bienSo = Get.arguments[9] ?? '';
   double total = 0;
   List<ProductModel> listProduct = [];
   List<ModelItemAdd> addData = [];
-  late String id_user;
+  late String idUserLocal;
   File? fileUpload;
   Position? position;
   late final BehaviorSubject<String> nameLocation;
-  late final TextEditingController controllerNote;
+  late final BehaviorSubject<String>
+      reloadStream; // dùng để reload con của field
+  late final TextEditingController _controllerTextNoteLocation;
   late final FormAddBloc _bloc;
-  late final List<List<dynamic>> listCustomerForChance;
+  late final AddDataBloc _blocAdd;
+  late final ServiceVoucherBloc _blocService;
+  late final AttackBloc _attackBloc;
+  late final ContactByCustomerBloc _contactBy;
+  late final TotalBloc _totalBloc;
 
   @override
   void initState() {
+    _blocService = ServiceVoucherBloc.of(context);
+    _totalBloc = TotalBloc.of(context);
+    _attackBloc = AttackBloc.of(context);
     _bloc = FormAddBloc(userRepository: FormAddBloc.of(context).userRepository);
-    String nameCustomerScreen =
-        shareLocal.getString(PreferencesKey.NAME_CUSTOMER);
-    listCustomerForChance = [
-      [
-        CA_NHAN,
-        '${getT(KeyT.add)}'
-            ' ${nameCustomerScreen.toString().toLowerCase()} '
-            '${getT(KeyT.individual)}'
-      ],
-      [
-        TO_CHUC,
-        '${getT(KeyT.add)}'
-            ' ${nameCustomerScreen.toString().toLowerCase()} '
-            '${getT(KeyT.organization)}'
-      ]
-    ];
-    controllerNote = TextEditingController();
+    _blocAdd =
+        AddDataBloc(userRepository: AddDataBloc.of(context).userRepository);
+    _contactBy = ContactByCustomerBloc.of(context);
+    _controllerTextNoteLocation = TextEditingController();
     nameLocation = BehaviorSubject.seeded('');
+    reloadStream = BehaviorSubject.seeded('');
     nameLocation.listen((value) {
-      if (value != '' && value != LOADING && controllerNote.text != value) {
-        controllerNote.text = value;
+      if (value != '' &&
+          value != LOADING &&
+          _controllerTextNoteLocation.text != value) {
+        _controllerTextNoteLocation.text = value;
       }
     });
     loadUser();
-    AttackBloc.of(context).add(LoadingAttackEvent());
-    if (type == ADD_CUSTOMER) {
+    if (product != null) {
+      addProduct(product!);
+    }
+    _attackBloc.add(LoadingAttackEvent());
+    if (type == ADD_CUSTOMER_OR) {
       _bloc.add(InitFormAddCusOrEvent());
+    } else if (type == ADD_CUSTOMER) {
+      _bloc.add(InitFormAddCustomerEvent());
     } else if (type == ADD_CLUE_CUSTOMER) {
       _bloc.add(InitFormAddContactCusEvent(id));
     } else if (type == ADD_CHANCE_CUSTOMER) {
       _bloc.add(InitFormAddOppCusEvent(id));
-    } else if (type == 13) {
+    } else if (type == ADD_CONTRACT_CUS) {
       _bloc.add(InitFormAddContractCusEvent(id));
     } else if (type == ADD_JOB_CUSTOMER) {
       _bloc.add(InitFormAddJobCusEvent(id));
@@ -115,7 +127,7 @@ class _FormAddDataState extends State<FormAddData> {
       _bloc.add(InitFormAddAgencyEvent());
     } else if (type == ADD_CHANCE) {
       _bloc.add(InitFormAddChanceEvent());
-    } else if (type == 4) {
+    } else if (type == ADD_CONTRACT) {
       _bloc.add(InitFormAddContractEvent(id: id));
     } else if (type == ADD_JOB) {
       _bloc.add(InitFormAddJobEvent());
@@ -141,6 +153,27 @@ class _FormAddDataState extends State<FormAddData> {
       _bloc.add(InitFormAddHTProductCustomerEvent(int.parse(id)));
     } else if (type == HD_PRODUCT_CUSTOMER_TYPE) {
       _bloc.add(InitFormAddHDProductCustomerEvent(int.parse(id)));
+    } else if (type == ADD_QUICK_CONTRACT) {
+      _bloc.add(InitFormAddQuickContract(
+        sdt,
+        bienSo,
+      ));
+    } else if (type == EDIT_CUSTOMER)
+      _bloc.add(InitFormEditCusEvent(id));
+    else if (type == EDIT_CLUE) {
+      _bloc.add(InitFormEditClueEvent(id));
+    } else if (type == EDIT_CHANCE) {
+      _bloc.add(InitFormEditChanceEvent(id));
+    } else if (type == EDIT_CONTRACT) {
+      _bloc.add(InitFormEditContractEvent(id));
+    } else if (type == EDIT_JOB) {
+      _bloc.add(InitFormEditJobEvent(id));
+    } else if (type == EDIT_SUPPORT) {
+      _bloc.add(InitFormEditSupportEvent(id));
+    } else if (type == PRODUCT_TYPE) {
+      _bloc.add(InitFormEditProductEvent(id));
+    } else if (type == PRODUCT_CUSTOMER_TYPE) {
+      _bloc.add(InitFormEditProductCustomerEvent(id));
     }
     super.initState();
   }
@@ -148,25 +181,28 @@ class _FormAddDataState extends State<FormAddData> {
   void loadUser() async {
     final response = await shareLocal.getString(PreferencesKey.USER);
     if (response != null) {
-      id_user = LoginData.fromJson(jsonDecode(response)).info_user!.user_id!;
+      idUserLocal =
+          LoginData.fromJson(jsonDecode(response)).info_user?.user_id ?? '';
     }
+  }
+
+  @override
+  void deactivate() {
+    _totalBloc.add(ReloadTotalEvent());
+    _contactBy.chiTietXe.add('');
+    _contactBy.listXe.add([]);
+    // PhoneBloc.of(context).add(InitPhoneEvent(''));
+    _attackBloc.add(RemoveAllAttackEvent());
+    _blocService.loaiXe.add('');
+    _blocService.resetDataCarVerison();
+    super.deactivate();
   }
 
   @override
   void dispose() {
     nameLocation.close();
+    _blocAdd.close();
     super.dispose();
-  }
-
-  @override
-  void deactivate() {
-    ContactByCustomerBloc.of(context).chiTietXe.add('');
-    ContactByCustomerBloc.of(context).listXe.add([]);
-    PhoneBloc.of(context).add(InitPhoneEvent(''));
-    AttackBloc.of(context).add(RemoveAllAttackEvent());
-    ServiceVoucherBloc.of(context).loaiXe.add('');
-    ServiceVoucherBloc.of(context).resetDataCarVerison();
-    super.deactivate();
   }
 
   getNameLocation() async {
@@ -224,15 +260,9 @@ class _FormAddDataState extends State<FormAddData> {
                         location != LOADING
                             ? Expanded(
                                 child: WidgetText(
-                                  title: location,
-                                  style: TextStyle(
-                                    fontFamily: 'Quicksand',
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: COLORS.BLACK,
-                                  ),
-                                ),
-                              )
+                                title: location,
+                                style: AppStyle.DEFAULT_14_BOLD,
+                              ))
                             : SizedBox(
                                 height: 12,
                                 width: 12,
@@ -268,14 +298,10 @@ class _FormAddDataState extends State<FormAddData> {
                           ),
                         ),
                         child: WidgetText(
-                          title: getT(KeyT.check_in),
-                          style: TextStyle(
-                            fontFamily: 'Quicksand',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: COLORS.WHITE,
-                          ),
-                        ),
+                            title: getT(KeyT.check_in),
+                            style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                              color: COLORS.WHITE,
+                            )),
                       ),
                     ),
                   if (location != '')
@@ -303,10 +329,7 @@ class _FormAddDataState extends State<FormAddData> {
                             ),
                             child: WidgetText(
                               title: getT(KeyT.check_in_again),
-                              style: TextStyle(
-                                fontFamily: 'Quicksand',
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
+                              style: AppStyle.DEFAULT_14_BOLD.copyWith(
                                 color: COLORS.TEXT_COLOR,
                               ),
                             ),
@@ -336,10 +359,7 @@ class _FormAddDataState extends State<FormAddData> {
                             ),
                             child: WidgetText(
                               title: getT(KeyT.delete),
-                              style: TextStyle(
-                                fontFamily: 'Quicksand',
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
+                              style: AppStyle.DEFAULT_14_BOLD.copyWith(
                                 color: COLORS.RED,
                               ),
                             ),
@@ -392,11 +412,8 @@ class _FormAddDataState extends State<FormAddData> {
                         child: Container(
                           child: TextFormField(
                             textCapitalization: TextCapitalization.sentences,
-                            controller: controllerNote,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
+                            controller: _controllerTextNoteLocation,
+                            style: AppStyle.DEFAULT_14_BOLD,
                             decoration: InputDecoration(
                               focusedBorder: InputBorder.none,
                               enabledBorder: InputBorder.none,
@@ -436,8 +453,8 @@ class _FormAddDataState extends State<FormAddData> {
     for (int i = 0; i < listProduct.length; i++) {
       total += listProduct[i].intoMoney ?? 0;
     }
-    TotalBloc.of(context).getPaid();
-    TotalBloc.of(context).add(InitTotalEvent(total));
+    _totalBloc.getPaid();
+    _totalBloc.add(InitTotalEvent(total));
   }
 
   @override
@@ -447,38 +464,23 @@ class _FormAddDataState extends State<FormAddData> {
         Scaffold(
           appBar: AppbarBaseNormal(title.toUpperCase().capitalizeFirst ?? ''),
           body: BlocListener<AddDataBloc, AddDataState>(
-            listener: (context, state) async {
-              if (state is SuccessAddCustomerOrState) {
+            bloc: _blocAdd,
+            listener: (context, state) {
+              if (state is SuccessAddData) {
+                LoadingApi().popLoading();
                 ShowDialogCustom.showDialogBase(
                   title: getT(KeyT.notification),
-                  content: getT(KeyT.new_data_added_successfully),
+                  content: state.isEdit
+                      ? getT(KeyT.update_data_successfully)
+                      : getT(KeyT.new_data_added_successfully),
                   onTap1: () {
-                    Get.back();
-                    Get.back();
-                    if (isResultData)
-                      Get.back(
-                        result: state.result,
-                      );
-                    GetListCustomerBloc.of(context)
-                        .loadMoreController
-                        .reloadData();
-                  },
-                );
-              } else if (state is ErrorAddCustomerOrState) {
-                ShowDialogCustom.showDialogBase(
-                    title: getT(KeyT.notification),
-                    content: state.msg,
-                    onTap1: () {
-                      Get.back();
-                      Get.back();
-                    });
-              } else if (state is SuccessAddContactCustomerState) {
-                ShowDialogCustom.showDialogBase(
-                  title: getT(KeyT.notification),
-                  content: getT(KeyT.new_data_added_successfully),
-                  onTap1: () {
-                    Get.back();
-                    Get.back();
+                    if (!isGetData &&
+                        type != ADD_CUSTOMER &&
+                        type != ADD_CUSTOMER_OR) {
+                      Navigator.of(context)
+                        ..pop()
+                        ..pop();
+                    }
                     if (type == ADD_CLUE) {
                       GetListClueBloc.of(context)
                           .loadMoreController
@@ -487,8 +489,9 @@ class _FormAddDataState extends State<FormAddData> {
                       GetListChanceBloc.of(context)
                           .loadMoreController
                           .reloadData();
-                    } else if (type == 4) {
-                      ContractBloc.of(context).add(InitGetContractEvent());
+                    } else if (type == ADD_CONTRACT) {
+                      ContractBloc.of(context).loadMoreController.reloadData();
+                      if (product != null) AppNavigator.navigateContract();
                     } else if (type == ADD_JOB) {
                       WorkBloc.of(context).loadMoreController.reloadData();
                     } else if (type == ADD_SUPPORT) {
@@ -498,9 +501,15 @@ class _FormAddDataState extends State<FormAddData> {
                           .loadMoreController
                           .reloadData();
                     } else if (type == PRODUCT_CUSTOMER_TYPE) {
-                      ProductCustomerModuleBloc.of(context)
-                          .loadMoreController
-                          .reloadData();
+                      if (isGetData) {
+                        Navigator.of(context)
+                          ..pop()
+                          ..pop([state.dataSPKH, state.idKH]);
+                      } else {
+                        ProductCustomerModuleBloc.of(context)
+                            .loadMoreController
+                            .reloadData();
+                      }
                     } else if (type == CV_PRODUCT_CUSTOMER_TYPE) {
                       DetailProductCustomerBloc.of(context)
                           .controllerCv
@@ -517,10 +526,57 @@ class _FormAddDataState extends State<FormAddData> {
                       DetailProductCustomerBloc.of(context)
                           .controllerHd
                           .reloadData();
+                    } else if (type == ADD_QUICK_CONTRACT) {
+                      //todo
+                    } else if (type == EDIT_CLUE) {
+                      GetListClueBloc.of(context)
+                          .loadMoreController
+                          .reloadData();
+                    } else if (type == EDIT_CHANCE) {
+                      GetListDetailChanceBloc.of(context)
+                          .add(InitGetListDetailEvent(int.parse(id)));
+                      GetListChanceBloc.of(context)
+                          .loadMoreController
+                          .reloadData();
+                    } else if (type == EDIT_JOB) {
+                      WorkBloc.of(context).loadMoreController.reloadData();
+                    } else if (type == EDIT_CONTRACT) {
+                      ContractBloc.of(context).add(InitGetContractEvent());
+                      DetailContractBloc.of(context)
+                          .add(InitGetDetailContractEvent(int.parse(id)));
+                    } else if (type == EDIT_SUPPORT) {
+                      SupportBloc.of(context).add(InitGetSupportEvent());
+                    } else if (type == PRODUCT_TYPE) {
+                      ProductModuleBloc.of(context)
+                          .loadMoreController
+                          .reloadData();
+                      DetailProductBloc.of(context)
+                          .add(InitGetDetailProductEvent(id));
+                    } else if (type == PRODUCT_CUSTOMER_TYPE) {
+                      ProductCustomerModuleBloc.of(context)
+                          .loadMoreController
+                          .reloadData();
+                      DetailProductCustomerBloc.of(context)
+                          .add(InitGetDetailProductCustomerEvent(id));
+                    } else if (type == EDIT_CUSTOMER) {
+                      GetListCustomerBloc.of(context)
+                          .loadMoreController
+                          .reloadData();
+                    } else if (type == ADD_CUSTOMER ||
+                        type == ADD_CUSTOMER_OR) {
+                      Navigator.of(context)
+                        ..pop()
+                        ..pop(
+                          state.result,
+                        );
+                      GetListCustomerBloc.of(context)
+                          .loadMoreController
+                          .reloadData();
                     }
                   },
                 );
-              } else if (state is ErrorAddContactCustomerState) {
+              } else if (state is ErrorAddData) {
+                LoadingApi().popLoading();
                 ShowDialogCustom.showDialogBase(
                   title: getT(KeyT.notification),
                   content: state.msg,
@@ -537,16 +593,15 @@ class _FormAddDataState extends State<FormAddData> {
                   BlocBuilder<FormAddBloc, FormAddState>(
                       bloc: _bloc,
                       builder: (context, state) {
-                        if (state is LoadingFormAddCustomerOrState) {
+                        if (state is LoadingForm) {
                           addData = [];
-                          data = [];
                           return SizedBox.shrink();
-                        } else if (state is ErrorFormAddCustomerOrState) {
+                        } else if (state is ErrorForm) {
                           return Text(
                             state.msg,
                             style: AppStyle.DEFAULT_16_T,
                           );
-                        } else if (state is SuccessFormAddCustomerOrState) {
+                        } else if (state is SuccessForm) {
                           if (addData.isEmpty) {
                             for (int i = 0; i < state.listAddData.length; i++) {
                               addData.add(
@@ -568,6 +623,8 @@ class _FormAddDataState extends State<FormAddData> {
                                             .toString(),
                                         required: state.listAddData[i].data![j]
                                             .field_require,
+                                        txtValidate: state.listAddData[i]
+                                            .data![j].field_validation_message,
                                       ),
                                     );
                               }
@@ -619,12 +676,13 @@ class _FormAddDataState extends State<FormAddData> {
                                                             ?.length ??
                                                         0, (indexChild) {
                                                   return _getBody(
-                                                      state
-                                                          .listAddData[
-                                                              indexParent]
-                                                          .data![indexChild],
-                                                      indexParent,
-                                                      indexChild);
+                                                    state
+                                                        .listAddData[
+                                                            indexParent]
+                                                        .data![indexChild],
+                                                    indexParent,
+                                                    indexChild,
+                                                  );
                                                 }),
                                               )
                                             ],
@@ -659,350 +717,169 @@ class _FormAddDataState extends State<FormAddData> {
     );
   }
 
-  Widget _fieldInputCustomer(
-      CustomerIndividualItemData data, int indexParent, int indexChild,
-      {bool noEdit = false, String value = ''}) {
-    if ((type == ADD_CLUE_JOB && data.field_name == 'so_dien_thoai') ||
-        (type == ADD_CHANCE_JOB && data.field_name == 'so_dien_thoai')) {
-      return SizedBox.shrink();
-    } else {
-      if (value != '' && noEdit) {
-        addData[indexParent].data[indexChild].value = value;
-      }
-      return Container(
-        margin: EdgeInsets.only(bottom: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            RichText(
-              textScaleFactor: MediaQuery.of(context).textScaleFactor,
-              text: TextSpan(
-                text: data.field_label ?? '',
-                style: AppStyle.DEFAULT_14W600,
-                children: <TextSpan>[
-                  data.field_require == 1
-                      ? TextSpan(
-                          text: '*',
-                          style: TextStyle(
-                              fontFamily: 'Quicksand',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: COLORS.RED))
-                      : TextSpan(),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: noEdit == true ? COLORS.LIGHT_GREY : COLORS.WHITE,
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: COLORS.ffBEB4B4)),
-              child: Padding(
-                padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
-                child: Container(
-                  child: TextFormField(
-                    minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
-                    maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                    keyboardType: data.field_type == 'TEXT_NUMERIC'
-                        ? TextInputType.number
-                        : data.field_special == 'default'
-                            ? TextInputType.text
-                            : (data.field_special == 'numberic')
-                                ? TextInputType.number
-                                : data.field_special == 'email-address'
-                                    ? TextInputType.emailAddress
-                                    : TextInputType.text,
-                    onChanged: (text) {
-                      addData[indexParent].data[indexChild].value = text;
-                    },
-                    readOnly: noEdit,
-                    initialValue: value != ''
-                        ? value
-                        : noEdit == true
-                            ? data.field_value
-                            : data.field_set_value != null
-                                ? data.field_set_value.toString()
-                                : null,
-                    decoration: InputDecoration(
-                      hintStyle: AppStyle.DEFAULT_14W500,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      isDense: true,
-                    ),
-                    textCapitalization: TextCapitalization.sentences,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
   Widget _getBody(
-      CustomerIndividualItemData data, int indexParent, int indexChild) {
-    return data.field_hidden != '1'
-        ? data.field_special == 'none-edit'
-            ? ((data.field_name == 'so_dien_thoai')
-                ? BlocBuilder<PhoneBloc, PhoneState>(
-                    builder: (context, stateA) {
-                    if (stateA is SuccessPhoneState) {
-                      return _fieldInputCustomer(data, indexParent, indexChild,
-                          noEdit: true, value: stateA.phone);
-                    } else
-                      return SizedBox.shrink();
-                  })
-                : ServiceVoucherBloc.of(context).getInput(data.field_name ?? '')
+    CustomerIndividualItemData data,
+    int indexParent,
+    int indexChild,
+  ) {
+    return data.field_hidden != '1' || data.field_type != 'HIDDEN' // ==1 ẩn
+        ? data.field_special == 'url'
+            ? ProductContract(
+                listBtn: data.button,
+                data: listProduct,
+                addProduct: addProduct,
+                reload: reload,
+                neverHidden: true,
+                canDelete: true,
+              )
+            : data.field_name == 'chi_tiet_xe' //chọn chi tiết xe
+                ? data.field_parent != null
                     ? StreamBuilder<String>(
-                        stream: ServiceVoucherBloc.of(context)
-                            .loaiXe, // getdata selectcar local
+                        stream: reloadStream,
                         builder: (context, snapshot) {
-                          return fieldCar(
-                              data, indexParent, indexChild, context,
-                              value: ServiceVoucherBloc.of(context)
-                                  .getDataSelectCar(data.field_name ?? ''));
-                        })
-                    : _fieldInputCustomer(data, indexParent, indexChild,
-                        noEdit: true))
-            : data.field_type == 'SELECT'
-                ? (data.field_name == 'cvsan_pham_kh' ||
-                        data.field_name == 'htsan_pham_kh' ||
-                        data.field_name == 'san_pham_kh')
-                    ? StreamBuilder<List<List<dynamic>>>(
-                        stream: ContactByCustomerBloc.of(context).listXe,
-                        builder: (context, snapshot) {
-                          final list = snapshot.data;
-                          return InputDropdown(
-                              isUpdate: true,
-                              isUpdateList: true,
-                              dropdownItemList:
-                                  list ?? data.field_datasource ?? [],
-                              data: data,
-                              onSuccess: (dataRes) async {
-                                ///
-                                ///
-                                if (dataRes == ADD_NEW_CAR) {
-                                  final List<dynamic>? result =
-                                      await AppNavigator.navigateFormAdd(
-                                    '${getT(KeyT.add)} ${data.field_label}',
-                                    PRODUCT_CUSTOMER_TYPE,
-                                    isGetData: true,
-                                  );
-                                  if (result != null) {
-                                    final dataResult =
-                                        result.first as Map<String, dynamic>;
-                                    // data
-                                    dataRes = [
-                                      '',
-                                      dataResult['bien_so'],
-                                      dataResult['bien_so'],
-                                      ADD_NEW_CAR,
-                                    ];
-
-                                    //remove data truoc đó
-                                    for (final value in (list ?? [])) {
-                                      if (value.last == ADD_NEW_CAR) {
-                                        list?.remove(value);
-                                        break;
-                                      }
-                                    }
-                                    list?.add(dataRes);
-                                    ContactByCustomerBloc.of(context)
-                                        .listXe
-                                        .add(list ?? []);
-                                    //
-                                    addData[indexParent]
-                                        .data[indexChild]
-                                        .value = ADD_NEW_CAR;
-
-                                    ContactByCustomerBloc.of(context)
-                                        .dataCarNew = dataResult;
-                                  }
-                                  /////////
-                                  ///// ///
-                                } else {
-                                  addData[indexParent].data[indexChild].value =
-                                      dataRes;
-                                  ContactByCustomerBloc.of(context)
-                                      .getCar(dataRes);
-                                }
-                                //// // /
-                                /// /// //
-                              },
-                              onUpdate: (dataRes) {
-                                if (ContactByCustomerBloc.of(context)
-                                        .dataCarNew !=
-                                    [])
-                                  addData[indexParent].data[indexChild].value =
-                                      dataRes;
-                                ContactByCustomerBloc.of(context)
-                                    .getCar(dataRes);
-                              },
-                              value: (list ?? []).isNotEmpty
-                                  ? list![list.length - 1][1]
-                                  : data.field_value ?? '');
-                        })
-                    : checkLocation(data)
-                        ? LocationWidget(
+                          return TypeCarBase(
                             data: data,
-                            onSuccess: (data) {
-                              addData[indexParent].data[indexChild].value =
-                                  data;
+                            bloc: _blocService,
+                            function: (v) {
+                              addData[indexParent].data[indexChild].value = v;
                             },
-                            initData: data.field_value,
-                          )
-                        : (data.field_name == 'khach_hang_sp' &&
-                                isGetData) //getdata cho spkh
-                            ? SizedBox()
-                            : ((data.field_name == 'cv_nguoiLienHe' ||
-                                    data.field_name == 'col131')
-                                ? BlocBuilder<ContactByCustomerBloc,
-                                        ContactByCustomerState>(
-                                    builder: (context, stateA) {
-                                    if (stateA
-                                        is UpdateGetContacBytCustomerState) {
-                                      return InputDropdown(
-                                          typeScreen: type,
-                                          dropdownItemList:
-                                              stateA.listContactByCustomer,
-                                          data: data,
-                                          onSuccess: (value) {
-                                            addData[indexParent]
-                                                .data[indexChild]
-                                                .value = value;
-                                            ContactByCustomerBloc.of(context).add(
-                                                InitGetContactByCustomerrEvent(
-                                              value,
-                                              isAddNewCar: true,
-                                            ));
-                                            if (data.field_name != 'cv_kh')
-                                              PhoneBloc.of(context).add(
-                                                  InitAgencyPhoneEvent(value));
-                                          },
-                                          value: data.field_value ?? '');
-                                    } else if (stateA
-                                        is LoadingContactByCustomerState) {
-                                      return SizedBox.shrink();
-                                    } else {
-                                      return InputDropdown(
-                                          typeScreen: type,
-                                          dropdownItemList:
-                                              data.field_datasource ?? [],
-                                          data: data,
-                                          onSuccess: (value) {
-                                            addData[indexParent]
-                                                .data[indexChild]
-                                                .value = value;
-                                            if (data.field_name != 'cv_kh')
-                                              PhoneBloc.of(context).add(
-                                                  InitAgencyPhoneEvent(value));
-                                          },
-                                          value: data.field_value ?? '');
-                                    }
-                                  })
-                                : (data.field_name == 'col121' &&
-                                        type == ADD_CHANCE)
-                                    ? StreamBuilder<List<dynamic>>(
-                                        stream: _bloc.customerNewStream,
+                            addData: addData,
+                          );
+                        })
+                    : TypeCarBase(
+                        data: data,
+                        bloc: _blocService,
+                        function: (v) {
+                          addData[indexParent].data[indexChild].value = v;
+                        },
+                        addData: addData,
+                      )
+                : data.field_type == 'TEXT' || data.field_type == 'TEXTAREA'
+                    ? _blocService.getInput(data.field_name ?? '')
+                        ? StreamBuilder<String>(
+                            stream:
+                                _blocService.loaiXe, // getdata selectcar local
+                            builder: (context, snapshot) {
+                              return fieldTextCar(
+                                data,
+                                _blocService
+                                    .getDataSelectCar(data.field_name ?? ''),
+                                (v) {
+                                  addData[indexParent].data[indexChild].value =
+                                      v;
+                                },
+                              );
+                            })
+                        : data.field_parent != null
+                            ? StreamBuilder<String>(
+                                stream: reloadStream,
+                                builder: (context, snapshot) {
+                                  return FieldTextAPi(
+                                    addData: addData,
+                                    data: data,
+                                    onChange: (v) {
+                                      addData[indexParent]
+                                          .data[indexChild]
+                                          .value = v;
+                                    },
+                                  );
+                                })
+                            : FieldText(
+                                data: data,
+                                onChange: (v) {
+                                  addData[indexParent].data[indexChild].value =
+                                      v;
+                                },
+                              )
+                    : data.field_type == 'SELECT'
+                        ? _blocService.getInput(data.field_name ?? '')
+                            ? StreamBuilder<String>(
+                                stream: _blocService
+                                    .loaiXe, // getdata selectcar local
+                                builder: (context, snapshot) {
+                                  return fieldTextCar(
+                                    data,
+                                    _blocService.getDataSelectCar(
+                                        data.field_name ?? ''),
+                                    (v) {
+                                      addData[indexParent]
+                                          .data[indexChild]
+                                          .value = v;
+                                    },
+                                  );
+                                })
+                            : checkLocation(data) // TH Select địa chỉ
+                                ? LocationWidget(
+                                    data: data,
+                                    onSuccess: (v) {
+                                      addData[indexParent]
+                                          .data[indexChild]
+                                          .value = v;
+                                    },
+                                    initData: data.field_value,
+                                  )
+                                : data.field_parent != null // TH reload api
+                                    ? StreamBuilder<String>(
+                                        stream: reloadStream,
                                         builder: (context, snapshot) {
-                                          final list = snapshot.data ?? [];
-                                          return InputDropdown(
-                                            isAddList: true,
-                                            dropdownItemList:
-                                                listCustomerForChance,
+                                          return InputDropdownBase(
                                             data: data,
-                                            onSuccess: (data) async {
-                                              List<dynamic>? result = [];
-                                              if (data == CA_NHAN) {
-                                                result = await AppNavigator
-                                                    .navigateAddCustomer(
-                                                        listCustomerForChance
-                                                            .first[1],
-                                                        isResultData: true);
-                                              } else if (data == TO_CHUC) {
-                                                result = await AppNavigator
-                                                    .navigateFormAddCustomerGroup(
-                                                  listCustomerForChance.last[1],
-                                                  ADD_CUSTOMER,
-                                                  isResultData: true,
-                                                );
-                                              }
-                                              if (result != null &&
-                                                  result.isNotEmpty) {
-                                                data = result.first;
-                                                _bloc.customerNewStream
-                                                    .add(result);
-                                              } else if (result == null) {
-                                                data = '';
-                                                _bloc.customerNewStream
-                                                    .add(['null', 'null']);
-                                              }
+                                            addData: addData,
+                                            onChange: (v) {
                                               addData[indexParent]
                                                   .data[indexChild]
-                                                  .value = data;
-                                              ContactByCustomerBloc.of(context).add(
-                                                  InitGetContactByCustomerrEvent(
-                                                      data));
-                                              PhoneBloc.of(context)
-                                                  .add(InitPhoneEvent(data));
+                                                  .value = v;
                                             },
-                                            value: list.isNotEmpty
-                                                ? list.last
-                                                : data.field_value ?? '',
                                           );
                                         })
-                                    : InputDropdown(
-                                        dropdownItemList:
-                                            data.field_datasource ?? [],
-                                        data: data,
-                                        onSuccess: (value) {
-                                          addData[indexParent]
-                                              .data[indexChild]
-                                              .value = value;
-                                          if (data.field_name == 'cv_kh' ||
-                                              data.field_name == 'col121' ||
-                                              data.field_name == 'khach_hang') {
-                                            ContactByCustomerBloc.of(context).add(
-                                                InitGetContactByCustomerrEvent(
-                                                    value));
-                                            PhoneBloc.of(context)
-                                                .add(InitPhoneEvent(value));
-                                          }
-                                        },
-                                        value: data.field_value ?? '',
-                                      ))
-                : data.field_type == 'TEXT_MULTI'
-                    ? SelectMulti(
-                        dropdownItemList: data.field_datasource ?? [],
-                        label: data.field_label ?? '',
-                        required: data.field_require ?? 0,
-                        maxLength: data.field_maxlength ?? '',
-                        initValue: addData[indexParent]
-                            .data[indexChild]
-                            .value
-                            .toString()
-                            .split(','),
-                        onChange: (data) {
-                          addData[indexParent].data[indexChild].value = data;
-                        },
-                      )
-                    : data.field_type == 'HIDDEN'
-                        ? SizedBox.shrink()
-                        : data.field_special == 'url'
-                            ? ProductContract(
-                                listBtn: data.button,
-                                data: listProduct,
-                                addProduct: addProduct,
-                                reload: reload,
-                                neverHidden: true,
-                                canDelete: true,
+                                    : data.field_name == 'hinh_thuc_thanh_toan'
+                                        ? StreamBuilder<double>(
+                                            stream: _totalBloc.paidStream,
+                                            builder: (context, snapshot) {
+                                              if ((snapshot.data ?? 0) == 0) {
+                                                return SizedBox();
+                                              } else {
+                                                return InputDropdownBase(
+                                                  data: data,
+                                                  addData: addData,
+                                                  onChange: (v) {
+                                                    addData[indexParent]
+                                                        .data[indexChild]
+                                                        .value = v;
+                                                    if (data.is_load == true)
+                                                      reloadStream.add(
+                                                          '${data.field_name}$v');
+                                                  },
+                                                );
+                                              }
+                                            })
+                                        : InputDropdownBase(
+                                            data: data,
+                                            addData: addData,
+                                            onChange: (v) {
+                                              addData[indexParent]
+                                                  .data[indexChild]
+                                                  .value = v;
+                                              if (data.is_load == true)
+                                                reloadStream.add(
+                                                    '${data.field_name}$v');
+                                            },
+                                          )
+                        : data.field_type == 'TEXT_MULTI'
+                            ? SelectMulti(
+                                dropdownItemList: data.field_datasource ?? [],
+                                label: data.field_label ?? '',
+                                required: data.field_require ?? 0,
+                                maxLength: data.field_maxlength ?? '',
+                                initValue: addData[indexParent]
+                                    .data[indexChild]
+                                    .value
+                                    .toString()
+                                    .split(','),
+                                onChange: (data) {
+                                  addData[indexParent].data[indexChild].value =
+                                      data;
+                                },
                               )
                             : data.field_type == 'TEXT_MULTI_NEW'
                                 ? InputMultipleWidget(
@@ -1012,6 +889,10 @@ class _FormAddDataState extends State<FormAddData> {
                                           .data[indexChild]
                                           .value = data.join(',');
                                     },
+                                    value: (data.field_set_value != null &&
+                                            data.field_set_value != '')
+                                        ? data.field_set_value.split(',')
+                                        : [],
                                   )
                                 : data.field_type == 'DATE'
                                     ? WidgetInputDate(
@@ -1062,31 +943,124 @@ class _FormAddDataState extends State<FormAddData> {
                                                           .value = text;
                                                     },
                                                   )
-                                                : data.field_name ==
-                                                            'chi_tiet_xe' &&
-                                                        data.field_type ==
-                                                            'TEXT'
-                                                    ? TypeCarBase(
-                                                        data,
-                                                        indexParent,
-                                                        indexChild,
-                                                        context,
-                                                        ServiceVoucherBloc.of(
-                                                            context),
-                                                        (v) {
-                                                          addData[indexParent]
-                                                              .data[indexChild]
-                                                              .value = v;
-                                                        },
-                                                      )
-                                                    : _fieldInputCustomer(data,
-                                                        indexParent, indexChild)
-        : SizedBox();
+                                                : data.field_type ==
+                                                        'TEXT_NUMERIC'
+                                                    ? data.field_name ==
+                                                            'chuathanhtoan'
+                                                        ? StreamBuilder<double>(
+                                                            stream: _totalBloc
+                                                                .unpaidStream,
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              final value =
+                                                                  snapshot.data;
+                                                              addData[indexParent]
+                                                                  .data[
+                                                                      indexChild]
+                                                                  .value = value;
+                                                              return WidgetTotalSum(
+                                                                label: data
+                                                                    .field_label,
+                                                                value: AppValue
+                                                                    .format_money(
+                                                                  (value ?? 0)
+                                                                      .toStringAsFixed(
+                                                                    0,
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            })
+                                                        : data.field_special ==
+                                                                'autosum'
+                                                            ? BlocBuilder<
+                                                                    TotalBloc,
+                                                                    TotalState>(
+                                                                builder:
+                                                                    (context,
+                                                                        stateA) {
+                                                                if (stateA
+                                                                    is SuccessTotalState) {
+                                                                  addData[indexParent]
+                                                                          .data[
+                                                                              indexChild]
+                                                                          .value =
+                                                                      stateA
+                                                                          .total
+                                                                          .toString();
+                                                                  TotalBloc.of(
+                                                                          context)
+                                                                      .getPaid();
+                                                                  return WidgetTotalSum(
+                                                                    label: data
+                                                                        .field_label,
+                                                                    value: AppValue
+                                                                        .format_money(
+                                                                      stateA
+                                                                          .total
+                                                                          .toStringAsFixed(
+                                                                        0,
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                } else {
+                                                                  return WidgetTotalSum(
+                                                                    label: data
+                                                                        .field_label,
+                                                                    value: '',
+                                                                  );
+                                                                }
+                                                              })
+                                                            : data.field_parent !=
+                                                                    null // TH reload api
+                                                                ? StreamBuilder<
+                                                                        String>(
+                                                                    stream:
+                                                                        reloadStream,
+                                                                    builder:
+                                                                        (context,
+                                                                            snapshot) {
+                                                                      return FieldTextAPi(
+                                                                        typeInput:
+                                                                            TextInputType.number,
+                                                                        addData:
+                                                                            addData,
+                                                                        data:
+                                                                            data,
+                                                                        onChange:
+                                                                            (v) {
+                                                                          addData[indexParent]
+                                                                              .data[indexChild]
+                                                                              .value = v;
+                                                                        },
+                                                                      );
+                                                                    })
+                                                                : FieldText(
+                                                                    data: data,
+                                                                    onChange:
+                                                                        (v) {
+                                                                      if (data.field_name ==
+                                                                          'datt') {
+                                                                        _totalBloc
+                                                                            .paidStream
+                                                                            .add(double.tryParse(v) ??
+                                                                                0);
+                                                                        _totalBloc
+                                                                            .getPaid();
+                                                                      }
+                                                                      addData[indexParent]
+                                                                          .data[
+                                                                              indexChild]
+                                                                          .value = v;
+                                                                    },
+                                                                  )
+                                                    : SizedBox.shrink()
+        : SizedBox.shrink();
   }
 
   void onClickSave() async {
     final Map<String, dynamic> data = {};
-    bool check = false;
+    bool isCheckValidate = false;
+    String? txtValidate;
     for (int i = 0; i < addData.length; i++) {
       for (int j = 0; j < addData[i].data.length; j++) {
         if ((addData[i].data[j].value == null ||
@@ -1094,32 +1068,49 @@ class _FormAddDataState extends State<FormAddData> {
                 addData[i].data[j].value == '') &&
             addData[i].data[j].required == 1 &&
             !(isGetData && addData[i].data[j].label == 'khach_hang_sp')) {
-          check = true;
+          isCheckValidate = true;
+          txtValidate = addData[i].data[j].txtValidate;
           break;
         } else if (addData[i].data[j].value != null &&
-            addData[i].data[j].value != 'null')
-          data['${addData[i].data[j].label}'] = addData[i].data[j].value;
-        else {
+            addData[i].data[j].value != 'null') {
+          if (addData[i].data[j].label == 'hdsan_pham_kh' &&
+              addData[i].data[j].value == ADD_NEW_CAR) {
+            if (_contactBy.dataCarNew != {})
+              data['productscus'] = _contactBy.dataCarNew;
+          } else {
+            data['${addData[i].data[j].label}'] = addData[i].data[j].value;
+          }
+        } else {
           data['${addData[i].data[j].label}'] = '';
         }
       }
     }
     //CHECKIN
     if (isCheckIn) {
-      if (controllerNote.text != '') {
+      if (_controllerTextNoteLocation.text != '') {
         data['longitude'] = position?.longitude.toString();
         data['latitude'] = position?.latitude.toString();
-        data['note_location'] = controllerNote.text;
+        data['note_location'] = _controllerTextNoteLocation.text;
         data['type'] = typeCheckIn;
       } else {
-        check = true;
+        isCheckValidate = true;
       }
     }
+
+    if (_totalBloc.unpaidStream.value < 0 && type == ADD_CONTRACT) {
+      isCheckValidate = true;
+    }
+
     //
-    if (check == true) {
+    if (isCheckValidate == true) {
       ShowDialogCustom.showDialogBase(
         title: getT(KeyT.notification),
-        content: getT(KeyT.please_enter_all_required_fields),
+        content: _totalBloc.unpaidStream.value < 0
+            ? getT(KeyT.the_amount_paid_cannot_be_greater_than_the_total_amount)
+            : (getT(KeyT.please_enter_all_required_fields) +
+                ((txtValidate != null && txtValidate != '')
+                    ? '\n($txtValidate)'
+                    : '')),
       );
     } else {
       if (listProduct.length > 0) {
@@ -1141,172 +1132,130 @@ class _FormAddDataState extends State<FormAddData> {
         }
         data['products'] = product;
       }
-      if (type == ADD_CUSTOMER) {
-        AddDataBloc.of(context).add(
-            AddCustomerOrEvent(data, files: AttackBloc.of(context).listFile));
+      if (type == ADD_CUSTOMER_OR) {
+        _blocAdd.add(AddCustomerOrEvent(data, files: _attackBloc.listFile));
+      } else if (type == ADD_CUSTOMER) {
+        _blocAdd.add(AddCustomerEvent(data, files: _attackBloc.listFile));
       } else if (type == ADD_CLUE_CUSTOMER) {
         data['customer_id'] = id;
-        AddDataBloc.of(context).add(AddContactCustomerEvent(data,
-            files: AttackBloc.of(context).listFile));
+        _blocAdd
+            .add(AddContactCustomerEvent(data, files: _attackBloc.listFile));
       } else if (type == ADD_CHANCE_CUSTOMER) {
         data['customer_id'] = id;
-        AddDataBloc.of(context).add(
-            AddOpportunityEvent(data, files: AttackBloc.of(context).listFile));
-      } else if (type == 13) {
+        _blocAdd.add(AddOpportunityEvent(data, files: _attackBloc.listFile));
+      } else if (type == ADD_CONTRACT_CUS) {
         data['customer_id'] = id;
-        AddDataBloc.of(context).add(
-            AddContractEvent(data, files: AttackBloc.of(context).listFile));
+        _blocAdd.add(AddContractEvent(data, files: _attackBloc.listFile));
       } else if (type == ADD_JOB_CUSTOMER) {
         data['customer_id'] = id;
-        AddDataBloc.of(context)
-            .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
+        _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
       } else if (type == ADD_SUPPORT_CUSTOMER) {
         data['customer_id'] = id;
-        data['nguoi_xu_lht'] = id_user;
-        AddDataBloc.of(context)
-            .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
+        data['nguoi_xu_lht'] = idUserLocal;
+        _blocAdd.add(AddSupportEvent(data, files: _attackBloc.listFile));
       } else if (type == ADD_CLUE) {
-        AddDataBloc.of(context).add(AddContactCustomerEvent(data,
-            files: AttackBloc.of(context).listFile));
+        _blocAdd
+            .add(AddContactCustomerEvent(data, files: _attackBloc.listFile));
       } else if (type == ADD_CHANCE) {
-        AddDataBloc.of(context).add(
-            AddOpportunityEvent(data, files: AttackBloc.of(context).listFile));
-      } else if (type == 4) {
-        data['customer_id'] = id;
-        AddDataBloc.of(context).add(
-            AddContractEvent(data, files: AttackBloc.of(context).listFile));
+        _blocAdd.add(AddOpportunityEvent(data, files: _attackBloc.listFile));
+      } else if (type == ADD_CONTRACT) {
+        data['col311'] =
+            data['col311'] != '' ? double.parse(data['col311']).toInt() : '';
+        _blocAdd.add(AddContractEvent(data, files: _attackBloc.listFile));
       } else if (type == ADD_JOB) {
-        AddDataBloc.of(context)
-            .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
+        _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
       } else if (type == ADD_SUPPORT) {
-        data['nguoi_xu_lht'] = id_user;
-        AddDataBloc.of(context)
-            .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
+        data['nguoi_xu_lht'] = idUserLocal;
+        _blocAdd.add(AddSupportEvent(data, files: _attackBloc.listFile));
       } else if (type == ADD_CLUE_JOB) {
         data['daumoi_id'] = id;
-        AddDataBloc.of(context)
-            .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
+        _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
       } else if (type == ADD_CHANCE_JOB) {
         data['cohoi_id'] = id;
-        AddDataBloc.of(context)
-            .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
+        _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
       } else if (type == ADD_SUPPORT_CONTRACT) {
         data['hopdong_id'] = id;
-        data['nguoi_xu_lht'] = id_user;
-        AddDataBloc.of(context)
-            .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
+        data['nguoi_xu_lht'] = idUserLocal;
+        _blocAdd.add(AddSupportEvent(data, files: _attackBloc.listFile));
       } else if (type == ADD_JOB_CONTRACT) {
         data['hopdong_id'] = id;
-        AddDataBloc.of(context)
-            .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
+        _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
       } else if (type == PRODUCT_TYPE) {
-        AddDataBloc.of(context)
-            .add(AddProductEvent(data, files: AttackBloc.of(context).listFile));
+        _blocAdd.add(AddProductEvent(data, files: _attackBloc.listFile));
       } else if (type == PRODUCT_CUSTOMER_TYPE) {
         ////
 
         if (isGetData) {
           //validate biển số xe
-          bool check =
-              await ServiceVoucherBloc.of(context).checkHasCar(data['bien_so']);
+          bool check = await _blocService.checkHasCar(data['bien_so']);
           if (check) {
             ShowDialogCustom.showDialogBase(
               title: getT(KeyT.notification),
               content: '${data['bien_so']} ${getT(KeyT.already_exist)}',
             );
           } else {
-            Navigator.of(context).pop([
-              data,
-              AttackBloc.of(context).listFile,
-            ]);
+            _blocAdd.add(
+                AddProductCustomerEvent(data, files: _attackBloc.listFile));
           }
           ////
         } else {
-          AddDataBloc.of(context).add(AddProductCustomerEvent(data,
-              files: AttackBloc.of(context).listFile));
+          _blocAdd
+              .add(AddProductCustomerEvent(data, files: _attackBloc.listFile));
         }
         ////
       } else if (type == CV_PRODUCT_CUSTOMER_TYPE) {
         data['customer_id'] = id;
-        AddDataBloc.of(context)
-            .add(AddJobEvent(data, files: AttackBloc.of(context).listFile));
+        _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
       } else if (type == HT_PRODUCT_CUSTOMER_TYPE) {
         data['customer_id'] = id;
-        data['nguoi_xu_lht'] = id_user;
-        AddDataBloc.of(context)
-            .add(AddSupportEvent(data, files: AttackBloc.of(context).listFile));
+        data['nguoi_xu_lht'] = idUserLocal;
+        _blocAdd.add(AddSupportEvent(data, files: _attackBloc.listFile));
       } else if (type == HD_PRODUCT_CUSTOMER_TYPE) {
         data['customer_id'] = id;
-        AddDataBloc.of(context).add(
-            AddContractEvent(data, files: AttackBloc.of(context).listFile));
+        _blocAdd.add(AddContractEvent(data, files: _attackBloc.listFile));
       } else if (type == CH_PRODUCT_CUSTOMER_TYPE) {
         data['customer_id'] = id;
-        AddDataBloc.of(context).add(
-            AddOpportunityEvent(data, files: AttackBloc.of(context).listFile));
+        _blocAdd.add(AddOpportunityEvent(data, files: _attackBloc.listFile));
+      } else if (type == ADD_QUICK_CONTRACT) {
+        _blocAdd.add(QuickContractSaveEvent(data, _attackBloc.listFile));
+      } else {
+        data['id'] = id; // save edit
+        if (type == EDIT_CUSTOMER) {
+          _blocAdd.add(EditCustomerEvent(data, files: _attackBloc.listFile));
+        } else if (type == EDIT_CLUE) {
+          _blocAdd.add(AddContactCustomerEvent(
+            data,
+            files: _attackBloc.listFile,
+            isEdit: true,
+          ));
+        } else if (type == EDIT_CHANCE) {
+          _blocAdd.add(AddOpportunityEvent(
+            data,
+            files: _attackBloc.listFile,
+            isEdit: true,
+          ));
+        } else if (type == EDIT_CONTRACT) {
+          _blocAdd.add(AddContractEvent(
+            data,
+            files: _attackBloc.listFile,
+            isEdit: true,
+          ));
+        } else if (type == EDIT_JOB) {
+          _blocAdd.add(EditJobEvent(data, files: _attackBloc.listFile));
+        } else if (type == EDIT_SUPPORT) {
+          _blocAdd.add(AddSupportEvent(
+            data,
+            files: _attackBloc.listFile,
+            isEdit: true,
+          ));
+        } else if (type == PRODUCT_TYPE) {
+          _blocAdd.add(EditProductEvent(data, int.parse(id),
+              files: _attackBloc.listFile));
+        } else if (type == PRODUCT_CUSTOMER_TYPE) {
+          _blocAdd
+              .add(EditProductCustomerEvent(data, files: _attackBloc.listFile));
+        }
       }
     }
-  }
-}
-
-class RenderCheckBox extends StatefulWidget {
-  RenderCheckBox({Key? key, required this.onChange, required this.data})
-      : super(key: key);
-
-  final Function? onChange;
-  final CustomerIndividualItemData data;
-
-  @override
-  State<RenderCheckBox> createState() => _RenderCheckBoxState();
-}
-
-class _RenderCheckBoxState extends State<RenderCheckBox> {
-  bool isCheck = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Row(
-        children: [
-          Container(
-            width: 24,
-            height: 24,
-            child: Checkbox(
-              value: isCheck,
-              onChanged: (bool? value) {
-                widget.onChange!(value);
-                setState(() {
-                  isCheck = value!;
-                });
-              },
-            ),
-          ),
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: widget.data.field_label ?? '',
-              style: TextStyle(
-                  fontFamily: 'Quicksand',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: COLORS.BLACK),
-              children: <TextSpan>[
-                widget.data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                          fontFamily: 'Quicksand',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: COLORS.RED,
-                        ),
-                      )
-                    : TextSpan(),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

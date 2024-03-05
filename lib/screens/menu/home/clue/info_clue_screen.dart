@@ -51,16 +51,19 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
   getThaoTac() {
     list.add(ModuleThaoTac(
       title:
-          "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
+          '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd(
-            "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
-            ADD_CLUE_JOB,
-            id: int.parse(id), onRefresh: () {
-          _bloc.controllerCV.reloadData();
-        });
+        AppNavigator.navigateForm(
+          title:
+              '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
+          type: ADD_CLUE_JOB,
+          id: int.parse(id),
+          onRefresh: () {
+            _bloc.controllerCV.reloadData();
+          },
+        );
       },
     ));
     list.add(ModuleThaoTac(
@@ -89,9 +92,13 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
         icon: ICONS.IC_EDIT_SVG,
         onThaoTac: () {
           Get.back();
-          AppNavigator.navigateEditDataScreen(id, EDIT_CLUE, onRefresh: () {
-            _bloc.add(InitGetDetailClueEvent(id));
-          });
+          AppNavigator.navigateForm(
+            type: EDIT_CLUE,
+            id: int.tryParse(id),
+            onRefresh: () {
+              _bloc.add(InitGetDetailClueEvent(id));
+            },
+          );
         }));
     list.add(ModuleThaoTac(
         title: getT(KeyT.delete),

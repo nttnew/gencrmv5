@@ -74,8 +74,10 @@ class _ChanceScreenState extends State<ChanceScreen> {
         child: FloatingActionButton(
           backgroundColor: COLORS.ff1AA928,
           onPressed: () {
-            AppNavigator.navigateFormAdd(
-                '${getT(KeyT.add)} ${title.toLowerCase()}', ADD_CHANCE);
+            AppNavigator.navigateForm(
+              title: '${getT(KeyT.add)} ${title.toLowerCase()}',
+              type: ADD_CHANCE,
+            );
           },
           child: Icon(Icons.add, size: 40),
         ),
@@ -106,7 +108,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
                           _bloc.loadMoreController.reloadData();
                         });
                       },
-                      onSubmit: (String v) {
+                      onChange: (String v) {
                         _bloc.search = v;
                         _bloc.loadMoreController.reloadData();
                       },

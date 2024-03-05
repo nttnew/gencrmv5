@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dartx/dartx.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,16 +24,18 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       yield* _addCustomerOrganization(event.data, event.files);
     } else if (event is EditCustomerEvent) {
       yield* _editCustomer(event.data, event.files);
+    } else if (event is AddCustomerEvent) {
+      yield* _addCustomer(event.data, event.files);
     } else if (event is AddContactCustomerEvent) {
-      yield* _addContactCus(event.data, event.files);
+      yield* _addContactCus(event.data, event.files, event.isEdit);
     } else if (event is AddOpportunityEvent) {
-      yield* _addOpportunity(event.data, event.files);
+      yield* _addOpportunity(event.data, event.files, event.isEdit);
     } else if (event is AddContractEvent) {
-      yield* _addContract(event.data, event.files);
+      yield* _addContract(event.data, event.files, event.isEdit);
     } else if (event is AddJobEvent) {
       yield* _addJob(event.data, event.files);
     } else if (event is AddSupportEvent) {
-      yield* _addSupport(event.data, event.files);
+      yield* _addSupport(event.data, event.files, event.isEdit);
     } else if (event is EditJobEvent) {
       yield* _editJob(event.data, event.files);
     } else if (event is AddProductEvent) {
@@ -45,363 +48,424 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       yield* _editProductCustomer(event.data, event.files);
     } else if (event is SignEvent) {
       yield* _signature(event.data, event.type);
+    } else if (event is QuickContractSaveEvent) {
+      yield* _addQuickContract(event.data, event.files);
     }
   }
 
   Stream<AddDataState> _addCustomerOrganization(
-      Map<String, dynamic> data, List<File>? files) async* {
+    Map<String, dynamic> data,
+    List<File>? files,
+  ) async* {
     LoadingApi().pushLoading();
-    yield LoadingAddCustomerOrState();
+    yield LoadingAddData();
     try {
       final response = await userRepository.addOrganizationCustomer(data: data);
       if (isSuccess(response.code)) {
-        if (files != null) {
+        if (files != null && files.length > 0) {
           final responseUpload = await userRepository.uploadMultiFileBase(
-              id: response.data!.id.toString(),
+              id: response.data?.id.toString() ?? '',
               files: files,
               module: getURLModule(Module.KHACH_HANG));
-          if ((responseUpload.code == BASE_URL.SUCCESS) ||
-              (responseUpload.code == BASE_URL.SUCCESS_200)) {
+          if (isSuccess(responseUpload.code)) {
             LoadingApi().popLoading();
-            yield SuccessAddCustomerOrState(
-                ['${response.id}', '${response.name}']);
+            yield SuccessAddData(
+                result: ['${response.id}', '${response.name}']);
           } else {
             LoadingApi().popLoading();
-            yield ErrorAddCustomerOrState(responseUpload.msg ?? '');
+            yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
           LoadingApi().popLoading();
-          yield SuccessAddCustomerOrState(
-              ['${response.id}', '${response.name}']);
+          yield SuccessAddData(result: ['${response.id}', '${response.name}']);
         }
       } else {
         LoadingApi().popLoading();
-        yield ErrorAddCustomerOrState(response.msg ?? '');
+        yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddCustomerOrState(getT(KeyT.an_error_occurred));
+      yield ErrorAddData(getT(KeyT.an_error_occurred));
+      throw e;
+    }
+    LoadingApi().popLoading();
+  }
+
+  Stream<AddDataState> _addCustomer(
+    Map<String, dynamic> data,
+    List<File>? files,
+  ) async* {
+    LoadingApi().pushLoading();
+    yield LoadingAddData();
+    try {
+      final response = await userRepository.addIndividualCustomer(data: data);
+      if (isSuccess(response.code)) {
+        if (files != null && files.length > 0) {
+          final responseUpload = await userRepository.uploadMultiFileBase(
+              id: response.data?.id.toString() ?? '',
+              files: files,
+              module: getURLModule(Module.KHACH_HANG));
+          if (isSuccess(responseUpload.code)) {
+            LoadingApi().popLoading();
+            yield SuccessAddData(
+                result: ['${response.id}', '${response.name}']);
+          } else {
+            LoadingApi().popLoading();
+            yield ErrorAddData(responseUpload.msg ?? '');
+          }
+        } else {
+          LoadingApi().popLoading();
+          yield SuccessAddData(result: ['${response.id}', '${response.name}']);
+        }
+      } else {
+        LoadingApi().popLoading();
+        yield ErrorAddData(response.msg ?? '');
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
   }
 
   Stream<AddDataState> _editCustomer(
-      Map<String, dynamic> data, List<File>? files) async* {
+    Map<String, dynamic> data,
+    List<File>? files,
+  ) async* {
     LoadingApi().pushLoading();
     try {
-      yield LoadingEditCustomerState();
+      yield LoadingAddData();
       final response = await userRepository.editCustomer(data: data);
       if (isSuccess(response.code)) {
-        if (files != null) {
+        if (files != null && files.length > 0) {
           final responseUpload = await userRepository.uploadMultiFileBase(
-              id: response.idkh.toString(),
-              files: files,
-              module: getURLModule(Module.KHACH_HANG));
-          if ((responseUpload.code == BASE_URL.SUCCESS) ||
-              (responseUpload.code == BASE_URL.SUCCESS_200)) {
-            yield SuccessEditCustomerState();
+            id: response.idkh.toString(),
+            files: files,
+            module: getURLModule(Module.KHACH_HANG),
+          );
+          if (isSuccess(responseUpload.code)) {
+            yield SuccessAddData(isEdit: true);
           } else {
-            yield ErrorEditCustomerState(responseUpload.msg ?? '');
+            yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
-          yield SuccessEditCustomerState();
+          yield SuccessAddData(isEdit: true);
         }
       } else {
-        yield ErrorEditCustomerState(response.msg ?? '');
+        yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorEditCustomerState(getT(KeyT.an_error_occurred));
+      yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
   }
 
   Stream<AddDataState> _addContactCus(
-      Map<String, dynamic> data, List<File>? files) async* {
+    Map<String, dynamic> data,
+    List<File>? files,
+    bool isEdit,
+  ) async* {
     LoadingApi().pushLoading();
     try {
-      yield LoadingAddContactCustomerState();
+      yield LoadingAddData();
       final response = await userRepository.addContactCus(data: data);
       if (isSuccess(response.code)) {
-        if (files != null) {
+        if (files != null && files.length > 0) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: response.data?.id.toString() ?? '',
               files: files,
               module: getURLModule(Module.DAU_MOI));
-          if ((responseUpload.code == BASE_URL.SUCCESS) ||
-              (responseUpload.code == BASE_URL.SUCCESS_200)) {
+          if (isSuccess(responseUpload.code)) {
             LoadingApi().popLoading();
-            yield SuccessAddContactCustomerState();
+            yield SuccessAddData(isEdit: isEdit);
           } else {
             LoadingApi().popLoading();
-            yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
+            yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
           LoadingApi().popLoading();
-          yield SuccessAddContactCustomerState();
+          yield SuccessAddData(isEdit: isEdit);
         }
       } else {
         LoadingApi().popLoading();
-        yield ErrorAddContactCustomerState(response.msg ?? '');
+        yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(getT(KeyT.an_error_occurred));
+      yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
   }
 
   Stream<AddDataState> _addOpportunity(
-      Map<String, dynamic> data, List<File>? files) async* {
+    Map<String, dynamic> data,
+    List<File>? files,
+    bool isEdit,
+  ) async* {
     LoadingApi().pushLoading();
     try {
-      yield LoadingAddContactCustomerState();
+      yield LoadingAddData();
       final response = await userRepository.addOpportunity(data: data);
       if (isSuccess(response.code)) {
-        if (files != null) {
+        if (files != null && files.length > 0) {
           final responseUpload = await userRepository.uploadMultiFileBase(
-              id: response.data!.id.toString(),
+              id: response.data?.id.toString() ?? '',
               files: files,
               module: getURLModule(Module.CO_HOI_BH));
-          if ((responseUpload.code == BASE_URL.SUCCESS) ||
-              (responseUpload.code == BASE_URL.SUCCESS_200)) {
+          if (isSuccess(responseUpload.code)) {
             LoadingApi().popLoading();
-            yield SuccessAddContactCustomerState();
+            yield SuccessAddData(isEdit: isEdit);
           } else {
             LoadingApi().popLoading();
-            yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
+            yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
           LoadingApi().popLoading();
-          yield SuccessAddContactCustomerState();
+          yield SuccessAddData(isEdit: isEdit);
         }
       } else {
         LoadingApi().popLoading();
-        yield ErrorAddContactCustomerState(response.msg ?? '');
+        yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(getT(KeyT.an_error_occurred));
+      yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
   }
 
   Stream<AddDataState> _addContract(
-      Map<String, dynamic> data, List<File>? files) async* {
+    Map<String, dynamic> data,
+    List<File>? files,
+    bool isEdit,
+  ) async* {
     LoadingApi().pushLoading();
     try {
-      yield LoadingAddContactCustomerState();
+      yield LoadingAddData();
       final response = await userRepository.addContract(data: data);
       if (isSuccess(response.code)) {
-        if (files != null) {
+        if (files != null && files.length > 0) {
           final responseUpload = await userRepository.uploadMultiFileBase(
-              id: response.data!.id.toString(),
+              id: response.data?.id.toString() ?? '',
               files: files,
               module: getURLModule(Module.HOP_DONG));
-          if ((responseUpload.code == BASE_URL.SUCCESS) ||
-              (responseUpload.code == BASE_URL.SUCCESS_200)) {
+          if (isSuccess(responseUpload.code)) {
             LoadingApi().popLoading();
-            yield SuccessAddContactCustomerState();
+            yield SuccessAddData(isEdit: isEdit);
           } else {
             LoadingApi().popLoading();
-            yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
+            yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
           LoadingApi().popLoading();
-          yield SuccessAddContactCustomerState();
+          yield SuccessAddData(isEdit: isEdit);
         }
       } else {
         LoadingApi().popLoading();
-        yield ErrorAddContactCustomerState(response.msg ?? '');
+        yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(getT(KeyT.an_error_occurred));
+      yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
   }
 
   Stream<AddDataState> _addJob(
-      Map<String, dynamic> data, List<File>? files) async* {
+    Map<String, dynamic> data,
+    List<File>? files,
+  ) async* {
     LoadingApi().pushLoading();
     try {
-      yield LoadingAddContactCustomerState();
+      yield LoadingAddData();
       final response = await userRepository.addJob(data: data);
       if (isSuccess(response.code)) {
-        if (files != null) {
+        if (files != null && files.length > 0) {
           final responseUpload = await userRepository.uploadMultiFileBase(
-            id: response.data!.id.toString(),
+            id: response.data?.id.toString() ?? '',
             files: files,
             module: getURLModule(Module.CONG_VIEC),
           );
-          if ((responseUpload.code == BASE_URL.SUCCESS) ||
-              (responseUpload.code == BASE_URL.SUCCESS_200)) {
+          if (isSuccess(responseUpload.code)) {
             LoadingApi().popLoading();
-            yield SuccessAddContactCustomerState();
+            yield SuccessAddData();
           } else {
             LoadingApi().popLoading();
-            yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
+            yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
           LoadingApi().popLoading();
-          yield SuccessAddContactCustomerState();
+          yield SuccessAddData();
         }
       } else {
         LoadingApi().popLoading();
-        yield ErrorAddContactCustomerState(response.msg ?? '');
+        yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(getT(KeyT.an_error_occurred));
+      yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
   }
 
   Stream<AddDataState> _addSupport(
-      Map<String, dynamic> data, List<File>? files) async* {
+    Map<String, dynamic> data,
+    List<File>? files,
+    bool isEdit,
+  ) async* {
     LoadingApi().pushLoading();
     try {
-      yield LoadingAddContactCustomerState();
+      yield LoadingAddData();
       final response = await userRepository.addSupport(data: data);
       if (isSuccess(response.code)) {
-        if (files != null) {
+        if (files != null && files.length > 0) {
           final responseUpload = await userRepository.uploadMultiFileBase(
-              id: response.data!.id.toString(),
+              id: response.data?.id.toString() ?? '',
               files: files,
               module: getURLModule(Module.HO_TRO));
-          if ((responseUpload.code == BASE_URL.SUCCESS) ||
-              (responseUpload.code == BASE_URL.SUCCESS_200)) {
+          if (isSuccess(responseUpload.code)) {
             LoadingApi().popLoading();
-            yield SuccessAddContactCustomerState();
+            yield SuccessAddData(isEdit: isEdit);
           } else {
             LoadingApi().popLoading();
-            yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
+            yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
           LoadingApi().popLoading();
-          yield SuccessAddContactCustomerState();
+          yield SuccessAddData(isEdit: isEdit);
         }
       } else {
         LoadingApi().popLoading();
-        yield ErrorAddContactCustomerState(response.msg ?? '');
+        yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(getT(KeyT.an_error_occurred));
+      yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
   }
 
   Stream<AddDataState> _editJob(
-      Map<String, dynamic> data, List<File>? files) async* {
+    Map<String, dynamic> data,
+    List<File>? files,
+  ) async* {
     LoadingApi().pushLoading();
     try {
-      yield LoadingAddContactCustomerState();
+      yield LoadingAddData();
       final response = await userRepository.editJob(data: data);
       if (isSuccess(response.code)) {
-        if (files != null) {
+        if (files != null && files.length > 0) {
           final responseUpload = await userRepository.uploadMultiFileBase(
-              id: response.data!.id.toString(),
+              id: response.data?.id.toString() ?? '',
               files: files,
               module: getURLModule(Module.CONG_VIEC));
-          if ((responseUpload.code == BASE_URL.SUCCESS) ||
-              (responseUpload.code == BASE_URL.SUCCESS_200)) {
+          if (isSuccess(responseUpload.code)) {
             LoadingApi().popLoading();
-            yield SuccessAddContactCustomerState();
+            yield SuccessAddData(isEdit: true);
           } else {
             LoadingApi().popLoading();
-            yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
+            yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
           LoadingApi().popLoading();
-          yield SuccessAddContactCustomerState();
+          yield SuccessAddData(isEdit: true);
         }
       } else {
         LoadingApi().popLoading();
-        yield ErrorAddContactCustomerState(response.msg ?? '');
+        yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(getT(KeyT.an_error_occurred));
+      yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
   }
 
   Stream<AddDataState> _addProduct(
-      Map<String, dynamic> data, List<File>? files) async* {
+    Map<String, dynamic> data,
+    List<File>? files,
+  ) async* {
     LoadingApi().pushLoading();
     try {
-      yield LoadingAddContactCustomerState();
+      yield LoadingAddData();
       final response = await userRepository.addProduct(data: data);
       if (isSuccess(response.code)) {
-        if (files != null) {
+        if (files != null && files.length > 0) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: response.id.toString(),
               files: files,
               module: getURLModule(Module.PRODUCT));
-          if ((responseUpload.code == BASE_URL.SUCCESS) ||
-              (responseUpload.code == BASE_URL.SUCCESS_200)) {
+          if (isSuccess(responseUpload.code)) {
             LoadingApi().popLoading();
-            yield SuccessAddContactCustomerState();
+            yield SuccessAddData();
           } else {
             LoadingApi().popLoading();
-            yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
+            yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
           LoadingApi().popLoading();
-          yield SuccessAddContactCustomerState();
+          yield SuccessAddData();
         }
       } else {
         LoadingApi().popLoading();
-        yield ErrorAddContactCustomerState(response.msg ?? '');
+        yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(getT(KeyT.an_error_occurred));
+      yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
   }
 
   Stream<AddDataState> _addProductCustomer(
-      Map<String, dynamic> data, List<File>? files) async* {
+    Map<String, dynamic> data,
+    List<File>? files,
+  ) async* {
     LoadingApi().pushLoading();
     try {
-      yield LoadingAddContactCustomerState();
+      yield LoadingAddData();
       final response = await userRepository.saveAddProductCustomer(data: data);
       if (isSuccess(response.code)) {
-        if (files != null) {
+        if (files != null && files.length > 0) {
           final responseUpload = await userRepository.uploadMultiFileBase(
-              id: response.id.toString(),
-              files: files,
-              module: getURLModule(Module.SAN_PHAM_KH));
-          if ((responseUpload.code == BASE_URL.SUCCESS) ||
-              (responseUpload.code == BASE_URL.SUCCESS_200)) {
+            id: response.id.toString(),
+            files: files,
+            module: getURLModule(Module.SAN_PHAM_KH),
+          );
+          if (isSuccess(response.code)) {
             LoadingApi().popLoading();
-            yield SuccessAddContactCustomerState();
+            yield SuccessAddData(
+              dataSPKH: response.data,
+              idKH: response.id.toString(),
+            );
           } else {
             LoadingApi().popLoading();
-            yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
+            yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
           LoadingApi().popLoading();
-          yield SuccessAddContactCustomerState();
+          yield SuccessAddData(
+            dataSPKH: response.data,
+            idKH: response.id.toString(),
+          );
         }
       } else {
         LoadingApi().popLoading();
-        yield ErrorAddContactCustomerState(response.msg ?? '');
+        yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(getT(KeyT.an_error_occurred));
+      yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
@@ -411,69 +475,69 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       Map<String, dynamic> data, List<File>? files, int id) async* {
     LoadingApi().pushLoading();
     try {
-      yield LoadingAddContactCustomerState();
+      yield LoadingAddData();
       final response = await userRepository.editProduct(data: data, id: id);
       if (isSuccess(response.code)) {
-        if (files != null) {
+        if (files != null && files.length > 0) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: response.data?.id.toString() ?? '',
               files: files,
               module: getURLModule(Module.PRODUCT));
-          if ((responseUpload.code == BASE_URL.SUCCESS) ||
-              (responseUpload.code == BASE_URL.SUCCESS_200)) {
+          if (isSuccess(responseUpload.code)) {
             LoadingApi().popLoading();
-            yield SuccessAddContactCustomerState();
+            yield SuccessAddData(isEdit: true);
           } else {
             LoadingApi().popLoading();
-            yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
+            yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
           LoadingApi().popLoading();
-          yield SuccessAddContactCustomerState();
+          yield SuccessAddData(isEdit: true);
         }
       } else {
         LoadingApi().popLoading();
-        yield ErrorAddContactCustomerState(response.msg ?? '');
+        yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(getT(KeyT.an_error_occurred));
+      yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
   }
 
   Stream<AddDataState> _editProductCustomer(
-      Map<String, dynamic> data, List<File>? files) async* {
+    Map<String, dynamic> data,
+    List<File>? files,
+  ) async* {
     LoadingApi().pushLoading();
     try {
-      yield LoadingAddContactCustomerState();
+      yield LoadingAddData();
       final response = await userRepository.saveEditProductCustomer(data: data);
       if (isSuccess(response.code)) {
-        if (files != null) {
+        if (files != null && files.length > 0) {
           final responseUpload = await userRepository.uploadMultiFileBase(
               id: response.data?.id.toString() ?? '',
               files: files,
               module: getURLModule(Module.SAN_PHAM_KH));
-          if ((responseUpload.code == BASE_URL.SUCCESS) ||
-              (responseUpload.code == BASE_URL.SUCCESS_200)) {
+          if (isSuccess(responseUpload.code)) {
             LoadingApi().popLoading();
-            yield SuccessAddContactCustomerState();
+            yield SuccessAddData(isEdit: true);
           } else {
             LoadingApi().popLoading();
-            yield ErrorAddContactCustomerState(responseUpload.msg ?? '');
+            yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
           LoadingApi().popLoading();
-          yield SuccessAddContactCustomerState();
+          yield SuccessAddData(isEdit: true);
         }
       } else {
         LoadingApi().popLoading();
-        yield ErrorAddContactCustomerState(response.msg ?? '');
+        yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(getT(KeyT.an_error_occurred));
+      yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
@@ -485,20 +549,62 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
   ) async* {
     LoadingApi().pushLoading();
     try {
-      yield LoadingAddContactCustomerState();
+      yield LoadingAddData();
       final response = await (type == ''
           ? userRepository.saveSignature(data: data)
           : userRepository.saveSignatureSupport(data: data));
       if (isSuccess(response.code)) {
         LoadingApi().popLoading();
-        yield SuccessAddContactCustomerState();
+        yield SuccessAddData();
       } else {
         LoadingApi().popLoading();
-        yield ErrorAddContactCustomerState(response.msg ?? '');
+        yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorAddContactCustomerState(getT(KeyT.an_error_occurred));
+      yield ErrorAddData(getT(KeyT.an_error_occurred));
+      throw e;
+    }
+    LoadingApi().popLoading();
+  }
+
+  Stream<AddDataState> _addQuickContract(
+    Map<String, dynamic> data,
+    List<File>? files,
+  ) async* {
+    LoadingApi().pushLoading();
+    try {
+      yield LoadingAddData();
+      final response = await userRepository.saveServiceVoucher(data: data);
+      final statusCode =
+          (response as Map<String, dynamic>).getOrElse('code', () => -1);
+      final msg = response.getOrElse('msg', () => -1);
+      final dataR = response.getOrElse('data', () => -1);
+
+      if (isSuccess(statusCode)) {
+        if (files != null && files.length > 0) {
+          final responseUpload = await userRepository.uploadMultiFileBase(
+              id: dataR['recordId'].toString(),
+              files: files,
+              module: getURLModule(Module.HOP_DONG));
+          if (isSuccess(responseUpload.code)) {
+            LoadingApi().popLoading();
+            yield SuccessAddData();
+          } else {
+            LoadingApi().popLoading();
+            yield ErrorAddData(responseUpload.msg ?? '');
+          }
+        } else {
+          LoadingApi().popLoading();
+          yield SuccessAddData();
+        }
+      } else {
+        LoadingApi().popLoading();
+        yield ErrorAddData(msg);
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();

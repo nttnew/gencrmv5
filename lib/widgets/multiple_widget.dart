@@ -64,10 +64,12 @@ class _InputMultipleWidgetState extends State<InputMultipleWidget> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Quicksand",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: COLORS.RED))
+                          fontFamily: "Quicksand",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: COLORS.RED,
+                        ),
+                      )
                     : TextSpan(),
               ],
             ),
@@ -111,7 +113,7 @@ class _InputMultipleWidgetState extends State<InputMultipleWidget> {
                     _focusNode.unfocus();
                   },
                   focusNode: _focusNode,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  style: AppStyle.DEFAULT_14_BOLD,
                   keyboardType: widget.data.field_special == "default"
                       ? TextInputType.text
                       : widget.data.field_special == "numberic"
@@ -128,10 +130,11 @@ class _InputMultipleWidgetState extends State<InputMultipleWidget> {
                   maxLengthEnforcement:
                       MaxLengthEnforcement.truncateAfterCompositionEnds,
                   decoration: InputDecoration(
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      isDense: true),
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    isDense: true,
+                  ),
                 ),
               ),
             ),
@@ -142,60 +145,63 @@ class _InputMultipleWidgetState extends State<InputMultipleWidget> {
               spacing: 8,
               runSpacing: 6,
               children: arr
-                  .map((e) => ConstrainedBox(
-                        constraints: BoxConstraints(
-                          maxHeight: double.maxFinite,
-                          maxWidth: MediaQuery.of(context).size.width,
-                          minHeight: 0,
-                          minWidth: 0,
+                  .map(
+                    (e) => ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: double.maxFinite,
+                        maxWidth: MediaQuery.of(context).size.width,
+                        minHeight: 0,
+                        minWidth: 0,
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          right: 4,
+                          bottom: 4,
+                          left: 8,
+                          top: 4,
                         ),
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            right: 4,
-                            bottom: 4,
-                            left: 8,
-                            top: 4,
-                          ),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: COLORS.BACKGROUND),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  maxHeight: double.maxFinite,
-                                  maxWidth:
-                                      MediaQuery.of(context).size.width - 90,
-                                  minHeight: 0,
-                                  minWidth: 0,
-                                ),
-                                child: WidgetText(
-                                  maxLine: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  title: e,
-                                  style: AppStyle.DEFAULT_14,
-                                ),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: COLORS.BACKGROUND),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxHeight: double.maxFinite,
+                                maxWidth:
+                                    MediaQuery.of(context).size.width - 90,
+                                minHeight: 0,
+                                minWidth: 0,
                               ),
-                              SizedBox(
-                                width: 8,
+                              child: WidgetText(
+                                maxLine: 1,
+                                overflow: TextOverflow.ellipsis,
+                                title: e,
+                                style: AppStyle.DEFAULT_14,
                               ),
-                              InkWell(
-                                  onTap: () {
-                                    arr.remove(e);
-                                    setState(() {
-                                      check = !check;
-                                    });
-                                  },
-                                  child: Image.asset(
-                                    ICONS.IC_REMOVE_TXT_PNG,
-                                    height: 20,
-                                    width: 20,
-                                  )),
-                            ],
-                          ),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            InkWell(
+                                onTap: () {
+                                  arr.remove(e);
+                                  setState(() {
+                                    check = !check;
+                                  });
+                                  widget.onSelect(arr);
+                                },
+                                child: Image.asset(
+                                  ICONS.IC_REMOVE_TXT_PNG,
+                                  height: 20,
+                                  width: 20,
+                                )),
+                          ],
                         ),
-                      ))
+                      ),
+                    ),
+                  )
                   .toList(),
             ),
           )

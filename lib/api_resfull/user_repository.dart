@@ -24,11 +24,9 @@ import 'package:gen_crm/src/models/model_generator/support.dart';
 import 'package:gen_crm/src/models/model_generator/work_clue.dart';
 import 'package:gen_crm/src/models/model_generator/work.dart';
 import 'package:gen_crm/src/models/model_generator/xe_dich_vu_response.dart';
-import 'package:gen_crm/src/models/request/voucher_service_request.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/share_local.dart';
 import '../src/models/model_generator/add_data_response.dart';
-import '../src/models/model_generator/add_voucher_response.dart';
 import '../src/models/model_generator/address_customer_response.dart';
 import '../src/models/model_generator/clue.dart';
 import '../src/models/model_generator/clue_detail.dart';
@@ -53,7 +51,6 @@ import '../src/models/model_generator/main_menu_response.dart';
 import '../src/models/model_generator/note.dart';
 import '../src/models/model_generator/param_del_notif.dart';
 import '../src/models/model_generator/param_read_notifi.dart';
-import '../src/models/model_generator/post_info_car_response.dart';
 import '../src/models/model_generator/product_customer_edit_response.dart';
 import '../src/models/model_generator/product_customer_save_response.dart';
 import '../src/models/model_generator/product_service_pack_response.dart';
@@ -200,18 +197,20 @@ class UserRepository {
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .getAddCustomer(isIndividual, id);
 
-  Future<AddVoucherResponse> postAddServiceVoucher(
-          String soDienThoai, String bienSo) async =>
+  Future<AddCustomerIndividual> postAddServiceVoucher(
+    String soDienThoai,
+    String bienSo,
+  ) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
           .postAddServiceVoucher(soDienThoai, bienSo);
 
-  Future<InfoCar> postInfoCar(String idxe) async =>
-      await RestClient(dio, baseUrl: dio.options.baseUrl).postInfoCar(idxe);
+  // Future<InfoCar> postInfoCar(String idxe) async =>
+  //     await RestClient(dio, baseUrl: dio.options.baseUrl).postInfoCar(idxe);
 
   Future<dynamic> saveServiceVoucher(
-          VoucherServiceRequest voucherServiceRequest) async =>
+      {required Map<String, dynamic> data}) async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl)
-          .saveServiceVoucher(voucherServiceRequest);
+          .saveServiceVoucher(data);
 
   Future<ListCarInfo> getVersionInfoCar() async =>
       await RestClient(dio, baseUrl: dio.options.baseUrl).getVersionInfoCar();

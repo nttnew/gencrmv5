@@ -140,7 +140,6 @@ class ItemCar extends StatelessWidget {
             itemTextIcon(
               styleText: AppStyle.DEFAULT_14.copyWith(
                 fontWeight: FontWeight.w400,
-                color: COLORS.TEXT_BLUE_BOLD,
               ),
               textPlus: getT(KeyT.so_phieu),
               text: data.soPhieu ?? '',

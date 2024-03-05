@@ -53,14 +53,17 @@ class _SupportScreenState extends State<SupportScreen> {
   }
 
   _handleRouter(String value) {
-    AppNavigator.navigateFormAdd(value, ADD_SUPPORT,
-        isCheckIn: listAdd.first == value);
+    AppNavigator.navigateForm(
+      title: value,
+      type: ADD_SUPPORT,
+      isCheckIn: listAdd.first == value,
+    );
   }
 
   _reloadLanguage() async {
     await _bloc.loadMoreController.reloadData();
     listAdd = [
-      '${getT(KeyT.add)} ${getT(KeyT.check_in)}',
+      '${getT(KeyT.add)} ${getT(KeyT.check_in).toLowerCase()}',
       '${getT(KeyT.add)} ${title.toLowerCase()}'
     ];
     title = ModuleMy.getNameModuleMy(
@@ -196,7 +199,7 @@ class _SupportScreenState extends State<SupportScreen> {
                           _bloc.loadMoreController.reloadData();
                         });
                       },
-                      onSubmit: (String v) {
+                      onChange: (String v) {
                         _bloc.search = v;
                         _bloc.loadMoreController.reloadData();
                       },

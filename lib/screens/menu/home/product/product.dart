@@ -75,8 +75,10 @@ class _ProductScreenState extends State<ProductScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: COLORS.ff1AA928,
-        onPressed: () => AppNavigator.navigateFormAdd(
-            '${getT(KeyT.add)} $title', PRODUCT_TYPE),
+        onPressed: () => AppNavigator.navigateForm(
+          title: '${getT(KeyT.add)} $title',
+          type: PRODUCT_TYPE,
+        ),
         child: Icon(Icons.add, size: 40),
       ),
       body: ViewLoadMoreBase(
@@ -116,7 +118,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     size: 20,
                   ),
                 ),
-                onSubmit: (String v) {
+                onChange: (String v) {
                   _bloc.querySearch = v;
                   _bloc.loadMoreController.reloadData();
                 },

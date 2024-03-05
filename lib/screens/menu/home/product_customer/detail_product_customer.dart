@@ -136,7 +136,7 @@ class _DetailProductCustomerScreenState
                       int.parse(data.id ?? '0'), data.nameJob ?? '');
                 },
                 child: WorkCardWidget(
-                  productCustomer: null,//todo
+                  productCustomer: null, //todo
                   nameCustomer: data.customer.name,
                   nameJob: data.nameJob,
                   startDate: data.startDate,
@@ -191,29 +191,41 @@ class _DetailProductCustomerScreenState
           String module = value.module ?? '';
           Get.back();
           if (ModuleMy.LICH_HEN == module) {
-            AppNavigator.navigateFormAdd(
-                value.name ?? '', CH_PRODUCT_CUSTOMER_TYPE, id: int.parse(id),
-                onRefresh: () {
-              _bloc.controllerCh.reloadData();
-            });
+            AppNavigator.navigateForm(
+              title: value.name ?? '',
+              type: CH_PRODUCT_CUSTOMER_TYPE,
+              id: int.parse(id),
+              onRefresh: () {
+                _bloc.controllerCh.reloadData();
+              },
+            );
           } else if (ModuleMy.HOP_DONG == module) {
-            AppNavigator.navigateFormAdd(
-                value.name ?? '', HD_PRODUCT_CUSTOMER_TYPE, id: int.parse(id),
-                onRefresh: () {
-              _bloc.controllerHd.reloadData();
-            });
+            AppNavigator.navigateForm(
+              title: value.name ?? '',
+              type: HD_PRODUCT_CUSTOMER_TYPE,
+              id: int.parse(id),
+              onRefresh: () {
+                _bloc.controllerHd.reloadData();
+              },
+            );
           } else if (ModuleMy.CONG_VIEC == module) {
-            AppNavigator.navigateFormAdd(
-                value.name ?? '', CV_PRODUCT_CUSTOMER_TYPE, id: int.parse(id),
-                onRefresh: () {
-              _bloc.controllerCv.reloadData();
-            });
+            AppNavigator.navigateForm(
+              title: value.name ?? '',
+              type: CV_PRODUCT_CUSTOMER_TYPE,
+              id: int.parse(id),
+              onRefresh: () {
+                _bloc.controllerCv.reloadData();
+              },
+            );
           } else if (ModuleMy.CSKH == module) {
-            AppNavigator.navigateFormAdd(
-                value.name ?? '', HT_PRODUCT_CUSTOMER_TYPE, id: int.parse(id),
-                onRefresh: () {
-              _bloc.controllerHt.reloadData();
-            });
+            AppNavigator.navigateForm(
+              title: value.name ?? '',
+              type: HT_PRODUCT_CUSTOMER_TYPE,
+              id: int.parse(id),
+              onRefresh: () {
+                _bloc.controllerHt.reloadData();
+              },
+            );
           }
         },
       ));
@@ -236,7 +248,11 @@ class _DetailProductCustomerScreenState
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditDataScreen(id, PRODUCT_CUSTOMER_TYPE);
+        AppNavigator.navigateForm(
+          title: getT(KeyT.edit),
+          type: PRODUCT_CUSTOMER_TYPE,
+          id: int.tryParse(id),
+        );
       },
     ));
 

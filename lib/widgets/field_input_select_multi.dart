@@ -55,19 +55,22 @@ class _SelectMultiState extends State<SelectMulti> {
             text: TextSpan(
               text: widget.label,
               style: TextStyle(
-                  fontFamily: "Quicksand",
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: COLORS.BLACK),
+                fontFamily: "Quicksand",
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: COLORS.BLACK,
+              ),
               children: <TextSpan>[
                 if (widget.required == 1)
                   TextSpan(
-                      text: '*',
-                      style: TextStyle(
-                          fontFamily: "Quicksand",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: COLORS.RED))
+                    text: '*',
+                    style: TextStyle(
+                      fontFamily: "Quicksand",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: COLORS.RED,
+                    ),
+                  )
               ],
             ),
           ),
@@ -117,7 +120,7 @@ class _SelectMultiState extends State<SelectMulti> {
             buttonText: Text(
               widget.label,
               style: AppStyle.DEFAULT_14_BOLD.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
               ),
             ),
             decoration: BoxDecoration(
@@ -135,7 +138,7 @@ class _SelectMultiState extends State<SelectMulti> {
               }
               return false;
             }).toList(),
-            selectedItemsTextStyle: AppStyle.DEFAULT_14,
+            selectedItemsTextStyle: AppStyle.DEFAULT_14_BOLD,
             itemsTextStyle: AppStyle.DEFAULT_14,
           ),
         ],

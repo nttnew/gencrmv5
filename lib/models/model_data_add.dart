@@ -3,6 +3,7 @@ class ModelDataAdd {
   dynamic value;
   int? required;
   String? parent;
+  String? txtValidate;
 
 
   ModelDataAdd({
@@ -10,5 +11,6 @@ class ModelDataAdd {
     this.value,
     this.required,
     this.parent,
+    this.txtValidate,
   });
 }

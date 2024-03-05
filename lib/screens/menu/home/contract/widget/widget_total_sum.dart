@@ -37,15 +37,18 @@ class _WidgetTotalSumState extends State<WidgetTotalSum> {
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-                color: COLORS.LIGHT_GREY,
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: COLORS.ffBEB4B4)),
+              color: COLORS.LIGHT_GREY,
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                color: COLORS.ffBEB4B4,
+              ),
+            ),
             child: Padding(
               padding: EdgeInsets.only(left: 10, top: 14, bottom: 14),
               child: Container(
                 child: WidgetText(
                   title: widget.value,
-                  style: AppStyle.DEFAULT_14W500,
+                  style: AppStyle.DEFAULT_14_BOLD,
                 ),
               ),
             ),

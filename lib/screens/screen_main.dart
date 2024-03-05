@@ -85,24 +85,29 @@ class _ScreenMainState extends State<ScreenMain> {
 
   _handelRouterMenuPlus(String id, String name) {
     if (ModuleText.CUSTOMER == id) {
-      AppNavigator.navigateAddCustomer('${getT(KeyT.add)}'
-          ' ${name.toLowerCase()} ${getT(KeyT.individual)}');
+      AppNavigator.navigateForm(
+        title: '${getT(KeyT.add)}'
+            ' ${name.toLowerCase()} ${getT(KeyT.individual)}',
+        type: ADD_CUSTOMER,
+      );
     } else if (ModuleText.DAU_MOI == id) {
-      AppNavigator.navigateFormAdd(name, ADD_CLUE);
+      AppNavigator.navigateForm(title: name, type: ADD_CLUE);
     } else if (ModuleText.LICH_HEN == id) {
-      AppNavigator.navigateFormAdd(name, ADD_CHANCE);
+      AppNavigator.navigateForm(title: name, type: ADD_CHANCE);
     } else if (ModuleText.HOP_DONG_FLASH == id) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => AddServiceVoucherScreen(
                 title: name.toUpperCase().capitalizeFirst ?? '',
               )));
     } else if (ModuleText.HOP_DONG == id) {
-      AppNavigator.navigateAddContract(
-          title: name.toUpperCase().capitalizeFirst ?? '');
+      AppNavigator.navigateForm(
+        title: name.toUpperCase().capitalizeFirst ?? '',
+        type: ADD_CONTRACT,
+      );
     } else if (ModuleText.CONG_VIEC == id) {
-      AppNavigator.navigateFormAdd(name, ADD_JOB);
+      AppNavigator.navigateForm(title: name, type: ADD_JOB);
     } else if (ModuleText.CSKH == id) {
-      AppNavigator.navigateFormAdd(name, ADD_SUPPORT);
+      AppNavigator.navigateForm(title: name, type: ADD_SUPPORT);
     } else if (ModuleText.THEM_MUA_XE == id) {
       //todo
     } else if (ModuleText.THEM_BAN_XE == id) {

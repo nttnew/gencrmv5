@@ -16,7 +16,6 @@ import 'package:gen_crm/bloc/detail_customer/detail_customer_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
 import 'package:gen_crm/bloc/get_infor_acc/get_infor_acc_bloc.dart';
-import 'package:gen_crm/bloc/form_edit/form_edit_bloc.dart';
 import 'package:gen_crm/bloc/infor/infor_bloc.dart';
 import 'package:gen_crm/bloc/information_account/information_account_bloc.dart';
 import 'package:gen_crm/bloc/list_note/add_note_bloc.dart';
@@ -210,9 +209,9 @@ Future main() async {
             create: (context) =>
                 DetailSupportBloc(userRepository: userRepository),
           ),
-          BlocProvider<FormEditBloc>(
-            create: (context) => FormEditBloc(userRepository: userRepository),
-          ),
+          // BlocProvider<FormEditBloc>(
+          //   create: (context) => FormEditBloc(userRepository: userRepository),
+          // ),
           BlocProvider<CustomerContractBloc>(
             create: (context) =>
                 CustomerContractBloc(userRepository: userRepository),

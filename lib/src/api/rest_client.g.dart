@@ -706,7 +706,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AddVoucherResponse> postAddServiceVoucher(
+  Future<AddCustomerIndividual> postAddServiceVoucher(
     soDienThoai,
     bienSo,
   ) async {
@@ -717,8 +717,8 @@ class _RestClient implements RestClient {
       'so_dien_thoai': soDienThoai,
       'bien_so': bienSo,
     };
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<AddVoucherResponse>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AddCustomerIndividual>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -730,44 +730,44 @@ class _RestClient implements RestClient {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = AddVoucherResponse.fromJson(_result.data!);
+    final value = AddCustomerIndividual.fromJson(_result.data!);
     return value;
   }
 
-  @override
-  Future<InfoCar> postInfoCar(idxe) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'idxe',
-      idxe,
-    ));
-    final _result =
-        await _dio.fetch<Map<String, dynamic>>(_setStreamType<InfoCar>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/product/getTTXE',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = InfoCar.fromJson(_result.data!);
-    return value;
-  }
+  // @override
+  // Future<InfoCar> postInfoCar(idxe) async {
+  //   const _extra = <String, dynamic>{};
+  //   final queryParameters = <String, dynamic>{};
+  //   final _headers = <String, dynamic>{};
+  //   final _data = FormData();
+  //   _data.fields.add(MapEntry(
+  //     'idxe',
+  //     idxe,
+  //   ));
+  //   final _result =
+  //       await _dio.fetch<Map<String, dynamic>>(_setStreamType<InfoCar>(Options(
+  //     method: 'POST',
+  //     headers: _headers,
+  //     extra: _extra,
+  //   )
+  //           .compose(
+  //             _dio.options,
+  //             'modules/genmobile2/product/getTTXE',
+  //             queryParameters: queryParameters,
+  //             data: _data,
+  //           )
+  //           .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+  //   final value = InfoCar.fromJson(_result.data!);
+  //   return value;
+  // }
 
   @override
-  Future<dynamic> saveServiceVoucher(voucherServiceRequest) async {
+  Future<dynamic> saveServiceVoucher(map) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(voucherServiceRequest.toJson());
+    _data.addAll(map);
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,

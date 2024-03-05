@@ -8,13 +8,13 @@ abstract class FormAddState extends Equatable {
 
 class InitFormAddState extends FormAddState {}
 
-class LoadingFormAddCustomerOrState extends FormAddState {}
+class LoadingForm extends FormAddState {}
 
-class SuccessFormAddCustomerOrState extends FormAddState {
+class SuccessForm extends FormAddState {
   final List<AddCustomerIndividualData> listAddData;
   final List<ChuKyResponse>? chuKyResponse;
   final double? soTien;
-  const SuccessFormAddCustomerOrState(
+  const SuccessForm(
     this.listAddData, {
     this.chuKyResponse,
     this.soTien,
@@ -23,10 +23,10 @@ class SuccessFormAddCustomerOrState extends FormAddState {
   List<Object?> get props => [listAddData, chuKyResponse, soTien];
 }
 
-class ErrorFormAddCustomerOrState extends FormAddState {
+class ErrorForm extends FormAddState {
   final String msg;
 
-  ErrorFormAddCustomerOrState(this.msg);
+  ErrorForm(this.msg);
   @override
   List<Object> get props => [msg];
 }

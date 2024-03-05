@@ -123,9 +123,9 @@ class _ListProductState extends State<ListProduct> {
                       ],
                     ),
                     child: SearchBase(
-                      inputController: _editingController,
+                      controller: _editingController,
                       hint: getT(KeyT.find_product),
-                      onSubmit: (v) {
+                      onChange: (v) {
                         _onClickSearch();
                       },
                       leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),

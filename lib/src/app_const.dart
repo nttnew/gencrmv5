@@ -19,34 +19,43 @@ const int IS_BEFORE = 0;
 const String BUNDLE_ID = 'com.gencrm';
 const String PACKAGE_ID = 'vn.gen_crm';
 const String TEAM_ID = 'AEY48KNZRS';
-const int PRODUCT_TYPE = 99;
-const int PRODUCT_CUSTOMER_TYPE = 98;
-const int EDIT_JOB = 5;
-const int CV_PRODUCT_CUSTOMER_TYPE = 97;
-const int HD_PRODUCT_CUSTOMER_TYPE = 96;
-const int HT_PRODUCT_CUSTOMER_TYPE = 95;
-const int CH_PRODUCT_CUSTOMER_TYPE = 94;
-const int ADD_CUSTOMER = 1;
-const int ADD_CHANCE_JOB = 31;
-const int ADD_CHANCE = 3;
-const int ADD_CLUE = 2;
-const int ADD_SUPPORT = 6;
-const int ADD_JOB = 5;
-const int ADD_CLUE_JOB = 21;
-const int ADD_JOB_CONTRACT = 42;
-const int ADD_SUPPORT_CONTRACT = 41;
-const int ADD_CLUE_CUSTOMER = 11;
-const int ADD_CHANCE_CUSTOMER = 12;
-const int ADD_JOB_CUSTOMER = 14;
-const int ADD_SUPPORT_CUSTOMER = 15;
-const int EDIT_SUPPORT = 6;
-const int EDIT_CHANCE = 3;
-const int EDIT_CLUE = 2;
-const int EDIT_CUSTOMER = 1;
+
+const String ADD_CUSTOMER_OR = 'ADD_CUSTOMER_OR';
+const String ADD_CLUE = 'ADD_CLUE';
+const String ADD_CHANCE = 'ADD_CHANCE';
+const String ADD_CONTRACT = 'ADD_CONTRACT';
+const String ADD_JOB = 'ADD_JOB';
+const String ADD_SUPPORT = 'ADD_SUPPORT';
+const String ADD_QUICK_CONTRACT = 'ADD_QUICK_CONTRACT';
+const String ADD_CUSTOMER = 'ADD_CUSTOMER';
+const String ADD_CLUE_CUSTOMER = 'ADD_CLUE_CUSTOMER';
+const String ADD_CHANCE_CUSTOMER = 'ADD_CHANCE_CUSTOMER';
+const String ADD_JOB_CUSTOMER = 'ADD_JOB_CUSTOMER';
+const String ADD_SUPPORT_CUSTOMER = 'ADD_SUPPORT_CUSTOMER';
+const String ADD_CONTRACT_CUS = 'ADD_CONTRACT_CUS';
+const String ADD_CLUE_JOB = 'ADD_CLUE_JOB';
+const String ADD_CHANCE_JOB = 'ADD_CHANCE_JOB';
+const String ADD_SUPPORT_CONTRACT = 'ADD_SUPPORT_CONTRACT';
+const String ADD_JOB_CONTRACT = 'ADD_JOB_CONTRACT';
+const String EDIT_CUSTOMER = 'EDIT_CUSTOMER';
+const String EDIT_CLUE = 'EDIT_CLUE';
+const String EDIT_CHANCE = 'EDIT_CHANCE';
+const String EDIT_CONTRACT = 'EDIT_CONTRACT';
+const String EDIT_JOB = 'EDIT_JOB';
+const String EDIT_SUPPORT = 'EDIT_SUPPORT';
+const String CH_PRODUCT_CUSTOMER_TYPE = 'CH_PRODUCT_CUSTOMER_TYPE';
+const String HT_PRODUCT_CUSTOMER_TYPE = 'HT_PRODUCT_CUSTOMER_TYPE';
+const String HD_PRODUCT_CUSTOMER_TYPE = 'HD_PRODUCT_CUSTOMER_TYPE';
+const String CV_PRODUCT_CUSTOMER_TYPE = 'CV_PRODUCT_CUSTOMER_TYPE';
+const String PRODUCT_CUSTOMER_TYPE = 'PRODUCT_CUSTOMER_TYPE';
+const String PRODUCT_TYPE = 'PRODUCT_TYPE';
+
 const LOADING = 'loading';
 String CA_NHAN = 'ca_nhan';
 String TO_CHUC = 'to_chuc';
-String ADD_NEW_CAR = 'Thêm';
+String ADD_NEW_CAR = 'ADD_NEW_CAR';
+String SPECIAL_KH = 'khachhang';
+String SPECIAL_SPKH = 'spkh';
 
 class TypeCheckIn {
   static const CHECK_IN = 'checkin';
@@ -466,7 +475,9 @@ String getFlagCountry(String flag) {
 }
 
 bool checkLocation(CustomerIndividualItemData data) =>
-    data.field_name == 'dia_chi_chung_text' && getTinhThanh().length > 0;
+    (data.field_name == 'dia_chi_chung_text_dm' ||
+        data.field_name == 'dia_chi_chung_text') &&
+    getTinhThanh().length > 0;
 
 /// CAR_CRM 1 = true
 const String CAR_CRM = '1';

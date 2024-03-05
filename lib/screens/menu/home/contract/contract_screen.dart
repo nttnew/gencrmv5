@@ -77,8 +77,10 @@ class _ContractScreenState extends State<ContractScreen> {
         child: FloatingActionButton(
           backgroundColor: COLORS.ff1AA928,
           onPressed: () {
-            AppNavigator.navigateAddContract(
-                title: '${getT(KeyT.add)} ${title.toLowerCase()}');
+            AppNavigator.navigateForm(
+              title: '${getT(KeyT.add)} ${title.toLowerCase()}',
+              type: ADD_CONTRACT,
+            );
           },
           child: Icon(Icons.add, size: 40),
         ),
@@ -109,7 +111,7 @@ class _ContractScreenState extends State<ContractScreen> {
                           _bloc.loadMoreController.reloadData();
                         });
                       },
-                      onSubmit: (String v) {
+                      onChange: (String v) {
                         _bloc.search = v;
                         _bloc.loadMoreController.reloadData();
                       },

@@ -1,10 +1,9 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/models/model_generator/customer.dart';
 import 'package:gen_crm/src/models/model_generator/list_product_customer_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/listview_loadmore_base.dart';
-import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:flutter/material.dart';
 import '../../../../bloc/add_service_voucher/add_service_bloc.dart';
 import '../../../../l10n/key_text.dart';
@@ -51,60 +50,52 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
     return Scaffold(
       backgroundColor: COLORS.WHITE,
       appBar: AppbarBaseNormal(widget.title),
-      body: BlocListener<ServiceVoucherBloc, ServiceVoucherState>(
-        listener: (context, state) {
-          if (state is GetServiceVoucherState) {
-            LoadingApi().popLoading();
-            AppNavigator.navigateAddServiceVoucherStepTwo(widget.title);
-          }
-        },
-        child: DefaultTabController(
-          length: 2,
-          child: Column(
-            children: [
-              AppValue.vSpaceTiny,
-              TabBar(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16,
+      body: DefaultTabController(
+        length: 2,
+        child: Column(
+          children: [
+            AppValue.vSpaceTiny,
+            TabBar(
+              padding: EdgeInsets.symmetric(
+                horizontal: 16,
+              ),
+              isScrollable: true,
+              indicatorColor: COLORS.TEXT_COLOR,
+              labelColor: COLORS.TEXT_COLOR,
+              unselectedLabelColor: COLORS.GREY,
+              labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
+              tabs: [
+                Tab(
+                  text: getT(KeyT.phone),
                 ),
-                isScrollable: true,
-                indicatorColor: COLORS.TEXT_COLOR,
-                labelColor: COLORS.TEXT_COLOR,
-                unselectedLabelColor: COLORS.GREY,
-                labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
-                tabs: [
-                  Tab(
-                    text: getT(KeyT.phone),
+                Tab(
+                  text: getT(KeyT.license_plates),
+                )
+              ],
+            ),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  _tabBody(
+                    getT(KeyT.phone),
+                    TextInputType.number,
+                    getT(KeyT.enter_phone),
+                    _txtPhone,
+                    _bloc.loadMoreControllerPhone,
+                    true,
                   ),
-                  Tab(
-                    text: getT(KeyT.license_plates),
-                  )
+                  _tabBody(
+                    getT(KeyT.license_plates),
+                    TextInputType.text,
+                    getT(KeyT.enter_license_plates),
+                    _txtBienSo,
+                    _bloc.loadMoreControllerBienSo,
+                    false,
+                  ),
                 ],
               ),
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    _tabBody(
-                      getT(KeyT.phone),
-                      TextInputType.number,
-                      getT(KeyT.enter_phone),
-                      _txtPhone,
-                      _bloc.loadMoreControllerPhone,
-                      true,
-                    ),
-                    _tabBody(
-                      getT(KeyT.license_plates),
-                      TextInputType.text,
-                      getT(KeyT.enter_license_plates),
-                      _txtBienSo,
-                      _bloc.loadMoreControllerBienSo,
-                      false,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -225,11 +216,10 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
                   ? ItemCustomer(
                       data: item,
                       onTap: () {
-                        ServiceVoucherBloc.of(context).add(
-                          PostServiceVoucherEvent(
-                            item.phone?.val ?? '',
-                            '',
-                          ),
+                        AppNavigator.navigateForm(
+                          title: widget.title,
+                          type: ADD_QUICK_CONTRACT,
+                          sdt: item.phone?.val ?? '',
                         );
                       },
                     )
@@ -241,11 +231,10 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
                         loai: item.loai,
                       ),
                       onTap: () {
-                        ServiceVoucherBloc.of(context).add(
-                          PostServiceVoucherEvent(
-                            '',
-                            item.name ?? '',
-                          ),
+                        AppNavigator.navigateForm(
+                          title: widget.title,
+                          type: ADD_QUICK_CONTRACT,
+                          bienSo: item.name,
                         );
                       },
                     );

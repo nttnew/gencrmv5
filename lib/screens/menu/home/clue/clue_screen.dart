@@ -76,8 +76,10 @@ class _ClueScreenState extends State<ClueScreen> {
         child: FloatingActionButton(
           backgroundColor: COLORS.ff1AA928,
           onPressed: () {
-            AppNavigator.navigateFormAdd(
-                '${getT(KeyT.add)} ${title}', ADD_CLUE);
+            AppNavigator.navigateForm(
+              title: '${getT(KeyT.add)} ${title}',
+              type: ADD_CLUE,
+            );
           },
           child: Icon(Icons.add, size: 40),
         ),
@@ -108,7 +110,7 @@ class _ClueScreenState extends State<ClueScreen> {
                           _bloc.loadMoreController.reloadData();
                         });
                       },
-                      onSubmit: (String v) {
+                      onChange: (String v) {
                         _bloc.search = v;
                         _bloc.loadMoreController.reloadData();
                       },

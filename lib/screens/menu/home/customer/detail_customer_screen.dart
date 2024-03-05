@@ -83,76 +83,88 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     list.add(
       ModuleThaoTac(
         title:
-            "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}",
+            '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}',
         icon: ICONS.IC_ADD_CLUE_SVG,
         onThaoTac: () {
           Get.back();
-          AppNavigator.navigateFormAdd(
-              "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}",
-              ADD_CLUE_CUSTOMER,
-              id: int.parse(id), onRefresh: () {
-            _bloc.controllerDM.reloadData();
-          });
+          AppNavigator.navigateForm(
+            title:
+                '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}',
+            type: ADD_CLUE_CUSTOMER,
+            id: int.parse(id),
+            onRefresh: () {
+              _bloc.controllerDM.reloadData();
+            },
+          );
         },
       ),
     );
 
     list.add(ModuleThaoTac(
-      title: "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}",
+      title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}',
       icon: ICONS.IC_ADD_CHANCE_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd(
-            "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}",
-            ADD_CHANCE_CUSTOMER,
-            id: int.parse(id), onRefresh: () {
-          _bloc.controllerCH.reloadData();
-        });
+        AppNavigator.navigateForm(
+          title:
+              '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}',
+          type: ADD_CHANCE_CUSTOMER,
+          id: int.parse(id),
+          onRefresh: () {
+            _bloc.controllerCH.reloadData();
+          },
+        );
       },
     ));
 
     list.add(ModuleThaoTac(
-      title: "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}",
+      title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
       icon: ICONS.IC_ADD_CONTRACT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddContract(
-            customer_id: id,
-            title:
-                "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}",
-            onRefresh: () {
-              _bloc.controllerHD.reloadData();
-            });
-        ;
+        AppNavigator.navigateForm(
+          title:
+              '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
+          type: ADD_CONTRACT_CUS,
+          id: int.tryParse(id),
+          onRefresh: () {
+            _bloc.controllerHD.reloadData();
+          },
+        );
       },
     ));
 
     list.add(ModuleThaoTac(
       title:
-          "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
+          '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd(
-            "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
-            ADD_JOB_CUSTOMER,
-            id: int.parse(id), onRefresh: () {
-          _bloc.controllerCV.reloadData();
-        });
+        AppNavigator.navigateForm(
+          title:
+              '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
+          type: ADD_JOB_CUSTOMER,
+          id: int.parse(id),
+          onRefresh: () {
+            _bloc.controllerCV.reloadData();
+          },
+        );
       },
     ));
 
     list.add(ModuleThaoTac(
-      title: "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
+      title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
       icon: ICONS.IC_ADD_SUPPORT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd(
-            "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
-            ADD_SUPPORT_CUSTOMER,
-            id: int.parse(id), onRefresh: () {
-          _bloc.controllerHT.reloadData();
-        });
+        AppNavigator.navigateForm(
+          title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
+          type: ADD_SUPPORT_CUSTOMER,
+          id: int.parse(id),
+          onRefresh: () {
+            _bloc.controllerHT.reloadData();
+          },
+        );
       },
     ));
 
@@ -186,9 +198,13 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditDataScreen(id, EDIT_CUSTOMER, onRefresh: () {
-          _bloc.add(InitGetDetailCustomerEvent(int.parse(id)));
-        });
+        AppNavigator.navigateForm(
+          type: EDIT_CUSTOMER,
+          id: int.tryParse(id),
+          onRefresh: () {
+            _bloc.add(InitGetDetailCustomerEvent(int.parse(id)));
+          },
+        );
       },
     ));
 
@@ -253,7 +269,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
               labelColor: COLORS.ff006CB1,
               unselectedLabelColor: COLORS.ff697077,
               labelStyle: TextStyle(
-                fontFamily: "Quicksand",
+                fontFamily: 'Quicksand',
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
               ),

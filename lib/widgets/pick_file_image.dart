@@ -233,7 +233,7 @@ Future<List<File>> pickFileDialog() async {
                 CupertinoActionSheetAction(
                   onPressed: () async {
                     final files = await pickFile();
-                    if (files != null) listFile.addAll(files);
+                    if (files != null && files.length > 0) listFile.addAll(files);
                     Get.back();
                   },
                   child: Text(
@@ -243,7 +243,7 @@ Future<List<File>> pickFileDialog() async {
                 CupertinoActionSheetAction(
                   onPressed: () async {
                     final files = await getImage();
-                    if (files != null) listFile.addAll(files);
+                    if (files != null && files.length > 0) listFile.addAll(files);
                     Get.back();
                   },
                   child: Text(

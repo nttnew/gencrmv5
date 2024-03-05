@@ -40,10 +40,12 @@ class _FieldInputPercentState extends State<FieldInputPercent> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: "Quicksand",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: COLORS.RED))
+                          fontFamily: "Quicksand",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: COLORS.RED,
+                        ),
+                      )
                     : TextSpan(),
               ],
             ),
@@ -58,36 +60,41 @@ class _FieldInputPercentState extends State<FieldInputPercent> {
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: COLORS.ffBEB4B4)),
             child: Padding(
-              padding: EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 16),
+              padding: EdgeInsets.only(
+                left: 10,
+                top: 5,
+                bottom: 5,
+                right: 16,
+              ),
               child: Row(
                 children: [
                   Expanded(
                     child: TextField(
                       textCapitalization: TextCapitalization.sentences,
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                      style: AppStyle.DEFAULT_14_BOLD,
                       keyboardType: TextInputType.number,
                       onChanged: (text) {
                         if (int.parse(text) >= 0 && int.parse(text) <= 100)
                           widget.onChanged(text);
                         else {
-                          // _editingController.text="";
                           _editingController.clear();
                         }
                       },
                       controller: _editingController,
                       decoration: InputDecoration(
-                          hintStyle: AppStyle.DEFAULT_14W500,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                          isDense: true),
+                        hintStyle: AppStyle.DEFAULT_14,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                        isDense: true,
+                      ),
                     ),
                   ),
                   WidgetText(
                     title: "%",
-                    style: AppStyle.DEFAULT_14
-                        .copyWith(fontWeight: FontWeight.w700),
+                    style: AppStyle.DEFAULT_14.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
                   )
                 ],
               ),

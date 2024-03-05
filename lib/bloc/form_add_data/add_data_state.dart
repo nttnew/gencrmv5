@@ -8,44 +8,58 @@ abstract class AddDataState extends Equatable {
 
 class InitAddDataState extends AddDataState {}
 
-class LoadingAddCustomerOrState extends AddDataState {}
+// class LoadingAddCustomerOrState extends AddDataState {}
+//
+// class SuccessAddCustomerOrState extends AddDataState {
+//   final List<String> result;
+//
+//   SuccessAddCustomerOrState(this.result);
+//   @override
+//   List<Object> get props => [result];
+// }
+//
+// class ErrorAddCustomerOrState extends AddDataState {
+//   final String msg;
+//
+//   ErrorAddCustomerOrState(this.msg);
+//   @override
+//   List<Object> get props => [msg];
+// }
 
-class SuccessAddCustomerOrState extends AddDataState {
-  final List<String> result;
+// class LoadingEditCustomerState extends AddDataState {}
+//
+// class SuccessEditCustomerState extends AddDataState {}
+//
+// class ErrorEditCustomerState extends AddDataState {
+//   final String msg;
+//
+//   ErrorEditCustomerState(this.msg);
+//   @override
+//   List<Object> get props => [msg];
+// }
 
-  SuccessAddCustomerOrState(this.result);
-  @override
-  List<Object> get props => [result];
+class LoadingAddData extends AddDataState {}
+
+class SuccessAddData extends AddDataState {
+  final List<dynamic>? dataSPKH;
+  final String? idKH;
+  final List<String>? result;
+  final bool isEdit;
+
+
+
+  SuccessAddData({
+    this.dataSPKH,
+    this.idKH,
+    this.result,
+    this.isEdit = false,
+  });
 }
 
-class ErrorAddCustomerOrState extends AddDataState {
+class ErrorAddData extends AddDataState {
   final String msg;
 
-  ErrorAddCustomerOrState(this.msg);
-  @override
-  List<Object> get props => [msg];
-}
-
-class LoadingEditCustomerState extends AddDataState {}
-
-class SuccessEditCustomerState extends AddDataState {}
-
-class ErrorEditCustomerState extends AddDataState {
-  final String msg;
-
-  ErrorEditCustomerState(this.msg);
-  @override
-  List<Object> get props => [msg];
-}
-
-class LoadingAddContactCustomerState extends AddDataState {}
-
-class SuccessAddContactCustomerState extends AddDataState {}
-
-class ErrorAddContactCustomerState extends AddDataState {
-  final String msg;
-
-  ErrorAddContactCustomerState(this.msg);
+  ErrorAddData(this.msg);
   @override
   List<Object> get props => [msg];
 }

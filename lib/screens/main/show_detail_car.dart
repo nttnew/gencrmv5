@@ -217,7 +217,6 @@ class _DetailCarState extends State<DetailCar> {
                                 itemTextIcon(
                                   styleText: AppStyle.DEFAULT_14.copyWith(
                                     fontWeight: FontWeight.w400,
-                                    color: COLORS.TEXT_BLUE_BOLD,
                                   ),
                                   textPlus: getT(KeyT.so_phieu),
                                   text: _blocLogin.xeDichVu?.soPhieu ?? '',
@@ -253,14 +252,13 @@ class _DetailCarState extends State<DetailCar> {
                                   _blocLogin,
                                 );
                               }),
-                          if (listSP.length > 0)
-                            Container(
-                              margin: EdgeInsets.only(
-                                top: 20,
-                              ),
-                              height: 1,
-                              color: COLORS.GREY_400,
+                          Container(
+                            margin: EdgeInsets.only(
+                              top: 20,
                             ),
+                            height: 1,
+                            color: COLORS.GREY_400,
+                          ),
                           ListView.builder(
                               physics: NeverScrollableScrollPhysics(),
                               padding: EdgeInsets.only(
@@ -275,6 +273,13 @@ class _DetailCarState extends State<DetailCar> {
                                   dataDV: listSP[i],
                                 );
                               }),
+                          if (listSP.length == 0)
+                            Text(
+                              getT(KeyT.no_data),
+                              style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                                color: COLORS.GREY,
+                              ),
+                            )
                         ],
                       ),
                     ),
@@ -291,8 +296,9 @@ class _DetailCarState extends State<DetailCar> {
                                   ModuleMy.HOP_DONG,
                                 ),
                             onTap: () {
-                              AppNavigator.navigateEditContractScreen(
-                                _blocLogin.xeDichVu?.id ?? '',
+                              AppNavigator.navigateForm(
+                                type: EDIT_CONTRACT,
+                                id: int.tryParse(_blocLogin.xeDichVu?.id ?? ''),
                                 onRefresh: () {
                                   _blocLogin.getDetailXeDichVu();
                                 },

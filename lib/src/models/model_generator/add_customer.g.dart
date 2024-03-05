@@ -35,6 +35,13 @@ CustomerIndividualItemData _$CustomerIndividualItemDataFromJson(
       (json['button'] as List<dynamic>?)
           ?.map((e) => ButtonRes.fromJson(e as Map<String, dynamic>))
           .toList(),
+      json['field_parent'] == null
+          ? null
+          : FieldParent.fromJson(json['field_parent'] as Map<String, dynamic>),
+      json['field_search'] == null
+          ? null
+          : FieldParent.fromJson(json['field_search'] as Map<String, dynamic>),
+      json['is_load'] as bool?,
     );
 
 Map<String, dynamic> _$CustomerIndividualItemDataToJson(
@@ -58,6 +65,9 @@ Map<String, dynamic> _$CustomerIndividualItemDataToJson(
       'field_value': instance.field_value,
       'products': instance.products,
       'button': instance.button,
+      'field_parent': instance.field_parent,
+      'field_search': instance.field_search,
+      'is_load': instance.is_load,
     };
 
 ChuKyResponse _$ChuKyResponseFromJson(Map<String, dynamic> json) =>
@@ -191,4 +201,19 @@ Map<String, dynamic> _$ButtonResToJson(ButtonRes instance) => <String, dynamic>{
       'field_label': instance.field_label,
       'field_url': instance.field_url,
       'field_type': instance.field_type,
+    };
+
+FieldParent _$FieldParentFromJson(Map<String, dynamic> json) => FieldParent(
+      json['field_value'] as String?,
+      json['field_keyparam'] as String?,
+      json['keysearch'] as String?,
+      json['field_url'] as String?,
+    );
+
+Map<String, dynamic> _$FieldParentToJson(FieldParent instance) =>
+    <String, dynamic>{
+      'field_value': instance.field_value,
+      'field_keyparam': instance.field_keyparam,
+      'keysearch': instance.keysearch,
+      'field_url': instance.field_url,
     };

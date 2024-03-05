@@ -66,30 +66,35 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
 
     list.add(ModuleThaoTac(
       title:
-          "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
+          '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd(
-            "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
-            ADD_JOB_CONTRACT,
-            id: int.parse(id), onRefresh: () {
-          _bloc.controllerCV.reloadData();
-        });
+        AppNavigator.navigateForm(
+          title:
+              '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
+          type: ADD_JOB_CONTRACT,
+          id: int.parse(id),
+          onRefresh: () {
+            _bloc.controllerCV.reloadData();
+          },
+        );
       },
     ));
 
     list.add(ModuleThaoTac(
-      title: "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
+      title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
       icon: ICONS.IC_ADD_SUPPORT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd(
-            "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}",
-            ADD_SUPPORT_CONTRACT,
-            id: int.parse(id), onRefresh: () {
-          _bloc.controllerHT.reloadData();
-        });
+        AppNavigator.navigateForm(
+          title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
+          type: ADD_SUPPORT_CONTRACT,
+          id: int.parse(id),
+          onRefresh: () {
+            _bloc.controllerHT.reloadData();
+          },
+        );
       },
     ));
 
@@ -122,9 +127,13 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditContractScreen(id, onRefresh: () {
-          _bloc.add(InitGetDetailContractEvent(int.parse(id)));
-        });
+        AppNavigator.navigateForm(
+          type: EDIT_CONTRACT,
+          id: int.tryParse(id),
+          onRefresh: () {
+            _bloc.add(InitGetDetailContractEvent(int.parse(id)));
+          },
+        );
       },
     ));
 

@@ -80,13 +80,12 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
       final response = await userRepository.addIndividualCustomer(data: data);
 
       if (isSuccess(response.code)) {
-        if (files != null) {
+        if (files != null && files.length > 0) {
           final responseUpload = await userRepository.uploadMultiFileBase(
-              id: response.data!.id.toString(),
+              id: response.data?.id.toString() ?? '',
               files: files,
               module: getURLModule(Module.KHACH_HANG));
-          if ((responseUpload.code == BASE_URL.SUCCESS) ||
-              (responseUpload.code == BASE_URL.SUCCESS_200)) {
+          if (isSuccess(responseUpload.code)) {
             LoadingApi().popLoading();
             yield SuccessAddCustomerIndividualState(
                 ['${response.id}', '${response.name}']);

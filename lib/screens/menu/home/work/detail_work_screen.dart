@@ -155,12 +155,14 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditDataScreen(id.toString(), EDIT_JOB,
-            onRefresh: () {
-          WorkBloc.of(context).loadMoreController.reloadData();
-
-          _bloc.add(InitGetDetailWorkEvent(id));
-        });
+        AppNavigator.navigateForm(
+          type: EDIT_JOB,
+          id: id,
+          onRefresh: () {
+            WorkBloc.of(context).loadMoreController.reloadData();
+            _bloc.add(InitGetDetailWorkEvent(id));
+          },
+        );
       },
     ));
 

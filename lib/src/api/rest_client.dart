@@ -1,14 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:gen_crm/src/models/model_generator/add_data_response.dart';
-import 'package:gen_crm/src/models/model_generator/add_voucher_response.dart';
 import 'package:gen_crm/src/models/model_generator/detail_product_module_response.dart';
 import 'package:gen_crm/src/models/model_generator/get_phone_cus.dart';
 import 'package:gen_crm/src/models/model_generator/info_acc.dart';
 import 'package:gen_crm/src/models/model_generator/manager_filter_response.dart';
-import 'package:gen_crm/src/models/model_generator/post_info_car_response.dart';
 import 'package:gen_crm/src/models/model_generator/product_customer_edit_response.dart';
-import 'package:gen_crm/src/models/request/voucher_service_request.dart';
 import 'package:dio/dio.dart';
 import 'package:gen_crm/src/models/model_generator/add_customer.dart';
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
@@ -202,19 +199,19 @@ abstract class RestClient {
   );
 
   @POST(BASE_URL.ADD_SERVICE_VOUCHER)
-  Future<AddVoucherResponse> postAddServiceVoucher(
+  Future<AddCustomerIndividual> postAddServiceVoucher(
     @Field('so_dien_thoai') String soDienThoai,
     @Field('bien_so') String bienSo,
   );
 
-  @POST(BASE_URL.POST_INFO_CAR)
-  Future<InfoCar> postInfoCar(
-    @Part(name: "idxe") String idxe,
-  );
+  // @POST(BASE_URL.POST_INFO_CAR)
+  // Future<InfoCar> postInfoCar(
+  //   @Part(name: "idxe") String idxe,
+  // );
 
   @POST(BASE_URL.SAVE_SERVICE_VOUCHER)
   Future<dynamic> saveServiceVoucher(
-    @Body() VoucherServiceRequest voucherServiceRequest,
+    @Body() Map<String, dynamic> map,
   );
 
   @POST(BASE_URL.LIST_CAR_INFO)

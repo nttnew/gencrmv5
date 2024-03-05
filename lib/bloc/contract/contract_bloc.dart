@@ -52,7 +52,7 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
         loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';
-    }  catch (e) {
+    } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
       LoadingApi().popLoading();
       return resDynamic;

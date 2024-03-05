@@ -60,7 +60,8 @@ class ButtonBaseSmall extends StatelessWidget {
       onTap: () => onTap(),
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(10),
+        height: 40,
+        padding: EdgeInsets.symmetric(vertical: 8,),
         decoration: BoxDecoration(
           color: HexColor("#D0F1EB"),
           borderRadius: BorderRadius.circular(20),
@@ -73,6 +74,8 @@ class ButtonBaseSmall extends StatelessWidget {
               fontWeight: FontWeight.w700,
               fontSize: 14,
             ),
+            textAlign: TextAlign.center,
+            maxLines: 2,
           ),
         ),
       ),

@@ -7,6 +7,7 @@ import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/menu/form/widget/location_select.dart';
+import 'package:gen_crm/screens/menu/form/widget/render_check_box.dart';
 import 'package:gen_crm/screens/menu/home/customer/widget/input_dropDown.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
@@ -104,7 +105,7 @@ class _FormAddSignState extends State<FormAddSign> {
         appBar: AppbarBaseNormal(title.toUpperCase().capitalizeFirst ?? ''),
         body: BlocListener<AddDataBloc, AddDataState>(
           listener: (context, state) async {
-            if (state is SuccessAddCustomerOrState) {
+            if (state is SuccessAddData) {
               ShowDialogCustom.showDialogBase(
                 title: getT(KeyT.notification),
                 content: getT(KeyT.new_data_added_successfully),
@@ -116,24 +117,7 @@ class _FormAddSignState extends State<FormAddSign> {
                       .reloadData();
                 },
               );
-            }
-            if (state is ErrorAddCustomerOrState) {
-              ShowDialogCustom.showDialogBase(
-                title: getT(KeyT.notification),
-                content: state.msg,
-              );
-            }
-            if (state is SuccessAddContactCustomerState) {
-              ShowDialogCustom.showDialogBase(
-                title: getT(KeyT.notification),
-                content: getT(KeyT.new_data_added_successfully),
-                onTap1: () {
-                  Get.back();
-                  Get.back();
-                },
-              );
-            }
-            if (state is ErrorAddContactCustomerState) {
+            } else if (state is ErrorAddData) {
               ShowDialogCustom.showDialogBase(
                 title: getT(KeyT.notification),
                 content: state.msg,
@@ -146,106 +130,102 @@ class _FormAddSignState extends State<FormAddSign> {
             child: SingleChildScrollView(
               padding: EdgeInsets.all(16),
               controller: scrollController,
-              child: Column(
-                children: [
-                  BlocBuilder<FormAddBloc, FormAddState>(
-                      bloc: _bloc,
-                      builder: (context, state) {
-                        if (state is LoadingFormAddCustomerOrState) {
-                          addData = [];
-                          data = [];
-                          return SizedBox.shrink();
-                        } else if (state is ErrorFormAddCustomerOrState) {
-                          return Text(
-                            state.msg,
-                            style: AppStyle.DEFAULT_16_T,
-                          );
-                        } else if (state is SuccessFormAddCustomerOrState) {
-                          soTien = state.soTien ?? 0;
-                          if (addData.isEmpty) {
-                            for (int i = 0; i < state.listAddData.length; i++) {
-                              addData.add(ModelItemAdd(
-                                  group_name:
-                                      state.listAddData[i].group_name ?? '',
-                                  data: []));
-                              for (int j = 0;
-                                  j < (state.listAddData[i].data?.length ?? 0);
-                                  j++) {
-                                addData[i].data.add(ModelDataAdd(
-                                      parent:
-                                          state.listAddData[i].data?[j].parent,
-                                      label: state
-                                          .listAddData[i].data?[j].field_name,
-                                      value: state.listAddData[i].data?[j]
-                                          .field_set_value
-                                          .toString(),
-                                      required: state.listAddData[i].data?[j]
-                                          .field_require,
-                                    ));
-                              }
-                            }
-
-                            if (state.chuKyResponse != null &&
-                                chuKyModelResponse.isEmpty) {
-                              for (final ChuKyModelResponse value
-                                  in (state.chuKyResponse?.first.data ?? [])) {
-                                chuKyModelResponse.add(value);
-                              }
-                            }
+              child: BlocBuilder<FormAddBloc, FormAddState>(
+                  bloc: _bloc,
+                  builder: (context, state) {
+                    if (state is LoadingForm) {
+                      addData = [];
+                      data = [];
+                      return SizedBox.shrink();
+                    } else if (state is ErrorForm) {
+                      return Text(
+                        state.msg,
+                        style: AppStyle.DEFAULT_16_T,
+                      );
+                    } else if (state is SuccessForm) {
+                      soTien = state.soTien ?? 0;
+                      if (addData.isEmpty) {
+                        for (int i = 0; i < state.listAddData.length; i++) {
+                          addData.add(ModelItemAdd(
+                              group_name: state.listAddData[i].group_name ?? '',
+                              data: []));
+                          for (int j = 0;
+                              j < (state.listAddData[i].data?.length ?? 0);
+                              j++) {
+                            addData[i].data.add(ModelDataAdd(
+                                  parent: state.listAddData[i].data?[j].parent,
+                                  label:
+                                      state.listAddData[i].data?[j].field_name,
+                                  value: state
+                                      .listAddData[i].data?[j].field_set_value
+                                      .toString(),
+                                  required: state
+                                      .listAddData[i].data?[j].field_require,
+                                ));
                           }
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                padding: EdgeInsets.zero,
-                                itemCount: state.listAddData.length,
-                                itemBuilder: (context, indexParent) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: 25,
-                                      ),
-                                      if (state.listAddData[indexParent]
-                                              .group_name !=
-                                          null)
-                                        WidgetText(
-                                          title: state.listAddData[indexParent]
-                                                  .group_name ??
-                                              '',
-                                          style: AppStyle.DEFAULT_18_BOLD,
-                                        ),
-                                      SizedBox(
-                                        height: 25,
-                                      ),
-                                      _itemField(
-                                        state.listAddData[indexParent].data ??
-                                            [],
-                                        indexParent,
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                              _signatureUi(state.chuKyResponse),
-                              SizedBox(
-                                height: 25,
-                              ),
-                              FileLuuBase(
-                                context,
-                                () => onClickSave(),
-                                isAttack: false,
-                              ),
-                            ],
-                          );
-                        } else
-                          return SizedBox.shrink();
-                      }),
-                ],
-              ),
+                        }
+
+                        if (state.chuKyResponse != null &&
+                            chuKyModelResponse.isEmpty) {
+                          for (final ChuKyModelResponse value
+                              in (state.chuKyResponse?.first.data ?? [])) {
+                            chuKyModelResponse.add(value);
+                          }
+                        }
+                      }
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            itemCount: state.listAddData.length,
+                            itemBuilder: (context, indexParent) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    height: 0.01 *
+                                        MediaQuery.of(context).size.height,
+                                  ),
+                                  if ((state.listAddData[indexParent]
+                                              .group_name ??
+                                          '') !=
+                                      '') ...[
+                                    WidgetText(
+                                      title: state.listAddData[indexParent]
+                                              .group_name ??
+                                          '',
+                                      style: AppStyle.DEFAULT_18_BOLD,
+                                    ),
+                                    Container(
+                                      height: 0.01 *
+                                          MediaQuery.of(context).size.height,
+                                    ),
+                                  ],
+                                  _itemField(
+                                    state.listAddData[indexParent].data ?? [],
+                                    indexParent,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                          _signatureUi(state.chuKyResponse),
+                          SizedBox(
+                            height: 25,
+                          ),
+                          FileLuuBase(
+                            context,
+                            () => onClickSave(),
+                            isAttack: false,
+                          ),
+                        ],
+                      );
+                    } else
+                      return SizedBox.shrink();
+                  }),
             ),
           ),
         ));
@@ -278,7 +258,7 @@ class _FormAddSignState extends State<FormAddSign> {
                               : InputDropdown(
                                   dropdownItemList: data.field_datasource ?? [],
                                   data: data,
-                                  onSuccess: (data) {
+                                  onChange: (data) {
                                     addData[indexParent]
                                         .data[indexChild]
                                         .value = data;
@@ -762,27 +742,29 @@ class _FormAddSignState extends State<FormAddSign> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: data.field_label ?? '',
-              style: AppStyle.DEFAULT_14W600,
-              children: <TextSpan>[
-                data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: 'Quicksand',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: COLORS.RED))
-                    : TextSpan(),
-              ],
+          if (data.field_label != '') ...[
+            RichText(
+              textScaleFactor: MediaQuery.of(context).textScaleFactor,
+              text: TextSpan(
+                text: data.field_label ?? '',
+                style: AppStyle.DEFAULT_14W600,
+                children: <TextSpan>[
+                  data.field_require == 1
+                      ? TextSpan(
+                          text: '*',
+                          style: TextStyle(
+                              fontFamily: 'Quicksand',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: COLORS.RED))
+                      : TextSpan(),
+                ],
+              ),
             ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
+            SizedBox(
+              height: 8,
+            ),
+          ],
           StreamBuilder<int>(
               stream: starStream,
               builder: (context, snapshot) {
@@ -905,67 +887,6 @@ class _FormAddSignState extends State<FormAddSign> {
     } else {
       AddDataBloc.of(context).add(SignEvent(data, type));
     }
-  }
-}
-
-class RenderCheckBox extends StatefulWidget {
-  RenderCheckBox({Key? key, required this.onChange, required this.data})
-      : super(key: key);
-
-  final Function? onChange;
-  final CustomerIndividualItemData data;
-
-  @override
-  State<RenderCheckBox> createState() => _RenderCheckBoxState();
-}
-
-class _RenderCheckBoxState extends State<RenderCheckBox> {
-  bool isCheck = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Row(
-        children: [
-          Container(
-            width: 24,
-            height: 24,
-            child: Checkbox(
-              value: isCheck,
-              onChanged: (bool? value) {
-                widget.onChange!(value);
-                setState(() {
-                  isCheck = value!;
-                });
-              },
-            ),
-          ),
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: widget.data.field_label ?? '',
-              style: TextStyle(
-                  fontFamily: 'Quicksand',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: COLORS.BLACK),
-              children: <TextSpan>[
-                widget.data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: 'Quicksand',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: COLORS.RED))
-                    : TextSpan(),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
 

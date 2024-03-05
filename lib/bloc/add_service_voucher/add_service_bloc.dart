@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dartx/dartx.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,7 +35,7 @@ class ServiceVoucherBloc
     if (event is PostServiceVoucherEvent) {
       yield* _postAddServiceVoucher(event.sdt, event.bienSoXe);
     } else if (event is SaveVoucherServiceEvent) {
-      yield* _postAddSave(event.voucherServiceRequest, event.listFile);
+      // yield* _postAddSave(event.voucherServiceRequest, event.listFile);
     }
   }
 
@@ -115,18 +114,18 @@ class ServiceVoucherBloc
     }
   }
 
-  List<List<dynamic>>? listThemXe(List<List<dynamic>>? list, String bienSoXe) {
-    if (bienSoXe != '') {
-      for (final value in list ?? []) {
-        if (value[1].toLowerCase() == bienSoXe.toLowerCase()) {
-          getCar(value[0]);
-        }
-      }
-    }
-    final listXe = list;
-    listXe?.add(['', THEM_MOI_XE, '', '']);
-    return listXe ?? null;
-  }
+  // List<List<dynamic>>? listThemXe(List<List<dynamic>>? list, String bienSoXe) {
+  //   if (bienSoXe != '') {
+  //     for (final value in list ?? []) {
+  //       if (value[1].toLowerCase() == bienSoXe.toLowerCase()) {
+  //         getCar(value[0]);
+  //       }
+  //     }
+  //   }
+  //   final listXe = list;
+  //   listXe?.add(['', THEM_MOI_XE, '', '']);
+  //   return listXe ?? null;
+  // }
 
   String? checkXe(List<List<dynamic>>? list, String bienSoXe) {
     if (bienSoXe != '') {
@@ -261,22 +260,22 @@ class ServiceVoucherBloc
     listPhienBan.add(list);
   }
 
-  void getCar(String id) {
-    if (id.trim() == '') {
-      infoCar.add(InfoCar(
-        soKilomet: '',
-        soMay: '',
-        soKhung: '',
-        chiTietXe: '',
-        idbg: '',
-        bienSo: '',
-        hangXe: '',
-        mauXe: '',
-      ));
-    } else {
-      userRepository.postInfoCar(id).then((value) => infoCar.add(value));
-    }
-  }
+  // void getCar(String id) {
+  //   if (id.trim() == '') {
+  //     infoCar.add(InfoCar(
+  //       soKilomet: '',
+  //       soMay: '',
+  //       soKhung: '',
+  //       chiTietXe: '',
+  //       idbg: '',
+  //       bienSo: '',
+  //       hangXe: '',
+  //       mauXe: '',
+  //     ));
+  //   } else {
+  //     userRepository.postInfoCar(id).then((value) => infoCar.add(value));
+  //   }
+  // }
 
   String? getTextInit({
     String? name,
@@ -322,43 +321,43 @@ class ServiceVoucherBloc
     }
   }
 
-  Stream<ServiceVoucherState> _postAddSave(
-    VoucherServiceRequest voucherServiceRequest,
-    List<File>? listFile,
-  ) async* {
-    LoadingApi().pushLoading();
-    try {
-      yield LoadingServiceVoucherState();
-      final response =
-          await userRepository.saveServiceVoucher(voucherServiceRequest);
-      final statusCode =
-          (response as Map<String, dynamic>).getOrElse('code', () => -1);
-      final msg = response.getOrElse('msg', () => -1);
-      final data = response.getOrElse('data', () => -1);
-      if (isSuccess(statusCode)) {
-        if (listFile?.isNotEmpty ?? false) {
-          final responseUpload = await userRepository.uploadMultiFileBase(
-              id: data['recordId'].toString(),
-              files: listFile ?? [],
-              module: getURLModule(Module.HOP_DONG));
-          if (isSuccess(responseUpload.code)) {
-            yield SaveServiceVoucherState(responseUpload.msg ?? '');
-          } else {
-            yield ErrorGetServiceVoucherState(responseUpload.msg ?? '');
-          }
-        } else {
-          yield SaveServiceVoucherState(msg);
-        }
-      } else if (statusCode == BASE_URL.SUCCESS_999) {
-        loginSessionExpired();
-      } else {
-        yield ErrorGetServiceVoucherState(
-            (response).getOrElse('msg', () => -1) ?? '');
-      }
-    } catch (e) {
-      yield ErrorGetServiceVoucherState(getT(KeyT.an_error_occurred));
-    }
-  }
+  // Stream<ServiceVoucherState> _postAddSave(
+  //   VoucherServiceRequest voucherServiceRequest,
+  //   List<File>? listFile,
+  // ) async* {
+  //   LoadingApi().pushLoading();
+  //   try {
+  //     yield LoadingServiceVoucherState();
+  //     final response =
+  //         await userRepository.saveServiceVoucher(voucherServiceRequest);
+  //     final statusCode =
+  //         (response as Map<String, dynamic>).getOrElse('code', () => -1);
+  //     final msg = response.getOrElse('msg', () => -1);
+  //     final data = response.getOrElse('data', () => -1);
+  //     if (isSuccess(statusCode)) {
+  //       if (listFile?.isNotEmpty ?? false) {
+  //         final responseUpload = await userRepository.uploadMultiFileBase(
+  //             id: data['recordId'].toString(),
+  //             files: listFile ?? [],
+  //             module: getURLModule(Module.HOP_DONG));
+  //         if (isSuccess(responseUpload.code)) {
+  //           yield SaveServiceVoucherState(responseUpload.msg ?? '');
+  //         } else {
+  //           yield ErrorGetServiceVoucherState(responseUpload.msg ?? '');
+  //         }
+  //       } else {
+  //         yield SaveServiceVoucherState(msg);
+  //       }
+  //     } else if (statusCode == BASE_URL.SUCCESS_999) {
+  //       loginSessionExpired();
+  //     } else {
+  //       yield ErrorGetServiceVoucherState(
+  //           (response).getOrElse('msg', () => -1) ?? '');
+  //     }
+  //   } catch (e) {
+  //     yield ErrorGetServiceVoucherState(getT(KeyT.an_error_occurred));
+  //   }
+  // }
 
   Future<bool> checkHasCar(String bienSoXe) async {
     LoadingApi().pushLoading();
@@ -366,12 +365,13 @@ class ServiceVoucherBloc
       final response = await userRepository.postAddServiceVoucher('', bienSoXe);
       if (isSuccess(response.code)) {
         LoadingApi().popLoading();
-        final list = response.data?.data ?? [];
-        for (final value in list) {
-          for (final valueChild in value.data ?? []) {
-            if (valueChild.fieldName == 'hdsan_pham_kh') {
-              return valueChild.fieldDatasource != [] &&
-                  valueChild.fieldDatasource != null;
+        final List<AddCustomerIndividualData> list = response.data ?? [];
+        for (final AddCustomerIndividualData value in list) {
+          for (final CustomerIndividualItemData valueChild
+              in value.data ?? []) {
+            if (valueChild.field_label == 'hdsan_pham_kh') {
+              return valueChild.field_datasource != [] &&
+                  valueChild.field_datasource != null;
             }
           }
         }
@@ -380,7 +380,7 @@ class ServiceVoucherBloc
       }
     } catch (e) {
       LoadingApi().popLoading();
-      throw e;
+      return false;
     }
     LoadingApi().popLoading();
     return false;
@@ -394,45 +394,7 @@ class ServiceVoucherBloc
       final response =
           await userRepository.postAddServiceVoucher(sdt, bienSoXe);
       if (isSuccess(response.code)) {
-        final List<AddCustomerIndividualData> list = response.data?.data
-                ?.map(
-                  (e) => AddCustomerIndividualData(
-                    e.data?.map((f) {
-                          return CustomerIndividualItemData(
-                            f.fieldId,
-                            f.fieldName,
-                            f.fieldLabel,
-                            f.fieldType,
-                            f.fieldValidation,
-                            f.fieldValidationMessage,
-                            f.fieldMaxlength,
-                            f.fieldHidden,
-                            null,
-                            f.fieldRequire,
-                            f.fieldReadOnly,
-                            f.fieldSetValue,
-                            f.fieldName == 'hdsan_pham_kh' //theem xe
-                                ? listThemXe(f.fieldDatasource, bienSoXe)
-                                : f.fieldDatasource,
-                            f.fieldSpecial,
-                            f.fieldSetValueDatasource,
-                            f.fieldName == 'hdsan_pham_kh' &&
-                                    bienSoXe != '' //theem xe
-                                ? checkXe(f.fieldDatasource, bienSoXe)
-                                : f.fieldValue,
-                            null,
-                            // e.fieldProducts
-                            f.buttons,
-                          );
-                        }).toList() ??
-                        [],
-                    e.groupName,
-                    null,
-                  ),
-                )
-                .toList() ??
-            [];
-        yield GetServiceVoucherState(list);
+        yield GetServiceVoucherState(response.data ?? []);
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {

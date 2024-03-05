@@ -7,11 +7,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/screens/call/init_app_call.dart';
-import 'package:gen_crm/screens/menu/form/add_service_voucher/add_service_voucher_step2_screen.dart';
-import 'package:gen_crm/screens/menu/form/form_edit.dart';
 import 'package:gen_crm/screens/menu/form/form_sign.dart';
 import 'package:gen_crm/screens/menu/form/product_list/list_product.dart';
-import 'package:gen_crm/screens/menu/form/update_contract.dart';
 import 'package:gen_crm/screens/menu/form/add_note.dart';
 import 'package:gen_crm/screens/menu/form/form_add_data.dart';
 import 'package:gen_crm/screens/menu/home/notification/notification_screen.dart';
@@ -202,10 +199,10 @@ class _MyAppState extends ConsumerState<MyApp> {
           name: ROUTE_NAMES.INFO_CONTRACT,
           page: () => DetailInfoContract(),
         ),
-        GetPage(
-          name: ROUTE_NAMES.ADD_CONTRACT,
-          page: () => FormAddContract(),
-        ),
+        // GetPage(
+        //   name: ROUTE_NAMES.ADD_CONTRACT,
+        //   page: () => FormAddContract(),
+        // ),
         GetPage(
           name: ROUTE_NAMES.SUPPORT,
           page: () => SupportScreen(),
@@ -238,14 +235,14 @@ class _MyAppState extends ConsumerState<MyApp> {
           name: ROUTE_NAMES.DETAIL_CUSTOMER,
           page: () => DetailCustomerScreen(),
         ),
-        GetPage(
-          name: ROUTE_NAMES.ADD_CUSTOMER,
-          page: () => AddCustomer(),
-        ),
-        GetPage(
-          name: ROUTE_NAMES.ADD_SERVICE_VOUCHER_STEP_TWO,
-          page: () => AddServiceVoucherStepTwoScreen(),
-        ),
+        // GetPage(
+        //   name: ROUTE_NAMES.ADD_CUSTOMER,
+        //   page: () => AddCustomer(),
+        // ),
+        // GetPage(
+        //   name: ROUTE_NAMES.ADD_SERVICE_VOUCHER_STEP_TWO,
+        //   page: () => AddServiceVoucherStepTwoScreen(),
+        // ),
         GetPage(
           name: ROUTE_NAMES.NOTIFICATION,
           page: () => NotificationScreen(),
@@ -254,14 +251,10 @@ class _MyAppState extends ConsumerState<MyApp> {
           name: ROUTE_NAMES.FORM_ADD,
           page: () => FormAddData(),
         ),
-        GetPage(
-          name: ROUTE_NAMES.FORM_ADD_CUSTOMER_GROUP,
-          page: () => FormAddData(),
-        ),
-        GetPage(
-          name: ROUTE_NAMES.FORM_EDIT,
-          page: () => FormEdit(),
-        ),
+        // GetPage(
+        //   name: ROUTE_NAMES.FORM_EDIT,
+        //   page: () => FormEdit(),
+        // ),
         GetPage(
           name: ROUTE_NAMES.ADD_NOTE,
           page: () => AddNote(),
@@ -270,10 +263,10 @@ class _MyAppState extends ConsumerState<MyApp> {
           name: ROUTE_NAMES.ADD_PRODUCT,
           page: () => ListProduct(),
         ),
-        GetPage(
-          name: ROUTE_NAMES.EDIT_CONTRACT,
-          page: () => EditContract(),
-        ),
+        // GetPage(
+        //   name: ROUTE_NAMES.EDIT_CONTRACT,
+        //   page: () => EditContract(),
+        // ),
         GetPage(
           name: ROUTE_NAMES.DETAIL_PRODUCT,
           page: () => DetailProductScreen(),

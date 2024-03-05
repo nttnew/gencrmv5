@@ -45,16 +45,18 @@ class _InfoChancePageState extends State<InfoChancePage> {
   getThaoTac() {
     list.add(ModuleThaoTac(
       title:
-          "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
+          '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
       icon: ICONS.IC_ADD_WORD_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormAdd(
-            "${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}",
-            ADD_CHANCE_JOB,
-            id: int.parse(id), onRefresh: () {
-          _bloc.controllerCV.reloadData();
-        });
+        AppNavigator.navigateForm(
+            title:
+                '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
+            type: ADD_CHANCE_JOB,
+            id: int.parse(id),
+            onRefresh: () {
+              _bloc.controllerCV.reloadData();
+            });
       },
     ));
 
@@ -87,9 +89,13 @@ class _InfoChancePageState extends State<InfoChancePage> {
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateEditDataScreen(id, EDIT_CHANCE, onRefresh: () {
-          _bloc.add(InitGetListDetailEvent(int.parse(id)));
-        });
+        AppNavigator.navigateForm(
+          type: EDIT_CHANCE,
+          id: int.tryParse(id),
+          onRefresh: () {
+            _bloc.add(InitGetListDetailEvent(int.parse(id)));
+          },
+        );
       },
     ));
 

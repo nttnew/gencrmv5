@@ -47,15 +47,15 @@ class ContactByCustomerBloc
     return true;
   }
 
-  void getCar(String id) {
-    if (id.trim() == '') {
-      chiTietXe.add('');
-    } else {
-      userRepository.postInfoCar(id).then((value) {
-        chiTietXe.add(value.chiTietXe ?? '');
-      });
-    }
-  }
+  // void getCar(String id) {
+  //   if (id.trim() == '') {
+  //     chiTietXe.add('');
+  //   } else {
+  //     userRepository.postInfoCar(id).then((value) {
+  //       chiTietXe.add(value.chiTietXe ?? '');
+  //     });
+  //   }
+  // }
 
   Future<void> getXe(String id, {isAddCarNew = false}) async {
     final res = await userRepository.getXe(id: id);

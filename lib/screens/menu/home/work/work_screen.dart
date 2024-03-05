@@ -45,8 +45,11 @@ class _WorkScreenState extends State<WorkScreen> {
   }
 
   _handleRouter(String value) {
-    AppNavigator.navigateFormAdd(value, ADD_JOB,
-        isCheckIn: listAdd.first == value);
+    AppNavigator.navigateForm(
+      title: value,
+      type: ADD_JOB,
+      isCheckIn: listAdd.first == value,
+    );
   }
 
   _getDataFirst() {
@@ -55,7 +58,7 @@ class _WorkScreenState extends State<WorkScreen> {
       isTitle: true,
     );
     listAdd = [
-      '${getT(KeyT.add)} ${getT(KeyT.check_in)}',
+      '${getT(KeyT.add)} ${getT(KeyT.check_in).toLowerCase()}',
       '${getT(KeyT.add)} ${title.toLowerCase()}'
     ];
   }
@@ -192,7 +195,7 @@ class _WorkScreenState extends State<WorkScreen> {
                           _bloc.loadMoreController.reloadData();
                         });
                       },
-                      onSubmit: (String v) {
+                      onChange: (String v) {
                         _bloc.search = v;
                         _bloc.loadMoreController.reloadData();
                       },

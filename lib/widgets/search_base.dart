@@ -6,7 +6,7 @@ import 'package:hexcolor/hexcolor.dart';
 import '../src/app_const.dart';
 
 class SearchBase extends StatefulWidget {
-  final TextEditingController? inputController;
+  final TextEditingController? controller;
   final FormFieldValidator<String>? validator;
   final String? hint, errorText, labelText, initialValue;
   final int? maxLine;
@@ -23,11 +23,12 @@ class SearchBase extends StatefulWidget {
   final BoxDecoration? boxDecoration;
   final TextStyle? hintTextStyle;
   final Function? onClickRight;
-  final Function(String) onSubmit;
+  final Function(String) onChange;
+  final int milliseconds;
   const SearchBase({
     Key? key,
     this.focusNode,
-    this.inputController,
+    this.controller,
     // this.onChanged,
     this.validator,
     this.hint,
@@ -47,7 +48,8 @@ class SearchBase extends StatefulWidget {
     this.boxDecoration,
     this.hintTextStyle,
     this.onClickRight,
-    required this.onSubmit,
+    this.milliseconds = 1500,
+    required this.onChange,
   }) : super(key: key);
 
   @override
@@ -55,7 +57,12 @@ class SearchBase extends StatefulWidget {
 }
 
 class _SearchBaseState extends State<SearchBase> {
-  Debounce debounce = Debounce();
+  late final Debounce debounce;
+  @override
+  void initState() {
+    debounce = Debounce(milliseconds: widget.milliseconds);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,12 +103,16 @@ class _SearchBaseState extends State<SearchBase> {
                 horizontal: 8,
               ),
               child: TextFormField(
-                controller: widget.inputController,
+                controller: widget.controller,
                 onChanged: (v) {
-                  debounce.run(() {
-                    widget.onSubmit(v.trim());
-                    FocusManager.instance.primaryFocus?.unfocus();
-                  });
+                  if (widget.milliseconds == 0) {
+                    widget.onChange(v.trim());
+                  } else {
+                    debounce.run(() {
+                      widget.onChange(v.trim());
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    });
+                  }
                 },
                 enabled: widget.enabled,
                 validator: widget.validator,

@@ -56,11 +56,15 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
   _handleRouter(String value) {
     if (listAdd[0] == value) {
-      AppNavigator.navigateFormAddCustomerGroup(
-          "${getT(KeyT.add)} ${value.toLowerCase()}", ADD_CUSTOMER);
+      AppNavigator.navigateForm(
+        title: '${getT(KeyT.add)} ${value.toLowerCase()}',
+        type: ADD_CUSTOMER_OR,
+      );
     } else if (listAdd[1] == value) {
-      AppNavigator.navigateAddCustomer(
-          "${getT(KeyT.add)} ${value.toLowerCase()}");
+      AppNavigator.navigateForm(
+        title: '${getT(KeyT.add)} ${value.toLowerCase()}',
+        type: ADD_CUSTOMER,
+      );
     } else {
       AppNavigator.navigateCall(title: title);
     }
@@ -209,7 +213,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                           _bloc.loadMoreController.reloadData();
                         });
                       },
-                      onSubmit: (String v) {
+                      onChange: (String v) {
                         _bloc.search = v;
                         _bloc.loadMoreController.reloadData();
                       },

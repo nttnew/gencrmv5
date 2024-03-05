@@ -10,6 +10,10 @@ class InitFormAddCusOrEvent extends FormAddEvent {
   InitFormAddCusOrEvent();
 }
 
+class InitFormAddCustomerEvent extends FormAddEvent {
+  InitFormAddCustomerEvent();
+}
+
 class InitFormAddContactCusEvent extends FormAddEvent {
   final String? id;
 
@@ -177,4 +181,86 @@ class InitFormAddHTProductCustomerEvent extends FormAddEvent {
   InitFormAddHTProductCustomerEvent(this.id);
   @override
   List<Object> get props => [id];
+}
+
+class InitFormAddQuickContract extends FormAddEvent {
+  final String sdt;
+  final String bienSoXe;
+
+  InitFormAddQuickContract(this.sdt, this.bienSoXe);
+  @override
+  List<Object?> get props => [sdt, bienSoXe];
+}
+
+
+class InitFormEditCusEvent extends FormAddEvent {
+  final String? id;
+
+  InitFormEditCusEvent(this.id);
+  @override
+  List<Object?> get props => [id];
+}
+
+class InitFormEditClueEvent extends FormAddEvent {
+  final String? id;
+
+  InitFormEditClueEvent(this.id);
+  @override
+  List<Object?> get props => [id];
+}
+
+class InitFormEditChanceEvent extends FormAddEvent {
+  final String? id;
+
+  InitFormEditChanceEvent(this.id);
+  @override
+  List<Object?> get props => [id];
+}
+
+class InitFormEditJobEvent extends FormAddEvent {
+  final String? id;
+
+  InitFormEditJobEvent(this.id);
+  @override
+  List<Object?> get props => [id];
+}
+
+class InitFormEditSupportEvent extends FormAddEvent {
+  final String? id;
+
+  InitFormEditSupportEvent(this.id);
+  @override
+  List<Object?> get props => [id];
+}
+
+class InitFormEditContractEvent extends FormAddEvent {
+  final String? id;
+
+  InitFormEditContractEvent(this.id);
+  @override
+  List<Object?> get props => [id];
+}
+
+class InitGetContactByCustomerEvent extends FormAddEvent {
+  final String? id;
+
+  InitGetContactByCustomerEvent(this.id);
+  @override
+  List<Object?> get props => [id];
+}
+
+class InitFormEditProductEvent extends FormAddEvent {
+  final String? id;
+
+  InitFormEditProductEvent(this.id);
+  @override
+  List<Object?> get props => [id];
+}
+
+class InitFormEditProductCustomerEvent extends FormAddEvent {
+  final String? id;
+
+  InitFormEditProductCustomerEvent(this.id);
+  @override
+  List<Object?> get props => [id];
 }
