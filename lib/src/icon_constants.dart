@@ -82,7 +82,7 @@ class ICONS {
   static const String IC_FILL_SVG = 'assets/icons/fill_customer.svg';
   static const String IC_FILTER_SVG = 'assets/icons/Filter.svg';
   static const String IC_MAIL_SVG = 'assets/icons/mail.svg';
-  static const String IC_CALL_SVG = 'assets/icons/Call.svg';
+  // static const String IC_CALL_SVG = 'assets/icons/Call.svg';
   static const String IC_PHONE_CUSTOMER_SVG = 'assets/icons/phone_customer.svg';
   static const String IC_MESS = 'assets/icons/Mess.svg';
   static const String IC_NOTIFICATION_SVG = 'assets/icons/notification.svg';
