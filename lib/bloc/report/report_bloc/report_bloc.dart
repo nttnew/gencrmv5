@@ -35,6 +35,7 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
   String? timeFrom;
   String? timeTo;
 
+
   init() {
     location = '';
     kyTaiChinh = null;
@@ -75,7 +76,7 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
       } else {
         resDynamic = response.msg ?? '';
       }
-    }  catch (e) {
+    } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
       LoadingApi().popLoading();
       return resDynamic;
@@ -105,7 +106,7 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
       } else {
         resDynamic = response.msg ?? '';
       }
-    }  catch (e) {
+    } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
       LoadingApi().popLoading();
       return resDynamic;
@@ -133,7 +134,7 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
         loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';
-    }  catch (e) {
+    } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
       LoadingApi().popLoading();
       return resDynamic;
@@ -175,7 +176,7 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
         loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';
-    }  catch (e) {
+    } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
       LoadingApi().popLoading();
       return resDynamic;

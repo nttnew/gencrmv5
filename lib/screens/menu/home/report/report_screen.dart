@@ -217,7 +217,7 @@ class _ReportScreenState extends State<ReportScreen> {
           padding: EdgeInsets.only(
             left: 16,
             right: 16,
-            top: 8,
+            top: 16,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -239,19 +239,27 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 
   _filterRow1() {
+    double w = MediaQuery.of(context).size.width - 32;
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         DropdownButton2(
           value: select,
-          icon: const Icon(Icons.arrow_drop_down_outlined),
-          dropdownWidth: Get.width / 2,
+          icon: SizedBox.shrink(),
           underline: SizedBox.shrink(),
           onChanged: (String? value) {
             setState(() {
               select = value!;
             });
           },
+          dropdownWidth: w * 0.65,
+          dropdownMaxHeight: 300,
+          selectedItemBuilder: (c) => typeReport
+              .map((items) => _itemSelect(
+                    items['name'] ?? '',
+                    wC: 0.65,
+                    sizeT: 16,
+                  ))
+              .toList(),
           items: typeReport
               .map((items) => DropdownMenuItem<String>(
                     onTap: () {
@@ -283,13 +291,20 @@ class _ReportScreenState extends State<ReportScreen> {
                   if (state is SuccessReportWorkState) {
                     if (state.dataTime.length > 0) _initTime(state);
                     return DropdownButton2<String?>(
-                      alignment: Alignment.centerRight,
                       value: _labelTime,
-                      dropdownWidth: 150,
-                      dropdownMaxHeight: 275,
-                      itemHeight: 40,
-                      icon: const Icon(Icons.arrow_drop_down_outlined),
+                      alignment: Alignment.centerRight,
+                      icon: SizedBox.shrink(),
                       underline: SizedBox.shrink(),
+                      dropdownWidth: w * 0.35,
+                      dropdownMaxHeight: 300,
+                      selectedItemBuilder: (c) => state.dataTime
+                          .map((items) => _itemSelect(
+                                items[1],
+                                wC: 0.35,
+                                sizeT: 14,
+                                alignment: Alignment.topRight,
+                              ))
+                          .toList(),
                       onChanged: (String? value) {
                         setState(() {
                           _labelTime = value;
@@ -353,6 +368,47 @@ class _ReportScreenState extends State<ReportScreen> {
                 },
               ),
       ],
+    );
+  }
+
+  Widget _itemSelect(
+    String title, {
+    double wC = 1,
+    double? sizeT,
+    AlignmentGeometry? alignment,
+  }) {
+    double w = MediaQuery.of(context).size.width - 32;
+    return Container(
+      width: w * wC,
+      alignment: alignment,
+      child: RichText(
+        maxLines: 1,
+        text: TextSpan(
+          text: '',
+          children: <WidgetSpan>[
+            WidgetSpan(
+              child: Text(
+                title,
+                style: AppStyle.DEFAULT_16_BOLD.copyWith(fontSize: sizeT),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            WidgetSpan(
+              alignment: PlaceholderAlignment.bottom,
+              child: Container(
+                padding: const EdgeInsets.only(left: 6, bottom: 3),
+                child: Image.asset(
+                  ICONS.IC_DROP_DOWN_PNG,
+                  height: 10,
+                  width: 10,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -455,6 +511,7 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 
   _filterRow2() {
+    double w = MediaQuery.of(context).size.width - 32;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -467,13 +524,20 @@ class _ReportScreenState extends State<ReportScreen> {
               }
               return DropdownButton2<String?>(
                   value: _labelLocation,
-                  icon: const Icon(Icons.arrow_drop_down_outlined),
+                  icon: SizedBox.shrink(),
                   underline: SizedBox.shrink(),
-                  dropdownMaxHeight: 250,
+                  dropdownMaxHeight: 300,
+                  dropdownWidth: w,
                   onChanged: (String? value) {
                     _labelLocation = value;
                     setState(() {});
                   },
+                  selectedItemBuilder: (c) => state.dataLocation
+                      .map((items) => _itemSelect(
+                            items[1],
+                            sizeT: 14,
+                          ))
+                      .toList(),
                   items: state.dataLocation
                       .map(
                         (items) => DropdownMenuItem<String?>(

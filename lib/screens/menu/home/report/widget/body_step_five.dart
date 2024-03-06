@@ -161,6 +161,6 @@ class BodyReportFive extends StatelessWidget {
   }
 
   _getTXT(int dataThu) {
-    return dataThu == 1 ? getT(KeyT.expenses) : getT(KeyT.income);
+    return dataThu == 1 ? getT(KeyT.income) : getT(KeyT.expenses);
   }
 }

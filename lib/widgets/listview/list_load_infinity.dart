@@ -48,6 +48,12 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     if (widget.child != null) {
@@ -255,14 +261,16 @@ class LoadMoreController<T> {
     streamList.add(list);
   }
 
+  _loadMore() {
+    if (controller.position.maxScrollExtent == controller.offset &&
+        isLoadMore) {
+      page = page + 1;
+      loadData(page);
+    }
+  }
+
   handelLoadMore() {
-    controller.addListener(() {
-      if (controller.position.maxScrollExtent == controller.offset &&
-          isLoadMore) {
-        page = page + 1;
-        loadData(page);
-      }
-    });
+    controller.addListener(_loadMore);
   }
 
   dispose() {
@@ -270,6 +278,7 @@ class LoadMoreController<T> {
     isLoadMore = true;
     page = BASE_URL.PAGE_DEFAULT;
     functionInit = null;
+    controller.removeListener(_loadMore);
   }
 
   Future<void> loadData(int page, {bool isInit = true}) async {
