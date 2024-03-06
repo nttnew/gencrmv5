@@ -76,7 +76,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
         AppNavigator.navigateForm(
           type: PRODUCT_TYPE,
           id: int.tryParse(id),
-          onRefresh: () {
+          onRefreshFormAdd: () {
             _bloc.add(InitGetDetailProductEvent(id));
             ProductModuleBloc.of(context).loadMoreController.reloadData();
           },

@@ -75,7 +75,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
               '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
           type: ADD_JOB_CONTRACT,
           id: int.parse(id),
-          onRefresh: () {
+          onRefreshFormAdd: () {
             _bloc.controllerCV.reloadData();
           },
         );
@@ -91,7 +91,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
           title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
           type: ADD_SUPPORT_CONTRACT,
           id: int.parse(id),
-          onRefresh: () {
+          onRefreshFormAdd: () {
             _bloc.controllerHT.reloadData();
           },
         );
@@ -130,7 +130,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
         AppNavigator.navigateForm(
           type: EDIT_CONTRACT,
           id: int.tryParse(id),
-          onRefresh: () {
+          onRefreshFormAdd: () {
             _bloc.add(InitGetDetailContractEvent(int.parse(id)));
           },
         );

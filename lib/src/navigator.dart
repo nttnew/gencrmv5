@@ -35,7 +35,7 @@ class AppNavigator {
     String typeCheckIn = TypeCheckIn.CHECK_IN,
     bool isResultData = false,
     bool isGetData = false, //getdata cho khsp
-    Function? onRefresh,
+    Function? onRefreshFormAdd,
     bool isPreventDuplicates = false,
     ProductModel? product,
   }) async =>
@@ -52,9 +52,9 @@ class AppNavigator {
             product,
             sdt,
             bienSo,
-          ])?.whenComplete(
-        () {
-          if (onRefresh != null) onRefresh();
+          ])?.then(
+        (v) {
+          if (onRefreshFormAdd != null && v != null) onRefreshFormAdd();
         },
       );
 

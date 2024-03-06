@@ -157,7 +157,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
         AppNavigator.navigateForm(
           type: EDIT_JOB,
           id: id,
-          onRefresh: () {
+          onRefreshFormAdd: () {
             WorkBloc.of(context).loadMoreController.reloadData();
             _bloc.add(InitGetDetailWorkEvent(id));
           },

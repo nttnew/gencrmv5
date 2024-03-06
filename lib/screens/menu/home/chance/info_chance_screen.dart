@@ -55,7 +55,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                 '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
             type: ADD_CHANCE_JOB,
             id: int.parse(id),
-            onRefresh: () {
+            onRefreshFormAdd: () {
               _bloc.controllerCV.reloadData();
             });
       },
@@ -93,7 +93,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
         AppNavigator.navigateForm(
           type: EDIT_CHANCE,
           id: int.tryParse(id),
-          onRefresh: () {
+          onRefreshFormAdd: () {
             _bloc.add(InitGetListDetailEvent(int.parse(id)));
           },
         );

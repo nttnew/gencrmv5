@@ -92,7 +92,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                 '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}',
             type: ADD_CLUE_CUSTOMER,
             id: int.parse(id),
-            onRefresh: () {
+            onRefreshFormAdd: () {
               _bloc.controllerDM.reloadData();
             },
           );
@@ -110,7 +110,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
               '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}',
           type: ADD_CHANCE_CUSTOMER,
           id: int.parse(id),
-          onRefresh: () {
+          onRefreshFormAdd: () {
             _bloc.controllerCH.reloadData();
           },
         );
@@ -127,7 +127,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
               '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
           type: ADD_CONTRACT_CUS,
           id: int.tryParse(id),
-          onRefresh: () {
+          onRefreshFormAdd: () {
             _bloc.controllerHD.reloadData();
           },
         );
@@ -145,7 +145,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
               '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
           type: ADD_JOB_CUSTOMER,
           id: int.parse(id),
-          onRefresh: () {
+          onRefreshFormAdd: () {
             _bloc.controllerCV.reloadData();
           },
         );
@@ -161,7 +161,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
           title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
           type: ADD_SUPPORT_CUSTOMER,
           id: int.parse(id),
-          onRefresh: () {
+          onRefreshFormAdd: () {
             _bloc.controllerHT.reloadData();
           },
         );
@@ -201,7 +201,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
         AppNavigator.navigateForm(
           type: EDIT_CUSTOMER,
           id: int.tryParse(id),
-          onRefresh: () {
+          onRefreshFormAdd: () {
             _bloc.add(InitGetDetailCustomerEvent(int.parse(id)));
           },
         );

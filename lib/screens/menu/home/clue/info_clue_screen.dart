@@ -60,7 +60,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
               '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
           type: ADD_CLUE_JOB,
           id: int.parse(id),
-          onRefresh: () {
+          onRefreshFormAdd: () {
             _bloc.controllerCV.reloadData();
           },
         );
@@ -95,7 +95,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
           AppNavigator.navigateForm(
             type: EDIT_CLUE,
             id: int.tryParse(id),
-            onRefresh: () {
+            onRefreshFormAdd: () {
               _bloc.add(InitGetDetailClueEvent(id));
             },
           );

@@ -195,7 +195,7 @@ class _DetailProductCustomerScreenState
               title: value.name ?? '',
               type: CH_PRODUCT_CUSTOMER_TYPE,
               id: int.parse(id),
-              onRefresh: () {
+              onRefreshFormAdd: () {
                 _bloc.controllerCh.reloadData();
               },
             );
@@ -204,7 +204,7 @@ class _DetailProductCustomerScreenState
               title: value.name ?? '',
               type: HD_PRODUCT_CUSTOMER_TYPE,
               id: int.parse(id),
-              onRefresh: () {
+              onRefreshFormAdd: () {
                 _bloc.controllerHd.reloadData();
               },
             );
@@ -213,7 +213,7 @@ class _DetailProductCustomerScreenState
               title: value.name ?? '',
               type: CV_PRODUCT_CUSTOMER_TYPE,
               id: int.parse(id),
-              onRefresh: () {
+              onRefreshFormAdd: () {
                 _bloc.controllerCv.reloadData();
               },
             );
@@ -222,7 +222,7 @@ class _DetailProductCustomerScreenState
               title: value.name ?? '',
               type: HT_PRODUCT_CUSTOMER_TYPE,
               id: int.parse(id),
-              onRefresh: () {
+              onRefreshFormAdd: () {
                 _bloc.controllerHt.reloadData();
               },
             );

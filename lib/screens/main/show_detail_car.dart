@@ -299,7 +299,7 @@ class _DetailCarState extends State<DetailCar> {
                               AppNavigator.navigateForm(
                                 type: EDIT_CONTRACT,
                                 id: int.tryParse(_blocLogin.xeDichVu?.id ?? ''),
-                                onRefresh: () {
+                                onRefreshFormAdd: () {
                                   _blocLogin.getDetailXeDichVu();
                                 },
                               );

@@ -479,7 +479,7 @@ class _FormAddDataState extends State<FormAddData> {
                         type != ADD_CUSTOMER_OR) {
                       Navigator.of(context)
                         ..pop()
-                        ..pop();
+                        ..pop(true);
                     }
                     if (type == ADD_CLUE) {
                       GetListClueBloc.of(context)

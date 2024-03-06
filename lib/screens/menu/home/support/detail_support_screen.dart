@@ -147,7 +147,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
         AppNavigator.navigateForm(
           type: EDIT_SUPPORT,
           id: int.tryParse(id),
-          onRefresh: () {
+          onRefreshFormAdd: () {
             _bloc.add(InitGetDetailSupportEvent(id));
           },
         );
