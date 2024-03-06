@@ -33,8 +33,7 @@ class InputDropdownBase extends StatefulWidget {
 class _InputDropdownState extends State<InputDropdownBase> {
   BehaviorSubject<List<dynamic>> _selectStream =
       BehaviorSubject.seeded(['', '']);
-  BehaviorSubject<List<List<dynamic>>?> _listSelectStream =
-      BehaviorSubject.seeded([]);
+  BehaviorSubject<List<List<dynamic>>?> _listSelectStream = BehaviorSubject();
   dynamic _idDF = '';
 
   void getId() {
@@ -82,21 +81,21 @@ class _InputDropdownState extends State<InputDropdownBase> {
           final List<dynamic> dataRes = response.data['data'] as List<dynamic>;
           final List<List<dynamic>> res =
               dataRes.map((e) => e as List<dynamic>).toList();
-          if (res.length == 1) {
-            _selectStream.add(res.first);
-            _onChangeMain(res.first.first);
-          } else {
+          final List<List<dynamic>> fieldSetValueDatasource =
+              widget.data.field_set_value_datasource ?? [];
+          if (res.length > 0 && fieldSetValueDatasource.length > 0) {
             res.forEach((element) {
-              if (element.first ==
-                  widget.data.field_set_value_datasource?.first.first) {
-                _selectStream.add(res.first);
-                _onChangeMain(res.first.first);
+              if (fieldSetValueDatasource.first.length > 0) {
+                if (element.first == fieldSetValueDatasource.first.first) {
+                  _selectStream.add(res.first);
+                  _onChangeMain(res.first.first);
+                }
               }
             });
-            _listSelectStream.add(res);
           }
+          _listSelectStream.add(res);
         } else {
-          _listSelectStream.add([]);
+          _listSelectStream.add(null);
         }
       }
     } catch (e) {
