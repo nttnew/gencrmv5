@@ -5,7 +5,7 @@ import '../../../src/src_index.dart';
 import '../../../widgets/line_horizontal_widget.dart';
 import '../../../widgets/widget_text.dart';
 
-class InfoBase extends StatefulWidget {
+class InfoBase extends StatelessWidget {
   const InfoBase({
     Key? key,
     required this.listData,
@@ -13,22 +13,18 @@ class InfoBase extends StatefulWidget {
   }) : super(key: key);
   final List<InfoDataModel> listData;
   final bool isLine;
-  @override
-  State<InfoBase> createState() => _InfoBaseState();
-}
 
-class _InfoBaseState extends State<InfoBase> {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: List.generate(
-        widget.listData.length,
+        listData.length,
         (index) => Column(
           children: [
             ItemInfo(
-              data: widget.listData[index],
+              data: listData[index],
             ),
-            if (widget.isLine)
+            if (isLine)
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
@@ -42,23 +38,12 @@ class _InfoBaseState extends State<InfoBase> {
   }
 }
 
-class ItemInfo extends StatefulWidget {
+class ItemInfo extends StatelessWidget {
   const ItemInfo({
     Key? key,
     required this.data,
   }) : super(key: key);
   final InfoDataModel data;
-  @override
-  State<ItemInfo> createState() => _ItemInfoState();
-}
-
-class _ItemInfoState extends State<ItemInfo> {
-  late final InfoDataModel data;
-  @override
-  void initState() {
-    data = widget.data;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
