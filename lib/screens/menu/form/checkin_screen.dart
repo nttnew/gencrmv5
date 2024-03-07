@@ -27,19 +27,29 @@ class _CheckInScreenState extends State<CheckInScreen> {
   String module = Get.arguments[1];
   String type = Get.arguments[2];
   Position? position;
+  late final CheckInBloc _blocCheckIn;
 
   getNameLocation() async {
     position = await determinePosition(context);
     if (position != null) {
       nameLocation.add(LOADING);
-      final location = await getLocationName(
-          position?.latitude ?? 0, position?.longitude ?? 0);
-      nameLocation.add(location);
+      try {
+        final location = await getLocationName(
+            position?.latitude ?? 0, position?.longitude ?? 0);
+        nameLocation.add(location);
+      } catch (e) {
+        ShowDialogCustom.showDialogBase(
+          title: getT(KeyT.notification),
+          content: getT(KeyT.an_error_occurred),
+        );
+      }
     }
   }
 
   @override
   void initState() {
+    _blocCheckIn =
+        CheckInBloc(userRepository: CheckInBloc.of(context).userRepository);
     nameLocation = BehaviorSubject.seeded('');
     controllerNote = TextEditingController();
     nameLocation.listen((value) {
@@ -52,7 +62,9 @@ class _CheckInScreenState extends State<CheckInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isCheckIn = type == TypeCheckIn.CHECK_IN;
     return BlocListener<CheckInBloc, CheckInState>(
+      bloc: _blocCheckIn,
       listener: (BuildContext context, state) {
         if (state is SuccessCheckInState) {
           LoadingApi().popLoading();
@@ -60,8 +72,9 @@ class _CheckInScreenState extends State<CheckInScreen> {
             title: getT(KeyT.notification),
             content: getT(KeyT.new_data_added_successfully),
             onTap1: () {
-              Get.back();
-              Get.back();
+              Navigator.of(context)
+                ..pop()
+                ..pop(true);
             },
           );
         } else if (state is ErrorCheckInState) {
@@ -74,7 +87,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
       },
       child: Scaffold(
         appBar: AppbarBaseNormal(
-          getT(KeyT.check_in),
+          isCheckIn ? getT(KeyT.check_in) : getT(KeyT.check_out),
         ),
         body: Container(
           padding: EdgeInsets.all(16),
@@ -168,7 +181,9 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                     color: COLORS.TEXT_COLOR,
                                   )),
                               child: WidgetText(
-                                title: getT(KeyT.check_in),
+                                title: isCheckIn
+                                    ? getT(KeyT.check_in)
+                                    : getT(KeyT.check_out),
                                 style: TextStyle(
                                   fontFamily: 'Quicksand',
                                   fontSize: 14,
@@ -202,7 +217,9 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                     ),
                                   ),
                                   child: WidgetText(
-                                    title: getT(KeyT.check_in_again),
+                                    title: isCheckIn
+                                        ? getT(KeyT.check_in_again)
+                                        : getT(KeyT.check_out_again),
                                     style: TextStyle(
                                       fontFamily: 'Quicksand',
                                       fontSize: 14,
@@ -329,7 +346,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                   getT(KeyT.please_enter_all_required_fields),
                             );
                           } else {
-                            CheckInBloc.of(context).add(
+                            _blocCheckIn.add(
                               SaveCheckIn(
                                 '${position?.longitude ?? ''}',
                                 '${position?.latitude ?? ''}',

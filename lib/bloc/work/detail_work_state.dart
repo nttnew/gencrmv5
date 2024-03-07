@@ -11,9 +11,18 @@ class InitGetDetailWorkState extends DetailWorkState {}
 
 class SuccessDetailWorkState extends DetailWorkState {
   final List<InfoDataModel> dataList;
+  final CheckInLocation? checkIn, checkOut;
   final int? location;
   final String? diDong;
-  SuccessDetailWorkState(this.dataList, this.location, this.diDong);
+
+  SuccessDetailWorkState(
+    this.dataList,
+    this.location,
+    this.diDong,
+    this.checkIn,
+    this.checkOut,
+  );
+
   @override
   List<Object?> get props => [dataList, location];
 }

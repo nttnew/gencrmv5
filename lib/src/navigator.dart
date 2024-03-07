@@ -174,10 +174,10 @@ class AppNavigator {
       await Get.toNamed(ROUTE_NAMES.DETAIL_PRODUCT, arguments: [title, id]);
 
   static navigateCheckIn(String id, String module, String type,
-          {Function? onRefresh}) async =>
+          {Function? onRefreshCheckIn}) async =>
       await Get.toNamed(ROUTE_NAMES.CHECK_IN, arguments: [id, module, type])
-          ?.whenComplete(() {
-        if (onRefresh != null) onRefresh();
+          ?.then((v) {
+        if (onRefreshCheckIn != null && v != null) onRefreshCheckIn();
       });
 
   static navigateProductCustomer() async => await Get.toNamed(

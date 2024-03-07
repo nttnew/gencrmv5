@@ -5,6 +5,7 @@ import 'package:gen_crm/api_resfull/api.dart';
 import '../../l10n/key_text.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/detail_customer.dart';
+import '../../src/models/model_generator/work.dart';
 import '../../widgets/loading_api.dart';
 
 part 'detail_work_event.dart';
@@ -30,15 +31,19 @@ class DetailWorkBloc extends Bloc<DetailWorkEvent, DetailWorkState> {
       final response = await userRepository.detailJob(id);
       if (isSuccess(response.code)) {
         yield SuccessDetailWorkState(
-            response.data ?? [], response.location, response.di_dong);
+          response.data ?? [],
+          response.location,
+          response.di_dong,
+          response.checkin,
+          response.checkout,
+        );
       } else {
         LoadingApi().popLoading();
         yield ErrorGetDetailWorkState(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetDetailWorkState(
-          getT(KeyT.an_error_occurred));
+      yield ErrorGetDetailWorkState(getT(KeyT.an_error_occurred));
       throw (e);
     }
     LoadingApi().popLoading();
@@ -56,8 +61,7 @@ class DetailWorkBloc extends Bloc<DetailWorkEvent, DetailWorkState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorDeleteWorkState(
-          getT(KeyT.an_error_occurred));
+      yield ErrorDeleteWorkState(getT(KeyT.an_error_occurred));
       throw (e);
     }
     LoadingApi().popLoading();

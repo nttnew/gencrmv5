@@ -22,9 +22,9 @@ class InfoDataModel {
   );
 
   factory InfoDataModel.fromJson(Map<String, dynamic> json) =>
-      _$CustomerInfoDataFromJson(json);
+      _$InfoDataModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CustomerInfoDataToJson(this);
+  Map<String, dynamic> toJson() => _$InfoDataModelToJson(this);
 }
 
 @JsonSerializable()

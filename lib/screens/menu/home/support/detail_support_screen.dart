@@ -51,15 +51,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
 
   checkLocation(SuccessGetDetailSupportState state) {
     location = state.location;
-    if (state.dataDetailSupport.isNotEmpty) {
-      final listLocation = state.dataDetailSupport.first.data
-          ?.where((element) => element.id == 'checkout')
-          .toList();
-      if (listLocation?.isNotEmpty ?? false) {
-        isCheckDone = listLocation?.first.value_field != '' &&
-            listLocation?.first.value_field != null;
-      }
-    }
+    isCheckDone = isCheckDataLocation(state.checkOut);
   }
 
   getThaoTac() {
@@ -74,7 +66,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
             Get.back();
             AppNavigator.navigateCheckIn(
                 id.toString(), ModuleMy.CSKH, TypeCheckIn.CHECK_IN,
-                onRefresh: () {
+                onRefreshCheckIn: () {
               SupportBloc.of(context).add(InitGetSupportEvent());
               _bloc.add(InitGetDetailSupportEvent(id));
             });
@@ -86,16 +78,12 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
           icon: ICONS.IC_LOCATION_SVG,
           onThaoTac: () {
             Get.back();
-            _blocCheckIn.add(
-              SaveCheckIn(
-                '',
-                '',
-                '',
-                id,
-                ModuleMy.CSKH,
-                TypeCheckIn.CHECK_OUT,
-              ),
-            );
+            AppNavigator.navigateCheckIn(
+                id.toString(), ModuleMy.CSKH, TypeCheckIn.CHECK_OUT,
+                onRefreshCheckIn: () {
+              SupportBloc.of(context).add(InitGetSupportEvent());
+              _bloc.add(InitGetDetailSupportEvent(id));
+            });
           },
         ));
       }
@@ -238,6 +226,8 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                                     ),
                                     child: InfoBase(
                                       listData: state.dataDetailSupport,
+                                      checkIn: state.checkIn,
+                                      checkOut: state.checkOut,
                                     ),
                                   ),
                                   AppValue.vSpaceTiny,

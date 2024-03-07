@@ -13,6 +13,12 @@ ListDetailChanceResponse _$ListDetailChanceResponseFromJson(
           ?.map((e) => InfoDataModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       json['location'] as int?,
+      json['checkin'] == null
+          ? null
+          : CheckInLocation.fromJson(json['checkin'] as Map<String, dynamic>),
+      json['checkout'] == null
+          ? null
+          : CheckInLocation.fromJson(json['checkout'] as Map<String, dynamic>),
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
@@ -26,4 +32,6 @@ Map<String, dynamic> _$ListDetailChanceResponseToJson(
       'code': instance.code,
       'data': instance.data,
       'location': instance.location,
+      'checkin': instance.checkin,
+      'checkout': instance.checkout,
     };

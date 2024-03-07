@@ -7,6 +7,7 @@ import '../../l10n/key_text.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/detail_customer.dart';
 import '../../src/models/model_generator/support.dart';
+import '../../src/models/model_generator/work.dart';
 
 part 'detail_support_event.dart';
 part 'detail_support_state.dart';
@@ -37,15 +38,18 @@ class DetailSupportBloc extends Bloc<DetailSupportEvent, DetailSupportState> {
       final response = await userRepository.getDetailSupport(id);
       if (isSuccess(response.code)) {
         yield SuccessGetDetailSupportState(
-            response.data ?? [], response.location);
+          response.data ?? [],
+          response.location,
+          response.checkin,
+          response.checkout,
+        );
       } else {
         LoadingApi().popLoading();
         yield ErrorGetDetailSupportState(response.msg ?? '');
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorGetDetailSupportState(
-         getT(KeyT.an_error_occurred));
+      yield ErrorGetDetailSupportState(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();
@@ -63,8 +67,7 @@ class DetailSupportBloc extends Bloc<DetailSupportEvent, DetailSupportState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorDeleteSupportState(
-         getT(KeyT.an_error_occurred));
+      yield ErrorDeleteSupportState(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();

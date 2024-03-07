@@ -10,8 +10,9 @@ class InitGetDetailSupport extends DetailSupportState {}
 
 class SuccessGetDetailSupportState extends DetailSupportState {
   final List<InfoDataModel> dataDetailSupport;
+  final CheckInLocation? checkIn, checkOut;
   final int? location;
-  const SuccessGetDetailSupportState(this.dataDetailSupport, this.location);
+  const SuccessGetDetailSupportState(this.dataDetailSupport, this.location,this.checkIn,this.checkOut,);
   @override
   List<Object?> get props => [dataDetailSupport, location];
 }

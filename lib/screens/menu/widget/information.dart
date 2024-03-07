@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gen_crm/src/models/model_generator/work.dart';
 import '../../../l10n/key_text.dart';
+import '../../../src/app_const.dart';
 import '../../../src/models/model_generator/detail_customer.dart';
 import '../../../src/src_index.dart';
 import '../../../widgets/line_horizontal_widget.dart';
@@ -10,14 +12,17 @@ class InfoBase extends StatelessWidget {
     Key? key,
     required this.listData,
     this.isLine = true,
+    this.checkIn,
+    this.checkOut,
   }) : super(key: key);
   final List<InfoDataModel> listData;
   final bool isLine;
+  final CheckInLocation? checkIn, checkOut;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: List.generate(
+    return Column(children: [
+      ...List.generate(
         listData.length,
         (index) => Column(
           children: [
@@ -34,8 +39,56 @@ class InfoBase extends StatelessWidget {
           ],
         ),
       ),
-    );
+      _itemLocation(checkIn, true),
+      _itemLocation(checkOut, false),
+      if (isCheckDataLocation(checkIn))
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 20,
+          ),
+          child: LineHorizontal(),
+        ),
+    ]);
   }
+
+  Widget _itemLocation(
+    CheckInLocation? data,
+    bool isCheckIn,
+  ) =>
+      isCheckDataLocation(data)
+          ? Container(
+              margin: EdgeInsets.only(
+                top: 20,
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 16,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    isCheckIn ? getT(KeyT.check_in) : getT(KeyT.check_out),
+                    style: AppStyle.DEFAULT_16_BOLD,
+                  ),
+                  itemTextIcon(
+                    text: data?.note_location ?? '',
+                    icon: ICONS.IC_LOCATION_SVG,
+                    styleText: AppStyle.DEFAULT_14_BOLD,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 24),
+                    child: Text(
+                      data?.time ?? '',
+                      style: AppStyle.DEFAULT_14.copyWith(
+                        color: COLORS.TEXT_GREY,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : SizedBox();
 }
 
 class ItemInfo extends StatelessWidget {
@@ -192,4 +245,12 @@ _navigateTypeScreen(InfoItem? data) {
     default:
       break;
   }
+}
+
+bool isCheckDataLocation(
+  CheckInLocation? data,
+) {
+  return data != null &&
+      (data.time ?? '') != '' &&
+      (data.note_location ?? '') != '';
 }

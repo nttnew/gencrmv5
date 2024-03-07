@@ -87,6 +87,12 @@ DetailWorkResponse _$DetailWorkResponseFromJson(Map<String, dynamic> json) =>
           .toList(),
       json['location'] as int?,
       json['di_dong'] as String?,
+      json['checkin'] == null
+          ? null
+          : CheckInLocation.fromJson(json['checkin'] as Map<String, dynamic>),
+      json['checkout'] == null
+          ? null
+          : CheckInLocation.fromJson(json['checkout'] as Map<String, dynamic>),
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
@@ -100,4 +106,28 @@ Map<String, dynamic> _$DetailWorkResponseToJson(DetailWorkResponse instance) =>
       'data': instance.data,
       'location': instance.location,
       'di_dong': instance.di_dong,
+      'checkin': instance.checkin,
+      'checkout': instance.checkout,
+    };
+
+CheckInLocation _$CheckInLocationFromJson(Map<String, dynamic> json) =>
+    CheckInLocation(
+      json['latitude'] as String?,
+      json['longitude'] as String?,
+      json['note_location'] as String?,
+      json['time'] as String?,
+    )
+      ..success = json['success'] as bool?
+      ..msg = json['msg'] as String?
+      ..code = json['code'] as int?;
+
+Map<String, dynamic> _$CheckInLocationToJson(CheckInLocation instance) =>
+    <String, dynamic>{
+      'success': instance.success,
+      'msg': instance.msg,
+      'code': instance.code,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'note_location': instance.note_location,
+      'time': instance.time,
     };

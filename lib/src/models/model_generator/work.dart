@@ -86,11 +86,38 @@ class DetailWorkResponse extends BaseResponse {
   final List<InfoDataModel>? data;
   final int? location;
   final String? di_dong;
+  final CheckInLocation? checkin, checkout;
 
-  DetailWorkResponse(this.data, this.location, this.di_dong);
+  DetailWorkResponse(
+    this.data,
+    this.location,
+    this.di_dong,
+    this.checkin,
+    this.checkout,
+  );
 
   factory DetailWorkResponse.fromJson(Map<String, dynamic> json) =>
       _$DetailWorkResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$DetailWorkResponseToJson(this);
+}
+
+@JsonSerializable()
+class CheckInLocation extends BaseResponse {
+  final String? latitude;
+  final String? longitude;
+  final String? note_location;
+  final String? time;
+
+  CheckInLocation(
+    this.latitude,
+    this.longitude,
+    this.note_location,
+    this.time,
+  );
+
+  factory CheckInLocation.fromJson(Map<String, dynamic> json) =>
+      _$CheckInLocationFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CheckInLocationToJson(this);
 }

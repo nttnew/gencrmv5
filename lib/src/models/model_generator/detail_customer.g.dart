@@ -6,7 +6,7 @@ part of 'detail_customer.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-InfoDataModel _$CustomerInfoDataFromJson(Map<String, dynamic> json) =>
+InfoDataModel _$InfoDataModelFromJson(Map<String, dynamic> json) =>
     InfoDataModel(
       json['group_name'] as String?,
       json['main_id'] as String?,
@@ -20,7 +20,7 @@ InfoDataModel _$CustomerInfoDataFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$CustomerInfoDataToJson(InfoDataModel instance) =>
+Map<String, dynamic> _$InfoDataModelToJson(InfoDataModel instance) =>
     <String, dynamic>{
       'group_name': instance.group_name,
       'main_id': instance.main_id,

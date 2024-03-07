@@ -54,15 +54,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   checkLocation(SuccessDetailWorkState state) {
     location = state.location;
     diDong = state.diDong;
-    if (state.dataList.isNotEmpty) {
-      final listLocation = (state.dataList.first.data ?? [])
-          .where((element) => element.id == 'checkout')
-          .toList();
-      if (listLocation.isNotEmpty) {
-        isCheckDone = listLocation.first.value_field != '' &&
-            listLocation.first.value_field != null;
-      }
-    }
+    isCheckDone = isCheckDataLocation(state.checkOut);
   }
 
   getThaoTac() {
@@ -108,7 +100,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
             Get.back();
             AppNavigator.navigateCheckIn(
                 id.toString(), ModuleMy.CONG_VIEC, TypeCheckIn.CHECK_IN,
-                onRefresh: () {
+                onRefreshCheckIn: () {
               _bloc.add(InitGetDetailWorkEvent(id));
               WorkBloc.of(context).loadMoreController.reloadData();
             });
@@ -120,17 +112,12 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
           icon: ICONS.IC_LOCATION_SVG,
           onThaoTac: () {
             Get.back();
-            _blocCheckIn.add(
-              SaveCheckIn(
-                '',
-                '',
-                '',
-                id.toString(),
-                ModuleMy.CONG_VIEC,
-                TypeCheckIn.CHECK_OUT,
-              ),
-            );
-            _bloc.add(InitGetDetailWorkEvent(id));
+            AppNavigator.navigateCheckIn(
+                id.toString(), ModuleMy.CONG_VIEC, TypeCheckIn.CHECK_OUT,
+                onRefreshCheckIn: () {
+              _bloc.add(InitGetDetailWorkEvent(id));
+              WorkBloc.of(context).loadMoreController.reloadData();
+            });
           },
         ));
       }
@@ -249,6 +236,8 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                   ),
                                   child: InfoBase(
                                     listData: state.dataList,
+                                    checkIn: state.checkIn,
+                                    checkOut: state.checkOut,
                                   ),
                                 );
                               } else if (state is ErrorDeleteWorkState) {

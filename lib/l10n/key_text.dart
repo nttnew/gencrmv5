@@ -126,6 +126,7 @@ class KeyT {
   static const String check_in = "check_in";
   static const String your_position = "your_position";
   static const String check_in_again = "check_in_again";
+  static const String check_out_again = "check_out_again";
   static const String delete = "delete";
   static const String location = "location";
   static const String edit_information = "edit_information";
