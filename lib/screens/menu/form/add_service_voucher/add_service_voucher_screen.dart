@@ -204,6 +204,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
                   ),
                   child: Container(
                     child: TextFormField(
+                      autofocus: true,
                       controller: textEditingController,
                       style: TextStyle(
                         fontSize: 14,
