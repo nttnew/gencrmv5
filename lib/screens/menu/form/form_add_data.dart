@@ -144,7 +144,7 @@ class _FormAddDataState extends State<FormAddData> {
     } else if (type == PRODUCT_TYPE) {
       _bloc.add(InitFormAddProductEvent());
     } else if (type == PRODUCT_CUSTOMER_TYPE) {
-      _bloc.add(InitFormAddProductCustomerEvent());
+      _bloc.add(InitFormAddProductCustomerEvent(idCustomer: int.tryParse(id)));
     } else if (type == CH_PRODUCT_CUSTOMER_TYPE) {
       _bloc.add(InitFormAddCHProductCustomerEvent(int.parse(id)));
     } else if (type == CV_PRODUCT_CUSTOMER_TYPE) {
@@ -170,9 +170,9 @@ class _FormAddDataState extends State<FormAddData> {
       _bloc.add(InitFormEditJobEvent(id));
     } else if (type == EDIT_SUPPORT) {
       _bloc.add(InitFormEditSupportEvent(id));
-    } else if (type == PRODUCT_TYPE) {
+    } else if (type == PRODUCT_TYPE_EDIT) {
       _bloc.add(InitFormEditProductEvent(id));
-    } else if (type == PRODUCT_CUSTOMER_TYPE) {
+    } else if (type == PRODUCT_CUSTOMER_TYPE_EDIT) {
       _bloc.add(InitFormEditProductCustomerEvent(id));
     }
     super.initState();
@@ -191,7 +191,6 @@ class _FormAddDataState extends State<FormAddData> {
     _totalBloc.add(ReloadTotalEvent());
     _contactBy.chiTietXe.add('');
     _contactBy.listXe.add([]);
-    // PhoneBloc.of(context).add(InitPhoneEvent(''));
     _attackBloc.add(RemoveAllAttackEvent());
     _blocService.loaiXe.add('');
     _blocService.resetDataCarVerison();
@@ -546,13 +545,13 @@ class _FormAddDataState extends State<FormAddData> {
                           .add(InitGetDetailContractEvent(int.parse(id)));
                     } else if (type == EDIT_SUPPORT) {
                       SupportBloc.of(context).add(InitGetSupportEvent());
-                    } else if (type == PRODUCT_TYPE) {
+                    } else if (type == PRODUCT_TYPE_EDIT) {
                       ProductModuleBloc.of(context)
                           .loadMoreController
                           .reloadData();
                       DetailProductBloc.of(context)
                           .add(InitGetDetailProductEvent(id));
-                    } else if (type == PRODUCT_CUSTOMER_TYPE) {
+                    } else if (type == PRODUCT_CUSTOMER_TYPE_EDIT) {
                       ProductCustomerModuleBloc.of(context)
                           .loadMoreController
                           .reloadData();
@@ -1248,10 +1247,10 @@ class _FormAddDataState extends State<FormAddData> {
             files: _attackBloc.listFile,
             isEdit: true,
           ));
-        } else if (type == PRODUCT_TYPE) {
+        } else if (type == PRODUCT_TYPE_EDIT) {
           _blocAdd.add(EditProductEvent(data, int.parse(id),
               files: _attackBloc.listFile));
-        } else if (type == PRODUCT_CUSTOMER_TYPE) {
+        } else if (type == PRODUCT_CUSTOMER_TYPE_EDIT) {
           _blocAdd
               .add(EditProductCustomerEvent(data, files: _attackBloc.listFile));
         }

@@ -183,6 +183,7 @@ class _InputDropdownState extends State<InputDropdownBase> {
           title: v[1].toString(),
           type: PRODUCT_CUSTOMER_TYPE,
           isGetData: true,
+          id: int.tryParse(_idDF),
         );
       } else if (v.first == CA_NHAN) {
         result = await AppNavigator.navigateForm(

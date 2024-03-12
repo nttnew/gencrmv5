@@ -74,7 +74,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateForm(
-          type: PRODUCT_TYPE,
+          type: PRODUCT_TYPE_EDIT,
           id: int.tryParse(id),
           onRefreshFormAdd: () {
             _bloc.add(InitGetDetailProductEvent(id));

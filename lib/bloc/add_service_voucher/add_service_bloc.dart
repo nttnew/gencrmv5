@@ -34,8 +34,6 @@ class ServiceVoucherBloc
       AddServiceVoucherEvent event) async* {
     if (event is PostServiceVoucherEvent) {
       yield* _postAddServiceVoucher(event.sdt, event.bienSoXe);
-    } else if (event is SaveVoucherServiceEvent) {
-      // yield* _postAddSave(event.voucherServiceRequest, event.listFile);
     }
   }
 
@@ -56,6 +54,8 @@ class ServiceVoucherBloc
   BehaviorSubject<Set<String>> listSoCho = BehaviorSubject.seeded({});
   List<CustomerData>? listCus;
   BehaviorSubject<InfoCar?> infoCar = BehaviorSubject.seeded(InfoCar());
+  BehaviorSubject<dynamic> listCarSearchStream = BehaviorSubject();
+
   String hangXe = '';
   String dongXe = '';
   String phienBan = '';
@@ -113,19 +113,6 @@ class ServiceVoucherBloc
         return false;
     }
   }
-
-  // List<List<dynamic>>? listThemXe(List<List<dynamic>>? list, String bienSoXe) {
-  //   if (bienSoXe != '') {
-  //     for (final value in list ?? []) {
-  //       if (value[1].toLowerCase() == bienSoXe.toLowerCase()) {
-  //         getCar(value[0]);
-  //       }
-  //     }
-  //   }
-  //   final listXe = list;
-  //   listXe?.add(['', THEM_MOI_XE, '', '']);
-  //   return listXe ?? null;
-  // }
 
   String? checkXe(List<List<dynamic>>? list, String bienSoXe) {
     if (bienSoXe != '') {
@@ -260,23 +247,6 @@ class ServiceVoucherBloc
     listPhienBan.add(list);
   }
 
-  // void getCar(String id) {
-  //   if (id.trim() == '') {
-  //     infoCar.add(InfoCar(
-  //       soKilomet: '',
-  //       soMay: '',
-  //       soKhung: '',
-  //       chiTietXe: '',
-  //       idbg: '',
-  //       bienSo: '',
-  //       hangXe: '',
-  //       mauXe: '',
-  //     ));
-  //   } else {
-  //     userRepository.postInfoCar(id).then((value) => infoCar.add(value));
-  //   }
-  // }
-
   String? getTextInit({
     String? name,
     List<dynamic>? list,
@@ -320,44 +290,6 @@ class ServiceVoucherBloc
       return null;
     }
   }
-
-  // Stream<ServiceVoucherState> _postAddSave(
-  //   VoucherServiceRequest voucherServiceRequest,
-  //   List<File>? listFile,
-  // ) async* {
-  //   LoadingApi().pushLoading();
-  //   try {
-  //     yield LoadingServiceVoucherState();
-  //     final response =
-  //         await userRepository.saveServiceVoucher(voucherServiceRequest);
-  //     final statusCode =
-  //         (response as Map<String, dynamic>).getOrElse('code', () => -1);
-  //     final msg = response.getOrElse('msg', () => -1);
-  //     final data = response.getOrElse('data', () => -1);
-  //     if (isSuccess(statusCode)) {
-  //       if (listFile?.isNotEmpty ?? false) {
-  //         final responseUpload = await userRepository.uploadMultiFileBase(
-  //             id: data['recordId'].toString(),
-  //             files: listFile ?? [],
-  //             module: getURLModule(Module.HOP_DONG));
-  //         if (isSuccess(responseUpload.code)) {
-  //           yield SaveServiceVoucherState(responseUpload.msg ?? '');
-  //         } else {
-  //           yield ErrorGetServiceVoucherState(responseUpload.msg ?? '');
-  //         }
-  //       } else {
-  //         yield SaveServiceVoucherState(msg);
-  //       }
-  //     } else if (statusCode == BASE_URL.SUCCESS_999) {
-  //       loginSessionExpired();
-  //     } else {
-  //       yield ErrorGetServiceVoucherState(
-  //           (response).getOrElse('msg', () => -1) ?? '');
-  //     }
-  //   } catch (e) {
-  //     yield ErrorGetServiceVoucherState(getT(KeyT.an_error_occurred));
-  //   }
-  // }
 
   Future<bool> checkHasCar(String bienSoXe) async {
     LoadingApi().pushLoading();
@@ -433,9 +365,11 @@ class ServiceVoucherBloc
     } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
       LoadingApi().popLoading();
+      listCarSearchStream.add(resDynamic);
       return resDynamic;
     }
     LoadingApi().popLoading();
+    listCarSearchStream.add(resDynamic);
     return resDynamic;
   }
 

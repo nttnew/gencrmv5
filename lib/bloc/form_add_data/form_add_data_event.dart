@@ -131,7 +131,10 @@ class InitFormAddProductEvent extends FormAddEvent {
 }
 
 class InitFormAddProductCustomerEvent extends FormAddEvent {
-  InitFormAddProductCustomerEvent();
+  final int? idCustomer;
+  InitFormAddProductCustomerEvent({
+    this.idCustomer,
+  });
 }
 
 class InitFormAddSignEvent extends FormAddEvent {
@@ -191,7 +194,6 @@ class InitFormAddQuickContract extends FormAddEvent {
   @override
   List<Object?> get props => [sdt, bienSoXe];
 }
-
 
 class InitFormEditCusEvent extends FormAddEvent {
   final String? id;

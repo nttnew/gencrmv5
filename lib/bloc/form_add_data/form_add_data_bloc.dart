@@ -61,7 +61,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     } else if (event is InitFormAddProductEvent) {
       yield* _getFormAddProduct();
     } else if (event is InitFormAddProductCustomerEvent) {
-      yield* _getFormAddProductCustomer();
+      yield* _getFormAddProductCustomer(idCustomer: event.idCustomer);
     } else if (event is InitFormAddSignEvent) {
       yield* _getFormAddSign(id: event.id ?? '', type: event.type);
     } else if (event is InitFormAddCVProductCustomerEvent) {
@@ -441,11 +441,12 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     LoadingApi().popLoading();
   }
 
-  Stream<FormAddState> _getFormAddProductCustomer() async* {
+  Stream<FormAddState> _getFormAddProductCustomer({int? idCustomer}) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingForm();
-      final response = await userRepository.getFormAddProductCustomer();
+      final response = await userRepository.getFormAddProductCustomer(
+          customer_id: idCustomer);
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data ?? []);
       } else {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/models/model_generator/customer.dart';
 import 'package:gen_crm/src/models/model_generator/list_product_customer_response.dart';
@@ -24,21 +26,49 @@ class AddServiceVoucherScreen extends StatefulWidget {
 }
 
 class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   TextEditingController _txtPhone = TextEditingController();
   TextEditingController _txtBienSo = TextEditingController();
   late final ServiceVoucherBloc _bloc;
   bool isDataPhone = true;
   bool isDataCar = true;
+  late final StreamSubscription _streamSubscription;
+  late final TabController _tabController;
 
   @override
   void initState() {
     _bloc = ServiceVoucherBloc.of(context);
+    _tabController = TabController(length: 2, vsync: this);
+    _streamSubscription = _bloc.listCarSearchStream.listen((value) {
+      if (value.runtimeType == List<CustomerData>) {
+        if ((value as List).length == 1) {
+          AppNavigator.navigateForm(
+            title: widget.title,
+            type: ADD_QUICK_CONTRACT,
+            sdt: _tabController.index == 0
+                ? (value.first as CustomerData).phone?.val //phone
+                : '',
+            bienSo: _tabController.index == 0
+                ? ''
+                : (value.firstOrNull as CustomerData).name,
+          );
+        } else if ((value).length == 0) {
+          AppNavigator.navigateForm(
+            title: widget.title,
+            type: ADD_QUICK_CONTRACT,
+            sdt: _tabController.index == 0 ? _txtPhone.text : '',
+            bienSo: _tabController.index == 0 ? '' : _txtBienSo.text,
+          );
+        }
+      }
+    });
     super.initState();
   }
 
   @override
   void dispose() {
+    _streamSubscription.cancel();
+    _bloc.listCarSearchStream.add(null); //reset data
     _bloc.loadMoreControllerBienSo.dispose();
     _bloc.loadMoreControllerPhone.dispose();
     super.dispose();
@@ -56,6 +86,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
           children: [
             AppValue.vSpaceTiny,
             TabBar(
+              controller: _tabController,
               padding: EdgeInsets.symmetric(
                 horizontal: 16,
               ),
@@ -75,6 +106,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
             ),
             Expanded(
               child: TabBarView(
+                controller: _tabController,
                 children: [
                   _tabBody(
                     getT(KeyT.phone),

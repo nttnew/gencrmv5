@@ -250,7 +250,7 @@ class _DetailProductCustomerScreenState
         Get.back();
         AppNavigator.navigateForm(
           title: getT(KeyT.edit),
-          type: PRODUCT_CUSTOMER_TYPE,
+          type: PRODUCT_CUSTOMER_TYPE_EDIT,
           id: int.tryParse(id),
         );
       },

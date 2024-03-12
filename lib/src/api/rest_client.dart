@@ -80,7 +80,9 @@ abstract class RestClient {
 
   @GET(BASE_URL.OTP_RESET_PASSWORD)
   Future<ResponseOtpForgotPassword> otpForgotPassword(
-      @Query("email") String email, @Query("otp_code") String otpCode);
+    @Query("email") String email,
+    @Query("otp_code") String otpCode,
+  );
 
   @GET(BASE_URL.FIRST_INTRODUCE)
   Future<FirstIntroResponse> firstIntroduce();
@@ -90,7 +92,9 @@ abstract class RestClient {
 
   @GET(BASE_URL.GET_LIST_NEW)
   Future<ListNewsResponse> getListNews(
-      @Query('pageSize') int pageSize, @Query('currentPage') int currentPage);
+    @Query('pageSize') int pageSize,
+    @Query('currentPage') int currentPage,
+  );
 
   @GET(BASE_URL.GET_LIST_DOCUMENTS)
   Future<ListDocumentsResponse> getListDocuments();
@@ -102,7 +106,9 @@ abstract class RestClient {
   Future<CoursesResponse> getCourse();
 
   @GET(BASE_URL.DETAIL_COURSE)
-  Future<DetailCoursesResponse> getDetailCourse(@Query('id') int id);
+  Future<DetailCoursesResponse> getDetailCourse(
+    @Query('id') int id,
+  );
 
   @GET(BASE_URL.LIST_CUSTOMER)
   Future<ListCustomerResponse> getListCustomer(
@@ -121,13 +127,19 @@ abstract class RestClient {
   );
 
   @GET(BASE_URL.DETAIL_CUSTOMER)
-  Future<DetailCustomerResponse> getDetailCustomer(@Query('id') int id);
+  Future<DetailCustomerResponse> getDetailCustomer(
+    @Query('id') int id,
+  );
 
   @GET(BASE_URL.LIST_DETAIL_CHANCE)
-  Future<ListDetailChanceResponse> getListDetailChance(@Query('id') int id);
+  Future<ListDetailChanceResponse> getListDetailChance(
+    @Query('id') int id,
+  );
 
   @GET(BASE_URL.ADD_JOB_CHANCE)
-  Future<AddJobResponse> getAddJobChance(@Query('id') int id);
+  Future<AddJobResponse> getAddJobChance(
+    @Query('id') int id,
+  );
 
   @GET(BASE_URL.JOB_CHANCE)
   Future<JobChance> getJobChance(
@@ -203,11 +215,6 @@ abstract class RestClient {
     @Field('so_dien_thoai') String soDienThoai,
     @Field('bien_so') String bienSo,
   );
-
-  // @POST(BASE_URL.POST_INFO_CAR)
-  // Future<InfoCar> postInfoCar(
-  //   @Part(name: "idxe") String idxe,
-  // );
 
   @POST(BASE_URL.SAVE_SERVICE_VOUCHER)
   Future<dynamic> saveServiceVoucher(
@@ -736,7 +743,9 @@ abstract class RestClient {
   );
 
   @GET(BASE_URL.GET_FORM_ADD_PRODUCT_CUSTOMER)
-  Future<AddCustomerIndividual> getFormAddProductCustomer();
+  Future<AddCustomerIndividual> getFormAddProductCustomer(
+    @Query('customer_id') int? customer_id,
+  );
 
   @GET(BASE_URL.GET_FORM_EDIT_PRODUCT_CUSTOMER)
   Future<AddCustomerIndividual> getFormEditProductCustomer(

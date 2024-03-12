@@ -61,10 +61,9 @@ class ButtonBaseSmall extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: 40,
-        padding: EdgeInsets.symmetric(vertical: 8,),
         decoration: BoxDecoration(
           color: HexColor("#D0F1EB"),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Center(
           child: Text(
