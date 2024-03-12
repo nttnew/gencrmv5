@@ -55,6 +55,7 @@ class AppNavigator {
           ])?.then(
         (v) {
           if (onRefreshFormAdd != null && v != null) onRefreshFormAdd();
+          return v;
         },
       );
 
@@ -173,11 +174,16 @@ class AppNavigator {
   static navigateDetailProduct(String title, String id) async =>
       await Get.toNamed(ROUTE_NAMES.DETAIL_PRODUCT, arguments: [title, id]);
 
-  static navigateCheckIn(String id, String module, String type,
-          {Function? onRefreshCheckIn}) async =>
+  static navigateCheckIn(
+    String id,
+    String module,
+    String type, {
+    Function? onRefreshCheckIn,
+  }) async =>
       await Get.toNamed(ROUTE_NAMES.CHECK_IN, arguments: [id, module, type])
           ?.then((v) {
         if (onRefreshCheckIn != null && v != null) onRefreshCheckIn();
+        return v;
       });
 
   static navigateProductCustomer() async => await Get.toNamed(
