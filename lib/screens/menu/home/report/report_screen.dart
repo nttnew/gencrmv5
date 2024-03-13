@@ -241,6 +241,7 @@ class _ReportScreenState extends State<ReportScreen> {
   _filterRow1() {
     double w = MediaQuery.of(context).size.width - 32;
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DropdownButton2(
           value: select,
@@ -285,7 +286,7 @@ class _ReportScreenState extends State<ReportScreen> {
               .toList(),
         ),
         (step == 5)
-            ? _pickDateStep5()
+            ? Container(width: w * 0.35, child: _pickDateStep5())
             : BlocBuilder<ReportBloc, ReportState>(
                 builder: (context, state) {
                   if (state is SuccessReportWorkState) {
@@ -490,6 +491,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   stream: _bloc.textNtcFilter,
                   builder: (context, snapshot) {
                     return Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
                           snapshot.data ?? '',
