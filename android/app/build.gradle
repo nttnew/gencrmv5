@@ -59,8 +59,8 @@ android {
     defaultConfig {
         applicationId "vn.gen_crm"
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 237//versionNew
-        versionName "2.3.7"
+        versionCode 238//versionNew
+        versionName "2.3.8"
         minSdkVersion 21
         multiDexEnabled true
     }
