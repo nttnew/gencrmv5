@@ -35,6 +35,7 @@ class _MainCarState extends State<MainCar> {
     LoginBloc _blocLogin = LoginBloc.of(context);
     return Expanded(
       child: ViewLoadMoreBase(
+        isDispose: false,
         child: SingleChildScrollView(
           child: StreamBuilder<FilterResponse>(
               stream: _blocLogin.locationStatusStream,

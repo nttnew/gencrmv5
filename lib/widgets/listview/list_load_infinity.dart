@@ -15,6 +15,7 @@ class ViewLoadMoreBase extends StatefulWidget {
     this.child,
     this.isCustom,
     this.isShowAll,
+    this.isDispose = true,
   }) : super(key: key);
   final Future<dynamic> Function(int page, bool isInit) functionInit;
   final Function(int index, dynamic data) itemWidget;
@@ -22,6 +23,7 @@ class ViewLoadMoreBase extends StatefulWidget {
   final bool isInit;
   final bool isGrid;
   final bool? isCustom;
+  final bool isDispose;
   final Widget? notFoundData;
   final Widget? child;
   final BehaviorSubject<List<dynamic>>? isShowAll;
@@ -49,7 +51,7 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
 
   @override
   void dispose() {
-    _controller.dispose();
+    if (widget.isDispose) _controller.dispose();
     super.dispose();
   }
 
