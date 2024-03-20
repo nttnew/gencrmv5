@@ -81,10 +81,11 @@ class _WorkScreenState extends State<WorkScreen> {
       key: _drawerKey,
       resizeToAvoidBottomInset: false,
       drawer: MainDrawer(
-        onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+        drawerKey: _drawerKey,
         onReload: () async {
           await _reloadLanguage();
         },
+        moduleMy: ModuleMy.CONG_VIEC,
       ),
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(

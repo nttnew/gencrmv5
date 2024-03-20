@@ -69,7 +69,11 @@ class _ChanceInfoState extends State<ChanceInfo>
                       style: AppStyle.DEFAULT_16_T,
                     );
                   } else
-                    return SizedBox.shrink();
+                    return Padding(
+                      padding: EdgeInsets.only(
+                      top: 16,
+                  ),
+                  child: loadInfo(),);
                 }),
             ListNote(
               module: Module.CO_HOI_BH,

@@ -5,11 +5,11 @@ import 'package:gen_crm/src/models/model_generator/customer.dart';
 import 'package:gen_crm/src/models/model_generator/list_product_customer_response.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
-import 'package:gen_crm/widgets/listview_loadmore_base.dart';
 import 'package:flutter/material.dart';
 import '../../../../bloc/add_service_voucher/add_service_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../widgets/appbar_base.dart';
+import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../home/customer/widget/item_list_customer.dart';
 import '../../home/product_customer/widget/item_product_customer.dart';
 
@@ -227,8 +227,8 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
           ),
         ),
         Expanded(
-          child: ListViewLoadMoreBase(
-            nodataWidget: isPhone
+          child: ViewLoadMoreBase(
+            noDataWidget: isPhone
                 ? isDataPhone
                     ? SizedBox()
                     : null

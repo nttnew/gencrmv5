@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/payment_contract/payment_contract_bloc.dart';
+import 'package:gen_crm/screens/menu/widget/information.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import '../../../../../src/app_const.dart';
 import '../../../../../src/models/model_generator/detail_contract.dart';
@@ -40,10 +41,7 @@ class _ContractPaymentState extends State<ContractPayment>
                           .listPaymentContract?.length ??
                       0) >
                   0)
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: _buildContent1(state.listPaymentContract),
-                );
+                return _buildContent1(state.listPaymentContract);
               else {
                 return Container(
                   height: MediaQuery.of(context).size.height / 2,
@@ -51,7 +49,10 @@ class _ContractPaymentState extends State<ContractPayment>
                 );
               }
               else
-                return SizedBox.shrink();
+                return Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: loadInfo(isTitle: false),
+                );
             })
           ],
         ),
@@ -63,7 +64,9 @@ class _ContractPaymentState extends State<ContractPayment>
     return Column(
       children: (data ?? [])
           .map((e) => Container(
-                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,9 +94,10 @@ class _ContractPaymentState extends State<ContractPayment>
                           return SizedBox.shrink();
                       }),
                     ),
+                    AppValue.vSpaceSmall,
                     WidgetLine(
                       color: Colors.grey,
-                    )
+                    ),
                   ],
                 ),
               ))

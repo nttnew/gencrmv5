@@ -76,8 +76,7 @@ class _ScreenMainState extends State<ScreenMain> {
           image: ICONS.IC_REPORT_PNG,
           backgroundColor: COLORS.ff5D5FEF,
           onTap: () {
-            AppNavigator.navigateReport(
-                shareLocal.getString(PreferencesKey.MONEY) ?? '');
+            AppNavigator.navigateReport();
           }),
     );
     setState(() {});
@@ -153,7 +152,8 @@ class _ScreenMainState extends State<ScreenMain> {
     return Scaffold(
       key: _drawerKey,
       drawer: MainDrawer(
-        onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+        moduleMy: ModuleMy.HOME,
+        drawerKey: _drawerKey,
         onReload: () {
           getMenu();
           _blocLogin.getListMenuFlash();

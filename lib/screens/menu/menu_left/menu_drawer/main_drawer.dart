@@ -14,12 +14,14 @@ import '../../../../widgets/widget_text.dart';
 import 'widget_item_list_menu.dart';
 
 class MainDrawer extends StatefulWidget {
-  final Function onPress;
+  final GlobalKey<ScaffoldState> drawerKey;
   final Function onReload;
+  final String moduleMy;
 
   const MainDrawer({
-    required this.onPress,
+    required this.drawerKey,
     required this.onReload,
+    required this.moduleMy,
   });
 
   @override
@@ -30,6 +32,7 @@ class _MainDrawerState extends State<MainDrawer> {
   List<ButtonMenuModel> listMenu = [];
   List _elements = [];
   bool isReload = false;
+
   @override
   void initState() {
     getMenu();
@@ -45,7 +48,7 @@ class _MainDrawerState extends State<MainDrawer> {
   getMenu() async {
     _elements = [];
     _elements.add({
-      'id': '1',
+      'id': ModuleMy.HOME,
       'title': getT(KeyT.home_page),
       'image': ICONS.IC_MENU_HOME_PNG,
       'group': '1',
@@ -66,14 +69,14 @@ class _MainDrawerState extends State<MainDrawer> {
       ..._elements,
       ...[
         {
-          'id': 'report',
+          'id': ModuleMy.REPORT,
           'title': getT(KeyT.report),
           'image': ICONS.IC_REPORT_PNG,
           'group': '1',
           'isAdmin': false
         },
         {
-          'id': 'setting',
+          'id': ModuleMy.SETTING,
           'title': getT(KeyT.setting),
           'image': ICONS.IC_SETTING_PNG,
           'group': '1',
@@ -108,7 +111,7 @@ class _MainDrawerState extends State<MainDrawer> {
                     children: [
                       WidgetNetworkImage(
                         isAvatar: true,
-                        image: state.inforAcc.avatar ?? "",
+                        image: state.inforAcc.avatar ?? '',
                         width: 75,
                         height: 75,
                         borderRadius: 75,
@@ -127,16 +130,12 @@ class _MainDrawerState extends State<MainDrawer> {
                                 title: isCarCrm()
                                     ? state.inforAcc.ten_viet_tat
                                     : state.inforAcc.fullname ?? '',
-                                style: AppStyle.DEFAULT_16_BOLD.copyWith(
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w600),
+                                style: AppStyle.DEFAULT_16_BOLD,
                               ),
                               AppValue.vSpaceTiny,
                               WidgetText(
                                 title: state.inforAcc.department_name ?? '',
-                                style: AppStyle.DEFAULT_16.copyWith(
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w400),
+                                style: AppStyle.DEFAULT_16,
                               ),
                             ],
                           ),
@@ -168,16 +167,12 @@ class _MainDrawerState extends State<MainDrawer> {
                           children: [
                             WidgetText(
                               title: '',
-                              style: AppStyle.DEFAULT_16_BOLD.copyWith(
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w600),
+                              style: AppStyle.DEFAULT_16_BOLD,
                             ),
                             AppValue.vSpaceTiny,
                             WidgetText(
                               title: '',
-                              style: AppStyle.DEFAULT_16.copyWith(
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w400),
+                              style: AppStyle.DEFAULT_16,
                             ),
                           ],
                         ),
@@ -192,43 +187,36 @@ class _MainDrawerState extends State<MainDrawer> {
             ),
           ),
           Expanded(
-              child: _elements.length > 0
-                  ? ListView.builder(
-                      itemCount: _elements.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: Column(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  if (_elements[index]['id'] == 'setting') {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => SettingScreen(
-                                          onSelectLang: () {
-                                            getMenu();
-                                            isReload = true;
-                                          },
-                                        ),
-                                      ),
-                                    );
-                                  } else {
-                                    widget.onPress(_elements[index]);
-                                  }
-                                },
-                                child: WidgetItemListMenu(
-                                  icon: _elements[index]['image'],
-                                  title: _elements[index]['title'],
-                                ),
+            child: _elements.length > 0
+                ? ListView.builder(
+                    itemCount: _elements.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                if (widget.moduleMy != _elements[index]['id'])
+                                  _handleOnPressItemMenu(
+                                    widget.drawerKey,
+                                    _elements[index],
+                                  );
+                                widget.drawerKey.currentState!.openEndDrawer();
+                              },
+                              child: WidgetItemListMenu(
+                                icon: _elements[index]['image'],
+                                title: _elements[index]['title'],
                               ),
-                              AppValue.vSpaceSmall,
-                            ],
-                          ),
-                        );
-                      },
-                    )
-                  : SizedBox()),
+                            ),
+                            AppValue.vSpaceSmall,
+                          ],
+                        ),
+                      );
+                    },
+                  )
+                : SizedBox.shrink(),
+          ),
           WidgetButton(
             onTap: () {
               ShowDialogCustom.showDialogBase(
@@ -236,13 +224,17 @@ class _MainDrawerState extends State<MainDrawer> {
                   colorButton1: COLORS.SECONDS_COLOR,
                   onTap2: () {
                     AppNavigator.navigateLogout();
-                    AuthenticationBloc.of(context)
-                        .add(AuthenticationLogoutRequested());
+                    AuthenticationBloc.of(context).add(
+                      AuthenticationLogoutRequested(),
+                    );
                     LoginBloc.of(context).logout(context);
                   });
             },
             height: 40,
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+            padding: EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 20,
+            ),
             text: getT(KeyT.logout),
             textColor: COLORS.BLACK,
             backgroundColor: COLORS.GREY.withOpacity(0.5),
@@ -250,5 +242,67 @@ class _MainDrawerState extends State<MainDrawer> {
         ],
       ),
     );
+  }
+
+  _handleOnPressItemMenu(
+    GlobalKey<ScaffoldState> _drawerKey,
+    value,
+  ) async {
+    switch (value['id']) {
+      case ModuleMy.HOME:
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateMain();
+        break;
+      case ModuleMy.LICH_HEN:
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateChance();
+        break;
+      case ModuleMy.CONG_VIEC:
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateWork();
+        break;
+      case ModuleMy.HOP_DONG:
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateContract();
+        break;
+      case ModuleMy.CSKH:
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateSupport();
+        break;
+      case ModuleMy.CUSTOMER:
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateCustomer();
+        break;
+      case ModuleMy.DAU_MOI:
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateClue();
+        break;
+      case ModuleMy.REPORT:
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateReport();
+        break;
+      case ModuleMy.SAN_PHAM:
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateProduct();
+        break;
+      case ModuleMy.SETTING:
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => SettingScreen(
+              onSelectLang: () {
+                getMenu();
+                isReload = true;
+              },
+            ),
+          ),
+        );
+        break;
+      case ModuleMy.SAN_PHAM_KH:
+        _drawerKey.currentState!.openEndDrawer();
+        AppNavigator.navigateProductCustomer();
+        break;
+      default:
+        break;
+    }
   }
 }

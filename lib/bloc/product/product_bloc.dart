@@ -7,7 +7,7 @@ import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/product_response.dart';
 import '../../src/models/model_generator/service_pack_response.dart';
-import '../../widgets/listview_loadmore_base.dart';
+import '../../widgets/listview/list_load_infinity.dart';
 import '../../widgets/loading_api.dart';
 
 part 'product_state.dart';

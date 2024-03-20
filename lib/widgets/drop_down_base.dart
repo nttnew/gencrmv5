@@ -11,11 +11,13 @@ class DropDownBase extends StatefulWidget {
     required this.stream,
     required this.onTap,
     this.isName = false,
+    this.isPadding = true,
   }) : super(key: key);
 
   final BehaviorSubject<List<dynamic>> stream;
   final Function(dynamic item) onTap;
   final bool isName;
+  final bool isPadding ;
   @override
   State<DropDownBase> createState() => _DropDownBaseState();
 }
@@ -46,11 +48,13 @@ class _DropDownBaseState extends State<DropDownBase> {
                   builder: (context, snapshot) {
                     final filter = snapshot.data;
                     return Container(
-                      padding: const EdgeInsets.only(
-                        left: 16,
-                        right: 16,
-                        bottom: 16,
-                      ),
+                      padding: widget.isPadding
+                          ? const EdgeInsets.only(
+                              left: 16,
+                              right: 16,
+                              bottom: 16,
+                            )
+                          : null,
                       alignment: Alignment.centerLeft,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,

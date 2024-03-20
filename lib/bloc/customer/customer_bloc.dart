@@ -42,7 +42,6 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
   Future<dynamic> getListCustomer({
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
-    LoadingApi().pushLoading();
     dynamic resDynamic = '';
     try {
       final response = await userRepository.getListCustomer(
@@ -63,10 +62,8 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
       }
     } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      LoadingApi().popLoading();
       return resDynamic;
     }
-    LoadingApi().popLoading();
     return resDynamic;
   }
 

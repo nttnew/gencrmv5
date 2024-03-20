@@ -42,7 +42,6 @@ class ProductCustomerModuleBloc
   Future<dynamic> getListProduct({
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
-    LoadingApi().pushLoading();
     dynamic resDynamic = '';
     try {
       final response = await userRepository.getListProductCustomer(
@@ -61,10 +60,8 @@ class ProductCustomerModuleBloc
         resDynamic = response.msg ?? '';
     }  catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      LoadingApi().popLoading();
       return resDynamic;
     }
-    LoadingApi().popLoading();
     return resDynamic;
   }
 

@@ -16,7 +16,7 @@ import '../../../../src/models/model_generator/job_chance.dart';
 import '../../../../src/models/model_generator/support.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
-import '../../../../widgets/listview_loadmore_base.dart';
+import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
@@ -235,7 +235,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                               padding: const EdgeInsets.only(
                                 top: 8,
                               ),
-                              child: ListViewLoadMoreBase(
+                              child: ViewLoadMoreBase(
                                 functionInit: (page, isInit) {
                                   return _bloc.getJobContract(
                                     id: int.parse(id),
@@ -269,7 +269,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                               padding: const EdgeInsets.only(
                                 top: 8,
                               ),
-                              child: ListViewLoadMoreBase(
+                              child: ViewLoadMoreBase(
                                 functionInit: (page, isInit) {
                                   return _bloc.getSupportContract(
                                     id: int.parse(id),
@@ -304,9 +304,16 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                           ],
                         ),
                       ),
-                      ButtonThaoTac(onTap: () {
-                        showThaoTac(context, list);
-                      }),
+                      BlocBuilder<DetailContractBloc, DetailContractState>(
+                        bloc: _bloc,
+                        builder: (context, state) {
+                          if (state is SuccessDetailContractState)
+                            return ButtonThaoTac(onTap: () {
+                              showThaoTac(context, list);
+                            });
+                          return ButtonThaoTac(disable: true, onTap: () {});
+                        },
+                      ),
                     ],
                   )),
             )

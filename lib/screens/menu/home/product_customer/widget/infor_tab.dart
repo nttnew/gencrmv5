@@ -40,7 +40,12 @@ class _InfoTabProductCustomerState extends State<InfoTabProductCustomer>
           style: AppStyle.DEFAULT_16_T,
         );
       }
-      return SizedBox();
+      return Padding(
+        padding: EdgeInsets.only(
+          top: 16,
+        ),
+        child: loadInfo(),
+      );
     });
   }
 

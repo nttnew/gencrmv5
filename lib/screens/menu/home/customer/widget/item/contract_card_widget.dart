@@ -6,8 +6,8 @@ import '../../../../../../src/models/model_generator/contract_customer.dart';
 import '../../../../../../src/src_index.dart';
 import '../../../../../../storages/share_local.dart';
 
-class ConstractCardWidget extends StatelessWidget {
-  ConstractCardWidget({
+class ContractCardWidget extends StatelessWidget {
+  ContractCardWidget({
     Key? key,
     required this.data,
     required this.onTap,

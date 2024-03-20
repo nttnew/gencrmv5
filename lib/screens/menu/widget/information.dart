@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/models/model_generator/work.dart';
+import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../l10n/key_text.dart';
 import '../../../src/app_const.dart';
 import '../../../src/models/model_generator/detail_customer.dart';
@@ -254,3 +256,57 @@ bool isCheckDataLocation(
       (data.time ?? '') != '' &&
       (data.note_location ?? '') != '';
 }
+
+loadInfo({bool isTitle = true}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(
+      horizontal: 16,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (isTitle) _itemLoading(w: 3),
+        _itemLoadingContent(),
+        _itemLoadingContent(),
+        _itemLoadingContent(),
+        _itemLoadingContent(),
+        _itemLoadingContent(),
+        _itemLoadingContent(),
+        _itemLoadingContent(),
+        AppValue.vSpaceSmall,
+        LineHorizontal(),
+      ],
+    ),
+  );
+}
+
+_itemLoadingContent() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      _itemLoading(w: 3),
+      AppValue.hSpaceSmall,
+      _itemLoading(w: 1.5),
+    ],
+  );
+}
+
+_itemLoading({double w = 2}) => Shimmer.fromColors(
+      baseColor: Colors.black12,
+      highlightColor: Colors.white,
+      child: Container(
+        margin: EdgeInsets.only(
+          bottom: 10,
+        ),
+        height: 20,
+        width: (MediaQuery.of(Get.context!).size.width - 48) / w,
+        decoration: BoxDecoration(
+          color: Colors.cyan,
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              4,
+            ),
+          ),
+        ),
+      ),
+    );

@@ -10,7 +10,7 @@ import '../../../../src/models/model_generator/detail_customer.dart';
 import '../../../../src/models/model_generator/job_chance.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
-import '../../../../widgets/listview_loadmore_base.dart';
+import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
@@ -191,7 +191,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                               padding: EdgeInsets.only(
                                 top: 8,
                               ),
-                              child: ListViewLoadMoreBase(
+                              child: ViewLoadMoreBase(
                                 functionInit: (page, isInit) {
                                   return _bloc.getJobChance(
                                     id: int.parse(id),
@@ -228,9 +228,16 @@ class _InfoChancePageState extends State<InfoChancePage> {
                     ],
                   )),
             ),
-            ButtonThaoTac(onTap: () {
-              showThaoTac(context, list);
-            }),
+            BlocBuilder<GetListDetailChanceBloc, DetailChanceState>(
+              bloc: _bloc,
+              builder: (context, state) {
+                if (state is UpdateGetListDetailChanceState)
+                  return ButtonThaoTac(onTap: () {
+                    showThaoTac(context, list);
+                  });
+                return ButtonThaoTac(disable: true, onTap: () {});
+              },
+            ),
           ],
         ),
       ),

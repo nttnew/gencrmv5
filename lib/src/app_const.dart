@@ -184,58 +184,11 @@ Widget itemIcon(
 }
 
 TextStyle styleTitleBottomSheet() => TextStyle(
-    color: HexColor("#0069CD"),
-    fontFamily: "Quicksand",
-    fontWeight: FontWeight.w700,
-    fontSize: 20);
-
-handleOnPressItemMenu(_drawerKey, value) async {
-  switch (value['id']) {
-    case '1':
-      _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateMain();
-      break;
-    case 'opportunity':
-      _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateChance();
-      break;
-    case 'job':
-      _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateWork();
-      break;
-    case 'contract':
-      _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateContract();
-      break;
-    case 'support':
-      _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateSupport();
-      break;
-    case 'customer':
-      _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateCustomer();
-      break;
-    case 'contact':
-      _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateClue();
-      break;
-    case 'report':
-      _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateReport(
-          shareLocal.getString(PreferencesKey.MONEY) ?? '');
-      break;
-    case 'product':
-      _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateProduct();
-      break;
-    case 'sanphamkh':
-      _drawerKey.currentState!.openEndDrawer();
-      AppNavigator.navigateProductCustomer();
-      break;
-    default:
-      break;
-  }
-}
+      color: HexColor("#0069CD"),
+      fontFamily: "Quicksand",
+      fontWeight: FontWeight.w700,
+      fontSize: 20,
+    );
 
 Widget widgetTextClick(
   String title,

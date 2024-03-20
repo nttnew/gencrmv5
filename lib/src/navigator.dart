@@ -92,12 +92,11 @@ class AppNavigator {
   static navigateInformationAccount() async =>
       await Get.toNamed(ROUTE_NAMES.INFORMATION_ACCOUNT);
 
-  static navigateReport(String money) async =>
-      await Get.toNamed(ROUTE_NAMES.REPORT, arguments: money);
+  static navigateReport() async => await Get.offAllNamed(ROUTE_NAMES.REPORT);
 
-  static navigateCustomer() async => await Get.toNamed(ROUTE_NAMES.CUSTOMER);
+  static navigateCustomer() async => await Get.offAllNamed(ROUTE_NAMES.CUSTOMER);
 
-  static navigateClue() async => await Get.toNamed(ROUTE_NAMES.CLUE);
+  static navigateClue() async => await Get.offAllNamed(ROUTE_NAMES.CLUE);
 
   static navigateDetailClue(String id, String name) async =>
       await Get.toNamed(ROUTE_NAMES.INFO_CLUE, arguments: [id, name]);
@@ -107,14 +106,14 @@ class AppNavigator {
   static navigateCall({required String title}) async =>
       await Get.toNamed(ROUTE_NAMES.CALL, arguments: title);
 
-  static navigateContract() async => await Get.toNamed(ROUTE_NAMES.CONTRACT);
+  static navigateContract() async => await Get.offAllNamed(ROUTE_NAMES.CONTRACT);
 
   static navigateDetailContract(String id, String name) async =>
       await Get.toNamed(ROUTE_NAMES.INFO_CONTRACT, arguments: [id, name]);
 
-  static navigateSupport() async => await Get.toNamed(ROUTE_NAMES.SUPPORT);
+  static navigateSupport() async => await Get.offAllNamed(ROUTE_NAMES.SUPPORT);
 
-  static navigateChance() async => await Get.toNamed(ROUTE_NAMES.CHANCE);
+  static navigateChance() async => await Get.offAllNamed(ROUTE_NAMES.CHANCE);
 
   static navigateAddChance(String id) async =>
       await Get.toNamed(ROUTE_NAMES.ADD_CHANCE, arguments: id);
@@ -122,7 +121,7 @@ class AppNavigator {
   static navigateDetailChance(String id, String name) async =>
       await Get.toNamed(ROUTE_NAMES.INFO_CHANCE, arguments: [id, name]);
 
-  static navigateWork() async => await Get.toNamed(
+  static navigateWork() async => await Get.offAllNamed(
         ROUTE_NAMES.WORK,
       );
 
@@ -167,7 +166,7 @@ class AppNavigator {
       await Get.toNamed(ROUTE_NAMES.ADD_PRODUCT,
           arguments: [add, reload, data, group]);
 
-  static navigateProduct() async => await Get.toNamed(
+  static navigateProduct() async => await Get.offAllNamed(
         ROUTE_NAMES.PRODUCT,
       );
 
@@ -186,7 +185,7 @@ class AppNavigator {
         return v;
       });
 
-  static navigateProductCustomer() async => await Get.toNamed(
+  static navigateProductCustomer() async => await Get.offAllNamed(
         ROUTE_NAMES.PRODUCT_CUSTOMER,
       );
 

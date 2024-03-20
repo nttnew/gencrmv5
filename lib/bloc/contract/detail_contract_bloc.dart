@@ -13,7 +13,7 @@ import '../../src/base.dart';
 import '../../src/models/model_generator/contract.dart';
 import '../../src/models/model_generator/detail_customer.dart';
 import '../../src/models/model_generator/file_response.dart';
-import '../../widgets/listview_loadmore_base.dart';
+import '../../widgets/listview/list_load_infinity.dart';
 
 part 'detail_contract_event.dart';
 part 'detail_contract_state.dart';
@@ -52,21 +52,17 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
   Stream<DetailContractState> _getDetailContract({
     required int id,
   }) async* {
-    LoadingApi().pushLoading();
     try {
       yield LoadingDetailContractState();
       final response = await userRepository.getDetailContract(id);
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
         yield SuccessDetailContractState(response.data ?? []);
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
         yield ErrorDetailContractState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
       yield ErrorDetailContractState(getT(KeyT.an_error_occurred));
     }
   }
@@ -142,50 +138,40 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
     }
   }
 
-  Future<dynamic> getSupportContract(
-      {required int id,
-      int page = BASE_URL.PAGE_DEFAULT,
-      bool isInit = true}) async {
-    if (isInit) {
-      LoadingApi().pushLoading();
-    }
+  Future<dynamic> getSupportContract({
+    required int id,
+    int page = BASE_URL.PAGE_DEFAULT,
+    bool isInit = true,
+  }) async {
     try {
       final response = await userRepository.getSupportContract(id, page);
       if (isSuccess(response.code)) {
-        if (isInit) LoadingApi().popLoading();
         return response.data ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        if (isInit) LoadingApi().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      if (isInit) LoadingApi().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }
 
-  Future<dynamic> getJobContract(
-      {required int id,
-      int page = BASE_URL.PAGE_DEFAULT,
-      bool isInit = true}) async {
-    if (isInit) {
-      LoadingApi().pushLoading();
-    }
+  Future<dynamic> getJobContract({
+    required int id,
+    int page = BASE_URL.PAGE_DEFAULT,
+    bool isInit = true,
+  }) async {
     try {
       final response = await userRepository.getJobContract(id, page);
       if (isSuccess(response.code)) {
-        if (isInit) LoadingApi().popLoading();
         return response.data ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        if (isInit) LoadingApi().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      if (isInit) LoadingApi().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }

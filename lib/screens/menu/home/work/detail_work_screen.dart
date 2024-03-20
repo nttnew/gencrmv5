@@ -246,7 +246,12 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                                   style: AppStyle.DEFAULT_16_T,
                                 );
                               } else
-                                return SizedBox.shrink();
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 24,
+                                  ),
+                                  child: loadInfo(),
+                                );
                             }),
                         SizedBox(
                           height: 16,
@@ -261,9 +266,19 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                   ),
                 ),
               ),
-              ButtonThaoTac(
-                onTap: () {
-                  showThaoTac(context, list);
+              BlocBuilder<DetailWorkBloc, DetailWorkState>(
+                bloc: _bloc,
+                builder: (context, state) {
+                  if (state is SuccessDetailWorkState)
+                    return ButtonThaoTac(
+                      onTap: () {
+                        showThaoTac(context, list);
+                      },
+                    );
+                  return ButtonThaoTac(
+                    disable: true,
+                    onTap: () {},
+                  );
                 },
               )
             ],

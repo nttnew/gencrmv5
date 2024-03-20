@@ -66,7 +66,8 @@ class _ClueScreenState extends State<ClueScreen> {
       resizeToAvoidBottomInset: false,
       appBar: AppbarBase(_drawerKey, title),
       drawer: MainDrawer(
-        onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+        drawerKey: _drawerKey,
+        moduleMy: ModuleMy.DAU_MOI,
         onReload: () async {
           await _reloadLanguage();
         },

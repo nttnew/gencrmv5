@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/customer_clue.dart';
-import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
@@ -35,7 +34,6 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
   Future<dynamic> getListContract({
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
-    LoadingApi().pushLoading();
     dynamic resDynamic = '';
     try {
       final response = await userRepository.getListContract(
@@ -54,10 +52,8 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
         resDynamic = response.msg ?? '';
     } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      LoadingApi().popLoading();
       return resDynamic;
     }
-    LoadingApi().popLoading();
     return resDynamic;
   }
 

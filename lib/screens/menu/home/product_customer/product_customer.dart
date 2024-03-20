@@ -71,10 +71,10 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
       key: _drawerKey,
       resizeToAvoidBottomInset: false,
       drawer: MainDrawer(
-        onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+        drawerKey: _drawerKey,
         onReload: () async {
           await _reloadLanguage();
-        },
+        }, moduleMy: ModuleMy.SAN_PHAM_KH,
       ),
       appBar: AppbarBase(_drawerKey, title),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

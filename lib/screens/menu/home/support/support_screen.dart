@@ -85,7 +85,8 @@ class _SupportScreenState extends State<SupportScreen> {
       key: _drawerKey,
       resizeToAvoidBottomInset: false,
       drawer: MainDrawer(
-        onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+        drawerKey: _drawerKey,
+        moduleMy: ModuleMy.CSKH,
         onReload: () async {
           await _reloadLanguage();
         },

@@ -8,7 +8,7 @@ import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/detail_product_customer_response.dart';
-import '../../widgets/listview_loadmore_base.dart';
+import '../../widgets/listview/list_load_infinity.dart';
 
 part 'detail_product_customer_event.dart';
 part 'detail_product_customer_state.dart';
@@ -38,22 +38,19 @@ class DetailProductCustomerBloc
   Stream<DetailProductCustomerState> _getDetailProduct({
     required String id,
   }) async* {
-    LoadingApi().pushLoading();
     try {
+      yield LoadingDetailProductCustomerState();
       final response = await userRepository.getDetailProductCustomer(id: id);
       if (isSuccess(response.code)) {
         yield GetDetailProductCustomerState(response);
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
         yield ErrorGetDetailProductCustomerState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
       yield ErrorGetDetailProductCustomerState(getT(KeyT.an_error_occurred));
     }
-    LoadingApi().popLoading();
   }
 
   Future<dynamic> getListCVProductCustomer({
@@ -61,22 +58,17 @@ class DetailProductCustomerBloc
     int page = BASE_URL.PAGE_DEFAULT,
     bool isInit = true,
   }) async {
-    if (isInit) LoadingApi().pushLoading();
-
     try {
       final response =
           await userRepository.getListCVProductCustomer(spkh: id, page: page);
       if (isSuccess(response.code)) {
-        if (isInit) LoadingApi().popLoading();
         return response.data?.data?.dataList ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        if (isInit) LoadingApi().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      if (isInit) LoadingApi().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }
@@ -86,22 +78,17 @@ class DetailProductCustomerBloc
     int page = BASE_URL.PAGE_DEFAULT,
     bool isInit = true,
   }) async {
-    if (isInit) LoadingApi().pushLoading();
-
     try {
       final response =
           await userRepository.getListCHProductCustomer(spkh: id, page: page);
       if (isSuccess(response.code)) {
-        if (isInit) LoadingApi().popLoading();
         return response.data?.lists ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        if (isInit) LoadingApi().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      if (isInit) LoadingApi().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }
@@ -111,22 +98,17 @@ class DetailProductCustomerBloc
     int page = BASE_URL.PAGE_DEFAULT,
     bool isInit = true,
   }) async {
-    if (isInit) LoadingApi().pushLoading();
-
     try {
       final response =
           await userRepository.getListHDProductCustomer(spkh: id, page: page);
       if (isSuccess(response.code)) {
-        if (isInit) LoadingApi().popLoading();
         return response.data ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        if (isInit) LoadingApi().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      if (isInit) LoadingApi().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }
@@ -136,22 +118,17 @@ class DetailProductCustomerBloc
     int page = BASE_URL.PAGE_DEFAULT,
     bool isInit = true,
   }) async {
-    if (isInit) LoadingApi().pushLoading();
-
     try {
       final response =
           await userRepository.getListHTProductCustomer(spkh: id, page: page);
       if (isSuccess(response.code)) {
-        if (isInit) LoadingApi().popLoading();
         return response.data ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        if (isInit) LoadingApi().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      if (isInit) LoadingApi().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }

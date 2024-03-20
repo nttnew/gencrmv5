@@ -8,7 +8,6 @@ import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/clue.dart';
 import '../../widgets/listview/list_load_infinity.dart';
-import '../../widgets/loading_api.dart';
 
 part 'clue_state.dart';
 part 'clue_event.dart';
@@ -34,7 +33,6 @@ class GetListClueBloc extends Bloc<GetListClueEvent, ClueState> {
   Future<dynamic> getListClue({
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
-    LoadingApi().pushLoading();
     dynamic resDynamic = '';
     try {
       final response = await userRepository.getListClue(
@@ -51,12 +49,10 @@ class GetListClueBloc extends Bloc<GetListClueEvent, ClueState> {
         loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';
-    }  catch (e) {
+    } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      LoadingApi().popLoading();
       return resDynamic;
     }
-    LoadingApi().popLoading();
     return resDynamic;
   }
 

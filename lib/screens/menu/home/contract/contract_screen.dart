@@ -66,10 +66,11 @@ class _ContractScreenState extends State<ContractScreen> {
       resizeToAvoidBottomInset: false,
       appBar: AppbarBase(_drawerKey, title),
       drawer: MainDrawer(
-        onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+        drawerKey: _drawerKey,
         onReload: () async {
           await _reloadLanguage();
         },
+        moduleMy: ModuleMy.HOP_DONG,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: Padding(

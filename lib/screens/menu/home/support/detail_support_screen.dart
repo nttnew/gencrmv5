@@ -171,46 +171,48 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
               );
             }
           },
-          child: BlocBuilder<DetailSupportBloc, DetailSupportState>(
-              bloc: _bloc,
-              builder: (context, state) {
-                if (state is SuccessGetDetailSupportState) {
-                  checkLocation(state);
-                  getThaoTac();
-                  return BlocListener<DetailSupportBloc, DetailSupportState>(
+          child: Column(
+            children: [
+              Expanded(
+                child: BlocBuilder<DetailSupportBloc, DetailSupportState>(
                     bloc: _bloc,
-                    listener: (context, state) async {
-                      if (state is SuccessDeleteSupportState) {
-                        LoadingApi().popLoading();
-                        ShowDialogCustom.showDialogBase(
-                          title: getT(KeyT.notification),
-                          content: getT(KeyT.success),
-                          onTap1: () {
-                            Get.back();
-                            Get.back();
-                            Get.back();
-                            Get.back();
-                            SupportBloc.of(context).add(InitGetSupportEvent());
+                    builder: (context, state) {
+                      if (state is SuccessGetDetailSupportState) {
+                        checkLocation(state);
+                        getThaoTac();
+                        return BlocListener<DetailSupportBloc,
+                            DetailSupportState>(
+                          bloc: _bloc,
+                          listener: (context, state) async {
+                            if (state is SuccessDeleteSupportState) {
+                              LoadingApi().popLoading();
+                              ShowDialogCustom.showDialogBase(
+                                title: getT(KeyT.notification),
+                                content: getT(KeyT.success),
+                                onTap1: () {
+                                  Get.back();
+                                  Get.back();
+                                  Get.back();
+                                  Get.back();
+                                  SupportBloc.of(context)
+                                      .add(InitGetSupportEvent());
+                                },
+                              );
+                            } else if (state is ErrorDeleteSupportState) {
+                              LoadingApi().popLoading();
+                              ShowDialogCustom.showDialogBase(
+                                title: getT(KeyT.notification),
+                                content: state.msg,
+                                textButton1: getT(KeyT.come_back),
+                                onTap1: () {
+                                  Get.back();
+                                  Get.back();
+                                  Get.back();
+                                  Get.back();
+                                },
+                              );
+                            }
                           },
-                        );
-                      } else if (state is ErrorDeleteSupportState) {
-                        LoadingApi().popLoading();
-                        ShowDialogCustom.showDialogBase(
-                          title: getT(KeyT.notification),
-                          content: state.msg,
-                          textButton1: getT(KeyT.come_back),
-                          onTap1: () {
-                            Get.back();
-                            Get.back();
-                            Get.back();
-                            Get.back();
-                          },
-                        );
-                      }
-                    },
-                    child: Column(
-                      children: [
-                        Expanded(
                           child: RefreshIndicator(
                             onRefresh: () async {
                               await _refresh();
@@ -240,21 +242,33 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                               ),
                             ),
                           ),
-                        ),
-                        ButtonThaoTac(onTap: () {
-                          showThaoTac(context, list);
-                        }),
-                      ],
-                    ),
-                  );
-                } else if (state is ErrorGetDetailSupportState) {
-                  return Text(
-                    state.msg,
-                    style: AppStyle.DEFAULT_16_T,
-                  );
-                } else
-                  return SizedBox.shrink();
-              }),
+                        );
+                      } else if (state is ErrorGetDetailSupportState) {
+                        return Text(
+                          state.msg,
+                          style: AppStyle.DEFAULT_16_T,
+                        );
+                      } else
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                            top: 24,
+                          ),
+                          child: loadInfo(),
+                        );
+                    }),
+              ),
+              BlocBuilder<DetailSupportBloc, DetailSupportState>(
+                bloc: _bloc,
+                builder: (context, state) {
+                  if (state is SuccessGetDetailSupportState)
+                    return ButtonThaoTac(onTap: () {
+                      showThaoTac(context, list);
+                    });
+                  return ButtonThaoTac(disable: true, onTap: () {});
+                },
+              ),
+            ],
+          ),
         ));
   }
 }

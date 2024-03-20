@@ -7,7 +7,7 @@ import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/detail_customer.dart';
-import '../../widgets/listview_loadmore_base.dart';
+import '../../widgets/listview/list_load_infinity.dart';
 
 part 'detail_chance_event.dart';
 part 'detail_chance_state.dart';
@@ -38,7 +38,7 @@ class GetListDetailChanceBloc
   }
 
   Stream<DetailChanceState> _getListChanceDetail({required int id}) async* {
-    LoadingApi().pushLoading();
+    yield LoadingListDetailChanceState();
     try {
       final response = await userRepository.getListDetailChance(id);
       if (isSuccess(response.code)) {
@@ -47,14 +47,10 @@ class GetListDetailChanceBloc
         loginSessionExpired();
       } else {
         yield ErrorGetListDetailChanceState(response.msg ?? '');
-        LoadingApi().popLoading();
       }
     } catch (e) {
       yield ErrorGetListDetailChanceState(getT(KeyT.an_error_occurred));
-      LoadingApi().popLoading();
-      throw e;
     }
-    LoadingApi().popLoading();
   }
 
   Stream<DetailChanceState> _deleteChance({required String id}) async* {
@@ -78,23 +74,16 @@ class GetListDetailChanceBloc
     int page = BASE_URL.PAGE_DEFAULT,
     bool isInit = true,
   }) async {
-    if (isInit) {
-      LoadingApi().pushLoading();
-    }
     try {
       final response = await userRepository.getJobChance(id, page);
       if (isSuccess(response.code)) {
-        if (isInit) LoadingApi().popLoading();
         return response.data ?? [];
       } else if (isFail(response.code)) {
-        if (isInit) LoadingApi().popLoading();
         loginSessionExpired();
       } else {
-        if (isInit) LoadingApi().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      if (isInit) LoadingApi().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }

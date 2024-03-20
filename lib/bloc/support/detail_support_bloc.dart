@@ -32,7 +32,6 @@ class DetailSupportBloc extends Bloc<DetailSupportEvent, DetailSupportState> {
   List<SupportItemData>? list;
 
   Stream<DetailSupportState> _getDetailSupport({required String id}) async* {
-    LoadingApi().pushLoading();
     try {
       yield LoadingDetailSupportState();
       final response = await userRepository.getDetailSupport(id);
@@ -44,15 +43,11 @@ class DetailSupportBloc extends Bloc<DetailSupportEvent, DetailSupportState> {
           response.checkout,
         );
       } else {
-        LoadingApi().popLoading();
         yield ErrorGetDetailSupportState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
       yield ErrorGetDetailSupportState(getT(KeyT.an_error_occurred));
-      throw e;
     }
-    LoadingApi().popLoading();
   }
 
   Stream<DetailSupportState> _deleteSupport({required String id}) async* {

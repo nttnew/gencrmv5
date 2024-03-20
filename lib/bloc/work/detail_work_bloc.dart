@@ -26,7 +26,7 @@ class DetailWorkBloc extends Bloc<DetailWorkEvent, DetailWorkState> {
   }
 
   Stream<DetailWorkState> _getDetailWork(int id) async* {
-    LoadingApi().pushLoading();
+    yield LoadingDetailWorkState();
     try {
       final response = await userRepository.detailJob(id);
       if (isSuccess(response.code)) {
@@ -38,15 +38,11 @@ class DetailWorkBloc extends Bloc<DetailWorkEvent, DetailWorkState> {
           response.checkout,
         );
       } else {
-        LoadingApi().popLoading();
         yield ErrorGetDetailWorkState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
       yield ErrorGetDetailWorkState(getT(KeyT.an_error_occurred));
-      throw (e);
     }
-    LoadingApi().popLoading();
   }
 
   Stream<DetailWorkState> _deleteWork(int id) async* {

@@ -132,10 +132,10 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
             );
           }
         },
-        child: Container(
-          child: Stack(
-            children: [
-              BlocBuilder<DetailProductBloc, DetailProductState>(
+        child: Column(
+          children: [
+            Expanded(
+              child: BlocBuilder<DetailProductBloc, DetailProductState>(
                   bloc: _bloc,
                   builder: (context, state) {
                     if (state is UpdateGetDetailProductState) {
@@ -164,21 +164,30 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                         style: AppStyle.DEFAULT_16_T,
                       );
                     } else
-                      return SizedBox();
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          top: 24,
+                        ),
+                        child: loadInfo(),
+                      );
                   }),
-              Positioned(
-                bottom: 0,
-                right: 16,
-                left: 16,
-                child: ButtonThaoTac(
-                  onTap: () {
-                    showThaoTac(context, list);
-                  },
-                  marginHorizontal: 0,
-                ),
-              ),
-            ],
-          ),
+            ),
+            BlocBuilder<DetailProductBloc, DetailProductState>(
+              bloc: _bloc,
+              builder: (context, state) {
+                if (state is UpdateGetDetailProductState)
+                  return ButtonThaoTac(
+                    onTap: () {
+                      showThaoTac(context, list);
+                    },
+                  );
+                return ButtonThaoTac(
+                  disable: true,
+                  onTap: () {},
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

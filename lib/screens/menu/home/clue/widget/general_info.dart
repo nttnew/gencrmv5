@@ -33,45 +33,61 @@ class _GeneralInfoState extends State<GeneralInfo>
     super.initState();
   }
 
+  init() async {
+    _bloc.add(InitGetDetailClueEvent(widget.id));
+    _blocNote.add(RefreshEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          BlocBuilder<GetDetailClueBloc, DetailClueState>(
-              bloc: _bloc,
-              builder: (context, state) {
-                if (state is GetDetailClueState) {
-                  if (state.list == [] || state.list == null) {
-                    return SizedBox();
+    return RefreshIndicator(
+      onRefresh: () async {
+        await init();
+      },
+      child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            BlocBuilder<GetDetailClueBloc, DetailClueState>(
+                bloc: _bloc,
+                builder: (context, state) {
+                  if (state is GetDetailClueState) {
+                    if (state.list == [] || state.list == null) {
+                      return SizedBox();
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          top: 16,
+                        ),
+                        child: InfoBase(
+                          listData: state.list ?? [],
+                        ),
+                      );
+                    }
+                  } else if (state is ErrorGetDetailClueState) {
+                    return Text(
+                      state.msg,
+                      style: AppStyle.DEFAULT_16_T,
+                    );
                   } else {
                     return Padding(
                       padding: const EdgeInsets.only(
                         top: 16,
                       ),
-                      child: InfoBase(
-                        listData: state.list ?? [],
-                      ),
+                      child: loadInfo(),
                     );
                   }
-                } else if (state is ErrorGetDetailClueState) {
-                  return Text(
-                    state.msg,
-                    style: AppStyle.DEFAULT_16_T,
-                  );
-                } else {
-                  return SizedBox();
-                }
-              }),
-          AppValue.vSpaceTiny,
-          ListNote(
-            module: Module.DAU_MOI,
-            id: widget.id,
-            bloc: _blocNote,
-          )
-        ],
+                }),
+            AppValue.vSpaceTiny,
+            ListNote(
+              module: Module.DAU_MOI,
+              id: widget.id,
+              bloc: _blocNote,
+            )
+          ],
+        ),
       ),
     );
   }

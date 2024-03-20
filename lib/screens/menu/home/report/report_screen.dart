@@ -39,7 +39,7 @@ class ReportScreen extends StatefulWidget {
 
 class _ReportScreenState extends State<ReportScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  String? money = Get.arguments;
+  String? money = shareLocal.getString(PreferencesKey.MONEY) ?? '';
   String? _labelTime;
   String? _labelLocation;
   int step = 1;
@@ -207,7 +207,8 @@ class _ReportScreenState extends State<ReportScreen> {
         backgroundColor: COLORS.WHITE,
         key: _drawerKey,
         drawer: MainDrawer(
-          onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+          moduleMy: ModuleMy.REPORT,
+          drawerKey: _drawerKey,
           onReload: () {
             init();
           },
@@ -255,7 +256,7 @@ class _ReportScreenState extends State<ReportScreen> {
           dropdownWidth: w * 0.65,
           dropdownMaxHeight: 300,
           selectedItemBuilder: (c) => typeReport
-              .map((items) => _itemSelect(
+              .map((items) => itemSelectDrop(
                     items['name'] ?? '',
                     wC: 0.65,
                     sizeT: 16,
@@ -299,7 +300,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       dropdownWidth: w * 0.35,
                       dropdownMaxHeight: 300,
                       selectedItemBuilder: (c) => state.dataTime
-                          .map((items) => _itemSelect(
+                          .map((items) => itemSelectDrop(
                                 items[1],
                                 wC: 0.35,
                                 sizeT: 14,
@@ -369,47 +370,6 @@ class _ReportScreenState extends State<ReportScreen> {
                 },
               ),
       ],
-    );
-  }
-
-  Widget _itemSelect(
-    String title, {
-    double wC = 1,
-    double? sizeT,
-    AlignmentGeometry? alignment,
-  }) {
-    double w = MediaQuery.of(context).size.width - 32;
-    return Container(
-      width: w * wC,
-      alignment: alignment,
-      child: RichText(
-        maxLines: 1,
-        text: TextSpan(
-          text: '',
-          children: <WidgetSpan>[
-            WidgetSpan(
-              child: Text(
-                title,
-                style: AppStyle.DEFAULT_16_BOLD.copyWith(fontSize: sizeT),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            WidgetSpan(
-              alignment: PlaceholderAlignment.bottom,
-              child: Container(
-                padding: const EdgeInsets.only(left: 6, bottom: 3),
-                child: Image.asset(
-                  ICONS.IC_DROP_DOWN_PNG,
-                  height: 10,
-                  width: 10,
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 
@@ -535,7 +495,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     setState(() {});
                   },
                   selectedItemBuilder: (c) => state.dataLocation
-                      .map((items) => _itemSelect(
+                      .map((items) => itemSelectDrop(
                             items[1],
                             sizeT: 14,
                           ))
@@ -624,52 +584,58 @@ class _ReportScreenState extends State<ReportScreen> {
                   padding: EdgeInsets.only(
                     top: 8,
                   ),
-                  children: typeDoanhSo
-                      .map(
-                        (e) => Container(
-                          padding: EdgeInsets.only(
-                            bottom: 8,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              _bloc.gt = e['gt'];
-                              _bloc.selectReport.add(_bloc.gt ?? '');
-                              _showBodyReportOne();
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: selectDoanhSoChung == e['gt']
+                  children: typeDoanhSo.map((e) {
+                    bool isCheckShowSelect = int.tryParse(checkDataDoanhSo(
+                          state.data!.list!,
+                          e['gt'],
+                        ).replaceAll(money ?? '', '')) ==
+                        0;
+                    return Container(
+                      padding: EdgeInsets.only(
+                        bottom: 8,
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (!isCheckShowSelect) {
+                            _bloc.gt = e['gt'];
+                            _bloc.selectReport.add(_bloc.gt ?? '');
+                            _showBodyReportOne();
+                          }
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: isCheckShowSelect
+                                ? COLORS.LIGHT_GREY
+                                : selectDoanhSoChung == e['gt']
                                     ? Color(0xffFDEEC8)
                                     : Color(0xffC8E5FD),
-                                borderRadius: BorderRadius.circular(
-                                  10,
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    e['name'],
-                                    style: AppStyle.DEFAULT_18_BOLD.copyWith(
-                                      color: COLORS.TEXT_BLUE_BOLD,
-                                    ),
-                                  ),
-                                  Text(
-                                    checkDataDoanhSo(
-                                      state.data!.list!,
-                                      e['gt'],
-                                    ),
-                                    style: AppStyle.DEFAULT_16,
-                                  )
-                                ],
-                              ),
+                            borderRadius: BorderRadius.circular(
+                              10,
                             ),
                           ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                e['name'],
+                                style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                                  color: COLORS.TEXT_BLUE_BOLD,
+                                ),
+                              ),
+                              Text(
+                                checkDataDoanhSo(
+                                  state.data!.list!,
+                                  e['gt'],
+                                ),
+                                style: AppStyle.DEFAULT_16,
+                              )
+                            ],
+                          ),
                         ),
-                      )
-                      .toList(),
+                      ),
+                    );
+                  }).toList(),
                 ),
               );
             });
@@ -700,22 +666,29 @@ class _ReportScreenState extends State<ReportScreen> {
                         ),
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
+                          bool isCheckShowSelect =
+                              int.tryParse(state.list[index].doanh_so ?? '') ==
+                                  0;
                           return Column(
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  _bloc.cl = state.list[index].id;
-                                  _bloc.timeFrom = timeFrom;
-                                  _bloc.timeTo = timeTo;
-                                  _bloc.selectReport.add('$index');
-                                  _showBodyReportTwo();
+                                  if (!isCheckShowSelect) {
+                                    _bloc.cl = state.list[index].id;
+                                    _bloc.timeFrom = timeFrom;
+                                    _bloc.timeTo = timeTo;
+                                    _bloc.selectReport.add('$index');
+                                    _showBodyReportTwo();
+                                  }
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    color: indexSelect == index
-                                        ? Colors.lime
-                                        : Colors.blue.withOpacity(0.4),
+                                    color: isCheckShowSelect
+                                        ? COLORS.LIGHT_GREY
+                                        : indexSelect == index
+                                            ? Colors.lime
+                                            : Colors.blue.withOpacity(0.4),
                                     borderRadius: BorderRadius.circular(
                                       10,
                                     ),
@@ -775,21 +748,27 @@ class _ReportScreenState extends State<ReportScreen> {
                         ),
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
+                          final bool isCheckShowSelect =
+                              (state.data[index].total_contract ?? 0) == 0;
                           return Column(
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  _bloc.selectReport.add('$index');
-                                  _bloc.id =
-                                      int.parse(state.data[index].id ?? '0');
-                                  _showBodyReportOne();
+                                  if (!isCheckShowSelect) {
+                                    _bloc.selectReport.add('$index');
+                                    _bloc.id =
+                                        int.parse(state.data[index].id ?? '0');
+                                    _showBodyReportOne();
+                                  }
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    color: indexSelect == index
-                                        ? Colors.lime
-                                        : Colors.blue.withOpacity(0.4),
+                                    color: isCheckShowSelect
+                                        ? COLORS.LIGHT_GREY
+                                        : indexSelect == index
+                                            ? Colors.lime
+                                            : Colors.blue.withOpacity(0.4),
                                     borderRadius: BorderRadius.circular(
                                       10,
                                     ),
@@ -960,63 +939,76 @@ class _ReportScreenState extends State<ReportScreen> {
                             ),
                           ),
                           ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.only(top: 16),
-                            itemCount:
-                                state.responseCarDashboard?.status?.length,
-                            itemBuilder: (context, index) => GestureDetector(
-                              onTap: () {
-                                String? id = state
-                                    .responseCarDashboard?.status?[index].id
-                                    .toString();
-                                _bloc.selectReport.add(id ?? '');
-                                _bloc.timeTo = timeTo;
-                                _bloc.timeFrom = timeFrom;
-                                _showBodyReportFour();
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                  bottom: 16,
-                                ),
-                                width: MediaQuery.of(context).size.width - 32,
-                                padding: EdgeInsets.all(
-                                  10,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: statusCar ==
-                                          state.responseCarDashboard
-                                              ?.status?[index].id
-                                              .toString()
-                                      ? Color(0xffFDEEC8)
-                                      : Color(0xffC8E5FD),
-                                  borderRadius: BorderRadius.circular(
-                                    10,
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      state.responseCarDashboard?.status?[index]
-                                              .name ??
-                                          '',
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              padding: EdgeInsets.only(top: 16),
+                              itemCount:
+                                  state.responseCarDashboard?.status?.length,
+                              itemBuilder: (context, index) {
+                                final isCheckShowSelect = (state
+                                            .responseCarDashboard
+                                            ?.status?[index]
+                                            .total ??
+                                        0) ==
+                                    0;
+                                return GestureDetector(
+                                  onTap: () {
+                                    if (!isCheckShowSelect) {
+                                      String? id = state.responseCarDashboard
+                                          ?.status?[index].id
+                                          .toString();
+                                      _bloc.selectReport.add(id ?? '');
+                                      _bloc.timeTo = timeTo;
+                                      _bloc.timeFrom = timeFrom;
+                                      _showBodyReportFour();
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                      bottom: 16,
                                     ),
-                                    Text(
-                                      (state.responseCarDashboard
-                                                  ?.status?[index].total ??
-                                              0)
-                                          .toString(),
-                                      style: AppStyle.DEFAULT_18_BOLD.copyWith(
-                                        color: COLORS.TEXT_BLUE_BOLD,
+                                    width:
+                                        MediaQuery.of(context).size.width - 32,
+                                    padding: EdgeInsets.all(
+                                      10,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: isCheckShowSelect
+                                          ? COLORS.LIGHT_GREY
+                                          : statusCar ==
+                                                  state.responseCarDashboard
+                                                      ?.status?[index].id
+                                                      .toString()
+                                              ? Color(0xffFDEEC8)
+                                              : Color(0xffC8E5FD),
+                                      borderRadius: BorderRadius.circular(
+                                        10,
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          state.responseCarDashboard
+                                                  ?.status?[index].name ??
+                                              '',
+                                        ),
+                                        Text(
+                                          (state.responseCarDashboard
+                                                      ?.status?[index].total ??
+                                                  0)
+                                              .toString(),
+                                          style:
+                                              AppStyle.DEFAULT_18_BOLD.copyWith(
+                                            color: COLORS.TEXT_BLUE_BOLD,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }),
                         ],
                       ),
                     );
@@ -1124,4 +1116,48 @@ class _ReportScreenState extends State<ReportScreen> {
                 ],
               ),
             );
+}
+
+Widget itemSelectDrop(
+  String title, {
+  double wC = 1,
+  double? sizeT,
+  AlignmentGeometry? alignment,
+}) {
+  double w = MediaQuery.of(Get.context!).size.width - 32;
+  return Container(
+    width: w * wC,
+    alignment: alignment,
+    child: RichText(
+      maxLines: 1,
+      text: TextSpan(
+        text: '',
+        children: <WidgetSpan>[
+          WidgetSpan(
+            alignment: PlaceholderAlignment.bottom,
+            child: Container(
+              padding: const EdgeInsets.only(
+                right: 8,
+                bottom: 3,
+              ),
+              child: Image.asset(
+                ICONS.IC_DROP_DOWN_PNG,
+                height: 10,
+                width: 10,
+              ),
+            ),
+          ),
+          WidgetSpan(
+            child: Text(
+              title,
+              style: AppStyle.DEFAULT_16_BOLD.copyWith(fontSize: sizeT),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }

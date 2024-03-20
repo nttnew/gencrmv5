@@ -40,9 +40,7 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
   Future<dynamic> getListProductMain({
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
-    LoadingApi().pushLoading();
     dynamic resDynamic = '';
-
     try {
       final response = await userRepository.getListProductModule(
         typeProduct: type,
@@ -61,10 +59,8 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
         resDynamic = response.msg ?? '';
     } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      LoadingApi().popLoading();
       return resDynamic;
     }
-    LoadingApi().popLoading();
     return resDynamic;
   }
 

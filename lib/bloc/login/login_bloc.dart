@@ -143,7 +143,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     int page = BASE_URL.PAGE_DEFAULT,
     bool isInit = true,
   }) async {
-    if (isInit) LoadingApi().pushLoading();
+    // if (isInit) LoadingApi().pushLoading();
     dynamic resDynamic = '';
     try {
       final response = await userRepository.postXeDichVu(
@@ -159,10 +159,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         resDynamic = response.msg ?? '';
     }  catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      if (isInit) LoadingApi().popLoading();
+      // if (isInit) LoadingApi().popLoading();
       return resDynamic;
     }
-    if (isInit) LoadingApi().popLoading();
+    // if (isInit) LoadingApi().popLoading();
     return resDynamic;
   }
 

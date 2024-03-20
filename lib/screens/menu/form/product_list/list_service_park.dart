@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/bloc/product/product_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
-import 'package:gen_crm/widgets/listview_loadmore_base.dart';
 import 'package:get/get.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../models/product_model.dart';
@@ -9,6 +8,7 @@ import '../../../../src/models/model_generator/product_service_pack_response.dar
 import '../../../../src/models/model_generator/service_pack_response.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
+import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/widget_text.dart';
 
 class ListServicePark extends StatefulWidget {
@@ -83,7 +83,7 @@ class _ListServiceParkState extends State<ListServicePark> {
             ),
           ),
           Expanded(
-            child: ListViewLoadMoreBase(
+            child: ViewLoadMoreBase(
               isInit: true,
               functionInit: (page, isInit) {
                 return _bloc.getServicePack(

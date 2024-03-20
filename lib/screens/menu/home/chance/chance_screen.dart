@@ -62,7 +62,8 @@ class _ChanceScreenState extends State<ChanceScreen> {
       key: _drawerKey,
       resizeToAvoidBottomInset: false,
       drawer: MainDrawer(
-        onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+        moduleMy: ModuleMy.LICH_HEN,
+        drawerKey: _drawerKey,
         onReload: () async {
           await _reloadLanguage();
         },

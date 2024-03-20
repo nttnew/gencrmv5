@@ -12,7 +12,7 @@ import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/work_clue.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
-import '../../../../widgets/listview_loadmore_base.dart';
+import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
@@ -187,7 +187,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 8.0),
-                              child: ListViewLoadMoreBase(
+                              child: ViewLoadMoreBase(
                                 functionInit: (page, isInit) {
                                   return _bloc.getWorkClue(
                                     id: id,
@@ -225,9 +225,19 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                     ],
                   )),
             ),
-            ButtonThaoTac(
-              onTap: () {
-                showThaoTac(context, list);
+            BlocBuilder<GetDetailClueBloc, DetailClueState>(
+              bloc: _bloc,
+              builder: (context, state) {
+                if (state is GetDetailClueState)
+                  return ButtonThaoTac(
+                    onTap: () {
+                      showThaoTac(context, list);
+                    },
+                  );
+                return ButtonThaoTac(
+                  disable: true,
+                  onTap: () {},
+                );
               },
             ),
           ],

@@ -18,7 +18,7 @@ import '../../src/models/model_generator/add_customer.dart';
 import '../../src/models/model_generator/customer.dart';
 import '../../src/models/model_generator/list_car_response.dart';
 import '../../storages/share_local.dart';
-import '../../widgets/listview_loadmore_base.dart';
+import '../../widgets/listview/list_load_infinity.dart';
 
 part 'add_service_event.dart';
 part 'add_service_state.dart';

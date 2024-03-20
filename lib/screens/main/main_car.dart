@@ -6,7 +6,6 @@ import 'package:gen_crm/src/models/model_generator/report_option.dart';
 import '../../bloc/login/login_bloc.dart';
 import '../../l10n/key_text.dart';
 import '../../src/src_index.dart';
-import '../../storages/share_local.dart';
 import '../../widgets/listview/list_load_infinity.dart';
 
 class MainCar extends StatefulWidget {
@@ -53,41 +52,84 @@ class _MainCarState extends State<MainCar> {
                           vertical: 8,
                         ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            DropdownButton2(
-                                value: _blocLogin.valueLocation ??
-                                    listLocation.first[1],
-                                icon:
-                                    const Icon(Icons.arrow_drop_down_outlined),
-                                underline: SizedBox.shrink(),
-                                dropdownMaxHeight: 250,
-                                onChanged: (String? value) {
-                                  _blocLogin.valueLocation = value ?? '';
-                                  _blocLogin.loadMoreControllerCar.reloadData();
-                                  setState(() {});
-                                },
-                                items: listLocation
-                                    .map(
-                                      (items) => DropdownMenuItem<String>(
-                                        onTap: () {
-                                          _blocLogin.location = items.first;
-                                        },
-                                        value: items[1],
-                                        child: FittedBox(
-                                          child: Text(
-                                            items[1],
-                                            style: AppStyle.DEFAULT_18_BOLD,
+                            Expanded(
+                              child: DropdownButton2(
+                                  value: _blocLogin.valueLocation ??
+                                      listLocation.first[1],
+                                  icon: SizedBox.shrink(),
+                                  underline: SizedBox.shrink(),
+                                  isExpanded: true,
+                                  dropdownMaxHeight: 300,
+                                  onChanged: (String? value) {
+                                    _blocLogin.valueLocation = value ?? '';
+                                    _blocLogin.loadMoreControllerCar
+                                        .reloadData();
+                                    setState(() {});
+                                  },
+                                  selectedItemBuilder: (context) => listLocation
+                                      .map(
+                                        (items) => DropdownMenuItem<String>(
+                                          onTap: () {
+                                            _blocLogin.location = items.first;
+                                          },
+                                          value: items[1],
+                                          child: RichText(
+                                            maxLines: 1,
+                                            textScaleFactor:
+                                                MediaQuery.of(context)
+                                                    .textScaleFactor,
+                                            overflow: TextOverflow.ellipsis,
+                                            text: TextSpan(
+                                              children: [
+                                                WidgetSpan(
+                                                  alignment:
+                                                      PlaceholderAlignment
+                                                          .bottom,
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      right: 8,
+                                                      bottom: 3,
+                                                    ),
+                                                    child: Image.asset(
+                                                      ICONS.IC_DROP_DOWN_PNG,
+                                                      height: 10,
+                                                      width: 10,
+                                                    ),
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: items[1],
+                                                  style:
+                                                      AppStyle.DEFAULT_18_BOLD,
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    )
-                                    .toList()),
+                                      )
+                                      .toList(),
+                                  items: listLocation
+                                      .map(
+                                        (items) => DropdownMenuItem<String>(
+                                          onTap: () {
+                                            _blocLogin.location = items.first;
+                                          },
+                                          value: items[1],
+                                          child: FittedBox(
+                                            child: Text(
+                                              items[1],
+                                              style: AppStyle.DEFAULT_18_BOLD,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                      .toList()),
+                            ),
                             GestureDetector(
                               onTap: () {
-                                AppNavigator.navigateReport(shareLocal
-                                        .getString(PreferencesKey.MONEY) ??
-                                    '');
+                                AppNavigator.navigateReport();
                               },
                               child: Container(
                                 margin: EdgeInsets.only(

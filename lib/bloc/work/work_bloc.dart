@@ -8,7 +8,6 @@ import '../../src/base.dart';
 import '../../src/models/model_generator/customer_clue.dart';
 import '../../src/models/model_generator/work.dart';
 import '../../widgets/listview/list_load_infinity.dart';
-import '../../widgets/loading_api.dart';
 
 part 'work_event.dart';
 part 'work_state.dart';
@@ -34,9 +33,7 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
   Future<dynamic> getListWork({
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
-    LoadingApi().pushLoading();
     dynamic resDynamic = '';
-
     try {
       final response = await userRepository.getListJob(
         page.toString(),
@@ -55,10 +52,8 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
       }
     } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      LoadingApi().popLoading();
       return resDynamic;
     }
-    LoadingApi().popLoading();
     return resDynamic;
   }
 

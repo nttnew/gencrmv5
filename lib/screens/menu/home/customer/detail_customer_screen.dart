@@ -16,7 +16,7 @@ import '../../../../src/models/model_generator/job_customer.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/dialog_call.dart';
-import '../../../../widgets/listview_loadmore_base.dart';
+import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
@@ -279,23 +279,34 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                   text: getT(KeyT.information),
                 ),
                 Tab(
-                  text:
-                      ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI, isTitle: true),
+                  text: ModuleMy.getNameModuleMy(
+                    ModuleMy.DAU_MOI,
+                    isTitle: true,
+                  ),
                 ),
                 Tab(
-                  text: ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN,
-                      isTitle: true),
+                  text: ModuleMy.getNameModuleMy(
+                    ModuleMy.LICH_HEN,
+                    isTitle: true,
+                  ),
                 ),
                 Tab(
-                  text: ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG,
-                      isTitle: true),
+                  text: ModuleMy.getNameModuleMy(
+                    ModuleMy.HOP_DONG,
+                    isTitle: true,
+                  ),
                 ),
                 Tab(
-                  text: ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC,
-                      isTitle: true),
+                  text: ModuleMy.getNameModuleMy(
+                    ModuleMy.CONG_VIEC,
+                    isTitle: true,
+                  ),
                 ),
                 Tab(
-                  text: ModuleMy.getNameModuleMy(ModuleMy.CSKH, isTitle: true),
+                  text: ModuleMy.getNameModuleMy(
+                    ModuleMy.CSKH,
+                    isTitle: true,
+                  ),
                 ),
               ],
             ),
@@ -312,7 +323,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                         blocNote: _blocNote,
                         bloc: _bloc,
                       ),
-                      ListViewLoadMoreBase(
+                      ViewLoadMoreBase(
                         functionInit: (page, isInit) {
                           return _bloc.getClueCustomer(
                               id: int.parse(id), page: page, isInit: isInit);
@@ -328,7 +339,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                         },
                         controller: _bloc.controllerDM,
                       ),
-                      ListViewLoadMoreBase(
+                      ViewLoadMoreBase(
                         functionInit: (page, isInit) {
                           return _bloc.getChanceCustomer(
                               id: int.parse(id), page: page, isInit: isInit);
@@ -344,7 +355,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                         },
                         controller: _bloc.controllerCH,
                       ),
-                      ListViewLoadMoreBase(
+                      ViewLoadMoreBase(
                         functionInit: (page, isInit) {
                           return _bloc.getContractCustomer(
                             id: int.parse(id),
@@ -353,7 +364,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                           );
                         },
                         itemWidget: (int index, data) {
-                          return ConstractCardWidget(
+                          return ContractCardWidget(
                             data: data,
                             onTap: () {
                               AppNavigator.navigateDetailContract(
@@ -363,7 +374,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                         },
                         controller: _bloc.controllerHD,
                       ),
-                      ListViewLoadMoreBase(
+                      ViewLoadMoreBase(
                         functionInit: (page, isInit) {
                           return _bloc.getJobCustomer(
                             id: int.parse(id),
@@ -385,7 +396,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                         },
                         controller: _bloc.controllerCV,
                       ),
-                      ListViewLoadMoreBase(
+                      ViewLoadMoreBase(
                         functionInit: (page, isInit) {
                           return _bloc.getSupportCustomer(
                             id: int.parse(id),
@@ -407,9 +418,16 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                     ],
                   ),
                 ),
-                ButtonThaoTac(onTap: () {
-                  showThaoTac(context, list);
-                }),
+                BlocBuilder<DetailCustomerBloc, DetailCustomerState>(
+                  bloc: _bloc,
+                  builder: (context, state) {
+                    if (state is UpdateGetDetailCustomerState)
+                      return ButtonThaoTac(onTap: () {
+                        showThaoTac(context, list);
+                      });
+                    return ButtonThaoTac(disable: true, onTap: () {});
+                  },
+                ),
               ],
             ),
           ),

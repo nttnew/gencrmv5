@@ -31,7 +31,7 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
   }
 
   Stream<DetailProductState> _getDetailProduct({required String id}) async* {
-    LoadingApi().pushLoading();
+    yield LoadingDetailProductState();
     try {
       final response = await userRepository.getDetailProduct(id: id);
       if (isSuccess(response.code)) {
@@ -56,16 +56,12 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
         yield ErrorGetDetailProductState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
       yield ErrorGetDetailProductState(
           getT(KeyT.an_error_occurred ));
-      throw e;
     }
-    LoadingApi().popLoading();
   }
 
   Future<ProductModel> getDetailProductQR({required String id}) async {

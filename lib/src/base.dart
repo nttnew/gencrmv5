@@ -266,6 +266,9 @@ class ModuleMy {
   static const String CSKH = 'support';
   static const String SAN_PHAM = 'product';
   static const String SAN_PHAM_KH = 'sanphamkh';
+  static const String REPORT = 'report';
+  static const String HOME = 'HOME';
+  static const String SETTING = 'SETTING';
 
   static String getIcon(String id) {
     if (ModuleMy.CUSTOMER == id) {

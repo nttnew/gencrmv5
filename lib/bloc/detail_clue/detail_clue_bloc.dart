@@ -6,7 +6,7 @@ import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/detail_customer.dart';
-import '../../widgets/listview_loadmore_base.dart';
+import '../../widgets/listview/list_load_infinity.dart';
 import '../../widgets/loading_api.dart';
 
 part 'detail_clue_event.dart';
@@ -23,7 +23,10 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
 
   initController(String idTxt) async {
     final dataCv = await getWorkClue(
-        page: BASE_URL.PAGE_DEFAULT, id: idTxt, isInit: false);
+      page: BASE_URL.PAGE_DEFAULT,
+      id: idTxt,
+      isInit: false,
+    );
     await controllerCV.initData(dataCv);
   }
 
@@ -38,7 +41,6 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
   }
 
   Stream<DetailClueState> _getDetailClue(String id) async* {
-    LoadingApi().pushLoading();
     try {
       yield LoadingDetailClueState();
       final responseDetailClue = await userRepository.getDetailClue(id);
@@ -46,14 +48,11 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
           (responseDetailClue.code == BASE_URL.SUCCESS_200)) {
         yield GetDetailClueState(responseDetailClue.data ?? []);
       } else {
-        LoadingApi().popLoading();
         yield ErrorGetDetailClueState(responseDetailClue.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
       yield ErrorGetDetailClueState(getT(KeyT.an_error_occurred));
     }
-    LoadingApi().popLoading();
   }
 
   Stream<DetailClueState> _deleteClue(String id) async* {
@@ -81,23 +80,16 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
     int page = BASE_URL.PAGE_DEFAULT,
     bool isInit = true,
   }) async {
-    if (isInit) {
-      LoadingApi().pushLoading();
-    }
     try {
       final response = await userRepository.getWorkClue(id, page);
       if (isSuccess(response.code)) {
-        if (isInit) LoadingApi().popLoading();
         return response.data ?? [];
       } else if (isFail(response.code)) {
-        if (isInit) LoadingApi().popLoading();
         loginSessionExpired();
       } else {
-        if (isInit) LoadingApi().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      if (isInit) LoadingApi().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }

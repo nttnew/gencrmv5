@@ -129,7 +129,10 @@ class _MyAppState extends ConsumerState<MyApp> {
     return GetMaterialApp(
       builder: EasyLoading.init(),
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'NunitoSans'),
+      theme: ThemeData(
+        fontFamily: 'NunitoSans',
+        androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
+      ),
       initialRoute: (shareLocal.getString(PreferencesKey.TOKEN) != '' &&
               shareLocal.getString(PreferencesKey.TOKEN) != null)
           ? ROUTE_NAMES.MAIN

@@ -35,7 +35,6 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
   String? timeFrom;
   String? timeTo;
 
-
   init() {
     location = '';
     kyTaiChinh = null;
@@ -59,7 +58,6 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
   Future<dynamic> getReportContact({
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
-    LoadingApi().pushLoading();
     dynamic resDynamic = '';
     try {
       final response = await userRepository.reportContact(
@@ -78,17 +76,14 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
       }
     } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      LoadingApi().popLoading();
       return resDynamic;
     }
-    LoadingApi().popLoading();
     return resDynamic;
   }
 
   Future<dynamic> getListReportCar({
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
-    LoadingApi().pushLoading();
     dynamic resDynamic = '';
     try {
       final response = await userRepository.getListBaoCao(
@@ -108,17 +103,14 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
       }
     } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      LoadingApi().popLoading();
       return resDynamic;
     }
-    LoadingApi().popLoading();
     return resDynamic;
   }
 
   Future<dynamic> getReportGeneralSelect({
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
-    LoadingApi().pushLoading();
     dynamic resDynamic = '';
     try {
       final response = await userRepository.reportProduct(
@@ -136,10 +128,8 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
         resDynamic = response.msg ?? '';
     } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      LoadingApi().popLoading();
       return resDynamic;
     }
-    LoadingApi().popLoading();
     return resDynamic;
   }
 
@@ -161,7 +151,6 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
   Future<dynamic> getBaoCaoSoQuy({
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
-    LoadingApi().pushLoading();
     dynamic resDynamic = '';
     try {
       final response = await userRepository.getBaoCaoSoQuy(
@@ -178,10 +167,8 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
         resDynamic = response.msg ?? '';
     } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      LoadingApi().popLoading();
       return resDynamic;
     }
-    LoadingApi().popLoading();
     return resDynamic;
   }
 

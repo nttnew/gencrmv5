@@ -67,7 +67,7 @@ class _TabInfoCustomerState extends State<TabInfoCustomer>
                       style: AppStyle.DEFAULT_16_T,
                     );
                   } else
-                    return SizedBox.shrink();
+                    return loadInfo();
                 }),
             ListNote(
               module: Module.KHACH_HANG,

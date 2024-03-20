@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/share_local.dart';
-import 'package:gen_crm/widgets/listview_loadmore_base.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../widgets/widget_text.dart';
@@ -12,6 +11,7 @@ import '../../../../api_resfull/dio_provider.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../models/model_item_add.dart';
 import '../../../../src/app_const.dart';
+import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/search_base.dart';
 
@@ -498,8 +498,8 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
             ),
           ),
           Expanded(
-            child: ListViewLoadMoreBase(
-              nodataWidget: null,
+            child: ViewLoadMoreBase(
+              noDataWidget: null,
               functionInit: (page, isInit) {
                 return getList(
                   page: page,

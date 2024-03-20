@@ -13,7 +13,7 @@ import '../../../../src/models/model_generator/list_hd_product_customer_response
 import '../../../../src/models/model_generator/list_ht_product_customer_response.dart';
 import '../../../../src/models/model_generator/support.dart';
 import '../../../../widgets/appbar_base.dart';
-import '../../../../widgets/listview_loadmore_base.dart';
+import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
@@ -65,7 +65,7 @@ class _DetailProductCustomerScreenState
         //cơ hội
         listWidget.add(Padding(
           padding: const EdgeInsets.only(top: 8.0),
-          child: ListViewLoadMoreBase(
+          child: ViewLoadMoreBase(
             functionInit: (page, isInit) {
               return _bloc.getListCHProductCustomer(
                   page: page, isInit: isInit, id: idM);
@@ -92,7 +92,7 @@ class _DetailProductCustomerScreenState
         //hợp đồng
         listWidget.add(Padding(
           padding: const EdgeInsets.only(top: 8.0),
-          child: ListViewLoadMoreBase(
+          child: ViewLoadMoreBase(
             functionInit: (page, isInit) {
               return _bloc.getListHDProductCustomer(
                 page: page,
@@ -124,7 +124,7 @@ class _DetailProductCustomerScreenState
       } else if (value.module == 'job') {
         listWidget.add(Padding(
           padding: const EdgeInsets.only(top: 8.0),
-          child: ListViewLoadMoreBase(
+          child: ViewLoadMoreBase(
             functionInit: (page, isInit) {
               return _bloc.getListCVProductCustomer(
                   page: page, isInit: isInit, id: idM);
@@ -152,7 +152,7 @@ class _DetailProductCustomerScreenState
       } else if (value.module == 'support') {
         listWidget.add(Padding(
           padding: const EdgeInsets.only(top: 8.0),
-          child: ListViewLoadMoreBase(
+          child: ViewLoadMoreBase(
             functionInit: (page, isInit) {
               return _bloc.getListHTProductCustomer(
                   page: page, isInit: isInit, id: idM);
@@ -355,9 +355,16 @@ class _DetailProductCustomerScreenState
                             children: listBody(state, _listTab),
                           ),
                         ),
-                        ButtonThaoTac(onTap: () {
-                          showThaoTac(context, _list);
-                        }),
+                        BlocBuilder<DetailProductCustomerBloc,
+                            DetailProductCustomerState>(
+                          builder: (context, state) {
+                            if (state is GetDetailProductCustomerState)
+                              return ButtonThaoTac(onTap: () {
+                                showThaoTac(context, _list);
+                              });
+                            return ButtonThaoTac(disable: true, onTap: () {});
+                          },
+                        ),
                       ],
                     ),
                   );

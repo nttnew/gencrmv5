@@ -8,7 +8,7 @@ import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/customer.dart';
-import '../../widgets/listview_loadmore_base.dart';
+import '../../widgets/listview/list_load_infinity.dart';
 
 part 'detail_customer_event.dart';
 part 'detail_customer_state.dart';
@@ -74,13 +74,12 @@ class DetailCustomerBloc
   }
 
   Stream<DetailCustomerState> _getDetailCustomer({required int id}) async* {
-    LoadingApi().pushLoading();
+    yield LoadingDetailCustomerState();
     try {
       final response = await userRepository.getDetailCustomer(id);
       if (isSuccess(response.code)) {
         try {
-          InfoItem? item =
-              response.data?.customer_info?.first.data?.firstWhere(
+          InfoItem? item = response.data?.customer_info?.first.data?.firstWhere(
             (element) => element.id == 'di_dong',
           );
           InfoItem? itemName =
@@ -100,15 +99,11 @@ class DetailCustomerBloc
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
         yield ErrorGetDetailCustomerState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
       yield ErrorGetDetailCustomerState(getT(KeyT.an_error_occurred));
-      throw e;
     }
-    LoadingApi().popLoading();
   }
 
   Stream<DetailCustomerState> _deleteCustomer({required int id}) async* {
@@ -135,25 +130,16 @@ class DetailCustomerBloc
     int page = BASE_URL.PAGE_DEFAULT,
     bool isInit = true,
   }) async {
-    if (isInit) {
-      LoadingApi().pushLoading();
-    }
     try {
       final response = await userRepository.getClueCustomer(id, page);
       if (isSuccess(response.code)) {
-        if (isInit) LoadingApi().popLoading();
         return response.data ?? [];
       } else if (isFail(response.code)) {
-        if (isInit) LoadingApi().popLoading();
-
         loginSessionExpired();
       } else {
-        if (isInit) LoadingApi().popLoading();
-
         return response.msg ?? '';
       }
     } catch (e) {
-      if (isInit) LoadingApi().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }
@@ -162,50 +148,35 @@ class DetailCustomerBloc
       {required int id,
       int page = BASE_URL.PAGE_DEFAULT,
       bool isInit = true}) async {
-    if (isInit) {
-      LoadingApi().pushLoading();
-    }
     try {
       final response = await userRepository.getChanceCustomer(id, page);
       if (isSuccess(response.code)) {
-        if (isInit) LoadingApi().popLoading();
-
         return response.data ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        if (isInit) LoadingApi().popLoading();
-
         return response.msg ?? '';
       }
     } catch (e) {
-      if (isInit) LoadingApi().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }
 
-  Future<dynamic> getContractCustomer(
-      {required int id,
-      int page = BASE_URL.PAGE_DEFAULT,
-      bool isInit = true}) async {
-    if (isInit) {
-      LoadingApi().pushLoading();
-    }
+  Future<dynamic> getContractCustomer({
+    required int id,
+    int page = BASE_URL.PAGE_DEFAULT,
+    bool isInit = true,
+  }) async {
     try {
       final response = await userRepository.getContractCustomer(id, page);
       if (isSuccess(response.code)) {
-        if (isInit) LoadingApi().popLoading();
-
         return response.data ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        if (isInit) LoadingApi().popLoading();
-
         return response.msg ?? '';
       }
     } catch (e) {
-      if (isInit) LoadingApi().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }
@@ -214,24 +185,16 @@ class DetailCustomerBloc
       {required int id,
       int page = BASE_URL.PAGE_DEFAULT,
       bool isInit = true}) async {
-    if (isInit) {
-      LoadingApi().pushLoading();
-    }
     try {
       final response = await userRepository.getSupportCustomer(id, page);
       if (isSuccess(response.code)) {
-        if (isInit) LoadingApi().popLoading();
-
         return response.data ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        if (isInit) LoadingApi().popLoading();
-
         return response.msg ?? '';
       }
     } catch (e) {
-      if (isInit) LoadingApi().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }
@@ -241,24 +204,16 @@ class DetailCustomerBloc
     int page = BASE_URL.PAGE_DEFAULT,
     bool isInit = true,
   }) async {
-    if (isInit) {
-      LoadingApi().pushLoading();
-    }
     try {
       final response = await userRepository.getJobCustomer(id, page);
       if (isSuccess(response.code)) {
-        if (isInit) LoadingApi().popLoading();
-
         return response.data ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        if (isInit) LoadingApi().popLoading();
-
         return response.msg ?? '';
       }
     } catch (e) {
-      if (isInit) LoadingApi().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }

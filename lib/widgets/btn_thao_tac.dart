@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../l10n/key_text.dart';
+import '../src/color.dart';
 
 class ButtonThaoTac extends StatelessWidget {
   const ButtonThaoTac({
@@ -8,16 +9,18 @@ class ButtonThaoTac extends StatelessWidget {
     required this.onTap,
     this.title,
     this.marginHorizontal,
+    this.disable = false,
   }) : super(key: key);
 
   final Function() onTap;
   final String? title;
   final double? marginHorizontal;
+  final bool disable;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onTap(),
+      onTap: () => disable ? {} : onTap(),
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.all(16),
@@ -26,7 +29,7 @@ class ButtonThaoTac extends StatelessWidget {
           horizontal: marginHorizontal ?? 16,
         ),
         decoration: BoxDecoration(
-          color: HexColor("#D0F1EB"),
+          color: disable ? COLORS.GRAY_IMAGE : HexColor("#D0F1EB"),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(

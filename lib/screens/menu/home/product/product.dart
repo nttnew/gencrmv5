@@ -66,7 +66,8 @@ class _ProductScreenState extends State<ProductScreen> {
       key: _drawerKey,
       resizeToAvoidBottomInset: false,
       drawer: MainDrawer(
-        onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+        drawerKey: _drawerKey,
+        moduleMy: ModuleMy.SAN_PHAM,
         onReload: () async {
           await _reloadLanguage();
         },
@@ -124,65 +125,74 @@ class _ProductScreenState extends State<ProductScreen> {
                 },
               ),
               AppValue.vSpaceTiny,
-              Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: DropDownBase(
-                      stream: _bloc.listType,
-                      onTap: (item) {
-                        _bloc.type = item.id;
-                        _bloc.loadMoreController.reloadData();
-                      },
-                    ),
-                  ),
-                  if (_bloc.listFilter.value.isNotEmpty) ...[
-                    SizedBox(
-                      width: 6,
-                    ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  bottom: 16,
+                ),
+                child: Row(
+                  children: [
                     Expanded(
                       child: DropDownBase(
-                        stream: _bloc.listFilter,
-                        isName: true,
+                        isPadding: false,
+                        stream: _bloc.listType,
                         onTap: (item) {
-                          _bloc.filter = item.id;
+                          _bloc.type = item.id;
                           _bloc.loadMoreController.reloadData();
                         },
                       ),
                     ),
+                    if (_bloc.listFilter.value.isNotEmpty) ...[
+                      SizedBox(
+                        width: 16,
+                      ),
+                      Expanded(
+                        child: DropDownBase(
+                          isPadding: false,
+                          stream: _bloc.listFilter,
+                          isName: true,
+                          onTap: (item) {
+                            _bloc.filter = item.id;
+                            _bloc.loadMoreController.reloadData();
+                          },
+                        ),
+                      ),
+                    ],
+                    StreamBuilder<List<TreeNodeData>>(
+                        stream: managerBloc.managerTrees,
+                        builder: (context, snapshot) {
+                          if (snapshot.data?.isNotEmpty ?? false)
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 6.0),
+                              child: GestureDetector(
+                                  onTap: () {
+                                    showManagerFilter(context, managerBloc,
+                                        (v) {
+                                      _bloc.ids = v;
+                                      _bloc.loadMoreController.reloadData();
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(14),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: COLORS.GREY_400,
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4))),
+                                    child: SvgPicture.asset(
+                                      ICONS.IC_FILL_SVG,
+                                      width: 20,
+                                      height: 20,
+                                      fit: BoxFit.contain,
+                                    ),
+                                  )),
+                            );
+                          return SizedBox();
+                        }),
                   ],
-                  StreamBuilder<List<TreeNodeData>>(
-                      stream: managerBloc.managerTrees,
-                      builder: (context, snapshot) {
-                        if (snapshot.data?.isNotEmpty ?? false)
-                          return Padding(
-                            padding: const EdgeInsets.only(left: 6.0),
-                            child: GestureDetector(
-                                onTap: () {
-                                  showManagerFilter(context, managerBloc, (v) {
-                                    _bloc.ids = v;
-                                    _bloc.loadMoreController.reloadData();
-                                  });
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(14),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: COLORS.GREY_400,
-                                      ),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(4))),
-                                  child: SvgPicture.asset(
-                                    ICONS.IC_FILL_SVG,
-                                    width: 20,
-                                    height: 20,
-                                    fit: BoxFit.contain,
-                                  ),
-                                )),
-                          );
-                        return SizedBox();
-                      }),
-                ],
+                ),
               ),
             ],
           ),

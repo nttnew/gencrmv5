@@ -26,8 +26,9 @@ class CustomerScreen extends StatefulWidget {
 }
 
 class _CustomerScreenState extends State<CustomerScreen> {
-  late final GlobalKey<ScaffoldState> _drawerKey;
-  late final _key;
+
+  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  late final _key = GlobalKey<ExpandableFabState>();
   String title = ModuleMy.getNameModuleMy(
     ModuleMy.CUSTOMER,
     isTitle: true,
@@ -38,15 +39,13 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
   @override
   void initState() {
-    _drawerKey = GlobalKey();
-    _key = GlobalKey<ExpandableFabState>();
+    _bloc = GetListCustomerBloc.of(context);
     listAdd = [
       '$title ${getT(KeyT.organization)}',
       '$title ${getT(KeyT.individual)}',
     ];
     if (LoginBloc.of(context).checkRegisterSuccess())
       listAdd.add(getT(KeyT.call_operator));
-    _bloc = GetListCustomerBloc.of(context);
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.KHACH_HANG);
@@ -96,7 +95,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
       key: _drawerKey,
       appBar: AppbarBase(_drawerKey, title),
       drawer: MainDrawer(
-        onPress: (v) => handleOnPressItemMenu(_drawerKey, v),
+        moduleMy: ModuleMy.CUSTOMER,
+        drawerKey: _drawerKey,
         onReload: () async {
           _reloadLanguage();
         },
@@ -244,7 +244,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
             data: snap,
             onTap: () => AppNavigator.navigateDetailCustomer(
               snap.id ?? '',
-              '${snap.danh_xung ?? ''}' + ' ' + '${snap.name ?? ''}',
+              '${snap.danh_xung ?? ''} ${snap.name ?? ''}',
             ),
           );
         },
