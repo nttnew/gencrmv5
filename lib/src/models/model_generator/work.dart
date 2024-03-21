@@ -23,7 +23,7 @@ class WorkItemData {
       start_date,
       location,
       di_dong;
-  final Customer customer, product_customer;
+  final Customer? customer, product_customer;
 
   WorkItemData(
     this.id,

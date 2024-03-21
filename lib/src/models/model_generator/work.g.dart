@@ -22,8 +22,12 @@ WorkItemData _$WorkItemDataFromJson(Map<String, dynamic> json) => WorkItemData(
       json['start_date'] as String?,
       json['location'] as String?,
       json['di_dong'] as String?,
-      Customer.fromJson(json['customer'] as Map<String, dynamic>),
-      Customer.fromJson(json['product_customer'] as Map<String, dynamic>),
+      json['customer'] == null
+          ? null
+          : Customer.fromJson(json['customer'] as Map<String, dynamic>),
+      json['product_customer'] == null
+          ? null
+          : Customer.fromJson(json['product_customer'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$WorkItemDataToJson(WorkItemData instance) =>

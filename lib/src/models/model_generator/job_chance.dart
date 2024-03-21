@@ -17,7 +17,7 @@ class DataFormAdd {
       status_job,
       start_date,
       color;
-  final Customer product_customer;
+  final Customer? product_customer;
 
   DataFormAdd(
       this.id,

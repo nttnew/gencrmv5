@@ -62,6 +62,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
         }
       }
     });
+    _bloc.init();
     super.initState();
   }
 

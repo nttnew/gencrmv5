@@ -55,7 +55,7 @@ class SupportContractData {
       total_note,
       nguoi_tao,
       khach_hang;
-  final Customer product_customer;
+  final Customer? product_customer;
 
   SupportContractData(
     this.id,

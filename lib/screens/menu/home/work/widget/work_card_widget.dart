@@ -103,13 +103,13 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
                   : COLORS.PRIMARY_COLOR,
             ),
             itemTextIcon(
-                text: widget.item.product_customer.name ?? '',
+                text: widget.item.product_customer?.name ?? '',
                 icon: ICONS.IC_CHANCE_3X_PNG,
                 isSVG: false,
                 colorText: COLORS.TEXT_BLUE_BOLD,
                 onTap: () {
-                  if (widget.item.product_customer.id != '' &&
-                      widget.item.product_customer.id != null)
+                  if (widget.item.product_customer?.id != '' &&
+                      widget.item.product_customer?.id != null)
                     AppNavigator.navigateDetailProductCustomer2(
                       widget.item.product_customer,
                     );

@@ -81,7 +81,9 @@ SupportContractData _$SupportContractDataFromJson(Map<String, dynamic> json) =>
       json['total_note'] as String?,
       json['nguoi_tao'] as String?,
       json['khach_hang'] as String?,
-      Customer.fromJson(json['product_customer'] as Map<String, dynamic>),
+      json['product_customer'] == null
+          ? null
+          : Customer.fromJson(json['product_customer'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SupportContractDataToJson(

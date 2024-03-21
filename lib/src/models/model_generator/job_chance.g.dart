@@ -17,7 +17,9 @@ DataFormAdd _$DataFormAddFromJson(Map<String, dynamic> json) => DataFormAdd(
       json['status_job'] as String?,
       json['start_date'] as String?,
       json['color'] as String?,
-      Customer.fromJson(json['product_customer'] as Map<String, dynamic>),
+      json['product_customer'] == null
+          ? null
+          : Customer.fromJson(json['product_customer'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$DataFormAddToJson(DataFormAdd instance) =>

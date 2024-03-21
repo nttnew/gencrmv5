@@ -70,6 +70,11 @@ class ServiceVoucherBloc
   LoadMoreController loadMoreControllerPhone = LoadMoreController();
   LoadMoreController loadMoreControllerBienSo = LoadMoreController();
 
+  init(){
+    loadMoreControllerPhone.initData([]);
+    loadMoreControllerBienSo.initData([]);
+  }
+
   void addProduct(ProductModel data) {
     bool check = false;
     for (int i = 0; i < listProduct.length; i++) {
@@ -347,7 +352,6 @@ class ServiceVoucherBloc
     String? bienSoSearch,
     String? phoneSearch,
   }) async {
-    LoadingApi().pushLoading();
     dynamic resDynamic = '';
     try {
       final response = await userRepository.getSearchQuickCreate(
@@ -364,11 +368,9 @@ class ServiceVoucherBloc
         resDynamic = response.msg ?? '';
     } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
-      LoadingApi().popLoading();
       listCarSearchStream.add(resDynamic);
       return resDynamic;
     }
-    LoadingApi().popLoading();
     listCarSearchStream.add(resDynamic);
     return resDynamic;
   }
