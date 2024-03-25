@@ -5,6 +5,7 @@ import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/screens/menu/menu_left/setting/setting_screen.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/widget_button.dart';
+import 'package:get/get.dart';
 import '../../../../bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../models/button_menu_model.dart';
@@ -255,35 +256,35 @@ class _MainDrawerState extends State<MainDrawer> {
         break;
       case ModuleMy.LICH_HEN:
         _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateChance();
+        _checkScreenPush(_drawerKey, ROUTE_NAMES.CHANCE);
+
         break;
       case ModuleMy.CONG_VIEC:
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateWork();
+        _checkScreenPush(_drawerKey, ROUTE_NAMES.WORK);
+
         break;
       case ModuleMy.HOP_DONG:
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateContract();
+        _checkScreenPush(_drawerKey, ROUTE_NAMES.CONTRACT);
+
         break;
       case ModuleMy.CSKH:
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateSupport();
+        _checkScreenPush(_drawerKey, ROUTE_NAMES.SUPPORT);
+
         break;
       case ModuleMy.CUSTOMER:
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateCustomer();
+        _checkScreenPush(_drawerKey, ROUTE_NAMES.CUSTOMER);
+
         break;
       case ModuleMy.DAU_MOI:
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateClue();
+        _checkScreenPush(_drawerKey, ROUTE_NAMES.CLUE);
+
         break;
       case ModuleMy.REPORT:
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateReport();
+        _checkScreenPush(_drawerKey, ROUTE_NAMES.REPORT);
+
         break;
       case ModuleMy.SAN_PHAM:
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateProduct();
+        _checkScreenPush(_drawerKey, ROUTE_NAMES.PRODUCT);
         break;
       case ModuleMy.SETTING:
         Navigator.of(context).push(
@@ -298,11 +299,19 @@ class _MainDrawerState extends State<MainDrawer> {
         );
         break;
       case ModuleMy.SAN_PHAM_KH:
-        _drawerKey.currentState!.openEndDrawer();
-        AppNavigator.navigateProductCustomer();
+        _checkScreenPush(_drawerKey, ROUTE_NAMES.PRODUCT_CUSTOMER);
         break;
       default:
         break;
+    }
+  }
+
+  _checkScreenPush(_drawerKey, String routeName) {
+    _drawerKey.currentState!.openEndDrawer();
+    if (widget.moduleMy == ModuleMy.HOME) {
+      Get.toNamed(routeName);
+    } else {
+      Get.offNamed(routeName);
     }
   }
 }
