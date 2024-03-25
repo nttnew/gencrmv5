@@ -1,6 +1,5 @@
 export 'api/rest_client.dart';
 export 'models/index.dart';
-export 'animation.dart';
 export 'base.dart';
 export 'color.dart';
 export 'router.dart';
