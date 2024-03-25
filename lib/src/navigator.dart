@@ -73,8 +73,6 @@ class AppNavigator {
   static navigateMain({dynamic data}) async =>
       await Get.offAllNamed(ROUTE_NAMES.MAIN, arguments: data);
 
-  static navigateIntro() async => await Get.offAllNamed(ROUTE_NAMES.INTRO);
-
   static navigateForgotPassword() async =>
       await Get.toNamed(ROUTE_NAMES.FORGOT_PASSWORD);
 
