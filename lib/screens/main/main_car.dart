@@ -284,7 +284,6 @@ class _MainCarState extends State<MainCar> {
         functionInit: (page, isInit) {
           return _blocLogin.getXeDichVu(
             page: page,
-            isInit: isInit,
           );
         },
         itemWidget: (int index, data) {
