@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/l10n/key_text.dart';
+import 'package:gen_crm/widgets/line_horizontal_widget.dart';
 import '../../../src/app_const.dart';
 import '../../../src/models/model_generator/xe_dich_vu_response.dart';
 import '../../../src/src_index.dart';
@@ -85,7 +87,7 @@ class ItemCar extends StatelessWidget {
                     ),
                   ),
                   child: WidgetText(
-                    title: data.chiNhanh ?? getT(KeyT.not_yet),
+                    title: data.trangThai ?? getT(KeyT.not_yet),
                     style: AppStyle.DEFAULT_14.copyWith(
                       fontSize: 12,
                     ),
@@ -93,53 +95,29 @@ class ItemCar extends StatelessWidget {
                 ),
               ],
             ),
-            GestureDetector(
+            itemTextIcon(
               onTap: () {
                 AppNavigator.navigateDetailCustomer(
                     data.khachHangId ?? '', data.tenKhachHang ?? '');
               },
-              child: itemTextIcon(
-                text: data.tenKhachHang ?? '',
-                icon: ICONS.IC_USER2_SVG,
-                colorIcon: COLORS.GREY,
-                styleText: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
-                  color: COLORS.TEXT_BLUE_BOLD,
-                  fontSize: 14,
-                ),
+              text: data.tenKhachHang ?? '',
+              icon: ICONS.IC_USER2_SVG,
+              colorIcon: COLORS.GREY,
+              styleText: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                color: COLORS.TEXT_BLUE_BOLD,
+                fontSize: 14,
               ),
             ),
             itemTextIcon(
               onTap: () {
-                if (data.diDong != null && data.diDong != '') {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return DialogCall(
-                        phone: '${data.diDong}',
-                        name: '${data.tenKhachHang}',
-                      );
-                    },
-                  );
-                }
+                AppNavigator.navigateDetailContract(
+                  data.id ?? '',
+                  data.soPhieu ?? '',
+                );
               },
-              text: data.diDong ?? getT(KeyT.not_yet),
               styleText: AppStyle.DEFAULT_14.copyWith(
                 fontWeight: FontWeight.w400,
                 color: COLORS.TEXT_BLUE_BOLD,
-              ),
-              icon: ICONS.IC_PHONE_CUSTOMER_SVG,
-            ),
-            itemTextIcon(
-              text: data.trangThai ?? getT(KeyT.not_yet),
-              icon: ICONS.IC_DANG_XU_LY_SVG,
-              colorIcon: COLORS.GREY,
-              styleText: AppStyle.DEFAULT_14.copyWith(
-                color: COLORS.ORANGE,
-              ),
-            ),
-            itemTextIcon(
-              styleText: AppStyle.DEFAULT_14.copyWith(
-                fontWeight: FontWeight.w400,
               ),
               textPlus: getT(KeyT.so_phieu),
               text: data.soPhieu ?? '',
@@ -147,6 +125,78 @@ class ItemCar extends StatelessWidget {
               isSVG: false,
               colorIcon: COLORS.GREY,
             ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 15,
+              ),
+              child: LineHorizontal(
+                color: COLORS.LIGHT_GREY,
+              ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: itemTextIcon(
+                    onTap: () {
+                      if (data.diDong != null && data.diDong != '') {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return DialogCall(
+                              phone: '${data.diDong}',
+                              name: '${data.tenKhachHang}',
+                            );
+                          },
+                        );
+                      }
+                    },
+                    text: data.diDong ?? getT(KeyT.not_yet),
+                    styleText: AppStyle.DEFAULT_14.copyWith(
+                      fontWeight: FontWeight.w400,
+                      color: COLORS.TEXT_BLUE_BOLD,
+                    ),
+                    icon: ICONS.IC_PHONE_CUSTOMER_SVG,
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 15,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          width: 16,
+                          height: 16,
+                          margin: EdgeInsets.only(
+                            right: 8,
+                          ),
+                          child: SvgPicture.asset(
+                            ICONS.IC_BUILD_SVG,
+                            color: COLORS.GREY,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        Container(
+                          constraints: BoxConstraints(
+                              maxWidth: MediaQuery.of(context).size.width / 2 -
+                                  32 -
+                                  16 -
+                                  8), //trừ đi pading và width widget
+                          child: Text(
+                            data.chiNhanh ?? getT(KeyT.not_yet),
+                            style: AppStyle.DEFAULT_14.copyWith(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),

@@ -108,7 +108,6 @@ class ManagerBloc extends Bloc<ManagerEvent, ManagerState> {
     ids = '';
     saveDataFilter = {};
     _getDataSave(managerTrees.value);
-    print(saveDataFilter);
   }
 
   _getDataSave(List<TreeNodeData> list) {

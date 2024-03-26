@@ -40,3 +40,11 @@ class COLORS {
   static final ffFCF1D4 = HexColor("#FCF1D4");
   static final ffBEB4B4 = HexColor("#BEB4B4");
 }
+
+List<BoxShadow> boxShadow1 = [
+  BoxShadow(
+    color: COLORS.BLACK.withOpacity(0.2),
+    spreadRadius: 2,
+    blurRadius: 5,
+  )
+];

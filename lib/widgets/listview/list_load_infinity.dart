@@ -17,6 +17,7 @@ class ViewLoadMoreBase extends StatefulWidget {
     this.child,
     this.isShowAll,
     this.isDispose = true,
+    this.heightAppBar = 75,
   }) : super(key: key);
   final Future<dynamic> Function(int page, bool isInit) functionInit;
   final Function(int index, dynamic data) itemWidget;
@@ -26,6 +27,7 @@ class ViewLoadMoreBase extends StatefulWidget {
   final Widget? noDataWidget;
   final Widget? child;
   final BehaviorSubject<List<dynamic>>? isShowAll;
+  final double heightAppBar;
 
   @override
   State<ViewLoadMoreBase> createState() => _ViewLoadMoreBaseState();
@@ -97,7 +99,7 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
                     automaticallyImplyLeading: false,
                     snap: true,
                     floating: true,
-                    expandedHeight: 75,
+                    expandedHeight: widget.heightAppBar,
                     flexibleSpace: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,

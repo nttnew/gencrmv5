@@ -317,35 +317,35 @@ Widget itemTextIcon({
   return text == ''
       ? SizedBox()
       : onTap != null
-          ? GestureDetector(
-              onTap: () => onTap(),
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: paddingTop ?? 15,
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 16,
-                      height: 16,
-                      child: icon.runtimeType == Icon
-                          ? icon
-                          : isSVG
-                              ? SvgPicture.asset(
-                                  icon,
-                                  color: colorIcon != null ? colorIcon : null,
-                                  fit: BoxFit.contain,
-                                )
-                              : Image.asset(
-                                  icon,
-                                  color: colorIcon != null ? colorIcon : null,
-                                  fit: BoxFit.contain,
-                                ),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Expanded(
+          ? Padding(
+              padding: EdgeInsets.only(
+                top: paddingTop ?? 15,
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 16,
+                    height: 16,
+                    child: icon.runtimeType == Icon
+                        ? icon
+                        : isSVG
+                            ? SvgPicture.asset(
+                                icon,
+                                color: colorIcon != null ? colorIcon : null,
+                                fit: BoxFit.contain,
+                              )
+                            : Image.asset(
+                                icon,
+                                color: colorIcon != null ? colorIcon : null,
+                                fit: BoxFit.contain,
+                              ),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => onTap(),
                       child: WidgetText(
                         title: (textPlus != null ? '$textPlus: ' : '') + text,
                         style: styleText ??
@@ -356,8 +356,8 @@ Widget itemTextIcon({
                             ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             )
           : Padding(
@@ -365,6 +365,8 @@ Widget itemTextIcon({
                 top: paddingTop ?? 15,
               ),
               child: Row(
+                mainAxisSize: MainAxisSize.min,
+                verticalDirection: VerticalDirection.up,
                 children: [
                   Container(
                     width: 16,

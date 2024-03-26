@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 
 class ButtonMenuModel {
-  final String? image;
+  final String image;
   final String title;
-  final GestureTapCallback? onTap;
-  final Color? backgroundColor;
+  final GestureTapCallback onTap;
+  final Color backgroundColor;
 
   ButtonMenuModel({
-    this.backgroundColor,
-    this.image,
+    required this.backgroundColor,
+    required this.image,
     required this.title,
-    this.onTap,
+    required this.onTap,
   });
 }

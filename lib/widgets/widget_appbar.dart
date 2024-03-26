@@ -26,7 +26,8 @@ class WidgetAppbar extends StatelessWidget {
     this.textColor = COLORS.WHITE,
     this.height,
     this.isTitleCenter = false,
-    this.isDivider = false, this.isShaDow = true,
+    this.isDivider = false,
+    this.isShaDow = true,
   }) : super(key: key);
 
   @override
@@ -40,16 +41,20 @@ class WidgetAppbar extends StatelessWidget {
       height: AppValue.heights * 0.1 + MediaQuery.of(context).padding.top,
       decoration: BoxDecoration(
         color: COLORS.PRIMARY_COLOR,
-        boxShadow:isShaDow? [
-          BoxShadow(
-            color: COLORS.BLACK.withOpacity(0.3),
-            spreadRadius: 2,
-            blurRadius: 2,
-          ),
-        ]:null,
-        borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(20),
-        ),
+        boxShadow: isShaDow
+            ? [
+                BoxShadow(
+                  color: COLORS.BLACK.withOpacity(0.3),
+                  spreadRadius: 2,
+                  blurRadius: 2,
+                ),
+              ]
+            : null,
+        borderRadius: !isShaDow
+            ? null
+            : BorderRadius.vertical(
+                bottom: Radius.circular(20),
+              ),
       ),
       child: Row(
         children: [

@@ -308,7 +308,11 @@ class _ScreenMainState extends State<ScreenMain> {
                 );
               }
             }),
-            isCarCrm() ? MainCar() : _main(),
+            isCarCrm()
+                ? MainCar(
+                    listMenu: listMenu,
+                  )
+                : _main(),
           ],
         ),
       ),

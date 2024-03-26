@@ -190,6 +190,9 @@ class _MainDrawerState extends State<MainDrawer> {
           Expanded(
             child: _elements.length > 0
                 ? ListView.builder(
+                    padding: EdgeInsets.only(
+                      top: 16,
+                    ),
                     itemCount: _elements.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
