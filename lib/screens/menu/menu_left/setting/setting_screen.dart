@@ -17,7 +17,10 @@ import '../../../../widgets/widget_text.dart';
 import '../menu_drawer/widget_item_list_menu.dart';
 
 class SettingScreen extends StatefulWidget {
-  const SettingScreen({Key? key, required this.onSelectLang,}) : super(key: key);
+  const SettingScreen({
+    Key? key,
+    required this.onSelectLang,
+  }) : super(key: key);
   final Function onSelectLang;
   @override
   State<SettingScreen> createState() => _SettingScreenState();
@@ -308,7 +311,7 @@ class _SettingScreenState extends State<SettingScreen> {
           AppValue.vSpaceTiny,
           Center(
             child: WidgetText(
-              title: 'Version: 2.3.9',
+              title: 'Version: 2.4.0',
               style: AppStyle.DEFAULT_16.copyWith(
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w400,
