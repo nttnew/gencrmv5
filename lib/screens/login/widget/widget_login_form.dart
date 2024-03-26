@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/api_resfull/dio_provider.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/storages/share_local.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -187,6 +190,36 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
                   }
                   return null;
                 },
+                suffixConstraint: BoxConstraints(
+                  maxHeight: 20,
+                  maxWidth: 44,
+                ),
+                iconWidget:
+                    shareLocal.getString(PreferencesKey.LIST_ADDRESS_APP) !=
+                            null
+                        ? GestureDetector(
+                            onTap: () async {
+                              final data =
+                                  await ShowDialogCustom.showDialogScreenBase(
+                                isPop: true,
+                                child: _itemShowAddressApp(),
+                              );
+                              if (data != null) {
+                                _domainController.text = data;
+                              }
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                right: 16,
+                                left: 8,
+                              ),
+                              child: Image.asset(
+                                ICONS.IC_SELECT_ADDRESS_PNG,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          )
+                        : null,
                 onSubmit: () {
                   _onLogin(bloc);
                 },
@@ -206,6 +239,60 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
           ),
         ),
       ),
+    );
+  }
+
+  _itemShowAddressApp() {
+    final List<dynamic> listAddress =
+        jsonDecode(shareLocal.getString(PreferencesKey.LIST_ADDRESS_APP));
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          getT(KeyT.change_address_application),
+          style: AppStyle.DEFAULT_18_BOLD,
+        ),
+        ListView.builder(
+          padding: EdgeInsets.only(
+            top: 16,
+          ),
+          shrinkWrap: true,
+          itemCount: listAddress.length,
+          itemBuilder: (context, i) => GestureDetector(
+            onTap: () {
+              Get.back(
+                result: listAddress[i].toString(),
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.all(16),
+              margin: EdgeInsets.symmetric(
+                vertical: 4,
+              ),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: COLORS.WHITE,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(
+                    8,
+                  ),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: COLORS.BLACK.withOpacity(0.1),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                  ),
+                ],
+              ),
+              child: Text(
+                listAddress[i],
+                style: AppStyle.DEFAULT_16_BOLD,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

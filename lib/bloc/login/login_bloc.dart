@@ -49,7 +49,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final dataCv = await getXeDichVu(
       page: BASE_URL.PAGE_DEFAULT,
     );
-    loadMoreControllerCar.isLoadMore=true;
+    loadMoreControllerCar.isLoadMore = true;
     await loadMoreControllerCar.initData(dataCv ?? []);
   }
 
@@ -156,7 +156,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';
-    }  catch (e) {
+    } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
       return resDynamic;
     }
@@ -406,6 +406,30 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     await getLanguageAPI();
     await getLocationApi();
     await getMenuMain();
+    // address app local
+    final resAddressLocal =
+        shareLocal.getString(PreferencesKey.LIST_ADDRESS_APP);
+    final baseUrl = shareLocal.getString(PreferencesKey.URL_BASE_FORMAT);
+    List<dynamic> listAddressDynamic = [];
+    listAddressDynamic.add(baseUrl);
+    if (resAddressLocal != null) {
+      listAddressDynamic.addAll(jsonDecode(resAddressLocal) as List<dynamic>);
+    }
+    shareLocal.putString(PreferencesKey.LIST_ADDRESS_APP,
+        jsonEncode(removeDuplicates(listAddressDynamic)));
+  }
+
+  List<dynamic> removeDuplicates(List<dynamic> list) {
+    Set<dynamic> uniqueItems =
+        {}; // Tạo một set để lưu trữ các giá trị duy nhất
+
+    // Lặp qua danh sách và thêm các giá trị vào set
+    for (dynamic item in list) {
+      uniqueItems.add(item);
+    }
+
+    // Chuyển đổi set trở lại thành danh sách và trả về
+    return uniqueItems.toList();
   }
 
   Future<void> getMenuMain() async {

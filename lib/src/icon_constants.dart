@@ -46,6 +46,7 @@ class ICONS {
   static const String IC_CAR_PNG = 'assets/icons/car.png';
   static const String IC_CALENDAR_PNG = 'assets/icons/calendar.png';
   static const String IC_DROP_DOWN_PNG = 'assets/icons/drop_down.png';
+  static const String IC_SELECT_ADDRESS_PNG = 'assets/icons/select_address.png';
 
   static const String IC_CUSTOMER_3X_PNG = 'assets/icons/Custumer_3x.png';
   static const String IC_CLUE_3X_PNG = 'assets/icons/Clue_3x.png';
