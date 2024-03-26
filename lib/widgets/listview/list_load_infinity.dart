@@ -17,7 +17,7 @@ class ViewLoadMoreBase extends StatefulWidget {
     this.child,
     this.isShowAll,
     this.isDispose = true,
-    this.heightAppBar = 75,
+    this.heightAppBar,
   }) : super(key: key);
   final Future<dynamic> Function(int page, bool isInit) functionInit;
   final Function(int index, dynamic data) itemWidget;
@@ -27,7 +27,7 @@ class ViewLoadMoreBase extends StatefulWidget {
   final Widget? noDataWidget;
   final Widget? child;
   final BehaviorSubject<List<dynamic>>? isShowAll;
-  final double heightAppBar;
+  final double? heightAppBar;
 
   @override
   State<ViewLoadMoreBase> createState() => _ViewLoadMoreBaseState();
@@ -58,6 +58,7 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
 
   @override
   Widget build(BuildContext context) {
+    final hAppBar = widget.heightAppBar;
     super.build(context);
     if (widget.child != null) {
       return RefreshIndicator(
@@ -77,8 +78,13 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
                         automaticallyImplyLeading: false,
                         snap: true,
                         floating: true,
-                        expandedHeight:
-                            (snapshot.data ?? []).length > 0 ? 135 : 75,
+                        expandedHeight: (snapshot.data ?? []).length > 0
+                            ? hAppBar != null
+                                ? hAppBar
+                                : 135
+                            : hAppBar != null
+                                ? (hAppBar - 40)
+                                : 75,
                         flexibleSpace: Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -99,7 +105,7 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
                     automaticallyImplyLeading: false,
                     snap: true,
                     floating: true,
-                    expandedHeight: widget.heightAppBar,
+                    expandedHeight: hAppBar ?? 75,
                     flexibleSpace: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,

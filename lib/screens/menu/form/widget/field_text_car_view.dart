@@ -9,7 +9,6 @@ Widget fieldTextCar(
   String value,
   Function(String) onChange,
 ) {
-  // onChange(value);//todo
   return Container(
     margin: EdgeInsets.only(bottom: 16),
     child: Column(

@@ -366,4 +366,10 @@ class _ScreenMainState extends State<ScreenMain> {
           ),
         ),
       );
+
+  @override
+  void dispose() {
+    _blocLogin.dispose();
+    super.dispose();
+  }
 }

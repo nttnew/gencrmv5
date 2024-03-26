@@ -78,18 +78,20 @@ class ItemCar extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 8,
-                    vertical: 2,
+                    vertical: 3,
                   ),
                   decoration: BoxDecoration(
                     color: COLORS.PRIMARY_COLOR,
                     borderRadius: BorderRadius.circular(
-                      99,
+                      5,
                     ),
                   ),
-                  child: WidgetText(
-                    title: data.trangThai ?? getT(KeyT.not_yet),
-                    style: AppStyle.DEFAULT_14.copyWith(
-                      fontSize: 12,
+                  child: Center(
+                    child: WidgetText(
+                      title: data.trangThai ?? getT(KeyT.not_yet),
+                      style: AppStyle.DEFAULT_14.copyWith(
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ),

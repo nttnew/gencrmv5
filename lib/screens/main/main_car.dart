@@ -39,6 +39,7 @@ class _MainCarState extends State<MainCar> {
     double w = wSz / 5;
     return Expanded(
       child: ViewLoadMoreBase(
+        isShowAll: _blocLogin.isShowLocaiton,
         isDispose: false,
         heightAppBar: w + 104 - MediaQuery.of(context).padding.top,
         child: Container(
@@ -87,6 +88,7 @@ class _MainCarState extends State<MainCar> {
                                       return GestureDetector(
                                         onTap: () => item.onTap(),
                                         child: Container(
+                                          alignment: Alignment.center,
                                           width: w,
                                           height: w,
                                           margin: EdgeInsets.only(
@@ -95,46 +97,24 @@ class _MainCarState extends State<MainCar> {
                                             bottom: 10,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: COLORS.WHITE,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: COLORS.BLACK
-                                                    .withOpacity(0.2),
-                                                spreadRadius: 2,
-                                                blurRadius: 5,
-                                              )
-                                            ],
+                                            color: generateColors()[i],
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(
                                                 10,
                                               ),
                                             ),
                                           ),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Image.asset(
-                                                item.image,
-                                                errorBuilder: (_, __, ___) =>
-                                                    Container(),
-                                                width: 24,
-                                                height: 24,
-                                              ),
-                                              SizedBox(
-                                                width: w - 20,
-                                                child: Center(
-                                                  child: Text(
-                                                    item.title,
-                                                    style: AppStyle.DEFAULT_14,
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                          child: Text(
+                                            item.title,
+                                            style: AppStyle.DEFAULT_14.copyWith(
+                                              color: generateColors(
+                                                startColorD: Colors.black38,
+                                                endColorD: Colors.black,
+                                              )[i],
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.center,
+                                            maxLines: 3,
                                           ),
                                         ),
                                       );
@@ -158,12 +138,12 @@ class _MainCarState extends State<MainCar> {
                             itemCount: listTrangThai.length,
                             itemBuilder: (context, i) {
                               final itemData = listTrangThai[i];
+                              bool isSelected =
+                                  _blocLogin.valueTrangThai?.id == itemData.id;
                               return GestureDetector(
                                 onTap: () {
                                   _blocLogin.valueTrangThai =
-                                      itemData == _blocLogin.valueTrangThai
-                                          ? null
-                                          : itemData;
+                                      isSelected ? null : itemData;
                                   _blocLogin.loadMoreControllerCar.reloadData();
 
                                   setState(() {});
@@ -173,8 +153,7 @@ class _MainCarState extends State<MainCar> {
                                     right: 16,
                                   ),
                                   decoration: BoxDecoration(
-                                    border: _blocLogin.valueTrangThai?.id ==
-                                            itemData.id
+                                    border: isSelected
                                         ? Border(
                                             bottom: BorderSide(
                                               color: COLORS.RED,
@@ -186,14 +165,9 @@ class _MainCarState extends State<MainCar> {
                                   child: Text(
                                     itemData.label ?? '',
                                     style: AppStyle.DEFAULT_14.copyWith(
-                                      fontWeight:
-                                          _blocLogin.valueTrangThai == itemData
-                                              ? FontWeight.w600
-                                              : FontWeight.w500,
-                                      color:
-                                          _blocLogin.valueTrangThai == itemData
-                                              ? null
-                                              : null,
+                                      fontWeight: isSelected
+                                          ? FontWeight.w600
+                                          : FontWeight.w500,
                                     ),
                                   ),
                                 ),
@@ -297,5 +271,34 @@ class _MainCarState extends State<MainCar> {
         controller: _blocLogin.loadMoreControllerCar,
       ),
     );
+  }
+
+  static List<Color> generateColors({
+    Color? startColorD,
+    Color? endColorD,
+  }) {
+    int count = 9;
+    List<Color> colors = [];
+    Color startColor = startColorD ?? COLORS.PRIMARY_COLOR2;
+    Color endColor = endColorD ?? COLORS.PRIMARY_COLOR3;
+    // Tính toán giá trị màu cho từng thành phần màu (red, green, blue)
+    double startRed = startColor.red.toDouble();
+    double startGreen = startColor.green.toDouble();
+    double startBlue = startColor.blue.toDouble();
+
+    double endRed = endColor.red.toDouble();
+    double endGreen = endColor.green.toDouble();
+    double endBlue = endColor.blue.toDouble();
+
+    // Tạo các màu ở giữa
+    for (int i = 1; i <= count; i++) {
+      double red = startRed + ((endRed - startRed) / (count + 1)) * i;
+      double green = startGreen + ((endGreen - startGreen) / (count + 1)) * i;
+      double blue = startBlue + ((endBlue - startBlue) / (count + 1)) * i;
+
+      colors.add(Color.fromARGB(255, red.toInt(), green.toInt(), blue.toInt()));
+    }
+
+    return colors;
   }
 }

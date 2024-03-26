@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ui';
 import 'package:gen_crm/src/preferences_key.dart';
 import '../storages/share_local.dart';
+import 'color.dart';
 import 'icon_constants.dart';
 import 'navigator.dart';
 
@@ -190,7 +191,8 @@ class BASE_URL {
       'modules/genmobile2/dashboard/getBaocaoSoquy';
   static const GET_DATA_LOCATION = 'modules/api/getdata/dataLocation';
   static const POST_XE_DICH_VU = 'modules/genmobile2/dashboard/getXedichvu';
-  static const POST_DETAIL_XE_DICH_VU = 'modules/genmobile2/dashboard/getChitietXedichvu';
+  static const POST_DETAIL_XE_DICH_VU =
+      'modules/genmobile2/dashboard/getChitietXedichvu';
   static const POST_UPDATE_TTHD = 'modules/genmobile2/dashboard/updateTTHD';
   static const POST_UPDATE_TDNTH = 'modules/genmobile2/dashboard/updateTDNTH';
   static const QUICK_CREATE_SEARCH = 'modules/genmobile2/quickCreate/search';
@@ -363,6 +365,8 @@ class ModuleMy {
       return Color(0xff22b290);
     } else if (ModuleMy.SAN_PHAM_KH == id) {
       return Color(0xff9c4bbb);
+    } else if (ModuleMy.REPORT == id) {
+      return COLORS.ff5D5FEF;
     }
     return Color(0xffFF993A);
   }

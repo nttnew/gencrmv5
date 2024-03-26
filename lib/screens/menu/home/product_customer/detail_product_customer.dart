@@ -136,7 +136,7 @@ class _DetailProductCustomerScreenState
                       int.parse(data.id ?? '0'), data.nameJob ?? '');
                 },
                 child: WorkCardWidget(
-                  productCustomer: null, //todo
+                  productCustomer: data.customer,
                   nameCustomer: data.customer.name,
                   nameJob: data.nameJob,
                   startDate: data.startDate,

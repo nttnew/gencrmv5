@@ -37,6 +37,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   static const String REGISTERED = 'REGISTERED';
   LoginData? loginData;
   BehaviorSubject<FilterResponse> locationStatusStream = BehaviorSubject();
+  BehaviorSubject<List<dynamic>> isShowLocaiton = BehaviorSubject.seeded([]);
   BehaviorSubject<dynamic> responseDetailXeDichVuStream = BehaviorSubject();
   String? valueLocation;
   String? location;
@@ -44,6 +45,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoadMoreController loadMoreControllerCar = LoadMoreController();
   XeDichVu? xeDichVu;
   String? trangThaiDichVu;
+
+  dispose(){
+    trangThaiDichVu = null;
+    valueLocation = null;
+    location = null;
+    isShowLocaiton.add([]);
+    valueTrangThai = null;
+    loadMoreControllerCar.dispose();
+  }
 
   initData() async {
     final dataCv = await getXeDichVu(
@@ -206,6 +216,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final response = await userRepository.getReportOption2();
       if (isSuccess(response.code)) {
         locationStatusStream.add(response);
+        if ((response.data?.diem_ban?.length ?? 0) > 1)
+          isShowLocaiton.add(response.data?.diem_ban ?? []);
       }
     } catch (e) {}
   }
