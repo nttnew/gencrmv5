@@ -209,9 +209,6 @@ Future main() async {
             create: (context) =>
                 DetailSupportBloc(userRepository: userRepository),
           ),
-          // BlocProvider<FormEditBloc>(
-          //   create: (context) => FormEditBloc(userRepository: userRepository),
-          // ),
           BlocProvider<CustomerContractBloc>(
             create: (context) =>
                 CustomerContractBloc(userRepository: userRepository),
