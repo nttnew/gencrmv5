@@ -56,7 +56,16 @@ class _MainCarState extends State<MainCar> {
                     children: [
                       if (widget.listMenu.length > 0)
                         Container(
-                          color: COLORS.PRIMARY_COLOR,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                COLORS.PRIMARY_COLOR2,
+                                COLORS.PRIMARY_COLOR3,
+                              ],
+                            ),
+                          ),
                           child: Stack(
                             children: [
                               Container(
@@ -108,7 +117,7 @@ class _MainCarState extends State<MainCar> {
                                             item.title,
                                             style: AppStyle.DEFAULT_14.copyWith(
                                               color: generateColors(
-                                                startColorD: Colors.black38,
+                                                startColorD: Colors.black,
                                                 endColorD: Colors.black,
                                               )[i],
                                             ),
@@ -277,10 +286,11 @@ class _MainCarState extends State<MainCar> {
     Color? startColorD,
     Color? endColorD,
   }) {
-    int count = 9;
+    int count = 8;
     List<Color> colors = [];
     Color startColor = startColorD ?? COLORS.PRIMARY_COLOR2;
     Color endColor = endColorD ?? COLORS.PRIMARY_COLOR3;
+    colors.add(startColor);
     // Tính toán giá trị màu cho từng thành phần màu (red, green, blue)
     double startRed = startColor.red.toDouble();
     double startGreen = startColor.green.toDouble();
@@ -298,7 +308,6 @@ class _MainCarState extends State<MainCar> {
 
       colors.add(Color.fromARGB(255, red.toInt(), green.toInt(), blue.toInt()));
     }
-
     return colors;
   }
 }

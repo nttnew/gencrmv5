@@ -33,6 +33,7 @@ class _ScreenMainState extends State<ScreenMain> {
 
   void getMenu() async {
     listMenu = [];
+    _addMenuReport(isCarCrm());
     String menu = await shareLocal.getString(PreferencesKey.MENU);
     List listM = jsonDecode(menu);
     for (final value in listM) {
@@ -70,16 +71,21 @@ class _ScreenMainState extends State<ScreenMain> {
             }),
       );
     }
-    listMenu.add(
-      ButtonMenuModel(
-          title: getT(KeyT.report),
-          image: ICONS.IC_REPORT_PNG,
-          backgroundColor: COLORS.ff5D5FEF,
-          onTap: () {
-            AppNavigator.navigateReport();
-          }),
-    );
+    _addMenuReport(!isCarCrm());
     setState(() {});
+  }
+
+  _addMenuReport(bool v) {
+    if (v)
+      listMenu.add(
+        ButtonMenuModel(
+            title: getT(KeyT.report),
+            image: ICONS.IC_REPORT_PNG,
+            backgroundColor: COLORS.ff5D5FEF,
+            onTap: () {
+              AppNavigator.navigateReport();
+            }),
+      );
   }
 
   _handelRouterMenuPlus(String id, String name) {

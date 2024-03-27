@@ -66,7 +66,8 @@ class _ReportScreenState extends State<ReportScreen> {
     },
   ];
 
-  String checkDataDoanhSo(DataList data, String gt) {
+  String checkDataDoanhSo(DataList? dataN, String gt) {
+    final data = dataN ?? DataList('0', '0', '0');
     if (gt == 'doanh_so') {
       return '${data.doanh_so}${money}';
     } else if (gt == 'thuc_thu') {
@@ -250,7 +251,7 @@ class _ReportScreenState extends State<ReportScreen> {
           underline: SizedBox.shrink(),
           onChanged: (String? value) {
             setState(() {
-              select = value!;
+              select = value ?? '';
             });
           },
           dropdownWidth: w * 0.65,
@@ -586,7 +587,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   ),
                   children: typeDoanhSo.map((e) {
                     bool isCheckShowSelect = int.tryParse(checkDataDoanhSo(
-                          state.data!.list!,
+                          state.data?.list,
                           e['gt'],
                         ).replaceAll(money ?? '', '')) ==
                         0;
@@ -625,7 +626,7 @@ class _ReportScreenState extends State<ReportScreen> {
                               ),
                               Text(
                                 checkDataDoanhSo(
-                                  state.data!.list!,
+                                  state.data?.list,
                                   e['gt'],
                                 ),
                                 style: AppStyle.DEFAULT_16,

@@ -1,4 +1,3 @@
-import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/src/src_index.dart';
@@ -41,6 +40,16 @@ class WidgetAppbar extends StatelessWidget {
       height: AppValue.heights * 0.1 + MediaQuery.of(context).padding.top,
       decoration: BoxDecoration(
         color: COLORS.PRIMARY_COLOR,
+        gradient: !isShaDow
+            ? LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  COLORS.PRIMARY_COLOR2,
+                  COLORS.PRIMARY_COLOR3,
+                ],
+              )
+            : null,
         boxShadow: isShaDow
             ? [
                 BoxShadow(
@@ -64,13 +73,7 @@ class WidgetAppbar extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                 horizontal: 16,
               ),
-              child: Text(
-                title ?? '',
-                style: AppStyle.DEFAULT_18_BOLD.copyWith(
-                  color: COLORS.BLACK,
-                  fontFamily: 'Montserrat',
-                ),
-              ),
+              child: Text(title ?? '', style: AppStyle.DEFAULT_18_BOLD),
             ),
           ),
           rightAppBar(),
@@ -87,15 +90,19 @@ Widget rightAppBar() => GestureDetector(
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          SvgPicture.asset(ICONS.IC_NOTIFICATION2_SVG),
+          Image.asset(
+            ICONS.IC_NOTIFICATION_PNG,
+            height: 24,
+            width: 24,
+          ),
           StreamBuilder<int>(
               stream: GetNotificationBloc.of(Get.context!).total,
               builder: (context, snapshot) {
                 final int total = snapshot.data ?? 0;
                 if (total != 0)
                   return Positioned(
-                    top: -5,
-                    right: -95,
+                    top: -4,
+                    right: -94,
                     child: Container(
                       width: 100,
                       child: Row(

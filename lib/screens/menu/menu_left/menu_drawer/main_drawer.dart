@@ -102,7 +102,17 @@ class _MainDrawerState extends State<MainDrawer> {
               left: 10,
               right: 10,
             ),
-            color: COLORS.SECONDS_COLOR,
+            decoration: BoxDecoration(
+              color: COLORS.SECONDS_COLOR,
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  COLORS.PRIMARY_COLOR2,
+                  COLORS.PRIMARY_COLOR3,
+                ],
+              ),
+            ),
             height: AppValue.heights * 0.18,
             child: BlocBuilder<GetInfoAccBloc, GetInforAccState>(
               builder: (context, state) {
