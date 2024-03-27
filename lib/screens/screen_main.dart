@@ -158,6 +158,7 @@ class _ScreenMainState extends State<ScreenMain> {
     return Scaffold(
       key: _drawerKey,
       drawer: MainDrawer(
+        isColor: isCarCrm(),
         moduleMy: ModuleMy.HOME,
         drawerKey: _drawerKey,
         onReload: () {

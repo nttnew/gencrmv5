@@ -46,7 +46,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   XeDichVu? xeDichVu;
   String? trangThaiDichVu;
 
-  dispose(){
+  dispose() {
     trangThaiDichVu = null;
     valueLocation = null;
     location = null;
@@ -189,8 +189,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final response = await userRepository.getVersionInfoCar();
       if (isSuccess(response.code)) {
         await shareLocal.putString(
-            PreferencesKey.INFO_VERSION, jsonEncode(response.data));
-      } else {}
+            PreferencesKey.INFO_VERSION, jsonEncode(response.data?.toJson()));
+      }
     } catch (e) {
       throw e;
     }

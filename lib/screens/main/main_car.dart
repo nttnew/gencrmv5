@@ -57,14 +57,8 @@ class _MainCarState extends State<MainCar> {
                       if (widget.listMenu.length > 0)
                         Container(
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [
-                                COLORS.PRIMARY_COLOR2,
-                                COLORS.PRIMARY_COLOR3,
-                              ],
-                            ),
+                            color: COLORS.PRIMARY_COLOR1,
+                            // gradient: linearGradientMain,
                           ),
                           child: Stack(
                             children: [
@@ -73,7 +67,7 @@ class _MainCarState extends State<MainCar> {
                                 decoration: BoxDecoration(
                                   color: COLORS.WHITE,
                                   borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(20),
+                                    top: Radius.circular(10),
                                   ),
                                 ),
                               ),
@@ -106,7 +100,8 @@ class _MainCarState extends State<MainCar> {
                                             bottom: 10,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: generateColors()[i],
+                                            color: COLORS
+                                                .PRIMARY_COLOR1, //generateColors()[i],
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(
                                                 10,
@@ -116,10 +111,7 @@ class _MainCarState extends State<MainCar> {
                                           child: Text(
                                             item.title,
                                             style: AppStyle.DEFAULT_14.copyWith(
-                                              color: generateColors(
-                                                startColorD: Colors.black,
-                                                endColorD: Colors.black,
-                                              )[i],
+                                              color: COLORS.WHITE,
                                             ),
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.center,
@@ -138,11 +130,11 @@ class _MainCarState extends State<MainCar> {
                       Container(
                         height: 40,
                         width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.only(
-                          left: 16,
-                          bottom: 5,
-                        ),
                         child: ListView.builder(
+                            padding: EdgeInsets.only(
+                              left: 16,
+                              bottom: 5,
+                            ),
                             scrollDirection: Axis.horizontal,
                             itemCount: listTrangThai.length,
                             itemBuilder: (context, i) {
@@ -282,32 +274,32 @@ class _MainCarState extends State<MainCar> {
     );
   }
 
-  static List<Color> generateColors({
-    Color? startColorD,
-    Color? endColorD,
-  }) {
-    int count = 8;
-    List<Color> colors = [];
-    Color startColor = startColorD ?? COLORS.PRIMARY_COLOR2;
-    Color endColor = endColorD ?? COLORS.PRIMARY_COLOR3;
-    colors.add(startColor);
-    // Tính toán giá trị màu cho từng thành phần màu (red, green, blue)
-    double startRed = startColor.red.toDouble();
-    double startGreen = startColor.green.toDouble();
-    double startBlue = startColor.blue.toDouble();
-
-    double endRed = endColor.red.toDouble();
-    double endGreen = endColor.green.toDouble();
-    double endBlue = endColor.blue.toDouble();
-
-    // Tạo các màu ở giữa
-    for (int i = 1; i <= count; i++) {
-      double red = startRed + ((endRed - startRed) / (count + 1)) * i;
-      double green = startGreen + ((endGreen - startGreen) / (count + 1)) * i;
-      double blue = startBlue + ((endBlue - startBlue) / (count + 1)) * i;
-
-      colors.add(Color.fromARGB(255, red.toInt(), green.toInt(), blue.toInt()));
-    }
-    return colors;
-  }
+  // static List<Color> generateColors({
+  //   Color? startColorD,
+  //   Color? endColorD,
+  // }) {
+  //   int count = 8;
+  //   List<Color> colors = [];
+  //   Color startColor = startColorD ?? COLORS.PRIMARY_COLOR1;
+  //   Color endColor = endColorD ?? COLORS.PRIMARY_COLOR1;
+  //   colors.add(startColor);
+  //   // Tính toán giá trị màu cho từng thành phần màu (red, green, blue)
+  //   double startRed = startColor.red.toDouble();
+  //   double startGreen = startColor.green.toDouble();
+  //   double startBlue = startColor.blue.toDouble();
+  //
+  //   double endRed = endColor.red.toDouble();
+  //   double endGreen = endColor.green.toDouble();
+  //   double endBlue = endColor.blue.toDouble();
+  //
+  //   // Tạo các màu ở giữa
+  //   for (int i = 1; i <= count; i++) {
+  //     double red = startRed + ((endRed - startRed) / (count + 1)) * i;
+  //     double green = startGreen + ((endGreen - startGreen) / (count + 1)) * i;
+  //     double blue = startBlue + ((endBlue - startBlue) / (count + 1)) * i;
+  //
+  //     colors.add(Color.fromARGB(255, red.toInt(), green.toInt(), blue.toInt()));
+  //   }
+  //   return colors;
+  // }
 }

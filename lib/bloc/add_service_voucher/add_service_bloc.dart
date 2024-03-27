@@ -70,7 +70,7 @@ class ServiceVoucherBloc
   LoadMoreController loadMoreControllerPhone = LoadMoreController();
   LoadMoreController loadMoreControllerBienSo = LoadMoreController();
 
-  init(){
+  init() {
     loadMoreControllerPhone.initData([]);
     loadMoreControllerBienSo.initData([]);
   }
@@ -155,16 +155,15 @@ class ServiceVoucherBloc
   void getVersionCarInfo() {
     String data = shareLocal.getString(PreferencesKey.INFO_VERSION) ?? '';
     if (data != '' && data != 'null') {
-      final result = json.decode(data);
-      final hangXe = (result['hang_xe'] ?? []) as List<dynamic>;
-      final versions = (result['versions'] ?? []) as List<dynamic>;
-      final resultHangXe = hangXe.map((e) => HangXe.fromJson(e)).toList();
+      final DataCar dataCar = DataCar.fromJson2(jsonDecode(data));
+      final hangXe = dataCar.hangXe ?? [];
+      final versions = dataCar.versions ?? [];
       final Set<HangXe> list = {};
-      for (final obj in resultHangXe) {
+      for (final obj in hangXe) {
         list.add(obj);
       }
       listHangXe.add(list);
-      listVersionCar = versions.map((e) => Versions.fromJson(e)).toList();
+      listVersionCar = versions;
     }
   }
 

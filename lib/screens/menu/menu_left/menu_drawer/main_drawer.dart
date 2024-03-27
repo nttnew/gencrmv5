@@ -18,11 +18,13 @@ class MainDrawer extends StatefulWidget {
   final GlobalKey<ScaffoldState> drawerKey;
   final Function onReload;
   final String moduleMy;
+  final bool isColor;
 
   const MainDrawer({
     required this.drawerKey,
     required this.onReload,
     required this.moduleMy,
+    this.isColor = false,
   });
 
   @override
@@ -85,7 +87,7 @@ class _MainDrawerState extends State<MainDrawer> {
         },
       ]
     ];
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override
@@ -103,15 +105,8 @@ class _MainDrawerState extends State<MainDrawer> {
               right: 10,
             ),
             decoration: BoxDecoration(
-              color: COLORS.SECONDS_COLOR,
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  COLORS.PRIMARY_COLOR2,
-                  COLORS.PRIMARY_COLOR3,
-                ],
-              ),
+              color:
+                  widget.isColor ? COLORS.PRIMARY_COLOR1 : COLORS.SECONDS_COLOR,
             ),
             height: AppValue.heights * 0.18,
             child: BlocBuilder<GetInfoAccBloc, GetInforAccState>(
@@ -141,12 +136,16 @@ class _MainDrawerState extends State<MainDrawer> {
                                 title: isCarCrm()
                                     ? state.inforAcc.ten_viet_tat
                                     : state.inforAcc.fullname ?? '',
-                                style: AppStyle.DEFAULT_16_BOLD,
+                                style: AppStyle.DEFAULT_16_BOLD.copyWith(
+                                  color: widget.isColor ? COLORS.WHITE : null,
+                                ),
                               ),
                               AppValue.vSpaceTiny,
                               WidgetText(
                                 title: state.inforAcc.department_name ?? '',
-                                style: AppStyle.DEFAULT_16,
+                                style: AppStyle.DEFAULT_16.copyWith(
+                                  color: widget.isColor ? COLORS.WHITE : null,
+                                ),
                               ),
                             ],
                           ),

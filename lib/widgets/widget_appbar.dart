@@ -39,17 +39,7 @@ class WidgetAppbar extends StatelessWidget {
       ),
       height: AppValue.heights * 0.1 + MediaQuery.of(context).padding.top,
       decoration: BoxDecoration(
-        color: COLORS.PRIMARY_COLOR,
-        gradient: !isShaDow
-            ? LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  COLORS.PRIMARY_COLOR2,
-                  COLORS.PRIMARY_COLOR3,
-                ],
-              )
-            : null,
+        color: !isShaDow ? COLORS.PRIMARY_COLOR1 : COLORS.PRIMARY_COLOR,
         boxShadow: isShaDow
             ? [
                 BoxShadow(
@@ -73,7 +63,12 @@ class WidgetAppbar extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                 horizontal: 16,
               ),
-              child: Text(title ?? '', style: AppStyle.DEFAULT_18_BOLD),
+              child: Text(
+                title ?? '',
+                style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                  color: !isShaDow ? COLORS.WHITE : null,
+                ),
+              ),
             ),
           ),
           rightAppBar(),

@@ -10,7 +10,14 @@ class ListCarInfo {
     success = json['success'];
     msg = json['msg'];
     code = json['code'];
-    data = json['data'] != null ? new DataCar.fromJson(json['data']) : null;
+    data = json['data'] != null ? DataCar.fromJson(json['data']) : null;
+  }
+
+  ListCarInfo.fromJson2(Map<String, dynamic> json) {
+    success = json['success'];
+    msg = json['msg'];
+    code = json['code'];
+    data = json['data'] != null ? DataCar.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -29,19 +36,39 @@ class DataCar {
   List<HangXe>? hangXe;
   List<Versions>? versions;
 
-  DataCar({this.hangXe, this.versions});
+  DataCar({
+    this.hangXe,
+    this.versions,
+  });
 
-  DataCar.fromJson(Map<String, dynamic> json) {
+  DataCar.fromJson2(Map<String, dynamic> json) {
     if (json['hang_xe'] != null) {
       hangXe = <HangXe>[];
       json['hang_xe'].forEach((v) {
-        hangXe!.add(new HangXe.fromJson(v));
+        hangXe!.add(HangXe.fromJson(v));
       });
     }
     if (json['versions'] != null) {
       versions = <Versions>[];
       json['versions'].forEach((v) {
-        versions!.add(new Versions.fromJson(v));
+        versions!.add(Versions.fromJson(v));
+      });
+    }
+  }
+
+  DataCar.fromJson(Map<String, dynamic> json) {
+    if (json['hang_xe'] != null) {
+      hangXe = <HangXe>[];
+      Map<String, dynamic> mapHangXe = json['hang_xe'];
+      mapHangXe.forEach((key, value) {
+        hangXe!.add(HangXe.fromJson(value));
+      });
+    }
+    if (json['versions'] != null) {
+      versions = <Versions>[];
+      Map<String, dynamic> mapVersion = json['versions'];
+      mapVersion.forEach((key, value) {
+        versions!.add(Versions.fromJson(value));
       });
     }
   }
@@ -62,7 +89,10 @@ class HangXe {
   int? id;
   String? name;
 
-  HangXe({this.id, this.name});
+  HangXe({
+    this.id,
+    this.name,
+  });
 
   HangXe.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -91,33 +121,38 @@ class Versions {
   String? phienBanId;
   String? soCho;
 
-  Versions(
-      {this.hangXe,
-      this.hangXeId,
-      this.dongXe,
-      this.dongXeId,
-      this.namSanXuat,
-      this.loaiXe,
-      this.loaiXeId,
-      this.kieuDang,
-      this.kieuDangId,
-      this.phienBan,
-      this.phienBanId,
-      this.soCho});
+  Versions({
+    this.hangXe,
+    this.hangXeId,
+    this.dongXe,
+    this.dongXeId,
+    this.namSanXuat,
+    this.loaiXe,
+    this.loaiXeId,
+    this.kieuDang,
+    this.kieuDangId,
+    this.phienBan,
+    this.phienBanId,
+    this.soCho,
+  });
 
   Versions.fromJson(Map<String, dynamic> json) {
-    hangXe = json['hang_xe'];
-    hangXeId = json['hang_xe_id'];
-    dongXe = json['dong_xe'];
-    dongXeId = json['dong_xe_id'];
-    namSanXuat = json['nam_san_xuat'];
-    loaiXe = json['loai_xe'];
-    loaiXeId = json['loai_xe_id'];
-    kieuDang = json['kieu_dang'];
-    kieuDangId = json['kieu_dang_id'];
-    phienBan = json['phien_ban'];
-    phienBanId = json['phien_ban_id'];
-    soCho = json['so_cho'];
+    hangXe = _checkNull(json['hang_xe']);
+    hangXeId = _checkNull(json['hang_xe_id']);
+    dongXe = _checkNull(json['dong_xe']);
+    dongXeId = _checkNull(json['dong_xe_id']);
+    namSanXuat = _checkNull(json['nam_san_xuat']);
+    loaiXe = _checkNull(json['loai_xe']);
+    loaiXeId = _checkNull(json['loai_xe_id']);
+    kieuDang = _checkNull(json['kieu_dang']);
+    kieuDangId = _checkNull(json['kieu_dang_id']);
+    phienBan = _checkNull(json['phien_ban']);
+    phienBanId = _checkNull(json['phien_ban_id']);
+    soCho = _checkNull(json['so_cho']);
+  }
+
+  String? _checkNull(dynamic value) {
+    return '$value' == '' ? null : value.toString();
   }
 
   Map<String, dynamic> toJson() {

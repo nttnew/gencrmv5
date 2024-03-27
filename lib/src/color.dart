@@ -5,8 +5,7 @@ class COLORS {
   COLORS._();
   static const PRIMARY_COLOR = const Color(0xffD0F1EB);
   static const SECONDS_COLOR = const Color(0xffD0F1EB);
-  static const PRIMARY_COLOR2 = const Color(0xffD0F1EB);
-  static const PRIMARY_COLOR3 = const Color(0xff00c797);
+  static const PRIMARY_COLOR1 = const Color(0xff006064);
   static const BLACK = const Color(0xFF000000);
   static final BLACK54 = Colors.black54;
   static const WHITE = const Color(0xffffffff);
@@ -42,6 +41,15 @@ class COLORS {
   static final ffFCF1D4 = HexColor("#FCF1D4");
   static final ffBEB4B4 = HexColor("#BEB4B4");
 }
+//
+// LinearGradient linearGradientMain = LinearGradient(
+//   begin: Alignment.topCenter,
+//   end: Alignment.bottomCenter,
+//   colors: [
+//     COLORS.PRIMARY_COLOR2,
+//     COLORS.PRIMARY_COLOR2,
+//   ],
+// );
 
 List<BoxShadow> boxShadow1 = [
   BoxShadow(
