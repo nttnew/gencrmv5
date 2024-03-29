@@ -112,7 +112,6 @@ class _ReportScreenState extends State<ReportScreen> {
     items = [getT(KeyT.all_company)];
     select = typeReport[0]['name'];
     GetNotificationBloc.of(context).add(CheckNotification(isLoading: false));
-    _bloc.init();
     _initApiTime();
   }
 
@@ -200,6 +199,12 @@ class _ReportScreenState extends State<ReportScreen> {
         bloc: _bloc,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _bloc.dispose();
+    super.dispose();
   }
 
   @override
@@ -800,7 +805,9 @@ class _ReportScreenState extends State<ReportScreen> {
                                           textAlign: TextAlign.start,
                                         ),
                                       ),
-                                      SizedBox(width: 4,),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
                                       Text(
                                         '${state.data[index].total_contract ?? '0'} ${getT(KeyT.contract)}',
                                         style: AppStyle.DEFAULT_14,

@@ -35,7 +35,13 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
   String? timeFrom;
   String? timeTo;
 
-  init() {
+  dispose() {
+    time = null;
+    id = null;
+    timeFrom = null;
+    timeTo = null;
+    cl = null;
+    gt = null;
     location = '';
     kyTaiChinh = null;
     ntcFilter = null;
