@@ -15,6 +15,7 @@ import 'package:gen_crm/src/models/model_generator/report_option.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/event_repository_storage.dart';
 import 'package:gen_crm/storages/share_local.dart';
+import 'package:get/get.dart' as GET;
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../l10n/key_text.dart';
@@ -52,15 +53,30 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     location = null;
     isShowLocaiton.add([]);
     valueTrangThai = null;
-    loadMoreControllerCar.dispose();
+    // loadMoreControllerCar.dispose();
   }
 
   initData() async {
-    final dataCv = await getXeDichVu(
+    final data = await getXeDichVu(
       page: BASE_URL.PAGE_DEFAULT,
     );
     loadMoreControllerCar.isLoadMore = true;
-    await loadMoreControllerCar.initData(dataCv ?? []);
+    if (data is String) {
+      ShowDialogCustom.showDialogBase(
+        title: getT(KeyT.notification),
+        content: getT(KeyT.an_error_occurred),
+        textButton1: getT(KeyT.try_again),
+        onTap1: () async {
+          final data = await getXeDichVu(
+            page: BASE_URL.PAGE_DEFAULT,
+          );
+          await loadMoreControllerCar.initData(data ?? []);
+          GET.Get.back();
+        },
+      );
+    } else {
+      await loadMoreControllerCar.initData(data ?? []);
+    }
   }
 
   LoginBloc({
@@ -219,7 +235,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if ((response.data?.diem_ban?.length ?? 0) > 1)
           isShowLocaiton.add(response.data?.diem_ban ?? []);
       }
-    } catch (e) {}
+    } catch (e) {
+      ShowDialogCustom.showDialogBase(
+        title: getT(KeyT.notification),
+        content: getT(KeyT.an_error_occurred),
+        textButton1: getT(KeyT.try_again),
+        onTap1: () {
+          getChiNhanh();
+          GET.Get.back();
+        },
+      );
+    }
   }
 
   void getListMenuFlash() {

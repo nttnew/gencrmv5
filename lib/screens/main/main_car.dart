@@ -101,7 +101,7 @@ class _MainCarState extends State<MainCar> {
                                           ),
                                           decoration: BoxDecoration(
                                             color: COLORS
-                                                .PRIMARY_COLOR1, //generateColors()[i],
+                                                .PRIMARY_COLOR1,
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(
                                                 10,
