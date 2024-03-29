@@ -215,8 +215,15 @@ class _DetailCarState extends State<DetailCar> {
                                   colorIcon: COLORS.GREY,
                                 ),
                                 itemTextIcon(
+                                  onTap: () {
+                                    AppNavigator.navigateDetailContract(
+                                      _blocLogin.xeDichVu?.id ?? '',
+                                      _blocLogin.xeDichVu?.soPhieu ?? '',
+                                    );
+                                  },
                                   styleText: AppStyle.DEFAULT_14.copyWith(
                                     fontWeight: FontWeight.w400,
+                                    color: COLORS.TEXT_BLUE_BOLD,
                                   ),
                                   textPlus: getT(KeyT.so_phieu),
                                   text: _blocLogin.xeDichVu?.soPhieu ?? '',
