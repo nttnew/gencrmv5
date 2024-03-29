@@ -3,16 +3,17 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/widgets/widget_appbar.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:hexcolor/hexcolor.dart';
+import '../src/app_const.dart';
 import '../src/src_index.dart';
 
 PreferredSizeWidget AppbarBaseNormal(String? title, {Function? onBack}) =>
     AppBar(
       toolbarHeight: AppValue.heights * 0.1,
-      backgroundColor: HexColor("#D0F1EB"),
+      backgroundColor: isCarCrm() ? COLORS.PRIMARY_COLOR1 : HexColor("#D0F1EB"),
       title: Text(
         title ?? '',
         style: TextStyle(
-          color: COLORS.BLACK,
+          color: isCarCrm() ? COLORS.WHITE : COLORS.BLACK,
           fontFamily: "Montserrat",
           fontWeight: FontWeight.w700,
           fontSize: 16,
@@ -30,7 +31,7 @@ PreferredSizeWidget AppbarBaseNormal(String? title, {Function? onBack}) =>
           ICONS.IC_BACK_PNG,
           height: 28,
           width: 28,
-          color: COLORS.BLACK,
+          color: isCarCrm() ? COLORS.LIGHT_GREY : COLORS.BLACK,
         ),
       ),
       shape: RoundedRectangleBorder(
@@ -44,7 +45,7 @@ PreferredSizeWidget AppbarBase(
         GlobalKey<ScaffoldState> _drawerKey, String title) =>
     AppBar(
       toolbarHeight: AppValue.heights * 0.1,
-      backgroundColor: HexColor("#D0F1EB"),
+      backgroundColor: isCarCrm() ? COLORS.PRIMARY_COLOR1 : HexColor("#D0F1EB"),
       centerTitle: false,
       title: Row(
         children: [
@@ -59,7 +60,7 @@ PreferredSizeWidget AppbarBase(
               child: WidgetText(
                 title: title,
                 style: TextStyle(
-                  color: COLORS.BLACK,
+                  color: isCarCrm() ? COLORS.WHITE : COLORS.BLACK,
                   fontFamily: "Montserrat",
                   fontWeight: FontWeight.w700,
                   fontSize: 16,
@@ -88,6 +89,7 @@ PreferredSizeWidget AppbarBase(
               fit: BoxFit.contain,
               width: 24,
               height: 24,
+              color: isCarCrm() ? COLORS.LIGHT_GREY : null,
             ),
           ),
         ),

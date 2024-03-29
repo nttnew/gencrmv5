@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/models/model_generator/list_product_response.dart';
+import 'package:gen_crm/storages/share_local.dart';
 import '../../../../../src/src_index.dart';
 
 class ItemProductModule extends StatefulWidget {
@@ -54,16 +56,17 @@ class _ItemProductModuleState extends State<ItemProductModule> {
               height: 80,
               width: 80,
               color: Colors.grey,
-              child: Image.network(
-                widget.productModule.avatar.toString(),
-                errorBuilder: (_, __, ___) {
+              child: CachedNetworkImage(
+                imageUrl: shareLocal.getString(PreferencesKey.URL_BASE) +
+                    widget.productModule.avatar.toString(),
+                errorWidget: (_, __, ___) {
                   return Icon(
                     Icons.error_outline_outlined,
                     color: Colors.black87,
                     size: 30,
                   );
                 },
-                fit: BoxFit.contain,
+                fit: BoxFit.cover,
               ),
             ),
             SizedBox(

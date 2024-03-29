@@ -18,13 +18,11 @@ class MainDrawer extends StatefulWidget {
   final GlobalKey<ScaffoldState> drawerKey;
   final Function onReload;
   final String moduleMy;
-  final bool isColor;
 
   const MainDrawer({
     required this.drawerKey,
     required this.onReload,
     required this.moduleMy,
-    this.isColor = false,
   });
 
   @override
@@ -105,8 +103,7 @@ class _MainDrawerState extends State<MainDrawer> {
               right: 10,
             ),
             decoration: BoxDecoration(
-              color:
-                  widget.isColor ? COLORS.PRIMARY_COLOR1 : COLORS.SECONDS_COLOR,
+              color: isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.SECONDS_COLOR,
             ),
             height: AppValue.heights * 0.18,
             child: BlocBuilder<GetInfoAccBloc, GetInforAccState>(
@@ -137,14 +134,14 @@ class _MainDrawerState extends State<MainDrawer> {
                                     ? state.inforAcc.ten_viet_tat
                                     : state.inforAcc.fullname ?? '',
                                 style: AppStyle.DEFAULT_16_BOLD.copyWith(
-                                  color: widget.isColor ? COLORS.WHITE : null,
+                                  color: isCarCrm() ? COLORS.WHITE : null,
                                 ),
                               ),
                               AppValue.vSpaceTiny,
                               WidgetText(
                                 title: state.inforAcc.department_name ?? '',
                                 style: AppStyle.DEFAULT_16.copyWith(
-                                  color: widget.isColor ? COLORS.WHITE : null,
+                                  color: isCarCrm() ? COLORS.WHITE : null,
                                 ),
                               ),
                             ],

@@ -3071,17 +3071,17 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ResponseSaveProduct> addProduct(map) async {
+  Future<ResponseSaveProduct> addProduct(data) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(map);
+    final _data = data.formData;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<ResponseSaveProduct>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: 'multipart/form-data',
     )
             .compose(
               _dio.options,
@@ -3128,13 +3128,13 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'id': id};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(map);
+    final _data = map.formData;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<ResponseEditProduct>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: 'multipart/form-data',
     )
             .compose(
               _dio.options,

@@ -19,11 +19,8 @@ class AttackBloc extends Bloc<AttackEvent, AttackState> {
   @override
   Stream<AttackState> mapEventToState(AttackEvent event) async* {
     if (event is InitAttackEvent) {
-      if (event.files?.isNotEmpty ?? false) {
-        listFile.addAll(event.files ?? []);
-        yield* _getAttack(files: listFile);
-      } else
-        yield* _getAttack();
+      listFile.addAll(event.files ?? []);
+      yield* _getAttack(files: listFile);
     }
     if (event is RemoveAttackEvent) {
       listFile.remove(event.file);

@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/models/model_generator/work.dart';
+import 'package:gen_crm/storages/share_local.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../l10n/key_text.dart';
@@ -8,6 +12,7 @@ import '../../../src/models/model_generator/detail_customer.dart';
 import '../../../src/src_index.dart';
 import '../../../widgets/line_horizontal_widget.dart';
 import '../../../widgets/widget_text.dart';
+import '../form/widget/preview_image.dart';
 
 class InfoBase extends StatelessWidget {
   const InfoBase({
@@ -94,7 +99,7 @@ class InfoBase extends StatelessWidget {
 }
 
 class ItemInfo extends StatelessWidget {
-  const ItemInfo({
+  ItemInfo({
     Key? key,
     required this.data,
   }) : super(key: key);
@@ -114,7 +119,9 @@ class ItemInfo extends StatelessWidget {
           AppValue.vSpace10,
           ((data.data
                           ?.where((e) =>
-                              e.value_field != '' && e.value_field != null)
+                              e.value_field != '' &&
+                              e.value_field != null &&
+                              e.value_field != [])
                           .toList()
                           .length ??
                       0) >
@@ -126,55 +133,120 @@ class ItemInfo extends StatelessWidget {
                       final InfoItem? item = data.data?[index];
                       bool isNameSP = data.data?[index].name_field == 'name' ||
                           data.data?[index].field_name == 'name';
+                      bool isImage = data.data?[index].is_image == 1;
 
                       if (item?.field_type == 'LINE') {
                         return Container(
                             margin: EdgeInsets.symmetric(vertical: 5),
                             child: LineHorizontal());
-                      } else
-                        return item?.value_field?.trim() != '' &&
-                                item?.value_field != null
-                            ? Container(
-                                margin: EdgeInsets.symmetric(vertical: 5),
+                      } else if (isImage) {
+                        final List<String> listImage =
+                            item?.value_field.toString().split(',') ?? [];
+                        if (listImage.length == 0 ||
+                            listImage.firstOrNull == '')
+                          return SizedBox.shrink();
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              WidgetText(
+                                title: item?.label_field ?? '',
+                                style: AppStyle.DEFAULT_14.copyWith(
+                                  color: COLORS.TEXT_GREY,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
                                 child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: WidgetText(
-                                        title: item?.label_field ?? '',
-                                        style: AppStyle.DEFAULT_14.copyWith(
-                                          color: COLORS.TEXT_GREY,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          if (item?.is_link == true) {
-                                            _navigateTypeScreen(item);
-                                          }
-                                        },
-                                        child: WidgetText(
-                                          title: item?.value_field ?? '',
-                                          textAlign: TextAlign.right,
-                                          style: AppStyle.DEFAULT_14.copyWith(
-                                            decoration: item?.is_link == true
-                                                ? TextDecoration.underline
-                                                : null,
-                                            color: item?.is_link == true
-                                                ? Colors.blue
-                                                : isNameSP
-                                                    ? COLORS.ORANGE_IMAGE
-                                                    : null,
-                                            fontWeight: FontWeight.w700,
+                                  children: listImage
+                                      .map(
+                                        (e) => GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PreviewImage(
+                                                  file: File(
+                                                      shareLocal.getString(
+                                                              PreferencesKey
+                                                                  .URL_BASE) +
+                                                          e),
+                                                  isNetwork: true,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.only(
+                                              right: 10,
+                                            ),
+                                            child: CachedNetworkImage(
+                                              imageUrl: shareLocal.getString(
+                                                      PreferencesKey.URL_BASE) +
+                                                  e,
+                                              fit: BoxFit.contain,
+                                              height: 100,
+                                              errorWidget: (_, ___, __) =>
+                                                  SizedBox.shrink(),
+                                            ),
                                           ),
                                         ),
+                                      )
+                                      .toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      return item?.value_field?.trim() != '' &&
+                              item?.value_field != null
+                          ? Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: WidgetText(
+                                      title: item?.label_field ?? '',
+                                      style: AppStyle.DEFAULT_14.copyWith(
+                                        color: COLORS.TEXT_GREY,
                                       ),
                                     ),
-                                  ],
-                                ),
-                              )
-                            : SizedBox.shrink();
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        if (item?.is_link == true) {
+                                          _navigateTypeScreen(item);
+                                        }
+                                      },
+                                      child: WidgetText(
+                                        title: item?.value_field ?? '',
+                                        textAlign: TextAlign.right,
+                                        style: AppStyle.DEFAULT_14.copyWith(
+                                          decoration: item?.is_link == true
+                                              ? TextDecoration.underline
+                                              : null,
+                                          color: item?.is_link == true
+                                              ? Colors.blue
+                                              : isNameSP
+                                                  ? COLORS.ORANGE_IMAGE
+                                                  : null,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : SizedBox.shrink();
                     },
                   ),
                 )

@@ -160,37 +160,44 @@ class _ProductScreenState extends State<ProductScreen> {
                       ),
                     ],
                     StreamBuilder<List<TreeNodeData>>(
-                        stream: managerBloc.managerTrees,
-                        builder: (context, snapshot) {
-                          if (snapshot.data?.isNotEmpty ?? false)
-                            return Padding(
-                              padding: const EdgeInsets.only(left: 6.0),
-                              child: GestureDetector(
-                                  onTap: () {
-                                    showManagerFilter(context, managerBloc,
-                                        (v) {
-                                      _bloc.ids = v;
-                                      _bloc.loadMoreController.reloadData();
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(14),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: COLORS.GREY_400,
-                                        ),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(4))),
-                                    child: SvgPicture.asset(
-                                      ICONS.IC_FILL_SVG,
-                                      width: 20,
-                                      height: 20,
-                                      fit: BoxFit.contain,
+                      stream: managerBloc.managerTrees,
+                      builder: (context, snapshot) {
+                        if (snapshot.data?.isNotEmpty ?? false)
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                              left: 6.0,
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                showManagerFilter(context, managerBloc, (v) {
+                                  _bloc.ids = v;
+                                  _bloc.loadMoreController.reloadData();
+                                });
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(14),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: COLORS.GREY_400,
+                                  ),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      4,
                                     ),
-                                  )),
-                            );
-                          return SizedBox();
-                        }),
+                                  ),
+                                ),
+                                child: SvgPicture.asset(
+                                  ICONS.IC_USER2_SVG,
+                                  width: 20,
+                                  height: 20,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                          );
+                        return SizedBox();
+                      },
+                    ),
                   ],
                 ),
               ),

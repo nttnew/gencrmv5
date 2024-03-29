@@ -31,13 +31,13 @@ class InfoDataModel {
 class InfoItem {
   final String? label_field,
       id,
-      value_field,
       field_type,
       link,
       name_field,
       field_name,
       is_type;
-  final int? action;
+  final dynamic value_field;
+  final int? action,is_image;
   final bool? is_call, is_link;
 
   InfoItem(
@@ -50,6 +50,7 @@ class InfoItem {
     this.field_name,
     this.is_type,
     this.action,
+    this.is_image,
     this.is_call,
     this.is_link,
   );

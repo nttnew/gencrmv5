@@ -78,14 +78,14 @@ class EditJobEvent extends AddDataEvent {
 }
 
 class AddProductEvent extends AddDataEvent {
-  final Map<String, dynamic> data;
+  final FormDataCustom data;
   final List<File>? files;
 
   AddProductEvent(this.data, {this.files});
 }
 
 class EditProductEvent extends AddDataEvent {
-  final Map<String, dynamic> data;
+  final FormDataCustom data;
   final List<File>? files;
   final int id;
 

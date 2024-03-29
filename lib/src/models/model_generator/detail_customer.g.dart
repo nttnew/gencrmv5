@@ -33,13 +33,14 @@ Map<String, dynamic> _$InfoDataModelToJson(InfoDataModel instance) =>
 InfoItem _$InfoItemFromJson(Map<String, dynamic> json) => InfoItem(
       json['label_field'] as String?,
       json['id'] as String?,
-      json['value_field'] as String?,
+      json['value_field'],
       json['field_type'] as String?,
       json['link'] as String?,
       json['name_field'] as String?,
       json['field_name'] as String?,
       json['is_type'] as String?,
       json['action'] as int?,
+      json['is_image'] as int?,
       json['is_call'] as bool?,
       json['is_link'] as bool?,
     );
@@ -47,13 +48,14 @@ InfoItem _$InfoItemFromJson(Map<String, dynamic> json) => InfoItem(
 Map<String, dynamic> _$InfoItemToJson(InfoItem instance) => <String, dynamic>{
       'label_field': instance.label_field,
       'id': instance.id,
-      'value_field': instance.value_field,
       'field_type': instance.field_type,
       'link': instance.link,
       'name_field': instance.name_field,
       'field_name': instance.field_name,
       'is_type': instance.is_type,
+      'value_field': instance.value_field,
       'action': instance.action,
+      'is_image': instance.is_image,
       'is_call': instance.is_call,
       'is_link': instance.is_link,
     };

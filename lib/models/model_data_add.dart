@@ -4,6 +4,7 @@ class ModelDataAdd {
   int? required;
   String? parent;
   String? txtValidate;
+  String? type;
 
 
   ModelDataAdd({
@@ -12,5 +13,6 @@ class ModelDataAdd {
     this.required,
     this.parent,
     this.txtValidate,
+    this.type,
   });
 }

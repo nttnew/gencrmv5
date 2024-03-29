@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
+import '../../src/api/rest_client.dart';
 import '../../src/base.dart';
 
 part 'add_data_event.dart';
@@ -391,13 +392,15 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
   }
 
   Stream<AddDataState> _addProduct(
-    Map<String, dynamic> data,
+    FormDataCustom data,
     List<File>? files,
   ) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingAddData();
-      final response = await userRepository.addProduct(data: data);
+      final response = await userRepository.addProduct(
+        data: data,
+      );
       if (isSuccess(response.code)) {
         if (files != null && files.length > 0) {
           final responseUpload = await userRepository.uploadMultiFileBase(
@@ -472,7 +475,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
   }
 
   Stream<AddDataState> _editProduct(
-      Map<String, dynamic> data, List<File>? files, int id) async* {
+      FormDataCustom data, List<File>? files, int id) async* {
     LoadingApi().pushLoading();
     try {
       yield LoadingAddData();

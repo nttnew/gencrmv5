@@ -16,10 +16,9 @@ import '../../l10n/key_text.dart';
 import '../screens/menu/form/widget/preview_image.dart';
 import '../src/app_const.dart';
 
-Widget FileDinhKemUiBase(
-        {required BuildContext context,
-        required Function() onTap,
-        bool isSave = true}) =>
+Widget FileDinhKemUiBase({
+  required BuildContext context,
+}) =>
     Column(
       children: [
         BlocBuilder<AttackBloc, AttackState>(builder: (context, state) {
@@ -38,10 +37,31 @@ Widget FileDinhKemUiBase(
                           itemCount:
                               checkListImage(false, state.files ?? []).length,
                           itemBuilder: (context, index) => Container(
-                            margin: EdgeInsets.only(bottom: 4),
+                            margin: EdgeInsets.only(bottom: 8),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(
+                                  4,
+                                ),
+                              ),
+                              color: COLORS.LIGHT_GREY,
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    right: 4,
+                                  ),
+                                  child: Icon(
+                                    Icons.file_open,
+                                    size: 20,
+                                  ),
+                                ),
                                 Expanded(
                                   child: WidgetText(
                                     title: checkListImage(
@@ -62,13 +82,16 @@ Widget FileDinhKemUiBase(
                                           false, state.files ?? [])[index],
                                     ));
                                   },
-                                  child: WidgetContainerImage(
-                                    image: ICONS.IC_DELETE_PNG,
-                                    width: 20,
-                                    height: 20,
-                                    fit: BoxFit.contain,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 4,
+                                    ),
+                                    child: Icon(
+                                      Icons.delete,
+                                      size: 20,
+                                    ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -82,8 +105,8 @@ Widget FileDinhKemUiBase(
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            crossAxisSpacing: 25,
-                            mainAxisSpacing: 25,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
                             mainAxisExtent: 90,
                           ),
                           itemBuilder: (context, index) => Stack(
@@ -91,20 +114,27 @@ Widget FileDinhKemUiBase(
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
                                       builder: (context) => PreviewImage(
-                                            file: checkListImage(
-                                                true, state.files ?? [])[index],
-                                          )));
+                                        file: checkListImage(
+                                            true, state.files ?? [])[index],
+                                      ),
+                                    ),
+                                  );
                                 },
                                 child: Container(
                                   clipBehavior: Clip.hardEdge,
                                   width: MediaQuery.of(context).size.width,
                                   height: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
-                                      color: Colors.grey,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8))),
+                                    color: Colors.grey,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                        8,
+                                      ),
+                                    ),
+                                  ),
                                   child: Image.file(
                                     checkListImage(
                                         true, state.files ?? [])[index],
@@ -122,18 +152,21 @@ Widget FileDinhKemUiBase(
                                     ));
                                   },
                                   child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: COLORS.WHITE,
-                                        border: Border.all(
-                                            color: COLORS.BLACK, width: 0.1),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: COLORS.WHITE,
+                                      border: Border.all(
+                                        color: COLORS.BLACK,
+                                        width: 0.5,
                                       ),
-                                      height: 24,
-                                      width: 24,
-                                      child: Icon(
-                                        Icons.close,
-                                        size: 16,
-                                      )),
+                                    ),
+                                    height: 24,
+                                    width: 24,
+                                    child: Icon(
+                                      Icons.close,
+                                      size: 15,
+                                    ),
+                                  ),
                                 ),
                                 top: -1,
                                 right: -1,
@@ -150,12 +183,14 @@ Widget FileDinhKemUiBase(
           else
             return const SizedBox.shrink();
         }),
-        if (isSave) FileLuuBase(context, onTap),
       ],
     );
 
-Widget FileLuuBase(BuildContext context, Function() onTap,
-        {bool isAttack = true}) =>
+Widget FileLuuBase(
+  BuildContext context,
+  Function() onTap, {
+  bool isAttack = true,
+}) =>
     Row(
       children: [
         if (isAttack)
@@ -176,7 +211,11 @@ Widget FileLuuBase(BuildContext context, Function() onTap,
         ),
       ],
     );
-Future<List<File>> onDinhKemBase(BuildContext context) async {
+
+Future<List<File>> onDinhKemBase(
+  BuildContext context, {
+  bool isImage = false,
+}) async {
   List<File> listPickFile = [];
   if (await Permission.storage.request().isGranted) {
     if (Platform.isAndroid) {
@@ -190,15 +229,15 @@ Future<List<File>> onDinhKemBase(BuildContext context) async {
         },
       );
     } else {
-      listPickFile = await pickFileDialog();
+      listPickFile = await pickFileDialog(isImage: isImage);
     }
   } else {
-    listPickFile = await pickFileDialog();
+    listPickFile = await pickFileDialog(isImage: isImage);
   }
   return listPickFile;
 }
 
-Future<List<File>> pickFileDialog() async {
+Future<List<File>> pickFileDialog({bool isImage = false}) async {
   List<File> listFile = [];
   await showCupertinoModalPopup(
       context: Get.context!,
@@ -220,30 +259,34 @@ Future<List<File>> pickFileDialog() async {
                     getT(KeyT.new_photo_shoot),
                   ),
                 ),
-                CupertinoActionSheetAction(
-                  onPressed: () async {
-                    final file = await getImageVideo();
-                    if (file != null) listFile.add(file);
-                    Get.back();
-                  },
-                  child: Text(
-                    getT(KeyT.new_video_recoding),
+                if (!isImage)
+                  CupertinoActionSheetAction(
+                    onPressed: () async {
+                      final file = await getImageVideo();
+                      if (file != null) listFile.add(file);
+                      Get.back();
+                    },
+                    child: Text(
+                      getT(KeyT.new_video_recoding),
+                    ),
                   ),
-                ),
-                CupertinoActionSheetAction(
-                  onPressed: () async {
-                    final files = await pickFile();
-                    if (files != null && files.length > 0) listFile.addAll(files);
-                    Get.back();
-                  },
-                  child: Text(
-                    getT(KeyT.pick_file),
+                if (!isImage)
+                  CupertinoActionSheetAction(
+                    onPressed: () async {
+                      final files = await pickFile();
+                      if (files != null && files.length > 0)
+                        listFile.addAll(files);
+                      Get.back();
+                    },
+                    child: Text(
+                      getT(KeyT.pick_file),
+                    ),
                   ),
-                ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
                     final files = await getImage();
-                    if (files != null && files.length > 0) listFile.addAll(files);
+                    if (files != null && files.length > 0)
+                      listFile.addAll(files);
                     Get.back();
                   },
                   child: Text(

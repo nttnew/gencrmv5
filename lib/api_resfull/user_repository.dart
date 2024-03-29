@@ -1186,8 +1186,9 @@ class UserRepository {
         id,
       );
 
-  Future<ResponseSaveProduct> addProduct(
-          {required Map<String, dynamic> data}) async =>
+  Future<ResponseSaveProduct> addProduct({
+    required FormDataCustom data,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -1195,8 +1196,10 @@ class UserRepository {
         data,
       );
 
-  Future<ResponseEditProduct> editProduct(
-          {required Map<String, dynamic> data, required int id}) async =>
+  Future<ResponseEditProduct> editProduct({
+    required FormDataCustom data,
+    required int id,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,

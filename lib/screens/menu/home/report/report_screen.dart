@@ -219,7 +219,7 @@ class _ReportScreenState extends State<ReportScreen> {
           padding: EdgeInsets.only(
             left: 16,
             right: 16,
-            top: 16,
+            top: 12,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -243,7 +243,6 @@ class _ReportScreenState extends State<ReportScreen> {
   _filterRow1() {
     double w = MediaQuery.of(context).size.width - 32;
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DropdownButton2(
           value: select,
@@ -257,11 +256,13 @@ class _ReportScreenState extends State<ReportScreen> {
           dropdownWidth: w * 0.65,
           dropdownMaxHeight: 300,
           selectedItemBuilder: (c) => typeReport
-              .map((items) => itemSelectDrop(
-                    items['name'] ?? '',
-                    wC: 0.65,
-                    sizeT: 16,
-                  ))
+              .map(
+                (items) => itemSelectDrop(
+                  items['name'] ?? '',
+                  wC: 0.65,
+                  sizeT: 16,
+                ),
+              )
               .toList(),
           items: typeReport
               .map((items) => DropdownMenuItem<String>(
@@ -282,13 +283,13 @@ class _ReportScreenState extends State<ReportScreen> {
                     value: items['name'],
                     child: Text(
                       items['name'],
-                      style: AppStyle.DEFAULT_16_BOLD,
+                      style: AppStyle.DEFAULT_14_BOLD,
                     ),
                   ))
               .toList(),
         ),
         (step == 5)
-            ? Container(width: w * 0.35, child: _pickDateStep5())
+            ? Container(width: w * 0.35, child: _pickDateStep5(w * 0.35))
             : BlocBuilder<ReportBloc, ReportState>(
                 builder: (context, state) {
                   if (state is SuccessReportWorkState) {
@@ -301,12 +302,10 @@ class _ReportScreenState extends State<ReportScreen> {
                       dropdownWidth: w * 0.35,
                       dropdownMaxHeight: 300,
                       selectedItemBuilder: (c) => state.dataTime
-                          .map((items) => itemSelectDrop(
-                                items[1],
-                                wC: 0.35,
-                                sizeT: 14,
-                                alignment: Alignment.topRight,
-                              ))
+                          .map(
+                            (items) => itemSelectDrop(items[1],
+                                wC: 0.35, alignment: Alignment.centerRight),
+                          )
                           .toList(),
                       onChanged: (String? value) {
                         setState(() {
@@ -357,9 +356,11 @@ class _ReportScreenState extends State<ReportScreen> {
                                 }
                               },
                               value: items[1],
-                              child: Text(
-                                items[1],
-                                style: AppStyle.DEFAULT_14,
+                              child: FittedBox(
+                                child: Text(
+                                  items[1],
+                                  style: AppStyle.DEFAULT_14,
+                                ),
                               ),
                             ),
                           )
@@ -408,7 +409,7 @@ class _ReportScreenState extends State<ReportScreen> {
     }
   }
 
-  _pickDateStep5() {
+  _pickDateStep5(double w) {
     return StreamBuilder<List<DataNTCFilter>>(
         stream: _bloc.filterSoQuyStream,
         builder: (context, snapshot) {
@@ -454,15 +455,26 @@ class _ReportScreenState extends State<ReportScreen> {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text(
-                          snapshot.data ?? '',
-                          style: AppStyle.DEFAULT_14,
-                        ),
                         Padding(
                           padding: const EdgeInsets.only(
-                            left: 4,
+                            right: 4,
                           ),
-                          child: Icon(Icons.arrow_drop_down_outlined),
+                          child: Image.asset(
+                            ICONS.IC_DROP_DOWN_PNG,
+                            height: 10,
+                            width: 10,
+                          ),
+                        ),
+                        Container(
+                          constraints: BoxConstraints(
+                            maxWidth: w - 14,
+                          ),
+                          child: FittedBox(
+                            child: Text(
+                              snapshot.data ?? '',
+                              style: AppStyle.DEFAULT_14_BOLD,
+                            ),
+                          ),
                         ),
                       ],
                     );
@@ -498,7 +510,6 @@ class _ReportScreenState extends State<ReportScreen> {
                   selectedItemBuilder: (c) => state.dataLocation
                       .map((items) => itemSelectDrop(
                             items[1],
-                            sizeT: 14,
                           ))
                       .toList(),
                   items: state.dataLocation
@@ -778,17 +789,21 @@ class _ReportScreenState extends State<ReportScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        state.data[index].name ??
-                                            getT(KeyT.not_yet),
-                                        style:
-                                            AppStyle.DEFAULT_18_BOLD.copyWith(
-                                          color: COLORS.TEXT_BLUE_BOLD,
+                                      Expanded(
+                                        child: Text(
+                                          state.data[index].name ??
+                                              getT(KeyT.not_yet),
+                                          style:
+                                              AppStyle.DEFAULT_16_BOLD.copyWith(
+                                            color: COLORS.TEXT_BLUE_BOLD,
+                                          ),
+                                          textAlign: TextAlign.start,
                                         ),
                                       ),
+                                      SizedBox(width: 4,),
                                       Text(
                                         '${state.data[index].total_contract ?? '0'} ${getT(KeyT.contract)}',
-                                        style: AppStyle.DEFAULT_16,
+                                        style: AppStyle.DEFAULT_14,
                                       )
                                     ],
                                   ),
@@ -1129,36 +1144,32 @@ Widget itemSelectDrop(
   return Container(
     width: w * wC,
     alignment: alignment,
-    child: RichText(
-      maxLines: 1,
-      text: TextSpan(
-        text: '',
-        children: <WidgetSpan>[
-          WidgetSpan(
-            alignment: PlaceholderAlignment.bottom,
-            child: Container(
-              padding: const EdgeInsets.only(
-                right: 8,
-                bottom: 3,
-              ),
-              child: Image.asset(
-                ICONS.IC_DROP_DOWN_PNG,
-                height: 10,
-                width: 10,
-              ),
-            ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            right: 4,
           ),
-          WidgetSpan(
-            child: Text(
-              title,
-              style: AppStyle.DEFAULT_16_BOLD.copyWith(fontSize: sizeT),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-            ),
+          child: Image.asset(
+            ICONS.IC_DROP_DOWN_PNG,
+            height: 10,
+            width: 10,
           ),
-        ],
-      ),
+        ),
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: w * wC - 14,
+          ),
+          child: Text(
+            title,
+            style: AppStyle.DEFAULT_14_BOLD.copyWith(fontSize: sizeT),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.start,
+          ),
+        ),
+      ],
     ),
   );
 }

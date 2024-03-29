@@ -9,6 +9,7 @@ import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
 import 'package:gen_crm/bloc/product_customer_module/product_customer_module_bloc.dart';
 import 'package:gen_crm/bloc/product_module/product_module_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
+import 'package:gen_crm/screens/menu/form/widget/field_image.dart';
 import 'package:gen_crm/screens/menu/form/widget/field_text.dart';
 import 'package:gen_crm/screens/menu/form/widget/field_text_api.dart';
 import 'package:gen_crm/screens/menu/form/widget/field_text_car_view.dart';
@@ -108,74 +109,54 @@ class _FormAddDataState extends State<FormAddData> {
     if (product != null) {
       addProduct(product!);
     }
-    _attackBloc.add(LoadingAttackEvent());
-    if (type == ADD_CUSTOMER_OR) {
-      _bloc.add(InitFormAddCusOrEvent());
-    } else if (type == ADD_CUSTOMER) {
-      _bloc.add(InitFormAddCustomerEvent());
-    } else if (type == ADD_CLUE_CUSTOMER) {
-      _bloc.add(InitFormAddContactCusEvent(id));
-    } else if (type == ADD_CHANCE_CUSTOMER) {
-      _bloc.add(InitFormAddOppCusEvent(id));
-    } else if (type == ADD_CONTRACT_CUS) {
-      _bloc.add(InitFormAddContractCusEvent(id));
-    } else if (type == ADD_JOB_CUSTOMER) {
-      _bloc.add(InitFormAddJobCusEvent(id));
-    } else if (type == ADD_SUPPORT_CUSTOMER) {
-      _bloc.add(InitFormAddSupportCusEvent(id));
-    } else if (type == ADD_CLUE) {
-      _bloc.add(InitFormAddAgencyEvent());
-    } else if (type == ADD_CHANCE) {
-      _bloc.add(InitFormAddChanceEvent());
-    } else if (type == ADD_CONTRACT) {
-      _bloc.add(InitFormAddContractEvent(id: id));
-    } else if (type == ADD_JOB) {
-      _bloc.add(InitFormAddJobEvent());
-    } else if (type == ADD_SUPPORT) {
-      _bloc.add(InitFormAddSupportEvent());
-    } else if (type == ADD_CLUE_JOB) {
-      _bloc.add(InitFormAddJobOppEvent(id));
-    } else if (type == ADD_CHANCE_JOB) {
-      _bloc.add(InitFormAddJobChanceEvent(id));
-    } else if (type == ADD_SUPPORT_CONTRACT) {
-      _bloc.add(InitFormAddSupportContractEvent(id));
-    } else if (type == ADD_JOB_CONTRACT) {
-      _bloc.add(InitFormAddJobContractEvent(id));
-    } else if (type == PRODUCT_TYPE) {
-      _bloc.add(InitFormAddProductEvent());
-    } else if (type == PRODUCT_CUSTOMER_TYPE) {
-      _bloc.add(InitFormAddProductCustomerEvent(idCustomer: int.tryParse(id)));
-    } else if (type == CH_PRODUCT_CUSTOMER_TYPE) {
-      _bloc.add(InitFormAddCHProductCustomerEvent(int.parse(id)));
-    } else if (type == CV_PRODUCT_CUSTOMER_TYPE) {
-      _bloc.add(InitFormAddCVProductCustomerEvent(int.parse(id)));
-    } else if (type == HT_PRODUCT_CUSTOMER_TYPE) {
-      _bloc.add(InitFormAddHTProductCustomerEvent(int.parse(id)));
-    } else if (type == HD_PRODUCT_CUSTOMER_TYPE) {
-      _bloc.add(InitFormAddHDProductCustomerEvent(int.parse(id)));
-    } else if (type == ADD_QUICK_CONTRACT) {
-      _bloc.add(InitFormAddQuickContract(
-        sdt,
-        bienSo,
-      ));
-    } else if (type == EDIT_CUSTOMER)
-      _bloc.add(InitFormEditCusEvent(id));
-    else if (type == EDIT_CLUE) {
-      _bloc.add(InitFormEditClueEvent(id));
-    } else if (type == EDIT_CHANCE) {
-      _bloc.add(InitFormEditChanceEvent(id));
-    } else if (type == EDIT_CONTRACT) {
-      _bloc.add(InitFormEditContractEvent(id));
-    } else if (type == EDIT_JOB) {
-      _bloc.add(InitFormEditJobEvent(id));
-    } else if (type == EDIT_SUPPORT) {
-      _bloc.add(InitFormEditSupportEvent(id));
-    } else if (type == PRODUCT_TYPE_EDIT) {
-      _bloc.add(InitFormEditProductEvent(id));
-    } else if (type == PRODUCT_CUSTOMER_TYPE_EDIT) {
-      _bloc.add(InitFormEditProductCustomerEvent(id));
-    }
+    addBlocEvent(type);
     super.initState();
+  }
+
+  void addBlocEvent(String type) {
+    _attackBloc.add(LoadingAttackEvent());
+    final eventMap = {
+      ADD_CUSTOMER_OR: InitFormAddCusOrEvent(),
+      ADD_CUSTOMER: InitFormAddCustomerEvent(),
+      ADD_CLUE_CUSTOMER: InitFormAddContactCusEvent(id),
+      ADD_CHANCE_CUSTOMER: InitFormAddOppCusEvent(id),
+      ADD_CONTRACT_CUS: InitFormAddContractCusEvent(id),
+      ADD_JOB_CUSTOMER: InitFormAddJobCusEvent(id),
+      ADD_SUPPORT_CUSTOMER: InitFormAddSupportCusEvent(id),
+      ADD_CLUE: InitFormAddAgencyEvent(),
+      ADD_CHANCE: InitFormAddChanceEvent(),
+      ADD_CONTRACT: InitFormAddContractEvent(id: id),
+      ADD_JOB: InitFormAddJobEvent(),
+      ADD_SUPPORT: InitFormAddSupportEvent(),
+      ADD_CLUE_JOB: InitFormAddJobOppEvent(id),
+      ADD_CHANCE_JOB: InitFormAddJobChanceEvent(id),
+      ADD_SUPPORT_CONTRACT: InitFormAddSupportContractEvent(id),
+      ADD_JOB_CONTRACT: InitFormAddJobContractEvent(id),
+      PRODUCT_TYPE: InitFormAddProductEvent(),
+      PRODUCT_CUSTOMER_TYPE:
+          InitFormAddProductCustomerEvent(idCustomer: int.tryParse(id)),
+      CH_PRODUCT_CUSTOMER_TYPE:
+          InitFormAddCHProductCustomerEvent(int.tryParse(id) ?? 0),
+      CV_PRODUCT_CUSTOMER_TYPE:
+          InitFormAddCVProductCustomerEvent(int.tryParse(id) ?? 0),
+      HT_PRODUCT_CUSTOMER_TYPE:
+          InitFormAddHTProductCustomerEvent(int.tryParse(id) ?? 0),
+      HD_PRODUCT_CUSTOMER_TYPE:
+          InitFormAddHDProductCustomerEvent(int.tryParse(id) ?? 0),
+      ADD_QUICK_CONTRACT: InitFormAddQuickContract(sdt, bienSo),
+      EDIT_CUSTOMER: InitFormEditCusEvent(id),
+      EDIT_CLUE: InitFormEditClueEvent(id),
+      EDIT_CHANCE: InitFormEditChanceEvent(id),
+      EDIT_CONTRACT: InitFormEditContractEvent(id),
+      EDIT_JOB: InitFormEditJobEvent(id),
+      EDIT_SUPPORT: InitFormEditSupportEvent(id),
+      PRODUCT_TYPE_EDIT: InitFormEditProductEvent(id),
+      PRODUCT_CUSTOMER_TYPE_EDIT: InitFormEditProductCustomerEvent(id),
+    };
+
+    if (eventMap.containsKey(type)) {
+      _bloc.add(eventMap[type]!);
+    }
   }
 
   void loadUser() async {
@@ -456,6 +437,95 @@ class _FormAddDataState extends State<FormAddData> {
     _totalBloc.add(InitTotalEvent(total));
   }
 
+  void handleNavigationAndReloadData(
+    String type,
+    BuildContext context,
+    SuccessAddData state,
+  ) {
+    switch (type) {
+      case ADD_CLUE:
+        GetListClueBloc.of(context).loadMoreController.reloadData();
+        break;
+      case ADD_CHANCE:
+        GetListChanceBloc.of(context).loadMoreController.reloadData();
+        break;
+      case ADD_CONTRACT:
+        ContractBloc.of(context).loadMoreController.reloadData();
+        if (product != null) AppNavigator.navigateContract();
+        break;
+      case ADD_JOB:
+        WorkBloc.of(context).loadMoreController.reloadData();
+        break;
+      case ADD_SUPPORT:
+        SupportBloc.of(context).loadMoreController.reloadData();
+        break;
+      case PRODUCT_TYPE:
+        ProductModuleBloc.of(context).loadMoreController.reloadData();
+        break;
+      case PRODUCT_CUSTOMER_TYPE:
+        if (isGetData) {
+          Navigator.of(context)
+            ..pop()
+            ..pop([state.dataSPKH, state.idKH]);
+        } else {
+          ProductCustomerModuleBloc.of(context).loadMoreController.reloadData();
+        }
+        break;
+      case CV_PRODUCT_CUSTOMER_TYPE:
+        DetailProductCustomerBloc.of(context).controllerCv.reloadData();
+        break;
+      case CH_PRODUCT_CUSTOMER_TYPE:
+        DetailProductCustomerBloc.of(context).controllerCh.reloadData();
+        break;
+      case HT_PRODUCT_CUSTOMER_TYPE:
+        DetailProductCustomerBloc.of(context).controllerHt.reloadData();
+        break;
+      case HD_PRODUCT_CUSTOMER_TYPE:
+        DetailProductCustomerBloc.of(context).controllerHd.reloadData();
+        break;
+      case EDIT_CLUE:
+        GetListClueBloc.of(context).loadMoreController.reloadData();
+        break;
+      case EDIT_CHANCE:
+        GetListDetailChanceBloc.of(context)
+            .add(InitGetListDetailEvent(int.tryParse(id) ?? 0));
+        GetListChanceBloc.of(context).loadMoreController.reloadData();
+        break;
+      case EDIT_JOB:
+        WorkBloc.of(context).loadMoreController.reloadData();
+        break;
+      case EDIT_CONTRACT:
+        ContractBloc.of(context).add(InitGetContractEvent());
+        DetailContractBloc.of(context)
+            .add(InitGetDetailContractEvent(int.tryParse(id) ?? 0));
+        break;
+      case EDIT_SUPPORT:
+        SupportBloc.of(context).add(InitGetSupportEvent());
+        break;
+      case PRODUCT_TYPE_EDIT:
+        ProductModuleBloc.of(context).loadMoreController.reloadData();
+        DetailProductBloc.of(context).add(InitGetDetailProductEvent(id));
+        break;
+      case PRODUCT_CUSTOMER_TYPE_EDIT:
+        ProductCustomerModuleBloc.of(context).loadMoreController.reloadData();
+        DetailProductCustomerBloc.of(context)
+            .add(InitGetDetailProductCustomerEvent(id));
+        break;
+      case EDIT_CUSTOMER:
+        GetListCustomerBloc.of(context).loadMoreController.reloadData();
+        break;
+      case ADD_CUSTOMER:
+      case ADD_CUSTOMER_OR:
+        Navigator.of(context)
+          ..pop()
+          ..pop(state.result);
+        GetListCustomerBloc.of(context).loadMoreController.reloadData();
+        break;
+      default:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -480,98 +550,7 @@ class _FormAddDataState extends State<FormAddData> {
                         ..pop()
                         ..pop(true);
                     }
-                    if (type == ADD_CLUE) {
-                      GetListClueBloc.of(context)
-                          .loadMoreController
-                          .reloadData();
-                    } else if (type == ADD_CHANCE) {
-                      GetListChanceBloc.of(context)
-                          .loadMoreController
-                          .reloadData();
-                    } else if (type == ADD_CONTRACT) {
-                      ContractBloc.of(context).loadMoreController.reloadData();
-                      if (product != null) AppNavigator.navigateContract();
-                    } else if (type == ADD_JOB) {
-                      WorkBloc.of(context).loadMoreController.reloadData();
-                    } else if (type == ADD_SUPPORT) {
-                      SupportBloc.of(context).loadMoreController.reloadData();
-                    } else if (type == PRODUCT_TYPE) {
-                      ProductModuleBloc.of(context)
-                          .loadMoreController
-                          .reloadData();
-                    } else if (type == PRODUCT_CUSTOMER_TYPE) {
-                      if (isGetData) {
-                        Navigator.of(context)
-                          ..pop()
-                          ..pop([state.dataSPKH, state.idKH]);
-                      } else {
-                        ProductCustomerModuleBloc.of(context)
-                            .loadMoreController
-                            .reloadData();
-                      }
-                    } else if (type == CV_PRODUCT_CUSTOMER_TYPE) {
-                      DetailProductCustomerBloc.of(context)
-                          .controllerCv
-                          .reloadData();
-                    } else if (type == CH_PRODUCT_CUSTOMER_TYPE) {
-                      DetailProductCustomerBloc.of(context)
-                          .controllerCh
-                          .reloadData();
-                    } else if (type == HT_PRODUCT_CUSTOMER_TYPE) {
-                      DetailProductCustomerBloc.of(context)
-                          .controllerHt
-                          .reloadData();
-                    } else if (type == HD_PRODUCT_CUSTOMER_TYPE) {
-                      DetailProductCustomerBloc.of(context)
-                          .controllerHd
-                          .reloadData();
-                    } else if (type == ADD_QUICK_CONTRACT) {
-                      //todo
-                    } else if (type == EDIT_CLUE) {
-                      GetListClueBloc.of(context)
-                          .loadMoreController
-                          .reloadData();
-                    } else if (type == EDIT_CHANCE) {
-                      GetListDetailChanceBloc.of(context)
-                          .add(InitGetListDetailEvent(int.parse(id)));
-                      GetListChanceBloc.of(context)
-                          .loadMoreController
-                          .reloadData();
-                    } else if (type == EDIT_JOB) {
-                      WorkBloc.of(context).loadMoreController.reloadData();
-                    } else if (type == EDIT_CONTRACT) {
-                      ContractBloc.of(context).add(InitGetContractEvent());
-                      DetailContractBloc.of(context)
-                          .add(InitGetDetailContractEvent(int.parse(id)));
-                    } else if (type == EDIT_SUPPORT) {
-                      SupportBloc.of(context).add(InitGetSupportEvent());
-                    } else if (type == PRODUCT_TYPE_EDIT) {
-                      ProductModuleBloc.of(context)
-                          .loadMoreController
-                          .reloadData();
-                      DetailProductBloc.of(context)
-                          .add(InitGetDetailProductEvent(id));
-                    } else if (type == PRODUCT_CUSTOMER_TYPE_EDIT) {
-                      ProductCustomerModuleBloc.of(context)
-                          .loadMoreController
-                          .reloadData();
-                      DetailProductCustomerBloc.of(context)
-                          .add(InitGetDetailProductCustomerEvent(id));
-                    } else if (type == EDIT_CUSTOMER) {
-                      GetListCustomerBloc.of(context)
-                          .loadMoreController
-                          .reloadData();
-                    } else if (type == ADD_CUSTOMER ||
-                        type == ADD_CUSTOMER_OR) {
-                      Navigator.of(context)
-                        ..pop()
-                        ..pop(
-                          state.result,
-                        );
-                      GetListCustomerBloc.of(context)
-                          .loadMoreController
-                          .reloadData();
-                    }
+                    handleNavigationAndReloadData(type, context, state);
                   },
                 );
               } else if (state is ErrorAddData) {
@@ -624,6 +603,8 @@ class _FormAddDataState extends State<FormAddData> {
                                             .field_require,
                                         txtValidate: state.listAddData[i]
                                             .data![j].field_validation_message,
+                                        type: state
+                                            .listAddData[i].data![j].field_type,
                                       ),
                                     );
                               }
@@ -691,8 +672,6 @@ class _FormAddDataState extends State<FormAddData> {
                               if (!isGetData)
                                 FileDinhKemUiBase(
                                   context: context,
-                                  onTap: () {},
-                                  isSave: false,
                                 ),
                               SizedBox(
                                 height: AppValue.widths * 0.1 + 10,
@@ -1052,41 +1031,75 @@ class _FormAddDataState extends State<FormAddData> {
                                                                           .value = v;
                                                                     },
                                                                   )
-                                                    : SizedBox.shrink()
+                                                    : data.field_type == 'images'
+                                                        ? FieldImage(
+                                                            init: (data.field_set_value
+                                                                    is List<
+                                                                        dynamic>)
+                                                                ? data
+                                                                    .field_set_value
+                                                                : null,
+                                                            data: data,
+                                                            onChange: (v) {
+                                                              addData[indexParent]
+                                                                  .data[
+                                                                      indexChild]
+                                                                  .value = v;
+                                                            },
+                                                          )
+                                                        : SizedBox.shrink()
         : SizedBox.shrink();
+  }
+
+  bool _isNull(data) {
+    return (data == null || data == 'null' || data == '');
   }
 
   void onClickSave() async {
     final Map<String, dynamic> data = {};
+    final Map<String, dynamic> dataFile = {};
+
     bool isCheckValidate = false;
     String? txtValidate;
+
     for (int i = 0; i < addData.length; i++) {
       for (int j = 0; j < addData[i].data.length; j++) {
-        if ((addData[i].data[j].value == null ||
-                addData[i].data[j].value == 'null' ||
-                addData[i].data[j].value == '') &&
-            addData[i].data[j].required == 1 &&
-            !(isGetData && addData[i].data[j].label == 'khach_hang_sp')) {
+        final valueAdd = addData[i].data[j].value;
+        final labelAdd = addData[i].data[j].label;
+        final typeAdd = addData[i].data[j].type;
+        final txtValidateAdd = addData[i].data[j].txtValidate;
+        final isRequiredAdd = addData[i].data[j].required == 1;
+
+        if (_isNull(valueAdd) &&
+            isRequiredAdd &&
+            !(isGetData && labelAdd == 'khach_hang_sp')) {
           isCheckValidate = true;
-          txtValidate = addData[i].data[j].txtValidate;
+          txtValidate = txtValidateAdd;
           break;
-        } else if (addData[i].data[j].value != null &&
-            addData[i].data[j].value != 'null') {
-          if (addData[i].data[j].label == 'hdsan_pham_kh' &&
-              addData[i].data[j].value == ADD_NEW_CAR) {
-            if (_contactBy.dataCarNew != {})
+        } else if (valueAdd != null && valueAdd != 'null') {
+          if (labelAdd == 'hdsan_pham_kh' && valueAdd == ADD_NEW_CAR) {
+            if (_contactBy.dataCarNew.isNotEmpty) {
               data['productscus'] = _contactBy.dataCarNew;
+            }
           } else {
-            data['${addData[i].data[j].label}'] = addData[i].data[j].value;
+            if (typeAdd == 'images') {
+              dataFile['$labelAdd'] = valueAdd;
+            } else {
+              data['$labelAdd'] = valueAdd;
+            }
           }
         } else {
-          data['${addData[i].data[j].label}'] = '';
+          if (typeAdd == 'images') {
+            dataFile['$labelAdd'] = [];
+          } else {
+            data['$labelAdd'] = '';
+          }
         }
       }
     }
-    //CHECKIN
+
     if (isCheckIn) {
-      if (_controllerTextNoteLocation.text != '') {
+      if (_controllerTextNoteLocation.text.isNotEmpty) {
         data['longitude'] = position?.longitude.toString();
         data['latitude'] = position?.latitude.toString();
         data['note_location'] = _controllerTextNoteLocation.text;
@@ -1100,7 +1113,6 @@ class _FormAddDataState extends State<FormAddData> {
       isCheckValidate = true;
     }
 
-    //
     if (isCheckValidate == true) {
       ShowDialogCustom.showDialogBase(
         title: getT(KeyT.notification),
@@ -1112,7 +1124,7 @@ class _FormAddDataState extends State<FormAddData> {
                     : '')),
       );
     } else {
-      if (listProduct.length > 0) {
+      if (listProduct.isNotEmpty) {
         List product = [];
         for (int i = 0; i < listProduct.length; i++) {
           product.add({
@@ -1131,129 +1143,163 @@ class _FormAddDataState extends State<FormAddData> {
         }
         data['products'] = product;
       }
-      if (type == ADD_CUSTOMER_OR) {
-        _blocAdd.add(AddCustomerOrEvent(data, files: _attackBloc.listFile));
-      } else if (type == ADD_CUSTOMER) {
-        _blocAdd.add(AddCustomerEvent(data, files: _attackBloc.listFile));
-      } else if (type == ADD_CLUE_CUSTOMER) {
-        data['customer_id'] = id;
-        _blocAdd
-            .add(AddContactCustomerEvent(data, files: _attackBloc.listFile));
-      } else if (type == ADD_CHANCE_CUSTOMER) {
-        data['customer_id'] = id;
-        _blocAdd.add(AddOpportunityEvent(data, files: _attackBloc.listFile));
-      } else if (type == ADD_CONTRACT_CUS) {
-        data['customer_id'] = id;
-        _blocAdd.add(AddContractEvent(data, files: _attackBloc.listFile));
-      } else if (type == ADD_JOB_CUSTOMER) {
-        data['customer_id'] = id;
-        _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
-      } else if (type == ADD_SUPPORT_CUSTOMER) {
-        data['customer_id'] = id;
-        data['nguoi_xu_lht'] = idUserLocal;
-        _blocAdd.add(AddSupportEvent(data, files: _attackBloc.listFile));
-      } else if (type == ADD_CLUE) {
-        _blocAdd
-            .add(AddContactCustomerEvent(data, files: _attackBloc.listFile));
-      } else if (type == ADD_CHANCE) {
-        _blocAdd.add(AddOpportunityEvent(data, files: _attackBloc.listFile));
-      } else if (type == ADD_CONTRACT) {
-        data['col311'] =
-            data['col311'] != '' ? double.parse(data['col311']).toInt() : '';
-        _blocAdd.add(AddContractEvent(data, files: _attackBloc.listFile));
-      } else if (type == ADD_JOB) {
-        _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
-      } else if (type == ADD_SUPPORT) {
-        data['nguoi_xu_lht'] = idUserLocal;
-        _blocAdd.add(AddSupportEvent(data, files: _attackBloc.listFile));
-      } else if (type == ADD_CLUE_JOB) {
-        data['daumoi_id'] = id;
-        _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
-      } else if (type == ADD_CHANCE_JOB) {
-        data['cohoi_id'] = id;
-        _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
-      } else if (type == ADD_SUPPORT_CONTRACT) {
-        data['hopdong_id'] = id;
-        data['nguoi_xu_lht'] = idUserLocal;
-        _blocAdd.add(AddSupportEvent(data, files: _attackBloc.listFile));
-      } else if (type == ADD_JOB_CONTRACT) {
-        data['hopdong_id'] = id;
-        _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
-      } else if (type == PRODUCT_TYPE) {
-        _blocAdd.add(AddProductEvent(data, files: _attackBloc.listFile));
-      } else if (type == PRODUCT_CUSTOMER_TYPE) {
-        ////
 
-        if (isGetData) {
-          //validate biển số xe
-          bool check = await _blocService.checkHasCar(data['bien_so']);
-          if (check) {
-            ShowDialogCustom.showDialogBase(
-              title: getT(KeyT.notification),
-              content: '${data['bien_so']} ${getT(KeyT.already_exist)}',
-            );
+      switch (type) {
+        case ADD_CUSTOMER_OR:
+          _blocAdd.add(AddCustomerOrEvent(data, files: _attackBloc.listFile));
+          break;
+        case ADD_CUSTOMER:
+          _blocAdd.add(AddCustomerEvent(data, files: _attackBloc.listFile));
+          break;
+        case ADD_CLUE_CUSTOMER:
+          data['customer_id'] = id;
+          _blocAdd
+              .add(AddContactCustomerEvent(data, files: _attackBloc.listFile));
+          break;
+        case ADD_CHANCE_CUSTOMER:
+          data['customer_id'] = id;
+          _blocAdd.add(AddOpportunityEvent(data, files: _attackBloc.listFile));
+          break;
+        case ADD_CONTRACT_CUS:
+          data['customer_id'] = id;
+          _blocAdd.add(AddContractEvent(data, files: _attackBloc.listFile));
+          break;
+        case ADD_JOB_CUSTOMER:
+          data['customer_id'] = id;
+          _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
+          break;
+        case ADD_SUPPORT_CUSTOMER:
+          data['customer_id'] = id;
+          data['nguoi_xu_lht'] = idUserLocal;
+          _blocAdd.add(AddSupportEvent(data, files: _attackBloc.listFile));
+          break;
+        case ADD_CLUE:
+          _blocAdd
+              .add(AddContactCustomerEvent(data, files: _attackBloc.listFile));
+          break;
+        case ADD_CHANCE:
+          _blocAdd.add(AddOpportunityEvent(data, files: _attackBloc.listFile));
+          break;
+        case ADD_CONTRACT:
+          data['col311'] = data['col311'] != ''
+              ? (double.tryParse(data['col311']) ?? 0).toInt()
+              : '';
+          _blocAdd.add(AddContractEvent(data, files: _attackBloc.listFile));
+          break;
+        case ADD_JOB:
+          _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
+          break;
+        case ADD_SUPPORT:
+          data['nguoi_xu_lht'] = idUserLocal;
+          _blocAdd.add(AddSupportEvent(data, files: _attackBloc.listFile));
+          break;
+        case ADD_CLUE_JOB:
+          data['daumoi_id'] = id;
+          _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
+          break;
+        case ADD_CHANCE_JOB:
+          data['cohoi_id'] = id;
+          _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
+          break;
+        case ADD_SUPPORT_CONTRACT:
+          data['hopdong_id'] = id;
+          data['nguoi_xu_lht'] = idUserLocal;
+          _blocAdd.add(AddSupportEvent(data, files: _attackBloc.listFile));
+          break;
+        case ADD_JOB_CONTRACT:
+          data['hopdong_id'] = id;
+          _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
+          break;
+        case PRODUCT_TYPE:
+          _blocAdd.add(
+            AddProductEvent(
+              FormDataCustom.formMap(
+                data,
+                dataFile,
+              ),
+              files: _attackBloc.listFile,
+            ),
+          );
+          break;
+        case PRODUCT_CUSTOMER_TYPE:
+          if (isGetData) {
+            bool check = await _blocService.checkHasCar(data['bien_so']);
+            if (check) {
+              ShowDialogCustom.showDialogBase(
+                title: getT(KeyT.notification),
+                content: '${data['bien_so']} ${getT(KeyT.already_exist)}',
+              );
+            } else {
+              _blocAdd.add(
+                  AddProductCustomerEvent(data, files: _attackBloc.listFile));
+            }
           } else {
             _blocAdd.add(
                 AddProductCustomerEvent(data, files: _attackBloc.listFile));
           }
-          ////
-        } else {
-          _blocAdd
-              .add(AddProductCustomerEvent(data, files: _attackBloc.listFile));
-        }
-        ////
-      } else if (type == CV_PRODUCT_CUSTOMER_TYPE) {
-        data['customer_id'] = id;
-        _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
-      } else if (type == HT_PRODUCT_CUSTOMER_TYPE) {
-        data['customer_id'] = id;
-        data['nguoi_xu_lht'] = idUserLocal;
-        _blocAdd.add(AddSupportEvent(data, files: _attackBloc.listFile));
-      } else if (type == HD_PRODUCT_CUSTOMER_TYPE) {
-        data['customer_id'] = id;
-        _blocAdd.add(AddContractEvent(data, files: _attackBloc.listFile));
-      } else if (type == CH_PRODUCT_CUSTOMER_TYPE) {
-        data['customer_id'] = id;
-        _blocAdd.add(AddOpportunityEvent(data, files: _attackBloc.listFile));
-      } else if (type == ADD_QUICK_CONTRACT) {
-        _blocAdd.add(QuickContractSaveEvent(data, _attackBloc.listFile));
-      } else {
-        data['id'] = id; // save edit
-        if (type == EDIT_CUSTOMER) {
-          _blocAdd.add(EditCustomerEvent(data, files: _attackBloc.listFile));
-        } else if (type == EDIT_CLUE) {
-          _blocAdd.add(AddContactCustomerEvent(
-            data,
-            files: _attackBloc.listFile,
-            isEdit: true,
-          ));
-        } else if (type == EDIT_CHANCE) {
-          _blocAdd.add(AddOpportunityEvent(
-            data,
-            files: _attackBloc.listFile,
-            isEdit: true,
-          ));
-        } else if (type == EDIT_CONTRACT) {
-          _blocAdd.add(AddContractEvent(
-            data,
-            files: _attackBloc.listFile,
-            isEdit: true,
-          ));
-        } else if (type == EDIT_JOB) {
-          _blocAdd.add(EditJobEvent(data, files: _attackBloc.listFile));
-        } else if (type == EDIT_SUPPORT) {
-          _blocAdd.add(AddSupportEvent(
-            data,
-            files: _attackBloc.listFile,
-            isEdit: true,
-          ));
-        } else if (type == PRODUCT_TYPE_EDIT) {
-          _blocAdd.add(EditProductEvent(data, int.parse(id),
-              files: _attackBloc.listFile));
-        } else if (type == PRODUCT_CUSTOMER_TYPE_EDIT) {
-          _blocAdd
-              .add(EditProductCustomerEvent(data, files: _attackBloc.listFile));
-        }
+          break;
+        case CV_PRODUCT_CUSTOMER_TYPE:
+          data['customer_id'] = id;
+          _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
+          break;
+        case HT_PRODUCT_CUSTOMER_TYPE:
+          data['customer_id'] = id;
+          data['nguoi_xu_lht'] = idUserLocal;
+          _blocAdd.add(AddSupportEvent(data, files: _attackBloc.listFile));
+          break;
+        case HD_PRODUCT_CUSTOMER_TYPE:
+          data['customer_id'] = id;
+          _blocAdd.add(AddContractEvent(data, files: _attackBloc.listFile));
+          break;
+        case CH_PRODUCT_CUSTOMER_TYPE:
+          data['customer_id'] = id;
+          _blocAdd.add(AddOpportunityEvent(data, files: _attackBloc.listFile));
+          break;
+        case ADD_QUICK_CONTRACT:
+          _blocAdd.add(QuickContractSaveEvent(data, _attackBloc.listFile));
+          break;
+        default:
+          data['id'] = id;
+          if (type == EDIT_CUSTOMER) {
+            _blocAdd.add(EditCustomerEvent(data, files: _attackBloc.listFile));
+          } else if (type == EDIT_CLUE) {
+            _blocAdd.add(AddContactCustomerEvent(
+              data,
+              files: _attackBloc.listFile,
+              isEdit: true,
+            ));
+          } else if (type == EDIT_CHANCE) {
+            _blocAdd.add(AddOpportunityEvent(
+              data,
+              files: _attackBloc.listFile,
+              isEdit: true,
+            ));
+          } else if (type == EDIT_CONTRACT) {
+            _blocAdd.add(AddContractEvent(
+              data,
+              files: _attackBloc.listFile,
+              isEdit: true,
+            ));
+          } else if (type == EDIT_JOB) {
+            _blocAdd.add(EditJobEvent(data, files: _attackBloc.listFile));
+          } else if (type == EDIT_SUPPORT) {
+            _blocAdd.add(AddSupportEvent(
+              data,
+              files: _attackBloc.listFile,
+              isEdit: true,
+            ));
+          } else if (type == PRODUCT_TYPE_EDIT) {
+            _blocAdd.add(EditProductEvent(
+                FormDataCustom.formMap(
+                  data,
+                  dataFile,
+                ),
+                int.tryParse(id) ?? 0,
+                files: _attackBloc.listFile));
+          } else if (type == PRODUCT_CUSTOMER_TYPE_EDIT) {
+            _blocAdd.add(
+                EditProductCustomerEvent(data, files: _attackBloc.listFile));
+          }
       }
     }
   }

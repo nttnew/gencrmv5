@@ -51,7 +51,6 @@ class QuySoReportBloc extends Bloc<QuySoReportEvent, QuySoReportState> {
     } catch (e) {
       LoadingApi().popLoading();
       yield ErrorGetListQuySoReportState(getT(KeyT.an_error_occurred));
-      throw e;
     }
     LoadingApi().popLoading();
   }

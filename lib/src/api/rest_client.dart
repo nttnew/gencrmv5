@@ -24,6 +24,8 @@ import 'package:gen_crm/src/models/model_generator/support.dart';
 import 'package:gen_crm/src/models/model_generator/param_del_notif.dart';
 import 'package:gen_crm/src/models/model_generator/work_clue.dart';
 import 'package:gen_crm/src/models/model_generator/work.dart';
+import 'package:gen_crm/src/preferences_key.dart';
+import 'package:gen_crm/storages/share_local.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:gen_crm/src/base.dart';
 import 'package:gen_crm/src/models/index.dart';
@@ -686,8 +688,9 @@ abstract class RestClient {
   );
 
   @POST(BASE_URL.ADD_PRODUCT_MODULE)
+  @MultiPart()
   Future<ResponseSaveProduct> addProduct(
-    @Body() Map<String, dynamic> map,
+    @Part() FormDataCustom data,
   );
 
   @POST(BASE_URL.DELETE_PRODUCT)
@@ -696,8 +699,9 @@ abstract class RestClient {
   );
 
   @POST(BASE_URL.ADD_PRODUCT_MODULE)
+  @MultiPart()
   Future<ResponseEditProduct> editProduct(
-    @Body() Map<String, dynamic> map,
+    @Part() FormDataCustom map,
     @Query('id') int id,
   );
 
@@ -904,3 +908,95 @@ abstract class RestClient {
     @Query('dienthoai') String? dienThoai,
   );
 }
+
+class FormDataCustom {
+  FormDataCustom({this.formData});
+  FormData? formData;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+
+    // Xử lý các trường
+    formData?.fields.forEach((field) {
+      data[field.key] = field.value;
+    });
+
+    data['file'] = formData?.files
+        .map(
+          (e) => e.value,
+        )
+        .toList();
+
+    return data;
+  }
+
+  FormDataCustom.formMap(
+    Map<String, dynamic> map,
+    Map<String, dynamic> file,
+  ) {
+    final formData = FormData();
+
+    map.forEach((key, value) {
+      formData.fields.add(MapEntry(key, value));
+    });
+
+    file.forEach((key, value) {
+      List<MultipartFile> multipartFiles = [];
+      List<String> listFile = [];
+
+      if (value is List<File>) {
+        for (final e in value) {
+          if (e.path.contains(shareLocal.getString(PreferencesKey.URL_BASE))) {
+            listFile.add(
+              e.path.replaceAll(
+                  shareLocal.getString(PreferencesKey.URL_BASE), ''),
+            );
+          } else {
+            multipartFiles.add(MultipartFile.fromFileSync(e.path));
+          }
+        }
+      }
+      formData.fields.add(
+        MapEntry(
+          key,
+          listFile
+              .toString()
+              .replaceAll('[', '')
+              .replaceAll(
+                ']',
+                '',
+              )
+              .replaceAll(' ', ''),
+        ),
+      );
+      formData.files.addAll(multipartFiles.map((file) {
+        return MapEntry('$key[]', file);
+      }));
+    });
+
+    this.formData = formData;
+  }
+}
+//@override   custom restClient.g
+//   Future<ResponseSaveProduct> addProduct(data) async {
+//     const _extra = <String, dynamic>{};
+//     final queryParameters = <String, dynamic>{};
+//     final _headers = <String, dynamic>{};
+//     final _data = data.formData;
+//     final _result = await _dio.fetch<Map<String, dynamic>>(
+//         _setStreamType<ResponseSaveProduct>(Options(
+//       method: 'POST',
+//       headers: _headers,
+//       extra: _extra,
+//       contentType: 'multipart/form-data',
+//     )
+//             .compose(
+//               _dio.options,
+//               'modules/genmobile2/product/save',
+//               queryParameters: queryParameters,
+//               data: _data,
+//             )
+//             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+//     final value = ResponseSaveProduct.fromJson(_result.data!);
+//     return value;
+//   }
