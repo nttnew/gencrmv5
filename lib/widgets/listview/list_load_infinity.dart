@@ -355,7 +355,15 @@ class LoadMoreController<T> {
       }
       showLoad.add(false);
       if (result.runtimeType == String) {
-        showToastM(Get.context!, title: result.toString());
+        ShowDialogCustom.showDialogBase(
+          title: getT(KeyT.notification),
+          content: result.toString(),
+          textButton1: getT(KeyT.try_again),
+          onTap1: () {
+            reloadData();
+            Get.back();
+          },
+        );
         isLoadMore = true;
       } else {
         if (page == BASE_URL.PAGE_DEFAULT) {

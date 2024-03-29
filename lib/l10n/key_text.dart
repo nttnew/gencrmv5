@@ -264,4 +264,5 @@ class KeyT {
   static String max = 'max';
   static String press_once_more_to_cancel_selection = 'press_once_more_to_cancel_selection';
   static String unselect = 'unselect';
+  static String try_again = 'try_again';
 }
