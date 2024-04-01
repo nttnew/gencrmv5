@@ -61,9 +61,8 @@ class _ProductContractState extends State<ProductContract> {
   }
 
   void _removeProduct(ProductModel productModel) {
-    setState(() {
-      _productData.remove(productModel);
-    });
+    _productData.remove(productModel);
+    _reload(true);
   }
 
   @override

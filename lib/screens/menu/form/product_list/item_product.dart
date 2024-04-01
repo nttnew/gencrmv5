@@ -56,7 +56,7 @@ class _ItemProductState extends State<ItemProduct> {
   bool _isTypeGiamGiaDefault = true;
   double _thanhTien = 0;
   String _donViTinh = '';
-  String _vat = '';
+  String _vat = '0';
   String _giamGia = '0';
   String _soLuong = '0';
   TextEditingController _giamGiaController = TextEditingController();
@@ -66,7 +66,7 @@ class _ItemProductState extends State<ItemProduct> {
   String _priceInit = '';
   String _countInit = '0';
   String _dvtInit = '';
-  String _vatInit = '';
+  String _vatInit = '0';
   String _saleInit = '0';
   double _intoMoneyInit = 0;
   bool _isTypeGiamGIaInit = true;
