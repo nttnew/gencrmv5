@@ -163,7 +163,7 @@ class _FieldTextAPiState extends State<FieldTextAPi> {
                   maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
                   style: AppStyle.DEFAULT_14_BOLD,
                   keyboardType: widget.typeInput ??
-                      (data.field_special == 'numberic' ||
+                      (data.field_special == 'numeric' ||
                               data.field_type == 'MONEY' ||
                               data.field_type == 'TEXT_NUMERIC'
                           ? TextInputType.number
