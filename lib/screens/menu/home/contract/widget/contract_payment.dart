@@ -77,6 +77,7 @@ class _ContractPaymentState extends State<ContractPayment>
                           return Container(
                             margin: EdgeInsets.symmetric(vertical: 8),
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 WidgetText(
@@ -84,9 +85,14 @@ class _ContractPaymentState extends State<ContractPayment>
                                   style: AppStyle.DEFAULT_14
                                       .copyWith(color: Colors.grey),
                                 ),
-                                WidgetText(
+                                AppValue.hSpaceTiny,
+                                Expanded(
+                                  child: WidgetText(
                                     title: e?[index].field_value.toString(),
-                                    style: AppStyle.DEFAULT_14)
+                                    style: AppStyle.DEFAULT_14,
+                                    textAlign: TextAlign.right,
+                                  ),
+                                )
                               ],
                             ),
                           );
