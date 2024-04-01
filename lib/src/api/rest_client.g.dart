@@ -3086,7 +3086,7 @@ class _RestClient implements RestClient {
               _dio.options,
               'modules/genmobile2/product/save',
               queryParameters: queryParameters,
-              data: data,
+              data: data.formData,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ResponseSaveProduct.fromJson(_result.data!);
@@ -3138,7 +3138,7 @@ class _RestClient implements RestClient {
               _dio.options,
               'modules/genmobile2/product/save',
               queryParameters: queryParameters,
-              data: map,
+              data: map.formData,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ResponseEditProduct.fromJson(_result.data!);

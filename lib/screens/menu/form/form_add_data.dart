@@ -743,7 +743,9 @@ class _FormAddDataState extends State<FormAddData> {
                         },
                         addData: _addData,
                       )
-                : data.field_type == 'TEXT' || data.field_type == 'TEXTAREA'
+                : data.field_type == 'TEXT' ||
+                        data.field_type == 'TEXTAREA' ||
+                        data.field_type == 'MONEY'
                     ? _blocService.getInput(data.field_name ?? '')
                         ? StreamBuilder<String>(
                             stream:
@@ -965,9 +967,8 @@ class _FormAddDataState extends State<FormAddData> {
                                                             ? BlocBuilder<
                                                                     TotalBloc,
                                                                     TotalState>(
-                                                                builder:
-                                                                    (context,
-                                                                        stateA) {
+                                                                builder: (context,
+                                                                    stateA) {
                                                                 if (stateA
                                                                     is SuccessTotalState) {
                                                                   _addData[indexParent]
@@ -1006,9 +1007,8 @@ class _FormAddDataState extends State<FormAddData> {
                                                                         String>(
                                                                     stream:
                                                                         _reloadStream,
-                                                                    builder:
-                                                                        (context,
-                                                                            snapshot) {
+                                                                    builder: (context,
+                                                                        snapshot) {
                                                                       return FieldTextAPi(
                                                                         typeInput:
                                                                             TextInputType.number,
