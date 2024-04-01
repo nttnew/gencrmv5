@@ -189,13 +189,13 @@ class _InputDropdownState extends State<InputDropdownBase> {
         result = await AppNavigator.navigateForm(
           title: v[1].toString(),
           type: ADD_CUSTOMER,
-          isResultData: true,
+          isGetData: true,
         );
       } else if (v.first == TO_CHUC) {
         result = await AppNavigator.navigateForm(
           title: v[1].toString(),
           type: ADD_CUSTOMER_OR,
-          isResultData: true,
+          isGetData: true,
         );
       }
 

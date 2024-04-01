@@ -16,15 +16,13 @@ class ProductContract extends StatefulWidget {
     required this.data,
     required this.addProduct,
     required this.reload,
-    this.neverHidden = false,
-    this.canDelete = false,
+    this.isDelete = false,
     this.listBtn,
   }) : super(key: key);
   final List<ProductModel> data;
   final Function addProduct;
   final Function reload;
-  final bool neverHidden;
-  final bool canDelete;
+  final bool isDelete;
   final List<ButtonRes>? listBtn;
 
   @override
@@ -32,37 +30,39 @@ class ProductContract extends StatefulWidget {
 }
 
 class _ProductContractState extends State<ProductContract> {
-  List<ProductModel> productData = [];
-  UserRepository userRepository = UserRepository();
-  List<List> listDVT = [];
-  List<List> listVAT = [];
+  List<ProductModel> _productData = [];
+  UserRepository _userRepository = UserRepository();
+  List<List> _listDVT = [];
+  List<List> _listVAT = [];
 
   @override
   void initState() {
-    productData = widget.data;
+    _productData = widget.data;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      final response = await userRepository.getListProduct(
+      final response = await _userRepository.getListProduct(
           BASE_URL.PAGE_DEFAULT.toString(), '', null);
       if (isSuccess(response.code)) {
-        if (listVAT.isEmpty) {
-          listVAT = response.data?.vats ?? [];
+        if (_listVAT.isEmpty) {
+          _listVAT = response.data?.vats ?? [];
         }
-        if (listDVT.isEmpty) {
-          listDVT = response.data?.units ?? [];
+        if (_listDVT.isEmpty) {
+          _listDVT = response.data?.units ?? [];
         }
       }
     });
     super.initState();
   }
 
-  reload() async {
+  _reload(bool isSetState) async {
     await widget.reload();
-    setState(() {});
+    if (isSetState) {
+      setState(() {});
+    }
   }
 
-  void removeProduct(ProductModel productModel) {
+  void _removeProduct(ProductModel productModel) {
     setState(() {
-      productData.remove(productModel);
+      _productData.remove(productModel);
     });
   }
 
@@ -73,38 +73,38 @@ class _ProductContractState extends State<ProductContract> {
         ListView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
-          itemCount: productData.length,
+          itemCount: _productData.length,
           itemBuilder: (context, index) => ItemProduct(
-            onDelete: removeProduct,
-            canDelete: widget.canDelete,
-            neverHidden: widget.neverHidden,
-            data: productData[index].item,
+            key: Key('${_productData[index].item.product_id}'),
+            onDelete: _removeProduct,
+            isDelete: widget.isDelete,
+            data: _productData[index].item,
             onChangeQuantity: (soLuong) {
-              productData[index].soLuong = double.parse(soLuong);
+              _productData[index].soLuong = double.parse(soLuong);
             },
             onDVT: (id, name) {
-              productData[index].nameDvt = name;
-              productData[index].item.dvt = id;
+              _productData[index].nameDvt = name;
+              _productData[index].item.dvt = id;
             },
             onVAT: (id, name) {
-              productData[index].nameVat = name;
-              productData[index].item.vat = id;
+              _productData[index].nameVat = name;
+              _productData[index].item.vat = id;
             },
             onGiamGia: (so, type) {
-              productData[index].giamGia = so;
-              productData[index].typeGiamGia = type;
+              _productData[index].giamGia = so;
+              _productData[index].typeGiamGia = type;
             },
             onPrice: (price) {
-              productData[index].item.sell_price = price;
+              _productData[index].item.sell_price = price;
             },
             onIntoMoney: (intoMoney) {
-              productData[index].intoMoney = intoMoney;
+              _productData[index].intoMoney = intoMoney;
             },
-            model: productData[index],
-            listDvt: listDVT,
-            listVat: listVAT,
-            onReload: () {
-              reload();
+            model: _productData[index],
+            listDvt: _listDVT,
+            listVat: _listVAT,
+            onReload: (bool v) {
+              _reload(v);
             },
           ),
         ),
@@ -116,10 +116,10 @@ class _ProductContractState extends State<ProductContract> {
             children: [
               itemBtnWrap(getT(KeyT.select_product), () {
                 AppNavigator.navigateAddProduct(
-                    widget.addProduct, reload, productData);
+                    widget.addProduct, _reload, _productData);
               }),
               itemBtnWrap(
-                'QR/Bar Code',
+                getT(KeyT.qr_bar_code),
                 () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(
@@ -160,15 +160,15 @@ class _ProductContractState extends State<ProductContract> {
                         if (item.field_type == 'service') {
                           AppNavigator.navigateListServicePark(
                             widget.addProduct,
-                            reload,
-                            productData,
+                            _reload,
+                            _productData,
                             item.field_label ?? '',
                           );
                         } else {
                           AppNavigator.navigateAddProduct(
                             widget.addProduct,
-                            reload,
-                            productData,
+                            _reload,
+                            _productData,
                             group: item.field_url,
                           );
                         }

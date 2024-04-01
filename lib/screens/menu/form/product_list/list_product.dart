@@ -27,7 +27,7 @@ class _ListProductState extends State<ListProduct> {
   int length = 0;
   TextEditingController _editingController = TextEditingController();
   Function addProduct = Get.arguments[0];
-  Function reload = Get.arguments[1];
+  Function(bool) reload = Get.arguments[1];
   List<ProductModel> listSelected = List.from(Get.arguments[2]);
   String? group = Get.arguments[3];
   late final ProductBloc _bloc;
@@ -36,7 +36,7 @@ class _ListProductState extends State<ListProduct> {
   @override
   void initState() {
     _bloc = ProductBloc(userRepository: ProductBloc.of(context).userRepository);
-    _bloc.add(InitGetListProductEvent(BASE_URL.PAGE_DEFAULT.toString(), "",
+    _bloc.add(InitGetListProductEvent(BASE_URL.PAGE_DEFAULT.toString(), '',
         group: group));
     _scrollController.addListener(() {
       if (_scrollController.offset ==
@@ -64,17 +64,18 @@ class _ListProductState extends State<ListProduct> {
         state.listProduct[i].product_id!,
         0,
         ProductItem(
-            state.listProduct[i].product_id,
-            state.listProduct[i].product_code,
-            state.listProduct[i].product_edit,
-            state.listProduct[i].product_name,
-            state.listProduct[i].dvt,
-            state.listProduct[i].vat,
-            state.listProduct[i].sell_price),
-        "0",
-        "",
-        "",
-        "",
+          state.listProduct[i].product_id,
+          state.listProduct[i].product_code,
+          state.listProduct[i].product_edit,
+          state.listProduct[i].product_name,
+          state.listProduct[i].dvt,
+          state.listProduct[i].vat,
+          state.listProduct[i].sell_price,
+        ),
+        '0',
+        '',
+        '',
+        '',
       ));
     }
     for (int i = 0; i < listUI.length; i++) {
@@ -143,7 +144,6 @@ class _ListProductState extends State<ListProduct> {
                       child: Column(
                         children: List.generate(listUI.length, (index) {
                           return ItemProduct(
-                            neverHidden: false,
                             data: listUI[index].item,
                             listDvt: state.listDvt,
                             listVat: state.listVat,
@@ -170,8 +170,8 @@ class _ListProductState extends State<ListProduct> {
                               listUI[index].intoMoney = intoMoney;
                             },
                             model: listUI[index],
-                            onReload: () {
-                              reload();
+                            onReload: (v) {
+                              reload(v);
                             },
                             onDelete: (ProductModel productModel) {},
                           );
@@ -214,7 +214,7 @@ class _ListProductState extends State<ListProduct> {
         addProduct(listUI[i]);
       }
     }
-    reload();
+    reload(true);
     Get.back();
   }
 

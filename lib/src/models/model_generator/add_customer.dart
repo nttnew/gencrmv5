@@ -19,7 +19,7 @@ class CustomerIndividualItemData {
   final List<List<dynamic>>? field_datasource;
   final List<List<dynamic>>? field_set_value_datasource;
   final String? field_special, field_value;
-  final List<ProductItemContract>? products;
+  final List<ProductItemRes>? products;
   final List<ButtonRes>? button;
   final FieldParent? field_parent, field_search;
   final bool? is_load;
@@ -103,7 +103,7 @@ class AddCustomerIndividualData {
 }
 
 @JsonSerializable()
-class ProductItemContract {
+class ProductItemRes {
   final String? name_product,
       price,
       quantity,
@@ -115,7 +115,7 @@ class ProductItemContract {
   final int? id, id_product, unit;
   final SaleOff sale_off;
 
-  ProductItemContract(
+  ProductItemRes(
     this.name_product,
     this.price,
     this.quantity,
@@ -130,7 +130,7 @@ class ProductItemContract {
     this.combo_id,
   );
 
-  factory ProductItemContract.fromJson(Map<String, dynamic> json) =>
+  factory ProductItemRes.fromJson(Map<String, dynamic> json) =>
       _$ProductItemContractFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProductItemContractToJson(this);

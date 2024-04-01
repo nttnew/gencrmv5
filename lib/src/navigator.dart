@@ -33,7 +33,6 @@ class AppNavigator {
     String? bienSo,
     bool isCheckIn = false,
     String typeCheckIn = TypeCheckIn.CHECK_IN,
-    bool isResultData = false,
     bool isGetData = false, //getdata cho khsp
     Function? onRefreshFormAdd,
     bool isPreventDuplicates = false,
@@ -47,7 +46,6 @@ class AppNavigator {
             id,
             isCheckIn,
             typeCheckIn,
-            isResultData,
             isGetData,
             product,
             sdt,

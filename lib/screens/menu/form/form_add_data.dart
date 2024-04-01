@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -38,6 +37,7 @@ import '../../../bloc/work/work_bloc.dart';
 import '../../../l10n/key_text.dart';
 import '../../../models/model_data_add.dart';
 import '../../../models/product_model.dart';
+import '../../../src/models/model_generator/product_response.dart';
 import '../../../widgets/loading_api.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/models/model_generator/login_response.dart';
@@ -59,25 +59,23 @@ class FormAddData extends StatefulWidget {
 }
 
 class _FormAddDataState extends State<FormAddData> {
-  String title = Get.arguments[0];
-  String type = Get.arguments[1] ?? '';
-  String id = Get.arguments[2] != null ? Get.arguments[2].toString() : '';
-  bool isCheckIn = Get.arguments[3] ?? false;
-  String typeCheckIn = Get.arguments[4];
-  bool isResultData = Get.arguments[5] ?? false;
-  bool isGetData = Get.arguments[6] ?? false;
-  ProductModel? product = Get.arguments[7];
-  String sdt = Get.arguments[8] ?? '';
-  String bienSo = Get.arguments[9] ?? '';
-  double total = 0;
-  List<ProductModel> listProduct = [];
-  List<ModelItemAdd> addData = [];
-  late String idUserLocal;
-  File? fileUpload;
-  Position? position;
-  late final BehaviorSubject<String> nameLocation;
+  String _title = Get.arguments[0];
+  String _type = Get.arguments[1] ?? '';
+  String _id = Get.arguments[2] != null ? Get.arguments[2].toString() : '';
+  bool _isCheckIn = Get.arguments[3] ?? false;
+  String _typeCheckIn = Get.arguments[4];
+  bool _isGetData = Get.arguments[5] ?? false;
+  ProductModel? _product = Get.arguments[6];
+  String _sdt = Get.arguments[7] ?? '';
+  String _bienSo = Get.arguments[8] ?? '';
+  double _total = 0;
+  List<ProductModel> _listProduct = [];
+  List<ModelItemAdd> _addData = [];
+  late String _idUserLocal;
+  Position? _position;
+  late final BehaviorSubject<String> _nameLocation;
   late final BehaviorSubject<String>
-      reloadStream; // dùng để reload con của field
+      _reloadStream; // dùng để reload con của field
   late final TextEditingController _controllerTextNoteLocation;
   late final FormAddBloc _bloc;
   late final AddDataBloc _blocAdd;
@@ -96,62 +94,62 @@ class _FormAddDataState extends State<FormAddData> {
         AddDataBloc(userRepository: AddDataBloc.of(context).userRepository);
     _contactBy = ContactByCustomerBloc.of(context);
     _controllerTextNoteLocation = TextEditingController();
-    nameLocation = BehaviorSubject.seeded('');
-    reloadStream = BehaviorSubject.seeded('');
-    nameLocation.listen((value) {
+    _nameLocation = BehaviorSubject.seeded('');
+    _reloadStream = BehaviorSubject.seeded('');
+    _nameLocation.listen((value) {
       if (value != '' &&
           value != LOADING &&
           _controllerTextNoteLocation.text != value) {
         _controllerTextNoteLocation.text = value;
       }
     });
-    loadUser();
-    if (product != null) {
-      addProduct(product!);
+    _loadUser();
+    if (_product != null) {
+      _addProduct(_product!);
     }
-    addBlocEvent(type);
+    _addBlocEvent(_type);
     super.initState();
   }
 
-  void addBlocEvent(String type) {
+  void _addBlocEvent(String type) {
     _attackBloc.add(LoadingAttackEvent());
     final eventMap = {
       ADD_CUSTOMER_OR: InitFormAddCusOrEvent(),
       ADD_CUSTOMER: InitFormAddCustomerEvent(),
-      ADD_CLUE_CUSTOMER: InitFormAddContactCusEvent(id),
-      ADD_CHANCE_CUSTOMER: InitFormAddOppCusEvent(id),
-      ADD_CONTRACT_CUS: InitFormAddContractCusEvent(id),
-      ADD_JOB_CUSTOMER: InitFormAddJobCusEvent(id),
-      ADD_SUPPORT_CUSTOMER: InitFormAddSupportCusEvent(id),
+      ADD_CLUE_CUSTOMER: InitFormAddContactCusEvent(_id),
+      ADD_CHANCE_CUSTOMER: InitFormAddOppCusEvent(_id),
+      ADD_CONTRACT_CUS: InitFormAddContractCusEvent(_id),
+      ADD_JOB_CUSTOMER: InitFormAddJobCusEvent(_id),
+      ADD_SUPPORT_CUSTOMER: InitFormAddSupportCusEvent(_id),
       ADD_CLUE: InitFormAddAgencyEvent(),
       ADD_CHANCE: InitFormAddChanceEvent(),
-      ADD_CONTRACT: InitFormAddContractEvent(id: id),
+      ADD_CONTRACT: InitFormAddContractEvent(id: _id),
       ADD_JOB: InitFormAddJobEvent(),
       ADD_SUPPORT: InitFormAddSupportEvent(),
-      ADD_CLUE_JOB: InitFormAddJobOppEvent(id),
-      ADD_CHANCE_JOB: InitFormAddJobChanceEvent(id),
-      ADD_SUPPORT_CONTRACT: InitFormAddSupportContractEvent(id),
-      ADD_JOB_CONTRACT: InitFormAddJobContractEvent(id),
+      ADD_CLUE_JOB: InitFormAddJobOppEvent(_id),
+      ADD_CHANCE_JOB: InitFormAddJobChanceEvent(_id),
+      ADD_SUPPORT_CONTRACT: InitFormAddSupportContractEvent(_id),
+      ADD_JOB_CONTRACT: InitFormAddJobContractEvent(_id),
       PRODUCT_TYPE: InitFormAddProductEvent(),
       PRODUCT_CUSTOMER_TYPE:
-          InitFormAddProductCustomerEvent(idCustomer: int.tryParse(id)),
+          InitFormAddProductCustomerEvent(idCustomer: int.tryParse(_id)),
       CH_PRODUCT_CUSTOMER_TYPE:
-          InitFormAddCHProductCustomerEvent(int.tryParse(id) ?? 0),
+          InitFormAddCHProductCustomerEvent(int.tryParse(_id) ?? 0),
       CV_PRODUCT_CUSTOMER_TYPE:
-          InitFormAddCVProductCustomerEvent(int.tryParse(id) ?? 0),
+          InitFormAddCVProductCustomerEvent(int.tryParse(_id) ?? 0),
       HT_PRODUCT_CUSTOMER_TYPE:
-          InitFormAddHTProductCustomerEvent(int.tryParse(id) ?? 0),
+          InitFormAddHTProductCustomerEvent(int.tryParse(_id) ?? 0),
       HD_PRODUCT_CUSTOMER_TYPE:
-          InitFormAddHDProductCustomerEvent(int.tryParse(id) ?? 0),
-      ADD_QUICK_CONTRACT: InitFormAddQuickContract(sdt, bienSo),
-      EDIT_CUSTOMER: InitFormEditCusEvent(id),
-      EDIT_CLUE: InitFormEditClueEvent(id),
-      EDIT_CHANCE: InitFormEditChanceEvent(id),
-      EDIT_CONTRACT: InitFormEditContractEvent(id),
-      EDIT_JOB: InitFormEditJobEvent(id),
-      EDIT_SUPPORT: InitFormEditSupportEvent(id),
-      PRODUCT_TYPE_EDIT: InitFormEditProductEvent(id),
-      PRODUCT_CUSTOMER_TYPE_EDIT: InitFormEditProductCustomerEvent(id),
+          InitFormAddHDProductCustomerEvent(int.tryParse(_id) ?? 0),
+      ADD_QUICK_CONTRACT: InitFormAddQuickContract(_sdt, _bienSo),
+      EDIT_CUSTOMER: InitFormEditCusEvent(_id),
+      EDIT_CLUE: InitFormEditClueEvent(_id),
+      EDIT_CHANCE: InitFormEditChanceEvent(_id),
+      EDIT_CONTRACT: InitFormEditContractEvent(_id),
+      EDIT_JOB: InitFormEditJobEvent(_id),
+      EDIT_SUPPORT: InitFormEditSupportEvent(_id),
+      PRODUCT_TYPE_EDIT: InitFormEditProductEvent(_id),
+      PRODUCT_CUSTOMER_TYPE_EDIT: InitFormEditProductCustomerEvent(_id),
     };
 
     if (eventMap.containsKey(type)) {
@@ -159,10 +157,10 @@ class _FormAddDataState extends State<FormAddData> {
     }
   }
 
-  void loadUser() async {
+  void _loadUser() async {
     final response = await shareLocal.getString(PreferencesKey.USER);
     if (response != null) {
-      idUserLocal =
+      _idUserLocal =
           LoginData.fromJson(jsonDecode(response)).info_user?.user_id ?? '';
     }
   }
@@ -180,25 +178,25 @@ class _FormAddDataState extends State<FormAddData> {
 
   @override
   void dispose() {
-    nameLocation.close();
+    _nameLocation.close();
     _blocAdd.close();
     super.dispose();
   }
 
-  getNameLocation() async {
-    position = await determinePosition(context);
-    if (position != null) {
-      nameLocation.add(LOADING);
+  _getNameLocation() async {
+    _position = await determinePosition(context);
+    if (_position != null) {
+      _nameLocation.add(LOADING);
       final location = await getLocationName(
-          position?.latitude ?? 0, position?.longitude ?? 0);
-      nameLocation.add(location);
+          _position?.latitude ?? 0, _position?.longitude ?? 0);
+      _nameLocation.add(location);
     }
   }
 
   _location() {
-    return isCheckIn
+    return _isCheckIn
         ? StreamBuilder<String>(
-            stream: nameLocation,
+            stream: _nameLocation,
             builder: (context, snapshot) {
               final location = snapshot.data ?? '';
               return Column(
@@ -259,7 +257,7 @@ class _FormAddDataState extends State<FormAddData> {
                   if (location == '')
                     GestureDetector(
                       onTap: () async {
-                        await getNameLocation();
+                        await _getNameLocation();
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(
@@ -290,7 +288,7 @@ class _FormAddDataState extends State<FormAddData> {
                       children: [
                         GestureDetector(
                           onTap: () async {
-                            await getNameLocation();
+                            await _getNameLocation();
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
@@ -320,7 +318,7 @@ class _FormAddDataState extends State<FormAddData> {
                         ),
                         GestureDetector(
                           onTap: () async {
-                            nameLocation.add('');
+                            _nameLocation.add('');
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
@@ -414,30 +412,30 @@ class _FormAddDataState extends State<FormAddData> {
         : SizedBox();
   }
 
-  addProduct(ProductModel data) {
+  _addProduct(ProductModel data) {
     bool check = false;
-    for (int i = 0; i < listProduct.length; i++) {
-      if (data.id == listProduct[i].id &&
-          data.item.combo_id == listProduct[i].item.combo_id) {
+    for (int i = 0; i < _listProduct.length; i++) {
+      if (data.id == _listProduct[i].id &&
+          data.item.combo_id == _listProduct[i].item.combo_id) {
         check = true;
         break;
       }
     }
     if (!check) {
-      listProduct.add(data);
+      _listProduct.add(data);
     }
   }
 
-  reload() {
-    total = 0;
-    for (int i = 0; i < listProduct.length; i++) {
-      total += listProduct[i].intoMoney ?? 0;
+  _reload() {
+    _total = 0;
+    for (int i = 0; i < _listProduct.length; i++) {
+      _total += _listProduct[i].intoMoney ?? 0;
     }
     _totalBloc.getPaid();
-    _totalBloc.add(InitTotalEvent(total));
+    _totalBloc.add(InitTotalEvent(_total));
   }
 
-  void handleNavigationAndReloadData(
+  _handleNavigationAndReloadData(
     String type,
     BuildContext context,
     SuccessAddData state,
@@ -451,7 +449,7 @@ class _FormAddDataState extends State<FormAddData> {
         break;
       case ADD_CONTRACT:
         ContractBloc.of(context).loadMoreController.reloadData();
-        if (product != null) AppNavigator.navigateContract();
+        if (_product != null) AppNavigator.navigateContract();
         break;
       case ADD_JOB:
         WorkBloc.of(context).loadMoreController.reloadData();
@@ -463,7 +461,7 @@ class _FormAddDataState extends State<FormAddData> {
         ProductModuleBloc.of(context).loadMoreController.reloadData();
         break;
       case PRODUCT_CUSTOMER_TYPE:
-        if (isGetData) {
+        if (_isGetData) {
           Navigator.of(context)
             ..pop()
             ..pop([state.dataSPKH, state.idKH]);
@@ -488,7 +486,7 @@ class _FormAddDataState extends State<FormAddData> {
         break;
       case EDIT_CHANCE:
         GetListDetailChanceBloc.of(context)
-            .add(InitGetListDetailEvent(int.tryParse(id) ?? 0));
+            .add(InitGetListDetailEvent(int.tryParse(_id) ?? 0));
         GetListChanceBloc.of(context).loadMoreController.reloadData();
         break;
       case EDIT_JOB:
@@ -497,19 +495,19 @@ class _FormAddDataState extends State<FormAddData> {
       case EDIT_CONTRACT:
         ContractBloc.of(context).add(InitGetContractEvent());
         DetailContractBloc.of(context)
-            .add(InitGetDetailContractEvent(int.tryParse(id) ?? 0));
+            .add(InitGetDetailContractEvent(int.tryParse(_id) ?? 0));
         break;
       case EDIT_SUPPORT:
         SupportBloc.of(context).add(InitGetSupportEvent());
         break;
       case PRODUCT_TYPE_EDIT:
         ProductModuleBloc.of(context).loadMoreController.reloadData();
-        DetailProductBloc.of(context).add(InitGetDetailProductEvent(id));
+        DetailProductBloc.of(context).add(InitGetDetailProductEvent(_id));
         break;
       case PRODUCT_CUSTOMER_TYPE_EDIT:
         ProductCustomerModuleBloc.of(context).loadMoreController.reloadData();
         DetailProductCustomerBloc.of(context)
-            .add(InitGetDetailProductCustomerEvent(id));
+            .add(InitGetDetailProductCustomerEvent(_id));
         break;
       case EDIT_CUSTOMER:
         GetListCustomerBloc.of(context).loadMoreController.reloadData();
@@ -531,7 +529,7 @@ class _FormAddDataState extends State<FormAddData> {
     return Stack(
       children: [
         Scaffold(
-          appBar: AppbarBaseNormal(title.toUpperCase().capitalizeFirst ?? ''),
+          appBar: AppbarBaseNormal(_title.toUpperCase().capitalizeFirst ?? ''),
           body: BlocListener<AddDataBloc, AddDataState>(
             bloc: _blocAdd,
             listener: (context, state) {
@@ -543,14 +541,14 @@ class _FormAddDataState extends State<FormAddData> {
                       ? getT(KeyT.update_data_successfully)
                       : getT(KeyT.new_data_added_successfully),
                   onTap1: () {
-                    if (!isGetData &&
-                        type != ADD_CUSTOMER &&
-                        type != ADD_CUSTOMER_OR) {
+                    if (!_isGetData &&
+                        _type != ADD_CUSTOMER &&
+                        _type != ADD_CUSTOMER_OR) {
                       Navigator.of(context)
                         ..pop()
                         ..pop(true);
                     }
-                    handleNavigationAndReloadData(type, context, state);
+                    _handleNavigationAndReloadData(_type, context, state);
                   },
                 );
               } else if (state is ErrorAddData) {
@@ -572,7 +570,8 @@ class _FormAddDataState extends State<FormAddData> {
                       bloc: _bloc,
                       builder: (context, state) {
                         if (state is LoadingForm) {
-                          addData = [];
+                          _addData = [];
+                          _listProduct = [];
                           return SizedBox.shrink();
                         } else if (state is ErrorForm) {
                           return Text(
@@ -580,31 +579,58 @@ class _FormAddDataState extends State<FormAddData> {
                             style: AppStyle.DEFAULT_16_T,
                           );
                         } else if (state is SuccessForm) {
-                          if (addData.isEmpty) {
-                            for (int i = 0; i < state.listAddData.length; i++) {
-                              addData.add(
+                          final List<AddCustomerIndividualData> _listAddData =
+                              state.listAddData;
+
+                          if (_addData.isEmpty) {
+                            for (int i = 0; i < _listAddData.length; i++) {
+                              //
+                              _addData.add(
                                 ModelItemAdd(
-                                  group_name:
-                                      state.listAddData[i].group_name ?? '',
+                                  group_name: _listAddData[i].group_name ?? '',
                                   data: [],
                                 ),
                               );
+                              //
                               for (int j = 0;
-                                  j < state.listAddData[i].data!.length;
+                                  j < (_listAddData[i].data?.length ?? 0);
                                   j++) {
-                                addData[i].data.add(
+                                CustomerIndividualItemData _item =
+                                    _listAddData[i].data![j];
+                                //
+                                _item.products?.forEach((_element) {
+                                  _listProduct.add(
+                                    ProductModel(
+                                      _element.id_product.toString(),
+                                      double.tryParse(
+                                              _element.quantity ?? '') ??
+                                          0,
+                                      ProductItem(
+                                        _element.id_product.toString(),
+                                        '',
+                                        '',
+                                        _element.name_product,
+                                        _element.unit.toString(),
+                                        _element.vat,
+                                        _element.price,
+                                      ),
+                                      _element.sale_off.value ?? '',
+                                      _element.unit_name ?? '',
+                                      _element.vat_name ?? '',
+                                      _element.sale_off.type ?? '',
+                                    ),
+                                  );
+                                });
+
+                                //
+                                _addData[i].data.add(
                                       ModelDataAdd(
-                                        label: state
-                                            .listAddData[i].data![j].field_name,
-                                        value: state.listAddData[i].data![j]
-                                            .field_set_value
-                                            .toString(),
-                                        required: state.listAddData[i].data![j]
-                                            .field_require,
-                                        txtValidate: state.listAddData[i]
-                                            .data![j].field_validation_message,
-                                        type: state
-                                            .listAddData[i].data![j].field_type,
+                                        label: _item.field_name,
+                                        value: _item.field_set_value.toString(),
+                                        required: _item.field_require,
+                                        txtValidate:
+                                            _item.field_validation_message,
+                                        type: _item.field_type,
                                       ),
                                     );
                               }
@@ -615,61 +641,47 @@ class _FormAddDataState extends State<FormAddData> {
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: List.generate(
-                                    state.listAddData.length,
-                                    (indexParent) => (state
-                                                    .listAddData[indexParent]
-                                                    .data !=
-                                                null &&
-                                            state.listAddData[indexParent].data!
-                                                    .length >
-                                                0)
-                                        ? Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                height: AppValue.heights * 0.01,
-                                              ),
-                                              state.listAddData[indexParent]
-                                                          .group_name !=
-                                                      null
-                                                  ? WidgetText(
-                                                      title: state
-                                                              .listAddData[
-                                                                  indexParent]
-                                                              .group_name ??
-                                                          '',
-                                                      style: AppStyle
-                                                          .DEFAULT_18_BOLD,
-                                                    )
-                                                  : SizedBox.shrink(),
-                                              SizedBox(
-                                                height: AppValue.heights * 0.01,
-                                              ),
-                                              Column(
-                                                children: List.generate(
-                                                    state
-                                                            .listAddData[
-                                                                indexParent]
-                                                            .data
-                                                            ?.length ??
-                                                        0, (indexChild) {
-                                                  return _getBody(
-                                                    state
-                                                        .listAddData[
-                                                            indexParent]
-                                                        .data![indexChild],
-                                                    indexParent,
-                                                    indexChild,
-                                                  );
-                                                }),
-                                              )
-                                            ],
-                                          )
-                                        : SizedBox.shrink()),
+                                children: List.generate(_listAddData.length,
+                                    (indexParent) {
+                                  final itemParent = _listAddData[indexParent];
+                                  return (itemParent.data != null &&
+                                          (itemParent.data?.length ?? 0) > 0)
+                                      ? Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              height: AppValue.heights * 0.01,
+                                            ),
+                                            itemParent.group_name != null
+                                                ? WidgetText(
+                                                    title:
+                                                        itemParent.group_name ??
+                                                            '',
+                                                    style: AppStyle
+                                                        .DEFAULT_18_BOLD,
+                                                  )
+                                                : SizedBox.shrink(),
+                                            SizedBox(
+                                              height: AppValue.heights * 0.01,
+                                            ),
+                                            Column(
+                                              children: List.generate(
+                                                  itemParent.data?.length ?? 0,
+                                                  (indexChild) {
+                                                return _getBody(
+                                                  itemParent.data![indexChild],
+                                                  indexParent,
+                                                  indexChild,
+                                                );
+                                              }),
+                                            )
+                                          ],
+                                        )
+                                      : SizedBox.shrink();
+                                }),
                               ),
-                              if (!isGetData)
+                              if (!_isGetData)
                                 FileDinhKemUiBase(
                                   context: context,
                                 ),
@@ -678,8 +690,8 @@ class _FormAddDataState extends State<FormAddData> {
                               ),
                               FileLuuBase(
                                 context,
-                                () => onClickSave(),
-                                isAttack: !isGetData,
+                                () => _onClickSave(),
+                                isAttack: !_isGetData,
                               ),
                             ],
                           );
@@ -704,33 +716,32 @@ class _FormAddDataState extends State<FormAddData> {
         ? data.field_special == 'url'
             ? ProductContract(
                 listBtn: data.button,
-                data: listProduct,
-                addProduct: addProduct,
-                reload: reload,
-                neverHidden: true,
-                canDelete: true,
+                data: _listProduct,
+                addProduct: _addProduct,
+                reload: _reload,
+                isDelete: true,
               )
             : data.field_name == 'chi_tiet_xe' //chọn chi tiết xe
                 ? data.field_parent != null
                     ? StreamBuilder<String>(
-                        stream: reloadStream,
+                        stream: _reloadStream,
                         builder: (context, snapshot) {
                           return TypeCarBase(
                             data: data,
                             bloc: _blocService,
                             function: (v) {
-                              addData[indexParent].data[indexChild].value = v;
+                              _addData[indexParent].data[indexChild].value = v;
                             },
-                            addData: addData,
+                            addData: _addData,
                           );
                         })
                     : TypeCarBase(
                         data: data,
                         bloc: _blocService,
                         function: (v) {
-                          addData[indexParent].data[indexChild].value = v;
+                          _addData[indexParent].data[indexChild].value = v;
                         },
-                        addData: addData,
+                        addData: _addData,
                       )
                 : data.field_type == 'TEXT' || data.field_type == 'TEXTAREA'
                     ? _blocService.getInput(data.field_name ?? '')
@@ -743,20 +754,20 @@ class _FormAddDataState extends State<FormAddData> {
                                 _blocService
                                     .getDataSelectCar(data.field_name ?? ''),
                                 (v) {
-                                  addData[indexParent].data[indexChild].value =
+                                  _addData[indexParent].data[indexChild].value =
                                       v;
                                 },
                               );
                             })
                         : data.field_parent != null
                             ? StreamBuilder<String>(
-                                stream: reloadStream,
+                                stream: _reloadStream,
                                 builder: (context, snapshot) {
                                   return FieldTextAPi(
-                                    addData: addData,
+                                    addData: _addData,
                                     data: data,
                                     onChange: (v) {
-                                      addData[indexParent]
+                                      _addData[indexParent]
                                           .data[indexChild]
                                           .value = v;
                                     },
@@ -765,7 +776,7 @@ class _FormAddDataState extends State<FormAddData> {
                             : FieldText(
                                 data: data,
                                 onChange: (v) {
-                                  addData[indexParent].data[indexChild].value =
+                                  _addData[indexParent].data[indexChild].value =
                                       v;
                                 },
                               )
@@ -780,7 +791,7 @@ class _FormAddDataState extends State<FormAddData> {
                                     _blocService.getDataSelectCar(
                                         data.field_name ?? ''),
                                     (v) {
-                                      addData[indexParent]
+                                      _addData[indexParent]
                                           .data[indexChild]
                                           .value = v;
                                     },
@@ -790,7 +801,7 @@ class _FormAddDataState extends State<FormAddData> {
                                 ? LocationWidget(
                                     data: data,
                                     onSuccess: (v) {
-                                      addData[indexParent]
+                                      _addData[indexParent]
                                           .data[indexChild]
                                           .value = v;
                                     },
@@ -798,13 +809,13 @@ class _FormAddDataState extends State<FormAddData> {
                                   )
                                 : data.field_parent != null // TH reload api
                                     ? StreamBuilder<String>(
-                                        stream: reloadStream,
+                                        stream: _reloadStream,
                                         builder: (context, snapshot) {
                                           return InputDropdownBase(
                                             data: data,
-                                            addData: addData,
+                                            addData: _addData,
                                             onChange: (v) {
-                                              addData[indexParent]
+                                              _addData[indexParent]
                                                   .data[indexChild]
                                                   .value = v;
                                             },
@@ -819,13 +830,13 @@ class _FormAddDataState extends State<FormAddData> {
                                               } else {
                                                 return InputDropdownBase(
                                                   data: data,
-                                                  addData: addData,
+                                                  addData: _addData,
                                                   onChange: (v) {
-                                                    addData[indexParent]
+                                                    _addData[indexParent]
                                                         .data[indexChild]
                                                         .value = v;
                                                     if (data.is_load == true)
-                                                      reloadStream.add(
+                                                      _reloadStream.add(
                                                           '${data.field_name}$v');
                                                   },
                                                 );
@@ -833,13 +844,13 @@ class _FormAddDataState extends State<FormAddData> {
                                             })
                                         : InputDropdownBase(
                                             data: data,
-                                            addData: addData,
+                                            addData: _addData,
                                             onChange: (v) {
-                                              addData[indexParent]
+                                              _addData[indexParent]
                                                   .data[indexChild]
                                                   .value = v;
                                               if (data.is_load == true)
-                                                reloadStream.add(
+                                                _reloadStream.add(
                                                     '${data.field_name}$v');
                                             },
                                           )
@@ -849,13 +860,13 @@ class _FormAddDataState extends State<FormAddData> {
                                 label: data.field_label ?? '',
                                 required: data.field_require ?? 0,
                                 maxLength: data.field_maxlength ?? '',
-                                initValue: addData[indexParent]
+                                initValue: _addData[indexParent]
                                     .data[indexChild]
                                     .value
                                     .toString()
                                     .split(','),
                                 onChange: (data) {
-                                  addData[indexParent].data[indexChild].value =
+                                  _addData[indexParent].data[indexChild].value =
                                       data;
                                 },
                               )
@@ -863,7 +874,7 @@ class _FormAddDataState extends State<FormAddData> {
                                 ? InputMultipleWidget(
                                     data: data,
                                     onSelect: (data) {
-                                      addData[indexParent]
+                                      _addData[indexParent]
                                           .data[indexChild]
                                           .value = data.join(',');
                                     },
@@ -877,12 +888,12 @@ class _FormAddDataState extends State<FormAddData> {
                                         data: data,
                                         dateText: data.field_set_value,
                                         onSelect: (int date) {
-                                          addData[indexParent]
+                                          _addData[indexParent]
                                               .data[indexChild]
                                               .value = date;
                                         },
                                         onInit: (v) {
-                                          addData[indexParent]
+                                          _addData[indexParent]
                                               .data[indexChild]
                                               .value = v;
                                         },
@@ -893,12 +904,12 @@ class _FormAddDataState extends State<FormAddData> {
                                             data: data,
                                             dateText: data.field_set_value,
                                             onSelect: (int date) {
-                                              addData[indexParent]
+                                              _addData[indexParent]
                                                   .data[indexChild]
                                                   .value = date;
                                             },
                                             onInit: (v) {
-                                              addData[indexParent]
+                                              _addData[indexParent]
                                                   .data[indexChild]
                                                   .value = v;
                                             },
@@ -906,7 +917,7 @@ class _FormAddDataState extends State<FormAddData> {
                                         : data.field_type == 'CHECK'
                                             ? RenderCheckBox(
                                                 onChange: (check) {
-                                                  addData[indexParent]
+                                                  _addData[indexParent]
                                                       .data[indexChild]
                                                       .value = check ? 1 : 0;
                                                 },
@@ -916,7 +927,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                 ? FieldInputPercent(
                                                     data: data,
                                                     onChanged: (text) {
-                                                      addData[indexParent]
+                                                      _addData[indexParent]
                                                           .data[indexChild]
                                                           .value = text;
                                                     },
@@ -932,7 +943,8 @@ class _FormAddDataState extends State<FormAddData> {
                                                                 snapshot) {
                                                               final value =
                                                                   snapshot.data;
-                                                              addData[indexParent]
+                                                              _addData[
+                                                                      indexParent]
                                                                   .data[
                                                                       indexChild]
                                                                   .value = value;
@@ -958,7 +970,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                                         stateA) {
                                                                 if (stateA
                                                                     is SuccessTotalState) {
-                                                                  addData[indexParent]
+                                                                  _addData[indexParent]
                                                                           .data[
                                                                               indexChild]
                                                                           .value =
@@ -993,7 +1005,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                                 ? StreamBuilder<
                                                                         String>(
                                                                     stream:
-                                                                        reloadStream,
+                                                                        _reloadStream,
                                                                     builder:
                                                                         (context,
                                                                             snapshot) {
@@ -1001,12 +1013,12 @@ class _FormAddDataState extends State<FormAddData> {
                                                                         typeInput:
                                                                             TextInputType.number,
                                                                         addData:
-                                                                            addData,
+                                                                            _addData,
                                                                         data:
                                                                             data,
                                                                         onChange:
                                                                             (v) {
-                                                                          addData[indexParent]
+                                                                          _addData[indexParent]
                                                                               .data[indexChild]
                                                                               .value = v;
                                                                         },
@@ -1025,7 +1037,8 @@ class _FormAddDataState extends State<FormAddData> {
                                                                         _totalBloc
                                                                             .getPaid();
                                                                       }
-                                                                      addData[indexParent]
+                                                                      _addData[
+                                                                              indexParent]
                                                                           .data[
                                                                               indexChild]
                                                                           .value = v;
@@ -1041,7 +1054,8 @@ class _FormAddDataState extends State<FormAddData> {
                                                                 : null,
                                                             data: data,
                                                             onChange: (v) {
-                                                              addData[indexParent]
+                                                              _addData[
+                                                                      indexParent]
                                                                   .data[
                                                                       indexChild]
                                                                   .value = v;
@@ -1055,24 +1069,24 @@ class _FormAddDataState extends State<FormAddData> {
     return (data == null || data == 'null' || data == '');
   }
 
-  void onClickSave() async {
+  void _onClickSave() async {
     final Map<String, dynamic> data = {};
     final Map<String, dynamic> dataFile = {};
 
     bool isCheckValidate = false;
     String? txtValidate;
 
-    for (int i = 0; i < addData.length; i++) {
-      for (int j = 0; j < addData[i].data.length; j++) {
-        final valueAdd = addData[i].data[j].value;
-        final labelAdd = addData[i].data[j].label;
-        final typeAdd = addData[i].data[j].type;
-        final txtValidateAdd = addData[i].data[j].txtValidate;
-        final isRequiredAdd = addData[i].data[j].required == 1;
+    for (int i = 0; i < _addData.length; i++) {
+      for (int j = 0; j < _addData[i].data.length; j++) {
+        final valueAdd = _addData[i].data[j].value;
+        final labelAdd = _addData[i].data[j].label;
+        final typeAdd = _addData[i].data[j].type;
+        final txtValidateAdd = _addData[i].data[j].txtValidate;
+        final isRequiredAdd = _addData[i].data[j].required == 1;
 
         if (_isNull(valueAdd) &&
             isRequiredAdd &&
-            !(isGetData && labelAdd == 'khach_hang_sp')) {
+            !(_isGetData && labelAdd == 'khach_hang_sp')) {
           isCheckValidate = true;
           txtValidate = txtValidateAdd;
           break;
@@ -1098,18 +1112,18 @@ class _FormAddDataState extends State<FormAddData> {
       }
     }
 
-    if (isCheckIn) {
+    if (_isCheckIn) {
       if (_controllerTextNoteLocation.text.isNotEmpty) {
-        data['longitude'] = position?.longitude.toString();
-        data['latitude'] = position?.latitude.toString();
+        data['longitude'] = _position?.longitude.toString();
+        data['latitude'] = _position?.latitude.toString();
         data['note_location'] = _controllerTextNoteLocation.text;
-        data['type'] = typeCheckIn;
+        data['type'] = _typeCheckIn;
       } else {
         isCheckValidate = true;
       }
     }
 
-    if (_totalBloc.unpaidStream.value < 0 && type == ADD_CONTRACT) {
+    if (_totalBloc.unpaidStream.value < 0 && _type == ADD_CONTRACT) {
       isCheckValidate = true;
     }
 
@@ -1124,27 +1138,27 @@ class _FormAddDataState extends State<FormAddData> {
                     : '')),
       );
     } else {
-      if (listProduct.isNotEmpty) {
+      if (_listProduct.isNotEmpty) {
         List product = [];
-        for (int i = 0; i < listProduct.length; i++) {
+        for (int i = 0; i < _listProduct.length; i++) {
           product.add({
-            'id': listProduct[i].id,
-            'price': listProduct[i].item.sell_price,
-            'quantity': listProduct[i].soLuong,
-            'vat': listProduct[i].item.vat,
-            'unit': listProduct[i].item.dvt,
-            'ten_combo': listProduct[i].item.ten_combo,
-            'combo_id': listProduct[i].item.combo_id,
+            'id': _listProduct[i].id,
+            'price': _listProduct[i].item.sell_price,
+            'quantity': _listProduct[i].soLuong,
+            'vat': _listProduct[i].item.vat,
+            'unit': _listProduct[i].item.dvt,
+            'ten_combo': _listProduct[i].item.ten_combo,
+            'combo_id': _listProduct[i].item.combo_id,
             'sale_off': {
-              'value': listProduct[i].giamGia,
-              'type': listProduct[i].typeGiamGia
+              'value': _listProduct[i].giamGia,
+              'type': _listProduct[i].typeGiamGia
             }
           });
         }
         data['products'] = product;
       }
 
-      switch (type) {
+      switch (_type) {
         case ADD_CUSTOMER_OR:
           _blocAdd.add(AddCustomerOrEvent(data, files: _attackBloc.listFile));
           break;
@@ -1152,25 +1166,25 @@ class _FormAddDataState extends State<FormAddData> {
           _blocAdd.add(AddCustomerEvent(data, files: _attackBloc.listFile));
           break;
         case ADD_CLUE_CUSTOMER:
-          data['customer_id'] = id;
+          data['customer_id'] = _id;
           _blocAdd
               .add(AddContactCustomerEvent(data, files: _attackBloc.listFile));
           break;
         case ADD_CHANCE_CUSTOMER:
-          data['customer_id'] = id;
+          data['customer_id'] = _id;
           _blocAdd.add(AddOpportunityEvent(data, files: _attackBloc.listFile));
           break;
         case ADD_CONTRACT_CUS:
-          data['customer_id'] = id;
+          data['customer_id'] = _id;
           _blocAdd.add(AddContractEvent(data, files: _attackBloc.listFile));
           break;
         case ADD_JOB_CUSTOMER:
-          data['customer_id'] = id;
+          data['customer_id'] = _id;
           _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
           break;
         case ADD_SUPPORT_CUSTOMER:
-          data['customer_id'] = id;
-          data['nguoi_xu_lht'] = idUserLocal;
+          data['customer_id'] = _id;
+          data['nguoi_xu_lht'] = _idUserLocal;
           _blocAdd.add(AddSupportEvent(data, files: _attackBloc.listFile));
           break;
         case ADD_CLUE:
@@ -1190,24 +1204,24 @@ class _FormAddDataState extends State<FormAddData> {
           _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
           break;
         case ADD_SUPPORT:
-          data['nguoi_xu_lht'] = idUserLocal;
+          data['nguoi_xu_lht'] = _idUserLocal;
           _blocAdd.add(AddSupportEvent(data, files: _attackBloc.listFile));
           break;
         case ADD_CLUE_JOB:
-          data['daumoi_id'] = id;
+          data['daumoi_id'] = _id;
           _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
           break;
         case ADD_CHANCE_JOB:
-          data['cohoi_id'] = id;
+          data['cohoi_id'] = _id;
           _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
           break;
         case ADD_SUPPORT_CONTRACT:
-          data['hopdong_id'] = id;
-          data['nguoi_xu_lht'] = idUserLocal;
+          data['hopdong_id'] = _id;
+          data['nguoi_xu_lht'] = _idUserLocal;
           _blocAdd.add(AddSupportEvent(data, files: _attackBloc.listFile));
           break;
         case ADD_JOB_CONTRACT:
-          data['hopdong_id'] = id;
+          data['hopdong_id'] = _id;
           _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
           break;
         case PRODUCT_TYPE:
@@ -1222,7 +1236,7 @@ class _FormAddDataState extends State<FormAddData> {
           );
           break;
         case PRODUCT_CUSTOMER_TYPE:
-          if (isGetData) {
+          if (_isGetData) {
             bool check = await _blocService.checkHasCar(data['bien_so']);
             if (check) {
               ShowDialogCustom.showDialogBase(
@@ -1239,64 +1253,64 @@ class _FormAddDataState extends State<FormAddData> {
           }
           break;
         case CV_PRODUCT_CUSTOMER_TYPE:
-          data['customer_id'] = id;
+          data['customer_id'] = _id;
           _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
           break;
         case HT_PRODUCT_CUSTOMER_TYPE:
-          data['customer_id'] = id;
-          data['nguoi_xu_lht'] = idUserLocal;
+          data['customer_id'] = _id;
+          data['nguoi_xu_lht'] = _idUserLocal;
           _blocAdd.add(AddSupportEvent(data, files: _attackBloc.listFile));
           break;
         case HD_PRODUCT_CUSTOMER_TYPE:
-          data['customer_id'] = id;
+          data['customer_id'] = _id;
           _blocAdd.add(AddContractEvent(data, files: _attackBloc.listFile));
           break;
         case CH_PRODUCT_CUSTOMER_TYPE:
-          data['customer_id'] = id;
+          data['customer_id'] = _id;
           _blocAdd.add(AddOpportunityEvent(data, files: _attackBloc.listFile));
           break;
         case ADD_QUICK_CONTRACT:
           _blocAdd.add(QuickContractSaveEvent(data, _attackBloc.listFile));
           break;
         default:
-          data['id'] = id;
-          if (type == EDIT_CUSTOMER) {
+          data['id'] = _id;
+          if (_type == EDIT_CUSTOMER) {
             _blocAdd.add(EditCustomerEvent(data, files: _attackBloc.listFile));
-          } else if (type == EDIT_CLUE) {
+          } else if (_type == EDIT_CLUE) {
             _blocAdd.add(AddContactCustomerEvent(
               data,
               files: _attackBloc.listFile,
               isEdit: true,
             ));
-          } else if (type == EDIT_CHANCE) {
+          } else if (_type == EDIT_CHANCE) {
             _blocAdd.add(AddOpportunityEvent(
               data,
               files: _attackBloc.listFile,
               isEdit: true,
             ));
-          } else if (type == EDIT_CONTRACT) {
+          } else if (_type == EDIT_CONTRACT) {
             _blocAdd.add(AddContractEvent(
               data,
               files: _attackBloc.listFile,
               isEdit: true,
             ));
-          } else if (type == EDIT_JOB) {
+          } else if (_type == EDIT_JOB) {
             _blocAdd.add(EditJobEvent(data, files: _attackBloc.listFile));
-          } else if (type == EDIT_SUPPORT) {
+          } else if (_type == EDIT_SUPPORT) {
             _blocAdd.add(AddSupportEvent(
               data,
               files: _attackBloc.listFile,
               isEdit: true,
             ));
-          } else if (type == PRODUCT_TYPE_EDIT) {
+          } else if (_type == PRODUCT_TYPE_EDIT) {
             _blocAdd.add(EditProductEvent(
                 FormDataCustom.formMap(
                   data,
                   dataFile,
                 ),
-                int.tryParse(id) ?? 0,
+                int.tryParse(_id) ?? 0,
                 files: _attackBloc.listFile));
-          } else if (type == PRODUCT_CUSTOMER_TYPE_EDIT) {
+          } else if (_type == PRODUCT_CUSTOMER_TYPE_EDIT) {
             _blocAdd.add(
                 EditProductCustomerEvent(data, files: _attackBloc.listFile));
           }

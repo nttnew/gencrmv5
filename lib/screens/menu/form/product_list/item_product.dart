@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gen_crm/screens/menu/form/product_list/function_product/click_so_luong.dart';
 import 'package:gen_crm/screens/menu/form/product_list/function_product/click_vat.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
+import 'package:gen_crm/src/string_ext.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../models/product_model.dart';
@@ -19,14 +20,13 @@ class ItemProduct extends StatefulWidget {
     required this.data,
     required this.listDvt,
     required this.listVat,
-    required this.neverHidden,
     required this.onChangeQuantity,
     required this.onDVT,
     required this.onVAT,
     required this.onGiamGia,
     required this.onPrice,
     required this.model,
-    this.canDelete = false,
+    this.isDelete = false,
     required this.onDelete,
     required this.onIntoMoney,
     required this.onReload,
@@ -41,10 +41,9 @@ class ItemProduct extends StatefulWidget {
   final Function onGiamGia;
   final Function onPrice;
   final Function(double) onIntoMoney;
-  final Function() onReload;
+  final Function(bool) onReload;
   final ProductModel model;
-  final bool neverHidden;
-  final bool canDelete;
+  final bool isDelete;
   final Function(ProductModel productModel) onDelete;
 
   @override
@@ -52,80 +51,80 @@ class ItemProduct extends StatefulWidget {
 }
 
 class _ItemProductState extends State<ItemProduct> {
-  String price = '';
-  bool isTypeGiamGIa = true;
-  bool typeGiamGiaDefault = true;
-  double intoMoney = 0;
-  String dvt = '';
-  String vat = '';
-  String giamGia = '0';
-  String soLuong = '0';
+  String _price = '';
+  bool _isTypeGiamGia = true;
+  bool _isTypeGiamGiaDefault = true;
+  double _thanhTien = 0;
+  String _donViTinh = '';
+  String _vat = '';
+  String _giamGia = '0';
+  String _soLuong = '0';
   TextEditingController _giamGiaController = TextEditingController();
   TextEditingController _priceController = TextEditingController();
   TextEditingController _soLuongController = TextEditingController();
   TextEditingController _intoMoneyController = TextEditingController();
-  String priceInit = '';
-  String countInit = '0';
-  String dvtInit = '';
-  String vatInit = '';
-  String saleInit = '0';
-  double intoMoneyInit = 0;
-  bool isTypeGiamGIaInit = true;
+  String _priceInit = '';
+  String _countInit = '0';
+  String _dvtInit = '';
+  String _vatInit = '';
+  String _saleInit = '0';
+  double _intoMoneyInit = 0;
+  bool _isTypeGiamGIaInit = true;
 
   @override
   void initState() {
-    int index =
+    int _index =
         widget.listDvt.indexWhere((element) => element[0] == widget.data.dvt);
-    int indexVat =
+    int _indexVat =
         widget.listVat.indexWhere((element) => element[0] == widget.data.vat);
-    price = widget.data.sell_price ?? '';
+    _price = widget.data.sell_price ?? '';
 
     /// init set color
-    priceInit = widget.data.sell_price ?? '';
+    _priceInit = widget.data.sell_price ?? '';
 
     ///
     if (widget.model.soLuong != 0) {
-      setState(() {
-        /// init set color
-        priceInit = widget.model.item.sell_price ?? '';
-        countInit = widget.model.soLuong.toString();
-        dvtInit = widget.model.nameDvt;
-        vatInit = widget.model.nameVat;
-        saleInit = widget.model.giamGia;
-        isTypeGiamGIaInit = widget.model.typeGiamGia == '%' ? false : true;
+      /// init set color
+      _priceInit = widget.model.item.sell_price ?? '';
+      _countInit = widget.model.soLuong.toString();
+      _dvtInit = widget.model.nameDvt;
+      _vatInit = widget.model.nameVat;
+      _saleInit = widget.model.giamGia;
+      _isTypeGiamGIaInit = widget.model.typeGiamGia == '%' ? false : true;
 
-        ///
-        dvt = widget.model.nameDvt;
-        vat = widget.model.nameVat;
-        giamGia = widget.model.giamGia;
-        isTypeGiamGIa = widget.model.typeGiamGia == '%' ? false : true;
-        soLuong = widget.model.soLuong.toString();
-        price = widget.model.item.sell_price ?? '';
-      });
-      widget.onDVT(widget.model.item.dvt, dvt);
-      widget.onVAT(widget.model.item.vat, vat);
+      ///
+      _donViTinh = widget.model.nameDvt;
+      _vat = widget.model.nameVat;
+      _giamGia = widget.model.giamGia;
+      _isTypeGiamGia = widget.model.typeGiamGia == '%' ? false : true;
+      _soLuong = widget.model.soLuong.toString();
+      _price = widget.model.item.sell_price ?? '';
+      widget.onDVT(widget.model.item.dvt, _donViTinh);
+      widget.onVAT(widget.model.item.vat, _vat);
     } else {
-      setState(() {
-        dvt = index != -1 ? widget.listDvt[index][1] : '';
-        vat = indexVat != -1 ? widget.listVat[indexVat][1] : '0';
-        soLuong = '0';
+      _donViTinh = _index != -1 ? widget.listDvt[_index][1] : '';
+      _vat = _indexVat != -1 ? widget.listVat[_indexVat][1] : '0';
+      _soLuong = '0';
 
-        /// init set color
-        dvtInit = index != -1 ? widget.listDvt[index][1] : '';
-        vatInit = indexVat != -1 ? widget.listVat[indexVat][1] : '0';
-        countInit = '0';
+      /// init set color
+      _dvtInit = _index != -1 ? widget.listDvt[_index][1] : '';
+      _vatInit = _indexVat != -1 ? widget.listVat[_indexVat][1] : '0';
+      _countInit = '0';
 
-        ///
-      });
-      widget.onDVT(widget.data.dvt, dvt);
-      widget.onVAT(widget.data.vat, vat);
+      ///
+      widget.onDVT(widget.data.dvt, _donViTinh);
+      widget.onVAT(widget.data.vat, _vat);
     }
 
     /// init set color
-    intoMoneyInit = widget.model.intoMoney ?? 0;
 
     ///
-    intoMoney = widget.model.intoMoney ?? 0;
+    if (widget.model.intoMoney == null) {
+      _getIntoMoney(isInit: true);
+    } else {
+      _thanhTien = widget.model.intoMoney ?? 0;
+      _intoMoneyInit = widget.model.intoMoney ?? 0;
+    }
     super.initState();
   }
 
@@ -133,97 +132,69 @@ class _ItemProductState extends State<ItemProduct> {
   void didUpdateWidget(covariant ItemProduct oldWidget) {
     final typeWidget = (widget.model.typeGiamGia == '%' ? false : true);
     if (oldWidget != widget) {
-      soLuong = widget.model.soLuong.toString();
-      price = widget.model.item.sell_price ?? '';
-      dvt = widget.model.nameDvt;
-      vat = widget.model.nameVat;
-      giamGia = widget.model.giamGia;
-      if (typeGiamGiaDefault != typeWidget) {
-        typeGiamGiaDefault = typeWidget;
-        isTypeGiamGIa = typeWidget;
+      _soLuong = widget.model.soLuong.toString();
+      _price = widget.model.item.sell_price ?? '';
+      _donViTinh = widget.model.nameDvt;
+      _vat = widget.model.nameVat;
+      _giamGia = widget.model.giamGia;
+      if (_isTypeGiamGiaDefault != typeWidget) {
+        _isTypeGiamGiaDefault = typeWidget;
+        _isTypeGiamGia = typeWidget;
       }
-      if (intoMoney != (widget.model.intoMoney ?? 0)) {
-        intoMoney = widget.model.intoMoney ?? 0;
+      if (_thanhTien != (widget.model.intoMoney ?? 0)) {
+        _thanhTien = widget.model.intoMoney ?? 0;
       }
-      widget.onReload();
+      widget.onReload(false);
     }
     super.didUpdateWidget(oldWidget);
   }
 
-  void _getIntoMoney() {
-    double priceProduct = 0;
-    double vatProduct = 0;
-    double vatProductNumber = 0;
-    double discount = 0;
-    double discountNumber = 0;
-    double countProduct = 0;
-    try {
-      if (double.parse(price) > 0) priceProduct = double.parse(price);
+  void _getIntoMoney({bool isInit = false}) {
+    double _priceProduct = _price.toDoubleTry();
+    double _vatProduct = 0;
+    double _vatProductNumber = _vat.split('%').first.toDoubleTry();
+    double _discount = 0;
+    double _discountNumber = _giamGia.toDoubleTry();
+    double _countProduct = 0;
 
-      if (double.parse(giamGia) > 0) discountNumber = double.parse(giamGia);
+    if (!_isTypeGiamGia) {
+      _discount = _priceProduct * _discountNumber / 100;
+    } else {
+      _discount = _discountNumber;
+    }
 
-      if (!isTypeGiamGIa) {
-        discount = priceProduct * discountNumber / 100;
-      } else {
-        discount = discountNumber;
-      }
+    _vatProduct = _vatProductNumber * (_priceProduct - _discount) / 100;
+    _countProduct = _soLuong.toDoubleTry();
 
-      try {
-        if (double.parse(vat.split('%').first) > 0) {
-          vatProductNumber = double.parse(vat.split('%').first);
-          vatProduct = vatProductNumber * (priceProduct - discount) / 100;
-        }
-      } catch (e) {}
-
-      if (soLuong.isNotEmpty) countProduct = double.parse(soLuong);
-    } catch (e) {}
-
-    double money = 0;
-    money = (priceProduct + vatProduct - discount) * countProduct;
-    intoMoney = money;
-    widget.onIntoMoney(money);
-    widget.onReload();
+    double _intoMoney = 0;
+    _intoMoney = (_priceProduct + _vatProduct - _discount) * _countProduct;
+    _thanhTien = _intoMoney;
+    if (isInit) _intoMoneyInit = _intoMoney;
+    widget.onIntoMoney(_intoMoney);
+    widget.onReload(true);
     setState(() {});
   }
 
   void _getNewPrice() {
-    double vatProductNumber = 0;
-    double discountNumber = 0;
-    double countProduct = 0;
-    try {
-      if (double.parse(giamGia) > 0) discountNumber = double.parse(giamGia);
+    double _vatProductNumber = _vat.split('%').first.toDoubleTry();
+    double _discountNumber = _giamGia.toDoubleTry();
+    double _countProduct = _soLuong.toDoubleTry();
 
-      try {
-        if (double.parse(vat.split('%').first) > 0) {
-          vatProductNumber = double.parse(vat.split('%').first);
-        }
-      } catch (e) {}
-
-      if (soLuong.isNotEmpty) countProduct = double.parse(soLuong);
-    } catch (e) {}
-
-    if (countProduct > 0) {
-      double newPrice = 0;
-      double oneProduct = intoMoney / countProduct;
-      double discount = 0;
-      double vat = 0;
-      if (!isTypeGiamGIa) {
-        discount = oneProduct - oneProduct * (100 - discountNumber) / 100;
+    if (_countProduct > 0) {
+      double _oneProduct = _thanhTien / _countProduct; //giá
+      double _tienTruocVat = _oneProduct / (1 + _vatProductNumber / 100);
+      double _tienTruocGiamGia = 0;
+      if (!_isTypeGiamGia) {
+        _tienTruocGiamGia = _tienTruocVat / ((100 - _discountNumber) / 100);
       } else {
-        discount = discountNumber;
+        _tienTruocGiamGia = _tienTruocVat + _discountNumber;
       }
-      if (vatProductNumber > 0) {
-        vat = (oneProduct - discount) -
-            (oneProduct - discount) * (100 - vatProductNumber) / 100;
-      }
-      newPrice = oneProduct - vat + discount;
-
-      price = newPrice.toStringAsFixed(0);
-      _priceController.text = price;
-      widget.onPrice(price);
-      widget.onIntoMoney(intoMoney);
+      _price = _tienTruocGiamGia.toStringAsFixed(0);
+      _priceController.text = _price;
+      widget.onPrice(_price);
+      widget.onIntoMoney(_thanhTien);
     } else {
-      intoMoney = 0;
+      _thanhTien = 0;
       widget.onIntoMoney(0);
     }
     setState(() {});
@@ -295,11 +266,10 @@ class _ItemProductState extends State<ItemProduct> {
                   height: 3,
                 ),
                 itemClick(
-                  colorDF: COLORS.GREY,
+                  colorDF: COLORS.BLACK.withOpacity(0.8),
                   title: '${getT(KeyT.price)}: ' +
-                      '${AppValue.format_money(price)}',
-                  isChange:
-                      !(double.tryParse(price) == double.tryParse(priceInit)),
+                      '${AppValue.format_money(_price)}',
+                  isChange: !(_price.toDoubleTry() == _priceInit.toDoubleTry()),
                   onTap: () {
                     _priceController.text = AppValue.format_money(
                                 widget.data.sell_price ?? '0',
@@ -310,11 +280,11 @@ class _ItemProductState extends State<ItemProduct> {
                             isD: false);
                     onClickPrice(context, _priceController, (v) {
                       if (v != '') {
-                        price = v;
-                        widget.onPrice(price);
+                        _price = v;
+                        widget.onPrice(_price);
                         _getIntoMoney();
                       } else {
-                        _priceController.text = price;
+                        _priceController.text = _price;
                       }
                       Get.back();
                     });
@@ -326,11 +296,11 @@ class _ItemProductState extends State<ItemProduct> {
                 Row(
                   children: [
                     itemClick(
-                      title: '${getT(KeyT.dvt)}: ' + '${dvt}',
-                      isChange: dvt != dvtInit,
+                      title: '${getT(KeyT.dvt)}: ' + '${_donViTinh}',
+                      isChange: _donViTinh != _dvtInit,
                       onTap: () {
                         onClickDVT(context, widget.listDvt, (v) {
-                          dvt = v[1];
+                          _donViTinh = v[1];
                           widget.onDVT(v[0], v[1]);
                           setState(() {});
                           Get.back();
@@ -341,11 +311,12 @@ class _ItemProductState extends State<ItemProduct> {
                       width: 5,
                     ),
                     itemClick(
-                      title: '${getT(KeyT.vat)}: ' + '${vat == '' ? '0' : vat}',
-                      isChange: vat != vatInit,
+                      title:
+                          '${getT(KeyT.vat)}: ' + '${_vat == '' ? '0' : _vat}',
+                      isChange: _vat != _vatInit,
                       onTap: () {
                         onClickVAT(context, widget.listVat, (v) {
-                          vat = v[1];
+                          _vat = v[1];
                           widget.onVAT(v[0], v[1]);
                           _getIntoMoney();
                           Get.back();
@@ -359,14 +330,14 @@ class _ItemProductState extends State<ItemProduct> {
                 ),
                 itemClick(
                   title: '${getT(KeyT.sale)}: ' +
-                      (isTypeGiamGIa
-                          ? AppValue.format_money(giamGia)
-                          : giamGia.trim()) +
-                      '${isTypeGiamGIa ? '' : '%'}',
-                  isChange: isTypeGiamGIa != isTypeGiamGIaInit ||
-                      double.tryParse(giamGia) != double.tryParse(saleInit),
+                      (_isTypeGiamGia
+                          ? AppValue.format_money(_giamGia)
+                          : _giamGia.trim()) +
+                      '${_isTypeGiamGia ? '' : '%'}',
+                  isChange: _isTypeGiamGia != _isTypeGiamGIaInit ||
+                      _giamGia.toDoubleTry() != _saleInit.toDoubleTry(),
                   onTap: () {
-                    if (double.parse(widget.model.giamGia) > 0) {
+                    if (widget.model.giamGia.toDoubleTry() > 0) {
                       _giamGiaController.text = AppValue.format_money(
                         widget.model.giamGia,
                         isD: false,
@@ -376,10 +347,13 @@ class _ItemProductState extends State<ItemProduct> {
                     }
                     onClickGiamGia(
                       context,
-                      isTypeGiamGIa,
+                      _isTypeGiamGia,
                       _giamGiaController,
-                      (isGiam, txt) {
-                        _onClickGiamGia(isGiam, txt);
+                      (bool isGiam, String txt) {
+                        _onClickGiamGia(
+                          isGiam,
+                          txt,
+                        );
                       },
                     );
                   },
@@ -389,28 +363,32 @@ class _ItemProductState extends State<ItemProduct> {
                 ),
                 itemClick(
                   title: '${getT(KeyT.into_money)}: ' +
-                      '${AppValue.format_money(intoMoney.toStringAsFixed(0))}',
-                  isChange: intoMoney != intoMoneyInit,
+                      '${AppValue.format_money(_thanhTien.toStringAsFixed(0))}',
+                  isChange: _thanhTien != _intoMoneyInit,
                   onTap: () {
-                    if (intoMoney > 0) {
+                    if (_thanhTien > 0) {
                       _intoMoneyController.text = AppValue.format_money(
-                        intoMoney.toStringAsFixed(0),
+                        _thanhTien.toStringAsFixed(0),
                         isD: false,
                       );
                     } else {
                       _intoMoneyController.text = '';
                     }
-                    onClickIntoMoney(context, _intoMoneyController, (v) {
-                      if (double.parse(v) >= 0) {
-                        intoMoney = (double.parse(v));
-                        _getNewPrice();
-                      } else {
-                        _intoMoneyController.text =
-                            intoMoney.toStringAsFixed(0);
-                      }
-                      widget.onReload();
-                      Get.back();
-                    });
+                    onClickIntoMoney(
+                      context,
+                      _intoMoneyController,
+                      (String v) {
+                        if (v.toDoubleTry() >= 0) {
+                          _thanhTien = v.toDoubleTry();
+                          _getNewPrice();
+                        } else {
+                          _intoMoneyController.text =
+                              _thanhTien.toStringAsFixed(0);
+                        }
+                        widget.onReload(false);
+                        Get.back();
+                      },
+                    );
                   },
                 ),
               ],
@@ -422,10 +400,13 @@ class _ItemProductState extends State<ItemProduct> {
     );
   }
 
-  _onClickGiamGia(bool isGiam, String txt) {
-    isTypeGiamGIa = isGiam;
-    if (isTypeGiamGIa &&
-        (double.parse(txt) > double.parse(widget.data.sell_price ?? '0'))) {
+  _onClickGiamGia(
+    bool isGiam,
+    String txt,
+  ) {
+    _isTypeGiamGia = isGiam;
+    if (_isTypeGiamGia &&
+        (txt.toDoubleTry() > widget.data.sell_price.toString().toDoubleTry())) {
       ShowDialogCustom.showDialogBase(
         title: getT(KeyT.notification),
         content: getT(KeyT
@@ -434,7 +415,7 @@ class _ItemProductState extends State<ItemProduct> {
           Get.back();
         },
       );
-    } else if (!isTypeGiamGIa && (double.parse(txt) > 100)) {
+    } else if (!_isTypeGiamGia && txt.toDoubleTry() > 100) {
       ShowDialogCustom.showDialogBase(
         title: getT(KeyT.notification),
         content: getT(KeyT.you_cannot_enter_more_than_100),
@@ -443,16 +424,16 @@ class _ItemProductState extends State<ItemProduct> {
         },
       );
     } else {
-      if (double.parse(txt) == 0) {
-        giamGia = '0';
-        _giamGiaController.text = giamGia;
+      if (txt == 0) {
+        _giamGia = '0';
+        _giamGiaController.text = _giamGia;
       } else {
-        giamGia = txt;
+        _giamGia = txt;
       }
 
       widget.onGiamGia(
         txt,
-        isTypeGiamGIa ? shareLocal.getString(PreferencesKey.MONEY) ?? '' : '%',
+        _isTypeGiamGia ? shareLocal.getString(PreferencesKey.MONEY) ?? '' : '%',
       );
       _getIntoMoney();
       Get.back();
@@ -464,14 +445,21 @@ class _ItemProductState extends State<ItemProduct> {
         children: [
           GestureDetector(
             onTap: () {
-              if (double.parse(soLuong) > 1) {
-                soLuong = (double.parse(soLuong) - 1).toString();
+              if (_soLuong.toDoubleTry() > 1) {
+                _soLuong = (_soLuong.toDoubleTry() - 1).toString();
+                widget.onChangeQuantity(
+                    _soLuong.toDoubleTry().toStringAsFixed(2));
+                _getIntoMoney();
               } else {
-                soLuong = '0';
-                widget.onDelete(widget.model);
+                _soLuong = '0';
+                if (widget.isDelete) {
+                  widget.onDelete(widget.model);
+                } else {
+                  widget.onChangeQuantity(
+                      _soLuong.toDoubleTry().toStringAsFixed(2));
+                  _getIntoMoney();
+                }
               }
-              widget.onChangeQuantity(double.parse(soLuong).toStringAsFixed(2));
-              _getIntoMoney();
             },
             child: WidgetContainerImage(
               image: ICONS.IC_MINUS_PNG,
@@ -479,31 +467,32 @@ class _ItemProductState extends State<ItemProduct> {
               height: 24,
               fit: BoxFit.contain,
               borderRadius: BorderRadius.circular(0),
-              colorImage: COLORS.GRAY_IMAGE,
+              colorImage:
+                  _soLuong.toDoubleTry() >= 1 ? COLORS.BLUE : COLORS.GRAY_IMAGE,
             ),
           ),
           GestureDetector(
             onTap: () {
-              if (double.parse(soLuong) == 0) {
+              if (_soLuong.toDoubleTry() == 0) {
                 _soLuongController.text = '';
               } else {
                 _soLuongController.text =
-                    double.parse(soLuong).toStringAsFixed(2);
+                    _soLuong.toDoubleTry().toStringAsFixed(2);
               }
               onClickSoLuong(context, _soLuongController, (v) {
                 String text = v; // Đoạn văn bản cần kiểm tra
                 double number = 0;
                 try {
-                  number = double.parse(text);
+                  number = text.toDoubleTry();
                 } catch (e) {
                   if (text.split(',').length <= 2) {
-                    number = double.parse(text.replaceAll(',', '.'));
+                    number = text.replaceAll(',', '.').toDoubleTry();
                   }
                   //khong phai kieu double
                 }
 
                 if (number > 0) {
-                  soLuong = number.toString();
+                  _soLuong = number.toString();
                   widget.onChangeQuantity(
                       number.toStringAsFixed(2)); // change data quantity
                   _getIntoMoney();
@@ -514,10 +503,10 @@ class _ItemProductState extends State<ItemProduct> {
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 16),
               child: WidgetText(
-                title: double.parse(soLuong).toStringAsFixed(2),
+                title: _soLuong.toDoubleTry().toStringAsFixed(2),
                 style: AppStyle.DEFAULT_16_BOLD.copyWith(
                   color: getColor(
-                    double.tryParse(soLuong) != double.tryParse(countInit),
+                    _soLuong.toDoubleTry() != _countInit.toDoubleTry(),
                   ),
                 ),
               ),
@@ -525,8 +514,9 @@ class _ItemProductState extends State<ItemProduct> {
           ),
           GestureDetector(
             onTap: () {
-              soLuong = (double.parse(soLuong) + 1).toString();
-              widget.onChangeQuantity(double.parse(soLuong).toStringAsFixed(2));
+              _soLuong = (_soLuong.toDoubleTry() + 1).toString();
+              widget
+                  .onChangeQuantity(_soLuong.toDoubleTry().toStringAsFixed(2));
               _getIntoMoney();
             },
             child: WidgetContainerImage(
@@ -535,10 +525,10 @@ class _ItemProductState extends State<ItemProduct> {
               height: 24,
               fit: BoxFit.contain,
               borderRadius: BorderRadius.circular(0),
-              colorImage: COLORS.GRAY_IMAGE,
+              colorImage: COLORS.BLUE,
             ),
           ),
-          widget.canDelete == false
+          widget.isDelete == false
               ? SizedBox()
               : GestureDetector(
                   onTap: () {

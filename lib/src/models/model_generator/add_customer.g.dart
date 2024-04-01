@@ -30,7 +30,7 @@ CustomerIndividualItemData _$CustomerIndividualItemDataFromJson(
           .toList(),
       json['field_value'] as String?,
       (json['products'] as List<dynamic>?)
-          ?.map((e) => ProductItemContract.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => ProductItemRes.fromJson(e as Map<String, dynamic>))
           .toList(),
       (json['button'] as List<dynamic>?)
           ?.map((e) => ButtonRes.fromJson(e as Map<String, dynamic>))
@@ -121,8 +121,8 @@ Map<String, dynamic> _$AddCustomerIndividualDataToJson(
       'mup': instance.mup,
     };
 
-ProductItemContract _$ProductItemContractFromJson(Map<String, dynamic> json) =>
-    ProductItemContract(
+ProductItemRes _$ProductItemContractFromJson(Map<String, dynamic> json) =>
+    ProductItemRes(
       json['name_product'] as String?,
       json['price'] as String?,
       json['quantity'] as String?,
@@ -138,7 +138,7 @@ ProductItemContract _$ProductItemContractFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$ProductItemContractToJson(
-        ProductItemContract instance) =>
+        ProductItemRes instance) =>
     <String, dynamic>{
       'name_product': instance.name_product,
       'price': instance.price,
