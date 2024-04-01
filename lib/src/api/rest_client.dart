@@ -937,7 +937,7 @@ class FormDataCustom {
     final formData = FormData();
 
     map.forEach((key, value) {
-      formData.fields.add(MapEntry(key, value));
+      formData.fields.add(MapEntry(key, value.toString()));
     });
 
     file.forEach((key, value) {
