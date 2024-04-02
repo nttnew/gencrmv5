@@ -70,6 +70,7 @@ class CHProductCustomer {
   String? price;
   String? trangThai;
   String? color;
+  String? starDate;
 
   CHProductCustomer({
     this.id,
@@ -79,6 +80,7 @@ class CHProductCustomer {
     this.price,
     this.trangThai,
     this.color,
+    this.starDate,
   });
 
   CHProductCustomer.fromJson(Map<String, dynamic> json) {
@@ -93,6 +95,7 @@ class CHProductCustomer {
     price = json['price'];
     trangThai = json['trang_thai'];
     color = json['color'];
+    starDate = json['start_date'];
   }
 
   Map<String, dynamic> toJson() {
@@ -108,6 +111,7 @@ class CHProductCustomer {
     data['price'] = this.price;
     data['trang_thai'] = this.trangThai;
     data['color'] = this.color;
+    data['start_date'] = this.starDate;
     return data;
   }
 }

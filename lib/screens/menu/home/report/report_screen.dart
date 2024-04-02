@@ -118,11 +118,11 @@ class _ReportScreenState extends State<ReportScreen> {
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
     setState(() {
       if (args.value is PickerDateRange) {
-        _range = '${DateFormat('dd/MM/yyyy').format(args.value.startDate)} -'
-            ' ${DateFormat('dd/MM/yyyy').format(args.value.endDate ?? args.value.startDate)}';
-        timeFrom = DateFormat('dd/MM/yyyy').format(args.value.startDate);
+        _range = '${DateFormat('dd/MM/yyyy').format(args.value.starDate)} -'
+            ' ${DateFormat('dd/MM/yyyy').format(args.value.endDate ?? args.value.starDate)}';
+        timeFrom = DateFormat('dd/MM/yyyy').format(args.value.starDate);
         timeTo = DateFormat('dd/MM/yyyy')
-            .format(args.value.endDate ?? args.value.startDate);
+            .format(args.value.endDate ?? args.value.starDate);
       }
     });
   }
