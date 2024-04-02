@@ -9,6 +9,7 @@ import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/contract.dart';
 import '../../../../src/models/model_generator/detail_product_customer_response.dart';
 import '../../../../src/models/model_generator/list_ch_product_customer_response.dart';
+import '../../../../src/models/model_generator/list_cv_customer_response.dart';
 import '../../../../src/models/model_generator/list_hd_product_customer_response.dart';
 import '../../../../src/models/model_generator/list_ht_product_customer_response.dart';
 import '../../../../src/models/model_generator/support.dart';
@@ -130,19 +131,20 @@ class _DetailProductCustomerScreenState
                   page: page, isInit: isInit, id: idM);
             },
             itemWidget: (int index, data) {
+              final DataList _item = data as DataList;
               return GestureDetector(
                 onTap: () {
                   AppNavigator.navigateDetailWork(
                       int.parse(data.id ?? '0'), data.nameJob ?? '');
                 },
                 child: WorkCardWidget(
-                  productCustomer: data.customer,
-                  nameCustomer: data.customer.name,
-                  nameJob: data.nameJob,
-                  startDate: data.starDate,
-                  statusJob: data.status,
-                  totalComment: data.totalNote,
-                  color: data.color,
+                  productCustomer: _item.customer,
+                  nameCustomer: _item.customer?.name,
+                  nameJob: _item.nameJob,
+                  startDate: _item.starDate,
+                  statusJob: _item.status,
+                  totalComment: _item.totalNote,
+                  color: _item.color,
                 ),
               );
             },

@@ -83,7 +83,7 @@ class DataList {
   String? nameCustomer;
   String? status;
   String? color;
-  String? startDate;
+  String? starDate;
   dynamic callId;
   dynamic ghiChuCallid;
   dynamic location;
@@ -99,7 +99,7 @@ class DataList {
       this.nameCustomer,
       this.status,
       this.color,
-      this.startDate,
+      this.starDate,
       this.callId,
       this.ghiChuCallid,
       this.location,
@@ -117,7 +117,7 @@ class DataList {
     nameCustomer = json['name_customer'];
     status = json['status'];
     color = json['color'];
-    startDate = json['start_date'];
+    starDate = json['start_date'];
     callId = json['call_id'];
     ghiChuCallid = json['ghi_chu_callid'];
     location = json['location'];
@@ -137,7 +137,7 @@ class DataList {
     data['name_customer'] = this.nameCustomer;
     data['status'] = this.status;
     data['color'] = this.color;
-    data['start_date'] = this.startDate;
+    data['start_date'] = this.starDate;
     data['call_id'] = this.callId;
     data['ghi_chu_callid'] = this.ghiChuCallid;
     data['location'] = this.location;
