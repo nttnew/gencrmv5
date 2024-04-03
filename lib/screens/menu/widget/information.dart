@@ -134,6 +134,7 @@ class ItemInfo extends StatelessWidget {
                       bool isNameSP = data.data?[index].name_field == 'name' ||
                           data.data?[index].field_name == 'name';
                       bool isImage = data.data?[index].is_image == 1;
+                      bool isCheckBox = data.data?[index].data_type == 'CHECK';
 
                       if (item?.field_type == 'LINE') {
                         return Container(
@@ -220,28 +221,44 @@ class ItemInfo extends StatelessWidget {
                                   ),
                                   Expanded(
                                     flex: 2,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        if (item?.is_link == true) {
-                                          _navigateTypeScreen(item);
-                                        }
-                                      },
-                                      child: WidgetText(
-                                        title: item?.value_field ?? '',
-                                        textAlign: TextAlign.right,
-                                        style: AppStyle.DEFAULT_14.copyWith(
-                                          decoration: item?.is_link == true
-                                              ? TextDecoration.underline
-                                              : null,
-                                          color: item?.is_link == true
-                                              ? Colors.blue
-                                              : isNameSP
-                                                  ? COLORS.ORANGE_IMAGE
-                                                  : null,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    ),
+                                    child: isCheckBox
+                                        ? Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Container(
+                                              width: 20,
+                                              height: 20,
+                                              child: Checkbox(
+                                                value: item?.value_field
+                                                        .toString() ==
+                                                    '1',
+                                                onChanged: null,
+                                              ),
+                                            ),
+                                          )
+                                        : GestureDetector(
+                                            onTap: () {
+                                              if (item?.is_link == true) {
+                                                _navigateTypeScreen(item);
+                                              }
+                                            },
+                                            child: WidgetText(
+                                              title: item?.value_field ?? '',
+                                              textAlign: TextAlign.right,
+                                              style:
+                                                  AppStyle.DEFAULT_14.copyWith(
+                                                decoration: item?.is_link ==
+                                                        true
+                                                    ? TextDecoration.underline
+                                                    : null,
+                                                color: item?.is_link == true
+                                                    ? Colors.blue
+                                                    : isNameSP
+                                                        ? COLORS.ORANGE_IMAGE
+                                                        : null,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
                                   ),
                                 ],
                               ),

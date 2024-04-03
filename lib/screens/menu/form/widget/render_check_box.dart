@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/src_index.dart';
-import '../../../../src/color.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
 
 class RenderCheckBox extends StatefulWidget {

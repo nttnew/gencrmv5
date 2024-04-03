@@ -35,9 +35,10 @@ class InfoItem {
       link,
       name_field,
       field_name,
-      is_type;
+      is_type,
+      data_type;
   final dynamic value_field;
-  final int? action,is_image;
+  final int? action, is_image;
   final bool? is_call, is_link;
 
   InfoItem(
@@ -49,6 +50,7 @@ class InfoItem {
     this.name_field,
     this.field_name,
     this.is_type,
+    this.data_type,
     this.action,
     this.is_image,
     this.is_call,
