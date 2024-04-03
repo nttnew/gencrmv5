@@ -70,6 +70,7 @@ class _ProductContractState extends State<ProductContract> {
     return Column(
       children: [
         ListView.builder(
+          padding: EdgeInsets.zero,
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: _productData.length,
