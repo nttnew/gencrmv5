@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:gen_crm/src/src_index.dart';
 import '../../../../src/color.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
 
 class RenderCheckBox extends StatefulWidget {
-  RenderCheckBox({Key? key, required this.onChange, required this.data})
-      : super(key: key);
+  RenderCheckBox({
+    Key? key,
+    required this.onChange,
+    required this.data,
+    this.init,
+  }) : super(key: key);
 
-  final Function? onChange;
+  final Function onChange;
   final CustomerIndividualItemData data;
+  final bool? init;
 
   @override
   State<RenderCheckBox> createState() => _RenderCheckBoxState();
@@ -15,6 +21,13 @@ class RenderCheckBox extends StatefulWidget {
 
 class _RenderCheckBoxState extends State<RenderCheckBox> {
   bool isCheck = false;
+
+  @override
+  void initState() {
+    isCheck = widget.init ?? false;
+    widget.onChange(isCheck);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +38,13 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
           Container(
             width: 24,
             height: 24,
+            margin: EdgeInsets.only(
+              right: 8,
+            ),
             child: Checkbox(
               value: isCheck,
               onChanged: (bool? value) {
-                widget.onChange!(value);
+                widget.onChange(value);
                 setState(() {
                   isCheck = value!;
                 });
@@ -39,22 +55,12 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
               text: widget.data.field_label ?? '',
-              style: TextStyle(
-                fontFamily: 'Quicksand',
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: COLORS.BLACK,
-              ),
+              style: AppStyle.DEFAULT_14,
               children: <TextSpan>[
                 widget.data.field_require == 1
                     ? TextSpan(
                         text: '*',
-                        style: TextStyle(
-                          fontFamily: 'Quicksand',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: COLORS.RED,
-                        ),
+                        style: AppStyle.DEFAULT_14W600_RED,
                       )
                     : TextSpan(),
               ],

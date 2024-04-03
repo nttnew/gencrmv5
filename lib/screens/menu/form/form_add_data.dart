@@ -918,6 +918,9 @@ class _FormAddDataState extends State<FormAddData> {
                                           )
                                         : data.field_type == 'CHECK'
                                             ? RenderCheckBox(
+                                                init: data.field_set_value
+                                                        .toString() ==
+                                                    '1',
                                                 onChange: (check) {
                                                   _addData[indexParent]
                                                       .data[indexChild]

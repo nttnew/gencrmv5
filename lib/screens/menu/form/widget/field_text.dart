@@ -24,9 +24,10 @@ class _FieldTextState extends State<FieldText> {
   void initState() {
     data = widget.data;
     _textEditingController.addListener(() {
-      widget.onChange(data.field_type == 'MONEY'
-          ? _textEditingController.text.replaceAll('.', '')
-          : _textEditingController.text);
+      widget.onChange(
+          data.field_type == 'MONEY' || data.field_type == 'TEXT_NUMERIC'
+              ? _textEditingController.text.replaceAll('.', '')
+              : _textEditingController.text);
     });
     if (widget.data.field_set_value != null &&
         widget.data.field_set_value != '')
@@ -89,14 +90,17 @@ class _FieldTextState extends State<FieldText> {
               ),
               child: Container(
                 child: TextFormField(
-                  inputFormatters:
-                      data.field_type == 'MONEY' ? AppStyle.inputPrice : null,
+                  inputFormatters: data.field_type == 'MONEY' ||
+                          data.field_type == 'TEXT_NUMERIC'
+                      ? AppStyle.inputPrice
+                      : null,
                   controller: _textEditingController,
                   minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
                   maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
                   style: AppStyle.DEFAULT_14_BOLD,
                   keyboardType: data.field_type == 'MONEY' ||
-                          data.field_special == 'numberic'
+                          data.field_special == 'numberic' ||
+                          data.field_type == 'TEXT_NUMERIC'
                       ? TextInputType.number
                       : data.field_special == 'default'
                           ? TextInputType.text
