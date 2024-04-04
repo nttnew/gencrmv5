@@ -377,7 +377,7 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
         dio.interceptors.add(dioLogger());
       }
       var response = await dio.request(
-        '${widget.data.field_search?.field_url}?${widget.data.field_search?.field_keyparam}=$page?'
+        '${widget.data.field_search?.field_url}?${widget.data.field_search?.field_keyparam}=$page&'
         '${widget.data.field_search?.keysearch}=$txtSearch',
         options: Options(
           method: 'GET',
