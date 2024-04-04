@@ -211,23 +211,23 @@ class _ListServiceParkState extends State<ListServicePark> {
                     if (result['list'] != []) {
                       List<DataProductServicePack> list = result['list'];
                       _handleData(list);
-                      reload();
+                      reload(true);
                       Get.back();
                     } else {
                       ShowDialogCustom.showDialogBase(
-                        title:getT(KeyT.notification),
+                        title: getT(KeyT.notification),
                         content: 'Bạn chưa chọn $title',
                       );
                     }
                   } else {
                     ShowDialogCustom.showDialogBase(
-                      title:getT(KeyT.notification),
+                      title: getT(KeyT.notification),
                       content: result['mess'],
                     );
                   }
                 } else {
                   ShowDialogCustom.showDialogBase(
-                    title:getT(KeyT.notification),
+                    title: getT(KeyT.notification),
                     content: 'Bạn chưa chọn $title',
                   );
                 }
