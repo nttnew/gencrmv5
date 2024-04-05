@@ -38,18 +38,7 @@ class _ProductContractState extends State<ProductContract> {
   @override
   void initState() {
     _productData = widget.data;
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      final response = await _userRepository.getListProduct(
-          BASE_URL.PAGE_DEFAULT.toString(), '', null);
-      if (isSuccess(response.code)) {
-        if (_listVAT.isEmpty) {
-          _listVAT = response.data?.vats ?? [];
-        }
-        if (_listDVT.isEmpty) {
-          _listDVT = response.data?.units ?? [];
-        }
-      }
-    });
+    _getList();
     super.initState();
   }
 
@@ -58,6 +47,23 @@ class _ProductContractState extends State<ProductContract> {
     if (isSetState) {
       setState(() {});
     }
+  }
+
+  _getList() async {
+    final response = await _userRepository.getListProduct(
+      BASE_URL.PAGE_DEFAULT.toString(),
+      '',
+      null,
+    );
+    if (isSuccess(response.code)) {
+      if (_listVAT.isEmpty) {
+        _listVAT = response.data?.vats ?? [];
+      }
+      if (_listDVT.isEmpty) {
+        _listDVT = response.data?.units ?? [];
+      }
+    }
+    setState(() {});
   }
 
   void _removeProduct(ProductModel productModel) {
