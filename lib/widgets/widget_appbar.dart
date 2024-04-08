@@ -37,23 +37,9 @@ class WidgetAppbar extends StatelessWidget {
         right: 24,
         top: MediaQuery.of(context).padding.top,
       ),
-      height: AppValue.heights * 0.1 + MediaQuery.of(context).padding.top,
+      height: AppValue.heightsAppBar + MediaQuery.of(context).padding.top,
       decoration: BoxDecoration(
         color: !isShaDow ? COLORS.PRIMARY_COLOR1 : COLORS.PRIMARY_COLOR,
-        boxShadow: isShaDow
-            ? [
-                BoxShadow(
-                  color: COLORS.BLACK.withOpacity(0.3),
-                  spreadRadius: 2,
-                  blurRadius: 2,
-                ),
-              ]
-            : null,
-        borderRadius: !isShaDow
-            ? null
-            : BorderRadius.vertical(
-                bottom: Radius.circular(20),
-              ),
       ),
       child: Row(
         children: [

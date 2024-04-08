@@ -92,6 +92,7 @@ class AppValue {
 
   static double widths = MediaQueryData.fromWindow(window).size.width;
   static double heights = MediaQueryData.fromWindow(window).size.height;
+  static double heightsAppBar = 75;
 
   static String formatStringDateTime(String dateString) =>
       DATE_TIME_FORMAT.format(DateTime.parse(dateString));

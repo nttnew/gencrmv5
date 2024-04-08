@@ -8,8 +8,9 @@ import '../src/src_index.dart';
 
 PreferredSizeWidget AppbarBaseNormal(String? title, {Function? onBack}) =>
     AppBar(
-      toolbarHeight: AppValue.heights * 0.1,
+      toolbarHeight: AppValue.heightsAppBar,
       backgroundColor: isCarCrm() ? COLORS.PRIMARY_COLOR1 : HexColor("#D0F1EB"),
+      elevation: 0,
       title: Text(
         title ?? '',
         style: TextStyle(
@@ -34,19 +35,20 @@ PreferredSizeWidget AppbarBaseNormal(String? title, {Function? onBack}) =>
           color: isCarCrm() ? COLORS.LIGHT_GREY : COLORS.BLACK,
         ),
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(15),
-        ),
-      ),
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.vertical(
+      //     bottom: Radius.circular(15),
+      //   ),
+      // ),
     );
 
 PreferredSizeWidget AppbarBase(
         GlobalKey<ScaffoldState> _drawerKey, String title) =>
     AppBar(
-      toolbarHeight: AppValue.heights * 0.1,
+      toolbarHeight: AppValue.heightsAppBar,
       backgroundColor: isCarCrm() ? COLORS.PRIMARY_COLOR1 : HexColor("#D0F1EB"),
       centerTitle: false,
+      elevation: 0,
       title: Row(
         children: [
           Expanded(
@@ -95,9 +97,9 @@ PreferredSizeWidget AppbarBase(
         ),
       ),
       leadingWidth: 48,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(15),
-        ),
-      ),
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.vertical(
+      //     bottom: Radius.circular(15),
+      //   ),
+      // ),
     );
