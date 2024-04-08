@@ -441,6 +441,10 @@ class _FormAddDataState extends State<FormAddData> {
     SuccessAddData state,
   ) {
     switch (type) {
+      case ADD_QUICK_CONTRACT:
+        ContractBloc.of(context).add(InitGetContractEvent());
+        AppNavigator.navigateContract();
+        break;
       case ADD_CLUE:
         GetListClueBloc.of(context).loadMoreController.reloadData();
         break;
@@ -543,7 +547,8 @@ class _FormAddDataState extends State<FormAddData> {
                   onTap1: () {
                     if (!_isGetData &&
                         _type != ADD_CUSTOMER &&
-                        _type != ADD_CUSTOMER_OR) {
+                        _type != ADD_CUSTOMER_OR &&
+                        _type != ADD_QUICK_CONTRACT) {
                       Navigator.of(context)
                         ..pop()
                         ..pop(true);

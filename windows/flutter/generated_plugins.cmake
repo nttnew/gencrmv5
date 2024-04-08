@@ -12,6 +12,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   nb_utils
   network_info_plus
   permission_handler_windows
+  printing
   url_launcher_windows
 )
 
