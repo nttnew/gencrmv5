@@ -80,6 +80,7 @@ class _DetailProductCustomerScreenState
                   item.price,
                   item.trangThai,
                   null,
+                  item.color,
                   item.starDate,
                   item.customer,
                   item.product_customer,

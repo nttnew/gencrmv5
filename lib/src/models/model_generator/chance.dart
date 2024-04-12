@@ -9,7 +9,7 @@ part 'chance.g.dart';
 class ListChanceData {
   final String? id;
   final String? dateNextCare;
-  final String? name, price, status, avatar;
+  final String? name, price, status, avatar, color;
   final Customer? customer, product_customer;
 
   ListChanceData(
@@ -18,6 +18,7 @@ class ListChanceData {
     this.price,
     this.status,
     this.avatar,
+    this.color,
     this.dateNextCare,
     this.customer,
     this.product_customer,

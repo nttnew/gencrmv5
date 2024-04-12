@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/app_const.dart';
+import 'package:hexcolor/hexcolor.dart';
 import '../../../../../l10n/key_text.dart';
 import '../../../../../src/src_index.dart';
 
@@ -46,7 +47,7 @@ class WidgetItemChance extends StatelessWidget {
             itemTextIconStart(
               title: data.name ?? getT(KeyT.not_yet),
               icon: ICONS.IC_CHANCE_3X_PNG,
-              colorDF: COLORS.RED,
+              colorDF: HexColor(data.color ?? '#FB4C2F'),
               isSVG: false,
               color: '',
             ),
@@ -72,8 +73,10 @@ class WidgetItemChance extends StatelessWidget {
             itemTextIcon(
               text: data.status ?? '',
               icon: ICONS.IC_DANG_XU_LY_SVG,
-              styleText:
-                  AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(color: COLORS.RED),
+              styleText: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                color: HexColor(data.color ?? '#FB4C2F'),
+              ),
+              colorIcon: HexColor(data.color ?? '#FB4C2F'),
             ),
             itemTextEnd(
               title: data.dateNextCare ?? getT(KeyT.not_yet),

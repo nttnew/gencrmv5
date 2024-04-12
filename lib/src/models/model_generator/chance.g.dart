@@ -13,6 +13,7 @@ ListChanceData _$ListChanceDataFromJson(Map<String, dynamic> json) =>
       json['price'] as String?,
       json['status'] as String?,
       json['avatar'] as String?,
+      json['color'] as String?,
       json['dateNextCare'] as String?,
       json['customer'] == null
           ? null
@@ -30,6 +31,7 @@ Map<String, dynamic> _$ListChanceDataToJson(ListChanceData instance) =>
       'price': instance.price,
       'status': instance.status,
       'avatar': instance.avatar,
+      'color': instance.color,
       'customer': instance.customer,
       'product_customer': instance.product_customer,
     };
