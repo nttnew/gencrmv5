@@ -191,25 +191,28 @@ Widget FileLuuBase(
   Function() onTap, {
   bool isAttack = true,
 }) =>
-    Row(
-      children: [
-        if (isAttack)
+    SizedBox(
+      height: 40,
+      child: Row(
+        children: [
+          if (isAttack)
+            GestureDetector(
+                onTap: () async {
+                  await onDinhKemBase(context).then((listFile) {
+                    if (listFile != []) {
+                      AttackBloc.of(context)
+                          .add(InitAttackEvent(files: listFile));
+                    }
+                  });
+                },
+                child: SvgPicture.asset(ICONS.IC_ATTACK_SVG)),
+          Spacer(),
           GestureDetector(
-              onTap: () async {
-                await onDinhKemBase(context).then((listFile) {
-                  if (listFile != []) {
-                    AttackBloc.of(context)
-                        .add(InitAttackEvent(files: listFile));
-                  }
-                });
-              },
-              child: SvgPicture.asset(ICONS.IC_ATTACK_SVG)),
-        Spacer(),
-        GestureDetector(
-          onTap: () => onTap(),
-          child: widgetSave(),
-        ),
-      ],
+            onTap: () => onTap(),
+            child: widgetSave(),
+          ),
+        ],
+      ),
     );
 
 Future<List<File>> onDinhKemBase(

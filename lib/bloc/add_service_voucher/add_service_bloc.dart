@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,29 +45,30 @@ class ServiceVoucherBloc
       BehaviorSubject.seeded([]);
   List<Versions> listVersionCar = [];
   BehaviorSubject<Set<HangXe>> listHangXe = BehaviorSubject.seeded({});
-  BehaviorSubject<Set<String>> listDongXe = BehaviorSubject.seeded({});
-  BehaviorSubject<Set<String>> listPhienBan = BehaviorSubject.seeded({});
-  BehaviorSubject<Set<String>> listNamSanXuat = BehaviorSubject.seeded({});
-  BehaviorSubject<Set<String>> listCanXe = BehaviorSubject.seeded({});
-  BehaviorSubject<Set<String>> listKieuDang = BehaviorSubject.seeded({});
-  BehaviorSubject<Set<String>> listSoCho = BehaviorSubject.seeded({});
+  BehaviorSubject<Set<HangXe>> listDongXe = BehaviorSubject.seeded({});
+  BehaviorSubject<Set<HangXe>> listPhienBan = BehaviorSubject.seeded({});
+  BehaviorSubject<Set<HangXe>> listNamSanXuat = BehaviorSubject.seeded({});
+  BehaviorSubject<Set<HangXe>> listCanXe = BehaviorSubject.seeded({});
+  BehaviorSubject<Set<HangXe>> listKieuDang = BehaviorSubject.seeded({});
+  BehaviorSubject<Set<HangXe>> listSoCho = BehaviorSubject.seeded({});
   List<CustomerData>? listCus;
   BehaviorSubject<InfoCar?> infoCar = BehaviorSubject.seeded(InfoCar());
   BehaviorSubject<dynamic> listCarSearchStream = BehaviorSubject();
 
-  String hangXe = '';
-  String dongXe = '';
-  String phienBan = '';
-  String namSanXuat = '';
-  String canXe = '';
-  String kieuDang = '';
-  String soCho = '';
+  HangXe? hangXe;
+  HangXe? dongXe;
+  HangXe? phienBan;
+  HangXe? namSanXuat;
+  HangXe? canXe;
+  HangXe? kieuDang;
+  HangXe? soCho;
   static final String KHONG_XAC_DINH = getT(KeyT.unknown);
   static final String THEM_MOI_XE = getT(KeyT.add_new_car);
   final List<ProductModel> listProduct = [];
   double total = 0;
   LoadMoreController loadMoreControllerPhone = LoadMoreController();
   LoadMoreController loadMoreControllerBienSo = LoadMoreController();
+  String? qr;
 
   init() {
     loadMoreControllerPhone.initData([]);
@@ -89,18 +89,48 @@ class ServiceVoucherBloc
     }
   }
 
-  String getDataSelectCar(String fieldName) {
-    switch (fieldName) {
+  String _nameData(List<List<dynamic>> list, {int name = 1}) {
+    if (list.length > 0) {
+      return list.first[name];
+    }
+    return '';
+  }
+
+  dynamic getDataSelectCar(CustomerIndividualItemData dataM) {
+    final String dataName = _nameData(dataM.field_set_value_datasource ?? []);
+    switch (dataM.field_name) {
       case 'hang_xe': //fieldName theo api
-        return canXe;
+        return canXe?.name ?? dataName;
       case 'nam_san_xuat':
-        return namSanXuat;
+        return namSanXuat?.name ?? '${dataM.field_set_value ?? ''}';
       case 'kieu_dang':
-        return kieuDang;
+        return kieuDang?.name ?? dataName;
       case 'dong_xe':
-        return dongXe;
+        return dongXe?.name ?? dataName;
       case 'hang_x_xe':
-        return hangXe;
+        return hangXe?.name ?? dataName;
+      default:
+        return '';
+    }
+  }
+
+  dynamic getDataSelectCarId(CustomerIndividualItemData dataM) {
+    final String dataId = _nameData(
+      dataM.field_set_value_datasource ?? [],
+      name: 0,
+    ); //1 ==id
+
+    switch (dataM.field_name) {
+      case 'hang_xe': //fieldName theo api
+        return canXe?.id ?? dataId;
+      case 'nam_san_xuat':
+        return namSanXuat?.name ?? dataM.field_set_value ?? '';
+      case 'kieu_dang':
+        return kieuDang?.id ?? dataId;
+      case 'dong_xe':
+        return dongXe?.id ?? dataId;
+      case 'hang_x_xe':
+        return hangXe?.id ?? dataId;
       default:
         return '';
     }
@@ -143,13 +173,13 @@ class ServiceVoucherBloc
   }
 
   void resetDataCarVerison() {
-    hangXe = '';
-    dongXe = '';
-    phienBan = '';
-    namSanXuat = '';
-    canXe = '';
-    kieuDang = '';
-    soCho = '';
+    hangXe = null;
+    dongXe = null;
+    phienBan = null;
+    namSanXuat = null;
+    canXe = null;
+    kieuDang = null;
+    soCho = null;
   }
 
   void getVersionCarInfo() {
@@ -168,87 +198,131 @@ class ServiceVoucherBloc
   }
 
   void getListNamSanXuat(String text) {
-    final Set<String> list = {};
+    final Set<HangXe> list = {};
     for (final obj in listVersionCar) {
       if (obj.phienBan == text) {
-        if (obj.namSanXuat?.trim().isNotEmpty ?? false) {
-          list.add(obj.namSanXuat.toString());
+        if (_checkString(obj.namSanXuat)) {
+          list.add(HangXe(
+            name: obj.namSanXuat,
+          ));
         }
       }
     }
-    list.add(KHONG_XAC_DINH);
+    list.add(
+      HangXe(
+        name: KHONG_XAC_DINH,
+      ),
+    );
     if (list.length == 1) namSanXuat = list.first;
     listNamSanXuat.add(list);
   }
 
   void getListCanXe(String text) {
-    final Set<String> list = {};
+    final Set<HangXe> list = {};
     for (final obj in listVersionCar) {
       if (obj.phienBan == text) {
-        if (obj.loaiXe?.trim().isNotEmpty ?? false) {
-          list.add(obj.loaiXe.toString());
+        if (_checkString(obj.loaiXe)) {
+          list.add(HangXe(
+            id: int.tryParse(obj.loaiXeId ?? ''),
+            name: obj.loaiXe ?? '',
+          ));
         }
       }
     }
-    list.add(KHONG_XAC_DINH);
+    list.add(
+      HangXe(
+        name: KHONG_XAC_DINH,
+      ),
+    );
     if (list.length == 1) canXe = list.first;
     listCanXe.add(list);
   }
 
   void getListKieuDang(String text) {
-    final Set<String> list = {};
+    final Set<HangXe> list = {};
     for (final obj in listVersionCar) {
       if (obj.phienBan == text) {
-        if (obj.kieuDang?.trim().isNotEmpty ?? false) {
-          list.add(obj.kieuDang.toString());
+        if (_checkString(obj.kieuDang)) {
+          list.add(HangXe(
+            id: int.tryParse(obj.kieuDangId ?? ''),
+            name: obj.kieuDang,
+          ));
         }
       }
     }
-    list.add(KHONG_XAC_DINH);
+    list.add(
+      HangXe(
+        name: KHONG_XAC_DINH,
+      ),
+    );
     if (list.length == 1) kieuDang = list.first;
     listKieuDang.add(list);
   }
 
   void getListSoCho(String text) {
-    final Set<String> list = {};
+    final Set<HangXe> list = {};
     for (final obj in listVersionCar) {
       if (obj.phienBan == text) {
-        if (obj.soCho?.trim().isNotEmpty ?? false) {
-          list.add(obj.soCho.toString());
+        if (_checkString(obj.soCho)) {
+          list.add(HangXe(
+            name: obj.soCho,
+          ));
         }
       }
     }
-    list.add(KHONG_XAC_DINH);
+    list.add(
+      HangXe(
+        name: KHONG_XAC_DINH,
+      ),
+    );
     if (list.length == 1) soCho = list.first;
     listSoCho.add(list);
   }
 
   void getDongXe(String id) {
-    final Set<String> list = {};
+    final Set<HangXe> list = {};
     for (final obj in listVersionCar) {
       if (obj.hangXeId == id) {
-        if (obj.dongXe?.trim().isNotEmpty ?? false) {
-          list.add(obj.dongXe.toString());
+        if (_checkString(obj.dongXe)) {
+          list.add(HangXe(
+            id: int.tryParse(obj.dongXeId ?? ''),
+            name: obj.dongXe,
+          ));
         }
       }
     }
-    list.add(KHONG_XAC_DINH);
+    list.add(
+      HangXe(
+        name: KHONG_XAC_DINH,
+      ),
+    );
     if (list.length == 1) dongXe = list.first;
     listDongXe.add(list);
   }
 
   void getPhienBan(String dongXe) {
-    final Set<String> list = {};
+    final Set<HangXe> list = {};
     for (final obj in listVersionCar) {
       if (obj.dongXe == dongXe) {
-        if (obj.phienBan?.trim().isNotEmpty ?? false) {
-          list.add(obj.phienBan.toString());
+        if (_checkString(obj.phienBan)) {
+          list.add(HangXe(
+            id: int.tryParse(obj.phienBanId ?? ''),
+            name: obj.phienBan,
+          ));
         }
       }
     }
-    list.add(KHONG_XAC_DINH);
+    list.add(
+      HangXe(
+        name: KHONG_XAC_DINH,
+      ),
+    );
     if (list.length == 1) phienBan = list.first;
     listPhienBan.add(list);
+  }
+
+  bool _checkString(String? text) {
+    return (text ?? '').trim() != '' && (text ?? '').trim() != 'null';
   }
 
   String? getTextInit({
@@ -357,6 +431,7 @@ class ServiceVoucherBloc
         page.toString(),
         bienSo: isPhone ? null : bienSoSearch,
         phone: isPhone ? phoneSearch : null,
+        qr: qr,
       );
       if (isSuccess(response.code)) {
         resDynamic =

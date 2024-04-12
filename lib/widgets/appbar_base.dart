@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/widgets/widget_appbar.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../src/app_const.dart';
 import '../src/src_index.dart';
 
-PreferredSizeWidget AppbarBaseNormal(String? title, {Function? onBack}) =>
+PreferredSizeWidget AppbarBaseNormal(
+  String? title, {
+  Function? onBack,
+  double? h,
+}) =>
     AppBar(
-      toolbarHeight: AppValue.heightsAppBar,
-      backgroundColor: isCarCrm() ? COLORS.PRIMARY_COLOR1 : HexColor("#D0F1EB"),
+      toolbarHeight: h ?? AppValue.heightsAppBar,
+      backgroundColor: isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.SECONDS_COLOR,
       elevation: 0,
       title: Text(
         title ?? '',
@@ -46,7 +49,7 @@ PreferredSizeWidget AppbarBase(
         GlobalKey<ScaffoldState> _drawerKey, String title) =>
     AppBar(
       toolbarHeight: AppValue.heightsAppBar,
-      backgroundColor: isCarCrm() ? COLORS.PRIMARY_COLOR1 : HexColor("#D0F1EB"),
+      backgroundColor: isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.SECONDS_COLOR,
       centerTitle: false,
       elevation: 0,
       title: Row(

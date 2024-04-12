@@ -120,6 +120,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     required String id,
     required String idTT,
   }) async {
+    LoadingApi().pushLoading();
     try {
       final response = await userRepository.postUpdateTTHD(
         xeDichVu?.id ?? '',
@@ -128,6 +129,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final statusCode =
           (response as Map<String, dynamic>).getOrElse('code', () => -1);
       final msg = response.getOrElse('msg', () => -1);
+      LoadingApi().popLoading();
       if (isSuccess(statusCode)) {
         return '';
       } else if (statusCode == BASE_URL.SUCCESS_999) {
@@ -136,6 +138,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         return msg;
       }
     } catch (e) {
+      LoadingApi().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }
@@ -145,6 +148,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     required String idTD,
     required String idNTH,
   }) async {
+    LoadingApi().pushLoading();
     try {
       final response = await userRepository.postUpdateTDNTH(
         id,
@@ -154,6 +158,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final statusCode =
           (response as Map<String, dynamic>).getOrElse('code', () => -1);
       final msg = response.getOrElse('msg', () => -1);
+      LoadingApi().popLoading();
+
       if (isSuccess(statusCode)) {
         return '';
       } else if (statusCode == BASE_URL.SUCCESS_999) {
@@ -162,6 +168,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         return msg;
       }
     } catch (e) {
+      LoadingApi().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }
@@ -169,6 +176,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<dynamic> getXeDichVu({
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
+    LoadingApi().pushLoading();
     dynamic resDynamic = '';
     try {
       final response = await userRepository.postXeDichVu(
@@ -183,9 +191,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } else
         resDynamic = response.msg ?? '';
     } catch (e) {
+      LoadingApi().popLoading();
       resDynamic = getT(KeyT.an_error_occurred);
       return resDynamic;
     }
+    LoadingApi().popLoading();
     return resDynamic;
   }
 

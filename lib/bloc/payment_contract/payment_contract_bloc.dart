@@ -53,6 +53,31 @@ class PaymentContractBloc
     if (isLoad) LoadingApi().popLoading();
   }
 
+  Future<String> deletePayment({
+    required String idContract,
+    required String idPayment,
+  }) async {
+    String mess = getT(KeyT.an_error_occurred);
+    LoadingApi().pushLoading();
+    try {
+      final response = await userRepository.deletePayment(
+        idContract: idContract,
+        idPayment: idPayment,
+      );
+      if (isSuccess(response.code)) {
+        return '';
+      } else if (isFail(response.code)) {
+        loginSessionExpired();
+      } else
+        return response.msg ?? '';
+    } catch (e) {
+      LoadingApi().popLoading();
+      return mess;
+    }
+    LoadingApi().popLoading();
+    return mess;
+  }
+
   static PaymentContractBloc of(BuildContext context) =>
       BlocProvider.of<PaymentContractBloc>(context);
 }

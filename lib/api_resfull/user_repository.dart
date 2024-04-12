@@ -1609,6 +1609,7 @@ class UserRepository {
     String page, {
     String? bienSo,
     String? phone,
+    String? qr,
   }) async =>
       await RestClient(
         dio,
@@ -1617,8 +1618,54 @@ class UserRepository {
         page,
         bienSo,
         phone,
+        qr,
       );
 
+  Future<AddCustomerIndividual> getFormPayment({
+    required String id,
+    required String idDetail,
+    required String idPay,
+  }) async =>
+      await RestClient(
+        dio,
+        baseUrl: dio.options.baseUrl,
+      ).getFormPayment(
+        id,
+        idDetail,
+        idPay,
+      );
+
+  Future<BaseResponse> addPayment({
+    required Map<String, dynamic> map,
+  }) async =>
+      await RestClient(
+        dio,
+        baseUrl: dio.options.baseUrl,
+      ).addPayment(
+        map,
+      );
+
+  Future<BaseResponse> updatePayment({
+    required Map<String, dynamic> map,
+  }) async =>
+      await RestClient(
+        dio,
+        baseUrl: dio.options.baseUrl,
+      ).updatePayment(
+        map,
+      );
+
+  Future<BaseResponse> deletePayment({
+    required String idContract,
+    required String idPayment,
+  }) async =>
+      await RestClient(
+        dio,
+        baseUrl: dio.options.baseUrl,
+      ).deletePayment(
+        idContract,
+        idPayment,
+      );
   //////////////////////
 
   Stream<AuthenticationStatus> get status async* {

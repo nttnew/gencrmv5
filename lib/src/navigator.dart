@@ -1,10 +1,10 @@
 import 'package:gen_crm/src/models/model_generator/customer_clue.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/src/router.dart';
-
 import '../l10n/key_text.dart';
 import '../models/product_model.dart';
 import 'app_const.dart';
+import 'models/model_generator/xe_dich_vu_response.dart';
 
 class AppNavigator {
   AppNavigator._();
@@ -34,9 +34,11 @@ class AppNavigator {
     bool isCheckIn = false,
     String typeCheckIn = TypeCheckIn.CHECK_IN,
     bool isGetData = false, //getdata cho khsp
-    Function? onRefreshFormAdd,
+    Function? onRefreshForm,
     bool isPreventDuplicates = false,
     ProductModel? product,
+    String? idDetail,
+    String? idPay,
   }) async =>
       await Get.toNamed(ROUTE_NAMES.FORM_ADD,
           preventDuplicates: isPreventDuplicates,
@@ -50,9 +52,11 @@ class AppNavigator {
             product,
             sdt,
             bienSo,
+            idDetail,
+            idPay,
           ])?.then(
         (v) {
-          if (onRefreshFormAdd != null && v != null) onRefreshFormAdd();
+          if (onRefreshForm != null && v != null) onRefreshForm();
           return v;
         },
       );
@@ -206,4 +210,13 @@ class AppNavigator {
           List<ProductModel> data, String title) async =>
       await Get.toNamed(ROUTE_NAMES.LIST_SERVICE_PARK,
           arguments: [add, reload, data, title]);
+
+  static navigateInPhieu() async => await Get.toNamed(
+        ROUTE_NAMES.IN_PHIEU,
+      );
+
+  static navigateDetailCarMain(XeDichVu detail) async => await Get.toNamed(
+        ROUTE_NAMES.DETAIL_CAR_MAIN,
+        arguments: detail,
+      );
 }

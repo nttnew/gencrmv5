@@ -8,11 +8,19 @@ part 'detail_contract.g.dart';
 @JsonSerializable()
 class PaymentContractItem {
   final String? field_name, field_label, field_type, field_special;
-  final dynamic field_value;
+  final dynamic field_value, id_payment, id_chi_tiet_thanh_toan;
   final int? field_hidden;
 
-  PaymentContractItem(this.field_name, this.field_label, this.field_value,
-      this.field_type, this.field_hidden, this.field_special);
+  PaymentContractItem(
+    this.field_name,
+    this.field_label,
+    this.field_value,
+    this.id_payment,
+    this.id_chi_tiet_thanh_toan,
+    this.field_type,
+    this.field_hidden,
+    this.field_special,
+  );
 
   factory PaymentContractItem.fromJson(Map<String, dynamic> json) =>
       _$PaymentContractItemFromJson(json);

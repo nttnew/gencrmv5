@@ -268,7 +268,6 @@ class _ScreenMainState extends State<ScreenMain> {
                 builder: (context, state) {
               if (state is UpdateGetInforAccState) {
                 return WidgetAppbar(
-                  isShaDow: !isCarCrm(),
                   title: isCarCrm()
                       ? state.inforAcc.ten_viet_tat
                       : state.inforAcc.fullname,
@@ -284,15 +283,14 @@ class _ScreenMainState extends State<ScreenMain> {
                     child: WidgetNetworkImage(
                       isAvatar: true,
                       image: state.inforAcc.avatar ?? '',
-                      width: 50,
-                      height: 50,
+                      width: 45,
+                      height: 45,
                       borderRadius: 25,
                     ),
                   ),
                 );
               } else {
                 return WidgetAppbar(
-                  isShaDow: !isCarCrm(),
                   title: '',
                   textColor: COLORS.BLACK,
                   right: rightAppBar(),
@@ -306,8 +304,8 @@ class _ScreenMainState extends State<ScreenMain> {
                     child: WidgetNetworkImage(
                       isAvatar: true,
                       image: '',
-                      width: 50,
-                      height: 50,
+                      width: 45,
+                      height: 45,
                       borderRadius: 25,
                     ),
                   ),

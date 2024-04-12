@@ -51,6 +51,10 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       yield* _signature(event.data, event.type);
     } else if (event is QuickContractSaveEvent) {
       yield* _addQuickContract(event.data, event.files);
+    } else if (event is AddPayment) {
+      yield* _addPayment(event.data);
+    } else if (event is EditPayment) {
+      yield* _editPayment(event.data);
     }
   }
 
@@ -601,6 +605,56 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
           LoadingApi().popLoading();
           yield SuccessAddData();
         }
+      } else {
+        LoadingApi().popLoading();
+        yield ErrorAddData(msg);
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      yield ErrorAddData(getT(KeyT.an_error_occurred));
+      throw e;
+    }
+    LoadingApi().popLoading();
+  }
+
+  Stream<AddDataState> _addPayment(
+    Map<String, dynamic> data,
+  ) async* {
+    LoadingApi().pushLoading();
+    try {
+      yield LoadingAddData();
+      final response = await userRepository.addPayment(map: data);
+      final statusCode = response.code;
+      final msg = response.msg ?? '';
+
+      if (isSuccess(statusCode)) {
+        LoadingApi().popLoading();
+        yield SuccessAddData();
+      } else {
+        LoadingApi().popLoading();
+        yield ErrorAddData(msg);
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      yield ErrorAddData(getT(KeyT.an_error_occurred));
+      throw e;
+    }
+    LoadingApi().popLoading();
+  }
+
+  Stream<AddDataState> _editPayment(
+    Map<String, dynamic> data,
+  ) async* {
+    LoadingApi().pushLoading();
+    try {
+      yield LoadingAddData();
+      final response = await userRepository.updatePayment(map: data);
+      final statusCode = response.code;
+      final msg = response.msg ?? '';
+
+      if (isSuccess(statusCode)) {
+        LoadingApi().popLoading();
+        yield SuccessAddData();
       } else {
         LoadingApi().popLoading();
         yield ErrorAddData(msg);

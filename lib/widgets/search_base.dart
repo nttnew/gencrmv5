@@ -67,6 +67,7 @@ class _SearchBaseState extends State<SearchBase> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 50,
       margin: EdgeInsets.symmetric(
         horizontal: 16,
       ),

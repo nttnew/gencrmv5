@@ -266,3 +266,25 @@ class InitFormEditProductCustomerEvent extends FormAddEvent {
   @override
   List<Object?> get props => [id];
 }
+
+class InitFormAddPaymentEvent extends FormAddEvent {
+  final String? id;
+
+  InitFormAddPaymentEvent(this.id);
+  @override
+  List<Object?> get props => [id];
+}
+
+class InitFormEditPaymentEvent extends FormAddEvent {
+  final String? id;
+  final String? idPay;
+  final String? idDetail;
+
+  InitFormEditPaymentEvent(
+    this.id,
+    this.idPay,
+    this.idDetail,
+  );
+  @override
+  List<Object?> get props => [id, idPay, idDetail];
+}

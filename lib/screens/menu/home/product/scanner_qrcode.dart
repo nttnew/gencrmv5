@@ -1,9 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-
 import '../../../../src/color.dart';
 
 class ScannerQrcode extends StatefulWidget {
@@ -30,7 +27,7 @@ class _ScannerQrcodeState extends State<ScannerQrcode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: HexColor("#D0F1EB"),
+      backgroundColor: COLORS.SECONDS_COLOR,
       body: SafeArea(
         child: Stack(
           children: [
@@ -67,7 +64,7 @@ class _ScannerQrcodeState extends State<ScannerQrcode> {
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
       overlay: QrScannerOverlayShape(
-        borderColor: HexColor("#D0F1EB"),
+        borderColor: COLORS.SECONDS_COLOR,
         borderRadius: 12,
         borderLength: 30,
         borderWidth: 10,

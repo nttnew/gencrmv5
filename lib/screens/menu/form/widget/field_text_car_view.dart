@@ -7,8 +7,9 @@ import '../../../../src/src_index.dart';
 Widget fieldTextCar(
   CustomerIndividualItemData data,
   String value,
-  Function(String) onChange,
+  Function() onChange,
 ) {
+  onChange();
   return Container(
     margin: EdgeInsets.only(bottom: 16),
     child: Column(

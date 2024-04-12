@@ -262,8 +262,14 @@ class KeyT {
   static String chua_phan_cong = 'chua_phan_cong';
   static String chua_bat_dau = 'chua_bat_dau';
   static String max = 'max';
-  static String press_once_more_to_cancel_selection = 'press_once_more_to_cancel_selection';
+  static String press_once_more_to_cancel_selection =
+      'press_once_more_to_cancel_selection';
   static String unselect = 'unselect';
   static String try_again = 'try_again';
   static String qr_bar_code = 'qr_bar_code';
+  static String in_phieu = 'in_phieu';
+  static String so_tien_tt_khong_duoc_lon_hon_so_tien_cl =
+      'so_tien_tt_khong_duoc_lon_hon_so_tien_cl';
+  static String add_payment = 'add_payment';
+  static String edit_payment = 'edit_payment';
 }

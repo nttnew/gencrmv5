@@ -121,7 +121,7 @@ Map<String, dynamic> _$AddCustomerIndividualDataToJson(
       'mup': instance.mup,
     };
 
-ProductItemRes _$ProductItemContractFromJson(Map<String, dynamic> json) =>
+ProductItemRes _$ProductItemResFromJson(Map<String, dynamic> json) =>
     ProductItemRes(
       json['name_product'] as String?,
       json['price'] as String?,
@@ -137,8 +137,7 @@ ProductItemRes _$ProductItemContractFromJson(Map<String, dynamic> json) =>
       json['combo_id'] as String?,
     );
 
-Map<String, dynamic> _$ProductItemContractToJson(
-        ProductItemRes instance) =>
+Map<String, dynamic> _$ProductItemResToJson(ProductItemRes instance) =>
     <String, dynamic>{
       'name_product': instance.name_product,
       'price': instance.price,

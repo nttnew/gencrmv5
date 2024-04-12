@@ -65,6 +65,24 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
     ));
 
     list.add(ModuleThaoTac(
+      title: getT(KeyT.add_payment),
+      icon: ICONS.IC_ADD_PAYMENT_PNG,
+      isSvg: false,
+      onThaoTac: () {
+        Get.back();
+        AppNavigator.navigateForm(
+          title: getT(KeyT.add_payment),
+          type: ADD_PAYMENT,
+          id: int.tryParse(id),
+          onRefreshForm: () {
+            PaymentContractBloc.of(context)
+                .add(InitGetPaymentContractEvent(int.tryParse(id) ?? 0));
+          },
+        );
+      },
+    ));
+
+    list.add(ModuleThaoTac(
       title:
           '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
       icon: ICONS.IC_ADD_WORD_SVG,
@@ -75,7 +93,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
               '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
           type: ADD_JOB_CONTRACT,
           id: int.parse(id),
-          onRefreshFormAdd: () {
+          onRefreshForm: () {
             _bloc.controllerCV.reloadData();
           },
         );
@@ -91,7 +109,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
           title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
           type: ADD_SUPPORT_CONTRACT,
           id: int.parse(id),
-          onRefreshFormAdd: () {
+          onRefreshForm: () {
             _bloc.controllerHT.reloadData();
           },
         );
@@ -130,7 +148,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
         AppNavigator.navigateForm(
           type: EDIT_CONTRACT,
           id: int.tryParse(id),
-          onRefreshFormAdd: () {
+          onRefreshForm: () {
             _bloc.add(InitGetDetailContractEvent(int.parse(id)));
           },
         );

@@ -31,7 +31,13 @@ class _FieldTextState extends State<FieldText> {
     });
     if (widget.data.field_set_value != null &&
         widget.data.field_set_value != '')
-      _textEditingController.text = widget.data.field_set_value ?? '';
+      _textEditingController.text =
+          data.field_type == 'MONEY' || data.field_type == 'TEXT_NUMERIC'
+              ? AppValue.format_money(
+                  '${widget.data.field_set_value ?? ''}',
+                  isD: false,
+                )
+              : '${widget.data.field_set_value ?? ''}';
     super.initState();
   }
 
@@ -44,7 +50,7 @@ class _FieldTextState extends State<FieldText> {
   @override
   Widget build(BuildContext context) {
     final isReadOnly =
-        data.field_special == 'none-edit' || data.field_read_only == '1';
+        data.field_special == 'none-edit' || data.field_read_only.toString() == '1';
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Column(
@@ -90,6 +96,7 @@ class _FieldTextState extends State<FieldText> {
               ),
               child: Container(
                 child: TextFormField(
+                  enabled: !isReadOnly,
                   inputFormatters: data.field_type == 'MONEY' ||
                           data.field_type == 'TEXT_NUMERIC'
                       ? AppStyle.inputPrice

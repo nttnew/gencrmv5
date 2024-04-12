@@ -1,6 +1,5 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:gen_crm/screens/main/show_detail_car.dart';
 import 'package:gen_crm/screens/main/widget/item_car.dart';
 import 'package:gen_crm/src/models/model_generator/report_option.dart';
 import '../../bloc/login/login_bloc.dart';
@@ -67,7 +66,7 @@ class _MainCarState extends State<MainCar> {
                                 decoration: BoxDecoration(
                                   color: COLORS.WHITE,
                                   borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(8),
+                                    top: Radius.circular(6),
                                   ),
                                 ),
                               ),
@@ -100,8 +99,7 @@ class _MainCarState extends State<MainCar> {
                                             bottom: 10,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: COLORS
-                                                .PRIMARY_COLOR1,
+                                            color: COLORS.PRIMARY_COLOR1,
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(
                                                 10,
@@ -265,7 +263,7 @@ class _MainCarState extends State<MainCar> {
           return ItemCar(
             data: data,
             onTap: () {
-              showDetailCar(context, data);
+              AppNavigator.navigateDetailCarMain(data);
             },
           );
         },

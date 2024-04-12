@@ -105,6 +105,16 @@ class HangXe {
     data['name'] = this.name;
     return data;
   }
+
+  static HangXe empty = HangXe(id: 0, name: '');
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is HangXe && runtimeType == other.runtimeType && name == other.name;
+
+  @override
+  int get hashCode => name.hashCode;
 }
 
 class Versions {

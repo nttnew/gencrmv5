@@ -3,47 +3,59 @@ import 'package:get/get.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:flutter/material.dart';
 import '../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
+import '../src/app_const.dart';
 
 class WidgetAppbar extends StatelessWidget {
   final String? title;
   final Widget? widgetTitle;
-  final Widget left;
-  final Widget right;
+  final Widget? left;
+  final Widget? right;
   final Color? textColor, backgroundColor;
   final double? height;
   final bool? isTitleCenter;
   final bool? isDivider;
-  final bool isShaDow;
+  final double? padding;
 
   const WidgetAppbar({
     Key? key,
     this.title,
     this.widgetTitle,
-    required this.left,
-    required this.right,
+    this.left,
+    this.right,
     this.backgroundColor,
     this.textColor = COLORS.WHITE,
     this.height,
     this.isTitleCenter = false,
     this.isDivider = false,
-    this.isShaDow = true,
+    this.padding,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-        left: 24,
-        right: 24,
+        left: padding ?? 20,
+        right: padding ?? 20,
         top: MediaQuery.of(context).padding.top,
       ),
       height: AppValue.heightsAppBar + MediaQuery.of(context).padding.top,
       decoration: BoxDecoration(
-        color: !isShaDow ? COLORS.PRIMARY_COLOR1 : COLORS.PRIMARY_COLOR,
+        color: isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.PRIMARY_COLOR,
       ),
       child: Row(
         children: [
-          left,
+          left ??
+              IconButton(
+                onPressed: () {
+                  AppNavigator.navigateBack();
+                },
+                icon: Image.asset(
+                  ICONS.IC_BACK_PNG,
+                  height: 28,
+                  width: 28,
+                  color: isCarCrm() ? COLORS.LIGHT_GREY : COLORS.BLACK,
+                ),
+              ),
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(
@@ -51,13 +63,13 @@ class WidgetAppbar extends StatelessWidget {
               ),
               child: Text(
                 title ?? '',
-                style: AppStyle.DEFAULT_18_BOLD.copyWith(
-                  color: !isShaDow ? COLORS.WHITE : null,
+                style: AppStyle.DEFAULT_16_BOLD.copyWith(
+                  color: isCarCrm() ? COLORS.WHITE : null,
                 ),
               ),
             ),
           ),
-          rightAppBar(),
+          right ?? rightAppBar(),
         ],
       ),
     );

@@ -163,7 +163,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
           },
           boxDecoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: HexColor("#D0F1EB"),
+            color: COLORS.SECONDS_COLOR,
           ),
           textStyle: TextStyle(
               fontFamily: "Quicksand",

@@ -125,3 +125,19 @@ class QuickContractSaveEvent extends AddDataEvent {
     this.files,
   );
 }
+
+class AddPayment extends AddDataEvent {
+  final Map<String, dynamic> data;
+
+  AddPayment(
+    this.data,
+  );
+}
+
+class EditPayment extends AddDataEvent {
+  final Map<String, dynamic> data;
+
+  EditPayment(
+    this.data,
+  );
+}

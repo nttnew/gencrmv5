@@ -11,6 +11,8 @@ PaymentContractItem _$PaymentContractItemFromJson(Map<String, dynamic> json) =>
       json['field_name'] as String?,
       json['field_label'] as String?,
       json['field_value'],
+      json['id_payment'],
+      json['id_chi_tiet_thanh_toan'],
       json['field_type'] as String?,
       json['field_hidden'] as int?,
       json['field_special'] as String?,
@@ -24,6 +26,8 @@ Map<String, dynamic> _$PaymentContractItemToJson(
       'field_type': instance.field_type,
       'field_special': instance.field_special,
       'field_value': instance.field_value,
+      'id_payment': instance.id_payment,
+      'id_chi_tiet_thanh_toan': instance.id_chi_tiet_thanh_toan,
       'field_hidden': instance.field_hidden,
     };
 

@@ -6,7 +6,6 @@ import 'package:gen_crm/api_resfull/dio_provider.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/storages/share_local.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:gen_crm/bloc/blocs.dart';
@@ -343,7 +342,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
       },
       boxDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: HexColor("#D0F1EB"),
+        color: COLORS.SECONDS_COLOR,
       ),
       textStyle: AppStyle.DEFAULT_18_BOLD,
       text: getT(KeyT.login),

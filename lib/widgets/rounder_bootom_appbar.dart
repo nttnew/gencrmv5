@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
-
 import '../src/src_index.dart';
 
 class RoundedAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -26,7 +24,7 @@ class RoundedAppBar extends StatelessWidget implements PreferredSizeWidget {
                           bottom: width / 2 - preferredSize.height / 2),
                       child: new DecoratedBox(
                         decoration: new BoxDecoration(
-                          color: HexColor("#D0F1EB"),
+                          color: COLORS.SECONDS_COLOR,
                           shape: BoxShape.circle,
                         ),
                       ),

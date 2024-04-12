@@ -68,6 +68,8 @@ class _FormAddDataState extends State<FormAddData> {
   ProductModel? _product = Get.arguments[6];
   String _sdt = Get.arguments[7] ?? '';
   String _bienSo = Get.arguments[8] ?? '';
+  String _idDetail = Get.arguments[9] ?? '';
+  String _idPay = Get.arguments[10] ?? '';
   double _total = 0;
   List<ProductModel> _listProduct = [];
   List<ModelItemAdd> _addData = [];
@@ -83,6 +85,9 @@ class _FormAddDataState extends State<FormAddData> {
   late final AttackBloc _attackBloc;
   late final ContactByCustomerBloc _contactBy;
   late final TotalBloc _totalBloc;
+  bool isHideDinhKem = (Get.arguments[1] ?? '') != ADD_PAYMENT &&
+      (Get.arguments[1] ?? '') != EDIT_PAYMENT &&
+      !(Get.arguments[5] ?? false);
 
   @override
   void initState() {
@@ -150,6 +155,8 @@ class _FormAddDataState extends State<FormAddData> {
       EDIT_SUPPORT: InitFormEditSupportEvent(_id),
       PRODUCT_TYPE_EDIT: InitFormEditProductEvent(_id),
       PRODUCT_CUSTOMER_TYPE_EDIT: InitFormEditProductCustomerEvent(_id),
+      ADD_PAYMENT: InitFormAddPaymentEvent(_id),
+      EDIT_PAYMENT: InitFormEditPaymentEvent(_id, _idPay, _idDetail),
     };
 
     if (eventMap.containsKey(type)) {
@@ -513,6 +520,12 @@ class _FormAddDataState extends State<FormAddData> {
         DetailProductCustomerBloc.of(context)
             .add(InitGetDetailProductCustomerEvent(_id));
         break;
+      case ADD_PAYMENT:
+        //todo
+        break;
+      case EDIT_PAYMENT:
+        //todo
+        break;
       case EDIT_CUSTOMER:
         GetListCustomerBloc.of(context).loadMoreController.reloadData();
         break;
@@ -530,185 +543,197 @@ class _FormAddDataState extends State<FormAddData> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppbarBaseNormal(_title.toUpperCase().capitalizeFirst ?? ''),
-          body: BlocListener<AddDataBloc, AddDataState>(
-            bloc: _blocAdd,
-            listener: (context, state) {
-              if (state is SuccessAddData) {
-                LoadingApi().popLoading();
-                ShowDialogCustom.showDialogBase(
-                  title: getT(KeyT.notification),
-                  content: state.isEdit
-                      ? getT(KeyT.update_data_successfully)
-                      : getT(KeyT.new_data_added_successfully),
-                  onTap1: () {
-                    if (!_isGetData &&
-                        _type != ADD_CUSTOMER &&
-                        _type != ADD_CUSTOMER_OR &&
-                        _type != ADD_QUICK_CONTRACT) {
-                      Navigator.of(context)
-                        ..pop()
-                        ..pop(true);
-                    }
-                    _handleNavigationAndReloadData(_type, context, state);
-                  },
-                );
-              } else if (state is ErrorAddData) {
-                LoadingApi().popLoading();
-                ShowDialogCustom.showDialogBase(
-                  title: getT(KeyT.notification),
-                  content: state.msg,
-                );
-              }
-            },
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(
-                16,
-              ),
-              child: Column(
-                children: [
-                  _location(),
-                  BlocBuilder<FormAddBloc, FormAddState>(
-                      bloc: _bloc,
-                      builder: (context, state) {
-                        if (state is LoadingForm) {
-                          _addData = [];
-                          _listProduct = [];
-                          return SizedBox.shrink();
-                        } else if (state is ErrorForm) {
-                          return Text(
-                            state.msg,
-                            style: AppStyle.DEFAULT_16_T,
+    final double paddingTop = MediaQuery.of(context).padding.top +
+        140; //140 là chiều cao của các widget còn lại
+    return Scaffold(
+      appBar: AppbarBaseNormal(_title.toUpperCase().capitalizeFirst ?? ''),
+      body: BlocListener<AddDataBloc, AddDataState>(
+        bloc: _blocAdd,
+        listener: (context, state) {
+          if (state is SuccessAddData) {
+            LoadingApi().popLoading();
+            ShowDialogCustom.showDialogBase(
+              title: getT(KeyT.notification),
+              content: state.isEdit
+                  ? getT(KeyT.update_data_successfully)
+                  : getT(KeyT.new_data_added_successfully),
+              onTap1: () {
+                if (!_isGetData &&
+                    _type != ADD_CUSTOMER &&
+                    _type != ADD_CUSTOMER_OR &&
+                    _type != ADD_QUICK_CONTRACT) {
+                  Navigator.of(context)
+                    ..pop()
+                    ..pop(true);
+                }
+                _handleNavigationAndReloadData(_type, context, state);
+              },
+            );
+          } else if (state is ErrorAddData) {
+            LoadingApi().popLoading();
+            ShowDialogCustom.showDialogBase(
+              title: getT(KeyT.notification),
+              content: state.msg,
+            );
+          }
+        },
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(
+            16,
+          ),
+          child: Column(
+            children: [
+              _location(),
+              BlocBuilder<FormAddBloc, FormAddState>(
+                  bloc: _bloc,
+                  builder: (context, state) {
+                    if (state is LoadingForm) {
+                      _addData = [];
+                      _listProduct = [];
+                      return SizedBox.shrink();
+                    } else if (state is ErrorForm) {
+                      return Text(
+                        state.msg,
+                        style: AppStyle.DEFAULT_16_T,
+                      );
+                    } else if (state is SuccessForm) {
+                      final List<AddCustomerIndividualData> _listAddData =
+                          state.listAddData;
+                      if (_addData.isEmpty) {
+                        for (int i = 0; i < _listAddData.length; i++) {
+                          //
+                          _addData.add(
+                            ModelItemAdd(
+                              group_name: _listAddData[i].group_name ?? '',
+                              data: [],
+                            ),
                           );
-                        } else if (state is SuccessForm) {
-                          final List<AddCustomerIndividualData> _listAddData =
-                              state.listAddData;
-
-                          if (_addData.isEmpty) {
-                            for (int i = 0; i < _listAddData.length; i++) {
-                              //
-                              _addData.add(
-                                ModelItemAdd(
-                                  group_name: _listAddData[i].group_name ?? '',
-                                  data: [],
+                          //
+                          for (int j = 0;
+                              j < (_listAddData[i].data?.length ?? 0);
+                              j++) {
+                            CustomerIndividualItemData _item =
+                                _listAddData[i].data![j];
+                            //
+                            _item.products?.forEach((_element) {
+                              _listProduct.add(
+                                ProductModel(
+                                  _element.id_product.toString(),
+                                  double.tryParse(_element.quantity ?? '') ?? 0,
+                                  ProductItem(
+                                    _element.id_product.toString(),
+                                    '',
+                                    '',
+                                    _element.name_product,
+                                    _element.unit.toString(),
+                                    _element.vat,
+                                    _element.price,
+                                  ),
+                                  _element.sale_off.value ?? '',
+                                  _element.unit_name ?? '',
+                                  _element.vat_name ?? '',
+                                  _element.sale_off.type ?? '',
                                 ),
                               );
-                              //
-                              for (int j = 0;
-                                  j < (_listAddData[i].data?.length ?? 0);
-                                  j++) {
-                                CustomerIndividualItemData _item =
-                                    _listAddData[i].data![j];
-                                //
-                                _item.products?.forEach((_element) {
-                                  _listProduct.add(
-                                    ProductModel(
-                                      _element.id_product.toString(),
-                                      double.tryParse(
-                                              _element.quantity ?? '') ??
-                                          0,
-                                      ProductItem(
-                                        _element.id_product.toString(),
-                                        '',
-                                        '',
-                                        _element.name_product,
-                                        _element.unit.toString(),
-                                        _element.vat,
-                                        _element.price,
-                                      ),
-                                      _element.sale_off.value ?? '',
-                                      _element.unit_name ?? '',
-                                      _element.vat_name ?? '',
-                                      _element.sale_off.type ?? '',
-                                    ),
-                                  );
-                                });
+                            });
 
-                                //
-                                _addData[i].data.add(
-                                      ModelDataAdd(
-                                        label: _item.field_name,
-                                        value: _item.field_set_value.toString(),
-                                        required: _item.field_require,
-                                        txtValidate:
-                                            _item.field_validation_message,
-                                        type: _item.field_type,
-                                      ),
-                                    );
-                              }
-                            }
+                            //
+                            _addData[i].data.add(
+                                  ModelDataAdd(
+                                    label: _item.field_name,
+                                    value: _item.field_set_value.toString(),
+                                    required: _item.field_require,
+                                    txtValidate: _item.field_validation_message,
+                                    type: _item.field_type,
+                                  ),
+                                );
                           }
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: List.generate(_listAddData.length,
-                                    (indexParent) {
-                                  final itemParent = _listAddData[indexParent];
-                                  return (itemParent.data != null &&
-                                          (itemParent.data?.length ?? 0) > 0)
-                                      ? Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              height: AppValue.heights * 0.01,
-                                            ),
-                                            itemParent.group_name != null
-                                                ? WidgetText(
-                                                    title:
-                                                        itemParent.group_name ??
+                        }
+                      }
+                      return Column(
+                        children: [
+                          Container(
+                            constraints: BoxConstraints(
+                              minHeight: MediaQuery.of(context).size.height -
+                                  paddingTop,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: List.generate(_listAddData.length,
+                                      (indexParent) {
+                                    final itemParent =
+                                        _listAddData[indexParent];
+                                    return (itemParent.data != null &&
+                                            (itemParent.data?.length ?? 0) > 0)
+                                        ? Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              if ('${itemParent.group_name ?? ''}'
+                                                      .trim() !=
+                                                  '') ...[
+                                                SizedBox(
+                                                  height:
+                                                      AppValue.heights * 0.01,
+                                                ),
+                                                itemParent.group_name != null
+                                                    ? WidgetText(
+                                                        title: itemParent
+                                                                .group_name ??
                                                             '',
-                                                    style: AppStyle
-                                                        .DEFAULT_18_BOLD,
-                                                  )
-                                                : SizedBox.shrink(),
-                                            SizedBox(
-                                              height: AppValue.heights * 0.01,
-                                            ),
-                                            Column(
-                                              children: List.generate(
-                                                  itemParent.data?.length ?? 0,
-                                                  (indexChild) {
-                                                return _getBody(
-                                                  itemParent.data![indexChild],
-                                                  indexParent,
-                                                  indexChild,
-                                                );
-                                              }),
-                                            )
-                                          ],
-                                        )
-                                      : SizedBox.shrink();
-                                }),
-                              ),
-                              if (!_isGetData)
-                                FileDinhKemUiBase(
-                                  context: context,
+                                                        style: AppStyle
+                                                            .DEFAULT_18_BOLD,
+                                                      )
+                                                    : SizedBox.shrink(),
+                                                SizedBox(
+                                                  height:
+                                                      AppValue.heights * 0.01,
+                                                ),
+                                              ],
+                                              Column(
+                                                children: List.generate(
+                                                    itemParent.data?.length ??
+                                                        0, (indexChild) {
+                                                  return _getBody(
+                                                    itemParent
+                                                        .data![indexChild],
+                                                    indexParent,
+                                                    indexChild,
+                                                  );
+                                                }),
+                                              )
+                                            ],
+                                          )
+                                        : SizedBox.shrink();
+                                  }),
                                 ),
-                              SizedBox(
-                                height: AppValue.widths * 0.1 + 10,
-                              ),
-                              FileLuuBase(
-                                context,
-                                () => _onClickSave(),
-                                isAttack: !_isGetData,
-                              ),
-                            ],
-                          );
-                        } else
-                          return SizedBox.shrink();
-                      }),
-                ],
-              ),
-            ),
+                                if (isHideDinhKem)
+                                  FileDinhKemUiBase(
+                                    context: context,
+                                  ),
+                                SizedBox(
+                                  height: AppValue.widths * 0.1 + 10,
+                                ),
+                              ],
+                            ),
+                          ),
+                          FileLuuBase(
+                            context,
+                            () => _onClickSave(),
+                            isAttack: isHideDinhKem,
+                          ),
+                        ],
+                      );
+                    } else
+                      return SizedBox.shrink();
+                  }),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 
@@ -726,47 +751,46 @@ class _FormAddDataState extends State<FormAddData> {
                 reload: _reload,
                 isDelete: true,
               )
-            : data.field_name == 'chi_tiet_xe' //chọn chi tiết xe
-                ? data.field_parent != null
-                    ? StreamBuilder<String>(
-                        stream: _reloadStream,
-                        builder: (context, snapshot) {
-                          return TypeCarBase(
+            : _blocService.getInput(data.field_name ?? '')
+                ? StreamBuilder<String>(
+                    stream: _blocService.loaiXe, // getdata selectcar local
+                    builder: (context, snapshot) {
+                      return fieldTextCar(
+                        data,
+                        _blocService.getDataSelectCar(data).toString(),
+                        () {
+                          _addData[indexParent].data[indexChild].value =
+                              _blocService.getDataSelectCarId(data).toString();
+                        },
+                      );
+                    })
+                : data.field_name == 'chi_tiet_xe' //chọn chi tiết xe
+                    ? data.field_parent != null
+                        ? StreamBuilder<String>(
+                            stream: _reloadStream,
+                            builder: (context, snapshot) {
+                              return TypeCarBase(
+                                data: data,
+                                bloc: _blocService,
+                                function: (v) {
+                                  _addData[indexParent].data[indexChild].value =
+                                      v;
+                                },
+                                addData: _addData,
+                              );
+                            })
+                        : TypeCarBase(
                             data: data,
                             bloc: _blocService,
                             function: (v) {
                               _addData[indexParent].data[indexChild].value = v;
                             },
                             addData: _addData,
-                          );
-                        })
-                    : TypeCarBase(
-                        data: data,
-                        bloc: _blocService,
-                        function: (v) {
-                          _addData[indexParent].data[indexChild].value = v;
-                        },
-                        addData: _addData,
-                      )
-                : data.field_type == 'TEXT' ||
-                        data.field_type == 'TEXTAREA' ||
-                        data.field_type == 'MONEY'
-                    ? _blocService.getInput(data.field_name ?? '')
-                        ? StreamBuilder<String>(
-                            stream:
-                                _blocService.loaiXe, // getdata selectcar local
-                            builder: (context, snapshot) {
-                              return fieldTextCar(
-                                data,
-                                _blocService
-                                    .getDataSelectCar(data.field_name ?? ''),
-                                (v) {
-                                  _addData[indexParent].data[indexChild].value =
-                                      v;
-                                },
-                              );
-                            })
-                        : data.field_parent != null
+                          )
+                    : data.field_type == 'TEXT' ||
+                            data.field_type == 'TEXTAREA' ||
+                            data.field_type == 'MONEY'
+                        ? data.field_parent != null
                             ? StreamBuilder<String>(
                                 stream: _reloadStream,
                                 builder: (context, snapshot) {
@@ -787,24 +811,8 @@ class _FormAddDataState extends State<FormAddData> {
                                       v;
                                 },
                               )
-                    : data.field_type == 'SELECT'
-                        ? _blocService.getInput(data.field_name ?? '')
-                            ? StreamBuilder<String>(
-                                stream: _blocService
-                                    .loaiXe, // getdata selectcar local
-                                builder: (context, snapshot) {
-                                  return fieldTextCar(
-                                    data,
-                                    _blocService.getDataSelectCar(
-                                        data.field_name ?? ''),
-                                    (v) {
-                                      _addData[indexParent]
-                                          .data[indexChild]
-                                          .value = v;
-                                    },
-                                  );
-                                })
-                            : checkLocation(data) // TH Select địa chỉ
+                        : data.field_type == 'SELECT'
+                            ? checkLocation(data) // TH Select địa chỉ
                                 ? LocationWidget(
                                     data: data,
                                     onSuccess: (v) {
@@ -828,7 +836,9 @@ class _FormAddDataState extends State<FormAddData> {
                                             },
                                           );
                                         })
-                                    : data.field_name == 'hinh_thuc_thanh_toan'
+                                    : data.field_name == 'hinh_thuc_thanh_toan' &&
+                                            _type != ADD_PAYMENT &&
+                                            _type != EDIT_PAYMENT
                                         ? StreamBuilder<double>(
                                             stream: _totalBloc.paidStream,
                                             builder: (context, snapshot) {
@@ -861,53 +871,39 @@ class _FormAddDataState extends State<FormAddData> {
                                                     '${data.field_name}$v');
                                             },
                                           )
-                        : data.field_type == 'TEXT_MULTI'
-                            ? SelectMulti(
-                                dropdownItemList: data.field_datasource ?? [],
-                                label: data.field_label ?? '',
-                                required: data.field_require ?? 0,
-                                maxLength: data.field_maxlength ?? '',
-                                initValue: _addData[indexParent]
-                                    .data[indexChild]
-                                    .value
-                                    .toString()
-                                    .split(','),
-                                onChange: (data) {
-                                  _addData[indexParent].data[indexChild].value =
-                                      data;
-                                },
-                              )
-                            : data.field_type == 'TEXT_MULTI_NEW'
-                                ? InputMultipleWidget(
-                                    data: data,
-                                    onSelect: (data) {
+                            : data.field_type == 'TEXT_MULTI'
+                                ? SelectMulti(
+                                    dropdownItemList:
+                                        data.field_datasource ?? [],
+                                    label: data.field_label ?? '',
+                                    required: data.field_require ?? 0,
+                                    maxLength: data.field_maxlength ?? '',
+                                    initValue: _addData[indexParent]
+                                        .data[indexChild]
+                                        .value
+                                        .toString()
+                                        .split(','),
+                                    onChange: (data) {
                                       _addData[indexParent]
                                           .data[indexChild]
-                                          .value = data.join(',');
+                                          .value = data;
                                     },
-                                    value: (data.field_set_value != null &&
-                                            data.field_set_value != '')
-                                        ? data.field_set_value.split(',')
-                                        : [],
                                   )
-                                : data.field_type == 'DATE'
-                                    ? WidgetInputDate(
+                                : data.field_type == 'TEXT_MULTI_NEW'
+                                    ? InputMultipleWidget(
                                         data: data,
-                                        dateText: data.field_set_value,
-                                        onSelect: (int date) {
+                                        onSelect: (data) {
                                           _addData[indexParent]
                                               .data[indexChild]
-                                              .value = date;
+                                              .value = data.join(',');
                                         },
-                                        onInit: (v) {
-                                          _addData[indexParent]
-                                              .data[indexChild]
-                                              .value = v;
-                                        },
+                                        value: (data.field_set_value != null &&
+                                                data.field_set_value != '')
+                                            ? data.field_set_value.split(',')
+                                            : [],
                                       )
-                                    : data.field_type == 'DATETIME'
+                                    : data.field_type == 'DATE'
                                         ? WidgetInputDate(
-                                            isDate: false,
                                             data: data,
                                             dateText: data.field_set_value,
                                             onSelect: (int date) {
@@ -921,155 +917,168 @@ class _FormAddDataState extends State<FormAddData> {
                                                   .value = v;
                                             },
                                           )
-                                        : data.field_type == 'CHECK'
-                                            ? RenderCheckBox(
-                                                init: data.field_set_value
-                                                        .toString() ==
-                                                    '1',
-                                                onChange: (check) {
+                                        : data.field_type == 'DATETIME'
+                                            ? WidgetInputDate(
+                                                isDate: false,
+                                                data: data,
+                                                dateText: data.field_set_value,
+                                                onSelect: (int date) {
                                                   _addData[indexParent]
                                                       .data[indexChild]
-                                                      .value = check ? 1 : 0;
+                                                      .value = date;
                                                 },
-                                                data: data,
+                                                onInit: (v) {
+                                                  _addData[indexParent]
+                                                      .data[indexChild]
+                                                      .value = v;
+                                                },
                                               )
-                                            : data.field_type == 'PERCENTAGE'
-                                                ? FieldInputPercent(
-                                                    data: data,
-                                                    onChanged: (text) {
+                                            : data.field_type == 'CHECK'
+                                                ? RenderCheckBox(
+                                                    init: data.field_set_value
+                                                            .toString() ==
+                                                        '1',
+                                                    onChange: (check) {
                                                       _addData[indexParent]
-                                                          .data[indexChild]
-                                                          .value = text;
+                                                              .data[indexChild]
+                                                              .value =
+                                                          check ? 1 : 0;
                                                     },
+                                                    data: data,
                                                   )
                                                 : data.field_type ==
-                                                        'TEXT_NUMERIC'
-                                                    ? data.field_name ==
-                                                            'chuathanhtoan'
-                                                        ? StreamBuilder<double>(
-                                                            stream: _totalBloc
-                                                                .unpaidStream,
-                                                            builder: (context,
-                                                                snapshot) {
-                                                              final value =
-                                                                  snapshot.data;
-                                                              _addData[
-                                                                      indexParent]
-                                                                  .data[
-                                                                      indexChild]
-                                                                  .value = value;
-                                                              return WidgetTotalSum(
-                                                                label: data
-                                                                    .field_label,
-                                                                value: AppValue
-                                                                    .format_money(
-                                                                  (value ?? 0)
-                                                                      .toStringAsFixed(
-                                                                    0,
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            })
-                                                        : data.field_special ==
-                                                                'autosum'
-                                                            ? BlocBuilder<
-                                                                    TotalBloc,
-                                                                    TotalState>(
+                                                        'PERCENTAGE'
+                                                    ? FieldInputPercent(
+                                                        data: data,
+                                                        onChanged: (text) {
+                                                          _addData[indexParent]
+                                                              .data[indexChild]
+                                                              .value = text;
+                                                        },
+                                                      )
+                                                    : data.field_type ==
+                                                            'TEXT_NUMERIC'
+                                                        ? data.field_name ==
+                                                                'chuathanhtoan'
+                                                            ? StreamBuilder<
+                                                                    double>(
+                                                                stream: _totalBloc
+                                                                    .unpaidStream,
                                                                 builder: (context,
-                                                                    stateA) {
-                                                                if (stateA
-                                                                    is SuccessTotalState) {
-                                                                  _addData[indexParent]
-                                                                          .data[
-                                                                              indexChild]
-                                                                          .value =
-                                                                      stateA
-                                                                          .total
-                                                                          .toString();
-                                                                  TotalBloc.of(
-                                                                          context)
-                                                                      .getPaid();
+                                                                    snapshot) {
+                                                                  final value =
+                                                                      snapshot
+                                                                          .data;
+                                                                  _addData[
+                                                                          indexParent]
+                                                                      .data[
+                                                                          indexChild]
+                                                                      .value = value;
                                                                   return WidgetTotalSum(
                                                                     label: data
                                                                         .field_label,
                                                                     value: AppValue
                                                                         .format_money(
-                                                                      stateA
-                                                                          .total
+                                                                      (value ??
+                                                                              0)
                                                                           .toStringAsFixed(
                                                                         0,
                                                                       ),
                                                                     ),
                                                                   );
-                                                                } else {
-                                                                  return WidgetTotalSum(
-                                                                    label: data
-                                                                        .field_label,
-                                                                    value: '',
-                                                                  );
-                                                                }
-                                                              })
-                                                            : data.field_parent !=
-                                                                    null // TH reload api
-                                                                ? StreamBuilder<
-                                                                        String>(
-                                                                    stream:
-                                                                        _reloadStream,
+                                                                })
+                                                            : data.field_special ==
+                                                                    'autosum'
+                                                                ? BlocBuilder<
+                                                                        TotalBloc,
+                                                                        TotalState>(
                                                                     builder: (context,
-                                                                        snapshot) {
-                                                                      return FieldTextAPi(
-                                                                        typeInput:
-                                                                            TextInputType.number,
-                                                                        addData:
-                                                                            _addData,
-                                                                        data:
-                                                                            data,
-                                                                        onChange:
-                                                                            (v) {
-                                                                          _addData[indexParent]
-                                                                              .data[indexChild]
-                                                                              .value = v;
-                                                                        },
-                                                                      );
-                                                                    })
-                                                                : FieldText(
-                                                                    data: data,
-                                                                    onChange:
-                                                                        (v) {
-                                                                      if (data.field_name ==
-                                                                          'datt') {
-                                                                        _totalBloc
-                                                                            .paidStream
-                                                                            .add(double.tryParse(v) ??
-                                                                                0);
-                                                                        _totalBloc
-                                                                            .getPaid();
-                                                                      }
+                                                                        stateA) {
+                                                                    if (stateA
+                                                                        is SuccessTotalState) {
                                                                       _addData[
                                                                               indexParent]
                                                                           .data[
                                                                               indexChild]
-                                                                          .value = v;
-                                                                    },
-                                                                  )
-                                                    : data.field_type == 'images'
-                                                        ? FieldImage(
-                                                            init: (data.field_set_value
-                                                                    is List<
-                                                                        dynamic>)
-                                                                ? data
-                                                                    .field_set_value
-                                                                : null,
-                                                            data: data,
-                                                            onChange: (v) {
-                                                              _addData[
-                                                                      indexParent]
-                                                                  .data[
-                                                                      indexChild]
-                                                                  .value = v;
-                                                            },
-                                                          )
-                                                        : SizedBox.shrink()
+                                                                          .value = stateA.total.toString();
+                                                                      TotalBloc.of(
+                                                                              context)
+                                                                          .getPaid();
+                                                                      return WidgetTotalSum(
+                                                                        label: data
+                                                                            .field_label,
+                                                                        value: AppValue
+                                                                            .format_money(
+                                                                          stateA
+                                                                              .total
+                                                                              .toStringAsFixed(
+                                                                            0,
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    } else {
+                                                                      return WidgetTotalSum(
+                                                                        label: data
+                                                                            .field_label,
+                                                                        value:
+                                                                            '',
+                                                                      );
+                                                                    }
+                                                                  })
+                                                                : data.field_parent !=
+                                                                        null // TH reload api
+                                                                    ? StreamBuilder<
+                                                                            String>(
+                                                                        stream:
+                                                                            _reloadStream,
+                                                                        builder: (context, snapshot) {
+                                                                          return FieldTextAPi(
+                                                                            typeInput:
+                                                                                TextInputType.number,
+                                                                            addData:
+                                                                                _addData,
+                                                                            data:
+                                                                                data,
+                                                                            onChange:
+                                                                                (v) {
+                                                                              _addData[indexParent].data[indexChild].value = v;
+                                                                            },
+                                                                          );
+                                                                        })
+                                                                    : FieldText(
+                                                                        data:
+                                                                            data,
+                                                                        onChange:
+                                                                            (v) {
+                                                                          if (data.field_name ==
+                                                                              'datt') {
+                                                                            _totalBloc.paidStream.add(double.tryParse(v) ??
+                                                                                0);
+                                                                            _totalBloc.getPaid();
+                                                                          }
+                                                                          _addData[indexParent]
+                                                                              .data[indexChild]
+                                                                              .value = v;
+                                                                        },
+                                                                      )
+                                                        : data.field_type == 'images'
+                                                            ? FieldImage(
+                                                                init: (data.field_set_value
+                                                                        is List<
+                                                                            dynamic>)
+                                                                    ? data
+                                                                        .field_set_value
+                                                                    : null,
+                                                                data: data,
+                                                                onChange: (v) {
+                                                                  _addData[
+                                                                          indexParent]
+                                                                      .data[
+                                                                          indexChild]
+                                                                      .value = v;
+                                                                },
+                                                              )
+                                                            : SizedBox.shrink()
         : SizedBox.shrink();
   }
 
@@ -1321,6 +1330,23 @@ class _FormAddDataState extends State<FormAddData> {
           } else if (_type == PRODUCT_CUSTOMER_TYPE_EDIT) {
             _blocAdd.add(
                 EditProductCustomerEvent(data, files: _attackBloc.listFile));
+          } else if (_type == ADD_PAYMENT) {
+            int soTienTT = int.tryParse(data['hd_sotien']) ?? 0;
+            int soTienCL = int.tryParse(data['con_lai']) ?? 0;
+            if (soTienTT <= soTienCL) {
+              data['id_contract'] = _id;
+              _blocAdd.add(AddPayment(data));
+            } else {
+              ShowDialogCustom.showDialogBase(
+                title: getT(KeyT.notification),
+                content: getT(KeyT.so_tien_tt_khong_duoc_lon_hon_so_tien_cl),
+              );
+            }
+          } else if (_type == EDIT_PAYMENT) {
+            data['id_contract'] = _id;
+            data['id_chi_tiet_thanh_toan'] = _idDetail;
+            data['id_payment'] = _idPay;
+            _blocAdd.add(EditPayment(data));
           }
       }
     }

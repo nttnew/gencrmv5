@@ -99,6 +99,14 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       yield* _getFormEditProduct(event.id ?? '');
     } else if (event is InitFormEditProductCustomerEvent) {
       yield* _getFormEditProductCustomer(event.id ?? '');
+    } else if (event is InitFormAddPaymentEvent) {
+      yield* _getFormPayment(event.id ?? '');
+    } else if (event is InitFormEditPaymentEvent) {
+      yield* _getFormPayment(
+        event.id ?? '',
+        idDetail: event.idDetail ?? '',
+        idPay: event.idPay ?? '',
+      );
     }
   }
 
@@ -112,7 +120,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
   void getAddressCustomer(String id) async {
     try {
       final result = await userRepository.getAddressCustomer(id: id);
-      addressStream.add(result?.data ?? 'Chưa có');
+      addressStream.add(result?.data ?? '');
     } catch (e) {
       throw e;
     }
@@ -745,6 +753,33 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     try {
       yield LoadingForm();
       final response = await userRepository.getFormEditProductCustomer(id: id);
+      if (isSuccess(response.code)) {
+        yield SuccessForm(response.data!);
+      } else {
+        yield ErrorForm(response.msg ?? '');
+        LoadingApi().popLoading();
+      }
+    } catch (e) {
+      yield ErrorForm(getT(KeyT.an_error_occurred));
+      LoadingApi().popLoading();
+      throw e;
+    }
+    LoadingApi().popLoading();
+  }
+
+  Stream<FormAddState> _getFormPayment(
+    String id, {
+    String idDetail = '',
+    String idPay = '',
+  }) async* {
+    LoadingApi().pushLoading();
+    try {
+      yield LoadingForm();
+      final response = await userRepository.getFormPayment(
+        id: id,
+        idDetail: idDetail,
+        idPay: idPay,
+      );
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data!);
       } else {

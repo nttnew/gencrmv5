@@ -118,6 +118,7 @@ abstract class RestClient {
     @Query('filter') String filter,
     @Query('search') String search,
     @Query('nguoi_quan_ly') String? manager,
+    //todo
   );
 
   @GET(BASE_URL.LIST_CHANCE)
@@ -906,6 +907,30 @@ abstract class RestClient {
     @Query('page') String page,
     @Query('bienso') String? bienSo,
     @Query('dienthoai') String? dienThoai,
+    @Query('qr') String? qr,
+  );
+
+  @GET(BASE_URL.GET_FORM_PAYMENT)
+  Future<AddCustomerIndividual> getFormPayment(
+    @Query('id') String? id,
+    @Query('detail') String? idDetail,
+    @Query('id_payment') String? idPay,
+  );
+
+  @POST(BASE_URL.ADD_PAYMENT)
+  Future<BaseResponse> addPayment(
+    @Body() Map<String, dynamic> map,
+  );
+
+  @POST(BASE_URL.UPDATE_PAYMENT)
+  Future<BaseResponse> updatePayment(
+    @Body() Map<String, dynamic> map,
+  );
+
+  @POST(BASE_URL.DELETE_PAYMENT)
+  Future<BaseResponse> deletePayment(
+    @Field('id_contract') String idContract,
+    @Field('id_payment') String idPayment,
   );
 }
 

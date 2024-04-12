@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/models/model_generator/customer.dart';
 import 'package:gen_crm/src/models/model_generator/list_product_customer_response.dart';
@@ -10,7 +9,9 @@ import '../../../../bloc/add_service_voucher/add_service_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/listview/list_load_infinity.dart';
+import '../../../../widgets/search_base.dart';
 import '../../home/customer/widget/item_list_customer.dart';
+import '../../home/product/scanner_qrcode.dart';
 import '../../home/product_customer/widget/item_product_customer.dart';
 
 class AddServiceVoucherScreen extends StatefulWidget {
@@ -171,61 +172,99 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 8,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              RichText(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
+              child: RichText(
                 textScaleFactor: MediaQuery.of(context).textScaleFactor,
                 text: TextSpan(
                   text: label,
                   style: AppStyle.DEFAULT_14W600,
                 ),
               ),
-              SizedBox(
-                height: 8,
-              ),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                    color: COLORS.ffBEB4B4,
-                  ),
+            ),
+            SearchBase(
+              controller: textEditingController,
+              hint: hintText,
+              endIcon: GestureDetector(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(
+                          builder: (context) => ScannerQrcode()))
+                      .then((value) async {
+                    if (value != '') {
+                      _bloc.qr = value;
+                      _onTap(isPhone);
+                      // _bloc.querySearch = v;
+                      // _bloc.loadMoreController.reloadData();
+
+                      // final result =
+                      // await _bloc.getListProduct(querySearch: value);
+                      // if (result?.data?.lists?.isNotEmpty ?? false) {
+                      //   AppNavigator.navigateDetailProduct(
+                      //     result?.data?.lists?.first.tenSanPham ?? '',
+                      //     result?.data?.lists?.first.id ?? '',
+                      //   );
+                      // } else {
+                      //   ShowDialogCustom.showDialogBase(
+                      //     title: getT(KeyT.notification),
+                      //     content: getT(KeyT.no_data),
+                      //   );
+                      // }
+                    }
+                  });
+                },
+                child: Icon(
+                  Icons.qr_code_scanner,
+                  size: 20,
                 ),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    left: 10,
-                    top: 5,
-                    bottom: 5,
-                  ),
-                  child: Container(
-                    child: TextFormField(
-                      autofocus: true,
-                      controller: textEditingController,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      keyboardType: textInputType,
-                      decoration: InputDecoration(
-                        hintText: hintText,
-                        hintStyle: AppStyle.DEFAULT_14W500,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                        isDense: true,
-                      ),
-                    ),
-                  ),
-                ),
               ),
-            ],
-          ),
+              onChange: (String v) {
+                // _bloc.querySearch = v;
+                // _bloc.loadMoreController.reloadData();
+              },
+            ),
+            // Container(
+            //   width: double.infinity,
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(5),
+            //     border: Border.all(
+            //       color: COLORS.ffBEB4B4,
+            //     ),
+            //   ),
+            //   child: Padding(
+            //     padding: EdgeInsets.only(
+            //       left: 10,
+            //       top: 5,
+            //       bottom: 5,
+            //     ),
+            //     child: Container(
+            //       child: TextFormField(
+            //         autofocus: true,
+            //         controller: textEditingController,
+            //         style: TextStyle(
+            //           fontSize: 14,
+            //           fontWeight: FontWeight.w500,
+            //         ),
+            //         keyboardType: textInputType,
+            //         decoration: InputDecoration(
+            //           hintText: hintText,
+            //           hintStyle: AppStyle.DEFAULT_14W500,
+            //           focusedBorder: InputBorder.none,
+            //           enabledBorder: InputBorder.none,
+            //           disabledBorder: InputBorder.none,
+            //           isDense: true,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+          ],
         ),
         Expanded(
           child: ViewLoadMoreBase(

@@ -196,6 +196,10 @@ class BASE_URL {
   static const POST_UPDATE_TTHD = 'modules/genmobile2/dashboard/updateTTHD';
   static const POST_UPDATE_TDNTH = 'modules/genmobile2/dashboard/updateTDNTH';
   static const QUICK_CREATE_SEARCH = 'modules/genmobile2/quickCreate/search';
+  static const GET_FORM_PAYMENT = 'modules/genmobile2/contract/formPayment';
+  static const ADD_PAYMENT = 'modules/genmobile2/contract/addPayment';
+  static const UPDATE_PAYMENT = 'modules/genmobile2/contract/udpatePayment';
+  static const DELETE_PAYMENT = 'modules/genmobile2/contract/deletePayment';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';

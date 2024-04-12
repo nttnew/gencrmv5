@@ -131,9 +131,9 @@ class ProductItemRes {
   );
 
   factory ProductItemRes.fromJson(Map<String, dynamic> json) =>
-      _$ProductItemContractFromJson(json);
+      _$ProductItemResFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ProductItemContractToJson(this);
+  Map<String, dynamic> toJson() => _$ProductItemResToJson(this);
 }
 
 @JsonSerializable()
