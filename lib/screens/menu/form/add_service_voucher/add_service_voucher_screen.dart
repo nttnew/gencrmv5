@@ -199,23 +199,20 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
                       .then((value) async {
                     if (value != '') {
                       _bloc.qr = value;
-                      _onTap(isPhone);
-                      // _bloc.querySearch = v;
-                      // _bloc.loadMoreController.reloadData();
-
-                      // final result =
-                      // await _bloc.getListProduct(querySearch: value);
-                      // if (result?.data?.lists?.isNotEmpty ?? false) {
-                      //   AppNavigator.navigateDetailProduct(
-                      //     result?.data?.lists?.first.tenSanPham ?? '',
-                      //     result?.data?.lists?.first.id ?? '',
-                      //   );
-                      // } else {
-                      //   ShowDialogCustom.showDialogBase(
-                      //     title: getT(KeyT.notification),
-                      //     content: getT(KeyT.no_data),
-                      //   );
-                      // }
+                      if (isPhone) {
+                        _txtPhone.text = '';
+                        isDataPhone = false;
+                        _bloc.loadMoreControllerPhone.reloadData();
+                      } else {
+                        _txtBienSo.text = '';
+                        isDataCar = false;
+                        _bloc.loadMoreControllerBienSo.reloadData();
+                      }
+                    } else {
+                      ShowDialogCustom.showDialogBase(
+                        title: getT(KeyT.notification),
+                        content: getT(KeyT.no_data),
+                      );
                     }
                   });
                 },
@@ -225,45 +222,9 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
                 ),
               ),
               onChange: (String v) {
-                // _bloc.querySearch = v;
-                // _bloc.loadMoreController.reloadData();
+                _bloc.qr = '';
               },
             ),
-            // Container(
-            //   width: double.infinity,
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(5),
-            //     border: Border.all(
-            //       color: COLORS.ffBEB4B4,
-            //     ),
-            //   ),
-            //   child: Padding(
-            //     padding: EdgeInsets.only(
-            //       left: 10,
-            //       top: 5,
-            //       bottom: 5,
-            //     ),
-            //     child: Container(
-            //       child: TextFormField(
-            //         autofocus: true,
-            //         controller: textEditingController,
-            //         style: TextStyle(
-            //           fontSize: 14,
-            //           fontWeight: FontWeight.w500,
-            //         ),
-            //         keyboardType: textInputType,
-            //         decoration: InputDecoration(
-            //           hintText: hintText,
-            //           hintStyle: AppStyle.DEFAULT_14W500,
-            //           focusedBorder: InputBorder.none,
-            //           enabledBorder: InputBorder.none,
-            //           disabledBorder: InputBorder.none,
-            //           isDense: true,
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
         Expanded(
