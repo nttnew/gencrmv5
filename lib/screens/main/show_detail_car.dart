@@ -71,19 +71,19 @@ class _DetailCarState extends State<DetailCar> {
             padding: 10,
             right: Row(
               children: [
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () {
-                    AppNavigator.navigateInPhieu();
-
-                    //todo
-                  },
-                  icon: Icon(
-                    Icons.print,
-                    color: COLORS.WHITE,
-                    size: 20,
-                  ),
-                ),
+                // IconButton(
+                //   padding: EdgeInsets.zero,
+                //   onPressed: () {
+                //     AppNavigator.navigateInPhieu();
+                //
+                //     //todo
+                //   },
+                //   icon: Icon(
+                //     Icons.print,
+                //     color: COLORS.WHITE,
+                //     size: 20,
+                //   ),
+                // ),
                 IconButton(
                   onPressed: () {
                     AppNavigator.navigateForm(
@@ -93,7 +93,6 @@ class _DetailCarState extends State<DetailCar> {
                         _blocLogin.getDetailXeDichVu();
                       },
                     );
-                    //todo
                   },
                   icon: Icon(
                     Icons.edit_note,
@@ -371,32 +370,10 @@ class _DetailCarState extends State<DetailCar> {
                                       title: getT(KeyT.pay),
                                       type: ADD_PAYMENT,
                                       id: int.tryParse(xeDichVu.id ?? ''),
-                                      onRefreshForm: () {
-                                        //todo
-                                        // _blocLogin.getDetailXeDichVu();
-                                      },
+                                      onRefreshForm: () {},
                                     );
-                                    //todo
                                   }),
                             ),
-                            // Expanded(
-                            //   child: ButtonBaseSmall(
-                            //       title: getT(KeyT.edit) +
-                            //           ' ' +
-                            //           ModuleMy.getNameModuleMy(
-                            //             ModuleMy.HOP_DONG,
-                            //           ),
-                            //       onTap: () {
-                            //         AppNavigator.navigateForm(
-                            //           type: EDIT_CONTRACT,
-                            //           id: int.tryParse(
-                            //               _blocLogin.xeDichVu?.id ?? ''),
-                            //           onRefreshFormAdd: () {
-                            //             _blocLogin.getDetailXeDichVu();
-                            //           },
-                            //         );
-                            //       }),
-                            // ),
                             AppValue.hSpaceSmall,
                             Expanded(
                               child: ButtonBaseSmall(
