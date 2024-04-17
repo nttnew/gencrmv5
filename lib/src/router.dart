@@ -54,4 +54,5 @@ class ROUTE_NAMES {
   static const String LIST_SERVICE_PARK = '/LIST_SERVICE_PARK';
   static const String IN_PHIEU = '/InPhieuScreen';
   static const String DETAIL_CAR_MAIN = '/DETAIL_CAR_MAIN';
+  static const String LIST_BIEU_MAU = '/ListBieuMau';
 }

@@ -17,6 +17,7 @@ class ViewLoadMoreBase extends StatefulWidget {
     this.isShowAll,
     this.isDispose = true,
     this.heightAppBar,
+    this.widgetLoad,
   }) : super(key: key);
   final Future<dynamic> Function(int page, bool isInit) functionInit;
   final Function(int index, dynamic data) itemWidget;
@@ -27,6 +28,7 @@ class ViewLoadMoreBase extends StatefulWidget {
   final Widget? child;
   final BehaviorSubject<List<dynamic>>? isShowAll;
   final double? heightAppBar;
+  final Widget? widgetLoad;
 
   @override
   State<ViewLoadMoreBase> createState() => _ViewLoadMoreBaseState();
@@ -238,65 +240,48 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
           top: 16,
         ),
         itemCount: 10,
-        itemBuilder: (context, index) => Container(
-          margin: EdgeInsets.only(
-            left: 16,
-            right: 16,
-            bottom: 16,
-          ),
-          padding: EdgeInsets.all(
-            16,
-          ),
-          decoration: BoxDecoration(
-            color: COLORS.WHITE,
-            borderRadius: BorderRadius.all(
-              Radius.circular(
-                10,
+        itemBuilder: (context, index) =>
+            widget.widgetLoad ??
+            Container(
+              margin: EdgeInsets.only(
+                left: 16,
+                right: 16,
+                bottom: 16,
               ),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(
-                  0.3,
+              padding: EdgeInsets.all(
+                16,
+              ),
+              decoration: BoxDecoration(
+                color: COLORS.WHITE,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(
+                    10,
+                  ),
                 ),
-                spreadRadius: 3,
-                blurRadius: 5,
-                offset: Offset(0, 0), // changes position of shadow
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(
+                      0.3,
+                    ),
+                    spreadRadius: 3,
+                    blurRadius: 5,
+                    offset: Offset(0, 0), // changes position of shadow
+                  ),
+                ],
               ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _itemLoading(isMaxWidth: true),
-              AppValue.vSpaceSmall,
-              _itemLoading(),
-              AppValue.vSpaceSmall,
-              _itemLoading(),
-              AppValue.vSpaceSmall,
-              _itemLoading(),
-            ],
-          ),
-        ),
-      );
-
-  _itemLoading({bool isMaxWidth = false}) => Shimmer.fromColors(
-        baseColor: Colors.black12,
-        highlightColor: Colors.white,
-        child: Container(
-          height: 20,
-          width: isMaxWidth
-              ? MediaQuery.of(context).size.width
-              : MediaQuery.of(context).size.width / 1 / 2,
-          decoration: BoxDecoration(
-            color: Colors.cyan,
-            borderRadius: BorderRadius.all(
-              Radius.circular(
-                4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  itemLoading(isMaxWidth: true),
+                  AppValue.vSpaceSmall,
+                  itemLoading(),
+                  AppValue.vSpaceSmall,
+                  itemLoading(),
+                  AppValue.vSpaceSmall,
+                  itemLoading(),
+                ],
               ),
             ),
-          ),
-        ),
       );
 }
 
@@ -391,5 +376,24 @@ notFound() => Container(
       child: Text(
         getT(KeyT.no_data),
         style: AppStyle.DEFAULT_18_BOLD,
+      ),
+    );
+
+itemLoading({bool isMaxWidth = false}) => Shimmer.fromColors(
+      baseColor: Colors.black12,
+      highlightColor: Colors.white,
+      child: Container(
+        height: 20,
+        width: isMaxWidth
+            ? MediaQuery.of(Get.context!).size.width
+            : MediaQuery.of(Get.context!).size.width / 1 / 2,
+        decoration: BoxDecoration(
+          color: Colors.cyan,
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              4,
+            ),
+          ),
+        ),
       ),
     );

@@ -44,6 +44,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   String? location;
   TrangThaiHDReport? valueTrangThai;
   LoadMoreController loadMoreControllerCar = LoadMoreController();
+  LoadMoreController loadMoreControllerBieuMau = LoadMoreController();
   XeDichVu? xeDichVu;
   String? trangThaiDichVu;
 
@@ -552,6 +553,61 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     shareLocal.putString(PreferencesKey.LANGUAGE_NAME, language.name ?? '');
     localeLocalSelect.add(language);
     addLocalLang(language);
+  }
+
+  Future<dynamic> getBieuMau({String id = '5' // dich vu,
+      }) async {
+    dynamic res = getT(KeyT.an_error_occurred);
+    try {
+      final response = await userRepository.getBieuMau(module: id);
+      if (isSuccess(response.code)) {
+        res = response.data ?? [];
+      } else if (isFail(response.code)) {
+        res = response.msg ?? '';
+      } else {
+        res = response.msg ?? '';
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      return getT(KeyT.an_error_occurred);
+    }
+    LoadingApi().popLoading();
+    return res;
+  }
+
+  Future<Map<String, dynamic>> getPdf({
+    String module = '5', // dich vu,
+    required String idDetail,
+    required String idBieuMau,
+  }) async {
+    LoadingApi().pushLoading();
+
+    Map<String, dynamic> res = {
+      'mes': getT(KeyT.an_error_occurred),
+      'link': '',
+    };
+
+    try {
+      final response = await userRepository.getPdf(
+        module: module,
+        idDetail: idDetail,
+        idBieuMau: idBieuMau,
+      );
+      if (isSuccess(response.code)) {
+        res['link'] = response.data?.link ?? '';
+        res['mes'] = '';
+      } else if (isFail(response.code)) {
+        res['mes'] = response.msg ?? '';
+      } else {
+        res['mes'] = response.msg ?? '';
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      res['mes'] = getT(KeyT.an_error_occurred);
+      return res;
+    }
+    LoadingApi().popLoading();
+    return res;
   }
 
   static LoginBloc of(BuildContext context) =>

@@ -211,8 +211,17 @@ class AppNavigator {
       await Get.toNamed(ROUTE_NAMES.LIST_SERVICE_PARK,
           arguments: [add, reload, data, title]);
 
-  static navigateInPhieu() async => await Get.toNamed(
+  static navigateInPhieu({required String link}) async => await Get.toNamed(
         ROUTE_NAMES.IN_PHIEU,
+        arguments: [link],
+      );
+
+  static navigateBieuMau({
+    required String idDetail,
+  }) async =>
+      await Get.toNamed(
+        ROUTE_NAMES.LIST_BIEU_MAU,
+        arguments: [idDetail],
       );
 
   static navigateDetailCarMain(XeDichVu detail) async => await Get.toNamed(

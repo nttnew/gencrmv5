@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/screens/call/init_app_call.dart';
 import 'package:gen_crm/screens/in_phieu/in_phieu.dart';
+import 'package:gen_crm/screens/main/list_bieu_mau.dart';
 import 'package:gen_crm/screens/main/show_detail_car.dart';
 import 'package:gen_crm/screens/menu/form/form_sign.dart';
 import 'package:gen_crm/screens/menu/form/product_list/list_product.dart';
@@ -287,6 +288,10 @@ class _MyAppState extends ConsumerState<MyApp> {
         GetPage(
           name: ROUTE_NAMES.DETAIL_CAR_MAIN,
           page: () => DetailCar(),
+        ),
+        GetPage(
+          name: ROUTE_NAMES.LIST_BIEU_MAU,
+          page: () => ListBieuMau(),
         ),
       ],
     );

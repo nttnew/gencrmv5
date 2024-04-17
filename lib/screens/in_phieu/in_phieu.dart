@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gen_crm/l10n/key_text.dart';
+import 'package:get/get.dart';
 import 'package:printing/printing.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -15,7 +16,7 @@ class InPhieuScreen extends StatefulWidget {
 
 class _InPhieuScreen extends State<InPhieuScreen> {
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
-
+  final String link = Get.arguments[0];
   @override
   void initState() {
     super.initState();
@@ -52,7 +53,7 @@ class _InPhieuScreen extends State<InPhieuScreen> {
           color: Colors.white,
         ),
         onPressed: () async {
-          String pdfUrl = 'http://www.pdf995.com/samples/pdf.pdf';
+          String pdfUrl = link;
 
           await Printing.layoutPdf(
             onLayout: (_) async {
@@ -67,7 +68,7 @@ class _InPhieuScreen extends State<InPhieuScreen> {
         },
       ),
       body: SfPdfViewer.network(
-        'http://www.pdf995.com/samples/pdf.pdf',
+        link,
         key: _pdfViewerKey,
       ),
     );

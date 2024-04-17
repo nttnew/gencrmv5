@@ -272,4 +272,5 @@ class KeyT {
       'so_tien_tt_khong_duoc_lon_hon_so_tien_cl';
   static String add_payment = 'add_payment';
   static String edit_payment = 'edit_payment';
+  static String bieu_mau = 'bieu_mau';
 }

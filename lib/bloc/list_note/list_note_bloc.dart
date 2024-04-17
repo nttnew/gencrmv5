@@ -100,6 +100,7 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
       }
     } catch (e) {
       LoadingApi().popLoading();
+      return getT(KeyT.an_error_occurred);
     }
   }
 

@@ -28,6 +28,7 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/share_local.dart';
 import '../src/models/model_generator/add_data_response.dart';
 import '../src/models/model_generator/address_customer_response.dart';
+import '../src/models/model_generator/bieu_mau_response.dart';
 import '../src/models/model_generator/clue.dart';
 import '../src/models/model_generator/clue_detail.dart';
 import '../src/models/model_generator/add_customer.dart';
@@ -51,6 +52,7 @@ import '../src/models/model_generator/main_menu_response.dart';
 import '../src/models/model_generator/note.dart';
 import '../src/models/model_generator/param_del_notif.dart';
 import '../src/models/model_generator/param_read_notifi.dart';
+import '../src/models/model_generator/pdf_response.dart';
 import '../src/models/model_generator/product_customer_edit_response.dart';
 import '../src/models/model_generator/product_customer_save_response.dart';
 import '../src/models/model_generator/product_service_pack_response.dart';
@@ -1665,6 +1667,30 @@ class UserRepository {
       ).deletePayment(
         idContract,
         idPayment,
+      );
+
+  Future<BieuMauResponse> getBieuMau({
+    required String module,
+  }) async =>
+      await RestClient(
+        dio,
+        baseUrl: dio.options.baseUrl,
+      ).getBieuMau(
+        module,
+      );
+
+  Future<PdfResponse> getPdf({
+    required String module,
+    required String idDetail,
+    required String idBieuMau,
+  }) async =>
+      await RestClient(
+        dio,
+        baseUrl: dio.options.baseUrl,
+      ).getPdf(
+        module,
+        idDetail,
+        idBieuMau,
       );
   //////////////////////
 

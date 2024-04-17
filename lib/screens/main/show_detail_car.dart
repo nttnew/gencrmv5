@@ -16,26 +16,6 @@ import '../../widgets/dialog_call.dart';
 import '../../widgets/widget_appbar.dart';
 import '../../widgets/widget_text.dart';
 
-// showDetailCar(
-//   BuildContext context,
-//   XeDichVu xeDichVu,
-// ) {
-//   return showModalBottomSheet(
-//     isScrollControlled: true,
-//     context: context,
-//     shape: RoundedRectangleBorder(
-//       borderRadius: BorderRadius.only(
-//         topRight: Radius.circular(30),
-//         topLeft: Radius.circular(30),
-//       ),
-//     ),
-//     backgroundColor: COLORS.WHITE,
-//     builder: (context) => DetailCar(
-//       xeDichVu: xeDichVu,
-//     ),
-//   );
-// }
-
 class DetailCar extends StatefulWidget {
   const DetailCar({
     Key? key,
@@ -71,19 +51,19 @@ class _DetailCarState extends State<DetailCar> {
             padding: 10,
             right: Row(
               children: [
-                // IconButton(
-                //   padding: EdgeInsets.zero,
-                //   onPressed: () {
-                //     AppNavigator.navigateInPhieu();
-                //
-                //     //todo
-                //   },
-                //   icon: Icon(
-                //     Icons.print,
-                //     color: COLORS.WHITE,
-                //     size: 20,
-                //   ),
-                // ),
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () {
+                    AppNavigator.navigateBieuMau(
+                      idDetail: xeDichVu.id ?? '',
+                    );
+                  },
+                  icon: Icon(
+                    Icons.print,
+                    color: COLORS.WHITE,
+                    size: 20,
+                  ),
+                ),
                 IconButton(
                   onPressed: () {
                     AppNavigator.navigateForm(
@@ -410,27 +390,6 @@ class _DetailCarState extends State<DetailCar> {
                           ],
                         ),
                         AppValue.vSpaceSmall,
-                        // Row(
-                        //   children: [
-                        //     AppValue.hSpaceSmall,
-                        //     Expanded(
-                        //       child: ButtonBaseSmall(
-                        //           title: getT(KeyT.pay),
-                        //           onTap: () {
-                        //             //todo
-                        //           }),
-                        //     ),
-                        //     AppValue.hSpaceSmall,
-                        //     Expanded(
-                        //       child: ButtonBaseSmall(
-                        //           title: getT(KeyT.in_phieu),
-                        //           onTap: () {
-                        //             AppNavigator.navigateInPhieu();
-                        //           }),
-                        //     ),
-                        //     AppValue.hSpaceSmall,
-                        //   ],
-                        // ),
                       ],
                     );
                   }

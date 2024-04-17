@@ -4175,11 +4175,15 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AddCustomerIndividual> getFormPayment(id, detail, idPay) async {
+  Future<AddCustomerIndividual> getFormPayment(
+    id,
+    idDetail,
+    idPay,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'id': id,
-      r'detail': detail,
+      r'detail': idDetail,
       r'id_payment': idPay,
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -4276,6 +4280,60 @@ class _RestClient implements RestClient {
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = BaseResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BieuMauResponse> getBieuMau(module) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'm': module};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BieuMauResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/print/getTemplateByModule',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BieuMauResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<PdfResponse> getPdf(
+    module,
+    idDetail,
+    idBieuMau,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'm': module,
+      r'item': idDetail,
+      r'temp': idBieuMau,
+    };
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<PdfResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/print/printItem',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = PdfResponse.fromJson(_result.data!);
     return value;
   }
 

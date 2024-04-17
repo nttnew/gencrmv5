@@ -30,6 +30,7 @@ import 'package:retrofit/retrofit.dart';
 import 'package:gen_crm/src/base.dart';
 import 'package:gen_crm/src/models/index.dart';
 import '../models/model_generator/address_customer_response.dart';
+import '../models/model_generator/bieu_mau_response.dart';
 import '../models/model_generator/contact_by_customer.dart';
 import '../models/model_generator/detail_contract.dart';
 import '../models/model_generator/clue.dart';
@@ -49,6 +50,7 @@ import '../models/model_generator/list_ht_product_customer_response.dart';
 import '../models/model_generator/list_product_customer_response.dart';
 import '../models/model_generator/list_product_response.dart';
 import '../models/model_generator/main_menu_response.dart';
+import '../models/model_generator/pdf_response.dart';
 import '../models/model_generator/policy.dart';
 import '../models/model_generator/product_customer_save_response.dart';
 import '../models/model_generator/product_response.dart';
@@ -931,6 +933,23 @@ abstract class RestClient {
   Future<BaseResponse> deletePayment(
     @Field('id_contract') String idContract,
     @Field('id_payment') String idPayment,
+  );
+
+  // item: là id của bản ghi cần in
+  // temp: là id của mẫu in
+  // m: là id của module
+  //m=5 tương ứng dịch vụ
+  @GET(BASE_URL.GET_LIST_MODULE)
+  Future<BieuMauResponse> getBieuMau(
+    @Query('m') String module,
+  );
+
+  //?m=5&temp=3&item=305
+  @GET(BASE_URL.GET_PDF)
+  Future<PdfResponse> getPdf(
+    @Query('m') String module,
+    @Query('item') String idDetail,
+    @Query('temp') String idBieuMau,
   );
 }
 

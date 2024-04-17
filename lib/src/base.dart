@@ -200,6 +200,8 @@ class BASE_URL {
   static const ADD_PAYMENT = 'modules/genmobile2/contract/addPayment';
   static const UPDATE_PAYMENT = 'modules/genmobile2/contract/udpatePayment';
   static const DELETE_PAYMENT = 'modules/genmobile2/contract/deletePayment';
+  static const GET_LIST_MODULE = 'modules/genmobile2/print/getTemplateByModule';
+  static const GET_PDF = 'modules/genmobile2/print/printItem';
 
   static const int receiveTimeout = 15000;
   static const ENV = 'assets/.env';
