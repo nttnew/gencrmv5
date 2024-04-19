@@ -26,17 +26,17 @@ class PdfResponse {
 }
 
 class Data {
-  String? link;
+  String? html;
 
-  Data({this.link});
+  Data({this.html});
 
   Data.fromJson(Map<String, dynamic> json) {
-    link = json['link'];
+    html = json['html'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    data['link'] = this.link;
+    data['html'] = this.html;
     return data;
   }
 }

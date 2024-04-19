@@ -26,7 +26,6 @@ class CustomerScreen extends StatefulWidget {
 }
 
 class _CustomerScreenState extends State<CustomerScreen> {
-
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   late final _key = GlobalKey<ExpandableFabState>();
   String title = ModuleMy.getNameModuleMy(
@@ -41,8 +40,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
   void initState() {
     _bloc = GetListCustomerBloc.of(context);
     listAdd = [
-      '$title ${getT(KeyT.organization)}',
-      '$title ${getT(KeyT.individual)}',
+      '$title ${getT(KeyT.organization).toLowerCase()}',
+      '$title ${getT(KeyT.individual).toLowerCase()}',
     ];
     if (LoginBloc.of(context).checkRegisterSuccess())
       listAdd.add(getT(KeyT.call_operator));

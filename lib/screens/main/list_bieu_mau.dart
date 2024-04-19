@@ -52,9 +52,18 @@ class _ListBieuMauState extends State<ListBieuMau> {
                       idDetail: idDetail,
                       idBieuMau: _item.id ?? '',
                     );
-                    if (res['mes'] == '') {
+                    //  <h1>Heading Example</h1>
+                    //   <p>This is a paragraph.</p>
+                    //   <img src="image.jpg" alt="Example Image" />
+                    //   <blockquote>This is a quote.</blockquote>
+                    //   <ul>
+                    //     <li>First item</li>
+                    //     <li>Second item</li>
+                    //     <li>Third item</li>
+                    //   </ul>
+                    if (res['mes'] == '' && res['html'] != null) {
                       AppNavigator.navigateInPhieu(
-                        link: res['link'],
+                        link: res['html'],
                       );
                     } else {
                       showToastM(
