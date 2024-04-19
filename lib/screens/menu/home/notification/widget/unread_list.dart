@@ -89,7 +89,9 @@ class _UnReadListState extends State<UnReadList>
       child: ListTile(
         onTap: () {
           ModuleMy.getNavigate(
-              item.record_id ?? '', item.title ?? '', item.module ?? '');
+            item.record_id ?? '',
+            item.module ?? '',
+          );
           GetNotificationBloc.of(context).add(
             ReadNotificationEvent(item.id ?? '', item.type ?? ''),
           );

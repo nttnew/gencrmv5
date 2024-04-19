@@ -69,7 +69,6 @@ class BodyReportOne extends StatelessWidget {
         onTap: () {
           AppNavigator.navigateDetailContract(
             dataContact.id ?? '',
-            dataContact.name ?? '',
           );
         },
         child: Container(

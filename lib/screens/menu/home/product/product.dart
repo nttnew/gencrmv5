@@ -102,7 +102,6 @@ class _ProductScreenState extends State<ProductScreen> {
                             await _bloc.getListProduct(querySearch: value);
                         if (result?.data?.lists?.isNotEmpty ?? false) {
                           AppNavigator.navigateDetailProduct(
-                            result?.data?.lists?.first.tenSanPham ?? '',
                             result?.data?.lists?.first.id ?? '',
                           );
                         } else {

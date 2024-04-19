@@ -180,12 +180,10 @@ class _DetailCarState extends State<DetailCar> {
                                         GestureDetector(
                                           onTap: () {
                                             AppNavigator.navigateDetailCustomer(
-                                                _blocLogin.xeDichVu
-                                                        ?.khachHangId ??
-                                                    '',
-                                                _blocLogin.xeDichVu
-                                                        ?.tenKhachHang ??
-                                                    '');
+                                              _blocLogin
+                                                      .xeDichVu?.khachHangId ??
+                                                  '',
+                                            );
                                           },
                                           child: itemTextIcon(
                                             text: _blocLogin
@@ -261,8 +259,7 @@ class _DetailCarState extends State<DetailCar> {
                                           onTap: () {
                                             AppNavigator.navigateDetailContract(
                                               _blocLogin.xeDichVu?.id ?? '',
-                                              _blocLogin.xeDichVu?.soPhieu ??
-                                                  '',
+
                                             );
                                           },
                                           styleText:

@@ -150,7 +150,6 @@ class _ClueScreenState extends State<ClueScreen> {
       onTap: () {
         AppNavigator.navigateDetailClue(
           clueData.id ?? '',
-          clueData.name ?? '',
         );
       },
       child: Container(

@@ -7,8 +7,10 @@ import '../../../widget/information.dart';
 class InfoTabProductCustomer extends StatefulWidget {
   const InfoTabProductCustomer({
     Key? key,
+    required this.bloc,
   }) : super(key: key);
 
+  final DetailProductCustomerBloc bloc;
   @override
   State<InfoTabProductCustomer> createState() => _InfoTabProductCustomerState();
 }
@@ -24,29 +26,31 @@ class _InfoTabProductCustomerState extends State<InfoTabProductCustomer>
   Widget build(BuildContext context) {
     super.build(context);
     return BlocBuilder<DetailProductCustomerBloc, DetailProductCustomerState>(
+        bloc: widget.bloc,
         builder: (context, state) {
-      if (state is GetDetailProductCustomerState) {
-        return SingleChildScrollView(
-          padding: EdgeInsets.only(
-            top: 16,
-          ),
-          child: InfoBase(
-            listData: state.productInfo.data ?? [],
-          ),
-        );
-      } else if (state is ErrorGetDetailProductCustomerState) {
-        return Text(
-          state.msg,
-          style: AppStyle.DEFAULT_16_T,
-        );
-      }
-      return Padding(
-        padding: EdgeInsets.only(
-          top: 16,
-        ),
-        child: loadInfo(),
-      );
-    });
+          if (state is GetDetailProductCustomerState) {
+            return SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              padding: EdgeInsets.only(
+                top: 16,
+              ),
+              child: InfoBase(
+                listData: state.productInfo.data ?? [],
+              ),
+            );
+          } else if (state is ErrorGetDetailProductCustomerState) {
+            return Text(
+              state.msg,
+              style: AppStyle.DEFAULT_16_T,
+            );
+          }
+          return Padding(
+            padding: EdgeInsets.only(
+              top: 16,
+            ),
+            child: loadInfo(),
+          );
+        });
   }
 
   @override

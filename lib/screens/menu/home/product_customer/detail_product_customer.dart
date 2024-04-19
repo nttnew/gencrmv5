@@ -35,41 +35,43 @@ class DetailProductCustomerScreen extends StatefulWidget {
 class _DetailProductCustomerScreenState
     extends State<DetailProductCustomerScreen>
     with SingleTickerProviderStateMixin {
-  String title = Get.arguments[0];
-  String id = Get.arguments[1];
+  String _title = '';
+  String _id = Get.arguments;
   late TabController _tabController;
   List<ModuleThaoTac> _list = [];
   List<Tabs> _listTab = [];
   late final DetailProductCustomerBloc _bloc;
 
   @override
-  void dispose() {
-    _bloc.dispose();
-    super.dispose();
-  }
-
-  @override
   void initState() {
-    _bloc = DetailProductCustomerBloc.of(context);
-    _bloc.initController(id);
-    _bloc.add(InitGetDetailProductCustomerEvent(id));
+    _bloc = DetailProductCustomerBloc(
+        userRepository: DetailProductCustomerBloc.of(context).userRepository);
+    _bloc.initController(_id);
+    _bloc.add(InitGetDetailProductCustomerEvent(_id));
     super.initState();
   }
 
   List<Widget> listBody(state, List<Tabs> listTab) {
-    List<Widget> listWidget = [];
-    int idM = int.parse(id);
+    List<Widget> _listWidget = [];
+    int _idM = int.parse(_id);
     for (final value in listTab) {
       if (value.module == 'thong_tin_chung') {
-        listWidget.add(InfoTabProductCustomer());
+        _listWidget.add(RefreshIndicator(
+          onRefresh: () async {
+            _bloc.add(InitGetDetailProductCustomerEvent(_id));
+          },
+          child: InfoTabProductCustomer(
+            bloc: _bloc,
+          ),
+        ));
       } else if (value.module == 'opportunity') {
         //cơ hội
-        listWidget.add(Padding(
+        _listWidget.add(Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: ViewLoadMoreBase(
             functionInit: (page, isInit) {
               return _bloc.getListCHProductCustomer(
-                  page: page, isInit: isInit, id: idM);
+                  page: page, isInit: isInit, id: _idM);
             },
             itemWidget: (int index, data) {
               final CHProductCustomer item = data as CHProductCustomer;
@@ -92,14 +94,14 @@ class _DetailProductCustomerScreenState
         ));
       } else if (value.module == 'contract') {
         //hợp đồng
-        listWidget.add(Padding(
+        _listWidget.add(Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: ViewLoadMoreBase(
             functionInit: (page, isInit) {
               return _bloc.getListHDProductCustomer(
                 page: page,
                 isInit: isInit,
-                id: idM,
+                id: _idM,
               );
             },
             itemWidget: (int index, data) {
@@ -124,19 +126,20 @@ class _DetailProductCustomerScreenState
           ),
         ));
       } else if (value.module == 'job') {
-        listWidget.add(Padding(
+        _listWidget.add(Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: ViewLoadMoreBase(
             functionInit: (page, isInit) {
               return _bloc.getListCVProductCustomer(
-                  page: page, isInit: isInit, id: idM);
+                  page: page, isInit: isInit, id: _idM);
             },
             itemWidget: (int index, data) {
               final DataList _item = data as DataList;
               return GestureDetector(
                 onTap: () {
                   AppNavigator.navigateDetailWork(
-                      int.parse(data.id ?? '0'), data.nameJob ?? '');
+                    int.parse(data.id ?? '0'),
+                  );
                 },
                 child: WorkCardWidget(
                   productCustomer: _item.customer,
@@ -153,12 +156,12 @@ class _DetailProductCustomerScreenState
           ),
         ));
       } else if (value.module == 'support') {
-        listWidget.add(Padding(
+        _listWidget.add(Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: ViewLoadMoreBase(
             functionInit: (page, isInit) {
               return _bloc.getListHTProductCustomer(
-                  page: page, isInit: isInit, id: idM);
+                  page: page, isInit: isInit, id: _idM);
             },
             itemWidget: (int index, data) {
               final DataHTProductCustomer item = data as DataHTProductCustomer;
@@ -181,10 +184,10 @@ class _DetailProductCustomerScreenState
         ));
       }
     }
-    return listWidget;
+    return _listWidget;
   }
 
-  getThaoTac(List<Tabs> listAction) {
+  _getThaoTac(List<Tabs> listAction) {
     for (final value in listAction) {
       _list.add(ModuleThaoTac(
         title: value.name ?? '',
@@ -197,7 +200,7 @@ class _DetailProductCustomerScreenState
             AppNavigator.navigateForm(
               title: value.name ?? '',
               type: CH_PRODUCT_CUSTOMER_TYPE,
-              id: int.parse(id),
+              id: int.parse(_id),
               onRefreshForm: () {
                 _bloc.controllerCh.reloadData();
               },
@@ -206,7 +209,7 @@ class _DetailProductCustomerScreenState
             AppNavigator.navigateForm(
               title: value.name ?? '',
               type: HD_PRODUCT_CUSTOMER_TYPE,
-              id: int.parse(id),
+              id: int.parse(_id),
               onRefreshForm: () {
                 _bloc.controllerHd.reloadData();
               },
@@ -215,7 +218,7 @@ class _DetailProductCustomerScreenState
             AppNavigator.navigateForm(
               title: value.name ?? '',
               type: CV_PRODUCT_CUSTOMER_TYPE,
-              id: int.parse(id),
+              id: int.parse(_id),
               onRefreshForm: () {
                 _bloc.controllerCv.reloadData();
               },
@@ -224,7 +227,7 @@ class _DetailProductCustomerScreenState
             AppNavigator.navigateForm(
               title: value.name ?? '',
               type: HT_PRODUCT_CUSTOMER_TYPE,
-              id: int.parse(id),
+              id: int.parse(_id),
               onRefreshForm: () {
                 _bloc.controllerHt.reloadData();
               },
@@ -240,7 +243,7 @@ class _DetailProductCustomerScreenState
         Get.back();
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => Attachment(
-                  id: id,
+                  id: _id,
                   typeModule: Module.SAN_PHAM_KH,
                 )));
       },
@@ -254,7 +257,10 @@ class _DetailProductCustomerScreenState
         AppNavigator.navigateForm(
           title: getT(KeyT.edit),
           type: PRODUCT_CUSTOMER_TYPE_EDIT,
-          id: int.tryParse(id),
+          id: int.tryParse(_id),
+          onRefreshForm: () {
+            _bloc.add(InitGetDetailProductCustomerEvent(_id));
+          },
         );
       },
     ));
@@ -265,7 +271,7 @@ class _DetailProductCustomerScreenState
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
           onTap2: () async {
-            _bloc.add(DeleteProductEvent(id));
+            _bloc.add(DeleteProductEvent(_id));
           },
           content: getT(KeyT.are_you_sure_you_want_to_delete),
         );
@@ -276,7 +282,7 @@ class _DetailProductCustomerScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarBaseNormal(title),
+      appBar: AppbarBaseNormal(_title),
       body: BlocListener<DetailProductCustomerBloc, DetailProductCustomerState>(
         bloc: _bloc,
         listener: (context, state) async {
@@ -290,7 +296,7 @@ class _DetailProductCustomerScreenState
                   context,
                   ROUTE_NAMES.PRODUCT_CUSTOMER,
                   ModalRoute.withName('/'),
-                  arguments: title,
+                  arguments: _title,
                 );
               },
             );
@@ -304,7 +310,7 @@ class _DetailProductCustomerScreenState
                 Get.back();
                 Get.back();
                 Get.back();
-                _bloc.add(InitGetDetailProductCustomerEvent(id));
+                _bloc.add(InitGetDetailProductCustomerEvent(_id));
               },
             );
           }
@@ -328,8 +334,16 @@ class _DetailProductCustomerScreenState
                     ];
                     _tabController =
                         TabController(length: _listTab.length, vsync: this);
-                    getThaoTac(state.productInfo.actions ?? []);
+                    _getThaoTac(state.productInfo.actions ?? []);
                   }
+                  _title = checkTitle(
+                    state.productInfo.data ?? [],
+                    'bien_so',
+                  );
+
+                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                    setState(() {});
+                  });
                   return Scaffold(
                     appBar: TabBar(
                       padding: EdgeInsets.symmetric(horizontal: 16),
@@ -360,6 +374,7 @@ class _DetailProductCustomerScreenState
                         ),
                         BlocBuilder<DetailProductCustomerBloc,
                             DetailProductCustomerState>(
+                          bloc: _bloc,
                           builder: (context, state) {
                             if (state is GetDetailProductCustomerState)
                               return ButtonThaoTac(onTap: () {

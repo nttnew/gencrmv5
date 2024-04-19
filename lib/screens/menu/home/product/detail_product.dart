@@ -22,9 +22,9 @@ class DetailProductScreen extends StatefulWidget {
 }
 
 class _DetailProductScreenState extends State<DetailProductScreen> {
-  String id = Get.arguments[1];
-  String title = Get.arguments[0];
-  List<ModuleThaoTac> list = [];
+  String _id = Get.arguments;
+  String _title = '';
+  List<ModuleThaoTac> _list = [];
   late final DetailProductBloc _bloc;
 
   @override
@@ -35,13 +35,15 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
     super.initState();
   }
 
+
+
   _init() {
-    _bloc.add(InitGetDetailProductEvent(id));
+    _bloc.add(InitGetDetailProductEvent(_id));
   }
 
-  getThaoTac(ProductModel? product) {
-    list = [];
-    list.add(ModuleThaoTac(
+  _getThaoTac(ProductModel? product) {
+    _list = [];
+    _list.add(ModuleThaoTac(
       title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
       icon: ICONS.IC_ADD_CONTRACT_SVG,
       onThaoTac: () {
@@ -55,42 +57,42 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.see_attachment),
       icon: ICONS.IC_ATTACK_SVG,
       onThaoTac: () async {
         Get.back();
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => Attachment(
-                  id: id,
+                  id: _id,
                   typeModule: Module.PRODUCT,
                 )));
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.edit),
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateForm(
           type: PRODUCT_TYPE_EDIT,
-          id: int.tryParse(id),
+          id: int.tryParse(_id),
           onRefreshForm: () {
-            _bloc.add(InitGetDetailProductEvent(id));
+            _bloc.add(InitGetDetailProductEvent(_id));
             ProductModuleBloc.of(context).loadMoreController.reloadData();
           },
         );
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.delete),
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
           onTap2: () async {
-            _bloc.add(DeleteProductEvent(id));
+            _bloc.add(DeleteProductEvent(_id));
           },
           content: getT(KeyT.are_you_sure_you_want_to_delete),
         );
@@ -101,7 +103,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarBaseNormal(title),
+      appBar: AppbarBaseNormal(_title),
       body: BlocListener<DetailProductBloc, DetailProductState>(
         bloc: _bloc,
         listener: (context, state) async {
@@ -113,8 +115,11 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
               onTap1: () {
                 ProductModuleBloc.of(context).loadMoreController.reloadData();
                 Navigator.pushNamedAndRemoveUntil(
-                    context, ROUTE_NAMES.PRODUCT, ModalRoute.withName('/'),
-                    arguments: title);
+                  context,
+                  ROUTE_NAMES.PRODUCT,
+                  ModalRoute.withName('/'),
+                  arguments: _title,
+                );
               },
             );
           } else if (state is ErrorDeleteProductState) {
@@ -127,7 +132,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                 Get.back();
                 Get.back();
                 Get.back();
-                _bloc.add(InitGetDetailProductEvent(id));
+                _bloc.add(InitGetDetailProductEvent(_id));
               },
             );
           }
@@ -139,7 +144,14 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                   bloc: _bloc,
                   builder: (context, state) {
                     if (state is UpdateGetDetailProductState) {
-                      getThaoTac(state.product);
+                      _getThaoTac(state.product);
+                      _title = checkTitle(
+                        state.productInfo?.data ?? [],
+                        '111',
+                      );
+                      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                        setState(() {});
+                      });
                       return RefreshIndicator(
                         onRefresh: () async {
                           await _init();
@@ -178,7 +190,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                 if (state is UpdateGetDetailProductState)
                   return ButtonThaoTac(
                     onTap: () {
-                      showThaoTac(context, list);
+                      showThaoTac(context, _list);
                     },
                   );
                 return ButtonThaoTac(

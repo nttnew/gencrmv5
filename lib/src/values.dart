@@ -132,7 +132,8 @@ class AppValue {
     }
     final currencyFormatter = NumberFormat('#,##0', 'ID');
     try {
-      result = currencyFormatter.format(double.parse(money));
+      result =
+          currencyFormatter.format(double.parse(money.replaceAll('.', '')));
     } catch (e) {}
     return result +
         (isD ? shareLocal.getString(PreferencesKey.MONEY) ?? '' : '');

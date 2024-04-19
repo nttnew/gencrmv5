@@ -36,7 +36,7 @@ class ItemProductCustomer extends StatelessWidget {
                     productModule.customer?.id != '')
                   AppNavigator.navigateDetailCustomer(
                       productModule.customer?.id ?? '',
-                      productModule.customer?.name ?? '');
+                      );
               },
               child: itemTextIcon(
                 text: productModule.customer?.name ?? getT(KeyT.not_yet),

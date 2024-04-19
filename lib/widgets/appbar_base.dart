@@ -12,8 +12,11 @@ PreferredSizeWidget AppbarBaseNormal(
 }) =>
     AppBar(
       toolbarHeight: h ?? AppValue.heightsAppBar,
-      backgroundColor: isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.SECONDS_COLOR,
+      backgroundColor:
+          isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.SECONDS_COLOR,
       elevation: 0,
+      titleSpacing: 0,
+      centerTitle: false,
       title: Text(
         title ?? '',
         style: TextStyle(
@@ -38,18 +41,14 @@ PreferredSizeWidget AppbarBaseNormal(
           color: isCarCrm() ? COLORS.LIGHT_GREY : COLORS.BLACK,
         ),
       ),
-      // shape: RoundedRectangleBorder(
-      //   borderRadius: BorderRadius.vertical(
-      //     bottom: Radius.circular(15),
-      //   ),
-      // ),
     );
 
 PreferredSizeWidget AppbarBase(
         GlobalKey<ScaffoldState> _drawerKey, String title) =>
     AppBar(
       toolbarHeight: AppValue.heightsAppBar,
-      backgroundColor: isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.SECONDS_COLOR,
+      backgroundColor:
+          isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.SECONDS_COLOR,
       centerTitle: false,
       elevation: 0,
       title: Row(

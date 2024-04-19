@@ -26,9 +26,9 @@ class InfoChancePage extends StatefulWidget {
 
 class _InfoChancePageState extends State<InfoChancePage> {
   List<InfoDataModel> dataChance = [];
-  String id = Get.arguments[0] ?? '';
-  String name = Get.arguments[1] ?? '';
-  List<ModuleThaoTac> list = [];
+  String _id = Get.arguments ?? '';
+  String _title = '';
+  List<ModuleThaoTac> _list = [];
   late final GetListDetailChanceBloc _bloc;
   late final ListNoteBloc _blocNote;
 
@@ -36,15 +36,15 @@ class _InfoChancePageState extends State<InfoChancePage> {
   void initState() {
     _bloc = GetListDetailChanceBloc(
         userRepository: GetListDetailChanceBloc.of(context).userRepository);
-    _bloc.add(InitGetListDetailEvent(int.parse(id)));
+    _bloc.add(InitGetListDetailEvent(int.parse(_id)));
     _blocNote =
         ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
-    getThaoTac();
+    _getThaoTac();
     super.initState();
   }
 
-  getThaoTac() {
-    list.add(ModuleThaoTac(
+  _getThaoTac() {
+    _list.add(ModuleThaoTac(
       title:
           '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
       icon: ICONS.IC_ADD_WORD_SVG,
@@ -54,58 +54,62 @@ class _InfoChancePageState extends State<InfoChancePage> {
             title:
                 '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
             type: ADD_CHANCE_JOB,
-            id: int.parse(id),
+            id: int.parse(_id),
             onRefreshForm: () {
               _bloc.controllerCV.reloadData();
             });
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.add_discuss),
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(Module.CO_HOI_BH, id, onRefresh: () {
-          _blocNote.add(RefreshEvent());
-        });
+        AppNavigator.navigateAddNoteScreen(
+          Module.CO_HOI_BH,
+          _id,
+          onRefresh: () {
+            _blocNote.add(RefreshEvent());
+          },
+        );
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.see_attachment),
       icon: ICONS.IC_ATTACK_SVG,
       onThaoTac: () async {
         Get.back();
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => Attachment(
-                  id: id,
+                  id: _id,
                   typeModule: Module.CO_HOI_BH,
                 )));
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.edit),
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateForm(
           type: EDIT_CHANCE,
-          id: int.tryParse(id),
+          id: int.tryParse(_id),
           onRefreshForm: () {
-            _bloc.add(InitGetListDetailEvent(int.parse(id)));
+            _bloc.add(InitGetListDetailEvent(int.parse(_id)));
           },
         );
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.delete),
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
-            onTap2: () => _bloc.add(InitDeleteChanceEvent(id)),
+            onTap2: () => _bloc.add(InitDeleteChanceEvent(_id)),
             content: getT(KeyT.are_you_sure_you_want_to_delete));
       },
     ));
@@ -147,7 +151,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
         },
         child: Column(
           children: [
-            AppbarBaseNormal(name),
+            AppbarBaseNormal(_title),
             AppValue.vSpaceTiny,
             Expanded(
               child: DefaultTabController(
@@ -183,7 +187,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                         child: TabBarView(
                           children: [
                             ChanceInfo(
-                              id: id,
+                              id: _id,
                               blocNote: _blocNote,
                               bloc: _bloc,
                             ),
@@ -194,7 +198,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                               child: ViewLoadMoreBase(
                                 functionInit: (page, isInit) {
                                   return _bloc.getJobChance(
-                                    id: int.parse(id),
+                                    id: int.parse(_id),
                                     page: page,
                                     isInit: isInit,
                                   );
@@ -205,7 +209,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                                     onTap: () {
                                       AppNavigator.navigateDetailWork(
                                         int.tryParse(item.id ?? '') ?? 0,
-                                        item.name_job ?? '',
+                                        // item.name_job ?? '',
                                       );
                                     },
                                     child: WorkCardWidget(
@@ -231,10 +235,15 @@ class _InfoChancePageState extends State<InfoChancePage> {
             BlocBuilder<GetListDetailChanceBloc, DetailChanceState>(
               bloc: _bloc,
               builder: (context, state) {
-                if (state is UpdateGetListDetailChanceState)
-                  return ButtonThaoTac(onTap: () {
-                    showThaoTac(context, list);
+                if (state is UpdateGetListDetailChanceState) {
+                  _title = checkTitle(state.data, 'col111');
+                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                    setState(() {});
                   });
+                  return ButtonThaoTac(onTap: () {
+                    showThaoTac(context, _list);
+                  });
+                }
                 return ButtonThaoTac(disable: true, onTap: () {});
               },
             ),

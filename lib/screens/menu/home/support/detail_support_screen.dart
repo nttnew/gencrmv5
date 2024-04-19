@@ -24,11 +24,11 @@ class DetailSupportScreen extends StatefulWidget {
 }
 
 class _DetailSupportScreenState extends State<DetailSupportScreen> {
-  String id = Get.arguments[0];
-  String title = Get.arguments[1];
-  List<ModuleThaoTac> list = [];
-  int? location;
-  bool isCheckDone = false;
+  String _id = Get.arguments;
+  String _title = '';
+  List<ModuleThaoTac> _list = [];
+  int? _location;
+  bool _isCheckDone = false;
   late final ListNoteBloc _blocNote;
   late final DetailSupportBloc _bloc;
   late final CheckInBloc _blocCheckIn;
@@ -40,56 +40,56 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
         userRepository: DetailSupportBloc.of(context).userRepository);
     _blocNote =
         ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
-    _bloc.add(InitGetDetailSupportEvent(id));
+    _bloc.add(InitGetDetailSupportEvent(_id));
     super.initState();
   }
 
   _refresh() {
-    _bloc.add(InitGetDetailSupportEvent(id));
+    _bloc.add(InitGetDetailSupportEvent(_id));
     _blocNote.add(RefreshEvent());
   }
 
-  checkLocation(SuccessGetDetailSupportState state) {
-    location = state.location;
-    isCheckDone = isCheckDataLocation(state.checkOut);
+  _checkLocation(SuccessGetDetailSupportState state) {
+    _location = state.location;
+    _isCheckDone = isCheckDataLocation(state.checkOut);
   }
 
-  getThaoTac() {
-    list = [];
-    if (!isCheckDone) {
-      if (location != 1) {
+  _getThaoTac() {
+    _list = [];
+    if (!_isCheckDone) {
+      if (_location != 1) {
         //1 là có rồi
-        list.add(ModuleThaoTac(
+        _list.add(ModuleThaoTac(
           title: getT(KeyT.check_in),
           icon: ICONS.IC_LOCATION_SVG,
           onThaoTac: () {
             Get.back();
             AppNavigator.navigateCheckIn(
-                id.toString(), ModuleMy.CSKH, TypeCheckIn.CHECK_IN,
+                _id.toString(), ModuleMy.CSKH, TypeCheckIn.CHECK_IN,
                 onRefreshCheckIn: () {
               SupportBloc.of(context).add(InitGetSupportEvent());
-              _bloc.add(InitGetDetailSupportEvent(id));
+              _bloc.add(InitGetDetailSupportEvent(_id));
             });
           },
         ));
       } else {
-        list.add(ModuleThaoTac(
+        _list.add(ModuleThaoTac(
           title: getT(KeyT.check_out),
           icon: ICONS.IC_LOCATION_SVG,
           onThaoTac: () {
             Get.back();
             AppNavigator.navigateCheckIn(
-                id.toString(), ModuleMy.CSKH, TypeCheckIn.CHECK_OUT,
+                _id.toString(), ModuleMy.CSKH, TypeCheckIn.CHECK_OUT,
                 onRefreshCheckIn: () {
               SupportBloc.of(context).add(InitGetSupportEvent());
-              _bloc.add(InitGetDetailSupportEvent(id));
+              _bloc.add(InitGetDetailSupportEvent(_id));
             });
           },
         ));
       }
     }
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.sign),
       icon: ICONS.IC_ELECTRIC_SIGN_PNG,
       isSvg: false,
@@ -97,57 +97,57 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
         Get.back();
         AppNavigator.navigateFormSign(
           getT(KeyT.sign),
-          id,
+          _id,
           type: ModuleMy.CSKH,
         );
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.add_discuss),
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(Module.HO_TRO, id, onRefresh: () {
+        AppNavigator.navigateAddNoteScreen(Module.HO_TRO, _id, onRefresh: () {
           _blocNote.add(RefreshEvent());
         });
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.see_attachment),
       icon: ICONS.IC_ATTACK_SVG,
       onThaoTac: () async {
         Get.back();
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => Attachment(
-                  id: id,
+                  id: _id,
                   typeModule: Module.HO_TRO,
                 )));
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.edit),
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateForm(
           type: EDIT_SUPPORT,
-          id: int.tryParse(id),
+          id: int.tryParse(_id),
           onRefreshForm: () {
-            _bloc.add(InitGetDetailSupportEvent(id));
+            _bloc.add(InitGetDetailSupportEvent(_id));
           },
         );
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.delete),
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
-          onTap2: () => _bloc.add(DeleteSupportEvent(id)),
+          onTap2: () => _bloc.add(DeleteSupportEvent(_id)),
           content: getT(KeyT.are_you_sure_you_want_to_delete),
         );
       },
@@ -157,13 +157,13 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppbarBaseNormal(title),
+        appBar: AppbarBaseNormal(_title),
         body: BlocListener<CheckInBloc, CheckInState>(
           bloc: _blocCheckIn,
           listener: (context, state) {
             if (state is SuccessCheckInState) {
               SupportBloc.of(context).add(InitGetSupportEvent());
-              _bloc.add(InitGetDetailSupportEvent(id));
+              _bloc.add(InitGetDetailSupportEvent(_id));
             } else if (state is ErrorCheckInState) {
               ShowDialogCustom.showDialogBase(
                 title: getT(KeyT.notification),
@@ -178,8 +178,16 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                     bloc: _bloc,
                     builder: (context, state) {
                       if (state is SuccessGetDetailSupportState) {
-                        checkLocation(state);
-                        getThaoTac();
+                        _checkLocation(state);
+                        _getThaoTac();
+                        _title = checkTitle(
+                          state.dataDetailSupport,
+                          'ten_ht',
+                        );
+                        WidgetsBinding.instance
+                            .addPostFrameCallback((timeStamp) {
+                          setState(() {});
+                        });
                         return BlocListener<DetailSupportBloc,
                             DetailSupportState>(
                           bloc: _bloc,
@@ -235,7 +243,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                                   AppValue.vSpaceTiny,
                                   ListNote(
                                     module: Module.HO_TRO,
-                                    id: id,
+                                    id: _id,
                                     bloc: _blocNote,
                                   )
                                 ],
@@ -262,7 +270,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                 builder: (context, state) {
                   if (state is SuccessGetDetailSupportState)
                     return ButtonThaoTac(onTap: () {
-                      showThaoTac(context, list);
+                      showThaoTac(context, _list);
                     });
                   return ButtonThaoTac(disable: true, onTap: () {});
                 },

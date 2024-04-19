@@ -296,41 +296,40 @@ class ItemInfo extends StatelessWidget {
 
 _navigateTypeScreen(InfoItem? data) {
   String id = data?.link ?? '';
-  String title = data?.value_field ?? '';
   switch (data?.is_type) {
     case 'KH':
-      AppNavigator.navigateDetailCustomer(id, title);
+      AppNavigator.navigateDetailCustomer(id);
       break;
 
     case 'HD':
-      AppNavigator.navigateDetailContract(id, title);
+      AppNavigator.navigateDetailContract(id);
       break;
 
     case 'CH':
-      AppNavigator.navigateDetailChance(id, title);
+      AppNavigator.navigateDetailChance(id);
       break;
 
     case 'DMLL':
-      AppNavigator.navigateDetailClue(id, title);
+      AppNavigator.navigateDetailClue(id);
       break;
     case 'DM':
-      AppNavigator.navigateDetailClue(id, title);
+      AppNavigator.navigateDetailClue(id);
       break;
 
     case 'SPKH':
-      AppNavigator.navigateDetailProductCustomer(title, id);
+      AppNavigator.navigateDetailProductCustomer(id);
       break;
 
     case 'SP':
-      AppNavigator.navigateDetailProduct(title, id);
+      AppNavigator.navigateDetailProduct(id);
       break;
 
     case 'HT':
-      AppNavigator.navigateDetailSupport(id, title);
+      AppNavigator.navigateDetailSupport(id);
       break;
 
     case 'CV':
-      AppNavigator.navigateDetailWork(int.tryParse(id) ?? 0, title);
+      AppNavigator.navigateDetailWork(int.tryParse(id) ?? 0);
       break;
 
     default:

@@ -17,7 +17,6 @@ class WidgetItemChance extends StatelessWidget {
       onTap: () {
         AppNavigator.navigateDetailChance(
           data.id ?? '',
-          data.name ?? '',
         );
       },
       child: Container(

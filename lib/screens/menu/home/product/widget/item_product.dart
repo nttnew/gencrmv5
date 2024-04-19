@@ -21,7 +21,6 @@ class _ItemProductModuleState extends State<ItemProductModule> {
     return GestureDetector(
       onTap: () {
         AppNavigator.navigateDetailProduct(
-          widget.productModule.tenSanPham ?? '',
           widget.productModule.id ?? '',
         );
       },

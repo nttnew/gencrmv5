@@ -316,41 +316,35 @@ class ModuleMy {
     return '';
   }
 
-  static void getNavigate(String id, String title, String module) {
+  static void getNavigate(String id, String module) {
     if (ModuleMy.CUSTOMER == module) {
       AppNavigator.navigateDetailCustomer(
         id,
-        title,
       );
     } else if (ModuleMy.DAU_MOI == module) {
       AppNavigator.navigateDetailClue(
         id,
-        title,
       );
     } else if (ModuleMy.LICH_HEN == module) {
       AppNavigator.navigateDetailChance(
         id,
-        title,
       );
     } else if (ModuleMy.HOP_DONG == module) {
       AppNavigator.navigateDetailContract(
         id,
-        title,
       );
     } else if (ModuleMy.CONG_VIEC == module) {
       AppNavigator.navigateDetailWork(
         int.parse(id),
-        title,
       );
     } else if (ModuleMy.CSKH == module) {
       AppNavigator.navigateDetailSupport(
         id,
-        title,
       );
     } else if (ModuleMy.SAN_PHAM == module) {
-      AppNavigator.navigateDetailProduct(title, id);
+      AppNavigator.navigateDetailProduct(id);
     } else if (ModuleMy.SAN_PHAM_KH == module) {
-      AppNavigator.navigateDetailProductCustomer(title, id);
+      AppNavigator.navigateDetailProductCustomer(id);
     }
   }
 

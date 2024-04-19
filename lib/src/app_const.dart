@@ -13,6 +13,7 @@ import '../widgets/loading_api.dart';
 import '../widgets/widget_text.dart';
 import 'location.dart';
 import 'models/model_generator/add_customer.dart';
+import 'models/model_generator/detail_customer.dart';
 
 const int IS_AFTER = 1;
 const int IS_BEFORE = 0;
@@ -467,3 +468,17 @@ Widget widgetSave() => Container(
         ),
       ),
     );
+
+String checkTitle(
+    List<InfoDataModel> dataL,
+    String key,
+    ) {
+  for (final value in dataL) {
+    for (final InfoItem element in value.data ?? []) {
+      if (element.id == key) {
+        return element.value_field;
+      }
+    }
+  }
+  return '';
+}

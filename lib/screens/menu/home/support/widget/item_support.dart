@@ -18,7 +18,6 @@ class ItemSupport extends StatelessWidget {
     return GestureDetector(
       onTap: () => AppNavigator.navigateDetailSupport(
         data.id.toString(),
-        data.ten_ho_tro ?? '',
       ),
       child: Container(
         margin: EdgeInsets.only(

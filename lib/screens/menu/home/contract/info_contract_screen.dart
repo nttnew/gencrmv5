@@ -31,9 +31,9 @@ class DetailInfoContract extends StatefulWidget {
 }
 
 class _DetailInfoContractState extends State<DetailInfoContract> {
-  String id = Get.arguments[0];
-  String name = Get.arguments[1];
-  List<ModuleThaoTac> list = [];
+  String _id = Get.arguments;
+  String _title = '';
+  List<ModuleThaoTac> _list = [];
   late final DetailContractBloc _bloc;
   late final ListNoteBloc _blocNote;
 
@@ -42,7 +42,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
     getThaoTac();
     PaymentContractBloc.of(context).add(
       InitGetPaymentContractEvent(
-        int.parse(id),
+        int.parse(_id),
         isLoad: false,
       ),
     );
@@ -54,17 +54,17 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
   }
 
   getThaoTac() {
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.sign),
       icon: ICONS.IC_ELECTRIC_SIGN_PNG,
       isSvg: false,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormSign(getT(KeyT.sign), id);
+        AppNavigator.navigateFormSign(getT(KeyT.sign), _id);
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.add_payment),
       icon: ICONS.IC_ADD_PAYMENT_PNG,
       isSvg: false,
@@ -73,16 +73,16 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
         AppNavigator.navigateForm(
           title: getT(KeyT.add_payment),
           type: ADD_PAYMENT,
-          id: int.tryParse(id),
+          id: int.tryParse(_id),
           onRefreshForm: () {
             PaymentContractBloc.of(context)
-                .add(InitGetPaymentContractEvent(int.tryParse(id) ?? 0));
+                .add(InitGetPaymentContractEvent(int.tryParse(_id) ?? 0));
           },
         );
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title:
           '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
       icon: ICONS.IC_ADD_WORD_SVG,
@@ -92,7 +92,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
           title:
               '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
           type: ADD_JOB_CONTRACT,
-          id: int.parse(id),
+          id: int.parse(_id),
           onRefreshForm: () {
             _bloc.controllerCV.reloadData();
           },
@@ -100,7 +100,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
       icon: ICONS.IC_ADD_SUPPORT_SVG,
       onThaoTac: () {
@@ -108,7 +108,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
         AppNavigator.navigateForm(
           title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
           type: ADD_SUPPORT_CONTRACT,
-          id: int.parse(id),
+          id: int.parse(_id),
           onRefreshForm: () {
             _bloc.controllerHT.reloadData();
           },
@@ -116,51 +116,51 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.add_discuss),
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(Module.HOP_DONG, id, onRefresh: () {
+        AppNavigator.navigateAddNoteScreen(Module.HOP_DONG, _id, onRefresh: () {
           _blocNote.add(RefreshEvent());
         });
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.see_attachment),
       icon: ICONS.IC_ATTACK_SVG,
       onThaoTac: () async {
         Get.back();
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => Attachment(
-                  id: id,
+                  id: _id,
                   typeModule: Module.HOP_DONG,
                 )));
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.edit),
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateForm(
           type: EDIT_CONTRACT,
-          id: int.tryParse(id),
+          id: int.tryParse(_id),
           onRefreshForm: () {
-            _bloc.add(InitGetDetailContractEvent(int.parse(id)));
+            _bloc.add(InitGetDetailContractEvent(int.parse(_id)));
           },
         );
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.delete),
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
-          onTap2: () => _bloc.add(InitDeleteContractEvent(int.parse(id))),
+          onTap2: () => _bloc.add(InitDeleteContractEvent(int.parse(_id))),
           content: getT(KeyT.are_you_sure_you_want_to_delete),
         );
       },
@@ -203,7 +203,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
         },
         child: Column(
           children: [
-            AppbarBaseNormal(name),
+            AppbarBaseNormal(_title),
             AppValue.vSpaceTiny,
             Expanded(
               child: DefaultTabController(
@@ -244,11 +244,11 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                         child: TabBarView(
                           children: [
                             ContractOperation(
-                              id: id,
+                              id: _id,
                               bloc: _bloc,
                               blocNote: _blocNote,
                             ),
-                            ContractPayment(id: int.parse(id)),
+                            ContractPayment(id: int.parse(_id)),
                             Padding(
                               padding: const EdgeInsets.only(
                                 top: 8,
@@ -256,7 +256,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                               child: ViewLoadMoreBase(
                                 functionInit: (page, isInit) {
                                   return _bloc.getJobContract(
-                                    id: int.parse(id),
+                                    id: int.parse(_id),
                                     page: page,
                                     isInit: isInit,
                                   );
@@ -266,8 +266,8 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                                   return GestureDetector(
                                     onTap: () {
                                       AppNavigator.navigateDetailWork(
-                                          int.parse(data.id ?? ''),
-                                          data.name_job ?? '');
+                                        int.parse(data.id ?? ''),
+                                      );
                                     },
                                     child: WorkCardWidget(
                                       color: item.color,
@@ -290,7 +290,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                               child: ViewLoadMoreBase(
                                 functionInit: (page, isInit) {
                                   return _bloc.getSupportContract(
-                                    id: int.parse(id),
+                                    id: int.parse(_id),
                                     page: page,
                                     isInit: isInit,
                                   );
@@ -325,10 +325,17 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                       BlocBuilder<DetailContractBloc, DetailContractState>(
                         bloc: _bloc,
                         builder: (context, state) {
-                          if (state is SuccessDetailContractState)
-                            return ButtonThaoTac(onTap: () {
-                              showThaoTac(context, list);
+                          if (state is SuccessDetailContractState) {
+                            _title =
+                                checkTitle(state.listDetailContract, 'col121');
+                            WidgetsBinding.instance
+                                .addPostFrameCallback((timeStamp) {
+                              setState(() {});
                             });
+                            return ButtonThaoTac(onTap: () {
+                              showThaoTac(context, _list);
+                            });
+                          }
                           return ButtonThaoTac(disable: true, onTap: () {});
                         },
                       ),

@@ -31,12 +31,10 @@ class DetailCustomerScreen extends StatefulWidget {
 
 class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     with SingleTickerProviderStateMixin {
-  String id = Get.arguments[0];
-  String title = Get.arguments[1];
+  String _id = Get.arguments;
+  String _title = '';
   late TabController _tabController;
-  int page = BASE_URL.PAGE_DEFAULT;
-  bool drag = false;
-  List<ModuleThaoTac> list = [];
+  List<ModuleThaoTac> _list = [];
   late final ListNoteBloc _blocNote;
   late final DetailCustomerBloc _bloc;
 
@@ -52,15 +50,15 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
         userRepository: DetailCustomerBloc.of(context).userRepository);
     _blocNote =
         ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
-    _bloc.initController(id);
+    _bloc.initController(_id);
     _tabController = TabController(length: 6, vsync: this);
     super.initState();
   }
 
-  getThaoTac() {
-    list = [];
+  _getThaoTac() {
+    _list = [];
     if (_bloc.sdt != null && _bloc.sdt != '')
-      list.add(
+      _list.add(
         ModuleThaoTac(
           isSvg: false,
           title: getT(KeyT.call),
@@ -80,7 +78,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
         ),
       );
 
-    list.add(
+    _list.add(
       ModuleThaoTac(
         title:
             '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}',
@@ -91,7 +89,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
             title:
                 '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}',
             type: ADD_CLUE_CUSTOMER,
-            id: int.parse(id),
+            id: int.parse(_id),
             onRefreshForm: () {
               _bloc.controllerDM.reloadData();
             },
@@ -100,7 +98,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       ),
     );
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}',
       icon: ICONS.IC_ADD_CHANCE_SVG,
       onThaoTac: () {
@@ -109,7 +107,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
           title:
               '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}',
           type: ADD_CHANCE_CUSTOMER,
-          id: int.parse(id),
+          id: int.parse(_id),
           onRefreshForm: () {
             _bloc.controllerCH.reloadData();
           },
@@ -117,7 +115,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
       icon: ICONS.IC_ADD_CONTRACT_SVG,
       onThaoTac: () {
@@ -126,7 +124,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
           title:
               '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
           type: ADD_CONTRACT_CUS,
-          id: int.tryParse(id),
+          id: int.tryParse(_id),
           onRefreshForm: () {
             _bloc.controllerHD.reloadData();
           },
@@ -134,7 +132,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title:
           '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
       icon: ICONS.IC_ADD_WORD_SVG,
@@ -144,7 +142,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
           title:
               '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
           type: ADD_JOB_CUSTOMER,
-          id: int.parse(id),
+          id: int.parse(_id),
           onRefreshForm: () {
             _bloc.controllerCV.reloadData();
           },
@@ -152,7 +150,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
       icon: ICONS.IC_ADD_SUPPORT_SVG,
       onThaoTac: () {
@@ -160,7 +158,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
         AppNavigator.navigateForm(
           title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
           type: ADD_SUPPORT_CUSTOMER,
-          id: int.parse(id),
+          id: int.parse(_id),
           onRefreshForm: () {
             _bloc.controllerHT.reloadData();
           },
@@ -168,52 +166,52 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.add_discuss),
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(Module.KHACH_HANG, id,
+        AppNavigator.navigateAddNoteScreen(Module.KHACH_HANG, _id,
             onRefresh: () {
           _blocNote.add(RefreshEvent());
         });
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.see_attachment),
       icon: ICONS.IC_ATTACK_SVG,
       onThaoTac: () async {
         Get.back();
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => Attachment(
-                  id: id,
+                  id: _id,
                   typeModule: Module.KHACH_HANG,
                 )));
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.edit),
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateForm(
           type: EDIT_CUSTOMER,
-          id: int.tryParse(id),
+          id: int.tryParse(_id),
           onRefreshForm: () {
-            _bloc.add(InitGetDetailCustomerEvent(int.parse(id)));
+            _bloc.add(InitGetDetailCustomerEvent(int.parse(_id)));
           },
         );
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.delete),
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
-          onTap2: () => _bloc.add(DeleteCustomerEvent(int.parse(id))),
+          onTap2: () => _bloc.add(DeleteCustomerEvent(int.parse(_id))),
           content: getT(KeyT.are_you_sure_you_want_to_delete),
         );
       },
@@ -223,7 +221,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppbarBaseNormal(title),
+        appBar: AppbarBaseNormal(_title),
         body: BlocListener<DetailCustomerBloc, DetailCustomerState>(
           bloc: _bloc,
           listener: (context, state) async {
@@ -256,7 +254,9 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                 },
               );
             } else if (state is UpdateGetDetailCustomerState) {
-              getThaoTac();
+              _title = checkTitle(state.customerInfo, 'ten_khach_hang');
+              _getThaoTac();
+              setState(() {});
             }
           },
           child: Scaffold(
@@ -319,21 +319,25 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                     physics: BouncingScrollPhysics(),
                     children: <Widget>[
                       TabInfoCustomer(
-                        id: id,
+                        id: _id,
                         blocNote: _blocNote,
                         bloc: _bloc,
                       ),
                       ViewLoadMoreBase(
                         functionInit: (page, isInit) {
                           return _bloc.getClueCustomer(
-                              id: int.parse(id), page: page, isInit: isInit);
+                            id: int.parse(_id),
+                            page: page,
+                            isInit: isInit,
+                          );
                         },
                         itemWidget: (int index, data) {
                           return ClueCardWidget(
                             data: data,
                             onTap: () {
                               AppNavigator.navigateDetailClue(
-                                  data.id ?? '', data.name ?? '');
+                                data.id ?? '',
+                              );
                             },
                           );
                         },
@@ -342,14 +346,15 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                       ViewLoadMoreBase(
                         functionInit: (page, isInit) {
                           return _bloc.getChanceCustomer(
-                              id: int.parse(id), page: page, isInit: isInit);
+                              id: int.parse(_id), page: page, isInit: isInit);
                         },
                         itemWidget: (int index, data) {
                           return ChanceCardWidget(
                             data: data,
                             onTap: () {
                               AppNavigator.navigateDetailChance(
-                                  data.id ?? '', data.name ?? '');
+                                data.id ?? '',
+                              );
                             },
                           );
                         },
@@ -358,7 +363,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                       ViewLoadMoreBase(
                         functionInit: (page, isInit) {
                           return _bloc.getContractCustomer(
-                            id: int.parse(id),
+                            id: int.parse(_id),
                             page: page,
                             isInit: isInit,
                           );
@@ -368,7 +373,8 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                             data: data,
                             onTap: () {
                               AppNavigator.navigateDetailContract(
-                                  data.id ?? '', data.name ?? '');
+                                data.id ?? '',
+                              );
                             },
                           );
                         },
@@ -377,7 +383,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                       ViewLoadMoreBase(
                         functionInit: (page, isInit) {
                           return _bloc.getJobCustomer(
-                            id: int.parse(id),
+                            id: int.parse(_id),
                             page: page,
                             isInit: isInit,
                           );
@@ -389,7 +395,6 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                             onTap: () {
                               AppNavigator.navigateDetailWork(
                                 int.tryParse(item.id ?? '') ?? 0,
-                                item.name ?? '',
                               );
                             },
                           );
@@ -399,7 +404,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                       ViewLoadMoreBase(
                         functionInit: (page, isInit) {
                           return _bloc.getSupportCustomer(
-                            id: int.parse(id),
+                            id: int.parse(_id),
                             page: page,
                             isInit: isInit,
                           );
@@ -409,7 +414,8 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                             data: data,
                             onTap: () {
                               AppNavigator.navigateDetailSupport(
-                                  data.id ?? '', data.name ?? '');
+                                data.id ?? '',
+                              );
                             },
                           );
                         },
@@ -423,7 +429,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                   builder: (context, state) {
                     if (state is UpdateGetDetailCustomerState)
                       return ButtonThaoTac(onTap: () {
-                        showThaoTac(context, list);
+                        showThaoTac(context, _list);
                       });
                     return ButtonThaoTac(disable: true, onTap: () {});
                   },

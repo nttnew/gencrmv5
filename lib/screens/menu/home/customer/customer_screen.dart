@@ -244,7 +244,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
             data: snap,
             onTap: () => AppNavigator.navigateDetailCustomer(
               snap.id ?? '',
-              '${snap.danh_xung ?? ''} ${snap.name ?? ''}',
             ),
           );
         },

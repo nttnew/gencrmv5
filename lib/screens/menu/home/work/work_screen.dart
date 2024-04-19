@@ -226,7 +226,6 @@ class _WorkScreenState extends State<WorkScreen> {
             item: snap,
             onTap: () => AppNavigator.navigateDetailWork(
               int.parse(snap.id ?? '0'),
-              snap.name_job ?? '',
             ),
           );
         },

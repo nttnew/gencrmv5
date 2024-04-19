@@ -25,12 +25,12 @@ class DetailWorkScreen extends StatefulWidget {
 }
 
 class _DetailWorkScreenState extends State<DetailWorkScreen> {
-  int id = Get.arguments[0];
-  String title = Get.arguments[1];
-  int? location;
-  String? diDong;
-  bool isCheckDone = false;
-  List<ModuleThaoTac> list = [];
+  int _id = Get.arguments;
+  String _title = '';
+  int? _location;
+  String? _diDong;
+  bool _isCheckDone = false;
+  List<ModuleThaoTac> _list = [];
   late final ListNoteBloc _blocNote;
   late final DetailWorkBloc _bloc;
   late final CheckInBloc _blocCheckIn;
@@ -42,25 +42,25 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
         userRepository: DetailWorkBloc.of(context).userRepository);
     _blocNote =
         ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
-    _bloc.add(InitGetDetailWorkEvent(id));
+    _bloc.add(InitGetDetailWorkEvent(_id));
     super.initState();
   }
 
   _init() {
     _blocNote.add(RefreshEvent());
-    _bloc.add(InitGetDetailWorkEvent(id));
+    _bloc.add(InitGetDetailWorkEvent(_id));
   }
 
-  checkLocation(SuccessDetailWorkState state) {
-    location = state.location;
-    diDong = state.diDong;
-    isCheckDone = isCheckDataLocation(state.checkOut);
+  _checkLocation(SuccessDetailWorkState state) {
+    _location = state.location;
+    _diDong = state.diDong;
+    _isCheckDone = isCheckDataLocation(state.checkOut);
   }
 
-  getThaoTac() {
-    list = [];
-    if (diDong != null && diDong != '')
-      list.add(
+  _getThaoTac() {
+    _list = [];
+    if (_diDong != null && _diDong != '')
+      _list.add(
         ModuleThaoTac(
           isSvg: false,
           title: getT(KeyT.call),
@@ -71,7 +71,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
               context: context,
               builder: (BuildContext context) {
                 return DialogCall(
-                  phone: diDong.toString(),
+                  phone: _diDong.toString(),
                   name: '',
                 );
               },
@@ -80,42 +80,42 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
         ),
       );
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.add_discuss),
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(Module.CONG_VIEC, id.toString(),
+        AppNavigator.navigateAddNoteScreen(Module.CONG_VIEC, _id.toString(),
             onRefresh: () {
           _blocNote.add(RefreshEvent());
         });
       },
     ));
-    if (!isCheckDone) {
-      if (location != 1) {
-        list.add(ModuleThaoTac(
+    if (!_isCheckDone) {
+      if (_location != 1) {
+        _list.add(ModuleThaoTac(
           title: getT(KeyT.check_in),
           icon: ICONS.IC_LOCATION_SVG,
           onThaoTac: () {
             Get.back();
             AppNavigator.navigateCheckIn(
-                id.toString(), ModuleMy.CONG_VIEC, TypeCheckIn.CHECK_IN,
+                _id.toString(), ModuleMy.CONG_VIEC, TypeCheckIn.CHECK_IN,
                 onRefreshCheckIn: () {
-              _bloc.add(InitGetDetailWorkEvent(id));
+              _bloc.add(InitGetDetailWorkEvent(_id));
               WorkBloc.of(context).loadMoreController.reloadData();
             });
           },
         ));
       } else {
-        list.add(ModuleThaoTac(
+        _list.add(ModuleThaoTac(
           title: getT(KeyT.check_out),
           icon: ICONS.IC_LOCATION_SVG,
           onThaoTac: () {
             Get.back();
             AppNavigator.navigateCheckIn(
-                id.toString(), ModuleMy.CONG_VIEC, TypeCheckIn.CHECK_OUT,
+                _id.toString(), ModuleMy.CONG_VIEC, TypeCheckIn.CHECK_OUT,
                 onRefreshCheckIn: () {
-              _bloc.add(InitGetDetailWorkEvent(id));
+              _bloc.add(InitGetDetailWorkEvent(_id));
               WorkBloc.of(context).loadMoreController.reloadData();
             });
           },
@@ -123,41 +123,41 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
       }
     }
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.see_attachment),
       icon: ICONS.IC_ATTACK_SVG,
       onThaoTac: () async {
         Get.back();
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => Attachment(
-                  id: id.toString(),
+                  id: _id.toString(),
                   typeModule: Module.CONG_VIEC,
                 )));
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.edit),
       icon: ICONS.IC_EDIT_SVG,
       onThaoTac: () {
         Get.back();
         AppNavigator.navigateForm(
           type: EDIT_JOB,
-          id: id,
+          id: _id,
           onRefreshForm: () {
             WorkBloc.of(context).loadMoreController.reloadData();
-            _bloc.add(InitGetDetailWorkEvent(id));
+            _bloc.add(InitGetDetailWorkEvent(_id));
           },
         );
       },
     ));
 
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.delete),
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
-          onTap2: () => _bloc.add(InitDeleteWorkEvent(id)),
+          onTap2: () => _bloc.add(InitDeleteWorkEvent(_id)),
           content: getT(KeyT.are_you_sure_you_want_to_delete),
         );
       },
@@ -167,12 +167,12 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarBaseNormal(title),
+      appBar: AppbarBaseNormal(_title),
       body: BlocListener<CheckInBloc, CheckInState>(
         bloc: _blocCheckIn,
         listener: (context, state) {
           if (state is SuccessCheckInState) {
-            _bloc.add(InitGetDetailWorkEvent(id));
+            _bloc.add(InitGetDetailWorkEvent(_id));
           } else if (state is ErrorCheckInState) {
             ShowDialogCustom.showDialogBase(
               title: getT(KeyT.notification),
@@ -228,8 +228,16 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                             bloc: _bloc,
                             builder: (context, state) {
                               if (state is SuccessDetailWorkState) {
-                                checkLocation(state);
-                                getThaoTac();
+                                _checkLocation(state);
+                                _getThaoTac();
+                                _title = checkTitle(
+                                  state.dataList,
+                                  'cv_name',
+                                );
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((timeStamp) {
+                                  setState(() {});
+                                });
                                 return Padding(
                                   padding: const EdgeInsets.only(
                                     top: 24,
@@ -258,7 +266,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                         ),
                         ListNote(
                           module: Module.CONG_VIEC,
-                          id: id.toString(),
+                          id: _id.toString(),
                           bloc: _blocNote,
                         ),
                       ],
@@ -272,7 +280,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                   if (state is SuccessDetailWorkState)
                     return ButtonThaoTac(
                       onTap: () {
-                        showThaoTac(context, list);
+                        showThaoTac(context, _list);
                       },
                     );
                   return ButtonThaoTac(

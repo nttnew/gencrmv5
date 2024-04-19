@@ -81,7 +81,9 @@ class _ReadListState extends State<ReadList>
       child: ListTile(
         onTap: () {
           ModuleMy.getNavigate(
-              item.record_id ?? '', item.title ?? '', item.module ?? '');
+            item.record_id ?? '',
+            item.module ?? '',
+          );
         },
         contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 4),
         title: WidgetText(

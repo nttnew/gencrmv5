@@ -100,7 +100,8 @@ class ItemCar extends StatelessWidget {
             itemTextIcon(
               onTap: () {
                 AppNavigator.navigateDetailCustomer(
-                    data.khachHangId ?? '', data.tenKhachHang ?? '');
+                  data.khachHangId ?? '',
+                );
               },
               text: data.tenKhachHang ?? '',
               icon: ICONS.IC_USER2_SVG,
@@ -114,7 +115,6 @@ class ItemCar extends StatelessWidget {
               onTap: () {
                 AppNavigator.navigateDetailContract(
                   data.id ?? '',
-                  data.soPhieu ?? '',
                 );
               },
               styleText: AppStyle.DEFAULT_14.copyWith(

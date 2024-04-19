@@ -66,7 +66,9 @@ class BodyReportFour extends StatelessWidget {
   _buildCustomer(ItemResponseReportCar data) {
     return GestureDetector(
       onTap: () {
-        AppNavigator.navigateDetailContract(data.id!, data.name!);
+        AppNavigator.navigateDetailContract(
+          data.id ?? '',
+        );
       },
       child: Container(
         margin: EdgeInsets.only(

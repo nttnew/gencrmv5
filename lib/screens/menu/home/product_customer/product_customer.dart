@@ -108,7 +108,6 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                         if (result?.data?.lists?.isNotEmpty ?? false) {
                           AppNavigator.navigateDetailProductCustomer(
                             result?.data?.lists?.first.name ?? '',
-                            result?.data?.lists?.first.id ?? '',
                           );
                         } else {
                           ShowDialogCustom.showDialogBase(
@@ -203,7 +202,6 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
             productModule: snap,
             onTap: () {
               AppNavigator.navigateDetailProductCustomer(
-                snap.name ?? '',
                 snap.id ?? '',
               );
             },

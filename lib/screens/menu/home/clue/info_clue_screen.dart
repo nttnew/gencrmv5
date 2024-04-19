@@ -25,16 +25,11 @@ class DetailInfoClue extends StatefulWidget {
 }
 
 class _DetailInfoClueState extends State<DetailInfoClue> {
-  String id = Get.arguments[0];
-  String name = Get.arguments[1];
-  List<ModuleThaoTac> list = [];
+  String _id = Get.arguments;
+  String _title = '';
+  List<ModuleThaoTac> _list = [];
   late final ListNoteBloc _blocNote;
   late final GetDetailClueBloc _bloc;
-
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
 
   @override
   void initState() {
@@ -43,13 +38,13 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
     );
     _blocNote =
         ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
-    _bloc.add(InitGetDetailClueEvent(id));
-    getThaoTac();
+    _bloc.add(InitGetDetailClueEvent(_id));
+    _getThaoTac();
     super.initState();
   }
 
-  getThaoTac() {
-    list.add(ModuleThaoTac(
+  _getThaoTac() {
+    _list.add(ModuleThaoTac(
       title:
           '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
       icon: ICONS.IC_ADD_WORD_SVG,
@@ -59,53 +54,57 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
           title:
               '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
           type: ADD_CLUE_JOB,
-          id: int.parse(id),
+          id: int.parse(_id),
           onRefreshForm: () {
             _bloc.controllerCV.reloadData();
           },
         );
       },
     ));
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
         title: getT(KeyT.add_discuss),
         icon: ICONS.IC_ADD_DISCUSS_SVG,
         onThaoTac: () {
           Get.back();
-          AppNavigator.navigateAddNoteScreen(Module.DAU_MOI, id, onRefresh: () {
-            _blocNote.add(RefreshEvent());
-          });
+          AppNavigator.navigateAddNoteScreen(
+            Module.DAU_MOI,
+            _id,
+            onRefresh: () {
+              _blocNote.add(RefreshEvent());
+            },
+          );
         }));
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
       title: getT(KeyT.see_attachment),
       icon: ICONS.IC_ATTACK_SVG,
       onThaoTac: () {
         Get.back();
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => Attachment(
-                  id: id,
+                  id: _id,
                   typeModule: Module.DAU_MOI,
                 )));
       },
     ));
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
         title: getT(KeyT.edit),
         icon: ICONS.IC_EDIT_SVG,
         onThaoTac: () {
           Get.back();
           AppNavigator.navigateForm(
             type: EDIT_CLUE,
-            id: int.tryParse(id),
+            id: int.tryParse(_id),
             onRefreshForm: () {
-              _bloc.add(InitGetDetailClueEvent(id));
+              _bloc.add(InitGetDetailClueEvent(_id));
             },
           );
         }));
-    list.add(ModuleThaoTac(
+    _list.add(ModuleThaoTac(
         title: getT(KeyT.delete),
         icon: ICONS.IC_DELETE_SVG,
         onThaoTac: () {
           ShowDialogCustom.showDialogBase(
-              onTap2: () => _bloc.add(InitDeleteClueEvent(id)),
+              onTap2: () => _bloc.add(InitDeleteClueEvent(_id)),
               content: getT(KeyT.are_you_sure_you_want_to_delete));
         }));
   }
@@ -146,7 +145,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
         },
         child: Column(
           children: [
-            AppbarBaseNormal(name),
+            AppbarBaseNormal(_title),
             AppValue.vSpaceTiny,
             Expanded(
               child: DefaultTabController(
@@ -181,7 +180,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                         child: TabBarView(
                           children: [
                             GeneralInfo(
-                              id: id,
+                              id: _id,
                               blocNote: _blocNote,
                               bloc: _bloc,
                             ),
@@ -190,7 +189,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                               child: ViewLoadMoreBase(
                                 functionInit: (page, isInit) {
                                   return _bloc.getWorkClue(
-                                    id: id,
+                                    id: _id,
                                     page: page,
                                     isInit: isInit,
                                   );
@@ -202,7 +201,6 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                                     onTap: () {
                                       AppNavigator.navigateDetailWork(
                                         int.tryParse(item.id ?? '') ?? 0,
-                                        item.name_job ?? '',
                                       );
                                     },
                                     child: WorkCardWidget(
@@ -228,12 +226,18 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
             BlocBuilder<GetDetailClueBloc, DetailClueState>(
               bloc: _bloc,
               builder: (context, state) {
-                if (state is GetDetailClueState)
+                if (state is GetDetailClueState) {
+                  _title = checkTitle(state.list ?? [], 'ho_ten_dm');
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    setState(() {});
+                  });
                   return ButtonThaoTac(
                     onTap: () {
-                      showThaoTac(context, list);
+                      showThaoTac(context, _list);
                     },
                   );
+                }
+
                 return ButtonThaoTac(
                   disable: true,
                   onTap: () {},
