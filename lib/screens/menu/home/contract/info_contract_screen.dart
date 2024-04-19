@@ -31,7 +31,7 @@ class DetailInfoContract extends StatefulWidget {
 }
 
 class _DetailInfoContractState extends State<DetailInfoContract> {
-  String _id = Get.arguments;
+  String _id = Get.arguments ?? '';
   String _title = '';
   List<ModuleThaoTac> _list = [];
   late final DetailContractBloc _bloc;

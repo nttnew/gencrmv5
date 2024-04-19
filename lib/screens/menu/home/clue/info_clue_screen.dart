@@ -25,7 +25,7 @@ class DetailInfoClue extends StatefulWidget {
 }
 
 class _DetailInfoClueState extends State<DetailInfoClue> {
-  String _id = Get.arguments;
+  String _id = Get.arguments ?? '';
   String _title = '';
   List<ModuleThaoTac> _list = [];
   late final ListNoteBloc _blocNote;

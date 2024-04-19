@@ -38,17 +38,21 @@ class DetailProductCustomerBloc
   Stream<DetailProductCustomerState> _getDetailProduct({
     required String id,
   }) async* {
+    LoadingApi().pushLoading();
     try {
       yield LoadingDetailProductCustomerState();
       final response = await userRepository.getDetailProductCustomer(id: id);
       if (isSuccess(response.code)) {
+        LoadingApi().popLoading();
         yield GetDetailProductCustomerState(response);
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
+        LoadingApi().popLoading();
         yield ErrorGetDetailProductCustomerState(response.msg ?? '');
       }
     } catch (e) {
+      LoadingApi().popLoading();
       yield ErrorGetDetailProductCustomerState(getT(KeyT.an_error_occurred));
     }
   }

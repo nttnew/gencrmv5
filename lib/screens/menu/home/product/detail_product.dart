@@ -22,7 +22,7 @@ class DetailProductScreen extends StatefulWidget {
 }
 
 class _DetailProductScreenState extends State<DetailProductScreen> {
-  String _id = Get.arguments;
+  String _id = Get.arguments ?? '';
   String _title = '';
   List<ModuleThaoTac> _list = [];
   late final DetailProductBloc _bloc;

@@ -36,7 +36,7 @@ class _DetailProductCustomerScreenState
     extends State<DetailProductCustomerScreen>
     with SingleTickerProviderStateMixin {
   String _title = '';
-  String _id = Get.arguments;
+  String _id = Get.arguments ?? '';
   late TabController _tabController;
   List<ModuleThaoTac> _list = [];
   List<Tabs> _listTab = [];

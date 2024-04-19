@@ -31,7 +31,7 @@ class DetailCustomerScreen extends StatefulWidget {
 
 class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     with SingleTickerProviderStateMixin {
-  String _id = Get.arguments;
+  String _id = Get.arguments ?? '';
   String _title = '';
   late TabController _tabController;
   List<ModuleThaoTac> _list = [];

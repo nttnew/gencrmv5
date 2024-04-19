@@ -25,7 +25,7 @@ class DetailWorkScreen extends StatefulWidget {
 }
 
 class _DetailWorkScreenState extends State<DetailWorkScreen> {
-  int _id = Get.arguments;
+  int _id = Get.arguments ?? '';
   String _title = '';
   int? _location;
   String? _diDong;
