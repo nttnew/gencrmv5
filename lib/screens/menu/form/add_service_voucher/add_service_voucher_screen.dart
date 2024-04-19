@@ -189,6 +189,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
               ),
             ),
             SearchBase(
+              inputType: isPhone ? TextInputType.phone : null,
               controller: textEditingController,
               hint: hintText,
               endIcon: GestureDetector(
