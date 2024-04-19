@@ -75,6 +75,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
           type: ADD_PAYMENT,
           id: int.tryParse(_id),
           onRefreshForm: () {
+            _bloc.add(InitGetDetailContractEvent(int.tryParse(_id) ?? 0));
             PaymentContractBloc.of(context)
                 .add(InitGetPaymentContractEvent(int.tryParse(_id) ?? 0));
           },
@@ -183,7 +184,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                 Get.back();
                 Get.back();
                 Get.back();
-                ContractBloc.of(context).add(InitGetContractEvent());
+                ContractBloc.of(context).loadMoreController.reloadData();
               },
             );
           } else if (state is ErrorDeleteContractState) {
@@ -248,7 +249,10 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                               bloc: _bloc,
                               blocNote: _blocNote,
                             ),
-                            ContractPayment(id: int.parse(_id)),
+                            ContractPayment(
+                              id: int.parse(_id),
+                              bloc: _bloc,
+                            ),
                             Padding(
                               padding: const EdgeInsets.only(
                                 top: 8,

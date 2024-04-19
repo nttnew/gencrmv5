@@ -271,6 +271,7 @@ class _DetailProductCustomerScreenState
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
           onTap2: () async {
+
             _bloc.add(DeleteProductEvent(_id));
           },
           content: getT(KeyT.are_you_sure_you_want_to_delete),

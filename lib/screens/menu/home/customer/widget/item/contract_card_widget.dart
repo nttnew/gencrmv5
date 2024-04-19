@@ -60,8 +60,8 @@ class ContractCardWidget extends StatelessWidget {
                 onTap: () {
                   if (data.product_customer?.id != '' &&
                       data.product_customer?.id != null)
-                    AppNavigator.navigateDetailProductCustomer2(
-                      data.product_customer,
+                    AppNavigator.navigateDetailProductCustomer(
+                      data.product_customer?.id ?? '',
                     );
                 }),
             itemTextIcon(

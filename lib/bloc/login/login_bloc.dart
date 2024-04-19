@@ -54,20 +54,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     location = null;
     isShowLocaiton.add([]);
     valueTrangThai = null;
-    // loadMoreControllerCar.dispose();
   }
 
   initData() async {
+    loadMoreControllerCar.page = BASE_URL.PAGE_DEFAULT;
+    loadMoreControllerCar.isLoadMore = true;
     final data = await getXeDichVu(
       page: BASE_URL.PAGE_DEFAULT,
     );
-    loadMoreControllerCar.isLoadMore = true;
     if (data is String) {
       ShowDialogCustom.showDialogBase(
         title: getT(KeyT.notification),
         content: getT(KeyT.an_error_occurred),
         textButton1: getT(KeyT.try_again),
         onTap1: () async {
+          loadMoreControllerCar.page = BASE_URL.PAGE_DEFAULT;
+          loadMoreControllerCar.isLoadMore = true;
           final data = await getXeDichVu(
             page: BASE_URL.PAGE_DEFAULT,
           );
@@ -177,7 +179,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<dynamic> getXeDichVu({
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
-    LoadingApi().pushLoading();
     dynamic resDynamic = '';
     try {
       final response = await userRepository.postXeDichVu(
@@ -192,11 +193,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } else
         resDynamic = response.msg ?? '';
     } catch (e) {
-      LoadingApi().popLoading();
       resDynamic = getT(KeyT.an_error_occurred);
       return resDynamic;
     }
-    LoadingApi().popLoading();
     return resDynamic;
   }
 

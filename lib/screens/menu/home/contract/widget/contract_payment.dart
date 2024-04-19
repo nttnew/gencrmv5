@@ -4,6 +4,7 @@ import 'package:gen_crm/bloc/payment_contract/payment_contract_bloc.dart';
 import 'package:gen_crm/screens/menu/widget/information.dart';
 import 'package:gen_crm/widgets/showToastM.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
+import '../../../../../bloc/contract/detail_contract_bloc.dart';
 import '../../../../../l10n/key_text.dart';
 import '../../../../../src/app_const.dart';
 import '../../../../../src/models/model_generator/detail_contract.dart';
@@ -14,8 +15,10 @@ class ContractPayment extends StatefulWidget {
   ContractPayment({
     Key? key,
     required this.id,
+    required this.bloc,
   }) : super(key: key);
   final int id;
+  final DetailContractBloc bloc;
 
   @override
   State<ContractPayment> createState() => _ContractPaymentState();
@@ -126,6 +129,7 @@ class _ContractPaymentState extends State<ContractPayment>
                             Navigator.of(context).pop();
                             PaymentContractBloc.of(context)
                                 .add(InitGetPaymentContractEvent(widget.id));
+                            widget.bloc.add(InitGetDetailContractEvent(widget.id));
                           } else {
                             showToastM(context, title: res);
                           }

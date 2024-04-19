@@ -66,8 +66,8 @@ class WorkCardWidget extends StatelessWidget {
               colorText: COLORS.TEXT_BLUE_BOLD,
               onTap: () {
                 if (productCustomer?.id != '' && productCustomer?.id != null)
-                  AppNavigator.navigateDetailProductCustomer2(
-                    productCustomer,
+                  AppNavigator.navigateDetailProductCustomer(
+                    productCustomer?.id ?? '',
                   );
               }),
           itemTextIcon(

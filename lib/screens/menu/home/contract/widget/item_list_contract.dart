@@ -15,7 +15,8 @@ class ItemContract extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         AppNavigator.navigateDetailContract(
-            data.id ?? '', );
+          data.id ?? '',
+        );
       },
       child: Container(
         margin: EdgeInsets.only(
@@ -60,8 +61,8 @@ class ItemContract extends StatelessWidget {
                 onTap: () {
                   if (data.product_customer?.id != '' &&
                       data.product_customer?.id != null)
-                    AppNavigator.navigateDetailProductCustomer2(
-                      data.product_customer,
+                    AppNavigator.navigateDetailProductCustomer(
+                      data.product_customer?.id ?? '',
                     );
                 }),
             itemTextIcon(

@@ -110,8 +110,8 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
                 onTap: () {
                   if (widget.item.product_customer?.id != '' &&
                       widget.item.product_customer?.id != null)
-                    AppNavigator.navigateDetailProductCustomer2(
-                      widget.item.product_customer,
+                    AppNavigator.navigateDetailProductCustomer(
+                      widget.item.product_customer?.id ?? '',
                     );
                 }),
             itemTextEnd(
