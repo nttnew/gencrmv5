@@ -509,7 +509,7 @@ class _FormAddDataState extends State<FormAddData> {
             .add(InitGetDetailContractEvent(int.tryParse(_id) ?? 0));
         break;
       case EDIT_SUPPORT:
-        SupportBloc.of(context).add(InitGetSupportEvent());
+        SupportBloc.of(context).loadMoreController.reloadData();
         break;
       case PRODUCT_TYPE_EDIT:
         ProductModuleBloc.of(context).loadMoreController.reloadData();

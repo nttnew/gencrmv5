@@ -93,9 +93,21 @@ class _InputDropdownState extends State<InputDropdownBase> {
               }
             });
           }
-          _listSelectStream.add(res);
+
+          if (widget.data.field_name == 'mau_sac') {
+            //case dac biet
+            if (res.length > 0) _selectStream.add(res.first);
+            _listSelectStream.add(widget.data.field_datasource);
+          } else {
+            _listSelectStream.add(res);
+          }
         } else {
-          _listSelectStream.add(null);
+          if (widget.data.field_name == 'mau_sac') {
+            //case dac biet
+            _listSelectStream.add(widget.data.field_datasource);
+          } else {
+            _listSelectStream.add(null);
+          }
         }
       }
     } catch (e) {

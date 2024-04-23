@@ -49,6 +49,10 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
     _blocNote.add(RefreshEvent());
   }
 
+  _refreshList() {
+    SupportBloc.of(context).loadMoreController.reloadData();
+  }
+
   _checkLocation(SuccessGetDetailSupportState state) {
     _location = state.location;
     _isCheckDone = isCheckDataLocation(state.checkOut);
@@ -67,7 +71,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
             AppNavigator.navigateCheckIn(
                 _id.toString(), ModuleMy.CSKH, TypeCheckIn.CHECK_IN,
                 onRefreshCheckIn: () {
-              SupportBloc.of(context).add(InitGetSupportEvent());
+              _refreshList();
               _bloc.add(InitGetDetailSupportEvent(_id));
             });
           },
@@ -81,7 +85,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
             AppNavigator.navigateCheckIn(
                 _id.toString(), ModuleMy.CSKH, TypeCheckIn.CHECK_OUT,
                 onRefreshCheckIn: () {
-              SupportBloc.of(context).add(InitGetSupportEvent());
+              _refreshList();
               _bloc.add(InitGetDetailSupportEvent(_id));
             });
           },
@@ -162,7 +166,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
           bloc: _blocCheckIn,
           listener: (context, state) {
             if (state is SuccessCheckInState) {
-              SupportBloc.of(context).add(InitGetSupportEvent());
+              _refreshList();
               _bloc.add(InitGetDetailSupportEvent(_id));
             } else if (state is ErrorCheckInState) {
               ShowDialogCustom.showDialogBase(
@@ -198,12 +202,11 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                                 title: getT(KeyT.notification),
                                 content: getT(KeyT.success),
                                 onTap1: () {
+                                  _refreshList();
                                   Get.back();
                                   Get.back();
                                   Get.back();
                                   Get.back();
-                                  SupportBloc.of(context)
-                                      .add(InitGetSupportEvent());
                                 },
                               );
                             } else if (state is ErrorDeleteSupportState) {

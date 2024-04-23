@@ -51,19 +51,19 @@ class _DetailCarState extends State<DetailCar> {
             padding: 10,
             right: Row(
               children: [
-                // IconButton(
-                //   padding: EdgeInsets.zero,
-                //   onPressed: () {
-                //     AppNavigator.navigateBieuMau(
-                //       idDetail: xeDichVu.id ?? '',
-                //     );
-                //   },
-                //   icon: Icon(
-                //     Icons.print,
-                //     color: COLORS.WHITE,
-                //     size: 20,
-                //   ),
-                // ),
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () {
+                    AppNavigator.navigateBieuMau(
+                      idDetail: xeDichVu.id ?? '',
+                    );
+                  },
+                  icon: Icon(
+                    Icons.print,
+                    color: COLORS.WHITE,
+                    size: 20,
+                  ),
+                ),
                 IconButton(
                   onPressed: () {
                     AppNavigator.navigateForm(

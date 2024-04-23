@@ -58,7 +58,8 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                if (widget.item.location != null) ...[
+                if (widget.item.location != null &&
+                    widget.item.location?.trim() != '') ...[
                   Container(
                     height: 16,
                     width: 16,

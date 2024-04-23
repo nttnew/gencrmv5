@@ -178,3 +178,7 @@ class _ItemNoteState extends State<ItemNote> {
     );
   }
 }
+
+
+Widget htmlBase(data) => Html(shrinkWrap: true, data: data);
+

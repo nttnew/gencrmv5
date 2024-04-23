@@ -34,7 +34,7 @@ class _FieldTextState extends State<FieldText> {
       _textEditingController.text =
           data.field_type == 'MONEY' || data.field_type == 'TEXT_NUMERIC'
               ? AppValue.format_money(
-                  '${widget.data.field_set_value ?? ''}',
+                  '${widget.data.field_set_value ?? ''}'.replaceAll('.', ''),
                   isD: false,
                 )
               : '${widget.data.field_set_value ?? ''}';
@@ -49,8 +49,8 @@ class _FieldTextState extends State<FieldText> {
 
   @override
   Widget build(BuildContext context) {
-    final isReadOnly =
-        data.field_special == 'none-edit' || data.field_read_only.toString() == '1';
+    final isReadOnly = data.field_special == 'none-edit' ||
+        data.field_read_only.toString() == '1';
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Column(

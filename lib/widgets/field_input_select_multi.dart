@@ -29,17 +29,25 @@ class SelectMulti extends StatefulWidget {
 
 class _SelectMultiState extends State<SelectMulti> {
   late final List<ModelDataAdd> _dropdown;
-  List<String>? init = [];
+  List<ModelDataAdd> _dropdownSelect = [];
 
   @override
   void initState() {
-    init = widget.initValue;
     _dropdown = [];
     for (int i = 0; i < widget.dropdownItemList.length; i++) {
       _dropdown.add(ModelDataAdd(
           label: widget.dropdownItemList[i][1],
           value: widget.dropdownItemList[i][0]));
     }
+
+    _dropdown.forEach((element) {
+      for (final value in widget.initValue ?? []) {
+        if ('$value' == '${element.value}') {
+          _dropdownSelect.add(element);
+        }
+      }
+    });
+
     super.initState();
   }
 
@@ -92,6 +100,7 @@ class _SelectMultiState extends State<SelectMulti> {
                 color: COLORS.BLUE,
               ),
             ),
+            separateSelectedItems: true,
             onConfirm: (values) {
               if (widget.maxLength != '' &&
                   values.length > int.parse(widget.maxLength)) {
@@ -130,14 +139,7 @@ class _SelectMultiState extends State<SelectMulti> {
               Icons.arrow_drop_down,
               size: 25,
             ),
-            initialValue: _dropdown.where((element) {
-              for (final value in init ?? []) {
-                if ('$value' == '${element.value}') {
-                  return true;
-                }
-              }
-              return false;
-            }).toList(),
+            initialValue: _dropdownSelect,
             selectedItemsTextStyle: AppStyle.DEFAULT_14_BOLD,
             itemsTextStyle: AppStyle.DEFAULT_14,
           ),

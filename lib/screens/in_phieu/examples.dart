@@ -1,12 +1,6 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:pdf/pdf.dart';
-import 'data.dart';
-import 'examples/document.dart';
-
-// const examples = <Example>[
-//   Example('DOCUMENT', 'document.dart', generateDocument),
-// ];
 
 typedef LayoutCallbackWithData = Future<Uint8List> Function(
   PdfPageFormat pageFormat,
