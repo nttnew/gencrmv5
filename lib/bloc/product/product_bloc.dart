@@ -30,18 +30,22 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     }
   }
 
-  Stream<ProductState> _getListProduct(String page, String querySearch,
-      {String? group}) async* {
+  Stream<ProductState> _getListProduct(
+    String page,
+    String querySearch, {
+    String? group,
+  }) async* {
     LoadingApi().pushLoading();
     try {
-      if (querySearch != "" && page == "1") yield LoadingGetListProductState();
+      if (querySearch != '' && page == BASE_URL.PAGE_DEFAULT)
+        yield LoadingGetListProductState();
       final response = await userRepository.getListProduct(
         page,
         querySearch,
         group,
       );
       if (isSuccess(response.code)) {
-        if (page == "1") {
+        if (page == BASE_URL.PAGE_DEFAULT) {
           data = response.data!.product;
           yield SuccessGetListProductState(
             response.data!.product!,

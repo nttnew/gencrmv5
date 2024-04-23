@@ -67,6 +67,10 @@ class TypeCheckIn {
   static const CHECK_OUT = 'checkout';
 }
 
+String hinhThucTT = 'hinh_thuc_thanh_toan';
+String hdSoTien = 'hd_sotien';
+String ghiChu = 'ghi_chu';
+
 void loginSessionExpired() {
   LoadingApi().popLoading();
   ShowDialogCustom.showDialogBase(
@@ -448,31 +452,36 @@ bool isCarCrm() {
       );
 }
 
-Widget widgetSave() => Container(
+Widget widgetSave({
+  String? title,
+  Color? background,
+  Color? textColor,
+}) =>
+    Container(
       padding: EdgeInsets.symmetric(
-        horizontal: 34,
+        horizontal: 24,
         vertical: 10,
       ),
       decoration: BoxDecoration(
-        color: HexColor("#F1A400"),
+        color: background ?? HexColor("#F1A400"),
         borderRadius: BorderRadius.circular(
-          20,
+          10,
         ),
       ),
       child: Center(
         child: Text(
-          getT(KeyT.save),
+          title ?? getT(KeyT.save),
           style: AppStyle.DEFAULT_16_BOLD.copyWith(
-            color: COLORS.WHITE,
+            color: textColor ?? COLORS.WHITE,
           ),
         ),
       ),
     );
 
 String checkTitle(
-    List<InfoDataModel> dataL,
-    String key,
-    ) {
+  List<InfoDataModel> dataL,
+  String key,
+) {
   for (final value in dataL) {
     for (final InfoItem element in value.data ?? []) {
       if (element.id == key) {

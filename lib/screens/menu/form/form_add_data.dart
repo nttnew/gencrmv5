@@ -17,7 +17,9 @@ import 'package:gen_crm/screens/menu/form/widget/render_check_box.dart';
 import 'package:gen_crm/screens/menu/form/widget/type_car.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
+import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/field_input_select_multi.dart';
+import 'package:gen_crm/widgets/showToastM.dart';
 import 'package:gen_crm/widgets/widget_field_input_percent.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
@@ -85,9 +87,14 @@ class _FormAddDataState extends State<FormAddData> {
   late final AttackBloc _attackBloc;
   late final ContactByCustomerBloc _contactBy;
   late final TotalBloc _totalBloc;
+
+  /// check hinhTTT = 'CK' && so_tien >0  : showQRcode
   bool isHideDinhKem = (Get.arguments[1] ?? '') != ADD_PAYMENT &&
       (Get.arguments[1] ?? '') != EDIT_PAYMENT &&
       !(Get.arguments[5] ?? false);
+  BehaviorSubject<bool> _showQrCodePayment = BehaviorSubject.seeded(false);
+
+  ///
 
   @override
   void initState() {
@@ -114,6 +121,39 @@ class _FormAddDataState extends State<FormAddData> {
     }
     _addBlocEvent(_type);
     super.initState();
+  }
+
+  String? _getData(String key) {
+    for (final value in _addData) {
+      for (final value2 in value.data) {
+        if (value2.label == key) {
+          return value2.value;
+        }
+      }
+    }
+  }
+
+  bool _checkThanhToan() {
+    if (_type != ADD_PAYMENT && _type != EDIT_PAYMENT) return false;
+    bool _checkTT = false;
+    bool _checkCK = false;
+    // số tiền thanh toán
+    _addData.forEach((_element) {
+      _element.data.forEach((_element2) {
+        if (_element2.label == hdSoTien) {
+          if ((int.tryParse(_element2.value) ?? 0) > 0) {
+            _checkTT = true;
+          }
+        }
+
+        if (_element2.label == hinhThucTT) {
+          if (_element2.isCK ?? false) {
+            _checkCK = true;
+          }
+        }
+      });
+    });
+    return _checkTT && _checkCK;
   }
 
   void _addBlocEvent(String type) {
@@ -187,6 +227,7 @@ class _FormAddDataState extends State<FormAddData> {
   void dispose() {
     _nameLocation.close();
     _blocAdd.close();
+    _showQrCodePayment.close();
     super.dispose();
   }
 
@@ -541,6 +582,48 @@ class _FormAddDataState extends State<FormAddData> {
     }
   }
 
+  _showDialogQrCode(String data) {
+    var image = base64Decode(data.replaceAll('data:image/png;base64,', ''));
+    return showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.8,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30),
+          topLeft: Radius.circular(30),
+        ),
+      ),
+      backgroundColor: COLORS.WHITE,
+      builder: (context) => Container(
+        padding: EdgeInsets.only(
+          top: 24,
+        ),
+        decoration: BoxDecoration(
+          color: COLORS.WHITE,
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(30),
+            topLeft: Radius.circular(30),
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Image.memory(image),
+            ButtonThaoTac(
+                title: 'Xác nhận đã thanh toán',
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _onClickSave();
+                }),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final double paddingTop = MediaQuery.of(context).padding.top +
@@ -723,7 +806,8 @@ class _FormAddDataState extends State<FormAddData> {
                           FileLuuBase(
                             context,
                             () => _onClickSave(),
-                            isAttack: isHideDinhKem,
+                            isAttack: !isHideDinhKem,
+                            btn: _btnShowQR(),
                           ),
                         ],
                       );
@@ -735,6 +819,59 @@ class _FormAddDataState extends State<FormAddData> {
         ),
       ),
     );
+  }
+
+  _btnShowQR() => (_type == ADD_PAYMENT || _type == EDIT_PAYMENT)
+      ? StreamBuilder<bool>(
+          stream: _showQrCodePayment,
+          builder: (context, snapshot) {
+            if (snapshot.data ?? false)
+              return GestureDetector(
+                onTap: () async {
+                  final String? soTien = _getData(hdSoTien);
+                  final String? note = _getData(ghiChu);
+                  final res = await _bloc.showQrCodePayment(
+                    soTien,
+                    note,
+                  );
+                  if (res['mes'] == '') {
+                    _showDialogQrCode(res['data'].toString());
+                  } else {
+                    showToastM(context, title: res['mes'].toString());
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 12,
+                  ),
+                  child: widgetSave(
+                    title: 'Hiện QR',
+                    background: COLORS.PRIMARY_COLOR1,
+                  ),
+                ),
+              );
+            return SizedBox.shrink();
+          })
+      : SizedBox.shrink();
+
+  _addCheckHTTT({
+    required CustomerIndividualItemData data,
+    required int indexParent,
+    required int indexChild,
+    required bool? isCK,
+  }) {
+    if (data.field_name == hinhThucTT && isCK == true) {
+      _addData[indexParent].data[indexChild].isCK = true;
+      _showQrCodePayment.add(_checkThanhToan());
+    }
+  }
+
+  _addCheckSoTien({
+    required CustomerIndividualItemData data,
+  }) {
+    if (data.field_name == hdSoTien) {
+      _showQrCodePayment.add(_checkThanhToan());
+    }
   }
 
   Widget _getBody(
@@ -829,14 +966,20 @@ class _FormAddDataState extends State<FormAddData> {
                                           return InputDropdownBase(
                                             data: data,
                                             addData: _addData,
-                                            onChange: (v) {
+                                            onChange: (v, bool? isCK) {
                                               _addData[indexParent]
                                                   .data[indexChild]
                                                   .value = v;
+                                              _addCheckHTTT(
+                                                data: data,
+                                                indexParent: indexParent,
+                                                indexChild: indexChild,
+                                                isCK: isCK,
+                                              );
                                             },
                                           );
                                         })
-                                    : data.field_name == 'hinh_thuc_thanh_toan' &&
+                                    : data.field_name == hinhThucTT &&
                                             _type != ADD_PAYMENT &&
                                             _type != EDIT_PAYMENT
                                         ? StreamBuilder<double>(
@@ -848,13 +991,19 @@ class _FormAddDataState extends State<FormAddData> {
                                                 return InputDropdownBase(
                                                   data: data,
                                                   addData: _addData,
-                                                  onChange: (v) {
+                                                  onChange: (v, bool? isCK) {
                                                     _addData[indexParent]
                                                         .data[indexChild]
                                                         .value = v;
                                                     if (data.is_load == true)
                                                       _reloadStream.add(
                                                           '${data.field_name}$v');
+                                                    _addCheckHTTT(
+                                                      data: data,
+                                                      indexParent: indexParent,
+                                                      indexChild: indexChild,
+                                                      isCK: isCK,
+                                                    );
                                                   },
                                                 );
                                               }
@@ -862,13 +1011,19 @@ class _FormAddDataState extends State<FormAddData> {
                                         : InputDropdownBase(
                                             data: data,
                                             addData: _addData,
-                                            onChange: (v) {
+                                            onChange: (v, bool? isCK) {
                                               _addData[indexParent]
                                                   .data[indexChild]
                                                   .value = v;
                                               if (data.is_load == true)
                                                 _reloadStream.add(
                                                     '${data.field_name}$v');
+                                              _addCheckHTTT(
+                                                data: data,
+                                                indexParent: indexParent,
+                                                indexChild: indexChild,
+                                                isCK: isCK,
+                                              );
                                             },
                                           )
                             : data.field_type == 'TEXT_MULTI'
@@ -992,8 +1147,9 @@ class _FormAddDataState extends State<FormAddData> {
                                                                 ? BlocBuilder<
                                                                         TotalBloc,
                                                                         TotalState>(
-                                                                    builder: (context,
-                                                                        stateA) {
+                                                                    builder:
+                                                                        (context,
+                                                                            stateA) {
                                                                     if (stateA
                                                                         is SuccessTotalState) {
                                                                       _addData[
@@ -1042,6 +1198,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                                             onChange:
                                                                                 (v) {
                                                                               _addData[indexParent].data[indexChild].value = v;
+                                                                              _addCheckSoTien(data: data);
                                                                             },
                                                                           );
                                                                         })
@@ -1056,9 +1213,13 @@ class _FormAddDataState extends State<FormAddData> {
                                                                                 0);
                                                                             _totalBloc.getPaid();
                                                                           }
+
                                                                           _addData[indexParent]
                                                                               .data[indexChild]
                                                                               .value = v;
+
+                                                                          _addCheckSoTien(
+                                                                              data: data);
                                                                         },
                                                                       )
                                                         : data.field_type == 'images'

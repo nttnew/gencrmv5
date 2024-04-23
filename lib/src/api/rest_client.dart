@@ -55,6 +55,7 @@ import '../models/model_generator/policy.dart';
 import '../models/model_generator/product_customer_save_response.dart';
 import '../models/model_generator/product_response.dart';
 import '../models/model_generator/product_service_pack_response.dart';
+import '../models/model_generator/qr_code_payment_res.dart';
 import '../models/model_generator/quick_create_response.dart';
 import '../models/model_generator/report_contact.dart';
 import '../models/model_generator/report_employee.dart';
@@ -950,6 +951,12 @@ abstract class RestClient {
     @Query('m') String module,
     @Query('item') String idDetail,
     @Query('temp') String idBieuMau,
+  );
+
+  @POST(BASE_URL.QR_CODE_PAYMENT)
+  Future<QrCodePaymentRes> getQRCode(
+    @Field('amount') String amount,
+    @Field('message') String message,
   );
 }
 

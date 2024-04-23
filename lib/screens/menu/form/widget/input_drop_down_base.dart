@@ -24,7 +24,7 @@ class InputDropdownBase extends StatefulWidget {
   }) : super(key: key);
   final CustomerIndividualItemData data;
   final List<ModelItemAdd> addData;
-  final Function(dynamic) onChange;
+  final Function(dynamic, bool?) onChange;
 
   @override
   State<InputDropdownBase> createState() => _InputDropdownState();
@@ -45,7 +45,7 @@ class _InputDropdownState extends State<InputDropdownBase> {
               value.value != '' &&
               _idDF != value.value) {
             _selectStream.add(['', '']);
-            _onChangeMain(''); //reset select
+            _onChangeMain('', null); //reset select
             _idDF = value.value;
             getDataApi(value.value.toString());
           }
@@ -88,7 +88,8 @@ class _InputDropdownState extends State<InputDropdownBase> {
               if (fieldSetValueDatasource.first.length > 0) {
                 if (element.first == fieldSetValueDatasource.first.first) {
                   _selectStream.add(res.first);
-                  _onChangeMain(res.first.first);
+                  _onChangeMain(
+                      res.first.first, _resultIndexTwoForList(res.first));
                 }
               }
             });
@@ -162,6 +163,7 @@ class _InputDropdownState extends State<InputDropdownBase> {
       _selectStream.add(data.field_set_value_datasource?.first ?? ['', '']);
       _onChangeMain(
         data.field_set_value_datasource?.first.first,
+        _resultIndexTwoForList(data.field_set_value_datasource?.first ?? []),
       );
     }
     super.initState();
@@ -173,8 +175,8 @@ class _InputDropdownState extends State<InputDropdownBase> {
     super.didUpdateWidget(oldWidget);
   }
 
-  _onChangeMain(id) {
-    widget.onChange(id);
+  _onChangeMain(id, bool? isCK) {
+    widget.onChange(id, isCK);
   }
 
   @override
@@ -215,22 +217,28 @@ class _InputDropdownState extends State<InputDropdownBase> {
         if (v.first == ADD_NEW_CAR) {
           if (result.length > 1) {
             _selectStream.add(result.first);
-            _onChangeMain(result.first[0]);
+            _onChangeMain(
+                result.first[0], _resultIndexTwoForList(result.first));
             Navigator.pop(context);
-            getDataApi(result.last.toString());
+            getDataApi(result[1].toString());
           }
         } else {
           _selectStream.add(result);
-          _onChangeMain(result.first);
+          _onChangeMain(result.first, _resultIndexTwoForList(result));
           Navigator.pop(context);
           getList();
         }
       }
     } else {
       _selectStream.add(v);
-      _onChangeMain(v.first);
+      _onChangeMain(v.first, _resultIndexTwoForList(v));
       Navigator.pop(context);
     }
+  }
+
+  bool? _resultIndexTwoForList(List<dynamic> result) {
+    //check bang 'ck' == true hinh_thuc_thanh_toan
+    return result.length > 2 ? result[2] == 'CK' : null;
   }
 
   @override

@@ -6,7 +6,7 @@ import '../../menu/home/customer/widget/item_note.dart';
 
 Future<Uint8List> generateDocument(PdfPageFormat format, String data) async {
   var myTheme = pw.ThemeData.withFont(
-    base: pw.Font.ttf(await rootBundle.load("assets/fonts/Open_Sans/static/OpenSans-Bold.ttfs")),
+    // base: pw.Font.ttf(await rootBundle.load("assets/fonts/Open_Sans/static/OpenSans-Bold.ttfs")),
   );
 
   final pw.Document _pdf = pw.Document(theme: myTheme);
@@ -27,10 +27,10 @@ Future<Uint8List> generateDocument(PdfPageFormat format, String data) async {
   );
   doc.addPage(
     pw.MultiPage(
-      theme: pw.ThemeData.withFont(
-        base: Font.ttf(await rootBundle
-            .load("assets/fonts/Open_Sans/static/OpenSans-Bold.ttf")),
-      ),
+      // theme: pw.ThemeData.withFont(
+      //   base: Font.ttf(await rootBundle
+      //       .load("assets/fonts/Open_Sans/static/OpenSans-Bold.ttf")),
+      // ),
       build: (context) => widgets,
     ),
   );

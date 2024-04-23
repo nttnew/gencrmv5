@@ -794,6 +794,34 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     LoadingApi().popLoading();
   }
 
+  Future<Map<String, dynamic>> showQrCodePayment(
+    String? amount,
+    String? message,
+  ) async {
+    Map<String, dynamic> res = {
+      'mes': getT(KeyT.an_error_occurred),
+      'data': '',
+    };
+
+    LoadingApi().pushLoading();
+    try {
+      final response = await userRepository.getQRCode(
+          amount: amount ?? '', message: message ?? '');
+      if (isSuccess(response.code)) {
+        res['mes'] = '';
+        res['data'] = response.data?.qrDataURL ?? '';
+      } else {
+        res['mes'] = response.msg;
+      }
+    } catch (e) {
+      LoadingApi().popLoading();
+      res['mes'] = getT(KeyT.an_error_occurred);
+      return res;
+    }
+    LoadingApi().popLoading();
+    return res;
+  }
+
   static FormAddBloc of(BuildContext context) =>
       BlocProvider.of<FormAddBloc>(context);
 }

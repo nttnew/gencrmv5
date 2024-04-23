@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
 import '../../../../src/src_index.dart';
 
@@ -100,7 +102,12 @@ class _FieldTextState extends State<FieldText> {
                   inputFormatters: data.field_type == 'MONEY' ||
                           data.field_type == 'TEXT_NUMERIC'
                       ? AppStyle.inputPrice
-                      : null,
+                      : data.field_name == ghiChu
+                          ? [
+                              FilteringTextInputFormatter.allow(RegExp(
+                                  '[a-zA-Z ]')), // Chỉ cho phép các ký tự tiếng Anh và dấu cách
+                            ]
+                          : null,
                   controller: _textEditingController,
                   minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
                   maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
@@ -116,7 +123,10 @@ class _FieldTextState extends State<FieldText> {
                               : isReadOnly
                                   ? TextInputType.none
                                   : TextInputType.text,
+                  maxLength: data.field_name == ghiChu ? 25 : null,
                   decoration: InputDecoration(
+                    counterText: '',
+                    counterStyle: TextStyle(fontSize: 0),
                     hintStyle: AppStyle.DEFAULT_14W500,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,

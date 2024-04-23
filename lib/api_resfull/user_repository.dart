@@ -56,6 +56,7 @@ import '../src/models/model_generator/pdf_response.dart';
 import '../src/models/model_generator/product_customer_edit_response.dart';
 import '../src/models/model_generator/product_customer_save_response.dart';
 import '../src/models/model_generator/product_service_pack_response.dart';
+import '../src/models/model_generator/qr_code_payment_res.dart';
 import '../src/models/model_generator/quick_create_response.dart';
 import '../src/models/model_generator/report_contact.dart';
 import '../src/models/model_generator/report_general.dart';
@@ -1691,6 +1692,18 @@ class UserRepository {
         module,
         idDetail,
         idBieuMau,
+      );
+
+  Future<QrCodePaymentRes> getQRCode({
+    required String amount,
+    required String message,
+  }) async =>
+      await RestClient(
+        dio,
+        baseUrl: dio.options.baseUrl,
+      ).getQRCode(
+        amount,
+        message,
       );
   //////////////////////
 

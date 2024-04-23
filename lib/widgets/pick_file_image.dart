@@ -190,6 +190,7 @@ Widget FileLuuBase(
   BuildContext context,
   Function() onTap, {
   bool isAttack = true,
+  Widget? btn,
 }) =>
     SizedBox(
       height: 40,
@@ -207,9 +208,14 @@ Widget FileLuuBase(
                 },
                 child: SvgPicture.asset(ICONS.IC_ATTACK_SVG)),
           Spacer(),
-          GestureDetector(
-            onTap: () => onTap(),
-            child: widgetSave(),
+          Row(
+            children: [
+              if(btn!=null) btn,
+              GestureDetector(
+                onTap: () => onTap(),
+                child: widgetSave(),
+              ),
+            ],
           ),
         ],
       ),
