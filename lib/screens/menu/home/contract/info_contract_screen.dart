@@ -60,7 +60,15 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
       isSvg: false,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormSign(getT(KeyT.sign), _id);
+        AppNavigator.navigateFormSign(
+          getT(KeyT.sign),
+          _id,
+          onRefreshForm: () {
+            _bloc.add(InitGetDetailContractEvent(int.tryParse(_id) ?? 0));
+            PaymentContractBloc.of(context)
+                .add(InitGetPaymentContractEvent(int.tryParse(_id) ?? 0));
+          },
+        );
       },
     ));
 

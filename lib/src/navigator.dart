@@ -231,12 +231,18 @@ class AppNavigator {
     String title,
     String id, {
     String type = '',
+    Function? onRefreshForm,
   }) async =>
       await Get.toNamed(ROUTE_NAMES.FORM_SIGN, arguments: [
         title,
         id,
         type,
-      ]);
+      ])?.then(
+        (v) {
+          if (onRefreshForm != null && v != null) onRefreshForm();
+          return v;
+        },
+      );
 
   static navigateListServicePark(
     Function add,

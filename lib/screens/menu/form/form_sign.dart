@@ -111,7 +111,7 @@ class _FormAddSignState extends State<FormAddSign> {
                 content: getT(KeyT.new_data_added_successfully),
                 onTap1: () {
                   Get.back();
-                  Get.back();
+                  Get.back(result: true);
                   GetListCustomerBloc.of(context)
                       .loadMoreController
                       .reloadData();
