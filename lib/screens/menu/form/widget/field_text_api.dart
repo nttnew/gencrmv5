@@ -1,11 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import '../../../../api_resfull/dio_provider.dart';
 import '../../../../models/model_item_add.dart';
-import '../../../../src/app_const.dart';
 import '../../../../src/base.dart';
 import '../../../../src/color.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
@@ -159,12 +157,7 @@ class _FieldTextAPiState extends State<FieldTextAPi> {
                   inputFormatters: data.field_type == 'MONEY' ||
                           data.field_type == 'TEXT_NUMERIC'
                       ? AppStyle.inputPrice
-                      : data.field_name == ghiChu
-                          ? [
-                              FilteringTextInputFormatter.allow(RegExp(
-                                  '[a-zA-Z ]')), // Chỉ cho phép các ký tự tiếng Anh và dấu cách
-                            ]
-                          : null,
+                      : null,
                   controller: _textEditingController,
                   minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
                   maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
@@ -181,7 +174,6 @@ class _FieldTextAPiState extends State<FieldTextAPi> {
                                   : isReadOnly
                                       ? TextInputType.none
                                       : TextInputType.text),
-                  maxLength: data.field_name == ghiChu ? 25 : null,
                   decoration: InputDecoration(
                     counterText: '',
                     counterStyle: TextStyle(fontSize: 0),

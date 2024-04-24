@@ -273,4 +273,5 @@ class KeyT {
   static String add_payment = 'add_payment';
   static String edit_payment = 'edit_payment';
   static String bieu_mau = 'bieu_mau';
+  static String hien_qr = 'hien_qr';
 }

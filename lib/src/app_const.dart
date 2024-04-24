@@ -460,7 +460,6 @@ Widget widgetSave({
     Container(
       padding: EdgeInsets.symmetric(
         horizontal: 24,
-        vertical: 10,
       ),
       decoration: BoxDecoration(
         color: background ?? HexColor("#F1A400"),

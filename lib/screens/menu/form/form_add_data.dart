@@ -845,7 +845,7 @@ class _FormAddDataState extends State<FormAddData> {
                     right: 12,
                   ),
                   child: widgetSave(
-                    title: 'Hiện QR',
+                    title: getT(KeyT.hien_qr),
                     background: COLORS.PRIMARY_COLOR1,
                   ),
                 ),
