@@ -247,3 +247,92 @@ class _InPhieuScreen extends State<InPhieuScreen> {
 //         });
 //   }
 // }
+//
+// import 'dart:io';
+// import 'package:pdf/pdf.dart';
+// import 'package:pdf/widgets.dart' as pw;
+// import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
+// import 'package:printing/printing.dart';
+// import 'package:html/parser.dart';
+//
+// class InPhieuScreen extends StatefulWidget {
+//   const InPhieuScreen({Key? key}) : super(key: key);
+//
+//   @override
+//   State<InPhieuScreen> createState() => _PrintScreenState();
+// }
+//
+// class _PrintScreenState extends State<InPhieuScreen> {
+//   final pdf = pw.Document();
+//
+//   String body = '''
+//   <h1>Hà Ngọc lực</h1>
+//    <h2>Hà Ngọc lực</h2>
+//   ''';
+//
+//   String _parseHtmlString(String htmlString) {
+//     final document = parse(htmlString);
+//     final String? parsedString =
+//         parse(document.body?.text).documentElement?.text;
+//
+//     return parsedString ?? '';
+//   }
+//
+//   Future<Uint8List> generaxtePdf(PdfPageFormat format, String title) async {
+//     final pdf = pw.Document(
+//         // version: PdfVersion.pdf_1_5, compress: true
+//     );
+//     final font = await PdfGoogleFonts.nunitoExtraLight();
+//
+//     // Chuyển đổi widget Flutter thành widget PDF
+//     pdf.addPage(pw.Page(
+//         pageFormat: format,
+//         build: (context) {
+//           return pw.Column(children: [
+//             pw.SizedBox(
+//                 width: double.infinity,
+//                 child: pw.FittedBox(
+//                   child: pw.Text(_parseHtmlString(title),
+//                       style: pw.TextStyle(font: font)),
+//                 )),
+//             // pw.SizedBox(height: 20),
+//             // pw.Flexible(child: pw.FlutterLogo())
+//           ]);
+//         },
+//         orientation: pw.PageOrientation.landscape));
+//     // pdf.addPage(
+//     //   pw.Page(
+//     //     build: (pw.Context context) => pw.Center(
+//     //       child: pw.Html(
+//     //         data: body,
+//     //       ),
+//     //     ),
+//     //   ),
+//     // );
+//     return pdf.save();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: PdfPreview(
+//         build: (format) {
+//           return generaxtePdf(format, body);
+//         },
+//       ),
+//       // home: Stack(
+//       //   fit: StackFit.expand,
+//       //   children: [
+//       //     ImageFiltered(
+//       //       imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+//       //       child: FlutterLogo(),
+//       //     ),
+//       //     Center(
+//       //       child: FlutterLogo(),
+//       //     )
+//       //   ],
+//       // ),
+//     );
+//   }
+// }
