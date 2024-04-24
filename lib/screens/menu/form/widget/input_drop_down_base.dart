@@ -459,6 +459,7 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
 
   @override
   void initState() {
+    _loadMoreController.isSet = true;
     _initController();
     super.initState();
   }
@@ -519,6 +520,7 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
           ),
           Expanded(
             child: ViewLoadMoreBase(
+              widgetLoad: widgetLoading(),
               noDataWidget: null,
               functionInit: (page, isInit) {
                 return getList(

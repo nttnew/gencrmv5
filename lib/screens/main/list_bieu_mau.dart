@@ -87,7 +87,7 @@ class _ListBieuMauState extends State<ListBieuMau> {
                   ),
                 );
               },
-              widgetLoad: _widgetLoading(),
+              widgetLoad: widgetLoading(),
               controller: _loginBloc.loadMoreControllerBieuMau,
             ),
           ),
@@ -97,24 +97,3 @@ class _ListBieuMauState extends State<ListBieuMau> {
   }
 }
 
-_widgetLoading() {
-  return Container(
-    margin: EdgeInsets.symmetric(
-      horizontal: 16,
-      vertical: 10,
-    ),
-    padding: EdgeInsets.all(
-      10,
-    ),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.all(
-        Radius.circular(
-          4,
-        ),
-      ),
-      color: COLORS.WHITE,
-      boxShadow: boxShadow1,
-    ),
-    child: itemLoading(),
-  );
-}

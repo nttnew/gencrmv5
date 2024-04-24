@@ -291,6 +291,7 @@ class LoadMoreController<T> {
   final ScrollController controller = ScrollController();
   bool isLoadMore = false;
   bool isRefresh = true;
+  bool isSet = false;
   int page = BASE_URL.PAGE_DEFAULT;
   Future<dynamic> Function(int page, bool isInit)? functionInit;
 
@@ -324,6 +325,7 @@ class LoadMoreController<T> {
     functionInit = null;
     controller.removeListener(_loadMore);
     showLoad.add(false);
+    isSet = false;
   }
 
   Future<void> loadData(int page, {bool isInit = true}) async {
@@ -353,7 +355,18 @@ class LoadMoreController<T> {
         if (page == BASE_URL.PAGE_DEFAULT) {
           streamList.add(result);
         } else {
-          streamList.add([...streamList.value ?? [], ...result]);
+          if (isSet) {
+            final resultSet = [];
+            result.map((e) {
+              if (!(streamList.value ?? [])
+                  .map((e) => e[0])
+                  .toList()
+                  .contains(e[0])) resultSet.add(e as List<dynamic>);
+            }).toList();
+            streamList.add([...streamList.value ?? [], ...resultSet]);
+          } else {
+            streamList.add([...streamList.value ?? [], ...result]);
+          }
         }
       }
     }
@@ -397,3 +410,25 @@ itemLoading({bool isMaxWidth = false}) => Shimmer.fromColors(
         ),
       ),
     );
+
+widgetLoading() {
+  return Container(
+    margin: EdgeInsets.symmetric(
+      horizontal: 16,
+      vertical: 10,
+    ),
+    padding: EdgeInsets.all(
+      10,
+    ),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.all(
+        Radius.circular(
+          4,
+        ),
+      ),
+      color: COLORS.WHITE,
+      boxShadow: boxShadow1,
+    ),
+    child: itemLoading(),
+  );
+}
