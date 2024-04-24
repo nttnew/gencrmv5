@@ -37,7 +37,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   }) async* {
     LoadingApi().pushLoading();
     try {
-      if (querySearch != '' && page == BASE_URL.PAGE_DEFAULT)
+      if (querySearch != '' && page == BASE_URL.PAGE_DEFAULT.toString())
         yield LoadingGetListProductState();
       final response = await userRepository.getListProduct(
         page,
@@ -45,18 +45,25 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         group,
       );
       if (isSuccess(response.code)) {
-        if (page == BASE_URL.PAGE_DEFAULT) {
-          data = response.data!.product;
+        if (page == BASE_URL.PAGE_DEFAULT.toString()) {
+          data = response.data?.product ?? [];
           yield SuccessGetListProductState(
-            response.data!.product!,
-            response.data!.units!,
-            response.data!.vats!,
-            response.data!.total!,
+            response.data?.product ?? [],
+            response.data?.units ?? [],
+            response.data?.vats ?? [],
+            response.data?.total ?? 0,
           );
         } else {
-          data = [...data!, ...response.data!.product!];
-          yield SuccessGetListProductState(data!, response.data!.units!,
-              response.data!.vats!, response.data!.total!);
+          data = [
+            ...data ?? [],
+            ...response.data?.product ?? [],
+          ];
+          yield SuccessGetListProductState(
+            data ?? [],
+            response.data?.units ?? [],
+            response.data?.vats ?? [],
+            response.data?.total ?? 0,
+          );
         }
       } else
         yield ErrorGetListProductState(response.msg ?? '');
@@ -73,8 +80,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   }) async {
     LoadingApi().pushLoading();
     try {
-      final response =
-          await userRepository.getServicePack(txt: txt, page: page.toString());
+      final response = await userRepository.getServicePack(
+        txt: txt,
+        page: page.toString(),
+      );
       if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         return response.data ?? [];
