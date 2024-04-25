@@ -271,7 +271,6 @@ class _DetailProductCustomerScreenState
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
           onTap2: () async {
-
             _bloc.add(DeleteProductEvent(_id));
           },
           content: getT(KeyT.are_you_sure_you_want_to_delete),
@@ -293,12 +292,10 @@ class _DetailProductCustomerScreenState
               title: getT(KeyT.notification),
               content: getT(KeyT.delete_success),
               onTap1: () {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  ROUTE_NAMES.PRODUCT_CUSTOMER,
-                  ModalRoute.withName('/'),
-                  arguments: _title,
-                );
+                Get.back();
+                Get.back();
+                Get.back();
+                Get.back(result: true);
               },
             );
           } else if (state is ErrorDeleteProductState) {
@@ -308,6 +305,7 @@ class _DetailProductCustomerScreenState
               content: state.msg,
               textButton1: getT(KeyT.come_back),
               onTap1: () {
+                Get.back();
                 Get.back();
                 Get.back();
                 Get.back();

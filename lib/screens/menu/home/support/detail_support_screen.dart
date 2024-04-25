@@ -206,7 +206,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                                   Get.back();
                                   Get.back();
                                   Get.back();
-                                  Get.back();
+                                  Get.back(result: true);
                                 },
                               );
                             } else if (state is ErrorDeleteSupportState) {

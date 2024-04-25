@@ -16,19 +16,29 @@ class AppNavigator {
       await Get.toNamed(ROUTE_NAMES.LOGIN, arguments: 'login');
 
   static navigateDetailSupport(
-    String id,
+    String id,{Function? onRefreshForm}
   ) async =>
       await Get.toNamed(
         ROUTE_NAMES.DETAIL_SUPPORT,
         arguments: id,
+      )?.then(
+            (v) {
+          if (onRefreshForm != null && v != null) onRefreshForm();
+          return v;
+        },
       );
 
   static navigateDetailWork(
-    int id,
+    int id,{Function? onRefreshForm}
   ) async =>
       await Get.toNamed(
         ROUTE_NAMES.DETAIL_WORK,
         arguments: id,
+      )?.then(
+            (v) {
+          if (onRefreshForm != null && v != null) onRefreshForm();
+          return v;
+        },
       );
 
   static navigateForm({
@@ -111,10 +121,16 @@ class AppNavigator {
 
   static navigateDetailClue(
     String id,
+  {Function? onRefreshForm}
   ) async =>
       await Get.toNamed(
         ROUTE_NAMES.INFO_CLUE,
         arguments: id,
+      )?.then(
+            (v) {
+          if (onRefreshForm != null && v != null) onRefreshForm();
+          return v;
+        },
       );
 
   static navigateAddClue() async => await Get.toNamed(ROUTE_NAMES.ADD_CLUE);
@@ -130,11 +146,16 @@ class AppNavigator {
   static navigateContract() async => await Get.toNamed(ROUTE_NAMES.CONTRACT);
 
   static navigateDetailContract(
-    String id,
+    String id,{Function? onRefreshForm}
   ) async =>
       await Get.toNamed(
         ROUTE_NAMES.INFO_CONTRACT,
         arguments: id,
+      )?.then(
+            (v) {
+          if (onRefreshForm != null && v != null) onRefreshForm();
+          return v;
+        },
       );
 
   static navigateSupport() async => await Get.toNamed(ROUTE_NAMES.SUPPORT);
@@ -146,10 +167,16 @@ class AppNavigator {
 
   static navigateDetailChance(
     String id,
+  {Function? onRefreshForm}
   ) async =>
       await Get.toNamed(
         ROUTE_NAMES.INFO_CHANCE,
         arguments: id,
+      )?.then(
+            (v) {
+          if (onRefreshForm != null && v != null) onRefreshForm();
+          return v;
+        },
       );
 
   static navigateWork() async => await Get.toNamed(

@@ -130,7 +130,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                 Get.back();
                 Get.back();
                 Get.back();
-                Get.back();
+                Get.back(result: true);
                 GetListChanceBloc.of(context).loadMoreController.reloadData();
               },
             );

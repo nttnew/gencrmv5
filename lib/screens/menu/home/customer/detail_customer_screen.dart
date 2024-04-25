@@ -337,6 +337,9 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                             onTap: () {
                               AppNavigator.navigateDetailClue(
                                 data.id ?? '',
+                                onRefreshForm: () {
+                                  _bloc.controllerDM.reloadData();
+                                },
                               );
                             },
                           );
@@ -354,6 +357,9 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                             onTap: () {
                               AppNavigator.navigateDetailChance(
                                 data.id ?? '',
+                                onRefreshForm: () {
+                                  _bloc.controllerCH.reloadData();
+                                },
                               );
                             },
                           );
@@ -372,9 +378,10 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                           return ContractCardWidget(
                             data: data,
                             onTap: () {
-                              AppNavigator.navigateDetailContract(
-                                data.id ?? '',
-                              );
+                              AppNavigator.navigateDetailContract(data.id ?? '',
+                                  onRefreshForm: () {
+                                _bloc.controllerHD.reloadData();
+                              });
                             },
                           );
                         },
@@ -394,8 +401,10 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                             data: item,
                             onTap: () {
                               AppNavigator.navigateDetailWork(
-                                int.tryParse(item.id ?? '') ?? 0,
-                              );
+                                  int.tryParse(item.id ?? '') ?? 0,
+                                  onRefreshForm: () {
+                                _bloc.controllerCV.reloadData();
+                              });
                             },
                           );
                         },
@@ -413,9 +422,10 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                           return SupportCardWidget(
                             data: data,
                             onTap: () {
-                              AppNavigator.navigateDetailSupport(
-                                data.id ?? '',
-                              );
+                              AppNavigator.navigateDetailSupport(data.id ?? '',
+                                  onRefreshForm: () {
+                                _bloc.controllerHT.reloadData();
+                              });
                             },
                           );
                         },

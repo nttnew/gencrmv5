@@ -192,7 +192,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                   Get.back();
                   Get.back();
                   Get.back();
-                  Get.back();
+                  Get.back(result: true);
                   WorkBloc.of(context).loadMoreController.reloadData();
                 },
               );

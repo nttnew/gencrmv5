@@ -35,8 +35,6 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
     super.initState();
   }
 
-
-
   _init() {
     _bloc.add(InitGetDetailProductEvent(_id));
   }
@@ -113,13 +111,11 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
               title: getT(KeyT.notification),
               content: getT(KeyT.delete_success),
               onTap1: () {
+                Get.back();
+                Get.back();
+                Get.back();
+                Get.back(result: true);
                 ProductModuleBloc.of(context).loadMoreController.reloadData();
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  ROUTE_NAMES.PRODUCT,
-                  ModalRoute.withName('/'),
-                  arguments: _title,
-                );
               },
             );
           } else if (state is ErrorDeleteProductState) {
@@ -129,6 +125,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
               content: state.msg,
               textButton1: getT(KeyT.come_back),
               onTap1: () {
+                Get.back();
                 Get.back();
                 Get.back();
                 Get.back();

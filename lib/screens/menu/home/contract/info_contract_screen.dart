@@ -191,7 +191,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                 Get.back();
                 Get.back();
                 Get.back();
-                Get.back();
+                Get.back(result: true);
                 ContractBloc.of(context).loadMoreController.reloadData();
               },
             );

@@ -124,7 +124,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                 Get.back();
                 Get.back();
                 Get.back();
-                Get.back();
+                Get.back(result: true);
                 GetListClueBloc.of(context).loadMoreController.reloadData();
               },
             );
