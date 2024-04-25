@@ -8,34 +8,30 @@ import 'models/model_generator/xe_dich_vu_response.dart';
 class AppNavigator {
   AppNavigator._();
 
-  static navigateBack({bool? reload}) async => Get.back(result:reload);
+  static navigateBack({bool? reload}) async => Get.back(result: reload);
 
   static navigateSplash() async => await Get.toNamed(ROUTE_NAMES.SPLASH);
 
   static navigateLogin() async =>
       await Get.toNamed(ROUTE_NAMES.LOGIN, arguments: 'login');
 
-  static navigateDetailSupport(
-    String id,{Function? onRefreshForm}
-  ) async =>
+  static navigateDetailSupport(String id, {Function? onRefreshForm}) async =>
       await Get.toNamed(
         ROUTE_NAMES.DETAIL_SUPPORT,
         arguments: id,
       )?.then(
-            (v) {
+        (v) {
           if (onRefreshForm != null && v != null) onRefreshForm();
           return v;
         },
       );
 
-  static navigateDetailWork(
-    int id,{Function? onRefreshForm}
-  ) async =>
+  static navigateDetailWork(int id, {Function? onRefreshForm}) async =>
       await Get.toNamed(
         ROUTE_NAMES.DETAIL_WORK,
         arguments: id,
       )?.then(
-            (v) {
+        (v) {
           if (onRefreshForm != null && v != null) onRefreshForm();
           return v;
         },
@@ -119,15 +115,12 @@ class AppNavigator {
 
   static navigateClue() async => await Get.toNamed(ROUTE_NAMES.CLUE);
 
-  static navigateDetailClue(
-    String id,
-  {Function? onRefreshForm}
-  ) async =>
+  static navigateDetailClue(String id, {Function? onRefreshForm}) async =>
       await Get.toNamed(
         ROUTE_NAMES.INFO_CLUE,
         arguments: id,
       )?.then(
-            (v) {
+        (v) {
           if (onRefreshForm != null && v != null) onRefreshForm();
           return v;
         },
@@ -145,24 +138,17 @@ class AppNavigator {
 
   static navigateContract() async => await Get.toNamed(ROUTE_NAMES.CONTRACT);
 
-  static navigateDetailContract(
-    String id,{Function? onRefreshForm}
-  ) async {
-
-   try{
-     await Get.toNamed(
-       ROUTE_NAMES.INFO_CONTRACT,
-       arguments: id,
-     )?.then(
-           (v) {
-         if (onRefreshForm != null && v != null) onRefreshForm();
-         return v;
-       },
-     );
-   }catch(e){
-     print(e);
-   }
-  }
+  static navigateDetailContract(String id, {Function? onRefreshForm}) async =>
+      await Get.toNamed(
+        ROUTE_NAMES.INFO_CONTRACT,
+        arguments: id,
+        preventDuplicates: false,
+      )?.then(
+        (v) {
+          if (onRefreshForm != null && v != null) onRefreshForm();
+          return v;
+        },
+      );
 
   static navigateSupport() async => await Get.toNamed(ROUTE_NAMES.SUPPORT);
 
@@ -171,15 +157,12 @@ class AppNavigator {
   static navigateAddChance(String id) async =>
       await Get.toNamed(ROUTE_NAMES.ADD_CHANCE, arguments: id);
 
-  static navigateDetailChance(
-    String id,
-  {Function? onRefreshForm}
-  ) async =>
+  static navigateDetailChance(String id, {Function? onRefreshForm}) async =>
       await Get.toNamed(
         ROUTE_NAMES.INFO_CHANCE,
         arguments: id,
       )?.then(
-            (v) {
+        (v) {
           if (onRefreshForm != null && v != null) onRefreshForm();
           return v;
         },

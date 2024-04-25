@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../../bloc/report/report_bloc/report_bloc.dart';
 import '../../../../../l10n/key_text.dart';
@@ -67,9 +66,12 @@ class BodyReportFour extends StatelessWidget {
   _buildCustomer(ItemResponseReportCar data) {
     return GestureDetector(
       onTap: () {
-        Get.back();
+        // Get.back();
         AppNavigator.navigateDetailContract(
           data.id ?? '',
+          onRefreshForm: (){
+            bloc.controllerGara.reloadData();
+          }
         );
       },
       child: Container(
