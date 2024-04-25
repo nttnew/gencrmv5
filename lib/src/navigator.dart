@@ -147,16 +147,22 @@ class AppNavigator {
 
   static navigateDetailContract(
     String id,{Function? onRefreshForm}
-  ) async =>
-      await Get.toNamed(
-        ROUTE_NAMES.INFO_CONTRACT,
-        arguments: id,
-      )?.then(
-            (v) {
-          if (onRefreshForm != null && v != null) onRefreshForm();
-          return v;
-        },
-      );
+  ) async {
+
+   try{
+     await Get.toNamed(
+       ROUTE_NAMES.INFO_CONTRACT,
+       arguments: id,
+     )?.then(
+           (v) {
+         if (onRefreshForm != null && v != null) onRefreshForm();
+         return v;
+       },
+     );
+   }catch(e){
+     print(e);
+   }
+  }
 
   static navigateSupport() async => await Get.toNamed(ROUTE_NAMES.SUPPORT);
 

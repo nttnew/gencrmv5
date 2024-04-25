@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/src/models/model_generator/report_contact.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../../bloc/report/report_bloc/report_bloc.dart';
 import '../../../../../l10n/key_text.dart';
@@ -65,8 +66,9 @@ class BodyReportOne extends StatelessWidget {
     );
   }
 
-  _item(DataListContact dataContact) => GestureDetector(
+  Widget _item(DataListContact dataContact) => GestureDetector(
         onTap: () {
+          Get.back();
           AppNavigator.navigateDetailContract(
             dataContact.id ?? '',
           );

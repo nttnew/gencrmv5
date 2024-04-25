@@ -37,6 +37,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
   List<ModuleThaoTac> _list = [];
   late final ListNoteBloc _blocNote;
   late final DetailCustomerBloc _bloc;
+  bool _reload = false;
 
   @override
   void deactivate() {
@@ -200,6 +201,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
           type: EDIT_CUSTOMER,
           id: int.tryParse(_id),
           onRefreshForm: () {
+            _reload = true;
             _bloc.add(InitGetDetailCustomerEvent(int.parse(_id)));
           },
         );
@@ -221,7 +223,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppbarBaseNormal(_title),
+        appBar: AppbarBaseNormal(_title,reload: _reload),
         body: BlocListener<DetailCustomerBloc, DetailCustomerState>(
           bloc: _bloc,
           listener: (context, state) async {

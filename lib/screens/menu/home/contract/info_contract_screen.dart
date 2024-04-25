@@ -36,6 +36,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
   List<ModuleThaoTac> _list = [];
   late final DetailContractBloc _bloc;
   late final ListNoteBloc _blocNote;
+  bool _reload = false;
 
   @override
   void initState() {
@@ -158,6 +159,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
           type: EDIT_CONTRACT,
           id: int.tryParse(_id),
           onRefreshForm: () {
+            _reload = true;
             _bloc.add(InitGetDetailContractEvent(int.parse(_id)));
           },
         );
@@ -212,7 +214,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
         },
         child: Column(
           children: [
-            AppbarBaseNormal(_title),
+            AppbarBaseNormal(_title,reload: _reload),
             AppValue.vSpaceTiny,
             Expanded(
               child: DefaultTabController(
