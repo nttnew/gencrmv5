@@ -10,15 +10,18 @@ class ItemSupport extends StatelessWidget {
   const ItemSupport({
     Key? key,
     required this.data,
+    required this.onRefreshForm,
   }) : super(key: key);
   final SupportItemData data;
+  final Function onRefreshForm;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => AppNavigator.navigateDetailSupport(
-        data.id.toString(),
-      ),
+      onTap: () => AppNavigator.navigateDetailSupport(data.id.toString(),
+          onRefreshForm: () {
+        onRefreshForm();
+      }),
       child: Container(
         margin: EdgeInsets.only(
           left: 16,

@@ -278,8 +278,10 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                                   return GestureDetector(
                                     onTap: () {
                                       AppNavigator.navigateDetailWork(
-                                        int.parse(data.id ?? ''),
-                                      );
+                                          int.parse(data.id ?? ''),
+                                          onRefreshForm: () {
+                                        _bloc.controllerCV.reloadData();
+                                      });
                                     },
                                     child: WorkCardWidget(
                                       color: item.color,
@@ -311,6 +313,9 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                                   final SupportContractData item =
                                       data as SupportContractData;
                                   return ItemSupport(
+                                    onRefreshForm: () {
+                                      _bloc.controllerHT.reloadData();
+                                    },
                                     data: SupportItemData(
                                       item.id,
                                       item.name,

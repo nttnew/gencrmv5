@@ -68,6 +68,7 @@ void onClickGiamGia(
                       GestureDetector(
                         onTap: () {
                           isType = !isType;
+                          controller.text = '';
                           setState(() {});
                         },
                         child: Container(
@@ -80,7 +81,8 @@ void onClickGiamGia(
                           child: WidgetText(
                             textAlign: TextAlign.center,
                             title: isType
-                                ? shareLocal.getString(PreferencesKey.MONEY) ?? ''
+                                ? shareLocal.getString(PreferencesKey.MONEY) ??
+                                    ''
                                 : '%',
                             style: AppStyle.DEFAULT_14,
                           ),
@@ -92,10 +94,11 @@ void onClickGiamGia(
                       GestureDetector(
                         onTap: () {
                           onClick(
-                              isType,
-                              isType
-                                  ? controller.text.replaceAll('.', '')
-                                  : controller.text);
+                            isType,
+                            isType
+                                ? controller.text.replaceAll('.', '')
+                                : controller.text,
+                          );
                         },
                         child: Container(
                           decoration: BoxDecoration(

@@ -178,7 +178,9 @@ class _DetailProductCustomerScreenState
                   item.customer,
                   item.product_customer,
                   null,
-                ),
+                ), onRefreshForm: (){
+                _bloc.controllerHt.reloadData();
+              },
               );
             },
             controller: _bloc.controllerHt,

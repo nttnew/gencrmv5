@@ -228,6 +228,9 @@ class _SupportScreenState extends State<SupportScreen> {
           SupportItemData snap = data;
           return ItemSupport(
             data: snap,
+            onRefreshForm: () {
+              _bloc.loadMoreController.reloadData();
+            },
           );
         },
         controller: _bloc.loadMoreController,
