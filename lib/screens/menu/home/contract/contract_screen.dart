@@ -139,6 +139,9 @@ class _ContractScreenState extends State<ContractScreen> {
         itemWidget: (int index, data) {
           ContractItemData snap = data;
           return ItemContract(
+            onRefreshForm: (){
+              _bloc.loadMoreController.reloadData();
+            },
             data: snap,
           );
         },

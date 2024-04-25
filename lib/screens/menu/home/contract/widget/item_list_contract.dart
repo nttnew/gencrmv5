@@ -7,8 +7,13 @@ import '../../../../../src/src_index.dart';
 import '../../../../../storages/share_local.dart';
 
 class ItemContract extends StatelessWidget {
-  const ItemContract({Key? key, required this.data}) : super(key: key);
+  const ItemContract({
+    Key? key,
+    required this.data,
+    required this.onRefreshForm,
+  }) : super(key: key);
   final ContractItemData data;
+  final Function onRefreshForm;
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +21,9 @@ class ItemContract extends StatelessWidget {
       onTap: () {
         AppNavigator.navigateDetailContract(
           data.id ?? '',
+          onRefreshForm: () {
+            onRefreshForm();
+          },
         );
       },
       child: Container(

@@ -21,7 +21,7 @@ class AppNavigator {
         arguments: id,
       )?.then(
         (v) {
-          if (onRefreshForm != null && v != null) onRefreshForm();
+          if (onRefreshForm != null && v == true) onRefreshForm();
           return v;
         },
       );
@@ -32,7 +32,7 @@ class AppNavigator {
         arguments: id,
       )?.then(
         (v) {
-          if (onRefreshForm != null && v != null) onRefreshForm();
+          if (onRefreshForm != null && v == true) onRefreshForm();
           return v;
         },
       );
@@ -68,7 +68,7 @@ class AppNavigator {
             idPay,
           ])?.then(
         (v) {
-          if (onRefreshForm != null && v != null) onRefreshForm();
+          if (onRefreshForm != null && v == true) onRefreshForm();
           return v;
         },
       );
@@ -121,7 +121,7 @@ class AppNavigator {
         arguments: id,
       )?.then(
         (v) {
-          if (onRefreshForm != null && v != null) onRefreshForm();
+          if (onRefreshForm != null && v == true) onRefreshForm();
           return v;
         },
       );
@@ -145,7 +145,7 @@ class AppNavigator {
         preventDuplicates: false,
       )?.then(
         (v) {
-          if (onRefreshForm != null && v != null) onRefreshForm();
+          if (onRefreshForm != null && v == true) onRefreshForm();
           return v;
         },
       );
@@ -163,7 +163,7 @@ class AppNavigator {
         arguments: id,
       )?.then(
         (v) {
-          if (onRefreshForm != null && v != null) onRefreshForm();
+          if (onRefreshForm != null && v == true) onRefreshForm();
           return v;
         },
       );
@@ -230,7 +230,7 @@ class AppNavigator {
   }) async =>
       await Get.toNamed(ROUTE_NAMES.CHECK_IN, arguments: [id, module, type])
           ?.then((v) {
-        if (onRefreshCheckIn != null && v != null) onRefreshCheckIn();
+        if (onRefreshCheckIn != null && v == true) onRefreshCheckIn();
         return v;
       });
 
@@ -255,7 +255,7 @@ class AppNavigator {
         type,
       ])?.then(
         (v) {
-          if (onRefreshForm != null && v != null) onRefreshForm();
+          if (onRefreshForm != null && v == true) onRefreshForm();
           return v;
         },
       );

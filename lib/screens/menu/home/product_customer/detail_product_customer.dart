@@ -122,6 +122,9 @@ class _DetailProductCustomerScreenState
                   null, //data.total_note,
                   item.conlai,
                 ),
+                onRefreshForm: () {
+                  _bloc.controllerHd.reloadData();
+                },
               );
             },
             controller: _bloc.controllerHd,
@@ -178,9 +181,10 @@ class _DetailProductCustomerScreenState
                   item.customer,
                   item.product_customer,
                   null,
-                ), onRefreshForm: (){
-                _bloc.controllerHt.reloadData();
-              },
+                ),
+                onRefreshForm: () {
+                  _bloc.controllerHt.reloadData();
+                },
               );
             },
             controller: _bloc.controllerHt,
