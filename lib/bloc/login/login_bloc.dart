@@ -593,7 +593,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         idBieuMau: idBieuMau,
       );
       if (isSuccess(response.code)) {
-        res['html'] = response.data?.link ?? '';
+        res['html'] = response.data?.html ?? '';
         res['mes'] = '';
       } else if (isFail(response.code)) {
         res['mes'] = response.msg ?? '';

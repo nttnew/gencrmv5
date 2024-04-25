@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../l10n/key_text.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
 import '../../../../src/src_index.dart';
 
@@ -8,9 +10,13 @@ class FieldText extends StatefulWidget {
     Key? key,
     required this.data,
     required this.onChange,
+    this.init,
+    this.soTien,
   }) : super(key: key);
   final CustomerIndividualItemData data;
   final Function(String) onChange;
+  final String? init;
+  final double? soTien;
 
   @override
   State<FieldText> createState() => _FieldTextState();
@@ -29,15 +35,17 @@ class _FieldTextState extends State<FieldText> {
               ? _textEditingController.text.replaceAll('.', '')
               : _textEditingController.text);
     });
-    if (widget.data.field_set_value != null &&
-        widget.data.field_set_value != '')
-      _textEditingController.text =
-          data.field_type == 'MONEY' || data.field_type == 'TEXT_NUMERIC'
-              ? AppValue.format_money(
+    if ((widget.data.field_set_value != null &&
+            widget.data.field_set_value != '') ||
+        widget.init != null)
+      _textEditingController.text = data.field_type == 'MONEY' ||
+              data.field_type == 'TEXT_NUMERIC'
+          ? AppValue.format_money(
+              widget.init ??
                   '${widget.data.field_set_value ?? ''}'.replaceAll('.', ''),
-                  isD: false,
-                )
-              : '${widget.data.field_set_value ?? ''}';
+              isD: false,
+            )
+          : widget.init ?? '${widget.data.field_set_value ?? ''}';
     super.initState();
   }
 
@@ -130,6 +138,32 @@ class _FieldTextState extends State<FieldText> {
               ),
             ),
           ),
+          if (data.field_name == hdSoTien && widget.soTien != null) ...[
+            SizedBox(
+              height: 8,
+            ),
+            RichText(
+              textScaleFactor: MediaQuery.of(context).textScaleFactor,
+              text: TextSpan(
+                text: '${getT(KeyT.unpaid)}:',
+                style: AppStyle.DEFAULT_14W600,
+                children: <TextSpan>[
+                  TextSpan(
+                    text:
+                        ' ${AppValue.format_money(widget.soTien?.toStringAsFixed(
+                              0,
+                            ) ?? '')}',
+                    style: TextStyle(
+                      fontFamily: 'Quicksand',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: COLORS.TEXT_COLOR,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ]
         ],
       ),
     );

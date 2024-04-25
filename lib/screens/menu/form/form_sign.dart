@@ -6,6 +6,7 @@ import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
+import 'package:gen_crm/screens/menu/form/widget/field_text.dart';
 import 'package:gen_crm/screens/menu/form/widget/location_select.dart';
 import 'package:gen_crm/screens/menu/form/widget/render_check_box.dart';
 import 'package:gen_crm/screens/menu/home/customer/widget/input_dropDown.dart';
@@ -39,7 +40,7 @@ class _FormAddSignState extends State<FormAddSign> {
   String type = Get.arguments[2] ?? '';
   List<ChuKyModelResponse> chuKyModelResponse = [];
   List data = [];
-  List<ModelItemAdd> addData = [];
+  List<ModelItemAdd> _addData = [];
   late final ScrollController scrollController;
   late final BehaviorSubject<bool> isMaxScroll;
   static const String HD_YEU_CAU_XUAT = 'hd_yeu_cau_xuat';
@@ -134,7 +135,7 @@ class _FormAddSignState extends State<FormAddSign> {
                   bloc: _bloc,
                   builder: (context, state) {
                     if (state is LoadingForm) {
-                      addData = [];
+                      _addData = [];
                       data = [];
                       return SizedBox.shrink();
                     } else if (state is ErrorForm) {
@@ -144,15 +145,15 @@ class _FormAddSignState extends State<FormAddSign> {
                       );
                     } else if (state is SuccessForm) {
                       soTien = state.soTien ?? 0;
-                      if (addData.isEmpty) {
+                      if (_addData.isEmpty) {
                         for (int i = 0; i < state.listAddData.length; i++) {
-                          addData.add(ModelItemAdd(
+                          _addData.add(ModelItemAdd(
                               group_name: state.listAddData[i].group_name ?? '',
                               data: []));
                           for (int j = 0;
                               j < (state.listAddData[i].data?.length ?? 0);
                               j++) {
-                            addData[i].data.add(ModelDataAdd(
+                            _addData[i].data.add(ModelDataAdd(
                                   parent: state.listAddData[i].data?[j].parent,
                                   label:
                                       state.listAddData[i].data?[j].field_name,
@@ -249,7 +250,7 @@ class _FormAddSignState extends State<FormAddSign> {
                               ? LocationWidget(
                                   data: data,
                                   onSuccess: (data) {
-                                    addData[indexParent]
+                                    _addData[indexParent]
                                         .data[indexChild]
                                         .value = data;
                                   },
@@ -259,7 +260,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                   dropdownItemList: data.field_datasource ?? [],
                                   data: data,
                                   onChange: (data) {
-                                    addData[indexParent]
+                                    _addData[indexParent]
                                         .data[indexChild]
                                         .value = data;
                                   },
@@ -277,13 +278,13 @@ class _FormAddSignState extends State<FormAddSign> {
                                   label: data.field_label ?? '',
                                   required: data.field_require ?? 0,
                                   maxLength: data.field_maxlength ?? '',
-                                  initValue: addData[indexParent]
+                                  initValue: _addData[indexParent]
                                       .data[indexChild]
                                       .value
                                       .toString()
                                       .split(','),
                                   onChange: (data) {
-                                    addData[indexParent]
+                                    _addData[indexParent]
                                         .data[indexChild]
                                         .value = data;
                                   },
@@ -294,7 +295,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                       ? InputMultipleWidget(
                                           data: data,
                                           onSelect: (data) {
-                                            addData[indexParent]
+                                            _addData[indexParent]
                                                 .data[indexChild]
                                                 .value = data.join(',');
                                           },
@@ -304,12 +305,12 @@ class _FormAddSignState extends State<FormAddSign> {
                                               data: data,
                                               dateText: data.field_set_value,
                                               onSelect: (int date) {
-                                                addData[indexParent]
+                                                _addData[indexParent]
                                                     .data[indexChild]
                                                     .value = date;
                                               },
                                               onInit: (v) {
-                                                addData[indexParent]
+                                                _addData[indexParent]
                                                     .data[indexChild]
                                                     .value = v;
                                               },
@@ -321,12 +322,12 @@ class _FormAddSignState extends State<FormAddSign> {
                                                   dateText:
                                                       data.field_set_value,
                                                   onSelect: (int date) {
-                                                    addData[indexParent]
+                                                    _addData[indexParent]
                                                         .data[indexChild]
                                                         .value = date;
                                                   },
                                                   onInit: (v) {
-                                                    addData[indexParent]
+                                                    _addData[indexParent]
                                                         .data[indexChild]
                                                         .value = v;
                                                   },
@@ -337,7 +338,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                                               .toString() ==
                                                           '1',
                                                       onChange: (check) {
-                                                        addData[indexParent]
+                                                        _addData[indexParent]
                                                                 .data[indexChild]
                                                                 .value =
                                                             check ? 1 : 0;
@@ -349,7 +350,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                                       ? FieldInputPercent(
                                                           data: data,
                                                           onChanged: (text) {
-                                                            addData[indexParent]
+                                                            _addData[indexParent]
                                                                 .data[
                                                                     indexChild]
                                                                 .value = text;
@@ -375,7 +376,8 @@ class _FormAddSignState extends State<FormAddSign> {
                                                                       check;
                                                                 }
                                                                 setState(() {});
-                                                                addData[indexParent]
+                                                                _addData[
+                                                                        indexParent]
                                                                     .data[
                                                                         indexChild]
                                                                     .value = check;
@@ -402,20 +404,32 @@ class _FormAddSignState extends State<FormAddSign> {
                                                                       data,
                                                                       indexParent,
                                                                       indexChild,
-                                                                      noEdit: data.field_name == 'kh_danh_gia_nd'
+                                                                      noEdit: data.field_name ==
+                                                                              'kh_danh_gia_nd'
                                                                           ? (((data.field_set_value ?? '') != '') ||
                                                                               editStar)
                                                                           : false,
                                                                       value:
                                                                           data.field_set_value ??
                                                                               '')
-                                                                  : _fieldInputCustomer(
-                                                                      data,
-                                                                      indexParent,
-                                                                      indexChild,
-                                                                      value: data.field_name == 'hd_sotien'
-                                                                          ? soTien.toInt().toString()
-                                                                          : '')
+                                                                  : FieldText(
+                                                                      data:
+                                                                          data,
+                                                                      onChange:
+                                                                          (v) {
+                                                                        _addData[indexParent]
+                                                                            .data[indexChild]
+                                                                            .value = v;
+                                                                      },
+                                                                      init: data.field_name ==
+                                                                              hdSoTien
+                                                                          ? soTien
+                                                                              .toInt()
+                                                                              .toString()
+                                                                          : '',
+                                                                      soTien:
+                                                                          soTien,
+                                                                    )
                   : SizedBox()
               : SizedBox();
         });
@@ -567,13 +581,17 @@ class _FormAddSignState extends State<FormAddSign> {
   }
 
   Widget _fieldInputCustomer(
-      CustomerIndividualItemData data, int indexParent, int indexChild,
-      {bool noEdit = false, String value = ''}) {
-    if (data.field_name == 'hd_sotien' &&
-            addData[indexParent].data[indexChild].value == null ||
-        addData[indexParent].data[indexChild].value == '' ||
-        addData[indexParent].data[indexChild].value == 'null') {
-      addData[indexParent].data[indexChild].value = value;
+    CustomerIndividualItemData data,
+    int indexParent,
+    int indexChild, {
+    bool noEdit = false,
+    String value = '',
+  }) {
+    if (data.field_name == hdSoTien &&
+            _addData[indexParent].data[indexChild].value == null ||
+        _addData[indexParent].data[indexChild].value == '' ||
+        _addData[indexParent].data[indexChild].value == 'null') {
+      _addData[indexParent].data[indexChild].value = value;
     }
     return Container(
       margin: EdgeInsets.only(bottom: 16),
@@ -625,7 +643,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                   ? TextInputType.emailAddress
                                   : TextInputType.text,
                   onChanged: (text) {
-                    addData[indexParent].data[indexChild].value = text;
+                    _addData[indexParent].data[indexChild].value = text;
                   },
                   readOnly: noEdit,
                   initialValue: value != ''
@@ -646,7 +664,7 @@ class _FormAddSignState extends State<FormAddSign> {
               ),
             ),
           ),
-          if (data.field_name == 'hd_sotien') ...[
+          if (data.field_name == hdSoTien) ...[
             SizedBox(
               height: 8,
             ),
@@ -706,7 +724,7 @@ class _FormAddSignState extends State<FormAddSign> {
                                   ? TextInputType.emailAddress
                                   : TextInputType.text,
                   onChanged: (text) {
-                    addData[indexParent].data[indexChild].value = text;
+                    _addData[indexParent].data[indexChild].value = text;
                   },
                   readOnly: noEdit,
                   initialValue: value != ''
@@ -740,7 +758,7 @@ class _FormAddSignState extends State<FormAddSign> {
     if (starStream.value == -1 || noEdit) {
       editStar = noEdit;
       starStream.add(value);
-      addData[indexParent].data[indexChild].value = starStream.value;
+      _addData[indexParent].data[indexChild].value = starStream.value;
     }
     return Container(
       margin: EdgeInsets.only(bottom: 16),
@@ -786,7 +804,7 @@ class _FormAddSignState extends State<FormAddSign> {
                         onTap: () {
                           if (!noEdit) {
                             starStream.add(index + 1);
-                            addData[indexParent].data[indexChild].value =
+                            _addData[indexParent].data[indexChild].value =
                                 index + 1;
                           }
                         },
@@ -821,27 +839,27 @@ class _FormAddSignState extends State<FormAddSign> {
   void onClickSave() {
     final Map<String, dynamic> data = {};
     bool check = false;
-    for (int i = 0; i < addData.length; i++) {
-      for (int j = 0; j < addData[i].data.length; j++) {
-        if ((addData[i].data[j].value == null ||
-                addData[i].data[j].value == 'null' ||
-                addData[i].data[j].value == '') &&
-            addData[i].data[j].required == 1) {
+    for (int i = 0; i < _addData.length; i++) {
+      for (int j = 0; j < _addData[i].data.length; j++) {
+        if ((_addData[i].data[j].value == null ||
+                _addData[i].data[j].value == 'null' ||
+                _addData[i].data[j].value == '') &&
+            _addData[i].data[j].required == 1) {
           check = true;
           break;
-        } else if (addData[i].data[j].value != null &&
-            addData[i].data[j].value != 'null') {
-          if (_checkHide(addData[i].data[j].parent)) {
-            data['${addData[i].data[j].label}'] = addData[i].data[j].value;
+        } else if (_addData[i].data[j].value != null &&
+            _addData[i].data[j].value != 'null') {
+          if (_checkHide(_addData[i].data[j].parent)) {
+            data['${_addData[i].data[j].label}'] = _addData[i].data[j].value;
           }
         } else {
-          data['${addData[i].data[j].label}'] = '';
+          data['${_addData[i].data[j].label}'] = '';
         }
       }
     }
     final isCheckMoney = double.parse(
-            data['hd_so_tien'] != '' && data['hd_so_tien'] != null
-                ? data['hd_so_tien']
+            data[hdSoTien] != '' && data[hdSoTien] != null
+                ? data[hdSoTien]
                 : '0') >
         soTien;
     if (isCheckMoney) {
