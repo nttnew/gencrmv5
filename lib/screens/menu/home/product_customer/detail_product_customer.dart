@@ -4,6 +4,7 @@ import 'package:gen_crm/bloc/detail_product_customer/detail_product_customer_blo
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../../src/src_index.dart';
+import '../../../../bloc/product_customer_module/product_customer_module_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/contract.dart';
@@ -296,6 +297,7 @@ class _DetailProductCustomerScreenState
                 Get.back();
                 Get.back();
                 Get.back(result: true);
+                ProductCustomerModuleBloc.of(context).loadMoreController.reloadData();
               },
             );
           } else if (state is ErrorDeleteProductState) {

@@ -334,33 +334,36 @@ class _CheckInScreenState extends State<CheckInScreen> {
                       ],
                     ),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          if (controllerNote.text.trim() == '') {
-                            ShowDialogCustom.showDialogBase(
-                              title: getT(KeyT.notification),
-                              content:
-                                  getT(KeyT.please_enter_all_required_fields),
-                            );
-                          } else {
-                            _blocCheckIn.add(
-                              SaveCheckIn(
-                                '${position?.longitude ?? ''}',
-                                '${position?.latitude ?? ''}',
-                                controllerNote.text,
-                                id,
-                                module,
-                                type,
-                              ),
-                            );
-                          }
-                        },
-                        child: widgetSave(),
-                      ),
-                    ],
+                  SizedBox(
+                    height: 40,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            if (controllerNote.text.trim() == '') {
+                              ShowDialogCustom.showDialogBase(
+                                title: getT(KeyT.notification),
+                                content:
+                                    getT(KeyT.please_enter_all_required_fields),
+                              );
+                            } else {
+                              _blocCheckIn.add(
+                                SaveCheckIn(
+                                  '${position?.longitude ?? ''}',
+                                  '${position?.latitude ?? ''}',
+                                  controllerNote.text,
+                                  id,
+                                  module,
+                                  type,
+                                ),
+                              );
+                            }
+                          },
+                          child: widgetSave(),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               );
