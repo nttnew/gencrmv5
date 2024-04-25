@@ -15,7 +15,7 @@ part 'product_event.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final UserRepository userRepository;
-  List<ProductItem>? data;
+  // List<ProductItem>? data;
   List<DataServicePark>? dataServicePack;
   List<String> listId = [];
   LoadMoreController loadMoreController = LoadMoreController();
@@ -45,26 +45,33 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         group,
       );
       if (isSuccess(response.code)) {
-        if (page == BASE_URL.PAGE_DEFAULT.toString()) {
-          data = response.data?.product ?? [];
-          yield SuccessGetListProductState(
-            response.data?.product ?? [],
-            response.data?.units ?? [],
-            response.data?.vats ?? [],
-            response.data?.total ?? 0,
-          );
-        } else {
-          data = [
-            ...data ?? [],
-            ...response.data?.product ?? [],
-          ];
-          yield SuccessGetListProductState(
-            data ?? [],
-            response.data?.units ?? [],
-            response.data?.vats ?? [],
-            response.data?.total ?? 0,
-          );
-        }
+        yield SuccessGetListProductState(
+          response.data?.product ?? [],
+          response.data?.units ?? [],
+          response.data?.vats ?? [],
+          response.data?.total ?? 0,
+        );
+        // if (page == BASE_URL.PAGE_DEFAULT.toString()) {
+        //   data = [];
+        //   data = response.data?.product ?? [];
+        //   yield SuccessGetListProductState(
+        //     response.data?.product ?? [],
+        //     response.data?.units ?? [],
+        //     response.data?.vats ?? [],
+        //     response.data?.total ?? 0,
+        //   );
+        // } else {
+        //   data = [
+        //     ...data ?? [],
+        //     ...response.data?.product ?? [],
+        //   ];
+        //   yield SuccessGetListProductState(
+        //     data ?? [],
+        //     response.data?.units ?? [],
+        //     response.data?.vats ?? [],
+        //     response.data?.total ?? 0,
+        //   );
+        // }
       } else
         yield ErrorGetListProductState(response.msg ?? '');
     } catch (e) {

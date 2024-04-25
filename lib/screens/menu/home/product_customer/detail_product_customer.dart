@@ -36,6 +36,7 @@ class DetailProductCustomerScreen extends StatefulWidget {
 class _DetailProductCustomerScreenState
     extends State<DetailProductCustomerScreen>
     with SingleTickerProviderStateMixin {
+  bool _reload = false;
   String _title = '';
   String _id = Get.arguments ?? '';
   late TabController _tabController;
@@ -260,6 +261,7 @@ class _DetailProductCustomerScreenState
           type: PRODUCT_CUSTOMER_TYPE_EDIT,
           id: int.tryParse(_id),
           onRefreshForm: () {
+            _reload = true;
             _bloc.add(InitGetDetailProductCustomerEvent(_id));
           },
         );
@@ -283,7 +285,10 @@ class _DetailProductCustomerScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarBaseNormal(_title),
+      appBar: AppbarBaseNormal(
+        _title,
+        reload: _reload,
+      ),
       body: BlocListener<DetailProductCustomerBloc, DetailProductCustomerState>(
         bloc: _bloc,
         listener: (context, state) async {
@@ -297,7 +302,9 @@ class _DetailProductCustomerScreenState
                 Get.back();
                 Get.back();
                 Get.back(result: true);
-                ProductCustomerModuleBloc.of(context).loadMoreController.reloadData();
+                ProductCustomerModuleBloc.of(context)
+                    .loadMoreController
+                    .reloadData();
               },
             );
           } else if (state is ErrorDeleteProductState) {

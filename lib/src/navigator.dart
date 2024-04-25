@@ -8,7 +8,7 @@ import 'models/model_generator/xe_dich_vu_response.dart';
 class AppNavigator {
   AppNavigator._();
 
-  static navigateBack() async => Get.back();
+  static navigateBack({bool? reload}) async => Get.back(result:reload);
 
   static navigateSplash() async => await Get.toNamed(ROUTE_NAMES.SPLASH);
 

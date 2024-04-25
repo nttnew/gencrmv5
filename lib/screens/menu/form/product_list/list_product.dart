@@ -22,7 +22,7 @@ class ListProduct extends StatefulWidget {
 
 class _ListProductState extends State<ListProduct> {
   ScrollController _scrollController = ScrollController();
-  int page = 1;
+  int page = BASE_URL.PAGE_DEFAULT;
   int total = 0;
   int length = 0;
   TextEditingController _editingController = TextEditingController();
@@ -219,7 +219,10 @@ class _ListProductState extends State<ListProduct> {
   }
 
   void _onClickSearch() {
-    _bloc.add(
-        InitGetListProductEvent('1', _editingController.text, group: group));
+    _bloc.add(InitGetListProductEvent(
+      BASE_URL.PAGE_DEFAULT.toString(),
+      _editingController.text,
+      group: group,
+    ));
   }
 }

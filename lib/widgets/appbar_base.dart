@@ -9,6 +9,7 @@ PreferredSizeWidget AppbarBaseNormal(
   String? title, {
   Function? onBack,
   double? h,
+  bool? reload,
 }) =>
     AppBar(
       toolbarHeight: h ?? AppValue.heightsAppBar,
@@ -31,7 +32,7 @@ PreferredSizeWidget AppbarBaseNormal(
           if (onBack != null) {
             onBack();
           } else {
-            AppNavigator.navigateBack();
+            AppNavigator.navigateBack(reload: reload);
           }
         },
         icon: Image.asset(
@@ -99,9 +100,4 @@ PreferredSizeWidget AppbarBase(
         ),
       ),
       leadingWidth: 48,
-      // shape: RoundedRectangleBorder(
-      //   borderRadius: BorderRadius.vertical(
-      //     bottom: Radius.circular(15),
-      //   ),
-      // ),
     );

@@ -87,9 +87,9 @@ class _InputDropdownState extends State<InputDropdownBase> {
             res.forEach((element) {
               if (fieldSetValueDatasource.first.length > 0) {
                 if (element.first == fieldSetValueDatasource.first.first) {
-                  _selectStream.add(res.first);
+                  _selectStream.add(element);
                   _onChangeMain(
-                      res.first.first, _resultIndexTwoForList(res.first));
+                      res.first.first, _resultIndexTwoForList(element));
                 }
               }
             });
