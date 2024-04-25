@@ -1,83 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:gen_crm/l10n/key_text.dart';
-import 'package:get/get.dart';
-import 'package:printing/printing.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-
-import '../../src/app_const.dart';
-import '../../src/color.dart';
-
-/// Represents InPhieuScreen for Navigation
-class InPhieuScreen extends StatefulWidget {
-  @override
-  _InPhieuScreen createState() => _InPhieuScreen();
-}
-
-class _InPhieuScreen extends State<InPhieuScreen> {
-  final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
-  final String link = Get.arguments[0];
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor:
-            isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.PRIMARY_COLOR,
-        title: Text(
-          getT(
-            KeyT.in_phieu,
-          ),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.bookmark,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              _pdfViewerKey.currentState?.openBookmarkView();
-            },
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor:
-            isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.PRIMARY_COLOR,
-        child: const Icon(
-          Icons.print,
-          color: Colors.white,
-        ),
-        onPressed: () async {
-          String pdfUrl = link;
-
-          await Printing.layoutPdf(
-            onLayout: (_) async {
-              // Tải dữ liệu của tệp PDF từ đường dẫn trên mạng
-              final pdfData =
-                  await NetworkAssetBundle(Uri.parse(pdfUrl)).load(pdfUrl);
-
-              // Trả về dữ liệu PDF để in
-              return pdfData.buffer.asUint8List();
-            },
-          );
-        },
-      ),
-      body: SfPdfViewer.network(
-        link,
-        key: _pdfViewerKey,
-      ),
-    );
-  }
-}
-//
 // import 'dart:async';
 // import 'dart:io';
-//
 // import 'package:flutter/foundation.dart';
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
@@ -86,11 +8,7 @@ class _InPhieuScreen extends State<InPhieuScreen> {
 // import 'package:pdf/pdf.dart';
 // import 'package:pdf/widgets.dart' as pw;
 // import 'package:printing/printing.dart';
-// import 'package:url_launcher/url_launcher.dart' as ul;
-//
-// import 'data.dart';
-// import 'examples.dart';
-// import 'examples/document.dart';
+// import 'document.dart';
 //
 // class InPhieuScreen extends StatefulWidget {
 //   const InPhieuScreen({Key? key}) : super(key: key);
@@ -107,8 +25,6 @@ class _InPhieuScreen extends State<InPhieuScreen> {
 //   TabController? _tabController;
 //   final String dataHTML = Get.arguments[0];
 //   PrintingInfo? printingInfo;
-//
-//   // var _data = const CustomData();
 //   var _hasData = false;
 //   var _pending = false;
 //
@@ -248,91 +164,96 @@ class _InPhieuScreen extends State<InPhieuScreen> {
 //   }
 // }
 //
-// import 'dart:io';
-// import 'package:pdf/pdf.dart';
-// import 'package:pdf/widgets.dart' as pw;
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:printing/printing.dart';
-// import 'package:html/parser.dart';
+// typedef LayoutCallbackWithData = Future<Uint8List> Function(
+//   PdfPageFormat pageFormat,
+//   String data,
+// );
 //
-// class InPhieuScreen extends StatefulWidget {
-//   const InPhieuScreen({Key? key}) : super(key: key);
+// class Example {
+//   const Example(this.name, this.file, this.builder, [this.needsData = false]);
 //
-//   @override
-//   State<InPhieuScreen> createState() => _PrintScreenState();
+//   final String name;
+//
+//   final String file;
+//
+//   final LayoutCallbackWithData builder;
+//
+//   final bool needsData;
 // }
-//
-// class _PrintScreenState extends State<InPhieuScreen> {
-//   final pdf = pw.Document();
-//
-//   String body = '''
-//   <h1>Hà Ngọc lực</h1>
-//    <h2>Hà Ngọc lực</h2>
-//   ''';
-//
-//   String _parseHtmlString(String htmlString) {
-//     final document = parse(htmlString);
-//     final String? parsedString =
-//         parse(document.body?.text).documentElement?.text;
-//
-//     return parsedString ?? '';
-//   }
-//
-//   Future<Uint8List> generaxtePdf(PdfPageFormat format, String title) async {
-//     final pdf = pw.Document(
-//         // version: PdfVersion.pdf_1_5, compress: true
-//     );
-//     final font = await PdfGoogleFonts.nunitoExtraLight();
-//
-//     // Chuyển đổi widget Flutter thành widget PDF
-//     pdf.addPage(pw.Page(
-//         pageFormat: format,
-//         build: (context) {
-//           return pw.Column(children: [
-//             pw.SizedBox(
-//                 width: double.infinity,
-//                 child: pw.FittedBox(
-//                   child: pw.Text(_parseHtmlString(title),
-//                       style: pw.TextStyle(font: font)),
-//                 )),
-//             // pw.SizedBox(height: 20),
-//             // pw.Flexible(child: pw.FlutterLogo())
-//           ]);
-//         },
-//         orientation: pw.PageOrientation.landscape));
-//     // pdf.addPage(
-//     //   pw.Page(
-//     //     build: (pw.Context context) => pw.Center(
-//     //       child: pw.Html(
-//     //         data: body,
-//     //       ),
-//     //     ),
-//     //   ),
-//     // );
-//     return pdf.save();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: PdfPreview(
-//         build: (format) {
-//           return generaxtePdf(format, body);
-//         },
-//       ),
-//       // home: Stack(
-//       //   fit: StackFit.expand,
-//       //   children: [
-//       //     ImageFiltered(
-//       //       imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-//       //       child: FlutterLogo(),
-//       //     ),
-//       //     Center(
-//       //       child: FlutterLogo(),
-//       //     )
-//       //   ],
-//       // ),
-//     );
-//   }
-// }
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:gen_crm/l10n/key_text.dart';
+import 'package:get/get.dart';
+import 'package:printing/printing.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
+import '../../src/app_const.dart';
+import '../../src/color.dart';
+
+/// Represents InPhieuScreen for Navigation
+class InPhieuScreen extends StatefulWidget {
+  @override
+  _InPhieuScreen createState() => _InPhieuScreen();
+}
+
+class _InPhieuScreen extends State<InPhieuScreen> {
+  final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
+  final String link = Get.arguments[0];
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor:
+            isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.PRIMARY_COLOR,
+        title: Text(
+          getT(
+            KeyT.in_phieu,
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.bookmark,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              _pdfViewerKey.currentState?.openBookmarkView();
+            },
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor:
+            isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.PRIMARY_COLOR,
+        child: const Icon(
+          Icons.print,
+          color: Colors.white,
+        ),
+        onPressed: () async {
+          String pdfUrl = link;
+
+          await Printing.layoutPdf(
+            onLayout: (_) async {
+              // Tải dữ liệu của tệp PDF từ đường dẫn trên mạng
+              final pdfData =
+                  await NetworkAssetBundle(Uri.parse(pdfUrl)).load(pdfUrl);
+
+              // Trả về dữ liệu PDF để in
+              return pdfData.buffer.asUint8List();
+            },
+          );
+        },
+      ),
+      body: SfPdfViewer.network(
+        link,
+        key: _pdfViewerKey,
+      ),
+    );
+  }
+}
