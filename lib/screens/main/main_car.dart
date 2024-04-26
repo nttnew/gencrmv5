@@ -40,7 +40,7 @@ class _MainCarState extends State<MainCar> {
       child: ViewLoadMoreBase(
         isShowAll: _blocLogin.isShowLocaiton,
         isDispose: false,
-        heightAppBar: w + 104 - MediaQuery.of(context).padding.top,
+        heightAppBar: w + 114 - MediaQuery.of(context).padding.top,
         child: Container(
           child: SingleChildScrollView(
             padding: EdgeInsets.zero,
@@ -78,46 +78,50 @@ class _MainCarState extends State<MainCar> {
                                 child: Container(
                                   height: w,
                                   width: wSz,
-                                  child: ListView.builder(
-                                    padding: EdgeInsets.only(
-                                      left: 16,
-                                    ),
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: widget.listMenu.length,
-                                    itemBuilder: (context, i) {
-                                      final item = widget.listMenu[i];
-                                      return GestureDetector(
-                                        onTap: () => item.onTap(),
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          width: w,
-                                          height: w,
-                                          margin: EdgeInsets.only(
-                                            top: 16,
-                                            right: 16,
-                                            bottom: 10,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: COLORS.PRIMARY_COLOR1,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(
-                                                10,
+                                  child: Scrollbar(
+                                    thumbVisibility: true,
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.only(
+                                        left: 16,
+                                      ),
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: widget.listMenu.length,
+                                      itemBuilder: (context, i) {
+                                        final item = widget.listMenu[i];
+                                        return GestureDetector(
+                                          onTap: () => item.onTap(),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            width: w,
+                                            height: w,
+                                            margin: EdgeInsets.only(
+                                              top: 16,
+                                              right: 16,
+                                              bottom: 10,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: COLORS.PRIMARY_COLOR1,
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(
+                                                  10,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          child: Text(
-                                            item.title,
-                                            style: AppStyle.DEFAULT_14.copyWith(
-                                              color: COLORS.WHITE,
+                                            child: Text(
+                                              item.title,
+                                              style:
+                                                  AppStyle.DEFAULT_14.copyWith(
+                                                color: COLORS.WHITE,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.center,
+                                              maxLines: 3,
                                             ),
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.center,
-                                            maxLines: 3,
                                           ),
-                                        ),
-                                      );
-                                    },
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),

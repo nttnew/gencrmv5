@@ -4,14 +4,16 @@ import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/bloc/detail_customer/detail_customer_bloc.dart';
 import 'package:gen_crm/screens/menu/home/customer/widget/item/chance_card_widget.dart';
 import 'package:gen_crm/screens/menu/home/customer/widget/item/clue_card_widget.dart';
-import 'package:gen_crm/screens/menu/home/customer/widget/item/contract_card_widget.dart';
 import 'package:gen_crm/screens/menu/home/customer/widget/item/general_infor_customer.dart';
 import 'package:gen_crm/screens/menu/home/customer/widget/item/work_card_widget.dart';
+import 'package:gen_crm/src/models/model_generator/contract.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
+import '../../../../src/models/model_generator/contract_customer.dart';
+import '../../../../src/models/model_generator/customer_clue.dart';
 import '../../../../src/models/model_generator/job_customer.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
@@ -21,6 +23,8 @@ import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
 import 'package:gen_crm/screens/menu/home/support/widget/support_card_widget.dart';
+
+import '../contract/widget/item_list_contract.dart';
 
 class DetailCustomerScreen extends StatefulWidget {
   const DetailCustomerScreen({Key? key}) : super(key: key);
@@ -223,7 +227,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppbarBaseNormal(_title,reload: _reload),
+        appBar: AppbarBaseNormal(_title, reload: _reload),
         body: BlocListener<DetailCustomerBloc, DetailCustomerState>(
           bloc: _bloc,
           listener: (context, state) async {
@@ -377,14 +381,28 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                           );
                         },
                         itemWidget: (int index, data) {
-                          return ContractCardWidget(
-                            data: data,
-                            onTap: () {
-                              AppNavigator.navigateDetailContract(data.id ?? '',
-                                  onRefreshForm: () {
-                                _bloc.controllerHD.reloadData();
-                              });
+                          ContractCustomerData snap = data;
+                          return ItemContract(
+                            onRefreshForm: () {
+                              _bloc.controllerHD.reloadData();
                             },
+                            data: ContractItemData(
+                              snap.id,
+                              snap.name,
+                              snap.total_value,
+                              snap.status,
+                              null,
+                              snap.color,
+                              null,
+                              Customer(
+                                null,
+                                snap.customer_name,
+                                null,
+                              ),
+                              snap.product_customer,
+                              snap.total_note,
+                              null,
+                            ),
                           );
                         },
                         controller: _bloc.controllerHD,

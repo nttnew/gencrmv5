@@ -5,6 +5,8 @@ import '../../../../../src/app_const.dart';
 import '../../../../../src/models/model_generator/contract.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../storages/share_local.dart';
+import '../../../../../widgets/line_horizontal_widget.dart';
+import '../../../../../widgets/widget_text.dart';
 
 class ItemContract extends StatelessWidget {
   const ItemContract({
@@ -50,43 +52,96 @@ class ItemContract extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            itemTextIconStart(
-              title: data.name ?? getT(KeyT.not_yet),
-              icon: ICONS.IC_CONTRACT_3X_PNG,
-              color: data.status_color,
-              isSVG: false,
+            Row(
+              children: [
+                SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: Image.asset(
+                    ICONS.IC_CONTRACT_3X_PNG,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Expanded(
+                  child: WidgetText(
+                    title: data.name ?? getT(KeyT.not_yet),
+                    style: AppStyle.DEFAULT_18.copyWith(
+                      color: COLORS.ff006CB1,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
+                  decoration: BoxDecoration(
+                    color: data.status_color != ''
+                        ? HexColor(data.status_color!)
+                        : COLORS.RED,
+                    borderRadius: BorderRadius.circular(
+                      5,
+                    ),
+                  ),
+                  child: Center(
+                    child: WidgetText(
+                      title: data.status ?? getT(KeyT.not_yet),
+                      style: AppStyle.DEFAULT_14.copyWith(
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             itemTextIcon(
-              text: data.customer?.name?.trim() ?? getT(KeyT.not_yet),
+              onTap: () {
+                if (data.customer?.id != '' && data.customer?.id != null)
+                  AppNavigator.navigateDetailCustomer(
+                    data.customer?.id ?? '',
+                  );
+              },
+              text: data.customer?.name ?? '',
               icon: ICONS.IC_USER2_SVG,
-              colorIcon: Color(0xffE75D18),
+              colorIcon: COLORS.GREY,
+              styleText: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                color: (data.customer?.id != '' && data.customer?.id != null)
+                    ? COLORS.TEXT_BLUE_BOLD
+                    : null,
+                fontSize: 14,
+              ),
             ),
             itemTextIcon(
-                text: data.product_customer?.name ?? '',
-                icon: ICONS.IC_CHANCE_3X_PNG,
-                isSVG: false,
-                colorText: COLORS.TEXT_BLUE_BOLD,
-                onTap: () {
-                  if (data.product_customer?.id != '' &&
-                      data.product_customer?.id != null)
-                    AppNavigator.navigateDetailProductCustomer(
-                      data.product_customer?.id ?? '',
-                    );
-                }),
-            itemTextIcon(
-              text: data.status ?? '',
-              icon: ICONS.IC_DANG_XU_LY_SVG,
-              colorText: data.status_color != ''
-                  ? HexColor(data.status_color!)
-                  : COLORS.RED,
-              styleText: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
-                color: data.status_color != ""
-                    ? HexColor(data.status_color!)
-                    : COLORS.RED,
+              onTap: () {
+                if (data.product_customer?.id != '' &&
+                    data.product_customer?.id != null)
+                  AppNavigator.navigateDetailProductCustomer(
+                    data.product_customer?.id ?? '',
+                  );
+              },
+              text: data.product_customer?.name ?? '',
+              styleText: AppStyle.DEFAULT_14.copyWith(
+                fontWeight: FontWeight.w400,
+                color: COLORS.TEXT_BLUE_BOLD,
               ),
-              colorIcon: data.status_color != ''
-                  ? HexColor(data.status_color!)
-                  : COLORS.RED,
+              icon: ICONS.IC_CHANCE_3X_PNG,
+              isSVG: false,
+              colorIcon: COLORS.GREY,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 15,
+              ),
+              child: LineHorizontal(
+                color: COLORS.LIGHT_GREY,
+              ),
             ),
             itemTextEnd(
               title: '${getT(KeyT.total_amount)}: ' +
