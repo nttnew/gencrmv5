@@ -80,6 +80,7 @@ class _MainCarState extends State<MainCar> {
                                   width: wSz,
                                   child: Scrollbar(
                                     thumbVisibility: true,
+                                    trackVisibility: true,
                                     child: ListView.builder(
                                       padding: EdgeInsets.only(
                                         left: 16,

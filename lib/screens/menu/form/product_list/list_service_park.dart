@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/product/product_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:get/get.dart';
@@ -9,7 +10,9 @@ import '../../../../src/models/model_generator/service_pack_response.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/listview/list_load_infinity.dart';
+import '../../../../widgets/search_base.dart';
 import '../../../../widgets/widget_text.dart';
+import '../../home/product/scanner_qrcode.dart';
 
 class ListServicePark extends StatefulWidget {
   const ListServicePark({Key? key}) : super(key: key);
@@ -38,48 +41,46 @@ class _ListServiceParkState extends State<ListServicePark> {
       appBar: AppbarBaseNormal('${getT(KeyT.select)} ${title.toLowerCase()}'),
       body: Column(
         children: [
-          AppValue.vSpaceSmall,
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Expanded(
-                    child: Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: COLORS.GREY_400),
-                      borderRadius: BorderRadius.circular(10)),
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  margin: EdgeInsets.only(right: 8),
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      hintText: '${getT(KeyT.search)} ${title.toLowerCase()}',
-                      border: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                    ),
-                  ),
-                )),
-                GestureDetector(
-                  onTap: () {
-                    _bloc.loadMoreController.reloadData();
-                    FocusManager.instance.primaryFocus?.unfocus();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                    decoration: BoxDecoration(
-                        color: COLORS.PRIMARY_COLOR,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: WidgetText(
-                      title: getT(KeyT.find),
-                      style: AppStyle.DEFAULT_16,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                )
+            padding: EdgeInsets.only(
+              top: 16,
+              bottom: 8,
+            ),
+            decoration: BoxDecoration(
+              color: COLORS.WHITE,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                  offset: Offset(0, 0), // changes position of shadow
+                ),
               ],
+            ),
+            child: SearchBase(
+              controller: _searchController,
+              hint: '${getT(KeyT.search)} ${title.toLowerCase()}',
+              onChange: (v) {
+                _bloc.loadMoreController.reloadData();
+              },
+              leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+              endIcon: GestureDetector(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(
+                          builder: (context) => ScannerQrcode()))
+                      .then((value) async {
+                    if (value != '') {
+                      _searchController.text = value;
+                      _bloc.loadMoreController.reloadData();
+                    }
+                  });
+                },
+                child: Icon(
+                  Icons.qr_code_scanner,
+                  size: 20,
+                ),
+              ),
             ),
           ),
           Expanded(
@@ -123,7 +124,8 @@ class _ListServiceParkState extends State<ListServicePark> {
                                 height: 3,
                               ),
                               WidgetText(
-                                title: "Tên gói dịch vụ: ${dataItem.tenCombo}",
+                                title:
+                                    "${getT(KeyT.ten_goi_dich_vu)}: ${dataItem.tenCombo}",
                                 style: AppStyle.DEFAULT_14_BOLD
                                     .copyWith(color: COLORS.TEXT_GREY),
                               ),
@@ -131,7 +133,8 @@ class _ListServiceParkState extends State<ListServicePark> {
                                 height: 3,
                               ),
                               WidgetText(
-                                title: "Số lượng sản phẩm: ${dataItem.countSp}",
+                                title:
+                                    "${getT(KeyT.so_luong_san_pham)}: ${dataItem.countSp}",
                                 style: AppStyle.DEFAULT_14_BOLD
                                     .copyWith(color: COLORS.TEXT_GREY),
                               ),
@@ -139,7 +142,8 @@ class _ListServiceParkState extends State<ListServicePark> {
                                 height: 3,
                               ),
                               WidgetText(
-                                title: "Thành tiền: ${dataItem.tongTienFormat}",
+                                title:
+                                    "${getT(KeyT.into_money)}: ${dataItem.tongTienFormat}",
                                 style: AppStyle.DEFAULT_14_BOLD
                                     .copyWith(color: COLORS.TEXT_GREY),
                               ),
@@ -150,7 +154,7 @@ class _ListServiceParkState extends State<ListServicePark> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   WidgetText(
-                                    title: "Đang sử dụng",
+                                    title: "${getT(KeyT.dang_su_dung)}",
                                     style: AppStyle.DEFAULT_14_BOLD
                                         .copyWith(color: COLORS.TEXT_GREY),
                                   ),
@@ -214,9 +218,10 @@ class _ListServiceParkState extends State<ListServicePark> {
                       reload(true);
                       Get.back();
                     } else {
+                      //not_select
                       ShowDialogCustom.showDialogBase(
                         title: getT(KeyT.notification),
-                        content: 'Bạn chưa chọn $title',
+                        content: '${getT(KeyT.not_select)} $title',
                       );
                     }
                   } else {
@@ -228,7 +233,7 @@ class _ListServiceParkState extends State<ListServicePark> {
                 } else {
                   ShowDialogCustom.showDialogBase(
                     title: getT(KeyT.notification),
-                    content: 'Bạn chưa chọn $title',
+                    content: '${getT(KeyT.not_select)} $title',
                   );
                 }
               },

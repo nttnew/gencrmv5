@@ -122,7 +122,10 @@ class _ProductContractState extends State<ProductContract> {
             children: [
               itemBtnWrap(getT(KeyT.select_product), () {
                 AppNavigator.navigateAddProduct(
-                    widget.addProduct, _reload, _productData);
+                  widget.addProduct,
+                  _reload,
+                  _productData,
+                );
               }),
               itemBtnWrap(
                 getT(KeyT.qr_bar_code),
@@ -176,6 +179,7 @@ class _ProductContractState extends State<ProductContract> {
                             _reload,
                             _productData,
                             group: item.field_url,
+                            title: item.field_label ?? '',
                           );
                         }
                       },

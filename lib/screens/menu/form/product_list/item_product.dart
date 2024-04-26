@@ -56,7 +56,7 @@ class _ItemProductState extends State<ItemProduct> {
   bool _isTypeGiamGiaDefault = true;
   double _thanhTien = 0;
   String _donViTinh = '';
-  String _vat = '0';
+  String _vat = 'null';
   String _giamGia = '0';
   String _soLuong = '0';
   TextEditingController _giamGiaController = TextEditingController();
@@ -66,7 +66,7 @@ class _ItemProductState extends State<ItemProduct> {
   String _priceInit = '';
   String _countInit = '0';
   String _dvtInit = '';
-  String _vatInit = '0';
+  String _vatInit = 'null';
   String _saleInit = '0';
   double _intoMoneyInit = 0;
   bool _isTypeGiamGIaInit = true;
@@ -103,12 +103,12 @@ class _ItemProductState extends State<ItemProduct> {
       widget.onVAT(widget.model.item.vat, _vat);
     } else {
       _donViTinh = _index != -1 ? widget.listDvt[_index][1] : '';
-      _vat = _indexVat != -1 ? widget.listVat[_indexVat][1] : '0';
+      _vat = _indexVat != -1 ? widget.listVat[_indexVat][1] : 'null';
       _soLuong = '0';
 
       /// init set color
       _dvtInit = _index != -1 ? widget.listDvt[_index][1] : '';
-      _vatInit = _indexVat != -1 ? widget.listVat[_indexVat][1] : '0';
+      _vatInit = _indexVat != -1 ? widget.listVat[_indexVat][1] : 'null';
       _countInit = '0';
 
       ///
@@ -312,7 +312,7 @@ class _ItemProductState extends State<ItemProduct> {
                     ),
                     itemClick(
                       title:
-                          '${getT(KeyT.vat)}: ' + '${_vat == '' ? '0' : _vat}',
+                          '${getT(KeyT.vat)}: ' + '${_vat == '' ? 'null' : _vat}',
                       isChange: _vat != _vatInit,
                       onTap: () {
                         onClickVAT(context, widget.listVat, (v) {

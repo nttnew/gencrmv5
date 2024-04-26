@@ -89,7 +89,7 @@ class _FormAddDataState extends State<FormAddData> {
   late final TotalBloc _totalBloc;
 
   /// check hinhTTT = 'CK' && so_tien >0  : showQRcode
-  bool isHideDinhKem = (Get.arguments[1] ?? '') != ADD_PAYMENT &&
+  bool isAttack = (Get.arguments[1] ?? '') != ADD_PAYMENT &&
       (Get.arguments[1] ?? '') != EDIT_PAYMENT &&
       !(Get.arguments[5] ?? false);
   BehaviorSubject<bool> _showQrCodePayment = BehaviorSubject.seeded(false);
@@ -794,7 +794,7 @@ class _FormAddDataState extends State<FormAddData> {
                                         : SizedBox.shrink();
                                   }),
                                 ),
-                                if (isHideDinhKem)
+                                if (isAttack)
                                   FileDinhKemUiBase(
                                     context: context,
                                   ),
@@ -807,7 +807,7 @@ class _FormAddDataState extends State<FormAddData> {
                           FileLuuBase(
                             context,
                             () => _onClickSave(),
-                            isAttack: !isHideDinhKem,
+                            isAttack: isAttack,
                             btn: _btnShowQR(),
                           ),
                         ],

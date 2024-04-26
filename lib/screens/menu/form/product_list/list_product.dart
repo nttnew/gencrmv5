@@ -11,6 +11,7 @@ import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/search_base.dart';
+import '../../home/product/scanner_qrcode.dart';
 import 'item_product.dart';
 
 class ListProduct extends StatefulWidget {
@@ -30,6 +31,7 @@ class _ListProductState extends State<ListProduct> {
   Function(bool) reload = Get.arguments[1];
   List<ProductModel> listSelected = List.from(Get.arguments[2]);
   String? group = Get.arguments[3];
+  String? title = Get.arguments[4];
   late final ProductBloc _bloc;
   List<ProductModel> listUI = [];
 
@@ -96,7 +98,9 @@ class _ListProductState extends State<ListProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarBaseNormal(getT(KeyT.select_product)),
+      appBar: AppbarBaseNormal(title != null
+          ? getT(KeyT.select) + ' ${title?.toLowerCase() ?? ''}'
+          : getT(KeyT.select_product)),
       body: BlocBuilder<ProductBloc, ProductState>(
           bloc: _bloc,
           builder: (context, state) {
@@ -125,11 +129,30 @@ class _ListProductState extends State<ListProduct> {
                     ),
                     child: SearchBase(
                       controller: _editingController,
-                      hint: getT(KeyT.find_product),
+                      hint: title != null
+                          ? getT(KeyT.find) + ' ${title?.toLowerCase() ?? ''}'
+                          : getT(KeyT.find_product),
                       onChange: (v) {
                         _onClickSearch();
                       },
                       leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                      endIcon: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(
+                                  builder: (context) => ScannerQrcode()))
+                              .then((value) async {
+                            if (value != '') {
+                              _editingController.text = value;
+                              _onClickSearch();
+                            }
+                          });
+                        },
+                        child: Icon(
+                          Icons.qr_code_scanner,
+                          size: 20,
+                        ),
+                      ),
                     ),
                   ),
                   Expanded(

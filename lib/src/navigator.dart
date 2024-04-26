@@ -208,10 +208,14 @@ class AppNavigator {
       await Get.toNamed(ROUTE_NAMES.NOTIFICATION);
 
   static navigateAddProduct(
-          Function add, Function reload, List<ProductModel> data,
-          {String? group}) async =>
+    Function add,
+    Function reload,
+    List<ProductModel> data, {
+    String? group,
+    String? title,
+  }) async =>
       await Get.toNamed(ROUTE_NAMES.ADD_PRODUCT,
-          arguments: [add, reload, data, group]);
+          arguments: [add, reload, data, group, title]);
 
   static navigateProduct() async => await Get.toNamed(
         ROUTE_NAMES.PRODUCT,

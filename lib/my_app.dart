@@ -133,6 +133,15 @@ class _MyAppState extends ConsumerState<MyApp> {
       builder: EasyLoading.init(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        scrollbarTheme: ScrollbarThemeData(
+          trackColor: MaterialStateProperty.all(COLORS.LIGHT_GREY),
+          thumbColor: MaterialStateProperty.all(
+            COLORS.PRIMARY_COLOR1.withOpacity(
+              0.7,
+            ),
+          ),
+          radius: Radius.circular(1000),
+        ),
         fontFamily: 'NunitoSans',
         androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
       ),

@@ -37,7 +37,7 @@ class PaymentContractBloc
       yield LoadingPaymentContractState();
       final response = await userRepository.getPaymentContract(id);
       if (isSuccess(response.code)) {
-        if (response.data!.length == 0) {
+        if (response.data?.length == 0) {
           yield SuccessPaymentContractState([]);
         } else {
           yield SuccessPaymentContractState(response.data);
@@ -48,7 +48,6 @@ class PaymentContractBloc
         yield ErrorPaymentContractState(response.msg ?? '');
     } catch (e) {
       yield ErrorPaymentContractState(getT(KeyT.an_error_occurred));
-      throw e;
     }
     if (isLoad) LoadingApi().popLoading();
   }
