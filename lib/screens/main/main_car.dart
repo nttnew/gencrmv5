@@ -40,7 +40,7 @@ class _MainCarState extends State<MainCar> {
       child: ViewLoadMoreBase(
         isShowAll: _blocLogin.isShowLocaiton,
         isDispose: false,
-        heightAppBar: w + 114 - MediaQuery.of(context).padding.top,
+        heightAppBar: w + 104 - MediaQuery.of(context).padding.top,
         child: Container(
           child: SingleChildScrollView(
             padding: EdgeInsets.zero,

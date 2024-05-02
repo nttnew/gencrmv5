@@ -16,6 +16,7 @@ import '../../../widgets/appbar_base.dart';
 import '../../../widgets/cupertino_loading.dart';
 import '../../../widgets/item_file.dart';
 import '../form/widget/preview_image.dart';
+import 'package:image/image.dart' as img;
 
 class Attachment extends StatefulWidget {
   Attachment({
@@ -161,7 +162,10 @@ class _AttachmentState extends State<Attachment> {
     }
   }
 
-  Future<void> _saveFile({required List<File> list, bool? isAfter}) async {
+  Future<void> _saveFile({
+    required List<File> list,
+    bool? isAfter,
+  }) async {
     await DetailContractBloc.of(context)
         .uploadFile(
             id: widget.id,
@@ -175,8 +179,11 @@ class _AttachmentState extends State<Attachment> {
       }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text('${getT(KeyT.add_attachment)} '
-                '${value == true ? getT(KeyT.success.toLowerCase()) : getT(KeyT.fail.toLowerCase())}!')),
+          content: Text(
+            '${getT(KeyT.add_attachment)} '
+            '${value == true ? getT(KeyT.success.toLowerCase()) : getT(KeyT.fail.toLowerCase())}!',
+          ),
+        ),
       );
     });
   }
@@ -193,12 +200,48 @@ class _AttachmentState extends State<Attachment> {
     }
   }
 
+  Future<File> compressImage(
+    File imageFile, {
+    int maxSizeInBytes = 2000000,
+  }) async {
+    //done 2mb
+    try {
+      // Đọc dữ liệu của ảnh
+      final bytes = await imageFile.readAsBytes();
+      img.Image? image = img.decodeImage(bytes);
+
+      // Nếu ảnh vượt quá kích thước tối đa đã đặt, nén ảnh
+      if (image != null && image.length > maxSizeInBytes) {
+        // Tính toán chất lượng nén cần thiết để giảm kích thước xuống dưới maxSizeInBytes
+        int quality = ((maxSizeInBytes / image.length) * 100).floor();
+
+        // Nén ảnh với chất lượng đã tính toán
+        List<int> compressedBytes = img.encodeJpg(image, quality: quality);
+
+        // Tạo một tệp mới với dữ liệu nén
+        File compressedImage = File('${imageFile.path}.compressed.jpg');
+        await compressedImage.writeAsBytes(compressedBytes);
+
+        // Trả về tệp đã nén
+        return compressedImage;
+      } else {
+        // Trả về tệp gốc nếu không cần nén
+        return imageFile;
+      }
+    } catch (e) {
+      return imageFile;
+    }
+  }
+
   Future _getImageVideo({bool? isAfter}) async {
     try {
       final XFile? cameraVideo =
           await ImagePicker().pickVideo(source: ImageSource.camera);
       if (cameraVideo != null) {
-        await _saveFile(list: [File(cameraVideo.path)], isAfter: isAfter);
+        await _saveFile(
+          list: [File(cameraVideo.path)],
+          isAfter: isAfter,
+        );
       }
     } on PlatformException catch (e) {
       throw e;
@@ -213,8 +256,11 @@ class _AttachmentState extends State<Attachment> {
       }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text('${getT(KeyT.delete_attachment)} '
-                '${value == true ? getT(KeyT.success.toLowerCase()) : getT(KeyT.fail.toLowerCase())}!')),
+          content: Text(
+            '${getT(KeyT.delete_attachment)} '
+            '${value == true ? getT(KeyT.success.toLowerCase()) : getT(KeyT.fail.toLowerCase())}!',
+          ),
+        ),
       );
     });
   }
@@ -231,9 +277,12 @@ class _AttachmentState extends State<Attachment> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             WidgetText(
-                title: getT(KeyT.select_attachment),
-                style: AppStyle.DEFAULT_16.copyWith(
-                    fontWeight: FontWeight.w700, color: COLORS.TEXT_COLOR)),
+              title: getT(KeyT.select_attachment),
+              style: AppStyle.DEFAULT_16.copyWith(
+                fontWeight: FontWeight.w700,
+                color: COLORS.TEXT_COLOR,
+              ),
+            ),
             GridView.builder(
               padding: EdgeInsets.only(top: 16),
               physics: NeverScrollableScrollPhysics(),
@@ -254,8 +303,13 @@ class _AttachmentState extends State<Attachment> {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(
+                        8,
+                      ),
+                    ),
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -264,9 +318,11 @@ class _AttachmentState extends State<Attachment> {
                         Icons.publish_sharp,
                       ),
                       WidgetText(
-                          title: pickOptions[index],
-                          style: AppStyle.DEFAULT_16
-                              .copyWith(fontWeight: FontWeight.w700)),
+                        title: pickOptions[index],
+                        style: AppStyle.DEFAULT_16.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -292,13 +348,15 @@ class _AttachmentState extends State<Attachment> {
                       return Container(
                         margin: EdgeInsets.only(top: 60),
                         child: Align(
-                            alignment: Alignment.topCenter,
-                            child: WidgetText(
-                                title: getT(KeyT.no_data),
-                                style: AppStyle.DEFAULT_16.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: COLORS.BLACK,
-                                ))),
+                          alignment: Alignment.topCenter,
+                          child: WidgetText(
+                            title: getT(KeyT.no_data),
+                            style: AppStyle.DEFAULT_16.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: COLORS.BLACK,
+                            ),
+                          ),
+                        ),
                       );
                     }
                     return RefreshIndicator(
@@ -342,115 +400,124 @@ class _AttachmentState extends State<Attachment> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 5),
                 child: WidgetText(
-                    title: title,
-                    style: AppStyle.DEFAULT_16.copyWith(
-                        fontWeight: FontWeight.w700, color: COLORS.TEXT_COLOR)),
+                  title: title,
+                  style: AppStyle.DEFAULT_16.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: COLORS.TEXT_COLOR,
+                  ),
+                ),
               )
             ],
           ),
           Container(
-              margin: EdgeInsets.symmetric(vertical: 8),
-              width: Get.width,
-              child: Column(
-                children: [
-                  ListView.builder(
+            margin: EdgeInsets.symmetric(vertical: 8),
+            width: Get.width,
+            child: Column(
+              children: [
+                ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: _checkListImageApi(
+                          isImage: false, list: list, isAfter: isAfter)
+                      .length,
+                  itemBuilder: (context, index) => ItemFile(
+                    file: _checkListImageApi(
+                        isImage: false, list: list, isAfter: isAfter)[index],
+                    functionMy: () {
+                      _removeFilePick(_checkListImageApi(
+                          isImage: false, list: list, isAfter: isAfter)[index]);
+                    },
+                  ),
+                ),
+                if (_checkListImageApi(
+                        isImage: true, list: list, isAfter: isAfter)
+                    .isNotEmpty)
+                  GridView.builder(
+                    padding: EdgeInsets.zero,
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: _checkListImageApi(
-                            isImage: false, list: list, isAfter: isAfter)
+                            isImage: true, list: list, isAfter: isAfter)
                         .length,
-                    itemBuilder: (context, index) => ItemFile(
-                      file: _checkListImageApi(
-                          isImage: false, list: list, isAfter: isAfter)[index],
-                      functionMy: () {
-                        _removeFilePick(_checkListImageApi(
-                            isImage: false,
-                            list: list,
-                            isAfter: isAfter)[index]);
-                      },
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 25,
+                      mainAxisSpacing: 25,
+                      mainAxisExtent: 90,
                     ),
-                  ),
-                  if (_checkListImageApi(
-                          isImage: true, list: list, isAfter: isAfter)
-                      .isNotEmpty)
-                    GridView.builder(
-                      padding: EdgeInsets.zero,
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: _checkListImageApi(
-                              isImage: true, list: list, isAfter: isAfter)
-                          .length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 25,
-                        mainAxisSpacing: 25,
-                        mainAxisExtent: 90,
-                      ),
-                      itemBuilder: (context, index) => Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => PreviewImage(
-                                        isNetwork: true,
-                                        file: File(_checkListImageApi(
-                                                    isImage: true,
-                                                    list: list,
-                                                    isAfter: isAfter)[index]
-                                                .link ??
-                                            ''),
-                                      )));
-                            },
-                            child: Container(
-                              clipBehavior: Clip.hardEdge,
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
-                              child: Image.network(
-                                _checkListImageApi(
-                                            isImage: true,
-                                            list: list,
-                                            isAfter: isAfter)[index]
-                                        .link ??
-                                    '',
-                                fit: BoxFit.cover,
+                    itemBuilder: (context, index) => Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => PreviewImage(
+                                  isNetwork: true,
+                                  file: File(_checkListImageApi(
+                                              isImage: true,
+                                              list: list,
+                                              isAfter: isAfter)[index]
+                                          .link ??
+                                      ''),
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            clipBehavior: Clip.hardEdge,
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8),
                               ),
                             ),
-                          ),
-                          Positioned(
-                            child: InkWell(
-                              onTap: () {
-                                _removeFilePick(_checkListImageApi(
-                                    isImage: true,
-                                    list: list,
-                                    isAfter: isAfter)[index]);
-                              },
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: COLORS.WHITE,
-                                    border: Border.all(
-                                        color: Colors.black, width: 0.1),
-                                  ),
-                                  height: 24,
-                                  width: 24,
-                                  child: Icon(
-                                    Icons.close,
-                                    size: 16,
-                                  )),
+                            child: Image.network(
+                              _checkListImageApi(
+                                          isImage: true,
+                                          list: list,
+                                          isAfter: isAfter)[index]
+                                      .link ??
+                                  '',
+                              fit: BoxFit.cover,
                             ),
-                            top: -1,
-                            right: -1,
-                          )
-                        ],
-                      ),
-                    )
-                ],
-              )),
+                          ),
+                        ),
+                        Positioned(
+                          child: InkWell(
+                            onTap: () {
+                              _removeFilePick(_checkListImageApi(
+                                  isImage: true,
+                                  list: list,
+                                  isAfter: isAfter)[index]);
+                            },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: COLORS.WHITE,
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 0.1,
+                                  ),
+                                ),
+                                height: 24,
+                                width: 24,
+                                child: Icon(
+                                  Icons.close,
+                                  size: 16,
+                                )),
+                          ),
+                          top: -1,
+                          right: -1,
+                        )
+                      ],
+                    ),
+                  )
+              ],
+            ),
+          ),
         ]
       ],
     );
