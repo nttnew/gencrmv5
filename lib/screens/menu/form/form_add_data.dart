@@ -1209,7 +1209,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                                         onChange:
                                                                             (v) {
                                                                           if (data.field_name ==
-                                                                              'datt') {
+                                                                              'dathanhtoan') {
                                                                             _totalBloc.paidStream.add(double.tryParse(v) ??
                                                                                 0);
                                                                             _totalBloc.getPaid();
