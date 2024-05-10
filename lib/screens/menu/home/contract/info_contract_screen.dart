@@ -214,7 +214,26 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
         },
         child: Column(
           children: [
-            AppbarBaseNormal(_title,reload: _reload),
+            AppbarBaseNormal(
+              _title,
+              reload: _reload,
+              widgetRight: GestureDetector(
+                onTap: () {
+                  AppNavigator.navigateDetailCarMain(_id);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 16,
+                  ),
+                  child: Image.asset(
+                    ICONS.IC_SHOW_PNG,
+                    height: 20,
+                    width: 20,
+                    color: COLORS.WHITE,
+                  ),
+                ),
+              ),
+            ),
             AppValue.vSpaceTiny,
             Expanded(
               child: DefaultTabController(

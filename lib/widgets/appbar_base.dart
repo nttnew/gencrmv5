@@ -11,6 +11,7 @@ PreferredSizeWidget AppbarBaseNormal(
   Function? onBack,
   double? h,
   bool? reload,
+  Widget? widgetRight,
 }) =>
     AppBar(
       toolbarHeight: h ?? AppValue.heightsAppBar,
@@ -43,6 +44,9 @@ PreferredSizeWidget AppbarBaseNormal(
           color: isCarCrm() ? COLORS.LIGHT_GREY : COLORS.BLACK,
         ),
       ),
+      actions: [
+        if (widgetRight != null) widgetRight,
+      ],
     );
 
 PreferredSizeWidget AppbarBase(

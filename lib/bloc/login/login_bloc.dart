@@ -21,7 +21,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/models/model_generator/customer_clue.dart';
-import '../../src/models/model_generator/xe_dich_vu_response.dart';
 import '../../src/models/validate_form/no_data.dart';
 import '../../widgets/listview/list_load_infinity.dart';
 import '../../widgets/loading_api.dart';
@@ -45,8 +44,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   TrangThaiHDReport? valueTrangThai;
   LoadMoreController loadMoreControllerCar = LoadMoreController();
   LoadMoreController loadMoreControllerBieuMau = LoadMoreController();
-  XeDichVu? xeDichVu;
   String? trangThaiDichVu;
+  String idDetailCarMain = '';
 
   dispose() {
     trangThaiDichVu = null;
@@ -100,11 +99,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     super.onTransition(transition);
   }
 
-  Future<dynamic> getDetailXeDichVu() async {
+  Future<void> getDetailXeDichVu() async {
     dynamic resDynamic = '';
     try {
       final response = await userRepository.postDetailXeDichVu(
-        xeDichVu?.id ?? '',
+        idDetailCarMain,
       );
       if (isSuccess(response.code)) {
         resDynamic = response.data;
@@ -120,13 +119,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Future<dynamic> postUpdateTTHD({
-    required String id,
     required String idTT,
   }) async {
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.postUpdateTTHD(
-        xeDichVu?.id ?? '',
+        idDetailCarMain,
         idTT,
       );
       final statusCode =

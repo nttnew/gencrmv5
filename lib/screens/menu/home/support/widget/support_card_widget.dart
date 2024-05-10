@@ -63,10 +63,10 @@ class SupportCardWidget extends StatelessWidget {
                 isSVG: false,
                 colorText: COLORS.TEXT_BLUE_BOLD,
                 onTap: () {
-                  if (data.product_customer?.id != '' &&
-                      data.product_customer?.id != null)
+                  if (data.product_customer?._id != '' &&
+                      data.product_customer?._id != null)
                     AppNavigator.navigateDetailProductCustomer(
-                      data.product_customer?.id ?? '',
+                      data.product_customer?._id ?? '',
                     );
                 }),
             itemTextIcon(

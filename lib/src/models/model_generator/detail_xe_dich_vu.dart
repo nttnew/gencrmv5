@@ -37,6 +37,8 @@ class DetailXeDichVuData {
   List<List<dynamic>>? listNguoiThucHien;
   List<List<dynamic>>? listTienDo;
   List<List<dynamic>>? listTrangThai;
+  InfoCarMainRes? info;
+  String? ngayRa;
 
   DetailXeDichVuData({
     this.listNhanCong,
@@ -44,6 +46,8 @@ class DetailXeDichVuData {
     this.listNguoiThucHien,
     this.listTienDo,
     this.listTrangThai,
+    this.info,
+    this.ngayRa,
   });
 
   DetailXeDichVuData.fromJson(Map<String, dynamic> json) {
@@ -77,6 +81,8 @@ class DetailXeDichVuData {
         listTrangThai!.add(v);
       });
     }
+    ngayRa = json['ngay_ra'];
+    info = json['info'] != null ? InfoCarMainRes.fromJson(json['info']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -98,6 +104,8 @@ class DetailXeDichVuData {
     if (this.listTrangThai != null) {
       data['list_trangthai'] = this.listTrangThai!.map((v) => v).toList();
     }
+    data['ngay_ra'] = this.ngayRa;
+    if (this.info != null) data['info'] = this.info?.toJson();
     return data;
   }
 }
@@ -144,6 +152,56 @@ class CTDichVu {
     data['ten_san_pham'] = this.tenSanPham;
     data['so_luong'] = this.soLuong;
     data['don_vi_tinh'] = this.donViTinh;
+    return data;
+  }
+}
+
+class InfoCarMainRes {
+  String? bienSo;
+  String? soPhieu;
+  String? khachHangId;
+  String? tenKhachHang;
+  String? diDong;
+  String? ngayVao;
+  String? id;
+  String? chiNhanh;
+  String? trangThai;
+
+  InfoCarMainRes({
+    this.bienSo,
+    this.soPhieu,
+    this.khachHangId,
+    this.tenKhachHang,
+    this.diDong,
+    this.ngayVao,
+    this.id,
+    this.chiNhanh,
+    this.trangThai,
+  });
+
+  InfoCarMainRes.fromJson(Map<String, dynamic> json) {
+    bienSo = json['bien_so'];
+    soPhieu = json['so_phieu'];
+    khachHangId = json['khach_hang_id'];
+    tenKhachHang = json['ten_khach_hang'];
+    diDong = json['di_dong'];
+    ngayVao = json['ngay_vao'];
+    id = json['id'];
+    chiNhanh = json['chi_nhanh'];
+    trangThai = json['trang_thai'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['bien_so'] = this.bienSo;
+    data['so_phieu'] = this.soPhieu;
+    data['khach_hang_id'] = this.khachHangId;
+    data['ten_khach_hang'] = this.tenKhachHang;
+    data['di_dong'] = this.diDong;
+    data['ngay_vao'] = this.ngayVao;
+    data['id'] = this.id;
+    data['chi_nhanh'] = this.chiNhanh;
+    data['trang_thai'] = this.trangThai;
     return data;
   }
 }

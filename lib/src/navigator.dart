@@ -3,7 +3,6 @@ import 'package:gen_crm/src/router.dart';
 import '../l10n/key_text.dart';
 import 'app_const.dart';
 import 'models/model_generator/products_response.dart';
-import 'models/model_generator/xe_dich_vu_response.dart';
 
 class AppNavigator {
   AppNavigator._();
@@ -292,8 +291,8 @@ class AppNavigator {
         arguments: [idDetail],
       );
 
-  static navigateDetailCarMain(XeDichVu detail) async => await Get.toNamed(
+  static navigateDetailCarMain(String idCar) async => await Get.toNamed(
         ROUTE_NAMES.DETAIL_CAR_MAIN,
-        arguments: detail,
+        arguments: idCar,
       );
 }
