@@ -39,11 +39,13 @@ class ItemProducts extends StatefulWidget {
     required this.onAdd,
     required this.onDelete,
     this.isDelete = false,
+    required this.typeContract,
   }) : super(key: key);
 
   final ProductsRes data;
   final double? paddingHorizontal;
   final bool isDelete;
+  final String typeContract;
   final Function(ProductsRes) onAdd;
   final Function(ProductsRes) onDelete;
 
@@ -53,11 +55,23 @@ class ItemProducts extends StatefulWidget {
 
 class _ItemProductsState extends State<ItemProducts> {
   late final ProductsRes _dataNew;
-
+  String _typeContract = '';
   @override
   void initState() {
+    _typeContract = widget.typeContract;
     _dataNew = widget.data;
+    _dataNew.form?.forEach((element) {
+      //isShow = true hiện field
+      element.isShow = _check(element.listTypeContract ?? []);
+    });
     super.initState();
+  }
+
+  bool _check(List<String> data) {
+    if (data.contains(_typeContract) || data.length == 0) {
+      return true;
+    }
+    return false;
   }
 
   _reload() {
@@ -123,7 +137,11 @@ class _ItemProductsState extends State<ItemProducts> {
             Wrap(
               runSpacing: 10,
               spacing: 10,
-              children: (_dataNew.form ?? []).asMap().mapEntries((e) {
+              children: ((_dataNew.form ?? [])
+                      .where((element) => element.isShow)
+                      .toList())
+                  .asMap()
+                  .mapEntries((e) {
                 if (e.key > 4 && !_dataNew.isShowLocal) return SizedBox();
                 return _widget(
                   e.value,

@@ -1,3 +1,4 @@
+import 'package:gen_crm/src/extensionss/string_ext.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/src/src_index.dart';
@@ -62,7 +63,7 @@ class WidgetAppbar extends StatelessWidget {
                 horizontal: 16,
               ),
               child: Text(
-                title ?? '',
+                (title ?? '').htmlToString(),
                 style: AppStyle.DEFAULT_16_BOLD.copyWith(
                   color: isCarCrm() ? COLORS.WHITE : null,
                 ),

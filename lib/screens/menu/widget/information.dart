@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:gen_crm/src/extensionss/string_ext.dart';
 import 'package:gen_crm/src/models/model_generator/work.dart';
 import 'package:gen_crm/storages/share_local.dart';
 import 'package:get/get.dart';
@@ -242,7 +243,9 @@ class ItemInfo extends StatelessWidget {
                                               }
                                             },
                                             child: WidgetText(
-                                              title: '${item?.value_field ?? ''}',
+                                              title:
+                                                  '${item?.value_field ?? ''}'
+                                                      .htmlToString(),
                                               textAlign: TextAlign.right,
                                               style:
                                                   AppStyle.DEFAULT_14.copyWith(

@@ -209,12 +209,13 @@ class AppNavigator {
 
   static navigateAddProduct(
     List<ProductsRes> data,
+    String typeContract,
     Function onThen, {
     String? group,
     String? title,
   }) async =>
       await Get.toNamed(ROUTE_NAMES.ADD_PRODUCT,
-          arguments: [title, group, data])?.then((value) {
+          arguments: [title, group, data, typeContract])?.then((value) {
         if (value != null) {
           onThen(value);
         }

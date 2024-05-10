@@ -59,6 +59,7 @@ const String TIEN_GIAM_FN =
 const String TONG_TIEN_THUE_FN = 'tien_thue';
 const String CHUA_THANH_TOAN_FN = 'chuathanhtoan';
 const String TONG_BAO_HIEM_TRA = 'tong_bao_hiem_tra';
+const String LOAI_HOP_DONG = 'col112'; // case add edit HOP_DONG
 
 class FormAddData extends StatefulWidget {
   const FormAddData({Key? key}) : super(key: key);
@@ -101,6 +102,7 @@ class _FormAddDataState extends State<FormAddData> {
   late final ContactByCustomerBloc _contactBy;
   // late final TotalBloc _totalBloc;
   BehaviorSubject<String> _autoSumStream = BehaviorSubject.seeded('');
+  BehaviorSubject<String> _typeContact = BehaviorSubject.seeded('');
   // auto sum dùng để reload khi value của các field autosum thay đổi
 
   /// check hinhTTT = 'CK' && so_tien >0  : showQRcode
@@ -492,6 +494,16 @@ class _FormAddDataState extends State<FormAddData> {
             else
               return '';
         }
+    }
+  }
+
+  void _setDataLoaiHopDong(
+    CustomerIndividualItemData data,
+    String v,
+  ) {
+    // set data loai and reload products
+    if (LOAI_HOP_DONG == data.field_name) {
+      _typeContact.add(v);
     }
   }
 
@@ -988,15 +1000,22 @@ class _FormAddDataState extends State<FormAddData> {
   ) {
     return data.field_hidden != '1' || data.field_type != 'HIDDEN' // ==1 ẩn
         ? data.field_special == 'url'
-            ? ProductContract(
-                listBtn: data.button,
-                data: _listProduct,
-                onChange: (List<ProductsRes> v) {
-                  _listProduct = v;
-                  _tinhTheoProduct();
-                },
-                isDelete: true,
-              )
+            ? StreamBuilder<String>(
+                stream: _typeContact,
+                builder: (context, snapshot) {
+                  final snap = snapshot.data ?? '';
+                  return ProductContract(
+                    key: Key(snap),
+                    typeContract: snap,
+                    listBtn: data.button,
+                    data: _listProduct,
+                    onChange: (List<ProductsRes> v) {
+                      _listProduct = v;
+                      _tinhTheoProduct();
+                    },
+                    isDelete: true,
+                  );
+                })
             : _blocService.getInput(data.field_name ?? '')
                 ? StreamBuilder<String>(
                     stream: _blocService.loaiXe, // getdata selectcar local
@@ -1085,6 +1104,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                 indexChild: indexChild,
                                                 isCK: isCK,
                                               );
+                                              _setDataLoaiHopDong(data, v);
                                             },
                                           );
                                         })
@@ -1133,6 +1153,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                 indexChild: indexChild,
                                                 isCK: isCK,
                                               );
+                                              _setDataLoaiHopDong(data, v);
                                             },
                                           )
                             : data.field_type == 'TEXT_MULTI'

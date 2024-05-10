@@ -9,6 +9,13 @@ import '../../../../src/models/model_generator/products_response.dart';
 import '../../home/product/scanner_qrcode.dart';
 import 'item_products.dart';
 
+//typeContract
+//1 số trường ẩn hiện theo loại hợp đồng có tùy chọn khác: 'TKCT'
+// - thang_su_dung, ky_thanh_toan, ngay_bat_dau
+//
+// Trích dẫn #3
+// Cập nhật bởi Dai Nguyen cách đây khoảng 18 giờ
+// - Trường "Số lượt" hiển thị theo loại hợp đồng có tùy chọn khác là "SOLUOT"
 class ProductContract extends StatefulWidget {
   ProductContract({
     Key? key,
@@ -16,11 +23,13 @@ class ProductContract extends StatefulWidget {
     required this.onChange,
     this.isDelete = false,
     this.listBtn,
+    required this.typeContract,
   }) : super(key: key);
   final List<ProductsRes> data;
   final Function(List<ProductsRes>) onChange;
   final bool isDelete;
   final List<ButtonRes>? listBtn;
+  final String typeContract;
 
   @override
   State<ProductContract> createState() => _ProductContractState();
@@ -29,10 +38,12 @@ class ProductContract extends StatefulWidget {
 class _ProductContractState extends State<ProductContract> {
   List<ProductsRes> _productData = [];
   List<Key> _listKey = [];
+  String _typeContract = '';
 
   @override
   void initState() {
     _productData = widget.data;
+    _typeContract = widget.typeContract;
     _listKey = _productData.map((e) => Key('${e.toJson()}')).toList();
     _onChangeMain(_productData);
     super.initState();
@@ -97,6 +108,7 @@ class _ProductContractState extends State<ProductContract> {
               },
               paddingHorizontal: 0,
               data: _productData[i],
+              typeContract: _typeContract,
             );
           },
         ),
@@ -109,6 +121,7 @@ class _ProductContractState extends State<ProductContract> {
               itemBtnWrap(getT(KeyT.select_product), () {
                 AppNavigator.navigateAddProduct(
                   _productData,
+                  _typeContract,
                   (List<ProductsRes> v) {
                     _productData = v;
                     _onChangeMain(_productData);
@@ -175,6 +188,7 @@ class _ProductContractState extends State<ProductContract> {
                             title: item.field_label,
                             group: item.field_url,
                             _productData,
+                            _typeContract,
                             (List<ProductsRes> v) {
                               _productData = v;
                               _onChangeMain(_productData);

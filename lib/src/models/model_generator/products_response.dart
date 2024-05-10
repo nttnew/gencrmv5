@@ -215,10 +215,11 @@ class ProductsRes {
     data['ten_combo'] = this.tenCombo;
     if (this.form != null) {
       form?.forEach((element) {
-        if (element.fieldName.toString() == 'sdgiamgiapopchhd') {
-          data['type_of_sale'] = element.typeOfSale;
+        if (element.isShow) {
+          if (element.fieldName.toString() == 'sdgiamgiapopchhd')
+            data['type_of_sale'] = element.typeOfSale;
+          data[element.fieldName.toString()] = element.fieldSetValue;
         }
-        data[element.fieldName.toString()] = element.fieldSetValue;
       });
     }
     return data;
@@ -237,8 +238,10 @@ class FormProduct {
   dynamic fieldReadOnly;
   dynamic fieldSetValue;
   dynamic fieldValue;
-  List<List<dynamic>>? fieldSetValueDatasource;
   bool? isReloadLocal;
+  List<List<dynamic>>? fieldSetValueDatasource;
+  List<String>? listTypeContract;
+  bool isShow = false;
 
   FormProduct({
     this.fieldId,
@@ -253,6 +256,7 @@ class FormProduct {
     this.fieldSetValue,
     this.fieldValue,
     this.fieldSetValueDatasource,
+    this.listTypeContract,
   });
 
   FormProduct.fromJson(Map<String, dynamic> json) {
@@ -279,6 +283,12 @@ class FormProduct {
         fieldSetValueDatasource!.add(v);
       });
     }
+    if (json['show_by_id_loai_hd'] != null) {
+      listTypeContract = [];
+      json['show_by_id_loai_hd'].forEach((v) {
+        listTypeContract!.add(v);
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -300,6 +310,10 @@ class FormProduct {
     if (this.fieldSetValueDatasource != null) {
       data['field_set_value_datasource'] =
           this.fieldSetValueDatasource!.map((v) => v).toList();
+    }
+    if (this.listTypeContract != null) {
+      data['show_by_id_loai_hd'] =
+          this.listTypeContract!.map((v) => v).toList();
     }
     return data;
   }

@@ -24,6 +24,7 @@ class _ListProductState extends State<ListProduct> {
   String? title = Get.arguments[0];
   String? group = Get.arguments[1];
   final List<ProductsRes> _listSelected = List.from(Get.arguments[2] ?? []);
+  final String typeContract = Get.arguments[3];
   late final ProductBloc _bloc;
   List<ProductsRes> _listAddSelect = [];
 
@@ -196,6 +197,7 @@ class _ListProductState extends State<ListProduct> {
             onDelete: (ProductsRes v) {
               _listAddSelect.remove(v);
             },
+            typeContract: typeContract,
           );
         },
         widgetLoad: widgetLoadingProduct(),
