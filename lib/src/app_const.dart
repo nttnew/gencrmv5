@@ -321,7 +321,7 @@ Widget itemTextIcon({
   Function? onTap,
   double? paddingTop,
 }) {
-  return text == ''
+  return text.trim() == ''
       ? SizedBox()
       : onTap != null
           ? Padding(
