@@ -8,6 +8,7 @@ import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
 import 'package:gen_crm/bloc/product_customer_module/product_customer_module_bloc.dart';
 import 'package:gen_crm/bloc/product_module/product_module_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
+import 'package:gen_crm/screens/menu/form/product_list/item_products.dart';
 import 'package:gen_crm/screens/menu/form/widget/field_image.dart';
 import 'package:gen_crm/screens/menu/form/widget/field_text.dart';
 import 'package:gen_crm/screens/menu/form/widget/field_text_api.dart';
@@ -16,6 +17,8 @@ import 'package:gen_crm/screens/menu/form/widget/location_select.dart';
 import 'package:gen_crm/screens/menu/form/widget/render_check_box.dart';
 import 'package:gen_crm/screens/menu/form/widget/type_car.dart';
 import 'package:gen_crm/src/app_const.dart';
+import 'package:gen_crm/src/models/model_generator/products_response.dart';
+import 'package:gen_crm/src/string_ext.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/field_input_select_multi.dart';
@@ -31,15 +34,12 @@ import '../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import '../../../bloc/contract/attack_bloc.dart';
 import '../../../bloc/contract/contract_bloc.dart';
 import '../../../bloc/contract/detail_contract_bloc.dart';
-import '../../../bloc/contract/total_bloc.dart';
 import '../../../bloc/detail_product/detail_product_bloc.dart';
 import '../../../bloc/detail_product_customer/detail_product_customer_bloc.dart';
 import '../../../bloc/support/support_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
 import '../../../l10n/key_text.dart';
 import '../../../models/model_data_add.dart';
-import '../../../models/product_model.dart';
-import '../../../src/models/model_generator/product_response.dart';
 import '../../../widgets/loading_api.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/models/model_generator/login_response.dart';
@@ -52,6 +52,13 @@ import '../../../widgets/multiple_widget.dart';
 import '../home/contract/widget/widget_total_sum.dart';
 import 'product_list/product_contract.dart';
 import 'widget/input_drop_down_base.dart';
+
+const String GIA_TRI_HOP_DONG_FN = 'col311';
+const String TIEN_GIAM_FN =
+    'tong_tien_giam'; // key id của các trường động autosum
+const String TONG_TIEN_THUE_FN = 'tien_thue';
+const String CHUA_THANH_TOAN_FN = 'chuathanhtoan';
+const String TONG_BAO_HIEM_TRA = 'tong_bao_hiem_tra';
 
 class FormAddData extends StatefulWidget {
   const FormAddData({Key? key}) : super(key: key);
@@ -67,13 +74,19 @@ class _FormAddDataState extends State<FormAddData> {
   bool _isCheckIn = Get.arguments[3] ?? false;
   String _typeCheckIn = Get.arguments[4];
   bool _isGetData = Get.arguments[5] ?? false;
-  ProductModel? _product = Get.arguments[6];
+  ProductsRes? _product = Get.arguments[6];
   String _sdt = Get.arguments[7] ?? '';
   String _bienSo = Get.arguments[8] ?? '';
   String _idDetail = Get.arguments[9] ?? '';
   String _idPay = Get.arguments[10] ?? '';
+
   double _total = 0;
-  List<ProductModel> _listProduct = [];
+  double _tongTienGiam = 0;
+  double _daThanhToan = 0;
+  double _tongTienThue = 0;
+  double _tongBaoHiemTra = 0;
+  double _tongChuaThanhToan = 0;
+  List<ProductsRes> _listProduct = [];
   List<ModelItemAdd> _addData = [];
   late String _idUserLocal;
   Position? _position;
@@ -86,7 +99,9 @@ class _FormAddDataState extends State<FormAddData> {
   late final ServiceVoucherBloc _blocService;
   late final AttackBloc _attackBloc;
   late final ContactByCustomerBloc _contactBy;
-  late final TotalBloc _totalBloc;
+  // late final TotalBloc _totalBloc;
+  BehaviorSubject<String> _autoSumStream = BehaviorSubject.seeded('');
+  // auto sum dùng để reload khi value của các field autosum thay đổi
 
   /// check hinhTTT = 'CK' && so_tien >0  : showQRcode
   bool isAttack = (Get.arguments[1] ?? '') != ADD_PAYMENT &&
@@ -98,8 +113,9 @@ class _FormAddDataState extends State<FormAddData> {
 
   @override
   void initState() {
+    final _p = _product;
+    if (_p != null) _listProduct.add(_p); // add product từ detail product
     _blocService = ServiceVoucherBloc.of(context);
-    _totalBloc = TotalBloc.of(context);
     _attackBloc = AttackBloc.of(context);
     _bloc = FormAddBloc(userRepository: FormAddBloc.of(context).userRepository);
     _blocAdd =
@@ -116,9 +132,6 @@ class _FormAddDataState extends State<FormAddData> {
       }
     });
     _loadUser();
-    if (_product != null) {
-      _addProduct(_product!);
-    }
     _addBlocEvent(_type);
     super.initState();
   }
@@ -215,7 +228,6 @@ class _FormAddDataState extends State<FormAddData> {
 
   @override
   void deactivate() {
-    _totalBloc.add(ReloadTotalEvent());
     _contactBy.chiTietXe.add('');
     _contactBy.listXe.add([]);
     _attackBloc.add(RemoveAllAttackEvent());
@@ -461,27 +473,144 @@ class _FormAddDataState extends State<FormAddData> {
         : SizedBox();
   }
 
-  _addProduct(ProductModel data) {
-    bool check = false;
-    for (int i = 0; i < _listProduct.length; i++) {
-      if (data.id == _listProduct[i].id &&
-          data.item.combo_id == _listProduct[i].item.combo_id) {
-        check = true;
-        break;
-      }
-    }
-    if (!check) {
-      _listProduct.add(data);
+  _getDataProduct(String fieldName, ProductsRes product) {
+    for (final FormProduct value in product.form ?? []) {
+      if (fieldName == value.fieldName)
+        switch (value.fieldType) {
+          case COUNT:
+          case TEXT_NUMERIC:
+          case TEXT:
+            return value.fieldSetValue;
+          case PERCENTAGE:
+            return {
+              VALUE_GIAM_GIA: value.fieldSetValue,
+              TYPE_GIAM_GIA: value.typeOfSale,
+            };
+          case SELECT:
+            if ((value.fieldSetValueDatasource?.length ?? 0) > 0)
+              return value.fieldSetValueDatasource?.first[1];
+            else
+              return '';
+        }
     }
   }
 
-  _reload() {
+  _tinhTheoProduct() {
     _total = 0;
-    for (int i = 0; i < _listProduct.length; i++) {
-      _total += _listProduct[i].intoMoney ?? 0;
+    _tongTienThue = 0;
+    _tongTienGiam = 0;
+    _tongBaoHiemTra = 0;
+    _listProduct.forEach((element) {
+      _total += _getIntoMoney(element);
+      _tongBaoHiemTra +=
+          _getDataProduct(BA0_HIEM_TRA, element).toString().toDoubleTry();
+      _tongTienGiam += _tienGiamProduct(element);
+      _tongTienThue += _vatProduct(element);
+    });
+    _tongChuaThanhToan = _total - _daThanhToan;
+    _autoSumStream.add(
+        '$_total$_tongTienGiam$_tongTienThue$_tongChuaThanhToan$_tongBaoHiemTra');
+  }
+
+  String _getDataWithFieldName(String v) {
+    switch (v) {
+      case GIA_TRI_HOP_DONG_FN:
+        return _total.toStringAsFixed(0);
+      case TIEN_GIAM_FN:
+        return _tongTienGiam.toStringAsFixed(0);
+      case TONG_TIEN_THUE_FN:
+        return _tongTienThue.toStringAsFixed(0);
+      case TONG_BAO_HIEM_TRA:
+        return _tongBaoHiemTra.toStringAsFixed(0);
+      case CHUA_THANH_TOAN_FN:
+        return _tongChuaThanhToan.toStringAsFixed(0);
+      default:
+        return '';
     }
-    _totalBloc.getPaid();
-    _totalBloc.add(InitTotalEvent(_total));
+  }
+
+  double _getIntoMoney(ProductsRes product) {
+    double _priceProduct =
+        _getDataProduct(DON_GIA, product).toString().toDoubleTry();
+    double _vatProduct = 0;
+    double _vatProductNumber = _getDataProduct(VAT, product) != ''
+        ? _getDataProduct(VAT, product)
+            .split(PHAN_TRAM)
+            .first
+            .toString()
+            .toDoubleTry()
+        : 0;
+    double _discount = 0;
+    double _discountNumber = _getDataProduct(GIAM_GIA, product)[VALUE_GIAM_GIA]
+        .toString()
+        .toDoubleTry();
+    bool _isTypeGiamGia =
+        _getDataProduct(GIAM_GIA, product)[TYPE_GIAM_GIA] != PHAN_TRAM;
+    double _countProduct =
+        _getDataProduct(SO_LUONG, product).toString().toDoubleTry();
+
+    if (!_isTypeGiamGia) {
+      _discount = _priceProduct * _discountNumber / 100;
+    } else {
+      _discount = _discountNumber;
+    }
+
+    _vatProduct = _vatProductNumber * (_priceProduct - _discount) / 100;
+
+    double _intoMoney = 0;
+    _intoMoney = (_priceProduct + _vatProduct - _discount) * _countProduct;
+    return _intoMoney;
+  }
+
+  double _tienGiamProduct(ProductsRes product) {
+    double _discountNumber = _getDataProduct(GIAM_GIA, product)[VALUE_GIAM_GIA]
+        .toString()
+        .toDoubleTry();
+    double _priceProduct =
+        _getDataProduct(DON_GIA, product).toString().toDoubleTry();
+    double _discount = 0;
+    bool _isTypeGiamGia =
+        _getDataProduct(GIAM_GIA, product)[TYPE_GIAM_GIA] != PHAN_TRAM;
+    double _countProduct =
+        _getDataProduct(SO_LUONG, product).toString().toDoubleTry();
+
+    if (!_isTypeGiamGia) {
+      _discount = (_priceProduct * _discountNumber / 100) * _countProduct;
+    } else {
+      _discount = _discountNumber * _countProduct;
+    }
+    return _discount;
+  }
+
+  _vatProduct(ProductsRes product) {
+    double _vatProductNumber = _getDataProduct(VAT, product) != ''
+        ? _getDataProduct(VAT, product)
+            .split(PHAN_TRAM)
+            .first
+            .toString()
+            .toDoubleTry()
+        : 0;
+    double _discountNumber = _getDataProduct(GIAM_GIA, product)[VALUE_GIAM_GIA]
+        .toString()
+        .toDoubleTry();
+    double _countProduct =
+        _getDataProduct(SO_LUONG, product).toString().toDoubleTry();
+    double _priceProduct =
+        _getDataProduct(DON_GIA, product).toString().toDoubleTry();
+    double _vatProduct = 0;
+    double _discount = 0;
+    bool _isTypeGiamGia =
+        _getDataProduct(GIAM_GIA, product)[TYPE_GIAM_GIA] != PHAN_TRAM;
+
+    if (!_isTypeGiamGia) {
+      _discount = _priceProduct * _discountNumber / 100;
+    } else {
+      _discount = _discountNumber;
+    }
+
+    _vatProduct = _vatProductNumber * (_priceProduct - _discount) / 100;
+
+    return _vatProduct * _countProduct;
   }
 
   _handleNavigationAndReloadData(
@@ -563,10 +692,8 @@ class _FormAddDataState extends State<FormAddData> {
             .add(InitGetDetailProductCustomerEvent(_id));
         break;
       case ADD_PAYMENT:
-        //todo
         break;
       case EDIT_PAYMENT:
-        //todo
         break;
       case EDIT_CUSTOMER:
         GetListCustomerBloc.of(context).loadMoreController.reloadData();
@@ -673,7 +800,6 @@ class _FormAddDataState extends State<FormAddData> {
                   builder: (context, state) {
                     if (state is LoadingForm) {
                       _addData = [];
-                      _listProduct = [];
                       return SizedBox.shrink();
                     } else if (state is ErrorForm) {
                       return Text(
@@ -699,29 +825,9 @@ class _FormAddDataState extends State<FormAddData> {
                             CustomerIndividualItemData _item =
                                 _listAddData[i].data![j];
                             //
-                            _item.products?.forEach((_element) {
-                              _listProduct.add(
-                                ProductModel(
-                                  _element.id_product.toString(),
-                                  double.tryParse(_element.quantity ?? '') ?? 0,
-                                  ProductItem(
-                                    _element.id_product.toString(),
-                                    '',
-                                    '',
-                                    _element.name_product,
-                                    _element.unit.toString(),
-                                    _element.vat,
-                                    _element.price,
-                                  ),
-                                  _element.sale_off.value ?? '',
-                                  _element.unit_name ?? '',
-                                  _element.vat_name ?? '',
-                                  _element.sale_off.type ?? '',
-                                ),
-                              );
-                            });
+                            if ((_item.products ?? []).length > 0)
+                              _listProduct = _item.products ?? [];
 
-                            //
                             _addData[i].data.add(
                                   ModelDataAdd(
                                     label: _item.field_name,
@@ -885,8 +991,10 @@ class _FormAddDataState extends State<FormAddData> {
             ? ProductContract(
                 listBtn: data.button,
                 data: _listProduct,
-                addProduct: _addProduct,
-                reload: _reload,
+                onChange: (List<ProductsRes> v) {
+                  _listProduct = v;
+                  _tinhTheoProduct();
+                },
                 isDelete: true,
               )
             : _blocService.getInput(data.field_name ?? '')
@@ -983,10 +1091,10 @@ class _FormAddDataState extends State<FormAddData> {
                                     : data.field_name == hinhThucTT &&
                                             _type != ADD_PAYMENT &&
                                             _type != EDIT_PAYMENT
-                                        ? StreamBuilder<double>(
-                                            stream: _totalBloc.paidStream,
+                                        ? StreamBuilder<String>(
+                                            stream: _autoSumStream,
                                             builder: (context, snapshot) {
-                                              if ((snapshot.data ?? 0) == 0) {
+                                              if (_daThanhToan == 0) {
                                                 return SizedBox();
                                               } else {
                                                 return InputDropdownBase(
@@ -1114,116 +1222,78 @@ class _FormAddDataState extends State<FormAddData> {
                                                       )
                                                     : data.field_type ==
                                                             'TEXT_NUMERIC'
-                                                        ? data.field_name ==
-                                                                'chuathanhtoan'
+                                                        ? data.field_special ==
+                                                                'autosum'
                                                             ? StreamBuilder<
-                                                                    double>(
-                                                                stream: _totalBloc
-                                                                    .unpaidStream,
+                                                                    String>(
+                                                                stream:
+                                                                    _autoSumStream,
                                                                 builder: (context,
                                                                     snapshot) {
-                                                                  final value =
-                                                                      snapshot
-                                                                          .data;
-                                                                  _addData[
-                                                                          indexParent]
-                                                                      .data[
-                                                                          indexChild]
-                                                                      .value = value;
                                                                   return WidgetTotalSum(
                                                                     label: data
                                                                         .field_label,
                                                                     value: AppValue
-                                                                        .format_money(
-                                                                      (value ??
-                                                                              0)
-                                                                          .toStringAsFixed(
-                                                                        0,
-                                                                      ),
+                                                                        .formatMoney(
+                                                                      _getDataWithFieldName(
+                                                                          data.field_name ??
+                                                                              ''),
                                                                     ),
                                                                   );
                                                                 })
-                                                            : data.field_special ==
-                                                                    'autosum'
-                                                                ? BlocBuilder<
-                                                                        TotalBloc,
-                                                                        TotalState>(
+                                                            : data.field_parent !=
+                                                                    null // TH reload api
+                                                                ? StreamBuilder<
+                                                                        String>(
+                                                                    stream:
+                                                                        _reloadStream,
                                                                     builder:
                                                                         (context,
-                                                                            stateA) {
-                                                                    if (stateA
-                                                                        is SuccessTotalState) {
-                                                                      _addData[
-                                                                              indexParent]
-                                                                          .data[
-                                                                              indexChild]
-                                                                          .value = stateA.total.toString();
-                                                                      TotalBloc.of(
-                                                                              context)
-                                                                          .getPaid();
-                                                                      return WidgetTotalSum(
-                                                                        label: data
-                                                                            .field_label,
-                                                                        value: AppValue
-                                                                            .format_money(
-                                                                          stateA
-                                                                              .total
-                                                                              .toStringAsFixed(
-                                                                            0,
-                                                                          ),
-                                                                        ),
-                                                                      );
-                                                                    } else {
-                                                                      return WidgetTotalSum(
-                                                                        label: data
-                                                                            .field_label,
-                                                                        value:
-                                                                            '',
-                                                                      );
-                                                                    }
-                                                                  })
-                                                                : data.field_parent !=
-                                                                        null // TH reload api
-                                                                    ? StreamBuilder<
-                                                                            String>(
-                                                                        stream:
-                                                                            _reloadStream,
-                                                                        builder: (context, snapshot) {
-                                                                          return FieldTextAPi(
-                                                                            typeInput:
-                                                                                TextInputType.number,
-                                                                            addData:
-                                                                                _addData,
-                                                                            data:
-                                                                                data,
-                                                                            onChange:
-                                                                                (v) {
-                                                                              _addData[indexParent].data[indexChild].value = v;
-                                                                              _addCheckSoTien(data: data);
-                                                                            },
-                                                                          );
-                                                                        })
-                                                                    : FieldText(
+                                                                            snapshot) {
+                                                                      return FieldTextAPi(
+                                                                        typeInput:
+                                                                            TextInputType.number,
+                                                                        addData:
+                                                                            _addData,
                                                                         data:
                                                                             data,
                                                                         onChange:
                                                                             (v) {
-                                                                          if (data.field_name ==
-                                                                              'dathanhtoan') {
-                                                                            _totalBloc.paidStream.add(double.tryParse(v) ??
-                                                                                0);
-                                                                            _totalBloc.getPaid();
-                                                                          }
-
                                                                           _addData[indexParent]
                                                                               .data[indexChild]
                                                                               .value = v;
-
                                                                           _addCheckSoTien(
                                                                               data: data);
                                                                         },
-                                                                      )
-                                                        : data.field_type == 'images'
+                                                                      );
+                                                                    })
+                                                                : FieldText(
+                                                                    data: data,
+                                                                    onChange:
+                                                                        (v) {
+                                                                      // tính chua thanh toan theo số tiền DATT
+                                                                      if (data.field_name ==
+                                                                              'datt' ||
+                                                                          data.field_name ==
+                                                                              'dathanhtoan') {
+                                                                        _daThanhToan =
+                                                                            v.toDoubleTry();
+                                                                        _tinhTheoProduct();
+                                                                      }
+
+                                                                      _addData[
+                                                                              indexParent]
+                                                                          .data[
+                                                                              indexChild]
+                                                                          .value = v;
+
+                                                                      _addCheckSoTien(
+                                                                          data:
+                                                                              data);
+                                                                    },
+                                                                  )
+                                                        : data.field_type ==
+                                                                'images'
                                                             ? FieldImage(
                                                                 init: (data.field_set_value
                                                                         is List<
@@ -1302,14 +1372,14 @@ class _FormAddDataState extends State<FormAddData> {
       }
     }
 
-    if (_totalBloc.unpaidStream.value < 0 && _type == ADD_CONTRACT) {
+    if (_daThanhToan < 0 && _type == ADD_CONTRACT) {
       isCheckValidate = true;
     }
 
     if (isCheckValidate == true) {
       ShowDialogCustom.showDialogBase(
         title: getT(KeyT.notification),
-        content: _totalBloc.unpaidStream.value < 0
+        content: _daThanhToan < 0
             ? getT(KeyT.the_amount_paid_cannot_be_greater_than_the_total_amount)
             : (getT(KeyT.please_enter_all_required_fields) +
                 ((txtValidate != null && txtValidate != '')
@@ -1317,25 +1387,9 @@ class _FormAddDataState extends State<FormAddData> {
                     : '')),
       );
     } else {
-      if (_listProduct.isNotEmpty) {
-        List product = [];
-        for (int i = 0; i < _listProduct.length; i++) {
-          product.add({
-            'id': _listProduct[i].id,
-            'price': _listProduct[i].item.sell_price,
-            'quantity': _listProduct[i].soLuong,
-            'vat': _listProduct[i].item.vat,
-            'unit': _listProduct[i].item.dvt,
-            'ten_combo': _listProduct[i].item.ten_combo,
-            'combo_id': _listProduct[i].item.combo_id,
-            'sale_off': {
-              'value': _listProduct[i].giamGia,
-              'type': _listProduct[i].typeGiamGia
-            }
-          });
-        }
-        data['products'] = product;
-      }
+      if (_listProduct.length > 0)
+        data['products'] =
+            jsonEncode(_listProduct.map((e) => e.toJsonPost()).toList());
 
       switch (_type) {
         case ADD_CUSTOMER_OR:

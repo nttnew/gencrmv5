@@ -205,7 +205,7 @@ class ItemInfo extends StatelessWidget {
                           ),
                         );
                       }
-                      return item?.value_field?.trim() != '' &&
+                      return '${item?.value_field ?? ''}'.trim() != '' &&
                               item?.value_field != null
                           ? Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
@@ -242,7 +242,7 @@ class ItemInfo extends StatelessWidget {
                                               }
                                             },
                                             child: WidgetText(
-                                              title: item?.value_field ?? '',
+                                              title: '${item?.value_field ?? ''}',
                                               textAlign: TextAlign.right,
                                               style:
                                                   AppStyle.DEFAULT_14.copyWith(

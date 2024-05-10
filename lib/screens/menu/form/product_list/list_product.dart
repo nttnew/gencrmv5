@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/product/product_bloc.dart';
-import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import '../../../../l10n/key_text.dart';
-import '../../../../models/product_model.dart';
 import 'package:get/get.dart';
-import '../../../../src/app_const.dart';
+import '../../../../src/models/model_generator/products_response.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
+import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/search_base.dart';
 import '../../home/product/scanner_qrcode.dart';
-import 'item_product.dart';
+import 'item_products.dart';
 
 class ListProduct extends StatefulWidget {
   ListProduct({Key? key}) : super(key: key);
@@ -22,77 +20,68 @@ class ListProduct extends StatefulWidget {
 }
 
 class _ListProductState extends State<ListProduct> {
-  ScrollController _scrollController = ScrollController();
-  int page = BASE_URL.PAGE_DEFAULT;
-  int total = 0;
-  int length = 0;
   TextEditingController _editingController = TextEditingController();
-  Function addProduct = Get.arguments[0];
-  Function(bool) reload = Get.arguments[1];
-  List<ProductModel> listSelected = List.from(Get.arguments[2]);
-  String? group = Get.arguments[3];
-  String? title = Get.arguments[4];
+  String? title = Get.arguments[0];
+  String? group = Get.arguments[1];
+  final List<ProductsRes> _listSelected = List.from(Get.arguments[2] ?? []);
   late final ProductBloc _bloc;
-  List<ProductModel> listUI = [];
+  List<ProductsRes> _listAddSelect = [];
 
   @override
   void initState() {
     _bloc = ProductBloc(userRepository: ProductBloc.of(context).userRepository);
-    _bloc.add(InitGetListProductEvent(BASE_URL.PAGE_DEFAULT.toString(), '',
-        group: group));
-    _scrollController.addListener(() {
-      if (_scrollController.offset ==
-              _scrollController.position.maxScrollExtent &&
-          length < total) {
-        _bloc.add(InitGetListProductEvent(
-            (page + 1).toString(), _editingController.text,
-            group: group));
-        page = page + 1;
-      }
-    });
+    _coverList();
     super.initState();
+  }
+
+  _coverList() {
+    // để k bị lỗi cùng vùng bộ nhớ
+    for (int i = 0; i < _listSelected.length; i++) {
+      _listAddSelect.add(ProductsRes(
+        id: _listSelected[i].id,
+        productId: _listSelected[i].productId,
+        productCode: _listSelected[i].productCode,
+        productEdit: _listSelected[i].productEdit,
+        productName: _listSelected[i].productName,
+        tenSanPhamEn: _listSelected[i].tenSanPhamEn,
+        tenSanPhamCn: _listSelected[i].tenSanPhamCn,
+        dvt: _listSelected[i].dvt,
+        vat: _listSelected[i].vat,
+        parentId: _listSelected[i].parentId,
+        hasChild: _listSelected[i].hasChild,
+        propertyId: _listSelected[i].propertyId,
+        sellPrice: _listSelected[i].sellPrice,
+        tenSanPhamJp: _listSelected[i].tenSanPhamJp,
+        tenSanPhamKr: _listSelected[i].tenSanPhamKr,
+        tenSanPhamBm: _listSelected[i].tenSanPhamBm,
+        propertyName: _listSelected[i].propertyName,
+        tenCombo: _listSelected[i].tenCombo,
+        comboId: _listSelected[i].comboId,
+        form: _listSelected[i]
+            .form
+            ?.map((e) => FormProduct(
+                  fieldId: e.fieldId,
+                  fieldName: e.fieldName,
+                  fieldLabel: e.fieldLabel,
+                  fieldType: e.fieldType,
+                  typeOfSale: e.typeOfSale,
+                  fieldRequire: e.fieldRequire,
+                  fieldHidden: e.fieldHidden,
+                  fieldDatasource: e.fieldDatasource,
+                  fieldReadOnly: e.fieldReadOnly,
+                  fieldSetValue: e.fieldSetValue,
+                  fieldValue: e.fieldValue,
+                  fieldSetValueDatasource: e.fieldSetValueDatasource,
+                ))
+            .toList(),
+      ));
+    }
   }
 
   @override
   void dispose() {
+    _editingController.dispose();
     super.dispose();
-  }
-
-  _handleDataSelect(SuccessGetListProductState state) {
-    total = state.total;
-    length = state.listProduct.length;
-    for (int i = 0; i < state.listProduct.length; i++) {
-      listUI.add(ProductModel(
-        state.listProduct[i].product_id!,
-        0,
-        ProductItem(
-          state.listProduct[i].product_id,
-          state.listProduct[i].product_code,
-          state.listProduct[i].product_edit,
-          state.listProduct[i].product_name,
-          state.listProduct[i].dvt,
-          state.listProduct[i].vat,
-          state.listProduct[i].sell_price,
-        ),
-        '0',
-        '',
-        '',
-        '',
-      ));
-    }
-    for (int i = 0; i < listUI.length; i++) {
-      int indexS = listSelected.indexWhere(
-        (element) =>
-            element.id == listUI[i].id &&
-            (element.item.combo_id == '' ||
-                element.item.combo_id == null ||
-                element.item.ten_combo == '' ||
-                element.item.ten_combo == null),
-      );
-      if (indexS != -1) {
-        listUI[i] = listSelected[indexS];
-      }
-    }
   }
 
   @override
@@ -101,151 +90,121 @@ class _ListProductState extends State<ListProduct> {
       appBar: AppbarBaseNormal(title != null
           ? getT(KeyT.select) + ' ${title?.toLowerCase() ?? ''}'
           : getT(KeyT.select_product)),
-      body: BlocBuilder<ProductBloc, ProductState>(
-          bloc: _bloc,
-          builder: (context, state) {
-            if (state is LoadingGetListProductState) {
-              listUI = [];
-              return SizedBox.shrink();
-            } else if (state is SuccessGetListProductState) {
-              _handleDataSelect(state);
-              return Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(
-                      top: 16,
-                      bottom: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: COLORS.WHITE,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: Offset(0, 0), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: SearchBase(
-                      controller: _editingController,
-                      hint: title != null
-                          ? getT(KeyT.find) + ' ${title?.toLowerCase() ?? ''}'
-                          : getT(KeyT.find_product),
-                      onChange: (v) {
-                        _onClickSearch();
-                      },
-                      leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
-                      endIcon: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(
-                                  builder: (context) => ScannerQrcode()))
-                              .then((value) async {
-                            if (value != '') {
-                              _editingController.text = value;
-                              _onClickSearch();
-                            }
-                          });
-                        },
-                        child: Icon(
-                          Icons.qr_code_scanner,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.only(
-                        top: 8,
-                        bottom: 16,
-                        right: 16,
-                        left: 16,
-                      ),
-                      controller: _scrollController,
-                      child: Column(
-                        children: List.generate(listUI.length, (index) {
-                          return ItemProduct(
-                            data: listUI[index].item,
-                            listDvt: state.listDvt,
-                            listVat: state.listVat,
-                            onChangeQuantity: (soLuong) {
-                              listUI[index].soLuong = double.parse(soLuong);
-                            },
-                            onDVT: (id, name) {
-                              listUI[index].nameDvt = name;
-                              listUI[index].item.dvt = id;
-                            },
-                            onVAT: (id, name) {
-                              listUI[index].nameVat = name;
-                              listUI[index].item.vat = id;
-                              // }
-                            },
-                            onGiamGia: (so, type) {
-                              listUI[index].giamGia = so;
-                              listUI[index].typeGiamGia = type;
-                            },
-                            onPrice: (price) {
-                              listUI[index].item.sell_price = price;
-                            },
-                            onIntoMoney: (intoMoney) {
-                              listUI[index].intoMoney = intoMoney;
-                            },
-                            model: listUI[index],
-                            onReload: (v) {
-                              reload(v);
-                            },
-                            onDelete: (ProductModel productModel) {},
-                          );
-                        }),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: Offset(0, 0), // changes position of shadow
-                        ),
-                      ],
-                      color: COLORS.WHITE,
-                    ),
-                    child: ButtonThaoTac(
-                      marginHorizontal: 30,
-                      title: getT(KeyT.select),
-                      onTap: () {
-                        _onClickSelect();
-                      },
-                    ),
-                  ),
-                ],
-              );
-            } else
-              return noData();
-          }),
+      bottomNavigationBar: Container(
+        width: double.infinity,
+        height: 65,
+        padding: EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: Offset(0, 0), // changes position of shadow
+            ),
+          ],
+          color: COLORS.WHITE,
+        ),
+        child: ButtonBaseSmall(
+          title: getT(KeyT.select),
+          onTap: () {
+            Get.back(result: _listAddSelect);
+          },
+        ),
+      ),
+      body: ViewLoadMoreBase(
+        heightAppBar: 65,
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(
+              top: 8,
+              bottom: 8,
+            ),
+            decoration: BoxDecoration(
+              color: COLORS.WHITE,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                  offset: Offset(0, 0), // changes position of shadow
+                ),
+              ],
+            ),
+            child: SearchBase(
+              controller: _editingController,
+              hint: title != null
+                  ? getT(KeyT.find) + ' ${title?.toLowerCase() ?? ''}'
+                  : getT(KeyT.find_product),
+              onChange: (v) {
+                _onClickSearch();
+              },
+              leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+              endIcon: GestureDetector(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(
+                          builder: (context) => ScannerQrcode()))
+                      .then((value) async {
+                    if (value != '') {
+                      _editingController.text = value;
+                      _onClickSearch();
+                    }
+                  });
+                },
+                child: Icon(
+                  Icons.qr_code_scanner,
+                  size: 20,
+                ),
+              ),
+            ),
+          ),
+        ),
+        isInit: true,
+        functionInit: (page, isInit) {
+          return _bloc.getListProduct(
+            page: page,
+            querySearch: _editingController.text,
+          );
+        },
+        itemWidget: (int index, data) {
+          ProductsRes _item = data as ProductsRes;
+          final index = _listAddSelect.indexWhere((element) =>
+              element.productId == _item.productId &&
+              element.comboId == _item.comboId);
+          if (index !=
+              -1) // check xem có trong list chưa có rồi thì hiển thị data select vào
+            _item = _listAddSelect[index];
+          return ItemProducts(
+            key: Key('key${_item.toJson()}'),
+            data: _item,
+            onAdd: (ProductsRes v) {
+              final int index = _listAddSelect.indexWhere((element) =>
+                  element.productId == v.productId &&
+                  element.comboId == v.comboId);
+              if (index != -1) {
+                // nếu có rồi thì tìm vị trí của nó và set lại
+                _listAddSelect[index] = v;
+              } else {
+                // nếu chưa có thì thêm
+                _listAddSelect.add(v);
+              }
+            },
+            onDelete: (ProductsRes v) {
+              _listAddSelect.remove(v);
+            },
+          );
+        },
+        widgetLoad: widgetLoadingProduct(),
+        controller: _bloc.loadMoreControllerProduct,
+      ),
     );
   }
 
-  void _onClickSelect() {
-    for (int i = 0; i < listUI.length; i++) {
-      if (listUI[i].soLuong > 0) {
-        addProduct(listUI[i]);
-      }
-    }
-    reload(true);
-    Get.back();
-  }
-
   void _onClickSearch() {
-    _bloc.add(InitGetListProductEvent(
-      BASE_URL.PAGE_DEFAULT.toString(),
-      _editingController.text,
-      group: group,
-    ));
+    _bloc.loadMoreControllerProduct.reloadData();
   }
 }

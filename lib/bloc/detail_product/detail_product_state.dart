@@ -10,7 +10,7 @@ class InitGetDetailProduct extends DetailProductState {}
 
 class UpdateGetDetailProductState extends DetailProductState {
   final DetailProductResponse? productInfo;
-  final ProductModel? product;
+  final ProductsRes? product;
   const UpdateGetDetailProductState(this.productInfo, this.product);
   @override
   List<Object?> get props => [productInfo, product];

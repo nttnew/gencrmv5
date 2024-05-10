@@ -53,8 +53,8 @@ import '../models/model_generator/main_menu_response.dart';
 import '../models/model_generator/pdf_response.dart';
 import '../models/model_generator/policy.dart';
 import '../models/model_generator/product_customer_save_response.dart';
-import '../models/model_generator/product_response.dart';
 import '../models/model_generator/product_service_pack_response.dart';
+import '../models/model_generator/products_response.dart';
 import '../models/model_generator/qr_code_payment_res.dart';
 import '../models/model_generator/quick_create_response.dart';
 import '../models/model_generator/report_contact.dart';
@@ -450,7 +450,7 @@ abstract class RestClient {
   );
 
   @GET(BASE_URL.LIST_PRODUCT)
-  Future<ProductResponse> getListProduct(
+  Future<ProductsResponse> getListProduct(
     @Query('page') String? page,
     @Query('querySearch') String? querySearch,
     @Query('group') String? group,

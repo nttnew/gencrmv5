@@ -40,7 +40,7 @@ class _FieldTextState extends State<FieldText> {
         widget.init != null)
       _textEditingController.text = data.field_type == 'MONEY' ||
               data.field_type == 'TEXT_NUMERIC'
-          ? AppValue.format_money(
+          ? AppValue.formatMoney(
               widget.init ??
                   '${widget.data.field_set_value ?? ''}'.replaceAll('.', ''),
               isD: false,
@@ -150,7 +150,7 @@ class _FieldTextState extends State<FieldText> {
                 children: <TextSpan>[
                   TextSpan(
                     text:
-                        ' ${AppValue.format_money(widget.soTien?.toStringAsFixed(
+                        ' ${AppValue.formatMoney(widget.soTien?.toStringAsFixed(
                               0,
                             ) ?? '')}',
                     style: TextStyle(

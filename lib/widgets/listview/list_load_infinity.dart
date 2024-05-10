@@ -411,6 +411,25 @@ itemLoading({bool isMaxWidth = false}) => Shimmer.fromColors(
       ),
     );
 
+itemLoading2({bool isMaxWidth = false}) => Shimmer.fromColors(
+      baseColor: Colors.black12,
+      highlightColor: Colors.white,
+      child: Container(
+        height: 40,
+        width: isMaxWidth
+            ? MediaQuery.of(Get.context!).size.width
+            : MediaQuery.of(Get.context!).size.width / 1 / 2,
+        decoration: BoxDecoration(
+          color: Colors.cyan,
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              4,
+            ),
+          ),
+        ),
+      ),
+    );
+
 widgetLoading() {
   return Container(
     margin: EdgeInsets.symmetric(
@@ -430,5 +449,109 @@ widgetLoading() {
       boxShadow: boxShadow1,
     ),
     child: itemLoading(),
+  );
+}
+
+widgetLoadingProduct() {
+  return Container(
+    decoration: BoxDecoration(
+      border: Border(
+        bottom: BorderSide(
+          width: 1,
+          color: COLORS.GREY_400,
+        ),
+      ),
+    ),
+    padding: EdgeInsets.all(16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        itemLoading(),
+        AppValue.vSpaceTiny,
+        Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: itemLoading(),
+            ),
+            Expanded(flex: 3, child: SizedBox()),
+            Expanded(
+              child: itemLoading(),
+            ),
+          ],
+        ),
+        AppValue.vSpaceSmall,
+        itemLoading2(isMaxWidth: true),
+        AppValue.vSpaceSmall,
+        itemLoading2(isMaxWidth: true),
+        AppValue.vSpaceSmall,
+        itemLoading2(isMaxWidth: true),
+        AppValue.vSpace10,
+      ],
+    ),
+  );
+}
+
+widgetLoadingPack() {
+  return Container(
+    margin: EdgeInsets.only(
+      top: 8,
+      left: 16,
+      right: 16,
+    ),
+    padding: EdgeInsets.only(
+      bottom: 16,
+    ),
+    decoration: BoxDecoration(
+      border: Border(
+        bottom: BorderSide(
+          width: 1,
+          color: COLORS.GREY_400,
+        ),
+      ),
+    ),
+    child: Row(
+      children: [
+        WidgetContainerImage(
+          image: ICONS.IC_CART_PNG,
+          width: 25,
+          height: 25,
+          fit: BoxFit.contain,
+          borderRadius: BorderRadius.circular(0),
+          colorImage: COLORS.BLUE,
+        ),
+        SizedBox(
+          width: 16,
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              itemLoading(),
+              AppValue.vSpace4,
+              itemLoading(),
+              AppValue.vSpace4,
+              itemLoading(),
+              AppValue.vSpace4,
+              itemLoading(),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 40,
+          width: 40,
+          child: Center(
+            child: Transform.scale(
+              scale: 1.2,
+              child: Checkbox(
+                //1 là đang sử dụng
+                value: false,
+                onChanged: null,
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
   );
 }

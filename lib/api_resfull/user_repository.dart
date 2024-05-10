@@ -18,7 +18,6 @@ import 'package:gen_crm/src/models/model_generator/list_product_customer_respons
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/models/model_generator/manager_filter_response.dart';
 import 'package:gen_crm/src/models/model_generator/policy.dart';
-import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/src/models/model_generator/report_employee.dart';
 import 'package:gen_crm/src/models/model_generator/support.dart';
 import 'package:gen_crm/src/models/model_generator/work_clue.dart';
@@ -56,6 +55,7 @@ import '../src/models/model_generator/pdf_response.dart';
 import '../src/models/model_generator/product_customer_edit_response.dart';
 import '../src/models/model_generator/product_customer_save_response.dart';
 import '../src/models/model_generator/product_service_pack_response.dart';
+import '../src/models/model_generator/products_response.dart';
 import '../src/models/model_generator/qr_code_payment_res.dart';
 import '../src/models/model_generator/quick_create_response.dart';
 import '../src/models/model_generator/report_contact.dart';
@@ -719,7 +719,7 @@ class UserRepository {
         id,
       );
 
-  Future<ProductResponse> getListProduct(
+  Future<ProductsResponse> getListProduct(
           String page, String querySearch, String? group) async =>
       await RestClient(
         dio,

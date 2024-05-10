@@ -1,4 +1,5 @@
 import 'package:gen_crm/src/models/model_generator/base_response.dart';
+import 'package:gen_crm/src/models/model_generator/products_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'add_customer.g.dart';
@@ -19,7 +20,7 @@ class CustomerIndividualItemData {
   final List<List<dynamic>>? field_datasource;
   final List<List<dynamic>>? field_set_value_datasource;
   final String? field_special, field_value;
-  final List<ProductItemRes>? products;
+  final List<ProductsRes>? products;
   final List<ButtonRes>? button;
   final FieldParent? field_parent, field_search;
   final bool? is_load;
@@ -102,39 +103,39 @@ class AddCustomerIndividualData {
   Map<String, dynamic> toJson() => _$AddCustomerIndividualDataToJson(this);
 }
 
-@JsonSerializable()
-class ProductItemRes {
-  final String? name_product,
-      price,
-      quantity,
-      vat,
-      vat_name,
-      unit_name,
-      ten_combo,
-      combo_id;
-  final int? id, id_product, unit;
-  final SaleOff sale_off;
-
-  ProductItemRes(
-    this.name_product,
-    this.price,
-    this.quantity,
-    this.vat,
-    this.vat_name,
-    this.unit,
-    this.unit_name,
-    this.id,
-    this.id_product,
-    this.sale_off,
-    this.ten_combo,
-    this.combo_id,
-  );
-
-  factory ProductItemRes.fromJson(Map<String, dynamic> json) =>
-      _$ProductItemResFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ProductItemResToJson(this);
-}
+// @JsonSerializable()
+// class ProductItemRes {
+//   final String? name_product,
+//       price,
+//       quantity,
+//       vat,
+//       vat_name,
+//       unit_name,
+//       ten_combo,
+//       combo_id;
+//   final int? id, id_product, unit;
+//   final SaleOff sale_off;
+//
+//   ProductItemRes(
+//     this.name_product,
+//     this.price,
+//     this.quantity,
+//     this.vat,
+//     this.vat_name,
+//     this.unit,
+//     this.unit_name,
+//     this.id,
+//     this.id_product,
+//     this.sale_off,
+//     this.ten_combo,
+//     this.combo_id,
+//   );
+//
+//   factory ProductItemRes.fromJson(Map<String, dynamic> json) =>
+//       _$ProductItemResFromJson(json);
+//
+//   Map<String, dynamic> toJson() => _$ProductItemResToJson(this);
+// }
 
 @JsonSerializable()
 class SaleOff {

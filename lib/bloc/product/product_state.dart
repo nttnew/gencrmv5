@@ -15,9 +15,18 @@ class SuccessGetListProductState extends ProductState {
   final int total;
 
   SuccessGetListProductState(
-      this.listProduct, this.listDvt, this.listVat, this.total);
+    this.listProduct,
+    this.listDvt,
+    this.listVat,
+    this.total,
+  );
   @override
-  List<Object> get props => [listProduct, listDvt, listVat, total];
+  List<Object> get props => [
+        listProduct,
+        listDvt,
+        listVat,
+        total,
+      ];
 }
 
 class LoadingGetListProductState extends ProductState {}

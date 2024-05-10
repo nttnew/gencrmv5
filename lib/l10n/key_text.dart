@@ -277,4 +277,6 @@ class KeyT {
   static String dang_su_dung = 'dang_su_dung';
   static String so_luong_san_pham = 'so_luong_san_pham';
   static String ten_goi_dich_vu = 'ten_goi_dich_vu';
+  static String an_bot = 'an_bot';
+  static String hien_them = 'hien_them';
 }

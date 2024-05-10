@@ -4,7 +4,6 @@ import 'package:gen_crm/bloc/forgot_password_otp/forgot_password_otp_bloc.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../bloc/forgot_password/forgot_password_bloc.dart';
 import '../../l10n/key_text.dart';
 import '../../src/src_index.dart';
@@ -183,7 +182,7 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
         inputType: TextInputType.emailAddress,
         boxDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: HexColor("#838A91")),
+          border: Border.all(color: COLORS.ff838A91),
         ),
         textLabel: Text(getT(KeyT.verification_codes),
             style: TextStyle(

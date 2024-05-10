@@ -23,62 +23,34 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       : userRepository = userRepository,
         super(InitGetListProductState());
 
-  @override
-  Stream<ProductState> mapEventToState(ProductEvent event) async* {
-    if (event is InitGetListProductEvent) {
-      yield* _getListProduct(event.page, event.querySearch, group: event.group);
-    }
-  }
 
-  Stream<ProductState> _getListProduct(
-    String page,
-    String querySearch, {
+
+  LoadMoreController loadMoreControllerProduct = LoadMoreController();
+
+
+  Future<dynamic> getListProduct({
+    int page = BASE_URL.PAGE_DEFAULT,
+    String? querySearch,
     String? group,
-  }) async* {
-    LoadingApi().pushLoading();
+  }) async {
+    dynamic resDynamic = '';
     try {
-      if (querySearch != '' && page == BASE_URL.PAGE_DEFAULT.toString())
-        yield LoadingGetListProductState();
       final response = await userRepository.getListProduct(
-        page,
-        querySearch,
-        group,
+        page.toString(),
+        querySearch ?? '',
+        group ?? '',
       );
       if (isSuccess(response.code)) {
-        yield SuccessGetListProductState(
-          response.data?.product ?? [],
-          response.data?.units ?? [],
-          response.data?.vats ?? [],
-          response.data?.total ?? 0,
-        );
-        // if (page == BASE_URL.PAGE_DEFAULT.toString()) {
-        //   data = [];
-        //   data = response.data?.product ?? [];
-        //   yield SuccessGetListProductState(
-        //     response.data?.product ?? [],
-        //     response.data?.units ?? [],
-        //     response.data?.vats ?? [],
-        //     response.data?.total ?? 0,
-        //   );
-        // } else {
-        //   data = [
-        //     ...data ?? [],
-        //     ...response.data?.product ?? [],
-        //   ];
-        //   yield SuccessGetListProductState(
-        //     data ?? [],
-        //     response.data?.units ?? [],
-        //     response.data?.vats ?? [],
-        //     response.data?.total ?? 0,
-        //   );
-        // }
+        resDynamic = response.data?.product ?? [];
+      } else if (isFail(response.code)) {
+        loginSessionExpired();
       } else
-        yield ErrorGetListProductState(response.msg ?? '');
+        resDynamic = response.msg ?? '';
     } catch (e) {
-      LoadingApi().popLoading();
-      yield ErrorGetListProductState(getT(KeyT.an_error_occurred));
+      resDynamic = getT(KeyT.an_error_occurred);
+      return resDynamic;
     }
-    LoadingApi().popLoading();
+    return resDynamic;
   }
 
   Future<dynamic> getServicePack({

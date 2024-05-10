@@ -4,7 +4,6 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../l10n/key_text.dart';
 import '../../widgets/rounder_bootom_appbar.dart';
 
@@ -158,7 +157,7 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
         obscureText: true,
         boxDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: HexColor("#838A91")),
+          border: Border.all(color: COLORS.ff838A91),
         ),
       );
     });
@@ -183,7 +182,7 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
       obscureText: true,
       boxDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: HexColor("#838A91")),
+        border: Border.all(color: COLORS.ff838A91),
       ),
     );
   }

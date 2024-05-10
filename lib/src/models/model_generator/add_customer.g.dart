@@ -30,7 +30,7 @@ CustomerIndividualItemData _$CustomerIndividualItemDataFromJson(
           .toList(),
       json['field_value'] as String?,
       (json['products'] as List<dynamic>?)
-          ?.map((e) => ProductItemRes.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => ProductsRes.fromJson(e as Map<String, dynamic>))
           .toList(),
       (json['button'] as List<dynamic>?)
           ?.map((e) => ButtonRes.fromJson(e as Map<String, dynamic>))
@@ -121,37 +121,37 @@ Map<String, dynamic> _$AddCustomerIndividualDataToJson(
       'mup': instance.mup,
     };
 
-ProductItemRes _$ProductItemResFromJson(Map<String, dynamic> json) =>
-    ProductItemRes(
-      json['name_product'] as String?,
-      json['price'] as String?,
-      json['quantity'] as String?,
-      json['vat'] as String?,
-      json['vat_name'] as String?,
-      json['unit'] as int?,
-      json['unit_name'] as String?,
-      json['id'] as int?,
-      json['id_product'] as int?,
-      SaleOff.fromJson(json['sale_off'] as Map<String, dynamic>),
-      json['ten_combo'] as String?,
-      json['combo_id'] as String?,
-    );
-
-Map<String, dynamic> _$ProductItemResToJson(ProductItemRes instance) =>
-    <String, dynamic>{
-      'name_product': instance.name_product,
-      'price': instance.price,
-      'quantity': instance.quantity,
-      'vat': instance.vat,
-      'vat_name': instance.vat_name,
-      'unit_name': instance.unit_name,
-      'ten_combo': instance.ten_combo,
-      'combo_id': instance.combo_id,
-      'id': instance.id,
-      'id_product': instance.id_product,
-      'unit': instance.unit,
-      'sale_off': instance.sale_off,
-    };
+// ProductItemRes _$ProductItemResFromJson(Map<String, dynamic> json) =>
+//     ProductItemRes(
+//       json['name_product'] as String?,
+//       json['price'] as String?,
+//       json['quantity'] as String?,
+//       json['vat'] as String?,
+//       json['vat_name'] as String?,
+//       json['unit'] as int?,
+//       json['unit_name'] as String?,
+//       json['id'] as int?,
+//       json['id_product'] as int?,
+//       SaleOff.fromJson(json['sale_off'] as Map<String, dynamic>),
+//       json['ten_combo'] as String?,
+//       json['combo_id'] as String?,
+//     );
+//
+// Map<String, dynamic> _$ProductItemResToJson(ProductItemRes instance) =>
+//     <String, dynamic>{
+//       'name_product': instance.name_product,
+//       'price': instance.price,
+//       'quantity': instance.quantity,
+//       'vat': instance.vat,
+//       'vat_name': instance.vat_name,
+//       'unit_name': instance.unit_name,
+//       'ten_combo': instance.ten_combo,
+//       'combo_id': instance.combo_id,
+//       'id': instance.id,
+//       'id_product': instance.id_product,
+//       'unit': instance.unit,
+//       'sale_off': instance.sale_off,
+//     };
 
 SaleOff _$SaleOffFromJson(Map<String, dynamic> json) => SaleOff(
       json['value'] as String?,

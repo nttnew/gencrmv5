@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
-import 'package:gen_crm/models/product_model.dart';
 import 'package:gen_crm/src/models/model_generator/post_info_car_response.dart';
 import 'package:gen_crm/src/models/request/voucher_service_request.dart';
 import 'package:gen_crm/src/src_index.dart';
@@ -16,6 +15,7 @@ import '../../src/app_const.dart';
 import '../../src/models/model_generator/add_customer.dart';
 import '../../src/models/model_generator/customer.dart';
 import '../../src/models/model_generator/list_car_response.dart';
+import '../../src/models/model_generator/products_response.dart';
 import '../../storages/share_local.dart';
 import '../../widgets/listview/list_load_infinity.dart';
 
@@ -64,7 +64,7 @@ class ServiceVoucherBloc
   HangXe? soCho;
   static final String KHONG_XAC_DINH = getT(KeyT.unknown);
   static final String THEM_MOI_XE = getT(KeyT.add_new_car);
-  final List<ProductModel> listProduct = [];
+  final List<ProductsRes> listProduct = [];
   double total = 0;
   LoadMoreController loadMoreControllerPhone = LoadMoreController();
   LoadMoreController loadMoreControllerBienSo = LoadMoreController();
@@ -75,18 +75,18 @@ class ServiceVoucherBloc
     loadMoreControllerBienSo.initData([]);
   }
 
-  void addProduct(ProductModel data) {
-    bool check = false;
-    for (int i = 0; i < listProduct.length; i++) {
-      if (data.id == listProduct[i].id &&
-          data.item.combo_id == listProduct[i].item.combo_id) {
-        check = true;
-        break;
-      }
-    }
-    if (check == false) {
-      listProduct.add(data);
-    }
+  void addProduct(ProductsRes data) {
+    // bool check = false;
+    // for (int i = 0; i < listProduct.length; i++) {
+    //   if (data.id == listProduct[i].id &&
+    //       data.item.combo_id == listProduct[i].item.combo_id) {
+    //     check = true;
+    //     break;
+    //   }
+    // }
+    // if (check == false) {
+    //   listProduct.add(data);
+    // }
   }
 
   String _nameData(List<List<dynamic>> list, {int name = 1}) {

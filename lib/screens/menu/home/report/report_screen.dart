@@ -1134,7 +1134,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     title,
                     style: AppStyle.DEFAULT_16,
                   ),
-                  Text(AppValue.format_money(content),
+                  Text(AppValue.formatMoney(content),
                       style: AppStyle.DEFAULT_18_BOLD),
                 ],
               ),

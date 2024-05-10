@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gen_crm/src/models/model_generator/products_response.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../bloc/detail_product/detail_product_bloc.dart';
 import '../../../../bloc/product_module/product_module_bloc.dart';
 import '../../../../l10n/key_text.dart';
-import '../../../../models/product_model.dart';
 import '../../../../src/app_const.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/loading_api.dart';
@@ -39,7 +39,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
     _bloc.add(InitGetDetailProductEvent(_id));
   }
 
-  _getThaoTac(ProductModel? product) {
+  _getThaoTac(ProductsRes? product) {
     _list = [];
     _list.add(ModuleThaoTac(
       title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
@@ -50,7 +50,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
           title:
               '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
           type: ADD_CONTRACT,
-          product: (product?.id ?? '') != '' ? product : null,
+          product: (product?.productId ?? '') != '' ? product : null,
         );
       },
     ));
@@ -144,7 +144,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                       _getThaoTac(state.product);
                       _title = checkTitle(
                         state.productInfo?.data ?? [],
-                        '111',
+                        '111',// 111 là id của tên sản phẩm
                       );
                       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                         setState(() {});
