@@ -73,6 +73,8 @@ class _ListProductState extends State<ListProduct> {
                   fieldSetValue: e.fieldSetValue,
                   fieldValue: e.fieldValue,
                   fieldSetValueDatasource: e.fieldSetValueDatasource,
+                  listTypeContract: e.listTypeContract,
+                  isShow: e.isShow,
                 ))
             .toList(),
       ));

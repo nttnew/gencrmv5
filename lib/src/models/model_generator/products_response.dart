@@ -257,6 +257,7 @@ class FormProduct {
     this.fieldValue,
     this.fieldSetValueDatasource,
     this.listTypeContract,
+    this.isShow = false,
   });
 
   FormProduct.fromJson(Map<String, dynamic> json) {
@@ -315,6 +316,7 @@ class FormProduct {
       data['show_by_id_loai_hd'] =
           this.listTypeContract!.map((v) => v).toList();
     }
+    data['isShow'] = this.isShow;
     return data;
   }
 }

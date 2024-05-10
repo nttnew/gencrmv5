@@ -105,7 +105,6 @@ class _TextNumericProductState extends State<TextNumericProduct> {
             style: AppStyle.DEFAULT_14_BOLD,
           ),
           if (widget.isShowVND) ...[
-            Text(' (', style: AppStyle.DEFAULT_14_BOLD),
             GestureDetector(
               onTap: () {
                 _controller.text = '';
@@ -113,16 +112,33 @@ class _TextNumericProductState extends State<TextNumericProduct> {
                 setState(() {});
                 _onChangeMain();
               },
-              child: Text(
-                isVND
-                    ? '${shareLocal.getString(PreferencesKey.MONEY) ?? ''}'
-                    : '%',
-                style: AppStyle.DEFAULT_14_BOLD.copyWith(
+              child: Container(
+                alignment: Alignment.center,
+                height: 24,
+                width: 24,
+                margin: EdgeInsets.only(
+                  left: 4,
+                ),
+                decoration: BoxDecoration(
                   color: COLORS.BLUE,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      6,
+                    ),
+                  ),
+                ),
+                child: FittedBox(
+                  child: Text(
+                    isVND
+                        ? '${shareLocal.getString(PreferencesKey.MONEY) ?? ''}'
+                        : '%',
+                    style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                      color: COLORS.WHITE,
+                    ),
+                  ),
                 ),
               ),
             ),
-            Text(')', style: AppStyle.DEFAULT_14_BOLD),
           ],
           Text(': ', style: AppStyle.DEFAULT_14_BOLD),
           Expanded(
