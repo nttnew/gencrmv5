@@ -59,7 +59,7 @@ class _DetailCarState extends State<DetailCar> {
                   },
                   icon: Icon(
                     Icons.print,
-                    color: COLORS.WHITE,
+                    color: !isCarCrm() ? COLORS.BLACK : COLORS.WHITE,
                     size: 20,
                   ),
                 ),
@@ -75,7 +75,7 @@ class _DetailCarState extends State<DetailCar> {
                   },
                   icon: Icon(
                     Icons.edit_note,
-                    color: COLORS.WHITE,
+                    color: !isCarCrm() ? COLORS.BLACK : COLORS.WHITE,
                   ),
                 ),
               ],

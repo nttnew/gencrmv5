@@ -226,10 +226,10 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                     right: 16,
                   ),
                   child: Image.asset(
-                    ICONS.IC_SHOW_PNG,
+                    ICONS.IC_SHOW2_PNG,
                     height: 20,
                     width: 20,
-                    color: COLORS.WHITE,
+                    color: !isCarCrm() ? COLORS.BLACK : COLORS.WHITE,
                   ),
                 ),
               ),
