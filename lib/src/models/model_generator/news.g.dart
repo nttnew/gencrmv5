@@ -8,7 +8,7 @@ part of 'news.dart';
 
 ListNewsResponse _$ListNewsResponseFromJson(Map<String, dynamic> json) =>
     ListNewsResponse(
-      code: json['code'] as int,
+      code: (json['code'] as num).toInt(),
       message: json['message'] as String?,
       payload: (json['payload'] as List<dynamic>)
           .map((e) => NewsData.fromJson(e as Map<String, dynamic>))
@@ -23,7 +23,7 @@ Map<String, dynamic> _$ListNewsResponseToJson(ListNewsResponse instance) =>
     };
 
 NewsData _$NewsDataFromJson(Map<String, dynamic> json) => NewsData(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       newCode: json['new_code'] as String,
       image: json['image'] as String,
       category: json['category'] as String,

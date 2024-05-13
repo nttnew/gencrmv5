@@ -11,7 +11,7 @@ DataEmployList _$DataEmployListFromJson(Map<String, dynamic> json) =>
       json['id'] as String?,
       json['name'] as String?,
       json['total_sales'] as String?,
-      json['total_contract'] as int?,
+      (json['total_contract'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$DataEmployListToJson(DataEmployList instance) =>
@@ -42,7 +42,7 @@ DataEmployResponse _$DataEmployResponseFromJson(Map<String, dynamic> json) =>
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$DataEmployResponseToJson(DataEmployResponse instance) =>
     <String, dynamic>{
@@ -54,8 +54,8 @@ Map<String, dynamic> _$DataEmployResponseToJson(DataEmployResponse instance) =>
 
 RequestEmployReport _$RequestEmployReportFromJson(Map<String, dynamic> json) =>
     RequestEmployReport(
-      diem_ban: json['diem_ban'] as int?,
-      time: json['time'] as int?,
+      diem_ban: (json['diem_ban'] as num?)?.toInt(),
+      time: (json['time'] as num?)?.toInt(),
       timefrom: json['timefrom'] as String?,
       timeto: json['timeto'] as String?,
     );

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,7 +60,7 @@ class ProductCustomerModuleBloc
         loginSessionExpired();
       } else
         resDynamic = response.msg ?? '';
-    }  catch (e) {
+    } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
       return resDynamic;
     }
@@ -83,6 +85,33 @@ class ProductCustomerModuleBloc
     }
     LoadingApi().popLoading();
     return null;
+  }
+
+  Future<Map<String, dynamic>> getBienSoWithImg({
+    required File file,
+  }) async {
+    Map<String, dynamic> res = {
+      'mes': getT(KeyT.an_error_occurred),
+      'data': '',
+    };
+    LoadingApi().pushLoading();
+    try {
+      final response = await userRepository.getBienSoWithImg(file: file);
+      LoadingApi().popLoading();
+      if (isSuccess(response.code)) {
+        if ((response.data?.listBienSos ?? []).length > 0) {
+          res['mes'] = '';
+          res['data'] = response.data?.listBienSos?.first.bienso;
+        }
+      } else {
+        res['mes'] = response.msg;
+      }
+    } catch (e) {
+      res['mes'] = getT(KeyT.an_error_occurred);
+      LoadingApi().popLoading();
+      return res;
+    }
+    return res;
   }
 
   void dispose() {

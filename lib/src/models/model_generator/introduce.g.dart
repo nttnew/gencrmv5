@@ -8,7 +8,7 @@ part of 'introduce.dart';
 
 IntroduceResponse _$IntroduceResponseFromJson(Map<String, dynamic> json) =>
     IntroduceResponse(
-      code: json['code'] as int,
+      code: (json['code'] as num).toInt(),
       message: json['message'] as String?,
       payload: IntroduceData.fromJson(json['payload'] as Map<String, dynamic>),
     );
@@ -22,7 +22,7 @@ Map<String, dynamic> _$IntroduceResponseToJson(IntroduceResponse instance) =>
 
 IntroduceData _$IntroduceDataFromJson(Map<String, dynamic> json) =>
     IntroduceData(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       image: json['image'] as String,
       detail: json['detail'] as String,
     );

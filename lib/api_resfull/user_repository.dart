@@ -27,6 +27,7 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/share_local.dart';
 import '../src/models/model_generator/add_data_response.dart';
 import '../src/models/model_generator/address_customer_response.dart';
+import '../src/models/model_generator/bien_so_with_img.dart';
 import '../src/models/model_generator/bieu_mau_response.dart';
 import '../src/models/model_generator/clue.dart';
 import '../src/models/model_generator/clue_detail.dart';
@@ -148,6 +149,7 @@ class UserRepository {
     String filter,
     String search,
     String? managers,
+    String? qr,
   ) async =>
       await RestClient(
         dio,
@@ -157,6 +159,7 @@ class UserRepository {
         filter,
         search,
         managers,
+        qr,
       );
 
   Future<ListChanceResponse> getListChance(
@@ -1704,6 +1707,16 @@ class UserRepository {
       ).getQRCode(
         amount,
         message,
+      );
+
+  Future<BienSoWithImgResponse> getBienSoWithImg({
+    required File file,
+  }) async =>
+      await RestClient(
+        dio,
+        baseUrl: dio.options.baseUrl,
+      ).getBienSoWithImg(
+        file,
       );
   //////////////////////
 

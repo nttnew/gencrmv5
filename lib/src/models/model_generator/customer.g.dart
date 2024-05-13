@@ -21,13 +21,13 @@ CustomerData _$CustomerDataFromJson(Map<String, dynamic> json) => CustomerData(
       json['avatar'] as String?,
       json['loai'] as String?,
       json['is_company'] as bool?,
-      json['rank_max_level'] as int?,
-      json['rank_value'] as int?,
-      json['total_comment'] as int?,
+      (json['rank_max_level'] as num?)?.toInt(),
+      (json['rank_value'] as num?)?.toInt(),
+      (json['total_comment'] as num?)?.toInt(),
       json['email'] == null
           ? null
           : ActionModel.fromJson(json['email'] as Map<String, dynamic>),
-      json['tong_so_hop_dong'] as int?,
+      (json['tong_so_hop_dong'] as num?)?.toInt(),
       json['customer'] == null
           ? null
           : Customer.fromJson(json['customer'] as Map<String, dynamic>),
@@ -58,8 +58,8 @@ Map<String, dynamic> _$CustomerDataToJson(CustomerData instance) =>
 ListCustomerData _$ListCustomerDataFromJson(Map<String, dynamic> json) =>
     ListCustomerData(
       json['page'] as String?,
-      json['total'] as int?,
-      json['limit'] as int?,
+      (json['total'] as num?)?.toInt(),
+      (json['limit'] as num?)?.toInt(),
       (json['list'] as List<dynamic>?)
           ?.map((e) => CustomerData.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -86,7 +86,7 @@ ListCustomerResponse _$ListCustomerResponseFromJson(
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$ListCustomerResponseToJson(
         ListCustomerResponse instance) =>

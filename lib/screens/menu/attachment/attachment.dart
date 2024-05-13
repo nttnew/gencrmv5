@@ -16,7 +16,6 @@ import '../../../widgets/appbar_base.dart';
 import '../../../widgets/cupertino_loading.dart';
 import '../../../widgets/item_file.dart';
 import '../form/widget/preview_image.dart';
-import 'package:image/image.dart' as img;
 
 class Attachment extends StatefulWidget {
   Attachment({
@@ -197,39 +196,6 @@ class _AttachmentState extends State<Attachment> {
       }
     } on PlatformException catch (e) {
       throw e;
-    }
-  }
-
-  Future<File> compressImage(
-    File imageFile, {
-    int maxSizeInBytes = 2000000,
-  }) async {
-    //done 2mb
-    try {
-      // Đọc dữ liệu của ảnh
-      final bytes = await imageFile.readAsBytes();
-      img.Image? image = img.decodeImage(bytes);
-
-      // Nếu ảnh vượt quá kích thước tối đa đã đặt, nén ảnh
-      if (image != null && image.length > maxSizeInBytes) {
-        // Tính toán chất lượng nén cần thiết để giảm kích thước xuống dưới maxSizeInBytes
-        int quality = ((maxSizeInBytes / image.length) * 100).floor();
-
-        // Nén ảnh với chất lượng đã tính toán
-        List<int> compressedBytes = img.encodeJpg(image, quality: quality);
-
-        // Tạo một tệp mới với dữ liệu nén
-        File compressedImage = File('${imageFile.path}.compressed.jpg');
-        await compressedImage.writeAsBytes(compressedBytes);
-
-        // Trả về tệp đã nén
-        return compressedImage;
-      } else {
-        // Trả về tệp gốc nếu không cần nén
-        return imageFile;
-      }
-    } catch (e) {
-      return imageFile;
     }
   }
 

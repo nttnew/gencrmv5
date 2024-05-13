@@ -9,7 +9,7 @@ part of 'report_product.dart';
 ListReportProduct _$ListReportProductFromJson(Map<String, dynamic> json) =>
     ListReportProduct(
       json['name'] as String?,
-      json['id'] as int,
+      (json['id'] as num).toInt(),
       json['doanh_so'] as String?,
     );
 
@@ -41,7 +41,7 @@ ReportProductResponse _$ReportProductResponseFromJson(
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$ReportProductResponseToJson(
         ReportProductResponse instance) =>
@@ -56,8 +56,8 @@ RequestBodyReportProduct _$RequestBodyReportProductFromJson(
         Map<String, dynamic> json) =>
     RequestBodyReportProduct(
       diem_ban: json['diem_ban'] as String?,
-      time: json['time'] as int?,
-      cl: json['cl'] as int?,
+      time: (json['time'] as num?)?.toInt(),
+      cl: (json['cl'] as num?)?.toInt(),
       timefrom: json['timefrom'] as String?,
       timeto: json['timeto'] as String?,
     );

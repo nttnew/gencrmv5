@@ -74,6 +74,7 @@ class AuthenticationBloc
             '',
             '',
             null,
+            null,
           );
           if ((response.code == BASE_URL.SUCCESS) ||
               (response.code == BASE_URL.SUCCESS_200)) {

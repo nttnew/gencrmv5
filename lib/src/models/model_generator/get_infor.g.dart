@@ -22,7 +22,7 @@ InforResponse _$InforResponseFromJson(Map<String, dynamic> json) =>
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$InforResponseToJson(InforResponse instance) =>
     <String, dynamic>{

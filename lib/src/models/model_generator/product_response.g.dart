@@ -33,8 +33,8 @@ Map<String, dynamic> _$ProductItemToJson(ProductItem instance) =>
 
 ProductData _$ProductDataFromJson(Map<String, dynamic> json) => ProductData(
       json['page'],
-      json['limit'] as int?,
-      json['total'] as int?,
+      (json['limit'] as num?)?.toInt(),
+      (json['total'] as num?)?.toInt(),
       (json['product'] as List<dynamic>?)
           ?.map((e) => ProductItem.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -62,7 +62,7 @@ ProductResponse _$ProductResponseFromJson(Map<String, dynamic> json) =>
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$ProductResponseToJson(ProductResponse instance) =>
     <String, dynamic>{

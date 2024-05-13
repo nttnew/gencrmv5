@@ -18,7 +18,7 @@ CustomerIndividualItemData _$CustomerIndividualItemDataFromJson(
       json['field_maxlength'] as String?,
       json['field_hidden'] as String?,
       json['parent'] as String?,
-      json['field_require'] as int?,
+      (json['field_require'] as num?)?.toInt(),
       json['field_read_only'],
       json['field_set_value'],
       (json['field_datasource'] as List<dynamic>?)
@@ -110,7 +110,7 @@ AddCustomerIndividualData _$AddCustomerIndividualDataFromJson(
               CustomerIndividualItemData.fromJson(e as Map<String, dynamic>))
           .toList(),
       json['group_name'] as String?,
-      json['mup'] as int?,
+      (json['mup'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$AddCustomerIndividualDataToJson(
@@ -120,38 +120,6 @@ Map<String, dynamic> _$AddCustomerIndividualDataToJson(
       'group_name': instance.group_name,
       'mup': instance.mup,
     };
-
-// ProductItemRes _$ProductItemResFromJson(Map<String, dynamic> json) =>
-//     ProductItemRes(
-//       json['name_product'] as String?,
-//       json['price'] as String?,
-//       json['quantity'] as String?,
-//       json['vat'] as String?,
-//       json['vat_name'] as String?,
-//       json['unit'] as int?,
-//       json['unit_name'] as String?,
-//       json['id'] as int?,
-//       json['id_product'] as int?,
-//       SaleOff.fromJson(json['sale_off'] as Map<String, dynamic>),
-//       json['ten_combo'] as String?,
-//       json['combo_id'] as String?,
-//     );
-//
-// Map<String, dynamic> _$ProductItemResToJson(ProductItemRes instance) =>
-//     <String, dynamic>{
-//       'name_product': instance.name_product,
-//       'price': instance.price,
-//       'quantity': instance.quantity,
-//       'vat': instance.vat,
-//       'vat_name': instance.vat_name,
-//       'unit_name': instance.unit_name,
-//       'ten_combo': instance.ten_combo,
-//       'combo_id': instance.combo_id,
-//       'id': instance.id,
-//       'id_product': instance.id_product,
-//       'unit': instance.unit,
-//       'sale_off': instance.sale_off,
-//     };
 
 SaleOff _$SaleOffFromJson(Map<String, dynamic> json) => SaleOff(
       json['value'] as String?,
@@ -177,7 +145,7 @@ AddCustomerIndividual _$AddCustomerIndividualFromJson(
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$AddCustomerIndividualToJson(
         AddCustomerIndividual instance) =>

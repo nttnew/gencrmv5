@@ -13,7 +13,7 @@ CustomerContractResponse _$CustomerContractResponseFromJson(
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$CustomerContractResponseToJson(
         CustomerContractResponse instance) =>

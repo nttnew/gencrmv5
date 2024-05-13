@@ -16,7 +16,7 @@ InfoUserLogin _$InfoUserLoginFromJson(Map<String, dynamic> json) =>
       json['email'] as String?,
       json['phone'] as String?,
       json['dia_chi'] as String?,
-      json['enable_callcenter'] as int?,
+      (json['enable_callcenter'] as num?)?.toInt(),
       json['info_setup_callcenter'] == null
           ? null
           : InfoSetupCallcenterRes.fromJson(
@@ -50,8 +50,8 @@ LoginData _$LoginDataFromJson(Map<String, dynamic> json) => LoginData(
           : InfoUserLogin.fromJson(json['info_user'] as Map<String, dynamic>),
       token: json['token'] as String?,
       session_id: json['session_id'] as String?,
-      systemversion: json['systemversion'] as int?,
-      carCRM: json['carCRM'] as int?,
+      systemversion: (json['systemversion'] as num?)?.toInt(),
+      carCRM: (json['carCRM'] as num?)?.toInt(),
       outbound_mobile: json['outbound_mobile'] as String?,
       port_mobile: json['port_mobile'] as String?,
       transport_mobile: json['transport_mobile'] as String?,
@@ -85,7 +85,7 @@ LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
     <String, dynamic>{
@@ -105,7 +105,7 @@ InfoSetupCallcenterRes _$InfoSetupCallcenterResFromJson(
       nth: json['nth'] as String?,
       ntd: json['ntd'] as String?,
       zalo_call: json['zalo_call'] as String?,
-      type_call: json['type_call'] as int?,
+      type_call: (json['type_call'] as num?)?.toInt(),
       outbound_proxy: json['outbound_proxy'] as String?,
       outbound_server: json['outbound_server'] as String?,
       wss_mobile: json['wss_mobile'] as String?,
@@ -134,7 +134,7 @@ Map<String, dynamic> _$InfoSetupCallcenterResToJson(
 LanguagesResponse _$LanguagesResponseFromJson(Map<String, dynamic> json) =>
     LanguagesResponse(
       label: json['label'] as String?,
-      defaultLanguages: json['default'] as int?,
+      defaultLanguages: (json['default'] as num?)?.toInt(),
       flag: json['flag'] as String?,
       name: json['name'] as String?,
     );

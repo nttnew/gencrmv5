@@ -7,7 +7,7 @@ part of 'logo.dart';
 // **************************************************************************
 
 LogoResponse _$LogoResponseFromJson(Map<String, dynamic> json) => LogoResponse(
-      code: json['code'] as int,
+      code: (json['code'] as num).toInt(),
       message: json['message'] as String?,
       payload: LogoData.fromJson(json['payload'] as Map<String, dynamic>),
     );
@@ -20,7 +20,7 @@ Map<String, dynamic> _$LogoResponseToJson(LogoResponse instance) =>
     };
 
 LogoData _$LogoDataFromJson(Map<String, dynamic> json) => LogoData(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       imageLogo: json['image_logo'] as String,
     );
 

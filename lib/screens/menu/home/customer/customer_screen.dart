@@ -16,6 +16,7 @@ import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
+import '../product/scanner_qrcode.dart';
 import 'widget/item_list_customer.dart';
 
 class CustomerScreen extends StatefulWidget {
@@ -192,42 +193,102 @@ class _CustomerScreenState extends State<CustomerScreen> {
           child: Column(
             children: [
               AppValue.vSpaceSmall,
-              StreamBuilder<List<TreeNodeData>>(
-                  stream: managerBloc.managerTrees,
-                  builder: (context, snapshot) {
-                    return SearchBase(
-                      hint: '${getT(KeyT.find)} ${title.toLowerCase()}',
-                      leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
-                      endIcon: (snapshot.data ?? []).isNotEmpty
-                          ? SvgPicture.asset(
-                              ICONS.IC_USER2_SVG,
-                              width: 16,
-                              height: 16,
-                              fit: BoxFit.contain,
-                            )
-                          : null,
-                      onClickRight: () {
-                        showManagerFilter(context, managerBloc, (v) {
-                          _bloc.ids = v;
-                          _bloc.loadMoreController.reloadData();
-                        });
-                      },
-                      onChange: (String v) {
-                        _bloc.search = v;
-                        _bloc.loadMoreController.reloadData();
-                      },
-                    );
-                  }),
-              AppValue.vSpaceTiny,
-              DropDownBase(
-                isName: true,
-                stream: _bloc.listType,
-                onTap: (item) {
-                  if (_bloc.idFilter != item._id.toString()) {
-                    _bloc.idFilter = item._id.toString();
-                    _bloc.loadMoreController.reloadData();
-                  }
+              SearchBase(
+                hint: '${getT(KeyT.find)} ${title.toLowerCase()}',
+                leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                endIcon: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(
+                            builder: (context) => ScannerQrcode()))
+                        .then((value) async {
+                      if (value != '') {
+                        final ListCustomerResponse? result =
+                            await _bloc.getListCustomerQR(qr: value);
+                        if (result?.data?.list?.isNotEmpty ?? false) {
+                          AppNavigator.navigateDetailCustomer(
+                            result?.data?.list?.first.id ?? '',
+                          );
+                        } else {
+                          ShowDialogCustom.showDialogBase(
+                            title: getT(KeyT.notification),
+                            content: getT(KeyT.no_data),
+                          );
+                        }
+                      }
+                    });
+                  },
+                  child: Icon(
+                    Icons.qr_code_scanner,
+                    size: 20,
+                  ),
+                ),
+                onChange: (String v) {
+                  _bloc.search = v;
+                  _bloc.loadMoreController.reloadData();
                 },
+              ),
+              AppValue.vSpaceTiny,
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  bottom: 16,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: DropDownBase(
+                        isPadding: false,
+                        isName: true,
+                        stream: _bloc.listType,
+                        onTap: (item) {
+                          if (_bloc.idFilter != item._id.toString()) {
+                            _bloc.idFilter = item._id.toString();
+                            _bloc.loadMoreController.reloadData();
+                          }
+                        },
+                      ),
+                    ),
+                    StreamBuilder<List<TreeNodeData>>(
+                        stream: managerBloc.managerTrees,
+                        builder: (context, snapshot) {
+                          if (snapshot.data?.isNotEmpty ?? false)
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 6.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  showManagerFilter(context, managerBloc, (v) {
+                                    _bloc.ids = v;
+                                    _bloc.loadMoreController.reloadData();
+                                  });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(14),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: COLORS.GREY_400,
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                        4,
+                                      ),
+                                    ),
+                                  ),
+                                  child: SvgPicture.asset(
+                                    ICONS.IC_USER2_SVG,
+                                    width: 20,
+                                    height: 20,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                            );
+                          return SizedBox();
+                        }),
+                  ],
+                ),
               ),
             ],
           ),

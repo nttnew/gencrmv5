@@ -17,7 +17,7 @@ WorkClueData _$WorkClueDataFromJson(Map<String, dynamic> json) => WorkClueData(
       user_work_id: json['user_work_id'] as String?,
       user_work_name: json['user_work_name'] as String?,
       user_work_avatar: json['user_work_avatar'] as String?,
-      total_comment: json['total_comment'] as int?,
+      total_comment: (json['total_comment'] as num?)?.toInt(),
       color: json['color'] as String?,
       product_customer: json['product_customer'] == null
           ? null
@@ -49,7 +49,7 @@ WorkClueResponse _$WorkClueResponseFromJson(Map<String, dynamic> json) =>
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$WorkClueResponseToJson(WorkClueResponse instance) =>
     <String, dynamic>{

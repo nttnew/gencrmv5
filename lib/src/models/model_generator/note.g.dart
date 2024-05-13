@@ -31,7 +31,7 @@ NoteData _$NoteDataFromJson(Map<String, dynamic> json) => NoteData(
           ?.map((e) => NoteItem.fromJson(e as Map<String, dynamic>))
           .toList(),
       json['id'] as String?,
-      json['remaining'] as int?,
+      (json['remaining'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$NoteDataToJson(NoteData instance) => <String, dynamic>{
@@ -47,7 +47,7 @@ NoteResponse _$NoteResponseFromJson(Map<String, dynamic> json) => NoteResponse(
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$NoteResponseToJson(NoteResponse instance) =>
     <String, dynamic>{

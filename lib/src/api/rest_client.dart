@@ -30,6 +30,7 @@ import 'package:retrofit/retrofit.dart';
 import 'package:gen_crm/src/base.dart';
 import 'package:gen_crm/src/models/index.dart';
 import '../models/model_generator/address_customer_response.dart';
+import '../models/model_generator/bien_so_with_img.dart';
 import '../models/model_generator/bieu_mau_response.dart';
 import '../models/model_generator/contact_by_customer.dart';
 import '../models/model_generator/detail_contract.dart';
@@ -121,7 +122,7 @@ abstract class RestClient {
     @Query('filter') String filter,
     @Query('search') String search,
     @Query('nguoi_quan_ly') String? manager,
-    //todo
+    @Query('qr') String? qr,
   );
 
   @GET(BASE_URL.LIST_CHANCE)
@@ -957,6 +958,12 @@ abstract class RestClient {
   Future<QrCodePaymentRes> getQRCode(
     @Field('amount') String amount,
     @Field('message') String message,
+  );
+
+  @POST(BASE_URL.GET_BIEN_SO_XE_WITH_IMG)
+  @MultiPart()
+  Future<BienSoWithImgResponse> getBienSoWithImg(
+    @Part(name: 'hinh_anh') File file,
   );
 }
 

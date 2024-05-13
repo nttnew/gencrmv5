@@ -34,7 +34,7 @@ ListNotification _$ListNotificationFromJson(Map<String, dynamic> json) =>
           ?.map((e) => DataNotification.fromJson(e as Map<String, dynamic>))
           .toList(),
       json['total'] as String?,
-      json['limit'] as int?,
+      (json['limit'] as num?)?.toInt(),
       json['page'] as String?,
     );
 
@@ -53,7 +53,7 @@ ListNotificationResponse _$ListNotificationResponseFromJson(
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$ListNotificationResponseToJson(
         ListNotificationResponse instance) =>
