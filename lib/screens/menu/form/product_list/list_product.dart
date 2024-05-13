@@ -119,6 +119,7 @@ class _ListProductState extends State<ListProduct> {
         ),
       ),
       body: ViewLoadMoreBase(
+        paddingList: 0,
         heightAppBar: 65,
         child: SingleChildScrollView(
           child: Container(

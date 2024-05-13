@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gen_crm/screens/menu/form/product_list/function_product/text_numeric_product.dart';
 import 'package:gen_crm/src/models/model_generator/products_response.dart';
 import 'package:gen_crm/src/string_ext.dart';
+import 'package:gen_crm/widgets/line_horizontal_widget.dart';
 import 'package:gen_crm/widgets/showToastM.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import '../../../../l10n/key_text.dart';
@@ -80,26 +81,25 @@ class _ItemProductsState extends State<ItemProducts> {
     });
   }
 
+  _isShowReload({bool? v}) {
+    _dataNew.isShowLocal = v ?? !_dataNew.isShowLocal;
+    _reload();
+  }
+
+  bool _checkSoLuong() => _getData(SO_LUONG).toString().toDoubleTry() > 0;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              width: 1,
-              color: COLORS.GREY_400,
-            ),
-          ),
-        ),
         padding: EdgeInsets.symmetric(
-          vertical: 16,
           horizontal: widget.paddingHorizontal ?? 16,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            AppValue.vSpaceSmall,
             WidgetText(
               title: _dataNew.productName ?? '',
               style: AppStyle.DEFAULT_16_BOLD,
@@ -116,33 +116,34 @@ class _ItemProductsState extends State<ItemProducts> {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    _dataNew.isShowLocal = !_dataNew.isShowLocal;
-                    setState(() {});
-                  },
-                  child: WidgetText(
-                    title: !_dataNew.isShowLocal
-                        ? getT(KeyT.hien_them)
-                        : getT(KeyT.an_bot),
-                    style: AppStyle.DEFAULT_14_BOLD.copyWith(
-                      color: COLORS.BLUE,
-                      decoration: TextDecoration.underline,
+                if (_checkSoLuong())
+                  GestureDetector(
+                    onTap: () {
+                      _isShowReload();
+                    },
+                    child: WidgetText(
+                      title: !_dataNew.isShowLocal
+                          ? getT(KeyT.hien_them)
+                          : getT(KeyT.an_bot),
+                      style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                        color: COLORS.BLUE,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
             AppValue.vSpace10,
             Wrap(
-              runSpacing: 10,
-              spacing: 10,
+              runSpacing: _checkSoLuong() ? 10 : 0,
+              spacing: _checkSoLuong() ? 10 : 0,
               children: ((_dataNew.form ?? [])
                       .where((element) => element.isShow)
                       .toList())
                   .asMap()
                   .mapEntries((e) {
-                if (e.key > 4 && !_dataNew.isShowLocal) return SizedBox();
+                if (e.key > (_checkSoLuong() ? 5 : 0) && !_dataNew.isShowLocal)
+                  return SizedBox.shrink();
                 return _widget(
                   e.value,
                   (
@@ -194,39 +195,50 @@ class _ItemProductsState extends State<ItemProducts> {
                       _reload();
                     }
 
-                    if (_getData(SO_LUONG).toString().toDoubleTry() > 0) {
+                    if (_checkSoLuong()) {
                       widget.onAdd(_dataNew);
                     } else {
+                      _isShowReload(v: false);
                       widget.onDelete(_dataNew);
                     }
                   },
                 );
               }).toList(),
             ),
+            _deleteWidget(),
             AppValue.vSpace10,
-            !widget.isDelete
-                ? SizedBox()
-                : GestureDetector(
-                    onTap: () {
-                      widget.onDelete(_dataNew);
-                    },
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      child: WidgetText(
-                        textAlign: TextAlign.end,
-                        title: getT(KeyT.delete),
-                        style: AppStyle.DEFAULT_14_BOLD.copyWith(
-                          color: COLORS.RED,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ),
-                  ),
+            LineHorizontal(
+              color: COLORS.GREY_400,
+            ),
           ],
         ),
       ),
     );
   }
+
+  Widget _deleteWidget() => (!widget.isDelete)
+      ? SizedBox()
+      : Container(
+          margin: EdgeInsets.only(
+            top: 10,
+          ),
+          child: GestureDetector(
+            onTap: () {
+              widget.onDelete(_dataNew);
+            },
+            child: Container(
+              alignment: Alignment.centerRight,
+              child: WidgetText(
+                textAlign: TextAlign.end,
+                title: getT(KeyT.delete),
+                style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                  color: COLORS.RED,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ),
+        );
 
   _setValueText(
     String fieldName,

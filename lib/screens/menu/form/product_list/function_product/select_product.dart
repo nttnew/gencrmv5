@@ -69,7 +69,8 @@ class _SelectProductState extends State<SelectProduct> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              (widget.formProduct.fieldLabel ?? '') + ': $valueName',
+              (widget.formProduct.fieldLabel ?? '') +
+                  '${valueName != '' ? ': $valueName' : ''}',
               style: AppStyle.DEFAULT_14_BOLD,
             ),
           ],

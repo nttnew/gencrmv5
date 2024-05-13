@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../line_horizontal_widget.dart';
+
 class ViewLoadMoreBase extends StatefulWidget {
   const ViewLoadMoreBase({
     Key? key,
@@ -18,6 +20,7 @@ class ViewLoadMoreBase extends StatefulWidget {
     this.isDispose = true,
     this.heightAppBar,
     this.widgetLoad,
+    this.paddingList,
   }) : super(key: key);
   final Future<dynamic> Function(int page, bool isInit) functionInit;
   final Function(int index, dynamic data) itemWidget;
@@ -29,6 +32,7 @@ class ViewLoadMoreBase extends StatefulWidget {
   final BehaviorSubject<List<dynamic>>? isShowAll;
   final double? heightAppBar;
   final Widget? widgetLoad;
+  final double? paddingList;
 
   @override
   State<ViewLoadMoreBase> createState() => _ViewLoadMoreBaseState();
@@ -227,7 +231,7 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
         shrinkWrap: isWarp,
         physics: physics ?? AlwaysScrollableScrollPhysics(),
         padding: EdgeInsets.only(
-          top: 16,
+          top: widget.paddingList ?? 16,
         ),
         controller: isController ? _controller.controller : null,
         itemCount: list?.length,
@@ -237,7 +241,7 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
   _childLNull() => ListView.builder(
         shrinkWrap: true,
         padding: EdgeInsets.only(
-          top: 16,
+          top: widget.paddingList ?? 16,
         ),
         itemCount: 10,
         itemBuilder: (context, index) =>
@@ -454,20 +458,32 @@ widgetLoading() {
 
 widgetLoadingProduct() {
   return Container(
-    decoration: BoxDecoration(
-      border: Border(
-        bottom: BorderSide(
-          width: 1,
-          color: COLORS.GREY_400,
-        ),
-      ),
+    padding: EdgeInsets.symmetric(
+      horizontal: 16,
     ),
-    padding: EdgeInsets.all(16),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        itemLoading(),
-        AppValue.vSpaceTiny,
+        AppValue.vSpaceSmall,
+        Row(
+          children: [
+            Expanded(
+              child: itemLoading(),
+            ),
+            Expanded(flex: 2, child: SizedBox()),
+          ],
+        ),
+        AppValue.vSpace4,
+        Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: itemLoading(),
+            ),
+            Expanded(flex: 2, child: SizedBox()),
+          ],
+        ),
+        AppValue.vSpace4,
         Row(
           children: [
             Expanded(
@@ -475,18 +491,12 @@ widgetLoadingProduct() {
               child: itemLoading(),
             ),
             Expanded(flex: 3, child: SizedBox()),
-            Expanded(
-              child: itemLoading(),
-            ),
           ],
         ),
-        AppValue.vSpaceSmall,
-        itemLoading2(isMaxWidth: true),
-        AppValue.vSpaceSmall,
-        itemLoading2(isMaxWidth: true),
-        AppValue.vSpaceSmall,
-        itemLoading2(isMaxWidth: true),
         AppValue.vSpace10,
+        LineHorizontal(
+          color: COLORS.GREY_400,
+        ),
       ],
     ),
   );

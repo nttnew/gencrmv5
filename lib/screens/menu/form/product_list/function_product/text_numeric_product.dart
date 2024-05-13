@@ -140,7 +140,6 @@ class _TextNumericProductState extends State<TextNumericProduct> {
               ),
             ),
           ],
-          Text(': ', style: AppStyle.DEFAULT_14_BOLD),
           Expanded(
             child: TextFormField(
               focusNode: _myFocusNode,

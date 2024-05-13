@@ -5,7 +5,6 @@ import '../../../../../src/src_index.dart';
 import '../../../../../storages/share_local.dart';
 import '../../../../../widgets/date_time_picker/flutter_datetime_picker.dart';
 import '../../../../../widgets/date_time_picker/src/i18n_model.dart';
-import '../../../../../widgets/widget_text.dart';
 
 class DateProduct extends StatefulWidget {
   DateProduct({
@@ -110,11 +109,8 @@ class _DateProductState extends State<DateProduct> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              (widget.formProduct.fieldLabel ?? '') + ': ',
-              style: AppStyle.DEFAULT_14_BOLD,
-            ),
-            WidgetText(
-              title: dateText,
+              (widget.formProduct.fieldLabel ?? '') +
+                  '${dateText != '' ? ': $dateText' : ''}',
               style: AppStyle.DEFAULT_14_BOLD,
             ),
             AppValue.hSpaceTiny,
