@@ -5,7 +5,7 @@ import '../storages/share_local.dart';
 
 String getT(String key) {
   final dataLang =
-      jsonDecode(shareLocal.getString(PreferencesKey.LANGUAGE_BE_ALL));
+      jsonDecode(shareLocal.getString(PreferencesKey.LANGUAGE_BE_ALL)) ?? '';
   final String lang = shareLocal.getString(PreferencesKey.LANGUAGE_NAME) ??
       L10n.VN; //default build app
   return dataLang[lang][key] ?? '';

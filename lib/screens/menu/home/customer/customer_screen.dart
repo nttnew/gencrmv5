@@ -244,8 +244,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
                         isName: true,
                         stream: _bloc.listType,
                         onTap: (item) {
-                          if (_bloc.idFilter != item._id.toString()) {
-                            _bloc.idFilter = item._id.toString();
+                          if (_bloc.idFilter != item.id.toString()) {
+                            _bloc.idFilter = item.id.toString();
                             _bloc.loadMoreController.reloadData();
                           }
                         },

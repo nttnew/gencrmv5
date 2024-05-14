@@ -130,7 +130,7 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                         isName: true,
                         stream: _bloc.listFilter,
                         onTap: (item) {
-                          _bloc.filter = item._id.toString();
+                          _bloc.filter = item.id.toString();
                           _bloc.loadMoreController.reloadData();
                         },
                       ),

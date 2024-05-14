@@ -123,7 +123,7 @@ class _ContractScreenState extends State<ContractScreen> {
                 isName: true,
                 stream: _bloc.listType,
                 onTap: (item) {
-                  _bloc.idFilter = item._id.toString();
+                  _bloc.idFilter = item.id.toString();
                   _bloc.loadMoreController.reloadData();
                 },
               ),

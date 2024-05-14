@@ -207,7 +207,7 @@ class _WorkScreenState extends State<WorkScreen> {
                 isName: true,
                 stream: _bloc.listType,
                 onTap: (item) {
-                  _bloc.idFilter = item._id.toString();
+                  _bloc.idFilter = item.id.toString();
                   _bloc.loadMoreController.reloadData();
                 },
               ),

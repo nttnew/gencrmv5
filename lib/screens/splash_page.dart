@@ -45,7 +45,9 @@ class _LogoAppState extends State<SplashPage>
     final response = await shareLocal.getString(PreferencesKey.USER);
     if (response != null && response != '') {
       setState(() {
-        user = LoginData.fromJson(jsonDecode(response));
+        try {
+          user = LoginData.fromJson(jsonDecode(response));
+        } catch (e) {}
       });
     }
   }

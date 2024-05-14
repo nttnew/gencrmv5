@@ -137,7 +137,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         isPadding: false,
                         stream: _bloc.listType,
                         onTap: (item) {
-                          _bloc.type = item._id;
+                          _bloc.type = item.id;
                           _bloc.loadMoreController.reloadData();
                         },
                       ),
@@ -152,7 +152,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           stream: _bloc.listFilter,
                           isName: true,
                           onTap: (item) {
-                            _bloc.filter = item._id;
+                            _bloc.filter = item.id;
                             _bloc.loadMoreController.reloadData();
                           },
                         ),
