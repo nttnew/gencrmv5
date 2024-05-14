@@ -1,8 +1,7 @@
 import 'dart:convert';
-
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/api_resfull/dio_provider.dart';
+import 'package:gen_crm/firebase/firebase_config.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/storages/share_local.dart';
 import 'package:get/get.dart';
@@ -55,8 +54,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
   }
 
   _init() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-    tokenFirebase = await messaging.getToken();
+    tokenFirebase = await FirebaseConfig.getTokenFcm();
     canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
     canAuthenticate =
         canAuthenticateWithBiometrics || await auth.isDeviceSupported();
