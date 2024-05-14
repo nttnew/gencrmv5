@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -60,11 +61,15 @@ Future main() async {
   shareLocal = await ShareLocal.getInstance();
   WidgetsFlutterBinding.ensureInitialized();
   UserRepository userRepository = UserRepository();
-  await PushNotifAndroid.initFirebase(DefaultFirebaseOptions.currentPlatform);
-  await Firebase.initializeApp(
-    name: "app",
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await PushNotifAndroid.initFirebase(
+      options: DefaultFirebaseOptions.currentPlatform,
+      onMessageOpenedApp: (RemoteMessage remoteMessage) {
+        AppNavigator.navigateNotification();
+      });
+  // await Firebase.initializeApp(
+  //   name: "app",
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
   runApp(
     MultiRepositoryProvider(
       providers: [
@@ -199,8 +204,7 @@ Future main() async {
                 GetListReadedNotifiBloc(userRepository: userRepository),
           ),
           BlocProvider<GetInfoAccBloc>(
-            create: (context) =>
-                GetInfoAccBloc(userRepository: userRepository),
+            create: (context) => GetInfoAccBloc(userRepository: userRepository),
           ),
           BlocProvider<SupportBloc>(
             create: (context) => SupportBloc(userRepository: userRepository),
@@ -279,7 +283,8 @@ Future main() async {
             create: (context) => ManagerBloc(userRepository: userRepository),
           ),
           BlocProvider<QuySoReportBloc>(
-            create: (context) => QuySoReportBloc(userRepository: userRepository),
+            create: (context) =>
+                QuySoReportBloc(userRepository: userRepository),
           ),
         ],
         child: ProviderScope(child: const MyApp()),
