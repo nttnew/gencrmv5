@@ -60,7 +60,8 @@ Future main() async {
   shareLocal = await ShareLocal.getInstance();
   WidgetsFlutterBinding.ensureInitialized();
   UserRepository userRepository = UserRepository();
-  await PushNotifAndroid.initFirebase(DefaultFirebaseOptions.currentPlatform);
+  await PushNotifAndroid.initFirebase(
+      options: DefaultFirebaseOptions.currentPlatform);
   await Firebase.initializeApp(
     name: "app",
     options: DefaultFirebaseOptions.currentPlatform,
@@ -199,8 +200,7 @@ Future main() async {
                 GetListReadedNotifiBloc(userRepository: userRepository),
           ),
           BlocProvider<GetInfoAccBloc>(
-            create: (context) =>
-                GetInfoAccBloc(userRepository: userRepository),
+            create: (context) => GetInfoAccBloc(userRepository: userRepository),
           ),
           BlocProvider<SupportBloc>(
             create: (context) => SupportBloc(userRepository: userRepository),
@@ -279,7 +279,8 @@ Future main() async {
             create: (context) => ManagerBloc(userRepository: userRepository),
           ),
           BlocProvider<QuySoReportBloc>(
-            create: (context) => QuySoReportBloc(userRepository: userRepository),
+            create: (context) =>
+                QuySoReportBloc(userRepository: userRepository),
           ),
         ],
         child: ProviderScope(child: const MyApp()),
