@@ -311,8 +311,8 @@ class _ItemProductState extends State<ItemProduct> {
                       width: 5,
                     ),
                     itemClick(
-                      title:
-                          '${getT(KeyT.vat)}: ' + '${_vat == '' ? 'null' : _vat}',
+                      title: '${getT(KeyT.vat)}: ' +
+                          '${_vat == '' ? 'null' : _vat}',
                       isChange: _vat != _vatInit,
                       onTap: () {
                         onClickVAT(context, widget.listVat, (v) {
@@ -483,7 +483,7 @@ class _ItemProductState extends State<ItemProduct> {
                 String text = v; // Đoạn văn bản cần kiểm tra
                 double number = 0;
                 try {
-                  number = text.toDoubleTry();
+                  number = double.parse(text);
                 } catch (e) {
                   if (text.split(',').length <= 2) {
                     number = text.replaceAll(',', '.').toDoubleTry();
