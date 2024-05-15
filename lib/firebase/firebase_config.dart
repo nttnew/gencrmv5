@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_pitel_voip/voip_push/push_notif.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import '../firebase_options.dart';
 import '../src/navigator.dart';
@@ -12,15 +13,19 @@ import 'package:flutter_pitel_voip/flutter_pitel_voip.dart';
 
 class FirebaseConfig {
   static Future<void> requestPermission() async {
-    // await FirebaseMessaging.instance.requestPermission(
-    //   alert: true,
-    //   announcement: false,
-    //   badge: true,
-    //   carPlay: false,
-    //   criticalAlert: false,
-    //   provisional: false,
-    //   sound: true,
-    // );
+    PermissionStatus status = await Permission.notification.status;
+    if (!status.isGranted) {
+      // Nếu ứng dụng chưa được cấp quyền, yêu cầu quyền nhận thông báo
+      await FirebaseMessaging.instance.requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
+      );
+    }
   }
 
   static void onBackgroundPressed() {
@@ -84,7 +89,6 @@ class FirebaseConfig {
 
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // await Firebase.initializeApp();
   PushNotifAndroid.handleNotification(message); // lib pitel
 }
 
