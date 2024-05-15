@@ -49,6 +49,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         .initNotification(context); // notification local init
     FirebaseConfig.onMessage(context); // show mess on app
     FirebaseConfig.receiveFromBackgroundState(context); // show mess on app
+    FirebaseConfig.onBackgroundPressed(); // show mess on app
   }
 
   @override
