@@ -202,7 +202,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                         .push(MaterialPageRoute(
                             builder: (context) => ScannerQrcode()))
                         .then((value) async {
-                      if (value != '') {
+                      if (value != '' && value != null) {
                         final ListCustomerResponse? result =
                             await _bloc.getListCustomerQR(qr: value);
                         if (result?.data?.list?.isNotEmpty ?? false) {

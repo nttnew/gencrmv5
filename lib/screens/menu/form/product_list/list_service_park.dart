@@ -72,7 +72,7 @@ class _ListServiceParkState extends State<ListServicePark> {
                       .push(MaterialPageRoute(
                           builder: (context) => ScannerQrcode()))
                       .then((value) async {
-                    if (value != '') {
+                    if (value != ''&&value != null) {
                       _searchController.text = value;
                       _bloc.loadMoreController.reloadData();
                     }

@@ -137,7 +137,7 @@ class _ProductContractState extends State<ProductContract> {
                       .push(MaterialPageRoute(
                           builder: (context) => ScannerQrcode()))
                       .then((value) async {
-                    if (value != '') {
+                    if (value != ''&&value != null) {
                       final result = await ProductModuleBloc.of(context)
                           .getListProduct(querySearch: value);
                       if (result?.data?.lists?.isNotEmpty ?? false) {

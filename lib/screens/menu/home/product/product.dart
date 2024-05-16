@@ -97,7 +97,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         .push(MaterialPageRoute(
                             builder: (context) => ScannerQrcode()))
                         .then((value) async {
-                      if (value != '') {
+                      if (value != ''&&value != null) {
                         final result =
                             await _bloc.getListProduct(querySearch: value);
                         if (result?.data?.lists?.isNotEmpty ?? false) {
