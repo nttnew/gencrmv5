@@ -4,11 +4,14 @@ import '../src/preferences_key.dart';
 import '../storages/share_local.dart';
 
 String getT(String key) {
-  final dataLang =
-      jsonDecode(shareLocal.getString(PreferencesKey.LANGUAGE_BE_ALL)) ?? '';
-  final String lang = shareLocal.getString(PreferencesKey.LANGUAGE_NAME) ??
-      L10n.VN; //default build app
-  return dataLang[lang][key] ?? '';
+  final dataLangLocal = shareLocal.getString(PreferencesKey.LANGUAGE_BE_ALL);
+  if (dataLangLocal != null) {
+    final dataLang = jsonDecode(dataLangLocal);
+    final String lang = shareLocal.getString(PreferencesKey.LANGUAGE_NAME) ??
+        L10n.VN; //default build app
+    return dataLang[lang][key] ?? '';
+  }
+  return '';
 }
 
 class KeyT {
