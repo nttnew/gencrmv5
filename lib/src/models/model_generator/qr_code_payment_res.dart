@@ -4,17 +4,22 @@ class QrCodePaymentRes {
   int? code;
   Data? data;
 
-  QrCodePaymentRes({this.success, this.msg, this.code, this.data});
+  QrCodePaymentRes({
+    this.success,
+    this.msg,
+    this.code,
+    this.data,
+  });
 
   QrCodePaymentRes.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     msg = json['msg'];
     code = json['code'];
-    data = json['data'] != null ?  Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['success'] = this.success;
     data['msg'] = this.msg;
     data['code'] = this.code;
@@ -37,7 +42,7 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['qrCode'] = this.qrCode;
     data['qrDataURL'] = this.qrDataURL;
     return data;

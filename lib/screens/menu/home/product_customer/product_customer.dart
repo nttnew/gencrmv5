@@ -13,6 +13,7 @@ import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/drop_down_base.dart';
 import '../../../../widgets/listview/list_load_infinity.dart';
+import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/pick_file_image.dart';
 import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_widget.dart';
@@ -201,8 +202,9 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
 
   void _handelRightIconSearch() async {
     if (isCarCrm()) {
-      final File? file = await getImageCamera(is2mb: true);
+      final File? file = await getImageCamera();
       if (file != null) {
+        LoadingApi().pushLoading();
         final res = await _bloc.getBienSoWithImg(file: file);
         if (res['mes'] == '') {
           if (res['data'] != '') _handelSearchWithText(res['data'].toString());

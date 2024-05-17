@@ -389,9 +389,9 @@ class _DetailCarState extends State<DetailCar> {
 
 _itemDichVu(
   BuildContext context,
-  CTDichVu dataDV,
-  DetailXeDichVuData dataDetail,
-  LoginBloc blocLogin,
+  CTDichVu _dataDV,
+  DetailXeDichVuData _dataDetail,
+  LoginBloc _blocLogin,
 ) {
   return Container(
     margin: EdgeInsets.only(
@@ -406,13 +406,13 @@ _itemDichVu(
               height: 10,
               margin: EdgeInsets.only(right: 10),
               decoration: BoxDecoration(
-                color: getColor(dataDV.tienDo ?? ''),
+                color: getColor(_dataDV.tienDo ?? ''),
                 shape: BoxShape.circle,
               ),
             ),
             Expanded(
               child: Text(
-                dataDV.tenSanPham ?? '',
+                _dataDV.tenSanPham ?? '',
                 style: AppStyle.DEFAULT_16_BOLD,
               ),
             ),
@@ -421,33 +421,33 @@ _itemDichVu(
         AppValue.vSpace10,
         widgetTextClick(
           getT(KeyT.nguoi_lam),
-          '${dataDV.nguoiThucHien}',
+          '${_dataDV.nguoiThucHien}',
           () {
             _clickShow(
               context,
-              blocLogin,
-              dataDetail,
-              dataDV,
+              _blocLogin,
+              _dataDetail,
+              _dataDV,
             );
           },
           contentNull: getT(KeyT.chua_phan_cong),
-          color: getColor(dataDV.tienDo ?? ''),
+          color: getColor(_dataDV.tienDo ?? ''),
         ),
         AppValue.vSpace10,
         widgetTextClick(
           getT(KeyT.tien_do),
-          '${dataDV.tienDo}',
+          '${_dataDV.tienDo}',
           contentValueNull: '',
           () {
             _clickShow(
               context,
-              blocLogin,
-              dataDetail,
-              dataDV,
+              _blocLogin,
+              _dataDetail,
+              _dataDV,
             );
           },
           contentNull: getT(KeyT.chua_bat_dau),
-          color: getColor(dataDV.tienDo ?? ''),
+          color: getColor(_dataDV.tienDo ?? ''),
         ),
       ],
     ),
@@ -456,9 +456,9 @@ _itemDichVu(
 
 _clickShow(
   BuildContext context,
-  blocLogin,
-  DetailXeDichVuData dataDetail,
-  CTDichVu dataDV,
+  LoginBloc _blocLogin,
+  DetailXeDichVuData _dataDetail,
+  CTDichVu _dataDV,
 ) =>
     showModalSelectMulti(
       context,
@@ -466,14 +466,14 @@ _clickShow(
         getT(KeyT.nguoi_lam),
         getT(KeyT.cap_nhat_tien_do),
       ],
-      [dataDetail.listNguoiThucHien ?? [], dataDetail.listTienDo ?? []],
-      init: [dataDV.nguoiThucHien, dataDV.tienDo],
+      [_dataDetail.listNguoiThucHien ?? [], _dataDetail.listTienDo ?? []],
+      init: [_dataDV.nguoiThucHien, _dataDV.tienDo],
       (data) async {
-        String idNTH = data?.first.first ?? dataDV.idNguoiThucHien ?? '';
-        String idTD = data?.last.first ?? dataDV.idTienDo ?? '';
+        String idNTH = data?.first.first ?? _dataDV.idNguoiThucHien ?? '';
+        String idTD = data?.last.first ?? _dataDV.idTienDo ?? '';
 
-        final res = await blocLogin.postUpdateTDNTH(
-          _id: dataDV.idct ?? '',
+        final res = await _blocLogin.postUpdateTDNTH(
+          id: _dataDV.idct ?? '',
           idNTH: idNTH,
           idTD: idTD,
         );
@@ -481,7 +481,7 @@ _clickShow(
         if (res != '') {
           showToastM(context, title: res);
         } else {
-          blocLogin.getDetailXeDichVu();
+          _blocLogin.getDetailXeDichVu();
           Navigator.pop(context);
         }
       },

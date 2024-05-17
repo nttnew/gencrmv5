@@ -382,8 +382,9 @@ Future<File?> getImageCamera({
   bool is2mb = false,
 }) async {
   try {
-    final XFile? fileCamera =
-        await ImagePicker().pickImage(source: ImageSource.camera);
+    final XFile? fileCamera = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+    );
     if (fileCamera != null) {
       if (is2mb) {
         final File duoi2MB = await compressImage(File(fileCamera.path));

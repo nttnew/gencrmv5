@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -725,7 +726,14 @@ class _FormAddDataState extends State<FormAddData> {
   }
 
   _showDialogQrCode(String data) {
+    final CarouselController _controller = CarouselController();
     var image = base64Decode(data.replaceAll('data:image/png;base64,', ''));
+    var _index = 1;
+    var _listImage = [
+      Image.memory(image),//todo
+      Image.memory(image),
+      Image.memory(image),
+    ];
     return showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -739,29 +747,78 @@ class _FormAddDataState extends State<FormAddData> {
         ),
       ),
       backgroundColor: COLORS.WHITE,
-      builder: (context) => Container(
-        padding: EdgeInsets.only(
-          top: 24,
-        ),
-        decoration: BoxDecoration(
-          color: COLORS.WHITE,
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(30),
-            topLeft: Radius.circular(30),
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Image.memory(image),
-            ButtonThaoTac(
-                title: 'Xác nhận đã thanh toán',
-                onTap: () {
-                  Navigator.of(context).pop();
-                  _onClickSave();
-                }),
-          ],
-        ),
+      builder: (context) => StatefulBuilder(
+        builder: (context, statePay) {
+          return Container(
+            padding: EdgeInsets.only(
+              top: 24,
+            ),
+            decoration: BoxDecoration(
+              color: COLORS.WHITE,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(30),
+                topLeft: Radius.circular(30),
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CarouselSlider(
+                  carouselController: _controller,
+                  items: _listImage,
+                  options: CarouselOptions(
+                    onPageChanged: (i, c) {
+                      _index = i + 1;
+                      statePay(() {});
+                    },
+                    disableCenter: true,
+                    height: MediaQuery.of(context).size.width,
+                    viewportFraction: 1,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    IconButton(
+                      padding: EdgeInsets.only(
+                        left: 10,
+                      ),
+                      onPressed: () {
+                        _controller.previousPage();
+                      },
+                      icon: Icon(
+                        Icons.navigate_before_outlined,
+                        size: 40,
+                      ),
+                    ),
+                    Text(
+                      '$_index/${_listImage.length}',
+                      style: AppStyle.DEFAULT_18_BOLD,
+                    ),
+                    IconButton(
+                      padding: EdgeInsets.only(
+                        right: 10,
+                      ),
+                      onPressed: () {
+                        _controller.nextPage();
+                      },
+                      icon: Icon(
+                        Icons.navigate_next_outlined,
+                        size: 40,
+                      ),
+                    ),
+                  ],
+                ),
+                ButtonThaoTac(
+                    title: getT(KeyT.xac_nhan_da_thanh_toan),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      _onClickSave();
+                    }),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -1108,7 +1165,8 @@ class _FormAddDataState extends State<FormAddData> {
                                                 indexChild: indexChild,
                                                 isCK: isCK,
                                               );
-                                              _setDataLoaiHopDong(data, v);
+                                              _setDataLoaiHopDong(
+                                                  data, v.toString());
                                             },
                                           );
                                         })
@@ -1157,7 +1215,8 @@ class _FormAddDataState extends State<FormAddData> {
                                                 indexChild: indexChild,
                                                 isCK: isCK,
                                               );
-                                              _setDataLoaiHopDong(data, v);
+                                              _setDataLoaiHopDong(
+                                                  data, v.toString());
                                             },
                                           )
                             : data.field_type == 'TEXT_MULTI'

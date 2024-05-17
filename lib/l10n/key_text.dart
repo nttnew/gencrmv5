@@ -283,4 +283,5 @@ class KeyT {
   static String an_bot = 'an_bot';
   static String hien_them = 'hien_them';
   static String giam_gia_tong_khong_duoc_lon_hon_CTT = 'giam_gia_tong_khong_duoc_lon_hon_CTT';
+  static String xac_nhan_da_thanh_toan = 'xac_nhan_da_thanh_toan';
 }
