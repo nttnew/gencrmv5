@@ -282,4 +282,5 @@ class KeyT {
   static String ten_goi_dich_vu = 'ten_goi_dich_vu';
   static String an_bot = 'an_bot';
   static String hien_them = 'hien_them';
+  static String giam_gia_tong_khong_duoc_lon_hon_CTT = 'giam_gia_tong_khong_duoc_lon_hon_CTT';
 }

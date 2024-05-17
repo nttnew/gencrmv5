@@ -84,6 +84,7 @@ class _FormAddDataState extends State<FormAddData> {
   double _total = 0;
   double _tongTienGiam = 0;
   double _daThanhToan = 0;
+  double _giam_gia_tong = 0;
   double _tongTienThue = 0;
   double _tongBaoHiemTra = 0;
   double _tongChuaThanhToan = 0;
@@ -519,7 +520,8 @@ class _FormAddDataState extends State<FormAddData> {
       _tongTienGiam += _tienGiamProduct(element);
       _tongTienThue += _vatProduct(element);
     });
-    _tongChuaThanhToan = _total - _daThanhToan;
+    _tongTienGiam = _tongTienGiam + _giam_gia_tong;
+    _tongChuaThanhToan = _total - _daThanhToan - _giam_gia_tong;
     _autoSumStream.add(
         '$_total$_tongTienGiam$_tongTienThue$_tongChuaThanhToan$_tongBaoHiemTra');
   }
@@ -1072,6 +1074,8 @@ class _FormAddDataState extends State<FormAddData> {
                             : FieldText(
                                 data: data,
                                 onChange: (v) {
+                                  _tinhAuto(data, v);
+
                                   _addData[indexParent].data[indexChild].value =
                                       v;
                                 },
@@ -1292,15 +1296,9 @@ class _FormAddDataState extends State<FormAddData> {
                                                                     data: data,
                                                                     onChange:
                                                                         (v) {
-                                                                      // tính chua thanh toan theo số tiền DATT
-                                                                      if (data.field_name ==
-                                                                              'datt' ||
-                                                                          data.field_name ==
-                                                                              'dathanhtoan') {
-                                                                        _daThanhToan =
-                                                                            v.toDoubleTry();
-                                                                        _tinhTheoProduct();
-                                                                      }
+                                                                      _tinhAuto(
+                                                                          data,
+                                                                          v);
 
                                                                       _addData[
                                                                               indexParent]
@@ -1393,19 +1391,22 @@ class _FormAddDataState extends State<FormAddData> {
       }
     }
 
-    if (_daThanhToan < 0 && _type == ADD_CONTRACT) {
+    String mess = (getT(KeyT.please_enter_all_required_fields) +
+        ((txtValidate != null && txtValidate != '') ? '\n($txtValidate)' : ''));
+
+    if (_daThanhToan < 0 && _type == ADD_CONTRACT && isCheckValidate == false) {
       isCheckValidate = true;
+      mess = getT(KeyT.the_amount_paid_cannot_be_greater_than_the_total_amount);
+    } else if (_giam_gia_tong > _tongChuaThanhToan &&
+        isCheckValidate == false) {
+      isCheckValidate = true;
+      mess = getT(KeyT.giam_gia_tong_khong_duoc_lon_hon_CTT);
     }
 
     if (isCheckValidate == true) {
       ShowDialogCustom.showDialogBase(
         title: getT(KeyT.notification),
-        content: _daThanhToan < 0
-            ? getT(KeyT.the_amount_paid_cannot_be_greater_than_the_total_amount)
-            : (getT(KeyT.please_enter_all_required_fields) +
-                ((txtValidate != null && txtValidate != '')
-                    ? '\n($txtValidate)'
-                    : '')),
+        content: mess,
       );
     } else {
       if (_listProduct.length > 0)
@@ -1586,6 +1587,20 @@ class _FormAddDataState extends State<FormAddData> {
             _blocAdd.add(EditPayment(data));
           }
       }
+    }
+  }
+
+  void _tinhAuto(
+    CustomerIndividualItemData data,
+    String v,
+  ) {
+    // tính chua thanh toan theo số tiền DATT
+    if (data.field_name == 'datt' || data.field_name == 'dathanhtoan') {
+      _daThanhToan = v.toDoubleTry();
+      _tinhTheoProduct();
+    } else if (data.field_name == 'giam_gia_tong') {
+      _giam_gia_tong = v.toDoubleTry();
+      _tinhTheoProduct();
     }
   }
 }
