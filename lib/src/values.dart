@@ -126,7 +126,7 @@ class AppValue {
     return base64Encode(imageBytes);
   }
 
-  static formatMoney(String money, {isD = true}) {
+  static format_money(String money, {isD = true}) {
     String result = '0';
     if (money == '') {
       return '';

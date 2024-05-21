@@ -55,8 +55,8 @@ import '../src/models/model_generator/param_read_notifi.dart';
 import '../src/models/model_generator/pdf_response.dart';
 import '../src/models/model_generator/product_customer_edit_response.dart';
 import '../src/models/model_generator/product_customer_save_response.dart';
+import '../src/models/model_generator/product_response.dart';
 import '../src/models/model_generator/product_service_pack_response.dart';
-import '../src/models/model_generator/products_response.dart';
 import '../src/models/model_generator/qr_code_payment_res.dart';
 import '../src/models/model_generator/quick_create_response.dart';
 import '../src/models/model_generator/report_contact.dart';
@@ -817,7 +817,7 @@ class UserRepository {
         id,
       );
 
-  Future<ProductsResponse> getListProduct(
+  Future<ProductResponse> getListProduct(
     String page,
     String querySearch,
     String? group,

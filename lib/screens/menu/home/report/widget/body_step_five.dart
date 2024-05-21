@@ -126,7 +126,7 @@ class BodyReportFive extends StatelessWidget {
               colorIcon: COLORS.GREY,
             ),
             itemTextIcon(
-              text: AppValue.formatMoney(data.soTien ?? ''),
+              text: AppValue.format_money(data.soTien ?? ''),
               icon: ICONS.IC_CIRCLE_SMALL_PNG,
               isSVG: false,
               colorIcon: COLORS.GREY,

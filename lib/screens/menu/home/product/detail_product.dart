@@ -50,7 +50,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
           title:
               '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
           type: ADD_CONTRACT,
-          product: (product?.productId ?? '') != '' ? product : null,
+          product: (product?.id ?? '') != '' ? product : null,
         );
       },
     ));

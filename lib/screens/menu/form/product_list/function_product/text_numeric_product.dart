@@ -55,7 +55,7 @@ class _TextNumericProductState extends State<TextNumericProduct> {
 
   _setInit() {
     final value = widget.formProduct.fieldSetValue;
-    _controller.text = AppValue.formatMoney('${value ?? ''}', isD: false);
+    _controller.text = AppValue.format_money('${value ?? ''}', isD: false);
   }
 
   @override

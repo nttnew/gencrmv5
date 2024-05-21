@@ -675,7 +675,7 @@ class _FormAddSignState extends State<FormAddSign> {
                 style: AppStyle.DEFAULT_14W600,
                 children: <TextSpan>[
                   TextSpan(
-                      text: ' ${AppValue.formatMoney(soTien.toStringAsFixed(
+                      text: ' ${AppValue.format_money(soTien.toStringAsFixed(
                         0,
                       ))}',
                       style: TextStyle(

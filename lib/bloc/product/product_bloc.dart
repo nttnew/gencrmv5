@@ -23,34 +23,41 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       : userRepository = userRepository,
         super(InitGetListProductState());
 
+  @override
+  Stream<ProductState> mapEventToState(ProductEvent event) async* {
+    if (event is InitGetListProductEvent) {
+      yield* _getListProduct(event.page, event.querySearch, group: event.group);
+    }
+  }
 
-
-  LoadMoreController loadMoreControllerProduct = LoadMoreController();
-
-
-  Future<dynamic> getListProduct({
-    int page = BASE_URL.PAGE_DEFAULT,
-    String? querySearch,
+  Stream<ProductState> _getListProduct(
+    String page,
+    String querySearch, {
     String? group,
-  }) async {
-    dynamic resDynamic = '';
+  }) async* {
+    LoadingApi().pushLoading();
     try {
+      if (querySearch != '' && page == BASE_URL.PAGE_DEFAULT.toString())
+        yield LoadingGetListProductState();
       final response = await userRepository.getListProduct(
-        page.toString(),
-        querySearch ?? '',
-        group ?? '',
+        page,
+        querySearch,
+        group,
       );
       if (isSuccess(response.code)) {
-        resDynamic = response.data?.product ?? [];
-      } else if (isFail(response.code)) {
-        loginSessionExpired();
+        yield SuccessGetListProductState(
+          response.data?.product ?? [],
+          response.data?.units ?? [],
+          response.data?.vats ?? [],
+          response.data?.total ?? 0,
+        );
       } else
-        resDynamic = response.msg ?? '';
+        yield ErrorGetListProductState(response.msg ?? '');
     } catch (e) {
-      resDynamic = getT(KeyT.an_error_occurred);
-      return resDynamic;
+      LoadingApi().popLoading();
+      yield ErrorGetListProductState(getT(KeyT.an_error_occurred));
     }
-    return resDynamic;
+    LoadingApi().popLoading();
   }
 
   Future<dynamic> getServicePack({

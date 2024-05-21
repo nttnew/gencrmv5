@@ -5,3 +5,10 @@ abstract class ProductEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
+class InitGetListProductEvent extends ProductEvent {
+  final String page, querySearch;
+  final String? group;
+
+  InitGetListProductEvent(this.page, this.querySearch, {this.group});
+}

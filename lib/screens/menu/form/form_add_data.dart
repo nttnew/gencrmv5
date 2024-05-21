@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,7 +8,6 @@ import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
 import 'package:gen_crm/bloc/product_customer_module/product_customer_module_bloc.dart';
 import 'package:gen_crm/bloc/product_module/product_module_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
-import 'package:gen_crm/screens/menu/form/product_list/item_products.dart';
 import 'package:gen_crm/screens/menu/form/widget/field_image.dart';
 import 'package:gen_crm/screens/menu/form/widget/field_text.dart';
 import 'package:gen_crm/screens/menu/form/widget/field_text_api.dart';
@@ -18,8 +16,6 @@ import 'package:gen_crm/screens/menu/form/widget/location_select.dart';
 import 'package:gen_crm/screens/menu/form/widget/render_check_box.dart';
 import 'package:gen_crm/screens/menu/form/widget/type_car.dart';
 import 'package:gen_crm/src/app_const.dart';
-import 'package:gen_crm/src/models/model_generator/products_response.dart';
-import 'package:gen_crm/src/string_ext.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/field_input_select_multi.dart';
@@ -35,12 +31,15 @@ import '../../../bloc/contact_by_customer/contact_by_customer_bloc.dart';
 import '../../../bloc/contract/attack_bloc.dart';
 import '../../../bloc/contract/contract_bloc.dart';
 import '../../../bloc/contract/detail_contract_bloc.dart';
+import '../../../bloc/contract/total_bloc.dart';
 import '../../../bloc/detail_product/detail_product_bloc.dart';
 import '../../../bloc/detail_product_customer/detail_product_customer_bloc.dart';
 import '../../../bloc/support/support_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
 import '../../../l10n/key_text.dart';
 import '../../../models/model_data_add.dart';
+import '../../../models/product_model.dart';
+import '../../../src/models/model_generator/product_response.dart';
 import '../../../widgets/loading_api.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/models/model_generator/login_response.dart';
@@ -53,14 +52,6 @@ import '../../../widgets/multiple_widget.dart';
 import '../home/contract/widget/widget_total_sum.dart';
 import 'product_list/product_contract.dart';
 import 'widget/input_drop_down_base.dart';
-
-const String GIA_TRI_HOP_DONG_FN = 'col311';
-const String TIEN_GIAM_FN =
-    'tong_tien_giam'; // key id của các trường động autosum
-const String TONG_TIEN_THUE_FN = 'tien_thue';
-const String CHUA_THANH_TOAN_FN = 'chuathanhtoan';
-const String TONG_BAO_HIEM_TRA = 'tong_bao_hiem_tra';
-const String LOAI_HOP_DONG = 'col112'; // case add edit HOP_DONG
 
 class FormAddData extends StatefulWidget {
   const FormAddData({Key? key}) : super(key: key);
@@ -76,36 +67,26 @@ class _FormAddDataState extends State<FormAddData> {
   bool _isCheckIn = Get.arguments[3] ?? false;
   String _typeCheckIn = Get.arguments[4];
   bool _isGetData = Get.arguments[5] ?? false;
-  ProductsRes? _product = Get.arguments[6];
+  ProductModel? _product = Get.arguments[6];
   String _sdt = Get.arguments[7] ?? '';
   String _bienSo = Get.arguments[8] ?? '';
   String _idDetail = Get.arguments[9] ?? '';
   String _idPay = Get.arguments[10] ?? '';
-
   double _total = 0;
-  double _tongTienGiam = 0;
-  double _daThanhToan = 0;
-  double _giam_gia_tong = 0;
-  double _tongTienThue = 0;
-  double _tongBaoHiemTra = 0;
-  double _tongChuaThanhToan = 0;
-  List<ProductsRes> _listProduct = [];
+  List<ProductModel> _listProduct = [];
   List<ModelItemAdd> _addData = [];
   late String _idUserLocal;
   Position? _position;
   late final BehaviorSubject<String> _nameLocation;
   late final BehaviorSubject<String>
-      _reloadStream; // dùng để reload con của field
+  _reloadStream; // dùng để reload con của field
   late final TextEditingController _controllerTextNoteLocation;
   late final FormAddBloc _bloc;
   late final AddDataBloc _blocAdd;
   late final ServiceVoucherBloc _blocService;
   late final AttackBloc _attackBloc;
   late final ContactByCustomerBloc _contactBy;
-  // late final TotalBloc _totalBloc;
-  BehaviorSubject<String> _autoSumStream = BehaviorSubject.seeded('');
-  BehaviorSubject<String> _typeContact = BehaviorSubject.seeded('');
-  // auto sum dùng để reload khi value của các field autosum thay đổi
+  late final TotalBloc _totalBloc;
 
   /// check hinhTTT = 'CK' && so_tien >0  : showQRcode
   bool isAttack = (Get.arguments[1] ?? '') != ADD_PAYMENT &&
@@ -117,9 +98,8 @@ class _FormAddDataState extends State<FormAddData> {
 
   @override
   void initState() {
-    final _p = _product;
-    if (_p != null) _listProduct.add(_p); // add product từ detail product
     _blocService = ServiceVoucherBloc.of(context);
+    _totalBloc = TotalBloc.of(context);
     _attackBloc = AttackBloc.of(context);
     _bloc = FormAddBloc(userRepository: FormAddBloc.of(context).userRepository);
     _blocAdd =
@@ -136,6 +116,9 @@ class _FormAddDataState extends State<FormAddData> {
       }
     });
     _loadUser();
+    if (_product != null) {
+      _addProduct(_product!);
+    }
     _addBlocEvent(_type);
     super.initState();
   }
@@ -195,15 +178,15 @@ class _FormAddDataState extends State<FormAddData> {
       ADD_JOB_CONTRACT: InitFormAddJobContractEvent(_id),
       PRODUCT_TYPE: InitFormAddProductEvent(),
       PRODUCT_CUSTOMER_TYPE:
-          InitFormAddProductCustomerEvent(idCustomer: int.tryParse(_id)),
+      InitFormAddProductCustomerEvent(idCustomer: int.tryParse(_id)),
       CH_PRODUCT_CUSTOMER_TYPE:
-          InitFormAddCHProductCustomerEvent(int.tryParse(_id) ?? 0),
+      InitFormAddCHProductCustomerEvent(int.tryParse(_id) ?? 0),
       CV_PRODUCT_CUSTOMER_TYPE:
-          InitFormAddCVProductCustomerEvent(int.tryParse(_id) ?? 0),
+      InitFormAddCVProductCustomerEvent(int.tryParse(_id) ?? 0),
       HT_PRODUCT_CUSTOMER_TYPE:
-          InitFormAddHTProductCustomerEvent(int.tryParse(_id) ?? 0),
+      InitFormAddHTProductCustomerEvent(int.tryParse(_id) ?? 0),
       HD_PRODUCT_CUSTOMER_TYPE:
-          InitFormAddHDProductCustomerEvent(int.tryParse(_id) ?? 0),
+      InitFormAddHDProductCustomerEvent(int.tryParse(_id) ?? 0),
       ADD_QUICK_CONTRACT: InitFormAddQuickContract(_sdt, _bienSo),
       EDIT_CUSTOMER: InitFormEditCusEvent(_id),
       EDIT_CLUE: InitFormEditClueEvent(_id),
@@ -232,6 +215,7 @@ class _FormAddDataState extends State<FormAddData> {
 
   @override
   void deactivate() {
+    _totalBloc.add(ReloadTotalEvent());
     _contactBy.chiTietXe.add('');
     _contactBy.listXe.add([]);
     _attackBloc.add(RemoveAllAttackEvent());
@@ -261,65 +245,96 @@ class _FormAddDataState extends State<FormAddData> {
   _location() {
     return _isCheckIn
         ? StreamBuilder<String>(
-            stream: _nameLocation,
-            builder: (context, snapshot) {
-              final location = snapshot.data ?? '';
-              return Column(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      children: [
-                        WidgetText(
-                          title: getT(KeyT.your_position),
-                          style: AppStyle.DEFAULT_18_BOLD,
-                        ),
-                        WidgetText(
-                          title: '*',
-                          style: AppStyle.DEFAULT_18_BOLD.copyWith(
-                            color: COLORS.RED,
-                          ),
-                        ),
-                      ],
+        stream: _nameLocation,
+        builder: (context, snapshot) {
+          final location = snapshot.data ?? '';
+          return Column(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  children: [
+                    WidgetText(
+                      title: getT(KeyT.your_position),
+                      style: AppStyle.DEFAULT_18_BOLD,
                     ),
-                  ),
-                  if (location != '') ...[
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          height: 16,
-                          width: 16,
-                          child: SvgPicture.asset(
-                            ICONS.IC_LOCATION_SVG,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        location != LOADING
-                            ? Expanded(
-                                child: WidgetText(
-                                title: location,
-                                style: AppStyle.DEFAULT_14_BOLD,
-                              ))
-                            : SizedBox(
-                                height: 12,
-                                width: 12,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 1.4,
-                                ),
-                              ),
-                      ],
+                    WidgetText(
+                      title: '*',
+                      style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                        color: COLORS.RED,
+                      ),
                     ),
                   ],
-                  SizedBox(
-                    height: 16,
+                ),
+              ),
+              if (location != '') ...[
+                SizedBox(
+                  height: 16,
+                ),
+                Row(
+                  children: [
+                    Container(
+                      height: 16,
+                      width: 16,
+                      child: SvgPicture.asset(
+                        ICONS.IC_LOCATION_SVG,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 4,
+                    ),
+                    location != LOADING
+                        ? Expanded(
+                        child: WidgetText(
+                          title: location,
+                          style: AppStyle.DEFAULT_14_BOLD,
+                        ))
+                        : SizedBox(
+                      height: 12,
+                      width: 12,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 1.4,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+              SizedBox(
+                height: 16,
+              ),
+              if (location == '')
+                GestureDetector(
+                  onTap: () async {
+                    await _getNameLocation();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: COLORS.TEXT_COLOR,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(
+                          16,
+                        ),
+                      ),
+                      border: Border.all(
+                        color: COLORS.TEXT_COLOR,
+                      ),
+                    ),
+                    child: WidgetText(
+                        title: getT(KeyT.check_in),
+                        style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                          color: COLORS.WHITE,
+                        )),
                   ),
-                  if (location == '')
+                ),
+              if (location != '')
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                     GestureDetector(
                       onTap: () async {
                         await _getNameLocation();
@@ -330,7 +345,6 @@ class _FormAddDataState extends State<FormAddData> {
                           vertical: 8,
                         ),
                         decoration: BoxDecoration(
-                          color: COLORS.TEXT_COLOR,
                           borderRadius: BorderRadius.all(
                             Radius.circular(
                               16,
@@ -341,298 +355,140 @@ class _FormAddDataState extends State<FormAddData> {
                           ),
                         ),
                         child: WidgetText(
-                            title: getT(KeyT.check_in),
-                            style: AppStyle.DEFAULT_14_BOLD.copyWith(
-                              color: COLORS.WHITE,
-                            )),
-                      ),
-                    ),
-                  if (location != '')
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () async {
-                            await _getNameLocation();
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(
-                                  16,
-                                ),
-                              ),
-                              border: Border.all(
-                                color: COLORS.TEXT_COLOR,
-                              ),
-                            ),
-                            child: WidgetText(
-                              title: getT(KeyT.check_in_again),
-                              style: AppStyle.DEFAULT_14_BOLD.copyWith(
-                                color: COLORS.TEXT_COLOR,
-                              ),
-                            ),
+                          title: getT(KeyT.check_in_again),
+                          style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                            color: COLORS.TEXT_COLOR,
                           ),
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            _nameLocation.add('');
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(
-                                  16,
-                                ),
-                              ),
-                              border: Border.all(
-                                color: COLORS.RED,
-                              ),
-                            ),
-                            child: WidgetText(
-                              title: getT(KeyT.delete),
-                              style: AppStyle.DEFAULT_14_BOLD.copyWith(
-                                color: COLORS.RED,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  if (location != '') ...[
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: RichText(
-                        textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                        text: TextSpan(
-                          text: getT(KeyT.location),
-                          style: AppStyle.DEFAULT_14W600,
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: '*',
-                              style: TextStyle(
-                                fontFamily: 'Quicksand',
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: COLORS.RED,
-                              ),
-                            ),
-                          ],
                         ),
                       ),
                     ),
                     SizedBox(
-                      height: 8,
+                      width: 16,
                     ),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          color: COLORS.ffBEB4B4,
+                    GestureDetector(
+                      onTap: () async {
+                        _nameLocation.add('');
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
                         ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: 10,
-                          top: 5,
-                          bottom: 5,
-                        ),
-                        child: Container(
-                          child: TextFormField(
-                            textCapitalization: TextCapitalization.sentences,
-                            controller: _controllerTextNoteLocation,
-                            style: AppStyle.DEFAULT_14_BOLD,
-                            decoration: InputDecoration(
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                              isDense: true,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(
+                              16,
                             ),
+                          ),
+                          border: Border.all(
+                            color: COLORS.RED,
+                          ),
+                        ),
+                        child: WidgetText(
+                          title: getT(KeyT.delete),
+                          style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                            color: COLORS.RED,
                           ),
                         ),
                       ),
                     ),
                   ],
-                  SizedBox(
-                    height: 16,
+                ),
+              SizedBox(
+                height: 16,
+              ),
+              if (location != '') ...[
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: RichText(
+                    textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                    text: TextSpan(
+                      text: getT(KeyT.location),
+                      style: AppStyle.DEFAULT_14W600,
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: '*',
+                          style: TextStyle(
+                            fontFamily: 'Quicksand',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: COLORS.RED,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              );
-            })
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(
+                      color: COLORS.ffBEB4B4,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: 10,
+                      top: 5,
+                      bottom: 5,
+                    ),
+                    child: Container(
+                      child: TextFormField(
+                        textCapitalization: TextCapitalization.sentences,
+                        controller: _controllerTextNoteLocation,
+                        style: AppStyle.DEFAULT_14_BOLD,
+                        decoration: InputDecoration(
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          isDense: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+              SizedBox(
+                height: 16,
+              ),
+            ],
+          );
+        })
         : SizedBox();
   }
 
-  _getDataProduct(String fieldName, ProductsRes product) {
-    for (final FormProduct value in product.form ?? []) {
-      if (fieldName == value.fieldName)
-        switch (value.fieldType) {
-          case COUNT:
-          case TEXT_NUMERIC:
-          case TEXT:
-            return value.fieldSetValue;
-          case PERCENTAGE:
-            return {
-              VALUE_GIAM_GIA: value.fieldSetValue,
-              TYPE_GIAM_GIA: value.typeOfSale,
-            };
-          case SELECT:
-            if ((value.fieldSetValueDatasource?.length ?? 0) > 0)
-              return value.fieldSetValueDatasource?.first[1];
-            else
-              return '';
-        }
+  _addProduct(ProductModel data) {
+    bool check = false;
+    for (int i = 0; i < _listProduct.length; i++) {
+      if (data.id == _listProduct[i].id &&
+          data.item.combo_id == _listProduct[i].item.combo_id) {
+        check = true;
+        break;
+      }
+    }
+    if (!check) {
+      _listProduct.add(data);
     }
   }
 
-  void _setDataLoaiHopDong(
-    CustomerIndividualItemData data,
-    String v,
-  ) {
-    // set data loai and reload products
-    if (LOAI_HOP_DONG == data.field_name) {
-      _typeContact.add(v);
-    }
-  }
-
-  _tinhTheoProduct() {
+  _reload() {
     _total = 0;
-    _tongTienThue = 0;
-    _tongTienGiam = 0;
-    _tongBaoHiemTra = 0;
-    _listProduct.forEach((element) {
-      _total += _getIntoMoney(element);
-      _tongBaoHiemTra +=
-          _getDataProduct(BA0_HIEM_TRA, element).toString().toDoubleTry();
-      _tongTienGiam += _tienGiamProduct(element);
-      _tongTienThue += _vatProduct(element);
-    });
-    _tongTienGiam = _tongTienGiam + _giam_gia_tong;
-    _tongChuaThanhToan = _total - _daThanhToan - _giam_gia_tong;
-    _autoSumStream.add(
-        '$_total$_tongTienGiam$_tongTienThue$_tongChuaThanhToan$_tongBaoHiemTra');
-  }
-
-  String _getDataWithFieldName(String v) {
-    switch (v) {
-      case GIA_TRI_HOP_DONG_FN:
-        return _total.toStringAsFixed(0);
-      case TIEN_GIAM_FN:
-        return _tongTienGiam.toStringAsFixed(0);
-      case TONG_TIEN_THUE_FN:
-        return _tongTienThue.toStringAsFixed(0);
-      case TONG_BAO_HIEM_TRA:
-        return _tongBaoHiemTra.toStringAsFixed(0);
-      case CHUA_THANH_TOAN_FN:
-        return _tongChuaThanhToan.toStringAsFixed(0);
-      default:
-        return '';
+    for (int i = 0; i < _listProduct.length; i++) {
+      _total += _listProduct[i].intoMoney ?? 0;
     }
-  }
-
-  double _getIntoMoney(ProductsRes product) {
-    double _priceProduct =
-        _getDataProduct(DON_GIA, product).toString().toDoubleTry();
-    double _vatProduct = 0;
-    double _vatProductNumber = _getDataProduct(VAT, product) != ''
-        ? _getDataProduct(VAT, product)
-            .split(PHAN_TRAM)
-            .first
-            .toString()
-            .toDoubleTry()
-        : 0;
-    double _discount = 0;
-    double _discountNumber = _getDataProduct(GIAM_GIA, product)[VALUE_GIAM_GIA]
-        .toString()
-        .toDoubleTry();
-    bool _isTypeGiamGia =
-        _getDataProduct(GIAM_GIA, product)[TYPE_GIAM_GIA] != PHAN_TRAM;
-    double _countProduct =
-        _getDataProduct(SO_LUONG, product).toString().toDoubleTry();
-
-    if (!_isTypeGiamGia) {
-      _discount = _priceProduct * _discountNumber / 100;
-    } else {
-      _discount = _discountNumber;
-    }
-
-    _vatProduct = _vatProductNumber * (_priceProduct - _discount) / 100;
-
-    double _intoMoney = 0;
-    _intoMoney = (_priceProduct + _vatProduct - _discount) * _countProduct;
-    return _intoMoney;
-  }
-
-  double _tienGiamProduct(ProductsRes product) {
-    double _discountNumber = _getDataProduct(GIAM_GIA, product)[VALUE_GIAM_GIA]
-        .toString()
-        .toDoubleTry();
-    double _priceProduct =
-        _getDataProduct(DON_GIA, product).toString().toDoubleTry();
-    double _discount = 0;
-    bool _isTypeGiamGia =
-        _getDataProduct(GIAM_GIA, product)[TYPE_GIAM_GIA] != PHAN_TRAM;
-    double _countProduct =
-        _getDataProduct(SO_LUONG, product).toString().toDoubleTry();
-
-    if (!_isTypeGiamGia) {
-      _discount = (_priceProduct * _discountNumber / 100) * _countProduct;
-    } else {
-      _discount = _discountNumber * _countProduct;
-    }
-    return _discount;
-  }
-
-  _vatProduct(ProductsRes product) {
-    double _vatProductNumber = _getDataProduct(VAT, product) != ''
-        ? _getDataProduct(VAT, product)
-            .split(PHAN_TRAM)
-            .first
-            .toString()
-            .toDoubleTry()
-        : 0;
-    double _discountNumber = _getDataProduct(GIAM_GIA, product)[VALUE_GIAM_GIA]
-        .toString()
-        .toDoubleTry();
-    double _countProduct =
-        _getDataProduct(SO_LUONG, product).toString().toDoubleTry();
-    double _priceProduct =
-        _getDataProduct(DON_GIA, product).toString().toDoubleTry();
-    double _vatProduct = 0;
-    double _discount = 0;
-    bool _isTypeGiamGia =
-        _getDataProduct(GIAM_GIA, product)[TYPE_GIAM_GIA] != PHAN_TRAM;
-
-    if (!_isTypeGiamGia) {
-      _discount = _priceProduct * _discountNumber / 100;
-    } else {
-      _discount = _discountNumber;
-    }
-
-    _vatProduct = _vatProductNumber * (_priceProduct - _discount) / 100;
-
-    return _vatProduct * _countProduct;
+    _totalBloc.getPaid();
+    _totalBloc.add(InitTotalEvent(_total));
   }
 
   _handleNavigationAndReloadData(
-    String type,
-    BuildContext context,
-    SuccessAddData state,
-  ) {
+      String type,
+      BuildContext context,
+      SuccessAddData state,
+      ) {
     switch (type) {
       case ADD_QUICK_CONTRACT:
         ContractBloc.of(context).add(InitGetContractEvent());
@@ -707,8 +563,10 @@ class _FormAddDataState extends State<FormAddData> {
             .add(InitGetDetailProductCustomerEvent(_id));
         break;
       case ADD_PAYMENT:
+      //todo
         break;
       case EDIT_PAYMENT:
+      //todo
         break;
       case EDIT_CUSTOMER:
         GetListCustomerBloc.of(context).loadMoreController.reloadData();
@@ -726,14 +584,7 @@ class _FormAddDataState extends State<FormAddData> {
   }
 
   _showDialogQrCode(String data) {
-    final CarouselController _controller = CarouselController();
     var image = base64Decode(data.replaceAll('data:image/png;base64,', ''));
-    var _index = 1;
-    var _listImage = [
-      Image.memory(image),//todo
-      Image.memory(image),
-      Image.memory(image),
-    ];
     return showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -747,78 +598,29 @@ class _FormAddDataState extends State<FormAddData> {
         ),
       ),
       backgroundColor: COLORS.WHITE,
-      builder: (context) => StatefulBuilder(
-        builder: (context, statePay) {
-          return Container(
-            padding: EdgeInsets.only(
-              top: 24,
-            ),
-            decoration: BoxDecoration(
-              color: COLORS.WHITE,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(30),
-                topLeft: Radius.circular(30),
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CarouselSlider(
-                  carouselController: _controller,
-                  items: _listImage,
-                  options: CarouselOptions(
-                    onPageChanged: (i, c) {
-                      _index = i + 1;
-                      statePay(() {});
-                    },
-                    disableCenter: true,
-                    height: MediaQuery.of(context).size.width,
-                    viewportFraction: 1,
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    IconButton(
-                      padding: EdgeInsets.only(
-                        left: 10,
-                      ),
-                      onPressed: () {
-                        _controller.previousPage();
-                      },
-                      icon: Icon(
-                        Icons.navigate_before_outlined,
-                        size: 40,
-                      ),
-                    ),
-                    Text(
-                      '$_index/${_listImage.length}',
-                      style: AppStyle.DEFAULT_18_BOLD,
-                    ),
-                    IconButton(
-                      padding: EdgeInsets.only(
-                        right: 10,
-                      ),
-                      onPressed: () {
-                        _controller.nextPage();
-                      },
-                      icon: Icon(
-                        Icons.navigate_next_outlined,
-                        size: 40,
-                      ),
-                    ),
-                  ],
-                ),
-                ButtonThaoTac(
-                    title: getT(KeyT.xac_nhan_da_thanh_toan),
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      _onClickSave();
-                    }),
-              ],
-            ),
-          );
-        },
+      builder: (context) => Container(
+        padding: EdgeInsets.only(
+          top: 24,
+        ),
+        decoration: BoxDecoration(
+          color: COLORS.WHITE,
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(30),
+            topLeft: Radius.circular(30),
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Image.memory(image),
+            ButtonThaoTac(
+                title: 'Xác nhận đã thanh toán',
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _onClickSave();
+                }),
+          ],
+        ),
       ),
     );
   }
@@ -871,6 +673,7 @@ class _FormAddDataState extends State<FormAddData> {
                   builder: (context, state) {
                     if (state is LoadingForm) {
                       _addData = [];
+                      _listProduct = [];
                       return SizedBox.shrink();
                     } else if (state is ErrorForm) {
                       return Text(
@@ -891,23 +694,43 @@ class _FormAddDataState extends State<FormAddData> {
                           );
                           //
                           for (int j = 0;
-                              j < (_listAddData[i].data?.length ?? 0);
-                              j++) {
+                          j < (_listAddData[i].data?.length ?? 0);
+                          j++) {
                             CustomerIndividualItemData _item =
-                                _listAddData[i].data![j];
+                            _listAddData[i].data![j];
                             //
-                            if ((_item.products ?? []).length > 0)
-                              _listProduct = _item.products ?? [];
-
-                            _addData[i].data.add(
-                                  ModelDataAdd(
-                                    label: _item.field_name,
-                                    value: _item.field_set_value.toString(),
-                                    required: _item.field_require,
-                                    txtValidate: _item.field_validation_message,
-                                    type: _item.field_type,
+                            _item.products?.forEach((_element) {
+                              _listProduct.add(
+                                ProductModel(
+                                  _element.id_product.toString(),
+                                  double.tryParse(_element.quantity ?? '') ?? 0,
+                                  ProductItem(
+                                    _element.id_product.toString(),
+                                    '',
+                                    '',
+                                    _element.name_product,
+                                    _element.unit.toString(),
+                                    _element.vat,
+                                    _element.price,
                                   ),
-                                );
+                                  _element.sale_off.value ?? '',
+                                  _element.unit_name ?? '',
+                                  _element.vat_name ?? '',
+                                  _element.sale_off.type ?? '',
+                                ),
+                              );
+                            });
+
+                            //
+                            _addData[i].data.add(
+                              ModelDataAdd(
+                                label: _item.field_name,
+                                value: _item.field_set_value.toString(),
+                                required: _item.field_require,
+                                txtValidate: _item.field_validation_message,
+                                type: _item.field_type,
+                              ),
+                            );
                           }
                         }
                       }
@@ -924,52 +747,52 @@ class _FormAddDataState extends State<FormAddData> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: List.generate(_listAddData.length,
-                                      (indexParent) {
-                                    final itemParent =
+                                          (indexParent) {
+                                        final itemParent =
                                         _listAddData[indexParent];
-                                    return (itemParent.data != null &&
+                                        return (itemParent.data != null &&
                                             (itemParent.data?.length ?? 0) > 0)
-                                        ? Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              if ('${itemParent.group_name ?? ''}'
-                                                      .trim() !=
-                                                  '') ...[
-                                                SizedBox(
-                                                  height:
-                                                      AppValue.heights * 0.01,
-                                                ),
-                                                itemParent.group_name != null
-                                                    ? WidgetText(
-                                                        title: itemParent
-                                                                .group_name ??
-                                                            '',
-                                                        style: AppStyle
-                                                            .DEFAULT_18_BOLD,
-                                                      )
-                                                    : SizedBox.shrink(),
-                                                SizedBox(
-                                                  height:
-                                                      AppValue.heights * 0.01,
-                                                ),
-                                              ],
-                                              Column(
-                                                children: List.generate(
-                                                    itemParent.data?.length ??
-                                                        0, (indexChild) {
-                                                  return _getBody(
-                                                    itemParent
-                                                        .data![indexChild],
-                                                    indexParent,
-                                                    indexChild,
-                                                  );
-                                                }),
+                                            ? Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            if ('${itemParent.group_name ?? ''}'
+                                                .trim() !=
+                                                '') ...[
+                                              SizedBox(
+                                                height:
+                                                AppValue.heights * 0.01,
+                                              ),
+                                              itemParent.group_name != null
+                                                  ? WidgetText(
+                                                title: itemParent
+                                                    .group_name ??
+                                                    '',
+                                                style: AppStyle
+                                                    .DEFAULT_18_BOLD,
                                               )
+                                                  : SizedBox.shrink(),
+                                              SizedBox(
+                                                height:
+                                                AppValue.heights * 0.01,
+                                              ),
                                             ],
-                                          )
-                                        : SizedBox.shrink();
-                                  }),
+                                            Column(
+                                              children: List.generate(
+                                                  itemParent.data?.length ??
+                                                      0, (indexChild) {
+                                                return _getBody(
+                                                  itemParent
+                                                      .data![indexChild],
+                                                  indexParent,
+                                                  indexChild,
+                                                );
+                                              }),
+                                            )
+                                          ],
+                                        )
+                                            : SizedBox.shrink();
+                                      }),
                                 ),
                                 if (isAttack)
                                   FileDinhKemUiBase(
@@ -983,7 +806,7 @@ class _FormAddDataState extends State<FormAddData> {
                           ),
                           FileLuuBase(
                             context,
-                            () => _onClickSave(),
+                                () => _onClickSave(),
                             isAttack: isAttack,
                             btn: _btnShowQR(),
                           ),
@@ -1001,35 +824,35 @@ class _FormAddDataState extends State<FormAddData> {
 
   _btnShowQR() => (_type == ADD_PAYMENT || _type == EDIT_PAYMENT)
       ? StreamBuilder<bool>(
-          stream: _showQrCodePayment,
-          builder: (context, snapshot) {
-            if (snapshot.data ?? false)
-              return GestureDetector(
-                onTap: () async {
-                  final String? soTien = _getData(hdSoTien);
-                  final String? note = _getData(ghiChu);
-                  final res = await _bloc.showQrCodePayment(
-                    soTien,
-                    note,
-                  );
-                  if (res['mes'] == '') {
-                    _showDialogQrCode(res['data'].toString());
-                  } else {
-                    showToastM(context, title: res['mes'].toString());
-                  }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 12,
-                  ),
-                  child: widgetSave(
-                    title: getT(KeyT.hien_qr),
-                    background: COLORS.PRIMARY_COLOR1,
-                  ),
-                ),
+      stream: _showQrCodePayment,
+      builder: (context, snapshot) {
+        if (snapshot.data ?? false)
+          return GestureDetector(
+            onTap: () async {
+              final String? soTien = _getData(hdSoTien);
+              final String? note = _getData(ghiChu);
+              final res = await _bloc.showQrCodePayment(
+                soTien,
+                note,
               );
-            return SizedBox.shrink();
-          })
+              if (res['mes'] == '') {
+                _showDialogQrCode(res['data'].toString());
+              } else {
+                showToastM(context, title: res['mes'].toString());
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(
+                right: 12,
+              ),
+              child: widgetSave(
+                title: getT(KeyT.hien_qr),
+                background: COLORS.PRIMARY_COLOR1,
+              ),
+            ),
+          );
+        return SizedBox.shrink();
+      })
       : SizedBox.shrink();
 
   _addCheckHTTT({
@@ -1053,342 +876,371 @@ class _FormAddDataState extends State<FormAddData> {
   }
 
   Widget _getBody(
-    CustomerIndividualItemData data,
-    int indexParent,
-    int indexChild,
-  ) {
+      CustomerIndividualItemData data,
+      int indexParent,
+      int indexChild,
+      ) {
     return data.field_hidden != '1' || data.field_type != 'HIDDEN' // ==1 ẩn
         ? data.field_special == 'url'
-            ? StreamBuilder<String>(
-                stream: _typeContact,
-                builder: (context, snapshot) {
-                  final snap = snapshot.data ?? '';
-                  return ProductContract(
-                    key: Key(snap),
-                    typeContract: snap,
-                    listBtn: data.button,
-                    data: _listProduct,
-                    onChange: (List<ProductsRes> v) {
-                      _listProduct = v;
-                      _tinhTheoProduct();
-                    },
-                    isDelete: true,
-                  );
-                })
-            : _blocService.getInput(data.field_name ?? '')
-                ? StreamBuilder<String>(
-                    stream: _blocService.loaiXe, // getdata selectcar local
-                    builder: (context, snapshot) {
-                      return fieldTextCar(
-                        data,
-                        _blocService.getDataSelectCar(data).toString(),
-                        () {
-                          _addData[indexParent].data[indexChild].value =
-                              _blocService.getDataSelectCarId(data).toString();
-                        },
-                      );
-                    })
-                : data.field_name == 'chi_tiet_xe' //chọn chi tiết xe
-                    ? data.field_parent != null
-                        ? StreamBuilder<String>(
-                            stream: _reloadStream,
-                            builder: (context, snapshot) {
-                              return TypeCarBase(
-                                data: data,
-                                bloc: _blocService,
-                                function: (v) {
-                                  _addData[indexParent].data[indexChild].value =
-                                      v;
-                                },
-                                addData: _addData,
-                              );
-                            })
-                        : TypeCarBase(
-                            data: data,
-                            bloc: _blocService,
-                            function: (v) {
-                              _addData[indexParent].data[indexChild].value = v;
-                            },
-                            addData: _addData,
-                          )
-                    : data.field_type == 'TEXT' ||
-                            data.field_type == 'TEXTAREA' ||
-                            data.field_type == 'MONEY'
-                        ? data.field_parent != null
-                            ? StreamBuilder<String>(
-                                stream: _reloadStream,
-                                builder: (context, snapshot) {
-                                  return FieldTextAPi(
-                                    addData: _addData,
-                                    data: data,
-                                    onChange: (v) {
-                                      _addData[indexParent]
-                                          .data[indexChild]
-                                          .value = v;
-                                    },
-                                  );
-                                })
-                            : FieldText(
-                                data: data,
-                                onChange: (v) {
-                                  _tinhAuto(data, v);
+        ? ProductContract(
+      listBtn: data.button,
+      data: _listProduct,
+      addProduct: _addProduct,
+      reload: _reload,
+      isDelete: true,
+    )
+        : _blocService.getInput(data.field_name ?? '')
+        ? StreamBuilder<String>(
+        stream: _blocService.loaiXe, // getdata selectcar local
+        builder: (context, snapshot) {
+          return fieldTextCar(
+            data,
+            _blocService.getDataSelectCar(data).toString(),
+                () {
+              _addData[indexParent].data[indexChild].value =
+                  _blocService.getDataSelectCarId(data).toString();
+            },
+          );
+        })
+        : data.field_name == 'chi_tiet_xe' //chọn chi tiết xe
+        ? data.field_parent != null
+        ? StreamBuilder<String>(
+        stream: _reloadStream,
+        builder: (context, snapshot) {
+          return TypeCarBase(
+            data: data,
+            bloc: _blocService,
+            function: (v) {
+              _addData[indexParent].data[indexChild].value =
+                  v;
+            },
+            addData: _addData,
+          );
+        })
+        : TypeCarBase(
+      data: data,
+      bloc: _blocService,
+      function: (v) {
+        _addData[indexParent].data[indexChild].value = v;
+      },
+      addData: _addData,
+    )
+        : data.field_type == 'TEXT' ||
+        data.field_type == 'TEXTAREA' ||
+        data.field_type == 'MONEY'
+        ? data.field_parent != null
+        ? StreamBuilder<String>(
+        stream: _reloadStream,
+        builder: (context, snapshot) {
+          return FieldTextAPi(
+            addData: _addData,
+            data: data,
+            onChange: (v) {
+              _addData[indexParent]
+                  .data[indexChild]
+                  .value = v;
+            },
+          );
+        })
+        : FieldText(
+      data: data,
+      onChange: (v) {
+        _addData[indexParent].data[indexChild].value =
+            v;
+      },
+    )
+        : data.field_type == 'SELECT'
+        ? checkLocation(data) // TH Select địa chỉ
+        ? LocationWidget(
+      data: data,
+      onSuccess: (v) {
+        _addData[indexParent]
+            .data[indexChild]
+            .value = v;
+      },
+      initData: data.field_value,
+    )
+        : data.field_parent != null // TH reload api
+        ? StreamBuilder<String>(
+        stream: _reloadStream,
+        builder: (context, snapshot) {
+          return InputDropdownBase(
+            data: data,
+            addData: _addData,
+            onChange: (v, bool? isCK) {
+              _addData[indexParent]
+                  .data[indexChild]
+                  .value = v;
+              _addCheckHTTT(
+                data: data,
+                indexParent: indexParent,
+                indexChild: indexChild,
+                isCK: isCK,
+              );
+            },
+          );
+        })
+        : data.field_name == hinhThucTT &&
+        _type != ADD_PAYMENT &&
+        _type != EDIT_PAYMENT
+        ? StreamBuilder<double>(
+        stream: _totalBloc.paidStream,
+        builder: (context, snapshot) {
+          if ((snapshot.data ?? 0) == 0) {
+            return SizedBox();
+          } else {
+            return InputDropdownBase(
+              data: data,
+              addData: _addData,
+              onChange: (v, bool? isCK) {
+                _addData[indexParent]
+                    .data[indexChild]
+                    .value = v;
+                if (data.is_load == true)
+                  _reloadStream.add(
+                      '${data.field_name}$v');
+                _addCheckHTTT(
+                  data: data,
+                  indexParent: indexParent,
+                  indexChild: indexChild,
+                  isCK: isCK,
+                );
+              },
+            );
+          }
+        })
+        : InputDropdownBase(
+      data: data,
+      addData: _addData,
+      onChange: (v, bool? isCK) {
+        _addData[indexParent]
+            .data[indexChild]
+            .value = v;
+        if (data.is_load == true)
+          _reloadStream.add(
+              '${data.field_name}$v');
+        _addCheckHTTT(
+          data: data,
+          indexParent: indexParent,
+          indexChild: indexChild,
+          isCK: isCK,
+        );
+      },
+    )
+        : data.field_type == 'TEXT_MULTI'
+        ? SelectMulti(
+      dropdownItemList:
+      data.field_datasource ?? [],
+      label: data.field_label ?? '',
+      required: data.field_require ?? 0,
+      maxLength: data.field_maxlength ?? '',
+      initValue: _addData[indexParent]
+          .data[indexChild]
+          .value
+          .toString()
+          .split(','),
+      onChange: (data) {
+        _addData[indexParent]
+            .data[indexChild]
+            .value = data;
+      },
+    )
+        : data.field_type == 'TEXT_MULTI_NEW'
+        ? InputMultipleWidget(
+      data: data,
+      onSelect: (data) {
+        _addData[indexParent]
+            .data[indexChild]
+            .value = data.join(',');
+      },
+      value: (data.field_set_value != null &&
+          data.field_set_value != '')
+          ? data.field_set_value.split(',')
+          : [],
+    )
+        : data.field_type == 'DATE'
+        ? WidgetInputDate(
+      data: data,
+      dateText: data.field_set_value,
+      onSelect: (int date) {
+        _addData[indexParent]
+            .data[indexChild]
+            .value = date;
+      },
+      onInit: (v) {
+        _addData[indexParent]
+            .data[indexChild]
+            .value = v;
+      },
+    )
+        : data.field_type == 'DATETIME'
+        ? WidgetInputDate(
+      isDate: false,
+      data: data,
+      dateText: data.field_set_value,
+      onSelect: (int date) {
+        _addData[indexParent]
+            .data[indexChild]
+            .value = date;
+      },
+      onInit: (v) {
+        _addData[indexParent]
+            .data[indexChild]
+            .value = v;
+      },
+    )
+        : data.field_type == 'CHECK'
+        ? RenderCheckBox(
+      init: data.field_set_value
+          .toString() ==
+          '1',
+      onChange: (check) {
+        _addData[indexParent]
+            .data[indexChild]
+            .value =
+        check ? 1 : 0;
+      },
+      data: data,
+    )
+        : data.field_type ==
+        'PERCENTAGE'
+        ? FieldInputPercent(
+      data: data,
+      onChanged: (text) {
+        _addData[indexParent]
+            .data[indexChild]
+            .value = text;
+      },
+    )
+        : data.field_type ==
+        'TEXT_NUMERIC'
+        ? data.field_name ==
+        'chuathanhtoan'
+        ? StreamBuilder<
+        double>(
+        stream: _totalBloc
+            .unpaidStream,
+        builder: (context,
+            snapshot) {
+          final value =
+              snapshot
+                  .data;
+          _addData[
+          indexParent]
+              .data[
+          indexChild]
+              .value = value;
+          return WidgetTotalSum(
+            label: data
+                .field_label,
+            value: AppValue
+                .format_money(
+              (value ??
+                  0)
+                  .toStringAsFixed(
+                0,
+              ),
+            ),
+          );
+        })
+        : data.field_special ==
+        'autosum'
+        ? BlocBuilder<
+        TotalBloc,
+        TotalState>(
+        builder:
+            (context,
+            stateA) {
+          if (stateA
+          is SuccessTotalState) {
+            _addData[
+            indexParent]
+                .data[
+            indexChild]
+                .value = stateA.total.toString();
+            TotalBloc.of(
+                context)
+                .getPaid();
+            return WidgetTotalSum(
+              label: data
+                  .field_label,
+              value: AppValue
+                  .format_money(
+                stateA
+                    .total
+                    .toStringAsFixed(
+                  0,
+                ),
+              ),
+            );
+          } else {
+            return WidgetTotalSum(
+              label: data
+                  .field_label,
+              value:
+              '',
+            );
+          }
+        })
+        : data.field_parent !=
+        null // TH reload api
+        ? StreamBuilder<
+        String>(
+        stream:
+        _reloadStream,
+        builder: (context, snapshot) {
+          return FieldTextAPi(
+            typeInput:
+            TextInputType.number,
+            addData:
+            _addData,
+            data:
+            data,
+            onChange:
+                (v) {
+              _addData[indexParent].data[indexChild].value = v;
+              _addCheckSoTien(data: data);
+            },
+          );
+        })
+        : FieldText(
+      data:
+      data,
+      onChange:
+          (v) {
+        if (data.field_name ==
+            'dathanhtoan') {
+          _totalBloc.paidStream.add(double.tryParse(v) ??
+              0);
+          _totalBloc.getPaid();
+        }
 
-                                  _addData[indexParent].data[indexChild].value =
-                                      v;
-                                },
-                              )
-                        : data.field_type == 'SELECT'
-                            ? checkLocation(data) // TH Select địa chỉ
-                                ? LocationWidget(
-                                    data: data,
-                                    onSuccess: (v) {
-                                      _addData[indexParent]
-                                          .data[indexChild]
-                                          .value = v;
-                                    },
-                                    initData: data.field_value,
-                                  )
-                                : data.field_parent != null // TH reload api
-                                    ? StreamBuilder<String>(
-                                        stream: _reloadStream,
-                                        builder: (context, snapshot) {
-                                          return InputDropdownBase(
-                                            data: data,
-                                            addData: _addData,
-                                            onChange: (v, bool? isCK) {
-                                              _addData[indexParent]
-                                                  .data[indexChild]
-                                                  .value = v;
-                                              _addCheckHTTT(
-                                                data: data,
-                                                indexParent: indexParent,
-                                                indexChild: indexChild,
-                                                isCK: isCK,
-                                              );
-                                              _setDataLoaiHopDong(
-                                                  data, v.toString());
-                                            },
-                                          );
-                                        })
-                                    : data.field_name == hinhThucTT &&
-                                            _type != ADD_PAYMENT &&
-                                            _type != EDIT_PAYMENT
-                                        ? StreamBuilder<String>(
-                                            stream: _autoSumStream,
-                                            builder: (context, snapshot) {
-                                              if (_daThanhToan == 0) {
-                                                return SizedBox();
-                                              } else {
-                                                return InputDropdownBase(
-                                                  data: data,
-                                                  addData: _addData,
-                                                  onChange: (v, bool? isCK) {
-                                                    _addData[indexParent]
-                                                        .data[indexChild]
-                                                        .value = v;
-                                                    if (data.is_load == true)
-                                                      _reloadStream.add(
-                                                          '${data.field_name}$v');
-                                                    _addCheckHTTT(
-                                                      data: data,
-                                                      indexParent: indexParent,
-                                                      indexChild: indexChild,
-                                                      isCK: isCK,
-                                                    );
-                                                  },
-                                                );
-                                              }
-                                            })
-                                        : InputDropdownBase(
-                                            data: data,
-                                            addData: _addData,
-                                            onChange: (v, bool? isCK) {
-                                              _addData[indexParent]
-                                                  .data[indexChild]
-                                                  .value = v;
-                                              if (data.is_load == true)
-                                                _reloadStream.add(
-                                                    '${data.field_name}$v');
-                                              _addCheckHTTT(
-                                                data: data,
-                                                indexParent: indexParent,
-                                                indexChild: indexChild,
-                                                isCK: isCK,
-                                              );
-                                              _setDataLoaiHopDong(
-                                                  data, v.toString());
-                                            },
-                                          )
-                            : data.field_type == 'TEXT_MULTI'
-                                ? SelectMulti(
-                                    dropdownItemList:
-                                        data.field_datasource ?? [],
-                                    label: data.field_label ?? '',
-                                    required: data.field_require ?? 0,
-                                    maxLength: data.field_maxlength ?? '',
-                                    initValue: _addData[indexParent]
-                                        .data[indexChild]
-                                        .value
-                                        .toString()
-                                        .split(','),
-                                    onChange: (data) {
-                                      _addData[indexParent]
-                                          .data[indexChild]
-                                          .value = data;
-                                    },
-                                  )
-                                : data.field_type == 'TEXT_MULTI_NEW'
-                                    ? InputMultipleWidget(
-                                        data: data,
-                                        onSelect: (data) {
-                                          _addData[indexParent]
-                                              .data[indexChild]
-                                              .value = data.join(',');
-                                        },
-                                        value: (data.field_set_value != null &&
-                                                data.field_set_value != '')
-                                            ? data.field_set_value.split(',')
-                                            : [],
-                                      )
-                                    : data.field_type == 'DATE'
-                                        ? WidgetInputDate(
-                                            data: data,
-                                            dateText: data.field_set_value,
-                                            onSelect: (int date) {
-                                              _addData[indexParent]
-                                                  .data[indexChild]
-                                                  .value = date;
-                                            },
-                                            onInit: (v) {
-                                              _addData[indexParent]
-                                                  .data[indexChild]
-                                                  .value = v;
-                                            },
-                                          )
-                                        : data.field_type == 'DATETIME'
-                                            ? WidgetInputDate(
-                                                isDate: false,
-                                                data: data,
-                                                dateText: data.field_set_value,
-                                                onSelect: (int date) {
-                                                  _addData[indexParent]
-                                                      .data[indexChild]
-                                                      .value = date;
-                                                },
-                                                onInit: (v) {
-                                                  _addData[indexParent]
-                                                      .data[indexChild]
-                                                      .value = v;
-                                                },
-                                              )
-                                            : data.field_type == 'CHECK'
-                                                ? RenderCheckBox(
-                                                    init: data.field_set_value
-                                                            .toString() ==
-                                                        '1',
-                                                    onChange: (check) {
-                                                      _addData[indexParent]
-                                                              .data[indexChild]
-                                                              .value =
-                                                          check ? 1 : 0;
-                                                    },
-                                                    data: data,
-                                                  )
-                                                : data.field_type ==
-                                                        'PERCENTAGE'
-                                                    ? FieldInputPercent(
-                                                        data: data,
-                                                        onChanged: (text) {
-                                                          _addData[indexParent]
-                                                              .data[indexChild]
-                                                              .value = text;
-                                                        },
-                                                      )
-                                                    : data.field_type ==
-                                                            'TEXT_NUMERIC'
-                                                        ? data.field_special ==
-                                                                'autosum'
-                                                            ? StreamBuilder<
-                                                                    String>(
-                                                                stream:
-                                                                    _autoSumStream,
-                                                                builder: (context,
-                                                                    snapshot) {
-                                                                  return WidgetTotalSum(
-                                                                    label: data
-                                                                        .field_label,
-                                                                    value: AppValue
-                                                                        .formatMoney(
-                                                                      _getDataWithFieldName(
-                                                                          data.field_name ??
-                                                                              ''),
-                                                                    ),
-                                                                  );
-                                                                })
-                                                            : data.field_parent !=
-                                                                    null // TH reload api
-                                                                ? StreamBuilder<
-                                                                        String>(
-                                                                    stream:
-                                                                        _reloadStream,
-                                                                    builder:
-                                                                        (context,
-                                                                            snapshot) {
-                                                                      return FieldTextAPi(
-                                                                        typeInput:
-                                                                            TextInputType.number,
-                                                                        addData:
-                                                                            _addData,
-                                                                        data:
-                                                                            data,
-                                                                        onChange:
-                                                                            (v) {
-                                                                          _addData[indexParent]
-                                                                              .data[indexChild]
-                                                                              .value = v;
-                                                                          _addCheckSoTien(
-                                                                              data: data);
-                                                                        },
-                                                                      );
-                                                                    })
-                                                                : FieldText(
-                                                                    data: data,
-                                                                    onChange:
-                                                                        (v) {
-                                                                      _tinhAuto(
-                                                                          data,
-                                                                          v);
+        _addData[indexParent]
+            .data[indexChild]
+            .value = v;
 
-                                                                      _addData[
-                                                                              indexParent]
-                                                                          .data[
-                                                                              indexChild]
-                                                                          .value = v;
-
-                                                                      _addCheckSoTien(
-                                                                          data:
-                                                                              data);
-                                                                    },
-                                                                  )
-                                                        : data.field_type ==
-                                                                'images'
-                                                            ? FieldImage(
-                                                                init: (data.field_set_value
-                                                                        is List<
-                                                                            dynamic>)
-                                                                    ? data
-                                                                        .field_set_value
-                                                                    : null,
-                                                                data: data,
-                                                                onChange: (v) {
-                                                                  _addData[
-                                                                          indexParent]
-                                                                      .data[
-                                                                          indexChild]
-                                                                      .value = v;
-                                                                },
-                                                              )
-                                                            : SizedBox.shrink()
+        _addCheckSoTien(
+            data: data);
+      },
+    )
+        : data.field_type == 'images'
+        ? FieldImage(
+      init: (data.field_set_value
+      is List<
+          dynamic>)
+          ? data
+          .field_set_value
+          : null,
+      data: data,
+      onChange: (v) {
+        _addData[
+        indexParent]
+            .data[
+        indexChild]
+            .value = v;
+      },
+    )
+        : SizedBox.shrink()
         : SizedBox.shrink();
   }
 
@@ -1450,27 +1302,40 @@ class _FormAddDataState extends State<FormAddData> {
       }
     }
 
-    String mess = (getT(KeyT.please_enter_all_required_fields) +
-        ((txtValidate != null && txtValidate != '') ? '\n($txtValidate)' : ''));
-
-    if (_daThanhToan < 0 && _type == ADD_CONTRACT && isCheckValidate == false) {
+    if (_totalBloc.unpaidStream.value < 0 && _type == ADD_CONTRACT) {
       isCheckValidate = true;
-      mess = getT(KeyT.the_amount_paid_cannot_be_greater_than_the_total_amount);
-    } else if (_giam_gia_tong > _tongChuaThanhToan &&
-        isCheckValidate == false) {
-      isCheckValidate = true;
-      mess = getT(KeyT.giam_gia_tong_khong_duoc_lon_hon_CTT);
     }
 
     if (isCheckValidate == true) {
       ShowDialogCustom.showDialogBase(
         title: getT(KeyT.notification),
-        content: mess,
+        content: _totalBloc.unpaidStream.value < 0
+            ? getT(KeyT.the_amount_paid_cannot_be_greater_than_the_total_amount)
+            : (getT(KeyT.please_enter_all_required_fields) +
+            ((txtValidate != null && txtValidate != '')
+                ? '\n($txtValidate)'
+                : '')),
       );
     } else {
-      if (_listProduct.length > 0)
-        data['products'] =
-            jsonEncode(_listProduct.map((e) => e.toJsonPost()).toList());
+      if (_listProduct.isNotEmpty) {
+        List product = [];
+        for (int i = 0; i < _listProduct.length; i++) {
+          product.add({
+            'id': _listProduct[i].id,
+            'price': _listProduct[i].item.sell_price,
+            'quantity': _listProduct[i].soLuong,
+            'vat': _listProduct[i].item.vat,
+            'unit': _listProduct[i].item.dvt,
+            'ten_combo': _listProduct[i].item.ten_combo,
+            'combo_id': _listProduct[i].item.combo_id,
+            'sale_off': {
+              'value': _listProduct[i].giamGia,
+              'type': _listProduct[i].typeGiamGia
+            }
+          });
+        }
+        data['products'] = product;
+      }
 
       switch (_type) {
         case ADD_CUSTOMER_OR:
@@ -1646,20 +1511,6 @@ class _FormAddDataState extends State<FormAddData> {
             _blocAdd.add(EditPayment(data));
           }
       }
-    }
-  }
-
-  void _tinhAuto(
-    CustomerIndividualItemData data,
-    String v,
-  ) {
-    // tính chua thanh toan theo số tiền DATT
-    if (data.field_name == 'datt' || data.field_name == 'dathanhtoan') {
-      _daThanhToan = v.toDoubleTry();
-      _tinhTheoProduct();
-    } else if (data.field_name == 'giam_gia_tong') {
-      _giam_gia_tong = v.toDoubleTry();
-      _tinhTheoProduct();
     }
   }
 }

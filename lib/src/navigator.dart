@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:gen_crm/src/router.dart';
 import '../l10n/key_text.dart';
+import '../models/product_model.dart';
 import 'app_const.dart';
 import 'models/model_generator/products_response.dart';
 
@@ -207,18 +208,14 @@ class AppNavigator {
       await Get.toNamed(ROUTE_NAMES.NOTIFICATION);
 
   static navigateAddProduct(
-    List<ProductsRes> data,
-    String typeContract,
-    Function onThen, {
+    Function add,
+    Function reload,
+    List<ProductModel> data, {
     String? group,
     String? title,
   }) async =>
       await Get.toNamed(ROUTE_NAMES.ADD_PRODUCT,
-          arguments: [title, group, data, typeContract])?.then((value) {
-        if (value != null) {
-          onThen(value);
-        }
-      });
+          arguments: [add, reload, data, group, title]);
 
   static navigateProduct() async => await Get.toNamed(
         ROUTE_NAMES.PRODUCT,
@@ -268,15 +265,17 @@ class AppNavigator {
       );
 
   static navigateListServicePark(
+    Function add,
+    Function reload,
+    List<ProductModel> data,
     String title,
-    Function onThen,
   ) async =>
-      await Get.toNamed(ROUTE_NAMES.LIST_SERVICE_PARK, arguments: title)
-          ?.then((value) {
-        if (value != null) {
-          onThen(value);
-        }
-      });
+      await Get.toNamed(ROUTE_NAMES.LIST_SERVICE_PARK, arguments: [
+        add,
+        reload,
+        data,
+        title,
+      ]);
 
   static navigateInPhieu({required String link}) async => await Get.toNamed(
         ROUTE_NAMES.IN_PHIEU,

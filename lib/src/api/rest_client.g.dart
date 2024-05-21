@@ -1885,7 +1885,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ProductsResponse> getListProduct(
+  Future<ProductResponse> getListProduct(
     page,
     querySearch,
     group,
@@ -1900,7 +1900,7 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<ProductsResponse>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<ProductResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -1912,7 +1912,7 @@ class _RestClient implements RestClient {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ProductsResponse.fromJson(_result.data!);
+    final value = ProductResponse.fromJson(_result.data!);
     return value;
   }
 
