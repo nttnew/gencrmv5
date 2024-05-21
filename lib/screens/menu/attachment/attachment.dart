@@ -216,15 +216,14 @@ class _AttachmentState extends State<Attachment> {
 
   Future<void> _removeFilePick(FileDataResponse file) async {
     await DetailContractBloc.of(context).deleteFileOnly(file).then((value) {
-      if (value) {
+      if (value == '') {
         DetailContractBloc.of(context)
             .getFile(int.parse(widget.id), widget.typeModule);
       }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            '${getT(KeyT.delete_attachment)} '
-            '${value == true ? getT(KeyT.success.toLowerCase()) : getT(KeyT.fail.toLowerCase())}!',
+            '${value == '' ? '${getT(KeyT.delete_attachment)} ${getT(KeyT.success.toLowerCase()).toLowerCase()}' : value}!',
           ),
         ),
       );

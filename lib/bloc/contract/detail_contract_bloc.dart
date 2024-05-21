@@ -108,14 +108,22 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
     return false;
   }
 
-  Future<bool> deleteFileOnly(FileDataResponse file) async {
+  Future<String> deleteFileOnly(FileDataResponse file) async {
     final response = await userRepository.deleteFile(id: file.id.toString());
-    final statusCode =
-        (response as Map<String, dynamic>).getOrElse('e', () => -1);
-    if (statusCode == 0) {
-      return true;
+    String mes = getT(KeyT.fail.toLowerCase());
+    try {
+      final statusCode =
+          (response as Map<String, dynamic>).getOrElse('e', () => -1);
+      final mesRes = response.getOrElse('m', () => -1);
+      if (statusCode == 0) {
+        mes = '';
+      } else {
+        mes = mesRes;
+      }
+    } catch (e) {
+      return mes;
     }
-    return false;
+    return mes;
   }
 
   Future<bool> uploadFile({

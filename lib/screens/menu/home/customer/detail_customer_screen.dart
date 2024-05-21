@@ -342,7 +342,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                             data: data,
                             onTap: () {
                               AppNavigator.navigateDetailClue(
-                                data._id ?? '',
+                                data.id ?? '',
                                 onRefreshForm: () {
                                   _bloc.controllerDM.reloadData();
                                 },
@@ -362,7 +362,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                             data: data,
                             onTap: () {
                               AppNavigator.navigateDetailChance(
-                                data._id ?? '',
+                                data.id ?? '',
                                 onRefreshForm: () {
                                   _bloc.controllerCH.reloadData();
                                 },
@@ -442,7 +442,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                           return SupportCardWidget(
                             data: data,
                             onTap: () {
-                              AppNavigator.navigateDetailSupport(data._id ?? '',
+                              AppNavigator.navigateDetailSupport(data.id ?? '',
                                   onRefreshForm: () {
                                 _bloc.controllerHT.reloadData();
                               });

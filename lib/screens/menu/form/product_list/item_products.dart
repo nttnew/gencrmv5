@@ -116,8 +116,8 @@ class _ItemProductsState extends State<ItemProducts> {
                     ),
                   ),
                 ),
-                if (_checkSoLuong())
-                  GestureDetector(
+                if (_checkSoLuong() && (_dataNew.form?.length ?? 0) > 6)
+                  InkWell(
                     onTap: () {
                       _isShowReload();
                     },
