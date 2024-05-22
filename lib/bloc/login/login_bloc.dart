@@ -10,6 +10,7 @@ import 'package:formz/formz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gen_crm/api_resfull/dio_provider.dart';
 import 'package:gen_crm/api_resfull/user_repository.dart';
+// import 'package:gen_crm/firebase/firebase_config.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/models/model_generator/report_option.dart';
 import 'package:gen_crm/src/src_index.dart';
@@ -231,6 +232,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   void logout(BuildContext context) async {
     shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.UNREGISTER);
     PitelClient.getInstance().logoutExtension(getSipInfo());
+    // FirebaseConfig.deleteTokenFcm();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(PreferencesKey.IS_LOGGED_IN, false);
   }
