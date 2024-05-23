@@ -153,7 +153,7 @@ class _ListProductState extends State<ListProduct> {
                       .push(MaterialPageRoute(
                           builder: (context) => ScannerQrcode()))
                       .then((value) async {
-                    if (value != ''&&value != null) {
+                    if (value != '' && value != null) {
                       _editingController.text = value;
                       _onClickSearch();
                     }
@@ -172,6 +172,7 @@ class _ListProductState extends State<ListProduct> {
           return _bloc.getListProduct(
             page: page,
             querySearch: _editingController.text,
+            group: group,
           );
         },
         itemWidget: (int index, data) {

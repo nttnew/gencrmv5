@@ -730,7 +730,7 @@ class _FormAddDataState extends State<FormAddData> {
     var image = base64Decode(data.replaceAll('data:image/png;base64,', ''));
     var _index = 1;
     var _listImage = [
-      Image.memory(image),//todo
+      Image.memory(image), //todo
       Image.memory(image),
       Image.memory(image),
     ];
@@ -1323,6 +1323,15 @@ class _FormAddDataState extends State<FormAddData> {
                                                                           data.field_name ??
                                                                               ''),
                                                                     ),
+                                                                    onChange:
+                                                                        (String?
+                                                                            v) {
+                                                                      _addData[
+                                                                              indexParent]
+                                                                          .data[
+                                                                              indexChild]
+                                                                          .value = v;
+                                                                    },
                                                                   );
                                                                 })
                                                             : data.field_parent !=

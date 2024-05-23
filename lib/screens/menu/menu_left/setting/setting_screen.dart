@@ -340,7 +340,7 @@ class _SettingScreenState extends State<SettingScreen> {
             width: 4,
           ),
           Text(
-            items.name ?? '',
+            items.label ?? '',
             style: AppStyle.DEFAULT_14.copyWith(
               fontWeight: FontWeight.w600,
             ),

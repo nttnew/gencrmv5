@@ -69,9 +69,10 @@ class _ProductContractState extends State<ProductContract> {
   }
 
   void _removeItem(ProductsRes v) {
+    _listKey.removeAt(_productData.indexWhere((element) => v == element));
     _productData.remove(v);
     _onChangeMain(_productData);
-    _reload();
+    setState(() {});
   }
 
   void _updateProduct(ProductsRes v, int index) {
@@ -104,7 +105,6 @@ class _ProductContractState extends State<ProductContract> {
               },
               onDelete: (v) {
                 _removeItem(v);
-                _reloadKey();
               },
               paddingHorizontal: 0,
               data: _productData[i],
@@ -137,7 +137,7 @@ class _ProductContractState extends State<ProductContract> {
                       .push(MaterialPageRoute(
                           builder: (context) => ScannerQrcode()))
                       .then((value) async {
-                    if (value != ''&&value != null) {
+                    if (value != '' && value != null) {
                       final result = await ProductModuleBloc.of(context)
                           .getListProduct(querySearch: value);
                       if (result?.data?.lists?.isNotEmpty ?? false) {

@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import '../../../../../src/src_index.dart';
 
-class WidgetTotalSum extends StatefulWidget {
-  WidgetTotalSum({Key? key, required this.label, required this.value})
-      : super(key: key);
+class WidgetTotalSum extends StatelessWidget {
+  WidgetTotalSum({
+    Key? key,
+    required this.label,
+    required this.value,
+    required this.onChange,
+  }) : super(key: key);
 
   final String? label;
   final String? value;
+  final Function(String?) onChange;
 
-  @override
-  State<WidgetTotalSum> createState() => _WidgetTotalSumState();
-}
-
-class _WidgetTotalSumState extends State<WidgetTotalSum> {
   @override
   Widget build(BuildContext context) {
+    onChange((value ?? '').replaceAll('.', '').replaceAll('đ', ''));
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Column(
@@ -24,7 +25,7 @@ class _WidgetTotalSumState extends State<WidgetTotalSum> {
           RichText(
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             text: TextSpan(
-              text: widget.label ?? '',
+              text: label ?? '',
               style: AppStyle.DEFAULT_14W600,
               children: <TextSpan>[
                 TextSpan(),
@@ -47,7 +48,7 @@ class _WidgetTotalSumState extends State<WidgetTotalSum> {
               padding: EdgeInsets.only(left: 10, top: 14, bottom: 14),
               child: Container(
                 child: WidgetText(
-                  title: widget.value,
+                  title: value,
                   style: AppStyle.DEFAULT_14_BOLD,
                 ),
               ),
