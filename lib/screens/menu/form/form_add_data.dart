@@ -763,52 +763,53 @@ class _FormAddDataState extends State<FormAddData> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CarouselSlider(
-                  carouselController: _controller,
-                  items: _listImage,
-                  options: CarouselOptions(
-                    onPageChanged: (i, c) {
-                      _index = i + 1;
-                      statePay(() {});
-                    },
-                    disableCenter: true,
-                    height: MediaQuery.of(context).size.width,
-                    viewportFraction: 1,
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    IconButton(
-                      padding: EdgeInsets.only(
-                        left: 10,
-                      ),
-                      onPressed: () {
-                        _controller.previousPage();
-                      },
-                      icon: Icon(
-                        Icons.navigate_before_outlined,
-                        size: 40,
-                      ),
-                    ),
-                    Text(
-                      '$_index/${_listImage.length}',
-                      style: AppStyle.DEFAULT_18_BOLD,
-                    ),
-                    IconButton(
-                      padding: EdgeInsets.only(
-                        right: 10,
-                      ),
-                      onPressed: () {
-                        _controller.nextPage();
-                      },
-                      icon: Icon(
-                        Icons.navigate_next_outlined,
-                        size: 40,
-                      ),
-                    ),
-                  ],
-                ),
+                // CarouselSlider(
+                //   carouselController: _controller,
+                //   items: _listImage,
+                //   options: CarouselOptions(
+                //     onPageChanged: (i, c) {
+                //       _index = i + 1;
+                //       statePay(() {});
+                //     },
+                //     disableCenter: true,
+                //     height: MediaQuery.of(context).size.width,
+                //     viewportFraction: 1,
+                //   ),
+                // ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: <Widget>[
+                //     IconButton(
+                //       padding: EdgeInsets.only(
+                //         left: 10,
+                //       ),
+                //       onPressed: () {
+                //         _controller.previousPage();
+                //       },
+                //       icon: Icon(
+                //         Icons.navigate_before_outlined,
+                //         size: 40,
+                //       ),
+                //     ),
+                //     Text(
+                //       '$_index/${_listImage.length}',
+                //       style: AppStyle.DEFAULT_18_BOLD,
+                //     ),
+                //     IconButton(
+                //       padding: EdgeInsets.only(
+                //         right: 10,
+                //       ),
+                //       onPressed: () {
+                //         _controller.nextPage();
+                //       },
+                //       icon: Icon(
+                //         Icons.navigate_next_outlined,
+                //         size: 40,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                Image.memory(image),
                 ButtonThaoTac(
                     title: getT(KeyT.xac_nhan_da_thanh_toan),
                     onTap: () {
