@@ -202,7 +202,7 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
 
   void _handelRightIconSearch() async {
     if (isCarCrm()) {
-      final File? file = await getImageCamera();
+      final File? file = await getImageCamera(is2mb: true);
       if (file != null) {
         LoadingApi().pushLoading();
         final res = await _bloc.getBienSoWithImg(file: file);
