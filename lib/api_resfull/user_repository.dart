@@ -1880,6 +1880,7 @@ class UserRepository {
   Future<QrCodePaymentRes> getQRCode({
     required String amount,
     required String message,
+    required String id,
   }) async =>
       await RestClient(
         dio,
@@ -1887,6 +1888,7 @@ class UserRepository {
       ).getQRCode(
         amount,
         message,
+        id,
       );
 
   Future<BienSoWithImgResponse> getBienSoWithImg({

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -61,6 +60,7 @@ const String TONG_TIEN_THUE_FN = 'tien_thue';
 const String CHUA_THANH_TOAN_FN = 'chuathanhtoan';
 const String TONG_BAO_HIEM_TRA = 'tong_bao_hiem_tra';
 const String LOAI_HOP_DONG = 'col112'; // case add edit HOP_DONG
+const String SELECT_NGAN_HANG = 'banks';
 
 class FormAddData extends StatefulWidget {
   const FormAddData({Key? key}) : super(key: key);
@@ -81,6 +81,7 @@ class _FormAddDataState extends State<FormAddData> {
   String _bienSo = Get.arguments[8] ?? '';
   String _idDetail = Get.arguments[9] ?? '';
   String _idPay = Get.arguments[10] ?? '';
+  String _idNganHang = '';
 
   double _total = 0;
   double _tongTienGiam = 0;
@@ -152,6 +153,7 @@ class _FormAddDataState extends State<FormAddData> {
   }
 
   bool _checkThanhToan() {
+    _idNganHang = '';
     if (_type != ADD_PAYMENT && _type != EDIT_PAYMENT) return false;
     bool _checkTT = false;
     bool _checkCK = false;
@@ -169,9 +171,13 @@ class _FormAddDataState extends State<FormAddData> {
             _checkCK = true;
           }
         }
+
+        if (_element2.label == SELECT_NGAN_HANG) {
+          _idNganHang = '${_element2.value ?? ''}';
+        }
       });
     });
-    return _checkTT && _checkCK;
+    return _checkTT && _checkCK && _idNganHang != '';
   }
 
   void _addBlocEvent(String type) {
@@ -726,14 +732,7 @@ class _FormAddDataState extends State<FormAddData> {
   }
 
   _showDialogQrCode(String data) {
-    final CarouselController _controller = CarouselController();
     var image = base64Decode(data.replaceAll('data:image/png;base64,', ''));
-    var _index = 1;
-    var _listImage = [
-      Image.memory(image), //todo
-      Image.memory(image),
-      Image.memory(image),
-    ];
     return showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -763,52 +762,6 @@ class _FormAddDataState extends State<FormAddData> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // CarouselSlider(
-                //   carouselController: _controller,
-                //   items: _listImage,
-                //   options: CarouselOptions(
-                //     onPageChanged: (i, c) {
-                //       _index = i + 1;
-                //       statePay(() {});
-                //     },
-                //     disableCenter: true,
-                //     height: MediaQuery.of(context).size.width,
-                //     viewportFraction: 1,
-                //   ),
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: <Widget>[
-                //     IconButton(
-                //       padding: EdgeInsets.only(
-                //         left: 10,
-                //       ),
-                //       onPressed: () {
-                //         _controller.previousPage();
-                //       },
-                //       icon: Icon(
-                //         Icons.navigate_before_outlined,
-                //         size: 40,
-                //       ),
-                //     ),
-                //     Text(
-                //       '$_index/${_listImage.length}',
-                //       style: AppStyle.DEFAULT_18_BOLD,
-                //     ),
-                //     IconButton(
-                //       padding: EdgeInsets.only(
-                //         right: 10,
-                //       ),
-                //       onPressed: () {
-                //         _controller.nextPage();
-                //       },
-                //       icon: Icon(
-                //         Icons.navigate_next_outlined,
-                //         size: 40,
-                //       ),
-                //     ),
-                //   ],
-                // ),
                 Image.memory(image),
                 ButtonThaoTac(
                     title: getT(KeyT.xac_nhan_da_thanh_toan),
@@ -1012,6 +965,7 @@ class _FormAddDataState extends State<FormAddData> {
                   final res = await _bloc.showQrCodePayment(
                     soTien,
                     note,
+                    _idNganHang,
                   );
                   if (res['mes'] == '') {
                     _showDialogQrCode(res['data'].toString());
@@ -1042,6 +996,9 @@ class _FormAddDataState extends State<FormAddData> {
     if (data.field_name == hinhThucTT && isCK == true) {
       _addData[indexParent].data[indexChild].isCK = true;
       _showQrCodePayment.add(_checkThanhToan());
+    } else if (data.field_name == hinhThucTT && isCK == false) {
+      _addData[indexParent].data[indexChild].isCK = false;
+      _showQrCodePayment.add(false);
     }
   }
 
@@ -1139,87 +1096,110 @@ class _FormAddDataState extends State<FormAddData> {
                                 },
                               )
                         : data.field_type == 'SELECT'
-                            ? checkLocation(data) // TH Select địa chỉ
-                                ? LocationWidget(
-                                    data: data,
-                                    onSuccess: (v) {
-                                      _addData[indexParent]
-                                          .data[indexChild]
-                                          .value = v;
-                                    },
-                                    initData: data.field_value,
-                                  )
-                                : data.field_parent != null // TH reload api
-                                    ? StreamBuilder<String>(
-                                        stream: _reloadStream,
-                                        builder: (context, snapshot) {
-                                          return InputDropdownBase(
-                                            data: data,
-                                            addData: _addData,
-                                            onChange: (v, bool? isCK) {
-                                              _addData[indexParent]
-                                                  .data[indexChild]
-                                                  .value = v;
-                                              _addCheckHTTT(
-                                                data: data,
-                                                indexParent: indexParent,
-                                                indexChild: indexChild,
-                                                isCK: isCK,
-                                              );
-                                              _setDataLoaiHopDong(
-                                                  data, v.toString());
-                                            },
-                                          );
-                                        })
-                                    : data.field_name == hinhThucTT &&
-                                            _type != ADD_PAYMENT &&
-                                            _type != EDIT_PAYMENT
+                            // case hiện chọn ngân hàng
+                            // hiển thị ki mà HTTT == CK
+                            ? data.field_name == SELECT_NGAN_HANG
+                                ? StreamBuilder<bool>(
+                                    stream: _showQrCodePayment,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.data ?? false)
+                                        return InputDropdownBase(
+                                          data: data,
+                                          addData: _addData,
+                                          onChange: (v, bool? isCK) {
+                                            _addData[indexParent]
+                                                .data[indexChild]
+                                                .value = v;
+                                            _idNganHang = '${v ?? ''}';
+                                          },
+                                        );
+                                      return SizedBox.shrink();
+                                    })
+                                : checkLocation(data) // TH Select địa chỉ
+                                    ? LocationWidget(
+                                        data: data,
+                                        onSuccess: (v) {
+                                          _addData[indexParent]
+                                              .data[indexChild]
+                                              .value = v;
+                                        },
+                                        initData: data.field_value,
+                                      )
+                                    : data.field_parent != null // TH reload api
                                         ? StreamBuilder<String>(
-                                            stream: _autoSumStream,
+                                            stream: _reloadStream,
                                             builder: (context, snapshot) {
-                                              if (_daThanhToan == 0) {
-                                                return SizedBox();
-                                              } else {
-                                                return InputDropdownBase(
-                                                  data: data,
-                                                  addData: _addData,
-                                                  onChange: (v, bool? isCK) {
-                                                    _addData[indexParent]
-                                                        .data[indexChild]
-                                                        .value = v;
-                                                    if (data.is_load == true)
-                                                      _reloadStream.add(
-                                                          '${data.field_name}$v');
-                                                    _addCheckHTTT(
-                                                      data: data,
-                                                      indexParent: indexParent,
-                                                      indexChild: indexChild,
-                                                      isCK: isCK,
-                                                    );
-                                                  },
-                                                );
-                                              }
-                                            })
-                                        : InputDropdownBase(
-                                            data: data,
-                                            addData: _addData,
-                                            onChange: (v, bool? isCK) {
-                                              _addData[indexParent]
-                                                  .data[indexChild]
-                                                  .value = v;
-                                              if (data.is_load == true)
-                                                _reloadStream.add(
-                                                    '${data.field_name}$v');
-                                              _addCheckHTTT(
+                                              return InputDropdownBase(
                                                 data: data,
-                                                indexParent: indexParent,
-                                                indexChild: indexChild,
-                                                isCK: isCK,
+                                                addData: _addData,
+                                                onChange: (v, bool? isCK) {
+                                                  _addData[indexParent]
+                                                      .data[indexChild]
+                                                      .value = v;
+                                                  _addCheckHTTT(
+                                                    data: data,
+                                                    indexParent: indexParent,
+                                                    indexChild: indexChild,
+                                                    isCK: isCK,
+                                                  );
+                                                  _setDataLoaiHopDong(
+                                                      data, v.toString());
+                                                },
                                               );
-                                              _setDataLoaiHopDong(
-                                                  data, v.toString());
-                                            },
-                                          )
+                                            })
+                                        : data.field_name == hinhThucTT &&
+                                                _type != ADD_PAYMENT &&
+                                                _type != EDIT_PAYMENT
+                                            ? StreamBuilder<String>(
+                                                stream: _autoSumStream,
+                                                builder: (context, snapshot) {
+                                                  if (_daThanhToan == 0) {
+                                                    return SizedBox();
+                                                  } else {
+                                                    return InputDropdownBase(
+                                                      data: data,
+                                                      addData: _addData,
+                                                      onChange:
+                                                          (v, bool? isCK) {
+                                                        _addData[indexParent]
+                                                            .data[indexChild]
+                                                            .value = v;
+                                                        if (data.is_load ==
+                                                            true)
+                                                          _reloadStream.add(
+                                                              '${data.field_name}$v');
+                                                        _addCheckHTTT(
+                                                          data: data,
+                                                          indexParent:
+                                                              indexParent,
+                                                          indexChild:
+                                                              indexChild,
+                                                          isCK: isCK,
+                                                        );
+                                                      },
+                                                    );
+                                                  }
+                                                })
+                                            : InputDropdownBase(
+                                                data: data,
+                                                addData: _addData,
+                                                onChange: (v, bool? isCK) {
+                                                  _addData[indexParent]
+                                                      .data[indexChild]
+                                                      .value = v;
+                                                  if (data.is_load == true)
+                                                    _reloadStream.add(
+                                                        '${data.field_name}$v');
+                                                  _addCheckHTTT(
+                                                    data: data,
+                                                    indexParent: indexParent,
+                                                    indexChild: indexChild,
+                                                    isCK: isCK,
+                                                  );
+                                                  _setDataLoaiHopDong(
+                                                      data, v.toString());
+                                                },
+                                              )
                             : data.field_type == 'TEXT_MULTI'
                                 ? SelectMulti(
                                     dropdownItemList:

@@ -958,6 +958,7 @@ abstract class RestClient {
   Future<QrCodePaymentRes> getQRCode(
     @Field('amount') String amount,
     @Field('message') String message,
+    @Field('id') String id,
   );
 
   @POST(BASE_URL.GET_BIEN_SO_XE_WITH_IMG)

@@ -4343,6 +4343,7 @@ class _RestClient implements RestClient {
   Future<QrCodePaymentRes> getQRCode(
     amount,
     message,
+    id,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -4350,6 +4351,7 @@ class _RestClient implements RestClient {
     final _data = {
       'amount': amount,
       'message': message,
+      'id': id,
     };
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<QrCodePaymentRes>(Options(
