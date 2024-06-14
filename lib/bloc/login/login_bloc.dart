@@ -235,6 +235,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     // FirebaseConfig.deleteTokenFcm();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(PreferencesKey.IS_LOGGED_IN, false);
+    LoginBloc.of(context).loginData = null;
   }
 
   Future<void> getChiNhanh() async {
@@ -276,6 +277,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (data != '') {
       final result = json.decode(data);
       loginData = LoginData.fromJson(result);
+    } else {
+      loginData = null;
     }
   }
 
