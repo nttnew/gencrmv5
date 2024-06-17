@@ -34,7 +34,11 @@ class DioProvider {
         }
         return status! < 503;
       };
-    if (Foundation.kDebugMode) {
+
+    // Kiểm tra và thêm logger nếu chưa có
+    if (Foundation.kDebugMode &&
+        !dio.interceptors
+            .any((interceptor) => interceptor is PrettyDioLogger)) {
       dio.interceptors.add(dioLogger());
     }
   }
@@ -44,6 +48,6 @@ PrettyDioLogger dioLogger() {
   return PrettyDioLogger(
     requestHeader: true,
     requestBody: true,
-    maxWidth: 100,
+    maxWidth: 120
   );
 }
