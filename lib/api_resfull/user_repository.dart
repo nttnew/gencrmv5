@@ -1536,42 +1536,26 @@ class UserRepository {
         id,
       );
 
-  Future<AddCustomerIndividual> getFormAddSign({required String id}) async =>
+  Future<AddCustomerIndividual> getFormAddSign({
+    required String id,
+    required String type,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).getFormSign(
         id,
+        type,
       );
 
   Future<ResponseSaveProductCustomer> saveSignature({
     required Map<String, dynamic> data,
+    required String type,
   }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
-      ).saveSignature(
-        data,
-      );
-
-  Future<AddCustomerIndividual> getFormAddSignSupport(
-          {required String id}) async =>
-      await RestClient(
-        dio,
-        baseUrl: dio.options.baseUrl,
-      ).getFormSignSupport(
-        id,
-      );
-
-  Future<ResponseSaveProductCustomer> saveSignatureSupport({
-    required Map<String, dynamic> data,
-  }) async =>
-      await RestClient(
-        dio,
-        baseUrl: dio.options.baseUrl,
-      ).saveSignatureSupport(
-        data,
-      );
+      ).saveSignature(data, type);
 
   Future<ListHDProductCustomerResponse> getListHDProductCustomer({
     required int spkh,

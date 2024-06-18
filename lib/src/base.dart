@@ -159,10 +159,8 @@ class BASE_URL {
       'modules/genmobile2/productCustomer/save';
   static const PRODUCT_CUSTOMER_DELETE =
       'modules/genmobile2/productCustomer/delete';
-  static const GET_FORM_SIGN = 'modules/genmobile2/contract/formKn';
-  static const SAVE_SIGN = 'modules/genmobile2/contract/saveKn';
-  static const GET_FORM_SIGN_SUPPORT = 'modules/genmobile2/support/formChuky';
-  static const SAVE_SIGN_SUPPORT = 'modules/genmobile2/support/saveChuky';
+  static const GET_FORM_SIGN = 'modules/genmobile2/{module}/formChuKy';
+  static const SAVE_SIGN = 'modules/genmobile2/{module}/saveKn';
   static const GET_LIST_HT_PRODUCT_CUSTOMER =
       'modules/genmobile2/productCustomer/tabHt';
   static const GET_LIST_CH_PRODUCT_CUSTOMER =
@@ -203,7 +201,8 @@ class BASE_URL {
   static const GET_LIST_MODULE = 'modules/genmobile2/print/getTemplateByModule';
   static const GET_PDF = 'modules/genmobile2/print/printItem';
   static const QR_CODE_PAYMENT = 'modules/genmobile2/payment/generateQrcode';
-  static const GET_BIEN_SO_XE_WITH_IMG = 'modules/genmobile2/helper/getlicensePlateFromImage';
+  static const GET_BIEN_SO_XE_WITH_IMG =
+      'modules/genmobile2/helper/getlicensePlateFromImage';
 
   static const int receiveTimeout = 30000;
   static const ENV = 'assets/.env';

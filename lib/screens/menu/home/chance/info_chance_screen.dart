@@ -44,6 +44,24 @@ class _InfoChancePageState extends State<InfoChancePage> {
   }
 
   _getThaoTac() {
+
+    _list.add(ModuleThaoTac(
+      title: getT(KeyT.sign),
+      icon: ICONS.IC_ELECTRIC_SIGN_PNG,
+      isSvg: false,
+      onThaoTac: () {
+        Get.back();
+        AppNavigator.navigateFormSign(
+          getT(KeyT.sign),
+          _id,
+          type: Module.CO_HOI_BH,
+          onRefreshForm: () {
+            _bloc.add(InitGetListDetailEvent(int.parse(_id)));
+          },
+        );
+      },
+    ));
+
     _list.add(ModuleThaoTac(
       title:
           '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',

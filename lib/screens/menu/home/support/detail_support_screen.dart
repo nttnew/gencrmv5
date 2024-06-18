@@ -102,7 +102,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
         AppNavigator.navigateFormSign(
           getT(KeyT.sign),
           _id,
-          type: ModuleMy.CSKH,
+          type: Module.HO_TRO,
         );
       },
     ));

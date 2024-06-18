@@ -36,8 +36,8 @@ class FormAddSign extends StatefulWidget {
 
 class _FormAddSignState extends State<FormAddSign> {
   String title = Get.arguments[0];
-  String id = Get.arguments[1] != null ? Get.arguments[1].toString() : '';
-  String type = Get.arguments[2] ?? '';
+  String _id = Get.arguments[1] != null ? Get.arguments[1].toString() : '';
+  String type = getURLModule(Get.arguments[2] ?? '');
   List<ChuKyModelResponse> chuKyModelResponse = [];
   List data = [];
   List<ModelItemAdd> _addData = [];
@@ -58,7 +58,7 @@ class _FormAddSignState extends State<FormAddSign> {
     starStream = BehaviorSubject.seeded(-1);
     scrollController = ScrollController();
     isMaxScroll = BehaviorSubject.seeded(false);
-    _bloc.add(InitFormAddSignEvent(id, type));
+    _bloc.add(InitFormAddSignEvent(_id, type));
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Future.delayed(Duration(seconds: 1));
       if (scrollController.position.maxScrollExtent > 7) {
@@ -608,10 +608,12 @@ class _FormAddSignState extends State<FormAddSign> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: 'Quicksand',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: COLORS.RED))
+                          fontFamily: 'Quicksand',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: COLORS.RED,
+                        ),
+                      )
                     : TextSpan(),
               ],
             ),
@@ -632,7 +634,10 @@ class _FormAddSignState extends State<FormAddSign> {
                   textCapitalization: TextCapitalization.sentences,
                   minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
                   maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                   keyboardType: data.field_type == 'TEXT_NUMERIC'
                       ? TextInputType.number
                       : data.field_special == 'default'
@@ -776,10 +781,12 @@ class _FormAddSignState extends State<FormAddSign> {
                       ? TextSpan(
                           text: '*',
                           style: TextStyle(
-                              fontFamily: 'Quicksand',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: COLORS.RED))
+                            fontFamily: 'Quicksand',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: COLORS.RED,
+                          ),
+                        )
                       : TextSpan(),
                 ],
               ),
@@ -885,17 +892,13 @@ class _FormAddSignState extends State<FormAddSign> {
               map['chuky'] = 'data:image/png;base64,' + value.chuky.toString();
             }
             map['doituong'] = value.doituongky;
-            map['hop_dong'] = id;
             chukys.add(map);
           }
-        } else {
-          // check = true;
-          // break;
         }
       }
       data['chuky'] = chukys;
     }
-    data['id'] = id;
+    data['id'] = _id;
     //
     if (check == true) {
       ShowDialogCustom.showDialogBase(
@@ -957,10 +960,12 @@ class _SwitchBaseState extends State<SwitchBase> {
                       ? TextSpan(
                           text: '*',
                           style: TextStyle(
-                              fontFamily: 'Quicksand',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: COLORS.RED))
+                            fontFamily: 'Quicksand',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: COLORS.RED,
+                          ),
+                        )
                       : TextSpan(),
                 ],
               ),

@@ -475,9 +475,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     LoadingApi().pushLoading();
     try {
       yield LoadingForm();
-      final response = await (type == '' // =='' contract
-          ? userRepository.getFormAddSign(id: id)
-          : userRepository.getFormAddSignSupport(id: id));
+      final response = await userRepository.getFormAddSign(id: id, type: type);
       if (isSuccess(response.code)) {
         yield SuccessForm(
           response.data ?? [],

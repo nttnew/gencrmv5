@@ -80,17 +80,6 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
         ),
       );
 
-    _list.add(ModuleThaoTac(
-      title: getT(KeyT.add_discuss),
-      icon: ICONS.IC_ADD_DISCUSS_SVG,
-      onThaoTac: () {
-        Get.back();
-        AppNavigator.navigateAddNoteScreen(Module.CONG_VIEC, _id.toString(),
-            onRefresh: () {
-          _blocNote.add(RefreshEvent());
-        });
-      },
-    ));
     if (!_isCheckDone) {
       if (_location != 1) {
         _list.add(ModuleThaoTac(
@@ -122,6 +111,35 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
         ));
       }
     }
+
+    _list.add(ModuleThaoTac(
+      title: getT(KeyT.sign),
+      icon: ICONS.IC_ELECTRIC_SIGN_PNG,
+      isSvg: false,
+      onThaoTac: () {
+        Get.back();
+        AppNavigator.navigateFormSign(
+          getT(KeyT.sign),
+          _id.toString(),
+          type: Module.CONG_VIEC,
+          onRefreshForm: () {
+            _bloc.add(InitGetDetailWorkEvent(_id));
+          },
+        );
+      },
+    ));
+
+    _list.add(ModuleThaoTac(
+      title: getT(KeyT.add_discuss),
+      icon: ICONS.IC_ADD_DISCUSS_SVG,
+      onThaoTac: () {
+        Get.back();
+        AppNavigator.navigateAddNoteScreen(Module.CONG_VIEC, _id.toString(),
+            onRefresh: () {
+          _blocNote.add(RefreshEvent());
+        });
+      },
+    ));
 
     _list.add(ModuleThaoTac(
       title: getT(KeyT.see_attachment),

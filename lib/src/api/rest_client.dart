@@ -779,21 +779,13 @@ abstract class RestClient {
   @GET(BASE_URL.GET_FORM_SIGN)
   Future<AddCustomerIndividual> getFormSign(
     @Query('id') String id,
+    @Path('module') String type,
   );
 
   @POST(BASE_URL.SAVE_SIGN)
   Future<ResponseSaveProductCustomer> saveSignature(
     @Body() Map<String, dynamic> map,
-  );
-
-  @GET(BASE_URL.GET_FORM_SIGN_SUPPORT)
-  Future<AddCustomerIndividual> getFormSignSupport(
-    @Query('id') String id,
-  );
-
-  @POST(BASE_URL.SAVE_SIGN_SUPPORT)
-  Future<ResponseSaveProductCustomer> saveSignatureSupport(
-    @Body() Map<String, dynamic> map,
+    @Path('module') String type,
   );
 
   @GET(BASE_URL.GET_LIST_CH_PRODUCT_CUSTOMER)

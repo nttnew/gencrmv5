@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:gen_crm/src/router.dart';
 import '../l10n/key_text.dart';
 import 'app_const.dart';
+import 'base.dart';
 import 'models/model_generator/products_response.dart';
 
 class AppNavigator {
@@ -253,7 +254,7 @@ class AppNavigator {
   static navigateFormSign(
     String title,
     String id, {
-    String type = '',
+    String type = Module.HOP_DONG,
     Function? onRefreshForm,
   }) async =>
       await Get.toNamed(ROUTE_NAMES.FORM_SIGN, arguments: [
