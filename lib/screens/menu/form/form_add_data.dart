@@ -528,7 +528,8 @@ class _FormAddDataState extends State<FormAddData> {
       _tongTienThue += _vatProduct(element);
     });
     _tongTienGiam = _tongTienGiam + _giam_gia_tong;
-    _tongChuaThanhToan = _total - _daThanhToan - _giam_gia_tong;
+    _total = _total - _giam_gia_tong;
+    _tongChuaThanhToan = _total - _daThanhToan;
     _autoSumStream.add(
         '$_total$_tongTienGiam$_tongTienThue$_tongChuaThanhToan$_tongBaoHiemTra');
   }
