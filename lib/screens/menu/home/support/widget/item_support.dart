@@ -65,10 +65,11 @@ class ItemSupport extends StatelessWidget {
                   child: WidgetText(
                     title: data.ten_ho_tro ?? '',
                     style: TextStyle(
-                        color: COLORS.ff006CB1,
-                        fontFamily: "Quicksand",
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18),
+                      color: COLORS.ff006CB1,
+                      fontFamily: "Quicksand",
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
                 SizedBox(

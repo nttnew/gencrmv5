@@ -84,7 +84,7 @@ class ItemContract extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: data.status_color != ''
-                        ? HexColor(data.status_color!)
+                        ? HexColor(data.status_color ?? '#000000')
                         : COLORS.RED,
                     borderRadius: BorderRadius.circular(
                       5,
