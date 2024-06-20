@@ -9,10 +9,10 @@ import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/detail_customer.dart';
 import '../../../../src/models/model_generator/job_chance.dart';
 import '../../../../src/src_index.dart';
-import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
+import '../../../../widgets/widget_appbar.dart';
 import '../../attachment/attachment.dart';
 import '../clue/widget/work_card_widget.dart';
 import 'widget/chance_info.dart';
@@ -44,7 +44,6 @@ class _InfoChancePageState extends State<InfoChancePage> {
   }
 
   _getThaoTac() {
-
     _list.add(ModuleThaoTac(
       title: getT(KeyT.sign),
       icon: ICONS.IC_ELECTRIC_SIGN_PNG,
@@ -169,7 +168,29 @@ class _InfoChancePageState extends State<InfoChancePage> {
         },
         child: Column(
           children: [
-            AppbarBaseNormal(_title),
+            WidgetAppbar(
+              title: _title,
+              textColor: COLORS.BLACK,
+              padding: 10,
+              right: Row(
+                children: [
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () {
+                      AppNavigator.navigateBieuMau(
+                        idDetail: _id,
+                        module: PDF_CO_HOI,
+                      );
+                    },
+                    icon: Icon(
+                      Icons.print,
+                      color: !isCarCrm() ? COLORS.BLACK : COLORS.WHITE,
+                      size: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             AppValue.vSpaceTiny,
             Expanded(
               child: DefaultTabController(

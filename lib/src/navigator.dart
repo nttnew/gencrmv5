@@ -286,10 +286,14 @@ class AppNavigator {
 
   static navigateBieuMau({
     required String idDetail,
+    required String module,
   }) async =>
       await Get.toNamed(
         ROUTE_NAMES.LIST_BIEU_MAU,
-        arguments: [idDetail],
+        arguments: [
+          idDetail,
+          module,
+        ],
       );
 
   static navigateDetailCarMain(String idCar) async => await Get.toNamed(

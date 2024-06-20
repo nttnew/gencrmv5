@@ -933,12 +933,13 @@ abstract class RestClient {
   // temp: là id của mẫu in
   // m: là id của module
   //m=5 tương ứng dịch vụ
+  //m=3 cơ hội
+  //m=6 hỗ trợ
   @GET(BASE_URL.GET_LIST_MODULE)
   Future<BieuMauResponse> getBieuMau(
     @Query('m') String module,
   );
 
-  //?m=5&temp=3&item=305
   @GET(BASE_URL.GET_PDF)
   Future<PdfResponse> getPdf(
     @Query('m') String module,

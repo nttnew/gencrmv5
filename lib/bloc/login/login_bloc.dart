@@ -10,7 +10,6 @@ import 'package:formz/formz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gen_crm/api_resfull/dio_provider.dart';
 import 'package:gen_crm/api_resfull/user_repository.dart';
-// import 'package:gen_crm/firebase/firebase_config.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/models/model_generator/report_option.dart';
 import 'package:gen_crm/src/src_index.dart';
@@ -557,11 +556,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     addLocalLang(language);
   }
 
-  Future<dynamic> getBieuMau({String id = '5' // dich vu,
+  Future<dynamic> getBieuMau({required String module // dich vu,
       }) async {
     dynamic res = getT(KeyT.an_error_occurred);
     try {
-      final response = await userRepository.getBieuMau(module: id);
+      final response = await userRepository.getBieuMau(
+        module: module,
+      );
       if (isSuccess(response.code)) {
         res = response.data ?? [];
       } else if (isFail(response.code)) {
@@ -578,7 +579,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Future<Map<String, dynamic>> getPdf({
-    String module = '5', // dich vu,
+    required String module,
     required String idDetail,
     required String idBieuMau,
   }) async {

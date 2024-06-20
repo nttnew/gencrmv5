@@ -55,6 +55,7 @@ class _DetailCarState extends State<DetailCar> {
                   onPressed: () {
                     AppNavigator.navigateBieuMau(
                       idDetail: _id,
+                      module: PDF_PRINT_DICHVU_CAR,
                     );
                   },
                   icon: Icon(

@@ -9,11 +9,11 @@ import '../../../../bloc/checkin_bloc/checkin_bloc.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
-import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/btn_thao_tac.dart';
 import '../../../../widgets/dialog_call.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
+import '../../../../widgets/widget_appbar.dart';
 import '../../attachment/attachment.dart';
 import '../../widget/information.dart';
 
@@ -185,7 +185,6 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarBaseNormal(_title),
       body: BlocListener<CheckInBloc, CheckInState>(
         bloc: _blocCheckIn,
         listener: (context, state) {
@@ -232,6 +231,29 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              WidgetAppbar(
+                title: _title,
+                textColor: COLORS.BLACK,
+                padding: 10,
+                right: Row(
+                  children: [
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        AppNavigator.navigateBieuMau(
+                          idDetail: _id.toString(),
+                          module: PDF_CONG_VIEC,
+                        );
+                      },
+                      icon: Icon(
+                        Icons.print,
+                        color: !isCarCrm() ? COLORS.BLACK : COLORS.WHITE,
+                        size: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: () async {

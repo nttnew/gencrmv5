@@ -20,6 +20,7 @@ class ListBieuMau extends StatefulWidget {
 class _ListBieuMauState extends State<ListBieuMau> {
   late final LoginBloc _loginBloc;
   final String idDetail = Get.arguments[0];
+  final String module = Get.arguments[1];
 
   @override
   void initState() {
@@ -42,13 +43,14 @@ class _ListBieuMauState extends State<ListBieuMau> {
             child: ViewLoadMoreBase(
               isInit: true,
               functionInit: (page, isInit) {
-                return _loginBloc.getBieuMau();
+                return _loginBloc.getBieuMau(module: module);
               },
               itemWidget: (int index, data) {
                 final BieuMauItemRes _item = data as BieuMauItemRes;
                 return GestureDetector(
                   onTap: () async {
                     final res = await _loginBloc.getPdf(
+                      module: module,
                       idDetail: idDetail,
                       idBieuMau: _item.id ?? '',
                     );
@@ -96,4 +98,3 @@ class _ListBieuMauState extends State<ListBieuMau> {
     );
   }
 }
-

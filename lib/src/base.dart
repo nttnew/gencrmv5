@@ -244,6 +244,10 @@ class Module {
   static const String PRODUCT = 'sanpham';
 }
 
+const PDF_PRINT_DICHVU_CAR = '5';
+const PDF_CONG_VIEC = '2';
+const PDF_CO_HOI = '3';
+const PDF_HO_TRO = '6';
 // job cv customer: khách hang support ho tro contact đầu mối
 String getURLModule(String module) {
   if (module == Module.HOP_DONG) {
