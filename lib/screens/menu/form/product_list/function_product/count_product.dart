@@ -96,11 +96,7 @@ class _CountProductState extends State<CountProduct> {
           child: TextFormField(
             controller: _textEditingController,
             textAlign: TextAlign.center,
-            style: AppStyle.DEFAULT_16_BOLD.copyWith(
-                // color: getColor(
-                //   _soLuong.toDoubleTry() != _countInit.toDoubleTry(),
-                // ),
-                ),
+            style: AppStyle.DEFAULT_16_BOLD,
             keyboardType: TextInputType.numberWithOptions(decimal: true),
             decoration: InputDecoration(
               contentPadding: EdgeInsets.zero,

@@ -59,6 +59,7 @@ class _DateProductState extends State<DateProduct> {
 
   @override
   Widget build(BuildContext context) {
+    bool fieldReadOnly = widget.formProduct.fieldReadOnly == 1;
     return Container(
       height: 40,
       padding: EdgeInsets.symmetric(
@@ -72,38 +73,40 @@ class _DateProductState extends State<DateProduct> {
           ),
         ),
         border: Border.all(
-          color: COLORS.BLUE,
+          color: fieldReadOnly ? COLORS.GRAY_IMAGE : COLORS.BLUE,
         ),
       ),
       child: GestureDetector(
         onTap: () {
-          widget.isDate
-              ? DatePicker.showDatePicker(
-                  context,
-                  showTitleActions: true,
-                  onConfirm: (DateTime date) {
-                    setState(() {
-                      dateText = AppValue.formatDate(date.toString());
-                    });
-                    int time = date.millisecondsSinceEpoch ~/ 1000;
-                    widget.onSelect(time);
-                  },
-                  currentTime: DateTime.now(),
-                  locale: _checkLocaleType(),
-                )
-              : DatePicker.showDateTimePicker(
-                  context,
-                  showTitleActions: true,
-                  onConfirm: (DateTime date) {
-                    setState(() {
-                      dateText = AppValue.formatStringDateTime(date.toString());
-                    });
-                    int time = date.millisecondsSinceEpoch ~/ 1000;
-                    widget.onSelect(time);
-                  },
-                  currentTime: DateTime.now(),
-                  locale: _checkLocaleType(),
-                );
+          if (!fieldReadOnly)
+            widget.isDate
+                ? DatePicker.showDatePicker(
+                    context,
+                    showTitleActions: true,
+                    onConfirm: (DateTime date) {
+                      setState(() {
+                        dateText = AppValue.formatDate(date.toString());
+                      });
+                      int time = date.millisecondsSinceEpoch ~/ 1000;
+                      widget.onSelect(time);
+                    },
+                    currentTime: DateTime.now(),
+                    locale: _checkLocaleType(),
+                  )
+                : DatePicker.showDateTimePicker(
+                    context,
+                    showTitleActions: true,
+                    onConfirm: (DateTime date) {
+                      setState(() {
+                        dateText =
+                            AppValue.formatStringDateTime(date.toString());
+                      });
+                      int time = date.millisecondsSinceEpoch ~/ 1000;
+                      widget.onSelect(time);
+                    },
+                    currentTime: DateTime.now(),
+                    locale: _checkLocaleType(),
+                  );
         },
         child: Row(
           mainAxisSize: MainAxisSize.min,

@@ -35,20 +35,22 @@ class _SelectProductState extends State<SelectProduct> {
 
   @override
   Widget build(BuildContext context) {
+    bool fieldReadOnly = widget.formProduct.fieldReadOnly == 1;
     return InkWell(
       onTap: () {
-        showSelectProduct(
-          context,
-          widget.formProduct.fieldDatasource ?? [],
-          (List<dynamic> data) {
-            widget.onChange(
-              data,
-            );
-            valueName = '${data[1]}';
-            Get.back();
-            setState(() {});
-          },
-        );
+        if (!fieldReadOnly)
+          showSelectProduct(
+            context,
+            widget.formProduct.fieldDatasource ?? [],
+            (List<dynamic> data) {
+              widget.onChange(
+                data,
+              );
+              valueName = '${data[1]}';
+              Get.back();
+              setState(() {});
+            },
+          );
       },
       child: Container(
         padding: EdgeInsets.symmetric(
@@ -61,7 +63,7 @@ class _SelectProductState extends State<SelectProduct> {
             ),
           ),
           border: Border.all(
-            color: COLORS.BLUE,
+            color: fieldReadOnly ? COLORS.GRAY_IMAGE : COLORS.BLUE,
           ),
         ),
         height: 40,

@@ -50,6 +50,7 @@ class _TextFieldProductState extends State<TextFieldProduct> {
 
   @override
   Widget build(BuildContext context) {
+    bool fieldReadOnly = widget.formProduct.fieldReadOnly == 1;
     return Container(
       alignment: Alignment.centerLeft,
       height: 40,
@@ -57,7 +58,7 @@ class _TextFieldProductState extends State<TextFieldProduct> {
         horizontal: 8,
       ),
       decoration: BoxDecoration(
-        color: COLORS.WHITE,
+        color: fieldReadOnly ? COLORS.GRAY_IMAGE : COLORS.WHITE,
         borderRadius: BorderRadius.all(
           Radius.circular(
             4,
@@ -68,6 +69,7 @@ class _TextFieldProductState extends State<TextFieldProduct> {
         ),
       ),
       child: TextFormField(
+        enabled: !fieldReadOnly,
         focusNode: _myFocusNode,
         controller: _controller,
         style: AppStyle.DEFAULT_14W600,

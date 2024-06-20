@@ -82,13 +82,14 @@ class _TextNumericProductState extends State<TextNumericProduct> {
 
   @override
   Widget build(BuildContext context) {
+    bool fieldReadOnly = widget.formProduct.fieldReadOnly == 1;
     return Container(
       height: 40,
       padding: EdgeInsets.symmetric(
         horizontal: 8,
       ),
       decoration: BoxDecoration(
-        color: COLORS.colorFff4d2,
+        color: fieldReadOnly ? COLORS.GRAY_IMAGE : COLORS.colorFff4d2,
         borderRadius: BorderRadius.all(
           Radius.circular(
             4,
@@ -107,10 +108,12 @@ class _TextNumericProductState extends State<TextNumericProduct> {
           if (widget.isShowVND) ...[
             GestureDetector(
               onTap: () {
-                _controller.text = '';
-                isVND = !isVND;
-                setState(() {});
-                _onChangeMain();
+                if (!fieldReadOnly) {
+                  _controller.text = '';
+                  isVND = !isVND;
+                  setState(() {});
+                  _onChangeMain();
+                }
               },
               child: Container(
                 alignment: Alignment.center,
@@ -120,7 +123,7 @@ class _TextNumericProductState extends State<TextNumericProduct> {
                   left: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: COLORS.BLUE,
+                  color: fieldReadOnly ? COLORS.GRAY_IMAGE : COLORS.BLUE,
                   borderRadius: BorderRadius.all(
                     Radius.circular(
                       6,
@@ -142,6 +145,7 @@ class _TextNumericProductState extends State<TextNumericProduct> {
           ],
           Expanded(
             child: TextFormField(
+              enabled: !fieldReadOnly,
               focusNode: _myFocusNode,
               keyboardType: TextInputType.number,
               controller: _controller,
