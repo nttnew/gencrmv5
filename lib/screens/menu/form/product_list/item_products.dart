@@ -116,7 +116,12 @@ class _ItemProductsState extends State<ItemProducts> {
                     ),
                   ),
                 ),
-                if (_checkSoLuong() && (_dataNew.form?.length ?? 0) > 6)
+                if (_checkSoLuong() &&
+                    ((_dataNew.form ?? [])
+                                .where((element) => element.isShow)
+                                .toList())
+                            .length >
+                        6)
                   InkWell(
                     onTap: () {
                       _isShowReload();
