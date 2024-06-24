@@ -252,9 +252,23 @@ class _ItemProductsState extends State<ItemProducts> {
     }
   }
 
+  bool _isDataNull(String _data) => _getData(_data) == null;
+
+  bool? _checktypeGiamGia() {
+    bool? _isTypeGiamGia = _isDataNull(GIAM_GIA)
+        ? null
+        : _getData(GIAM_GIA)[TYPE_GIAM_GIA] != PHAN_TRAM;
+    // nếu mà giam gía == null thì mặc định sẽ là giảm giá theo %
+    return _isTypeGiamGia;
+  }
+
   bool _validateSale(String v) {
-    bool _isTypeSale = _getData(GIAM_GIA)[TYPE_GIAM_GIA] != PHAN_TRAM;
+    bool? _isTypeSale = _checktypeGiamGia();
     double _priceProduct = _getData(DON_GIA).toString().toDoubleTry();
+
+    if (_isTypeSale == null) {
+      return false;
+    }
 
     if (_isTypeSale && (v.toDoubleTry() > _priceProduct)) {
       showToastM(context,
@@ -269,36 +283,45 @@ class _ItemProductsState extends State<ItemProducts> {
   }
 
   void _getNewPriceOrNewCount() {
-    double _vatProductNumber = _getData(VAT) != ''
-        ? _getData(VAT).split(PHAN_TRAM).first.toString().toDoubleTry()
-        : 0;
-    double _discountNumber =
-        _getData(GIAM_GIA)[VALUE_GIAM_GIA].toString().toDoubleTry();
+    double _vatProductNumber = _isDataNull(VAT)
+        ? 0
+        : _getData(VAT).split(PHAN_TRAM).first.toString().toDoubleTry();
+    double _discountNumber = _isDataNull(GIAM_GIA)
+        ? 0
+        : _getData(GIAM_GIA)[VALUE_GIAM_GIA].toString().toDoubleTry();
+    bool? _isTypeGiamGia = _checktypeGiamGia();
     double _countProduct = _getData(SO_LUONG).toString().toDoubleTry();
     double _thanhTien = _getData(THANH_TIEN).toString().toDoubleTry();
     double _priceProduct = _getData(DON_GIA).toString().toDoubleTry();
     double _vatProduct = 0;
     double _discount = 0;
-    bool _isTypeGiamGia = _getData(GIAM_GIA)[TYPE_GIAM_GIA] != PHAN_TRAM;
 
     if (_countProduct > 0) {
       double _oneProduct = _thanhTien / _countProduct; //giá
       double _tienTruocVat = _oneProduct / (1 + _vatProductNumber / 100);
       double _tienTruocGiamGia = 0;
-      if (!_isTypeGiamGia) {
-        _tienTruocGiamGia = _tienTruocVat / ((100 - _discountNumber) / 100);
+
+      if (_isTypeGiamGia != null) {
+        if (!_isTypeGiamGia) {
+          _tienTruocGiamGia = _tienTruocVat / ((100 - _discountNumber) / 100);
+        } else {
+          _tienTruocGiamGia = _tienTruocVat + _discountNumber;
+        }
       } else {
-        _tienTruocGiamGia = _tienTruocVat + _discountNumber;
+        _tienTruocGiamGia = _tienTruocVat;
       }
+
       _setValueText(DON_GIA, _tienTruocGiamGia.toStringAsFixed(0));
     } else {
-      if (!_isTypeGiamGia) {
+      if (_isTypeGiamGia != null) if (!_isTypeGiamGia) {
         _discount = _priceProduct * _discountNumber / 100;
       } else {
         _discount = _discountNumber;
       }
+
       _vatProduct = _vatProductNumber * (_priceProduct - _discount) / 100;
       _countProduct = _thanhTien / (_priceProduct + _vatProduct - _discount);
+
       _setValueText(SO_LUONG, _countProduct.toString());
     }
   }
@@ -306,16 +329,19 @@ class _ItemProductsState extends State<ItemProducts> {
   String _getIntoMoney() {
     double _priceProduct = _getData(DON_GIA).toString().toDoubleTry();
     double _vatProduct = 0;
-    double _vatProductNumber = _getData(VAT) != ''
-        ? _getData(VAT).split(PHAN_TRAM).first.toString().toDoubleTry()
-        : 0;
+    double _vatProductNumber = _isDataNull(VAT)
+        ? 0
+        : _getData(VAT).split(PHAN_TRAM).first.toString().toDoubleTry();
     double _discount = 0;
-    double _discountNumber =
-        _getData(GIAM_GIA)[VALUE_GIAM_GIA].toString().toDoubleTry();
-    bool _isTypeGiamGia = _getData(GIAM_GIA)[TYPE_GIAM_GIA] != PHAN_TRAM;
+    double _discountNumber = _isDataNull(GIAM_GIA)
+        ? 0
+        : _getData(GIAM_GIA)[VALUE_GIAM_GIA].toString().toDoubleTry();
+    bool? _isTypeGiamGia = _checktypeGiamGia();
     double _countProduct = _getData(SO_LUONG).toString().toDoubleTry();
 
-    if (!_isTypeGiamGia) {
+    ///
+    ///
+    if (_isTypeGiamGia != null) if (!_isTypeGiamGia) {
       _discount = _priceProduct * _discountNumber / 100;
     } else {
       _discount = _discountNumber;
