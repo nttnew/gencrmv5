@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pitel_voip/services/sip_info_data.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/src/src_index.dart';
-import 'package:gen_crm/widgets/line_horizontal_widget.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../bloc/login/login_bloc.dart';
