@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pitel_voip/services/sip_info_data.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/src/src_index.dart';
+import 'package:gen_crm/widgets/line_horizontal_widget.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../bloc/login/login_bloc.dart';
@@ -279,34 +280,85 @@ Widget itemTextEnd({
   Color? colorTitle,
   Function? onTapTitle,
   bool isSvg = true,
+  bool isAvatar = false,
 }) {
-  return Row(
-    crossAxisAlignment: CrossAxisAlignment.end,
-    children: [
-      Expanded(
-        child: itemTextIcon(
-          isSVG: isSvg,
-          text: title,
-          icon: icon,
-          colorText: colorTitle,
-          onTap: onTapTitle,
-        ),
+  return Container(
+    margin: !isAvatar
+        ? null
+        : EdgeInsets.only(
+            top: 8,
+          ),
+    decoration: !isAvatar
+        ? null
+        : BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: COLORS.GRAY_IMAGE,
+              ),
+            ),
+          ),
+    child: Container(
+      margin: EdgeInsets.only(
+        top: 8,
       ),
-      SizedBox(
-        width: 8,
+      child: Row(
+        crossAxisAlignment:
+            isAvatar ? CrossAxisAlignment.center : CrossAxisAlignment.end,
+        children: [
+          if (isAvatar)
+            Expanded(
+              child: Row(
+                children: [
+                  Container(
+                    height: 32,
+                    width: 32,
+                    margin: EdgeInsets.only(
+                      right: 8,
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: Image.network(icon),
+                  ),
+                  WidgetText(
+                    title: title,
+                    style: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                      color: colorTitle ?? COLORS.BLACK,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          else
+            Expanded(
+              child: itemTextIcon(
+                isSVG: isSvg,
+                text: title,
+                icon: icon,
+                colorText: colorTitle,
+                onTap: onTapTitle,
+              ),
+            ),
+          SizedBox(
+            width: 8,
+          ),
+          SvgPicture.asset(ICONS.IC_QUESTION_SVG),
+          SizedBox(
+            width: 4,
+          ),
+          WidgetText(
+            title: content,
+            style: AppStyle.DEFAULT_14.copyWith(
+              color: COLORS.TEXT_BLUE_BOLD,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
       ),
-      SvgPicture.asset(ICONS.IC_QUESTION_SVG),
-      SizedBox(
-        width: 4,
-      ),
-      WidgetText(
-        title: content,
-        style: AppStyle.DEFAULT_14.copyWith(
-          color: COLORS.TEXT_BLUE_BOLD,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    ],
+    ),
   );
 }
 
