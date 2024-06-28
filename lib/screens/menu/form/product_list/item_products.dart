@@ -60,7 +60,16 @@ class _ItemProductsState extends State<ItemProducts> {
   @override
   void initState() {
     _typeContract = widget.typeContract;
-    _dataNew = widget.data;
+    final ProductsRes _dataSort = widget.data;
+
+    int index =
+        _dataSort.form?.indexWhere((element) => element.fieldType == COUNT) ??
+            0; // lấy vị trí của số lượng
+    FormProduct? element = _dataSort.form!
+        .removeAt(index); // Lấy phần tử ở vị trí index và xóa nó khỏi danh sách
+    _dataSort.form?.insert(0, element); // Chèn phần tử vào vị trí đầu tiên
+
+    _dataNew = _dataSort;
     _dataNew.form?.forEach((element) {
       //isShow = true hiện field
       element.isShow = _check(element.listTypeContract ?? []);
