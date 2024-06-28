@@ -1016,7 +1016,9 @@ class _FormAddDataState extends State<FormAddData> {
     int indexParent,
     int indexChild,
   ) {
-    return data.field_hidden != '1' && data.field_type != 'HIDDEN' // ==1 ẩn
+    return data.field_hidden != '1' &&
+            (data.field_type != 'HIDDEN' ||
+                data.field_special == 'url') // ==1 ẩn
         ? data.field_special == 'url'
             ? StreamBuilder<String>(
                 stream: _typeContact,

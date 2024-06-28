@@ -103,40 +103,6 @@ class AddCustomerIndividualData {
   Map<String, dynamic> toJson() => _$AddCustomerIndividualDataToJson(this);
 }
 
-// @JsonSerializable()
-// class ProductItemRes {
-//   final String? name_product,
-//       price,
-//       quantity,
-//       vat,
-//       vat_name,
-//       unit_name,
-//       ten_combo,
-//       combo_id;
-//   final int? id, id_product, unit;
-//   final SaleOff sale_off;
-//
-//   ProductItemRes(
-//     this.name_product,
-//     this.price,
-//     this.quantity,
-//     this.vat,
-//     this.vat_name,
-//     this.unit,
-//     this.unit_name,
-//     this.id,
-//     this.id_product,
-//     this.sale_off,
-//     this.ten_combo,
-//     this.combo_id,
-//   );
-//
-//   factory ProductItemRes.fromJson(Map<String, dynamic> json) =>
-//       _$ProductItemResFromJson(json);
-//
-//   Map<String, dynamic> toJson() => _$ProductItemResToJson(this);
-// }
-
 @JsonSerializable()
 class SaleOff {
   final String? value, type;
