@@ -297,9 +297,11 @@ Widget itemTextEnd({
             ),
           ),
     child: Container(
-      margin: EdgeInsets.only(
-        top: 8,
-      ),
+      margin: isAvatar
+          ? EdgeInsets.only(
+              top: 8,
+            )
+          : null,
       child: Row(
         crossAxisAlignment:
             isAvatar ? CrossAxisAlignment.center : CrossAxisAlignment.end,

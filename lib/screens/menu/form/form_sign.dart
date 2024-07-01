@@ -479,9 +479,9 @@ class _FormAddSignState extends State<FormAddSign> {
                       shrinkWrap: true,
                       padding: EdgeInsets.zero,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: e.data?.length ?? 0,
+                      itemCount: chuKyModelResponse.length,
                       itemBuilder: (context, index) => _signature(
-                        e.data?[index],
+                        chuKyModelResponse[index],
                         (v) {
                           chuKyModelResponse[index] = v;
                         },
@@ -525,54 +525,49 @@ class _FormAddSignState extends State<FormAddSign> {
               stream: dataStream,
               builder: (context, snapshot) {
                 final data = snapshot.data ?? '';
-                return Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: COLORS.ffBEB4B4),
-                      borderRadius: BorderRadius.all(Radius.circular(6))),
-                  height: 300,
-                  padding: EdgeInsets.all(15),
-                  width: MediaQuery.of(context).size.width,
-                  child: Image.memory(
-                    base64Decode(data),
-                    errorBuilder: (_, __, ___) {
-                      return Container(
-                        height: 300,
-                        width: MediaQuery.of(context).size.width,
-                        child: Center(
-                          child: WidgetText(
-                            title: getT(KeyT.click_to_sign),
-                            style: AppStyle.DEFAULT_14.copyWith(
-                              color: COLORS.TEXT_COLOR,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                );
+                return _itemImage(data);
               },
             ),
           ),
         if (dataSign?.chuky != null)
-          Container(
-            decoration: BoxDecoration(
+          if (dataSign?.chuky?.contains('<img') ??
+              false) // true thì là img từ BE trả về
+            Container(
+              decoration: BoxDecoration(
                 color: COLORS.WHITE,
-                border: Border.all(color: COLORS.ffBEB4B4),
-                borderRadius: BorderRadius.all(Radius.circular(6))),
-            height: 300,
-            // padding: EdgeInsets.all(15),
-            width: MediaQuery.of(context).size.width,
-            child: Center(
-                child: Html(shrinkWrap: true, data: dataSign?.chuky, style: {
-              'img': Style(),
-            })),
-          ),
+                border: Border.all(
+                  color: COLORS.ffBEB4B4,
+                ),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(
+                    6,
+                  ),
+                ),
+              ),
+              height: 300,
+              // padding: EdgeInsets.all(15),
+              width: MediaQuery.of(context).size.width,
+              child: Center(
+                child: Html(
+                  shrinkWrap: true,
+                  data: dataSign?.chuky,
+                  style: {
+                    'img': Style(),
+                  },
+                ),
+              ),
+            )
+          else
+            _itemImage(
+              dataSign?.chuky ?? '',
+            ),
         SizedBox(
           height: AppValue.heights * 0.005,
         ),
         WidgetText(
-            title: dataSign?.nhanhienthi ?? '',
-            style: AppStyle.DEFAULT_16_BOLD),
+          title: dataSign?.nhanhienthi ?? '',
+          style: AppStyle.DEFAULT_16_BOLD,
+        ),
         SizedBox(
           height: AppValue.heights * 0.02,
         ),
@@ -913,6 +908,34 @@ class _FormAddSignState extends State<FormAddSign> {
     } else {
       AddDataBloc.of(context).add(SignEvent(data, type));
     }
+  }
+
+  Widget _itemImage(String data) {
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: COLORS.ffBEB4B4),
+          borderRadius: BorderRadius.all(Radius.circular(6))),
+      height: 300,
+      padding: EdgeInsets.all(15),
+      width: MediaQuery.of(context).size.width,
+      child: Image.memory(
+        base64Decode(data),
+        errorBuilder: (_, __, ___) {
+          return Container(
+            height: 300,
+            width: MediaQuery.of(context).size.width,
+            child: Center(
+              child: WidgetText(
+                title: getT(KeyT.click_to_sign),
+                style: AppStyle.DEFAULT_14.copyWith(
+                  color: COLORS.TEXT_COLOR,
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }
 
