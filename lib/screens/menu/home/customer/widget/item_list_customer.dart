@@ -6,8 +6,8 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../../l10n/key_text.dart';
 import '../../../../../src/src_index.dart';
-import '../../../../../widgets/dialog_call.dart';
 import '../../../../../widgets/widget_text.dart';
+import '../../../widget/information.dart';
 
 class ItemCustomer extends StatelessWidget {
   const ItemCustomer({
@@ -105,14 +105,10 @@ class ItemCustomer extends StatelessWidget {
                     onTap: () {
                       if ((data.phone?.val != null && data.phone?.val != "") &&
                           data.phone?.action != null) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return DialogCall(
-                              phone: '${data.phone?.val}',
-                              name: '${data.name}',
-                            );
-                          },
+                        dialogShowAllSDT(
+                          context,
+                          handelListSdt(data.phone?.val),
+                          name: data.name ?? '',
                         );
                       }
                     },

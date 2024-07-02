@@ -10,7 +10,6 @@ import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../widgets/btn_thao_tac.dart';
-import '../../../../widgets/dialog_call.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../../../widgets/widget_appbar.dart';
@@ -67,14 +66,10 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
           icon: ICONS.IC_PHONE_PNG,
           onThaoTac: () {
             Get.back();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return DialogCall(
-                  phone: _diDong.toString(),
-                  name: '',
-                );
-              },
+            dialogShowAllSDT(
+              context,
+              handelListSdt(_diDong),
+              name: '',
             );
           },
         ),

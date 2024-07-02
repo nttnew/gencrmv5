@@ -5,8 +5,8 @@ import 'package:gen_crm/widgets/line_horizontal_widget.dart';
 import '../../../src/app_const.dart';
 import '../../../src/models/model_generator/xe_dich_vu_response.dart';
 import '../../../src/src_index.dart';
-import '../../../widgets/dialog_call.dart';
 import '../../../widgets/widget_text.dart';
+import '../../menu/widget/information.dart';
 
 class ItemCar extends StatelessWidget {
   const ItemCar({
@@ -141,14 +141,10 @@ class ItemCar extends StatelessWidget {
                   child: itemTextIcon(
                     onTap: () {
                       if (data.diDong != null && data.diDong != '') {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return DialogCall(
-                              phone: '${data.diDong}',
-                              name: '${data.tenKhachHang}',
-                            );
-                          },
+                        dialogShowAllSDT(
+                          context,
+                          handelListSdt(data.diDong),
+                          name: data.tenKhachHang ?? '',
                         );
                       }
                     },

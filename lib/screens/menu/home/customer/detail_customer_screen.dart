@@ -17,13 +17,12 @@ import '../../../../src/models/model_generator/customer_clue.dart';
 import '../../../../src/models/model_generator/job_customer.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
-import '../../../../widgets/dialog_call.dart';
 import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
 import 'package:gen_crm/screens/menu/home/support/widget/support_card_widget.dart';
-
+import '../../widget/information.dart';
 import '../contract/widget/item_list_contract.dart';
 
 class DetailCustomerScreen extends StatefulWidget {
@@ -70,14 +69,10 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
           icon: ICONS.IC_PHONE_PNG,
           onThaoTac: () {
             Get.back();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return DialogCall(
-                  phone: _bloc.sdt ?? '',
-                  name: _bloc.name ?? '',
-                );
-              },
+            dialogShowAllSDT(
+              context,
+              handelListSdt(_bloc.sdt),
+              name: _bloc.name ?? '',
             );
           },
         ),

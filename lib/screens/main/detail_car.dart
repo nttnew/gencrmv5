@@ -11,9 +11,9 @@ import '../../src/app_const.dart';
 import '../../src/models/model_generator/detail_xe_dich_vu.dart';
 import '../../src/src_index.dart';
 import '../../widgets/cupertino_loading.dart';
-import '../../widgets/dialog_call.dart';
 import '../../widgets/widget_appbar.dart';
 import '../../widgets/widget_text.dart';
+import '../menu/widget/information.dart';
 
 class DetailCar extends StatefulWidget {
   const DetailCar({
@@ -200,17 +200,11 @@ class _DetailCarState extends State<DetailCar> {
                                           onTap: () {
                                             if (dataInfo?.diDong != null &&
                                                 dataInfo?.diDong != '') {
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return DialogCall(
-                                                    phone:
-                                                        '${dataInfo?.diDong}',
-                                                    name:
-                                                        '${dataInfo?.tenKhachHang}',
-                                                  );
-                                                },
+                                              dialogShowAllSDT(
+                                                context,
+                                                handelListSdt(dataInfo?.diDong),
+                                                name: dataInfo?.tenKhachHang ??
+                                                    '',
                                               );
                                             }
                                           },

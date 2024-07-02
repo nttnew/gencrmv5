@@ -3,7 +3,7 @@ import 'package:gen_crm/src/models/model_generator/list_product_customer_respons
 import '../../../../../l10n/key_text.dart';
 import '../../../../../src/app_const.dart';
 import '../../../../../src/src_index.dart';
-import '../../../../../widgets/dialog_call.dart';
+import '../../../widget/information.dart';
 
 class ItemProductCustomer extends StatelessWidget {
   const ItemProductCustomer({
@@ -35,8 +35,8 @@ class ItemProductCustomer extends StatelessWidget {
                 if (productModule.customer?.id != null &&
                     productModule.customer?.id != '')
                   AppNavigator.navigateDetailCustomer(
-                      productModule.customer?.id ?? '',
-                      );
+                    productModule.customer?.id ?? '',
+                  );
               },
               child: itemTextIcon(
                 text: productModule.customer?.name ?? getT(KeyT.not_yet),
@@ -52,14 +52,10 @@ class ItemProductCustomer extends StatelessWidget {
                 if ((productModule.phone?.val != null &&
                         productModule.phone?.val != "") &&
                     productModule.phone?.action != null) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return DialogCall(
-                        phone: '${productModule.phone?.val}',
-                        name: '${productModule.name}',
-                      );
-                    },
+                  dialogShowAllSDT(
+                    context,
+                    handelListSdt(productModule.phone?.val),
+                    name: productModule.name ?? '',
                   );
                 }
               },

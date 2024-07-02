@@ -60,7 +60,7 @@ class _DialogCallState extends ConsumerState<DialogCall> {
   }
 
   void _handleCall(BuildContext context, [bool voiceonly = false]) {
-    var dest = widget.phone;
+    var dest = widget.phone.trim().replaceAll(' ', '');
     if (dest.isEmpty) {
     } else {
       pitelCall.outGoingCall(
@@ -99,7 +99,7 @@ class _DialogCallState extends ConsumerState<DialogCall> {
                   onTap: () {
                     Clipboard.setData(
                       ClipboardData(
-                        text: widget.phone,
+                        text: widget.phone.trim().replaceAll(' ', ''),
                       ),
                     ).then((_) {
                       showToast(getT(KeyT.copy_success));
@@ -115,7 +115,9 @@ class _DialogCallState extends ConsumerState<DialogCall> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    launchUrl(Uri(scheme: "tel", path: widget.phone));
+                    launchUrl(Uri(
+                        scheme: "tel",
+                        path: widget.phone.trim().replaceAll(' ', '')));
                   },
                   child: WidgetText(
                       title: getT(KeyT.call),
@@ -130,7 +132,7 @@ class _DialogCallState extends ConsumerState<DialogCall> {
                     onTap: () {
                       saveHistoryCall(
                         CallHistoryModel(
-                          phone: widget.phone,
+                          phone: widget.phone.trim().replaceAll(' ', ''),
                           name: widget.name,
                           time: DateTime.now().toString(),
                         ),

@@ -135,7 +135,7 @@ class _CallGencrmScreenState extends ConsumerState<CallGencrmScreen> {
                           horizontal: 16,
                           vertical: 32,
                         ),
-                        child: ListView.builder(
+                        child: ListView. builder(
                           shrinkWrap: true,
                           itemCount: listCallHistory.length,
                           itemBuilder: (context, index) => _itemHistory(() {
