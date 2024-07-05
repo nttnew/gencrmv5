@@ -11,6 +11,7 @@ import 'package:gen_crm/screens/menu/form/widget/location_select.dart';
 import 'package:gen_crm/screens/menu/form/widget/render_check_box.dart';
 import 'package:gen_crm/screens/menu/home/customer/widget/input_dropDown.dart';
 import 'package:gen_crm/src/app_const.dart';
+import 'package:gen_crm/src/extensionss/common_ext.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/ky_nhan_widget.dart';
 import 'package:gen_crm/widgets/widget_field_input_percent.dart';
@@ -34,7 +35,8 @@ class FormAddSign extends StatefulWidget {
   State<FormAddSign> createState() => _FormAddSignState();
 }
 
-class _FormAddSignState extends State<FormAddSign> {
+class _FormAddSignState extends State<FormAddSign>
+    with AutomaticKeepAliveClientMixin {
   String title = Get.arguments[0];
   String _id = Get.arguments[1] != null ? Get.arguments[1].toString() : '';
   String type = getURLModule(Get.arguments[2] ?? '');
@@ -102,6 +104,7 @@ class _FormAddSignState extends State<FormAddSign> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         appBar: AppbarBaseNormal(title.toUpperCase().capitalizeFirst ?? ''),
         body: BlocListener<AddDataBloc, AddDataState>(
@@ -125,109 +128,104 @@ class _FormAddSignState extends State<FormAddSign> {
               );
             }
           },
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            color: COLORS.WHITE,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(16),
-              controller: scrollController,
-              child: BlocBuilder<FormAddBloc, FormAddState>(
-                  bloc: _bloc,
-                  builder: (context, state) {
-                    if (state is LoadingForm) {
-                      _addData = [];
-                      data = [];
-                      return SizedBox.shrink();
-                    } else if (state is ErrorForm) {
-                      return Text(
-                        state.msg,
-                        style: AppStyle.DEFAULT_16_T,
-                      );
-                    } else if (state is SuccessForm) {
-                      soTien = state.soTien ?? 0;
-                      if (_addData.isEmpty) {
-                        for (int i = 0; i < state.listAddData.length; i++) {
-                          _addData.add(ModelItemAdd(
-                              group_name: state.listAddData[i].group_name ?? '',
-                              data: []));
-                          for (int j = 0;
-                              j < (state.listAddData[i].data?.length ?? 0);
-                              j++) {
-                            _addData[i].data.add(ModelDataAdd(
-                                  parent: state.listAddData[i].data?[j].parent,
-                                  label:
-                                      state.listAddData[i].data?[j].field_name,
-                                  value: state
-                                      .listAddData[i].data?[j].field_set_value
-                                      .toString(),
-                                  required: state
-                                      .listAddData[i].data?[j].field_require,
-                                ));
-                          }
-                        }
-
-                        if (state.chuKyResponse != null &&
-                            chuKyModelResponse.isEmpty) {
-                          for (final ChuKyModelResponse value
-                              in (state.chuKyResponse?.first.data ?? [])) {
-                            chuKyModelResponse.add(value);
-                          }
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(16),
+            controller: scrollController,
+            child: BlocBuilder<FormAddBloc, FormAddState>(
+                bloc: _bloc,
+                builder: (context, state) {
+                  if (state is LoadingForm) {
+                    _addData = [];
+                    data = [];
+                    return SizedBox.shrink();
+                  } else if (state is ErrorForm) {
+                    return Text(
+                      state.msg,
+                      style: AppStyle.DEFAULT_16_T,
+                    );
+                  } else if (state is SuccessForm) {
+                    soTien = state.soTien ?? 0;
+                    if (_addData.isEmpty) {
+                      for (int i = 0; i < state.listAddData.length; i++) {
+                        _addData.add(ModelItemAdd(
+                            group_name: state.listAddData[i].group_name ?? '',
+                            data: []));
+                        for (int j = 0;
+                            j < (state.listAddData[i].data?.length ?? 0);
+                            j++) {
+                          _addData[i].data.add(ModelDataAdd(
+                                parent: state.listAddData[i].data?[j].parent,
+                                label: state.listAddData[i].data?[j].field_name,
+                                value: state
+                                    .listAddData[i].data?[j].field_set_value
+                                    .toString(),
+                                required:
+                                    state.listAddData[i].data?[j].field_require,
+                              ));
                         }
                       }
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.zero,
-                            itemCount: state.listAddData.length,
-                            itemBuilder: (context, indexParent) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+
+                      if (state.chuKyResponse != null &&
+                          chuKyModelResponse.isEmpty) {
+                        for (final ChuKyModelResponse value
+                            in (state.chuKyResponse?.first.data ?? [])) {
+                          chuKyModelResponse.add(value);
+                        }
+                      }
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          itemCount: state.listAddData.length,
+                          itemBuilder: (context, indexParent) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height:
+                                      0.01 * MediaQuery.of(context).size.height,
+                                ),
+                                if ((state.listAddData[indexParent]
+                                            .group_name ??
+                                        '') !=
+                                    '') ...[
+                                  WidgetText(
+                                    title: state.listAddData[indexParent]
+                                            .group_name ??
+                                        '',
+                                    style: AppStyle.DEFAULT_18_BOLD,
+                                  ),
                                   Container(
                                     height: 0.01 *
                                         MediaQuery.of(context).size.height,
                                   ),
-                                  if ((state.listAddData[indexParent]
-                                              .group_name ??
-                                          '') !=
-                                      '') ...[
-                                    WidgetText(
-                                      title: state.listAddData[indexParent]
-                                              .group_name ??
-                                          '',
-                                      style: AppStyle.DEFAULT_18_BOLD,
-                                    ),
-                                    Container(
-                                      height: 0.01 *
-                                          MediaQuery.of(context).size.height,
-                                    ),
-                                  ],
-                                  _itemField(
-                                    state.listAddData[indexParent].data ?? [],
-                                    indexParent,
-                                  ),
                                 ],
-                              );
-                            },
-                          ),
-                          _signatureUi(state.chuKyResponse),
-                          SizedBox(
-                            height: 25,
-                          ),
-                          FileLuuBase(
-                            context,
-                            () => onClickSave(),
-                            isAttack: false,
-                          ),
-                        ],
-                      );
-                    } else
-                      return SizedBox.shrink();
-                  }),
-            ),
+                                _itemField(
+                                  state.listAddData[indexParent].data ?? [],
+                                  indexParent,
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                        _signatureUi(state.chuKyResponse),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        FileLuuBase(
+                          context,
+                          () => onClickSave(),
+                          isAttack: false,
+                        ),
+                      ],
+                    );
+                  } else
+                    return SizedBox.shrink();
+                }),
           ),
         ));
   }
@@ -458,37 +456,35 @@ class _FormAddSignState extends State<FormAddSign> {
       return Column(
         children: chuKyResponse
             .map(
-              (e) => Container(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: AppValue.heights * 0.01,
+              (e) => Column(
+                children: [
+                  SizedBox(
+                    height: AppValue.heights * 0.01,
+                  ),
+                  e.group_name != null
+                      ? Align(
+                          alignment: Alignment.centerLeft,
+                          child: WidgetText(
+                              title: e.group_name ?? '',
+                              style: AppStyle.DEFAULT_18_BOLD),
+                        )
+                      : SizedBox.shrink(),
+                  SizedBox(
+                    height: AppValue.heights * 0.02,
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: chuKyModelResponse.length,
+                    itemBuilder: (context, index) => _signature(
+                      chuKyModelResponse[index],
+                      (v) {
+                        chuKyModelResponse[index] = v;
+                      },
                     ),
-                    e.group_name != null
-                        ? Align(
-                            alignment: Alignment.centerLeft,
-                            child: WidgetText(
-                                title: e.group_name ?? '',
-                                style: AppStyle.DEFAULT_18_BOLD),
-                          )
-                        : SizedBox.shrink(),
-                    SizedBox(
-                      height: AppValue.heights * 0.02,
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: chuKyModelResponse.length,
-                      itemBuilder: (context, index) => _signature(
-                        chuKyModelResponse[index],
-                        (v) {
-                          chuKyModelResponse[index] = v;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             )
             .toList(),
@@ -509,6 +505,7 @@ class _FormAddSignState extends State<FormAddSign> {
         if (dataSign?.chuky == null)
           GestureDetector(
             onTap: () async {
+              closeKey();
               final data = await ShowDialogCustom.showDialogScreenBase(
                 child: KyNhan(
                   data: dataSign,
@@ -545,8 +542,7 @@ class _FormAddSignState extends State<FormAddSign> {
                 ),
               ),
               height: 300,
-              // padding: EdgeInsets.all(15),
-              width: MediaQuery.of(context).size.width,
+              // width: MediaQuery.of(context).size.width,
               child: Center(
                 child: Html(
                   shrinkWrap: true,
@@ -804,6 +800,7 @@ class _FormAddSignState extends State<FormAddSign> {
                       itemCount: 5,
                       itemBuilder: (context, index) => GestureDetector(
                         onTap: () {
+                          closeKey();
                           if (!noEdit) {
                             starStream.add(index + 1);
                             _addData[indexParent].data[indexChild].value =
@@ -917,13 +914,12 @@ class _FormAddSignState extends State<FormAddSign> {
           borderRadius: BorderRadius.all(Radius.circular(6))),
       height: 300,
       padding: EdgeInsets.all(15),
-      width: MediaQuery.of(context).size.width,
+      width: double.maxFinite,
       child: Image.memory(
         base64Decode(data),
         errorBuilder: (_, __, ___) {
           return Container(
             height: 300,
-            width: MediaQuery.of(context).size.width,
             child: Center(
               child: WidgetText(
                 title: getT(KeyT.click_to_sign),
@@ -937,6 +933,9 @@ class _FormAddSignState extends State<FormAddSign> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class SwitchBase extends StatefulWidget {
