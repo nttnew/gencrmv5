@@ -59,7 +59,7 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 if (widget.item.location != null &&
-                    widget.item.location?.trim() != '') ...[
+                    (widget.item.location ?? '').trim() != '') ...[
                   Container(
                     height: 16,
                     width: 16,
@@ -93,9 +93,16 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
               ],
             ),
             itemTextIcon(
-              text: widget.item.user_work_name ?? '',
-              icon: ICONS.IC_AVATAR_SVG,
-            ),
+                text: widget.item.customer?.name ?? '',
+                icon: ICONS.IC_AVATAR_SVG,
+                colorText: COLORS.TEXT_BLUE_BOLD,
+                onTap: () {
+                  if (widget.item.customer?.id != '' &&
+                      widget.item.customer?.id != null)
+                    AppNavigator.navigateDetailCustomer(
+                      widget.item.customer?.id ?? '',
+                    );
+                }),
             itemTextIcon(
               text: widget.item.status_job ?? '',
               icon: ICONS.IC_ICON3_SVG,
@@ -115,10 +122,15 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
                       widget.item.product_customer?.id ?? '',
                     );
                 }),
-            itemTextEnd(
-              title: widget.item.start_date ?? '',
-              content: widget.item.total_comment.toString(),
+            itemTextIcon(
+              text: widget.item.start_date ?? '',
               icon: ICONS.IC_ICON4_SVG,
+            ),
+            itemTextEnd(
+              isAvatar: true,
+              title: widget.item.user_work_name ?? '',
+              icon: widget.item.user_work_avatar ?? '',
+              content: widget.item.total_comment.toString(),
             ),
           ],
         ),

@@ -17,13 +17,12 @@ import '../../../../src/models/model_generator/customer_clue.dart';
 import '../../../../src/models/model_generator/job_customer.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
-import '../../../../widgets/dialog_call.dart';
 import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
 import 'package:gen_crm/screens/menu/home/support/widget/support_card_widget.dart';
-
+import '../../widget/information.dart';
 import '../contract/widget/item_list_contract.dart';
 
 class DetailCustomerScreen extends StatefulWidget {
@@ -35,7 +34,7 @@ class DetailCustomerScreen extends StatefulWidget {
 
 class _DetailCustomerScreenState extends State<DetailCustomerScreen>
     with SingleTickerProviderStateMixin {
-  String _id = Get.arguments ?? '';
+  int _id = int.tryParse(Get.arguments) ?? -1;
   String _title = '';
   late TabController _tabController;
   List<ModuleThaoTac> _list = [];
@@ -55,7 +54,6 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
         userRepository: DetailCustomerBloc.of(context).userRepository);
     _blocNote =
         ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
-    _bloc.initController(_id);
     _tabController = TabController(length: 6, vsync: this);
     super.initState();
   }
@@ -70,14 +68,10 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
           icon: ICONS.IC_PHONE_PNG,
           onThaoTac: () {
             Get.back();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return DialogCall(
-                  phone: _bloc.sdt ?? '',
-                  name: _bloc.name ?? '',
-                );
-              },
+            dialogShowAllSDT(
+              context,
+              handelListSdt(_bloc.sdt),
+              name: _bloc.name ?? '',
             );
           },
         ),
@@ -94,7 +88,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
             title:
                 '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}',
             type: ADD_CLUE_CUSTOMER,
-            id: int.parse(_id),
+            id: _id,
             onRefreshForm: () {
               _bloc.controllerDM.reloadData();
             },
@@ -112,7 +106,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
           title:
               '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}',
           type: ADD_CHANCE_CUSTOMER,
-          id: int.parse(_id),
+          id: _id,
           onRefreshForm: () {
             _bloc.controllerCH.reloadData();
           },
@@ -129,7 +123,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
           title:
               '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
           type: ADD_CONTRACT_CUS,
-          id: int.tryParse(_id),
+          id: _id,
           onRefreshForm: () {
             _bloc.controllerHD.reloadData();
           },
@@ -147,7 +141,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
           title:
               '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
           type: ADD_JOB_CUSTOMER,
-          id: int.parse(_id),
+          id: _id,
           onRefreshForm: () {
             _bloc.controllerCV.reloadData();
           },
@@ -163,7 +157,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
         AppNavigator.navigateForm(
           title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
           type: ADD_SUPPORT_CUSTOMER,
-          id: int.parse(_id),
+          id: _id,
           onRefreshForm: () {
             _bloc.controllerHT.reloadData();
           },
@@ -176,7 +170,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       icon: ICONS.IC_ADD_DISCUSS_SVG,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateAddNoteScreen(Module.KHACH_HANG, _id,
+        AppNavigator.navigateAddNoteScreen(Module.KHACH_HANG, _id.toString(),
             onRefresh: () {
           _blocNote.add(RefreshEvent());
         });
@@ -190,7 +184,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
         Get.back();
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => Attachment(
-                  id: _id,
+                  id: _id.toString(),
                   typeModule: Module.KHACH_HANG,
                 )));
       },
@@ -203,10 +197,10 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
         Get.back();
         AppNavigator.navigateForm(
           type: EDIT_CUSTOMER,
-          id: int.tryParse(_id),
+          id: _id,
           onRefreshForm: () {
             _reload = true;
-            _bloc.add(InitGetDetailCustomerEvent(int.parse(_id)));
+            _bloc.add(InitGetDetailCustomerEvent(_id));
           },
         );
       },
@@ -217,7 +211,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       icon: ICONS.IC_DELETE_SVG,
       onThaoTac: () {
         ShowDialogCustom.showDialogBase(
-          onTap2: () => _bloc.add(DeleteCustomerEvent(int.parse(_id))),
+          onTap2: () => _bloc.add(DeleteCustomerEvent(_id)),
           content: getT(KeyT.are_you_sure_you_want_to_delete),
         );
       },
@@ -325,16 +319,16 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                     physics: BouncingScrollPhysics(),
                     children: <Widget>[
                       TabInfoCustomer(
-                        id: _id,
+                        id: _id.toString(),
                         blocNote: _blocNote,
                         bloc: _bloc,
                       ),
                       ViewLoadMoreBase(
+                        isInit: true,
                         functionInit: (page, isInit) {
                           return _bloc.getClueCustomer(
-                            id: int.parse(_id),
+                            id: _id,
                             page: page,
-                            isInit: isInit,
                           );
                         },
                         itemWidget: (int index, data) {
@@ -353,9 +347,12 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                         controller: _bloc.controllerDM,
                       ),
                       ViewLoadMoreBase(
+                        isInit: true,
                         functionInit: (page, isInit) {
                           return _bloc.getChanceCustomer(
-                              id: int.parse(_id), page: page, isInit: isInit);
+                            id: _id,
+                            page: page,
+                          );
                         },
                         itemWidget: (int index, data) {
                           return ChanceCardWidget(
@@ -373,11 +370,11 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                         controller: _bloc.controllerCH,
                       ),
                       ViewLoadMoreBase(
+                        isInit: true,
                         functionInit: (page, isInit) {
                           return _bloc.getContractCustomer(
-                            id: int.parse(_id),
+                            id: _id,
                             page: page,
-                            isInit: isInit,
                           );
                         },
                         itemWidget: (int index, data) {
@@ -408,11 +405,11 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                         controller: _bloc.controllerHD,
                       ),
                       ViewLoadMoreBase(
+                        isInit: true,
                         functionInit: (page, isInit) {
                           return _bloc.getJobCustomer(
-                            id: int.parse(_id),
+                            id: _id,
                             page: page,
-                            isInit: isInit,
                           );
                         },
                         itemWidget: (int index, data) {
@@ -431,11 +428,11 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                         controller: _bloc.controllerCV,
                       ),
                       ViewLoadMoreBase(
+                        isInit: true,
                         functionInit: (page, isInit) {
                           return _bloc.getSupportCustomer(
-                            id: int.parse(_id),
+                            id: _id,
                             page: page,
-                            isInit: isInit,
                           );
                         },
                         itemWidget: (int index, data) {

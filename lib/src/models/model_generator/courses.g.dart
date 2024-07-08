@@ -8,7 +8,7 @@ part of 'courses.dart';
 
 CoursesResponse _$CoursesResponseFromJson(Map<String, dynamic> json) =>
     CoursesResponse(
-      code: json['code'] as int,
+      code: (json['code'] as num).toInt(),
       message: json['message'] as String?,
       payload: (json['payload'] as List<dynamic>)
           .map((e) => CoursesData.fromJson(e as Map<String, dynamic>))
@@ -25,7 +25,7 @@ Map<String, dynamic> _$CoursesResponseToJson(CoursesResponse instance) =>
 DetailCoursesResponse _$DetailCoursesResponseFromJson(
         Map<String, dynamic> json) =>
     DetailCoursesResponse(
-      code: json['code'] as int,
+      code: (json['code'] as num).toInt(),
       message: json['message'] as String?,
       payload: CoursesData.fromJson(json['payload'] as Map<String, dynamic>),
     );
@@ -39,12 +39,12 @@ Map<String, dynamic> _$DetailCoursesResponseToJson(
     };
 
 CoursesData _$CoursesDataFromJson(Map<String, dynamic> json) => CoursesData(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       courseCode: json['course_code'] as String,
       courseName: json['course_name'] as String,
-      amountNew: json['amount_new'] as int,
-      amountOld: json['amount_old'] as int,
-      time: json['time'] as int,
+      amountNew: (json['amount_new'] as num).toInt(),
+      amountOld: (json['amount_old'] as num).toInt(),
+      time: (json['time'] as num).toInt(),
       image: json['image'] as String?,
       fee: json['fee'] as String?,
       author: json['author'] as String?,

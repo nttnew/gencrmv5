@@ -8,7 +8,7 @@ part of 'job_chance.dart';
 
 DataFormAdd _$DataFormAddFromJson(Map<String, dynamic> json) => DataFormAdd(
       json['id'] as String?,
-      json['total_comment'] as int?,
+      (json['total_comment'] as num?)?.toInt(),
       json['name_job'] as String?,
       json['user_work_id'] as String?,
       json['user_work_name'] as String?,
@@ -44,7 +44,7 @@ JobChance _$JobChanceFromJson(Map<String, dynamic> json) => JobChance(
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$JobChanceToJson(JobChance instance) => <String, dynamic>{
       'success': instance.success,

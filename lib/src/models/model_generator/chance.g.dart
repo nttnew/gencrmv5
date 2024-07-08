@@ -38,7 +38,7 @@ Map<String, dynamic> _$ListChanceDataToJson(ListChanceData instance) =>
 
 DataChance _$DataChanceFromJson(Map<String, dynamic> json) => DataChance(
       json['page'] as String?,
-      json['limit'] as int?,
+      (json['limit'] as num?)?.toInt(),
       json['total'] as String?,
       (json['filter'] as List<dynamic>?)
           ?.map((e) => Customer.fromJson(e as Map<String, dynamic>))
@@ -65,7 +65,7 @@ ListChanceResponse _$ListChanceResponseFromJson(Map<String, dynamic> json) =>
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$ListChanceResponseToJson(ListChanceResponse instance) =>
     <String, dynamic>{

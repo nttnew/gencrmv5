@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../line_horizontal_widget.dart';
+
 class ViewLoadMoreBase extends StatefulWidget {
   const ViewLoadMoreBase({
     Key? key,
@@ -18,6 +20,7 @@ class ViewLoadMoreBase extends StatefulWidget {
     this.isDispose = true,
     this.heightAppBar,
     this.widgetLoad,
+    this.paddingList,
   }) : super(key: key);
   final Future<dynamic> Function(int page, bool isInit) functionInit;
   final Function(int index, dynamic data) itemWidget;
@@ -29,6 +32,7 @@ class ViewLoadMoreBase extends StatefulWidget {
   final BehaviorSubject<List<dynamic>>? isShowAll;
   final double? heightAppBar;
   final Widget? widgetLoad;
+  final double? paddingList;
 
   @override
   State<ViewLoadMoreBase> createState() => _ViewLoadMoreBaseState();
@@ -227,7 +231,7 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
         shrinkWrap: isWarp,
         physics: physics ?? AlwaysScrollableScrollPhysics(),
         padding: EdgeInsets.only(
-          top: 16,
+          top: widget.paddingList ?? 16,
         ),
         controller: isController ? _controller.controller : null,
         itemCount: list?.length,
@@ -237,7 +241,7 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
   _childLNull() => ListView.builder(
         shrinkWrap: true,
         padding: EdgeInsets.only(
-          top: 16,
+          top: widget.paddingList ?? 16,
         ),
         itemCount: 10,
         itemBuilder: (context, index) =>
@@ -296,10 +300,12 @@ class LoadMoreController<T> {
   Future<dynamic> Function(int page, bool isInit)? functionInit;
 
   reloadData() {
-    streamList.add(null);
-    isRefresh = true;
-    page = BASE_URL.PAGE_DEFAULT;
-    loadData(page);
+    if (functionInit != null) {
+      streamList.add(null);
+      isRefresh = true;
+      page = BASE_URL.PAGE_DEFAULT;
+      loadData(page);
+    }
   }
 
   initData(List<dynamic> list) {
@@ -411,6 +417,25 @@ itemLoading({bool isMaxWidth = false}) => Shimmer.fromColors(
       ),
     );
 
+itemLoading2({bool isMaxWidth = false}) => Shimmer.fromColors(
+      baseColor: Colors.black12,
+      highlightColor: Colors.white,
+      child: Container(
+        height: 40,
+        width: isMaxWidth
+            ? MediaQuery.of(Get.context!).size.width
+            : MediaQuery.of(Get.context!).size.width / 1 / 2,
+        decoration: BoxDecoration(
+          color: Colors.cyan,
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              4,
+            ),
+          ),
+        ),
+      ),
+    );
+
 widgetLoading() {
   return Container(
     margin: EdgeInsets.symmetric(
@@ -430,5 +455,115 @@ widgetLoading() {
       boxShadow: boxShadow1,
     ),
     child: itemLoading(),
+  );
+}
+
+widgetLoadingProduct() {
+  return Container(
+    padding: EdgeInsets.symmetric(
+      horizontal: 16,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppValue.vSpaceSmall,
+        Row(
+          children: [
+            Expanded(
+              child: itemLoading(),
+            ),
+            Expanded(flex: 2, child: SizedBox()),
+          ],
+        ),
+        AppValue.vSpace4,
+        Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: itemLoading(),
+            ),
+            Expanded(flex: 2, child: SizedBox()),
+          ],
+        ),
+        AppValue.vSpace4,
+        Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: itemLoading(),
+            ),
+            Expanded(flex: 3, child: SizedBox()),
+          ],
+        ),
+        AppValue.vSpace10,
+        LineHorizontal(
+          color: COLORS.GREY_400,
+        ),
+      ],
+    ),
+  );
+}
+
+widgetLoadingPack() {
+  return Container(
+    margin: EdgeInsets.only(
+      top: 8,
+      left: 16,
+      right: 16,
+    ),
+    padding: EdgeInsets.only(
+      bottom: 16,
+    ),
+    decoration: BoxDecoration(
+      border: Border(
+        bottom: BorderSide(
+          width: 1,
+          color: COLORS.GREY_400,
+        ),
+      ),
+    ),
+    child: Row(
+      children: [
+        WidgetContainerImage(
+          image: ICONS.IC_CART_PNG,
+          width: 25,
+          height: 25,
+          fit: BoxFit.contain,
+          borderRadius: BorderRadius.circular(0),
+          colorImage: COLORS.BLUE,
+        ),
+        SizedBox(
+          width: 16,
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              itemLoading(),
+              AppValue.vSpace4,
+              itemLoading(),
+              AppValue.vSpace4,
+              itemLoading(),
+              AppValue.vSpace4,
+              itemLoading(),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 40,
+          width: 40,
+          child: Center(
+            child: Transform.scale(
+              scale: 1.2,
+              child: Checkbox(
+                //1 là đang sử dụng
+                value: false,
+                onChanged: null,
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
   );
 }

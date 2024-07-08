@@ -26,7 +26,7 @@ class GetInforBloc extends Bloc<GetInforEvent, InforState> {
   Stream<InforState> _getInfor() async* {
     LoadingApi().pushLoading();
     try {
-      final response = await userRepository.getInfor();
+      final response = await userRepository.getInfo();
       if (isSuccess(response.code)) {
         yield UpdateGetInforState(response.data!.gioi_thieu);
       } else

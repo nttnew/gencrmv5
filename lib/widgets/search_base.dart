@@ -152,7 +152,9 @@ class _SearchBaseState extends State<SearchBase> {
           ),
           widget.endIcon != null
               ? GestureDetector(
-                  onTap: () => widget.onClickRight!(),
+                  onTap: () {
+                    if (widget.onClickRight != null) widget.onClickRight!();
+                  },
                   child: Container(
                     padding: EdgeInsets.symmetric(
                       vertical: 16,

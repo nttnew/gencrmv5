@@ -1,5 +1,8 @@
 extension StringExt on String {
   double toDoubleTry() {
-    return double.tryParse(this) ?? 0;
+    if (this != 'null' && this != '')
+      return double.tryParse(this) ?? 0;
+    else
+      return 0;
   }
 }

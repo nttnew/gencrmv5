@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:gen_crm/src/extensionss/string_ext.dart';
 import 'package:gen_crm/src/models/model_generator/work.dart';
 import 'package:gen_crm/storages/share_local.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import '../../../l10n/key_text.dart';
 import '../../../src/app_const.dart';
 import '../../../src/models/model_generator/detail_customer.dart';
 import '../../../src/src_index.dart';
+import '../../../widgets/dialog_call.dart';
 import '../../../widgets/line_horizontal_widget.dart';
 import '../../../widgets/widget_text.dart';
 import '../form/widget/preview_image.dart';
@@ -138,13 +140,15 @@ class ItemInfo extends StatelessWidget {
 
                       if (item?.field_type == 'LINE') {
                         return Container(
-                            margin: EdgeInsets.symmetric(vertical: 5),
-                            child: LineHorizontal());
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: LineHorizontal(),
+                        );
                       } else if (isImage) {
                         final List<String> listImage =
                             item?.value_field.toString().split(',') ?? [];
                         if (listImage.length == 0 ||
-                            listImage.firstOrNull == '')
+                            listImage.firstOrNull == '' ||
+                            listImage.firstOrNull == '-1')
                           return SizedBox.shrink();
                         return Container(
                           width: MediaQuery.of(context).size.width,
@@ -205,11 +209,17 @@ class ItemInfo extends StatelessWidget {
                           ),
                         );
                       }
-                      return item?.value_field?.trim() != '' &&
-                              item?.value_field != null
+                      final bool isCall = item?.is_call == true ||
+                          item?.id == 'so_dien_thoai' ||
+                          item?.id == 'dien_thoai';
+                      final bool isValue =
+                          '${item?.value_field ?? ''}'.trim() != '' &&
+                              item?.value_field != null;
+                      return isValue
                           ? Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     child: WidgetText(
@@ -222,43 +232,11 @@ class ItemInfo extends StatelessWidget {
                                   Expanded(
                                     flex: 2,
                                     child: isCheckBox
-                                        ? Align(
-                                            alignment: Alignment.centerRight,
-                                            child: Container(
-                                              width: 20,
-                                              height: 20,
-                                              child: Checkbox(
-                                                value: item?.value_field
-                                                        .toString() ==
-                                                    '1',
-                                                onChanged: null,
-                                              ),
-                                            ),
-                                          )
-                                        : GestureDetector(
-                                            onTap: () {
-                                              if (item?.is_link == true) {
-                                                _navigateTypeScreen(item);
-                                              }
-                                            },
-                                            child: WidgetText(
-                                              title: item?.value_field ?? '',
-                                              textAlign: TextAlign.right,
-                                              style:
-                                                  AppStyle.DEFAULT_14.copyWith(
-                                                decoration: item?.is_link ==
-                                                        true
-                                                    ? TextDecoration.underline
-                                                    : null,
-                                                color: item?.is_link == true
-                                                    ? Colors.blue
-                                                    : isNameSP
-                                                        ? COLORS.ORANGE_IMAGE
-                                                        : null,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ),
+                                        ? _widgetCheckBox(context, item)
+                                        : isCall
+                                            ? _widgetCall(context, item)
+                                            : _widgetItem(
+                                                context, item, isNameSP),
                                   ),
                                 ],
                               ),
@@ -281,6 +259,163 @@ class ItemInfo extends StatelessWidget {
                 ),
           AppValue.vSpace20,
         ],
+      ),
+    );
+  }
+
+  Widget _widgetCall(BuildContext context, InfoItem? item) {
+    final List<String> listSDT = handelListSdt(item?.value_field);
+    return GestureDetector(
+      onTap: () {
+        dialogShowAllSDT(context, listSDT);
+      },
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.start,
+        alignment: WrapAlignment.end,
+        children: listSDT
+            .map(
+              (e) => WidgetText(
+                title: e + '  ',
+                textAlign: TextAlign.right,
+                style: AppStyle.DEFAULT_14.copyWith(
+                  decoration: TextDecoration.underline,
+                  color: Colors.blue,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            )
+            .toList(),
+      ),
+    );
+  }
+
+  Widget _widgetItem(
+    BuildContext context,
+    InfoItem? item,
+    bool isNameSP,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        if (item?.is_link == true) {
+          _navigateTypeScreen(item);
+        }
+      },
+      child: WidgetText(
+        title: '${item?.value_field ?? ''}'.htmlToString(),
+        textAlign: TextAlign.right,
+        style: AppStyle.DEFAULT_14.copyWith(
+          decoration: item?.is_link == true ? TextDecoration.underline : null,
+          color: item?.is_link == true
+              ? Colors.blue
+              : isNameSP
+                  ? COLORS.ORANGE_IMAGE
+                  : null,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
+  }
+
+  Widget _widgetCheckBox(
+    BuildContext context,
+    InfoItem? item,
+  ) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Container(
+        width: 20,
+        height: 20,
+        child: Checkbox(
+          value: item?.value_field.toString() == '1', //1 là true theo code PHP
+          onChanged: null,
+        ),
+      ),
+    );
+  }
+}
+
+List<String> handelListSdt(dynamic sdt) {
+  if (sdt == null) return [];
+  final handelDataCall = sdt.toString().split(',');
+  List<String> listSDT = handelDataCall.map((e) => e.toString()).toList();
+  return listSDT;
+}
+
+void dialogShowAllSDT(
+  BuildContext _context,
+  List<String> listSDT, {
+  String name = '',
+}) {
+  if (listSDT.length == 1) {
+    showDialog(
+      context: _context,
+      builder: (BuildContext context) {
+        return DialogCall(
+          phone: listSDT.first,
+          name: name,
+        );
+      },
+    );
+  } else if (listSDT.length > 1) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: _context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30),
+          topLeft: Radius.circular(30),
+        ),
+      ),
+      backgroundColor: COLORS.WHITE,
+      builder: (context) => Container(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height,
+        ),
+        margin: EdgeInsets.only(top: 4),
+        padding: EdgeInsets.symmetric(
+          vertical: 20,
+          horizontal: 16,
+        ),
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: listSDT.length,
+          itemBuilder: (BuildContext context, int index) {
+            return GestureDetector(
+              onTap: () {
+                Get.back();
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return DialogCall(
+                      phone: listSDT[index],
+                      name: name,
+                    );
+                  },
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.all(
+                  6,
+                ),
+                margin: EdgeInsets.only(
+                  bottom: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: COLORS.WHITE,
+                  border: Border.all(
+                    color: COLORS.GREY_400,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      4,
+                    ),
+                  ),
+                ),
+                child: Text(listSDT[index], style: AppStyle.DEFAULT_16_T),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

@@ -70,7 +70,7 @@ class _ReadListState extends State<ReadList>
             );
           return noData();
         } else {
-          return noData();
+          return SizedBox.shrink();
         }
       }),
     );

@@ -2,14 +2,13 @@ import 'package:dartx/dartx.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gen_crm/models/product_model.dart';
-import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/widgets/loading_api.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
 import '../../src/models/model_generator/detail_product_module_response.dart';
+import '../../src/models/model_generator/products_response.dart';
 
 part 'detail_product_event.dart';
 part 'detail_product_state.dart';
@@ -36,52 +35,29 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
       final response = await userRepository.getDetailProduct(id: id);
       if (isSuccess(response.code)) {
         yield UpdateGetDetailProductState(
-            response,
-            ProductModel(
-                response.info?.productId ?? '',
-                1,
-                ProductItem(
-                  response.info?.productId,
-                  response.info?.productCode,
-                  response.info?.productEdit,
-                  response.info?.productName,
-                  response.info?.dvt,
-                  response.info?.vat,
-                  response.info?.sellPrice.toString(),
-                ),
-                '0',
-                response.info?.nameDvt ?? '',
-                response.info?.nameVat ?? '',
-                ''));
+          response,
+          response.info,
+        );
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
         yield ErrorGetDetailProductState(response.msg ?? '');
       }
     } catch (e) {
-      yield ErrorGetDetailProductState(
-          getT(KeyT.an_error_occurred ));
+      yield ErrorGetDetailProductState(getT(KeyT.an_error_occurred));
     }
   }
 
-  Future<ProductModel> getDetailProductQR({required String id}) async {
-    final response = await userRepository.getDetailProduct(id: id);
-    return ProductModel(
-        response.info?.productId ?? '',
-        1,
-        ProductItem(
-          response.info?.productId,
-          response.info?.productCode,
-          response.info?.productEdit,
-          response.info?.productName,
-          response.info?.dvt,
-          response.info?.vat,
-          response.info?.sellPrice.toString(),
-        ),
-        '0',
-        response.info?.nameDvt ?? '',
-        response.info?.nameVat ?? '',
-        '');
+  Future<ProductsRes?> getDetailProductQR({required String id}) async {
+    try {
+      final response = await userRepository.getDetailProduct(id: id);
+      if (isSuccess(response.code)) {
+        return response.info;
+      }
+    } catch (e) {
+       return null;
+    }
+    return null;
   }
 
   Stream<DetailProductState> _deleteProduct({required String id}) async* {
@@ -100,8 +76,7 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
         yield ErrorDeleteProductState(msg);
     } catch (e) {
       LoadingApi().popLoading();
-      yield ErrorDeleteProductState(
-          getT(KeyT.an_error_occurred ));
+      yield ErrorDeleteProductState(getT(KeyT.an_error_occurred));
       throw e;
     }
     LoadingApi().popLoading();

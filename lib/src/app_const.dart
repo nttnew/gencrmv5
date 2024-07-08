@@ -279,34 +279,87 @@ Widget itemTextEnd({
   Color? colorTitle,
   Function? onTapTitle,
   bool isSvg = true,
+  bool isAvatar = false,
 }) {
-  return Row(
-    crossAxisAlignment: CrossAxisAlignment.end,
-    children: [
-      Expanded(
-        child: itemTextIcon(
-          isSVG: isSvg,
-          text: title,
-          icon: icon,
-          colorText: colorTitle,
-          onTap: onTapTitle,
-        ),
+  return Container(
+    margin: !isAvatar
+        ? null
+        : EdgeInsets.only(
+            top: 8,
+          ),
+    decoration: !isAvatar
+        ? null
+        : BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: COLORS.GRAY_IMAGE,
+              ),
+            ),
+          ),
+    child: Container(
+      margin: isAvatar
+          ? EdgeInsets.only(
+              top: 8,
+            )
+          : null,
+      child: Row(
+        crossAxisAlignment:
+            isAvatar ? CrossAxisAlignment.center : CrossAxisAlignment.end,
+        children: [
+          if (isAvatar)
+            Expanded(
+              child: Row(
+                children: [
+                  Container(
+                    height: 32,
+                    width: 32,
+                    margin: EdgeInsets.only(
+                      right: 8,
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: Image.network(icon),
+                  ),
+                  WidgetText(
+                    title: title,
+                    style: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
+                      color: colorTitle ?? COLORS.BLACK,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          else
+            Expanded(
+              child: itemTextIcon(
+                isSVG: isSvg,
+                text: title,
+                icon: icon,
+                colorText: colorTitle,
+                onTap: onTapTitle,
+              ),
+            ),
+          SizedBox(
+            width: 8,
+          ),
+          SvgPicture.asset(ICONS.IC_QUESTION_SVG),
+          SizedBox(
+            width: 4,
+          ),
+          WidgetText(
+            title: content,
+            style: AppStyle.DEFAULT_14.copyWith(
+              color: COLORS.TEXT_BLUE_BOLD,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
       ),
-      SizedBox(
-        width: 8,
-      ),
-      SvgPicture.asset(ICONS.IC_QUESTION_SVG),
-      SizedBox(
-        width: 4,
-      ),
-      WidgetText(
-        title: content,
-        style: AppStyle.DEFAULT_14.copyWith(
-          color: COLORS.TEXT_BLUE_BOLD,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    ],
+    ),
   );
 }
 
@@ -321,7 +374,7 @@ Widget itemTextIcon({
   Function? onTap,
   double? paddingTop,
 }) {
-  return text == ''
+  return text.trim() == ''
       ? SizedBox()
       : onTap != null
           ? Padding(

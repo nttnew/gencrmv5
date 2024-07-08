@@ -15,7 +15,7 @@ ManagerFilterResponse _$ManagerFilterResponseFromJson(
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$ManagerFilterResponseToJson(
         ManagerFilterResponse instance) =>
@@ -33,7 +33,7 @@ DataResponse _$DataResponseFromJson(Map<String, dynamic> json) => DataResponse(
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$DataResponseToJson(DataResponse instance) =>
     <String, dynamic>{
@@ -57,7 +57,7 @@ ManagerResponse _$ManagerResponseFromJson(Map<String, dynamic> json) =>
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$ManagerResponseToJson(ManagerResponse instance) =>
     <String, dynamic>{
@@ -74,7 +74,7 @@ AttrResponse _$AttrResponseFromJson(Map<String, dynamic> json) => AttrResponse(
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$AttrResponseToJson(AttrResponse instance) =>
     <String, dynamic>{
@@ -91,7 +91,7 @@ DataTwoResponse _$DataTwoResponseFromJson(Map<String, dynamic> json) =>
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$DataTwoResponseToJson(DataTwoResponse instance) =>
     <String, dynamic>{

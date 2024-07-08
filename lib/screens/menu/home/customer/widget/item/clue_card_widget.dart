@@ -4,7 +4,7 @@ import 'package:gen_crm/src/models/model_generator/clue_customer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../../../l10n/key_text.dart';
 import '../../../../../../src/src_index.dart';
-import '../../../../../../widgets/dialog_call.dart';
+import '../../../../widget/information.dart';
 
 class ClueCardWidget extends StatelessWidget {
   ClueCardWidget({
@@ -73,14 +73,11 @@ class ClueCardWidget extends StatelessWidget {
                 onTapTitle: () {
                   if (data.phone?.action != null && data.phone?.action == 2) {
                     if (data.phone?.val != null)
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return DialogCall(
-                              phone: '${data.phone?.val}',
-                              name: '${data.name}',
-                            );
-                          });
+                      dialogShowAllSDT(
+                        context,
+                        handelListSdt(data.phone?.val),
+                        name: data.name ?? '',
+                      );
                   }
                 }),
           ],

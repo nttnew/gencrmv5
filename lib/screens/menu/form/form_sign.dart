@@ -11,6 +11,7 @@ import 'package:gen_crm/screens/menu/form/widget/location_select.dart';
 import 'package:gen_crm/screens/menu/form/widget/render_check_box.dart';
 import 'package:gen_crm/screens/menu/home/customer/widget/input_dropDown.dart';
 import 'package:gen_crm/src/app_const.dart';
+import 'package:gen_crm/src/extensionss/common_ext.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:gen_crm/widgets/ky_nhan_widget.dart';
 import 'package:gen_crm/widgets/widget_field_input_percent.dart';
@@ -34,10 +35,11 @@ class FormAddSign extends StatefulWidget {
   State<FormAddSign> createState() => _FormAddSignState();
 }
 
-class _FormAddSignState extends State<FormAddSign> {
+class _FormAddSignState extends State<FormAddSign>
+    with AutomaticKeepAliveClientMixin {
   String title = Get.arguments[0];
-  String id = Get.arguments[1] != null ? Get.arguments[1].toString() : '';
-  String type = Get.arguments[2] ?? '';
+  String _id = Get.arguments[1] != null ? Get.arguments[1].toString() : '';
+  String type = getURLModule(Get.arguments[2] ?? '');
   List<ChuKyModelResponse> chuKyModelResponse = [];
   List data = [];
   List<ModelItemAdd> _addData = [];
@@ -58,7 +60,7 @@ class _FormAddSignState extends State<FormAddSign> {
     starStream = BehaviorSubject.seeded(-1);
     scrollController = ScrollController();
     isMaxScroll = BehaviorSubject.seeded(false);
-    _bloc.add(InitFormAddSignEvent(id, type));
+    _bloc.add(InitFormAddSignEvent(_id, type));
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Future.delayed(Duration(seconds: 1));
       if (scrollController.position.maxScrollExtent > 7) {
@@ -102,6 +104,7 @@ class _FormAddSignState extends State<FormAddSign> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         appBar: AppbarBaseNormal(title.toUpperCase().capitalizeFirst ?? ''),
         body: BlocListener<AddDataBloc, AddDataState>(
@@ -125,109 +128,104 @@ class _FormAddSignState extends State<FormAddSign> {
               );
             }
           },
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            color: COLORS.WHITE,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(16),
-              controller: scrollController,
-              child: BlocBuilder<FormAddBloc, FormAddState>(
-                  bloc: _bloc,
-                  builder: (context, state) {
-                    if (state is LoadingForm) {
-                      _addData = [];
-                      data = [];
-                      return SizedBox.shrink();
-                    } else if (state is ErrorForm) {
-                      return Text(
-                        state.msg,
-                        style: AppStyle.DEFAULT_16_T,
-                      );
-                    } else if (state is SuccessForm) {
-                      soTien = state.soTien ?? 0;
-                      if (_addData.isEmpty) {
-                        for (int i = 0; i < state.listAddData.length; i++) {
-                          _addData.add(ModelItemAdd(
-                              group_name: state.listAddData[i].group_name ?? '',
-                              data: []));
-                          for (int j = 0;
-                              j < (state.listAddData[i].data?.length ?? 0);
-                              j++) {
-                            _addData[i].data.add(ModelDataAdd(
-                                  parent: state.listAddData[i].data?[j].parent,
-                                  label:
-                                      state.listAddData[i].data?[j].field_name,
-                                  value: state
-                                      .listAddData[i].data?[j].field_set_value
-                                      .toString(),
-                                  required: state
-                                      .listAddData[i].data?[j].field_require,
-                                ));
-                          }
-                        }
-
-                        if (state.chuKyResponse != null &&
-                            chuKyModelResponse.isEmpty) {
-                          for (final ChuKyModelResponse value
-                              in (state.chuKyResponse?.first.data ?? [])) {
-                            chuKyModelResponse.add(value);
-                          }
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(16),
+            controller: scrollController,
+            child: BlocBuilder<FormAddBloc, FormAddState>(
+                bloc: _bloc,
+                builder: (context, state) {
+                  if (state is LoadingForm) {
+                    _addData = [];
+                    data = [];
+                    return SizedBox.shrink();
+                  } else if (state is ErrorForm) {
+                    return Text(
+                      state.msg,
+                      style: AppStyle.DEFAULT_16_T,
+                    );
+                  } else if (state is SuccessForm) {
+                    soTien = state.soTien ?? 0;
+                    if (_addData.isEmpty) {
+                      for (int i = 0; i < state.listAddData.length; i++) {
+                        _addData.add(ModelItemAdd(
+                            group_name: state.listAddData[i].group_name ?? '',
+                            data: []));
+                        for (int j = 0;
+                            j < (state.listAddData[i].data?.length ?? 0);
+                            j++) {
+                          _addData[i].data.add(ModelDataAdd(
+                                parent: state.listAddData[i].data?[j].parent,
+                                label: state.listAddData[i].data?[j].field_name,
+                                value: state
+                                    .listAddData[i].data?[j].field_set_value
+                                    .toString(),
+                                required:
+                                    state.listAddData[i].data?[j].field_require,
+                              ));
                         }
                       }
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.zero,
-                            itemCount: state.listAddData.length,
-                            itemBuilder: (context, indexParent) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+
+                      if (state.chuKyResponse != null &&
+                          chuKyModelResponse.isEmpty) {
+                        for (final ChuKyModelResponse value
+                            in (state.chuKyResponse?.first.data ?? [])) {
+                          chuKyModelResponse.add(value);
+                        }
+                      }
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          itemCount: state.listAddData.length,
+                          itemBuilder: (context, indexParent) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height:
+                                      0.01 * MediaQuery.of(context).size.height,
+                                ),
+                                if ((state.listAddData[indexParent]
+                                            .group_name ??
+                                        '') !=
+                                    '') ...[
+                                  WidgetText(
+                                    title: state.listAddData[indexParent]
+                                            .group_name ??
+                                        '',
+                                    style: AppStyle.DEFAULT_18_BOLD,
+                                  ),
                                   Container(
                                     height: 0.01 *
                                         MediaQuery.of(context).size.height,
                                   ),
-                                  if ((state.listAddData[indexParent]
-                                              .group_name ??
-                                          '') !=
-                                      '') ...[
-                                    WidgetText(
-                                      title: state.listAddData[indexParent]
-                                              .group_name ??
-                                          '',
-                                      style: AppStyle.DEFAULT_18_BOLD,
-                                    ),
-                                    Container(
-                                      height: 0.01 *
-                                          MediaQuery.of(context).size.height,
-                                    ),
-                                  ],
-                                  _itemField(
-                                    state.listAddData[indexParent].data ?? [],
-                                    indexParent,
-                                  ),
                                 ],
-                              );
-                            },
-                          ),
-                          _signatureUi(state.chuKyResponse),
-                          SizedBox(
-                            height: 25,
-                          ),
-                          FileLuuBase(
-                            context,
-                            () => onClickSave(),
-                            isAttack: false,
-                          ),
-                        ],
-                      );
-                    } else
-                      return SizedBox.shrink();
-                  }),
-            ),
+                                _itemField(
+                                  state.listAddData[indexParent].data ?? [],
+                                  indexParent,
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                        _signatureUi(state.chuKyResponse),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        FileLuuBase(
+                          context,
+                          () => onClickSave(),
+                          isAttack: false,
+                        ),
+                      ],
+                    );
+                  } else
+                    return SizedBox.shrink();
+                }),
           ),
         ));
   }
@@ -458,37 +456,35 @@ class _FormAddSignState extends State<FormAddSign> {
       return Column(
         children: chuKyResponse
             .map(
-              (e) => Container(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: AppValue.heights * 0.01,
+              (e) => Column(
+                children: [
+                  SizedBox(
+                    height: AppValue.heights * 0.01,
+                  ),
+                  e.group_name != null
+                      ? Align(
+                          alignment: Alignment.centerLeft,
+                          child: WidgetText(
+                              title: e.group_name ?? '',
+                              style: AppStyle.DEFAULT_18_BOLD),
+                        )
+                      : SizedBox.shrink(),
+                  SizedBox(
+                    height: AppValue.heights * 0.02,
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: chuKyModelResponse.length,
+                    itemBuilder: (context, index) => _signature(
+                      chuKyModelResponse[index],
+                      (v) {
+                        chuKyModelResponse[index] = v;
+                      },
                     ),
-                    e.group_name != null
-                        ? Align(
-                            alignment: Alignment.centerLeft,
-                            child: WidgetText(
-                                title: e.group_name ?? '',
-                                style: AppStyle.DEFAULT_18_BOLD),
-                          )
-                        : SizedBox.shrink(),
-                    SizedBox(
-                      height: AppValue.heights * 0.02,
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: e.data?.length ?? 0,
-                      itemBuilder: (context, index) => _signature(
-                        e.data?[index],
-                        (v) {
-                          chuKyModelResponse[index] = v;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             )
             .toList(),
@@ -509,6 +505,7 @@ class _FormAddSignState extends State<FormAddSign> {
         if (dataSign?.chuky == null)
           GestureDetector(
             onTap: () async {
+              closeKey();
               final data = await ShowDialogCustom.showDialogScreenBase(
                 child: KyNhan(
                   data: dataSign,
@@ -525,54 +522,48 @@ class _FormAddSignState extends State<FormAddSign> {
               stream: dataStream,
               builder: (context, snapshot) {
                 final data = snapshot.data ?? '';
-                return Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: COLORS.ffBEB4B4),
-                      borderRadius: BorderRadius.all(Radius.circular(6))),
-                  height: 300,
-                  padding: EdgeInsets.all(15),
-                  width: MediaQuery.of(context).size.width,
-                  child: Image.memory(
-                    base64Decode(data),
-                    errorBuilder: (_, __, ___) {
-                      return Container(
-                        height: 300,
-                        width: MediaQuery.of(context).size.width,
-                        child: Center(
-                          child: WidgetText(
-                            title: getT(KeyT.click_to_sign),
-                            style: AppStyle.DEFAULT_14.copyWith(
-                              color: COLORS.TEXT_COLOR,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                );
+                return _itemImage(data);
               },
             ),
           ),
         if (dataSign?.chuky != null)
-          Container(
-            decoration: BoxDecoration(
+          if (dataSign?.chuky?.contains('<img') ??
+              false) // true thì là img từ BE trả về
+            Container(
+              decoration: BoxDecoration(
                 color: COLORS.WHITE,
-                border: Border.all(color: COLORS.ffBEB4B4),
-                borderRadius: BorderRadius.all(Radius.circular(6))),
-            height: 300,
-            // padding: EdgeInsets.all(15),
-            width: MediaQuery.of(context).size.width,
-            child: Center(
-                child: Html(shrinkWrap: true, data: dataSign?.chuky, style: {
-              'img': Style(),
-            })),
-          ),
+                border: Border.all(
+                  color: COLORS.ffBEB4B4,
+                ),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(
+                    6,
+                  ),
+                ),
+              ),
+              height: 300,
+              // width: MediaQuery.of(context).size.width,
+              child: Center(
+                child: Html(
+                  shrinkWrap: true,
+                  data: dataSign?.chuky,
+                  style: {
+                    'img': Style(),
+                  },
+                ),
+              ),
+            )
+          else
+            _itemImage(
+              dataSign?.chuky ?? '',
+            ),
         SizedBox(
           height: AppValue.heights * 0.005,
         ),
         WidgetText(
-            title: dataSign?.nhanhienthi ?? '',
-            style: AppStyle.DEFAULT_16_BOLD),
+          title: dataSign?.nhanhienthi ?? '',
+          style: AppStyle.DEFAULT_16_BOLD,
+        ),
         SizedBox(
           height: AppValue.heights * 0.02,
         ),
@@ -608,10 +599,12 @@ class _FormAddSignState extends State<FormAddSign> {
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
-                            fontFamily: 'Quicksand',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: COLORS.RED))
+                          fontFamily: 'Quicksand',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: COLORS.RED,
+                        ),
+                      )
                     : TextSpan(),
               ],
             ),
@@ -632,7 +625,10 @@ class _FormAddSignState extends State<FormAddSign> {
                   textCapitalization: TextCapitalization.sentences,
                   minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
                   maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                   keyboardType: data.field_type == 'TEXT_NUMERIC'
                       ? TextInputType.number
                       : data.field_special == 'default'
@@ -675,7 +671,7 @@ class _FormAddSignState extends State<FormAddSign> {
                 style: AppStyle.DEFAULT_14W600,
                 children: <TextSpan>[
                   TextSpan(
-                      text: ' ${AppValue.format_money(soTien.toStringAsFixed(
+                      text: ' ${AppValue.formatMoney(soTien.toStringAsFixed(
                         0,
                       ))}',
                       style: TextStyle(
@@ -776,10 +772,12 @@ class _FormAddSignState extends State<FormAddSign> {
                       ? TextSpan(
                           text: '*',
                           style: TextStyle(
-                              fontFamily: 'Quicksand',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: COLORS.RED))
+                            fontFamily: 'Quicksand',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: COLORS.RED,
+                          ),
+                        )
                       : TextSpan(),
                 ],
               ),
@@ -802,6 +800,7 @@ class _FormAddSignState extends State<FormAddSign> {
                       itemCount: 5,
                       itemBuilder: (context, index) => GestureDetector(
                         onTap: () {
+                          closeKey();
                           if (!noEdit) {
                             starStream.add(index + 1);
                             _addData[indexParent].data[indexChild].value =
@@ -885,17 +884,13 @@ class _FormAddSignState extends State<FormAddSign> {
               map['chuky'] = 'data:image/png;base64,' + value.chuky.toString();
             }
             map['doituong'] = value.doituongky;
-            map['hop_dong'] = id;
             chukys.add(map);
           }
-        } else {
-          // check = true;
-          // break;
         }
       }
       data['chuky'] = chukys;
     }
-    data['id'] = id;
+    data['id'] = _id;
     //
     if (check == true) {
       ShowDialogCustom.showDialogBase(
@@ -911,6 +906,36 @@ class _FormAddSignState extends State<FormAddSign> {
       AddDataBloc.of(context).add(SignEvent(data, type));
     }
   }
+
+  Widget _itemImage(String data) {
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: COLORS.ffBEB4B4),
+          borderRadius: BorderRadius.all(Radius.circular(6))),
+      height: 300,
+      padding: EdgeInsets.all(15),
+      width: double.maxFinite,
+      child: Image.memory(
+        base64Decode(data),
+        errorBuilder: (_, __, ___) {
+          return Container(
+            height: 300,
+            child: Center(
+              child: WidgetText(
+                title: getT(KeyT.click_to_sign),
+                style: AppStyle.DEFAULT_14.copyWith(
+                  color: COLORS.TEXT_COLOR,
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class SwitchBase extends StatefulWidget {
@@ -957,10 +982,12 @@ class _SwitchBaseState extends State<SwitchBase> {
                       ? TextSpan(
                           text: '*',
                           style: TextStyle(
-                              fontFamily: 'Quicksand',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: COLORS.RED))
+                            fontFamily: 'Quicksand',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: COLORS.RED,
+                          ),
+                        )
                       : TextSpan(),
                 ],
               ),

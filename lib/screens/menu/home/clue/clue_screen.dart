@@ -9,13 +9,13 @@ import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/clue.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
-import '../../../../widgets/dialog_call.dart';
 import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_node_model.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../../../widgets/widget_text.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
+import '../../widget/information.dart';
 
 class ClueScreen extends StatefulWidget {
   const ClueScreen({Key? key}) : super(key: key);
@@ -209,14 +209,10 @@ class _ClueScreenState extends State<ClueScreen> {
                         String phone = clueData.phone?.val ?? '';
                         String name = clueData.customer?.name ?? '';
                         if (phone != '') {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return DialogCall(
-                                phone: phone,
-                                name: name,
-                              );
-                            },
+                          dialogShowAllSDT(
+                            context,
+                            handelListSdt(phone),
+                            name: name,
                           );
                         }
                       },

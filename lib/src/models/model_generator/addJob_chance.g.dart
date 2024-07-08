@@ -44,7 +44,7 @@ Field_General _$Field_GeneralFromJson(Map<String, dynamic> json) =>
           ?.map((e) => DataField.fromJson(e as Map<String, dynamic>))
           .toList(),
       json['group_name'] as String?,
-      json['mup'] as int?,
+      (json['mup'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$Field_GeneralToJson(Field_General instance) =>
@@ -62,7 +62,7 @@ AddJobResponse _$AddJobResponseFromJson(Map<String, dynamic> json) =>
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$AddJobResponseToJson(AddJobResponse instance) =>
     <String, dynamic>{

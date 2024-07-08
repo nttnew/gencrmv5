@@ -8,7 +8,7 @@ part of 'params_change_info.dart';
 
 ParamChangeInfo _$ParamChangeInfoFromJson(Map<String, dynamic> json) =>
     ParamChangeInfo(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       userCode: json['user_code'] as String,
       fullname: json['fullname'] as String,
       imageBase64: json['imageBase64'] as String?,
@@ -33,7 +33,7 @@ Map<String, dynamic> _$ParamChangeInfoToJson(ParamChangeInfo instance) =>
 ParamChangeInfoNotImage _$ParamChangeInfoNotImageFromJson(
         Map<String, dynamic> json) =>
     ParamChangeInfoNotImage(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       userCode: json['user_code'] as String,
       fullname: json['fullname'] as String,
       phone: json['phone'] as String,

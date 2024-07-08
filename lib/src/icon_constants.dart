@@ -34,6 +34,7 @@ class ICONS {
   static const String IC_REMOVE_TXT_PNG = 'assets/icons/remove_txt.png';
   static const String IC_HIDE_PNG = 'assets/icons/hide.png';
   static const String IC_SHOW_PNG = 'assets/icons/show.png';
+  static const String IC_SHOW2_PNG = 'assets/icons/show2.png';
   static const String IC_QR_PNG = 'assets/icons/qr_code.png';
   static const String IC_PHONE_PNG = 'assets/icons/phone.png';
   static const String IC_COPY_PNG = 'assets/icons/copy.png';

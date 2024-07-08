@@ -81,6 +81,7 @@ class AppValue {
   static const Widget hSpaceLarge = SizedBox(width: 64.0);
 
   static Widget vSpace(double height) => SizedBox(height: height);
+  static const Widget vSpace4 = SizedBox(height: 4.0);
   static const Widget vSpaceTiny = SizedBox(height: 8.0);
   static const Widget vSpace10 = SizedBox(height: 10);
   static const Widget vSpace20 = SizedBox(height: 20);
@@ -125,7 +126,7 @@ class AppValue {
     return base64Encode(imageBytes);
   }
 
-  static format_money(String money, {isD = true}) {
+  static formatMoney(String money, {isD = true}) {
     String result = '0';
     if (money == '') {
       return '';

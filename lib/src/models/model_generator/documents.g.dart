@@ -9,7 +9,7 @@ part of 'documents.dart';
 ListDocumentsResponse _$ListDocumentsResponseFromJson(
         Map<String, dynamic> json) =>
     ListDocumentsResponse(
-      code: json['code'] as int,
+      code: (json['code'] as num).toInt(),
       message: json['message'] as String?,
       payload: (json['payload'] as List<dynamic>)
           .map((e) => ListDocumentsData.fromJson(e as Map<String, dynamic>))

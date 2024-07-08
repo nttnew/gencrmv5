@@ -302,6 +302,7 @@ class _MainDrawerState extends State<MainDrawer> {
               onSelectLang: () {
                 getMenu();
                 isReload = true;
+                if (isReload) widget.onReload();
               },
             ),
           ),

@@ -8,7 +8,7 @@ part of 'param_del_notif.dart';
 
 DelNotifiParam _$DelNotifiParamFromJson(Map<String, dynamic> json) =>
     DelNotifiParam(
-      json['id'] as int,
+      (json['id'] as num).toInt(),
       json['type'] as String,
     );
 

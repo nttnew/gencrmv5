@@ -67,12 +67,9 @@ class BodyReportFour extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // Get.back();
-        AppNavigator.navigateDetailContract(
-          data.id ?? '',
-          onRefreshForm: (){
-            bloc.controllerGara.reloadData();
-          }
-        );
+        AppNavigator.navigateDetailContract(data.id ?? '', onRefreshForm: () {
+          bloc.controllerGara.reloadData();
+        });
       },
       child: Container(
         margin: EdgeInsets.only(
@@ -129,17 +126,17 @@ class BodyReportFour extends StatelessWidget {
               ],
             ),
             itemTextIcon(
-              text: data.customer?.name?.trim() ?? '',
+              text: (data.customer?.name ?? '').trim(),
               icon: ICONS.IC_USER2_SVG,
               colorIcon: HexColor('E75D18'),
             ),
             itemTextIcon(
               isSVG: false,
-              text: data.bienSo?.trim() ?? '',
+              text: (data.bienSo ?? '').trim(),
               icon: ICONS.IC_LICENSE_PLATE_PNG,
             ),
             itemTextIcon(
-              text: data.status?.trim() ?? '',
+              text: (data.status ?? '').trim(),
               icon: ICONS.IC_DANG_XU_LY_SVG,
               colorIcon: data.color != "" ? HexColor(data.color!) : COLORS.RED,
               colorText: data.color != "" ? HexColor(data.color!) : COLORS.RED,

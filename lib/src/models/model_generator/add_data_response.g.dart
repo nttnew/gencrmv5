@@ -24,7 +24,7 @@ AddDataResponse _$AddDataResponseFromJson(Map<String, dynamic> json) =>
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$AddDataResponseToJson(AddDataResponse instance) =>
     <String, dynamic>{
@@ -41,7 +41,7 @@ EditCusResponse _$EditCusResponseFromJson(Map<String, dynamic> json) =>
       json['idkh'] as String?,
       json['type'] as String?,
       json['success'] as bool?,
-      json['code'] as int?,
+      (json['code'] as num?)?.toInt(),
       json['msg'] as String?,
     );
 

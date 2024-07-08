@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/product_customer_module/product_customer_module_bloc.dart';
@@ -12,6 +13,8 @@ import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/drop_down_base.dart';
 import '../../../../widgets/listview/list_load_infinity.dart';
+import '../../../../widgets/loading_api.dart';
+import '../../../../widgets/pick_file_image.dart';
 import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
@@ -98,28 +101,12 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                 leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                 endIcon: GestureDetector(
                   onTap: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(
-                            builder: (context) => ScannerQrcode()))
-                        .then((value) async {
-                      if (value != '') {
-                        final result = await _bloc.getListProductCustomer(
-                            querySearch: value);
-                        if (result?.data?.lists?.isNotEmpty ?? false) {
-                          AppNavigator.navigateDetailProductCustomer(
-                            result?.data?.lists?.first.name ?? '',
-                          );
-                        } else {
-                          ShowDialogCustom.showDialogBase(
-                            title: getT(KeyT.notification),
-                            content: getT(KeyT.no_data),
-                          );
-                        }
-                      }
-                    });
+                    _handelRightIconSearch();
                   },
                   child: Icon(
-                    Icons.qr_code_scanner,
+                    isCarCrm()
+                        ? Icons.photo_camera_outlined
+                        : Icons.qr_code_scanner,
                     size: 20,
                   ),
                 ),
@@ -156,31 +143,32 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                             return Padding(
                               padding: const EdgeInsets.only(left: 6.0),
                               child: GestureDetector(
-                                  onTap: () {
-                                    showManagerFilter(context, managerBloc, (v) {
-                                      _bloc.ids = v;
-                                      _bloc.loadMoreController.reloadData();
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(14),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: COLORS.GREY_400,
-                                      ),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(
-                                          4,
-                                        ),
+                                onTap: () {
+                                  showManagerFilter(context, managerBloc, (v) {
+                                    _bloc.ids = v;
+                                    _bloc.loadMoreController.reloadData();
+                                  });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(14),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: COLORS.GREY_400,
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                        4,
                                       ),
                                     ),
-                                    child: SvgPicture.asset(
-                                      ICONS.IC_USER2_SVG,
-                                      width: 20,
-                                      height: 20,
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),),
+                                  ),
+                                  child: SvgPicture.asset(
+                                    ICONS.IC_USER2_SVG,
+                                    width: 20,
+                                    height: 20,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
                             );
                           return SizedBox();
                         }),
@@ -210,5 +198,45 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
         controller: _bloc.loadMoreController,
       ),
     );
+  }
+
+  void _handelRightIconSearch() async {
+    if (isCarCrm()) {
+      final File? file = await getImageCamera(is2mb: true);
+      if (file != null) {
+        LoadingApi().pushLoading();
+        final res = await _bloc.getBienSoWithImg(file: file);
+        if (res['mes'] == '') {
+          if (res['data'] != '') _handelSearchWithText(res['data'].toString());
+        } else {
+          ShowDialogCustom.showDialogBase(
+            title: getT(KeyT.notification),
+            content: getT(KeyT.no_data),
+          );
+        }
+      }
+    } else {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ScannerQrcode()))
+          .then((value) async {
+        _handelSearchWithText(value);
+      });
+    }
+  }
+
+  _handelSearchWithText(String v) async {
+    if (v != '') {
+      final result = await _bloc.getListProductCustomer(querySearch: v);
+      if (result?.data?.lists?.isNotEmpty ?? false) {
+        AppNavigator.navigateDetailProductCustomer(
+          result?.data?.lists?.first.id ?? '',
+        );
+      } else {
+        ShowDialogCustom.showDialogBase(
+          title: getT(KeyT.notification),
+          content: getT(KeyT.no_data),
+        );
+      }
+    }
   }
 }

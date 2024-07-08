@@ -9,10 +9,10 @@ import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/detail_customer.dart';
 import '../../../../src/models/model_generator/job_chance.dart';
 import '../../../../src/src_index.dart';
-import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
+import '../../../../widgets/widget_appbar.dart';
 import '../../attachment/attachment.dart';
 import '../clue/widget/work_card_widget.dart';
 import 'widget/chance_info.dart';
@@ -44,6 +44,23 @@ class _InfoChancePageState extends State<InfoChancePage> {
   }
 
   _getThaoTac() {
+    _list.add(ModuleThaoTac(
+      title: getT(KeyT.sign),
+      icon: ICONS.IC_ELECTRIC_SIGN_PNG,
+      isSvg: false,
+      onThaoTac: () {
+        Get.back();
+        AppNavigator.navigateFormSign(
+          getT(KeyT.sign),
+          _id,
+          type: Module.CO_HOI_BH,
+          onRefreshForm: () {
+            _bloc.add(InitGetListDetailEvent(int.parse(_id)));
+          },
+        );
+      },
+    ));
+
     _list.add(ModuleThaoTac(
       title:
           '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
@@ -151,7 +168,29 @@ class _InfoChancePageState extends State<InfoChancePage> {
         },
         child: Column(
           children: [
-            AppbarBaseNormal(_title),
+            WidgetAppbar(
+              title: _title,
+              textColor: COLORS.BLACK,
+              padding: 10,
+              right: Row(
+                children: [
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () {
+                      AppNavigator.navigateBieuMau(
+                        idDetail: _id,
+                        module: PDF_CO_HOI,
+                      );
+                    },
+                    icon: Icon(
+                      Icons.print,
+                      color: !isCarCrm() ? COLORS.BLACK : COLORS.WHITE,
+                      size: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             AppValue.vSpaceTiny,
             Expanded(
               child: DefaultTabController(
@@ -196,11 +235,11 @@ class _InfoChancePageState extends State<InfoChancePage> {
                                 top: 8,
                               ),
                               child: ViewLoadMoreBase(
+                                isInit: true,
                                 functionInit: (page, isInit) {
                                   return _bloc.getJobChance(
                                     id: int.parse(_id),
                                     page: page,
-                                    isInit: isInit,
                                   );
                                 },
                                 itemWidget: (int index, data) {
@@ -209,7 +248,6 @@ class _InfoChancePageState extends State<InfoChancePage> {
                                     onTap: () {
                                       AppNavigator.navigateDetailWork(
                                         int.tryParse(item.id ?? '') ?? 0,
-                                        // item.name_job ?? '',
                                       );
                                     },
                                     child: WorkCardWidget(

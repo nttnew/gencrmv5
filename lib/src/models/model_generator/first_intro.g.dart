@@ -8,7 +8,7 @@ part of 'first_intro.dart';
 
 FirstIntroResponse _$FirstIntroResponseFromJson(Map<String, dynamic> json) =>
     FirstIntroResponse(
-      code: json['code'] as int,
+      code: (json['code'] as num).toInt(),
       message: json['message'] as String?,
       payload: (json['payload'] as List<dynamic>)
           .map((e) => FirstIntroData.fromJson(e as Map<String, dynamic>))
@@ -24,7 +24,7 @@ Map<String, dynamic> _$FirstIntroResponseToJson(FirstIntroResponse instance) =>
 
 FirstIntroData _$FirstIntroDataFromJson(Map<String, dynamic> json) =>
     FirstIntroData(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       introductionCode: json['introduction_code'] as String,
       image: json['image'] as String,
       title: json['title'] as String,

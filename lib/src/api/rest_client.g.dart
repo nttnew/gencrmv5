@@ -245,6 +245,7 @@ class _RestClient implements RestClient {
     filter,
     search,
     manager,
+    qr,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -252,6 +253,7 @@ class _RestClient implements RestClient {
       r'filter': filter,
       r'search': search,
       r'nguoi_quan_ly': manager,
+      r'qr': qr,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -1883,7 +1885,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ProductResponse> getListProduct(
+  Future<ProductsResponse> getListProduct(
     page,
     querySearch,
     group,
@@ -1898,7 +1900,7 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<ProductResponse>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<ProductsResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -1910,7 +1912,7 @@ class _RestClient implements RestClient {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ProductResponse.fromJson(_result.data!);
+    final value = ProductsResponse.fromJson(_result.data!);
     return value;
   }
 
@@ -3503,7 +3505,10 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AddCustomerIndividual> getFormSign(id) async {
+  Future<AddCustomerIndividual> getFormSign(
+    id,
+    type,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'id': id};
     final _headers = <String, dynamic>{};
@@ -3516,7 +3521,7 @@ class _RestClient implements RestClient {
     )
             .compose(
               _dio.options,
-              'modules/genmobile2/contract/formKn',
+              'modules/genmobile2/${type}/formChuKy',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -3526,7 +3531,10 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ResponseSaveProductCustomer> saveSignature(map) async {
+  Future<ResponseSaveProductCustomer> saveSignature(
+    map,
+    type,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -3540,54 +3548,7 @@ class _RestClient implements RestClient {
     )
             .compose(
               _dio.options,
-              'modules/genmobile2/contract/saveKn',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ResponseSaveProductCustomer.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<AddCustomerIndividual> getFormSignSupport(id) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'id': id};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AddCustomerIndividual>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/support/formChuky',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = AddCustomerIndividual.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<ResponseSaveProductCustomer> saveSignatureSupport(map) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(map);
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ResponseSaveProductCustomer>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'modules/genmobile2/support/saveChuky',
+              'modules/genmobile2/${type}/saveKn',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -4341,6 +4302,7 @@ class _RestClient implements RestClient {
   Future<QrCodePaymentRes> getQRCode(
     amount,
     message,
+    id,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -4348,6 +4310,7 @@ class _RestClient implements RestClient {
     final _data = {
       'amount': amount,
       'message': message,
+      'id': id,
     };
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<QrCodePaymentRes>(Options(
@@ -4363,6 +4326,37 @@ class _RestClient implements RestClient {
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = QrCodePaymentRes.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BienSoWithImgResponse> getBienSoWithImg(file) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.files.add(MapEntry(
+      'hinh_anh',
+      MultipartFile.fromFileSync(
+        file.path,
+        filename: file.path.split(Platform.pathSeparator).last,
+      ),
+    ));
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BienSoWithImgResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'multipart/form-data',
+    )
+            .compose(
+              _dio.options,
+              'modules/genmobile2/helper/getlicensePlateFromImage',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BienSoWithImgResponse.fromJson(_result.data!);
     return value;
   }
 

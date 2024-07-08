@@ -321,7 +321,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           .map(
                             (items) => DropdownMenuItem<String?>(
                               onTap: () {
-                                _bloc.time = int.tryParse(items.first) ?? 0;
+                                _bloc.time = int.tryParse(items.first) ?? -1;
                                 shareLocal.putString(PreferencesKey.TIME_REPORT,
                                     _bloc.time.toString());
 
@@ -411,6 +411,10 @@ class _ReportScreenState extends State<ReportScreen> {
         shareLocal.putString(PreferencesKey.TIME_REPORT, _bloc.time.toString());
         break;
       }
+    }
+    if (_labelTime == null && timeDF == '-1') {
+      //'-1' là id_time== null
+      _labelTime = state.dataTime.firstOrNull?[1] ?? '';
     }
   }
 
@@ -1134,7 +1138,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     title,
                     style: AppStyle.DEFAULT_16,
                   ),
-                  Text(AppValue.format_money(content),
+                  Text(AppValue.formatMoney(content),
                       style: AppStyle.DEFAULT_18_BOLD),
                 ],
               ),

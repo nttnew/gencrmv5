@@ -475,9 +475,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     LoadingApi().pushLoading();
     try {
       yield LoadingForm();
-      final response = await (type == '' // =='' contract
-          ? userRepository.getFormAddSign(id: id)
-          : userRepository.getFormAddSignSupport(id: id));
+      final response = await userRepository.getFormAddSign(id: id, type: type);
       if (isSuccess(response.code)) {
         yield SuccessForm(
           response.data ?? [],
@@ -797,6 +795,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
   Future<Map<String, dynamic>> showQrCodePayment(
     String? amount,
     String? message,
+    String idNganHang,
   ) async {
     Map<String, dynamic> res = {
       'mes': getT(KeyT.an_error_occurred),
@@ -806,7 +805,10 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.getQRCode(
-          amount: amount ?? '', message: message ?? '');
+        amount: amount ?? '',
+        message: message ?? '',
+        id: idNganHang,
+      );
       if (isSuccess(response.code)) {
         res['mes'] = '';
         res['data'] = response.data?.qrDataURL ?? '';

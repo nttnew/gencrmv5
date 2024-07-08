@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gen_crm/screens/main/widget/item_detail_sp.dart';
 import 'package:gen_crm/screens/main/widget/select_body.dart';
 import 'package:gen_crm/screens/main/widget/select_multi_body.dart';
-import 'package:gen_crm/src/models/model_generator/xe_dich_vu_response.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/showToastM.dart';
 import 'package:get/get.dart';
@@ -12,9 +11,9 @@ import '../../src/app_const.dart';
 import '../../src/models/model_generator/detail_xe_dich_vu.dart';
 import '../../src/src_index.dart';
 import '../../widgets/cupertino_loading.dart';
-import '../../widgets/dialog_call.dart';
 import '../../widgets/widget_appbar.dart';
 import '../../widgets/widget_text.dart';
+import '../menu/widget/information.dart';
 
 class DetailCar extends StatefulWidget {
   const DetailCar({
@@ -27,15 +26,15 @@ class DetailCar extends StatefulWidget {
 
 class _DetailCarState extends State<DetailCar> {
   late final LoginBloc _blocLogin;
+  String _id = Get.arguments;
 
-  final XeDichVu xeDichVu = Get.arguments;
   @override
   void initState() {
     _blocLogin = LoginBloc(
       userRepository: LoginBloc.of(context).userRepository,
       localRepository: LoginBloc.of(context).localRepository,
     );
-    _blocLogin.xeDichVu = xeDichVu;
+    _blocLogin.idDetailCarMain = _id;
     _blocLogin.getDetailXeDichVu();
     super.initState();
   }
@@ -55,12 +54,13 @@ class _DetailCarState extends State<DetailCar> {
                   padding: EdgeInsets.zero,
                   onPressed: () {
                     AppNavigator.navigateBieuMau(
-                      idDetail: xeDichVu.id ?? '',
+                      idDetail: _id,
+                      module: PDF_PRINT_DICHVU_CAR,
                     );
                   },
                   icon: Icon(
                     Icons.print,
-                    color: COLORS.WHITE,
+                    color: !isCarCrm() ? COLORS.BLACK : COLORS.WHITE,
                     size: 20,
                   ),
                 ),
@@ -68,7 +68,7 @@ class _DetailCarState extends State<DetailCar> {
                   onPressed: () {
                     AppNavigator.navigateForm(
                       type: EDIT_CONTRACT,
-                      id: int.tryParse(_blocLogin.xeDichVu?.id ?? ''),
+                      id: int.tryParse(_id),
                       onRefreshForm: () {
                         _blocLogin.getDetailXeDichVu();
                       },
@@ -76,7 +76,7 @@ class _DetailCarState extends State<DetailCar> {
                   },
                   icon: Icon(
                     Icons.edit_note,
-                    color: COLORS.WHITE,
+                    color: !isCarCrm() ? COLORS.BLACK : COLORS.WHITE,
                   ),
                 ),
               ],
@@ -102,9 +102,12 @@ class _DetailCarState extends State<DetailCar> {
                       );
                     }
                     final dataDetail = snapShot as DetailXeDichVuData;
+                    final dataInfo = dataDetail.info;
                     final List<CTDichVu> listNhanCong =
                         dataDetail.listNhanCong ?? [];
                     final List<CTDichVu> listSP = dataDetail.listPhuTung ?? [];
+                    if (_blocLogin.trangThaiDichVu == null)
+                      _blocLogin.trangThaiDichVu = dataInfo?.trangThai;
                     return Column(
                       children: [
                         Expanded(
@@ -140,8 +143,7 @@ class _DetailCarState extends State<DetailCar> {
                                             ),
                                             Expanded(
                                               child: WidgetText(
-                                                title: _blocLogin
-                                                        .xeDichVu?.bienSo ??
+                                                title: dataInfo?.bienSo ??
                                                     getT(KeyT.not_yet),
                                                 style: AppStyle.DEFAULT_18
                                                     .copyWith(
@@ -166,8 +168,7 @@ class _DetailCarState extends State<DetailCar> {
                                                 ),
                                               ),
                                               child: WidgetText(
-                                                title: _blocLogin
-                                                        .xeDichVu?.chiNhanh ??
+                                                title: dataInfo?.chiNhanh ??
                                                     getT(KeyT.not_yet),
                                                 style: AppStyle.DEFAULT_14
                                                     .copyWith(
@@ -180,15 +181,11 @@ class _DetailCarState extends State<DetailCar> {
                                         GestureDetector(
                                           onTap: () {
                                             AppNavigator.navigateDetailCustomer(
-                                              _blocLogin
-                                                      .xeDichVu?.khachHangId ??
-                                                  '',
+                                              dataInfo?.khachHangId ?? '',
                                             );
                                           },
                                           child: itemTextIcon(
-                                            text: _blocLogin
-                                                    .xeDichVu?.tenKhachHang ??
-                                                '',
+                                            text: dataInfo?.tenKhachHang ?? '',
                                             icon: ICONS.IC_USER2_SVG,
                                             colorIcon: COLORS.GREY,
                                             styleText: AppStyle
@@ -201,25 +198,17 @@ class _DetailCarState extends State<DetailCar> {
                                         ),
                                         itemTextIcon(
                                           onTap: () {
-                                            if (_blocLogin.xeDichVu?.diDong !=
-                                                    null &&
-                                                _blocLogin.xeDichVu?.diDong !=
-                                                    '') {
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return DialogCall(
-                                                    phone:
-                                                        '${_blocLogin.xeDichVu?.diDong}',
-                                                    name:
-                                                        '${_blocLogin.xeDichVu?.tenKhachHang}',
-                                                  );
-                                                },
+                                            if (dataInfo?.diDong != null &&
+                                                dataInfo?.diDong != '') {
+                                              dialogShowAllSDT(
+                                                context,
+                                                handelListSdt(dataInfo?.diDong),
+                                                name: dataInfo?.tenKhachHang ??
+                                                    '',
                                               );
                                             }
                                           },
-                                          text: _blocLogin.xeDichVu?.diDong ??
+                                          text: dataInfo?.diDong ??
                                               getT(KeyT.not_yet),
                                           styleText:
                                               AppStyle.DEFAULT_14.copyWith(
@@ -230,7 +219,7 @@ class _DetailCarState extends State<DetailCar> {
                                         ),
                                         itemTextIcon(
                                           text: _blocLogin.trangThaiDichVu ??
-                                              _blocLogin.xeDichVu?.trangThai ??
+                                              dataInfo?.trangThai ??
                                               getT(KeyT.not_yet),
                                           icon: ICONS.IC_DANG_XU_LY_SVG,
                                           colorIcon: COLORS.GREY,
@@ -241,16 +230,14 @@ class _DetailCarState extends State<DetailCar> {
                                         ),
                                         itemTextIcon(
                                           textPlus: getT(KeyT.ngay_vao),
-                                          text: _blocLogin.xeDichVu?.ngayVao ??
-                                              '',
+                                          text: dataInfo?.ngayVao ?? '',
                                           icon: ICONS.IC_CALENDAR_PNG,
                                           isSVG: false,
                                           colorIcon: COLORS.GREY,
                                         ),
                                         itemTextIcon(
                                           textPlus: getT(KeyT.ngay_ra),
-                                          text:
-                                              _blocLogin.xeDichVu?.ngayRa ?? '',
+                                          text: dataDetail.ngayRa ?? '',
                                           icon: ICONS.IC_CALENDAR_PNG,
                                           isSVG: false,
                                           colorIcon: COLORS.GREY,
@@ -258,8 +245,7 @@ class _DetailCarState extends State<DetailCar> {
                                         itemTextIcon(
                                           onTap: () {
                                             AppNavigator.navigateDetailContract(
-                                              _blocLogin.xeDichVu?.id ?? '',
-
+                                              dataInfo?.id ?? '',
                                             );
                                           },
                                           styleText:
@@ -268,8 +254,7 @@ class _DetailCarState extends State<DetailCar> {
                                             color: COLORS.TEXT_BLUE_BOLD,
                                           ),
                                           textPlus: getT(KeyT.so_phieu),
-                                          text: _blocLogin.xeDichVu?.soPhieu ??
-                                              '',
+                                          text: dataInfo?.soPhieu ?? '',
                                           icon: ICONS.IC_CART_PNG,
                                           isSVG: false,
                                           colorIcon: COLORS.GREY,
@@ -346,7 +331,7 @@ class _DetailCarState extends State<DetailCar> {
                                     AppNavigator.navigateForm(
                                       title: getT(KeyT.pay),
                                       type: ADD_PAYMENT,
-                                      id: int.tryParse(xeDichVu.id ?? ''),
+                                      id: int.tryParse(_id),
                                       onRefreshForm: () {},
                                     );
                                   }),
@@ -360,13 +345,12 @@ class _DetailCarState extends State<DetailCar> {
                                     context,
                                     getT(KeyT.cap_nhat_trang_thai),
                                     dataDetail.listTrangThai ?? [],
-                                    init: _blocLogin.trangThaiDichVu ??
-                                        xeDichVu.trangThai,
+                                    init: _blocLogin.trangThaiDichVu,
                                     (data) async {
                                       final res =
                                           await _blocLogin.postUpdateTTHD(
-                                              id: xeDichVu.id ?? '',
-                                              idTT: '${data?.first}');
+                                        idTT: '${data?.first}',
+                                      );
 
                                       if (res != '') {
                                         showToastM(context, title: res);
@@ -400,9 +384,9 @@ class _DetailCarState extends State<DetailCar> {
 
 _itemDichVu(
   BuildContext context,
-  CTDichVu dataDV,
-  DetailXeDichVuData dataDetail,
-  LoginBloc blocLogin,
+  CTDichVu _dataDV,
+  DetailXeDichVuData _dataDetail,
+  LoginBloc _blocLogin,
 ) {
   return Container(
     margin: EdgeInsets.only(
@@ -417,13 +401,13 @@ _itemDichVu(
               height: 10,
               margin: EdgeInsets.only(right: 10),
               decoration: BoxDecoration(
-                color: getColor(dataDV.tienDo ?? ''),
+                color: getColor(_dataDV.tienDo ?? ''),
                 shape: BoxShape.circle,
               ),
             ),
             Expanded(
               child: Text(
-                dataDV.tenSanPham ?? '',
+                _dataDV.tenSanPham ?? '',
                 style: AppStyle.DEFAULT_16_BOLD,
               ),
             ),
@@ -432,33 +416,33 @@ _itemDichVu(
         AppValue.vSpace10,
         widgetTextClick(
           getT(KeyT.nguoi_lam),
-          '${dataDV.nguoiThucHien}',
+          '${_dataDV.nguoiThucHien}',
           () {
             _clickShow(
               context,
-              blocLogin,
-              dataDetail,
-              dataDV,
+              _blocLogin,
+              _dataDetail,
+              _dataDV,
             );
           },
           contentNull: getT(KeyT.chua_phan_cong),
-          color: getColor(dataDV.tienDo ?? ''),
+          color: getColor(_dataDV.tienDo ?? ''),
         ),
         AppValue.vSpace10,
         widgetTextClick(
           getT(KeyT.tien_do),
-          '${dataDV.tienDo}',
+          '${_dataDV.tienDo}',
           contentValueNull: '',
           () {
             _clickShow(
               context,
-              blocLogin,
-              dataDetail,
-              dataDV,
+              _blocLogin,
+              _dataDetail,
+              _dataDV,
             );
           },
           contentNull: getT(KeyT.chua_bat_dau),
-          color: getColor(dataDV.tienDo ?? ''),
+          color: getColor(_dataDV.tienDo ?? ''),
         ),
       ],
     ),
@@ -467,9 +451,9 @@ _itemDichVu(
 
 _clickShow(
   BuildContext context,
-  blocLogin,
-  DetailXeDichVuData dataDetail,
-  CTDichVu dataDV,
+  LoginBloc _blocLogin,
+  DetailXeDichVuData _dataDetail,
+  CTDichVu _dataDV,
 ) =>
     showModalSelectMulti(
       context,
@@ -477,14 +461,14 @@ _clickShow(
         getT(KeyT.nguoi_lam),
         getT(KeyT.cap_nhat_tien_do),
       ],
-      [dataDetail.listNguoiThucHien ?? [], dataDetail.listTienDo ?? []],
-      init: [dataDV.nguoiThucHien, dataDV.tienDo],
+      [_dataDetail.listNguoiThucHien ?? [], _dataDetail.listTienDo ?? []],
+      init: [_dataDV.nguoiThucHien, _dataDV.tienDo],
       (data) async {
-        String idNTH = data?.first.first ?? dataDV.idNguoiThucHien ?? '';
-        String idTD = data?.last.first ?? dataDV.idTienDo ?? '';
+        String idNTH = data?.first.first ?? _dataDV.idNguoiThucHien ?? '';
+        String idTD = data?.last.first ?? _dataDV.idTienDo ?? '';
 
-        final res = await blocLogin.postUpdateTDNTH(
-          id: dataDV.idct ?? '',
+        final res = await _blocLogin.postUpdateTDNTH(
+          id: _dataDV.idct ?? '',
           idNTH: idNTH,
           idTD: idTD,
         );
@@ -492,7 +476,7 @@ _clickShow(
         if (res != '') {
           showToastM(context, title: res);
         } else {
-          blocLogin.getDetailXeDichVu();
+          _blocLogin.getDetailXeDichVu();
           Navigator.pop(context);
         }
       },

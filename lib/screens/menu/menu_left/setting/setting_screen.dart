@@ -311,7 +311,7 @@ class _SettingScreenState extends State<SettingScreen> {
           AppValue.vSpaceTiny,
           Center(
             child: WidgetText(
-              title: 'Version: 2.4.0',
+              title: 'Version: 2.4.3',
               style: AppStyle.DEFAULT_16.copyWith(
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w400,
@@ -340,7 +340,7 @@ class _SettingScreenState extends State<SettingScreen> {
             width: 4,
           ),
           Text(
-            items.name ?? '',
+            items.label ?? '',
             style: AppStyle.DEFAULT_14.copyWith(
               fontWeight: FontWeight.w600,
             ),

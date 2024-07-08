@@ -4,6 +4,7 @@ import 'package:gen_crm/screens/main/widget/item_car.dart';
 import 'package:gen_crm/src/models/model_generator/report_option.dart';
 import '../../bloc/login/login_bloc.dart';
 import '../../models/button_menu_model.dart';
+import '../../src/models/model_generator/xe_dich_vu_response.dart';
 import '../../src/src_index.dart';
 import '../../widgets/listview/list_load_infinity.dart';
 
@@ -265,10 +266,11 @@ class _MainCarState extends State<MainCar> {
           );
         },
         itemWidget: (int index, data) {
+          XeDichVu _item = data as XeDichVu;
           return ItemCar(
-            data: data,
+            data: _item,
             onTap: () {
-              AppNavigator.navigateDetailCarMain(data);
+              AppNavigator.navigateDetailCarMain(_item.id ?? '');
             },
           );
         },

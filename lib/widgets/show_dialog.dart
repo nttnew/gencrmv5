@@ -4,7 +4,6 @@ import 'package:gen_crm/storages/share_local.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../l10n/key_text.dart';
 
 class ShowDialogCustom {
@@ -231,7 +230,7 @@ class ShowDialogCustom {
                         // focusNode: _emailFocusNode,
                         boxDecoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: HexColor("#838A91")),
+                          border: Border.all(color: COLORS.ff838A91),
                         ),
                         initialValue: initAddressApplication(),
                         textLabel: Text("",

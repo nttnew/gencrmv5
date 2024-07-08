@@ -18,7 +18,6 @@ import 'package:gen_crm/src/models/model_generator/list_product_customer_respons
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/models/model_generator/manager_filter_response.dart';
 import 'package:gen_crm/src/models/model_generator/policy.dart';
-import 'package:gen_crm/src/models/model_generator/product_response.dart';
 import 'package:gen_crm/src/models/model_generator/report_employee.dart';
 import 'package:gen_crm/src/models/model_generator/support.dart';
 import 'package:gen_crm/src/models/model_generator/work_clue.dart';
@@ -28,6 +27,7 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/share_local.dart';
 import '../src/models/model_generator/add_data_response.dart';
 import '../src/models/model_generator/address_customer_response.dart';
+import '../src/models/model_generator/bien_so_with_img.dart';
 import '../src/models/model_generator/bieu_mau_response.dart';
 import '../src/models/model_generator/clue.dart';
 import '../src/models/model_generator/clue_detail.dart';
@@ -56,6 +56,7 @@ import '../src/models/model_generator/pdf_response.dart';
 import '../src/models/model_generator/product_customer_edit_response.dart';
 import '../src/models/model_generator/product_customer_save_response.dart';
 import '../src/models/model_generator/product_service_pack_response.dart';
+import '../src/models/model_generator/products_response.dart';
 import '../src/models/model_generator/qr_code_payment_res.dart';
 import '../src/models/model_generator/quick_create_response.dart';
 import '../src/models/model_generator/report_contact.dart';
@@ -148,6 +149,7 @@ class UserRepository {
     String filter,
     String search,
     String? managers,
+    String? qr,
   ) async =>
       await RestClient(
         dio,
@@ -157,6 +159,7 @@ class UserRepository {
         filter,
         search,
         managers,
+        qr,
       );
 
   Future<ListChanceResponse> getListChance(
@@ -207,7 +210,9 @@ class UserRepository {
       );
 
   Future<ContractCustomerResponse> getContractCustomer(
-          int id, int page) async =>
+    int id,
+    int page,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -306,8 +311,9 @@ class UserRepository {
         bienSo,
       );
 
-  Future<dynamic> saveServiceVoucher(
-          {required Map<String, dynamic> data}) async =>
+  Future<dynamic> saveServiceVoucher({
+    required Map<String, dynamic> data,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -320,7 +326,9 @@ class UserRepository {
         baseUrl: dio.options.baseUrl,
       ).getVersionInfoCar();
 
-  Future<PaymentContractResponse> getPaymentContract(int id) async =>
+  Future<PaymentContractResponse> getPaymentContract(
+    int id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -328,7 +336,11 @@ class UserRepository {
         id,
       );
 
-  Future<JobChance> getJobContract(int id, int page) async => await RestClient(
+  Future<JobChance> getJobContract(
+    int id,
+    int page,
+  ) async =>
+      await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).getJobContract(
@@ -336,7 +348,9 @@ class UserRepository {
         page,
       );
 
-  Future<BaseResponse> deleteCustomer(Map<String, dynamic> id) async =>
+  Future<BaseResponse> deleteCustomer(
+    Map<String, dynamic> id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -344,7 +358,11 @@ class UserRepository {
         id,
       );
 
-  Future<JobChance> getJobChance(int id, int page) async => await RestClient(
+  Future<JobChance> getJobChance(
+    int id,
+    int page,
+  ) async =>
+      await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).getJobChance(
@@ -352,14 +370,19 @@ class UserRepository {
         page,
       );
 
-  Future<AddJobResponse> getAddJobChance(int id) async => await RestClient(
+  Future<AddJobResponse> getAddJobChance(
+    int id,
+  ) async =>
+      await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).getAddJobChance(
         id,
       );
 
-  Future<ListDetailChanceResponse> getListDetailChance(int id) async =>
+  Future<ListDetailChanceResponse> getListDetailChance(
+    int id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -383,14 +406,20 @@ class UserRepository {
         managers,
       );
 
-  Future<DetailClue> getDetailClue(String id) async => await RestClient(
+  Future<DetailClue> getDetailClue(
+    String id,
+  ) async =>
+      await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).getDetailClue(
         id,
       );
 
-  Future<WorkClueResponse> getWorkClue(String id, int page) async =>
+  Future<WorkClueResponse> getWorkClue(
+    String id,
+    int page,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -404,13 +433,16 @@ class UserRepository {
         baseUrl: dio.options.baseUrl,
       ).getPolicy();
 
-  Future<InforResponse> getInfor() async => await RestClient(
+  Future<InforResponse> getInfo() async => await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).getInfor();
 
   Future<NoteResponse> getNoteList(
-          String module, String id, String page) async =>
+    String module,
+    String id,
+    String page,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -420,7 +452,9 @@ class UserRepository {
         page,
       );
 
-  Future<ListNotificationResponse> getListUnReadNotification(int page) async =>
+  Future<ListNotificationResponse> getListUnReadNotification(
+    int page,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -428,7 +462,9 @@ class UserRepository {
         page,
       );
 
-  Future<ListNotificationResponse> getListReadNotification(int page) async =>
+  Future<ListNotificationResponse> getListReadNotification(
+    int page,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -436,7 +472,10 @@ class UserRepository {
         page,
       );
 
-  Future<BaseResponse> deleteNotification(int id, String type) async =>
+  Future<BaseResponse> deleteNotification(
+    int id,
+    String type,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -472,7 +511,10 @@ class UserRepository {
         id,
       );
 
-  Future<SupportContractResponse> getSupportContract(int id, int page) async =>
+  Future<SupportContractResponse> getSupportContract(
+    int id,
+    int page,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -497,7 +539,9 @@ class UserRepository {
         managers,
       );
 
-  Future<AddCustomerIndividual> getUpdateCustomer(String id) async =>
+  Future<AddCustomerIndividual> getUpdateCustomer(
+    String id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -505,7 +549,9 @@ class UserRepository {
         id,
       );
 
-  Future<BaseResponse> deleteContract(Map<String, dynamic> id) async =>
+  Future<BaseResponse> deleteContract(
+    Map<String, dynamic> id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -513,7 +559,9 @@ class UserRepository {
         id,
       );
 
-  Future<BaseResponse> deleteJob(Map<String, dynamic> id) async =>
+  Future<BaseResponse> deleteJob(
+    Map<String, dynamic> id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -521,7 +569,10 @@ class UserRepository {
         id,
       );
 
-  Future<DetailWorkResponse> detailJob(int id) async => await RestClient(
+  Future<DetailWorkResponse> detailJob(
+    int id,
+  ) async =>
+      await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).detailJob(
@@ -529,7 +580,8 @@ class UserRepository {
       );
 
   Future<AddCustomerIndividual> getFormAddContactCus(
-          String customer_id) async =>
+    String customer_id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -537,7 +589,9 @@ class UserRepository {
         customer_id,
       );
 
-  Future<AddCustomerIndividual> getFormAddOppCus(String customer_id) async =>
+  Future<AddCustomerIndividual> getFormAddOppCus(
+    String customer_id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -546,7 +600,8 @@ class UserRepository {
       );
 
   Future<AddCustomerIndividual> getFormAddContractCus(
-          String customer_id) async =>
+    String customer_id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -554,7 +609,9 @@ class UserRepository {
         customer_id,
       );
 
-  Future<AddCustomerIndividual> getFormAddJobCus(String customer_id) async =>
+  Future<AddCustomerIndividual> getFormAddJobCus(
+    String customer_id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -563,7 +620,8 @@ class UserRepository {
       );
 
   Future<AddCustomerIndividual> getFormAddSupportCus(
-          String customer_id) async =>
+    String customer_id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -571,7 +629,9 @@ class UserRepository {
         customer_id,
       );
 
-  Future<AddCustomerIndividual> getFormAddAgency(String id) async =>
+  Future<AddCustomerIndividual> getFormAddAgency(
+    String id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -579,7 +639,9 @@ class UserRepository {
         id,
       );
 
-  Future<AddCustomerIndividual> getFormAddChance(String id) async =>
+  Future<AddCustomerIndividual> getFormAddChance(
+    String id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -587,7 +649,9 @@ class UserRepository {
         id,
       );
 
-  Future<AddCustomerIndividual> getFormAddContract(String id) async =>
+  Future<AddCustomerIndividual> getFormAddContract(
+    String id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -595,7 +659,9 @@ class UserRepository {
         id,
       );
 
-  Future<AddCustomerIndividual> getFormAddJob(String id) async =>
+  Future<AddCustomerIndividual> getFormAddJob(
+    String id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -603,7 +669,9 @@ class UserRepository {
         id,
       );
 
-  Future<AddCustomerIndividual> getFormAddSupport(String id) async =>
+  Future<AddCustomerIndividual> getFormAddSupport(
+    String id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -611,7 +679,9 @@ class UserRepository {
         id,
       );
 
-  Future<AddCustomerIndividual> getFormAddJobOpp(String id) async =>
+  Future<AddCustomerIndividual> getFormAddJobOpp(
+    String id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -619,7 +689,9 @@ class UserRepository {
         id,
       );
 
-  Future<AddCustomerIndividual> getFormAddJobChance(String id) async =>
+  Future<AddCustomerIndividual> getFormAddJobChance(
+    String id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -627,7 +699,9 @@ class UserRepository {
         id,
       );
 
-  Future<BaseResponse> deleteContact(Map<String, dynamic> id) async =>
+  Future<BaseResponse> deleteContact(
+    Map<String, dynamic> id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -635,7 +709,9 @@ class UserRepository {
         id,
       );
 
-  Future<BaseResponse> deleteChance(Map<String, dynamic> id) async =>
+  Future<BaseResponse> deleteChance(
+    Map<String, dynamic> id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -643,7 +719,9 @@ class UserRepository {
         id,
       );
 
-  Future<BaseResponse> deleteSupport(Map<String, dynamic> id) async =>
+  Future<BaseResponse> deleteSupport(
+    Map<String, dynamic> id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -652,16 +730,24 @@ class UserRepository {
       );
 
   Future<BaseResponse> deleteNote(
-          String noteid, String id, String module) async =>
+    String noteId,
+    String id,
+    String module,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).deleteNote(
         module,
-        {BASE_URL.NOTE_ID: noteid, BASE_URL.ID: id},
+        {
+          BASE_URL.NOTE_ID: noteId,
+          BASE_URL.ID: id,
+        },
       );
 
-  Future<AddCustomerIndividual> getFormEditClue(String id) async =>
+  Future<AddCustomerIndividual> getFormEditClue(
+    String id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -669,7 +755,9 @@ class UserRepository {
         id,
       );
 
-  Future<AddCustomerIndividual> getFormEditSupport(String id) async =>
+  Future<AddCustomerIndividual> getFormEditSupport(
+    String id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -677,7 +765,9 @@ class UserRepository {
         id,
       );
 
-  Future<AddCustomerIndividual> getFormEditContract(String id) async =>
+  Future<AddCustomerIndividual> getFormEditContract(
+    String id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -685,7 +775,9 @@ class UserRepository {
         id,
       );
 
-  Future<AddCustomerIndividual> getFormAddJobContract(String id) async =>
+  Future<AddCustomerIndividual> getFormAddJobContract(
+    String id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -693,7 +785,9 @@ class UserRepository {
         id,
       );
 
-  Future<AddCustomerIndividual> getFormAddSupportContract(String id) async =>
+  Future<AddCustomerIndividual> getFormAddSupportContract(
+    String id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -702,7 +796,9 @@ class UserRepository {
       );
 
   Future<CustomerContractResponse> getCustomerContract(
-          String page, String querySearch) async =>
+    String page,
+    String querySearch,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -711,7 +807,9 @@ class UserRepository {
         querySearch,
       );
 
-  Future<ContactByCustomerResponse> getContactByCustomer(String id) async =>
+  Future<ContactByCustomerResponse> getContactByCustomer(
+    String id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -719,8 +817,11 @@ class UserRepository {
         id,
       );
 
-  Future<ProductResponse> getListProduct(
-          String page, String querySearch, String? group) async =>
+  Future<ProductsResponse> getListProduct(
+    String page,
+    String querySearch,
+    String? group,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -730,14 +831,19 @@ class UserRepository {
         group,
       );
 
-  Future<GetPhoneCusResponse> getPhoneCus(String id) async => await RestClient(
+  Future<GetPhoneCusResponse> getPhoneCus(
+    String id,
+  ) async =>
+      await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).getPhoneCus(
         id,
       );
 
-  Future<GetPhoneCusResponse> getPhoneAgency(String id) async =>
+  Future<GetPhoneCusResponse> getPhoneAgency(
+    String id,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -752,39 +858,48 @@ class UserRepository {
         dio,
         baseUrl: dio.options.baseUrl,
       ).logout(
-        {BASE_URL.DEVICE_TOKEN: device_token},
+        {
+          BASE_URL.DEVICE_TOKEN: device_token,
+        },
       );
 
-  Future<LoginResponse> loginApp(
-          {required String email,
-          required String password,
-          required String device_token,
-          required String platform}) async =>
+  Future<LoginResponse> loginApp({
+    required String email,
+    required String password,
+    required String device_token,
+    required String platform,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).loginApp(
         LoginAppRequest(
-            email: email,
-            password: password,
-            device_token: device_token,
-            platform: platform),
+          email: email,
+          password: password,
+          device_token: device_token,
+          platform: platform,
+        ),
       );
 
-  Future<ResponseStatus> registerApp(
-          {required String fullName,
-          required String email,
-          required String password}) async =>
+  Future<ResponseStatus> registerApp({
+    required String fullName,
+    required String email,
+    required String password,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).registerApp(
         RegisterAppRequest(
-            fullname: fullName, email: email, password: password),
+          fullname: fullName,
+          email: email,
+          password: password,
+        ),
       );
 
-  Future<ResponseStatus> changePassword(
-          {required ParamChangePassword paramChangePassword}) async =>
+  Future<ResponseStatus> changePassword({
+    required ParamChangePassword paramChangePassword,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -792,92 +907,136 @@ class UserRepository {
         paramChangePassword,
       );
 
-  Future<ParamForgotPassword> forgotPassword(
-          {required String email,
-          required String username,
-          required String timestamp}) async =>
+  Future<ParamForgotPassword> forgotPassword({
+    required String email,
+    required String username,
+    required String timestamp,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).forgotPassword(
         ParamRequestForgotPassword(
-            email: email, username: username, timestamp: timestamp),
+          email: email,
+          username: username,
+          timestamp: timestamp,
+        ),
       );
 
-  Future<BaseResponse> forgotPasswordOtp(
-          {required String timestamp,
-          required String code,
-          required String email,
-          required String username}) async =>
+  Future<BaseResponse> forgotPasswordOtp({
+    required String timestamp,
+    required String code,
+    required String email,
+    required String username,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).forgotPasswordOtp(
         ParamRequestForgotPasswordOtp(
-            timestamp: timestamp, code: code, email: email, username: username),
+          timestamp: timestamp,
+          code: code,
+          email: email,
+          username: username,
+        ),
       );
 
   Future<ContactReportResponse> reportContact(
-          int? id, int? time, String? location, int? page, String? gt) async =>
+    int? id,
+    int? time,
+    String? location,
+    int? page,
+    String? gt,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).reportContact(
         RequestBodyReport(
-            id: id, diem_ban: location, time: time, page: page, gt: gt),
+          id: id,
+          diem_ban: location,
+          time: time,
+          page: page,
+          gt: gt,
+        ),
       );
 
   Future<DataGeneralResponse> reportGeneral(
-          int? time, String? location, int? page) async =>
+    int? time,
+    String? location,
+    int? page,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).reportGeneral(
-        RequestBodyReport(diem_ban: location, time: time, page: page, id: null),
+        RequestBodyReport(
+          diem_ban: location,
+          time: time,
+          page: page,
+          id: null,
+        ),
       );
 
-  Future<BaseResponse> resetPassword(
-          {required String timestamp,
-          required String newPass,
-          required String email,
-          required String username}) async =>
+  Future<BaseResponse> resetPassword({
+    required String timestamp,
+    required String newPass,
+    required String email,
+    required String username,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).resetPassword(
         ParamResetPassword(
-            email: email,
-            newPass: newPass,
-            timestamp: timestamp,
-            username: username),
+          email: email,
+          newPass: newPass,
+          timestamp: timestamp,
+          username: username,
+        ),
       );
 
-  Future<ReportProductResponse> reportProduct(int time, String location,
-          int? cl, String? timeFrom, String? timeTo) async =>
+  Future<ReportProductResponse> reportProduct(
+    int time,
+    String location,
+    int? cl,
+    String? timeFrom,
+    String? timeTo,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).reportProduct(
         RequestBodyReportProduct(
-            diem_ban: location,
-            time: time,
-            cl: cl,
-            timefrom: timeFrom,
-            timeto: timeTo),
+          diem_ban: location,
+          time: time,
+          cl: cl,
+          timefrom: timeFrom,
+          timeto: timeTo,
+        ),
       );
 
   Future<DataEmployResponse> reportEmployee(
-          int time, int? diem_ban, String? timefrom, String? timeto) async =>
+    int time,
+    int? diem_ban,
+    String? timeFrom,
+    String? timeTo,
+  ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).reportEmployee(
         RequestEmployReport(
-            diem_ban: diem_ban, time: time, timefrom: timefrom, timeto: timeto),
+          diem_ban: diem_ban,
+          time: time,
+          timefrom: timeFrom,
+          timeto: timeTo,
+        ),
       );
 
-  Future<ResponseDataStatus> postUpdateProfile(
-          {required ParamChangeInfo infoUser}) async =>
+  Future<ResponseDataStatus> postUpdateProfile({
+    required ParamChangeInfo infoUser,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -885,8 +1044,9 @@ class UserRepository {
         infoUser,
       );
 
-  Future<ResponseDataStatus> postUpdateProfileNotImage(
-          {required ParamChangeInfoNotImage infoUser}) async =>
+  Future<ResponseDataStatus> postUpdateProfileNotImage({
+    required ParamChangeInfoNotImage infoUser,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -894,8 +1054,9 @@ class UserRepository {
         infoUser,
       );
 
-  Future<ResponseDataStatus> orderCourse(
-          {required ParamOrderCourse paramOrderCourse}) async =>
+  Future<ResponseDataStatus> orderCourse({
+    required ParamOrderCourse paramOrderCourse,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -903,24 +1064,29 @@ class UserRepository {
         paramOrderCourse,
       );
 
-  Future<BaseResponse> updatePass(
-          {required String username,
-          required String oldpass,
-          required String newpass}) async =>
+  Future<BaseResponse> updatePass({
+    required String username,
+    required String oldpass,
+    required String newpass,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).updatePass(
         UpdatePassRequest(
-            username: username, oldpass: oldpass, newpass: newpass),
+          username: username,
+          oldpass: oldpass,
+          newpass: newpass,
+        ),
       );
 
-  Future<BaseResponse> changeInforAcc(
-          {required String fullName,
-          required String phone,
-          required String email,
-          required String address,
-          required File avatar}) async =>
+  Future<BaseResponse> changeInforAcc({
+    required String fullName,
+    required String phone,
+    required String email,
+    required String address,
+    required File avatar,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -932,11 +1098,12 @@ class UserRepository {
         avatar,
       );
 
-  Future<BaseResponse> changeInforAccNoAvatar(
-          {required String fullName,
-          required String phone,
-          required String email,
-          required String address}) async =>
+  Future<BaseResponse> changeInforAccNoAvatar({
+    required String fullName,
+    required String phone,
+    required String email,
+    required String address,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -947,17 +1114,23 @@ class UserRepository {
         address,
       );
 
-  Future<BaseResponse> readNotification(
-          {required String id, required String type}) async =>
+  Future<BaseResponse> readNotification({
+    required String id,
+    required String type,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).readNotification(
-        ReadNotifiParam(id, type),
+        ReadNotifiParam(
+          id,
+          type,
+        ),
       );
 
-  Future<AddDataResponse> addIndividualCustomer(
-          {required Map<String, dynamic> data}) async =>
+  Future<AddDataResponse> addIndividualCustomer({
+    required Map<String, dynamic> data,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -965,8 +1138,9 @@ class UserRepository {
         data,
       );
 
-  Future<AddDataResponse> addOrganizationCustomer(
-          {required Map<String, dynamic> data}) async =>
+  Future<AddDataResponse> addOrganizationCustomer({
+    required Map<String, dynamic> data,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -974,8 +1148,9 @@ class UserRepository {
         data,
       );
 
-  Future<EditCusResponse> editCustomer(
-          {required Map<String, dynamic> data}) async =>
+  Future<EditCusResponse> editCustomer({
+    required Map<String, dynamic> data,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -983,8 +1158,9 @@ class UserRepository {
         data,
       );
 
-  Future<AddDataResponse> addContactCus(
-          {required Map<String, dynamic> data}) async =>
+  Future<AddDataResponse> addContactCus({
+    required Map<String, dynamic> data,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -992,8 +1168,9 @@ class UserRepository {
         data,
       );
 
-  Future<AddDataResponse> addOpportunity(
-          {required Map<String, dynamic> data}) async =>
+  Future<AddDataResponse> addOpportunity({
+    required Map<String, dynamic> data,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -1001,8 +1178,9 @@ class UserRepository {
         data,
       );
 
-  Future<AddDataResponse> addContract(
-          {required Map<String, dynamic> data}) async =>
+  Future<AddDataResponse> addContract({
+    required Map<String, dynamic> data,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -1010,7 +1188,9 @@ class UserRepository {
         data,
       );
 
-  Future<AddDataResponse> addJob({required Map<String, dynamic> data}) async =>
+  Future<AddDataResponse> addJob({
+    required Map<String, dynamic> data,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -1018,8 +1198,9 @@ class UserRepository {
         data,
       );
 
-  Future<AddDataResponse> addSupport(
-          {required Map<String, dynamic> data}) async =>
+  Future<AddDataResponse> addSupport({
+    required Map<String, dynamic> data,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -1027,7 +1208,9 @@ class UserRepository {
         data,
       );
 
-  Future<AddDataResponse> editJob({required Map<String, dynamic> data}) async =>
+  Future<AddDataResponse> editJob({
+    required Map<String, dynamic> data,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
@@ -1353,42 +1536,26 @@ class UserRepository {
         id,
       );
 
-  Future<AddCustomerIndividual> getFormAddSign({required String id}) async =>
+  Future<AddCustomerIndividual> getFormAddSign({
+    required String id,
+    required String type,
+  }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).getFormSign(
         id,
+        type,
       );
 
   Future<ResponseSaveProductCustomer> saveSignature({
     required Map<String, dynamic> data,
+    required String type,
   }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
-      ).saveSignature(
-        data,
-      );
-
-  Future<AddCustomerIndividual> getFormAddSignSupport(
-          {required String id}) async =>
-      await RestClient(
-        dio,
-        baseUrl: dio.options.baseUrl,
-      ).getFormSignSupport(
-        id,
-      );
-
-  Future<ResponseSaveProductCustomer> saveSignatureSupport({
-    required Map<String, dynamic> data,
-  }) async =>
-      await RestClient(
-        dio,
-        baseUrl: dio.options.baseUrl,
-      ).saveSignatureSupport(
-        data,
-      );
+      ).saveSignature(data, type);
 
   Future<ListHDProductCustomerResponse> getListHDProductCustomer({
     required int spkh,
@@ -1697,6 +1864,7 @@ class UserRepository {
   Future<QrCodePaymentRes> getQRCode({
     required String amount,
     required String message,
+    required String id,
   }) async =>
       await RestClient(
         dio,
@@ -1704,6 +1872,17 @@ class UserRepository {
       ).getQRCode(
         amount,
         message,
+        id,
+      );
+
+  Future<BienSoWithImgResponse> getBienSoWithImg({
+    required File file,
+  }) async =>
+      await RestClient(
+        dio,
+        baseUrl: dio.options.baseUrl,
+      ).getBienSoWithImg(
+        file,
       );
   //////////////////////
 

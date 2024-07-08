@@ -7,7 +7,7 @@ part of 'clue.dart';
 // **************************************************************************
 
 Email _$EmailFromJson(Map<String, dynamic> json) => Email(
-      json['action'] as int?,
+      (json['action'] as num?)?.toInt(),
       json['val'] as String?,
     );
 
@@ -62,7 +62,7 @@ Map<String, dynamic> _$FilterDataToJson(FilterData instance) =>
 ListClueData _$ListClueDataFromJson(Map<String, dynamic> json) => ListClueData(
       json['page'] as String?,
       json['total'] as String?,
-      json['limit'] as int?,
+      (json['limit'] as num?)?.toInt(),
       (json['list'] as List<dynamic>?)
           ?.map((e) => ClueData.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -88,7 +88,7 @@ ListClueResponse _$ListClueResponseFromJson(Map<String, dynamic> json) =>
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$ListClueResponseToJson(ListClueResponse instance) =>
     <String, dynamic>{

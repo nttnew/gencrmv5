@@ -198,7 +198,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
                       .push(MaterialPageRoute(
                           builder: (context) => ScannerQrcode()))
                       .then((value) async {
-                    if (value != null) if (value != '') {
+                    if (value != ''&&value != null) {
                       _bloc.qr = value;
                       if (isPhone) {
                         _txtPhone.text = '';

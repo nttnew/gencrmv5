@@ -48,7 +48,6 @@ class _DetailProductCustomerScreenState
   void initState() {
     _bloc = DetailProductCustomerBloc(
         userRepository: DetailProductCustomerBloc.of(context).userRepository);
-    _bloc.initController(_id);
     _bloc.add(InitGetDetailProductCustomerEvent(_id));
     super.initState();
   }
@@ -71,9 +70,9 @@ class _DetailProductCustomerScreenState
         _listWidget.add(Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: ViewLoadMoreBase(
+            isInit: true,
             functionInit: (page, isInit) {
-              return _bloc.getListCHProductCustomer(
-                  page: page, isInit: isInit, id: _idM);
+              return _bloc.getListCHProductCustomer(page: page, id: _idM);
             },
             itemWidget: (int index, data) {
               final CHProductCustomer item = data as CHProductCustomer;
@@ -99,10 +98,10 @@ class _DetailProductCustomerScreenState
         _listWidget.add(Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: ViewLoadMoreBase(
+            isInit: true,
             functionInit: (page, isInit) {
               return _bloc.getListHDProductCustomer(
                 page: page,
-                isInit: isInit,
                 id: _idM,
               );
             },
@@ -134,9 +133,9 @@ class _DetailProductCustomerScreenState
         _listWidget.add(Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: ViewLoadMoreBase(
+            isInit: true,
             functionInit: (page, isInit) {
-              return _bloc.getListCVProductCustomer(
-                  page: page, isInit: isInit, id: _idM);
+              return _bloc.getListCVProductCustomer(page: page, id: _idM);
             },
             itemWidget: (int index, data) {
               final DataList _item = data as DataList;
@@ -164,9 +163,9 @@ class _DetailProductCustomerScreenState
         _listWidget.add(Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: ViewLoadMoreBase(
+            isInit: true,
             functionInit: (page, isInit) {
-              return _bloc.getListHTProductCustomer(
-                  page: page, isInit: isInit, id: _idM);
+              return _bloc.getListHTProductCustomer(page: page, id: _idM);
             },
             itemWidget: (int index, data) {
               final DataHTProductCustomer item = data as DataHTProductCustomer;

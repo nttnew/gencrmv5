@@ -9,11 +9,10 @@ import '../../../../bloc/checkin_bloc/checkin_bloc.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
-import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/btn_thao_tac.dart';
-import '../../../../widgets/dialog_call.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
+import '../../../../widgets/widget_appbar.dart';
 import '../../attachment/attachment.dart';
 import '../../widget/information.dart';
 
@@ -67,30 +66,15 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
           icon: ICONS.IC_PHONE_PNG,
           onThaoTac: () {
             Get.back();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return DialogCall(
-                  phone: _diDong.toString(),
-                  name: '',
-                );
-              },
+            dialogShowAllSDT(
+              context,
+              handelListSdt(_diDong),
+              name: '',
             );
           },
         ),
       );
 
-    _list.add(ModuleThaoTac(
-      title: getT(KeyT.add_discuss),
-      icon: ICONS.IC_ADD_DISCUSS_SVG,
-      onThaoTac: () {
-        Get.back();
-        AppNavigator.navigateAddNoteScreen(Module.CONG_VIEC, _id.toString(),
-            onRefresh: () {
-          _blocNote.add(RefreshEvent());
-        });
-      },
-    ));
     if (!_isCheckDone) {
       if (_location != 1) {
         _list.add(ModuleThaoTac(
@@ -122,6 +106,35 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
         ));
       }
     }
+
+    _list.add(ModuleThaoTac(
+      title: getT(KeyT.sign),
+      icon: ICONS.IC_ELECTRIC_SIGN_PNG,
+      isSvg: false,
+      onThaoTac: () {
+        Get.back();
+        AppNavigator.navigateFormSign(
+          getT(KeyT.sign),
+          _id.toString(),
+          type: Module.CONG_VIEC,
+          onRefreshForm: () {
+            _bloc.add(InitGetDetailWorkEvent(_id));
+          },
+        );
+      },
+    ));
+
+    _list.add(ModuleThaoTac(
+      title: getT(KeyT.add_discuss),
+      icon: ICONS.IC_ADD_DISCUSS_SVG,
+      onThaoTac: () {
+        Get.back();
+        AppNavigator.navigateAddNoteScreen(Module.CONG_VIEC, _id.toString(),
+            onRefresh: () {
+          _blocNote.add(RefreshEvent());
+        });
+      },
+    ));
 
     _list.add(ModuleThaoTac(
       title: getT(KeyT.see_attachment),
@@ -167,7 +180,6 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarBaseNormal(_title),
       body: BlocListener<CheckInBloc, CheckInState>(
         bloc: _blocCheckIn,
         listener: (context, state) {
@@ -214,6 +226,29 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              WidgetAppbar(
+                title: _title,
+                textColor: COLORS.BLACK,
+                padding: 10,
+                right: Row(
+                  children: [
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        AppNavigator.navigateBieuMau(
+                          idDetail: _id.toString(),
+                          module: PDF_CONG_VIEC,
+                        );
+                      },
+                      icon: Icon(
+                        Icons.print,
+                        color: !isCarCrm() ? COLORS.BLACK : COLORS.WHITE,
+                        size: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: () async {

@@ -78,7 +78,7 @@ class _UnReadListState extends State<UnReadList>
             );
           return noData();
         } else {
-          return noData();
+          return SizedBox.shrink();
         }
       }),
     );

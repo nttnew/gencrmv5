@@ -29,33 +29,10 @@ class DetailCustomerBloc
       : userRepository = userRepository,
         super(InitGetDetailCustomer());
 
-  initController(String idTxt) async {
-    final int id = int.parse(idTxt);
-
-    final dataDM = await getClueCustomer(
-        page: BASE_URL.PAGE_DEFAULT, id: id, isInit: false);
-    await controllerDM.initData(dataDM);
-
-    final dataCH = await getChanceCustomer(
-        page: BASE_URL.PAGE_DEFAULT, id: id, isInit: false);
-    await controllerCH.initData(dataCH);
-
-    final dataHD = await getContractCustomer(
-        page: BASE_URL.PAGE_DEFAULT, id: id, isInit: false);
-    await controllerHD.initData(dataHD);
-
-    final dataCv = await getJobCustomer(
-        page: BASE_URL.PAGE_DEFAULT, id: id, isInit: false);
-    await controllerCV.initData(dataCv);
-
-    final dataHT = await getSupportCustomer(
-        page: BASE_URL.PAGE_DEFAULT, id: id, isInit: false);
-    await controllerHT.initData(dataHT);
-  }
-
   @override
   Stream<DetailCustomerState> mapEventToState(
-      DetailCustomerEvent event) async* {
+    DetailCustomerEvent event,
+  ) async* {
     if (event is InitGetDetailCustomerEvent) {
       yield* _getDetailCustomer(id: event.id);
     } else if (event is DeleteCustomerEvent) {
@@ -106,10 +83,14 @@ class DetailCustomerBloc
     }
   }
 
-  Stream<DetailCustomerState> _deleteCustomer({required int id}) async* {
+  Stream<DetailCustomerState> _deleteCustomer({
+    required int id,
+  }) async* {
     LoadingApi().pushLoading();
     try {
-      final response = await userRepository.deleteCustomer({"id": id});
+      final response = await userRepository.deleteCustomer({
+        'id': id,
+      });
       if (isSuccess(response.code)) {
         yield SuccessDeleteCustomerState();
       } else if (isFail(response.code)) {
@@ -120,7 +101,6 @@ class DetailCustomerBloc
     } catch (e) {
       LoadingApi().popLoading();
       yield ErrorDeleteCustomerState(getT(KeyT.an_error_occurred));
-      throw e;
     }
     LoadingApi().popLoading();
   }
@@ -128,7 +108,6 @@ class DetailCustomerBloc
   Future<dynamic> getClueCustomer({
     required int id,
     int page = BASE_URL.PAGE_DEFAULT,
-    bool isInit = true,
   }) async {
     try {
       final response = await userRepository.getClueCustomer(id, page);
@@ -144,10 +123,10 @@ class DetailCustomerBloc
     }
   }
 
-  Future<dynamic> getChanceCustomer(
-      {required int id,
-      int page = BASE_URL.PAGE_DEFAULT,
-      bool isInit = true}) async {
+  Future<dynamic> getChanceCustomer({
+    required int id,
+    int page = BASE_URL.PAGE_DEFAULT,
+  }) async {
     try {
       final response = await userRepository.getChanceCustomer(id, page);
       if (isSuccess(response.code)) {
@@ -165,7 +144,6 @@ class DetailCustomerBloc
   Future<dynamic> getContractCustomer({
     required int id,
     int page = BASE_URL.PAGE_DEFAULT,
-    bool isInit = true,
   }) async {
     try {
       final response = await userRepository.getContractCustomer(id, page);
@@ -181,10 +159,10 @@ class DetailCustomerBloc
     }
   }
 
-  Future<dynamic> getSupportCustomer(
-      {required int id,
-      int page = BASE_URL.PAGE_DEFAULT,
-      bool isInit = true}) async {
+  Future<dynamic> getSupportCustomer({
+    required int id,
+    int page = BASE_URL.PAGE_DEFAULT,
+  }) async {
     try {
       final response = await userRepository.getSupportCustomer(id, page);
       if (isSuccess(response.code)) {
@@ -202,7 +180,6 @@ class DetailCustomerBloc
   Future<dynamic> getJobCustomer({
     required int id,
     int page = BASE_URL.PAGE_DEFAULT,
-    bool isInit = true,
   }) async {
     try {
       final response = await userRepository.getJobCustomer(id, page);

@@ -1,15 +1,13 @@
 import 'dart:io';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/screens/call/init_app_call.dart';
 import 'package:gen_crm/screens/in_phieu/in_phieu.dart';
 import 'package:gen_crm/screens/main/list_bieu_mau.dart';
-import 'package:gen_crm/screens/main/show_detail_car.dart';
+import 'package:gen_crm/screens/main/detail_car.dart';
 import 'package:gen_crm/screens/menu/form/form_sign.dart';
 import 'package:gen_crm/screens/menu/form/product_list/list_product.dart';
 import 'package:gen_crm/screens/menu/form/add_note.dart';
@@ -25,7 +23,8 @@ import 'package:get/get.dart';
 import 'package:gen_crm/screens/forgot_password/forgot_password_otp_screen.dart';
 import 'package:gen_crm/screens/screens.dart';
 import 'package:gen_crm/src/src_index.dart';
-import 'bloc/unread_list_notification/unread_list_notifi_bloc.dart';
+import 'firebase/firebase_config.dart';
+import 'firebase/notifi_local.dart';
 import 'screens/menu/form/product_list/list_service_park.dart';
 import 'screens/menu/home/customer/call_screen.dart';
 import 'storages/share_local.dart';
@@ -46,72 +45,11 @@ class _MyAppState extends ConsumerState<MyApp> {
   }
 
   _handleMessFirebase() async {
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
-    var initializationSettings;
-    if (Platform.isAndroid) {
-      const AndroidNotificationChannel channel = AndroidNotificationChannel(
-        'high_importance_channel',
-        'xxxx',
-        importance: Importance.max,
-      );
-      var initializationSettingsAndroid =
-          new AndroidInitializationSettings("@mipmap/ic_launcher");
-      await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()!
-          .createNotificationChannel(channel);
-
-      initializationSettings =
-          new InitializationSettings(android: initializationSettingsAndroid);
-    } else {
-      var initializationSettingsIOS = new DarwinInitializationSettings();
-      initializationSettings =
-          new InitializationSettings(iOS: initializationSettingsIOS);
-    }
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      GetNotificationBloc.of(context).add(CheckNotification());
-
-      RemoteNotification? notification = message.notification;
-
-      if (notification != null) {
-        if (Platform.isAndroid) {
-          AndroidNotification? androidNotification =
-              message.notification?.android;
-          if (androidNotification != null) {
-            var androidPlatformChannelSpecifics =
-                const AndroidNotificationDetails(
-              'high_importance_channel',
-              'xxxx',
-              importance: Importance.max,
-              priority: Priority.max,
-            );
-            var platformChannelSpecifics = NotificationDetails(
-              android: androidPlatformChannelSpecifics,
-            );
-            await flutterLocalNotificationsPlugin.show(
-              0,
-              notification.title,
-              notification.body,
-              platformChannelSpecifics,
-              payload: 'test',
-            );
-          }
-        } else if (Platform.isIOS) {
-          var iOSChannelSpecifics = const DarwinNotificationDetails();
-          var platformChannelSpecifics =
-              NotificationDetails(iOS: iOSChannelSpecifics);
-          await flutterLocalNotificationsPlugin.show(
-            0,
-            notification.title,
-            notification.body,
-            platformChannelSpecifics,
-            payload: 'test',
-          );
-        }
-      }
-    });
+    NotificationLocalService()
+        .initNotification(context); // notification local init
+    FirebaseConfig.onMessage(context); // show mess on app
+    FirebaseConfig.receiveFromBackgroundState(context); // show mess on app
+    FirebaseConfig.onBackgroundPressed(); // show mess on app
   }
 
   @override

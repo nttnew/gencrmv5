@@ -214,7 +214,26 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
         },
         child: Column(
           children: [
-            AppbarBaseNormal(_title,reload: _reload),
+            AppbarBaseNormal(
+              _title,
+              reload: _reload,
+              widgetRight: GestureDetector(
+                onTap: () {
+                  AppNavigator.navigateDetailCarMain(_id);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 16,
+                  ),
+                  child: Image.asset(
+                    ICONS.IC_SHOW2_PNG,
+                    height: 20,
+                    width: 20,
+                    color: !isCarCrm() ? COLORS.BLACK : COLORS.WHITE,
+                  ),
+                ),
+              ),
+            ),
             AppValue.vSpaceTiny,
             Expanded(
               child: DefaultTabController(
@@ -268,11 +287,11 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                                 top: 8,
                               ),
                               child: ViewLoadMoreBase(
+                                isInit: true,
                                 functionInit: (page, isInit) {
                                   return _bloc.getJobContract(
                                     id: int.parse(_id),
                                     page: page,
-                                    isInit: isInit,
                                   );
                                 },
                                 itemWidget: (int index, data) {
@@ -304,11 +323,11 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                                 top: 8,
                               ),
                               child: ViewLoadMoreBase(
+                                isInit: true,
                                 functionInit: (page, isInit) {
                                   return _bloc.getSupportContract(
                                     id: int.parse(_id),
                                     page: page,
-                                    isInit: isInit,
                                   );
                                 },
                                 itemWidget: (int index, data) {

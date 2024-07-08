@@ -39,7 +39,7 @@ Map<String, dynamic> _$DataListContactToJson(DataListContact instance) =>
 DataContactReport _$DataContactReportFromJson(Map<String, dynamic> json) =>
     DataContactReport(
       json['page'],
-      json['limit'] as int?,
+      (json['limit'] as num?)?.toInt(),
       json['total'] as String?,
       (json['list'] as List<dynamic>?)
           ?.map((e) => DataListContact.fromJson(e as Map<String, dynamic>))
@@ -65,7 +65,7 @@ ContactReportResponse _$ContactReportResponseFromJson(
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$ContactReportResponseToJson(
         ContactReportResponse instance) =>
@@ -78,10 +78,10 @@ Map<String, dynamic> _$ContactReportResponseToJson(
 
 RequestBodyReport _$RequestBodyReportFromJson(Map<String, dynamic> json) =>
     RequestBodyReport(
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       diem_ban: json['diem_ban'] as String?,
-      time: json['time'] as int?,
-      page: json['page'] as int?,
+      time: (json['time'] as num?)?.toInt(),
+      page: (json['page'] as num?)?.toInt(),
       gt: json['gt'] as String?,
     );
 

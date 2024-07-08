@@ -13,7 +13,7 @@ TimeReport _$TimeReportFromJson(Map<String, dynamic> json) => TimeReport(
       (json['diem_ban'] as List<dynamic>?)
           ?.map((e) => (e as List<dynamic>).map((e) => e as String).toList())
           .toList(),
-      json['thoi_gian_mac_dinh'] as int?,
+      (json['thoi_gian_mac_dinh'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$TimeReportToJson(TimeReport instance) =>
@@ -30,7 +30,7 @@ TimeResponse _$TimeResponseFromJson(Map<String, dynamic> json) => TimeResponse(
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$TimeResponseToJson(TimeResponse instance) =>
     <String, dynamic>{
@@ -48,7 +48,7 @@ FilterResponse _$FilterResponseFromJson(Map<String, dynamic> json) =>
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$FilterResponseToJson(FilterResponse instance) =>
     <String, dynamic>{
@@ -68,7 +68,7 @@ FilterReport _$FilterReportFromJson(Map<String, dynamic> json) => FilterReport(
       (json['trangthaihd'] as List<dynamic>?)
           ?.map((e) => TrangThaiHDReport.fromJson(e as Map<String, dynamic>))
           .toList(),
-      json['thoi_gian_mac_dinh'] as int?,
+      (json['thoi_gian_mac_dinh'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$FilterReportToJson(FilterReport instance) =>

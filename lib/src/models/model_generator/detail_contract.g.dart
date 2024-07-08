@@ -14,7 +14,7 @@ PaymentContractItem _$PaymentContractItemFromJson(Map<String, dynamic> json) =>
       json['id_payment'],
       json['id_chi_tiet_thanh_toan'],
       json['field_type'] as String?,
-      json['field_hidden'] as int?,
+      (json['field_hidden'] as num?)?.toInt(),
       json['field_special'] as String?,
     );
 
@@ -43,7 +43,7 @@ PaymentContractResponse _$PaymentContractResponseFromJson(
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$PaymentContractResponseToJson(
         PaymentContractResponse instance) =>
@@ -63,7 +63,7 @@ DetailContractResponse _$DetailContractResponseFromJson(
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$DetailContractResponseToJson(
         DetailContractResponse instance) =>
@@ -114,7 +114,7 @@ SupportContractResponse _$SupportContractResponseFromJson(
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$SupportContractResponseToJson(
         SupportContractResponse instance) =>

@@ -39,7 +39,7 @@ Map<String, dynamic> _$SupportItemDataToJson(SupportItemData instance) =>
 SupportData _$SupportDataFromJson(Map<String, dynamic> json) => SupportData(
       json['page'] as String?,
       json['total'] as String?,
-      json['limit'] as int?,
+      (json['limit'] as num?)?.toInt(),
       (json['list'] as List<dynamic>?)
           ?.map((e) => SupportItemData.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -63,7 +63,7 @@ SupportResponse _$SupportResponseFromJson(Map<String, dynamic> json) =>
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$SupportResponseToJson(SupportResponse instance) =>
     <String, dynamic>{

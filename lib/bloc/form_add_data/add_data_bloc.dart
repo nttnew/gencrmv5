@@ -557,9 +557,8 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     LoadingApi().pushLoading();
     try {
       yield LoadingAddData();
-      final response = await (type == ''
-          ? userRepository.saveSignature(data: data)
-          : userRepository.saveSignatureSupport(data: data));
+      final response =
+          await userRepository.saveSignature(data: data, type: type);
       if (isSuccess(response.code)) {
         LoadingApi().popLoading();
         yield SuccessAddData();

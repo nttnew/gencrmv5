@@ -30,6 +30,7 @@ import 'package:retrofit/retrofit.dart';
 import 'package:gen_crm/src/base.dart';
 import 'package:gen_crm/src/models/index.dart';
 import '../models/model_generator/address_customer_response.dart';
+import '../models/model_generator/bien_so_with_img.dart';
 import '../models/model_generator/bieu_mau_response.dart';
 import '../models/model_generator/contact_by_customer.dart';
 import '../models/model_generator/detail_contract.dart';
@@ -53,8 +54,8 @@ import '../models/model_generator/main_menu_response.dart';
 import '../models/model_generator/pdf_response.dart';
 import '../models/model_generator/policy.dart';
 import '../models/model_generator/product_customer_save_response.dart';
-import '../models/model_generator/product_response.dart';
 import '../models/model_generator/product_service_pack_response.dart';
+import '../models/model_generator/products_response.dart';
 import '../models/model_generator/qr_code_payment_res.dart';
 import '../models/model_generator/quick_create_response.dart';
 import '../models/model_generator/report_contact.dart';
@@ -121,7 +122,7 @@ abstract class RestClient {
     @Query('filter') String filter,
     @Query('search') String search,
     @Query('nguoi_quan_ly') String? manager,
-    //todo
+    @Query('qr') String? qr,
   );
 
   @GET(BASE_URL.LIST_CHANCE)
@@ -450,7 +451,7 @@ abstract class RestClient {
   );
 
   @GET(BASE_URL.LIST_PRODUCT)
-  Future<ProductResponse> getListProduct(
+  Future<ProductsResponse> getListProduct(
     @Query('page') String? page,
     @Query('querySearch') String? querySearch,
     @Query('group') String? group,
@@ -778,21 +779,13 @@ abstract class RestClient {
   @GET(BASE_URL.GET_FORM_SIGN)
   Future<AddCustomerIndividual> getFormSign(
     @Query('id') String id,
+    @Path('module') String type,
   );
 
   @POST(BASE_URL.SAVE_SIGN)
   Future<ResponseSaveProductCustomer> saveSignature(
     @Body() Map<String, dynamic> map,
-  );
-
-  @GET(BASE_URL.GET_FORM_SIGN_SUPPORT)
-  Future<AddCustomerIndividual> getFormSignSupport(
-    @Query('id') String id,
-  );
-
-  @POST(BASE_URL.SAVE_SIGN_SUPPORT)
-  Future<ResponseSaveProductCustomer> saveSignatureSupport(
-    @Body() Map<String, dynamic> map,
+    @Path('module') String type,
   );
 
   @GET(BASE_URL.GET_LIST_CH_PRODUCT_CUSTOMER)
@@ -940,12 +933,13 @@ abstract class RestClient {
   // temp: là id của mẫu in
   // m: là id của module
   //m=5 tương ứng dịch vụ
+  //m=3 cơ hội
+  //m=6 hỗ trợ
   @GET(BASE_URL.GET_LIST_MODULE)
   Future<BieuMauResponse> getBieuMau(
     @Query('m') String module,
   );
 
-  //?m=5&temp=3&item=305
   @GET(BASE_URL.GET_PDF)
   Future<PdfResponse> getPdf(
     @Query('m') String module,
@@ -957,6 +951,13 @@ abstract class RestClient {
   Future<QrCodePaymentRes> getQRCode(
     @Field('amount') String amount,
     @Field('message') String message,
+    @Field('id') String id,
+  );
+
+  @POST(BASE_URL.GET_BIEN_SO_XE_WITH_IMG)
+  @MultiPart()
+  Future<BienSoWithImgResponse> getBienSoWithImg(
+    @Part(name: 'hinh_anh') File file,
   );
 }
 

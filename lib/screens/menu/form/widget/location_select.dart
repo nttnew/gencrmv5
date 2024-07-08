@@ -452,7 +452,7 @@ class _SelectTypeLocationState extends State<SelectTypeLocation> {
               right: widget.shinkWrap ? 0 : 16,
             ),
             child: Text(
-              '${getT(KeyT.not_select).trim()} ${widget.title.toLowerCase()}',
+              '${(getT(KeyT.not_select)).trim()} ${widget.title.toLowerCase()}',
               style: AppStyle.DEFAULT_14.apply(
                 color: Colors.red,
               ),

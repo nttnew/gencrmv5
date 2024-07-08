@@ -10,9 +10,9 @@ import '../../../../bloc/checkin_bloc/checkin_bloc.dart';
 import '../../../../bloc/list_note/list_note_bloc.dart';
 import '../../../../bloc/support/support_bloc.dart';
 import '../../../../l10n/key_text.dart';
-import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/show_thao_tac.dart';
+import '../../../../widgets/widget_appbar.dart';
 import '../../attachment/attachment.dart';
 import '../../widget/information.dart';
 
@@ -102,7 +102,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
         AppNavigator.navigateFormSign(
           getT(KeyT.sign),
           _id,
-          type: ModuleMy.CSKH,
+          type: Module.HO_TRO,
         );
       },
     ));
@@ -161,7 +161,6 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppbarBaseNormal(_title),
         body: BlocListener<CheckInBloc, CheckInState>(
           bloc: _blocCheckIn,
           listener: (context, state) {
@@ -177,6 +176,29 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
           },
           child: Column(
             children: [
+              WidgetAppbar(
+                title: _title,
+                textColor: COLORS.BLACK,
+                padding: 10,
+                right: Row(
+                  children: [
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        AppNavigator.navigateBieuMau(
+                          idDetail: _id,
+                          module: PDF_HO_TRO,
+                        );
+                      },
+                      icon: Icon(
+                        Icons.print,
+                        color: !isCarCrm() ? COLORS.BLACK : COLORS.WHITE,
+                        size: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
                 child: BlocBuilder<DetailSupportBloc, DetailSupportState>(
                     bloc: _bloc,

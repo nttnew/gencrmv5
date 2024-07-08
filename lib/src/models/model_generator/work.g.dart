@@ -8,7 +8,7 @@ part of 'work.dart';
 
 WorkItemData _$WorkItemDataFromJson(Map<String, dynamic> json) => WorkItemData(
       json['id'] as String?,
-      json['total_comment'] as int?,
+      (json['total_comment'] as num?)?.toInt(),
       json['id_customer'] as String?,
       json['name_job'] as String?,
       json['content_job'] as String?,
@@ -55,7 +55,7 @@ WorkData _$WorkDataFromJson(Map<String, dynamic> json) => WorkData(
       (json['data_list'] as List<dynamic>?)
           ?.map((e) => WorkItemData.fromJson(e as Map<String, dynamic>))
           .toList(),
-      json['pageCount'] as int?,
+      (json['pageCount'] as num?)?.toInt(),
       (json['data_filter'] as List<dynamic>?)
           ?.map((e) => Customer.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -74,7 +74,7 @@ WorkResponse _$WorkResponseFromJson(Map<String, dynamic> json) => WorkResponse(
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$WorkResponseToJson(WorkResponse instance) =>
     <String, dynamic>{
@@ -89,7 +89,7 @@ DetailWorkResponse _$DetailWorkResponseFromJson(Map<String, dynamic> json) =>
       (json['data'] as List<dynamic>?)
           ?.map((e) => InfoDataModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      json['location'] as int?,
+      (json['location'] as num?)?.toInt(),
       json['di_dong'] as String?,
       json['checkin'] == null
           ? null
@@ -100,7 +100,7 @@ DetailWorkResponse _$DetailWorkResponseFromJson(Map<String, dynamic> json) =>
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$DetailWorkResponseToJson(DetailWorkResponse instance) =>
     <String, dynamic>{
@@ -123,7 +123,7 @@ CheckInLocation _$CheckInLocationFromJson(Map<String, dynamic> json) =>
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$CheckInLocationToJson(CheckInLocation instance) =>
     <String, dynamic>{

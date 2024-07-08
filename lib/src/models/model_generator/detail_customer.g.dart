@@ -11,7 +11,7 @@ InfoDataModel _$InfoDataModelFromJson(Map<String, dynamic> json) =>
       json['group_name'] as String?,
       json['main_id'] as String?,
       json['avatar'] as String?,
-      json['mup'] as int?,
+      (json['mup'] as num?)?.toInt(),
       (json['data'] as List<dynamic>?)
           ?.map((e) => InfoItem.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -40,8 +40,8 @@ InfoItem _$InfoItemFromJson(Map<String, dynamic> json) => InfoItem(
       json['field_name'] as String?,
       json['is_type'] as String?,
       json['data_type'] as String?,
-      json['action'] as int?,
-      json['is_image'] as int?,
+      (json['action'] as num?)?.toInt(),
+      (json['is_image'] as num?)?.toInt(),
       json['is_call'] as bool?,
       json['is_link'] as bool?,
     );
@@ -73,8 +73,8 @@ Map<String, dynamic> _$CustomerSaleToJson(CustomerSale instance) =>
 
 CustomerNote _$CustomerNoteFromJson(Map<String, dynamic> json) => CustomerNote(
       json['sale'] as String?,
-      json['is_admin'] as int?,
-      json['number_of_record_left'] as int?,
+      (json['is_admin'] as num?)?.toInt(),
+      (json['number_of_record_left'] as num?)?.toInt(),
       (json['data'] as List<dynamic>?)
           ?.map((e) => CustomerNoteData.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -95,7 +95,7 @@ CustomerNoteData _$CustomerNoteDataFromJson(Map<String, dynamic> json) =>
       json['avatar_user'] as String?,
       json['content'] as String?,
       json['time'] as String?,
-      json['user_create_id'] as int?,
+      (json['user_create_id'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$CustomerNoteDataToJson(CustomerNoteData instance) =>
@@ -141,7 +141,7 @@ DetailCustomerResponse _$DetailCustomerResponseFromJson(
     )
       ..success = json['success'] as bool?
       ..msg = json['msg'] as String?
-      ..code = json['code'] as int?;
+      ..code = (json['code'] as num?)?.toInt();
 
 Map<String, dynamic> _$DetailCustomerResponseToJson(
         DetailCustomerResponse instance) =>

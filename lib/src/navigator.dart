@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:gen_crm/src/router.dart';
 import '../l10n/key_text.dart';
-import '../models/product_model.dart';
 import 'app_const.dart';
-import 'models/model_generator/xe_dich_vu_response.dart';
+import 'base.dart';
+import 'models/model_generator/products_response.dart';
 
 class AppNavigator {
   AppNavigator._();
@@ -48,7 +48,7 @@ class AppNavigator {
     bool isGetData = false, //getdata cho khsp
     Function? onRefreshForm,
     bool isPreventDuplicates = false,
-    ProductModel? product,
+    ProductsRes? product,
     String? idDetail,
     String? idPay,
   }) async =>
@@ -208,14 +208,18 @@ class AppNavigator {
       await Get.toNamed(ROUTE_NAMES.NOTIFICATION);
 
   static navigateAddProduct(
-    Function add,
-    Function reload,
-    List<ProductModel> data, {
+    List<ProductsRes> data,
+    String typeContract,
+    Function onThen, {
     String? group,
     String? title,
   }) async =>
       await Get.toNamed(ROUTE_NAMES.ADD_PRODUCT,
-          arguments: [add, reload, data, group, title]);
+          arguments: [title, group, data, typeContract])?.then((value) {
+        if (value != null) {
+          onThen(value);
+        }
+      });
 
   static navigateProduct() async => await Get.toNamed(
         ROUTE_NAMES.PRODUCT,
@@ -250,7 +254,7 @@ class AppNavigator {
   static navigateFormSign(
     String title,
     String id, {
-    String type = '',
+    String type = Module.HOP_DONG,
     Function? onRefreshForm,
   }) async =>
       await Get.toNamed(ROUTE_NAMES.FORM_SIGN, arguments: [
@@ -265,17 +269,15 @@ class AppNavigator {
       );
 
   static navigateListServicePark(
-    Function add,
-    Function reload,
-    List<ProductModel> data,
     String title,
+    Function onThen,
   ) async =>
-      await Get.toNamed(ROUTE_NAMES.LIST_SERVICE_PARK, arguments: [
-        add,
-        reload,
-        data,
-        title,
-      ]);
+      await Get.toNamed(ROUTE_NAMES.LIST_SERVICE_PARK, arguments: title)
+          ?.then((value) {
+        if (value != null) {
+          onThen(value);
+        }
+      });
 
   static navigateInPhieu({required String link}) async => await Get.toNamed(
         ROUTE_NAMES.IN_PHIEU,
@@ -284,14 +286,18 @@ class AppNavigator {
 
   static navigateBieuMau({
     required String idDetail,
+    required String module,
   }) async =>
       await Get.toNamed(
         ROUTE_NAMES.LIST_BIEU_MAU,
-        arguments: [idDetail],
+        arguments: [
+          idDetail,
+          module,
+        ],
       );
 
-  static navigateDetailCarMain(XeDichVu detail) async => await Get.toNamed(
+  static navigateDetailCarMain(String idCar) async => await Get.toNamed(
         ROUTE_NAMES.DETAIL_CAR_MAIN,
-        arguments: detail,
+        arguments: idCar,
       );
 }

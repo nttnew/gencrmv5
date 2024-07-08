@@ -4,7 +4,6 @@ import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../l10n/key_text.dart';
 import '../../widgets/rounder_bootom_appbar.dart';
 
@@ -138,7 +137,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             state.email.invalid ? getT(KeyT.this_email_is_invalid) : null,
         boxDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: HexColor("#838A91")),
+          border: Border.all(color: COLORS.ff838A91),
         ),
         textLabel: WidgetText(
             title: getT(KeyT.email),
@@ -161,7 +160,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         inputType: TextInputType.text,
         boxDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: HexColor("#838A91")),
+          border: Border.all(color: COLORS.ff838A91),
         ),
         errorText:
             state.username.invalid ? getT(KeyT.this_account_is_invalid) : null,

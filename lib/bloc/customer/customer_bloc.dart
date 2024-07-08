@@ -39,6 +39,30 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
     ids = '';
   }
 
+  Future<ListCustomerResponse?> getListCustomerQR({
+    int page = BASE_URL.PAGE_DEFAULT,
+    String? qr,
+  }) async {
+    LoadingApi().pushLoading();
+    try {
+      final response = await userRepository.getListCustomer(
+        page,
+        '',
+        '', // get data theo qr lên k cần
+        null,
+        qr,
+      );
+      if (isSuccess(response.code)) {
+        LoadingApi().popLoading();
+        return response;
+      }
+    } catch (e) {
+      throw e;
+    }
+    LoadingApi().popLoading();
+    return null;
+  }
+
   Future<dynamic> getListCustomer({
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
@@ -49,6 +73,7 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
         idFilter,
         search,
         ids,
+        null, // vì quét qr chỉ lấy 1
       );
       if (isSuccess(response.code)) {
         if (page == BASE_URL.PAGE_DEFAULT)

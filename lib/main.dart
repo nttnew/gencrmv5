@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_pitel_voip/flutter_pitel_voip.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_crm/bloc/add_job_chance/add_job_chance_bloc.dart';
 import 'package:gen_crm/bloc/add_service_voucher/add_service_bloc.dart';
@@ -26,6 +24,7 @@ import 'package:gen_crm/bloc/report/report_general/report_general_bloc.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'package:gen_crm/bloc/support/detail_support_bloc.dart';
 import 'package:gen_crm/bloc/support/support_bloc.dart';
+import 'package:gen_crm/firebase/firebase_config.dart';
 import 'package:gen_crm/my_app.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/storages.dart';
@@ -52,7 +51,6 @@ import 'bloc/report/report_bloc/report_bloc.dart';
 import 'bloc/report/report_product/report_product_bloc.dart';
 import 'bloc/work/detail_work_bloc.dart';
 import 'bloc/work/work_bloc.dart';
-import 'firebase_options.dart';
 
 Future main() async {
   Bloc.observer = SimpleBlocObserver();
@@ -60,12 +58,8 @@ Future main() async {
   shareLocal = await ShareLocal.getInstance();
   WidgetsFlutterBinding.ensureInitialized();
   UserRepository userRepository = UserRepository();
-  await PushNotifAndroid.initFirebase(
-      options: DefaultFirebaseOptions.currentPlatform);
-  await Firebase.initializeApp(
-    name: "app",
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await FirebaseConfig.initFireBase();
+  await FirebaseConfig.requestPermission();
   runApp(
     MultiRepositoryProvider(
       providers: [

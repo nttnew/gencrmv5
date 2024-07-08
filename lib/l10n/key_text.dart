@@ -9,7 +9,11 @@ String getT(String key) {
     final dataLang = jsonDecode(dataLangLocal);
     final String lang = shareLocal.getString(PreferencesKey.LANGUAGE_NAME) ??
         L10n.VN; //default build app
-    return dataLang[lang][key] ?? '';
+    try {
+      return dataLang[lang][key] ?? '';
+    } catch (e) {
+      return '';
+    }
   }
   return '';
 }
@@ -280,4 +284,9 @@ class KeyT {
   static String dang_su_dung = 'dang_su_dung';
   static String so_luong_san_pham = 'so_luong_san_pham';
   static String ten_goi_dich_vu = 'ten_goi_dich_vu';
+  static String an_bot = 'an_bot';
+  static String hien_them = 'hien_them';
+  static String giam_gia_tong_khong_duoc_lon_hon_CTT =
+      'giam_gia_tong_khong_duoc_lon_hon_CTT';
+  static String xac_nhan_da_thanh_toan = 'xac_nhan_da_thanh_toan';
 }

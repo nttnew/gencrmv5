@@ -21,7 +21,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/models/model_generator/customer_clue.dart';
-import '../../src/models/model_generator/xe_dich_vu_response.dart';
 import '../../src/models/validate_form/no_data.dart';
 import '../../widgets/listview/list_load_infinity.dart';
 import '../../widgets/loading_api.dart';
@@ -45,8 +44,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   TrangThaiHDReport? valueTrangThai;
   LoadMoreController loadMoreControllerCar = LoadMoreController();
   LoadMoreController loadMoreControllerBieuMau = LoadMoreController();
-  XeDichVu? xeDichVu;
   String? trangThaiDichVu;
+  String idDetailCarMain = '';
 
   dispose() {
     trangThaiDichVu = null;
@@ -100,11 +99,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     super.onTransition(transition);
   }
 
-  Future<dynamic> getDetailXeDichVu() async {
+  Future<void> getDetailXeDichVu() async {
     dynamic resDynamic = '';
     try {
       final response = await userRepository.postDetailXeDichVu(
-        xeDichVu?.id ?? '',
+        idDetailCarMain,
       );
       if (isSuccess(response.code)) {
         resDynamic = response.data;
@@ -120,13 +119,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Future<dynamic> postUpdateTTHD({
-    required String id,
     required String idTT,
   }) async {
     LoadingApi().pushLoading();
     try {
       final response = await userRepository.postUpdateTTHD(
-        xeDichVu?.id ?? '',
+        idDetailCarMain,
         idTT,
       );
       final statusCode =
@@ -233,8 +231,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   void logout(BuildContext context) async {
     shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.UNREGISTER);
     PitelClient.getInstance().logoutExtension(getSipInfo());
+    // FirebaseConfig.deleteTokenFcm();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(PreferencesKey.IS_LOGGED_IN, false);
+    LoginBloc.of(context).loginData = null;
   }
 
   Future<void> getChiNhanh() async {
@@ -276,6 +276,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (data != '') {
       final result = json.decode(data);
       loginData = LoginData.fromJson(result);
+    } else {
+      loginData = null;
     }
   }
 
@@ -554,11 +556,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     addLocalLang(language);
   }
 
-  Future<dynamic> getBieuMau({String id = '5' // dich vu,
+  Future<dynamic> getBieuMau({required String module // dich vu,
       }) async {
     dynamic res = getT(KeyT.an_error_occurred);
     try {
-      final response = await userRepository.getBieuMau(module: id);
+      final response = await userRepository.getBieuMau(
+        module: module,
+      );
       if (isSuccess(response.code)) {
         res = response.data ?? [];
       } else if (isFail(response.code)) {
@@ -575,7 +579,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Future<Map<String, dynamic>> getPdf({
-    String module = '5', // dich vu,
+    required String module,
     required String idDetail,
     required String idBieuMau,
   }) async {

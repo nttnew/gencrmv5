@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gen_crm/src/extensionss/string_ext.dart';
 import 'package:gen_crm/widgets/widget_appbar.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import '../src/app_const.dart';
@@ -10,6 +11,7 @@ PreferredSizeWidget AppbarBaseNormal(
   Function? onBack,
   double? h,
   bool? reload,
+  Widget? widgetRight,
 }) =>
     AppBar(
       toolbarHeight: h ?? AppValue.heightsAppBar,
@@ -19,7 +21,7 @@ PreferredSizeWidget AppbarBaseNormal(
       titleSpacing: 0,
       centerTitle: false,
       title: Text(
-        title ?? '',
+        (title ?? '').htmlToString(),
         style: TextStyle(
           color: isCarCrm() ? COLORS.WHITE : COLORS.BLACK,
           fontFamily: "Montserrat",
@@ -42,6 +44,9 @@ PreferredSizeWidget AppbarBaseNormal(
           color: isCarCrm() ? COLORS.LIGHT_GREY : COLORS.BLACK,
         ),
       ),
+      actions: [
+        if (widgetRight != null) widgetRight,
+      ],
     );
 
 PreferredSizeWidget AppbarBase(
@@ -63,7 +68,7 @@ PreferredSizeWidget AppbarBase(
                 }
               },
               child: WidgetText(
-                title: title,
+                title: title.htmlToString(),
                 style: TextStyle(
                   color: isCarCrm() ? COLORS.WHITE : COLORS.BLACK,
                   fontFamily: "Montserrat",

@@ -8,7 +8,7 @@ part of 'action_model.dart';
 
 ActionModel _$ActionModelFromJson(Map<String, dynamic> json) => ActionModel(
       json['val'] as String?,
-      json['action'] as int?,
+      (json['action'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$ActionModelToJson(ActionModel instance) =>
