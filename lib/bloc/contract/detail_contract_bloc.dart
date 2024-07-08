@@ -32,21 +32,10 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
   @override
   Stream<DetailContractState> mapEventToState(ContractEvent event) async* {
     if (event is InitGetDetailContractEvent) {
-      initController(event.id);
       yield* _getDetailContract(id: event.id);
     } else if (event is InitDeleteContractEvent) {
       yield* _deleteContract(id: event.id);
     }
-  }
-
-  initController(int idTxt) async {
-    final dataCv = await getJobContract(
-        page: BASE_URL.PAGE_DEFAULT, id: idTxt, isInit: false);
-    await controllerCV.initData(dataCv);
-
-    final dataHT = await getSupportContract(
-        page: BASE_URL.PAGE_DEFAULT, id: idTxt, isInit: false);
-    await controllerHT.initData(dataHT);
   }
 
   Stream<DetailContractState> _getDetailContract({
@@ -149,7 +138,6 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
   Future<dynamic> getSupportContract({
     required int id,
     int page = BASE_URL.PAGE_DEFAULT,
-    bool isInit = true,
   }) async {
     try {
       final response = await userRepository.getSupportContract(id, page);
@@ -168,7 +156,6 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
   Future<dynamic> getJobContract({
     required int id,
     int page = BASE_URL.PAGE_DEFAULT,
-    bool isInit = true,
   }) async {
     try {
       final response = await userRepository.getJobContract(id, page);

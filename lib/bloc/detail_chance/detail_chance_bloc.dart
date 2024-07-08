@@ -24,17 +24,10 @@ class GetListDetailChanceBloc
   @override
   Stream<DetailChanceState> mapEventToState(DetailChanceEvent event) async* {
     if (event is InitGetListDetailEvent) {
-      initController(event.id);
       yield* _getListChanceDetail(id: event.id);
     } else if (event is InitDeleteChanceEvent) {
       yield* _deleteChance(id: event.id);
     }
-  }
-
-  initController(int idTxt) async {
-    final dataCv = await getJobChance(
-        page: BASE_URL.PAGE_DEFAULT, id: idTxt, isInit: false);
-    await controllerCV.initData(dataCv);
   }
 
   Stream<DetailChanceState> _getListChanceDetail({required int id}) async* {
@@ -72,7 +65,6 @@ class GetListDetailChanceBloc
   Future<dynamic> getJobChance({
     required int id,
     int page = BASE_URL.PAGE_DEFAULT,
-    bool isInit = true,
   }) async {
     try {
       final response = await userRepository.getJobChance(id, page);

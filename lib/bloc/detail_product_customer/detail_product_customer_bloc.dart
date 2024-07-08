@@ -60,7 +60,6 @@ class DetailProductCustomerBloc
   Future<dynamic> getListCVProductCustomer({
     required int id,
     int page = BASE_URL.PAGE_DEFAULT,
-    bool isInit = true,
   }) async {
     try {
       final response =
@@ -80,7 +79,6 @@ class DetailProductCustomerBloc
   Future<dynamic> getListCHProductCustomer({
     required int id,
     int page = BASE_URL.PAGE_DEFAULT,
-    bool isInit = true,
   }) async {
     try {
       final response =
@@ -100,7 +98,6 @@ class DetailProductCustomerBloc
   Future<dynamic> getListHDProductCustomer({
     required int id,
     int page = BASE_URL.PAGE_DEFAULT,
-    bool isInit = true,
   }) async {
     try {
       final response =
@@ -120,7 +117,6 @@ class DetailProductCustomerBloc
   Future<dynamic> getListHTProductCustomer({
     required int id,
     int page = BASE_URL.PAGE_DEFAULT,
-    bool isInit = true,
   }) async {
     try {
       final response =
@@ -166,22 +162,6 @@ class DetailProductCustomerBloc
     controllerCh.dispose();
     controllerHd.dispose();
     controllerHt.dispose();
-  }
-
-  initController(String idTxt) async {
-    final int id = int.parse(idTxt);
-    final dataCv = await getListCVProductCustomer(
-        page: BASE_URL.PAGE_DEFAULT, id: id, isInit: false);
-    await controllerCv.initData(dataCv);
-    final dataCh = await getListCHProductCustomer(
-        page: BASE_URL.PAGE_DEFAULT, id: id, isInit: false);
-    await controllerCh.initData(dataCh);
-    final dataHd = await getListHDProductCustomer(
-        page: BASE_URL.PAGE_DEFAULT, id: id, isInit: false);
-    await controllerHd.initData(dataHd);
-    final dataHt = await getListHTProductCustomer(
-        page: BASE_URL.PAGE_DEFAULT, id: id, isInit: false);
-    await controllerHt.initData(dataHt);
   }
 
   static DetailProductCustomerBloc of(BuildContext context) =>

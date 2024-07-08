@@ -300,10 +300,12 @@ class LoadMoreController<T> {
   Future<dynamic> Function(int page, bool isInit)? functionInit;
 
   reloadData() {
-    streamList.add(null);
-    isRefresh = true;
-    page = BASE_URL.PAGE_DEFAULT;
-    loadData(page);
+    if (functionInit != null) {
+      streamList.add(null);
+      isRefresh = true;
+      page = BASE_URL.PAGE_DEFAULT;
+      loadData(page);
+    }
   }
 
   initData(List<dynamic> list) {

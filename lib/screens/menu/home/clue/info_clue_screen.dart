@@ -187,11 +187,11 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                             Padding(
                               padding: const EdgeInsets.only(top: 8.0),
                               child: ViewLoadMoreBase(
+                                isInit: true,
                                 functionInit: (page, isInit) {
                                   return _bloc.getWorkClue(
                                     id: _id,
                                     page: page,
-                                    isInit: isInit,
                                   );
                                 },
                                 itemWidget: (int index, data) {

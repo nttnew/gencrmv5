@@ -21,19 +21,9 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
       : userRepository = userRepository,
         super(InitGetDetailClueState());
 
-  initController(String idTxt) async {
-    final dataCv = await getWorkClue(
-      page: BASE_URL.PAGE_DEFAULT,
-      id: idTxt,
-      isInit: false,
-    );
-    await controllerCV.initData(dataCv);
-  }
-
   @override
   Stream<DetailClueState> mapEventToState(GetDetailClueEvent event) async* {
     if (event is InitGetDetailClueEvent) {
-      initController(event.id ?? '');
       yield* _getDetailClue(event.id ?? '');
     } else if (event is InitDeleteClueEvent) {
       yield* _deleteClue(event.id ?? '');
@@ -78,7 +68,6 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
   Future<dynamic> getWorkClue({
     required String id,
     int page = BASE_URL.PAGE_DEFAULT,
-    bool isInit = true,
   }) async {
     try {
       final response = await userRepository.getWorkClue(id, page);

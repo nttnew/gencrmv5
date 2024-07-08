@@ -140,13 +140,15 @@ class ItemInfo extends StatelessWidget {
 
                       if (item?.field_type == 'LINE') {
                         return Container(
-                            margin: EdgeInsets.symmetric(vertical: 5),
-                            child: LineHorizontal());
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: LineHorizontal(),
+                        );
                       } else if (isImage) {
                         final List<String> listImage =
                             item?.value_field.toString().split(',') ?? [];
                         if (listImage.length == 0 ||
-                            listImage.firstOrNull == '')
+                            listImage.firstOrNull == '' ||
+                            listImage.firstOrNull == '-1')
                           return SizedBox.shrink();
                         return Container(
                           width: MediaQuery.of(context).size.width,
@@ -207,7 +209,9 @@ class ItemInfo extends StatelessWidget {
                           ),
                         );
                       }
-                      final bool isCall = item?.is_call == true;
+                      final bool isCall = item?.is_call == true ||
+                          item?.id == 'so_dien_thoai' ||
+                          item?.id == 'dien_thoai';
                       final bool isValue =
                           '${item?.value_field ?? ''}'.trim() != '' &&
                               item?.value_field != null;
@@ -215,9 +219,7 @@ class ItemInfo extends StatelessWidget {
                           ? Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Row(
-                                crossAxisAlignment: isCall
-                                    ? CrossAxisAlignment.start
-                                    : CrossAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     child: WidgetText(
@@ -335,9 +337,7 @@ class ItemInfo extends StatelessWidget {
 List<String> handelListSdt(dynamic sdt) {
   if (sdt == null) return [];
   final handelDataCall = sdt.toString().split(',');
-  List<String> listSDT = handelDataCall
-      .map((e) => e.toString())
-      .toList();
+  List<String> listSDT = handelDataCall.map((e) => e.toString()).toList();
   return listSDT;
 }
 
@@ -411,10 +411,7 @@ void dialogShowAllSDT(
                     ),
                   ),
                 ),
-                child: Text(
-                  listSDT[index],
-                  style: AppStyle.DEFAULT_16_T
-                ),
+                child: Text(listSDT[index], style: AppStyle.DEFAULT_16_T),
               ),
             );
           },

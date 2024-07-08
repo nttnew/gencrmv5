@@ -235,11 +235,11 @@ class _InfoChancePageState extends State<InfoChancePage> {
                                 top: 8,
                               ),
                               child: ViewLoadMoreBase(
+                                isInit: true,
                                 functionInit: (page, isInit) {
                                   return _bloc.getJobChance(
                                     id: int.parse(_id),
                                     page: page,
-                                    isInit: isInit,
                                   );
                                 },
                                 itemWidget: (int index, data) {
@@ -248,7 +248,6 @@ class _InfoChancePageState extends State<InfoChancePage> {
                                     onTap: () {
                                       AppNavigator.navigateDetailWork(
                                         int.tryParse(item.id ?? '') ?? 0,
-                                        // item.name_job ?? '',
                                       );
                                     },
                                     child: WorkCardWidget(

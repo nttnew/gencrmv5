@@ -287,11 +287,11 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                                 top: 8,
                               ),
                               child: ViewLoadMoreBase(
+                                isInit: true,
                                 functionInit: (page, isInit) {
                                   return _bloc.getJobContract(
                                     id: int.parse(_id),
                                     page: page,
-                                    isInit: isInit,
                                   );
                                 },
                                 itemWidget: (int index, data) {
@@ -323,11 +323,11 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                                 top: 8,
                               ),
                               child: ViewLoadMoreBase(
+                                isInit: true,
                                 functionInit: (page, isInit) {
                                   return _bloc.getSupportContract(
                                     id: int.parse(_id),
                                     page: page,
-                                    isInit: isInit,
                                   );
                                 },
                                 itemWidget: (int index, data) {
