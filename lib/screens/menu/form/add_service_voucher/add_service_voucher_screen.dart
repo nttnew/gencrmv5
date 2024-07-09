@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/models/model_generator/customer.dart';
 import 'package:gen_crm/src/models/model_generator/list_product_customer_response.dart';
@@ -6,9 +7,12 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:flutter/material.dart';
 import '../../../../bloc/add_service_voucher/add_service_bloc.dart';
+import '../../../../bloc/product_customer_module/product_customer_module_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/listview/list_load_infinity.dart';
+import '../../../../widgets/loading_api.dart';
+import '../../../../widgets/pick_file_image.dart';
 import '../../../../widgets/search_base.dart';
 import '../../home/customer/widget/item_list_customer.dart';
 import '../../home/product/scanner_qrcode.dart';
@@ -31,8 +35,8 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
   TextEditingController _txtPhone = TextEditingController();
   TextEditingController _txtBienSo = TextEditingController();
   late final ServiceVoucherBloc _bloc;
-  bool isDataPhone = true;
-  bool isDataCar = true;
+  bool _isDataPhone = true;
+  bool _isDataCar = true;
   late final StreamSubscription _streamSubscription;
   late final TabController _tabController;
 
@@ -61,6 +65,11 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
             bienSo: _tabController.index == 0 ? '' : _txtBienSo.text,
           );
         }
+      } else if (value.runtimeType == List<dynamic>) {
+        AppNavigator.navigateForm(
+          title: widget.title,
+          type: ADD_QUICK_CONTRACT,
+        );
       }
     });
     _bloc.init();
@@ -144,10 +153,10 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
       );
     } else {
       if (isPhone) {
-        isDataPhone = false;
+        _isDataPhone = false;
         _bloc.loadMoreControllerPhone.reloadData();
       } else {
-        isDataCar = false;
+        _isDataCar = false;
         _bloc.loadMoreControllerBienSo.reloadData();
       }
     }
@@ -193,32 +202,49 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
               controller: textEditingController,
               hint: hintText,
               endIcon: GestureDetector(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(
-                          builder: (context) => ScannerQrcode()))
-                      .then((value) async {
-                    if (value != ''&&value != null) {
-                      _bloc.qr = value;
-                      if (isPhone) {
-                        _txtPhone.text = '';
-                        isDataPhone = false;
-                        _bloc.loadMoreControllerPhone.reloadData();
+                onTap: () async {
+                  if (isPhone) {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(
+                            builder: (context) => ScannerQrcode()))
+                        .then((value) async {
+                      if (value != '' && value != null) {
+                        _bloc.qr = value;
+                        if (isPhone) {
+                          _txtPhone.text = '';
+                          _isDataPhone = false;
+                          _bloc.loadMoreControllerPhone.reloadData();
+                        } else {
+                          _txtBienSo.text = '';
+                          _isDataCar = false;
+                          _bloc.loadMoreControllerBienSo.reloadData();
+                        }
                       } else {
-                        _txtBienSo.text = '';
-                        isDataCar = false;
+                        ShowDialogCustom.showDialogBase(
+                          title: getT(KeyT.notification),
+                          content: getT(KeyT.no_data),
+                        );
+                      }
+                    });
+                  } else {
+                    final File? file = await getImageCamera(is2mb: true);
+                    if (file != null) {
+                      LoadingApi().pushLoading();
+                      final _blocP = ProductCustomerModuleBloc.of(context);
+                      final res = await _blocP.getBienSoWithImg(file: file);
+                      _isDataCar = true;
+                      _txtBienSo.text = res['data'] ?? '';
+                      if (_txtBienSo.text == '') {
+                        _bloc.listCarSearchStream.add([]);
+                        _bloc.loadMoreControllerBienSo.initData([]);
+                      } else {
                         _bloc.loadMoreControllerBienSo.reloadData();
                       }
-                    } else {
-                      ShowDialogCustom.showDialogBase(
-                        title: getT(KeyT.notification),
-                        content: getT(KeyT.no_data),
-                      );
                     }
-                  });
+                  }
                 },
                 child: Icon(
-                  Icons.qr_code_scanner,
+                  isPhone ? Icons.qr_code_scanner : Icons.camera_alt_outlined,
                   size: 20,
                 ),
               ),
@@ -231,10 +257,10 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
         Expanded(
           child: ViewLoadMoreBase(
             noDataWidget: isPhone
-                ? isDataPhone
+                ? _isDataPhone
                     ? SizedBox()
                     : null
-                : isDataCar
+                : _isDataCar
                     ? SizedBox()
                     : null,
             functionInit: (page, isInit) {
