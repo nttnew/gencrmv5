@@ -54,7 +54,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
           getT(KeyT.sign),
           _id,
           type: Module.CO_HOI_BH,
-          onRefreshForm: () {
+          onRefresh: () {
             _bloc.add(InitGetListDetailEvent(int.parse(_id)));
           },
         );

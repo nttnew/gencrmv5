@@ -234,11 +234,11 @@ class AppNavigator {
     String id,
     String module,
     String type, {
-    Function? onRefreshCheckIn,
+    Function? onRefresh,
   }) async =>
       await Get.toNamed(ROUTE_NAMES.CHECK_IN, arguments: [id, module, type])
           ?.then((v) {
-        if (onRefreshCheckIn != null && v == true) onRefreshCheckIn();
+        if (onRefresh != null && v == true) onRefresh();
         return v;
       });
 
@@ -255,7 +255,7 @@ class AppNavigator {
     String title,
     String id, {
     String type = Module.HOP_DONG,
-    Function? onRefreshForm,
+    Function? onRefresh,
   }) async =>
       await Get.toNamed(ROUTE_NAMES.FORM_SIGN, arguments: [
         title,
@@ -263,7 +263,7 @@ class AppNavigator {
         type,
       ])?.then(
         (v) {
-          if (onRefreshForm != null && v == true) onRefreshForm();
+          if (onRefresh != null && v == true) onRefresh();
           return v;
         },
       );

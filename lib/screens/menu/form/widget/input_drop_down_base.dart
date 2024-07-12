@@ -374,8 +374,8 @@ class DropDownSearchApi extends StatefulWidget {
 
 class _DropDownSearchApiState extends State<DropDownSearchApi> {
   LoadMoreController _loadMoreController = LoadMoreController();
-  String txtSearch = '';
-  List<List<dynamic>> listAdd = [];
+  String _txtSearch = '';
+  List<List<dynamic>> _listAdd = [];
 
   Future<dynamic> getList({
     String? txt,
@@ -397,7 +397,7 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
       }
       var response = await dio.request(
         '${widget.data.field_search?.field_url}?${widget.data.field_search?.field_keyparam}=$page&'
-        '${widget.data.field_search?.keysearch}=$txtSearch',
+        '${widget.data.field_search?.keysearch}=$_txtSearch',
         options: Options(
           method: 'GET',
           headers: headers,
@@ -413,7 +413,7 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
           return res;
         } else {
           LoadingApi().popLoading();
-          return '';
+          return [];
         }
       } else {
         LoadingApi().popLoading();
@@ -427,7 +427,7 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
 
   _initController() async {
     if (widget.data.field_special == SPECIAL_KH) {
-      listAdd = [
+      _listAdd = [
         [
           CA_NHAN,
           '${getT(KeyT.add)}'
@@ -442,7 +442,7 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
         ]
       ];
     } else if (widget.data.field_special == SPECIAL_SPKH) {
-      listAdd = [
+      _listAdd = [
         [
           ADD_NEW_CAR,
           '${getT(KeyT.add)} ${widget.data.field_label?.toLowerCase()}',
@@ -510,7 +510,7 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
                       '${getT(KeyT.find)} ${widget.data.field_label?.toLowerCase()}',
                   leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
                   onChange: (String v) {
-                    txtSearch = v.trim();
+                    _txtSearch = v.trim();
                     _loadMoreController.reloadData();
                   },
                 ),
@@ -527,10 +527,10 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
                 );
               },
               itemWidget: (int index, data) {
-                if (listAdd.length > 0 && index == 0) {
+                if (_listAdd.length > 0 && index == 0) {
                   return Column(
                     children: [
-                      ...listAdd
+                      ..._listAdd
                           .map(
                             (e) => GestureDetector(
                               onTap: () {
@@ -581,8 +581,8 @@ class DropDownWidget extends StatefulWidget {
 }
 
 class _DropDownWidgetState extends State<DropDownWidget> {
-  List<List<dynamic>> listData = [];
-  List<List<dynamic>> listAdd = [];
+  List<List<dynamic>> _listData = [];
+  List<List<dynamic>> _listAdd = [];
 
   void searchLocal(
     String name,
@@ -593,14 +593,15 @@ class _DropDownWidgetState extends State<DropDownWidget> {
         list.add(element);
       }
     });
-    listData = list;
+    _listData = list;
+    setState(() {});
   }
 
   @override
   void initState() {
-    listData = widget.listData;
+    _listData = widget.listData;
     if (widget.data.field_special == SPECIAL_KH) {
-      listAdd = [
+      _listAdd = [
         [
           CA_NHAN,
           '${getT(KeyT.add)}'
@@ -615,7 +616,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
         ]
       ];
     } else if (widget.data.field_special == SPECIAL_SPKH) {
-      listAdd = [
+      _listAdd = [
         [
           ADD_NEW_CAR,
           '${getT(KeyT.add)} ${widget.data.field_label?.toLowerCase()}',
@@ -678,62 +679,56 @@ class _DropDownWidgetState extends State<DropDownWidget> {
             ),
           ),
           Expanded(
-            child: listData.length < 1
-                ? ListView(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 8,
-                    ),
-                    children: listAdd
-                        .map(
-                          (e) => GestureDetector(
-                            onTap: () {
-                              widget.onChange(e);
-                            },
-                            child: _itemList(e),
-                          ),
-                        )
-                        .toList(),
-                  )
-                : ListView.builder(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 8,
-                    ),
-                    shrinkWrap: true,
-                    itemCount: listData.length,
-                    itemBuilder: (context, i) {
-                      if (i == 0 && listAdd.length > 0) {
-                        return Column(
-                          children: [
-                            ...listAdd
-                                .map(
-                                  (e) => GestureDetector(
-                                    onTap: () {
-                                      widget.onChange(e);
-                                    },
-                                    child: _itemList(e),
-                                  ),
-                                )
-                                .toList(),
-                            GestureDetector(
-                              onTap: () {
-                                widget.onChange(listData[i]);
-                              },
-                              child: _itemList(listData[i]),
-                            ),
-                          ],
-                        );
-                      }
-                      return GestureDetector(
-                        onTap: () {
-                          widget.onChange(listData[i]);
+            child: _listData.isEmpty && _listAdd.isNotEmpty
+                ? _buildListView(_listAdd)
+                : _listAdd.isNotEmpty
+                    ? ListView.builder(
+                        padding: EdgeInsets.symmetric(vertical: 8),
+                        shrinkWrap: true,
+                        itemCount: _listData.length,
+                        itemBuilder: (context, i) {
+                          if (i == 0) {
+                            return Column(
+                              children: [
+                                ..._listAdd
+                                    .map((e) => _buildGestureDetector(e))
+                                    .toList(),
+                                _buildGestureDetector(_listData[i]),
+                              ],
+                            );
+                          }
+                          return _buildGestureDetector(_listData[i]);
                         },
-                        child: _itemList(listData[i]),
-                      );
-                    },
-                  ),
+                      )
+                    : _listData.isNotEmpty
+                        ? ListView.builder(
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            shrinkWrap: true,
+                            itemCount: _listData.length,
+                            itemBuilder: (context, i) {
+                              return _buildGestureDetector(_listData[i]);
+                            },
+                          )
+                        : noData(),
           )
         ],
       ),
+    );
+  }
+
+  Widget _buildListView(List<dynamic> list) {
+    return ListView(
+      padding: EdgeInsets.symmetric(vertical: 8),
+      children: list.map((e) => _buildGestureDetector(e)).toList(),
+    );
+  }
+
+  Widget _buildGestureDetector(dynamic item) {
+    return GestureDetector(
+      onTap: () {
+        widget.onChange(item);
+      },
+      child: _itemList(item),
     );
   }
 }

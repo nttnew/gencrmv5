@@ -15,6 +15,7 @@ import '../../../src/models/model_generator/file_response.dart';
 import '../../../widgets/appbar_base.dart';
 import '../../../widgets/cupertino_loading.dart';
 import '../../../widgets/item_file.dart';
+import '../../../widgets/pick_file_image.dart';
 import '../form/widget/preview_image.dart';
 
 class Attachment extends StatefulWidget {
@@ -192,7 +193,8 @@ class _AttachmentState extends State<Attachment> {
       final XFile? camera =
           await ImagePicker().pickImage(source: ImageSource.camera);
       if (camera != null) {
-        await _saveFile(list: [File(camera.path)], isAfter: isAfter);
+        final File duoi2MB = await compressImage(File(camera.path));
+        await _saveFile(list: [duoi2MB], isAfter: isAfter);
       }
     } on PlatformException catch (e) {
       throw e;

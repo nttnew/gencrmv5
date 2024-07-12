@@ -113,6 +113,8 @@ class _FormAddDataState extends State<FormAddData> {
       (Get.arguments[1] ?? '') != EDIT_PAYMENT &&
       !(Get.arguments[5] ?? false);
   BehaviorSubject<bool> _showQrCodePayment = BehaviorSubject.seeded(false);
+  // làm riêng cho carpa
+  BehaviorSubject<String> _showFieldStream = BehaviorSubject.seeded('');
 
   ///
 
@@ -251,6 +253,7 @@ class _FormAddDataState extends State<FormAddData> {
     _nameLocation.close();
     _blocAdd.close();
     _showQrCodePayment.close();
+    _showFieldStream.close();
     super.dispose();
   }
 
@@ -778,6 +781,29 @@ class _FormAddDataState extends State<FormAddData> {
     );
   }
 
+  _addReloadField(
+    CustomerIndividualItemData data,
+    v,
+  ) {
+    if (data.isShowParrent == true) _showFieldStream.add(v.toString());
+    if (data.is_load == true) _reloadStream.add('${data.field_name}$v');
+  }
+
+  _addDataV(
+    int indexParent,
+    int indexChild,
+    v,
+  ) {
+    _addData[indexParent].data[indexChild].value = v;
+  }
+
+  _getDataV(
+    int indexParent,
+    int indexChild,
+  ) {
+    return _addData[indexParent].data[indexChild].value;
+  }
+
   @override
   Widget build(BuildContext context) {
     final double paddingTop = MediaQuery.of(context).padding.top +
@@ -913,12 +939,50 @@ class _FormAddDataState extends State<FormAddData> {
                                                 children: List.generate(
                                                     itemParent.data?.length ??
                                                         0, (indexChild) {
-                                                  return _getBody(
-                                                    itemParent
-                                                        .data![indexChild],
-                                                    indexParent,
-                                                    indexChild,
-                                                  );
+                                                  CustomerIndividualItemData
+                                                      dataItem = itemParent
+                                                          .data![indexChild];
+                                                  List<dynamic>
+                                                      listShowParents =
+                                                      dataItem.showparents ??
+                                                          [];
+                                                  if (listShowParents.length >
+                                                      0) {
+                                                    return StreamBuilder<
+                                                            String>(
+                                                        stream:
+                                                            _showFieldStream,
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          final String value =
+                                                              snapshot.data ??
+                                                                  '';
+                                                          if (listShowParents
+                                                              .contains(
+                                                                  value)) {
+                                                            return _getBody(
+                                                              dataItem,
+                                                              indexParent,
+                                                              indexChild,
+                                                            );
+                                                          } else {
+                                                            _addReloadField(
+                                                                dataItem, '');
+                                                            _addDataV(
+                                                                indexParent,
+                                                                indexChild,
+                                                                '');
+                                                            return SizedBox
+                                                                .shrink();
+                                                          }
+                                                        });
+                                                  } else {
+                                                    return _getBody(
+                                                      dataItem,
+                                                      indexParent,
+                                                      indexChild,
+                                                    );
+                                                  }
                                                 }),
                                               )
                                             ],
@@ -1044,8 +1108,9 @@ class _FormAddDataState extends State<FormAddData> {
                         data,
                         _blocService.getDataSelectCar(data).toString(),
                         () {
-                          _addData[indexParent].data[indexChild].value =
+                          String v =
                               _blocService.getDataSelectCarId(data).toString();
+                          _addDataV(indexParent, indexChild, v);
                         },
                       );
                     })
@@ -1058,8 +1123,7 @@ class _FormAddDataState extends State<FormAddData> {
                                 data: data,
                                 bloc: _blocService,
                                 function: (v) {
-                                  _addData[indexParent].data[indexChild].value =
-                                      v;
+                                  _addDataV(indexParent, indexChild, v);
                                 },
                                 addData: _addData,
                               );
@@ -1068,7 +1132,7 @@ class _FormAddDataState extends State<FormAddData> {
                             data: data,
                             bloc: _blocService,
                             function: (v) {
-                              _addData[indexParent].data[indexChild].value = v;
+                              _addDataV(indexParent, indexChild, v);
                             },
                             addData: _addData,
                           )
@@ -1083,9 +1147,7 @@ class _FormAddDataState extends State<FormAddData> {
                                     addData: _addData,
                                     data: data,
                                     onChange: (v) {
-                                      _addData[indexParent]
-                                          .data[indexChild]
-                                          .value = v;
+                                      _addDataV(indexParent, indexChild, v);
                                     },
                                   );
                                 })
@@ -1093,9 +1155,7 @@ class _FormAddDataState extends State<FormAddData> {
                                 data: data,
                                 onChange: (v) {
                                   _tinhAuto(data, v);
-
-                                  _addData[indexParent].data[indexChild].value =
-                                      v;
+                                  _addDataV(indexParent, indexChild, v);
                                 },
                               )
                         : data.field_type == 'SELECT'
@@ -1110,9 +1170,8 @@ class _FormAddDataState extends State<FormAddData> {
                                           data: data,
                                           addData: _addData,
                                           onChange: (v, bool? isCK) {
-                                            _addData[indexParent]
-                                                .data[indexChild]
-                                                .value = v;
+                                            _addDataV(
+                                                indexParent, indexChild, v);
                                             _idNganHang = '${v ?? ''}';
                                           },
                                         );
@@ -1122,9 +1181,7 @@ class _FormAddDataState extends State<FormAddData> {
                                     ? LocationWidget(
                                         data: data,
                                         onSuccess: (v) {
-                                          _addData[indexParent]
-                                              .data[indexChild]
-                                              .value = v;
+                                          _addDataV(indexParent, indexChild, v);
                                         },
                                         initData: data.field_value,
                                       )
@@ -1136,9 +1193,8 @@ class _FormAddDataState extends State<FormAddData> {
                                                 data: data,
                                                 addData: _addData,
                                                 onChange: (v, bool? isCK) {
-                                                  _addData[indexParent]
-                                                      .data[indexChild]
-                                                      .value = v;
+                                                  _addDataV(indexParent,
+                                                      indexChild, v);
                                                   _addCheckHTTT(
                                                     data: data,
                                                     indexParent: indexParent,
@@ -1147,6 +1203,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                   );
                                                   _setDataLoaiHopDong(
                                                       data, v.toString());
+                                                  _addReloadField(data, v);
                                                 },
                                               );
                                             })
@@ -1164,13 +1221,10 @@ class _FormAddDataState extends State<FormAddData> {
                                                       addData: _addData,
                                                       onChange:
                                                           (v, bool? isCK) {
-                                                        _addData[indexParent]
-                                                            .data[indexChild]
-                                                            .value = v;
-                                                        if (data.is_load ==
-                                                            true)
-                                                          _reloadStream.add(
-                                                              '${data.field_name}$v');
+                                                        _addDataV(indexParent,
+                                                            indexChild, v);
+                                                        _addReloadField(
+                                                            data, v);
                                                         _addCheckHTTT(
                                                           data: data,
                                                           indexParent:
@@ -1187,12 +1241,9 @@ class _FormAddDataState extends State<FormAddData> {
                                                 data: data,
                                                 addData: _addData,
                                                 onChange: (v, bool? isCK) {
-                                                  _addData[indexParent]
-                                                      .data[indexChild]
-                                                      .value = v;
-                                                  if (data.is_load == true)
-                                                    _reloadStream.add(
-                                                        '${data.field_name}$v');
+                                                  _addDataV(indexParent,
+                                                      indexChild, v);
+                                                  _addReloadField(data, v);
                                                   _addCheckHTTT(
                                                     data: data,
                                                     indexParent: indexParent,
@@ -1210,24 +1261,20 @@ class _FormAddDataState extends State<FormAddData> {
                                     label: data.field_label ?? '',
                                     required: data.field_require ?? 0,
                                     maxLength: data.field_maxlength ?? '',
-                                    initValue: _addData[indexParent]
-                                        .data[indexChild]
-                                        .value
-                                        .toString()
-                                        .split(','),
-                                    onChange: (data) {
-                                      _addData[indexParent]
-                                          .data[indexChild]
-                                          .value = data;
+                                    initValue:
+                                        _getDataV(indexParent, indexChild)
+                                            .toString()
+                                            .split(','),
+                                    onChange: (v) {
+                                      _addDataV(indexParent, indexChild, v);
                                     },
                                   )
                                 : data.field_type == 'TEXT_MULTI_NEW'
                                     ? InputMultipleWidget(
                                         data: data,
                                         onSelect: (data) {
-                                          _addData[indexParent]
-                                              .data[indexChild]
-                                              .value = data.join(',');
+                                          final v = data.join(',');
+                                          _addDataV(indexParent, indexChild, v);
                                         },
                                         value: (data.field_set_value != null &&
                                                 data.field_set_value != '')
@@ -1238,15 +1285,13 @@ class _FormAddDataState extends State<FormAddData> {
                                         ? WidgetInputDate(
                                             data: data,
                                             dateText: data.field_set_value,
-                                            onSelect: (int date) {
-                                              _addData[indexParent]
-                                                  .data[indexChild]
-                                                  .value = date;
+                                            onSelect: (v) {
+                                              _addDataV(
+                                                  indexParent, indexChild, v);
                                             },
                                             onInit: (v) {
-                                              _addData[indexParent]
-                                                  .data[indexChild]
-                                                  .value = v;
+                                              _addDataV(
+                                                  indexParent, indexChild, v);
                                             },
                                           )
                                         : data.field_type == 'DATETIME'
@@ -1254,15 +1299,13 @@ class _FormAddDataState extends State<FormAddData> {
                                                 isDate: false,
                                                 data: data,
                                                 dateText: data.field_set_value,
-                                                onSelect: (int date) {
-                                                  _addData[indexParent]
-                                                      .data[indexChild]
-                                                      .value = date;
+                                                onSelect: (v) {
+                                                  _addDataV(indexParent,
+                                                      indexChild, v);
                                                 },
                                                 onInit: (v) {
-                                                  _addData[indexParent]
-                                                      .data[indexChild]
-                                                      .value = v;
+                                                  _addDataV(indexParent,
+                                                      indexChild, v);
                                                 },
                                               )
                                             : data.field_type == 'CHECK'
@@ -1271,10 +1314,9 @@ class _FormAddDataState extends State<FormAddData> {
                                                             .toString() ==
                                                         '1',
                                                     onChange: (check) {
-                                                      _addData[indexParent]
-                                                              .data[indexChild]
-                                                              .value =
-                                                          check ? 1 : 0;
+                                                      final v = check ? 1 : 0;
+                                                      _addDataV(indexParent,
+                                                          indexChild, v);
                                                     },
                                                     data: data,
                                                   )
@@ -1282,10 +1324,9 @@ class _FormAddDataState extends State<FormAddData> {
                                                         'PERCENTAGE'
                                                     ? FieldInputPercent(
                                                         data: data,
-                                                        onChanged: (text) {
-                                                          _addData[indexParent]
-                                                              .data[indexChild]
-                                                              .value = text;
+                                                        onChanged: (v) {
+                                                          _addDataV(indexParent,
+                                                              indexChild, v);
                                                         },
                                                       )
                                                     : data.field_type ==
@@ -1310,11 +1351,10 @@ class _FormAddDataState extends State<FormAddData> {
                                                                     onChange:
                                                                         (String?
                                                                             v) {
-                                                                      _addData[
-                                                                              indexParent]
-                                                                          .data[
-                                                                              indexChild]
-                                                                          .value = v;
+                                                                      _addDataV(
+                                                                          indexParent,
+                                                                          indexChild,
+                                                                          v);
                                                                     },
                                                                   );
                                                                 })
@@ -1336,9 +1376,10 @@ class _FormAddDataState extends State<FormAddData> {
                                                                             data,
                                                                         onChange:
                                                                             (v) {
-                                                                          _addData[indexParent]
-                                                                              .data[indexChild]
-                                                                              .value = v;
+                                                                          _addDataV(
+                                                                              indexParent,
+                                                                              indexChild,
+                                                                              v);
                                                                           _addCheckSoTien(
                                                                               data: data);
                                                                         },
@@ -1351,13 +1392,10 @@ class _FormAddDataState extends State<FormAddData> {
                                                                       _tinhAuto(
                                                                           data,
                                                                           v);
-
-                                                                      _addData[
-                                                                              indexParent]
-                                                                          .data[
-                                                                              indexChild]
-                                                                          .value = v;
-
+                                                                      _addDataV(
+                                                                          indexParent,
+                                                                          indexChild,
+                                                                          v);
                                                                       _addCheckSoTien(
                                                                           data:
                                                                               data);
@@ -1374,11 +1412,10 @@ class _FormAddDataState extends State<FormAddData> {
                                                                     : null,
                                                                 data: data,
                                                                 onChange: (v) {
-                                                                  _addData[
-                                                                          indexParent]
-                                                                      .data[
-                                                                          indexChild]
-                                                                      .value = v;
+                                                                  _addDataV(
+                                                                      indexParent,
+                                                                      indexChild,
+                                                                      v);
                                                                 },
                                                               )
                                                             : SizedBox.shrink()

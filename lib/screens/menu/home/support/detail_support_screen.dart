@@ -70,7 +70,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
             Get.back();
             AppNavigator.navigateCheckIn(
                 _id.toString(), ModuleMy.CSKH, TypeCheckIn.CHECK_IN,
-                onRefreshCheckIn: () {
+                onRefresh: () {
               _refreshList();
               _bloc.add(InitGetDetailSupportEvent(_id));
             });
@@ -84,7 +84,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
             Get.back();
             AppNavigator.navigateCheckIn(
                 _id.toString(), ModuleMy.CSKH, TypeCheckIn.CHECK_OUT,
-                onRefreshCheckIn: () {
+                onRefresh: () {
               _refreshList();
               _bloc.add(InitGetDetailSupportEvent(_id));
             });
@@ -99,11 +99,11 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
       isSvg: false,
       onThaoTac: () {
         Get.back();
-        AppNavigator.navigateFormSign(
-          getT(KeyT.sign),
-          _id,
-          type: Module.HO_TRO,
-        );
+        AppNavigator.navigateFormSign(getT(KeyT.sign), _id, type: Module.HO_TRO,
+            onRefresh: () {
+          _refreshList();
+          _bloc.add(InitGetDetailSupportEvent(_id));
+        });
       },
     ));
 
@@ -162,146 +162,144 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: BlocListener<CheckInBloc, CheckInState>(
-          bloc: _blocCheckIn,
-          listener: (context, state) {
-            if (state is SuccessCheckInState) {
-              _refreshList();
-              _bloc.add(InitGetDetailSupportEvent(_id));
-            } else if (state is ErrorCheckInState) {
-              ShowDialogCustom.showDialogBase(
-                title: getT(KeyT.notification),
-                content: state.msg,
-              );
-            }
-          },
-          child: Column(
-            children: [
-              WidgetAppbar(
-                title: _title,
-                textColor: COLORS.BLACK,
-                padding: 10,
-                right: Row(
-                  children: [
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        AppNavigator.navigateBieuMau(
-                          idDetail: _id,
-                          module: PDF_HO_TRO,
-                        );
-                      },
-                      icon: Icon(
-                        Icons.print,
-                        color: !isCarCrm() ? COLORS.BLACK : COLORS.WHITE,
-                        size: 20,
-                      ),
-                    ),
-                  ],
+      bloc: _blocCheckIn,
+      listener: (context, state) {
+        if (state is SuccessCheckInState) {
+          _refreshList();
+          _bloc.add(InitGetDetailSupportEvent(_id));
+        } else if (state is ErrorCheckInState) {
+          ShowDialogCustom.showDialogBase(
+            title: getT(KeyT.notification),
+            content: state.msg,
+          );
+        }
+      },
+      child: Column(
+        children: [
+          WidgetAppbar(
+            title: _title,
+            textColor: COLORS.BLACK,
+            padding: 10,
+            right: Row(
+              children: [
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () {
+                    AppNavigator.navigateBieuMau(
+                      idDetail: _id,
+                      module: PDF_HO_TRO,
+                    );
+                  },
+                  icon: Icon(
+                    Icons.print,
+                    color: !isCarCrm() ? COLORS.BLACK : COLORS.WHITE,
+                    size: 20,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: BlocBuilder<DetailSupportBloc, DetailSupportState>(
-                    bloc: _bloc,
-                    builder: (context, state) {
-                      if (state is SuccessGetDetailSupportState) {
-                        _checkLocation(state);
-                        _getThaoTac();
-                        _title = checkTitle(
-                          state.dataDetailSupport,
-                          'ten_ht',
-                        );
-                        WidgetsBinding.instance
-                            .addPostFrameCallback((timeStamp) {
-                          setState(() {});
-                        });
-                        return BlocListener<DetailSupportBloc,
-                            DetailSupportState>(
-                          bloc: _bloc,
-                          listener: (context, state) async {
-                            if (state is SuccessDeleteSupportState) {
-                              LoadingApi().popLoading();
-                              ShowDialogCustom.showDialogBase(
-                                title: getT(KeyT.notification),
-                                content: getT(KeyT.success),
-                                onTap1: () {
-                                  _refreshList();
-                                  Get.back();
-                                  Get.back();
-                                  Get.back();
-                                  Get.back(result: true);
-                                },
-                              );
-                            } else if (state is ErrorDeleteSupportState) {
-                              LoadingApi().popLoading();
-                              ShowDialogCustom.showDialogBase(
-                                title: getT(KeyT.notification),
-                                content: state.msg,
-                                textButton1: getT(KeyT.come_back),
-                                onTap1: () {
-                                  Get.back();
-                                  Get.back();
-                                  Get.back();
-                                  Get.back();
-                                },
-                              );
-                            }
-                          },
-                          child: RefreshIndicator(
-                            onRefresh: () async {
-                              await _refresh();
-                            },
-                            child: SingleChildScrollView(
-                              physics: AlwaysScrollableScrollPhysics(),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: 24,
-                                    ),
-                                    child: InfoBase(
-                                      listData: state.dataDetailSupport,
-                                      checkIn: state.checkIn,
-                                      checkOut: state.checkOut,
-                                    ),
-                                  ),
-                                  AppValue.vSpaceTiny,
-                                  ListNote(
-                                    module: Module.HO_TRO,
-                                    id: _id,
-                                    bloc: _blocNote,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      } else if (state is ErrorGetDetailSupportState) {
-                        return Text(
-                          state.msg,
-                          style: AppStyle.DEFAULT_16_T,
-                        );
-                      } else
-                        return Padding(
-                          padding: const EdgeInsets.only(
-                            top: 24,
-                          ),
-                          child: loadInfo(),
-                        );
-                    }),
-              ),
-              BlocBuilder<DetailSupportBloc, DetailSupportState>(
+              ],
+            ),
+          ),
+          Expanded(
+            child: BlocBuilder<DetailSupportBloc, DetailSupportState>(
                 bloc: _bloc,
                 builder: (context, state) {
-                  if (state is SuccessGetDetailSupportState)
-                    return ButtonThaoTac(onTap: () {
-                      showThaoTac(context, _list);
+                  if (state is SuccessGetDetailSupportState) {
+                    _checkLocation(state);
+                    _getThaoTac();
+                    _title = checkTitle(
+                      state.dataDetailSupport,
+                      'ten_ht',
+                    );
+                    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                      setState(() {});
                     });
-                  return ButtonThaoTac(disable: true, onTap: () {});
-                },
-              ),
-            ],
+                    return BlocListener<DetailSupportBloc, DetailSupportState>(
+                      bloc: _bloc,
+                      listener: (context, state) async {
+                        if (state is SuccessDeleteSupportState) {
+                          LoadingApi().popLoading();
+                          ShowDialogCustom.showDialogBase(
+                            title: getT(KeyT.notification),
+                            content: getT(KeyT.success),
+                            onTap1: () {
+                              _refreshList();
+                              Get.back();
+                              Get.back();
+                              Get.back();
+                              Get.back(result: true);
+                            },
+                          );
+                        } else if (state is ErrorDeleteSupportState) {
+                          LoadingApi().popLoading();
+                          ShowDialogCustom.showDialogBase(
+                            title: getT(KeyT.notification),
+                            content: state.msg,
+                            textButton1: getT(KeyT.come_back),
+                            onTap1: () {
+                              Get.back();
+                              Get.back();
+                              Get.back();
+                              Get.back();
+                            },
+                          );
+                        }
+                      },
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          await _refresh();
+                        },
+                        child: SingleChildScrollView(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 24,
+                                ),
+                                child: InfoBase(
+                                  listData: state.dataDetailSupport,
+                                  checkIn: state.checkIn,
+                                  checkOut: state.checkOut,
+                                ),
+                              ),
+                              AppValue.vSpaceTiny,
+                              ListNote(
+                                module: Module.HO_TRO,
+                                id: _id,
+                                bloc: _blocNote,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  } else if (state is ErrorGetDetailSupportState) {
+                    return Text(
+                      state.msg,
+                      style: AppStyle.DEFAULT_16_T,
+                    );
+                  } else
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                        top: 24,
+                      ),
+                      child: loadInfo(),
+                    );
+                }),
           ),
-        ));
+          BlocBuilder<DetailSupportBloc, DetailSupportState>(
+            bloc: _bloc,
+            builder: (context, state) {
+              if (state is SuccessGetDetailSupportState)
+                return ButtonThaoTac(onTap: () {
+                  showThaoTac(context, _list);
+                });
+              return ButtonThaoTac(disable: true, onTap: () {});
+            },
+          ),
+        ],
+      ),
+    ));
   }
 }

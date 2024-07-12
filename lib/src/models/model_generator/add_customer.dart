@@ -24,6 +24,8 @@ class CustomerIndividualItemData {
   final List<ButtonRes>? button;
   final FieldParent? field_parent, field_search;
   final bool? is_load;
+  final bool? isShowParrent;
+  final List<dynamic>? showparents;
 
   CustomerIndividualItemData(
     this.field_id,
@@ -47,6 +49,8 @@ class CustomerIndividualItemData {
     this.field_parent,
     this.field_search,
     this.is_load,
+    this.isShowParrent,
+    this.showparents,
   );
 
   factory CustomerIndividualItemData.fromJson(Map<String, dynamic> json) =>

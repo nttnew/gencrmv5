@@ -64,7 +64,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
         AppNavigator.navigateFormSign(
           getT(KeyT.sign),
           _id,
-          onRefreshForm: () {
+          onRefresh: () {
             _bloc.add(InitGetDetailContractEvent(int.tryParse(_id) ?? 0));
             PaymentContractBloc.of(context)
                 .add(InitGetPaymentContractEvent(int.tryParse(_id) ?? 0));

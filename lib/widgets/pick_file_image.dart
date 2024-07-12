@@ -260,7 +260,7 @@ Future<List<File>> pickFileDialog({bool isImage = false}) async {
               actions: [
                 CupertinoActionSheetAction(
                   onPressed: () async {
-                    final file = await getImageCamera();
+                    final file = await getImageCamera(is2mb: true);
                     if (file != null) listFile.add(file);
                     Get.back();
                   },
@@ -379,7 +379,7 @@ Future<File> compressImage(
 }
 
 Future<File?> getImageCamera({
-  bool is2mb = false,
+  bool is2mb = true,
 }) async {
   try {
     final XFile? fileCamera = await ImagePicker().pickImage(

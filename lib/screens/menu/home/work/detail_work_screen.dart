@@ -84,7 +84,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
             Get.back();
             AppNavigator.navigateCheckIn(
                 _id.toString(), ModuleMy.CONG_VIEC, TypeCheckIn.CHECK_IN,
-                onRefreshCheckIn: () {
+                onRefresh: () {
               _bloc.add(InitGetDetailWorkEvent(_id));
               WorkBloc.of(context).loadMoreController.reloadData();
             });
@@ -98,7 +98,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
             Get.back();
             AppNavigator.navigateCheckIn(
                 _id.toString(), ModuleMy.CONG_VIEC, TypeCheckIn.CHECK_OUT,
-                onRefreshCheckIn: () {
+                onRefresh: () {
               _bloc.add(InitGetDetailWorkEvent(_id));
               WorkBloc.of(context).loadMoreController.reloadData();
             });
@@ -117,7 +117,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
           getT(KeyT.sign),
           _id.toString(),
           type: Module.CONG_VIEC,
-          onRefreshForm: () {
+          onRefresh: () {
             _bloc.add(InitGetDetailWorkEvent(_id));
           },
         );

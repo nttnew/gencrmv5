@@ -9,40 +9,43 @@ part of 'add_customer.dart';
 CustomerIndividualItemData _$CustomerIndividualItemDataFromJson(
         Map<String, dynamic> json) =>
     CustomerIndividualItemData(
-      json['field_id'] as String?,
-      json['field_name'] as String?,
-      json['field_label'] as String?,
-      json['field_type'] as String?,
-      json['field_validation'] as String?,
-      json['field_validation_message'] as String?,
-      json['field_maxlength'] as String?,
-      json['field_hidden'] as String?,
-      json['parent'] as String?,
-      (json['field_require'] as num?)?.toInt(),
-      json['field_read_only'],
-      json['field_set_value'],
-      (json['field_datasource'] as List<dynamic>?)
-          ?.map((e) => e as List<dynamic>)
-          .toList(),
-      json['field_special'] as String?,
-      (json['field_set_value_datasource'] as List<dynamic>?)
-          ?.map((e) => e as List<dynamic>)
-          .toList(),
-      json['field_value'] as String?,
-      (json['products'] as List<dynamic>?)
-          ?.map((e) => ProductsRes.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      (json['button'] as List<dynamic>?)
-          ?.map((e) => ButtonRes.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      json['field_parent'] == null
-          ? null
-          : FieldParent.fromJson(json['field_parent'] as Map<String, dynamic>),
-      json['field_search'] == null
-          ? null
-          : FieldParent.fromJson(json['field_search'] as Map<String, dynamic>),
-      json['is_load'] as bool?,
-    );
+        json['field_id'] as String?,
+        json['field_name'] as String?,
+        json['field_label'] as String?,
+        json['field_type'] as String?,
+        json['field_validation'] as String?,
+        json['field_validation_message'] as String?,
+        json['field_maxlength'] as String?,
+        json['field_hidden'] as String?,
+        json['parent'] as String?,
+        (json['field_require'] as num?)?.toInt(),
+        json['field_read_only'],
+        json['field_set_value'],
+        (json['field_datasource'] as List<dynamic>?)
+            ?.map((e) => e as List<dynamic>)
+            .toList(),
+        json['field_special'] as String?,
+        (json['field_set_value_datasource'] as List<dynamic>?)
+            ?.map((e) => e as List<dynamic>)
+            .toList(),
+        json['field_value'] as String?,
+        (json['products'] as List<dynamic>?)
+            ?.map((e) => ProductsRes.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        (json['button'] as List<dynamic>?)
+            ?.map((e) => ButtonRes.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        json['field_parent'] == null
+            ? null
+            : FieldParent.fromJson(
+                json['field_parent'] as Map<String, dynamic>),
+        json['field_search'] == null
+            ? null
+            : FieldParent.fromJson(
+                json['field_search'] as Map<String, dynamic>),
+        json['is_load'] as bool?,
+        json['isShowParrent'] as bool?,
+        (json['showparents'] as List<dynamic>?));
 
 Map<String, dynamic> _$CustomerIndividualItemDataToJson(
         CustomerIndividualItemData instance) =>
@@ -68,6 +71,8 @@ Map<String, dynamic> _$CustomerIndividualItemDataToJson(
       'field_parent': instance.field_parent,
       'field_search': instance.field_search,
       'is_load': instance.is_load,
+      'isShowParrent': instance.isShowParrent,
+      'showparents': instance.showparents,
     };
 
 ChuKyResponse _$ChuKyResponseFromJson(Map<String, dynamic> json) =>

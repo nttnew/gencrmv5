@@ -266,27 +266,30 @@ class ItemInfo extends StatelessWidget {
   Widget _widgetCall(BuildContext context, InfoItem? item) {
     final List<String> listSDT = handelListSdt(item?.value_field);
     return GestureDetector(
-      onTap: () {
-        dialogShowAllSDT(context, listSDT);
-      },
-      child: Wrap(
-        crossAxisAlignment: WrapCrossAlignment.start,
-        alignment: WrapAlignment.end,
-        children: listSDT
-            .map(
-              (e) => WidgetText(
-                title: e + '  ',
-                textAlign: TextAlign.right,
-                style: AppStyle.DEFAULT_14.copyWith(
-                  decoration: TextDecoration.underline,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w700,
+        onTap: () {
+          dialogShowAllSDT(context, listSDT);
+        },
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.start,
+          alignment: WrapAlignment.end,
+          children: listSDT
+              .map(
+                (e) => Container(
+                  constraints: BoxConstraints(
+                      minWidth: MediaQuery.of(context).size.width / 3.5),
+                  child: WidgetText(
+                    title: e + ' ',
+                    textAlign: TextAlign.right,
+                    style: AppStyle.DEFAULT_14.copyWith(
+                      // decoration: TextDecoration.underline,
+                      color: Colors.blue,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
-              ),
-            )
-            .toList(),
-      ),
-    );
+              )
+              .toList(),
+        ));
   }
 
   Widget _widgetItem(
@@ -301,7 +304,8 @@ class ItemInfo extends StatelessWidget {
         }
       },
       child: WidgetText(
-        title: '${item?.value_field ?? ''}'.htmlToString(),
+        title:
+            '${item?.value_field ?? ''}'.replaceAll(r'\n', '\n').htmlToString(),
         textAlign: TextAlign.right,
         style: AppStyle.DEFAULT_14.copyWith(
           decoration: item?.is_link == true ? TextDecoration.underline : null,

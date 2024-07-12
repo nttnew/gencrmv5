@@ -29,24 +29,35 @@ class FieldTextAPi extends StatefulWidget {
 }
 
 class _FieldTextAPiState extends State<FieldTextAPi> {
-  late final CustomerIndividualItemData data;
+  late final CustomerIndividualItemData _data;
   TextEditingController _textEditingController = TextEditingController();
-  String idDF = '';
+  String _idDF = '';
+  bool _isDisable = false;
 
   void getId() {
     final List<ModelItemAdd> dataSelect = widget.addData;
     dataSelect.forEach((element) {
       element.data.forEach((value) {
         if (value.label == widget.data.field_parent?.field_value) {
-          if (value.value != null && value.value != '' && idDF != value.value)
+          if (value.value != null &&
+              value.value != '' &&
+              _idDF != value.value) {
             getDataApi(value.value.toString());
+            return;
+          } else if (value.value == '' && _isDisable) {
+            // case carpa 12/7
+            _isDisable = false;
+            _textEditingController.text = '';
+            _idDF = '';
+            return;
+          }
         }
       });
     });
   }
 
   Future<void> getDataApi(String id) async {
-    idDF = id;
+    _idDF = id;
     try {
       var headers = {
         'Authorization': shareLocal.getString(PreferencesKey.TOKEN),
@@ -70,7 +81,12 @@ class _FieldTextAPiState extends State<FieldTextAPi> {
 
       if (response.statusCode == 200) {
         if (response.data['data'] != null) {
+          _isDisable = response.data['isDisable'] ?? false;
           _textEditingController.text = response.data['data'] ?? '';
+          if (_isDisable) {
+            // trong case carpa
+            setState(() {});
+          }
         }
       }
     } catch (e) {
@@ -80,10 +96,10 @@ class _FieldTextAPiState extends State<FieldTextAPi> {
 
   @override
   void initState() {
-    data = widget.data;
+    _data = widget.data;
     _textEditingController.addListener(() {
       widget.onChange(
-          data.field_type == 'MONEY' || data.field_type == 'TEXT_NUMERIC'
+          _data.field_type == 'MONEY' || _data.field_type == 'TEXT_NUMERIC'
               ? _textEditingController.text.replaceAll('.', '')
               : _textEditingController.text);
     });
@@ -108,7 +124,7 @@ class _FieldTextAPiState extends State<FieldTextAPi> {
   @override
   Widget build(BuildContext context) {
     final isReadOnly =
-        data.field_special == 'none-edit' || data.field_read_only == '1';
+        _data.field_special == 'none-edit' || _data.field_read_only == '1';
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Column(
@@ -117,10 +133,10 @@ class _FieldTextAPiState extends State<FieldTextAPi> {
           RichText(
             textScaleFactor: MediaQuery.of(Get.context!).textScaleFactor,
             text: TextSpan(
-              text: data.field_label ?? '',
+              text: _data.field_label ?? '',
               style: AppStyle.DEFAULT_14W600,
               children: <TextSpan>[
-                data.field_require == 1
+                _data.field_require == 1
                     ? TextSpan(
                         text: '*',
                         style: TextStyle(
@@ -140,7 +156,8 @@ class _FieldTextAPiState extends State<FieldTextAPi> {
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-              color: isReadOnly ? COLORS.LIGHT_GREY : COLORS.WHITE,
+              color:
+                  isReadOnly || _isDisable ? COLORS.LIGHT_GREY : COLORS.WHITE,
               borderRadius: BorderRadius.circular(5),
               border: Border.all(
                 color: COLORS.ffBEB4B4,
@@ -154,22 +171,23 @@ class _FieldTextAPiState extends State<FieldTextAPi> {
               ),
               child: Container(
                 child: TextFormField(
-                  inputFormatters: data.field_type == 'MONEY' ||
-                          data.field_type == 'TEXT_NUMERIC'
+                  enabled: !_isDisable,
+                  inputFormatters: _data.field_type == 'MONEY' ||
+                          _data.field_type == 'TEXT_NUMERIC'
                       ? AppStyle.inputPrice
                       : null,
                   controller: _textEditingController,
-                  minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
-                  maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
+                  minLines: _data.field_type == 'TEXTAREA' ? 2 : 1,
+                  maxLines: _data.field_type == 'TEXTAREA' ? 6 : 1,
                   style: AppStyle.DEFAULT_14_BOLD,
                   keyboardType: widget.typeInput ??
-                      (data.field_special == 'numeric' ||
-                              data.field_type == 'MONEY' ||
-                              data.field_type == 'TEXT_NUMERIC'
+                      (_data.field_special == 'numeric' ||
+                              _data.field_type == 'MONEY' ||
+                              _data.field_type == 'TEXT_NUMERIC'
                           ? TextInputType.number
-                          : data.field_special == 'default'
+                          : _data.field_special == 'default'
                               ? TextInputType.text
-                              : data.field_special == 'email-address'
+                              : _data.field_special == 'email-address'
                                   ? TextInputType.emailAddress
                                   : isReadOnly
                                       ? TextInputType.none
