@@ -62,6 +62,12 @@ String ADD_NEW_CAR = 'ADD_NEW_CAR';
 String SPECIAL_KH = 'khachhang';
 String SPECIAL_SPKH = 'spkh';
 
+// id column db
+String SO_HOP_DONG_DB = 'so_hop_dong';
+String TRANG_THAI_DB = 'trang_thai';
+String NGAY_KY_DB = 'ngay_ky';
+String KHACH_HANG_DB = 'khach_hang';
+
 class TypeCheckIn {
   static const CHECK_IN = 'checkin';
   static const CHECK_OUT = 'checkout';

@@ -59,7 +59,7 @@ const String TIEN_GIAM_FN =
 const String TONG_TIEN_THUE_FN = 'tien_thue';
 const String CHUA_THANH_TOAN_FN = 'chuathanhtoan';
 const String TONG_BAO_HIEM_TRA = 'tong_bao_hiem_tra';
-const String LOAI_HOP_DONG = 'col112'; // case add edit HOP_DONG
+const String LOAI_HOP_DONG_DB = 'loai_hop_dong'; // case add edit HOP_DONG
 const String SELECT_NGAN_HANG = 'banks';
 
 class FormAddData extends StatefulWidget {
@@ -513,7 +513,7 @@ class _FormAddDataState extends State<FormAddData> {
     String v,
   ) {
     // set data loai and reload products
-    if (LOAI_HOP_DONG == data.field_name) {
+    if (LOAI_HOP_DONG_DB == data.field_name) {
       _typeContact.add(v);
     }
   }

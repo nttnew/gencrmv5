@@ -90,10 +90,10 @@ class _InputDropdownState extends State<InputDropdown> {
   @override
   void initState() {
     if (widget.isEdit) {
-      if ((widget.data.field_name == 'col131' &&
+      if ((widget.data.field_name == KHACH_HANG_DB &&
               widget.typeScreen != ADD_CHANCE_CUSTOMER &&
               widget.typeScreen != EDIT_CHANCE) ||
-          widget.data.field_name == 'col121' ||
+          widget.data.field_name == SO_HOP_DONG_DB ||
           widget.data.field_name == 'khach_hang_id_dm' ||
           widget.data.field_name == 'cv_kh' ||
           widget.data.field_name == 'khach_hang') {
@@ -233,10 +233,10 @@ class _InputDropdownState extends State<InputDropdown> {
                                     MediaQuery.of(context).viewInsets.bottom),
                             child: DataDropDownItem(
                               data: dropdown,
-                              isSearch: ((widget.data.field_name == 'col131' &&
+                              isSearch: ((widget.data.field_name == KHACH_HANG_DB &&
                                           widget.typeScreen !=
                                               ADD_CHANCE_CUSTOMER) ||
-                                      widget.data.field_name == 'col121' ||
+                                      widget.data.field_name == SO_HOP_DONG_DB ||
                                       widget.data.field_name == 'cv_kh' ||
                                       widget.data.field_name ==
                                           'khach_hang_id_dm' ||
@@ -260,10 +260,10 @@ class _InputDropdownState extends State<InputDropdown> {
                                 FocusManager.instance.primaryFocus?.unfocus();
                               },
                               onLoadMore: (int page, String search) {
-                                if ((widget.data.field_name == 'col131' &&
+                                if ((widget.data.field_name == KHACH_HANG_DB &&
                                         widget.typeScreen !=
                                             ADD_CHANCE_CUSTOMER) ||
-                                    widget.data.field_name == 'col121' ||
+                                    widget.data.field_name == SO_HOP_DONG_DB ||
                                     widget.data.field_name == 'cv_kh' ||
                                     widget.data.field_name ==
                                         'khach_hang_id_dm' ||

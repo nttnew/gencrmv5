@@ -365,7 +365,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                         builder: (context, state) {
                           if (state is SuccessDetailContractState) {
                             _title =
-                                checkTitle(state.listDetailContract, 'col121');
+                                checkTitle(state.listDetailContract, SO_HOP_DONG_DB);
                             WidgetsBinding.instance
                                 .addPostFrameCallback((timeStamp) {
                               setState(() {});

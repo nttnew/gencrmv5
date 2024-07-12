@@ -14,15 +14,3 @@ class PostServiceVoucherEvent extends AddServiceVoucherEvent {
   @override
   List<Object?> get props => [sdt, bienSoXe];
 }
-
-class SaveVoucherServiceEvent extends AddServiceVoucherEvent {
-  final VoucherServiceRequest voucherServiceRequest;
-  final List<File>? listFile;
-
-  SaveVoucherServiceEvent(
-    this.voucherServiceRequest,
-    this.listFile,
-  );
-  @override
-  List<Object?> get props => [voucherServiceRequest, listFile];
-}
