@@ -116,7 +116,7 @@ class _InputMultipleWidgetState extends State<InputMultipleWidget> {
                   style: AppStyle.DEFAULT_14_BOLD,
                   keyboardType: widget.data.field_special == "default"
                       ? TextInputType.text
-                      : widget.data.field_special == "numberic"
+                      : widget.data.field_special == "numeric"
                           ? TextInputType.number
                           : widget.data.field_special == "email-address"
                               ? TextInputType.emailAddress

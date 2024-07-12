@@ -114,7 +114,7 @@ class _FieldTextState extends State<FieldText> {
                   maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
                   style: AppStyle.DEFAULT_14_BOLD,
                   keyboardType: data.field_type == 'MONEY' ||
-                          data.field_special == 'numberic' ||
+                          data.field_special == 'numeric' ||
                           data.field_type == 'TEXT_NUMERIC'
                       ? TextInputType.number
                       : data.field_special == 'default'

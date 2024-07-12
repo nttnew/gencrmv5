@@ -633,7 +633,7 @@ class _FormAddSignState extends State<FormAddSign>
                       ? TextInputType.number
                       : data.field_special == 'default'
                           ? TextInputType.text
-                          : (data.field_special == 'numberic')
+                          : (data.field_special == 'numeric')
                               ? TextInputType.number
                               : data.field_special == 'email-address'
                                   ? TextInputType.emailAddress
@@ -714,7 +714,7 @@ class _FormAddSignState extends State<FormAddSign>
                       ? TextInputType.number
                       : data.field_special == 'default'
                           ? TextInputType.text
-                          : (data.field_special == 'numberic')
+                          : (data.field_special == 'numeric')
                               ? TextInputType.number
                               : data.field_special == 'email-address'
                                   ? TextInputType.emailAddress
