@@ -86,7 +86,7 @@ class DetailCustomerBloc
   Stream<DetailCustomerState> _deleteCustomer({
     required int id,
   }) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.deleteCustomer({
         'id': id,
@@ -99,10 +99,10 @@ class DetailCustomerBloc
         yield ErrorDeleteCustomerState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorDeleteCustomerState(getT(KeyT.an_error_occurred));
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Future<dynamic> getClueCustomer({

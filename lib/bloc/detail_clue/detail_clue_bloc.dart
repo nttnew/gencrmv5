@@ -46,7 +46,7 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
   }
 
   Stream<DetailClueState> _deleteClue(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingDetailClueState();
       final responseDetailClue =
@@ -58,11 +58,11 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
         yield ErrorDeleteClueState(responseDetailClue.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorDeleteClueState(getT(KeyT.an_error_occurred));
       throw (e);
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Future<dynamic> getWorkClue({

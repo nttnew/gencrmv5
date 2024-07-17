@@ -61,7 +61,7 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
   }
 
   Stream<DetailProductState> _deleteProduct({required String id}) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingDeleteProductState();
       final response = await userRepository.deleteProduct(id: id);
@@ -75,11 +75,11 @@ class DetailProductBloc extends Bloc<DetailProductEvent, DetailProductState> {
       } else
         yield ErrorDeleteProductState(msg);
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorDeleteProductState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static DetailProductBloc of(BuildContext context) =>

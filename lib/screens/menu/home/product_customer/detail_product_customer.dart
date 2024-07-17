@@ -298,7 +298,7 @@ class _DetailProductCustomerScreenState
         bloc: _bloc,
         listener: (context, state) async {
           if (state is SuccessDeleteProductState) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             ShowDialogCustom.showDialogBase(
               title: getT(KeyT.notification),
               content: getT(KeyT.delete_success),
@@ -313,7 +313,7 @@ class _DetailProductCustomerScreenState
               },
             );
           } else if (state is ErrorDeleteProductState) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             ShowDialogCustom.showDialogBase(
               title: getT(KeyT.notification),
               content: state.msg,

@@ -27,7 +27,7 @@ class AddJobChanceBloc extends Bloc<AddJobChanceEvent, AddJobChanceState> {
   }
 
   Stream<AddJobChanceState> _getAddJobChance({required int id}) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.getAddJobChance(id);
       if (isSuccess(response.code)) {
@@ -37,11 +37,11 @@ class AddJobChanceBloc extends Bloc<AddJobChanceEvent, AddJobChanceState> {
       } else
         yield ErrorGetAddJobChanceState(response.msg ?? '');
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorGetAddJobChanceState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static AddJobChanceBloc of(BuildContext context) =>

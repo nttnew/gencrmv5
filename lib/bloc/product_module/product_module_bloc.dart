@@ -67,20 +67,20 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
   Future<ListProductResponse?> getListProduct({
     required String querySearch,
   }) async {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.getListProductModule(
         txt: querySearch,
         page: BASE_URL.PAGE_DEFAULT.toString(),
       );
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         return response;
       }
     } catch (e) {
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
     return null;
   }
 

@@ -116,7 +116,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
         bloc: _bloc,
         listener: (context, state) async {
           if (state is SuccessDeleteClueState) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             ShowDialogCustom.showDialogBase(
               title: getT(KeyT.notification),
               content: getT(KeyT.success),
@@ -129,7 +129,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
               },
             );
           } else if (state is ErrorDeleteClueState) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             ShowDialogCustom.showDialogBase(
               title: getT(KeyT.notification),
               content: state.msg,

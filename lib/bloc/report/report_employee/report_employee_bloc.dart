@@ -36,7 +36,7 @@ class ReportEmployeeBloc
 
   Stream<ReportEmployeeState> _getReportContact(
       int? time, String? timeFrom, String? timeTo, int? diemBan) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingReportEmployeeState();
       final response =
@@ -46,15 +46,15 @@ class ReportEmployeeBloc
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorReportEmployeeState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorReportEmployeeState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static ReportEmployeeBloc of(BuildContext context) =>

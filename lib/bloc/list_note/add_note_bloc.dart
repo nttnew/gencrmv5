@@ -45,7 +45,7 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
     required String content,
     required String module,
   }) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddNoteState();
       final response = await userRepository.addNote(
@@ -54,7 +54,7 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
         module: getURLModule(module),
       );
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield SuccessAddNoteState();
       } else {
         yield ErrorAddNoteState(response.msg ?? '');
@@ -64,7 +64,7 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
          getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddNoteState> _editNoteCus({
@@ -73,7 +73,7 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
     required String noteId,
     required String module,
   }) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddNoteState();
       final response = await userRepository.editNote(
@@ -86,15 +86,15 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
         yield SuccessAddNoteState();
       } else {
         yield ErrorAddNoteState(response.msg ?? '');
-        LoadingApi().popLoading();
+        Loading().popLoading();
       }
     } catch (e) {
       yield ErrorAddNoteState(
           getT(KeyT.an_error_occurred),);
-      LoadingApi().popLoading();
+      Loading().popLoading();
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddNoteState> _deleteNote({
@@ -102,7 +102,7 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
     required String noteId,
     required String module,
   }) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingDeleteNoteState();
       final response = await userRepository.deleteNote(
@@ -114,15 +114,15 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
         yield SuccessAddNoteState();
       } else {
         yield ErrorDeleteNoteState(response.msg ?? '');
-        LoadingApi().popLoading();
+        Loading().popLoading();
       }
     } catch (e) {
       yield ErrorDeleteNoteState(
          getT(KeyT.an_error_occurred));
-      LoadingApi().popLoading();
+      Loading().popLoading();
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static AddNoteBloc of(BuildContext context) =>

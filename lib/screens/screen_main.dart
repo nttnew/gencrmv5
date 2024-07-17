@@ -135,7 +135,7 @@ class _ScreenMainState extends State<ScreenMain> {
     );
     getMenu();
     _blocLogin.getListMenuFlash();
-    if (isCarCrm()) _blocLogin.getChiNhanh();
+    _blocLogin.getChiNhanh();
     super.initState();
   }
 

@@ -121,7 +121,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<dynamic> postUpdateTTHD({
     required String idTT,
   }) async {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.postUpdateTTHD(
         idDetailCarMain,
@@ -130,7 +130,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final statusCode =
           (response as Map<String, dynamic>).getOrElse('code', () => -1);
       final msg = response.getOrElse('msg', () => -1);
-      LoadingApi().popLoading();
+      Loading().popLoading();
       if (isSuccess(statusCode)) {
         return '';
       } else if (statusCode == BASE_URL.SUCCESS_999) {
@@ -139,7 +139,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         return msg;
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }
@@ -149,7 +149,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     required String idTD,
     required String idNTH,
   }) async {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.postUpdateTDNTH(
         id,
@@ -159,7 +159,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final statusCode =
           (response as Map<String, dynamic>).getOrElse('code', () => -1);
       final msg = response.getOrElse('msg', () => -1);
-      LoadingApi().popLoading();
+      Loading().popLoading();
 
       if (isSuccess(statusCode)) {
         return '';
@@ -169,7 +169,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         return msg;
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }
@@ -238,24 +238,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Future<void> getChiNhanh() async {
-    try {
-      final response = await userRepository.getReportOption2();
-      if (isSuccess(response.code)) {
-        locationStatusStream.add(response);
-        if ((response.data?.diem_ban?.length ?? 0) > 1)
-          isShowLocaiton.add(response.data?.diem_ban ?? []);
+    if (isCarCrm())
+      try {
+        final response = await userRepository.getReportOption2();
+        if (isSuccess(response.code)) {
+          locationStatusStream.add(response);
+          if ((response.data?.diem_ban?.length ?? 0) > 1)
+            isShowLocaiton.add(response.data?.diem_ban ?? []);
+        }
+      } catch (e) {
+        ShowDialogCustom.showDialogBase(
+          title: getT(KeyT.notification),
+          content: getT(KeyT.an_error_occurred),
+          textButton1: getT(KeyT.try_again),
+          onTap1: () {
+            getChiNhanh();
+            GET.Get.back();
+          },
+        );
       }
-    } catch (e) {
-      ShowDialogCustom.showDialogBase(
-        title: getT(KeyT.notification),
-        content: getT(KeyT.an_error_occurred),
-        textButton1: getT(KeyT.try_again),
-        onTap1: () {
-          getChiNhanh();
-          GET.Get.back();
-        },
-      );
-    }
   }
 
   void getListMenuFlash() {
@@ -322,7 +323,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else if (event is FormSubmitted) {
       try {
         if (state.status.isValidated) {
-          LoadingApi().pushLoading(isLogin: true);
+          Loading().showLoading(isLogin: true);
 
           yield state.copyWith(status: FormzStatus.submissionInProgress);
           var response = await userRepository.loginApp(
@@ -353,14 +354,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             await _saveData(response);
             await shareLocal.putString(
                 PreferencesKey.USER_PASSWORD, state.password.value);
-            LoadingApi().popLoading();
+            Loading().popLoading();
 
             yield state.copyWith(
                 status: FormzStatus.submissionSuccess,
                 message: response.msg ?? '',
                 user: response.data!);
           } else {
-            LoadingApi().popLoading();
+            Loading().popLoading();
 
             yield state.copyWith(
                 status: FormzStatus.submissionFailure,
@@ -368,7 +369,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           }
         }
       } catch (e) {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield state.copyWith(
             status: FormzStatus.submissionFailure,
             message: getT(KeyT.an_error_occurred));
@@ -376,7 +377,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     } else {
       if (event is LoginWithFingerPrint) {
-        LoadingApi().pushLoading(isLogin: true);
+        Loading().showLoading(isLogin: true);
         yield state.copyWith(status: FormzStatus.submissionInProgress);
         try {
           String userName =
@@ -398,19 +399,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               token: response.data?.token,
             );
             await _saveData(response);
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield state.copyWith(
                 status: FormzStatus.submissionSuccess,
                 message: response.msg ?? '',
                 user: response.data!);
           } else {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield state.copyWith(
                 status: FormzStatus.submissionFailure,
                 message: response.msg ?? '');
           }
         } catch (e) {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           yield state.copyWith(
               status: FormzStatus.submissionFailure,
               message: getT(KeyT.an_error_occurred));
@@ -543,10 +544,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Future<void> reloadLang() async {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     await getLanguageAPI();
     await getLocationApi();
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   void setLanguage(LanguagesResponse language) {
@@ -571,10 +572,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         res = response.msg ?? '';
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       return getT(KeyT.an_error_occurred);
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
     return res;
   }
 
@@ -583,7 +584,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     required String idDetail,
     required String idBieuMau,
   }) async {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
 
     Map<String, dynamic> res = {
       'mes': getT(KeyT.an_error_occurred),
@@ -605,11 +606,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         res['mes'] = response.msg ?? '';
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       res['mes'] = getT(KeyT.an_error_occurred);
       return res;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
     return res;
   }
 

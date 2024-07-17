@@ -34,7 +34,7 @@ class QuySoReportBloc extends Bloc<QuySoReportEvent, QuySoReportState> {
     String kyTaiChinh,
     String location,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.getBaoCaoSoQuy(
         nam,
@@ -49,10 +49,10 @@ class QuySoReportBloc extends Bloc<QuySoReportEvent, QuySoReportState> {
       } else
         yield ErrorGetListQuySoReportState(response.msg ?? '');
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorGetListQuySoReportState(getT(KeyT.an_error_occurred));
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static QuySoReportBloc of(BuildContext context) =>

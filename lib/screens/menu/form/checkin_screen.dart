@@ -67,7 +67,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
       bloc: _blocCheckIn,
       listener: (BuildContext context, state) {
         if (state is SuccessCheckInState) {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           ShowDialogCustom.showDialogBase(
             title: getT(KeyT.notification),
             content: getT(KeyT.new_data_added_successfully),
@@ -78,7 +78,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
             },
           );
         } else if (state is ErrorCheckInState) {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           ShowDialogCustom.showDialogBase(
             title: getT(KeyT.notification),
             content: state.msg,

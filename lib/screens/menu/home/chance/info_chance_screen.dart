@@ -139,7 +139,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
         bloc: _bloc,
         listener: (context, state) async {
           if (state is SuccessDeleteChanceState) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             ShowDialogCustom.showDialogBase(
               title: getT(KeyT.notification),
               content: getT(KeyT.success),
@@ -152,7 +152,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
               },
             );
           } else if (state is ErrorDeleteChanceState) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             ShowDialogCustom.showDialogBase(
               title: getT(KeyT.notification),
               content: state.msg,

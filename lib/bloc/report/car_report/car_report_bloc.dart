@@ -36,7 +36,7 @@ class CarReportBloc extends Bloc<CarReportEvent, CarReportState> {
     String? timeTo,
     String? diemBan,
   }) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.getHomeBaoCao(
         time: time,
@@ -51,12 +51,12 @@ class CarReportBloc extends Bloc<CarReportEvent, CarReportState> {
       } else
         yield ErrorGetListCarReportState(response.msg ?? '');
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorGetListCarReportState(getT(KeyT.an_error_occurred));
 
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static CarReportBloc of(BuildContext context) =>

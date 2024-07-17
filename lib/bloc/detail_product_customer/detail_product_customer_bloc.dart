@@ -38,21 +38,21 @@ class DetailProductCustomerBloc
   Stream<DetailProductCustomerState> _getDetailProduct({
     required String id,
   }) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingDetailProductCustomerState();
       final response = await userRepository.getDetailProductCustomer(id: id);
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield GetDetailProductCustomerState(response);
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorGetDetailProductCustomerState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorGetDetailProductCustomerState(getT(KeyT.an_error_occurred));
     }
   }
@@ -136,7 +136,7 @@ class DetailProductCustomerBloc
   Stream<DetailProductCustomerState> _deleteProduct({
     required String id,
   }) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingDeleteProductState();
       final response = await userRepository.deleteProductCustomer(id: id);
@@ -151,10 +151,10 @@ class DetailProductCustomerBloc
       } else
         yield ErrorDeleteProductState(msg);
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorDeleteProductState(getT(KeyT.an_error_occurred));
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   dispose() {

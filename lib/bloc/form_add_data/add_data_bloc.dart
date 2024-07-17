@@ -62,7 +62,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     Map<String, dynamic> data,
     List<File>? files,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     yield LoadingAddData();
     try {
       final response = await userRepository.addOrganizationCustomer(data: data);
@@ -73,34 +73,34 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
               files: files,
               module: getURLModule(Module.KHACH_HANG));
           if (isSuccess(responseUpload.code)) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield SuccessAddData(
                 result: ['${response.id}', '${response.name}']);
           } else {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           yield SuccessAddData(result: ['${response.id}', '${response.name}']);
         }
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddDataState> _addCustomer(
     Map<String, dynamic> data,
     List<File>? files,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     yield LoadingAddData();
     try {
       final response = await userRepository.addIndividualCustomer(data: data);
@@ -111,34 +111,34 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
               files: files,
               module: getURLModule(Module.KHACH_HANG));
           if (isSuccess(responseUpload.code)) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield SuccessAddData(
                 result: ['${response.id}', '${response.name}']);
           } else {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           yield SuccessAddData(result: ['${response.id}', '${response.name}']);
         }
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddDataState> _editCustomer(
     Map<String, dynamic> data,
     List<File>? files,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddData();
       final response = await userRepository.editCustomer(data: data);
@@ -161,11 +161,11 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
         yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddDataState> _addContactCus(
@@ -173,7 +173,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     List<File>? files,
     bool isEdit,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddData();
       final response = await userRepository.addContactCus(data: data);
@@ -184,26 +184,26 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
               files: files,
               module: getURLModule(Module.DAU_MOI));
           if (isSuccess(responseUpload.code)) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield SuccessAddData(isEdit: isEdit);
           } else {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           yield SuccessAddData(isEdit: isEdit);
         }
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddDataState> _addOpportunity(
@@ -211,7 +211,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     List<File>? files,
     bool isEdit,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddData();
       final response = await userRepository.addOpportunity(data: data);
@@ -222,26 +222,26 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
               files: files,
               module: getURLModule(Module.CO_HOI_BH));
           if (isSuccess(responseUpload.code)) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield SuccessAddData(isEdit: isEdit);
           } else {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           yield SuccessAddData(isEdit: isEdit);
         }
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddDataState> _addContract(
@@ -249,7 +249,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     List<File>? files,
     bool isEdit,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddData();
       final response = await userRepository.addContract(data: data);
@@ -260,33 +260,33 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
               files: files,
               module: getURLModule(Module.HOP_DONG));
           if (isSuccess(responseUpload.code)) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield SuccessAddData(isEdit: isEdit);
           } else {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           yield SuccessAddData(isEdit: isEdit);
         }
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddDataState> _addJob(
     Map<String, dynamic> data,
     List<File>? files,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddData();
       final response = await userRepository.addJob(data: data);
@@ -298,26 +298,26 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
             module: getURLModule(Module.CONG_VIEC),
           );
           if (isSuccess(responseUpload.code)) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield SuccessAddData();
           } else {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           yield SuccessAddData();
         }
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddDataState> _addSupport(
@@ -325,7 +325,7 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
     List<File>? files,
     bool isEdit,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddData();
       final response = await userRepository.addSupport(data: data);
@@ -336,33 +336,33 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
               files: files,
               module: getURLModule(Module.HO_TRO));
           if (isSuccess(responseUpload.code)) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield SuccessAddData(isEdit: isEdit);
           } else {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           yield SuccessAddData(isEdit: isEdit);
         }
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddDataState> _editJob(
     Map<String, dynamic> data,
     List<File>? files,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddData();
       final response = await userRepository.editJob(data: data);
@@ -373,33 +373,33 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
               files: files,
               module: getURLModule(Module.CONG_VIEC));
           if (isSuccess(responseUpload.code)) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield SuccessAddData(isEdit: true);
           } else {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           yield SuccessAddData(isEdit: true);
         }
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddDataState> _addProduct(
     FormDataCustom data,
     List<File>? files,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddData();
       final response = await userRepository.addProduct(
@@ -412,33 +412,33 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
               files: files,
               module: getURLModule(Module.PRODUCT));
           if (isSuccess(responseUpload.code)) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield SuccessAddData();
           } else {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           yield SuccessAddData();
         }
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddDataState> _addProductCustomer(
     Map<String, dynamic> data,
     List<File>? files,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddData();
       final response = await userRepository.saveAddProductCustomer(data: data);
@@ -450,37 +450,37 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
             module: getURLModule(Module.SAN_PHAM_KH),
           );
           if (isSuccess(response.code)) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield SuccessAddData(
               dataSPKH: response.data,
               idKH: response.id.toString(),
             );
           } else {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           yield SuccessAddData(
             dataSPKH: response.data,
             idKH: response.id.toString(),
           );
         }
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddDataState> _editProduct(
       FormDataCustom data, List<File>? files, int id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddData();
       final response = await userRepository.editProduct(data: data, id: id);
@@ -491,33 +491,33 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
               files: files,
               module: getURLModule(Module.PRODUCT));
           if (isSuccess(responseUpload.code)) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield SuccessAddData(isEdit: true);
           } else {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           yield SuccessAddData(isEdit: true);
         }
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddDataState> _editProductCustomer(
     Map<String, dynamic> data,
     List<File>? files,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddData();
       final response = await userRepository.saveEditProductCustomer(data: data);
@@ -528,57 +528,57 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
               files: files,
               module: getURLModule(Module.SAN_PHAM_KH));
           if (isSuccess(responseUpload.code)) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield SuccessAddData(isEdit: true);
           } else {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           yield SuccessAddData(isEdit: true);
         }
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddDataState> _signature(
     Map<String, dynamic> data,
     String type,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddData();
       final response =
           await userRepository.saveSignature(data: data, type: type);
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield SuccessAddData();
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorAddData(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddDataState> _addQuickContract(
     Map<String, dynamic> data,
     List<File>? files,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddData();
       final response = await userRepository.saveServiceVoucher(data: data);
@@ -594,32 +594,32 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
               files: files,
               module: getURLModule(Module.HOP_DONG));
           if (isSuccess(responseUpload.code)) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield SuccessAddData();
           } else {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield ErrorAddData(responseUpload.msg ?? '');
           }
         } else {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           yield SuccessAddData();
         }
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorAddData(msg);
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddDataState> _addPayment(
     Map<String, dynamic> data,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddData();
       final response = await userRepository.addPayment(map: data);
@@ -627,24 +627,24 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       final msg = response.msg ?? '';
 
       if (isSuccess(statusCode)) {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield SuccessAddData();
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorAddData(msg);
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddDataState> _editPayment(
     Map<String, dynamic> data,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddData();
       final response = await userRepository.updatePayment(map: data);
@@ -652,18 +652,18 @@ class AddDataBloc extends Bloc<AddDataEvent, AddDataState> {
       final msg = response.msg ?? '';
 
       if (isSuccess(statusCode)) {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield SuccessAddData();
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorAddData(msg);
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddData(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static AddDataBloc of(BuildContext context) =>

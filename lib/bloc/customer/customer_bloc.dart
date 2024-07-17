@@ -43,7 +43,7 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
     int page = BASE_URL.PAGE_DEFAULT,
     String? qr,
   }) async {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.getListCustomer(
         page,
@@ -53,13 +53,13 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
         qr,
       );
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         return response;
       }
     } catch (e) {
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
     return null;
   }
 
@@ -97,7 +97,7 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
     List<File>? files,
   }) async* {
     yield LoadingListCustomerState();
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.addIndividualCustomer(data: data);
 
@@ -108,30 +108,30 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
               files: files,
               module: getURLModule(Module.KHACH_HANG));
           if (isSuccess(responseUpload.code)) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield SuccessAddCustomerIndividualState(
                 ['${response.id}', '${response.name}']);
           } else {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             yield ErrorAddCustomerIndividualState(responseUpload.msg ?? '');
           }
         } else {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           yield SuccessAddCustomerIndividualState(
               ['${response.id}', '${response.name}']);
         }
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorAddCustomerIndividualState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorAddCustomerIndividualState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static GetListCustomerBloc of(BuildContext context) =>

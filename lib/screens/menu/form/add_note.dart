@@ -52,14 +52,14 @@ class _AddNoteState extends State<AddNote> {
               FocusManager.instance.primaryFocus?.unfocus();
               _controllerNote.reloadData();
             } else if (state is ErrorAddNoteState) {
-              LoadingApi().popLoading();
+              Loading().popLoading();
               ShowDialogCustom.showDialogBase(
                 title: getT(KeyT.notification),
                 content: state.msg,
                 textButton1: getT(KeyT.ok),
               );
             } else if (state is ErrorDeleteNoteState) {
-              LoadingApi().popLoading();
+              Loading().popLoading();
               ShowDialogCustom.showDialogBase(
                 title: getT(KeyT.notification),
                 content: state.msg,

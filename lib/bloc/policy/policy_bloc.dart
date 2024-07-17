@@ -24,7 +24,7 @@ class GetPolicyBloc extends Bloc<GetPolicyEvent, PolicyState> {
   }
 
   Stream<PolicyState> _getPolicy() async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.getPolicy();
       if (isSuccess(response.code)) {
@@ -32,12 +32,12 @@ class GetPolicyBloc extends Bloc<GetPolicyEvent, PolicyState> {
       } else
         yield ErrorGetPolicyState(response.msg ?? '');
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorGetPolicyState(
          getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static GetPolicyBloc of(BuildContext context) =>

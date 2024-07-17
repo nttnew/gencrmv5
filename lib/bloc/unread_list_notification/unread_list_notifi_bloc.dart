@@ -40,7 +40,7 @@ class GetNotificationBloc
     required int page,
     bool isLoading = true,
   }) async* {
-    if (isLoading) LoadingApi().pushLoading();
+    if (isLoading) Loading().showLoading();
     try {
       final response = await userRepository.getListUnReadNotification(page);
       if (isSuccess(response.code)) {
@@ -51,18 +51,18 @@ class GetNotificationBloc
         } else {
           listNotification!.addAll(response.data.list!);
         }
-        if (isLoading) LoadingApi().popLoading();
+        if (isLoading) Loading().popLoading();
         yield UpdateNotificationState(
             list: listNotification!,
             total: response.data.total!,
             limit: response.data.limit!,
             page: page);
       } else {
-        if (isLoading) LoadingApi().popLoading();
+        if (isLoading) Loading().popLoading();
         yield ErrorGetNotificationState(response.msg ?? '');
       }
     } catch (e) {
-      if (isLoading) LoadingApi().popLoading();
+      if (isLoading) Loading().popLoading();
       yield ErrorGetNotificationState(getT(KeyT.an_error_occurred));
     }
   }
@@ -74,11 +74,11 @@ class GetNotificationBloc
       if (isSuccess(response.code)) {
         yield DeleteNotificationState();
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorDeleteNotificationState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorDeleteNotificationState(getT(KeyT.an_error_occurred));
       throw e;
     }
@@ -92,31 +92,31 @@ class GetNotificationBloc
       if (isSuccess(response.code)) {
         yield ReadNotificationState();
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorNotificationState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorNotificationState(getT(KeyT.an_error_occurred));
     }
   }
 
   Stream<NotificationState> _checkNotification(bool isLoading) async* {
     try {
-      if (isLoading) LoadingApi().pushLoading();
+      if (isLoading) Loading().showLoading();
       final response = await userRepository.getListUnReadNotification(1);
       if (isSuccess(response.code)) {
-        if (isLoading) LoadingApi().popLoading();
+        if (isLoading) Loading().popLoading();
         if (response.data.list!.length > 0) {
           total.add(int.parse(response.data.total ?? '0'));
           yield NotificationNeedRead();
         }
       } else {
-        if (isLoading) LoadingApi().popLoading();
+        if (isLoading) Loading().popLoading();
         yield ErrorGetNotificationState(response.msg ?? '');
       }
     } catch (e) {
-      if (isLoading) LoadingApi().popLoading();
+      if (isLoading) Loading().popLoading();
       yield ErrorGetNotificationState(getT(KeyT.an_error_occurred));
     }
   }

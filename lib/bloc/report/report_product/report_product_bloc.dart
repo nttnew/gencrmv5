@@ -38,7 +38,7 @@ class ReportProductBloc extends Bloc<ReportProductEvent, ReportProductState> {
     String? timeFrom,
     String? timeTo,
   ) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingReportProductState();
       final response = await userRepository.reportProduct(
@@ -53,15 +53,15 @@ class ReportProductBloc extends Bloc<ReportProductEvent, ReportProductState> {
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorReportProductState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorReportProductState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static ReportProductBloc of(BuildContext context) =>

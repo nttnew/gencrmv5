@@ -51,21 +51,21 @@ class DetailSupportBloc extends Bloc<DetailSupportEvent, DetailSupportState> {
   }
 
   Stream<DetailSupportState> _deleteSupport({required String id}) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.deleteSupport({"id": id});
       if (isSuccess(response.code)) {
         yield SuccessDeleteSupportState();
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorDeleteSupportState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorDeleteSupportState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static DetailSupportBloc of(BuildContext context) =>

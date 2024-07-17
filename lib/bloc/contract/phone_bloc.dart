@@ -39,7 +39,7 @@ class PhoneBloc extends Bloc<PhoneEvent, PhoneState> {
       } else
         yield ErrorPhoneState(response.msg ?? '');
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorPhoneState(
           getT(KeyT.an_error_occurred ));
       throw e;
@@ -47,7 +47,7 @@ class PhoneBloc extends Bloc<PhoneEvent, PhoneState> {
   }
 
   Stream<PhoneState> _getPhoneAgency(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingPhoneState();
       final response = await userRepository.getPhoneAgency(id);
@@ -63,12 +63,12 @@ class PhoneBloc extends Bloc<PhoneEvent, PhoneState> {
       } else
         yield ErrorPhoneState(response.msg ?? '');
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorPhoneState(
           getT(KeyT.an_error_occurred ));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static PhoneBloc of(BuildContext context) =>

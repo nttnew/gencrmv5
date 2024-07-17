@@ -382,7 +382,7 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
     try {
-      LoadingApi().pushLoading();
+      Loading().showLoading();
       var headers = {
         'Authorization': shareLocal.getString(PreferencesKey.TOKEN),
       };
@@ -409,18 +409,18 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
           final List<dynamic> dataRes = response.data['data'] as List<dynamic>;
           final List<List<dynamic>> res =
               dataRes.map((e) => e as List<dynamic>).toList();
-          LoadingApi().popLoading();
+          Loading().popLoading();
           return res;
         } else {
-          LoadingApi().popLoading();
+          Loading().popLoading();
           return [];
         }
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         return response.data['msg'].toString();
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }

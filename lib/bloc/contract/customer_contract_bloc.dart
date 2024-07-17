@@ -32,7 +32,7 @@ class CustomerContractBloc
 
   Stream<CustomerContractState> _getListContractCustomer(
       {required String page, required String search}) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       if (page == BASE_URL.PAGE_DEFAULT.toString())
         yield LoadingContractCustomerState();
@@ -52,17 +52,17 @@ class CustomerContractBloc
       } else
         yield ErrorGetContractCustomerState(response.msg ?? '');
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorGetContractCustomerState(
          getT(KeyT.an_error_occurred ));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<CustomerContractState> _getListContactCus(
       {required String id}) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingContractCustomerState();
       final response = await userRepository.getContactByCustomer(id);
@@ -73,12 +73,12 @@ class CustomerContractBloc
       } else
         yield ErrorGetContractCustomerState(response.msg ?? '');
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorGetContractCustomerState(
          getT(KeyT.an_error_occurred ));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static CustomerContractBloc of(BuildContext context) =>

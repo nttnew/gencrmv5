@@ -78,7 +78,7 @@ String hdSoTien = 'hd_sotien';
 String ghiChu = 'ghi_chu';
 
 void loginSessionExpired() {
-  LoadingApi().popLoading();
+  Loading().popLoading();
   ShowDialogCustom.showDialogBase(
     title: getT(KeyT.notification),
     content: getT(KeyT.login_session_expired_please_login_again),

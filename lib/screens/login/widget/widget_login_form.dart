@@ -138,7 +138,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
               title: getT(KeyT.notification),
               content: state.message,
               onWhen: () {
-                LoadingApi().popLoading();
+                Loading().popLoading();
               });
         }
       },

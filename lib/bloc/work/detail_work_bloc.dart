@@ -46,21 +46,21 @@ class DetailWorkBloc extends Bloc<DetailWorkEvent, DetailWorkState> {
   }
 
   Stream<DetailWorkState> _deleteWork(int id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.deleteJob({"id": id});
       if (isSuccess(response.code)) {
         yield SuccessDeleteWorkState();
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorDeleteWorkState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorDeleteWorkState(getT(KeyT.an_error_occurred));
       throw (e);
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static DetailWorkBloc of(BuildContext context) =>

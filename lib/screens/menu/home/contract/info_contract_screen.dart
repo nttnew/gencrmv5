@@ -185,7 +185,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
         bloc: _bloc,
         listener: (context, state) async {
           if (state is SuccessDeleteContractState) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             ShowDialogCustom.showDialogBase(
               title: getT(KeyT.notification),
               content: getT(KeyT.success),
@@ -198,7 +198,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
               },
             );
           } else if (state is ErrorDeleteContractState) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             ShowDialogCustom.showDialogBase(
               title: getT(KeyT.notification),
               content: state.msg,

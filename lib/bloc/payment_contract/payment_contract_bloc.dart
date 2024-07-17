@@ -32,7 +32,7 @@ class PaymentContractBloc
     required int id,
     required bool isLoad,
   }) async* {
-    if (isLoad) LoadingApi().pushLoading();
+    if (isLoad) Loading().showLoading();
     try {
       yield LoadingPaymentContractState();
       final response = await userRepository.getPaymentContract(id);
@@ -49,7 +49,7 @@ class PaymentContractBloc
     } catch (e) {
       yield ErrorPaymentContractState(getT(KeyT.an_error_occurred));
     }
-    if (isLoad) LoadingApi().popLoading();
+    if (isLoad) Loading().popLoading();
   }
 
   Future<String> deletePayment({
@@ -57,7 +57,7 @@ class PaymentContractBloc
     required String idPayment,
   }) async {
     String mess = getT(KeyT.an_error_occurred);
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.deletePayment(
         idContract: idContract,
@@ -70,10 +70,10 @@ class PaymentContractBloc
       } else
         return response.msg ?? '';
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       return mess;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
     return mess;
   }
 

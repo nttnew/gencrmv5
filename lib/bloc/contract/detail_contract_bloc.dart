@@ -57,7 +57,7 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
   }
 
   Stream<DetailContractState> _deleteContract({required int id}) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingDeleteContractState();
       final response = await userRepository.deleteContract({"id": id});
@@ -68,11 +68,11 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
       } else
         yield ErrorDeleteContractState(response.msg ?? '');
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorDeleteContractState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Future<void> getFile(int id, String module) async {

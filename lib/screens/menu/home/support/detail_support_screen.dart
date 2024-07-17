@@ -217,7 +217,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                       bloc: _bloc,
                       listener: (context, state) async {
                         if (state is SuccessDeleteSupportState) {
-                          LoadingApi().popLoading();
+                          Loading().popLoading();
                           ShowDialogCustom.showDialogBase(
                             title: getT(KeyT.notification),
                             content: getT(KeyT.success),
@@ -230,7 +230,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                             },
                           );
                         } else if (state is ErrorDeleteSupportState) {
-                          LoadingApi().popLoading();
+                          Loading().popLoading();
                           ShowDialogCustom.showDialogBase(
                             title: getT(KeyT.notification),
                             content: state.msg,

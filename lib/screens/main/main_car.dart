@@ -2,6 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/screens/main/widget/item_car.dart';
 import 'package:gen_crm/src/models/model_generator/report_option.dart';
+import 'package:gen_crm/storages/share_local.dart';
 import '../../bloc/login/login_bloc.dart';
 import '../../models/button_menu_model.dart';
 import '../../src/models/model_generator/xe_dich_vu_response.dart';
@@ -19,8 +20,11 @@ class MainCar extends StatefulWidget {
 }
 
 class _MainCarState extends State<MainCar> {
+  late String? lang;
+
   @override
   void initState() {
+    lang = shareLocal.getString(PreferencesKey.LANGUAGE_NAME);
     LoginBloc _blocLogin = LoginBloc.of(context);
     _blocLogin.locationStatusStream.listen((value) {
       final listTrangThai = value.data?.trangthaihd ?? [];
@@ -30,6 +34,16 @@ class _MainCarState extends State<MainCar> {
       }
     });
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant MainCar oldWidget) {
+    final langNew = shareLocal.getString(PreferencesKey.LANGUAGE_NAME);
+    if (lang != langNew) {
+      lang = langNew;
+      LoginBloc.of(context).getChiNhanh();
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   @override

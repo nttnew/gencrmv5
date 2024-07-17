@@ -196,7 +196,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
           bloc: _bloc,
           listener: (context, state) {
             if (state is SuccessDeleteWorkState) {
-              LoadingApi().popLoading();
+              Loading().popLoading();
               ShowDialogCustom.showDialogBase(
                 title: getT(KeyT.notification),
                 content: getT(KeyT.success),
@@ -209,7 +209,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                 },
               );
             } else if (state is ErrorDeleteWorkState) {
-              LoadingApi().popLoading();
+              Loading().popLoading();
               ShowDialogCustom.showDialogBase(
                 title: getT(KeyT.notification),
                 content: state.msg,

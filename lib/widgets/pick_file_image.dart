@@ -16,6 +16,8 @@ import '../screens/menu/form/widget/preview_image.dart';
 import '../src/app_const.dart';
 import 'package:image/image.dart' as img;
 
+import 'loading_api.dart';
+
 Widget FileDinhKemUiBase({
   required BuildContext context,
 }) =>
@@ -380,11 +382,13 @@ Future<File> compressImage(
 
 Future<File?> getImageCamera({
   bool is2mb = true,
+  bool isShowLoading = false,
 }) async {
   try {
     final XFile? fileCamera = await ImagePicker().pickImage(
       source: ImageSource.camera,
     );
+    if(isShowLoading) Loading().showLoading();
     if (fileCamera != null) {
       if (is2mb) {
         final File duoi2MB = await compressImage(File(fileCamera.path));

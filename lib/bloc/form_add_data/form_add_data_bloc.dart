@@ -127,178 +127,178 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
   }
 
   Stream<FormAddState> _getFormAddCustomerOrganization() async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getAddCusOr();
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data!);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddContactCustomer(String customer_id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddContactCus(customer_id);
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data!);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddCustomer(int type) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getAddCustomer(type);
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data!);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddOppCus(String customer_id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddOppCus(customer_id);
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data!);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddContractCus(String customer_id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddContractCus(customer_id);
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data!);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddJobCus(String customer_id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddJobCus(customer_id);
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data!);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddSupportCus(String customer_id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddSupportCus(customer_id);
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data!);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddAgency(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddAgency(id);
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data!);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorFormAddContactCustomerState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorFormAddContactCustomerState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddChance(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddChance(id);
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data!);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddContract(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddContract(id);
@@ -306,151 +306,151 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
         yield SuccessForm(response.data!);
       } else {
         yield ErrorForm(response.msg ?? '');
-        LoadingApi().popLoading();
+        Loading().popLoading();
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddJob(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddJob(id);
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data!);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddSupport(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddSupport(id);
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data!);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddJobOpp(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddJobOpp(id);
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data!);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddJobChance(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddJobChance(id);
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data!);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddSupportContract(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddSupportContract(id);
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data!);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddJobContract(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddJobContract(id);
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data!);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddProduct() async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddProduct();
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data ?? []);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddProductCustomer({int? idCustomer}) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddProductCustomer(
@@ -458,21 +458,21 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data ?? []);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddSign({
     required String id,
     required String type,
   }) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddSign(id: id, type: type);
@@ -483,21 +483,21 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           soTien: response.chuathanhtoan,
         );
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddCHProductCustomer({
     required int id,
   }) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormCHProductCustomer(id: id);
@@ -507,22 +507,22 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           response.data ?? [],
         );
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddQuickContact({
     required String sdt,
     required String bienSoXe,
   }) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response =
@@ -533,21 +533,21 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           response.data ?? [],
         );
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddCVProductCustomer({
     required int id,
   }) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormCVProductCustomer(id: id);
@@ -556,21 +556,21 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           response.data ?? [],
         );
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddHDProductCustomer({
     required int id,
   }) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormHDProductCustomer(id: id);
@@ -579,21 +579,21 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           response.data ?? [],
         );
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormAddHTProductCustomer({
     required int id,
   }) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormHTProductCustomer(id: id);
@@ -602,38 +602,38 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
           response.data ?? [],
         );
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormEditCus(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getUpdateCustomer(id);
       if (isSuccess(response.code)) {
         yield SuccessForm(response.data!);
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorForm(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorForm(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormEditClue(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormEditClue(id);
@@ -641,18 +641,18 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
         yield SuccessForm(response.data!);
       } else {
         yield ErrorForm(response.msg ?? '');
-        LoadingApi().popLoading();
+        Loading().popLoading();
       }
     } catch (e) {
       yield ErrorForm(getT(KeyT.an_error_occurred));
-      LoadingApi().popLoading();
+      Loading().popLoading();
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormEditChance(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddChance(id);
@@ -660,18 +660,18 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
         yield SuccessForm(response.data!);
       } else {
         yield ErrorForm(response.msg ?? '');
-        LoadingApi().popLoading();
+        Loading().popLoading();
       }
     } catch (e) {
       yield ErrorForm(getT(KeyT.an_error_occurred));
-      LoadingApi().popLoading();
+      Loading().popLoading();
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormEditJob(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormAddJob(id);
@@ -679,18 +679,18 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
         yield SuccessForm(response.data!);
       } else {
         yield ErrorForm(response.msg ?? '');
-        LoadingApi().popLoading();
+        Loading().popLoading();
       }
     } catch (e) {
       yield ErrorForm(getT(KeyT.an_error_occurred));
-      LoadingApi().popLoading();
+      Loading().popLoading();
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormEditSupport(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormEditSupport(id);
@@ -698,18 +698,18 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
         yield SuccessForm(response.data!);
       } else {
         yield ErrorForm(response.msg ?? '');
-        LoadingApi().popLoading();
+        Loading().popLoading();
       }
     } catch (e) {
       yield ErrorForm(getT(KeyT.an_error_occurred));
-      LoadingApi().popLoading();
+      Loading().popLoading();
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormEditContract(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormEditContract(id);
@@ -717,18 +717,18 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
         yield SuccessForm(response.data!);
       } else {
         yield ErrorForm(response.msg ?? '');
-        LoadingApi().popLoading();
+        Loading().popLoading();
       }
     } catch (e) {
       yield ErrorForm(getT(KeyT.an_error_occurred));
-      LoadingApi().popLoading();
+      Loading().popLoading();
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormEditProduct(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getEditProduct(id: id);
@@ -736,18 +736,18 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
         yield SuccessForm(response.data!);
       } else {
         yield ErrorForm(response.msg ?? '');
-        LoadingApi().popLoading();
+        Loading().popLoading();
       }
     } catch (e) {
       yield ErrorForm(getT(KeyT.an_error_occurred));
-      LoadingApi().popLoading();
+      Loading().popLoading();
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormEditProductCustomer(String id) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormEditProductCustomer(id: id);
@@ -755,14 +755,14 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
         yield SuccessForm(response.data!);
       } else {
         yield ErrorForm(response.msg ?? '');
-        LoadingApi().popLoading();
+        Loading().popLoading();
       }
     } catch (e) {
       yield ErrorForm(getT(KeyT.an_error_occurred));
-      LoadingApi().popLoading();
+      Loading().popLoading();
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<FormAddState> _getFormPayment(
@@ -770,7 +770,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
     String idDetail = '',
     String idPay = '',
   }) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingForm();
       final response = await userRepository.getFormPayment(
@@ -782,14 +782,14 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
         yield SuccessForm(response.data!);
       } else {
         yield ErrorForm(response.msg ?? '');
-        LoadingApi().popLoading();
+        Loading().popLoading();
       }
     } catch (e) {
       yield ErrorForm(getT(KeyT.an_error_occurred));
-      LoadingApi().popLoading();
+      Loading().popLoading();
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Future<Map<String, dynamic>> showQrCodePayment(
@@ -802,7 +802,7 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
       'data': '',
     };
 
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.getQRCode(
         amount: amount ?? '',
@@ -816,11 +816,11 @@ class FormAddBloc extends Bloc<FormAddEvent, FormAddState> {
         res['mes'] = response.msg;
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       res['mes'] = getT(KeyT.an_error_occurred);
       return res;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
     return res;
   }
 

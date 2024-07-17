@@ -70,20 +70,20 @@ class ProductCustomerModuleBloc
   Future<ListProductCustomerResponse?> getListProductCustomer({
     required String querySearch,
   }) async {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.getListProductCustomer(
         txt: querySearch,
         page: BASE_URL.PAGE_DEFAULT.toString(),
       );
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         return response;
       }
     } catch (e) {
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
     return null;
   }
 
@@ -94,10 +94,10 @@ class ProductCustomerModuleBloc
       'mes': getT(KeyT.an_error_occurred),
       'data': '',
     };
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.getBienSoWithImg(file: file);
-      LoadingApi().popLoading();
+      Loading().popLoading();
       if (isSuccess(response.code)) {
         if ((response.data?.listBienSos ?? []).length > 0) {
           res['mes'] = '';
@@ -108,7 +108,7 @@ class ProductCustomerModuleBloc
       }
     } catch (e) {
       res['mes'] = getT(KeyT.an_error_occurred);
-      LoadingApi().popLoading();
+      Loading().popLoading();
       return res;
     }
     return res;

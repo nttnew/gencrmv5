@@ -31,7 +31,7 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState> {
   }
 
   Stream<AddCustomerState> _getAddCustomer({required int isIndividual}) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingAddCustomerState();
       final response = await userRepository.getAddCustomer(isIndividual);
@@ -40,19 +40,19 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState> {
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorGetAddCustomerState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorGetAddCustomerState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Stream<AddCustomerState> _getEditCustomer({String? id}) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingGetEditCustomerState();
       final response = await userRepository.getUpdateCustomer(id ?? '');
@@ -61,15 +61,15 @@ class AddCustomerBloc extends Bloc<AddCustomerEvent, AddCustomerState> {
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorGetEditCustomerState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorGetEditCustomerState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static AddCustomerBloc of(BuildContext context) =>

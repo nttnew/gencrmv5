@@ -33,7 +33,7 @@ class ReportGeneralBloc extends Bloc<ReportGeneralEvent, ReportGeneralState> {
     String? location, {
     int? page = BASE_URL.PAGE_DEFAULT,
   }) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingReportGeneralState();
       final response = await userRepository.reportGeneral(
@@ -48,11 +48,11 @@ class ReportGeneralBloc extends Bloc<ReportGeneralEvent, ReportGeneralState> {
       } else
         yield ErrorReportGeneralState(response.msg ?? '');
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorReportGeneralState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static ReportGeneralBloc of(BuildContext context) =>

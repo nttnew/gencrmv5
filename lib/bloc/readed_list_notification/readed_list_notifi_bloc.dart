@@ -41,7 +41,7 @@ class GetListReadedNotifiBloc
 
   List<DataNotification>? listNotifi;
   Stream<ReadNotificationState> _getListNotifi({required int page}) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.getListReadNotification(page);
       if (isSuccess(response.code)) {
@@ -60,11 +60,11 @@ class GetListReadedNotifiBloc
       } else
         yield ErrorGetReadNotificationState(response.msg ?? "");
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorGetReadNotificationState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static GetListReadedNotifiBloc of(BuildContext context) =>

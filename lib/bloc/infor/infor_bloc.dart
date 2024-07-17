@@ -24,7 +24,7 @@ class GetInforBloc extends Bloc<GetInforEvent, InforState> {
   }
 
   Stream<InforState> _getInfor() async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.getInfo();
       if (isSuccess(response.code)) {
@@ -32,12 +32,12 @@ class GetInforBloc extends Bloc<GetInforEvent, InforState> {
       } else
         yield ErrorGetInforState(response.msg ?? '');
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorGetInforState(
          getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static GetInforBloc of(BuildContext context) =>

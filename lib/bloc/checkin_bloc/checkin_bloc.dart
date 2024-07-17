@@ -37,7 +37,7 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
     required String id,
     required String type,
   }) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     yield LoadingCheckInState();
     try {
       final response = await userRepository.saveCheckIn(
@@ -56,12 +56,12 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
         yield ErrorCheckInState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorCheckInState(
          getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static CheckInBloc of(BuildContext context) =>

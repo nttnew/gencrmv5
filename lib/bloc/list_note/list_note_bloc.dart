@@ -50,7 +50,7 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
     required String page,
     required bool isAdd,
   }) async* {
-    if (isAdd) LoadingApi().pushLoading();
+    if (isAdd) Loading().showLoading();
     try {
       yield LoadingGetNoteOppState();
       final response = await userRepository.getNoteList(
@@ -61,15 +61,15 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
       if (isSuccess(response.code)) {
         yield SuccessGetNoteOppState(response.data?.notes ?? []);
       } else {
-        if (isAdd) LoadingApi().popLoading();
+        if (isAdd) Loading().popLoading();
         yield ErrorGetNoteOppState(response.msg ?? '');
       }
     } catch (e) {
-      if (isAdd) LoadingApi().popLoading();
+      if (isAdd) Loading().popLoading();
       yield ErrorGetNoteOppState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    if (isAdd) LoadingApi().popLoading();
+    if (isAdd) Loading().popLoading();
   }
 
   Future<dynamic> getListNote({
@@ -80,7 +80,7 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
     required bool isInit,
   }) async {
     if (isInit) {
-      LoadingApi().pushLoading();
+      Loading().showLoading();
     }
     try {
       final response = await userRepository.getNoteList(
@@ -89,17 +89,17 @@ class ListNoteBloc extends Bloc<ListNoteEvent, ListNoteState> {
         page,
       );
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         return response.data?.notes ?? [];
       } else if (isFail(response.code)) {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         return response.msg ?? '';
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }

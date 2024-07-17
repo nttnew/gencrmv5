@@ -226,7 +226,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
           bloc: _bloc,
           listener: (context, state) async {
             if (state is SuccessDeleteCustomerState) {
-              LoadingApi().popLoading();
+              Loading().popLoading();
               ShowDialogCustom.showDialogBase(
                 title: getT(KeyT.notification),
                 content: getT(KeyT.success),
@@ -241,7 +241,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                 },
               );
             } else if (state is ErrorDeleteCustomerState) {
-              LoadingApi().popLoading();
+              Loading().popLoading();
               ShowDialogCustom.showDialogBase(
                 title: getT(KeyT.notification),
                 content: state.msg,

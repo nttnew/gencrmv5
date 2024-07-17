@@ -368,11 +368,11 @@ class ServiceVoucherBloc
   }
 
   Future<bool> checkHasCar(String bienSoXe) async {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.postAddServiceVoucher('', bienSoXe);
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         final List<AddCustomerIndividualData> list = response.data ?? [];
         for (final AddCustomerIndividualData value in list) {
           for (final CustomerIndividualItemData valueChild
@@ -384,19 +384,19 @@ class ServiceVoucherBloc
           }
         }
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       return false;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
     return false;
   }
 
   Stream<ServiceVoucherState> _postAddServiceVoucher(
       String sdt, String bienSoXe) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       yield LoadingServiceVoucherState();
       final response =
@@ -406,15 +406,15 @@ class ServiceVoucherBloc
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorGetServiceVoucherState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorGetServiceVoucherState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Future<dynamic> getSearchQuickCreate({

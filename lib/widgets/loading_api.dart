@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 
 import 'cupertino_loading.dart';
 
-class LoadingApi {
+class Loading {
   RxInt loading = RxInt(0);
 
-  pushLoading({isLogin = false}) {
+  showLoading({isLogin = false}) {
     loading.value++;
     if (isLoading() && Get.isDialogOpen != true) {
       Get.dialog(Container(

@@ -47,7 +47,7 @@ class GetListDetailChanceBloc
   }
 
   Stream<DetailChanceState> _deleteChance({required String id}) async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.deleteChance({BASE_URL.ID: id});
       if (isSuccess(response.code)) {
@@ -59,7 +59,7 @@ class GetListDetailChanceBloc
       yield ErrorDeleteChanceState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   Future<dynamic> getJobChance({

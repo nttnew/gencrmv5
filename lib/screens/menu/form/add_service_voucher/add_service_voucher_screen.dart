@@ -227,9 +227,11 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
                       }
                     });
                   } else {
-                    final File? file = await getImageCamera(is2mb: true);
+                    final File? file = await getImageCamera(
+                      is2mb: true,
+                      isShowLoading: true,
+                    );
                     if (file != null) {
-                      LoadingApi().pushLoading();
                       final _blocP = ProductCustomerModuleBloc.of(context);
                       final res = await _blocP.getBienSoWithImg(file: file);
                       _isDataCar = true;
@@ -240,6 +242,8 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
                       } else {
                         _bloc.loadMoreControllerBienSo.reloadData();
                       }
+                    }else{
+                      Loading().popLoading();
                     }
                   }
                 },

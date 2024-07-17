@@ -814,7 +814,7 @@ class _FormAddDataState extends State<FormAddData> {
         bloc: _blocAdd,
         listener: (context, state) {
           if (state is SuccessAddData) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             ShowDialogCustom.showDialogBase(
               title: getT(KeyT.notification),
               content: state.isEdit
@@ -833,7 +833,7 @@ class _FormAddDataState extends State<FormAddData> {
               },
             );
           } else if (state is ErrorAddData) {
-            LoadingApi().popLoading();
+            Loading().popLoading();
             ShowDialogCustom.showDialogBase(
               title: getT(KeyT.notification),
               content: state.msg,

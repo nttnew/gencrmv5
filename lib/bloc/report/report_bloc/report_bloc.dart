@@ -179,7 +179,7 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
   }
 
   Stream<ReportState> _getReportGeneral() async* {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.getReportOption();
       if (isSuccess(response.code)) {
@@ -197,15 +197,15 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         yield ErrorReportWorkState(response.msg ?? '');
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
       yield ErrorReportWorkState(getT(KeyT.an_error_occurred));
       throw e;
     }
-    LoadingApi().popLoading();
+    Loading().popLoading();
   }
 
   static ReportBloc of(BuildContext context) =>

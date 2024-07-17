@@ -57,28 +57,28 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     String? txt,
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     try {
       final response = await userRepository.getServicePack(
         txt: txt,
         page: page.toString(),
       );
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         return response.data ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();
       } else {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         return response.msg ?? '';
       }
     } catch (e) {
-      LoadingApi().popLoading();
+      Loading().popLoading();
     }
   }
 
   Future<Map<String, dynamic>> getProductServicePack(String id) async {
-    LoadingApi().pushLoading();
+    Loading().showLoading();
     Map<String, dynamic> result = {
       'mess': '',
       'list': [],
@@ -86,20 +86,20 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       final response = await userRepository.getProductServicePack(id: id);
       if (isSuccess(response.code)) {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         result['mess'] = '';
         result['list'] = response.data;
         //data
       } else if (isFail(response.code)) {
-        LoadingApi().popLoading();
+        Loading().popLoading();
         loginSessionExpired();
       } else {
         result['mess'] = response.msg ?? '';
-        LoadingApi().popLoading();
+        Loading().popLoading();
       }
     } catch (e) {
       result['mess'] = e.toString();
-      LoadingApi().popLoading();
+      Loading().popLoading();
     }
     return result;
   }
