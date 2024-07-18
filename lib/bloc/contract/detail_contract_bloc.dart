@@ -10,7 +10,6 @@ import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
 import '../../src/app_const.dart';
 import '../../src/base.dart';
-import '../../src/models/model_generator/contract.dart';
 import '../../src/models/model_generator/detail_customer.dart';
 import '../../src/models/model_generator/file_response.dart';
 import '../../widgets/listview/list_load_infinity.dart';
@@ -20,7 +19,6 @@ part 'detail_contract_state.dart';
 
 class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
   final UserRepository userRepository;
-  List<ContractItemData>? list;
   BehaviorSubject<List<FileDataResponse>?> listFileStream = BehaviorSubject();
   LoadMoreController controllerCV = LoadMoreController();
   LoadMoreController controllerHT = LoadMoreController();

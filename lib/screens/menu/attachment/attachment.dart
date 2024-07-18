@@ -35,24 +35,25 @@ class _AttachmentState extends State<Attachment> {
   late final String id;
   late final String typeModule;
   static final List<String> pickOptions = [getT(KeyT.begin), getT(KeyT.after)];
-
+  late final DetailContractBloc _bloc;
   @override
   void initState() {
+    _bloc = DetailContractBloc.of(context);
     id = widget.id;
     typeModule = widget.typeModule;
-    DetailContractBloc.of(context).getFile(int.parse(id), typeModule);
+    _bloc.getFile(int.parse(id), typeModule);
     super.initState();
   }
 
   @override
   void deactivate() {
-    DetailContractBloc.of(context).listFileStream.add(null);
+    _bloc.listFileStream.add(null);
     super.deactivate();
   }
 
   @override
   void dispose() {
-    DetailContractBloc.of(context).listFileStream.close();
+    _bloc.listFileStream.close();
     super.dispose();
   }
 
@@ -139,7 +140,7 @@ class _AttachmentState extends State<Attachment> {
     }
   }
 
-  List<FileDataResponse> _checkListImageApi({
+  List<FileDataResponse> _checkListImageOrFileApi({
     required bool isImage,
     required List<FileDataResponse> list,
     required int isAfter,
@@ -166,7 +167,7 @@ class _AttachmentState extends State<Attachment> {
     required List<File> list,
     bool? isAfter,
   }) async {
-    await DetailContractBloc.of(context)
+    await _bloc
         .uploadFile(
             id: widget.id,
             listFile: list,
@@ -174,8 +175,7 @@ class _AttachmentState extends State<Attachment> {
             isAfter: isAfter)
         .then((value) {
       if (value) {
-        DetailContractBloc.of(context)
-            .getFile(int.parse(widget.id), widget.typeModule);
+        _bloc.getFile(int.parse(widget.id), widget.typeModule);
       }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -217,18 +217,23 @@ class _AttachmentState extends State<Attachment> {
   }
 
   Future<void> _removeFilePick(FileDataResponse file) async {
-    await DetailContractBloc.of(context).deleteFileOnly(file).then((value) {
+    // Xoá file trên UI
+    final List<FileDataResponse> _listData = _bloc.listFileStream.value ?? [];
+    _listData.remove(file);
+    _bloc.listFileStream.add(_listData);
+    // Xoá file trên BE
+    await _bloc.deleteFileOnly(file).then((value) {
       if (value == '') {
-        DetailContractBloc.of(context)
-            .getFile(int.parse(widget.id), widget.typeModule);
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            '${value == '' ? '${getT(KeyT.delete_attachment)} ${getT(KeyT.success.toLowerCase()).toLowerCase()}' : value}!',
+        _bloc.getFile(int.parse(widget.id), widget.typeModule);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '${value == '' ? '${getT(KeyT.delete_attachment)} '
+                  '${getT(KeyT.success.toLowerCase()).toLowerCase()}' : value}!',
+            ),
           ),
-        ),
-      );
+        );
+      }
     });
   }
 
@@ -300,7 +305,7 @@ class _AttachmentState extends State<Attachment> {
             ),
             Expanded(
               child: StreamBuilder<List<FileDataResponse>?>(
-                  stream: DetailContractBloc.of(context).listFileStream,
+                  stream: _bloc.listFileStream,
                   builder: (context, snapshot) {
                     final list = snapshot.data;
                     if (list == null) {
@@ -328,8 +333,8 @@ class _AttachmentState extends State<Attachment> {
                     }
                     return RefreshIndicator(
                       onRefresh: () async {
-                        await DetailContractBloc.of(context)
-                            .getFile(int.parse(widget.id), widget.typeModule);
+                        await _bloc.getFile(
+                            int.parse(widget.id), widget.typeModule);
                       },
                       child: Container(
                         height: double.maxFinite,
@@ -356,12 +361,13 @@ class _AttachmentState extends State<Attachment> {
   }
 
   Widget viewPickFile(List<FileDataResponse> list, String title, int isAfter) {
+    final listImage =
+        _checkListImageOrFileApi(isImage: true, list: list, isAfter: isAfter);
+    final listFile =
+        _checkListImageOrFileApi(isImage: false, list: list, isAfter: isAfter);
     return Column(
       children: [
-        if (_checkListImageApi(isImage: false, list: list, isAfter: isAfter)
-                .isNotEmpty ||
-            _checkListImageApi(isImage: true, list: list, isAfter: isAfter)
-                .isNotEmpty) ...[
+        if (listImage.isNotEmpty || listFile.isNotEmpty) ...[
           Row(
             children: [
               Padding(
@@ -384,28 +390,20 @@ class _AttachmentState extends State<Attachment> {
                 ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: _checkListImageApi(
-                          isImage: false, list: list, isAfter: isAfter)
-                      .length,
+                  itemCount: listFile.length,
                   itemBuilder: (context, index) => ItemFile(
-                    file: _checkListImageApi(
-                        isImage: false, list: list, isAfter: isAfter)[index],
+                    file: listFile[index],
                     functionMy: () {
-                      _removeFilePick(_checkListImageApi(
-                          isImage: false, list: list, isAfter: isAfter)[index]);
+                      _removeFilePick(listFile[index]);
                     },
                   ),
                 ),
-                if (_checkListImageApi(
-                        isImage: true, list: list, isAfter: isAfter)
-                    .isNotEmpty)
+                if (listImage.isNotEmpty)
                   GridView.builder(
                     padding: EdgeInsets.zero,
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: _checkListImageApi(
-                            isImage: true, list: list, isAfter: isAfter)
-                        .length,
+                    itemCount: listImage.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 25,
@@ -421,12 +419,7 @@ class _AttachmentState extends State<Attachment> {
                               MaterialPageRoute(
                                 builder: (context) => PreviewImage(
                                   isNetwork: true,
-                                  file: File(_checkListImageApi(
-                                              isImage: true,
-                                              list: list,
-                                              isAfter: isAfter)[index]
-                                          .link ??
-                                      ''),
+                                  file: File(listImage[index].link ?? ''),
                                 ),
                               ),
                             );
@@ -442,12 +435,7 @@ class _AttachmentState extends State<Attachment> {
                               ),
                             ),
                             child: Image.network(
-                              _checkListImageApi(
-                                          isImage: true,
-                                          list: list,
-                                          isAfter: isAfter)[index]
-                                      .link ??
-                                  '',
+                              listImage[index].link ?? '',
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -455,10 +443,7 @@ class _AttachmentState extends State<Attachment> {
                         Positioned(
                           child: InkWell(
                             onTap: () {
-                              _removeFilePick(_checkListImageApi(
-                                  isImage: true,
-                                  list: list,
-                                  isAfter: isAfter)[index]);
+                              _removeFilePick(listImage[index]);
                             },
                             child: Container(
                                 decoration: BoxDecoration(
