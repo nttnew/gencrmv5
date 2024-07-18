@@ -147,6 +147,7 @@ class _ProductContractState extends State<ProductContract> {
                                     id: result?.data?.lists?.first.id ?? '');
                         if (data != null) {
                           _addProduct(data);
+                          _reloadKey();
                           _reload();
                         }
                       } else {
