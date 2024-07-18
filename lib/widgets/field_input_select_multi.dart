@@ -30,6 +30,7 @@ class SelectMulti extends StatefulWidget {
 class _SelectMultiState extends State<SelectMulti> {
   late final List<ModelDataAdd> _dropdown;
   List<ModelDataAdd> _dropdownSelect = [];
+  bool _showLine = false;
 
   @override
   void initState() {
@@ -43,6 +44,7 @@ class _SelectMultiState extends State<SelectMulti> {
     _dropdown.forEach((element) {
       for (final value in widget.initValue ?? []) {
         if ('$value' == '${element.value}') {
+          _showLine = true;
           _dropdownSelect.add(element);
         }
       }
@@ -83,65 +85,75 @@ class _SelectMultiState extends State<SelectMulti> {
             ),
           ),
           AppValue.vSpaceTiny,
-          MultiSelectDialogField<ModelDataAdd>(
-            listType: MultiSelectListType.CHIP,
-            items: _dropdown
-                .map((e) => MultiSelectItem(e, e.label ?? ''))
-                .toList(),
-            cancelText: Text(
-              getT(KeyT.cancel),
-              style: AppStyle.DEFAULT_16_BOLD.copyWith(
-                color: COLORS.BLUE,
-              ),
-            ),
-            confirmText: Text(
-              getT(KeyT.select),
-              style: AppStyle.DEFAULT_16_BOLD.copyWith(
-                color: COLORS.BLUE,
-              ),
-            ),
-            separateSelectedItems: true,
-            onConfirm: (values) {
-              if (widget.maxLength != '' &&
-                  values.length > int.parse(widget.maxLength)) {
-                values.removeRange(
-                    int.parse(widget.maxLength) - 1, values.length - 1);
-                ShowDialogCustom.showDialogBase(
-                  title: getT(KeyT.notification),
-                  content:
-                      "${getT(KeyT.you_can_only_choose)} ${getT(KeyT.max)} "
-                      "${widget.maxLength} ${getT(KeyT.value)}"
-                      "\n(${getT(KeyT.press_once_more_to_cancel_selection)})",
-                );
-              } else {
-                List<String> res = [];
-                for (int i = 0; i < values.length; i++) {
-                  res.add('${values[i].value}');
-                }
-                widget.onChange(res.join(","));
-              }
-            },
-            searchable: true,
-            title: WidgetText(
-              title: widget.label,
-              style: AppStyle.DEFAULT_18_BOLD,
-            ),
-            buttonText: Text(
-              widget.label,
-              style: AppStyle.DEFAULT_14_BOLD.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+          Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: COLORS.ffBEB4B4)),
-            buttonIcon: Icon(
-              Icons.arrow_drop_down,
-              size: 25,
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: COLORS.ffBEB4B4),
             ),
-            initialValue: _dropdownSelect,
-            selectedItemsTextStyle: AppStyle.DEFAULT_14_BOLD,
-            itemsTextStyle: AppStyle.DEFAULT_14,
+            child: MultiSelectDialogField<ModelDataAdd>(
+              listType: MultiSelectListType.CHIP,
+              items: _dropdown
+                  .map((e) => MultiSelectItem(e, e.label ?? ''))
+                  .toList(),
+              cancelText: Text(
+                getT(KeyT.cancel),
+                style: AppStyle.DEFAULT_16_BOLD.copyWith(
+                  color: COLORS.BLUE,
+                ),
+              ),
+              confirmText: Text(
+                getT(KeyT.select),
+                style: AppStyle.DEFAULT_16_BOLD.copyWith(
+                  color: COLORS.BLUE,
+                ),
+              ),
+              separateSelectedItems: true,
+              onConfirm: (values) {
+                if (widget.maxLength != '' &&
+                    values.length > int.parse(widget.maxLength)) {
+                  values.removeRange(
+                      int.parse(widget.maxLength) - 1, values.length - 1);
+                  _showLine = true;
+                  ShowDialogCustom.showDialogBase(
+                    title: getT(KeyT.notification),
+                    content:
+                        "${getT(KeyT.you_can_only_choose)} ${getT(KeyT.max)} "
+                        "${widget.maxLength} ${getT(KeyT.value)}"
+                        "\n(${getT(KeyT.press_once_more_to_cancel_selection)})",
+                  );
+                } else {
+                  List<String> res = [];
+                  for (int i = 0; i < values.length; i++) {
+                    res.add('${values[i].value}');
+                  }
+                  _showLine = res.isNotEmpty;
+                  widget.onChange(res.join(","));
+                }
+                setState(() {});
+              },
+              searchable: true,
+              title: WidgetText(
+                title: widget.label,
+                style: AppStyle.DEFAULT_18_BOLD,
+              ),
+              buttonText: Text(
+                getT(KeyT.select) +
+                    ((int.tryParse(widget.maxLength) ?? 0) > 0
+                        ? ' ${getT(KeyT.max).toLowerCase()} ${widget.maxLength}'
+                        : ''), //+ ' ' + widget.label.toLowerCase(),
+                style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              decoration: !_showLine ? BoxDecoration() : null,
+              buttonIcon: Icon(
+                Icons.arrow_drop_down,
+                size: 25,
+              ),
+              initialValue: _dropdownSelect,
+              selectedItemsTextStyle: AppStyle.DEFAULT_14_BOLD,
+              itemsTextStyle: AppStyle.DEFAULT_14,
+            ),
           ),
         ],
       ),
