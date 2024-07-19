@@ -72,7 +72,7 @@ class _ListServiceParkState extends State<ListServicePark> {
                       .push(MaterialPageRoute(
                           builder: (context) => ScannerQrcode()))
                       .then((value) async {
-                    if (value != ''&&value != null) {
+                    if (value != '' && value != null) {
                       _searchController.text = value;
                       _bloc.loadMoreController.reloadData();
                     }
@@ -134,9 +134,21 @@ class _ListServiceParkState extends State<ListServicePark> {
                         SizedBox(
                           height: 3,
                         ),
+                        Container(
+                          width: MediaQuery.of(context).size.width / 1.6,
+                          child: WidgetText(
+                            title:
+                                '${getT(KeyT.ten_goi_dich_vu)}: ${dataItem.tenCombo}',
+                            style: AppStyle.DEFAULT_14_BOLD
+                                .copyWith(color: COLORS.TEXT_GREY),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 3,
+                        ),
                         WidgetText(
                           title:
-                              "${getT(KeyT.ten_goi_dich_vu)}: ${dataItem.tenCombo}",
+                              '${getT(KeyT.so_luong_san_pham)}: ${dataItem.countSp}',
                           style: AppStyle.DEFAULT_14_BOLD
                               .copyWith(color: COLORS.TEXT_GREY),
                         ),
@@ -145,16 +157,7 @@ class _ListServiceParkState extends State<ListServicePark> {
                         ),
                         WidgetText(
                           title:
-                              "${getT(KeyT.so_luong_san_pham)}: ${dataItem.countSp}",
-                          style: AppStyle.DEFAULT_14_BOLD
-                              .copyWith(color: COLORS.TEXT_GREY),
-                        ),
-                        SizedBox(
-                          height: 3,
-                        ),
-                        WidgetText(
-                          title:
-                              "${getT(KeyT.into_money)}: ${dataItem.tongTienFormat}",
+                              '${getT(KeyT.into_money)}: ${dataItem.tongTienFormat}',
                           style: AppStyle.DEFAULT_14_BOLD
                               .copyWith(color: COLORS.TEXT_GREY),
                         ),
