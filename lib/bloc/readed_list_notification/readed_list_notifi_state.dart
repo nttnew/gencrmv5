@@ -11,17 +11,22 @@ class InitGetReadNotificationState extends ReadNotificationState {}
 
 class UpdateReadNotificationState extends ReadNotificationState {
   final List<DataNotification> list;
-  final String total;
-  final int limit, page;
 
-  UpdateReadNotificationState(
-      {required this.list,
-      required this.page,
-      required this.total,
-      required this.limit});
+  UpdateReadNotificationState({
+    required this.list,
+  });
+  UpdateReadNotificationState copyWith({
+    List<DataNotification>? list,
+  }) {
+    return UpdateReadNotificationState(
+      list: list ?? this.list,
+    );
+  }
 
   @override
-  List<Object> get props => [this.list, this.total, this.limit, this.page];
+  List<Object> get props => [
+        this.list,
+      ];
 }
 
 class LoadingReadNotificationState extends ReadNotificationState {}

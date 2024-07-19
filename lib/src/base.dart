@@ -134,6 +134,7 @@ class BASE_URL {
       'modules/genmobile2/notification/listRead';
   static const DELETE_NOTIFICATION = 'modules/genmobile2/notification/delete';
   static const READ_NOTIFICATION = 'modules/genmobile2/notification/read';
+
   static const GET_XE = 'modules/genmobile2/product/getsanphamkh';
   static const GROUP_PRODUCT = 'modules/genmobile2/product/getCats';
   static const PRODUCT = 'modules/genmobile2/product/list';

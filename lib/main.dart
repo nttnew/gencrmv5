@@ -185,13 +185,13 @@ Future main() async {
           BlocProvider<InforAccBloc>(
             create: (context) => InforAccBloc(userRepository: userRepository),
           ),
-          BlocProvider<GetNotificationBloc>(
+          BlocProvider<UnreadNotificationBloc>(
             create: (context) =>
-                GetNotificationBloc(userRepository: userRepository),
+                UnreadNotificationBloc(userRepository: userRepository),
           ),
-          BlocProvider<GetListReadedNotifiBloc>(
+          BlocProvider<ReadNotificationBloc>(
             create: (context) =>
-                GetListReadedNotifiBloc(userRepository: userRepository),
+                ReadNotificationBloc(userRepository: userRepository),
           ),
           BlocProvider<GetInfoAccBloc>(
             create: (context) => GetInfoAccBloc(userRepository: userRepository),

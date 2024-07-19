@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
@@ -12,31 +13,107 @@ import '../../widgets/loading_api.dart';
 part 'unread_list_notifi_event.dart';
 part 'unread_list_notifi_state.dart';
 
-class GetNotificationBloc
-    extends Bloc<ListUnReadNotificationEvent, NotificationState> {
+class UnreadNotificationBloc
+    extends Bloc<UnReadNotificationEvent, UnReadNotificationState> {
   final UserRepository userRepository;
   BehaviorSubject<int> total = BehaviorSubject.seeded(0);
   List<DataNotification>? listNotification;
+  BehaviorSubject<bool> showSelectAll = BehaviorSubject.seeded(false);
+  bool isShowBtnAll = true;
 
-  GetNotificationBloc({required UserRepository userRepository})
+  UnreadNotificationBloc({required UserRepository userRepository})
       : userRepository = userRepository,
         super(InitGetNotificationState());
 
   @override
-  Stream<NotificationState> mapEventToState(
-      ListUnReadNotificationEvent event) async* {
+  Stream<UnReadNotificationState> mapEventToState(
+    UnReadNotificationEvent event,
+  ) async* {
     if (event is InitGetListUnReadNotificationEvent) {
       yield* _getListNotification(page: event.page, isLoading: event.isLoading);
     } else if (event is DeleteUnReadListNotificationEvent) {
-      yield* _deleteNotification(id: event.id, type: event.type);
+      yield* _deleteNotification(
+        id: event.id,
+      );
     } else if (event is ReadNotificationEvent) {
-      yield* _readNotification(id: event.id, type: event.type);
+      yield* _readNotification(
+        id: event.id,
+      );
     } else if (event is CheckNotification) {
       yield* _checkNotification(event.isLoading ?? true);
+    } else if (event is ShowSelectOrUnselectAll) {
+      yield* selectOrUnselectAll(isSelect: event.isSelect ?? true);
     }
   }
 
-  Stream<NotificationState> _getListNotification({
+  readAll() {
+    String ids = _getId();
+    if (ids != '') {
+      String dataIds = ids.splitBefore(',');
+      this.add(ReadNotificationEvent(dataIds));
+    }
+  }
+
+  deleteAll() {
+    String ids = _getId();
+    if (ids != '') {
+      String dataIds = ids.splitBefore(',');
+      this.add(DeleteUnReadListNotificationEvent(dataIds));
+    }
+  }
+
+  String _getId() {
+    final idsSelect =
+        listNotification?.where((element) => element.isSelect == true).toList();
+    String ids = '';
+    idsSelect?.forEach((element) {
+      ids += '${element.id},';
+    });
+    return ids;
+  }
+
+  resetSelect() {
+    showSelectAll.add(false);
+    isShowBtnAll = true;
+  }
+
+  Stream<UnReadNotificationState> selectOrUnselectAll({
+    bool isSelect = true,
+  }) async* {
+    List<DataNotification> listS = [];
+    if ((listNotification?.length ?? 0) > 0) {
+      for (int i = 0; i < listNotification!.length; i++) {
+        listS.add(DataNotification(
+          id: listNotification![i].id,
+          type: listNotification![i].type,
+          title: listNotification![i].title,
+          content: listNotification![i].content,
+          link: listNotification![i].link,
+          module: listNotification![i].module,
+          recordId: listNotification![i].recordId,
+          isSelect: isSelect,
+        ));
+      }
+      listNotification = listS;
+      yield UpdateNotificationState(
+        list: listS,
+      );
+    }
+  }
+
+  selectOrUnselectOne({
+    bool isSelect = true,
+    required DataNotification value,
+  }) {
+    if (listNotification?.isNotEmpty ?? false) {
+      int index = listNotification!.indexOf(value);
+      if (index != -1) {
+        listNotification![index].isSelect = isSelect;
+      }
+    }
+  }
+
+  Stream<UnReadNotificationState> _getListNotification({
     required int page,
     bool isLoading = true,
   }) async* {
@@ -44,19 +121,20 @@ class GetNotificationBloc
     try {
       final response = await userRepository.getListUnReadNotification(page);
       if (isSuccess(response.code)) {
-        total.add(int.parse(response.data.total ?? '0'));
-        int page = int.parse(response.data.page!);
+        total.add(int.parse(response.data?.total ?? '0'));
+        int page = int.parse(response.data?.page ?? '0');
         if (page == 1) {
-          listNotification = response.data.list;
+          listNotification = response.data?.list ?? [];
         } else {
-          listNotification!.addAll(response.data.list!);
+          listNotification = [
+            ...listNotification ?? [],
+            ...response.data?.list ?? []
+          ];
         }
         if (isLoading) Loading().popLoading();
         yield UpdateNotificationState(
-            list: listNotification!,
-            total: response.data.total!,
-            limit: response.data.limit!,
-            page: page);
+          list: listNotification ?? [],
+        );
       } else {
         if (isLoading) Loading().popLoading();
         yield ErrorGetNotificationState(response.msg ?? '');
@@ -67,10 +145,13 @@ class GetNotificationBloc
     }
   }
 
-  Stream<NotificationState> _deleteNotification(
-      {required int id, required String type}) async* {
+  Stream<UnReadNotificationState> _deleteNotification({
+    required String id,
+  }) async* {
     try {
-      final response = await userRepository.deleteNotification(id, type);
+      final response = await userRepository.deleteNotification(
+        id,
+      );
       if (isSuccess(response.code)) {
         yield DeleteNotificationState();
       } else {
@@ -84,11 +165,14 @@ class GetNotificationBloc
     }
   }
 
-  Stream<NotificationState> _readNotification(
-      {required String id, required String type}) async* {
+  Stream<UnReadNotificationState> _readNotification({
+    required String id,
+  }) async* {
     try {
-      final response =
-          await userRepository.readNotification(id: id, type: type);
+      //list id,id,..
+      final response = await userRepository.readNotification(
+        id: id,
+      );
       if (isSuccess(response.code)) {
         yield ReadNotificationState();
       } else {
@@ -101,26 +185,23 @@ class GetNotificationBloc
     }
   }
 
-  Stream<NotificationState> _checkNotification(bool isLoading) async* {
+  Stream<UnReadNotificationState> _checkNotification(bool isLoading) async* {
     try {
       if (isLoading) Loading().showLoading();
       final response = await userRepository.getListUnReadNotification(1);
       if (isSuccess(response.code)) {
         if (isLoading) Loading().popLoading();
-        if (response.data.list!.length > 0) {
-          total.add(int.parse(response.data.total ?? '0'));
-          yield NotificationNeedRead();
+        if ((response.data?.list?.length ?? 0) > 0) {
+          total.add(int.parse(response.data?.total ?? '0'));
         }
       } else {
         if (isLoading) Loading().popLoading();
-        yield ErrorGetNotificationState(response.msg ?? '');
       }
     } catch (e) {
       if (isLoading) Loading().popLoading();
-      yield ErrorGetNotificationState(getT(KeyT.an_error_occurred));
     }
   }
 
-  static GetNotificationBloc of(BuildContext context) =>
-      BlocProvider.of<GetNotificationBloc>(context);
+  static UnreadNotificationBloc of(BuildContext context) =>
+      BlocProvider.of<UnreadNotificationBloc>(context);
 }

@@ -49,7 +49,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.KHACH_HANG);
-    GetNotificationBloc.of(context).add(CheckNotification(isLoading: false));
+    UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     super.initState();
   }
 

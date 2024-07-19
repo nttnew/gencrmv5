@@ -1,13 +1,13 @@
 part of 'unread_list_notifi_bloc.dart';
 
-abstract class ListUnReadNotificationEvent extends Equatable {
+abstract class UnReadNotificationEvent extends Equatable {
   @override
   List<Object?> get props => [];
 
-  ListUnReadNotificationEvent();
+  UnReadNotificationEvent();
 }
 
-class InitGetListUnReadNotificationEvent extends ListUnReadNotificationEvent {
+class InitGetListUnReadNotificationEvent extends UnReadNotificationEvent {
   final int page;
   final bool isLoading;
 
@@ -19,25 +19,38 @@ class InitGetListUnReadNotificationEvent extends ListUnReadNotificationEvent {
   List<Object?> get props => [page];
 }
 
-class DeleteUnReadListNotificationEvent extends ListUnReadNotificationEvent {
-  final int id;
-  final String type;
+class DeleteUnReadListNotificationEvent extends UnReadNotificationEvent {
+  final String id;
 
-  DeleteUnReadListNotificationEvent(this.id, this.type);
+  DeleteUnReadListNotificationEvent(
+    this.id,
+  );
   @override
-  List<Object?> get props => [id, type];
+  List<Object?> get props => [
+        id,
+      ];
 }
 
-class CheckNotification extends ListUnReadNotificationEvent {
+class CheckNotification extends UnReadNotificationEvent {
   final bool? isLoading;
   CheckNotification({this.isLoading});
 }
 
-class ReadNotificationEvent extends ListUnReadNotificationEvent {
+class ReadNotificationEvent extends UnReadNotificationEvent {
   final String id;
-  final String type;
 
-  ReadNotificationEvent(this.id, this.type);
+  ReadNotificationEvent(
+    this.id,
+  );
   @override
-  List<Object?> get props => [id, type];
+  List<Object?> get props => [
+        id,
+      ];
+}
+
+class ShowSelectOrUnselectAll extends UnReadNotificationEvent {
+  final bool? isSelect;
+  ShowSelectOrUnselectAll({this.isSelect});
+  @override
+  List<Object?> get props => [isSelect];
 }

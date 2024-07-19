@@ -40,7 +40,7 @@ class _WorkScreenState extends State<WorkScreen> {
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.CONG_VIEC);
-    GetNotificationBloc.of(context).add(CheckNotification(isLoading: false));
+    UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     super.initState();
   }
 

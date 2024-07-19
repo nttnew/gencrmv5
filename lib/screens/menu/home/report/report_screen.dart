@@ -111,7 +111,7 @@ class _ReportScreenState extends State<ReportScreen> {
     ];
     items = [getT(KeyT.all_company)];
     select = typeReport[0]['name'];
-    GetNotificationBloc.of(context).add(CheckNotification(isLoading: false));
+    UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     _initApiTime();
   }
 

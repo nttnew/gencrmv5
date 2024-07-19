@@ -50,8 +50,6 @@ import '../src/models/model_generator/list_ht_product_customer_response.dart';
 import '../src/models/model_generator/list_product_response.dart';
 import '../src/models/model_generator/main_menu_response.dart';
 import '../src/models/model_generator/note.dart';
-import '../src/models/model_generator/param_del_notif.dart';
-import '../src/models/model_generator/param_read_notifi.dart';
 import '../src/models/model_generator/pdf_response.dart';
 import '../src/models/model_generator/product_customer_edit_response.dart';
 import '../src/models/model_generator/product_customer_save_response.dart';
@@ -452,7 +450,7 @@ class UserRepository {
         page,
       );
 
-  Future<ListNotificationResponse> getListUnReadNotification(
+  Future<NotificationResponse> getListUnReadNotification(
     int page,
   ) async =>
       await RestClient(
@@ -462,7 +460,7 @@ class UserRepository {
         page,
       );
 
-  Future<ListNotificationResponse> getListReadNotification(
+  Future<NotificationResponse> getListReadNotification(
     int page,
   ) async =>
       await RestClient(
@@ -473,14 +471,13 @@ class UserRepository {
       );
 
   Future<BaseResponse> deleteNotification(
-    int id,
-    String type,
+    String id,
   ) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).deleteNotifi(
-        DelNotifiParam(id, type),
+        id,
       );
 
   Future<InfoAccResponse> getInfoAcc() async => await RestClient(
@@ -1116,16 +1113,12 @@ class UserRepository {
 
   Future<BaseResponse> readNotification({
     required String id,
-    required String type,
   }) async =>
       await RestClient(
         dio,
         baseUrl: dio.options.baseUrl,
       ).readNotification(
-        ReadNotifiParam(
-          id,
-          type,
-        ),
+        id,
       );
 
   Future<AddDataResponse> addIndividualCustomer({

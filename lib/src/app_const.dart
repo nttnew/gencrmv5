@@ -511,6 +511,14 @@ bool isCarCrm() {
       );
 }
 
+Color getColorWithIsCar() {
+  return isCarCrm() ? COLORS.WHITE : COLORS.BLACK;
+}
+
+Color getBackgroundWithIsCar() {
+  return isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.SECONDS_COLOR;
+}
+
 Widget widgetSave({
   String? title,
   Color? background,

@@ -126,8 +126,8 @@ class _ScreenMainState extends State<ScreenMain> {
     _blocLogin = LoginBloc.of(context);
     _showFaceId();
     GetInfoAccBloc.of(context).add(InitGetInforAcc(isLoading: false));
-    GetNotificationBloc.of(context).add(CheckNotification(isLoading: false));
-    GetNotificationBloc.of(context).add(
+    UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
+    UnreadNotificationBloc.of(context).add(
       InitGetListUnReadNotificationEvent(
         BASE_URL.PAGE_DEFAULT,
         isLoading: false,

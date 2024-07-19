@@ -46,7 +46,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
     managerBloc =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
     managerBloc.getManager(module: Module.CO_HOI_BH);
-    GetNotificationBloc.of(context).add(CheckNotification(isLoading: false));
+    UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     super.initState();
   }
 

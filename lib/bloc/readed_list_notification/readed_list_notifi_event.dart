@@ -1,13 +1,13 @@
 part of 'readed_list_notifi_bloc.dart';
 
-abstract class ListReadedNotifiEvent extends Equatable {
+abstract class ReadNotificationEvent extends Equatable {
   @override
   List<Object?> get props => [];
 
-  ListReadedNotifiEvent();
+  ReadNotificationEvent();
 }
 
-class InitGetListReadedNotifiEvent extends ListReadedNotifiEvent {
+class InitGetListReadedNotifiEvent extends ReadNotificationEvent {
   final int page;
 
   InitGetListReadedNotifiEvent(this.page);
@@ -15,11 +15,21 @@ class InitGetListReadedNotifiEvent extends ListReadedNotifiEvent {
   List<Object?> get props => [page];
 }
 
-class DeleteReadedListNotifiEvent extends ListReadedNotifiEvent {
-  final int id;
-  final String type;
+class DeleteReadedListNotifiEvent extends ReadNotificationEvent {
+  final String id;
 
-  DeleteReadedListNotifiEvent(this.id, this.type);
+  DeleteReadedListNotifiEvent(
+    this.id,
+  );
   @override
-  List<Object?> get props => [id, type];
+  List<Object?> get props => [
+        id,
+      ];
+}
+
+class ShowSelectOrUnselectAll extends ReadNotificationEvent {
+  final bool? isSelect;
+  ShowSelectOrUnselectAll({this.isSelect});
+  @override
+  List<Object?> get props => [isSelect];
 }

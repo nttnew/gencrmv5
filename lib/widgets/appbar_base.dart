@@ -16,14 +16,14 @@ PreferredSizeWidget AppbarBaseNormal(
     AppBar(
       toolbarHeight: h ?? AppValue.heightsAppBar,
       backgroundColor:
-          isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.SECONDS_COLOR,
+          getBackgroundWithIsCar(),
       elevation: 0,
       titleSpacing: 0,
       centerTitle: false,
       title: Text(
         (title ?? '').htmlToString(),
         style: TextStyle(
-          color: isCarCrm() ? COLORS.WHITE : COLORS.BLACK,
+          color: getColorWithIsCar(),
           fontFamily: "Montserrat",
           fontWeight: FontWeight.w700,
           fontSize: 16,
@@ -41,7 +41,7 @@ PreferredSizeWidget AppbarBaseNormal(
           ICONS.IC_BACK_PNG,
           height: 28,
           width: 28,
-          color: isCarCrm() ? COLORS.LIGHT_GREY : COLORS.BLACK,
+          color: getColorWithIsCar(),
         ),
       ),
       actions: [
@@ -54,7 +54,7 @@ PreferredSizeWidget AppbarBase(
     AppBar(
       toolbarHeight: AppValue.heightsAppBar,
       backgroundColor:
-          isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.SECONDS_COLOR,
+          getBackgroundWithIsCar(),
       centerTitle: false,
       elevation: 0,
       title: Row(
@@ -70,7 +70,7 @@ PreferredSizeWidget AppbarBase(
               child: WidgetText(
                 title: title.htmlToString(),
                 style: TextStyle(
-                  color: isCarCrm() ? COLORS.WHITE : COLORS.BLACK,
+                  color: getColorWithIsCar(),
                   fontFamily: "Montserrat",
                   fontWeight: FontWeight.w700,
                   fontSize: 16,

@@ -1032,13 +1032,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ListNotificationResponse> getListUnReadNotification(page) async {
+  Future<NotificationResponse> getListUnReadNotification(page) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'page': page};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ListNotificationResponse>(Options(
+        _setStreamType<NotificationResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -1050,18 +1050,18 @@ class _RestClient implements RestClient {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ListNotificationResponse.fromJson(_result.data!);
+    final value = NotificationResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<ListNotificationResponse> getListReadedNotification(page) async {
+  Future<NotificationResponse> getListReadedNotification(page) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'page': page};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ListNotificationResponse>(Options(
+        _setStreamType<NotificationResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -1073,17 +1073,16 @@ class _RestClient implements RestClient {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ListNotificationResponse.fromJson(_result.data!);
+    final value = NotificationResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<BaseResponse> deleteNotifi(delnotifi) async {
+  Future<BaseResponse> deleteNotifi(id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(delnotifi.toJson());
+    final _data = {'id': id};
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
       method: 'DELETE',
@@ -2363,11 +2362,11 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<BaseResponse> readNotification(ReadNotifiParam) async {
+  Future<BaseResponse> readNotification(id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = ReadNotifiParam;
+    final _data = {'id': id};
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
       method: 'POST',

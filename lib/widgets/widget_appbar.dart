@@ -90,7 +90,7 @@ Widget rightAppBar() => GestureDetector(
             width: 24,
           ),
           StreamBuilder<int>(
-              stream: GetNotificationBloc.of(Get.context!).total,
+              stream: UnreadNotificationBloc.of(Get.context!).total,
               builder: (context, snapshot) {
                 final int total = snapshot.data ?? 0;
                 if (total != 0)

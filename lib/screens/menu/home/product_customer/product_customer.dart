@@ -42,7 +42,7 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
       ModuleMy.SAN_PHAM_KH,
       isTitle: true,
     );
-    GetNotificationBloc.of(context).add(CheckNotification(isLoading: false));
+    UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     _bloc = ProductCustomerModuleBloc.of(context);
     _bloc.getFilter();
     super.initState();

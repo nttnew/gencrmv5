@@ -17,7 +17,7 @@ class DropDownBase extends StatefulWidget {
   final BehaviorSubject<List<dynamic>> stream;
   final Function(dynamic item) onTap;
   final bool isName;
-  final bool isPadding ;
+  final bool isPadding;
   @override
   State<DropDownBase> createState() => _DropDownBaseState();
 }
@@ -78,13 +78,17 @@ class _DropDownBaseState extends State<DropDownBase> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Text(
-                                  filter ??
-                                      (!widget.isName
-                                          ? getT(KeyT.select_type)
-                                          : getT(KeyT.select_filter)),
-                                  style: AppStyle.DEFAULT_16
-                                      .copyWith(fontWeight: FontWeight.w600),
+                                Expanded(
+                                  child: Text(
+                                    filter ??
+                                        (!widget.isName
+                                            ? getT(KeyT.select_type)
+                                            : getT(KeyT.select_filter)),
+                                    style: AppStyle.DEFAULT_16
+                                        .copyWith(fontWeight: FontWeight.w600),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 8,

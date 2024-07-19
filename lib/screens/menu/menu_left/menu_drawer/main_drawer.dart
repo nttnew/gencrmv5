@@ -103,7 +103,7 @@ class _MainDrawerState extends State<MainDrawer> {
               right: 10,
             ),
             decoration: BoxDecoration(
-              color: isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.SECONDS_COLOR,
+              color: getBackgroundWithIsCar(),
             ),
             height: AppValue.heights * 0.18,
             child: BlocBuilder<GetInfoAccBloc, GetInforAccState>(

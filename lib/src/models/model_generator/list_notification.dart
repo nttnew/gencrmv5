@@ -1,39 +1,137 @@
-import 'package:gen_crm/src/models/model_generator/base_response.dart';
-import 'package:json_annotation/json_annotation.dart';
+class NotificationResponse {
+  bool? success;
+  String? msg;
+  int? code;
+  Data? data;
 
-part 'list_notification.g.dart';
+  NotificationResponse({
+    this.success,
+    this.msg,
+    this.code,
+    this.data,
+  });
 
-@JsonSerializable(explicitToJson: true)
-class DataNotification {
-  final String? id, type, title, content, link, module, record_id;
+  NotificationResponse.fromJson(Map<String, dynamic> json) {
+    success = json['success'];
+    msg = json['msg'];
+    code = json['code'];
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+  }
 
-  DataNotification(this.id, this.type, this.title, this.content, this.link,
-      this.module, this.record_id);
-
-  factory DataNotification.fromJson(Map<String, dynamic> json) =>
-      _$DataNotificationFromJson(json);
-  Map<String, dynamic> toJson() => _$DataNotificationToJson(this);
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['success'] = this.success;
+    data['msg'] = this.msg;
+    data['code'] = this.code;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
 }
 
-@JsonSerializable(explicitToJson: true)
-class ListNotification {
+class Data {
   List<DataNotification>? list;
-  String? total, page;
+  String? page;
   int? limit;
+  String? total;
 
-  ListNotification(this.list, this.total, this.limit, this.page);
-  factory ListNotification.fromJson(Map<String, dynamic> json) =>
-      _$ListNotificationFromJson(json);
-  Map<String, dynamic> toJson() => _$ListNotificationToJson(this);
+  Data({
+    this.list,
+    this.page,
+    this.limit,
+    this.total,
+  });
+
+  Data.fromJson(Map<String, dynamic> json) {
+    if (json['list'] != null) {
+      list = <DataNotification>[];
+      json['list'].forEach((v) {
+        list!.add(DataNotification.fromJson(v));
+      });
+    }
+    page = json['page'];
+    limit = json['limit'];
+    total = json['total'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    if (this.list != null) {
+      data['list'] = this.list!.map((v) => v.toJson()).toList();
+    }
+    data['page'] = this.page;
+    data['limit'] = this.limit;
+    data['total'] = this.total;
+    return data;
+  }
 }
 
-@JsonSerializable(explicitToJson: true)
-class ListNotificationResponse extends BaseResponse {
-  ListNotification data;
+class DataNotification {
+  String? id;
+  String? type;
+  String? title;
+  String? content;
+  String? link;
+  String? module;
+  String? recordId;
+  bool? isSelect;
 
-  ListNotificationResponse(this.data);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DataNotification &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          type == other.type &&
+          title == other.title &&
+          content == other.content &&
+          link == other.link &&
+          module == other.module &&
+          recordId == other.recordId &&
+          isSelect == other.isSelect;
 
-  factory ListNotificationResponse.fromJson(Map<String, dynamic> json) =>
-      _$ListNotificationResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$ListNotificationResponseToJson(this);
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      type.hashCode ^
+      title.hashCode ^
+      content.hashCode ^
+      link.hashCode ^
+      module.hashCode ^
+      recordId.hashCode ^
+      isSelect.hashCode;
+
+  DataNotification({
+    this.id,
+    this.type,
+    this.title,
+    this.content,
+    this.link,
+    this.module,
+    this.recordId,
+    this.isSelect = false,
+  });
+
+  DataNotification.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    type = json['type'];
+    title = json['title'];
+    content = json['content'];
+    link = json['link'];
+    module = json['module'];
+    recordId = json['record_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = this.id;
+    data['type'] = this.type;
+    data['title'] = this.title;
+    data['content'] = this.content;
+    data['link'] = this.link;
+    data['module'] = this.module;
+    data['record_id'] = this.recordId;
+    return data;
+  }
 }

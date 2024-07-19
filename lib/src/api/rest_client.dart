@@ -21,7 +21,6 @@ import 'package:gen_crm/src/models/model_generator/list_notification.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/src/models/model_generator/note.dart';
 import 'package:gen_crm/src/models/model_generator/support.dart';
-import 'package:gen_crm/src/models/model_generator/param_del_notif.dart';
 import 'package:gen_crm/src/models/model_generator/work_clue.dart';
 import 'package:gen_crm/src/models/model_generator/work.dart';
 import 'package:gen_crm/src/preferences_key.dart';
@@ -278,18 +277,19 @@ abstract class RestClient {
   Future<InforResponse> getInfor();
 
   @GET(BASE_URL.LIST_UNREAD_NOTIFICATION)
-  Future<ListNotificationResponse> getListUnReadNotification(
+  Future<NotificationResponse> getListUnReadNotification(
     @Query('page') int page,
   );
 
   @GET(BASE_URL.LIST_READED_NOTIFICATION)
-  Future<ListNotificationResponse> getListReadedNotification(
+  Future<NotificationResponse> getListReadedNotification(
     @Query('page') int page,
   );
   @DELETE(BASE_URL.DELETE_NOTIFICATION)
   Future<BaseResponse> deleteNotifi(
-    @Body() DelNotifiParam delnotifi,
+    @Field('id') String id,
   );
+
   @GET(BASE_URL.LIST_JOB)
   Future<WorkResponse> getListJob(
     @Query('pageIndex') String pageIndex,
@@ -553,7 +553,7 @@ abstract class RestClient {
 
   @POST(BASE_URL.READ_NOTIFICATION)
   Future<BaseResponse> readNotification(
-    @Body() ReadNotifiParam,
+    @Field('id') String id,
   );
 
   @POST(BASE_URL.CHANGE_INFOR_ACC)
