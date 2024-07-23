@@ -36,6 +36,7 @@ class _AttachmentState extends State<Attachment> {
   late final String typeModule;
   static final List<String> pickOptions = [getT(KeyT.begin), getT(KeyT.after)];
   late final DetailContractBloc _bloc;
+
   @override
   void initState() {
     _bloc = DetailContractBloc.of(context);
@@ -46,14 +47,8 @@ class _AttachmentState extends State<Attachment> {
   }
 
   @override
-  void deactivate() {
-    _bloc.listFileStream.add(null);
-    super.deactivate();
-  }
-
-  @override
   void dispose() {
-    _bloc.listFileStream.close();
+    _bloc.listFileStream.add(null);
     super.dispose();
   }
 
