@@ -21,11 +21,12 @@ class MainCar extends StatefulWidget {
 
 class _MainCarState extends State<MainCar> {
   late String? lang;
+  late final LoginBloc _blocLogin;
 
   @override
   void initState() {
     lang = shareLocal.getString(PreferencesKey.LANGUAGE_NAME);
-    LoginBloc _blocLogin = LoginBloc.of(context);
+    _blocLogin = LoginBloc.of(context);
     _blocLogin.locationStatusStream.listen((value) {
       final listTrangThai = value.data?.trangthaihd ?? [];
       if (_blocLogin.valueTrangThai == null && listTrangThai.length > 0) {
@@ -41,16 +42,16 @@ class _MainCarState extends State<MainCar> {
     final langNew = shareLocal.getString(PreferencesKey.LANGUAGE_NAME);
     if (lang != langNew) {
       lang = langNew;
-      LoginBloc.of(context).getChiNhanh();
+      _blocLogin.getChiNhanh();
+      _blocLogin.loadMoreControllerCar.reloadData();
     }
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   Widget build(BuildContext context) {
-    LoginBloc _blocLogin = LoginBloc.of(context);
-    double wSz = MediaQuery.of(context).size.width;
-    double w = wSz / 5;
+    double _wSz = MediaQuery.of(context).size.width;
+    double w = _wSz / 5;
     return Expanded(
       child: ViewLoadMoreBase(
         isShowAll: _blocLogin.isShowLocaiton,
@@ -92,7 +93,7 @@ class _MainCarState extends State<MainCar> {
                                 right: 0,
                                 child: Container(
                                   height: w,
-                                  width: wSz,
+                                  width: _wSz,
                                   child: Scrollbar(
                                     thumbVisibility: true,
                                     trackVisibility: true,
