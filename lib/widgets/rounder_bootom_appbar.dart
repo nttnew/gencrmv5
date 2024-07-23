@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gen_crm/src/app_const.dart';
 import '../src/src_index.dart';
 
 class RoundedAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -8,23 +9,23 @@ class RoundedAppBar extends StatelessWidget implements PreferredSizeWidget {
       alignment: Alignment.center,
       children: [
         Align(
-          child: new SizedBox.fromSize(
+          child:  SizedBox.fromSize(
             size: preferredSize,
-            child: new LayoutBuilder(builder: (context, constraint) {
+            child:  LayoutBuilder(builder: (context, constraint) {
               final width = constraint.maxWidth * 8;
-              return new ClipRect(
-                child: new OverflowBox(
+              return  ClipRect(
+                child:  OverflowBox(
                   maxHeight: double.infinity,
                   maxWidth: double.infinity,
-                  child: new SizedBox(
+                  child:  SizedBox(
                     width: width,
                     height: width,
-                    child: new Padding(
-                      padding: new EdgeInsets.only(
+                    child:  Padding(
+                      padding:  EdgeInsets.only(
                           bottom: width / 2 - preferredSize.height / 2),
-                      child: new DecoratedBox(
-                        decoration: new BoxDecoration(
-                          color: COLORS.SECONDS_COLOR,
+                      child:  DecoratedBox(
+                        decoration:  BoxDecoration(
+                          color: getBackgroundWithIsCar(),
                           shape: BoxShape.circle,
                         ),
                       ),

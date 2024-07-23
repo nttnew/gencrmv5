@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,9 +12,8 @@ import '../../../../../src/src_index.dart';
 import '../bloc/contract/attack_bloc.dart';
 import '../../l10n/key_text.dart';
 import '../screens/menu/form/widget/preview_image.dart';
-import '../src/app_const.dart';
 import 'package:image/image.dart' as img;
-
+import 'btn_save.dart';
 import 'loading_api.dart';
 
 Widget FileDinhKemUiBase({
@@ -200,23 +198,25 @@ Widget FileLuuBase(
         children: [
           if (isAttack)
             GestureDetector(
-                onTap: () async {
-                  await onDinhKemBase(context).then((listFile) {
-                    if (listFile != []) {
-                      AttackBloc.of(context)
-                          .add(InitAttackEvent(files: listFile));
-                    }
-                  });
-                },
-                child: SvgPicture.asset(ICONS.IC_ATTACK_SVG)),
+              onTap: () async {
+                await onDinhKemBase(context).then((listFile) {
+                  if (listFile != []) {
+                    AttackBloc.of(context)
+                        .add(InitAttackEvent(files: listFile));
+                  }
+                });
+              },
+              child: Image.asset(
+                ICONS.IC_ATTACK_PNG,
+                height: 24,
+                width: 24,
+              ),
+            ),
           Spacer(),
           Row(
             children: [
               if (btn != null) btn,
-              GestureDetector(
-                onTap: () => onTap(),
-                child: widgetSave(),
-              ),
+              ButtonSave(onPressed: () => onTap()),
             ],
           ),
         ],
@@ -385,7 +385,7 @@ Future<File?> getImageCamera({
   bool isShowLoading = false,
 }) async {
   try {
-    if(isShowLoading) Loading().showLoading();
+    if (isShowLoading) Loading().showLoading();
     final XFile? fileCamera = await ImagePicker().pickImage(
       source: ImageSource.camera,
     );

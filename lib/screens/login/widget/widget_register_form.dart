@@ -4,6 +4,7 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:formz/formz.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/src/src_index.dart';
+import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import '../../../l10n/key_text.dart';
 
@@ -54,7 +55,7 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
         if (state.status.isSubmissionSuccess) {
           GetSnackBarUtils.removeSnackBar();
           ShowDialogCustom.showDialogBase(
-            title:getT(KeyT.notification),
+            title: getT(KeyT.notification),
             content: getT(KeyT.success),
             onTap1: () => AppNavigator.navigateLogout(),
           );
@@ -65,7 +66,7 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
         if (state.status.isSubmissionFailure) {
           GetSnackBarUtils.removeSnackBar();
           ShowDialogCustom.showDialogBase(
-            title:getT(KeyT.notification),
+            title: getT(KeyT.notification),
             content: state.message,
           );
         }
@@ -111,13 +112,11 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
     return BlocBuilder<RegisterBloc, RegisterState>(
         buildWhen: (previous, current) => previous.status != current.status,
         builder: (context, state) {
-          return WidgetButton(
-            onTap: () => state.status.isValidated
-                ? bloc.add(RegisterFormSubmitted())
+          return ButtonCustom(
+            onTap: state.status.isValidated
+                ? () => bloc.add(RegisterFormSubmitted())
                 : null,
-            enable: state.status.isValidated,
-            backgroundColor: COLORS.PRIMARY_COLOR,
-            text: getT(KeyT.register),
+            title: getT(KeyT.register),
           );
         });
   }
@@ -158,9 +157,8 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
         boxDecoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25), color: COLORS.WHITE),
         hint: getT(KeyT.enter_your_email),
-        errorText: state.email.invalid
-            ? getT(KeyT.this_account_is_invalid)
-            : null,
+        errorText:
+            state.email.invalid ? getT(KeyT.this_account_is_invalid) : null,
       );
     });
   }

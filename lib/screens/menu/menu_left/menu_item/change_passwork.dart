@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
 import 'package:gen_crm/bloc/blocs.dart';
-import 'package:gen_crm/widgets/widget_button.dart';
+import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/widget_input.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/src_index.dart';
@@ -76,7 +76,7 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
             if (state.status.isSubmissionFailure) {
               GetSnackBarUtils.removeSnackBar();
               ShowDialogCustom.showDialogBase(
-                title:getT(KeyT.notification),
+                title: getT(KeyT.notification),
                 content: state.message,
               );
             }
@@ -92,20 +92,18 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
               Spacer(),
               BlocBuilder<ChangePasswordBloc, ChangePasswordState>(
                   builder: (context, state) {
-                return WidgetButton(
+                return ButtonCustom(
+                  marginHorizontal: 0,
+                  marginVertical: 0,
                   onTap: () {
                     state.status.isValidated
                         ? bloc.add(FormChangePasswordSubmitted())
                         : ShowDialogCustom.showDialogBase(
-                            title:getT(KeyT.notification),
+                            title: getT(KeyT.notification),
                             content: getT(KeyT.check_the_information),
                           );
                   },
-                  height: 45,
-                  padding: EdgeInsets.all(0),
-                  backgroundColor: COLORS.SECONDS_COLOR,
-                  text: getT(KeyT.completed),
-                  textColor: COLORS.BLACK,
+                  title: getT(KeyT.completed),
                 );
               })
             ],

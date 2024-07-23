@@ -139,7 +139,8 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
 
     _list.add(ModuleThaoTac(
       title: getT(KeyT.see_attachment),
-      icon: ICONS.IC_ATTACK_SVG,
+      icon: ICONS.IC_ATTACK_PNG,
+      isSvg: false,
       onThaoTac: () async {
         Get.back();
         Navigator.of(context).push(MaterialPageRoute(
@@ -296,23 +297,21 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                                 },
                                 itemWidget: (int index, data) {
                                   final DataFormAdd item = data as DataFormAdd;
-                                  return GestureDetector(
+                                  return WorkCardWidget(
                                     onTap: () {
                                       AppNavigator.navigateDetailWork(
                                           int.parse(data.id ?? ''),
                                           onRefreshForm: () {
-                                        _bloc.controllerCV.reloadData();
-                                      });
+                                            _bloc.controllerCV.reloadData();
+                                          });
                                     },
-                                    child: WorkCardWidget(
-                                      color: item.color,
-                                      nameCustomer: item.name_customer,
-                                      nameJob: item.name_job,
-                                      statusJob: item.status_job,
-                                      startDate: item.start_date,
-                                      totalComment: item.total_comment,
-                                      productCustomer: item.product_customer,
-                                    ),
+                                    color: item.color,
+                                    nameCustomer: item.name_customer,
+                                    nameJob: item.name_job,
+                                    statusJob: item.status_job,
+                                    startDate: item.start_date,
+                                    totalComment: item.total_comment,
+                                    productCustomer: item.product_customer,
                                   );
                                 },
                                 controller: _bloc.controllerCV,
@@ -364,17 +363,17 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                         bloc: _bloc,
                         builder: (context, state) {
                           if (state is SuccessDetailContractState) {
-                            _title =
-                                checkTitle(state.listDetailContract, SO_HOP_DONG_DB);
+                            _title = checkTitle(
+                                state.listDetailContract, SO_HOP_DONG_DB);
                             WidgetsBinding.instance
                                 .addPostFrameCallback((timeStamp) {
                               setState(() {});
                             });
-                            return ButtonThaoTac(onTap: () {
+                            return ButtonCustom(onTap: () {
                               showThaoTac(context, _list);
                             });
                           }
-                          return ButtonThaoTac(disable: true, onTap: () {});
+                          return ButtonCustom();
                         },
                       ),
                     ],

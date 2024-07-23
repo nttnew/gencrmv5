@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:gen_crm/bloc/blocs.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/src_index.dart';
+import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import '../../l10n/key_text.dart';
@@ -112,14 +114,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   _buildButtonSubmit(ForgotPasswordBloc bloc) {
     return BlocBuilder<ForgotPasswordBloc, ForgotPasswordState>(
         builder: (context, state) {
-      return WidgetButton(
+      return ButtonCustom(
+        marginHorizontal: 0,
+        backgroundColor: getBackgroundWithIsCar(),
         onTap: () => bloc.add(FormForgotPasswordSubmitted()),
-        boxDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: COLORS.SECONDS_COLOR,
-        ),
-        textStyle: AppStyle.DEFAULT_14.copyWith(fontWeight: FontWeight.w600),
-        text: (getT(KeyT.continue_my)).toUpperCase(),
+        title: (getT(KeyT.continue_my)).toUpperCase(),
       );
     });
   }

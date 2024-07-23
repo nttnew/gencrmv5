@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/l10n/key_text.dart';
+import 'package:gen_crm/screens/menu/widget/box_item.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -96,7 +97,7 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
                             boxShadow: [
                               BoxShadow(
                                 color: Color(0xff333333).withOpacity(0.2),
-                                blurRadius: 6,
+                                blurRadius: 2,
                                 offset: const Offset(0, 2),
                               )
                             ],
@@ -246,33 +247,8 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
         itemCount: 10,
         itemBuilder: (context, index) =>
             widget.widgetLoad ??
-            Container(
-              margin: EdgeInsets.only(
-                left: 16,
-                right: 16,
-                bottom: 16,
-              ),
-              padding: EdgeInsets.all(
-                16,
-              ),
-              decoration: BoxDecoration(
-                color: COLORS.WHITE,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(
-                    10,
-                  ),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(
-                      0.3,
-                    ),
-                    spreadRadius: 3,
-                    blurRadius: 5,
-                    offset: Offset(0, 0), // changes position of shadow
-                  ),
-                ],
-              ),
+            BoxItem(
+              onTap: (){},
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

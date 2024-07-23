@@ -181,27 +181,27 @@ Widget itemIcon(
                   ? SvgPicture.asset(
                       icon,
                       fit: BoxFit.contain,
+                      color: COLORS.TEXT_BLUE_BOLD,
                     )
                   : Image.asset(
                       icon,
                       fit: BoxFit.contain,
+                      color: COLORS.TEXT_BLUE_BOLD,
                     )),
         ),
         SizedBox(
           width: 25,
         ),
-        WidgetText(title: title, style: styleTitleBottomSheet())
+        WidgetText(
+          title: title,
+          style: AppStyle.DEFAULT_20_BOLD.copyWith(
+            color: COLORS.TEXT_BLUE_BOLD,
+          ),
+        )
       ],
     ),
   );
 }
-
-TextStyle styleTitleBottomSheet() => TextStyle(
-      color: HexColor("#0069CD"),
-      fontFamily: "Quicksand",
-      fontWeight: FontWeight.w700,
-      fontSize: 20,
-    );
 
 Widget widgetTextClick(
   String title,
@@ -525,30 +525,7 @@ Color getBackgroundWithIsCar() {
   return isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.SECONDS_COLOR;
 }
 
-Widget widgetSave({
-  String? title,
-  Color? background,
-  Color? textColor,
-}) =>
-    Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 24,
-      ),
-      decoration: BoxDecoration(
-        color: background ?? HexColor("#F1A400"),
-        borderRadius: BorderRadius.circular(
-          10,
-        ),
-      ),
-      child: Center(
-        child: Text(
-          title ?? getT(KeyT.save),
-          style: AppStyle.DEFAULT_16_BOLD.copyWith(
-            color: textColor ?? COLORS.WHITE,
-          ),
-        ),
-      ),
-    );
+
 
 String checkTitle(
   List<InfoDataModel> dataL,

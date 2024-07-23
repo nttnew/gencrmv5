@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/src/src_index.dart';
+import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -114,7 +115,7 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
   _buildButtonSubmit(ResetPasswordBloc bloc) {
     return BlocBuilder<ResetPasswordBloc, ResetPasswordState>(
         builder: (context, state) {
-      return WidgetButton(
+      return ButtonCustom(
           onTap: () {
             if (cfPass == newPass) {
               if (cfPass.length < 6 || newPass.length < 6) {
@@ -129,15 +130,7 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
                   title: getT(KeyT.notification),
                   content: getT(KeyT.password_not_match));
           },
-          boxDecoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: COLORS.SECONDS_COLOR,
-          ),
-          textStyle: TextStyle(
-              fontFamily: "Quicksand",
-              fontWeight: FontWeight.w600,
-              fontSize: 14),
-          text: getT(KeyT.completed));
+          title: getT(KeyT.completed));
     });
   }
 

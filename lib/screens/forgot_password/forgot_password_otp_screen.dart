@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/forgot_password_otp/forgot_password_otp_bloc.dart';
+import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -86,7 +87,8 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
                                 height: 5,
                               ),
                               Text(
-                                getT(KeyT.please_enter_the_otp_sent_to_the_email),
+                                getT(KeyT
+                                    .please_enter_the_otp_sent_to_the_email),
                                 style: AppStyle.DEFAULT_14W500,
                               ),
                               SizedBox(
@@ -155,20 +157,13 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
   _buildButtonSubmit(ForgotPasswordOTPBloc bloc) {
     return BlocBuilder<ForgotPasswordOTPBloc, ForgotPasswordOtpState>(
         builder: (context, state) {
-      return WidgetButton(
-          onTap: () {
-            bloc.add(FormForgotPasswordOTPSubmitted(
-                code: code, username: username, email: email));
-          },
-          boxDecoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: COLORS.SECONDS_COLOR,
-          ),
-          textStyle: TextStyle(
-              fontFamily: "Quicksand",
-              fontWeight: FontWeight.w600,
-              fontSize: 14),
-          text: getT(KeyT.confirm));
+      return ButtonCustom(
+        onTap: () {
+          bloc.add(FormForgotPasswordOTPSubmitted(
+              code: code, username: username, email: email));
+        },
+        title: getT(KeyT.confirm),
+      );
     });
   }
 

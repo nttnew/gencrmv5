@@ -9,6 +9,7 @@ import '../../../l10n/key_text.dart';
 import '../../../src/app_const.dart';
 import '../../../src/src_index.dart';
 import '../../../widgets/appbar_base.dart';
+import '../../../widgets/btn_save.dart';
 import '../../../widgets/loading_api.dart';
 import '../../../widgets/location_base.dart';
 import '../../../widgets/widget_text.dart';
@@ -139,12 +140,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                   ? Expanded(
                                       child: WidgetText(
                                         title: location,
-                                        style: TextStyle(
-                                          fontFamily: 'Quicksand',
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: COLORS.BLACK,
-                                        ),
+                                        style: AppStyle.DEFAULT_14W500,
                                       ),
                                     )
                                   : SizedBox(
@@ -184,12 +180,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                 title: isCheckIn
                                     ? getT(KeyT.check_in)
                                     : getT(KeyT.check_out),
-                                style: TextStyle(
-                                  fontFamily: 'Quicksand',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: COLORS.WHITE,
-                                ),
+                                style: AppStyle.DEFAULT_14W500
+                                    .copyWith(color: COLORS.WHITE),
                               ),
                             ),
                           ),
@@ -220,12 +212,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                     title: isCheckIn
                                         ? getT(KeyT.check_in_again)
                                         : getT(KeyT.check_out_again),
-                                    style: TextStyle(
-                                      fontFamily: 'Quicksand',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: COLORS.TEXT_COLOR,
-                                    ),
+                                    style: AppStyle.DEFAULT_14W500
+                                        .copyWith(color: COLORS.TEXT_COLOR),
                                   ),
                                 ),
                               ),
@@ -253,12 +241,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                   ),
                                   child: WidgetText(
                                     title: getT(KeyT.delete),
-                                    style: TextStyle(
-                                      fontFamily: 'Quicksand',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: COLORS.RED,
-                                    ),
+                                    style: AppStyle.DEFAULT_14W500
+                                        .copyWith(color: COLORS.RED),
                                   ),
                                 ),
                               ),
@@ -279,12 +263,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                 children: <TextSpan>[
                                   TextSpan(
                                     text: '*',
-                                    style: TextStyle(
-                                      fontFamily: 'Quicksand',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: COLORS.RED,
-                                    ),
+                                    style: AppStyle.DEFAULT_14W500
+                                        .copyWith(color: COLORS.RED),
                                   ),
                                 ],
                               ),
@@ -339,8 +319,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        GestureDetector(
-                          onTap: () {
+                        ButtonSave(
+                          onPressed: () {
                             if (controllerNote.text.trim() == '') {
                               ShowDialogCustom.showDialogBase(
                                 title: getT(KeyT.notification),
@@ -360,7 +340,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
                               );
                             }
                           },
-                          child: widgetSave(),
                         ),
                       ],
                     ),

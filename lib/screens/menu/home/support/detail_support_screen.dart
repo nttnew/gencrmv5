@@ -120,7 +120,8 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
 
     _list.add(ModuleThaoTac(
       title: getT(KeyT.see_attachment),
-      icon: ICONS.IC_ATTACK_SVG,
+      icon: ICONS.IC_ATTACK_PNG,
+      isSvg: false,
       onThaoTac: () async {
         Get.back();
         Navigator.of(context).push(MaterialPageRoute(
@@ -292,10 +293,10 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
             bloc: _bloc,
             builder: (context, state) {
               if (state is SuccessGetDetailSupportState)
-                return ButtonThaoTac(onTap: () {
+                return ButtonCustom(onTap: () {
                   showThaoTac(context, _list);
                 });
-              return ButtonThaoTac(disable: true, onTap: () {});
+              return ButtonCustom();
             },
           ),
         ],

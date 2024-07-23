@@ -194,7 +194,7 @@ class _SelectKyTaiChinhState extends State<SelectKyTaiChinh> {
         SizedBox(
           height: 32,
         ),
-        ButtonThaoTac(
+        ButtonCustom(
           onTap: () {
             if (yearSelect != null) {
               widget.onSelect(yearSelect, kyTaiChinhSelect);

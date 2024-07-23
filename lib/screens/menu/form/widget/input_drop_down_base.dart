@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' as Foundation;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gen_crm/src/extensionss/common_ext.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/share_local.dart';
 import 'package:rxdart/rxdart.dart';
@@ -175,6 +176,7 @@ class _InputDropdownState extends State<InputDropdownBase> {
   }
 
   _onChangeMain(id, bool? isCK) {
+    closeKey();
     widget.onChange(id, isCK);
   }
 

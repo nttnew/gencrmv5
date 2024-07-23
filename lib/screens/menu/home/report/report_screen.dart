@@ -11,6 +11,7 @@ import 'package:gen_crm/screens/menu/home/report/widget/body_step_five.dart';
 import 'package:gen_crm/screens/menu/home/report/widget/body_step_four.dart';
 import 'package:gen_crm/screens/menu/home/report/widget/select_ky_tai_chinh.dart';
 import 'package:gen_crm/storages/share_local.dart';
+import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -868,8 +869,10 @@ class _ReportScreenState extends State<ReportScreen> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
-            child: WidgetButton(
-              height: 40,
+            child: ButtonCustom(
+              marginVertical: 0,
+              marginHorizontal: 0,
+              paddingAll: 0,
               onTap: () {
                 Get.back();
                 setState(() {
@@ -901,7 +904,7 @@ class _ReportScreenState extends State<ReportScreen> {
                             );
                 });
               },
-              text: getT(KeyT.done),
+              title: getT(KeyT.done),
               backgroundColor: COLORS.BLUE,
             ),
           )

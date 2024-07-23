@@ -40,6 +40,7 @@ import '../../../bloc/support/support_bloc.dart';
 import '../../../bloc/work/work_bloc.dart';
 import '../../../l10n/key_text.dart';
 import '../../../models/model_data_add.dart';
+import '../../../widgets/btn_save.dart';
 import '../../../widgets/loading_api.dart';
 import '../../../widgets/widget_input_date.dart';
 import '../../../src/models/model_generator/login_response.dart';
@@ -767,7 +768,7 @@ class _FormAddDataState extends State<FormAddData> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.memory(image),
-                ButtonThaoTac(
+                ButtonCustom(
                     title: getT(KeyT.xac_nhan_da_thanh_toan),
                     onTap: () {
                       Navigator.of(context).pop();
@@ -1023,8 +1024,11 @@ class _FormAddDataState extends State<FormAddData> {
           stream: _showQrCodePayment,
           builder: (context, snapshot) {
             if (snapshot.data ?? false)
-              return GestureDetector(
-                onTap: () async {
+              return ButtonSave(
+                title: getT(KeyT.hien_qr),
+                background: COLORS.PRIMARY_COLOR1,
+                paddingHorizontal: 12,
+                onPressed: () async {
                   final String? soTien = _getData(hdSoTien);
                   final String? note = _getData(ghiChu);
                   final res = await _bloc.showQrCodePayment(
@@ -1038,15 +1042,6 @@ class _FormAddDataState extends State<FormAddData> {
                     showToastM(context, title: res['mes'].toString());
                   }
                 },
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 12,
-                  ),
-                  child: widgetSave(
-                    title: getT(KeyT.hien_qr),
-                    background: COLORS.PRIMARY_COLOR1,
-                  ),
-                ),
               );
             return SizedBox.shrink();
           })

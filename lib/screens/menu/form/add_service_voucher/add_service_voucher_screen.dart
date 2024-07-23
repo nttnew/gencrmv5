@@ -163,7 +163,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
     }
   }
 
-  _button(bool isPhone) => ButtonThaoTac(
+  _button(bool isPhone) => ButtonCustom(
         onTap: () {
           FocusManager.instance.primaryFocus?.unfocus();
           _onTap(isPhone);

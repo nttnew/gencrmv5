@@ -11,7 +11,7 @@ class ICONS {
   static const String IC_LOGO_PNG = 'assets/icons/logo.png';
   static const String IC_DATE_PNG = 'assets/icons/date.png';
   static const String IC_DELETE_PNG = 'assets/icons/icon_delete.png';
-  static const String IC_ATTACK_SVG = 'assets/icons/attack.svg';
+  static const String IC_ATTACK_PNG = 'assets/icons/attach.png';
   static const String IC_HOP_DONG_PNG = 'assets/icons/hopdong.png';
   static const String IC_CONTENT_PNG = 'assets/icons/addContent.png';
   static const String IC_EDIT_2_PNG = 'assets/icons/edit.png';

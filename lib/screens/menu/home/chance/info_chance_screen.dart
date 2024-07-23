@@ -95,7 +95,8 @@ class _InfoChancePageState extends State<InfoChancePage> {
 
     _list.add(ModuleThaoTac(
       title: getT(KeyT.see_attachment),
-      icon: ICONS.IC_ATTACK_SVG,
+      icon: ICONS.IC_ATTACK_PNG,
+      isSvg: false,
       onThaoTac: () async {
         Get.back();
         Navigator.of(context).push(MaterialPageRoute(
@@ -244,21 +245,19 @@ class _InfoChancePageState extends State<InfoChancePage> {
                                 },
                                 itemWidget: (int index, data) {
                                   final DataFormAdd item = data as DataFormAdd;
-                                  return GestureDetector(
+                                  return WorkCardWidget(
                                     onTap: () {
                                       AppNavigator.navigateDetailWork(
                                         int.tryParse(item.id ?? '') ?? 0,
                                       );
                                     },
-                                    child: WorkCardWidget(
-                                      color: item.color,
-                                      nameCustomer: item.name_customer,
-                                      nameJob: item.name_job,
-                                      statusJob: item.status_job,
-                                      startDate: item.start_date,
-                                      totalComment: item.total_comment,
-                                      productCustomer: item.product_customer,
-                                    ),
+                                    color: item.color,
+                                    nameCustomer: item.name_customer,
+                                    nameJob: item.name_job,
+                                    statusJob: item.status_job,
+                                    startDate: item.start_date,
+                                    totalComment: item.total_comment,
+                                    productCustomer: item.product_customer,
                                   );
                                 },
                                 controller: _bloc.controllerCV,
@@ -278,11 +277,11 @@ class _InfoChancePageState extends State<InfoChancePage> {
                   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                     setState(() {});
                   });
-                  return ButtonThaoTac(onTap: () {
+                  return ButtonCustom(onTap: () {
                     showThaoTac(context, _list);
                   });
                 }
-                return ButtonThaoTac(disable: true, onTap: () {});
+                return ButtonCustom();
               },
             ),
           ],

@@ -55,7 +55,7 @@ Future showThaoTac(
                   )
                   .toList(),
             ),
-            ButtonThaoTac(
+            ButtonCustom(
                 title: getT(KeyT.close),
                 onTap: () {
                   Navigator.of(context).pop();

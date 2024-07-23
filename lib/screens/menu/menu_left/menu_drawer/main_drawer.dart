@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/screens/menu/menu_left/setting/setting_screen.dart';
 import 'package:gen_crm/src/app_const.dart';
-import 'package:gen_crm/widgets/widget_button.dart';
+import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import '../../../../l10n/key_text.dart';
@@ -227,11 +227,14 @@ class _MainDrawerState extends State<MainDrawer> {
                   )
                 : SizedBox.shrink(),
           ),
-          WidgetButton(
+          ButtonCustom(
+            paddingAll: 10,
+            backgroundColor: COLORS.GREY.withOpacity(0.5),
+            title: getT(KeyT.logout),
             onTap: () {
               ShowDialogCustom.showDialogBase(
                   colorButton2: COLORS.GREY.withOpacity(0.5),
-                  colorButton1: COLORS.SECONDS_COLOR,
+                  colorButton1: getBackgroundWithIsCar(),
                   onTap2: () {
                     AppNavigator.navigateLogout();
                     AuthenticationBloc.of(context).add(
@@ -240,14 +243,6 @@ class _MainDrawerState extends State<MainDrawer> {
                     LoginBloc.of(context).logout(context);
                   });
             },
-            height: 40,
-            padding: EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 20,
-            ),
-            text: getT(KeyT.logout),
-            textColor: COLORS.BLACK,
-            backgroundColor: COLORS.GREY.withOpacity(0.5),
           ),
         ],
       ),

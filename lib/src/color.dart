@@ -40,6 +40,7 @@ class COLORS {
   static final ff838A91 = HexColor("#838A91");
   static final ffFCF1D4 = HexColor("#FCF1D4");
   static final ffBEB4B4 = HexColor("#BEB4B4");
+  static final ffF1A400 = HexColor("#F1A400");
   static final colorFff4d2 = Color(0xfffff4d2);
 }
 //

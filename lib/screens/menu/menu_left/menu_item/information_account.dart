@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import 'package:gen_crm/bloc/information_account/information_account_bloc.dart';
+import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
@@ -248,35 +249,26 @@ class _InformationAccountState extends State<InformationAccount> {
                     alignment: Alignment.bottomRight,
                     child: BlocBuilder<InforAccBloc, InforAccState>(
                       builder: (context, state) {
-                        return WidgetButton(
-                            onTap: () async {
-                              print('$image!, $name, $address');
-                              if (state.status.isValidated) {
-                                if (image != null) {
-                                  bloc.add(FormInforAccSubmitted(
-                                      image!, name, address));
-                                } else {
-                                  bloc.add(FormInforAccNoAvatarSubmitted(
-                                      name, address));
-                                }
+                        return ButtonCustom(
+                          onTap: () async {
+                            print('$image!, $name, $address');
+                            if (state.status.isValidated) {
+                              if (image != null) {
+                                bloc.add(FormInforAccSubmitted(
+                                    image!, name, address));
                               } else {
-                                ShowDialogCustom.showDialogBase(
-                                  title: getT(KeyT.notification),
-                                  content: getT(KeyT.check_the_information),
-                                );
+                                bloc.add(FormInforAccNoAvatarSubmitted(
+                                    name, address));
                               }
-                            },
-                            height: 35,
-                            width: 120,
-                            padding: EdgeInsets.only(
-                                right: 20,
-                                bottom: 20,
-                                top: AppValue.heights * 0.1),
-                            text: getT(KeyT.save),
-                            textStyle: AppStyle.DEFAULT_14.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: COLORS.WHITE),
-                            backgroundColor: Color(0xffF1A400));
+                            } else {
+                              ShowDialogCustom.showDialogBase(
+                                title: getT(KeyT.notification),
+                                content: getT(KeyT.check_the_information),
+                              );
+                            }
+                          },
+                          title: getT(KeyT.save),
+                        );
                       },
                     ),
                   )

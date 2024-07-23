@@ -76,7 +76,8 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
         }));
     _list.add(ModuleThaoTac(
       title: getT(KeyT.see_attachment),
-      icon: ICONS.IC_ATTACK_SVG,
+      icon: ICONS.IC_ATTACK_PNG,      isSvg: false,
+
       onThaoTac: () {
         Get.back();
         Navigator.of(context).push(MaterialPageRoute(
@@ -197,21 +198,19 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                                 itemWidget: (int index, data) {
                                   final WorkClueData item =
                                       data as WorkClueData;
-                                  return GestureDetector(
+                                  return WorkCardWidget(
                                     onTap: () {
                                       AppNavigator.navigateDetailWork(
                                         int.tryParse(item.id ?? '') ?? 0,
                                       );
                                     },
-                                    child: WorkCardWidget(
-                                      productCustomer: item.product_customer,
-                                      nameCustomer: item.name_customer,
-                                      nameJob: item.name_job,
-                                      startDate: item.start_date,
-                                      statusJob: item.status_job,
-                                      totalComment: item.total_comment,
-                                      color: item.color,
-                                    ),
+                                    productCustomer: item.product_customer,
+                                    nameCustomer: item.name_customer,
+                                    nameJob: item.name_job,
+                                    startDate: item.start_date,
+                                    statusJob: item.status_job,
+                                    totalComment: item.total_comment,
+                                    color: item.color,
                                   );
                                 },
                                 controller: _bloc.controllerCV,
@@ -231,16 +230,15 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     setState(() {});
                   });
-                  return ButtonThaoTac(
+                  return ButtonCustom(
                     onTap: () {
                       showThaoTac(context, _list);
                     },
                   );
                 }
 
-                return ButtonThaoTac(
-                  disable: true,
-                  onTap: () {},
+                return ButtonCustom(
+
                 );
               },
             ),

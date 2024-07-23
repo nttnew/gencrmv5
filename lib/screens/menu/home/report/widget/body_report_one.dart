@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gen_crm/screens/menu/widget/box_item.dart';
 import 'package:gen_crm/src/models/model_generator/report_contact.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../../bloc/report/report_bloc/report_bloc.dart';
@@ -65,7 +66,7 @@ class BodyReportOne extends StatelessWidget {
     );
   }
 
-  Widget _item(DataListContact dataContact) => GestureDetector(
+  Widget _item(DataListContact dataContact) => BoxItem(
         onTap: () {
           AppNavigator.navigateDetailContract(
             dataContact.id ?? '',
@@ -74,128 +75,109 @@ class BodyReportOne extends StatelessWidget {
             }
           );
         },
-        child: Container(
-          margin: EdgeInsets.only(
-            left: 16,
-            right: 16,
-            bottom: 16,
-          ),
-          padding: EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: COLORS.WHITE,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: COLORS.BLACK.withOpacity(0.1),
-                spreadRadius: 1,
-                blurRadius: 5,
-              )
-            ],
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  ImageBaseDefault(
-                    icon: ICONS.IC_CONTRACT_3X_PNG,
-                    width: 16,
-                    height: 16,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                ImageBaseDefault(
+                  icon: ICONS.IC_CONTRACT_3X_PNG,
+                  width: 16,
+                  height: 16,
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Expanded(
+                  child: WidgetText(
+                    title: dataContact.name ?? '',
+                    style: AppStyle.DEFAULT_TITLE_PRODUCT
+                        .copyWith(color: COLORS.TEXT_COLOR),
                   ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Expanded(
-                    child: WidgetText(
-                      title: dataContact.name ?? '',
-                      style: AppStyle.DEFAULT_TITLE_PRODUCT
-                          .copyWith(color: COLORS.TEXT_COLOR),
+                ),
+                Spacer(),
+                Container(
+                  decoration: BoxDecoration(
+                    color: dataContact.status_color != ''
+                        ? HexColor(dataContact.status_color!)
+                        : COLORS.RED,
+                    borderRadius: BorderRadius.circular(
+                      99,
                     ),
                   ),
-                  Spacer(),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: dataContact.status_color != ''
-                          ? HexColor(dataContact.status_color!)
-                          : COLORS.RED,
-                      borderRadius: BorderRadius.circular(
-                        99,
-                      ),
-                    ),
-                    width: AppValue.widths * 0.08,
-                    height: AppValue.heights * 0.02,
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    ICONS.IC_USER2_SVG,
-                    color: Color(0xffE75D18),
+                  width: AppValue.widths * 0.08,
+                  height: AppValue.heights * 0.02,
+                )
+              ],
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Row(
+              children: [
+                SvgPicture.asset(
+                  ICONS.IC_USER2_SVG,
+                  color: Color(0xffE75D18),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: WidgetText(
+                    title: dataContact.customer?.name ?? getT(KeyT.not_yet),
+                    style: AppStyle.DEFAULT_LABEL_PRODUCT,
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: WidgetText(
-                      title: dataContact.customer?.name ?? getT(KeyT.not_yet),
-                      style: AppStyle.DEFAULT_LABEL_PRODUCT,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    ICONS.IC_DANG_XU_LY_SVG,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Row(
+              children: [
+                SvgPicture.asset(
+                  ICONS.IC_DANG_XU_LY_SVG,
+                  color: dataContact.status_color != ''
+                      ? HexColor(dataContact.status_color!)
+                      : COLORS.RED,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                WidgetText(
+                  title: dataContact.status,
+                  style: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
                     color: dataContact.status_color != ''
                         ? HexColor(dataContact.status_color!)
                         : COLORS.RED,
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  WidgetText(
-                    title: dataContact.status,
-                    style: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
-                      color: dataContact.status_color != ''
-                          ? HexColor(dataContact.status_color!)
-                          : COLORS.RED,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    ICONS.IC_MAIL_SVG,
-                    color: Colors.grey,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  WidgetText(
-                    title: '${getT(KeyT.sales)}: ' +
-                        dataContact.price.toString() +
-                        money,
-                    style: AppStyle.DEFAULT_LABEL_PRODUCT
-                        .copyWith(color: COLORS.GREY),
-                  ),
-                  Spacer(),
-                ],
-              ),
-              AppValue.hSpaceTiny,
-            ],
-          ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Row(
+              children: [
+                SvgPicture.asset(
+                  ICONS.IC_MAIL_SVG,
+                  color: Colors.grey,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                WidgetText(
+                  title: '${getT(KeyT.sales)}: ' +
+                      dataContact.price.toString() +
+                      money,
+                  style: AppStyle.DEFAULT_LABEL_PRODUCT
+                      .copyWith(color: COLORS.GREY),
+                ),
+                Spacer(),
+              ],
+            ),
+            AppValue.hSpaceTiny,
+          ],
         ),
       );
 }

@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/api_resfull/dio_provider.dart';
 import 'package:gen_crm/firebase/firebase_config.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:gen_crm/storages/share_local.dart';
+import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -334,16 +336,13 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
   }
 
   _buildButtonLogin(LoginBloc bloc) {
-    return WidgetButton(
+    return ButtonCustom(
+      marginHorizontal: 0,
       onTap: () async {
         _onLogin(bloc);
       },
-      boxDecoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: COLORS.SECONDS_COLOR,
-      ),
-      textStyle: AppStyle.DEFAULT_18_BOLD,
-      text: getT(KeyT.login),
+      backgroundColor: getBackgroundWithIsCar(),
+      title: getT(KeyT.login),
     );
   }
 

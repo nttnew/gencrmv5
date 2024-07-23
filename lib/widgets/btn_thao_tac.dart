@@ -1,44 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:gen_crm/src/app_const.dart';
+import 'package:gen_crm/src/src_index.dart';
 import '../../l10n/key_text.dart';
-import '../src/color.dart';
 
-class ButtonThaoTac extends StatelessWidget {
-  const ButtonThaoTac({
+class ButtonCustom extends StatelessWidget {
+  const ButtonCustom({
     Key? key,
-    required this.onTap,
+    this.onTap,
     this.title,
     this.marginHorizontal,
-    this.disable = false,
+    this.backgroundColor,
+    this.paddingAll,
+    this.textColor,
+    this.marginVertical,
   }) : super(key: key);
 
-  final Function() onTap;
+  final Function()? onTap;
   final String? title;
   final double? marginHorizontal;
-  final bool disable;
+  final double? marginVertical;
+  final double? paddingAll;
+  final Color? backgroundColor;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => disable ? {} : onTap(),
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.all(16),
-        margin: EdgeInsets.symmetric(
-          vertical: 16,
-          horizontal: marginHorizontal ?? 16,
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.symmetric(
+        vertical: marginVertical ?? 16,
+        horizontal: marginHorizontal ?? 16,
+      ),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: backgroundColor ?? getBackgroundWithIsCar(),
+          padding: EdgeInsets.all(paddingAll ?? 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
-        decoration: BoxDecoration(
-          color: disable ? COLORS.GRAY_IMAGE : COLORS.SECONDS_COLOR,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Center(
-          child: Text(
-            title ?? getT(KeyT.action),
-            style: TextStyle(
-              fontFamily: "Quicksand",
-              fontWeight: FontWeight.w700,
-              fontSize: 16,
-            ),
+        onPressed: onTap,
+        child: Text(
+          title ?? getT(KeyT.action),
+          style: AppStyle.DEFAULT_16_BOLD.copyWith(
+            color: textColor ?? getColorWithIsCar(),
           ),
         ),
       ),
@@ -58,27 +63,20 @@ class ButtonBaseSmall extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => onTap(),
-      child: Container(
-        width: double.infinity,
-        height: 40,
-        decoration: BoxDecoration(
-          color: COLORS.SECONDS_COLOR,
-          borderRadius: BorderRadius.circular(10),
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          backgroundColor: getBackgroundWithIsCar(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(7),
+          )),
+      onPressed: () => onTap(),
+      child: Text(
+        title ?? getT(KeyT.action),
+        style: AppStyle.DEFAULT_14_BOLD.copyWith(
+          color: getColorWithIsCar(),
         ),
-        child: Center(
-          child: Text(
-            title ?? getT(KeyT.action),
-            style: TextStyle(
-              fontFamily: "Quicksand",
-              fontWeight: FontWeight.w700,
-              fontSize: 14,
-            ),
-            textAlign: TextAlign.center,
-            maxLines: 2,
-          ),
-        ),
+        textAlign: TextAlign.center,
+        maxLines: 2,
       ),
     );
   }

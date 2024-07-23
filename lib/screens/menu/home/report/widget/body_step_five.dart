@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gen_crm/screens/menu/widget/box_item.dart';
 import '../../../../../bloc/report/report_bloc/report_bloc.dart';
 import '../../../../../l10n/key_text.dart';
 import '../../../../../src/app_const.dart';
@@ -63,76 +64,52 @@ class BodyReportFive extends StatelessWidget {
   }
 
   _buildCustomer(DataListSoQuy data) {
-    return GestureDetector(
+    return BoxItem(
       onTap: () {
         //todo
       },
-      child: Container(
-        margin: EdgeInsets.only(
-          left: 16,
-          right: 16,
-          bottom: 16,
-        ),
-        padding: EdgeInsets.all(
-          16,
-        ),
-        decoration: BoxDecoration(
-          color: COLORS.WHITE,
-          borderRadius: BorderRadius.circular(
-            10,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              ImageBaseDefault(
+                icon: ICONS.IC_WALLET_PNG,
+                height: 16,
+                width: 16,
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                child: WidgetText(
+                  title: data.soPhieu ?? '',
+                  style: AppStyle.DEFAULT_TITLE_PRODUCT
+                      .copyWith(color: COLORS.TEXT_COLOR),
+                ),
+              ),
+              _getWidget(data.thu ?? 0),
+            ],
           ),
-          border: Border.all(width: 1, color: COLORS.WHITE),
-          boxShadow: [
-            BoxShadow(
-              color: COLORS.BLACK.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 5,
-            )
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                ImageBaseDefault(
-                  icon: ICONS.IC_WALLET_PNG,
-                  height: 16,
-                  width: 16,
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Expanded(
-                  child: WidgetText(
-                    title: data.soPhieu ?? '',
-                    style: AppStyle.DEFAULT_TITLE_PRODUCT
-                        .copyWith(color: COLORS.TEXT_COLOR),
-                  ),
-                ),
-                _getWidget(data.thu ?? 0),
-              ],
-            ),
-            itemTextIcon(
-              text: data.ghiChu ?? '',
-              icon: ICONS.IC_CIRCLE_SMALL_PNG,
-              isSVG: false,
-              colorIcon: COLORS.GREY,
-            ),
-            itemTextIcon(
-              text: (data.hinhThucTt ?? '') + ' (${data.ngay ?? ''})',
-              icon: ICONS.IC_CIRCLE_SMALL_PNG,
-              isSVG: false,
-              colorIcon: COLORS.GREY,
-            ),
-            itemTextIcon(
-              text: AppValue.formatMoney(data.soTien ?? ''),
-              icon: ICONS.IC_CIRCLE_SMALL_PNG,
-              isSVG: false,
-              colorIcon: COLORS.GREY,
-            ),
-          ],
-        ),
+          itemTextIcon(
+            text: data.ghiChu ?? '',
+            icon: ICONS.IC_CIRCLE_SMALL_PNG,
+            isSVG: false,
+            colorIcon: COLORS.GREY,
+          ),
+          itemTextIcon(
+            text: (data.hinhThucTt ?? '') + ' (${data.ngay ?? ''})',
+            icon: ICONS.IC_CIRCLE_SMALL_PNG,
+            isSVG: false,
+            colorIcon: COLORS.GREY,
+          ),
+          itemTextIcon(
+            text: AppValue.formatMoney(data.soTien ?? ''),
+            icon: ICONS.IC_CIRCLE_SMALL_PNG,
+            isSVG: false,
+            colorIcon: COLORS.GREY,
+          ),
+        ],
       ),
     );
   }

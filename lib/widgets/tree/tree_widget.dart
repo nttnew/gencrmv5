@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/tree/tree_node_model.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
@@ -177,54 +178,34 @@ class _TreeWidgetState extends State<TreeWidget> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(25.0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: GestureDetector(
+                          child: ButtonCustom(
+                            paddingAll: 12,
+                            backgroundColor: COLORS.GREY.withOpacity(0.5),
+                            marginHorizontal: 0,
+                            title: getT(KeyT.close),
                             onTap: () => Get.back(),
-                            child: Container(
-                              padding: EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                  color: COLORS.GREY.withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Center(
-                                child: Text(
-                                  getT(KeyT.close),
-                                  style: AppStyle.DEFAULT_16_BOLD,
-                                ),
-                              ),
-                            ),
                           ),
                         ),
                         SizedBox(
                           width: 16,
                         ),
                         Expanded(
-                          child: GestureDetector(
+                          child: ButtonCustom(
+                            paddingAll: 12,
+                            marginHorizontal: 0,
+                            title: getT(KeyT.find),
                             onTap: () {
                               widget.bloc.save();
                               widget.funFilter(widget.bloc.ids);
                               Get.back();
                             },
-                            child: Container(
-                              padding: EdgeInsets.all(
-                                15,
-                              ),
-                              decoration: BoxDecoration(
-                                color: COLORS.SECONDS_COLOR,
-                                borderRadius: BorderRadius.circular(
-                                  10,
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  getT(KeyT.find),
-                                  style: AppStyle.DEFAULT_16_BOLD,
-                                ),
-                              ),
-                            ),
                           ),
                         ),
                       ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/src_index.dart';
 import '../../../../../src/models/model_generator/customer_clue.dart';
+import '../../../widget/box_item.dart';
 
 class WorkCardWidget extends StatelessWidget {
   final String? nameCustomer;
@@ -11,6 +12,7 @@ class WorkCardWidget extends StatelessWidget {
   final int? totalComment;
   final String? color;
   final Customer? productCustomer;
+  final Function onTap;
 
   WorkCardWidget({
     required this.color,
@@ -20,33 +22,15 @@ class WorkCardWidget extends StatelessWidget {
     required this.startDate,
     required this.totalComment,
     required this.productCustomer,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(
-        bottom: 16,
-        right: 16,
-        left: 16,
-      ),
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: COLORS.WHITE,
-        borderRadius: BorderRadius.all(
-          Radius.circular(
-            10,
-          ),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 3,
-            blurRadius: 5,
-            offset: Offset(0, 0), // changes position of shadow
-          ),
-        ],
-      ),
+    return BoxItem(
+      onTap: () {
+        onTap();
+      },
       child: Column(
         children: [
           itemTextIconStart(

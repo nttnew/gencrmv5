@@ -138,7 +138,8 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
 
     _list.add(ModuleThaoTac(
       title: getT(KeyT.see_attachment),
-      icon: ICONS.IC_ATTACK_SVG,
+      icon: ICONS.IC_ATTACK_PNG,
+      isSvg: false,
       onThaoTac: () async {
         Get.back();
         Navigator.of(context).push(MaterialPageRoute(
@@ -313,15 +314,12 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
                 bloc: _bloc,
                 builder: (context, state) {
                   if (state is SuccessDetailWorkState)
-                    return ButtonThaoTac(
+                    return ButtonCustom(
                       onTap: () {
                         showThaoTac(context, _list);
                       },
                     );
-                  return ButtonThaoTac(
-                    disable: true,
-                    onTap: () {},
-                  );
+                  return ButtonCustom();
                 },
               )
             ],

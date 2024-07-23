@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/storages/share_local.dart';
+import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
@@ -48,9 +50,10 @@ class ShowDialogCustom {
               child: Center(
                 child: Container(
                   decoration: BoxDecoration(
-                      color: COLORS.WHITE,
-                      borderRadius: BorderRadius.circular(10)),
-                  padding: EdgeInsets.all(15),
+                    color: COLORS.WHITE,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: EdgeInsets.all(16),
                   margin: EdgeInsets.all(25),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -80,56 +83,39 @@ class ShowDialogCustom {
                         height: 25,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Expanded(
-                            child: GestureDetector(
-                                onTap: onTap1 ?? () => Get.back(),
-                                child: Container(
-                                  padding: EdgeInsets.all(15),
-                                  decoration: BoxDecoration(
-                                      color: colorButton1 ??
-                                          (onTap2 == null
-                                              ? COLORS.PRIMARY_COLOR
-                                              : COLORS.GREY.withOpacity(0.5)),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Center(
-                                    child: Text(
-                                      textButton1 ??
-                                          (onTap2 != null
-                                              ? getT(KeyT.cancel)
-                                              : getT(KeyT.ok)),
-                                      style: AppStyle.DEFAULT_16_BOLD.copyWith(
-                                          color:
-                                              txtColorButton1 ?? COLORS.BLACK),
-                                    ),
-                                  ),
-                                )),
+                            child: ButtonCustom(
+                              paddingAll: 10,
+                              marginHorizontal: 0,
+                              marginVertical: 0,
+                              backgroundColor: colorButton1 ??
+                                  (onTap2 == null
+                                      ? getBackgroundWithIsCar()
+                                      : COLORS.GREY.withOpacity(0.5)),
+                              onTap: onTap1 ?? () => Get.back(),
+                              title: textButton1 ??
+                                  (onTap2 != null
+                                      ? getT(KeyT.cancel)
+                                      : getT(KeyT.ok)),
+                            ),
                           ),
                           if (onTap2 != null) ...[
                             SizedBox(
-                              width: 15,
+                              width: 16,
                             ),
                             Expanded(
-                              child: GestureDetector(
-                                  onTap: onTap2,
-                                  child: Container(
-                                    padding: EdgeInsets.all(15),
-                                    decoration: BoxDecoration(
-                                        color: colorButton2 ??
-                                            COLORS.SECONDS_COLOR,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: Center(
-                                      child: Text(
-                                        textButton2 ?? getT(KeyT.agree),
-                                        style: AppStyle.DEFAULT_16_BOLD
-                                            .copyWith(
-                                                color: txtColorButton1 ??
-                                                    COLORS.BLACK),
-                                      ),
-                                    ),
-                                  )),
+                              child: ButtonCustom(
+                                textColor: COLORS.BLACK,
+                                paddingAll: 10,
+                                marginHorizontal: 0,
+                                marginVertical: 0,
+                                onTap: onTap2,
+                                title: textButton2 ?? getT(KeyT.agree),
+                                backgroundColor:
+                                    colorButton2 ?? getBackgroundWithIsCar(),
+                              ),
                             ),
                           ]
                         ],

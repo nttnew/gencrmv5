@@ -325,7 +325,9 @@ class _DetailCarState extends State<DetailCar> {
                           children: [
                             AppValue.hSpaceSmall,
                             Expanded(
-                              child: ButtonBaseSmall(
+                              child: ButtonCustom(
+                                  paddingAll: 12,
+                                  marginHorizontal: 0,
                                   title: getT(KeyT.pay),
                                   onTap: () {
                                     AppNavigator.navigateForm(
@@ -338,7 +340,9 @@ class _DetailCarState extends State<DetailCar> {
                             ),
                             AppValue.hSpaceSmall,
                             Expanded(
-                              child: ButtonBaseSmall(
+                              child: ButtonCustom(
+                                paddingAll: 12,
+                                marginHorizontal: 0,
                                 title: getT(KeyT.cap_nhat_trang_thai),
                                 onTap: () {
                                   showModalSelect(
@@ -370,7 +374,6 @@ class _DetailCarState extends State<DetailCar> {
                             AppValue.hSpaceSmall,
                           ],
                         ),
-                        AppValue.vSpaceSmall,
                       ],
                     );
                   }

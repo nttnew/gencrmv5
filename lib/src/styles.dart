@@ -108,10 +108,11 @@ class AppStyle {
       color: COLORS.RED);
 
   static const DEFAULT_14W500 = TextStyle(
-      fontFamily: 'Quicksand',
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-      color: COLORS.BLACK);
+    fontFamily: 'Quicksand',
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: COLORS.BLACK,
+  );
 
   static final DEFAULT_14_BOLD =
       DEFAULT_14.copyWith(fontWeight: FontWeight.bold);
@@ -149,5 +150,4 @@ class AppStyle {
       symbol: '',
     ),
   ];
-
 }

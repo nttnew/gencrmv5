@@ -265,7 +265,7 @@ class _SelectLocationBottomSheetState extends State<SelectLocationBottomSheet> {
         ),
         AppValue.vSpaceMedium,
         AppValue.vSpaceMedium,
-        ButtonThaoTac(
+        ButtonCustom(
           onTap: () {
             if (tinhThanh?[NAME] == '') {
               tinhThanh = null;

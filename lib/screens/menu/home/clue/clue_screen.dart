@@ -1,5 +1,6 @@
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
+import 'package:gen_crm/screens/menu/widget/box_item.dart';
 import 'package:gen_crm/widgets/drop_down_base.dart';
 import '../../../../bloc/clue/clue_bloc.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
@@ -146,102 +147,75 @@ class _ClueScreenState extends State<ClueScreen> {
   }
 
   _buildCustomer(ClueData clueData) {
-    return InkWell(
+    return BoxItem(
       onTap: () {
         AppNavigator.navigateDetailClue(
           clueData.id ?? '',
         );
       },
-      child: Container(
-        margin: EdgeInsets.only(
-          left: 16,
-          right: 16,
-          bottom: 16,
-        ),
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: COLORS.WHITE,
-          borderRadius: BorderRadius.circular(
-            10,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          itemTextIcon(
+            paddingTop: 0,
+            text: clueData.name ?? getT(KeyT.not_yet),
+            icon: ICONS.IC_CHANCE_3X_PNG,
+            isSVG: false,
+            styleText:
+                AppStyle.DEFAULT_18_BOLD.copyWith(color: COLORS.TEXT_COLOR),
           ),
-          border: Border.all(
-            width: 1,
-            color: COLORS.WHITE,
+          itemTextIcon(
+            text: clueData.customer?.name ?? getT(KeyT.not_yet),
+            icon: ICONS.IC_USER2_SVG,
+            colorIcon: COLORS.GREY,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: COLORS.BLACK.withOpacity(
-                0.1,
-              ),
-              spreadRadius: 1,
-              blurRadius: 5,
-            )
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            itemTextIcon(
-              paddingTop: 0,
-              text: clueData.name ?? getT(KeyT.not_yet),
-              icon: ICONS.IC_CHANCE_3X_PNG,
-              isSVG: false,
-              styleText:
-                  AppStyle.DEFAULT_18_BOLD.copyWith(color: COLORS.TEXT_COLOR),
-            ),
-            itemTextIcon(
-              text: clueData.customer?.name ?? getT(KeyT.not_yet),
-              icon: ICONS.IC_USER2_SVG,
-              colorIcon: COLORS.GREY,
-            ),
-            itemTextIcon(
-              text: clueData.email?.val ?? getT(KeyT.not_yet),
-              icon: ICONS.IC_MAIL_SVG,
-              colorIcon: COLORS.GREY,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: itemTextIcon(
-                      onTap: () {
-                        String phone = clueData.phone?.val ?? '';
-                        String name = clueData.customer?.name ?? '';
-                        if (phone != '') {
-                          dialogShowAllSDT(
-                            context,
-                            handelListSdt(phone),
-                            name: name,
-                          );
-                        }
-                      },
-                      paddingTop: 0,
-                      text: clueData.phone?.val ?? getT(KeyT.not_yet),
-                      icon: ICONS.IC_PHONE_CUSTOMER_SVG,
-                      styleText: AppStyle.DEFAULT_LABEL_PRODUCT
-                          .copyWith(color: COLORS.TEXT_COLOR),
-                    ),
+          itemTextIcon(
+            text: clueData.email?.val ?? getT(KeyT.not_yet),
+            icon: ICONS.IC_MAIL_SVG,
+            colorIcon: COLORS.GREY,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: Row(
+              children: [
+                Expanded(
+                  child: itemTextIcon(
+                    onTap: () {
+                      String phone = clueData.phone?.val ?? '';
+                      String name = clueData.customer?.name ?? '';
+                      if (phone != '') {
+                        dialogShowAllSDT(
+                          context,
+                          handelListSdt(phone),
+                          name: name,
+                        );
+                      }
+                    },
+                    paddingTop: 0,
+                    text: clueData.phone?.val ?? getT(KeyT.not_yet),
+                    icon: ICONS.IC_PHONE_CUSTOMER_SVG,
+                    styleText: AppStyle.DEFAULT_LABEL_PRODUCT
+                        .copyWith(color: COLORS.TEXT_COLOR),
                   ),
-                  SizedBox(
-                    width: 8,
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                SvgPicture.asset(ICONS.IC_QUESTION_SVG),
+                SizedBox(
+                  width: 4,
+                ),
+                WidgetText(
+                  title: clueData.total_note ?? getT(KeyT.not_yet),
+                  style: TextStyle(
+                    color: COLORS.TEXT_BLUE_BOLD,
                   ),
-                  SvgPicture.asset(ICONS.IC_QUESTION_SVG),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  WidgetText(
-                    title: clueData.total_note ?? getT(KeyT.not_yet),
-                    style: TextStyle(
-                      color: COLORS.TEXT_BLUE_BOLD,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            AppValue.hSpaceTiny,
-          ],
-        ),
+          ),
+          AppValue.hSpaceTiny,
+        ],
       ),
     );
   }
