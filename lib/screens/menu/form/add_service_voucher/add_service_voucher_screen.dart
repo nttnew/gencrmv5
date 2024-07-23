@@ -17,6 +17,7 @@ import '../../../../widgets/search_base.dart';
 import '../../home/customer/widget/item_list_customer.dart';
 import '../../home/product/scanner_qrcode.dart';
 import '../../home/product_customer/widget/item_product_customer.dart';
+import '../widget/camera_custom.dart';
 
 class AddServiceVoucherScreen extends StatefulWidget {
   const AddServiceVoucherScreen({
@@ -228,13 +229,16 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
                       }
                     });
                   } else {
-                    final File? file = await getImageCamera(
-                      is2mb: true,
-                      isShowLoading: true,
-                    );
+                    Loading().showLoading();
+                    final String? file = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CameraCustom(),
+                        ));
                     if (file != null) {
+                      final File file2MB = await compressImage(File(file));
                       final _blocP = ProductCustomerModuleBloc.of(context);
-                      final res = await _blocP.getBienSoWithImg(file: file);
+                      final res = await _blocP.getBienSoWithImg(file: file2MB);
                       _isDataCar = true;
                       _txtBienSo.text = res['data'] ?? '';
                       if (_txtBienSo.text == '') {
@@ -243,7 +247,7 @@ class _AddServiceVoucherScreenState extends State<AddServiceVoucherScreen>
                       } else {
                         _bloc.loadMoreControllerBienSo.reloadData();
                       }
-                    }else{
+                    } else {
                       Loading().popLoading();
                     }
                   }

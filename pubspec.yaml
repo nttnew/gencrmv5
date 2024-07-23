@@ -81,6 +81,8 @@ dependencies:
   syncfusion_flutter_pdfviewer: 20.4.54
   html_unescape: ^2.0.0
   carousel_slider: ^4.2.1
+  camera: ^0.10.5+9
+  path: ^1.8.3
 
 dependency_overrides:
   watcher: 1.1.0

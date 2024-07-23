@@ -17,6 +17,7 @@ import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/pick_file_image.dart';
 import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_widget.dart';
+import '../../form/widget/camera_custom.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 import '../product/scanner_qrcode.dart';
 
@@ -202,13 +203,15 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
 
   void _handelRightIconSearch() async {
     if (isCarCrm()) {
-      final File? file = await getImageCamera(
-        is2mb: true,
-        isShowLoading: true,
-      );
+      final String? file = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CameraCustom(),
+          ));
       if (file != null) {
         Loading().showLoading();
-        final res = await _bloc.getBienSoWithImg(file: file);
+        final File file2MB = await compressImage(File(file));
+        final res = await _bloc.getBienSoWithImg(file: file2MB);
         if (res['mes'] == '') {
           if (res['data'] != '') _handelSearchWithText(res['data'].toString());
         } else {

@@ -385,10 +385,10 @@ Future<File?> getImageCamera({
   bool isShowLoading = false,
 }) async {
   try {
+    if(isShowLoading) Loading().showLoading();
     final XFile? fileCamera = await ImagePicker().pickImage(
       source: ImageSource.camera,
     );
-    if(isShowLoading) Loading().showLoading();
     if (fileCamera != null) {
       if (is2mb) {
         final File duoi2MB = await compressImage(File(fileCamera.path));

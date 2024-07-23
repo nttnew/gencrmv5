@@ -324,9 +324,15 @@ Widget itemTextEnd({
                     ),
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
+                      color: COLORS.GRAY_IMAGE,
                       shape: BoxShape.circle,
                     ),
-                    child: Image.network(icon),
+                    child: Image.network(
+                      icon,
+                      errorBuilder: (_, __, ___) => Image.asset(
+                        ICONS.IC_PROFILE_ERROR_PNG,
+                      ),
+                    ),
                   ),
                   WidgetText(
                     title: title,
@@ -557,3 +563,34 @@ String checkTitle(
   }
   return '';
 }
+
+Widget iconBackBlur() => Positioned(
+      top: 16 + MediaQuery.of(Get.context!).padding.top,
+      left: 16,
+      child: Container(
+        height: 45,
+        width: 45,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              12,
+            ),
+          ),
+          color: Colors.black.withOpacity(
+            0.4,
+          ),
+        ),
+        child: GestureDetector(
+          onTap: () {
+            Get.back();
+          },
+          child: Center(
+            child: Icon(
+              Icons.arrow_back_ios_new_outlined,
+              color: COLORS.WHITE,
+              size: 24,
+            ),
+          ),
+        ),
+      ),
+    );

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/color.dart';
 
 class ScannerQrcode extends StatefulWidget {
@@ -27,34 +28,11 @@ class _ScannerQrcodeState extends State<ScannerQrcode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: COLORS.SECONDS_COLOR,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            _buildQrView(context),
-            Positioned(
-              top: 16,
-              left: 16,
-              child: Container(
-                height: 45,
-                width: 45,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                    color: Colors.black.withOpacity(0.4)),
-                child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Center(
-                        child: Icon(
-                      Icons.arrow_back_ios_new_outlined,
-                      color: COLORS.WHITE,
-                      size: 24,
-                    ))),
-              ),
-            ),
-          ],
-        ),
+      body: Stack(
+        children: [
+          _buildQrView(context),
+          iconBackBlur(),
+        ],
       ),
     );
   }
