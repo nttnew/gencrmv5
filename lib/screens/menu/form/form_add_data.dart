@@ -55,6 +55,7 @@ import 'product_list/product_contract.dart';
 import 'widget/input_drop_down_base.dart';
 
 const String GIA_TRI_HOP_DONG_FN = 'col311';
+const String GIA_TRI_XUAT_HOA_DON = 'gia_tri_xuat_hoa_don';
 const String TIEN_GIAM_FN =
     'tong_tien_giam'; // key id của các trường động autosum
 const String TONG_TIEN_THUE_FN = 'tien_thue';
@@ -541,6 +542,7 @@ class _FormAddDataState extends State<FormAddData> {
   String _getDataWithFieldName(String v) {
     switch (v) {
       case GIA_TRI_HOP_DONG_FN:
+      case GIA_TRI_XUAT_HOA_DON:
         return _total.toStringAsFixed(0);
       case TIEN_GIAM_FN:
         return _tongTienGiam.toStringAsFixed(0);
@@ -1327,7 +1329,10 @@ class _FormAddDataState extends State<FormAddData> {
                                                     : data.field_type ==
                                                             'TEXT_NUMERIC'
                                                         ? data.field_special ==
-                                                                'autosum'
+                                                                    'autosum' ||
+                                                                data
+                                                                        .field_name == //todo gía trị xuất hoá đơn chưa làm
+                                                                    GIA_TRI_XUAT_HOA_DON
                                                             ? StreamBuilder<
                                                                     String>(
                                                                 stream:
