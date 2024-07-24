@@ -55,8 +55,6 @@ void showDialogPermissionLocation(BuildContext context,
 Future<String> getLocationName(double latitude, double longitude) async {
   List<Placemark> placemarks =
       await placemarkFromCoordinates(latitude, longitude);
-  print(placemarks.toString());
-  print('$latitude+' + '+$longitude');
   return checkData('${getT(KeyT.number)}',
           '${placemarks.first.name},') +
       checkData('', '${placemarks.first.thoroughfare},') +
