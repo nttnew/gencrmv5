@@ -41,46 +41,49 @@ class _ListBieuMauState extends State<ListBieuMau> {
           ),
           Expanded(
             child: ViewLoadMoreBase(
+              paddingList: 10,
               isInit: true,
               functionInit: (page, isInit) {
                 return _loginBloc.getBieuMau(module: module);
               },
               itemWidget: (int index, data) {
                 final BieuMauItemRes _item = data as BieuMauItemRes;
-                return GestureDetector(
-                  onTap: () async {
-                    final res = await _loginBloc.getPdf(
-                      module: module,
-                      idDetail: idDetail,
-                      idBieuMau: _item.id ?? '',
-                    );
-                    if (res['mes'] == '' && res['html'] != null) {
-                      AppNavigator.navigateInPhieu(
-                        link: res['html'],
+                return Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 4,
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final res = await _loginBloc.getPdf(
+                        module: module,
+                        idDetail: idDetail,
+                        idBieuMau: _item.id ?? '',
                       );
-                    } else {
-                      showToastM(
-                        context,
-                        title: res['mes'],
-                      );
-                    }
-                  },
-                  child: Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 10,
-                    ),
-                    padding: EdgeInsets.all(
-                      10,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(
-                          4,
+                      if (res['mes'] == '' && res['html'] != null) {
+                        AppNavigator.navigateInPhieu(
+                          link: res['html'],
+                        );
+                      } else {
+                        showToastM(
+                          context,
+                          title: res['mes'],
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.all(
+                        12,
+                      ),
+                      backgroundColor: COLORS.WHITE,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(
+                            4,
+                          ),
                         ),
                       ),
-                      color: COLORS.WHITE,
-                      boxShadow: boxShadow1,
                     ),
                     child: Text(
                       _item.tenBieuMau ?? '',

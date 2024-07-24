@@ -345,22 +345,20 @@ class _ScreenMainState extends State<ScreenMain> {
                     mainAxisSpacing: 25,
                   ),
                   itemBuilder: (context, index) {
-                    return GestureDetector(
+                    return ItemMenu(
+                      data: listMenu[index],
                       onTap: listMenu[index].onTap,
-                      child: ItemMenu(data: listMenu[index]),
                     );
                   }),
               if (listMenu.length % 2 != 0)
-                GestureDetector(
-                  onTap: listMenu.last.onTap,
-                  child: Container(
-                    margin: EdgeInsets.only(top: 25),
-                    width: (MediaQuery.of(context).size.width - 50),
-                    height: (MediaQuery.of(context).size.width - 75) / 2,
-                    child: ItemMenu(
-                      data: listMenu.last,
-                      isLast: true,
-                    ),
+                Container(
+                  margin: EdgeInsets.only(top: 25),
+                  width: (MediaQuery.of(context).size.width - 50),
+                  height: (MediaQuery.of(context).size.width - 75) / 2,
+                  child: ItemMenu(
+                    data: listMenu.last,
+                    isLast: true,
+                    onTap: listMenu.last.onTap,
                   ),
                 ),
               SizedBox(

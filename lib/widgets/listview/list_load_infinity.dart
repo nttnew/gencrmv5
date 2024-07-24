@@ -248,7 +248,7 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
         itemBuilder: (context, index) =>
             widget.widgetLoad ??
             BoxItem(
-              onTap: (){},
+              onTap: () {},
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -415,22 +415,25 @@ itemLoading2({bool isMaxWidth = false}) => Shimmer.fromColors(
 widgetLoading() {
   return Container(
     margin: EdgeInsets.symmetric(
-      horizontal: 16,
-      vertical: 10,
+      horizontal: 12,
+      vertical: 4,
     ),
-    padding: EdgeInsets.all(
-      10,
-    ),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.all(
-        Radius.circular(
-          4,
+    child: ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        alignment: Alignment.centerLeft,
+        backgroundColor: COLORS.WHITE,
+        padding: EdgeInsets.all(12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              8,
+            ),
+          ),
         ),
       ),
-      color: COLORS.WHITE,
-      boxShadow: boxShadow1,
+      child: itemLoading(isMaxWidth: true),
     ),
-    child: itemLoading(),
   );
 }
 

@@ -99,36 +99,41 @@ class _MainCarState extends State<MainCar> {
                                     trackVisibility: true,
                                     child: ListView.builder(
                                       padding: EdgeInsets.only(
-                                        left: 16,
+                                        left: 12,
                                       ),
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
                                       itemCount: widget.listMenu.length,
                                       itemBuilder: (context, i) {
                                         final item = widget.listMenu[i];
-                                        return GestureDetector(
-                                          onTap: () => item.onTap(),
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            width: w,
-                                            height: w,
-                                            margin: EdgeInsets.only(
-                                              top: 16,
-                                              right: 16,
-                                              bottom: 10,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: COLORS.PRIMARY_COLOR1,
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(
-                                                  10,
-                                                ),
-                                              ),
-                                            ),
+                                        return Container(
+                                          width: w,
+                                          height: w,
+                                          margin: EdgeInsets.only(
+                                            top: 12,
+                                            right: 12,
+                                            bottom: 10,
+                                          ),
+                                          child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              padding: EdgeInsets.zero,
+                                                backgroundColor:
+                                                COLORS.PRIMARY_COLOR1,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius.all(
+                                                    Radius.circular(
+                                                      10,
+                                                    ),
+                                                  ),
+                                                )),
+                                            onPressed: () {
+                                              item.onTap();
+                                            },
                                             child: Text(
                                               item.title,
                                               style:
-                                                  AppStyle.DEFAULT_14.copyWith(
+                                              AppStyle.DEFAULT_14.copyWith(
                                                 color: COLORS.WHITE,
                                               ),
                                               overflow: TextOverflow.ellipsis,

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:get/get.dart';
 import 'package:gen_crm/src/color.dart';
 import 'package:gen_crm/widgets/widget_handle.dart';
@@ -12,7 +13,7 @@ class GetSnackBarUtils {
   static Duration _progressDuration = Duration(seconds: 15);
   static Duration _stateDuration = Duration(seconds: 1);
   static Duration _stateDurationDelay = Duration(seconds: 2);
-  static Color _backgroundColor = COLORS.PRIMARY_COLOR;
+  static Color _backgroundColor = getBackgroundWithIsCar();
   static Color _successColor = Colors.green;
   static Color _failureColor = Colors.orange;
   static Color _errorColor = COLORS.RED;

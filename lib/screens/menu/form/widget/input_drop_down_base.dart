@@ -13,7 +13,6 @@ import '../../../../l10n/key_text.dart';
 import '../../../../models/model_item_add.dart';
 import '../../../../src/app_const.dart';
 import '../../../../widgets/listview/list_load_infinity.dart';
-import '../../../../widgets/loading_api.dart';
 import '../../../../widgets/search_base.dart';
 
 class InputDropdownBase extends StatefulWidget {
@@ -246,7 +245,7 @@ class _InputDropdownState extends State<InputDropdownBase> {
   Widget build(BuildContext context) {
     bool isReadOnly = widget.data.field_read_only.toString() == '1';
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.only(bottom: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -384,8 +383,6 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
     try {
-      if(page== BASE_URL.PAGE_DEFAULT)
-      Loading().showLoading();
       var headers = {
         'Authorization': shareLocal.getString(PreferencesKey.TOKEN),
       };
@@ -412,22 +409,14 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
           final List<dynamic> dataRes = response.data['data'] as List<dynamic>;
           final List<List<dynamic>> res =
               dataRes.map((e) => e as List<dynamic>).toList();
-          if(page== BASE_URL.PAGE_DEFAULT)
-          Loading().popLoading();
           return res;
         } else {
-          if(page== BASE_URL.PAGE_DEFAULT)
-          Loading().popLoading();
           return [];
         }
       } else {
-        if(page== BASE_URL.PAGE_DEFAULT)
-        Loading().popLoading();
         return response.data['msg'].toString();
       }
     } catch (e) {
-      if(page== BASE_URL.PAGE_DEFAULT)
-      Loading().popLoading();
       return getT(KeyT.an_error_occurred);
     }
   }
@@ -487,23 +476,17 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
         children: [
           Container(
             padding: const EdgeInsets.only(
-              bottom: 16,
+              bottom: 12,
             ),
             decoration: BoxDecoration(
               color: COLORS.WHITE,
-              boxShadow: [
-                BoxShadow(
-                  color: COLORS.BLACK.withOpacity(0.2),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                ),
-              ],
+              boxShadow: boxShadowVip,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(12),
                   child: WidgetText(
                     title: getT(KeyT.select) +
                         ' ' +
@@ -526,6 +509,7 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
           ),
           Expanded(
             child: ViewLoadMoreBase(
+              paddingList: 6,
               widgetLoad: widgetLoading(),
               noDataWidget: null,
               functionInit: (page, isInit) {
@@ -539,28 +523,28 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
                     children: [
                       ..._listAdd
                           .map(
-                            (e) => GestureDetector(
-                              onTap: () {
+                            (e) => _itemList(
+                              e,
+                              () {
                                 widget.onChange(e);
                               },
-                              child: _itemList(e),
                             ),
                           )
                           .toList(),
-                      GestureDetector(
-                        onTap: () {
+                      _itemList(
+                        data,
+                        () {
                           widget.onChange(data);
                         },
-                        child: _itemList(data),
                       ),
                     ],
                   );
                 }
-                return GestureDetector(
-                  onTap: () {
+                return _itemList(
+                  data,
+                  () {
                     widget.onChange(data);
                   },
-                  child: _itemList(data),
                 );
               },
               controller: _loadMoreController,
@@ -647,23 +631,17 @@ class _DropDownWidgetState extends State<DropDownWidget> {
         children: [
           Container(
             padding: const EdgeInsets.only(
-              bottom: 16,
+              bottom: 12,
             ),
             decoration: BoxDecoration(
               color: COLORS.WHITE,
-              boxShadow: [
-                BoxShadow(
-                  color: COLORS.BLACK.withOpacity(0.2),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                ),
-              ],
+              boxShadow: boxShadowVip,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(12),
                   child: WidgetText(
                     title: getT(KeyT.select) +
                         ' ' +
@@ -690,7 +668,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
                 ? _buildListView(_listAdd)
                 : _listAdd.isNotEmpty
                     ? ListView.builder(
-                        padding: EdgeInsets.symmetric(vertical: 8),
+                        padding: EdgeInsets.symmetric(vertical: 6),
                         shrinkWrap: true,
                         itemCount: _listData.length,
                         itemBuilder: (context, i) {
@@ -709,7 +687,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
                       )
                     : _listData.isNotEmpty
                         ? ListView.builder(
-                            padding: EdgeInsets.symmetric(vertical: 8),
+                            padding: EdgeInsets.symmetric(vertical: 6),
                             shrinkWrap: true,
                             itemCount: _listData.length,
                             itemBuilder: (context, i) {
@@ -725,51 +703,55 @@ class _DropDownWidgetState extends State<DropDownWidget> {
 
   Widget _buildListView(List<dynamic> list) {
     return ListView(
-      padding: EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.symmetric(vertical: 6),
       children: list.map((e) => _buildGestureDetector(e)).toList(),
     );
   }
 
   Widget _buildGestureDetector(dynamic item) {
-    return GestureDetector(
-      onTap: () {
+    return _itemList(
+      item,
+      () {
         widget.onChange(item);
       },
-      child: _itemList(item),
     );
   }
 }
 
-_itemList(dynamic data) {
+_itemList(
+  dynamic data,
+  Function onTap,
+) {
   return Container(
-    padding: EdgeInsets.all(16),
     margin: EdgeInsets.symmetric(
       vertical: 4,
-      horizontal: 16,
+      horizontal: 12,
     ),
     width: double.infinity,
-    decoration: BoxDecoration(
-      color: COLORS.WHITE,
-      borderRadius: BorderRadius.all(
-        Radius.circular(
-          8,
+    child: ElevatedButton(
+      onPressed: () {
+        onTap();
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: COLORS.WHITE,
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.all(12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              8,
+            ),
+          ),
         ),
       ),
-      boxShadow: [
-        BoxShadow(
-          color: COLORS.BLACK.withOpacity(0.1),
-          spreadRadius: 2,
-          blurRadius: 5,
-        ),
-      ],
-    ),
-    child: Text(
-      data[1].toString() != 'null' && data[1].toString() != ''
-          ? data[1].toString()
-          : getT(KeyT.not_yet),
-      style: AppStyle.DEFAULT_16_BOLD.copyWith(
-        color: _getColor(
-          data[0].toString(),
+      child: Text(
+        data[1].toString() != 'null' && data[1].toString() != ''
+            ? data[1].toString()
+            : getT(KeyT.not_yet),
+        style: AppStyle.DEFAULT_16_BOLD.copyWith(
+          color: _getColor(
+            data[0].toString(),
+          ),
         ),
       ),
     ),

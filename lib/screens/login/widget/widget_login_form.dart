@@ -41,7 +41,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
   late LoginData user;
   TextEditingController _unameController = TextEditingController();
   TextEditingController _domainController = TextEditingController();
-  String baseUrl = "";
+  String baseUrl = '';
   String? tokenFirebase;
 
   final LocalAuthentication auth = LocalAuthentication();
@@ -84,8 +84,8 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
     });
     if (widget.isLogin &&
         canAuthenticate &&
-        shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT) == "true" &&
-        shareLocal.getString(PreferencesKey.USER) != "" &&
+        shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT) == 'true' &&
+        shareLocal.getString(PreferencesKey.USER) != '' &&
         shareLocal.getString(PreferencesKey.USER) != null) {
       loginWithFingerPrint();
     }
@@ -95,8 +95,8 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
   void didChangeDependencies() {
     LoginBloc.of(context).add(PasswordChanged(password: ''));
     if (widget.isLogin &&
-        shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT) == "true" &&
-        shareLocal.getString(PreferencesKey.USER) != "" &&
+        shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT) == 'true' &&
+        shareLocal.getString(PreferencesKey.USER) != '' &&
         shareLocal.getString(PreferencesKey.USER) != null) {
       loginWithFingerPrint();
     }
@@ -320,7 +320,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
         child: Text(
           getT(KeyT.forgot_password),
           style: TextStyle(
-              fontFamily: "Quicksand",
+              fontFamily: 'Quicksand',
               fontWeight: FontWeight.w500,
               fontSize: 14),
         ),
@@ -348,8 +348,8 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
 
   _buildFingerPrintButton() {
     return canAuthenticate &&
-            shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT) == "true" &&
-            shareLocal.getString(PreferencesKey.USER) != "" &&
+            shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT) == 'true' &&
+            shareLocal.getString(PreferencesKey.USER) != '' &&
             shareLocal.getString(PreferencesKey.USER) != null
         ? Align(
             alignment: Alignment.centerLeft,
@@ -369,7 +369,7 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
                   WidgetText(
                     title: getT(KeyT.print_finger_face_id),
                     style: TextStyle(
-                      fontFamily: "Quicksand",
+                      fontFamily: 'Quicksand',
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                     ),

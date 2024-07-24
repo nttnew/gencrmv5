@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../models/button_menu_model.dart';
 import '../src/src_index.dart';
 
@@ -8,23 +7,21 @@ class ItemMenu extends StatelessWidget {
     Key? key,
     required this.data,
     this.isLast = false,
+    required this.onTap,
   }) : super(key: key);
   final ButtonMenuModel data;
   final bool isLast;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: data.backgroundColor,
-        boxShadow: [
-          BoxShadow(
-            color: COLORS.BLACK.withOpacity(0.15),
-            spreadRadius: 1,
-            blurRadius: 1,
-          ),
-        ],
+    return ElevatedButton(
+      onPressed: () => onTap(),
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        backgroundColor: data.backgroundColor,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
