@@ -187,7 +187,11 @@ class _CustomerScreenState extends State<CustomerScreen> {
             .toList(),
       ),
       body: ViewLoadMoreBase(
-        isShowAll: _bloc.listType,
+        isShowAll:
+        // _bloc.listType.value.length == 0
+        //     ? managerBloc.managerTrees
+        //     :
+        _bloc.listType,
         isInit: true,
         child: SingleChildScrollView(
           child: Column(
@@ -231,6 +235,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
               AppValue.vSpaceTiny,
               Padding(
                 padding: const EdgeInsets.only(
+                  top: 1,
                   left: 16,
                   right: 16,
                   bottom: 16,
