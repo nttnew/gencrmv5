@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
-import 'package:gen_crm/l10n/key_text.dart';
-import 'package:gen_crm/widgets/widget_text.dart';
 import '../../../../../../src/app_const.dart';
 import '../../../../../../src/models/model_generator/list_notification.dart';
 import '../../../../../../src/src_index.dart';
+import '../../../widget/error_item.dart';
 import '../widget/item_noti.dart';
 
 class UnReadList extends StatefulWidget {
@@ -108,11 +107,9 @@ class _UnReadListState extends State<UnReadList>
                 );
               return noData();
             } else if (state is ErrorNotificationState) {
-              return Center(
-                child: WidgetText(
-                  title: getT(KeyT.an_error_occurred),
-                  style: AppStyle.DEFAULT_18_BOLD,
-                ),
+              return ErrorItem(
+                onPressed: () => reload(),
+                error: state.msg,
               );
             }
             return SizedBox.shrink();

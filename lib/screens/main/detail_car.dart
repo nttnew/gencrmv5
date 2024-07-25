@@ -13,6 +13,7 @@ import '../../src/src_index.dart';
 import '../../widgets/cupertino_loading.dart';
 import '../../widgets/widget_appbar.dart';
 import '../../widgets/widget_text.dart';
+import '../menu/widget/error_item.dart';
 import '../menu/widget/information.dart';
 
 class DetailCar extends StatefulWidget {
@@ -90,9 +91,9 @@ class _DetailCarState extends State<DetailCar> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CupertinoLoading());
                   } else if (snapshot.hasError) {
-                    return Text(
-                      getT(KeyT.an_error_occurred),
-                      style: AppStyle.DEFAULT_16_T,
+                    return ErrorItem(
+                      onPressed: () => _blocLogin.getDetailXeDichVu(),
+                      error: getT(KeyT.an_error_occurred),
                     );
                   } else {
                     if (snapShot.runtimeType == String) {

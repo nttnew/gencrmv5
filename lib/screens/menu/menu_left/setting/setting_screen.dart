@@ -154,28 +154,32 @@ class _SettingScreenState extends State<SettingScreen> {
         children: [
           ListView.builder(
             padding: EdgeInsets.only(
-              top: 24,
+              bottom: 24,
+              top: 12,
             ),
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             itemCount: listSetting.length,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        listSetting[index].onTap();
-                      },
+              return Column(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      listSetting[index].onTap();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        top: 16,
+                        right: 20,
+                        left: 20,
+                      ),
                       child: WidgetItemListMenu(
                         icon: listSetting[index].image,
                         title: getT(listSetting[index].keyTitle),
                       ),
                     ),
-                    AppValue.vSpaceSmall,
-                  ],
-                ),
+                  ),
+                ],
               );
             },
           ),

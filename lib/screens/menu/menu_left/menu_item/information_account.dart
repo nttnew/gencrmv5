@@ -6,13 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import 'package:gen_crm/bloc/information_account/information_account_bloc.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
-import 'package:gen_crm/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 import 'package:formz/formz.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
+import '../../widget/error_item.dart';
 
 class InformationAccount extends StatefulWidget {
   const InformationAccount({Key? key}) : super(key: key);
@@ -22,8 +22,8 @@ class InformationAccount extends StatefulWidget {
 }
 
 class _InformationAccountState extends State<InformationAccount> {
-  String name = "";
-  String address = "";
+  String name = '';
+  String address = '';
   File? image;
 
   Future getImageCamera() async {
@@ -119,11 +119,11 @@ class _InformationAccountState extends State<InformationAccount> {
           builder: (context, state) {
             if (state is UpdateGetInforAccState) {
               final bloc = InforAccBloc.of(context);
-              initEmail = state.inforAcc.email ?? "";
-              initFullName = state.inforAcc.fullname ?? "";
-              initAddress = state.inforAcc.address ?? "";
-              initPhone = state.inforAcc.phone ?? "";
-              urlAvatar = state.inforAcc.avatar ?? "";
+              initEmail = state.inforAcc.email ?? '';
+              initFullName = state.inforAcc.fullname ?? '';
+              initAddress = state.inforAcc.address ?? '';
+              initPhone = state.inforAcc.phone ?? '';
+              urlAvatar = state.inforAcc.avatar ?? '';
               bloc.add(EmailChanged(initEmail));
               bloc.add(PhoneChanged(initPhone));
               return Column(
@@ -169,7 +169,13 @@ class _InformationAccountState extends State<InformationAccount> {
                           aspectRatio: 3.8,
                           child: image != null
                               ? Center(
-                                  child: ClipOval(
+                                  child: Container(
+                                    clipBehavior: Clip.hardEdge,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      boxShadow: boxShadowVip,
+                                      color: Colors.white,
+                                    ),
                                     child: Image.file(
                                       image!,
                                       width: 100,
@@ -179,7 +185,13 @@ class _InformationAccountState extends State<InformationAccount> {
                                   ),
                                 )
                               : Center(
-                                  child: ClipOval(
+                                  child: Container(
+                                    clipBehavior: Clip.hardEdge,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      boxShadow: boxShadowVip,
+                                      color: Colors.white,
+                                    ),
                                     child: Image.network(
                                       urlAvatar,
                                       fit: BoxFit.contain,
@@ -198,9 +210,14 @@ class _InformationAccountState extends State<InformationAccount> {
                                 ),
                         ),
                         Positioned(
-                            left: AppValue.widths * 0.55,
-                            top: AppValue.heights * 0.1,
-                            child: Image.asset(ICONS.IC_MAY_ANH_PNG))
+                          left: AppValue.widths * 0.55,
+                          top: AppValue.heights * 0.1,
+                          child: Image.asset(
+                            ICONS.IC_MAY_ANH_PNG,
+                            height: 24,
+                            width: 24,
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -275,11 +292,10 @@ class _InformationAccountState extends State<InformationAccount> {
                 ],
               );
             } else if (state is Error) {
-              return Center(
-                child: WidgetText(
-                  title: getT(KeyT.an_error_occurred),
-                  style: AppStyle.DEFAULT_18_BOLD,
-                ),
+              return ErrorItem(
+                onPressed: () =>
+                    GetInfoAccBloc.of(context).add(InitGetInforAcc()),
+                error: getT(KeyT.an_error_occurred),
               );
             } else {
               return SizedBox.shrink();

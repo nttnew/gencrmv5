@@ -100,7 +100,8 @@ class ReadNotificationBloc
     required DataNotification value,
   }) {
     if (listNotification?.isNotEmpty ?? false) {
-      int index = listNotification!.indexOf(value);
+      int index = listNotification!.indexWhere((element) =>
+          element.id == value.id && element.recordId == element.recordId);
       if (index != -1) {
         listNotification![index].isSelect = isSelect;
       }
