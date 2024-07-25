@@ -51,7 +51,7 @@ import '../../../widgets/location_base.dart';
 import 'package:geolocator/geolocator.dart' show Position;
 import '../../../widgets/multiple_widget.dart';
 import '../home/contract/widget/widget_total_sum.dart';
-import 'product_list/product_contract.dart';
+import 'product_list/product_field.dart';
 import 'widget/input_drop_down_base.dart';
 
 const String GIA_TRI_HOP_DONG_FN = 'col311';
@@ -63,6 +63,10 @@ const String CHUA_THANH_TOAN_FN = 'chuathanhtoan';
 const String TONG_BAO_HIEM_TRA = 'tong_bao_hiem_tra';
 const String LOAI_HOP_DONG_DB = 'loai_hop_dong'; // case add edit HOP_DONG
 const String SELECT_NGAN_HANG = 'banks';
+const String FIELD_NAME_STATUS_P = 'sdtrangthaipopchhd';
+const String ID_STATUS_CANCEL = '10657';
+const String ID_STATUS_VIRTUAL = '10697';
+// status == ảo +tiền ảo/ status = huỷ không công tiền ảo
 
 class FormAddData extends StatefulWidget {
   const FormAddData({Key? key}) : super(key: key);
@@ -92,6 +96,7 @@ class _FormAddDataState extends State<FormAddData> {
   double _tongTienThue = 0;
   double _tongBaoHiemTra = 0;
   double _tongChuaThanhToan = 0;
+  double _tongGiaTriXuatHoaDon = 0;
   List<ProductsRes> _listProduct = [];
   List<ModelItemAdd> _addData = [];
   late String _idUserLocal;
@@ -488,7 +493,11 @@ class _FormAddDataState extends State<FormAddData> {
         : SizedBox();
   }
 
-  _getDataProduct(String fieldName, ProductsRes product) {
+  _getDataProduct(
+    String fieldName,
+    ProductsRes product, {
+    bool isIdSelect = false,
+  }) {
     for (final FormProduct value in product.form ?? []) {
       if (fieldName == value.fieldName)
         switch (value.fieldType) {
@@ -503,7 +512,9 @@ class _FormAddDataState extends State<FormAddData> {
             };
           case SELECT:
             if ((value.fieldSetValueDatasource?.length ?? 0) > 0)
-              return value.fieldSetValueDatasource?.first[1];
+              return isIdSelect
+                  ? value.fieldSetValueDatasource?.first[0]
+                  : value.fieldSetValueDatasource?.first[1];
             else
               return '';
         }
@@ -525,25 +536,37 @@ class _FormAddDataState extends State<FormAddData> {
     _tongTienThue = 0;
     _tongTienGiam = 0;
     _tongBaoHiemTra = 0;
+    _tongGiaTriXuatHoaDon = 0;
+    double _tongTienAo = 0;
     _listProduct.forEach((element) {
-      _total += _getIntoMoney(element);
       _tongBaoHiemTra +=
           _getDataProduct(BA0_HIEM_TRA, element).toString().toDoubleTry();
       _tongTienGiam += _tienGiamProduct(element);
       _tongTienThue += _vatProduct(element);
+      if (isStatusVirtual(element)) {
+        _tongTienAo += _getIntoMoney(element);
+        // lấy ra tổng tiền ảo + vào giá trị xuất hoá đơn
+      } else if (isStatusCancel(element)) {
+        // không tính tiền ảo
+      } else {
+        _total += _getIntoMoney(element);
+        // không vào 2 trường hợp trên công hết
+      }
     });
     _tongTienGiam = _tongTienGiam + _giam_gia_tong;
     _total = _total - _giam_gia_tong;
     _tongChuaThanhToan = _total - _daThanhToan;
+    _tongGiaTriXuatHoaDon = _total + _tongTienAo;
     _autoSumStream.add(
-        '$_total$_tongTienGiam$_tongTienThue$_tongChuaThanhToan$_tongBaoHiemTra');
+        '$_total$_tongTienGiam$_tongTienThue$_tongChuaThanhToan$_tongBaoHiemTra$_tongGiaTriXuatHoaDon');
   }
 
   String _getDataWithFieldName(String v) {
     switch (v) {
       case GIA_TRI_HOP_DONG_FN:
-      case GIA_TRI_XUAT_HOA_DON:
         return _total.toStringAsFixed(0);
+      case GIA_TRI_XUAT_HOA_DON:
+        return _tongGiaTriXuatHoaDon.toStringAsFixed(0);
       case TIEN_GIAM_FN:
         return _tongTienGiam.toStringAsFixed(0);
       case TONG_TIEN_THUE_FN:
@@ -555,6 +578,26 @@ class _FormAddDataState extends State<FormAddData> {
       default:
         return '';
     }
+  }
+
+  bool isStatusVirtual(ProductsRes _product) {
+    //[[10658, Sử dụng], [10657, Hủy], [10656, Nợ], [10697, Ảo],
+    // [10698, Gửi], [36868, Đổi trả], [36869, Dùng thử]]
+    // == Ảo => true
+    // field_id: "12897",
+    // field_name: "sdtrangthaipopchhd",
+    return _getDataProduct(FIELD_NAME_STATUS_P, _product, isIdSelect: true) ==
+        ID_STATUS_VIRTUAL;
+  }
+
+  bool isStatusCancel(ProductsRes _product) {
+    //[[10658, Sử dụng], [10657, Hủy], [10656, Nợ], [10697, Ảo],
+    // [10698, Gửi], [36868, Đổi trả], [36869, Dùng thử]]
+    // == Ảo => true
+    // field_id: "12897",
+    // field_name: "sdtrangthaipopchhd",
+    return _getDataProduct(FIELD_NAME_STATUS_P, _product, isIdSelect: true) ==
+        ID_STATUS_CANCEL;
   }
 
   double _getIntoMoney(ProductsRes product) {
@@ -1085,7 +1128,7 @@ class _FormAddDataState extends State<FormAddData> {
                 stream: _typeContact,
                 builder: (context, snapshot) {
                   final snap = snapshot.data ?? '';
-                  return ProductContract(
+                  return ProductField(
                     key: Key(snap),
                     typeContract: snap,
                     listBtn: data.button,
@@ -1331,7 +1374,8 @@ class _FormAddDataState extends State<FormAddData> {
                                                         ? data.field_special ==
                                                                     'autosum' ||
                                                                 data
-                                                                        .field_name == //todo gía trị xuất hoá đơn chưa làm
+                                                                        .field_name ==
+                                                                    // gía trị xuất hoá đơn nhắc BE trả về autosum
                                                                     GIA_TRI_XUAT_HOA_DON
                                                             ? StreamBuilder<
                                                                     String>(

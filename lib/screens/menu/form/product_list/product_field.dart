@@ -16,8 +16,8 @@ import 'item_products.dart';
 // Trích dẫn #3
 // Cập nhật bởi Dai Nguyen cách đây khoảng 18 giờ
 // - Trường "Số lượt" hiển thị theo loại hợp đồng có tùy chọn khác là "SOLUOT"
-class ProductContract extends StatefulWidget {
-  ProductContract({
+class ProductField extends StatefulWidget {
+  ProductField({
     Key? key,
     required this.data,
     required this.onChange,
@@ -32,10 +32,10 @@ class ProductContract extends StatefulWidget {
   final String typeContract;
 
   @override
-  State<ProductContract> createState() => _ProductContractState();
+  State<ProductField> createState() => _ProductFieldState();
 }
 
-class _ProductContractState extends State<ProductContract> {
+class _ProductFieldState extends State<ProductField> {
   List<ProductsRes> _productData = [];
   List<Key> _listKey = [];
   String _typeContract = '';
@@ -116,7 +116,6 @@ class _ProductContractState extends State<ProductContract> {
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: Wrap(
             spacing: 10, // Khoảng cách giữa các item theo chiều ngang
-            runSpacing: 10, // Khoảng cách giữa các dòng
             children: [
               itemBtnWrap(getT(KeyT.select_product), () {
                 AppNavigator.navigateAddProduct(
@@ -218,43 +217,34 @@ class _ProductContractState extends State<ProductContract> {
     Widget? icon,
     Color? color,
   }) =>
-      GestureDetector(
-        onTap: () => onTap(),
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 8,
-          ),
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: COLORS.BLACK.withOpacity(
-                  0.1,
+      ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            minimumSize: Size(0, 0),
+            padding: EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
+            backgroundColor: color ?? COLORS.TEXT_COLOR,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  16,
                 ),
-                spreadRadius: 2,
-                blurRadius: 5,
-              )
-            ],
-            color: color ?? COLORS.TEXT_COLOR,
-            borderRadius: BorderRadius.all(
-              Radius.circular(
-                16,
+              ),
+            ),),
+        onPressed: () => onTap(),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (icon != null) icon,
+            WidgetText(
+              title: title,
+              style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                color: COLORS.WHITE,
               ),
             ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (icon != null) icon,
-              WidgetText(
-                title: title,
-                style: AppStyle.DEFAULT_14_BOLD.copyWith(
-                  color: COLORS.WHITE,
-                ),
-              ),
-            ],
-          ),
+          ],
         ),
       );
 }
