@@ -117,25 +117,13 @@ class _CallGencrmScreenState extends ConsumerState<CallGencrmScreen> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      isDismissible: true,
-                      constraints: BoxConstraints(
-                        maxHeight: MediaQuery.of(context).size.height * 0.7,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(30),
-                          topLeft: Radius.circular(30),
-                        ),
-                      ),
-                      builder: (context) => Container(
+                    showBottomGenCRM(
+                      child: Container(
                         margin: EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 32,
                         ),
-                        child: ListView. builder(
+                        child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: listCallHistory.length,
                           itemBuilder: (context, index) => _itemHistory(() {

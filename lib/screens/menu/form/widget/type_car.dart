@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:get/get.dart';
 import '../../../../api_resfull/dio_provider.dart';
 import '../../../../bloc/add_service_voucher/add_service_bloc.dart';
@@ -123,21 +124,11 @@ class _TypeCarBaseState extends State<TypeCarBase> {
           ),
           GestureDetector(
             onTap: () {
-              showModalBottomSheet(
-                  isDismissible: false,
-                  enableDrag: false,
-                  isScrollControlled: true,
-                  context: Get.context!,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(
-                        30,
-                      ),
-                    ),
-                  ),
-                  builder: (BuildContext context) {
-                    return SelectCar();
-                  });
+              showBottomGenCRM(
+                isDismissible: false,
+                enableDrag: false,
+                child: SelectCar(),
+              );
             },
             child: StreamBuilder<String>(
                 stream: widget.bloc.loaiXe,

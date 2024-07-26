@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
-import 'package:gen_crm/widgets/tree/tree_node_model.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
@@ -16,6 +14,7 @@ import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
+import '../../widget/tree_filter.dart';
 import '../product/scanner_qrcode.dart';
 import 'widget/item_list_customer.dart';
 
@@ -177,6 +176,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                               ? ICONS.IC_PHONE_PNG
                               : ICONS.IC_CUSTOMER_3X_PNG,
                           fit: BoxFit.contain,
+                          color: COLORS.TEXT_BLUE_BOLD,
                         ),
                       ),
                     )
@@ -187,11 +187,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
             .toList(),
       ),
       body: ViewLoadMoreBase(
-        isShowAll:
-        // _bloc.listType.value.length == 0
-        //     ? managerBloc.managerTrees
-        //     :
-        _bloc.listType,
+        isShowAll: _bloc.listType,
         isInit: true,
         child: SingleChildScrollView(
           child: Column(
@@ -199,7 +195,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
               AppValue.vSpaceSmall,
               SearchBase(
                 hint: '${getT(KeyT.find)} ${title.toLowerCase()}',
-                leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                leadIcon: itemSearch(),
                 endIcon: GestureDetector(
                   onTap: () {
                     Navigator.of(context)
@@ -256,42 +252,19 @@ class _CustomerScreenState extends State<CustomerScreen> {
                         },
                       ),
                     ),
-                    StreamBuilder<List<TreeNodeData>>(
-                        stream: managerBloc.managerTrees,
-                        builder: (context, snapshot) {
-                          if (snapshot.data?.isNotEmpty ?? false)
-                            return Padding(
-                              padding: const EdgeInsets.only(left: 6.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  showManagerFilter(context, managerBloc, (v) {
-                                    _bloc.ids = v;
-                                    _bloc.loadMoreController.reloadData();
-                                  });
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(14),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: COLORS.GREY_400,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        4,
-                                      ),
-                                    ),
-                                  ),
-                                  child: SvgPicture.asset(
-                                    ICONS.IC_USER2_SVG,
-                                    width: 20,
-                                    height: 20,
-                                    fit: BoxFit.contain,
-                                  ),
-                                ),
-                              ),
-                            );
-                          return SizedBox();
-                        }),
+                    TreeFilter(
+                      treeStream: managerBloc.managerTrees,
+                      onTap: () {
+                        showManagerFilter(
+                          context,
+                          managerBloc,
+                          (v) {
+                            _bloc.ids = v;
+                            _bloc.loadMoreController.reloadData();
+                          },
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),

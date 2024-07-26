@@ -97,9 +97,11 @@ class _DetailCarState extends State<DetailCar> {
                     );
                   } else {
                     if (snapShot.runtimeType == String) {
-                      return Text(
-                        snapShot,
-                        style: AppStyle.DEFAULT_16_T,
+                      return ErrorItem(
+                        onPressed: () {
+                          _blocLogin.getDetailXeDichVu();
+                        },
+                        error: snapShot,
                       );
                     }
                     final dataDetail = snapShot as DetailXeDichVuData;
@@ -187,7 +189,8 @@ class _DetailCarState extends State<DetailCar> {
                                           },
                                           child: itemTextIcon(
                                             text: dataInfo?.tenKhachHang ?? '',
-                                            icon: ICONS.IC_USER2_SVG,
+                                            icon: ICONS.IC_USER_NEW_PNG,
+                                            isSVG: false,
                                             colorIcon: COLORS.GREY,
                                             styleText: AppStyle
                                                 .DEFAULT_LABEL_PRODUCT

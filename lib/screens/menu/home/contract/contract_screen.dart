@@ -1,4 +1,3 @@
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/bloc/contract/contract_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/contract.dart';
@@ -14,7 +13,7 @@ import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_node_model.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
-import 'widget/item_list_contract.dart';
+import 'widget/item_contract.dart';
 
 class ContractScreen extends StatefulWidget {
   const ContractScreen({Key? key}) : super(key: key);
@@ -96,15 +95,10 @@ class _ContractScreenState extends State<ContractScreen> {
                   stream: managerBloc.managerTrees,
                   builder: (context, snapshot) {
                     return SearchBase(
-                      hint: "${getT(KeyT.find)} ${title.toLowerCase()}",
-                      leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                      hint: '${getT(KeyT.find)} ${title.toLowerCase()}',
+                      leadIcon: itemSearch(),
                       endIcon: (snapshot.data ?? []).isNotEmpty
-                          ? SvgPicture.asset(
-                              ICONS.IC_USER2_SVG,
-                              width: 16,
-                              height: 16,
-                              fit: BoxFit.contain,
-                            )
+                          ? itemSearchFilterTree()
                           : null,
                       onClickRight: () {
                         showManagerFilter(context, managerBloc, (v) {

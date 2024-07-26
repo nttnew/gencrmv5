@@ -27,6 +27,7 @@ class ICONS {
   static const String IC_WORK2_PNG = 'assets/icons/Work.png';
   static const String IC_FAVICON_PNG = 'assets/icons/favicon.png';
   static const String IC_LICENSE_PLATE_PNG = 'assets/icons/license-plate.png';
+  static const String IC_BIEN_SO_XE_PNG = 'assets/icons/bien_so.png';
   static const String IC_ELECTRIC_SIGN_PNG = 'assets/icons/sign.png';
   static const String IC_STAR_PNG = 'assets/icons/star.png';
   static const String IC_STAR_BOLD_PNG = 'assets/icons/star_bold.png';
@@ -51,6 +52,9 @@ class ICONS {
   static const String IC_SELECT_ADDRESS_PNG = 'assets/icons/select_address.png';
   static const String IC_UPLOAD_IMAGE_PNG = 'assets/icons/image-upload.png';
   static const String IC_ADD_PAYMENT_PNG = 'assets/icons/add_payment.png';
+  static const String IC_GROSS_PNG = 'assets/icons/gross.png';
+  static const String IC_USER_NEW_PNG = 'assets/icons/user.png';
+  static const String IC_SEARCH_PNG = 'assets/icons/search.png';
 
   static const String IC_CUSTOMER_3X_PNG = 'assets/icons/Custumer_3x.png';
   static const String IC_CLUE_3X_PNG = 'assets/icons/Clue_3x.png';
@@ -94,7 +98,7 @@ class ICONS {
   static const String IC_PHONE_CUSTOMER_SVG = 'assets/icons/phone_customer.svg';
   static const String IC_MESS = 'assets/icons/Mess.svg';
   static const String IC_INPUT_SVG = 'assets/icons/iconInputImg.svg';
-  static const String IC_USER2_SVG = 'assets/icons/User.svg';
+  // static const String IC_USER2_SVG = 'assets/icons/User.svg';
   static const String IC_DANG_XU_LY_SVG = 'assets/icons/dangxuly.svg';
   static const String IC_HINT_SVG = 'assets/icons/pass.svg';
   static const String IC_BUILD_SVG = 'assets/icons/building.svg';

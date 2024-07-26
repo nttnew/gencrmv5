@@ -35,7 +35,8 @@ class WidgetItemChance extends StatelessWidget {
                     ' ' +
                     '${data.customer?.name ?? ''}')
                 .trim(),
-            icon: ICONS.IC_USER2_SVG,
+            icon: ICONS.IC_USER_NEW_PNG,
+            isSVG: false,
           ),
           itemTextIcon(
               text: data.product_customer?.name ?? '',

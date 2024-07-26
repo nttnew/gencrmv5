@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
@@ -101,7 +100,7 @@ class _DataDropDownItemState extends State<DataDropDownItem> {
                               color: HexColor("#707070")),
                           hint: getT(KeyT.find),
                           height: 48,
-                          leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                          leadIcon: itemSearch(),
                           onSubmit: (v) {
                             search = v;
                             debounce.run(() {

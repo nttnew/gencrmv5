@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../src/app_const.dart';
 import '../../../src/src_index.dart';
 
 showModalSelect(
@@ -8,17 +9,8 @@ showModalSelect(
   Function(List<dynamic>?) onTap, {
   String? init,
 }) {
-  return showModalBottomSheet(
-    isScrollControlled: true,
-    context: context,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topRight: Radius.circular(30),
-        topLeft: Radius.circular(30),
-      ),
-    ),
-    backgroundColor: COLORS.WHITE,
-    builder: (context) => SelectBody(
+  return showBottomGenCRM(
+    child: SelectBody(
       init: init,
       title: title,
       listData: listData,

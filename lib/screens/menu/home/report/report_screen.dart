@@ -135,16 +135,8 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 
   _showBodyReportOne() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(30),
-          topLeft: Radius.circular(30),
-        ),
-      ),
-      builder: (context) => BodyReportOne(
+    showBottomGenCRM(
+      child: BodyReportOne(
         money: money ?? '',
         bloc: _bloc,
       ),
@@ -152,16 +144,8 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 
   _showBodyReportFive() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(30),
-          topLeft: Radius.circular(30),
-        ),
-      ),
-      builder: (context) => BodyReportFive(
+    showBottomGenCRM(
+      child: BodyReportFive(
         money: money ?? '',
         bloc: _bloc,
       ),
@@ -169,16 +153,8 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 
   _showBodyReportFour() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(30),
-          topLeft: Radius.circular(30),
-        ),
-      ),
-      builder: (context) => BodyReportFour(
+    showBottomGenCRM(
+      child: BodyReportFour(
         money: money ?? '',
         bloc: _bloc,
       ),
@@ -186,16 +162,8 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 
   _showBodyReportTwo() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(30),
-          topLeft: Radius.circular(30),
-        ),
-      ),
-      builder: (context) => BodyReportTwo(
+    showBottomGenCRM(
+      child: BodyReportTwo(
         money: money ?? '',
         bloc: _bloc,
       ),
@@ -427,37 +395,28 @@ class _ReportScreenState extends State<ReportScreen> {
           if (soQuy.length > 0) {
             return GestureDetector(
               onTap: () {
-                showModalBottomSheet(
-                    isScrollControlled: true,
-                    context: context,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(30),
-                        topLeft: Radius.circular(30),
-                      ),
-                    ),
-                    builder: (BuildContext context) {
-                      return SelectKyTaiChinh(
-                        soQuy: soQuy,
-                        kyTaiChinhSelect: _bloc.kyTaiChinh,
-                        yearSelect: _bloc.ntcFilter,
-                        onSelect:
-                            (DataNTCFilter? ntcFilter, KyTaiChinh? kyTaiChinh) {
-                          _bloc.kyTaiChinh = kyTaiChinh;
-                          _bloc.ntcFilter = ntcFilter;
-                          _bloc.textNtcFilter.add(
-                              '${kyTaiChinh?.name ?? ''} ${ntcFilter?.nam}');
-                          QuySoReportBloc.of(context).add(
-                            GetDashboardQuySo(
-                              nam: _bloc.ntcFilter?.nam ?? '',
-                              kyTaiChinh: _bloc.kyTaiChinh?.id ?? '',
-                              location: _bloc.location,
-                            ),
-                          );
-                          Get.back();
-                        },
+                showBottomGenCRM(
+                  child: SelectKyTaiChinh(
+                    soQuy: soQuy,
+                    kyTaiChinhSelect: _bloc.kyTaiChinh,
+                    yearSelect: _bloc.ntcFilter,
+                    onSelect:
+                        (DataNTCFilter? ntcFilter, KyTaiChinh? kyTaiChinh) {
+                      _bloc.kyTaiChinh = kyTaiChinh;
+                      _bloc.ntcFilter = ntcFilter;
+                      _bloc.textNtcFilter
+                          .add('${kyTaiChinh?.name ?? ''} ${ntcFilter?.nam}');
+                      QuySoReportBloc.of(context).add(
+                        GetDashboardQuySo(
+                          nam: _bloc.ntcFilter?.nam ?? '',
+                          kyTaiChinh: _bloc.kyTaiChinh?.id ?? '',
+                          location: _bloc.location,
+                        ),
                       );
-                    });
+                      Get.back();
+                    },
+                  ),
+                );
               },
               child: StreamBuilder<String>(
                   stream: _bloc.textNtcFilter,

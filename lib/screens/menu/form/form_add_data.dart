@@ -783,20 +783,8 @@ class _FormAddDataState extends State<FormAddData> {
 
   _showDialogQrCode(String data) {
     var image = base64Decode(data.replaceAll('data:image/png;base64,', ''));
-    return showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.8,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(30),
-          topLeft: Radius.circular(30),
-        ),
-      ),
-      backgroundColor: COLORS.WHITE,
-      builder: (context) => StatefulBuilder(
+    return showBottomGenCRM(
+      child: StatefulBuilder(
         builder: (context, statePay) {
           return Container(
             padding: EdgeInsets.only(

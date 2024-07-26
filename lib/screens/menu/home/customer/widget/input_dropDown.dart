@@ -213,71 +213,62 @@ class _InputDropdownState extends State<InputDropdown> {
                 FocusManager.instance.primaryFocus?.unfocus();
               }
               if (widget.isEdit)
-                showModalBottomSheet(
-                    enableDrag: false,
-                    isScrollControlled: true,
-                    context: context,
-                    constraints: BoxConstraints(
-                        maxHeight: Get.height * 0.65, minWidth: Get.width),
-                    builder: (BuildContext context) {
-                      return StatefulBuilder(
-                        builder: (context, setState1) {
-                          if (isUpdate) {
-                            getCustomer(1,
-                                reload: () => setState1(() {}), search: '');
-                            isUpdate = false;
-                          }
-                          return Container(
-                            padding: EdgeInsets.only(
-                                bottom:
-                                    MediaQuery.of(context).viewInsets.bottom),
-                            child: DataDropDownItem(
-                              data: dropdown,
-                              isSearch: ((widget.data.field_name == KHACH_HANG_DB &&
-                                          widget.typeScreen !=
-                                              ADD_CHANCE_CUSTOMER) ||
-                                      widget.data.field_name == SO_HOP_DONG_DB ||
-                                      widget.data.field_name == 'cv_kh' ||
-                                      widget.data.field_name ==
-                                          'khach_hang_id_dm' ||
-                                      widget.data.field_name == 'khach_hang')
-                                  ? true
-                                  : false,
-                              onSuccess: (data, label) {
-                                if (mounted) {
-                                  setState(() {
-                                    textValue = label;
-                                  });
-                                }
+                showBottomGenCRM(
+                  enableDrag: false,
+                  child: StatefulBuilder(
+                    builder: (context, setState1) {
+                      if (isUpdate) {
+                        getCustomer(1,
+                            reload: () => setState1(() {}), search: '');
+                        isUpdate = false;
+                      }
+                      return Container(
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom),
+                        child: DataDropDownItem(
+                          data: dropdown,
+                          isSearch: ((widget.data.field_name == KHACH_HANG_DB &&
+                                      widget.typeScreen !=
+                                          ADD_CHANCE_CUSTOMER) ||
+                                  widget.data.field_name == SO_HOP_DONG_DB ||
+                                  widget.data.field_name == 'cv_kh' ||
+                                  widget.data.field_name ==
+                                      'khach_hang_id_dm' ||
+                                  widget.data.field_name == 'khach_hang')
+                              ? true
+                              : false,
+                          onSuccess: (data, label) {
+                            if (mounted) {
+                              setState(() {
+                                textValue = label;
+                              });
+                            }
 
-                                Get.back();
-                                widget.onChange(data);
-                              },
-                              onTabSearch: (search) {
-                                getCustomer(1,
-                                    reload: () => setState1(() {}),
-                                    search: search);
-                                FocusManager.instance.primaryFocus?.unfocus();
-                              },
-                              onLoadMore: (int page, String search) {
-                                if ((widget.data.field_name == KHACH_HANG_DB &&
-                                        widget.typeScreen !=
-                                            ADD_CHANCE_CUSTOMER) ||
-                                    widget.data.field_name == SO_HOP_DONG_DB ||
-                                    widget.data.field_name == 'cv_kh' ||
-                                    widget.data.field_name ==
-                                        'khach_hang_id_dm' ||
-                                    widget.data.field_name == 'khach_hang')
-                                  getCustomer(page,
-                                      reload: () => setState1(() {}),
-                                      search: search,
-                                      isLoadMore: true);
-                              },
-                            ),
-                          );
-                        },
+                            Get.back();
+                            widget.onChange(data);
+                          },
+                          onTabSearch: (search) {
+                            getCustomer(1,
+                                reload: () => setState1(() {}), search: search);
+                            FocusManager.instance.primaryFocus?.unfocus();
+                          },
+                          onLoadMore: (int page, String search) {
+                            if ((widget.data.field_name == KHACH_HANG_DB &&
+                                    widget.typeScreen != ADD_CHANCE_CUSTOMER) ||
+                                widget.data.field_name == SO_HOP_DONG_DB ||
+                                widget.data.field_name == 'cv_kh' ||
+                                widget.data.field_name == 'khach_hang_id_dm' ||
+                                widget.data.field_name == 'khach_hang')
+                              getCustomer(page,
+                                  reload: () => setState1(() {}),
+                                  search: search,
+                                  isLoadMore: true);
+                          },
+                        ),
                       );
-                    });
+                    },
+                  ),
+                );
             },
             child: Container(
                 width: double.infinity,

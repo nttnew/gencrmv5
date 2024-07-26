@@ -286,6 +286,7 @@ Widget itemTextEnd({
   Function? onTapTitle,
   bool isSvg = true,
   bool isAvatar = false,
+  Color? colorIcon,
 }) {
   return Container(
     margin: !isAvatar
@@ -351,6 +352,7 @@ Widget itemTextEnd({
                 isSVG: isSvg,
                 text: title,
                 icon: icon,
+                colorIcon: colorIcon,
                 colorText: colorTitle,
                 onTap: onTapTitle,
               ),
@@ -525,8 +527,6 @@ Color getBackgroundWithIsCar() {
   return isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.SECONDS_COLOR;
 }
 
-
-
 String checkTitle(
   List<InfoDataModel> dataL,
   String key,
@@ -571,3 +571,42 @@ Widget iconBackBlur() => Positioned(
         ),
       ),
     );
+
+showBottomGenCRM({
+  required Widget child,
+  bool isScrollControlled = true,
+  bool isDismissible = true,
+  bool enableDrag = true,
+  double radius = 10,
+}) =>
+    showModalBottomSheet(
+      enableDrag: enableDrag,
+      isDismissible: isDismissible,
+      context: Get.context!,
+      isScrollControlled: isScrollControlled,
+      constraints:
+          BoxConstraints(maxHeight: Get.height * 0.8, minWidth: Get.width),
+      clipBehavior: Clip.hardEdge,
+      backgroundColor: COLORS.WHITE,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(radius),
+          topLeft: Radius.circular(radius),
+        ),
+      ),
+      builder: (context) => child,
+    );
+
+itemSearchFilterTree() => Image.asset(
+      ICONS.IC_USER_NEW_PNG,
+      width: 20,
+      height: 20,
+      fit: BoxFit.contain,
+    );
+
+itemSearch() => Image.asset(
+  ICONS.IC_SEARCH_PNG,
+  width: 20,
+  height: 20,
+  fit: BoxFit.contain,
+);

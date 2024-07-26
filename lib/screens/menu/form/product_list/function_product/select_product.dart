@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../l10n/key_text.dart';
+import '../../../../../src/app_const.dart';
 import '../../../../../src/models/model_generator/products_response.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/widget_text.dart';
@@ -87,71 +88,68 @@ void showSelectProduct(
   List<List<dynamic>> listData,
   Function(List<dynamic>) onClick,
 ) {
-  showModalBottomSheet(
-      enableDrag: false,
-      isScrollControlled: true,
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 16,
+  showBottomGenCRM(
+    enableDrag: false,
+    child: Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: 16,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AppValue.vSpace10,
+          Container(
+            width: Get.width,
+            child: WidgetText(
+              title: getT(KeyT.select),
+              style: AppStyle.DEFAULT_16_BOLD,
+              textAlign: TextAlign.center,
+            ),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppValue.vSpace10,
-              Container(
-                width: Get.width,
-                child: WidgetText(
-                  title: getT(KeyT.select),
-                  style: AppStyle.DEFAULT_16_BOLD,
-                  textAlign: TextAlign.center,
-                ),
+          AppValue.vSpace10,
+          Container(
+            constraints: BoxConstraints(
+              maxHeight: Get.height * 0.6,
+              minWidth: Get.width,
+            ),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(
+                bottom: 16,
               ),
-              AppValue.vSpace10,
-              Container(
-                constraints: BoxConstraints(
-                  maxHeight: Get.height * 0.6,
-                  minWidth: Get.width,
-                ),
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.only(
-                    bottom: 16,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: List.generate(
-                      listData.length,
-                      (index) => GestureDetector(
-                        onTap: () {
-                          onClick(listData[index]);
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 8),
-                          width: Get.width,
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                width: 1,
-                                color: COLORS.GREY_400,
-                              ),
-                            ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: List.generate(
+                  listData.length,
+                  (index) => GestureDetector(
+                    onTap: () {
+                      onClick(listData[index]);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      width: Get.width,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 1,
+                            color: COLORS.GREY_400,
                           ),
-                          child: WidgetText(
-                            title: listData[index][1].toString(),
-                            style: AppStyle.DEFAULT_16.copyWith(
-                              color: COLORS.TEXT_BLUE_BOLD,
-                            ),
-                          ),
+                        ),
+                      ),
+                      child: WidgetText(
+                        title: listData[index][1].toString(),
+                        style: AppStyle.DEFAULT_16.copyWith(
+                          color: COLORS.TEXT_BLUE_BOLD,
                         ),
                       ),
                     ),
                   ),
                 ),
-              )
-            ],
-          ),
-        );
-      });
+              ),
+            ),
+          )
+        ],
+      ),
+    ),
+  );
 }

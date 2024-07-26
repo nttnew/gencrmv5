@@ -21,7 +21,7 @@ import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
 import '../chance/widget/widget_chance_item.dart';
 import '../clue/widget/work_card_widget.dart';
-import '../contract/widget/item_list_contract.dart';
+import '../contract/widget/item_contract.dart';
 import '../support/widget/item_support.dart';
 import 'widget/infor_tab.dart';
 

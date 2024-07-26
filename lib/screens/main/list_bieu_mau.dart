@@ -48,40 +48,40 @@ class _ListBieuMauState extends State<ListBieuMau> {
               },
               itemWidget: (int index, data) {
                 final BieuMauItemRes _item = data as BieuMauItemRes;
-                return Container(
-                  margin: EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 4,
-                  ),
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      final res = await _loginBloc.getPdf(
-                        module: module,
-                        idDetail: idDetail,
-                        idBieuMau: _item.id ?? '',
+                return GestureDetector(
+                  onTap: () async {
+                    final res = await _loginBloc.getPdf(
+                      module: module,
+                      idDetail: idDetail,
+                      idBieuMau: _item.id ?? '',
+                    );
+                    if (res['mes'] == '' && res['html'] != null) {
+                      AppNavigator.navigateInPhieu(
+                        link: res['html'],
                       );
-                      if (res['mes'] == '' && res['html'] != null) {
-                        AppNavigator.navigateInPhieu(
-                          link: res['html'],
-                        );
-                      } else {
-                        showToastM(
-                          context,
-                          title: res['mes'],
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.all(
-                        12,
+                    } else {
+                      showToastM(
+                        context,
+                        title: res['mes'],
+                      );
+                    }
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 6,
+                    ),
+                    padding: EdgeInsets.all(12),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      color: COLORS.WHITE,
+                      border: Border.all(
+                        color: COLORS.GREY_400,
+                        width: 0.5,
                       ),
-                      backgroundColor: COLORS.WHITE,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(
-                            4,
-                          ),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(
+                          6,
                         ),
                       ),
                     ),

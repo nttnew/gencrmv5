@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:gen_crm/src/src_index.dart';
-import 'package:hexcolor/hexcolor.dart';
-
 import '../src/app_const.dart';
 
 class SearchBase extends StatefulWidget {
@@ -85,16 +83,14 @@ class _SearchBaseState extends State<SearchBase> {
         crossAxisAlignment: widget.crossAxisAlignment,
         children: [
           widget.leadIcon != null
-              ? Padding(
-                  padding: EdgeInsets.only(
-                    left: 16,
-                  ),
-                  child: Center(
-                    child: Container(
-                      height: 20,
-                      width: 20,
-                      child: widget.leadIcon,
+              ? Center(
+                  child: Container(
+                    margin: EdgeInsets.only(
+                      left: 10,
                     ),
+                    height: 24,
+                    width: 24,
+                    child: widget.leadIcon,
                   ),
                 )
               : SizedBox.shrink(),
@@ -133,11 +129,9 @@ class _SearchBaseState extends State<SearchBase> {
                   labelStyle:
                       AppStyle.DEFAULT_14.copyWith(color: COLORS.PRIMARY_COLOR),
                   hintText: widget.hint,
-                  hintStyle: TextStyle(
-                    fontFamily: "Quicksand",
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: HexColor("#707070"),
+                  hintStyle: AppStyle.DEFAULT_16.copyWith(
+                    color: COLORS.GRAY_IMAGE,
+                    fontWeight: FontWeight.w600,
                   ),
                   errorText: widget.errorText,
                   errorStyle: AppStyle.DEFAULT_14.copyWith(
@@ -157,7 +151,7 @@ class _SearchBaseState extends State<SearchBase> {
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(
-                      vertical: 16,
+                      vertical: 14,
                       horizontal: 16,
                     ),
                     decoration: BoxDecoration(

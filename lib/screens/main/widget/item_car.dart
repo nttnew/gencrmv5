@@ -78,7 +78,8 @@ class ItemCar extends StatelessWidget {
               );
             },
             text: data.tenKhachHang ?? '',
-            icon: ICONS.IC_USER2_SVG,
+            icon: ICONS.IC_USER_NEW_PNG,
+            isSVG: false,
             colorIcon: COLORS.GREY,
             styleText: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
               color: COLORS.TEXT_BLUE_BOLD,

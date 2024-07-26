@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/product/product_bloc.dart';
 import 'package:get/get.dart';
 import '../../../../l10n/key_text.dart';
+import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/products_response.dart';
 import '../../../../src/models/model_generator/service_pack_response.dart';
 import '../../../../src/src_index.dart';
@@ -65,7 +65,7 @@ class _ListServiceParkState extends State<ListServicePark> {
               onChange: (v) {
                 _bloc.loadMoreController.reloadData();
               },
-              leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+              leadIcon: itemSearch(),
               endIcon: GestureDetector(
                 onTap: () {
                   Navigator.of(context)

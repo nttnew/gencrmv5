@@ -184,6 +184,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gen_crm/l10n/key_text.dart';
+import 'package:gen_crm/src/src_index.dart';
+import 'package:gen_crm/widgets/appbar_base.dart';
 import 'package:get/get.dart';
 import 'package:printing/printing.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -208,32 +210,24 @@ class _InPhieuScreen extends State<InPhieuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor:
-            isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.PRIMARY_COLOR,
-        title: Text(
-          getT(
-            KeyT.in_phieu,
+      appBar: AppbarBaseNormal(
+        getT(KeyT.in_phieu),
+        widgetRight: IconButton(
+          icon: Icon(
+            Icons.bookmark,
+            color: COLORS.ORANGE_IMAGE,
           ),
+          onPressed: () {
+            _pdfViewerKey.currentState?.openBookmarkView();
+          },
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.bookmark,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              _pdfViewerKey.currentState?.openBookmarkView();
-            },
-          ),
-        ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor:
             isCarCrm() ? COLORS.PRIMARY_COLOR1 : COLORS.PRIMARY_COLOR,
-        child: const Icon(
+        child: Icon(
           Icons.print,
-          color: Colors.white,
+          color: getColorWithIsCar(),
         ),
         onPressed: () async {
           String pdfUrl = link;

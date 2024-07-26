@@ -98,14 +98,9 @@ class _ClueScreenState extends State<ClueScreen> {
                   builder: (context, snapshot) {
                     return SearchBase(
                       hint: '${getT(KeyT.find)} ${title.toLowerCase()}',
-                      leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                      leadIcon: itemSearch(),
                       endIcon: (snapshot.data ?? []).isNotEmpty
-                          ? SvgPicture.asset(
-                              ICONS.IC_USER2_SVG,
-                              width: 16,
-                              height: 16,
-                              fit: BoxFit.contain,
-                            )
+                          ? itemSearchFilterTree()
                           : null,
                       onClickRight: () {
                         showManagerFilter(context, managerBloc, (v) {
@@ -166,7 +161,8 @@ class _ClueScreenState extends State<ClueScreen> {
           ),
           itemTextIcon(
             text: clueData.customer?.name ?? getT(KeyT.not_yet),
-            icon: ICONS.IC_USER2_SVG,
+            icon: ICONS.IC_USER_NEW_PNG,
+            isSVG: false,
             colorIcon: COLORS.GREY,
           ),
           itemTextIcon(

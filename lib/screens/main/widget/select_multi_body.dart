@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../l10n/key_text.dart';
+import '../../../src/app_const.dart';
 import '../../../src/src_index.dart';
 import '../../../widgets/btn_thao_tac.dart';
 
@@ -10,17 +11,8 @@ showModalSelectMulti(
   Function(List<List<dynamic>>?) onTap, {
   List<String?>? init,
 }) {
-  return showModalBottomSheet(
-    isScrollControlled: true,
-    context: context,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topRight: Radius.circular(30),
-        topLeft: Radius.circular(30),
-      ),
-    ),
-    backgroundColor: COLORS.WHITE,
-    builder: (context) => SelectBodyMulti(
+  return showBottomGenCRM(
+    child: SelectBodyMulti(
       init: init,
       title: title,
       listData: listData,

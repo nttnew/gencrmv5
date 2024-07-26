@@ -361,19 +361,10 @@ void dialogShowAllSDT(
       },
     );
   } else if (listSDT.length > 1) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      context: _context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(30),
-          topLeft: Radius.circular(30),
-        ),
-      ),
-      backgroundColor: COLORS.WHITE,
-      builder: (context) => Container(
+    showBottomGenCRM(
+      child: Container(
         constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height,
+          maxHeight: MediaQuery.of(Get.context!).size.height,
         ),
         margin: EdgeInsets.only(top: 4),
         padding: EdgeInsets.symmetric(

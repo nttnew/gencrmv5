@@ -94,13 +94,7 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
                         flexibleSpace: Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0xff333333).withOpacity(0.2),
-                                blurRadius: 2,
-                                offset: const Offset(0, 2),
-                              )
-                            ],
+                            boxShadow: boxShadowVip,
                           ),
                           child: widget.child,
                         ),
@@ -115,13 +109,7 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
                     flexibleSpace: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0xff333333).withOpacity(0.2),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
-                          )
-                        ],
+                        boxShadow: boxShadowVip,
                       ),
                       child: widget.child,
                     ),
@@ -415,20 +403,21 @@ itemLoading2({bool isMaxWidth = false}) => Shimmer.fromColors(
 widgetLoading() {
   return Container(
     margin: EdgeInsets.symmetric(
-      horizontal: 12,
-      vertical: 4,
+      horizontal: 16,
+      vertical: 6,
     ),
-    child: ElevatedButton(
-      onPressed: () {},
-      style: ElevatedButton.styleFrom(
-        alignment: Alignment.centerLeft,
-        backgroundColor: COLORS.WHITE,
-        padding: EdgeInsets.all(12),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              8,
-            ),
+    child: Container(
+      padding: EdgeInsets.all(12),
+      alignment: Alignment.centerLeft,
+      decoration: BoxDecoration(
+        color: COLORS.WHITE,
+        border: Border.all(
+          color: COLORS.GREY_400,
+          width: 0.5,
+        ),
+        borderRadius: BorderRadius.all(
+          Radius.circular(
+            6,
           ),
         ),
       ),

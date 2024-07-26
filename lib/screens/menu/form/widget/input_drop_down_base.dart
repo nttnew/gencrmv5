@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart' as Foundation;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/src/extensionss/common_ext.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/storages/share_local.dart';
@@ -279,29 +278,23 @@ class _InputDropdownState extends State<InputDropdownBase> {
                 return GestureDetector(
                   onTap: () {
                     if (!isReadOnly)
-                      showModalBottomSheet(
-                          isScrollControlled: true,
-                          context: context,
-                          constraints: BoxConstraints(
-                            maxHeight: MediaQuery.of(context).size.height * 0.8,
-                          ),
-                          builder: (BuildContext context) {
-                            return widget.data.field_search != null
-                                ? DropDownSearchApi(
-                                    data: widget.data,
-                                    onChange: (List<dynamic> v) {
-                                      _onDropDown(v);
-                                    },
-                                    listData: listData,
-                                  )
-                                : DropDownWidget(
-                                    data: widget.data,
-                                    onChange: (List<dynamic> v) {
-                                      _onDropDown(v);
-                                    },
-                                    listData: listData ?? [],
-                                  );
-                          });
+                      showBottomGenCRM(
+                        child: widget.data.field_search != null
+                            ? DropDownSearchApi(
+                                data: widget.data,
+                                onChange: (List<dynamic> v) {
+                                  _onDropDown(v);
+                                },
+                                listData: listData,
+                              )
+                            : DropDownWidget(
+                                data: widget.data,
+                                onChange: (List<dynamic> v) {
+                                  _onDropDown(v);
+                                },
+                                listData: listData ?? [],
+                              ),
+                      );
                   },
                   child: Container(
                     width: double.infinity,
@@ -498,7 +491,7 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
                 SearchBase(
                   hint:
                       '${getT(KeyT.find)} ${widget.data.field_label?.toLowerCase()}',
-                  leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                  leadIcon: itemSearch(),
                   onChange: (String v) {
                     _txtSearch = v.trim();
                     _loadMoreController.reloadData();
@@ -653,7 +646,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
                 SearchBase(
                   hint:
                       '${getT(KeyT.find)} ${widget.data.field_label?.toLowerCase()}',
-                  leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                  leadIcon: itemSearch(),
                   milliseconds: 0,
                   onChange: (String v) {
                     searchLocal(v);
@@ -724,33 +717,37 @@ _itemList(
 ) {
   return Container(
     margin: EdgeInsets.symmetric(
-      vertical: 4,
-      horizontal: 12,
+      vertical: 6,
+      horizontal: 16,
     ),
     width: double.infinity,
-    child: ElevatedButton(
-      onPressed: () {
+    child: InkWell(
+      onTap: () {
         onTap();
       },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: COLORS.WHITE,
-        alignment: Alignment.centerLeft,
+      child: Container(
         padding: EdgeInsets.all(12),
-        shape: RoundedRectangleBorder(
+        alignment: Alignment.centerLeft,
+        decoration: BoxDecoration(
+          color: COLORS.WHITE,
+          border: Border.all(
+            color: COLORS.GREY_400,
+            width: 0.5,
+          ),
           borderRadius: BorderRadius.all(
             Radius.circular(
-              8,
+              6,
             ),
           ),
         ),
-      ),
-      child: Text(
-        data[1].toString() != 'null' && data[1].toString() != ''
-            ? data[1].toString()
-            : getT(KeyT.not_yet),
-        style: AppStyle.DEFAULT_16_BOLD.copyWith(
-          color: _getColor(
-            data[0].toString(),
+        child: Text(
+          data[1].toString() != 'null' && data[1].toString() != ''
+              ? data[1].toString()
+              : getT(KeyT.not_yet),
+          style: AppStyle.DEFAULT_16_BOLD.copyWith(
+            color: _getColor(
+              data[0].toString(),
+            ),
           ),
         ),
       ),

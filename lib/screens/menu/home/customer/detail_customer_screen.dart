@@ -23,7 +23,7 @@ import '../../../../widgets/show_thao_tac.dart';
 import '../../attachment/attachment.dart';
 import 'package:gen_crm/screens/menu/home/support/widget/support_card_widget.dart';
 import '../../widget/information.dart';
-import '../contract/widget/item_list_contract.dart';
+import '../contract/widget/item_contract.dart';
 
 class DetailCustomerScreen extends StatefulWidget {
   const DetailCustomerScreen({Key? key}) : super(key: key);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:gen_crm/widgets/tree/tree_node_model.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
@@ -11,17 +12,8 @@ import '../../l10n/key_text.dart';
 
 void showManagerFilter(BuildContext context, ManagerBloc bloc,
         Function(String ids) funFilter) =>
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      constraints: BoxConstraints(maxHeight: Get.height * 0.7),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(30),
-          topLeft: Radius.circular(30),
-        ),
-      ),
-      builder: (context) => TreeWidget(
+    showBottomGenCRM(
+      child: TreeWidget(
         bloc: bloc,
         funFilter: funFilter,
       ),

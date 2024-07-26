@@ -40,7 +40,8 @@ class ItemProductCustomer extends StatelessWidget {
             },
             child: itemTextIcon(
               text: productModule.customer?.name ?? getT(KeyT.not_yet),
-              icon: ICONS.IC_USER2_SVG,
+              icon: ICONS.IC_USER_NEW_PNG,
+              isSVG: false,
               styleText: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
                 color: COLORS.TEXT_BLUE_BOLD,
                 fontSize: 14,

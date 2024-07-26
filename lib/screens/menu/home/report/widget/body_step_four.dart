@@ -6,9 +6,7 @@ import '../../../../../l10n/key_text.dart';
 import '../../../../../src/app_const.dart';
 import '../../../../../src/models/model_generator/response_bao_cao.dart';
 import '../../../../../src/src_index.dart';
-import '../../../../../widgets/image_default.dart';
 import '../../../../../widgets/listview/list_load_infinity.dart';
-import '../../../../../widgets/widget_text.dart';
 
 class BodyReportFour extends StatelessWidget {
   const BodyReportFour({
@@ -67,7 +65,6 @@ class BodyReportFour extends StatelessWidget {
   _buildCustomer(ItemResponseReportCar data) {
     return BoxItem(
       onTap: () {
-        // Get.back();
         AppNavigator.navigateDetailContract(data.id ?? '', onRefreshForm: () {
           bloc.controllerGara.reloadData();
         });
@@ -75,37 +72,17 @@ class BodyReportFour extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              ImageBaseDefault(
-                icon: ICONS.IC_CONTRACT_3X_PNG,
-                width: 16,
-                height: 16,
-              ),
-              SizedBox(
-                width: 8,
-              ),
-              Expanded(
-                child: WidgetText(
-                  title: data.name ?? '',
-                  style: AppStyle.DEFAULT_TITLE_PRODUCT
-                      .copyWith(color: COLORS.TEXT_COLOR),
-                ),
-              ),
-              Spacer(),
-              Container(
-                decoration: BoxDecoration(
-                    color:
-                        data.color != "" ? HexColor(data.color!) : COLORS.RED,
-                    borderRadius: BorderRadius.circular(99)),
-                width: AppValue.widths * 0.08,
-                height: AppValue.heights * 0.02,
-              )
-            ],
+          itemTextIconStart(
+            title: data.name ?? '',
+            icon: ICONS.IC_CONTRACT_3X_PNG,
+            isSVG: false,
+            colorDF: data.color != '' ? HexColor(data.color!) : COLORS.RED,
+            color: '',
           ),
           itemTextIcon(
             text: (data.customer?.name ?? '').trim(),
-            icon: ICONS.IC_USER2_SVG,
+            icon: ICONS.IC_USER_NEW_PNG,
+            isSVG: false,
             colorIcon: HexColor('E75D18'),
           ),
           itemTextIcon(

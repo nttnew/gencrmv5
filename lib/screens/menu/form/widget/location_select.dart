@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import '../../../../l10n/key_text.dart';
+import '../../../../src/app_const.dart' as APP_CONST;
 import '../../../../src/location.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
 import '../../../../src/src_index.dart';
@@ -74,16 +75,12 @@ class _LocationWidgetState extends State<LocationWidget> {
               if (widget.data.field_special != "none-edit") {
                 FocusManager.instance.primaryFocus?.unfocus();
               }
-              final LocationModel? result = await showModalBottomSheet(
-                  enableDrag: false,
-                  isScrollControlled: true,
-                  context: context,
-                  builder: (BuildContext context) {
-                    return SelectLocationBottomSheet(
-                      init: initData,
-                      title: widget.data.field_label ?? '',
-                    );
-                  });
+              final LocationModel? result = await APP_CONST.showBottomGenCRM(
+                child: SelectLocationBottomSheet(
+                  init: initData,
+                  title: widget.data.field_label ?? '',
+                ),
+              );
 
               if (result != null) {
                 initData = result;
@@ -391,17 +388,8 @@ class _SelectTypeLocationState extends State<SelectTypeLocation> {
             onTap: () async {
               FocusManager.instance.primaryFocus?.unfocus();
               if (!isHide) {
-                final result = await showModalBottomSheet(
-                  isScrollControlled: true,
-                  context: context,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(30),
-                      topLeft: Radius.circular(30),
-                    ),
-                  ),
-                  backgroundColor: COLORS.WHITE,
-                  builder: (_) => ListLocation(
+                final result = await APP_CONST.showBottomGenCRM(
+                  child: ListLocation(
                     listData: listData,
                     title: widget.title,
                     text: widget.text,

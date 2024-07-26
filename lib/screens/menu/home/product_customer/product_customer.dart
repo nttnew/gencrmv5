@@ -1,9 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/product_customer_module/product_customer_module_bloc.dart';
 import 'package:gen_crm/screens/menu/home/product_customer/widget/item_product_customer.dart';
-import 'package:gen_crm/widgets/tree/tree_node_model.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import '../../../../l10n/key_text.dart';
@@ -19,6 +17,7 @@ import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_widget.dart';
 import '../../form/widget/camera_custom.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
+import '../../widget/tree_filter.dart';
 import '../product/scanner_qrcode.dart';
 
 class ProductCustomerScreen extends StatefulWidget {
@@ -99,7 +98,7 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
               AppValue.vSpaceSmall,
               SearchBase(
                 hint: getT(KeyT.enter_name_barcode_qr_code),
-                leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                leadIcon: itemSearch(),
                 endIcon: GestureDetector(
                   onTap: () {
                     _handelRightIconSearch();
@@ -137,42 +136,19 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                         },
                       ),
                     ),
-                    StreamBuilder<List<TreeNodeData>>(
-                        stream: managerBloc.managerTrees,
-                        builder: (context, snapshot) {
-                          if (snapshot.data?.isNotEmpty ?? false)
-                            return Padding(
-                              padding: const EdgeInsets.only(left: 6.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  showManagerFilter(context, managerBloc, (v) {
-                                    _bloc.ids = v;
-                                    _bloc.loadMoreController.reloadData();
-                                  });
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(14),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: COLORS.GREY_400,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        4,
-                                      ),
-                                    ),
-                                  ),
-                                  child: SvgPicture.asset(
-                                    ICONS.IC_USER2_SVG,
-                                    width: 20,
-                                    height: 20,
-                                    fit: BoxFit.contain,
-                                  ),
-                                ),
-                              ),
-                            );
-                          return SizedBox();
-                        }),
+                    TreeFilter(
+                      treeStream: managerBloc.managerTrees,
+                      onTap: () {
+                        showManagerFilter(
+                          context,
+                          managerBloc,
+                          (v) {
+                            _bloc.ids = v;
+                            _bloc.loadMoreController.reloadData();
+                          },
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),

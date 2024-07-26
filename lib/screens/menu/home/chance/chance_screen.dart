@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
@@ -93,15 +92,10 @@ class _ChanceScreenState extends State<ChanceScreen> {
                   stream: managerBloc.managerTrees,
                   builder: (context, snapshot) {
                     return SearchBase(
-                      hint: "${getT(KeyT.find)} ${title.toLowerCase()}",
-                      leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                      hint: '${getT(KeyT.find)} ${title.toLowerCase()}',
+                      leadIcon: itemSearch(),
                       endIcon: (snapshot.data ?? []).isNotEmpty
-                          ? SvgPicture.asset(
-                              ICONS.IC_USER2_SVG,
-                              width: 16,
-                              height: 16,
-                              fit: BoxFit.contain,
-                            )
+                          ? itemSearchFilterTree()
                           : null,
                       onClickRight: () {
                         showManagerFilter(context, managerBloc, (v) {

@@ -60,6 +60,15 @@ class _DropDownBaseState extends State<DropDownBase> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           DropdownButton2(
+                            dropdownElevation: 2,
+                            dropdownDecoration: BoxDecoration(
+                              color: COLORS.WHITE,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(
+                                  6,
+                                ),
+                              ),
+                            ),
                             isExpanded: true,
                             buttonPadding: EdgeInsets.symmetric(
                               horizontal: 10,

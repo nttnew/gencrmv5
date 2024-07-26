@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'package:gen_crm/bloc/support/support_bloc.dart';
 import 'package:gen_crm/src/models/model_generator/support.dart';
@@ -185,14 +184,9 @@ class _SupportScreenState extends State<SupportScreen> {
                   builder: (context, snapshot) {
                     return SearchBase(
                       hint: "${getT(KeyT.find)} ${title.toLowerCase()}",
-                      leadIcon: SvgPicture.asset(ICONS.IC_SEARCH_SVG),
+                      leadIcon: itemSearch(),
                       endIcon: (snapshot.data ?? []).isNotEmpty
-                          ? SvgPicture.asset(
-                              ICONS.IC_USER2_SVG,
-                              width: 16,
-                              height: 16,
-                              fit: BoxFit.contain,
-                            )
+                          ? itemSearchFilterTree()
                           : null,
                       onClickRight: () {
                         showManagerFilter(context, managerBloc, (v) {

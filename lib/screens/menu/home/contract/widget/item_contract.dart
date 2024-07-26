@@ -89,7 +89,8 @@ class ItemContract extends StatelessWidget {
                 );
             },
             text: data.customer?.name ?? '',
-            icon: ICONS.IC_USER2_SVG,
+            icon: ICONS.IC_USER_NEW_PNG,
+            isSVG: false,
             colorIcon: COLORS.GREY,
             styleText: AppStyle.DEFAULT_LABEL_PRODUCT.copyWith(
               color: (data.customer?.id != '' && data.customer?.id != null)
@@ -111,7 +112,7 @@ class ItemContract extends StatelessWidget {
               fontWeight: FontWeight.w400,
               color: COLORS.TEXT_BLUE_BOLD,
             ),
-            icon: ICONS.IC_CHANCE_3X_PNG,
+            icon: isCarCrm() ? ICONS.IC_BIEN_SO_XE_PNG : ICONS.IC_CHANCE_3X_PNG,
             isSVG: false,
             colorIcon: COLORS.GREY,
           ),
@@ -128,7 +129,8 @@ class ItemContract extends StatelessWidget {
                 '${data.price.toString()}' +
                 shareLocal.getString(PreferencesKey.MONEY),
             content: data.total_note ?? '0',
-            icon: ICONS.IC_MAIL_SVG,
+            icon: ICONS.IC_GROSS_PNG,
+            isSvg: false,
           ),
         ],
       ),
