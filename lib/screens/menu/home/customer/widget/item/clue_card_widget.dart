@@ -44,7 +44,8 @@ class ClueCardWidget extends StatelessWidget {
               title: data.phone?.val ?? getT(KeyT.not_yet),
               colorTitle: COLORS.TEXT_BLUE_BOLD,
               content: data.total_note ?? '',
-              icon: ICONS.IC_PHONE_CUSTOMER_SVG,
+              icon: ICONS.IC_PHONE_C_PNG,
+              colorIcon: COLORS.GREY,
               onTapTitle: () {
                 if (data.phone?.action != null && data.phone?.action == 2) {
                   if (data.phone?.val != null)

@@ -219,14 +219,16 @@ class _DetailCarState extends State<DetailCar> {
                                             fontWeight: FontWeight.w400,
                                             color: COLORS.TEXT_BLUE_BOLD,
                                           ),
-                                          icon: ICONS.IC_PHONE_CUSTOMER_SVG,
+                                          icon: ICONS.IC_PHONE_C_PNG,
+                                          isSVG: false,
+                                          colorIcon: COLORS.GREY,
                                         ),
                                         itemTextIcon(
                                           text: _blocLogin.trangThaiDichVu ??
                                               dataInfo?.trangThai ??
                                               getT(KeyT.not_yet),
                                           icon: ICONS.IC_DANG_XU_LY_SVG,
-                                          colorIcon: COLORS.GREY,
+                                          colorIcon: COLORS.ORANGE,
                                           styleText:
                                               AppStyle.DEFAULT_14.copyWith(
                                             color: COLORS.ORANGE,

@@ -189,7 +189,9 @@ class _ClueScreenState extends State<ClueScreen> {
                     },
                     paddingTop: 0,
                     text: clueData.phone?.val ?? getT(KeyT.not_yet),
-                    icon: ICONS.IC_PHONE_CUSTOMER_SVG,
+                    icon: ICONS.IC_PHONE_C_PNG,
+                    colorIcon: COLORS.GREY,
+                    isSVG: false,
                     styleText: AppStyle.DEFAULT_LABEL_PRODUCT
                         .copyWith(color: COLORS.TEXT_COLOR),
                   ),

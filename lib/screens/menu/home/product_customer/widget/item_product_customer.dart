@@ -27,8 +27,8 @@ class ItemProductCustomer extends StatelessWidget {
             text: productModule.name ?? getT(KeyT.not_yet),
             icon: ICONS.IC_CHANCE_3X_PNG,
             isSVG: false,
-            styleText: AppStyle.DEFAULT_18.copyWith(
-                color: COLORS.ff006CB1, fontWeight: FontWeight.w700),
+            styleText: AppStyle.DEFAULT_18
+                .copyWith(color: COLORS.ff006CB1, fontWeight: FontWeight.w700),
           ),
           GestureDetector(
             onTap: () {
@@ -65,7 +65,9 @@ class ItemProductCustomer extends StatelessWidget {
               fontWeight: FontWeight.w400,
               color: COLORS.TEXT_BLUE_BOLD,
             ),
-            icon: ICONS.IC_PHONE_CUSTOMER_SVG,
+            icon: ICONS.IC_PHONE_C_PNG,
+            colorIcon: COLORS.GREY,
+            isSVG: false,
           ),
           itemTextIcon(
             text: productModule.loai ?? getT(KeyT.not_yet),

@@ -128,7 +128,9 @@ class ItemCar extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     color: COLORS.TEXT_BLUE_BOLD,
                   ),
-                  icon: ICONS.IC_PHONE_CUSTOMER_SVG,
+                  icon: ICONS.IC_PHONE_C_PNG,
+                  isSVG: false,
+                  colorIcon: COLORS.GREY,
                 ),
               ),
               Expanded(

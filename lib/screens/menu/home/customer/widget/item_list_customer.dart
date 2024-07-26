@@ -114,7 +114,9 @@ class ItemCustomer extends StatelessWidget {
                   },
                   text: data.phone?.val ?? getT(KeyT.not_yet),
                   styleText: AppStyle.DEFAULT_14_TEXT_BLUE,
-                  icon: ICONS.IC_PHONE_CUSTOMER_SVG,
+                  icon: ICONS.IC_PHONE_C_PNG,
+                  colorIcon: COLORS.GREY,
+                  isSVG: false,
                 ),
               ),
               SizedBox(

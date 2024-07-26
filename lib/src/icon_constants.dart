@@ -69,7 +69,7 @@ class ICONS {
   static const String IC_CIRCLE_SMALL_PNG = 'assets/icons/circle_small.png';
   static const String IC_NOTIFICATION_PNG =
       'assets/icons/notification-bell.png';
-
+  static const String IC_PHONE_C_PNG= 'assets/icons/phone-call.png';
   static const String IC_FLAG_VI = 'assets/icons/vietnam.png';
   static const String IC_FLAG_KO = 'assets/icons/south-korea.png';
   static const String IC_FLAG_EN = 'assets/icons/united-kingdom.png';
@@ -94,11 +94,8 @@ class ICONS {
   static const String IC_FILL_SVG = 'assets/icons/fill_customer.svg';
   static const String IC_FILTER_SVG = 'assets/icons/Filter.svg';
   static const String IC_MAIL_SVG = 'assets/icons/mail.svg';
-  // static const String IC_CALL_SVG = 'assets/icons/Call.svg';
-  static const String IC_PHONE_CUSTOMER_SVG = 'assets/icons/phone_customer.svg';
   static const String IC_MESS = 'assets/icons/Mess.svg';
   static const String IC_INPUT_SVG = 'assets/icons/iconInputImg.svg';
-  // static const String IC_USER2_SVG = 'assets/icons/User.svg';
   static const String IC_DANG_XU_LY_SVG = 'assets/icons/dangxuly.svg';
   static const String IC_HINT_SVG = 'assets/icons/pass.svg';
   static const String IC_BUILD_SVG = 'assets/icons/building.svg';
