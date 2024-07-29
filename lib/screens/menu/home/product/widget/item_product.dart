@@ -32,7 +32,15 @@ class _ItemProductModuleState extends State<ItemProductModule> {
           Container(
             height: 80,
             width: 80,
-            color: Colors.grey,
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+              color: COLORS.GRAY_IMAGE,
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  4,
+                ),
+              ),
+            ),
             child: CachedNetworkImage(
               imageUrl: shareLocal.getString(PreferencesKey.URL_BASE) +
                   widget.productModule.avatar.toString(),

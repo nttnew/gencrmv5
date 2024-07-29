@@ -362,16 +362,30 @@ notFound() => Container(
       ),
     );
 
-itemLoading({bool isMaxWidth = false}) => Shimmer.fromColors(
-      baseColor: Colors.black12,
-      highlightColor: Colors.white,
+// Define your COLORS here
+const COLORS_LOAD = {
+  'GRAY_IMAGE': Color(0xFFE0E0E0),
+  'WHITE10': Color(0x1AFFFFFF),
+  'BLACK': Colors.black,
+};
+
+itemLoading({
+  bool isMaxWidth = false,
+  double height = 20,
+  double? width,
+}) =>
+    Shimmer.fromColors(
+      baseColor: COLORS.GRAY_IMAGE,
+      highlightColor: COLORS.GRAY_IMAGE.withOpacity(0.5),
+      period: Duration(seconds: 1),
       child: Container(
-        height: 20,
-        width: isMaxWidth
-            ? MediaQuery.of(Get.context!).size.width
-            : MediaQuery.of(Get.context!).size.width / 1 / 2,
+        height: height,
+        width: width ??
+            (isMaxWidth
+                ? MediaQuery.of(Get.context!).size.width
+                : MediaQuery.of(Get.context!).size.width / 1 / 2),
         decoration: BoxDecoration(
-          color: Colors.cyan,
+          color: COLORS.BLACK,
           borderRadius: BorderRadius.all(
             Radius.circular(
               4,
@@ -382,15 +396,16 @@ itemLoading({bool isMaxWidth = false}) => Shimmer.fromColors(
     );
 
 itemLoading2({bool isMaxWidth = false}) => Shimmer.fromColors(
-      baseColor: Colors.black12,
-      highlightColor: Colors.white,
+      baseColor: COLORS.GRAY_IMAGE,
+      highlightColor: COLORS.GRAY_IMAGE.withOpacity(0.5),
+      period: Duration(seconds: 1),
       child: Container(
         height: 40,
         width: isMaxWidth
             ? MediaQuery.of(Get.context!).size.width
             : MediaQuery.of(Get.context!).size.width / 1 / 2,
         decoration: BoxDecoration(
-          color: Colors.cyan,
+          color: COLORS.BLACK,
           borderRadius: BorderRadius.all(
             Radius.circular(
               4,

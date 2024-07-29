@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/bloc/product_module/product_module_bloc.dart';
 import 'package:gen_crm/screens/menu/home/product/scanner_qrcode.dart';
+import 'package:gen_crm/screens/menu/widget/box_item.dart';
 import 'package:gen_crm/src/models/model_generator/list_product_response.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../bloc/unread_list_notification/unread_list_notifi_bloc.dart';
@@ -82,6 +83,7 @@ class _ProductScreenState extends State<ProductScreen> {
         child: Icon(Icons.add, size: 40),
       ),
       body: ViewLoadMoreBase(
+        widgetLoad: _widgetLoad(),
         isShowAll: _bloc.listType,
         child: SingleChildScrollView(
           child: Column(
@@ -96,7 +98,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         .push(MaterialPageRoute(
                             builder: (context) => ScannerQrcode()))
                         .then((value) async {
-                      if (value != ''&&value != null) {
+                      if (value != '' && value != null) {
                         final result =
                             await _bloc.getListProduct(querySearch: value);
                         if (result?.data?.lists?.isNotEmpty ?? false) {
@@ -131,39 +133,45 @@ class _ProductScreenState extends State<ProductScreen> {
                 ),
                 child: Row(
                   children: [
-                    Expanded(
-                      child: DropDownBase(
-                        isPadding: false,
-                        stream: _bloc.listType,
-                        onTap: (item) {
-                          _bloc.type = item.id;
-                          _bloc.loadMoreController.reloadData();
-                        },
-                      ),
+                    DropDownBase(
+                      isExpand: true,
+                      isPadding: false,
+                      stream: _bloc.listType,
+                      onTap: (item) {
+                        _bloc.type = item.id;
+                        _bloc.loadMoreController.reloadData();
+                      },
                     ),
-                    if (_bloc.listFilter.value.isNotEmpty) ...[
-                      SizedBox(
-                        width: 16,
-                      ),
-                      Expanded(
-                        child: DropDownBase(
-                          isPadding: false,
-                          stream: _bloc.listFilter,
-                          isName: true,
-                          onTap: (item) {
-                            _bloc.filter = item.id;
-                            _bloc.loadMoreController.reloadData();
-                          },
-                        ),
-                      ),
-                    ],
+                    DropDownBase(
+                      isExpand: true,
+                      isMarginRight: true,
+                      isPadding: false,
+                      stream: _bloc.listFilterKho,
+                      isName: true,
+                      title: getT(KeyT.select_kho),
+                      onTap: (item) {
+                        _bloc.khoId = item.id;
+                        _bloc.loadMoreController.reloadData();
+                      },
+                    ),
+                    DropDownBase(
+                      isExpand: true,
+                      isMarginRight: true,
+                      isPadding: false,
+                      stream: _bloc.listFilter,
+                      isName: true,
+                      onTap: (item) {
+                        _bloc.filter = item.id;
+                        _bloc.loadMoreController.reloadData();
+                      },
+                    ),
                     TreeFilter(
                       treeStream: managerBloc.managerTrees,
                       onTap: () {
                         showManagerFilter(
                           context,
                           managerBloc,
-                              (v) {
+                          (v) {
                             _bloc.ids = v;
                             _bloc.loadMoreController.reloadData();
                           },
@@ -191,5 +199,33 @@ class _ProductScreenState extends State<ProductScreen> {
         controller: _bloc.loadMoreController,
       ),
     );
+  }
+
+  _widgetLoad() {
+    return BoxItem(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            itemLoading(
+              height: 80,
+              width: 80,
+            ),
+            SizedBox(
+              width: 16,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                itemLoading(),
+                SizedBox(
+                  height: 8,
+                ),
+                itemLoading(),
+              ],
+            ),
+          ],
+        ),
+        onTap: () {});
   }
 }

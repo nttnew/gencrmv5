@@ -5,21 +5,37 @@ class ListProductResponse {
   int? code;
   String? msg;
   Data? data;
+  List<DanhSachKho>? danhSachKho;
 
-  ListProductResponse({this.success, this.code, this.msg, this.data});
+  ListProductResponse({
+    this.success,
+    this.code,
+    this.msg,
+    this.data,
+    this.danhSachKho,
+  });
 
   ListProductResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     code = json['code'];
     msg = json['msg'];
-    data = json['data'] != null ?  Data.fromJson(json['data']) : null;
+    if (json['danh_sach_kho'] != null) {
+      danhSachKho = [];
+      json['danh_sach_kho'].forEach((v) {
+        danhSachKho!.add(DanhSachKho.fromJson(v));
+      });
+    }
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['success'] = this.success;
     data['code'] = this.code;
     data['msg'] = this.msg;
+    if (this.danhSachKho != null) {
+      data['danh_sach_kho'] = this.danhSachKho!.map((v) => v.toJson()).toList();
+    }
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -38,20 +54,20 @@ class Data {
     if (json['lists'] != null) {
       lists = <ProductModule>[];
       json['lists'].forEach((v) {
-        lists!.add( ProductModule.fromJson(v));
+        lists!.add(ProductModule.fromJson(v));
       });
     }
     t = json['t'];
     if (json['data_filter'] != null) {
       dataFilter = <Customer>[];
       json['data_filter'].forEach((v) {
-        dataFilter!.add( Customer.fromJson(v));
+        dataFilter!.add(Customer.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.lists != null) {
       data['lists'] = this.lists!.map((v) => v.toJson()).toList();
     }
@@ -76,14 +92,14 @@ class ProductModule {
 
   ProductModule(
       {this.tonKho,
-        this.giaBan,
-        this.giaNhap,
-        this.avatar,
-        this.coTheBan,
-        this.phienBan,
-        this.tenSanPham,
-        this.maSanPham,
-        this.id});
+      this.giaBan,
+      this.giaNhap,
+      this.avatar,
+      this.coTheBan,
+      this.phienBan,
+      this.tenSanPham,
+      this.maSanPham,
+      this.id});
 
   ProductModule.fromJson(Map<String, dynamic> json) {
     tonKho = json['ton_kho'];
@@ -98,7 +114,7 @@ class ProductModule {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['ton_kho'] = this.tonKho;
     data['gia_ban'] = this.giaBan;
     data['gia_nhap'] = this.giaNhap;
@@ -112,3 +128,25 @@ class ProductModule {
   }
 }
 
+class DanhSachKho {
+  String? name;
+  String? id;
+
+  DanhSachKho({
+    this.id,
+    this.name,
+  });
+
+  DanhSachKho.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+
+    return data;
+  }
+}

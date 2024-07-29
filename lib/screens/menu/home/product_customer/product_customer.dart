@@ -125,16 +125,15 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: DropDownBase(
-                        isPadding: false,
-                        isName: true,
-                        stream: _bloc.listFilter,
-                        onTap: (item) {
-                          _bloc.filter = item.id.toString();
-                          _bloc.loadMoreController.reloadData();
-                        },
-                      ),
+                    DropDownBase(
+                      isExpand: true,
+                      isPadding: false,
+                      isName: true,
+                      stream: _bloc.listFilter,
+                      onTap: (item) {
+                        _bloc.filter = item.id.toString();
+                        _bloc.loadMoreController.reloadData();
+                      },
                     ),
                     TreeFilter(
                       treeStream: managerBloc.managerTrees,

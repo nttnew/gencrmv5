@@ -20,10 +20,12 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
   LoadMoreController loadMoreController = LoadMoreController();
   String? querySearch;
   String? filter;
+  String? khoId;
   String? type;
   String? ids;
   BehaviorSubject<List<Cats>> listType = BehaviorSubject.seeded([]);
   BehaviorSubject<List<Customer>> listFilter = BehaviorSubject.seeded([]);
+  BehaviorSubject<List<DanhSachKho>> listFilterKho = BehaviorSubject.seeded([]);
 
   ProductModuleBloc({required UserRepository userRepository})
       : userRepository = userRepository,
@@ -46,11 +48,15 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
         typeProduct: type,
         txt: querySearch,
         page: page.toString(),
+        kho: khoId,
         filter: filter,
       );
       if (isSuccess(response.code)) {
         if (listFilter.value.isEmpty) {
           listFilter.add(response.data?.dataFilter ?? []);
+        }
+        if (listFilterKho.value.isEmpty) {
+          listFilterKho.add(response.danhSachKho ?? []);
         }
         resDynamic = response.data?.lists ?? [];
       } else if (isFail(response.code)) {
@@ -86,6 +92,8 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
 
   void dispose() {
     listType.add([]);
+    listFilterKho.add([]);
+    listFilter.add([]);
     querySearch = null;
     filter = null;
     type = null;

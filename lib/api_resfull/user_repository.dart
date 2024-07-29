@@ -1327,6 +1327,7 @@ class UserRepository {
     String? txt,
     required String page,
     String? filter,
+    String? kho,
     String? managers,
   }) async =>
       await RestClient(
@@ -1337,6 +1338,7 @@ class UserRepository {
         txt,
         page,
         filter,
+        kho,
         managers,
       );
 

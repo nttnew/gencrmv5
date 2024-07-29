@@ -2956,6 +2956,7 @@ class _RestClient implements RestClient {
     txt,
     page,
     filter,
+    kho,
     manager,
   ) async {
     const _extra = <String, dynamic>{};
@@ -2983,6 +2984,12 @@ class _RestClient implements RestClient {
       _data.fields.add(MapEntry(
         'filter',
         filter,
+      ));
+    }
+    if (kho != null) {
+      _data.fields.add(MapEntry(
+        'kho',
+        kho,
       ));
     }
     final _result = await _dio.fetch<Map<String, dynamic>>(

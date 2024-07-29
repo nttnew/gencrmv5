@@ -289,4 +289,5 @@ class KeyT {
   static String giam_gia_tong_khong_duoc_lon_hon_CTT =
       'giam_gia_tong_khong_duoc_lon_hon_CTT';
   static String xac_nhan_da_thanh_toan = 'xac_nhan_da_thanh_toan';
+  static String select_kho = 'select_kho';
 }

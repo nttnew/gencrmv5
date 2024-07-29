@@ -676,6 +676,7 @@ abstract class RestClient {
     @Part(name: "txt") String? txt,
     @Part(name: "page") String page,
     @Part(name: "filter") String? filter,
+    @Part(name: "kho") String? kho,
     @Query('nguoi_quan_ly') String? manager,
   );
 
