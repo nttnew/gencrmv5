@@ -61,6 +61,7 @@ class _UnReadListState extends State<UnReadList>
               _length = _list.length;
               if (_length > 0)
                 return RefreshIndicator(
+                  color: getBackgroundWithIsCar(),
                   onRefresh: () async {
                     await reload();
                   },

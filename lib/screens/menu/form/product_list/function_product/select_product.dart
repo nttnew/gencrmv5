@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:gen_crm/screens/menu/form/form_add_data.dart';
 import 'package:get/get.dart';
 import '../../../../../l10n/key_text.dart';
 import '../../../../../src/app_const.dart';
 import '../../../../../src/models/model_generator/products_response.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../widgets/widget_text.dart';
+import 'dialog_gui.dart';
 
 class SelectProduct extends StatefulWidget {
   const SelectProduct({
     Key? key,
     required this.formProduct,
     required this.onChange,
+    this.donGia,
+    required this.onChangeDonGia,
+    this.soTienGui,
   }) : super(key: key);
   final FormProduct formProduct;
+  final dynamic donGia;
+  final int? soTienGui;
   final Function(List<dynamic>) onChange;
+  final Function(Map<String, dynamic>) onChangeDonGia;
 
   @override
   State<SelectProduct> createState() => _SelectProductState();
@@ -21,12 +29,14 @@ class SelectProduct extends StatefulWidget {
 
 class _SelectProductState extends State<SelectProduct> {
   String valueName = '';
+  String valueArrThree = '';
 
   @override
   void initState() {
     final setValue = widget.formProduct.fieldSetValueDatasource;
     if (setValue != null && setValue.length > 0) {
       valueName = '${setValue.first[1]}';
+      if (setValue.first.length > 2) valueArrThree = '${setValue.first[2]}';
       widget.onChange(
         setValue.first,
       );
@@ -48,6 +58,7 @@ class _SelectProductState extends State<SelectProduct> {
                 data,
               );
               valueName = '${data[1]}';
+              if (data.length > 2) valueArrThree = '${data[2]}';
               Get.back();
               setState(() {});
             },
@@ -76,6 +87,25 @@ class _SelectProductState extends State<SelectProduct> {
                   '${valueName != '' ? ': $valueName' : ''}',
               style: AppStyle.DEFAULT_14_BOLD,
             ),
+            if (valueArrThree == STATUS_SEND) // arr[2] ==GUI là trạng thái gửi
+              iconButtonGen(
+                icon: widget.soTienGui == 0
+                    ? null
+                    : Icon(
+                        Icons.edit,
+                        size: 16,
+                        color: COLORS.YELLOW,
+                      ),
+                onTap: () async {
+                  final data = await showDialogGui(
+                    donGia: widget.donGia,
+                    soTienGui: widget.soTienGui,
+                  );
+                  if (data != null) {
+                    widget.onChangeDonGia(data);
+                  }
+                },
+              ),
           ],
         ),
       ),

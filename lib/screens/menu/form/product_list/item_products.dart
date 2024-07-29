@@ -17,6 +17,8 @@ import 'function_product/textfield_product.dart';
 const String SO_LUONG = 'so_luong';
 const String DON_GIA = 'don_gia';
 const String THANH_TIEN = 'thanh_tien';
+const String SO_TIEN_GUI = 'so_tien_gui';
+const String THANH_TIEN_GUI = 'THANH_TIEN_GUI';
 const String BA0_HIEM_TRA = 'gia_bao_hiem';
 const String GIAM_GIA = 'sdgiamgiapopchhd';
 const String VAT = 'sdvatpopchhd';
@@ -57,6 +59,7 @@ class ItemProducts extends StatefulWidget {
 class _ItemProductsState extends State<ItemProducts> {
   late final ProductsRes _dataNew;
   String _typeContract = '';
+
   @override
   void initState() {
     _typeContract = widget.typeContract;
@@ -74,6 +77,8 @@ class _ItemProductsState extends State<ItemProducts> {
       //isShow = true hiện field
       element.isShow = _check(element.listTypeContract ?? []);
     });
+    if (_dataNew.donGiaDefault == null)
+      _dataNew.donGiaDefault = _getData(DON_GIA).toString().toIntOrNull();
     super.initState();
   }
 
@@ -131,17 +136,27 @@ class _ItemProductsState extends State<ItemProducts> {
                                 .toList())
                             .length >
                         6)
-                  InkWell(
-                    onTap: () {
+                  ElevatedButton(
+                    onPressed: () {
                       _isShowReload();
                     },
+                    style: ElevatedButton.styleFrom(
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      minimumSize: Size(0, 0),
+                      backgroundColor: !_dataNew.isShowLocal
+                          ? COLORS.BLUE
+                          : COLORS.ORANGE_IMAGE,
+                    ),
                     child: WidgetText(
                       title: !_dataNew.isShowLocal
                           ? getT(KeyT.hien_them)
                           : getT(KeyT.an_bot),
-                      style: AppStyle.DEFAULT_14_BOLD.copyWith(
-                        color: COLORS.BLUE,
-                        decoration: TextDecoration.underline,
+                      style: AppStyle.DEFAULT_14.copyWith(
+                        color: COLORS.WHITE,
                       ),
                     ),
                   ),
@@ -268,7 +283,7 @@ class _ItemProductsState extends State<ItemProducts> {
 
   bool _isDataNull(String _data) => _getData(_data) == null;
 
-  bool? _checktypeGiamGia() {
+  bool? _checkTypeGiamGia() {
     bool? _isTypeGiamGia = _isDataNull(GIAM_GIA)
         ? null
         : _getData(GIAM_GIA)[TYPE_GIAM_GIA] != PHAN_TRAM;
@@ -277,7 +292,7 @@ class _ItemProductsState extends State<ItemProducts> {
   }
 
   bool _validateSale(String v) {
-    bool? _isTypeSale = _checktypeGiamGia();
+    bool? _isTypeSale = _checkTypeGiamGia();
     double _priceProduct = _getData(DON_GIA).toString().toDoubleTry();
 
     if (_isTypeSale == null) {
@@ -303,7 +318,7 @@ class _ItemProductsState extends State<ItemProducts> {
     double _discountNumber = _isDataNull(GIAM_GIA)
         ? 0
         : _getData(GIAM_GIA)[VALUE_GIAM_GIA].toString().toDoubleTry();
-    bool? _isTypeGiamGia = _checktypeGiamGia();
+    bool? _isTypeGiamGia = _checkTypeGiamGia();
     double _countProduct = _getData(SO_LUONG).toString().toDoubleTry();
     double _thanhTien = _getData(THANH_TIEN).toString().toDoubleTry();
     double _priceProduct = _getData(DON_GIA).toString().toDoubleTry();
@@ -350,7 +365,7 @@ class _ItemProductsState extends State<ItemProducts> {
     double _discountNumber = _isDataNull(GIAM_GIA)
         ? 0
         : _getData(GIAM_GIA)[VALUE_GIAM_GIA].toString().toDoubleTry();
-    bool? _isTypeGiamGia = _checktypeGiamGia();
+    bool? _isTypeGiamGia = _checkTypeGiamGia();
     double _countProduct = _getData(SO_LUONG).toString().toDoubleTry();
 
     ///
@@ -447,6 +462,17 @@ class _ItemProductsState extends State<ItemProducts> {
           formProduct: dataF,
           onChange: (List<dynamic> v) {
             onChange(v);
+          },
+          donGia: _dataNew.donGiaDefault,
+          soTienGui: _dataNew.soTienGui,
+          onChangeDonGia: (Map<String, dynamic> v) {
+            _setValueText(DON_GIA, v[THANH_TIEN_GUI].toString());
+            _dataNew.soTienGui = v[SO_TIEN_GUI];
+            _setValueText(
+              THANH_TIEN,
+              _getIntoMoney(),
+            );
+            _reload();
           },
         );
       case TEXT_NUMERIC:

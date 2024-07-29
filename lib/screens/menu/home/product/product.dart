@@ -12,9 +12,7 @@ import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/drop_down_base.dart';
 import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/search_base.dart';
-import '../../../../widgets/tree/tree_widget.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
-import '../../widget/tree_filter.dart';
 import 'widget/item_product.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -163,19 +161,6 @@ class _ProductScreenState extends State<ProductScreen> {
                       onTap: (item) {
                         _bloc.filter = item.id;
                         _bloc.loadMoreController.reloadData();
-                      },
-                    ),
-                    TreeFilter(
-                      treeStream: managerBloc.managerTrees,
-                      onTap: () {
-                        showManagerFilter(
-                          context,
-                          managerBloc,
-                          (v) {
-                            _bloc.ids = v;
-                            _bloc.loadMoreController.reloadData();
-                          },
-                        );
                       },
                     ),
                   ],

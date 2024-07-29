@@ -22,7 +22,6 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
   String? filter;
   String? khoId;
   String? type;
-  String? ids;
   BehaviorSubject<List<Cats>> listType = BehaviorSubject.seeded([]);
   BehaviorSubject<List<Customer>> listFilter = BehaviorSubject.seeded([]);
   BehaviorSubject<List<DanhSachKho>> listFilterKho = BehaviorSubject.seeded([]);

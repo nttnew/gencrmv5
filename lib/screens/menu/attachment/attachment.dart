@@ -327,6 +327,7 @@ class _AttachmentState extends State<Attachment> {
                       );
                     }
                     return RefreshIndicator(
+                      color: getBackgroundWithIsCar(),
                       onRefresh: () async {
                         await _bloc.getFile(
                             int.parse(widget.id), widget.typeModule);

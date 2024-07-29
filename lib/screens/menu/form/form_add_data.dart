@@ -64,8 +64,9 @@ const String TONG_BAO_HIEM_TRA = 'tong_bao_hiem_tra';
 const String LOAI_HOP_DONG_DB = 'loai_hop_dong'; // case add edit HOP_DONG
 const String SELECT_NGAN_HANG = 'banks';
 const String FIELD_NAME_STATUS_P = 'sdtrangthaipopchhd';
-const String ID_STATUS_CANCEL = '10657';
-const String ID_STATUS_VIRTUAL = '10697';
+const String STATUS_CANCEL = 'HUY';
+const String STATUS_VIRTUAL = 'AO';
+const String STATUS_SEND = 'GUI';
 // status == ảo +tiền ảo/ status = huỷ không công tiền ảo
 
 class FormAddData extends StatefulWidget {
@@ -496,7 +497,7 @@ class _FormAddDataState extends State<FormAddData> {
   _getDataProduct(
     String fieldName,
     ProductsRes product, {
-    bool isIdSelect = false,
+    bool isGetThree = false,
   }) {
     for (final FormProduct value in product.form ?? []) {
       if (fieldName == value.fieldName)
@@ -512,9 +513,11 @@ class _FormAddDataState extends State<FormAddData> {
             };
           case SELECT:
             if ((value.fieldSetValueDatasource?.length ?? 0) > 0)
-              return isIdSelect
+              return isGetThree
                   ? value.fieldSetValueDatasource?.first[0]
-                  : value.fieldSetValueDatasource?.first[1];
+                  : (value.fieldSetValueDatasource?.first.length ?? 0) > 2
+                      ? value.fieldSetValueDatasource?.first[2]
+                      : null;
             else
               return '';
         }
@@ -581,13 +584,18 @@ class _FormAddDataState extends State<FormAddData> {
   }
 
   bool isStatusVirtual(ProductsRes _product) {
-    //[[10658, Sử dụng], [10657, Hủy], [10656, Nợ], [10697, Ảo],
-    // [10698, Gửi], [36868, Đổi trả], [36869, Dùng thử]]
+    // [10658, Sử dụng, SUDUNG, 1,
+    //  [10657, Hủy, HUY, 0, ],
+    //  [10656, Nợ, HOAN, 0, ],
+    //  [10697, Ảo, AO, 0, ],
+    //  [10698, Gửi, GUI, 0, ],
+    //  [36868, Đổi trả, , 0, ],
+    //  [36869, Dùng thử, , 0, ]
     // == Ảo => true
     // field_id: "12897",
     // field_name: "sdtrangthaipopchhd",
-    return _getDataProduct(FIELD_NAME_STATUS_P, _product, isIdSelect: true) ==
-        ID_STATUS_VIRTUAL;
+    return _getDataProduct(FIELD_NAME_STATUS_P, _product, isGetThree: true) ==
+        STATUS_VIRTUAL;
   }
 
   bool isStatusCancel(ProductsRes _product) {
@@ -596,8 +604,8 @@ class _FormAddDataState extends State<FormAddData> {
     // == Ảo => true
     // field_id: "12897",
     // field_name: "sdtrangthaipopchhd",
-    return _getDataProduct(FIELD_NAME_STATUS_P, _product, isIdSelect: true) ==
-        ID_STATUS_CANCEL;
+    return _getDataProduct(FIELD_NAME_STATUS_P, _product, isGetThree: true) ==
+        STATUS_CANCEL;
   }
 
   double _getIntoMoney(ProductsRes product) {
@@ -1061,7 +1069,7 @@ class _FormAddDataState extends State<FormAddData> {
                 title: getT(KeyT.hien_qr),
                 background: COLORS.PRIMARY_COLOR1,
                 paddingHorizontal: 12,
-                onPressed: () async {
+                onTap: () async {
                   final String? soTien = _getData(hdSoTien);
                   final String? note = _getData(ghiChu);
                   final res = await _bloc.showQrCodePayment(

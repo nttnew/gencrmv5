@@ -115,6 +115,7 @@ class _DetailCarState extends State<DetailCar> {
                       children: [
                         Expanded(
                           child: RefreshIndicator(
+                            color: getBackgroundWithIsCar(),
                             onRefresh: () async {
                               await _blocLogin.getDetailXeDichVu();
                             },

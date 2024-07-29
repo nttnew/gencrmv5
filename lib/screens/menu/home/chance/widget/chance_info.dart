@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../bloc/detail_chance/detail_chance_bloc.dart';
 import '../../../../../bloc/list_note/list_note_bloc.dart';
+import '../../../../../src/app_const.dart';
 import '../../../../../src/src_index.dart';
 import '../../../widget/information.dart';
 import '../../customer/widget/list_note.dart';
@@ -42,6 +43,7 @@ class _ChanceInfoState extends State<ChanceInfo>
   Widget build(BuildContext context) {
     super.build(context);
     return RefreshIndicator(
+      color: getBackgroundWithIsCar(),
       onRefresh: () async {
         await _onRefresh();
       },

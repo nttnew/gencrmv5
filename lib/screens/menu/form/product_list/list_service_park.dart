@@ -238,7 +238,7 @@ class _ListServiceParkState extends State<ListServicePark> {
           ],
           color: COLORS.WHITE,
         ),
-        child: ButtonBaseSmall(
+        child: ButtonSmall(
           title: getT(KeyT.select),
           onTap: () async {
             if (_bloc.listId.isNotEmpty) {

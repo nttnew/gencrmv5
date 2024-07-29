@@ -115,6 +115,7 @@ class _ProductFieldState extends State<ProductField> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: Wrap(
+            runSpacing: 10,
             spacing: 10, // Khoảng cách giữa các item theo chiều ngang
             children: [
               itemBtnWrap(getT(KeyT.select_product), () {
@@ -219,19 +220,21 @@ class _ProductFieldState extends State<ProductField> {
   }) =>
       ElevatedButton(
         style: ElevatedButton.styleFrom(
-            minimumSize: Size(0, 0),
-            padding: EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
-            ),
-            backgroundColor: color ?? COLORS.TEXT_COLOR,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(
-                  16,
-                ),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          minimumSize: Size(0, 0),
+          padding: EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 8,
+          ),
+          backgroundColor: color ?? COLORS.TEXT_COLOR,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(
+                16,
               ),
-            ),),
+            ),
+          ),
+        ),
         onPressed: () => onTap(),
         child: Row(
           mainAxisSize: MainAxisSize.min,

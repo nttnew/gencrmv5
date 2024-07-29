@@ -58,6 +58,7 @@ class _DetailProductCustomerScreenState
     for (final value in listTab) {
       if (value.module == 'thong_tin_chung') {
         _listWidget.add(RefreshIndicator(
+          color: getBackgroundWithIsCar(),
           onRefresh: () async {
             _bloc.add(InitGetDetailProductCustomerEvent(_id));
           },

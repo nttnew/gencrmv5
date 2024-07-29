@@ -605,8 +605,44 @@ itemSearchFilterTree() => Image.asset(
     );
 
 itemSearch() => Image.asset(
-  ICONS.IC_SEARCH_PNG,
-  width: 20,
-  height: 20,
-  fit: BoxFit.contain,
-);
+      ICONS.IC_SEARCH_PNG,
+      width: 20,
+      height: 20,
+      fit: BoxFit.contain,
+    );
+
+iconButtonGen({
+  required Function onTap,
+  Widget? icon,
+  Color? backgroundColor,
+}) =>
+    Container(
+      margin: EdgeInsets.only(
+        left: 8,
+      ),
+      child: ElevatedButton(
+        onPressed: () {
+          onTap();
+        },
+        style: ElevatedButton.styleFrom(
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            padding: EdgeInsets.all(4),
+            minimumSize: Size(0, 0),
+            fixedSize: Size(24, 24),
+            maximumSize: Size(24, 24),
+            backgroundColor: backgroundColor ?? COLORS.BLUE,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  4,
+                ),
+              ),
+            )),
+        child: icon ??
+            Icon(
+              Icons.add,
+              color: COLORS.WHITE,
+              size: 16,
+            ),
+      ),
+    );

@@ -73,14 +73,23 @@ class _CountProductState extends State<CountProduct> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        GestureDetector(
-          onTap: () {
+        ElevatedButton(
+          onPressed: () {
             if (_getCount() > 1) {
               _getCountMinus();
             } else {
               _getCountZero();
             }
           },
+          style: ElevatedButton.styleFrom(
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            padding: EdgeInsets.zero,
+            minimumSize: Size(0, 0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(180),
+            ),
+            backgroundColor: COLORS.WHITE,
+          ),
           child: WidgetContainerImage(
             image: ICONS.IC_MINUS_PNG,
             width: 24,
@@ -90,7 +99,6 @@ class _CountProductState extends State<CountProduct> {
             colorImage: _getCount() >= 1 ? COLORS.BLUE : COLORS.GRAY_IMAGE,
           ),
         ),
-        AppValue.hSpace4,
         Container(
           width: 80,
           child: TextFormField(
@@ -108,9 +116,17 @@ class _CountProductState extends State<CountProduct> {
             ),
           ),
         ),
-        AppValue.hSpace4,
-        GestureDetector(
-          onTap: () {
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            padding: EdgeInsets.zero,
+            minimumSize: Size(0, 0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(180),
+            ),
+            backgroundColor: COLORS.WHITE,
+          ),
+          onPressed: () {
             _getCountPlus();
           },
           child: WidgetContainerImage(
@@ -118,7 +134,6 @@ class _CountProductState extends State<CountProduct> {
             width: 24,
             height: 24,
             fit: BoxFit.contain,
-            borderRadius: BorderRadius.circular(0),
             colorImage: COLORS.BLUE,
           ),
         ),

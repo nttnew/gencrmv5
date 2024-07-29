@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/l10n/key_text.dart';
 import 'package:gen_crm/screens/menu/widget/box_item.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -68,6 +69,7 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
     super.build(context);
     if (widget.child != null) {
       return RefreshIndicator(
+        color: getBackgroundWithIsCar(),
         onRefresh: () async {
           await _controller.onRefresh();
         },
@@ -160,6 +162,7 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
                 children: [
                   Expanded(
                     child: RefreshIndicator(
+                      color: getBackgroundWithIsCar(),
                       onRefresh: () async {
                         await _controller.onRefresh();
                       },
@@ -199,7 +202,7 @@ class _ViewLoadMoreBaseState extends State<ViewLoadMoreBase>
               bottom: 16,
             ),
             child: CircularProgressIndicator(
-              color: COLORS.BLUE,
+              color: getBackgroundWithIsCar(),
               strokeWidth: 3,
             ),
           );

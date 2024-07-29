@@ -134,7 +134,7 @@ class _SelectBodyMultiState extends State<SelectBodyMulti> {
           Row(
             children: [
               Expanded(
-                child: ButtonBaseSmall(
+                child: ButtonSmall(
                     title: getT(KeyT.close),
                     onTap: () {
                       Navigator.pop(context);
@@ -142,7 +142,7 @@ class _SelectBodyMultiState extends State<SelectBodyMulti> {
               ),
               AppValue.hSpaceSmall,
               Expanded(
-                child: ButtonBaseSmall(
+                child: ButtonSmall(
                   title: getT(KeyT.save),
                   onTap: () {
                     widget.onTap(dataSelect);

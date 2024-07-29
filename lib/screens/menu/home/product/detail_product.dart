@@ -151,6 +151,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                         setState(() {});
                       });
                       return RefreshIndicator(
+                        color: getBackgroundWithIsCar(),
                         onRefresh: () async {
                           await _init();
                         },

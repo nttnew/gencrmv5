@@ -6,14 +6,14 @@ import '../l10n/key_text.dart';
 class ButtonSave extends StatelessWidget {
   const ButtonSave({
     Key? key,
-    this.onPressed,
+    this.onTap,
     this.title,
     this.textColor,
     this.background,
     this.paddingHorizontal,
     this.radius,
   }) : super(key: key);
-  final Function()? onPressed;
+  final Function()? onTap;
   final String? title;
   final Color? textColor;
   final Color? background;
@@ -27,7 +27,7 @@ class ButtonSave extends StatelessWidget {
         horizontal: paddingHorizontal ?? 0,
       ),
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: onTap,
         style: ElevatedButton.styleFrom(
           backgroundColor: background ?? COLORS.ffF1A400,
           shape: RoundedRectangleBorder(

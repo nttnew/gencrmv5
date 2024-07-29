@@ -38,46 +38,50 @@ class _ListProductState extends State<ListProduct> {
   _coverList() {
     // để k bị lỗi cùng vùng bộ nhớ
     for (int i = 0; i < _listSelected.length; i++) {
-      _listAddSelect.add(ProductsRes(
-        id: _listSelected[i].id,
-        productId: _listSelected[i].productId,
-        productCode: _listSelected[i].productCode,
-        productEdit: _listSelected[i].productEdit,
-        productName: _listSelected[i].productName,
-        tenSanPhamEn: _listSelected[i].tenSanPhamEn,
-        tenSanPhamCn: _listSelected[i].tenSanPhamCn,
-        dvt: _listSelected[i].dvt,
-        vat: _listSelected[i].vat,
-        parentId: _listSelected[i].parentId,
-        hasChild: _listSelected[i].hasChild,
-        propertyId: _listSelected[i].propertyId,
-        sellPrice: _listSelected[i].sellPrice,
-        tenSanPhamJp: _listSelected[i].tenSanPhamJp,
-        tenSanPhamKr: _listSelected[i].tenSanPhamKr,
-        tenSanPhamBm: _listSelected[i].tenSanPhamBm,
-        propertyName: _listSelected[i].propertyName,
-        tenCombo: _listSelected[i].tenCombo,
-        comboId: _listSelected[i].comboId,
-        form: _listSelected[i]
-            .form
-            ?.map((e) => FormProduct(
-                  fieldId: e.fieldId,
-                  fieldName: e.fieldName,
-                  fieldLabel: e.fieldLabel,
-                  fieldType: e.fieldType,
-                  typeOfSale: e.typeOfSale,
-                  fieldRequire: e.fieldRequire,
-                  fieldHidden: e.fieldHidden,
-                  fieldDatasource: e.fieldDatasource,
-                  fieldReadOnly: e.fieldReadOnly,
-                  fieldSetValue: e.fieldSetValue,
-                  fieldValue: e.fieldValue,
-                  fieldSetValueDatasource: e.fieldSetValueDatasource,
-                  listTypeContract: e.listTypeContract,
-                  isShow: e.isShow,
-                ))
-            .toList(),
-      ));
+      _listAddSelect.add(
+        ProductsRes(
+          id: _listSelected[i].id,
+          productId: _listSelected[i].productId,
+          productCode: _listSelected[i].productCode,
+          productEdit: _listSelected[i].productEdit,
+          productName: _listSelected[i].productName,
+          tenSanPhamEn: _listSelected[i].tenSanPhamEn,
+          tenSanPhamCn: _listSelected[i].tenSanPhamCn,
+          dvt: _listSelected[i].dvt,
+          vat: _listSelected[i].vat,
+          parentId: _listSelected[i].parentId,
+          hasChild: _listSelected[i].hasChild,
+          propertyId: _listSelected[i].propertyId,
+          sellPrice: _listSelected[i].sellPrice,
+          tenSanPhamJp: _listSelected[i].tenSanPhamJp,
+          tenSanPhamKr: _listSelected[i].tenSanPhamKr,
+          tenSanPhamBm: _listSelected[i].tenSanPhamBm,
+          propertyName: _listSelected[i].propertyName,
+          tenCombo: _listSelected[i].tenCombo,
+          comboId: _listSelected[i].comboId,
+          form: _listSelected[i]
+              .form
+              ?.map((e) => FormProduct(
+                    fieldId: e.fieldId,
+                    fieldName: e.fieldName,
+                    fieldLabel: e.fieldLabel,
+                    fieldType: e.fieldType,
+                    typeOfSale: e.typeOfSale,
+                    fieldRequire: e.fieldRequire,
+                    fieldHidden: e.fieldHidden,
+                    fieldDatasource: e.fieldDatasource,
+                    fieldReadOnly: e.fieldReadOnly,
+                    fieldSetValue: e.fieldSetValue,
+                    fieldValue: e.fieldValue,
+                    fieldSetValueDatasource: e.fieldSetValueDatasource,
+                    listTypeContract: e.listTypeContract,
+                    isShow: e.isShow,
+                  ))
+              .toList(),
+          soTienGui: _listSelected[i].soTienGui,
+          donGiaDefault: _listSelected[i].donGiaDefault,
+        ),
+      );
     }
   }
 
@@ -111,7 +115,7 @@ class _ListProductState extends State<ListProduct> {
           ],
           color: COLORS.WHITE,
         ),
-        child: ButtonBaseSmall(
+        child: ButtonSmall(
           title: getT(KeyT.select),
           onTap: () {
             Get.back(result: _listAddSelect);

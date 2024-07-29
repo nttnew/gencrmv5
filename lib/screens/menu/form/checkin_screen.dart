@@ -320,7 +320,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         ButtonSave(
-                          onPressed: () {
+                          onTap: () {
                             if (controllerNote.text.trim() == '') {
                               ShowDialogCustom.showDialogBase(
                                 title: getT(KeyT.notification),

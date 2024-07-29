@@ -51,8 +51,8 @@ class ButtonCustom extends StatelessWidget {
   }
 }
 
-class ButtonBaseSmall extends StatelessWidget {
-  const ButtonBaseSmall({
+class ButtonSmall extends StatelessWidget {
+  const ButtonSmall({
     Key? key,
     required this.onTap,
     this.title,
@@ -68,7 +68,7 @@ class ButtonBaseSmall extends StatelessWidget {
           backgroundColor: getBackgroundWithIsCar(),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(7),
-          )),
+          ),),
       onPressed: () => onTap(),
       child: Text(
         title ?? getT(KeyT.action),

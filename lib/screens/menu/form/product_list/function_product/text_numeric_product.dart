@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../../src/app_const.dart';
 import '../../../../../src/models/model_generator/products_response.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../../storages/share_local.dart';
@@ -105,44 +106,36 @@ class _TextNumericProductState extends State<TextNumericProduct> {
             widget.formProduct.fieldLabel ?? '',
             style: AppStyle.DEFAULT_14_BOLD,
           ),
-          if (widget.isShowVND) ...[
-            GestureDetector(
-              onTap: () {
-                if (!fieldReadOnly) {
-                  _controller.text = '';
-                  isVND = !isVND;
-                  setState(() {});
-                  _onChangeMain();
-                }
-              },
-              child: Container(
-                alignment: Alignment.center,
-                height: 24,
-                width: 24,
-                margin: EdgeInsets.only(
-                  left: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: fieldReadOnly ? COLORS.GRAY_IMAGE : COLORS.BLUE,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(
-                      6,
-                    ),
-                  ),
-                ),
-                child: FittedBox(
-                  child: Text(
-                    isVND
-                        ? '${shareLocal.getString(PreferencesKey.MONEY) ?? ''}'
-                        : '%',
-                    style: AppStyle.DEFAULT_14_BOLD.copyWith(
-                      color: COLORS.WHITE,
+          if (widget.isShowVND)
+            Container(
+              margin: EdgeInsets.only(
+                right: 8,
+              ),
+              child: iconButtonGen(
+                onTap: () {
+                  if (!fieldReadOnly) {
+                    _controller.text = '';
+                    isVND = !isVND;
+                    setState(() {});
+                    _onChangeMain();
+                  }
+                },
+                icon: SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: FittedBox(
+                    child: Text(
+                      isVND
+                          ? '${shareLocal.getString(PreferencesKey.MONEY) ?? ''}'
+                          : '%',
+                      style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                        color: COLORS.WHITE,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ],
           Expanded(
             child: TextFormField(
               enabled: !fieldReadOnly,

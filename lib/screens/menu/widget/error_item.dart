@@ -26,7 +26,7 @@ class ErrorItem extends StatelessWidget {
           ),
           AppValue.vSpace10,
           ButtonSave(
-            onPressed: () {
+            onTap: () {
               onPressed();
             },
             background: getBackgroundWithIsCar(),

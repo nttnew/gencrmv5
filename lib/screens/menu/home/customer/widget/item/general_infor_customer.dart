@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/detail_customer/detail_customer_bloc.dart';
 import 'package:gen_crm/screens/menu/home/customer/widget/list_note.dart';
 import '../../../../../../bloc/list_note/list_note_bloc.dart';
+import '../../../../../../src/app_const.dart';
 import '../../../../../../src/src_index.dart';
 import '../../../../widget/error_item.dart';
 import '../../../../widget/information.dart';
@@ -44,6 +45,7 @@ class _TabInfoCustomerState extends State<TabInfoCustomer>
   Widget build(BuildContext context) {
     super.build(context);
     return RefreshIndicator(
+      color: getBackgroundWithIsCar(),
       onRefresh: () async {
         await init();
       },

@@ -216,7 +216,7 @@ Widget FileLuuBase(
           Row(
             children: [
               if (btn != null) btn,
-              ButtonSave(onPressed: () => onTap()),
+              ButtonSave(onTap: () => onTap()),
             ],
           ),
         ],

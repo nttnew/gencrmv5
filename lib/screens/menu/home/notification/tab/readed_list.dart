@@ -64,6 +64,7 @@ class _ReadListState extends State<ReadList>
               _length = _list.length;
               if (_length > 0)
                 return RefreshIndicator(
+                  color: getBackgroundWithIsCar(),
                   onRefresh: () async {
                     await reload();
                   },

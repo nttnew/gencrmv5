@@ -34,6 +34,7 @@ class _ContractPaymentState extends State<ContractPayment>
   Widget build(BuildContext context) {
     super.build(context);
     return RefreshIndicator(
+      color: getBackgroundWithIsCar(),
       onRefresh: () async {
         await _init();
       },

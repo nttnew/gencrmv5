@@ -113,6 +113,8 @@ class ProductsRes {
   String? comboId;
   List<FormProduct>? form;
   bool isShowLocal = false;
+  int? soTienGui = 0;
+  int? donGiaDefault;
 
   ProductsRes({
     this.id,
@@ -135,6 +137,8 @@ class ProductsRes {
     this.tenCombo,
     this.comboId,
     this.form,
+    this.soTienGui = 0,
+    this.donGiaDefault,
   });
 
   ProductsRes.fromJson(Map<String, dynamic> json) {
@@ -157,6 +161,8 @@ class ProductsRes {
     propertyName = json['property_name'];
     tenCombo = json['ten_combo'];
     comboId = json['combo_id'];
+    soTienGui = json['soTienGui'];
+    donGiaDefault = json['donGiaDefault'];
     if (json['form'] != null) {
       form = <FormProduct>[];
       json['form'].forEach((v) {
@@ -186,6 +192,8 @@ class ProductsRes {
     data['property_name'] = this.propertyName;
     data['combo_id'] = this.comboId;
     data['ten_combo'] = this.tenCombo;
+    data['soTienGui'] = this.soTienGui;
+    data['donGiaDefault'] = this.donGiaDefault;
     if (this.form != null) {
       data['form'] = this.form!.map((v) => v.toJson()).toList();
     }
@@ -213,6 +221,9 @@ class ProductsRes {
     data['property_name'] = this.propertyName;
     data['combo_id'] = this.comboId;
     data['ten_combo'] = this.tenCombo;
+    data['dongia'] = this.donGiaDefault;
+    data['sotiengui'] = this.soTienGui;
+    data['tongdongia'] = (this.soTienGui ?? 0) + (this.donGiaDefault ?? 0);
     if (this.form != null) {
       form?.forEach((element) {
         if (element.isShow) {

@@ -246,6 +246,7 @@ class _DetailSupportScreenState extends State<DetailSupportScreen> {
                         }
                       },
                       child: RefreshIndicator(
+                        color: getBackgroundWithIsCar(),
                         onRefresh: () async {
                           await _refresh();
                         },

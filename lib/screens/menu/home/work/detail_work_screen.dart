@@ -252,6 +252,7 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
               ),
               Expanded(
                 child: RefreshIndicator(
+                  color: getBackgroundWithIsCar(),
                   onRefresh: () async {
                     await _init();
                   },
