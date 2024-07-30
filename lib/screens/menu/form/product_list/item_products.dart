@@ -249,21 +249,26 @@ class _ItemProductsState extends State<ItemProducts> {
       ? SizedBox()
       : Container(
           margin: EdgeInsets.only(
-            top: 10,
+            top: !_dataNew.isShowLocal ? 0 : 10,
           ),
-          child: GestureDetector(
-            onTap: () {
+          alignment: Alignment.centerRight,
+          child: ElevatedButton(
+            onPressed: () {
               widget.onDelete(_dataNew);
             },
-            child: Container(
-              alignment: Alignment.centerRight,
-              child: WidgetText(
-                textAlign: TextAlign.end,
-                title: getT(KeyT.delete),
-                style: AppStyle.DEFAULT_14_BOLD.copyWith(
-                  color: COLORS.RED,
-                  fontWeight: FontWeight.w800,
-                ),
+            style: ElevatedButton.styleFrom(
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              padding: EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 4,
+              ),
+              minimumSize: Size(0, 0),
+              backgroundColor: COLORS.RED,
+            ),
+            child: WidgetText(
+              title: getT(KeyT.delete),
+              style: AppStyle.DEFAULT_14.copyWith(
+                color: COLORS.WHITE,
               ),
             ),
           ),

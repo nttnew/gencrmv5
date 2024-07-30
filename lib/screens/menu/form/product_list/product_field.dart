@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/models/model_generator/add_customer.dart';
 import 'package:gen_crm/src/src_index.dart';
+import 'package:gen_crm/widgets/loading_api.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import '../../../../bloc/detail_product/detail_product_bloc.dart';
 import '../../../../bloc/product_module/product_module_bloc.dart';
@@ -138,22 +139,48 @@ class _ProductFieldState extends State<ProductField> {
                           builder: (context) => ScannerQrcode()))
                       .then((value) async {
                     if (value != '' && value != null) {
-                      final result = await ProductModuleBloc.of(context)
-                          .getListProduct(querySearch: value);
-                      if (result?.data?.lists?.isNotEmpty ?? false) {
-                        final ProductsRes? data =
-                            await DetailProductBloc.of(context)
-                                .getDetailProductQR(
-                                    id: result?.data?.lists?.first.id ?? '');
-                        if (data != null) {
-                          _addProduct(data);
-                          _reloadKey();
-                          _reload();
+                      try {
+                        final result = await ProductModuleBloc.of(context)
+                            .getListProduct(querySearch: value);
+                        if (result?.data?.lists?.isNotEmpty ?? false) {
+                          final ProductsRes? data =
+                              await DetailProductBloc.of(context)
+                                  .getDetailProductQR(
+                                      id: result?.data?.lists?.first.id ?? '');
+                          if (data != null) {
+                            final index = _productData.indexWhere((element) =>
+                                element.productId == data.productId &&
+                                element.comboId == data.comboId);
+                            if (index == -1) {
+                              _addProduct(data);
+                            } else {
+                              final dataSelect = _productData[index];
+                              for (int i = 0;
+                                  i < (dataSelect.form?.length ?? 0);
+                                  i++) {
+                                if (dataSelect.form?[i].fieldType == COUNT) {
+                                  dataSelect.form?[i].fieldSetValue += 1;
+                                  dataSelect.form?[i].fieldValue =
+                                      dataSelect.form?[i].fieldSetValue;
+                                }
+                              }
+                              _updateProduct(dataSelect, index);
+                            }
+                            _reloadKey();
+                            _reload();
+                          }
+                        } else {
+                          Loading().popLoading();
+                          ShowDialogCustom.showDialogBase(
+                            title: getT(KeyT.notification),
+                            content: getT(KeyT.no_data),
+                          );
                         }
-                      } else {
+                      } catch (e) {
+                        Loading().popLoading();
                         ShowDialogCustom.showDialogBase(
                           title: getT(KeyT.notification),
-                          content: getT(KeyT.no_data),
+                          content: getT(KeyT.an_error_occurred),
                         );
                       }
                     }
@@ -211,43 +238,43 @@ class _ProductFieldState extends State<ProductField> {
       ],
     );
   }
-
-  Widget itemBtnWrap(
-    String title,
-    Function onTap, {
-    Widget? icon,
-    Color? color,
-  }) =>
-      ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          minimumSize: Size(0, 0),
-          padding: EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 8,
-          ),
-          backgroundColor: color ?? COLORS.TEXT_COLOR,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(
-                16,
-              ),
-            ),
-          ),
-        ),
-        onPressed: () => onTap(),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (icon != null) icon,
-            WidgetText(
-              title: title,
-              style: AppStyle.DEFAULT_14_BOLD.copyWith(
-                color: COLORS.WHITE,
-              ),
-            ),
-          ],
-        ),
-      );
 }
+
+Widget itemBtnWrap(
+  String title,
+  Function onTap, {
+  Widget? icon,
+  Color? color,
+}) =>
+    ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        minimumSize: Size(0, 0),
+        padding: EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 8,
+        ),
+        backgroundColor: color ?? COLORS.TEXT_COLOR,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              16,
+            ),
+          ),
+        ),
+      ),
+      onPressed: () => onTap(),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (icon != null) icon,
+          WidgetText(
+            title: title,
+            style: AppStyle.DEFAULT_14_BOLD.copyWith(
+              color: COLORS.WHITE,
+            ),
+          ),
+        ],
+      ),
+    );

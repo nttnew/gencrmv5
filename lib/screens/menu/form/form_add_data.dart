@@ -613,11 +613,13 @@ class _FormAddDataState extends State<FormAddData> {
         _getDataProduct(DON_GIA, product).toString().toDoubleTry();
     double _vatProduct = 0;
     double _vatProductNumber = _getDataProduct(VAT, product) != ''
-        ? _getDataProduct(VAT, product)
-            .split(PHAN_TRAM)
-            .first
-            .toString()
-            .toDoubleTry()
+        ? (_getDataProduct(VAT, product) != null)
+            ? _getDataProduct(VAT, product)
+                .split(PHAN_TRAM)
+                .first
+                .toString()
+                .toDoubleTry()
+            : 0
         : 0;
     double _discount = 0;
     double _discountNumber = _getDataProduct(GIAM_GIA, product)[VALUE_GIAM_GIA]
@@ -663,11 +665,13 @@ class _FormAddDataState extends State<FormAddData> {
 
   _vatProduct(ProductsRes product) {
     double _vatProductNumber = _getDataProduct(VAT, product) != ''
-        ? _getDataProduct(VAT, product)
-            .split(PHAN_TRAM)
-            .first
-            .toString()
-            .toDoubleTry()
+        ? (_getDataProduct(VAT, product) != null)
+            ? _getDataProduct(VAT, product)
+                .split(PHAN_TRAM)
+                .first
+                .toString()
+                .toDoubleTry()
+            : 0
         : 0;
     double _discountNumber = _getDataProduct(GIAM_GIA, product)[VALUE_GIAM_GIA]
         .toString()
