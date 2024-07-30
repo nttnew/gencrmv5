@@ -50,13 +50,7 @@ class _ItemNoteState extends State<ItemNote> {
             decoration: BoxDecoration(
               color: COLORS.WHITE,
               shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: COLORS.BLACK.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                )
-              ],
+              boxShadow: boxShadowVip,
             ),
             child: WidgetNetworkImage(
               isAvatar: true,
@@ -76,13 +70,7 @@ class _ItemNoteState extends State<ItemNote> {
                 decoration: BoxDecoration(
                   color: isOwner ? COLORS.SECONDS_COLOR : COLORS.WHITE,
                   borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: COLORS.BLACK.withOpacity(0.1),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                    )
-                  ],
+                  boxShadow: boxShadowVipPro,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,15 +132,22 @@ class _ItemNoteState extends State<ItemNote> {
                               widget.data.content,
                             );
                           },
-                          child: WidgetContainerImage(
-                            image: ICONS.IC_EDIT_PNG,
-                            width: 20,
-                            height: 20,
-                            fit: BoxFit.contain,
+                          child: Container(
+                            padding: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: COLORS.BLACK),
+                              shape: BoxShape.circle,
+                              boxShadow: boxShadowVipPro,
+                              color: COLORS.WHITE,
+                            ),
+                            child: Icon(
+                              Icons.edit_outlined,
+                              size: 14,
+                            ),
                           ),
                         ),
                         SizedBox(
-                          width: 6,
+                          width: 4,
                         ),
                         GestureDetector(
                           onTap: () {
@@ -160,11 +155,18 @@ class _ItemNoteState extends State<ItemNote> {
                               widget.data.noteid,
                             );
                           },
-                          child: WidgetContainerImage(
-                            image: ICONS.IC_DELETE_PNG,
-                            width: 20,
-                            height: 20,
-                            fit: BoxFit.contain,
+                          child: Container(
+                            padding: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: COLORS.BLACK),
+                              shape: BoxShape.circle,
+                              boxShadow: boxShadowVipPro,
+                              color: COLORS.WHITE,
+                            ),
+                            child: Icon(
+                              Icons.delete_outline_outlined,
+                              size: 14,
+                            ),
                           ),
                         ),
                       ],
@@ -179,6 +181,4 @@ class _ItemNoteState extends State<ItemNote> {
   }
 }
 
-
 Widget htmlBase(data) => Html(shrinkWrap: true, data: data);
-

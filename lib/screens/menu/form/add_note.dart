@@ -89,57 +89,46 @@ class _AddNoteState extends State<AddNote> {
               Container(
                 decoration: BoxDecoration(
                   color: COLORS.WHITE,
-                  boxShadow: [
-                    BoxShadow(
-                      color: COLORS.BLACK.withOpacity(0.1),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                    )
-                  ],
+                  boxShadow: boxShadowVipPro,
                 ),
                 child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: COLORS.GREY),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  padding: EdgeInsets.only(
-                    left: 8,
-                  ),
-                  margin: EdgeInsets.only(
-                    left: 25,
-                    right: 25,
-                    bottom: 25,
-                    top: 15,
-                  ),
+                  margin: EdgeInsets.all(16),
                   child: Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          textCapitalization: TextCapitalization.sentences,
-                          textInputAction: TextInputAction.send,
-                          controller: _editingController,
-                          focusNode: _focusNode,
-                          decoration: InputDecoration(
-                            hintText: getT(KeyT.enter_content),
-                            contentPadding: EdgeInsets.zero,
-                            enabledBorder: InputBorder.none,
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: COLORS.GRAY_IMAGE,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: EdgeInsets.only(left: 16, right: 16),
+                          margin: EdgeInsets.only(right: 16),
+                          child: TextField(
+                            textCapitalization: TextCapitalization.sentences,
+                            textInputAction: TextInputAction.send,
+                            controller: _editingController,
+                            focusNode: _focusNode,
+                            decoration: InputDecoration(
+                              hintText: getT(KeyT.enter_content),
+                              contentPadding: EdgeInsets.zero,
+                              enabledBorder: InputBorder.none,
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                            ),
                           ),
                         ),
                       ),
                       GestureDetector(
                         onTap: this.onSend,
-                        child: Container(
-                          padding: EdgeInsets.all(8),
-                          child: WidgetContainerImage(
-                            image: ICONS.IC_SEND_PNG,
-                            width: 25,
-                            height: 25,
-                            fit: BoxFit.contain,
-                            borderRadius: BorderRadius.circular(0),
-                          ),
+                        child: WidgetContainerImage(
+                          image: ICONS.IC_SEND_PNG,
+                          width: 24,
+                          height: 24,
+                          fit: BoxFit.contain,
                         ),
                       )
                     ],

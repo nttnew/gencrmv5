@@ -69,3 +69,11 @@ List<BoxShadow> boxShadowVip = [
     blurRadius: 2,
   )
 ];
+
+List<BoxShadow> boxShadowVipPro = [
+  BoxShadow(
+    color: COLORS.BLACK.withOpacity(0.1),
+    spreadRadius: 2,
+    blurRadius: 2,
+  )
+];

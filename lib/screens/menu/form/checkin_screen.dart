@@ -31,6 +31,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
   late final CheckInBloc _blocCheckIn;
 
   getNameLocation() async {
+    Loading().showLoading();
     position = await determinePosition(context);
     if (position != null) {
       nameLocation.add(LOADING);
@@ -38,7 +39,9 @@ class _CheckInScreenState extends State<CheckInScreen> {
         final location = await getLocationName(
             position?.latitude ?? 0, position?.longitude ?? 0);
         nameLocation.add(location);
+        Loading().popLoading();
       } catch (e) {
+        Loading().popLoading();
         ShowDialogCustom.showDialogBase(
           title: getT(KeyT.notification),
           content: getT(KeyT.an_error_occurred),
@@ -140,7 +143,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                   ? Expanded(
                                       child: WidgetText(
                                         title: location,
-                                        style: AppStyle.DEFAULT_14W500,
+                                        style: AppStyle.DEFAULT_14W600
                                       ),
                                     )
                                   : SizedBox(
@@ -153,104 +156,40 @@ class _CheckInScreenState extends State<CheckInScreen> {
                             ],
                           ),
                         ],
-                        SizedBox(
-                          height: 16,
-                        ),
+                        AppValue.vSpaceSmall,
                         if (location == '')
-                          GestureDetector(
-                            onTap: () async {
+                          _buttonCheck(
+                            isCheckIn
+                                ? getT(KeyT.check_in)
+                                : getT(KeyT.check_out),
+                            () async {
                               await getNameLocation();
                             },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
-                              ),
-                              decoration: BoxDecoration(
-                                  color: COLORS.TEXT_COLOR,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(
-                                      16,
-                                    ),
-                                  ),
-                                  border: Border.all(
-                                    color: COLORS.TEXT_COLOR,
-                                  )),
-                              child: WidgetText(
-                                title: isCheckIn
-                                    ? getT(KeyT.check_in)
-                                    : getT(KeyT.check_out),
-                                style: AppStyle.DEFAULT_14W500
-                                    .copyWith(color: COLORS.WHITE),
-                              ),
-                            ),
                           ),
                         if (location != '')
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              GestureDetector(
-                                onTap: () async {
+                              _buttonCheck(
+                                isCheckIn
+                                    ? getT(KeyT.check_in_again)
+                                    : getT(KeyT.check_out_again),
+                                () async {
                                   await getNameLocation();
                                 },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 8,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        16,
-                                      ),
-                                    ),
-                                    border: Border.all(
-                                      color: COLORS.TEXT_COLOR,
-                                    ),
-                                  ),
-                                  child: WidgetText(
-                                    title: isCheckIn
-                                        ? getT(KeyT.check_in_again)
-                                        : getT(KeyT.check_out_again),
-                                    style: AppStyle.DEFAULT_14W500
-                                        .copyWith(color: COLORS.TEXT_COLOR),
-                                  ),
-                                ),
+                                backGround: COLORS.TEXT_BLUE_BOLD,
                               ),
-                              SizedBox(
-                                width: 16,
-                              ),
-                              GestureDetector(
-                                onTap: () async {
+                              AppValue.hSpace10,
+                              _buttonCheck(
+                                getT(KeyT.delete),
+                                () {
                                   nameLocation.add('');
                                 },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 8,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        16,
-                                      ),
-                                    ),
-                                    border: Border.all(
-                                      color: COLORS.RED,
-                                    ),
-                                  ),
-                                  child: WidgetText(
-                                    title: getT(KeyT.delete),
-                                    style: AppStyle.DEFAULT_14W500
-                                        .copyWith(color: COLORS.RED),
-                                  ),
-                                ),
+                                backGround: COLORS.RED,
                               ),
                             ],
                           ),
-                        SizedBox(
-                          height: 16,
-                        ),
+                        AppValue.vSpaceSmall,
                         if (location != '') ...[
                           Align(
                             alignment: Alignment.centerLeft,
@@ -308,9 +247,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                             ),
                           ),
                         ],
-                        SizedBox(
-                          height: 16,
-                        ),
+                        AppValue.vSpaceSmall,
                       ],
                     ),
                   ),
@@ -348,6 +285,46 @@ class _CheckInScreenState extends State<CheckInScreen> {
               );
             },
           ),
+        ),
+      ),
+    );
+  }
+
+  _buttonCheck(
+    String title,
+    Function onTap, {
+    Color? backGround,
+  }) {
+    bool isBackG = backGround != null;
+    return ElevatedButton(
+      onPressed: () {
+        onTap();
+      },
+      style: ElevatedButton.styleFrom(
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        backgroundColor: isBackG ? COLORS.WHITE : COLORS.TEXT_COLOR,
+        minimumSize: Size(0, 0),
+        padding: EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 8,
+        ),
+        shape: RoundedRectangleBorder(
+          side: isBackG
+              ? BorderSide(
+                  color: backGround,
+                )
+              : BorderSide.none,
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              16,
+            ),
+          ),
+        ),
+      ),
+      child: WidgetText(
+        title: title,
+        style: AppStyle.DEFAULT_14W600.copyWith(
+          color: backGround ?? COLORS.WHITE,
         ),
       ),
     );
