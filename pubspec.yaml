@@ -1,7 +1,7 @@
 name: gen_crm
 description: A new Flutter application.
 publish_to: 'none'
-version: 2.7.5+275
+version: 2.7.6+276
 #versionNew
 
 environment:
