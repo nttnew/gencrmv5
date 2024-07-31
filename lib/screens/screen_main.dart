@@ -11,11 +11,11 @@ import 'package:gen_crm/models/index.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:get/get.dart';
+import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 import '../bloc/login/login_bloc.dart';
 import '../../l10n/key_text.dart';
 import '../src/app_const.dart';
 import '../storages/share_local.dart';
-import '../widgets/item_menu.dart';
 import '../widgets/widget_fingerprint_faceid.dart';
 import 'menu/form/add_service_voucher/add_service_voucher_screen.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
@@ -28,11 +28,11 @@ class ScreenMain extends StatefulWidget {
 class _ScreenMainState extends State<ScreenMain> {
   final _key = GlobalKey<ExpandableFabState>();
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  List<ButtonMenuModel> listMenu = [];
+  List<ButtonMenuModel> _listMenu = [];
   late LoginBloc _blocLogin;
 
   void getMenu() async {
-    listMenu = [];
+    _listMenu = [];
     _addMenuReport(isCarCrm());
     String menu = await shareLocal.getString(PreferencesKey.MENU);
     List listM = jsonDecode(menu);
@@ -45,7 +45,7 @@ class _ScreenMainState extends State<ScreenMain> {
       } else if (id == ModuleMy.CUSTOMER) {
         shareLocal.putString(PreferencesKey.NAME_CUSTOMER, name);
       }
-      listMenu.add(
+      _listMenu.add(
         ButtonMenuModel(
             title: name,
             image: ModuleMy.getIcon(id),
@@ -77,7 +77,7 @@ class _ScreenMainState extends State<ScreenMain> {
 
   _addMenuReport(bool v) {
     if (v)
-      listMenu.add(
+      _listMenu.add(
         ButtonMenuModel(
             title: getT(KeyT.report),
             image: ICONS.IC_REPORT_PNG,
@@ -314,7 +314,7 @@ class _ScreenMainState extends State<ScreenMain> {
             }),
             isCarCrm()
                 ? MainCar(
-                    listMenu: listMenu,
+                    listMenu: _listMenu,
                   )
                 : _main(),
           ],
@@ -323,49 +323,78 @@ class _ScreenMainState extends State<ScreenMain> {
     );
   }
 
-  _main() => Expanded(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 25,
+  _main() => Container(
+        padding: EdgeInsets.all(8),
+        child: Wrap(
+          children: _listMenu.asMap().entries.map((entry) {
+            final value = entry.value;
+            final i = entry.key;
+            final hAll = MediaQuery.of(context).size.height -
+                AppValue.heightsAppBar -
+                MediaQuery.of(context).padding.top -
+                16;
+            final wAll = MediaQuery.of(context).size.width - 16;
+            final h = hAll / (_listMenu.length / 2).ceil();
+            final w = (wAll / 2);
+            bool isMaxWidth = false;
+            if (_listMenu.length % 2 != 0) {
+              isMaxWidth = (i + 1) == _listMenu.length;
+            }
+            return WidgetAnimator(
+              incomingEffect: WidgetTransitionEffects.incomingScaleDown(
+                duration: Duration(milliseconds: 800),
               ),
-              GridView.builder(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 25,
+              child: Container(
+                height: h,
+                width: isMaxWidth ? wAll : w,
+                padding: EdgeInsets.all(8),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    backgroundColor: value.backgroundColor,
+                    minimumSize: Size(0, 0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(
+                          10,
+                        ),
+                      ),
+                    ),
                   ),
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: listMenu.length % 2 != 0
-                      ? listMenu.length - 1
-                      : listMenu.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 25,
-                    mainAxisSpacing: 25,
-                  ),
-                  itemBuilder: (context, index) {
-                    return ItemMenu(
-                      data: listMenu[index],
-                      onTap: listMenu[index].onTap,
-                    );
-                  }),
-              if (listMenu.length % 2 != 0)
-                Container(
-                  margin: EdgeInsets.only(top: 25),
-                  width: (MediaQuery.of(context).size.width - 50),
-                  height: (MediaQuery.of(context).size.width - 75) / 2,
-                  child: ItemMenu(
-                    data: listMenu.last,
-                    isLast: true,
-                    onTap: listMenu.last.onTap,
+                  onPressed: () => value.onTap(),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        top: 8,
+                        right: 0,
+                        left: 0,
+                        child: SizedBox(
+                          width: (isMaxWidth ? wAll : w) - 16,
+                          child: Text(
+                            value.title,
+                            style: AppStyle.DEFAULT_16_BOLD.copyWith(
+                              color: isMaxWidth ? COLORS.WHITE : null,
+                              fontSize: isMaxWidth ? 20 : null,
+                            ),
+                            maxLines: 2,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 8,
+                        right: 8,
+                        child: Image.asset(
+                          ICONS.IC_NEXT_SCREEN_PNG,
+                          height: 32,
+                          color: isMaxWidth ? COLORS.WHITE : null,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              SizedBox(
-                height: 25,
               ),
-            ],
-          ),
+            );
+          }).toList(),
         ),
       );
 

@@ -73,6 +73,7 @@ class ICONS {
   static const String IC_FLAG_VI = 'assets/icons/vietnam.png';
   static const String IC_FLAG_KO = 'assets/icons/south-korea.png';
   static const String IC_FLAG_EN = 'assets/icons/united-kingdom.png';
+  static const String IC_NEXT_SCREEN_PNG = 'assets/icons/next_screen.png';
 
   //////////////===============SVG===============//////////////
   static const String IC_MAIL_CUSTOMER_SVG = 'assets/icons/mail_customer.svg';
