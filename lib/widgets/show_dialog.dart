@@ -107,7 +107,7 @@ class ShowDialogCustom {
                             ),
                             Expanded(
                               child: ButtonCustom(
-                                textColor: COLORS.BLACK,
+                                textColor: getColorWithIsCar(),
                                 paddingAll: 10,
                                 marginHorizontal: 0,
                                 marginVertical: 0,

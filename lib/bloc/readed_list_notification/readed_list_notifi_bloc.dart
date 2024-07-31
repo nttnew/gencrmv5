@@ -115,7 +115,6 @@ class ReadNotificationBloc
     try {
       final response = await userRepository.getListReadNotification(page);
       if (isSuccess(response.code)) {
-        int page = int.parse(response.data?.page ?? '0');
         if (page == BASE_URL.PAGE_DEFAULT) {
           listNotification = response.data?.list ?? [];
         } else {

@@ -30,7 +30,8 @@ class UnreadNotificationBloc
     UnReadNotificationEvent event,
   ) async* {
     if (event is InitGetListUnReadNotificationEvent) {
-      yield* _getListNotification(page: event.page, isLoading: event.isLoading);
+      yield* _getUnreadNotification(
+          page: event.page, isLoading: event.isLoading);
     } else if (event is DeleteUnReadListNotificationEvent) {
       yield* _deleteNotification(
         id: event.id,
@@ -113,7 +114,7 @@ class UnreadNotificationBloc
     }
   }
 
-  Stream<UnReadNotificationState> _getListNotification({
+  Stream<UnReadNotificationState> _getUnreadNotification({
     required int page,
     bool isLoading = true,
   }) async* {
@@ -122,8 +123,7 @@ class UnreadNotificationBloc
       final response = await userRepository.getListUnReadNotification(page);
       if (isSuccess(response.code)) {
         total.add(int.parse(response.data?.total ?? '0'));
-        int page = int.parse(response.data?.page ?? '0');
-        if (page == 1) {
+        if (page == BASE_URL.PAGE_DEFAULT) {
           listNotification = response.data?.list ?? [];
         } else {
           listNotification = [
