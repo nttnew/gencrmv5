@@ -96,6 +96,7 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
     querySearch = null;
     filter = null;
     type = null;
+    khoId = null;
     SuccessGetListProductModuleState([]);
   }
 
