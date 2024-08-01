@@ -113,7 +113,8 @@ class _ProductFieldState extends State<ProductField> {
             );
           },
         ),
-        Padding(
+        Container(
+          width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: Wrap(
             runSpacing: 10,
