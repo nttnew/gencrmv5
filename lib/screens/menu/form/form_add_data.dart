@@ -513,8 +513,8 @@ class _FormAddDataState extends State<FormAddData> {
             };
           case SELECT:
             if ((value.fieldSetValueDatasource?.length ?? 0) > 0)
-              return isGetThree
-                  ? value.fieldSetValueDatasource?.first[0]
+              return !isGetThree
+                  ? value.fieldSetValueDatasource?.first[1]
                   : (value.fieldSetValueDatasource?.first.length ?? 0) > 2
                       ? value.fieldSetValueDatasource?.first[2]
                       : null;
