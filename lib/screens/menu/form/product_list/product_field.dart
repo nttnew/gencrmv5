@@ -159,7 +159,11 @@ class _ProductFieldState extends State<ProductField> {
                                   i < (dataSelect.form?.length ?? 0);
                                   i++) {
                                 if (dataSelect.form?[i].fieldType == COUNT) {
-                                  double count = double.tryParse(dataSelect.form?[i].fieldSetValue ?? '')??0;
+                                  double count = double.tryParse(dataSelect
+                                              .form?[i].fieldSetValue
+                                              .toString() ??
+                                          '') ??
+                                      0;
                                   count += 1;
                                   dataSelect.form?[i].fieldSetValue = count;
                                   dataSelect.form?[i].fieldValue =
