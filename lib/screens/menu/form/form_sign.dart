@@ -7,9 +7,9 @@ import 'package:gen_crm/bloc/form_add_data/add_data_bloc.dart';
 import 'package:gen_crm/bloc/form_add_data/form_add_data_bloc.dart';
 import 'package:gen_crm/models/model_item_add.dart';
 import 'package:gen_crm/screens/menu/form/widget/field_text.dart';
+import 'package:gen_crm/screens/menu/form/widget/input_drop_down_base.dart';
 import 'package:gen_crm/screens/menu/form/widget/location_select.dart';
 import 'package:gen_crm/screens/menu/form/widget/render_check_box.dart';
-import 'package:gen_crm/screens/menu/home/customer/widget/input_dropDown.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/extensionss/common_ext.dart';
 import 'package:gen_crm/widgets/appbar_base.dart';
@@ -241,8 +241,11 @@ class _FormAddSignState extends State<FormAddSign>
           return data.field_hidden != '1'
               ? _checkHide(data.parent)
                   ? (data.field_special ?? '') == 'none-edit'
-                      ? _fieldInputCustomer(data, indexParent, indexChild,
-                          noEdit: true)
+                      ? FieldText(
+                          data: data,
+                          onChange: (v) {
+                            _addData[indexParent].data[indexChild].value = v;
+                          })
                       : data.field_type == 'SELECT'
                           ? checkLocation(data)
                               ? LocationWidget(
@@ -254,21 +257,14 @@ class _FormAddSignState extends State<FormAddSign>
                                   },
                                   initData: data.field_value,
                                 )
-                              : InputDropdown(
-                                  dropdownItemList: data.field_datasource ?? [],
+                              : InputDropdownBase(
                                   data: data,
-                                  onChange: (data) {
+                                  onChange: (data, bool) {
                                     _addData[indexParent]
                                         .data[indexChild]
                                         .value = data;
                                   },
-                                  value: (data.field_set_value_datasource
-                                              ?.isNotEmpty ??
-                                          false)
-                                      ? (data.field_set_value_datasource?[0]
-                                              [1] ??
-                                          '')
-                                      : '',
+                                  addData: _addData,
                                 )
                           : data.field_type == 'TEXT_MULTI'
                               ? SelectMulti(
@@ -398,18 +394,21 @@ class _FormAddSignState extends State<FormAddSign>
                                                                 )
                                                               : data.field_type ==
                                                                       'TEXTAREA'
-                                                                  ? _fieldInputTextarea(
-                                                                      data,
-                                                                      indexParent,
-                                                                      indexChild,
-                                                                      noEdit: data.field_name ==
+                                                                  ? FieldText(
+                                                                      isNoneEdit: data.field_name ==
                                                                               'kh_danh_gia_nd'
                                                                           ? (((data.field_set_value ?? '') != '') ||
                                                                               editStar)
                                                                           : false,
-                                                                      value:
-                                                                          data.field_set_value ??
-                                                                              '')
+                                                                      data:
+                                                                          data,
+                                                                      onChange:
+                                                                          (v) {
+                                                                        _addData[indexParent]
+                                                                            .data[indexChild]
+                                                                            .value = v;
+                                                                      },
+                                                                    )
                                                                   : FieldText(
                                                                       data:
                                                                           data,
@@ -571,183 +570,6 @@ class _FormAddSignState extends State<FormAddSign>
     );
   }
 
-  Widget _fieldInputCustomer(
-    CustomerIndividualItemData data,
-    int indexParent,
-    int indexChild, {
-    bool noEdit = false,
-    String value = '',
-  }) {
-    if (data.field_name == hdSoTien &&
-            _addData[indexParent].data[indexChild].value == null ||
-        _addData[indexParent].data[indexChild].value == '' ||
-        _addData[indexParent].data[indexChild].value == 'null') {
-      _addData[indexParent].data[indexChild].value = value;
-    }
-    return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: data.field_label ?? '',
-              style: AppStyle.DEFAULT_14W600,
-              children: <TextSpan>[
-                data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                          fontFamily: 'Quicksand',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: COLORS.RED,
-                        ),
-                      )
-                    : TextSpan(),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-                color: noEdit == true ? COLORS.LIGHT_GREY : COLORS.WHITE,
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: COLORS.ffBEB4B4)),
-            child: Padding(
-              padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
-              child: Container(
-                child: TextFormField(
-                  textCapitalization: TextCapitalization.sentences,
-                  minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
-                  maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  keyboardType: data.field_type == 'TEXT_NUMERIC'
-                      ? TextInputType.number
-                      : data.field_special == 'default'
-                          ? TextInputType.text
-                          : (data.field_special == 'numeric')
-                              ? TextInputType.number
-                              : data.field_special == 'email-address'
-                                  ? TextInputType.emailAddress
-                                  : TextInputType.text,
-                  onChanged: (text) {
-                    _addData[indexParent].data[indexChild].value = text;
-                  },
-                  readOnly: noEdit,
-                  initialValue: value != ''
-                      ? value
-                      : noEdit == true
-                          ? data.field_value
-                          : data.field_set_value != null
-                              ? data.field_set_value.toString()
-                              : null,
-                  decoration: InputDecoration(
-                    hintStyle: AppStyle.DEFAULT_14W500,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    isDense: true,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          if (data.field_name == hdSoTien) ...[
-            SizedBox(
-              height: 8,
-            ),
-            RichText(
-              textScaleFactor: MediaQuery.of(context).textScaleFactor,
-              text: TextSpan(
-                text: '${getT(KeyT.unpaid)}:',
-                style: AppStyle.DEFAULT_14W600,
-                children: <TextSpan>[
-                  TextSpan(
-                      text: ' ${AppValue.formatMoney(soTien.toStringAsFixed(
-                        0,
-                      ))}',
-                      style: TextStyle(
-                          fontFamily: 'Quicksand',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: COLORS.TEXT_COLOR)),
-                ],
-              ),
-            ),
-          ]
-        ],
-      ),
-    );
-  }
-
-  Widget _fieldInputTextarea(
-      CustomerIndividualItemData data, int indexParent, int indexChild,
-      {bool noEdit = false, String value = ''}) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-                color: noEdit == true ? COLORS.LIGHT_GREY : COLORS.WHITE,
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: COLORS.ffBEB4B4)),
-            child: Padding(
-              padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
-              child: Container(
-                child: TextFormField(
-                  textCapitalization: TextCapitalization.sentences,
-                  minLines: 2,
-                  maxLines: 99,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                  keyboardType: data.field_type == 'TEXT_NUMERIC'
-                      ? TextInputType.number
-                      : data.field_special == 'default'
-                          ? TextInputType.text
-                          : (data.field_special == 'numeric')
-                              ? TextInputType.number
-                              : data.field_special == 'email-address'
-                                  ? TextInputType.emailAddress
-                                  : TextInputType.text,
-                  onChanged: (text) {
-                    _addData[indexParent].data[indexChild].value = text;
-                  },
-                  readOnly: noEdit,
-                  initialValue: value != ''
-                      ? value
-                      : noEdit == true
-                          ? data.field_value
-                          : data.field_set_value != null
-                              ? data.field_set_value.toString()
-                              : null,
-                  decoration: InputDecoration(
-                    hintText: // noEdit ? null :
-                        data.field_label,
-                    hintStyle: AppStyle.DEFAULT_14W500,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    isDense: true,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _rateWidget(
       CustomerIndividualItemData data, int indexParent, int indexChild,
       {bool noEdit = false, int value = 0}) {
@@ -757,7 +579,7 @@ class _FormAddSignState extends State<FormAddSign>
       _addData[indexParent].data[indexChild].value = starStream.value;
     }
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.only(bottom: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

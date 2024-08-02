@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/bloc/checkin_bloc/checkin_bloc.dart';
+import 'package:gen_crm/screens/menu/widget/widget_label.dart';
+import 'package:gen_crm/src/models/model_generator/add_customer.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -90,6 +92,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
         }
       },
       child: Scaffold(
+        backgroundColor: COLORS.WHITE,
         appBar: AppbarBaseNormal(
           isCheckIn ? getT(KeyT.check_in) : getT(KeyT.check_out),
         ),
@@ -142,9 +145,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                               location != LOADING
                                   ? Expanded(
                                       child: WidgetText(
-                                        title: location,
-                                        style: AppStyle.DEFAULT_14W600
-                                      ),
+                                          title: location,
+                                          style: AppStyle.DEFAULT_14W600),
                                     )
                                   : SizedBox(
                                       height: 12,
@@ -191,58 +193,22 @@ class _CheckInScreenState extends State<CheckInScreen> {
                           ),
                         AppValue.vSpaceSmall,
                         if (location != '') ...[
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: RichText(
-                              textScaleFactor:
-                                  MediaQuery.of(context).textScaleFactor,
-                              text: TextSpan(
-                                text: getT(KeyT.location),
-                                style: AppStyle.DEFAULT_14W600,
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: '*',
-                                    style: AppStyle.DEFAULT_14W500
-                                        .copyWith(color: COLORS.RED),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
                           Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(
-                                color: COLORS.ffBEB4B4,
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 10,
-                                top: 5,
-                                bottom: 5,
-                              ),
-                              child: Container(
-                                child: TextFormField(
-                                  textCapitalization:
-                                      TextCapitalization.sentences,
-                                  controller: controllerNote,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  onChanged: (text) {},
-                                  decoration: InputDecoration(
-                                    focusedBorder: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    disabledBorder: InputBorder.none,
-                                    isDense: true,
+                            child: TextFormField(
+                              textCapitalization: TextCapitalization.sentences,
+                              controller: controllerNote,
+                              style: AppStyle.DEFAULT_14_BOLD,
+                              onChanged: (text) {},
+                              decoration: InputDecoration(
+                                contentPadding: paddingBaseForm,
+                                label: WidgetLabelPo(
+                                  data: CustomerIndividualItemData.two(
+                                    field_label: getT(KeyT.location),
+                                    field_require: 1,
                                   ),
                                 ),
+                                border: OutlineInputBorder(),
+                                isDense: true,
                               ),
                             ),
                           ),

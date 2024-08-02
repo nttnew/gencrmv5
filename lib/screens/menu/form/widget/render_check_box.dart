@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gen_crm/src/src_index.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
+import '../../widget/widget_label.dart';
 
 class RenderCheckBox extends StatefulWidget {
   RenderCheckBox({
@@ -31,7 +31,7 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
+      margin: marginBottomFrom,
       child: Row(
         children: [
           Container(
@@ -50,21 +50,7 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
               },
             ),
           ),
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: widget.data.field_label ?? '',
-              style: AppStyle.DEFAULT_14,
-              children: <TextSpan>[
-                widget.data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: AppStyle.DEFAULT_14W600_RED,
-                      )
-                    : TextSpan(),
-              ],
-            ),
-          ),
+          WidgetLabel(widget.data),
         ],
       ),
     );

@@ -8,6 +8,7 @@ import '../../../../src/models/model_generator/add_customer.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/form_input/form_input.dart';
 import '../../../../widgets/widget_text.dart';
+import '../../widget/widget_label.dart';
 
 class LocationWidget extends StatefulWidget {
   const LocationWidget({
@@ -43,33 +44,10 @@ class _LocationWidgetState extends State<LocationWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      margin: marginBottomFrom,
+      child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: widget.data.field_label ?? '',
-              style: AppStyle.DEFAULT_14W600,
-              children: <TextSpan>[
-                widget.data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                          fontFamily: "Quicksand",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: COLORS.RED,
-                        ),
-                      )
-                    : TextSpan(),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
           GestureDetector(
             onTap: () async {
               if (widget.data.field_special != "none-edit") {
@@ -95,6 +73,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                   ? COLORS.GREY_400
                   : COLORS.WHITE,
               child: Container(
+                padding: paddingBaseForm,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(
@@ -104,39 +83,30 @@ class _LocationWidgetState extends State<LocationWidget> {
                     color: COLORS.ffBEB4B4,
                   ),
                 ),
-                child: Padding(
-                  padding: EdgeInsets.all(
-                    10,
-                  ),
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: WidgetText(
-                            title: dataTitle,
-                            maxLine: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "Quicksand",
-                              fontWeight: FontWeight.w600,
-                              color: COLORS.BLACK,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          child: Icon(
-                            Icons.arrow_drop_down,
-                            size: 25,
-                          ),
-                        )
-                      ],
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: dataTitle != ''
+                          ? WidgetText(
+                              title: dataTitle,
+                              maxLine: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppStyle.DEFAULT_14_BOLD,
+                            )
+                          : WidgetLabel(widget.data),
                     ),
-                  ),
+                    Container(
+                      child: Icon(
+                        Icons.arrow_drop_down,
+                        size: 25,
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),
           ),
+          if (dataTitle != '') WidgetLabelPo(data: widget.data),
         ],
       ),
     );
@@ -294,7 +264,6 @@ class _SelectLocationBottomSheetState extends State<SelectLocationBottomSheet> {
 class SelectTypeLocation extends StatefulWidget {
   const SelectTypeLocation({
     Key? key,
-    this.shinkWrap = false,
     this.code,
     required this.text,
     required this.title,
@@ -304,7 +273,6 @@ class SelectTypeLocation extends StatefulWidget {
     this.validate,
   }) : super(key: key);
 
-  final bool shinkWrap;
   final String? code;
   final String text;
   final String title;
@@ -360,94 +328,82 @@ class _SelectTypeLocationState extends State<SelectTypeLocation> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (title != (data?[NAME] ?? widget.text))
-          Padding(
-            padding: EdgeInsets.only(
-              left: widget.shinkWrap ? 0 : 16,
-              right: widget.shinkWrap ? 0 : 16,
-              bottom: 4,
-            ),
-            child: Text(
-              title,
-              style: AppStyle.APP_MEDIUM.copyWith(
-                color: COLORS.GREY,
-                fontWeight: FontWeight.w500,
-                fontSize: 12,
-              ),
-            ),
-          ),
-        Padding(
-          padding: EdgeInsets.only(
-            left: widget.shinkWrap ? 0 : 16,
-            right: widget.shinkWrap ? 0 : 16,
-          ),
-          child: InkWell(
-            onTap: () async {
-              FocusManager.instance.primaryFocus?.unfocus();
-              if (!isHide) {
-                final result = await APP_CONST.showBottomGenCRM(
-                  child: ListLocation(
-                    listData: listData,
-                    title: widget.title,
-                    text: widget.text,
-                  ),
-                );
-                data = result;
-                widget.onSelect(result);
-                setState(() {});
-              }
-            },
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(
-                    5,
-                  ),
-                ),
-                border: Border.all(
-                  color: _getColor(),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      !isHide ? (data?[NAME] ?? widget.text) : widget.text,
-                      style: AppStyle.DEFAULT_14.copyWith(
-                        color: _getColor(isText: true),
+    return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: 16,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              InkWell(
+                onTap: () async {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  if (!isHide) {
+                    final result = await APP_CONST.showBottomGenCRM(
+                      child: ListLocation(
+                        listData: listData,
+                        title: widget.title,
+                        text: widget.text,
+                      ),
+                    );
+                    data = result;
+                    widget.onSelect(result);
+                    setState(() {});
+                  }
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: paddingBaseForm,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(
+                        4,
                       ),
                     ),
+                    border: Border.all(
+                      color: _getColor(),
+                    ),
                   ),
-                  Icon(
-                    Icons.arrow_drop_down,
-                    color: _getColor(isText: true),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          !isHide ? (data?[NAME] ?? widget.text) : widget.text,
+                          style: AppStyle.DEFAULT_14.copyWith(
+                            color: _getColor(isText: true),
+                          ),
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_drop_down,
+                        color: _getColor(isText: true),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+              if (title != (data?[NAME] ?? widget.text))
+                WidgetLabelPo(
+                  data: CustomerIndividualItemData.two(
+                    field_label: title,
+                  ),
+                ),
+            ],
           ),
-        ),
-        if (validate == null) ...[
-          AppValue.hSpaceTiny,
-          Padding(
-            padding: EdgeInsets.only(
-              left: widget.shinkWrap ? 0 : 16,
-              right: widget.shinkWrap ? 0 : 16,
-            ),
-            child: Text(
+          if (validate == null) ...[
+            AppValue.hSpaceTiny,
+            Text(
               '${(getT(KeyT.not_select)).trim()} ${widget.title.toLowerCase()}',
               style: AppStyle.DEFAULT_14.apply(
                 color: Colors.red,
               ),
             ),
-          ),
-        ]
-      ],
+          ]
+        ],
+      ),
     );
   }
 

@@ -1,15 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/app_const.dart';
-import 'package:get/get.dart';
 import '../../../../api_resfull/dio_provider.dart';
 import '../../../../bloc/add_service_voucher/add_service_bloc.dart';
-import '../../../../l10n/key_text.dart';
 import '../../../../models/model_item_add.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
 import '../../../../src/src_index.dart';
 import '../../../../storages/share_local.dart';
 import '../../../../widgets/widget_text.dart';
+import '../../widget/widget_label.dart';
 import 'select_car.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 
@@ -95,33 +94,10 @@ class _TypeCarBaseState extends State<TypeCarBase> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      margin: marginBottomFrom,
+      child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(Get.context!).textScaleFactor,
-            text: TextSpan(
-              text: widget.data.field_label ?? '',
-              style: AppStyle.DEFAULT_14W600,
-              children: <TextSpan>[
-                widget.data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                          fontFamily: 'Quicksand',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: COLORS.RED,
-                        ),
-                      )
-                    : TextSpan(),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
           GestureDetector(
             onTap: () {
               showBottomGenCRM(
@@ -141,30 +117,29 @@ class _TypeCarBaseState extends State<TypeCarBase> {
                     decoration: BoxDecoration(
                       color: COLORS.WHITE,
                       borderRadius: BorderRadius.circular(
-                        5,
+                        4,
                       ),
                       border: Border.all(
-                        color: COLORS.ffBEB4B4,
+                        color: COLORS.COLOR_GRAY,
                       ),
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: 10,
-                        top: 16,
-                        bottom: 16,
-                      ),
-                      child: Container(
-                        child: WidgetText(
-                          title: (widget.bloc.loaiXe.value != ''
-                              ? widget.bloc.loaiXe.value
-                              : '---${getT(KeyT.select)}---'),
-                          style: AppStyle.DEFAULT_14_BOLD,
-                        ),
-                      ),
-                    ),
+                    padding: paddingBaseForm,
+                    child: widget.bloc.loaiXe.value != ''
+                        ? WidgetText(
+                            title: widget.bloc.loaiXe.value,
+                            style: AppStyle.DEFAULT_14_BOLD,
+                          )
+                        : WidgetLabel(widget.data),
                   );
                 }),
           ),
+          StreamBuilder<String>(
+              stream: widget.bloc.loaiXe,
+              builder: (context, snapshot) {
+                if (snapshot.data != '')
+                  return WidgetLabelPo(data: widget.data);
+                return SizedBox.shrink();
+              }),
         ],
       ),
     );

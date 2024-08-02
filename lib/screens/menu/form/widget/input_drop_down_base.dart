@@ -13,6 +13,7 @@ import '../../../../models/model_item_add.dart';
 import '../../../../src/app_const.dart';
 import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/search_base.dart';
+import '../../widget/widget_label.dart';
 
 class InputDropdownBase extends StatefulWidget {
   InputDropdownBase({
@@ -244,33 +245,10 @@ class _InputDropdownState extends State<InputDropdownBase> {
   Widget build(BuildContext context) {
     bool isReadOnly = widget.data.field_read_only.toString() == '1';
     return Container(
-      margin: EdgeInsets.only(bottom: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      margin: marginBottomFrom,
+      child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: widget.data.field_label ?? '',
-              style: AppStyle.DEFAULT_14W600,
-              children: <TextSpan>[
-                widget.data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                          fontFamily: 'Quicksand',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: COLORS.RED,
-                        ),
-                      )
-                    : TextSpan(),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
           StreamBuilder<List<List<dynamic>>?>(
               stream: _listSelectStream,
               builder: (context, snapshot) {
@@ -297,53 +275,56 @@ class _InputDropdownState extends State<InputDropdownBase> {
                       );
                   },
                   child: Container(
+                    padding: paddingBaseForm,
                     width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: isReadOnly ? COLORS.LIGHT_GREY : COLORS.WHITE,
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: COLORS.COLOR_GRAY),
+                    ),
                     child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: isReadOnly ? COLORS.LIGHT_GREY : COLORS.WHITE,
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: COLORS.ffBEB4B4),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: 10,
-                          top: 10,
-                          bottom: 10,
-                          right: 10,
-                        ),
-                        child: Container(
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: StreamBuilder<List<dynamic>>(
-                                    stream: _selectStream,
-                                    builder: (context, snapshot) {
-                                      final List<dynamic> listSnap =
-                                          snapshot.data ?? [];
-                                      return WidgetText(
-                                        title: listSnap.length > 1
-                                            ? listSnap[1]
-                                            : '',
-                                        maxLine: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: AppStyle.DEFAULT_14_BOLD,
-                                      );
-                                    }),
-                              ),
-                              Container(
-                                child: Icon(
-                                  Icons.arrow_drop_down,
-                                  size: 25,
-                                ),
-                              ),
-                            ],
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: StreamBuilder<List<dynamic>>(
+                                stream: _selectStream,
+                                builder: (context, snapshot) {
+                                  final List<dynamic> listSnap =
+                                      snapshot.data ?? [];
+                                  return listSnap.length > 1
+                                      ? listSnap[1] != ''
+                                          ? WidgetText(
+                                              title:
+                                                  listSnap[1].toString().trim(),
+                                              maxLine: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: AppStyle.DEFAULT_14_BOLD,
+                                            )
+                                          : WidgetLabel(widget.data)
+                                      : WidgetLabel(widget.data);
+                                }),
                           ),
-                        ),
+                          Container(
+                            child: Icon(
+                              Icons.arrow_drop_down,
+                              size: 25,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 );
+              }),
+          StreamBuilder<List<dynamic>>(
+              stream: _selectStream,
+              builder: (context, snapshot) {
+                final List<dynamic> listSnap = snapshot.data ?? [];
+                return listSnap.length > 1
+                    ? listSnap[1] != ''
+                        ? WidgetLabelPo(data: widget.data)
+                        : SizedBox.shrink()
+                    : SizedBox.shrink();
               }),
         ],
       ),
@@ -742,7 +723,7 @@ _itemList(
         ),
         child: Text(
           data[1].toString() != 'null' && data[1].toString() != ''
-              ? data[1].toString()
+              ? data[1].toString().trim()
               : getT(KeyT.not_yet),
           style: AppStyle.DEFAULT_16_BOLD.copyWith(
             color: _getColor(

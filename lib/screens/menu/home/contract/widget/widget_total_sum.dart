@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gen_crm/screens/menu/widget/widget_label.dart';
 import '../../../../../src/src_index.dart';
 
 class WidgetTotalSum extends StatelessWidget {
@@ -17,7 +18,7 @@ class WidgetTotalSum extends StatelessWidget {
   Widget build(BuildContext context) {
     onChange((value ?? '').replaceAll('.', '').replaceAll('đ', ''));
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: marginBottomFrom,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

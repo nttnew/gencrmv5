@@ -12,6 +12,7 @@ class COLORS {
   static final WHITE60 = Colors.white60;
   static final WHITE10 = Colors.white10;
   static const GREY = const Color(0xFF808080);
+  static const COLOR_GRAY = Colors.grey;
   static const GREY_400 = const Color(0xFFBDBDBD);
   static const LIGHT_GREY = const Color(0xEEEEEEEE);
   static const RED = const Color(0xffff0000);

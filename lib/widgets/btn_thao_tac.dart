@@ -56,19 +56,22 @@ class ButtonSmall extends StatelessWidget {
     Key? key,
     required this.onTap,
     this.title,
+    this.backGround,
   }) : super(key: key);
 
   final Function() onTap;
   final String? title;
+  final Color? backGround;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          backgroundColor: getBackgroundWithIsCar(),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(7),
-          ),),
+        backgroundColor: backGround ?? getBackgroundWithIsCar(),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(7),
+        ),
+      ),
       onPressed: () => onTap(),
       child: Text(
         title ?? getT(KeyT.action),

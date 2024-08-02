@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
 import '../../../../src/src_index.dart';
+import '../../widget/widget_label.dart';
 
 class FieldText extends StatefulWidget {
   const FieldText({
@@ -12,11 +12,13 @@ class FieldText extends StatefulWidget {
     required this.onChange,
     this.init,
     this.soTien,
+    this.isNoneEdit = false,
   }) : super(key: key);
   final CustomerIndividualItemData data;
   final Function(String) onChange;
   final String? init;
   final double? soTien;
+  final bool isNoneEdit;
 
   @override
   State<FieldText> createState() => _FieldTextState();
@@ -58,105 +60,69 @@ class _FieldTextState extends State<FieldText> {
   @override
   Widget build(BuildContext context) {
     final isReadOnly = data.field_special == 'none-edit' ||
-        data.field_read_only.toString() == '1';
+        data.field_read_only.toString() == '1' ||
+        widget.isNoneEdit;
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
+      margin: marginBottomFrom,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(Get.context!).textScaleFactor,
-            text: TextSpan(
-              text: data.field_label ?? '',
-              style: AppStyle.DEFAULT_14W600,
-              children: <TextSpan>[
-                data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                          fontFamily: 'Quicksand',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: COLORS.RED,
-                        ),
-                      )
-                    : TextSpan(),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
           Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: isReadOnly ? COLORS.LIGHT_GREY : COLORS.WHITE,
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                color: COLORS.ffBEB4B4,
+            child: TextFormField(
+              enabled: !isReadOnly,
+              inputFormatters: data.field_type == 'MONEY' ||
+                      data.field_type == 'TEXT_NUMERIC'
+                  ? AppStyle.inputPrice
+                  : null,
+              controller: _textEditingController,
+              minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
+              maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
+              style: AppStyle.DEFAULT_14_BOLD,
+              keyboardType: data.field_type == 'MONEY' ||
+                      data.field_special == 'numeric' ||
+                      data.field_type == 'TEXT_NUMERIC'
+                  ? TextInputType.number
+                  : data.field_special == 'default'
+                      ? TextInputType.text
+                      : data.field_special == 'email-address'
+                          ? TextInputType.emailAddress
+                          : isReadOnly
+                              ? TextInputType.none
+                              : TextInputType.text,
+              decoration: InputDecoration(
+                contentPadding: paddingBaseForm,
+                label: WidgetLabel(data),
+                counterText: '',
+                counterStyle: TextStyle(fontSize: 0),
+                hintStyle: hintTextStyle,
+                border: OutlineInputBorder(),
+                isDense: true,
+                hintText: getT(KeyT.enter) +
+                    ' ' +
+                    (data.field_label ?? '').toLowerCase(),
               ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: 10,
-                top: 5,
-                bottom: 5,
-              ),
-              child: Container(
-                child: TextFormField(
-                  enabled: !isReadOnly,
-                  inputFormatters: data.field_type == 'MONEY' ||
-                          data.field_type == 'TEXT_NUMERIC'
-                      ? AppStyle.inputPrice
-                      : null,
-                  controller: _textEditingController,
-                  minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
-                  maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
-                  style: AppStyle.DEFAULT_14_BOLD,
-                  keyboardType: data.field_type == 'MONEY' ||
-                          data.field_special == 'numeric' ||
-                          data.field_type == 'TEXT_NUMERIC'
-                      ? TextInputType.number
-                      : data.field_special == 'default'
-                          ? TextInputType.text
-                          : data.field_special == 'email-address'
-                              ? TextInputType.emailAddress
-                              : isReadOnly
-                                  ? TextInputType.none
-                                  : TextInputType.text,
-                  decoration: InputDecoration(
-                    counterText: '',
-                    counterStyle: TextStyle(fontSize: 0),
-                    hintStyle: AppStyle.DEFAULT_14W500,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    isDense: true,
-                  ),
-                  textCapitalization: TextCapitalization.sentences,
-                ),
-              ),
+              textCapitalization: TextCapitalization.sentences,
             ),
           ),
           if (data.field_name == hdSoTien && widget.soTien != null) ...[
             SizedBox(
-              height: 8,
+              height: 4,
             ),
             RichText(
               textScaleFactor: MediaQuery.of(context).textScaleFactor,
               text: TextSpan(
                 text: '${getT(KeyT.unpaid)}:',
-                style: AppStyle.DEFAULT_14W600,
+                style: AppStyle.DEFAULT_14W600.copyWith(
+                  fontSize: 12,
+                ),
                 children: <TextSpan>[
                   TextSpan(
                     text:
                         ' ${AppValue.formatMoney(widget.soTien?.toStringAsFixed(
                               0,
                             ) ?? '')}',
-                    style: TextStyle(
-                      fontFamily: 'Quicksand',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                    style: AppStyle.DEFAULT_14W600.copyWith(
+                      fontSize: 12,
                       color: COLORS.TEXT_COLOR,
                     ),
                   ),

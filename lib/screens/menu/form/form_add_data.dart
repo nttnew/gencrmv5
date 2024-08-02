@@ -855,6 +855,7 @@ class _FormAddDataState extends State<FormAddData> {
     final double paddingTop = MediaQuery.of(context).padding.top +
         140; //140 là chiều cao của các widget còn lại
     return Scaffold(
+      backgroundColor: COLORS.WHITE,
       appBar: AppbarBaseNormal(_title.toUpperCase().capitalizeFirst ?? ''),
       body: BlocListener<AddDataBloc, AddDataState>(
         bloc: _blocAdd,
@@ -963,10 +964,6 @@ class _FormAddDataState extends State<FormAddData> {
                                               if ('${itemParent.group_name ?? ''}'
                                                       .trim() !=
                                                   '') ...[
-                                                SizedBox(
-                                                  height:
-                                                      AppValue.heights * 0.01,
-                                                ),
                                                 itemParent.group_name != null
                                                     ? WidgetText(
                                                         title: itemParent
@@ -976,10 +973,7 @@ class _FormAddDataState extends State<FormAddData> {
                                                             .DEFAULT_18_BOLD,
                                                       )
                                                     : SizedBox.shrink(),
-                                                SizedBox(
-                                                  height:
-                                                      AppValue.heights * 0.01,
-                                                ),
+                                                AppValue.vSpace20,
                                               ],
                                               Column(
                                                 children: List.generate(
@@ -1040,9 +1034,7 @@ class _FormAddDataState extends State<FormAddData> {
                                   FileDinhKemUiBase(
                                     context: context,
                                   ),
-                                SizedBox(
-                                  height: AppValue.widths * 0.1 + 10,
-                                ),
+                                AppValue.vSpace20,
                               ],
                             ),
                           ),

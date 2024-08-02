@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gen_crm/screens/menu/widget/widget_label.dart';
 import '../l10n/l10n.dart';
 import '../src/models/model_generator/add_customer.dart';
 import '../src/src_index.dart';
@@ -68,35 +69,10 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      margin: marginBottomFrom,
+      child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: widget.data.field_label ?? '',
-              style: TextStyle(
-                  fontFamily: "Quicksand",
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: COLORS.BLACK),
-              children: <TextSpan>[
-                widget.data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                            fontFamily: "Quicksand",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: COLORS.RED))
-                    : TextSpan(),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
           GestureDetector(
             onTap: () {
               widget.isDate
@@ -129,26 +105,22 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
                     );
             },
             child: Container(
+              padding: paddingBaseForm,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(4),
                 border: Border.all(
-                  color: COLORS.ffBEB4B4,
+                  color: COLORS.COLOR_GRAY,
                 ),
               ),
               child: Row(
                 children: [
                   Expanded(
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        left: 10,
-                        top: 16,
-                        bottom: 16,
-                      ),
-                      child: WidgetText(
-                        title: dateText,
-                        style: AppStyle.DEFAULT_14_BOLD,
-                      ),
-                    ),
+                    child: dateText == ''
+                        ? WidgetLabel(widget.data)
+                        : WidgetText(
+                            title: dateText,
+                            style: AppStyle.DEFAULT_14_BOLD,
+                          ),
                   ),
                   WidgetContainerImage(
                     image: ICONS.IC_DATE_PNG,
@@ -156,13 +128,11 @@ class _WidgetInputDateState extends State<WidgetInputDate> {
                     height: 20,
                     fit: BoxFit.contain,
                   ),
-                  SizedBox(
-                    width: 16,
-                  )
                 ],
               ),
             ),
           ),
+          if (dateText != '') WidgetLabelPo(data: widget.data),
         ],
       ),
     );

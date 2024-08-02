@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/models/model_generator/list_car_response.dart';
+import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../bloc/add_service_voucher/add_service_bloc.dart';
@@ -208,29 +209,17 @@ class _SelectCarState extends State<SelectCar> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: HexColor('a6c1bc'),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(17))),
-                          child: Center(
-                            child: WidgetText(
-                              title: getT(KeyT.close),
-                              style: AppStyle.DEFAULT_16.copyWith(
-                                  color: HexColor('130F26'),
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                        ),
-                      ),
+                      child: ButtonSmall(
+                          backGround: COLORS.GREY,
+                          title: getT(KeyT.close),
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          }),
                     ),
-                    SizedBox(width: 16),
+                    AppValue.hSpaceSmall,
                     Expanded(
-                      child: GestureDetector(
+                      child: ButtonSmall(
+                        title: getT(KeyT.select),
                         onTap: () {
                           _bloc.loaiXe.add(
                             (_checkKhongXacDinh(_bloc.hangXe?.name ?? '') +
@@ -249,20 +238,6 @@ class _SelectCarState extends State<SelectCar> {
                           );
                           Navigator.of(context).pop();
                         },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: HexColor('c18300'),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(17))),
-                          child: Center(
-                            child: WidgetText(
-                              title: getT(KeyT.select),
-                              style: AppStyle.DEFAULT_16.copyWith(
-                                  color: HexColor('130F26'),
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                        ),
                       ),
                     ),
                   ],

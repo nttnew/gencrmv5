@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/list_note/add_note_bloc.dart';
 import 'package:gen_crm/bloc/list_note/list_note_bloc.dart';
+import 'package:gen_crm/screens/menu/widget/widget_label.dart';
 import 'package:get/get.dart';
 import '../../../l10n/key_text.dart';
 import '../../../src/app_const.dart';
@@ -113,6 +114,7 @@ class _AddNoteState extends State<AddNote> {
                             focusNode: _focusNode,
                             decoration: InputDecoration(
                               hintText: getT(KeyT.enter_content),
+                              hintStyle: hintTextStyle,
                               contentPadding: EdgeInsets.zero,
                               enabledBorder: InputBorder.none,
                               border: InputBorder.none,

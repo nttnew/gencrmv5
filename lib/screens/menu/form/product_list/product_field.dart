@@ -115,7 +115,7 @@ class _ProductFieldState extends State<ProductField> {
         ),
         Container(
           width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.only(bottom: 20, top: 20),
           child: Wrap(
             runSpacing: 10,
             spacing: 10, // Khoảng cách giữa các item theo chiều ngang

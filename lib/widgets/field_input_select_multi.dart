@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gen_crm/screens/menu/widget/widget_label.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../models/model_data_add.dart';
 import '../../l10n/key_text.dart';
+import '../src/models/model_generator/add_customer.dart';
 import '../src/src_index.dart';
 
 class SelectMulti extends StatefulWidget {
@@ -56,40 +58,12 @@ class _SelectMultiState extends State<SelectMulti> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      margin: marginBottomFrom,
+      child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: widget.label,
-              style: TextStyle(
-                fontFamily: "Quicksand",
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: COLORS.BLACK,
-              ),
-              children: <TextSpan>[
-                if (widget.required == 1)
-                  TextSpan(
-                    text: '*',
-                    style: TextStyle(
-                      fontFamily: "Quicksand",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: COLORS.RED,
-                    ),
-                  )
-              ],
-            ),
-          ),
-          AppValue.vSpaceTiny,
           Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: COLORS.ffBEB4B4),
-            ),
+            decoration: boxDecorationBaseForm,
             child: MultiSelectDialogField<ModelDataAdd>(
               listType: MultiSelectListType.CHIP,
               items: _dropdown
@@ -117,9 +91,9 @@ class _SelectMultiState extends State<SelectMulti> {
                   ShowDialogCustom.showDialogBase(
                     title: getT(KeyT.notification),
                     content:
-                        "${getT(KeyT.you_can_only_choose)} ${getT(KeyT.max)} "
-                        "${widget.maxLength} ${getT(KeyT.value)}"
-                        "\n(${getT(KeyT.press_once_more_to_cancel_selection)})",
+                        '${getT(KeyT.you_can_only_choose)} ${getT(KeyT.max)} '
+                        '${widget.maxLength} ${getT(KeyT.value)}'
+                        '\n(${getT(KeyT.press_once_more_to_cancel_selection)})',
                   );
                 } else {
                   List<String> res = [];
@@ -127,7 +101,7 @@ class _SelectMultiState extends State<SelectMulti> {
                     res.add('${values[i].value}');
                   }
                   _showLine = res.isNotEmpty;
-                  widget.onChange(res.join(","));
+                  widget.onChange(res.join(','));
                 }
                 setState(() {});
               },
@@ -153,6 +127,11 @@ class _SelectMultiState extends State<SelectMulti> {
               initialValue: _dropdownSelect,
               selectedItemsTextStyle: AppStyle.DEFAULT_14_BOLD,
               itemsTextStyle: AppStyle.DEFAULT_14,
+            ),
+          ),
+          WidgetLabelPo(
+            data: CustomerIndividualItemData.two(
+              field_label: widget.label,
             ),
           ),
         ],

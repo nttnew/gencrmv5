@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gen_crm/screens/menu/widget/widget_label.dart';
+import '../l10n/key_text.dart';
 import '../src/models/model_generator/add_customer.dart';
 import '../src/src_index.dart';
 import 'widget_text.dart';
@@ -45,166 +47,149 @@ class _InputMultipleWidgetState extends State<InputMultipleWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      margin: marginBottomFrom,
+      child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            text: TextSpan(
-              text: widget.data.field_label ?? '',
-              style: TextStyle(
-                fontFamily: "Quicksand",
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: COLORS.BLACK,
-              ),
-              children: <TextSpan>[
-                widget.data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                          fontFamily: "Quicksand",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: COLORS.RED,
-                        ),
-                      )
-                    : TextSpan(),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
           Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: COLORS.ffBEB4B4)),
-            child: Padding(
-              padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
-              child: Focus(
-                onFocusChange: (status) {
-                  if (status == false) {
-                    if (_editingController.text != "") {
-                      arr.add(_editingController.text);
-                      widget.onSelect(arr);
-                      setState(() {
-                        check = !check;
-                      });
+            padding: paddingBaseForm,
+            decoration: boxDecorationBaseForm,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Focus(
+                  onFocusChange: (status) {
+                    if (status == false) {
+                      if (_editingController.text != '') {
+                        arr.add(_editingController.text);
+                        widget.onSelect(arr);
+                        setState(() {
+                          check = !check;
+                        });
+                      }
+                      _editingController.text = '';
+                      _focusNode.unfocus();
                     }
-                    _editingController.text = "";
-                    _focusNode.unfocus();
-                  }
-                },
-                child: TextField(
-                  textCapitalization: TextCapitalization.sentences,
-                  controller: _editingController,
-                  onEditingComplete: () {
-                    if (_editingController.text != "") {
-                      arr.add(_editingController.text);
-                      widget.onSelect(arr);
-                      setState(() {
-                        check = !check;
-                      });
-                    }
-                    _editingController.text = "";
-                    _focusNode.unfocus();
                   },
-                  focusNode: _focusNode,
-                  style: AppStyle.DEFAULT_14_BOLD,
-                  keyboardType: widget.data.field_special == "default"
-                      ? TextInputType.text
-                      : widget.data.field_special == "numeric"
-                          ? TextInputType.number
-                          : widget.data.field_special == "email-address"
-                              ? TextInputType.emailAddress
-                              : TextInputType.text,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(
-                        widget.data.field_maxlength != null
-                            ? int.parse(widget.data.field_maxlength!)
-                            : null),
-                  ],
-                  maxLengthEnforcement:
-                      MaxLengthEnforcement.truncateAfterCompositionEnds,
-                  decoration: InputDecoration(
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    isDense: true,
+                  child: TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    controller: _editingController,
+                    onEditingComplete: () {
+                      if (_editingController.text != '') {
+                        arr.add(_editingController.text);
+                        widget.onSelect(arr);
+                        setState(() {
+                          check = !check;
+                        });
+                      }
+                      _editingController.text = '';
+                      _focusNode.unfocus();
+                    },
+                    focusNode: _focusNode,
+                    style: AppStyle.DEFAULT_14_BOLD,
+                    keyboardType: widget.data.field_special == 'default'
+                        ? TextInputType.text
+                        : widget.data.field_special == 'numeric'
+                            ? TextInputType.number
+                            : widget.data.field_special == 'email-address'
+                                ? TextInputType.emailAddress
+                                : TextInputType.text,
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(
+                          widget.data.field_maxlength != null
+                              ? int.parse(widget.data.field_maxlength!)
+                              : null),
+                    ],
+                    maxLengthEnforcement:
+                        MaxLengthEnforcement.truncateAfterCompositionEnds,
+                    decoration: InputDecoration(
+                      hintStyle: hintTextStyle,
+                      hintText: getT(KeyT.enter) +
+                          ' ' +
+                          widget.data.field_label.toString().toLowerCase(),
+                      contentPadding: EdgeInsets.zero,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      isDense: true,
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 8),
-            child: Wrap(
-              spacing: 8,
-              runSpacing: 6,
-              children: arr
-                  .map(
-                    (e) => ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: double.maxFinite,
-                        maxWidth: MediaQuery.of(context).size.width,
-                        minHeight: 0,
-                        minWidth: 0,
-                      ),
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          right: 4,
-                          bottom: 4,
-                          left: 8,
-                          top: 4,
-                        ),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: COLORS.BACKGROUND),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ConstrainedBox(
+                if (arr.isNotEmpty)
+                  Container(
+                    margin: EdgeInsets.only(top: 16),
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 6,
+                      children: arr
+                          .map(
+                            (e) => ConstrainedBox(
                               constraints: BoxConstraints(
                                 maxHeight: double.maxFinite,
-                                maxWidth:
-                                    MediaQuery.of(context).size.width - 90,
+                                maxWidth: MediaQuery.of(context).size.width,
                                 minHeight: 0,
                                 minWidth: 0,
                               ),
-                              child: WidgetText(
-                                maxLine: 1,
-                                overflow: TextOverflow.ellipsis,
-                                title: e,
-                                style: AppStyle.DEFAULT_14,
+                              child: Container(
+                                padding: EdgeInsets.only(
+                                  right: 4,
+                                  bottom: 4,
+                                  left: 8,
+                                  top: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: COLORS.BACKGROUND),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        maxHeight: double.maxFinite,
+                                        maxWidth:
+                                            MediaQuery.of(context).size.width -
+                                                90,
+                                        minHeight: 0,
+                                        minWidth: 0,
+                                      ),
+                                      child: WidgetText(
+                                        maxLine: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        title: e,
+                                        style: AppStyle.DEFAULT_14,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        arr.remove(e);
+                                        setState(() {
+                                          check = !check;
+                                        });
+                                        widget.onSelect(arr);
+                                      },
+                                      child: Image.asset(
+                                        ICONS.IC_REMOVE_TXT_PNG,
+                                        height: 20,
+                                        width: 20,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            InkWell(
-                                onTap: () {
-                                  arr.remove(e);
-                                  setState(() {
-                                    check = !check;
-                                  });
-                                  widget.onSelect(arr);
-                                },
-                                child: Image.asset(
-                                  ICONS.IC_REMOVE_TXT_PNG,
-                                  height: 20,
-                                  width: 20,
-                                )),
-                          ],
-                        ),
-                      ),
+                          )
+                          .toList(),
                     ),
                   )
-                  .toList(),
+              ],
             ),
-          )
+          ),
+          WidgetLabelPo(
+            data: widget.data,
+          ),
         ],
       ),
     );

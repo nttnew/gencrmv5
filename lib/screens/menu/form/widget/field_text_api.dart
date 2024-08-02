@@ -1,15 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import '../../../../api_resfull/dio_provider.dart';
+import '../../../../l10n/key_text.dart';
 import '../../../../models/model_item_add.dart';
 import '../../../../src/base.dart';
-import '../../../../src/color.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
 import '../../../../src/preferences_key.dart';
 import '../../../../src/styles.dart';
 import '../../../../storages/share_local.dart';
+import '../../widget/widget_label.dart';
 
 class FieldTextAPi extends StatefulWidget {
   const FieldTextAPi({
@@ -123,90 +123,44 @@ class _FieldTextAPiState extends State<FieldTextAPi> {
 
   @override
   Widget build(BuildContext context) {
-    final isReadOnly =
-        _data.field_special == 'none-edit' || _data.field_read_only == '1';
+    final isReadOnly = _data.field_special == 'none-edit' ||
+        _data.field_read_only == '1' ||
+        _isDisable;
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RichText(
-            textScaleFactor: MediaQuery.of(Get.context!).textScaleFactor,
-            text: TextSpan(
-              text: _data.field_label ?? '',
-              style: AppStyle.DEFAULT_14W600,
-              children: <TextSpan>[
-                _data.field_require == 1
-                    ? TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                          fontFamily: 'Quicksand',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: COLORS.RED,
-                        ),
-                      )
-                    : TextSpan(),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color:
-                  isReadOnly || _isDisable ? COLORS.LIGHT_GREY : COLORS.WHITE,
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                color: COLORS.ffBEB4B4,
-              ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: 10,
-                top: 5,
-                bottom: 5,
-              ),
-              child: Container(
-                child: TextFormField(
-                  enabled: !_isDisable,
-                  inputFormatters: _data.field_type == 'MONEY' ||
-                          _data.field_type == 'TEXT_NUMERIC'
-                      ? AppStyle.inputPrice
-                      : null,
-                  controller: _textEditingController,
-                  minLines: _data.field_type == 'TEXTAREA' ? 2 : 1,
-                  maxLines: _data.field_type == 'TEXTAREA' ? 6 : 1,
-                  style: AppStyle.DEFAULT_14_BOLD,
-                  keyboardType: widget.typeInput ??
-                      (_data.field_special == 'numeric' ||
-                              _data.field_type == 'MONEY' ||
-                              _data.field_type == 'TEXT_NUMERIC'
-                          ? TextInputType.number
-                          : _data.field_special == 'default'
-                              ? TextInputType.text
-                              : _data.field_special == 'email-address'
-                                  ? TextInputType.emailAddress
-                                  : isReadOnly
-                                      ? TextInputType.none
-                                      : TextInputType.text),
-                  decoration: InputDecoration(
-                    counterText: '',
-                    counterStyle: TextStyle(fontSize: 0),
-                    hintStyle: AppStyle.DEFAULT_14W500,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    isDense: true,
-                  ),
-                  textCapitalization: TextCapitalization.sentences,
-                ),
-              ),
-            ),
-          ),
-        ],
+      margin: marginBottomFrom,
+      child: TextFormField(
+        enabled: !isReadOnly,
+        inputFormatters:
+            _data.field_type == 'MONEY' || _data.field_type == 'TEXT_NUMERIC'
+                ? AppStyle.inputPrice
+                : null,
+        controller: _textEditingController,
+        minLines: _data.field_type == 'TEXTAREA' ? 2 : 1,
+        maxLines: _data.field_type == 'TEXTAREA' ? 6 : 1,
+        style: AppStyle.DEFAULT_14_BOLD,
+        keyboardType: widget.typeInput ??
+            (_data.field_special == 'numeric' ||
+                    _data.field_type == 'MONEY' ||
+                    _data.field_type == 'TEXT_NUMERIC'
+                ? TextInputType.number
+                : _data.field_special == 'default'
+                    ? TextInputType.text
+                    : _data.field_special == 'email-address'
+                        ? TextInputType.emailAddress
+                        : isReadOnly
+                            ? TextInputType.none
+                            : TextInputType.text),
+        decoration: InputDecoration(
+          contentPadding: paddingBaseForm,
+          label: WidgetLabel(_data),
+          counterText: '',
+          counterStyle: TextStyle(fontSize: 0),
+          hintStyle: hintTextStyle,
+          hintText: getT(KeyT.enter) + ' ' + (_data.field_label ?? '').toLowerCase(),
+          border: OutlineInputBorder(),
+          isDense: true,
+        ),
+        textCapitalization: TextCapitalization.sentences,
       ),
     );
   }

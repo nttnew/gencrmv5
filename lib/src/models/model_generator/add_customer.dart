@@ -53,6 +53,35 @@ class CustomerIndividualItemData {
     this.showparents,
   );
 
+  CustomerIndividualItemData.two({
+    this.field_id,
+    this.field_name,
+    this.field_label,
+    this.field_type,
+    this.field_validation,
+    this.field_validation_message,
+    this.field_maxlength,
+    this.field_hidden,
+    this.parent,
+    this.field_require,
+    this.field_set_value,
+    this.field_read_only,
+    this.field_datasource,
+    this.field_set_value_datasource,
+    this.field_special,
+    this.field_value,
+    this.products,
+    this.button,
+    this.field_parent,
+    this.field_search,
+    this.is_load,
+    this.isShowParrent,
+    this.showparents,
+  });
+
+  getLabel() =>
+      this.field_require == 1 ? '${this.field_label}*' : this.field_label;
+
   factory CustomerIndividualItemData.fromJson(Map<String, dynamic> json) =>
       _$CustomerIndividualItemDataFromJson(json);
 
