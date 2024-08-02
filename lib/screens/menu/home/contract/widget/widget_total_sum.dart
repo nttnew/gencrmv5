@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gen_crm/widgets/widgets.dart';
 import '../../../../../src/src_index.dart';
 
 class WidgetTotalSum extends StatelessWidget {
@@ -18,8 +17,8 @@ class WidgetTotalSum extends StatelessWidget {
   Widget build(BuildContext context) {
     onChange((value ?? '').replaceAll('.', '').replaceAll('đ', ''));
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
+      margin: EdgeInsets.only(bottom: 10),
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
@@ -32,26 +31,13 @@ class WidgetTotalSum extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
-            height: 8,
-          ),
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: COLORS.LIGHT_GREY,
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                color: COLORS.ffBEB4B4,
+          Expanded(
+            child: Text(
+               value ?? '',
+              style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                color: COLORS.ORANGE_IMAGE,
               ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(left: 10, top: 14, bottom: 14),
-              child: Container(
-                child: WidgetText(
-                  title: value,
-                  style: AppStyle.DEFAULT_14_BOLD,
-                ),
-              ),
+              textAlign: TextAlign.end,
             ),
           ),
         ],
