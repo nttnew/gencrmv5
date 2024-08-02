@@ -62,9 +62,15 @@ class _DropDownBaseState extends State<DropDownBase> {
                     final _filter = snapshot.data;
                     if (widget.isExpand)
                       return Expanded(
-                          child:
-                              _item(filter: _filter, listFilter: _listFilter));
-                    return _item(filter: _filter, listFilter: _listFilter);
+                        child: _item(
+                          filter: _filter,
+                          listFilter: _listFilter,
+                        ),
+                      );
+                    return _item(
+                      filter: _filter,
+                      listFilter: _listFilter,
+                    );
                   })
               : SizedBox();
         });
@@ -124,9 +130,12 @@ class _DropDownBaseState extends State<DropDownBase> {
                           widget.title ??
                           ((!widget.isName
                               ? getT(KeyT.select_type)
-                              : getT(KeyT.select_filter))),
-                      style: AppStyle.DEFAULT_16
-                          .copyWith(fontWeight: FontWeight.w600),
+                              : getT(
+                                  KeyT.select_filter,
+                                ))),
+                      style: AppStyle.DEFAULT_16.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

@@ -41,6 +41,9 @@ class _RenderCheckBoxState extends State<RenderCheckBox> {
               right: 8,
             ),
             child: Checkbox(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4), // Bo góc checkbox
+              ),
               value: isCheck,
               onChanged: (bool? value) {
                 widget.onChange(value);

@@ -52,72 +52,84 @@ class _InputMultipleWidgetState extends State<InputMultipleWidget> {
         clipBehavior: Clip.none,
         children: [
           Container(
-            padding: paddingBaseForm,
             decoration: boxDecorationBaseForm,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Focus(
-                  onFocusChange: (status) {
-                    if (status == false) {
-                      if (_editingController.text != '') {
-                        arr.add(_editingController.text);
-                        widget.onSelect(arr);
-                        setState(() {
-                          check = !check;
-                        });
+                Container(
+                  padding: paddingBaseForm,
+                  decoration: arr.isEmpty
+                      ? null
+                      : BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(color: COLORS.BLUE, width: 2),
+                          ),
+                        ),
+                  child: Focus(
+                    onFocusChange: (status) {
+                      if (status == false) {
+                        if (_editingController.text != '') {
+                          arr.add(_editingController.text);
+                          widget.onSelect(arr);
+                          setState(() {
+                            check = !check;
+                          });
+                        }
+                        _editingController.text = '';
+                        _focusNode.unfocus();
                       }
-                      _editingController.text = '';
-                      _focusNode.unfocus();
-                    }
-                  },
-                  child: TextFormField(
-                    textCapitalization: TextCapitalization.sentences,
-                    controller: _editingController,
-                    onEditingComplete: () {
-                      if (_editingController.text != '') {
-                        arr.add(_editingController.text);
-                        widget.onSelect(arr);
-                        setState(() {
-                          check = !check;
-                        });
-                      }
-                      _editingController.text = '';
-                      _focusNode.unfocus();
                     },
-                    focusNode: _focusNode,
-                    style: AppStyle.DEFAULT_14_BOLD,
-                    keyboardType: widget.data.field_special == 'default'
-                        ? TextInputType.text
-                        : widget.data.field_special == 'numeric'
-                            ? TextInputType.number
-                            : widget.data.field_special == 'email-address'
-                                ? TextInputType.emailAddress
-                                : TextInputType.text,
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(
-                          widget.data.field_maxlength != null
-                              ? int.parse(widget.data.field_maxlength!)
-                              : null),
-                    ],
-                    maxLengthEnforcement:
-                        MaxLengthEnforcement.truncateAfterCompositionEnds,
-                    decoration: InputDecoration(
-                      hintStyle: hintTextStyle,
-                      hintText: getT(KeyT.enter) +
-                          ' ' +
-                          widget.data.field_label.toString().toLowerCase(),
-                      contentPadding: EdgeInsets.zero,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      isDense: true,
+                    child: TextFormField(
+                      textCapitalization: TextCapitalization.sentences,
+                      controller: _editingController,
+                      onEditingComplete: () {
+                        if (_editingController.text != '') {
+                          arr.add(_editingController.text);
+                          widget.onSelect(arr);
+                          setState(() {
+                            check = !check;
+                          });
+                        }
+                        _editingController.text = '';
+                        _focusNode.unfocus();
+                      },
+                      focusNode: _focusNode,
+                      style: AppStyle.DEFAULT_14_BOLD,
+                      keyboardType: widget.data.field_special == 'default'
+                          ? TextInputType.text
+                          : widget.data.field_special == 'numeric'
+                              ? TextInputType.number
+                              : widget.data.field_special == 'email-address'
+                                  ? TextInputType.emailAddress
+                                  : TextInputType.text,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(
+                            widget.data.field_maxlength != null
+                                ? int.parse(widget.data.field_maxlength!)
+                                : null),
+                      ],
+                      maxLengthEnforcement:
+                          MaxLengthEnforcement.truncateAfterCompositionEnds,
+                      decoration: InputDecoration(
+                        hintStyle: hintTextStyle,
+                        hintText: getT(KeyT.enter) +
+                            ' ' +
+                            widget.data.field_label.toString().toLowerCase(),
+                        contentPadding: EdgeInsets.zero,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                        isDense: true,
+                      ),
                     ),
                   ),
                 ),
                 if (arr.isNotEmpty)
                   Container(
-                    margin: EdgeInsets.only(top: 16),
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                     child: Wrap(
                       spacing: 8,
                       runSpacing: 6,

@@ -43,6 +43,7 @@ class _LocationWidgetState extends State<LocationWidget> {
 
   @override
   Widget build(BuildContext context) {
+    bool isReadOnly = widget.data.field_special == 'none-edit';
     return Container(
       margin: marginBottomFrom,
       child: Stack(
@@ -50,59 +51,53 @@ class _LocationWidgetState extends State<LocationWidget> {
         children: [
           GestureDetector(
             onTap: () async {
-              if (widget.data.field_special != "none-edit") {
-                FocusManager.instance.primaryFocus?.unfocus();
-              }
-              final LocationModel? result = await APP_CONST.showBottomGenCRM(
-                child: SelectLocationBottomSheet(
-                  init: initData,
-                  title: widget.data.field_label ?? '',
-                ),
-              );
+              FocusManager.instance.primaryFocus?.unfocus();
+              if (!isReadOnly) {
+                final LocationModel? result = await APP_CONST.showBottomGenCRM(
+                  child: SelectLocationBottomSheet(
+                    init: initData,
+                    title: widget.data.field_label ?? '',
+                  ),
+                );
 
-              if (result != null) {
-                initData = result;
-                dataTitle = result.getTitle();
-                widget.onSuccess(result.toJson());
-                setState(() {});
+                if (result != null) {
+                  initData = result;
+                  dataTitle = result.getTitle();
+                  widget.onSuccess(result.toJson());
+                  setState(() {});
+                }
               }
             },
             child: Container(
+              padding: paddingBaseForm,
               width: double.infinity,
-              color: widget.data.field_special == "none-edit"
-                  ? COLORS.GREY_400
-                  : COLORS.WHITE,
-              child: Container(
-                padding: paddingBaseForm,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    5,
-                  ),
-                  border: Border.all(
-                    color: COLORS.ffBEB4B4,
-                  ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(
+                  5,
                 ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: dataTitle != ''
-                          ? WidgetText(
-                              title: dataTitle,
-                              maxLine: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: AppStyle.DEFAULT_14_BOLD,
-                            )
-                          : WidgetLabel(widget.data),
-                    ),
-                    Container(
-                      child: Icon(
-                        Icons.arrow_drop_down,
-                        size: 25,
-                      ),
-                    )
-                  ],
+                border: Border.all(
+                  color: COLORS.COLOR_GRAY,
+                  width: isReadOnly ? 0.2 : 1,
                 ),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: dataTitle != ''
+                        ? WidgetText(
+                            title: dataTitle,
+                            maxLine: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppStyle.DEFAULT_14_BOLD,
+                          )
+                        : WidgetLabel(widget.data),
+                  ),
+                  Icon(
+                    Icons.arrow_drop_down,
+                    size: 24,
+                    color: isReadOnly ? COLORS.COLOR_GRAY : null,
+                  )
+                ],
               ),
             ),
           ),

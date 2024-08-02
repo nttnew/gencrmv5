@@ -114,9 +114,12 @@ class _ItemProductsState extends State<ItemProducts> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppValue.vSpaceSmall,
-            WidgetText(
-              title: _dataNew.productName ?? '',
-              style: AppStyle.DEFAULT_16_BOLD,
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 1.5,
+              child: WidgetText(
+                title: _dataNew.productName ?? '',
+                style: AppStyle.DEFAULT_16_BOLD,
+              ),
             ),
             _tenCombo(_dataNew),
             Row(

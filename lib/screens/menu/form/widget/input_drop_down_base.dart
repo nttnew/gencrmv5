@@ -278,9 +278,12 @@ class _InputDropdownState extends State<InputDropdownBase> {
                     padding: paddingBaseForm,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: isReadOnly ? COLORS.LIGHT_GREY : COLORS.WHITE,
+                      color: COLORS.WHITE,
                       borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: COLORS.COLOR_GRAY),
+                      border: Border.all(
+                        color: COLORS.COLOR_GRAY,
+                        width: isReadOnly ? 0.3 : 1,
+                      ),
                     ),
                     child: Container(
                       child: Row(
@@ -304,11 +307,10 @@ class _InputDropdownState extends State<InputDropdownBase> {
                                       : WidgetLabel(widget.data);
                                 }),
                           ),
-                          Container(
-                            child: Icon(
-                              Icons.arrow_drop_down,
-                              size: 25,
-                            ),
+                          Icon(
+                            Icons.arrow_drop_down,
+                            size: 24,
+                            color: isReadOnly ? COLORS.COLOR_GRAY : null,
                           ),
                         ],
                       ),
