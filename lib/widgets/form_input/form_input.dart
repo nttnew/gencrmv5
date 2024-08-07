@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gen_crm/src/models/model_generator/add_customer.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../screens/menu/widget/widget_label.dart';
 import '../../src/src_index.dart';
 
 class FormInputBase extends StatefulWidget {
@@ -39,7 +41,8 @@ class FormInputBase extends StatefulWidget {
     this.hint,
     this.onSubmit,
     this.errorText,
-    this.focusNode, this.label,
+    this.focusNode,
+    this.label,
   }) : super(key: key);
 
   final bool isClose;
@@ -184,7 +187,10 @@ class FormInputBaseState extends State<FormInputBase> {
                     if (widget.onSubmit != null) widget.onSubmit!();
                   },
                   decoration: InputDecoration(
-                    labelText: widget.label,
+                    label: widget.label != null
+                        ? WidgetLabel(CustomerIndividualItemData.two(
+                            field_label: widget.label))
+                        : null,
                     errorText: widget.errorText,
                     hintText: widget.hint,
                     contentPadding: EdgeInsets.only(
