@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
+import 'package:gen_crm/widgets/form_input/form_input.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -137,46 +138,23 @@ class _ForgotPasswordResetScreenState extends State<ForgotPasswordResetScreen> {
   _buildTextFieldPassword(BuildContext context, ResetPasswordBloc bloc) {
     return BlocBuilder<ResetPasswordBloc, ResetPasswordState>(
         builder: (context, state) {
-      return WidgetInput(
-        onChanged: (value) => newPass = value,
+      return FormInputBase(
+        onChange: (value) => newPass = value,
         focusNode: _newPassFocusNode,
-        inputType: TextInputType.text,
-        colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
-        textLabel: Text(getT(KeyT.password),
-            style: TextStyle(
-                fontFamily: "Quicksand",
-                fontWeight: FontWeight.w600,
-                fontSize: 14)),
-        obscureText: true,
-        boxDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: COLORS.ff838A91),
-        ),
+        label: getT(KeyT.password),
+        isPass: true,
       );
     });
   }
 
   _buildTextFieldPasswordPressAgain(BuildContext context) {
-    return WidgetInput(
-      onChanged: (value) {
+    return FormInputBase(
+      onChange: (value) {
         cfPass = value;
       },
       focusNode: _cfPassFocusNode,
-      inputType: TextInputType.text,
-      colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
-      textLabel: Text(
-        getT(KeyT.enter_password_again),
-        style: TextStyle(
-          fontFamily: "Quicksand",
-          fontWeight: FontWeight.w600,
-          fontSize: 14,
-        ),
-      ),
-      obscureText: true,
-      boxDecoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: COLORS.ff838A91),
-      ),
+      label: getT(KeyT.enter_password_again),
+      isPass: true,
     );
   }
 }

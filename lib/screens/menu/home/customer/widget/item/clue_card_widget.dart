@@ -24,7 +24,7 @@ class ClueCardWidget extends StatelessWidget {
         children: [
           itemTextIcon(
             paddingTop: 0,
-            text: "${data.danh_xung ?? ''}" + " " + "${data.name ?? ''}".trim(),
+            text: '${data.danh_xung ?? ''}' + ' ' + '${data.name ?? ''}'.trim(),
             icon: ICONS.IC_AVATAR_SVG,
             styleText:
                 AppStyle.DEFAULT_16_BOLD.copyWith(color: COLORS.TEXT_BLUE_BOLD),
@@ -36,7 +36,7 @@ class ClueCardWidget extends StatelessWidget {
             onTap: () {
               if (data.email?.action != null && data.email?.action == 1) {
                 if (data.email?.val != null)
-                  launchUrl(Uri(scheme: "mailto", path: "${data.email?.val}"));
+                  launchUrl(Uri(scheme: 'mailto', path: '${data.email?.val}'));
               }
             },
           ),
@@ -45,6 +45,7 @@ class ClueCardWidget extends StatelessWidget {
               colorTitle: COLORS.TEXT_BLUE_BOLD,
               content: data.total_note ?? '',
               icon: ICONS.IC_PHONE_C_PNG,
+              isSvg: false,
               colorIcon: COLORS.GREY,
               onTapTitle: () {
                 if (data.phone?.action != null && data.phone?.action == 2) {

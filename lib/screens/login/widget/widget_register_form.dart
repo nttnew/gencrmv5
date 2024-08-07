@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:community_material_icon/community_material_icon.dart';
 import 'package:formz/formz.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
-import 'package:gen_crm/widgets/widgets.dart';
+import 'package:gen_crm/widgets/form_input/form_input.dart';
 import '../../../l10n/key_text.dart';
 
 class WidgetRegisterForm extends StatefulWidget {
@@ -17,7 +16,6 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
   final _fullNameFocusNode = FocusNode();
   final _emailFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
-  bool obscurePassword = true;
 
   @override
   void initState() {
@@ -79,24 +77,10 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                getT(KeyT.full_name),
-                style: AppStyle.DEFAULT_16_BOLD,
-              ),
               AppValue.vSpaceSmall,
               _buildTextFieldFullName(bloc),
               AppValue.vSpaceSmall,
-              Text(
-                getT(KeyT.email),
-                style: AppStyle.DEFAULT_16_BOLD,
-              ),
-              AppValue.vSpaceSmall,
               _buildTextFieldEmail(bloc),
-              AppValue.vSpaceSmall,
-              Text(
-                getT(KeyT.password),
-                style: AppStyle.DEFAULT_16_BOLD,
-              ),
               AppValue.vSpaceSmall,
               _buildTextFieldPassword(bloc),
               AppValue.vSpaceLarge,
@@ -123,39 +107,26 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
 
   _buildTextFieldPassword(RegisterBloc bloc) {
     return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
-      return WidgetInput(
-        onChanged: (value) =>
-            bloc.add(PasswordRegisterChanged(password: value)),
+      return FormInputBase(
+        onChange: (value) => bloc.add(PasswordRegisterChanged(password: value)),
         errorText: state.password.invalid
             ? getT(KeyT.password_must_be_at_least_6_characters)
             : null,
-        obscureText: obscurePassword,
-        focusNode: _passwordFocusNode,
-        boxDecoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25), color: COLORS.WHITE),
+        isPass: true,
         hint: getT(KeyT.enter_your_password),
-        endIcon: GestureDetector(
-          onTap: () => setState(() => obscurePassword = !obscurePassword),
-          child: Icon(
-            obscurePassword
-                ? CommunityMaterialIcons.eye_outline
-                : CommunityMaterialIcons.eye_off_outline,
-            color: COLORS.GREY,
-            size: 25,
-          ),
-        ),
+        focusNode: _passwordFocusNode,
+        label: getT(KeyT.password),
       );
     });
   }
 
   _buildTextFieldEmail(RegisterBloc bloc) {
     return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
-      return WidgetInput(
-        onChanged: (value) => bloc.add(EmailRegisterChanged(email: value)),
-        inputType: TextInputType.emailAddress,
+      return FormInputBase(
+        onChange: (value) => bloc.add(EmailRegisterChanged(email: value)),
+        label: getT(KeyT.email),
         focusNode: _emailFocusNode,
-        boxDecoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25), color: COLORS.WHITE),
+        textInputType: TextInputType.emailAddress,
         hint: getT(KeyT.enter_your_email),
         errorText:
             state.email.invalid ? getT(KeyT.this_account_is_invalid) : null,
@@ -165,13 +136,10 @@ class _WidgetRegisterFormState extends State<WidgetRegisterForm> {
 
   _buildTextFieldFullName(RegisterBloc bloc) {
     return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
-      return WidgetInput(
-        onChanged: (value) =>
-            bloc.add(FullNameRegisterChanged(fullName: value)),
-        inputType: TextInputType.text,
+      return FormInputBase(
+        onChange: (value) => bloc.add(FullNameRegisterChanged(fullName: value)),
+        label: getT(KeyT.full_name),
         focusNode: _fullNameFocusNode,
-        boxDecoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25), color: COLORS.WHITE),
         hint: getT(KeyT.enter_full_name),
         errorText: state.fullName.invalid
             ? getT(KeyT.name_cannot_be_left_blank)

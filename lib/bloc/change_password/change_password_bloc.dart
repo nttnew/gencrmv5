@@ -26,8 +26,9 @@ class ChangePasswordBloc
     super.onTransition(transition);
   }
 
-  String repeatPass = "";
-  String oldPass = "";
+  String repeatPass = '';
+  String oldPass = '';
+
   @override
   Stream<ChangePasswordState> mapEventToState(
       ChangePasswordEvent event) async* {

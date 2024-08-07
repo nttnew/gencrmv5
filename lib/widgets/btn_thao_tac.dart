@@ -12,7 +12,7 @@ class ButtonCustom extends StatelessWidget {
     this.backgroundColor,
     this.paddingAll,
     this.textColor,
-    this.marginVertical,
+    this.marginVertical, this.style,
   }) : super(key: key);
 
   final Function()? onTap;
@@ -22,6 +22,7 @@ class ButtonCustom extends StatelessWidget {
   final double? paddingAll;
   final Color? backgroundColor;
   final Color? textColor;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +43,12 @@ class ButtonCustom extends StatelessWidget {
         onPressed: onTap,
         child: Text(
           title ?? getT(KeyT.action),
-          style: AppStyle.DEFAULT_16_BOLD.copyWith(
-            color: textColor ?? getColorWithIsCar(),
-          ),
+          style: style ??
+              AppStyle.DEFAULT_16_BOLD.copyWith(
+                color: textColor ?? getColorWithIsCar(),
+              ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ),
     );

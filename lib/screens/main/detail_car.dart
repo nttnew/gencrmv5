@@ -333,6 +333,10 @@ class _DetailCarState extends State<DetailCar> {
                             AppValue.hSpaceSmall,
                             Expanded(
                               child: ButtonCustom(
+                                  style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                                    fontSize: 12,
+                                    color: COLORS.WHITE,
+                                  ),
                                   paddingAll: 12,
                                   marginHorizontal: 0,
                                   title: getT(KeyT.pay),
@@ -348,6 +352,10 @@ class _DetailCarState extends State<DetailCar> {
                             AppValue.hSpaceSmall,
                             Expanded(
                               child: ButtonCustom(
+                                style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                                  fontSize: 12,
+                                  color: COLORS.WHITE,
+                                ),
                                 paddingAll: 12,
                                 marginHorizontal: 0,
                                 title: getT(KeyT.cap_nhat_trang_thai),

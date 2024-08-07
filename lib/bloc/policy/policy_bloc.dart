@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../api_resfull/user_repository.dart';
 import '../../l10n/key_text.dart';
 import '../../src/base.dart';
-import '../../widgets/loading_api.dart';
 
 part 'policy_state.dart';
 part 'policy_event.dart';
@@ -24,7 +23,6 @@ class GetPolicyBloc extends Bloc<GetPolicyEvent, PolicyState> {
   }
 
   Stream<PolicyState> _getPolicy() async* {
-    Loading().showLoading();
     try {
       final response = await userRepository.getPolicy();
       if (isSuccess(response.code)) {
@@ -32,12 +30,9 @@ class GetPolicyBloc extends Bloc<GetPolicyEvent, PolicyState> {
       } else
         yield ErrorGetPolicyState(response.msg ?? '');
     } catch (e) {
-      Loading().popLoading();
       yield ErrorGetPolicyState(
          getT(KeyT.an_error_occurred));
-      throw e;
     }
-    Loading().popLoading();
   }
 
   static GetPolicyBloc of(BuildContext context) =>

@@ -4,6 +4,7 @@ import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
+import 'package:gen_crm/widgets/form_input/form_input.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import '../../l10n/key_text.dart';
@@ -126,24 +127,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   _buildTextFieldEmail(BuildContext context, ForgotPasswordBloc bloc) {
     return BlocBuilder<ForgotPasswordBloc, ForgotPasswordState>(
         builder: (context, state) {
-      return WidgetInput(
-        onChanged: (value) =>
-            bloc.add(EmailForgotPasswordChanged(email: value)),
-        colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
+      return FormInputBase(
+        onChange: (value) => bloc.add(EmailForgotPasswordChanged(email: value)),
         focusNode: _EmailFocusNode,
-        inputType: TextInputType.emailAddress,
+        textInputType: TextInputType.emailAddress,
         errorText:
             state.email.invalid ? getT(KeyT.this_email_is_invalid) : null,
-        boxDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: COLORS.ff838A91),
-        ),
-        textLabel: WidgetText(
-            title: getT(KeyT.email),
-            style: TextStyle(
-                fontFamily: "Quicksand",
-                fontWeight: FontWeight.w600,
-                fontSize: 14)),
+        label: getT(KeyT.email),
       );
     });
   }
@@ -151,23 +141,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   _buildTextFieldUsername(BuildContext context, ForgotPasswordBloc bloc) {
     return BlocBuilder<ForgotPasswordBloc, ForgotPasswordState>(
         builder: (context, state) {
-      return WidgetInput(
-        onChanged: (value) =>
+      return FormInputBase(
+        onChange: (value) =>
             bloc.add(UserForgotPasswordChanged(username: value)),
-        colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
         focusNode: _UserFocusNode,
-        inputType: TextInputType.text,
-        boxDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: COLORS.ff838A91),
-        ),
+        textInputType: TextInputType.text,
         errorText:
             state.username.invalid ? getT(KeyT.this_account_is_invalid) : null,
-        textLabel: Text(getT(KeyT.user),
-            style: TextStyle(
-                fontFamily: "Quicksand",
-                fontWeight: FontWeight.w600,
-                fontSize: 14)),
+        label: getT(KeyT.user),
       );
     });
   }

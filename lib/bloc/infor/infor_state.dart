@@ -1,26 +1,26 @@
 part of 'infor_bloc.dart';
 
-abstract class InforState extends Equatable {
+abstract class InfoState extends Equatable {
   @override
   List<Object?> get props => [];
 
-  InforState();
+  InfoState();
 }
 
-class InitGetInforState extends InforState {}
+class InitGetInfoState extends InfoState {}
 
-class UpdateGetInforState extends InforState {
-  final String? gioi_thieu;
+class UpdateGetInfoState extends InfoState {
+  final String? gioiThieu;
 
-  UpdateGetInforState(this.gioi_thieu);
+  UpdateGetInfoState(this.gioiThieu);
 }
 
-class LoadingGetInforState extends InforState {}
+class LoadingGetInfoState extends InfoState {}
 
-class ErrorGetInforState extends InforState {
+class ErrorGetInfoState extends InfoState {
   final String msg;
 
-  ErrorGetInforState(this.msg);
+  ErrorGetInfoState(this.msg);
   @override
   List<Object> get props => [msg];
 }

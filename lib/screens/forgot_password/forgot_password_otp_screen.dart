@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/forgot_password_otp/forgot_password_otp_bloc.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
+import 'package:gen_crm/widgets/form_input/form_input.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -170,20 +171,11 @@ class _ForgotPasswordOTPScreenState extends State<ForgotPasswordOTPScreen> {
   _buildPassAuth(BuildContext context, ForgotPasswordOTPBloc bloc) {
     return BlocBuilder<ForgotPasswordOTPBloc, ForgotPasswordOtpState>(
         builder: (context, state) {
-      return WidgetInput(
-        onChanged: (value) => code = value,
-        colorTxtLabel: Theme.of(context).scaffoldBackgroundColor,
+      return FormInputBase(
+        onChange: (value) => code = value,
         focusNode: _OtpFocusNode,
-        inputType: TextInputType.emailAddress,
-        boxDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: COLORS.ff838A91),
-        ),
-        textLabel: Text(getT(KeyT.verification_codes),
-            style: TextStyle(
-                fontFamily: "Quicksand",
-                fontWeight: FontWeight.w600,
-                fontSize: 14)),
+        textInputType: TextInputType.emailAddress,
+        label: getT(KeyT.verification_codes),
       );
     });
   }

@@ -163,9 +163,9 @@ Future main() async {
           BlocProvider<GetPolicyBloc>(
             create: (context) => GetPolicyBloc(userRepository: userRepository),
           ),
-          BlocProvider<GetInforBloc>(
+          BlocProvider<GetInfoBloc>(
               create: (context) =>
-                  GetInforBloc(userRepository: userRepository)),
+                  GetInfoBloc(userRepository: userRepository)),
           BlocProvider<FormAddBloc>(
             create: (context) => FormAddBloc(userRepository: userRepository),
           ),

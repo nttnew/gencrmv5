@@ -60,6 +60,9 @@ class UnreadNotificationBloc
     if (ids != '') {
       String dataIds = ids.splitBefore(',');
       this.add(DeleteUnReadListNotificationEvent(dataIds));
+    } else {
+      String dataIds = ids.splitBefore(',');
+      print('fuck${dataIds}');
     }
   }
 
@@ -107,7 +110,8 @@ class UnreadNotificationBloc
     required DataNotification value,
   }) {
     if (listNotification?.isNotEmpty ?? false) {
-      int index = listNotification!.indexOf(value);
+      int index = listNotification!.indexWhere((element) =>
+      element.id == value.id && element.recordId == element.recordId);
       if (index != -1) {
         listNotification![index].isSelect = isSelect;
       }

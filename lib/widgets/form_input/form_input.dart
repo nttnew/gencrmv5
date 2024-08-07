@@ -38,6 +38,8 @@ class FormInputBase extends StatefulWidget {
     this.colorTitle,
     this.hint,
     this.onSubmit,
+    this.errorText,
+    this.focusNode, this.label,
   }) : super(key: key);
 
   final bool isClose;
@@ -70,6 +72,9 @@ class FormInputBase extends StatefulWidget {
   final bool isWrap;
   final bool isBorder;
   final String? hint;
+  final String? errorText;
+  final String? label;
+  final FocusNode? focusNode;
 
   @override
   FormInputBaseState createState() => FormInputBaseState();
@@ -166,7 +171,7 @@ class FormInputBaseState extends State<FormInputBase> {
                     widget.onChange(text);
                     validate(text);
                   },
-                  focusNode: focus,
+                  focusNode: widget.focusNode ?? focus,
                   onTap: widget.onTap,
                   inputFormatters: widget.inputFormatters,
                   keyboardType: widget.textInputType,
@@ -179,6 +184,8 @@ class FormInputBaseState extends State<FormInputBase> {
                     if (widget.onSubmit != null) widget.onSubmit!();
                   },
                   decoration: InputDecoration(
+                    labelText: widget.label,
+                    errorText: widget.errorText,
                     hintText: widget.hint,
                     contentPadding: EdgeInsets.only(
                       top: 16,
@@ -191,7 +198,7 @@ class FormInputBaseState extends State<FormInputBase> {
                     counterText: '',
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: COLORS.BLACK,
+                        color: COLORS.BLUE,
                       ),
                       borderRadius: BorderRadius.all(
                         Radius.circular(

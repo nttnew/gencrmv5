@@ -1,12 +1,12 @@
 part of 'infor_bloc.dart';
 
-abstract class GetInforEvent extends Equatable {
+abstract class GetInfoEvent extends Equatable {
   @override
   List<Object?> get props => [];
 
-  GetInforEvent();
+  GetInfoEvent();
 }
 
-class InitGetInforEvent extends GetInforEvent {
-  InitGetInforEvent();
+class InitGetInfoEvent extends GetInfoEvent {
+  InitGetInfoEvent();
 }
