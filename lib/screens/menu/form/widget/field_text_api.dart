@@ -5,6 +5,7 @@ import '../../../../api_resfull/dio_provider.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../models/model_item_add.dart';
 import '../../../../src/base.dart';
+import '../../../../src/color.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
 import '../../../../src/preferences_key.dart';
 import '../../../../src/styles.dart';
@@ -137,7 +138,9 @@ class _FieldTextAPiState extends State<FieldTextAPi> {
         controller: _textEditingController,
         minLines: _data.field_type == 'TEXTAREA' ? 2 : 1,
         maxLines: _data.field_type == 'TEXTAREA' ? 6 : 1,
-        style: AppStyle.DEFAULT_14_BOLD,
+        style: AppStyle.DEFAULT_14_BOLD.copyWith(
+          color: isReadOnly ? COLORS.GREY : null,
+        ),
         keyboardType: widget.typeInput ??
             (_data.field_special == 'numeric' ||
                     _data.field_type == 'MONEY' ||
@@ -156,7 +159,8 @@ class _FieldTextAPiState extends State<FieldTextAPi> {
           counterText: '',
           counterStyle: TextStyle(fontSize: 0),
           hintStyle: hintTextStyle,
-          hintText: getT(KeyT.enter) + ' ' + (_data.field_label ?? '').toLowerCase(),
+          hintText:
+              getT(KeyT.enter) + ' ' + (_data.field_label ?? '').toLowerCase(),
           border: OutlineInputBorder(),
           isDense: true,
         ),

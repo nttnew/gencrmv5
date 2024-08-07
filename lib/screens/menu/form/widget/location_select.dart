@@ -88,7 +88,9 @@ class _LocationWidgetState extends State<LocationWidget> {
                             title: dataTitle,
                             maxLine: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: AppStyle.DEFAULT_14_BOLD,
+                            style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                              color: isReadOnly ? COLORS.GREY : null,
+                            ),
                           )
                         : WidgetLabel(widget.data),
                   ),

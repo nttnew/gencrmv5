@@ -77,7 +77,9 @@ class _FieldTextState extends State<FieldText> {
               controller: _textEditingController,
               minLines: data.field_type == 'TEXTAREA' ? 2 : 1,
               maxLines: data.field_type == 'TEXTAREA' ? 6 : 1,
-              style: AppStyle.DEFAULT_14_BOLD,
+              style: AppStyle.DEFAULT_14_BOLD.copyWith(
+                color: isReadOnly ? COLORS.GREY : null,
+              ),
               keyboardType: data.field_type == 'MONEY' ||
                       data.field_special == 'numeric' ||
                       data.field_type == 'TEXT_NUMERIC'

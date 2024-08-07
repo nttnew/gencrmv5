@@ -301,7 +301,12 @@ class _InputDropdownState extends State<InputDropdownBase> {
                                                   listSnap[1].toString().trim(),
                                               maxLine: 1,
                                               overflow: TextOverflow.ellipsis,
-                                              style: AppStyle.DEFAULT_14_BOLD,
+                                              style: AppStyle.DEFAULT_14_BOLD
+                                                  .copyWith(
+                                                color: isReadOnly
+                                                    ? COLORS.GREY
+                                                    : null,
+                                              ),
                                             )
                                           : WidgetLabel(widget.data)
                                       : WidgetLabel(widget.data);
