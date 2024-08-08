@@ -146,8 +146,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                       style: AppStyle.DEFAULT_14W600.copyWith(
                                         fontStyle: FontStyle.italic,
                                       ),
-                                      atRestEffect: WidgetRestingEffects.slide(
-                                        numberOfPlays: 1,
+                                      outgoingEffect: WidgetTransitionEffects.outgoingSlideOutToRight(
+                                        duration: Duration(milliseconds: 1),
                                       ),
                                     ),
                                   )
