@@ -132,6 +132,7 @@ class _SelectMultiState extends State<SelectMulti> {
           WidgetLabelPo(
             data: CustomerIndividualItemData.two(
               field_label: widget.label,
+              field_require: widget.required,
             ),
           ),
         ],
