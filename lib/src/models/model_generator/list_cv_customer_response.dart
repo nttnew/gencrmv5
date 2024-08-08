@@ -76,6 +76,7 @@ class DataResponse {
 class DataList {
   String? id;
   Customer? customer;
+  Customer? productCustomer;
   String? nameJob;
   String? contentJob;
   String? userWorkId;
@@ -89,26 +90,31 @@ class DataList {
   dynamic location;
   int? totalNote;
 
-  DataList(
-      {this.id,
-      this.customer,
-      this.nameJob,
-      this.contentJob,
-      this.userWorkId,
-      this.userWorkName,
-      this.nameCustomer,
-      this.status,
-      this.color,
-      this.starDate,
-      this.callId,
-      this.ghiChuCallid,
-      this.location,
-      this.totalNote});
+  DataList({
+    this.id,
+    this.customer,
+    this.productCustomer,
+    this.nameJob,
+    this.contentJob,
+    this.userWorkId,
+    this.userWorkName,
+    this.nameCustomer,
+    this.status,
+    this.color,
+    this.starDate,
+    this.callId,
+    this.ghiChuCallid,
+    this.location,
+    this.totalNote,
+  });
 
   DataList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     customer = json['customer'] != null
         ? new Customer.fromJson(json['customer'])
+        : null;
+    productCustomer = json['product_customer'] != null
+        ? new Customer.fromJson(json['product_customer'])
         : null;
     nameJob = json['name_job'];
     contentJob = json['content_job'];
@@ -130,6 +136,9 @@ class DataList {
     if (this.customer != null) {
       data['customer'] = this.customer!.toJson();
     }
+    if (this.productCustomer != null) {
+      data['product_customer'] = this.productCustomer!.toJson();
+    }
     data['name_job'] = this.nameJob;
     data['content_job'] = this.contentJob;
     data['user_work_id'] = this.userWorkId;
@@ -145,4 +154,3 @@ class DataList {
     return data;
   }
 }
-

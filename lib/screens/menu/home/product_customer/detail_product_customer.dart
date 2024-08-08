@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/detail_product_customer/detail_product_customer_bloc.dart';
+import 'package:gen_crm/src/models/model_generator/customer_clue.dart';
 import 'package:gen_crm/widgets/btn_thao_tac.dart';
 import 'package:get/get.dart';
 import '../../../../../src/src_index.dart';
@@ -140,13 +141,18 @@ class _DetailProductCustomerScreenState
             },
             itemWidget: (int index, data) {
               final DataList _item = data as DataList;
+              _item.productCustomer = Customer.two(
+                // mục đính để k hiển thị chuyển màn sang sản phầm vì đg ở đây rồi
+                name: _item.productCustomer?.name,
+              );
               return WorkCardWidget(
                 onTap: () {
                   AppNavigator.navigateDetailWork(
                     int.parse(data.id ?? '0'),
                   );
                 },
-                productCustomer: _item.customer,
+                customer: _item.customer,
+                productCustomer: _item.productCustomer,
                 nameCustomer: _item.customer?.name,
                 nameJob: _item.nameJob,
                 startDate: _item.starDate,

@@ -12,6 +12,7 @@ class WorkCardWidget extends StatelessWidget {
   final int? totalComment;
   final String? color;
   final Customer? productCustomer;
+  final Customer? customer;
   final Function onTap;
 
   WorkCardWidget({
@@ -23,6 +24,7 @@ class WorkCardWidget extends StatelessWidget {
     required this.totalComment,
     required this.productCustomer,
     required this.onTap,
+    this.customer,
   });
 
   @override
@@ -40,19 +42,32 @@ class WorkCardWidget extends StatelessWidget {
             color: color,
           ),
           itemTextIcon(
-            text: nameCustomer ?? '',
-            icon: ICONS.IC_AVATAR_SVG,
-          ),
+              text: nameCustomer ?? '',
+              icon: ICONS.IC_USER_NEW_PNG,
+              isSVG: false,
+              colorText: (customer?.id != '' && customer?.id != null)
+                  ? COLORS.TEXT_BLUE_BOLD
+                  : null,
+              onTap: () {
+                if (customer?.id != '' && customer?.id != null)
+                  AppNavigator.navigateDetailCustomer(
+                    customer?.id ?? '',
+                  );
+              }),
           itemTextIcon(
               text: productCustomer?.name ?? '',
               icon: ICONS.IC_CHANCE_3X_PNG,
               isSVG: false,
-              colorText: COLORS.TEXT_BLUE_BOLD,
+              colorText:
+                  (productCustomer?.id != '' && productCustomer?.id != null)
+                      ? COLORS.TEXT_BLUE_BOLD
+                      : null,
               onTap: () {
-                if (productCustomer?.id != '' && productCustomer?.id != null)
+                if (productCustomer?.id != '' && productCustomer?.id != null){
                   AppNavigator.navigateDetailProductCustomer(
                     productCustomer?.id ?? '',
                   );
+                }
               }),
           itemTextIcon(
             text: statusJob ?? '',

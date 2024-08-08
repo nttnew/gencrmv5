@@ -13,6 +13,12 @@ class Customer {
     this.danh_xung,
   );
 
+  Customer.two({
+    this.id,
+    this.name,
+    this.danh_xung,
+  });
+
   factory Customer.fromJson(Map<String, dynamic> json) =>
       _$CustomerFromJson(json);
   Map<String, dynamic> toJson() => _$CustomerToJson(this);
