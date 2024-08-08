@@ -29,7 +29,7 @@ class ChanceCardWidget extends StatelessWidget {
           ),
           itemTextIcon(
             text: (data.customer_name == '' || data.customer_name == null)
-                ? getT(KeyT.not_yet)
+                ? ''
                 : data.customer_name ?? '',
             icon: ICONS.IC_AVATAR_SVG,
             colorIcon: COLORS.GRAY_IMAGE,
