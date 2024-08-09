@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../l10n/key_text.dart';
@@ -74,6 +75,7 @@ class _WidgetFingerPrintState extends State<WidgetFingerPrint> {
       if (didAuthenticate) {
         fingerPrintIsCheck.add(true);
         shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "true");
+        Get.back();
       } else {
         ShowDialogCustom.showDialogBase(
           title:getT(KeyT.notification),
