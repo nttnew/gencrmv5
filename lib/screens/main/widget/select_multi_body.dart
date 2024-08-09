@@ -12,6 +12,7 @@ showModalSelectMulti(
   List<String?>? init,
 }) {
   return showBottomGenCRM(
+    isConstraints: true,
     child: SelectBodyMulti(
       init: init,
       title: title,
@@ -70,71 +71,78 @@ class _SelectBodyMultiState extends State<SelectBodyMulti> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ListView.builder(
-              shrinkWrap: true,
-              itemCount: widget.listData.length,
-              itemBuilder: (context, i) {
-                final itemData = widget.listData[i];
-                final title = widget.title[i];
-                final isEnable = dataSelect.first.first != '' ||
-                    i == 0; // phải chọn người làm mới chọn được tiến độ
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      title,
-                      style: AppStyle.DEFAULT_18_BOLD.copyWith(
-                        color: COLORS.TEXT_BLUE_BOLD,
+          Container(
+            constraints: BoxConstraints(
+              minHeight: 0,
+              maxHeight: MediaQuery.of(context).size.height * 0.7,
+            ),
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: widget.listData.length,
+                itemBuilder: (context, i) {
+                  final itemData = widget.listData[i];
+                  final title = widget.title[i];
+                  final isEnable = dataSelect.first.first != '' ||
+                      i == 0; // phải chọn người làm mới chọn được tiến độ
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        title,
+                        style: AppStyle.DEFAULT_18_BOLD.copyWith(
+                          color: COLORS.TEXT_BLUE_BOLD,
+                        ),
                       ),
-                    ),
-                    AppValue.vSpace24,
-                    Wrap(
-                      spacing: 16,
-                      runSpacing: 16,
-                      children: itemData.asMap().entries.map((entry) {
-                        final e = entry.value;
-                        return GestureDetector(
-                          onTap: () {
-                            if (isEnable) {
-                              dataSelect[i] = e;
-                              setState(() {});
-                            }
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: dataSelect[i] == e
-                                  ? COLORS.ORANGE.withOpacity(0.5)
-                                  : COLORS.LIGHT_GREY,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(
-                                  12,
+                      AppValue.vSpace24,
+                      Wrap(
+                        spacing: 16,
+                        runSpacing: 16,
+                        children: itemData.asMap().entries.map((entry) {
+                          final e = entry.value;
+                          return GestureDetector(
+                            onTap: () {
+                              if (isEnable) {
+                                dataSelect[i] = e;
+                                setState(() {});
+                              }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: dataSelect[i] == e
+                                    ? COLORS.ORANGE.withOpacity(0.5)
+                                    : COLORS.LIGHT_GREY,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(
+                                    12,
+                                  ),
+                                ),
+                              ),
+                              child: Text(
+                                e[1],
+                                style: AppStyle.DEFAULT_16_T.copyWith(
+                                  color: isEnable ? null : COLORS.GREY,
                                 ),
                               ),
                             ),
-                            child: Text(
-                              e[1],
-                              style: AppStyle.DEFAULT_16_T.copyWith(
-                                color: isEnable ? null : COLORS.GREY,
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                    AppValue.vSpaceMedium,
-                  ],
-                );
-              }),
+                          );
+                        }).toList(),
+                      ),
+                      AppValue.vSpaceMedium,
+                    ],
+                  );
+                }),
+          ),
           AppValue.vSpaceSmall,
           Row(
             children: [
               Expanded(
                 child: ButtonSmall(
+                  backGround: COLORS.GRAY_IMAGE,
                     title: getT(KeyT.close),
                     onTap: () {
                       Navigator.pop(context);
@@ -144,6 +152,7 @@ class _SelectBodyMultiState extends State<SelectBodyMulti> {
               Expanded(
                 child: ButtonSmall(
                   title: getT(KeyT.save),
+                  backGround: COLORS.ffF1A400,
                   onTap: () {
                     widget.onTap(dataSelect);
                   },

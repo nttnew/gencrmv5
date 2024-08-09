@@ -482,8 +482,8 @@ _clickShow(
       [_dataDetail.listNguoiThucHien ?? [], _dataDetail.listTienDo ?? []],
       init: [_dataDV.nguoiThucHien, _dataDV.tienDo],
       (data) async {
-        String idNTH = data?.first.first ?? _dataDV.idNguoiThucHien ?? '';
-        String idTD = data?.last.first ?? _dataDV.idTienDo ?? '';
+        String idNTH = (data?.first.first ?? _dataDV.idNguoiThucHien ?? '').toString();
+        String idTD = (data?.last.first ?? _dataDV.idTienDo ?? '').toString();
 
         final res = await _blocLogin.postUpdateTDNTH(
           id: _dataDV.idct ?? '',

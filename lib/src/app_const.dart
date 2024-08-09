@@ -578,14 +578,16 @@ showBottomGenCRM({
   bool isDismissible = true,
   bool enableDrag = true,
   double radius = 10,
+  bool isConstraints = false,
 }) =>
     showModalBottomSheet(
       enableDrag: enableDrag,
       isDismissible: isDismissible,
       context: Get.context!,
       isScrollControlled: isScrollControlled,
-      constraints:
-          BoxConstraints(maxHeight: Get.height * 0.8, minWidth: Get.width),
+      constraints: isConstraints
+          ? null
+          : BoxConstraints(maxHeight: Get.height * 0.8, minWidth: Get.width),
       clipBehavior: Clip.hardEdge,
       backgroundColor: COLORS.WHITE,
       shape: RoundedRectangleBorder(
