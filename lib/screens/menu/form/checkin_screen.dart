@@ -13,6 +13,7 @@ import '../../../src/app_const.dart';
 import '../../../src/src_index.dart';
 import '../../../widgets/appbar_base.dart';
 import '../../../widgets/btn_save.dart';
+import '../../../widgets/loading_api.dart';
 import '../../../widgets/location_base.dart';
 import '../../../widgets/widget_text.dart';
 
@@ -33,7 +34,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
   late final CheckInBloc _blocCheckIn;
 
   getNameLocation({bool isLoadingNow = false}) async {
-    if(isLoadingNow){
+    if (isLoadingNow) {
       nameLocation.add(LOADING);
     }
     position = await determinePosition(context);
@@ -72,6 +73,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
       bloc: _blocCheckIn,
       listener: (BuildContext context, state) {
         if (state is SuccessCheckInState) {
+          Loading().popLoading();
           ShowDialogCustom.showDialogBase(
             title: getT(KeyT.notification),
             content: getT(KeyT.new_data_added_successfully),
@@ -82,6 +84,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
             },
           );
         } else if (state is ErrorCheckInState) {
+          Loading().popLoading();
           ShowDialogCustom.showDialogBase(
             title: getT(KeyT.notification),
             content: state.msg,
@@ -127,10 +130,15 @@ class _CheckInScreenState extends State<CheckInScreen> {
                           height: 16,
                         ),
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              height: 16,
-                              width: 16,
+                              margin: EdgeInsets.only(
+                                top: 5,
+                              ),
+                              height:
+                                  calculateTextHeight(location, 14, context),
+                              width: calculateTextHeight(location, 14, context),
                               child: SvgPicture.asset(
                                 ICONS.IC_LOCATION_SVG,
                                 fit: BoxFit.contain,
@@ -146,14 +154,20 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                       style: AppStyle.DEFAULT_14W600.copyWith(
                                         fontStyle: FontStyle.italic,
                                       ),
-                                      outgoingEffect: WidgetTransitionEffects.outgoingSlideOutToRight(
+                                      outgoingEffect: WidgetTransitionEffects
+                                          .outgoingSlideOutToRight(
                                         duration: Duration(milliseconds: 1),
                                       ),
                                     ),
                                   )
-                                : SizedBox(
-                                    height: 12,
-                                    width: 12,
+                                : Container(
+                                    margin: EdgeInsets.only(
+                                      top: 5,
+                                    ),
+                                    height: calculateTextHeight(
+                                        location, 14, context),
+                                    width: calculateTextHeight(
+                                        location, 14, context),
                                     child: CircularProgressIndicator(
                                       strokeWidth: 1.4,
                                     ),
