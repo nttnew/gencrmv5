@@ -20,7 +20,7 @@ class _LogoAppState extends State<SplashPage>
   late AnimationController controller;
   late Timer _timer;
   LoginData user = LoginData();
-  String? baseUrl = "";
+  String? baseUrl = '';
 
   @override
   void initState() {

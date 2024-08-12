@@ -49,7 +49,8 @@ class FirebaseConfig {
       PushNotifAndroid.handleNotification(message); // lib pitel
       final RemoteNotification? notification = message.notification;
       if (notification != null) {
-        UnreadNotificationBloc.of(context).add(CheckNotification());
+        UnreadNotificationBloc.of(context)
+            .add(CheckNotification(isLoading: false));
         unawaited(
           NotificationLocalService().showNotification(
             id: notification.hashCode,

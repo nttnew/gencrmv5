@@ -23,9 +23,7 @@ class NotificationLocalService {
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
-      onDidReceiveLocalNotification: (id, title, body, payload) {
-        print(13);
-      },
+      onDidReceiveLocalNotification: (id, title, body, payload) {},
     );
 
     final InitializationSettings settings = InitializationSettings(
