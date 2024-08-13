@@ -38,6 +38,23 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
   late final ListNoteBloc _blocNote;
   bool _reload = false;
 
+  List<Widget> _listTab = [
+    Tab(
+      text: getT(KeyT.information),
+    ),
+    Tab(
+      text: getT(KeyT.pay),
+    ),
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.CONG_VIEC))
+      Tab(
+        text: ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC, isTitle: true),
+      ),
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.CSKH))
+      Tab(
+        text: ModuleMy.getNameModuleMy(ModuleMy.CSKH, isTitle: true),
+      ),
+  ];
+
   @override
   void initState() {
     getThaoTac();
@@ -92,39 +109,41 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
       },
     ));
 
-    _list.add(ModuleThaoTac(
-      title:
-          '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
-      icon: ICONS.IC_ADD_WORD_SVG,
-      onThaoTac: () {
-        Get.back();
-        AppNavigator.navigateForm(
-          title:
-              '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
-          type: ADD_JOB_CONTRACT,
-          id: int.parse(_id),
-          onRefreshForm: () {
-            _bloc.controllerCV.reloadData();
-          },
-        );
-      },
-    ));
-
-    _list.add(ModuleThaoTac(
-      title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
-      icon: ICONS.IC_ADD_SUPPORT_SVG,
-      onThaoTac: () {
-        Get.back();
-        AppNavigator.navigateForm(
-          title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
-          type: ADD_SUPPORT_CONTRACT,
-          id: int.parse(_id),
-          onRefreshForm: () {
-            _bloc.controllerHT.reloadData();
-          },
-        );
-      },
-    ));
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.CONG_VIEC))
+      _list.add(ModuleThaoTac(
+        title:
+            '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
+        icon: ICONS.IC_ADD_WORD_SVG,
+        onThaoTac: () {
+          Get.back();
+          AppNavigator.navigateForm(
+            title:
+                '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
+            type: ADD_JOB_CONTRACT,
+            id: int.parse(_id),
+            onRefreshForm: () {
+              _bloc.controllerCV.reloadData();
+            },
+          );
+        },
+      ));
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.CSKH))
+      _list.add(ModuleThaoTac(
+        title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
+        icon: ICONS.IC_ADD_SUPPORT_SVG,
+        onThaoTac: () {
+          Get.back();
+          AppNavigator.navigateForm(
+            title:
+                '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
+            type: ADD_SUPPORT_CONTRACT,
+            id: int.parse(_id),
+            onRefreshForm: () {
+              _bloc.controllerHT.reloadData();
+            },
+          );
+        },
+      ));
 
     _list.add(ModuleThaoTac(
       title: getT(KeyT.add_discuss),
@@ -238,7 +257,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
             AppValue.vSpaceTiny,
             Expanded(
               child: DefaultTabController(
-                  length: 4,
+                  length: _listTab.length,
                   child: Column(
                     children: [
                       Align(
@@ -253,22 +272,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                           labelColor: COLORS.TEXT_COLOR,
                           unselectedLabelColor: COLORS.GREY,
                           labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
-                          tabs: [
-                            Tab(
-                              text: getT(KeyT.information),
-                            ),
-                            Tab(
-                              text: getT(KeyT.pay),
-                            ),
-                            Tab(
-                              text: ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC,
-                                  isTitle: true),
-                            ),
-                            Tab(
-                              text: ModuleMy.getNameModuleMy(ModuleMy.CSKH,
-                                  isTitle: true),
-                            ),
-                          ],
+                          tabs: _listTab,
                         ),
                       ),
                       Expanded(
@@ -283,79 +287,82 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                               id: int.parse(_id),
                               bloc: _bloc,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 8,
+                            if (ModuleMy.isShowNameModuleMy(ModuleMy.CONG_VIEC))
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 8,
+                                ),
+                                child: ViewLoadMoreBase(
+                                  isInit: true,
+                                  functionInit: (page, isInit) {
+                                    return _bloc.getJobContract(
+                                      id: int.parse(_id),
+                                      page: page,
+                                    );
+                                  },
+                                  itemWidget: (int index, data) {
+                                    final DataFormAdd item =
+                                        data as DataFormAdd;
+                                    return WorkCardWidget(
+                                      onTap: () {
+                                        AppNavigator.navigateDetailWork(
+                                            int.parse(data.id ?? ''),
+                                            onRefreshForm: () {
+                                          _bloc.controllerCV.reloadData();
+                                        });
+                                      },
+                                      color: item.color,
+                                      nameCustomer: item.name_customer,
+                                      nameJob: item.name_job,
+                                      statusJob: item.status_job,
+                                      startDate: item.start_date,
+                                      totalComment: item.total_comment,
+                                      productCustomer: item.product_customer,
+                                    );
+                                  },
+                                  controller: _bloc.controllerCV,
+                                ),
                               ),
-                              child: ViewLoadMoreBase(
-                                isInit: true,
-                                functionInit: (page, isInit) {
-                                  return _bloc.getJobContract(
-                                    id: int.parse(_id),
-                                    page: page,
-                                  );
-                                },
-                                itemWidget: (int index, data) {
-                                  final DataFormAdd item = data as DataFormAdd;
-                                  return WorkCardWidget(
-                                    onTap: () {
-                                      AppNavigator.navigateDetailWork(
-                                          int.parse(data.id ?? ''),
-                                          onRefreshForm: () {
-                                            _bloc.controllerCV.reloadData();
-                                          });
-                                    },
-                                    color: item.color,
-                                    nameCustomer: item.name_customer,
-                                    nameJob: item.name_job,
-                                    statusJob: item.status_job,
-                                    startDate: item.start_date,
-                                    totalComment: item.total_comment,
-                                    productCustomer: item.product_customer,
-                                  );
-                                },
-                                controller: _bloc.controllerCV,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 8,
-                              ),
-                              child: ViewLoadMoreBase(
-                                isInit: true,
-                                functionInit: (page, isInit) {
-                                  return _bloc.getSupportContract(
-                                    id: int.parse(_id),
-                                    page: page,
-                                  );
-                                },
-                                itemWidget: (int index, data) {
-                                  final SupportContractData item =
-                                      data as SupportContractData;
-                                  return ItemSupport(
-                                    onRefreshForm: () {
-                                      _bloc.controllerHT.reloadData();
-                                    },
-                                    data: SupportItemData(
-                                      item.id,
-                                      item.name,
-                                      item.created_date,
-                                      item.status,
-                                      item.color,
-                                      item.total_note,
-                                      Customer(
-                                        '',
-                                        data.khach_hang,
-                                        '',
+                            if (ModuleMy.isShowNameModuleMy(ModuleMy.CSKH))
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 8,
+                                ),
+                                child: ViewLoadMoreBase(
+                                  isInit: true,
+                                  functionInit: (page, isInit) {
+                                    return _bloc.getSupportContract(
+                                      id: int.parse(_id),
+                                      page: page,
+                                    );
+                                  },
+                                  itemWidget: (int index, data) {
+                                    final SupportContractData item =
+                                        data as SupportContractData;
+                                    return ItemSupport(
+                                      onRefreshForm: () {
+                                        _bloc.controllerHT.reloadData();
+                                      },
+                                      data: SupportItemData(
+                                        item.id,
+                                        item.name,
+                                        item.created_date,
+                                        item.status,
+                                        item.color,
+                                        item.total_note,
+                                        Customer(
+                                          '',
+                                          data.khach_hang,
+                                          '',
+                                        ),
+                                        item.product_customer,
+                                        null,
                                       ),
-                                      item.product_customer,
-                                      null,
-                                    ),
-                                  );
-                                },
-                                controller: _bloc.controllerHT,
+                                    );
+                                  },
+                                  controller: _bloc.controllerHT,
+                                ),
                               ),
-                            ),
                           ],
                         ),
                       ),

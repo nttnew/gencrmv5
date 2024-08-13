@@ -44,23 +44,24 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
   }
 
   _getThaoTac() {
-    _list.add(ModuleThaoTac(
-      title:
-          '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
-      icon: ICONS.IC_ADD_WORD_SVG,
-      onThaoTac: () {
-        Get.back();
-        AppNavigator.navigateForm(
-          title:
-              '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
-          type: ADD_CLUE_JOB,
-          id: int.parse(_id),
-          onRefreshForm: () {
-            _bloc.controllerCV.reloadData();
-          },
-        );
-      },
-    ));
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.CONG_VIEC))
+      _list.add(ModuleThaoTac(
+        title:
+            '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
+        icon: ICONS.IC_ADD_WORD_SVG,
+        onThaoTac: () {
+          Get.back();
+          AppNavigator.navigateForm(
+            title:
+                '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
+            type: ADD_CLUE_JOB,
+            id: int.parse(_id),
+            onRefreshForm: () {
+              _bloc.controllerCV.reloadData();
+            },
+          );
+        },
+      ));
     _list.add(ModuleThaoTac(
         title: getT(KeyT.add_discuss),
         icon: ICONS.IC_ADD_DISCUSS_SVG,
@@ -76,8 +77,8 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
         }));
     _list.add(ModuleThaoTac(
       title: getT(KeyT.see_attachment),
-      icon: ICONS.IC_ATTACK_PNG,      isSvg: false,
-
+      icon: ICONS.IC_ATTACK_PNG,
+      isSvg: false,
       onThaoTac: () {
         Get.back();
         Navigator.of(context).push(MaterialPageRoute(
@@ -109,6 +110,16 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
               content: getT(KeyT.are_you_sure_you_want_to_delete));
         }));
   }
+
+  List<Widget> _listTab = [
+    Tab(
+      text: getT(KeyT.information),
+    ),
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.CONG_VIEC))
+      Tab(
+        text: ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC, isTitle: true),
+      )
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +161,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
             AppValue.vSpaceTiny,
             Expanded(
               child: DefaultTabController(
-                  length: 2,
+                  length: _listTab.length,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -165,15 +176,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                           labelColor: COLORS.TEXT_COLOR,
                           unselectedLabelColor: COLORS.GREY,
                           labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
-                          tabs: [
-                            Tab(
-                              text: getT(KeyT.information),
-                            ),
-                            Tab(
-                              text: ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC,
-                                  isTitle: true),
-                            )
-                          ],
+                          tabs: _listTab,
                         ),
                       ),
                       AppValue.hSpaceTiny,
@@ -185,37 +188,38 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                               blocNote: _blocNote,
                               bloc: _bloc,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: ViewLoadMoreBase(
-                                isInit: true,
-                                functionInit: (page, isInit) {
-                                  return _bloc.getWorkClue(
-                                    id: _id,
-                                    page: page,
-                                  );
-                                },
-                                itemWidget: (int index, data) {
-                                  final WorkClueData item =
-                                      data as WorkClueData;
-                                  return WorkCardWidget(
-                                    onTap: () {
-                                      AppNavigator.navigateDetailWork(
-                                        int.tryParse(item.id ?? '') ?? 0,
-                                      );
-                                    },
-                                    productCustomer: item.product_customer,
-                                    nameCustomer: item.name_customer,
-                                    nameJob: item.name_job,
-                                    startDate: item.start_date,
-                                    statusJob: item.status_job,
-                                    totalComment: item.total_comment,
-                                    color: item.color,
-                                  );
-                                },
-                                controller: _bloc.controllerCV,
+                            if (ModuleMy.isShowNameModuleMy(ModuleMy.CONG_VIEC))
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: ViewLoadMoreBase(
+                                  isInit: true,
+                                  functionInit: (page, isInit) {
+                                    return _bloc.getWorkClue(
+                                      id: _id,
+                                      page: page,
+                                    );
+                                  },
+                                  itemWidget: (int index, data) {
+                                    final WorkClueData item =
+                                        data as WorkClueData;
+                                    return WorkCardWidget(
+                                      onTap: () {
+                                        AppNavigator.navigateDetailWork(
+                                          int.tryParse(item.id ?? '') ?? 0,
+                                        );
+                                      },
+                                      productCustomer: item.product_customer,
+                                      nameCustomer: item.name_customer,
+                                      nameJob: item.name_job,
+                                      startDate: item.start_date,
+                                      statusJob: item.status_job,
+                                      totalComment: item.total_comment,
+                                      color: item.color,
+                                    );
+                                  },
+                                  controller: _bloc.controllerCV,
+                                ),
                               ),
-                            ),
                           ],
                         ),
                       ),
@@ -237,9 +241,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                   );
                 }
 
-                return ButtonCustom(
-
-                );
+                return ButtonCustom();
               },
             ),
           ],

@@ -305,7 +305,19 @@ class ModuleMy {
     return ICONS.IC_WORK_3X_PNG;
   }
 
-  static String getNameModuleMy(String txt, {isTitle = false}) {
+  static const String TXT_NULL = 'txt_null';
+
+  static bool isShowNameModuleMy(
+    String txt,
+  ) {
+    return getNameModuleMy(txt, isTxtNull: true) != TXT_NULL;
+  }
+
+  static String getNameModuleMy(
+    String txt, {
+    bool isTitle = false,
+    bool isTxtNull = false,
+  }) {
     String menu = shareLocal.getString(PreferencesKey.MENU);
     List listM = jsonDecode(menu);
     for (final value in listM) {
@@ -319,6 +331,7 @@ class ModuleMy {
         }
       }
     }
+    if (isTxtNull) return TXT_NULL;
     return '';
   }
 

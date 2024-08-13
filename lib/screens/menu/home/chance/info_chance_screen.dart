@@ -43,6 +43,19 @@ class _InfoChancePageState extends State<InfoChancePage> {
     super.initState();
   }
 
+  List<Widget> _listTab = [
+    Tab(
+      text: getT(KeyT.information),
+    ),
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.CONG_VIEC))
+      Tab(
+        text: ModuleMy.getNameModuleMy(
+          ModuleMy.CONG_VIEC,
+          isTitle: true,
+        ),
+      )
+  ];
+
   _getThaoTac() {
     _list.add(ModuleThaoTac(
       title: getT(KeyT.sign),
@@ -61,22 +74,23 @@ class _InfoChancePageState extends State<InfoChancePage> {
       },
     ));
 
-    _list.add(ModuleThaoTac(
-      title:
-          '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
-      icon: ICONS.IC_ADD_WORD_SVG,
-      onThaoTac: () {
-        Get.back();
-        AppNavigator.navigateForm(
-            title:
-                '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
-            type: ADD_CHANCE_JOB,
-            id: int.parse(_id),
-            onRefreshForm: () {
-              _bloc.controllerCV.reloadData();
-            });
-      },
-    ));
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.CONG_VIEC))
+      _list.add(ModuleThaoTac(
+        title:
+            '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
+        icon: ICONS.IC_ADD_WORD_SVG,
+        onThaoTac: () {
+          Get.back();
+          AppNavigator.navigateForm(
+              title:
+                  '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
+              type: ADD_CHANCE_JOB,
+              id: int.parse(_id),
+              onRefreshForm: () {
+                _bloc.controllerCV.reloadData();
+              });
+        },
+      ));
 
     _list.add(ModuleThaoTac(
       title: getT(KeyT.add_discuss),
@@ -195,7 +209,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
             AppValue.vSpaceTiny,
             Expanded(
               child: DefaultTabController(
-                  length: 2,
+                  length: _listTab.length,
                   child: Column(
                     children: [
                       Align(
@@ -209,17 +223,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                           labelColor: COLORS.TEXT_COLOR,
                           unselectedLabelColor: COLORS.GREY,
                           labelStyle: AppStyle.DEFAULT_LABEL_TARBAR,
-                          tabs: [
-                            Tab(
-                              text: getT(KeyT.information),
-                            ),
-                            Tab(
-                              text: ModuleMy.getNameModuleMy(
-                                ModuleMy.CONG_VIEC,
-                                isTitle: true,
-                              ),
-                            )
-                          ],
+                          tabs: _listTab,
                         ),
                       ),
                       AppValue.hSpaceTiny,
@@ -231,38 +235,40 @@ class _InfoChancePageState extends State<InfoChancePage> {
                               blocNote: _blocNote,
                               bloc: _bloc,
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                top: 8,
+                            if (ModuleMy.isShowNameModuleMy(ModuleMy.CONG_VIEC))
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  top: 8,
+                                ),
+                                child: ViewLoadMoreBase(
+                                  isInit: true,
+                                  functionInit: (page, isInit) {
+                                    return _bloc.getJobChance(
+                                      id: int.parse(_id),
+                                      page: page,
+                                    );
+                                  },
+                                  itemWidget: (int index, data) {
+                                    final DataFormAdd item =
+                                        data as DataFormAdd;
+                                    return WorkCardWidget(
+                                      onTap: () {
+                                        AppNavigator.navigateDetailWork(
+                                          int.tryParse(item.id ?? '') ?? 0,
+                                        );
+                                      },
+                                      color: item.color,
+                                      nameCustomer: item.name_customer,
+                                      nameJob: item.name_job,
+                                      statusJob: item.status_job,
+                                      startDate: item.start_date,
+                                      totalComment: item.total_comment,
+                                      productCustomer: item.product_customer,
+                                    );
+                                  },
+                                  controller: _bloc.controllerCV,
+                                ),
                               ),
-                              child: ViewLoadMoreBase(
-                                isInit: true,
-                                functionInit: (page, isInit) {
-                                  return _bloc.getJobChance(
-                                    id: int.parse(_id),
-                                    page: page,
-                                  );
-                                },
-                                itemWidget: (int index, data) {
-                                  final DataFormAdd item = data as DataFormAdd;
-                                  return WorkCardWidget(
-                                    onTap: () {
-                                      AppNavigator.navigateDetailWork(
-                                        int.tryParse(item.id ?? '') ?? 0,
-                                      );
-                                    },
-                                    color: item.color,
-                                    nameCustomer: item.name_customer,
-                                    nameJob: item.name_job,
-                                    statusJob: item.status_job,
-                                    startDate: item.start_date,
-                                    totalComment: item.total_comment,
-                                    productCustomer: item.product_customer,
-                                  );
-                                },
-                                controller: _bloc.controllerCV,
-                              ),
-                            ),
                           ],
                         ),
                       ),

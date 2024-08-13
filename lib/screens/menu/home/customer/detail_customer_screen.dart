@@ -54,7 +54,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
         userRepository: DetailCustomerBloc.of(context).userRepository);
     _blocNote =
         ListNoteBloc(userRepository: ListNoteBloc.of(context).userRepository);
-    _tabController = TabController(length: 6, vsync: this);
+    _tabController = TabController(length: _listTab.length, vsync: this);
     super.initState();
   }
 
@@ -77,93 +77,101 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
         ),
       );
 
-    _list.add(
-      ModuleThaoTac(
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.DAU_MOI))
+      _list.add(
+        ModuleThaoTac(
+          title:
+              '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}',
+          icon: ICONS.IC_ADD_CLUE_SVG,
+          onThaoTac: () {
+            Get.back();
+            AppNavigator.navigateForm(
+              title:
+                  '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}',
+              type: ADD_CLUE_CUSTOMER,
+              id: _id,
+              onRefreshForm: () {
+                _bloc.controllerDM.reloadData();
+              },
+            );
+          },
+        ),
+      );
+
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.LICH_HEN))
+      _list.add(ModuleThaoTac(
         title:
-            '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}',
-        icon: ICONS.IC_ADD_CLUE_SVG,
+            '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}',
+        icon: ICONS.IC_ADD_CHANCE_SVG,
         onThaoTac: () {
           Get.back();
           AppNavigator.navigateForm(
             title:
-                '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.DAU_MOI)}',
-            type: ADD_CLUE_CUSTOMER,
+                '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}',
+            type: ADD_CHANCE_CUSTOMER,
             id: _id,
             onRefreshForm: () {
-              _bloc.controllerDM.reloadData();
+              _bloc.controllerCH.reloadData();
             },
           );
         },
-      ),
-    );
+      ));
 
-    _list.add(ModuleThaoTac(
-      title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}',
-      icon: ICONS.IC_ADD_CHANCE_SVG,
-      onThaoTac: () {
-        Get.back();
-        AppNavigator.navigateForm(
-          title:
-              '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.LICH_HEN)}',
-          type: ADD_CHANCE_CUSTOMER,
-          id: _id,
-          onRefreshForm: () {
-            _bloc.controllerCH.reloadData();
-          },
-        );
-      },
-    ));
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.HOP_DONG))
+      _list.add(ModuleThaoTac(
+        title:
+            '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
+        icon: ICONS.IC_ADD_CONTRACT_SVG,
+        onThaoTac: () {
+          Get.back();
+          AppNavigator.navigateForm(
+            title:
+                '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
+            type: ADD_CONTRACT_CUS,
+            id: _id,
+            onRefreshForm: () {
+              _bloc.controllerHD.reloadData();
+            },
+          );
+        },
+      ));
 
-    _list.add(ModuleThaoTac(
-      title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
-      icon: ICONS.IC_ADD_CONTRACT_SVG,
-      onThaoTac: () {
-        Get.back();
-        AppNavigator.navigateForm(
-          title:
-              '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
-          type: ADD_CONTRACT_CUS,
-          id: _id,
-          onRefreshForm: () {
-            _bloc.controllerHD.reloadData();
-          },
-        );
-      },
-    ));
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.CONG_VIEC))
+      _list.add(ModuleThaoTac(
+        title:
+            '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
+        icon: ICONS.IC_ADD_WORD_SVG,
+        onThaoTac: () {
+          Get.back();
+          AppNavigator.navigateForm(
+            title:
+                '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
+            type: ADD_JOB_CUSTOMER,
+            id: _id,
+            onRefreshForm: () {
+              _bloc.controllerCV.reloadData();
+            },
+          );
+        },
+      ));
 
-    _list.add(ModuleThaoTac(
-      title:
-          '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
-      icon: ICONS.IC_ADD_WORD_SVG,
-      onThaoTac: () {
-        Get.back();
-        AppNavigator.navigateForm(
-          title:
-              '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CONG_VIEC)}',
-          type: ADD_JOB_CUSTOMER,
-          id: _id,
-          onRefreshForm: () {
-            _bloc.controllerCV.reloadData();
-          },
-        );
-      },
-    ));
-
-    _list.add(ModuleThaoTac(
-      title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
-      icon: ICONS.IC_ADD_SUPPORT_SVG,
-      onThaoTac: () {
-        Get.back();
-        AppNavigator.navigateForm(
-          title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
-          type: ADD_SUPPORT_CUSTOMER,
-          id: _id,
-          onRefreshForm: () {
-            _bloc.controllerHT.reloadData();
-          },
-        );
-      },
-    ));
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.CSKH))
+      _list.add(ModuleThaoTac(
+        title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
+        icon: ICONS.IC_ADD_SUPPORT_SVG,
+        onThaoTac: () {
+          Get.back();
+          AppNavigator.navigateForm(
+            title:
+                '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.CSKH)}',
+            type: ADD_SUPPORT_CUSTOMER,
+            id: _id,
+            onRefreshForm: () {
+              _bloc.controllerHT.reloadData();
+            },
+          );
+        },
+      ));
 
     _list.add(ModuleThaoTac(
       title: getT(KeyT.add_discuss),
@@ -218,6 +226,47 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
       },
     ));
   }
+
+  List<Widget> _listTab = <Widget>[
+    Tab(
+      text: getT(KeyT.information),
+    ),
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.DAU_MOI))
+      Tab(
+        text: ModuleMy.getNameModuleMy(
+          ModuleMy.DAU_MOI,
+          isTitle: true,
+        ),
+      ),
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.LICH_HEN))
+      Tab(
+        text: ModuleMy.getNameModuleMy(
+          ModuleMy.LICH_HEN,
+          isTitle: true,
+        ),
+      ),
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.HOP_DONG))
+      Tab(
+        text: ModuleMy.getNameModuleMy(
+          ModuleMy.HOP_DONG,
+          isTitle: true,
+        ),
+      ),
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.CONG_VIEC))
+      Tab(
+        text: ModuleMy.getNameModuleMy(
+          ModuleMy.CONG_VIEC,
+          isTitle: true,
+        ),
+      ),
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.CSKH))
+      Tab(
+        text: ModuleMy.getNameModuleMy(
+          ModuleMy.CSKH,
+          isTitle: true,
+        ),
+      ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -275,41 +324,7 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                 fontWeight: FontWeight.w700,
               ),
               indicatorColor: COLORS.ff006CB1,
-              tabs: <Widget>[
-                Tab(
-                  text: getT(KeyT.information),
-                ),
-                Tab(
-                  text: ModuleMy.getNameModuleMy(
-                    ModuleMy.DAU_MOI,
-                    isTitle: true,
-                  ),
-                ),
-                Tab(
-                  text: ModuleMy.getNameModuleMy(
-                    ModuleMy.LICH_HEN,
-                    isTitle: true,
-                  ),
-                ),
-                Tab(
-                  text: ModuleMy.getNameModuleMy(
-                    ModuleMy.HOP_DONG,
-                    isTitle: true,
-                  ),
-                ),
-                Tab(
-                  text: ModuleMy.getNameModuleMy(
-                    ModuleMy.CONG_VIEC,
-                    isTitle: true,
-                  ),
-                ),
-                Tab(
-                  text: ModuleMy.getNameModuleMy(
-                    ModuleMy.CSKH,
-                    isTitle: true,
-                  ),
-                ),
-              ],
+              tabs: _listTab,
             ),
             body: Column(
               children: [
@@ -324,131 +339,136 @@ class _DetailCustomerScreenState extends State<DetailCustomerScreen>
                         blocNote: _blocNote,
                         bloc: _bloc,
                       ),
-                      ViewLoadMoreBase(
-                        isInit: true,
-                        functionInit: (page, isInit) {
-                          return _bloc.getClueCustomer(
-                            id: _id,
-                            page: page,
-                          );
-                        },
-                        itemWidget: (int index, data) {
-                          return ClueCardWidget(
-                            data: data,
-                            onTap: () {
-                              AppNavigator.navigateDetailClue(
-                                data.id ?? '',
-                                onRefreshForm: () {
-                                  _bloc.controllerDM.reloadData();
-                                },
-                              );
-                            },
-                          );
-                        },
-                        controller: _bloc.controllerDM,
-                      ),
-                      ViewLoadMoreBase(
-                        isInit: true,
-                        functionInit: (page, isInit) {
-                          return _bloc.getChanceCustomer(
-                            id: _id,
-                            page: page,
-                          );
-                        },
-                        itemWidget: (int index, data) {
-                          return ChanceCardWidget(
-                            data: data,
-                            onTap: () {
-                              AppNavigator.navigateDetailChance(
-                                data.id ?? '',
-                                onRefreshForm: () {
-                                  _bloc.controllerCH.reloadData();
-                                },
-                              );
-                            },
-                          );
-                        },
-                        controller: _bloc.controllerCH,
-                      ),
-                      ViewLoadMoreBase(
-                        isInit: true,
-                        functionInit: (page, isInit) {
-                          return _bloc.getContractCustomer(
-                            id: _id,
-                            page: page,
-                          );
-                        },
-                        itemWidget: (int index, data) {
-                          ContractCustomerData snap = data;
-                          return ItemContract(
-                            onRefreshForm: () {
-                              _bloc.controllerHD.reloadData();
-                            },
-                            data: ContractItemData(
-                              snap.id,
-                              snap.name,
-                              snap.total_value,
-                              snap.status,
-                              null,
-                              snap.color,
-                              null,
-                              Customer(
+                      if (ModuleMy.isShowNameModuleMy(ModuleMy.DAU_MOI))
+                        ViewLoadMoreBase(
+                          isInit: true,
+                          functionInit: (page, isInit) {
+                            return _bloc.getClueCustomer(
+                              id: _id,
+                              page: page,
+                            );
+                          },
+                          itemWidget: (int index, data) {
+                            return ClueCardWidget(
+                              data: data,
+                              onTap: () {
+                                AppNavigator.navigateDetailClue(
+                                  data.id ?? '',
+                                  onRefreshForm: () {
+                                    _bloc.controllerDM.reloadData();
+                                  },
+                                );
+                              },
+                            );
+                          },
+                          controller: _bloc.controllerDM,
+                        ),
+                      if (ModuleMy.isShowNameModuleMy(ModuleMy.LICH_HEN))
+                        ViewLoadMoreBase(
+                          isInit: true,
+                          functionInit: (page, isInit) {
+                            return _bloc.getChanceCustomer(
+                              id: _id,
+                              page: page,
+                            );
+                          },
+                          itemWidget: (int index, data) {
+                            return ChanceCardWidget(
+                              data: data,
+                              onTap: () {
+                                AppNavigator.navigateDetailChance(
+                                  data.id ?? '',
+                                  onRefreshForm: () {
+                                    _bloc.controllerCH.reloadData();
+                                  },
+                                );
+                              },
+                            );
+                          },
+                          controller: _bloc.controllerCH,
+                        ),
+                      if (ModuleMy.isShowNameModuleMy(ModuleMy.HOP_DONG))
+                        ViewLoadMoreBase(
+                          isInit: true,
+                          functionInit: (page, isInit) {
+                            return _bloc.getContractCustomer(
+                              id: _id,
+                              page: page,
+                            );
+                          },
+                          itemWidget: (int index, data) {
+                            ContractCustomerData snap = data;
+                            return ItemContract(
+                              onRefreshForm: () {
+                                _bloc.controllerHD.reloadData();
+                              },
+                              data: ContractItemData(
+                                snap.id,
+                                snap.name,
+                                snap.total_value,
+                                snap.status,
                                 null,
-                                snap.customer_name,
+                                snap.color,
+                                null,
+                                Customer(
+                                  null,
+                                  snap.customer_name,
+                                  null,
+                                ),
+                                snap.product_customer,
+                                snap.total_note,
                                 null,
                               ),
-                              snap.product_customer,
-                              snap.total_note,
-                              null,
-                            ),
-                          );
-                        },
-                        controller: _bloc.controllerHD,
-                      ),
-                      ViewLoadMoreBase(
-                        isInit: true,
-                        functionInit: (page, isInit) {
-                          return _bloc.getJobCustomer(
-                            id: _id,
-                            page: page,
-                          );
-                        },
-                        itemWidget: (int index, data) {
-                          JobCustomerData item = data as JobCustomerData;
-                          return WorkCardWidget(
-                            data: item,
-                            onTap: () {
-                              AppNavigator.navigateDetailWork(
-                                  int.tryParse(item.id ?? '') ?? 0,
-                                  onRefreshForm: () {
-                                _bloc.controllerCV.reloadData();
-                              });
-                            },
-                          );
-                        },
-                        controller: _bloc.controllerCV,
-                      ),
-                      ViewLoadMoreBase(
-                        isInit: true,
-                        functionInit: (page, isInit) {
-                          return _bloc.getSupportCustomer(
-                            id: _id,
-                            page: page,
-                          );
-                        },
-                        itemWidget: (int index, data) {
-                          return SupportCardWidget(
-                            data: data,
-                            onTap: () {
-                              AppNavigator.navigateDetailSupport(data.id ?? '',
-                                  onRefreshForm: () {
-                                _bloc.controllerHT.reloadData();
-                              });
-                            },
-                          );
-                        },
-                        controller: _bloc.controllerHT,
-                      ),
+                            );
+                          },
+                          controller: _bloc.controllerHD,
+                        ),
+                      if (ModuleMy.isShowNameModuleMy(ModuleMy.CONG_VIEC))
+                        ViewLoadMoreBase(
+                          isInit: true,
+                          functionInit: (page, isInit) {
+                            return _bloc.getJobCustomer(
+                              id: _id,
+                              page: page,
+                            );
+                          },
+                          itemWidget: (int index, data) {
+                            JobCustomerData item = data as JobCustomerData;
+                            return WorkCardWidget(
+                              data: item,
+                              onTap: () {
+                                AppNavigator.navigateDetailWork(
+                                    int.tryParse(item.id ?? '') ?? 0,
+                                    onRefreshForm: () {
+                                  _bloc.controllerCV.reloadData();
+                                });
+                              },
+                            );
+                          },
+                          controller: _bloc.controllerCV,
+                        ),
+                      if (ModuleMy.isShowNameModuleMy(ModuleMy.CSKH))
+                        ViewLoadMoreBase(
+                          isInit: true,
+                          functionInit: (page, isInit) {
+                            return _bloc.getSupportCustomer(
+                              id: _id,
+                              page: page,
+                            );
+                          },
+                          itemWidget: (int index, data) {
+                            return SupportCardWidget(
+                              data: data,
+                              onTap: () {
+                                AppNavigator.navigateDetailSupport(
+                                    data.id ?? '', onRefreshForm: () {
+                                  _bloc.controllerHT.reloadData();
+                                });
+                              },
+                            );
+                          },
+                          controller: _bloc.controllerHT,
+                        ),
                     ],
                   ),
                 ),

@@ -41,24 +41,27 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
 
   _getThaoTac(ProductsRes? product) {
     _list = [];
-    _list.add(ModuleThaoTac(
-      title: '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
-      icon: ICONS.IC_ADD_CONTRACT_SVG,
-      onThaoTac: () {
-        Get.back();
-        AppNavigator.navigateForm(
-          title:
-              '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
-          type: ADD_CONTRACT,
-          product: (product?.productId ?? '') != '' ? product : null,
-        );
-      },
-    ));
+
+    if (ModuleMy.isShowNameModuleMy(ModuleMy.HOP_DONG))
+      _list.add(ModuleThaoTac(
+        title:
+            '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
+        icon: ICONS.IC_ADD_CONTRACT_SVG,
+        onThaoTac: () {
+          Get.back();
+          AppNavigator.navigateForm(
+            title:
+                '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(ModuleMy.HOP_DONG)}',
+            type: ADD_CONTRACT,
+            product: (product?.productId ?? '') != '' ? product : null,
+          );
+        },
+      ));
 
     _list.add(ModuleThaoTac(
       title: getT(KeyT.see_attachment),
-      icon: ICONS.IC_ATTACK_PNG,      isSvg: false,
-
+      icon: ICONS.IC_ATTACK_PNG,
+      isSvg: false,
       onThaoTac: () async {
         Get.back();
         Navigator.of(context).push(MaterialPageRoute(
@@ -145,7 +148,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                       _getThaoTac(state.product);
                       _title = checkTitle(
                         state.productInfo?.data ?? [],
-                        '111',// 111 là id của tên sản phẩm
+                        '111', // 111 là id của tên sản phẩm
                       );
                       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                         setState(() {});
@@ -192,8 +195,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                       showThaoTac(context, _list);
                     },
                   );
-                return ButtonCustom(
-                );
+                return ButtonCustom();
               },
             ),
           ],
