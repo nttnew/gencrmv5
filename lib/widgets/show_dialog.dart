@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:gen_crm/src/src_index.dart';
 import '../../l10n/key_text.dart';
 
+const String SPECIAL = 'special*';
+
 class ShowDialogCustom {
   static showLoading() {
     showDialog<void>(
@@ -70,13 +72,46 @@ class ShowDialogCustom {
                           height: 15,
                         ),
                       ],
-                      Text(
-                        content ?? getT(KeyT.are_you_sure_you_want_to_sign_out),
-                        style: title != null
-                            ? AppStyle.DEFAULT_14
-                            : AppStyle.DEFAULT_18_BOLD,
-                        textAlign: TextAlign.center,
-                      ),
+                      if (content != null &&
+                          content.toString().contains(SPECIAL))
+                        RichText(
+                          textScaleFactor:
+                              MediaQuery.of(context).textScaleFactor,
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: content.replaceAll(SPECIAL, ''),
+                                style: title != null
+                                    ? AppStyle.DEFAULT_14
+                                    : AppStyle.DEFAULT_18_BOLD,
+                              ),
+                              TextSpan(
+                                text: '*',
+                                style: (title != null
+                                        ? AppStyle.DEFAULT_14
+                                        : AppStyle.DEFAULT_18_BOLD)
+                                    .copyWith(
+                                  color: COLORS.RED,
+                                ),
+                              ),
+                              TextSpan(
+                                text: ')',
+                                style: (title != null
+                                    ? AppStyle.DEFAULT_14
+                                    : AppStyle.DEFAULT_18_BOLD),
+                              ),
+                            ],
+                          ),
+                        )
+                      else
+                        Text(
+                          getT(KeyT.are_you_sure_you_want_to_sign_out),
+                          style: title != null
+                              ? AppStyle.DEFAULT_14
+                              : AppStyle.DEFAULT_18_BOLD,
+                          textAlign: TextAlign.center,
+                        ),
                       if (child != null) child,
                       SizedBox(
                         height: 25,

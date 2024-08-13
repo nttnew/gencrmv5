@@ -5,8 +5,8 @@ class ModelDataAdd {
   String? parent;
   String? txtValidate;
   String? type;
-  bool? isCK;//data = 'CK'
-
+  String? title;
+  bool? isCK; //data = 'CK'
 
   ModelDataAdd({
     this.label,
@@ -15,6 +15,7 @@ class ModelDataAdd {
     this.parent,
     this.txtValidate,
     this.type,
+    this.title,
     this.isCK,
   });
 }

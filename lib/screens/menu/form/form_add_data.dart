@@ -929,6 +929,7 @@ class _FormAddDataState extends State<FormAddData> {
 
                             _addData[i].data.add(
                                   ModelDataAdd(
+                                    title: _item.field_label,
                                     label: _item.field_name,
                                     value: _item.field_set_value.toString(),
                                     required: _item.field_require,
@@ -1474,7 +1475,7 @@ class _FormAddDataState extends State<FormAddData> {
         final valueAdd = _addData[i].data[j].value;
         final labelAdd = _addData[i].data[j].label;
         final typeAdd = _addData[i].data[j].type;
-        final txtValidateAdd = _addData[i].data[j].txtValidate;
+        final txtValidateAdd = _addData[i].data[j].title.toString() + SPECIAL;
         final isRequiredAdd = _addData[i].data[j].required == 1;
 
         if (_isNull(valueAdd) &&
@@ -1517,7 +1518,7 @@ class _FormAddDataState extends State<FormAddData> {
     }
 
     String mess = (getT(KeyT.please_enter_all_required_fields) +
-        ((txtValidate != null && txtValidate != '') ? '\n($txtValidate)' : ''));
+        ((txtValidate != null && txtValidate != '') ? '\n($txtValidate' : ''));
 
     if (_daThanhToan < 0 && _type == ADD_CONTRACT && isCheckValidate == false) {
       isCheckValidate = true;
@@ -1633,7 +1634,7 @@ class _FormAddDataState extends State<FormAddData> {
           }
           break;
         case CV_PRODUCT_CUSTOMER_TYPE:
-          data['customer_id'] = _id;
+          // data['customer_id'] = _id;
           _blocAdd.add(AddJobEvent(data, files: _attackBloc.listFile));
           break;
         case HT_PRODUCT_CUSTOMER_TYPE:
