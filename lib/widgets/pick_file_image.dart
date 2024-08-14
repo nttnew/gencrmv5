@@ -349,7 +349,7 @@ Future<List<File>?> pickFile() async {
 
 Future<File> compressImage(
   File imageFile, {
-  int maxSizeInBytes = 2000000,
+  int maxSizeInBytes = 200000000000000,// bỏ resize
 }) async {
   //done 2mb
   try {
