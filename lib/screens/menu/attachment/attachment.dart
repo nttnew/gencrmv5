@@ -446,7 +446,7 @@ class _AttachmentState extends State<Attachment> {
                                   shape: BoxShape.circle,
                                   color: COLORS.WHITE,
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: COLORS.BLACK,
                                     width: 0.1,
                                   ),
                                 ),
