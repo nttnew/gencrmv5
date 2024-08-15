@@ -106,7 +106,8 @@ class ShowDialogCustom {
                         )
                       else
                         Text(
-                          getT(KeyT.are_you_sure_you_want_to_sign_out),
+                          content ??
+                              getT(KeyT.are_you_sure_you_want_to_sign_out),
                           style: title != null
                               ? AppStyle.DEFAULT_14
                               : AppStyle.DEFAULT_18_BOLD,
