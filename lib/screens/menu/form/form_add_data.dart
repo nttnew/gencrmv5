@@ -998,9 +998,9 @@ class _FormAddDataState extends State<FormAddData> {
                                                           final String value =
                                                               snapshot.data ??
                                                                   '';
-                                                          if (listShowParents
-                                                              .contains(
-                                                                  value)) {
+                                                          if (_checkListShow(
+                                                              listShowParents,
+                                                              value)) {
                                                             return _getBody(
                                                               dataItem,
                                                               indexParent,
@@ -1055,6 +1055,31 @@ class _FormAddDataState extends State<FormAddData> {
         ),
       ),
     );
+  }
+
+  bool _checkListShow(
+    List<dynamic> _listShowParents,
+    String _value,
+  ) {
+    final List<String> _listValue = _value.split(',');
+
+    if (_listShowParents.contains(_value) ||
+        hasCommonElement(_listShowParents, _listValue)) {
+      return true;
+    }
+    return false;
+  }
+
+  bool hasCommonElement(List<dynamic> list1, List<String> list2) {
+    // Duyệt qua từng phần tử trong list1
+    for (final element in list1) {
+      // Nếu phần tử đó tồn tại trong list2, trả về true
+      if (list2.contains(element.toString())) {
+        return true;
+      }
+    }
+    // Nếu không có phần tử nào chung, trả về false
+    return false;
   }
 
   _btnShowQR() => (_type == ADD_PAYMENT || _type == EDIT_PAYMENT)
@@ -1299,6 +1324,7 @@ class _FormAddDataState extends State<FormAddData> {
                                             .toString()
                                             .split(','),
                                     onChange: (v) {
+                                      _addReloadField(data, v);
                                       _addDataV(indexParent, indexChild, v);
                                     },
                                   )
