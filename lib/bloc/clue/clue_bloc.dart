@@ -24,7 +24,7 @@ class GetListClueBloc extends Bloc<GetListClueEvent, ClueState> {
       : userRepository = userRepository,
         super(InitGetListClue());
 
-  init() {
+  dispose() {
     idFilter = '';
     search = '';
     ids = '';

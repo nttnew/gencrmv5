@@ -20,7 +20,7 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
   String search = '';
   String ids = '';
 
-  init() {
+  dispose() {
     idFilter = '';
     search = '';
     ids = '';

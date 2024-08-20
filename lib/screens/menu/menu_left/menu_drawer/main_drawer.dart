@@ -136,6 +136,8 @@ class _MainDrawerState extends State<MainDrawer> {
                                 style: AppStyle.DEFAULT_16_BOLD.copyWith(
                                   color: isCarCrm() ? COLORS.WHITE : null,
                                 ),
+                                maxLine: 2,
+                                overflow: TextOverflow.ellipsis,
                               ),
                               AppValue.vSpaceTiny,
                               WidgetText(
@@ -143,6 +145,8 @@ class _MainDrawerState extends State<MainDrawer> {
                                 style: AppStyle.DEFAULT_16.copyWith(
                                   color: isCarCrm() ? COLORS.WHITE : null,
                                 ),
+                                maxLine: 2,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ],
                           ),

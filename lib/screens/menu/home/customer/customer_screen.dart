@@ -84,7 +84,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
   @override
   void dispose() {
-    _bloc.init();
+    _bloc.dispose();
     super.dispose();
   }
 

@@ -21,7 +21,7 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
   String search = '';
   String ids = '';
 
-  init() {
+  dispose() {
     idFilter = '';
     search = '';
     ids = '';

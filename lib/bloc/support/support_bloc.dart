@@ -19,7 +19,7 @@ class SupportBloc extends Bloc<SupportEvent, SupportState> {
   String search = '';
   String ids = '';
 
-  init() {
+  dispose() {
     idFilter = '';
     search = '';
     ids = '';
@@ -47,7 +47,7 @@ class SupportBloc extends Bloc<SupportEvent, SupportState> {
       } else {
         resDynamic = response.msg ?? '';
       }
-    }  catch (e) {
+    } catch (e) {
       resDynamic = getT(KeyT.an_error_occurred);
       return resDynamic;
     }

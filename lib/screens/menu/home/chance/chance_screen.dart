@@ -51,7 +51,7 @@ class _ChanceScreenState extends State<ChanceScreen> {
 
   @override
   void dispose() {
-    _bloc.init();
+    _bloc.dispose();
     super.dispose();
   }
 

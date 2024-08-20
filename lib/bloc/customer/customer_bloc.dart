@@ -33,7 +33,7 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
     }
   }
 
-  init() {
+  dispose() {
     idFilter = '';
     search = '';
     ids = '';
@@ -78,7 +78,6 @@ class GetListCustomerBloc extends Bloc<GetListCustomerEvent, CustomerState> {
       if (isSuccess(response.code)) {
         if (page == BASE_URL.PAGE_DEFAULT)
           listType.add(response.data?.filter ?? []);
-
         resDynamic = response.data?.list ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();

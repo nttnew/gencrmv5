@@ -54,7 +54,7 @@ class _ContractScreenState extends State<ContractScreen> {
 
   @override
   void dispose() {
-    _bloc.init();
+    _bloc.dispose();
     super.dispose();
   }
 

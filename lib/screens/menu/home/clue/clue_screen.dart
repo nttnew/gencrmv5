@@ -56,7 +56,7 @@ class _ClueScreenState extends State<ClueScreen> {
 
   @override
   void dispose() {
-    _bloc.init();
+    _bloc.dispose();
     super.dispose();
   }
 

@@ -20,7 +20,7 @@ class GetListChanceBloc extends Bloc<GetListChanceEvent, ChanceState> {
   String search = '';
   String ids = '';
 
-  init() {
+  dispose() {
     idFilter = '';
     search = '';
     ids = '';

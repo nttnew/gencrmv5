@@ -74,7 +74,7 @@ class _SupportScreenState extends State<SupportScreen> {
 
   @override
   void dispose() {
-    _bloc.init();
+    _bloc.dispose();
     super.dispose();
   }
 

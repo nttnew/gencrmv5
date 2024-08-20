@@ -52,9 +52,8 @@ class ProductCustomerModuleBloc
         filter: filter,
       );
       if (isSuccess(response.code)) {
-        if (listFilter.value.isEmpty) {
+        if (page == BASE_URL.PAGE_DEFAULT)
           listFilter.add(response.data?.dataFilter ?? []);
-        }
         resDynamic = response.data?.lists ?? [];
       } else if (isFail(response.code)) {
         loginSessionExpired();

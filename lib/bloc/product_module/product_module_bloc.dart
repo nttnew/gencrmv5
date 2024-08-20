@@ -51,10 +51,8 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
         filter: filter,
       );
       if (isSuccess(response.code)) {
-        if (listFilter.value.isEmpty) {
+        if (page == BASE_URL.PAGE_DEFAULT) {
           listFilter.add(response.data?.dataFilter ?? []);
-        }
-        if (listFilterKho.value.isEmpty) {
           listFilterKho.add(response.danhSachKho ?? []);
         }
         resDynamic = response.data?.lists ?? [];
