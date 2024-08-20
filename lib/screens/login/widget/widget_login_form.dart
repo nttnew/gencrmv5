@@ -308,6 +308,11 @@ class _WidgetLoginFormState extends State<WidgetLoginForm> {
     } else {
       urlBase = text;
     }
+    if (urlBase != shareLocal.getString(PreferencesKey.URL_BASE)) {
+      shareLocal.putString(PreferencesKey.LANGUAGE, '');// nếu mà thay đổi url thì mấy em này đều mặc định
+      shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, 'false');
+      shareLocal.putString(PreferencesKey.SHOW_LOGIN_FINGER_PRINT,'true');
+    }
     shareLocal.putString(PreferencesKey.URL_BASE, urlBase);
     DioProvider.instance(baseUrl: urlBase);
   }

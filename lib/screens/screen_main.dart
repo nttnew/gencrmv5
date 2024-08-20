@@ -31,7 +31,7 @@ class _ScreenMainState extends State<ScreenMain> {
   List<ButtonMenuModel> _listMenu = [];
   late LoginBloc _blocLogin;
 
-  void getMenu() async {
+  void _getMenu() async {
     _listMenu = [];
     _addMenuReport(isCarCrm());
     String menu = await shareLocal.getString(PreferencesKey.MENU);
@@ -133,7 +133,7 @@ class _ScreenMainState extends State<ScreenMain> {
         isLoading: false,
       ),
     );
-    getMenu();
+    _getMenu();
     _blocLogin.getListMenuFlash();
     _blocLogin.getChiNhanh();
     super.initState();
@@ -142,8 +142,8 @@ class _ScreenMainState extends State<ScreenMain> {
   void _showFaceId() async {
     final bool showDialogFaceID =
         await (shareLocal.getString(PreferencesKey.SHOW_LOGIN_FINGER_PRINT) ??
-                "true") ==
-            "true";
+                'true') ==
+            'true';
     if (showDialogFaceID) {
       shareLocal.putString(PreferencesKey.SHOW_LOGIN_FINGER_PRINT, 'false');
       ShowDialogCustom.showDialogBase(
@@ -161,7 +161,7 @@ class _ScreenMainState extends State<ScreenMain> {
         moduleMy: ModuleMy.HOME,
         drawerKey: _drawerKey,
         onReload: () {
-          getMenu();
+          _getMenu();
           _blocLogin.getListMenuFlash();
         },
       ),
@@ -341,6 +341,7 @@ class _ScreenMainState extends State<ScreenMain> {
               isMaxWidth = (i + 1) == _listMenu.length;
             }
             return WidgetAnimator(
+              key: Key(value.title.toString()),
               incomingEffect: WidgetTransitionEffects.incomingScaleDown(
                 duration: Duration(milliseconds: 800),
               ),
