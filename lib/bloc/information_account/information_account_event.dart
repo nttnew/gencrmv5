@@ -1,13 +1,13 @@
 part of 'information_account_bloc.dart';
 
-abstract class InforAccEvent extends Equatable {
-  const InforAccEvent();
+abstract class InfoAccEvent extends Equatable {
+  const InfoAccEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class EmailChanged extends InforAccEvent {
+class EmailChanged extends InfoAccEvent {
   final String email;
 
   @override
@@ -16,9 +16,9 @@ class EmailChanged extends InforAccEvent {
   EmailChanged(this.email);
 }
 
-class EmailUnfocused extends InforAccEvent {}
+class EmailUnfocused extends InfoAccEvent {}
 
-class PhoneChanged extends InforAccEvent {
+class PhoneChanged extends InfoAccEvent {
   final String phone;
 
   @override
@@ -27,23 +27,23 @@ class PhoneChanged extends InforAccEvent {
   PhoneChanged(this.phone);
 }
 
-class PhoneUnfocused extends InforAccEvent {}
+class PhoneUnfocused extends InfoAccEvent {}
 
-class FormInforAccNoAvatarSubmitted extends InforAccEvent {
-  final String fullName, address;
+class FormInfoAccNoAvatarSubmitted extends InfoAccEvent {
+  final String fullName, address, phone;
 
-  FormInforAccNoAvatarSubmitted(this.fullName, this.address);
+  FormInfoAccNoAvatarSubmitted(this.fullName, this.address, this.phone);
 
   @override
-  List<Object> get props => [fullName, address];
+  List<Object> get props => [fullName, address, phone];
 }
 
-class FormInforAccSubmitted extends InforAccEvent {
+class FormInfoAccSubmitted extends InfoAccEvent {
   final File avatar;
-  final String fullName, address;
+  final String fullName, address, phone;
 
-  FormInforAccSubmitted(this.avatar, this.fullName, this.address);
+  FormInfoAccSubmitted(this.avatar, this.fullName, this.address, this.phone);
 
   @override
-  List<Object> get props => [avatar, fullName, address];
+  List<Object> get props => [avatar, fullName, address, phone];
 }

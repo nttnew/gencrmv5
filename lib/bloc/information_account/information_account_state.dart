@@ -1,26 +1,22 @@
 part of 'information_account_bloc.dart';
 
-class InforAccState extends Equatable {
-  const InforAccState({
-    this.phone = const Phone.pure(),
+class InfoAccState extends Equatable {
+  const InfoAccState({
     this.email = const Email.pure(),
     this.status = FormzStatus.pure,
     this.message = '',
   });
 
-  final Phone phone;
   final Email email;
   final FormzStatus status;
   final String message;
 
-  InforAccState copyWith({
-    Phone? phone,
+  InfoAccState copyWith({
     Email? email,
     FormzStatus? status,
     String? message,
   }) {
-    return InforAccState(
-      phone: phone ?? this.phone,
+    return InfoAccState(
       email: email ?? this.email,
       status: status ?? this.status,
       message: message ?? this.message,
@@ -28,5 +24,5 @@ class InforAccState extends Equatable {
   }
 
   @override
-  List<Object> get props => [phone, email, status];
+  List<Object> get props => [email, status];
 }

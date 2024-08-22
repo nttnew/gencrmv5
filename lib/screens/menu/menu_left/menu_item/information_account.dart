@@ -26,6 +26,7 @@ class InformationAccount extends StatefulWidget {
 class _InformationAccountState extends State<InformationAccount> {
   String name = '';
   String address = '';
+  String phone = '';
   File? image;
 
   Future getImageCamera() async {
@@ -55,8 +56,6 @@ class _InformationAccountState extends State<InformationAccount> {
     }
   }
 
-  final _nameFocusNode = FocusNode();
-  final _phoneFocusNode = FocusNode();
   final _emailFocusNode = FocusNode();
   late String initEmail;
   late String initPhone;
@@ -67,24 +66,17 @@ class _InformationAccountState extends State<InformationAccount> {
   @override
   void initState() {
     GetInfoAccBloc.of(context).add(InitGetInforAcc());
-    _phoneFocusNode.addListener(() {
-      if (!_phoneFocusNode.hasFocus) {
-        context.read<InforAccBloc>().add(PhoneUnfocused());
-      }
-    });
     _emailFocusNode.addListener(() {
       if (!_emailFocusNode.hasFocus) {
-        context.read<InforAccBloc>().add(EmailUnfocused());
+        context.read<InfoAccBloc>().add(EmailUnfocused());
       }
     });
-
     super.initState();
   }
 
   @override
   void dispose() {
     _emailFocusNode.dispose();
-    _phoneFocusNode.dispose();
     super.dispose();
   }
 
@@ -95,7 +87,7 @@ class _InformationAccountState extends State<InformationAccount> {
       body: GestureDetector(
         onTap: () => closeKey(),
         child: SingleChildScrollView(
-            child: BlocListener<InforAccBloc, InforAccState>(
+            child: BlocListener<InfoAccBloc, InfoAccState>(
           listener: (context, state) {
             if (state.status.isSubmissionSuccess) {
               GetSnackBarUtils.removeSnackBar();
@@ -122,7 +114,7 @@ class _InformationAccountState extends State<InformationAccount> {
           child: BlocBuilder<GetInfoAccBloc, GetInforAccState>(
             builder: (context, state) {
               if (state is UpdateGetInforAccState) {
-                final bloc = InforAccBloc.of(context);
+                final bloc = InfoAccBloc.of(context);
                 initEmail = state.inforAcc.email ?? '';
                 initFullName = state.inforAcc.fullname ?? '';
                 initAddress = state.inforAcc.address ?? '';
@@ -246,7 +238,7 @@ class _InformationAccountState extends State<InformationAccount> {
                     ),
                     Align(
                       alignment: Alignment.bottomRight,
-                      child: BlocBuilder<InforAccBloc, InforAccState>(
+                      child: BlocBuilder<InfoAccBloc, InfoAccState>(
                         builder: (context, state) {
                           return ButtonCustom(
                             onTap: () async {
@@ -275,36 +267,33 @@ class _InformationAccountState extends State<InformationAccount> {
     );
   }
 
-  _buildFullNameField(InforAccBloc bloc) {
-    return BlocBuilder<InforAccBloc, InforAccState>(builder: (context, state) {
+  _buildFullNameField(InfoAccBloc bloc) {
+    return BlocBuilder<InfoAccBloc, InfoAccState>(builder: (context, state) {
       return FormInputBase(
         label: getT(KeyT.full_name),
         onChange: (value) {
           name = value;
         },
-        focusNode: _nameFocusNode,
         textInputAction: TextInputAction.next,
         initText: initFullName,
       );
     });
   }
 
-  _buildPhoneField(InforAccBloc bloc) {
-    return BlocBuilder<InforAccBloc, InforAccState>(builder: (context, state) {
+  _buildPhoneField(InfoAccBloc bloc) {
+    return BlocBuilder<InfoAccBloc, InfoAccState>(builder: (context, state) {
       return FormInputBase(
         label: getT(KeyT.phone),
-        onChange: (value) => bloc.add(PhoneChanged(value)),
+        onChange: (value) => phone = value,
         textInputType: TextInputType.number,
-        errorText: state.phone.invalid ? getT(KeyT.invalid_phone_number) : null,
-        focusNode: _phoneFocusNode,
         textInputAction: TextInputAction.next,
         initText: initPhone,
       );
     });
   }
 
-  _buildEmailField(InforAccBloc bloc) {
-    return BlocBuilder<InforAccBloc, InforAccState>(builder: (context, state) {
+  _buildEmailField(InfoAccBloc bloc) {
+    return BlocBuilder<InfoAccBloc, InfoAccState>(builder: (context, state) {
       return FormInputBase(
         textInputAction: TextInputAction.next,
         label: getT(KeyT.email),
@@ -319,7 +308,7 @@ class _InformationAccountState extends State<InformationAccount> {
     });
   }
 
-  _buildAddressField(InforAccBloc bloc) {
+  _buildAddressField(InfoAccBloc bloc) {
     return FormInputBase(
       textInputAction: TextInputAction.done,
       label: getT(KeyT.address),
@@ -330,13 +319,13 @@ class _InformationAccountState extends State<InformationAccount> {
     );
   }
 
-  Future<void> _submit(InforAccBloc bloc, InforAccState state) async {
+  Future<void> _submit(InfoAccBloc bloc, InfoAccState state) async {
     closeKey();
     if (state.status.isValidated) {
       if (image != null) {
-        bloc.add(FormInforAccSubmitted(image!, name, address));
+        bloc.add(FormInfoAccSubmitted(image!, name, address, phone));
       } else {
-        bloc.add(FormInforAccNoAvatarSubmitted(name, address));
+        bloc.add(FormInfoAccNoAvatarSubmitted(name, address, phone));
       }
     } else {
       ShowDialogCustom.showDialogBase(

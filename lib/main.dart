@@ -182,8 +182,8 @@ Future main() async {
           BlocProvider<DetailWorkBloc>(
             create: (context) => DetailWorkBloc(userRepository: userRepository),
           ),
-          BlocProvider<InforAccBloc>(
-            create: (context) => InforAccBloc(userRepository: userRepository),
+          BlocProvider<InfoAccBloc>(
+            create: (context) => InfoAccBloc(userRepository: userRepository),
           ),
           BlocProvider<UnreadNotificationBloc>(
             create: (context) =>
