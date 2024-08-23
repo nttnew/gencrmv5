@@ -67,6 +67,7 @@ const String FIELD_NAME_STATUS_P = 'sdtrangthaipopchhd';
 const String STATUS_CANCEL = 'HUY';
 const String STATUS_VIRTUAL = 'AO';
 const String STATUS_SEND = 'GUI';
+const String DA_THANH_TOAN = 'dathanhtoan';
 // status == ảo +tiền ảo/ status = huỷ không công tiền ảo
 
 class FormAddData extends StatefulWidget {
@@ -564,7 +565,7 @@ class _FormAddDataState extends State<FormAddData> {
         '$_total$_tongTienGiam$_tongTienThue$_tongChuaThanhToan$_tongBaoHiemTra$_tongGiaTriXuatHoaDon');
   }
 
-  String _getDataWithFieldName(String v) {
+  String _getDataWithFieldName(String v, {setValue}) {
     switch (v) {
       case GIA_TRI_HOP_DONG_FN:
         return _total.toStringAsFixed(0);
@@ -578,6 +579,8 @@ class _FormAddDataState extends State<FormAddData> {
         return _tongBaoHiemTra.toStringAsFixed(0);
       case CHUA_THANH_TOAN_FN:
         return _tongChuaThanhToan.toStringAsFixed(0);
+      case DA_THANH_TOAN:
+        return '$setValue';
       default:
         return '';
     }
@@ -1402,14 +1405,20 @@ class _FormAddDataState extends State<FormAddData> {
                                                                     _autoSumStream,
                                                                 builder: (context,
                                                                     snapshot) {
+                                                                  _tinhAuto(
+                                                                      data,
+                                                                      '${data.field_set_value}');
                                                                   return WidgetTotalSum(
                                                                     label: data
                                                                         .field_label,
                                                                     value: AppValue
                                                                         .formatMoney(
                                                                       _getDataWithFieldName(
-                                                                          data.field_name ??
-                                                                              ''),
+                                                                        data.field_name ??
+                                                                            '',
+                                                                        setValue:
+                                                                            data.field_set_value,
+                                                                      ),
                                                                     ),
                                                                     onChange:
                                                                         (String?
