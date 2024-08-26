@@ -25,30 +25,31 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   late final ProductModuleBloc _bloc;
-  String title = '';
-  late final ManagerBloc managerBloc;
+  String _title = '';
+  late final ManagerBloc _blocManager;
 
   @override
   void initState() {
-    managerBloc =
+    _getDataFirst();
+    _blocManager =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
-    managerBloc.getManager(module: Module.PRODUCT);
+    _blocManager.getManager(module: Module.PRODUCT);
     UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
-    title = ModuleMy.getNameModuleMy(
-      ModuleMy.SAN_PHAM,
-      isTitle: true,
-    );
     _bloc = ProductModuleBloc.of(context);
     _bloc.getFilter();
     super.initState();
   }
 
-  _reloadLanguage() async {
-    await _bloc.loadMoreController.reloadData();
-    title = ModuleMy.getNameModuleMy(
+  _getDataFirst() {
+    _title = ModuleMy.getNameModuleMy(
       ModuleMy.SAN_PHAM,
       isTitle: true,
     );
+  }
+
+  _reloadLanguage() async {
+    await _bloc.loadMoreController.reloadData();
+    _getDataFirst();
     setState(() {});
   }
 
@@ -70,12 +71,12 @@ class _ProductScreenState extends State<ProductScreen> {
           await _reloadLanguage();
         },
       ),
-      appBar: AppbarBase(_drawerKey, title),
+      appBar: AppbarBase(_drawerKey, _title),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: COLORS.ff1AA928,
         onPressed: () => AppNavigator.navigateForm(
-          title: '${getT(KeyT.add)} $title',
+          title: '${getT(KeyT.add)} $_title',
           type: PRODUCT_TYPE,
         ),
         child: Icon(Icons.add, size: 40),

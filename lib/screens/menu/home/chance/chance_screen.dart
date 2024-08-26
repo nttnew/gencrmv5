@@ -23,30 +23,32 @@ class ChanceScreen extends StatefulWidget {
 
 class _ChanceScreenState extends State<ChanceScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  String title = ModuleMy.getNameModuleMy(
-    ModuleMy.LICH_HEN,
-    isTitle: true,
-  );
-  late final ManagerBloc managerBloc;
+  String _title = '';
+  late final ManagerBloc _blocManager;
   late final GetListChanceBloc _bloc;
-
-  _reloadLanguage() async {
-    await _bloc.loadMoreController.reloadData();
-    title = ModuleMy.getNameModuleMy(
-      ModuleMy.LICH_HEN,
-      isTitle: true,
-    );
-    setState(() {});
-  }
 
   @override
   void initState() {
+    _getDataFirst();
     _bloc = GetListChanceBloc.of(context);
-    managerBloc =
+    _blocManager =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
-    managerBloc.getManager(module: Module.CO_HOI_BH);
+    _blocManager.getManager(module: Module.CO_HOI_BH);
     UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     super.initState();
+  }
+
+  _reloadLanguage() async {
+    await _bloc.loadMoreController.reloadData();
+    _getDataFirst();
+    setState(() {});
+  }
+
+  _getDataFirst() {
+    _title = ModuleMy.getNameModuleMy(
+      ModuleMy.LICH_HEN,
+      isTitle: true,
+    );
   }
 
   @override
@@ -68,14 +70,14 @@ class _ChanceScreenState extends State<ChanceScreen> {
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      appBar: AppbarBase(_drawerKey, title),
+      appBar: AppbarBase(_drawerKey, _title),
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 20),
         child: FloatingActionButton(
           backgroundColor: COLORS.ff1AA928,
           onPressed: () {
             AppNavigator.navigateForm(
-              title: '${getT(KeyT.add)} ${title.toLowerCase()}',
+              title: '${getT(KeyT.add)} ${_title.toLowerCase()}',
               type: ADD_CHANCE,
             );
           },
@@ -89,16 +91,16 @@ class _ChanceScreenState extends State<ChanceScreen> {
             children: [
               AppValue.vSpaceSmall,
               StreamBuilder<List<TreeNodeData>>(
-                  stream: managerBloc.managerTrees,
+                  stream: _blocManager.managerTrees,
                   builder: (context, snapshot) {
                     return SearchBase(
-                      hint: '${getT(KeyT.find)} ${title.toLowerCase()}',
+                      hint: '${getT(KeyT.find)} ${_title.toLowerCase()}',
                       leadIcon: itemSearch(),
                       endIcon: (snapshot.data ?? []).isNotEmpty
                           ? itemSearchFilterTree()
                           : null,
                       onClickRight: () {
-                        showManagerFilter(context, managerBloc, (v) {
+                        showManagerFilter(context, _blocManager, (v) {
                           _bloc.ids = v;
                           _bloc.loadMoreController.reloadData();
                         });

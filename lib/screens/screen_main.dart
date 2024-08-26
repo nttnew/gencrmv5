@@ -9,16 +9,14 @@ import 'package:gen_crm/screens/main/main_car.dart';
 import 'package:gen_crm/widgets/widget_appbar.dart';
 import 'package:gen_crm/models/index.dart';
 import 'package:gen_crm/src/src_index.dart';
-import 'package:gen_crm/widgets/widget_text.dart';
-import 'package:get/get.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 import '../bloc/login/login_bloc.dart';
 import '../../l10n/key_text.dart';
 import '../src/app_const.dart';
 import '../storages/share_local.dart';
 import '../widgets/widget_fingerprint_faceid.dart';
-import 'menu/form/add_service_voucher/add_service_voucher_screen.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
+import 'menu/widget/floating_action_button.dart';
 
 class ScreenMain extends StatefulWidget {
   @override
@@ -88,39 +86,6 @@ class _ScreenMainState extends State<ScreenMain> {
       );
   }
 
-  _handelRouterMenuPlus(String id, String name) {
-    if (ModuleText.CUSTOMER == id) {
-      AppNavigator.navigateForm(
-        title: '${getT(KeyT.add)}'
-            ' ${name.toLowerCase()} ${getT(KeyT.individual)}',
-        type: ADD_CUSTOMER,
-      );
-    } else if (ModuleText.DAU_MOI == id) {
-      AppNavigator.navigateForm(title: name, type: ADD_CLUE);
-    } else if (ModuleText.LICH_HEN == id) {
-      AppNavigator.navigateForm(title: name, type: ADD_CHANCE);
-    } else if (ModuleText.HOP_DONG_FLASH == id) {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => AddServiceVoucherScreen(
-                title: name.toUpperCase().capitalizeFirst ?? '',
-              )));
-    } else if (ModuleText.HOP_DONG == id) {
-      AppNavigator.navigateForm(
-        title: name.toUpperCase().capitalizeFirst ?? '',
-        type: ADD_CONTRACT,
-      );
-    } else if (ModuleText.CONG_VIEC == id) {
-      AppNavigator.navigateForm(title: name, type: ADD_JOB);
-    } else if (ModuleText.CSKH == id) {
-      AppNavigator.navigateForm(title: name, type: ADD_SUPPORT);
-    } else if (ModuleText.THEM_MUA_XE == id) {
-      //todo
-    } else if (ModuleText.THEM_BAN_XE == id) {
-      //todo
-    }
-  }
-  //////////////////////
-
   @override
   void initState() {
     _blocLogin = LoginBloc.of(context);
@@ -166,93 +131,10 @@ class _ScreenMainState extends State<ScreenMain> {
         },
       ),
       floatingActionButtonLocation: ExpandableFab.location,
-      floatingActionButton: _blocLogin.listMenuFlash.isNotEmpty
-          ? ExpandableFab(
-              key: _key,
-              distance: 65,
-              type: ExpandableFabType.up,
-              child: Icon(Icons.add, size: 40),
-              closeButtonStyle: const ExpandableFabCloseButtonStyle(
-                child: Icon(Icons.close),
-                foregroundColor: COLORS.WHITE,
-                backgroundColor: COLORS.ff1AA928,
-              ),
-              backgroundColor: COLORS.ff1AA928,
-              overlayStyle: ExpandableFabOverlayStyle(
-                blur: 5,
-              ),
-              children: _blocLogin.listMenuFlash.reversed
-                  .map(
-                    (e) => GestureDetector(
-                      onTap: () async {
-                        final state = _key.currentState;
-                        if (state != null) {
-                          if (state.isOpen) {
-                            final id = e.id ?? '';
-                            final name = e.name ?? '';
-                            await _handelRouterMenuPlus(id, name);
-                            state.toggle();
-                          }
-                        }
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              color: COLORS.WHITE,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: COLORS.BLACK.withOpacity(0.2),
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
-                                )
-                              ],
-                            ),
-                            child: WidgetText(
-                              title: e.name ?? '',
-                              style: AppStyle.DEFAULT_18_BOLD.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                              left: 8,
-                              right: 8,
-                            ),
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: COLORS.WHITE,
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: COLORS.BLACK.withOpacity(0.2),
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
-                                )
-                              ],
-                            ),
-                            child: SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: Image.asset(
-                                ModuleText.getIconMenu(e.id.toString()),
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                  .toList(),
-            )
-          : SizedBox(),
+      floatingActionButton: floatingActionButton(
+        _key,
+        _blocLogin.listMenuFlash,
+      ),
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
           content: Text(

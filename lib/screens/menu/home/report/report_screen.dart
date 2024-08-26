@@ -40,16 +40,15 @@ class ReportScreen extends StatefulWidget {
 
 class _ReportScreenState extends State<ReportScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  String? money = shareLocal.getString(PreferencesKey.MONEY) ?? '';
+  String? _money = shareLocal.getString(PreferencesKey.MONEY) ?? '';
   String? _labelTime;
   String? _labelLocation;
   int step = 1;
   String _range = '';
-  String? timeFrom;
-  String? timeTo;
-  List<Map<String, dynamic>> typeReport = [];
-  List<String> items = [];
-  String select = '';
+  String? _timeFrom;
+  String? _timeTo;
+  List<Map<String, dynamic>> _typeReport = [];
+  String _select = '';
   late final ReportBloc _bloc;
 
   List<Map<String, dynamic>> typeDoanhSo = [
@@ -70,9 +69,9 @@ class _ReportScreenState extends State<ReportScreen> {
   String checkDataDoanhSo(DataList? dataN, String gt) {
     final data = dataN ?? DataList('0', '0', '0');
     if (gt == 'doanh_so') {
-      return '${data.doanh_so}${money}';
+      return '${data.doanh_so}${_money}';
     } else if (gt == 'thuc_thu') {
-      return '${data.thuc_thu}${money}';
+      return '${data.thuc_thu}${_money}';
     } else if (gt == 'so_hop_dong') {
       return '${data.so_hop_dong}';
     }
@@ -88,7 +87,7 @@ class _ReportScreenState extends State<ReportScreen> {
   init() {
     _bloc = ReportBloc.of(context);
     final nameReport = shareLocal.getString(PreferencesKey.NAME_REPORT);
-    typeReport = [
+    _typeReport = [
       {
         'name': getT(KeyT.turn_over),
         'index': 1,
@@ -110,8 +109,7 @@ class _ReportScreenState extends State<ReportScreen> {
         'index': 5,
       },
     ];
-    items = [getT(KeyT.all_company)];
-    select = typeReport[0]['name'];
+    _select = _typeReport[0]['name'];
     UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     _initApiTime();
   }
@@ -121,8 +119,8 @@ class _ReportScreenState extends State<ReportScreen> {
       if (args.value is PickerDateRange) {
         _range = '${DateFormat('dd/MM/yyyy').format(args.value.starDate)} -'
             ' ${DateFormat('dd/MM/yyyy').format(args.value.endDate ?? args.value.starDate)}';
-        timeFrom = DateFormat('dd/MM/yyyy').format(args.value.starDate);
-        timeTo = DateFormat('dd/MM/yyyy')
+        _timeFrom = DateFormat('dd/MM/yyyy').format(args.value.starDate);
+        _timeTo = DateFormat('dd/MM/yyyy')
             .format(args.value.endDate ?? args.value.starDate);
       }
     });
@@ -137,7 +135,7 @@ class _ReportScreenState extends State<ReportScreen> {
   _showBodyReportOne() {
     showBottomGenCRM(
       child: BodyReportOne(
-        money: money ?? '',
+        money: _money ?? '',
         bloc: _bloc,
       ),
     );
@@ -146,7 +144,7 @@ class _ReportScreenState extends State<ReportScreen> {
   _showBodyReportFive() {
     showBottomGenCRM(
       child: BodyReportFive(
-        money: money ?? '',
+        money: _money ?? '',
         bloc: _bloc,
       ),
     );
@@ -155,7 +153,7 @@ class _ReportScreenState extends State<ReportScreen> {
   _showBodyReportFour() {
     showBottomGenCRM(
       child: BodyReportFour(
-        money: money ?? '',
+        money: _money ?? '',
         bloc: _bloc,
       ),
     );
@@ -164,7 +162,7 @@ class _ReportScreenState extends State<ReportScreen> {
   _showBodyReportTwo() {
     showBottomGenCRM(
       child: BodyReportTwo(
-        money: money ?? '',
+        money: _money ?? '',
         bloc: _bloc,
       ),
     );
@@ -219,17 +217,17 @@ class _ReportScreenState extends State<ReportScreen> {
     return Row(
       children: [
         DropdownButton2(
-          value: select,
+          value: _select,
           icon: SizedBox.shrink(),
           underline: SizedBox.shrink(),
           onChanged: (String? value) {
             setState(() {
-              select = value ?? '';
+              _select = value ?? '';
             });
           },
           dropdownWidth: w * 0.65,
           dropdownMaxHeight: 300,
-          selectedItemBuilder: (c) => typeReport
+          selectedItemBuilder: (c) => _typeReport
               .map(
                 (items) => itemSelectDrop(
                   items['name'] ?? '',
@@ -238,11 +236,11 @@ class _ReportScreenState extends State<ReportScreen> {
                 ),
               )
               .toList(),
-          items: typeReport
+          items: _typeReport
               .map((items) => DropdownMenuItem<String>(
                     onTap: () {
                       step = items['index'];
-                      timeFrom = timeTo = null;
+                      _timeFrom = _timeTo = null;
                       _range = '';
                       _bloc.selectReport.add('');
                       OptionBloc.of(context).add(
@@ -569,7 +567,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     bool isCheckShowSelect = int.tryParse(checkDataDoanhSo(
                           state.data?.list,
                           e['gt'],
-                        ).replaceAll(money ?? '', '')) ==
+                        ).replaceAll(_money ?? '', '')) ==
                         0;
                     return Container(
                       padding: EdgeInsets.only(
@@ -656,8 +654,8 @@ class _ReportScreenState extends State<ReportScreen> {
                                 onTap: () {
                                   if (!isCheckShowSelect) {
                                     _bloc.cl = state.list[index].id;
-                                    _bloc.timeFrom = timeFrom;
-                                    _bloc.timeTo = timeTo;
+                                    _bloc.timeFrom = _timeFrom;
+                                    _bloc.timeTo = _timeTo;
                                     _bloc.selectReport.add('$index');
                                     _showBodyReportTwo();
                                   }
@@ -687,7 +685,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                         ),
                                       ),
                                       Text(
-                                        '${state.list[index].doanh_so ?? getT(KeyT.not_yet)}$money',
+                                        '${state.list[index].doanh_so ?? getT(KeyT.not_yet)}$_money',
                                         style: AppStyle.DEFAULT_16,
                                       ),
                                     ],
@@ -786,7 +784,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                   children: [
                                     Spacer(),
                                     Text(
-                                      '${state.data[index].total_sales ?? '0'}$money',
+                                      '${state.data[index].total_sales ?? '0'}$_money',
                                       style: AppStyle.DEFAULT_16_BOLD,
                                     ),
                                   ],
@@ -840,24 +838,24 @@ class _ReportScreenState extends State<ReportScreen> {
                           InitReportProductEvent(
                             location: _bloc.location,
                             time: _bloc.time,
-                            timeFrom: timeFrom,
-                            timeTo: timeTo,
+                            timeFrom: _timeFrom,
+                            timeTo: _timeTo,
                           ),
                         )
                       : step == 3
                           ? ReportEmployeeBloc.of(context).add(
                               InitReportEmployeeEvent(
                                 time: _bloc.time,
-                                timeFrom: timeFrom,
-                                timeTo: timeTo,
+                                timeFrom: _timeFrom,
+                                timeTo: _timeTo,
                                 diemBan: int.parse(_bloc.location),
                               ),
                             )
                           : CarReportBloc.of(context).add(
                               GetDashboardCar(
                                 time: _bloc.time,
-                                timeFrom: timeFrom,
-                                timeTo: timeTo,
+                                timeFrom: _timeFrom,
+                                timeTo: _timeTo,
                                 diemBan: _bloc.location,
                               ),
                             );
@@ -947,8 +945,8 @@ class _ReportScreenState extends State<ReportScreen> {
                                           ?.status?[index].id
                                           .toString();
                                       _bloc.selectReport.add(id ?? '');
-                                      _bloc.timeTo = timeTo;
-                                      _bloc.timeFrom = timeFrom;
+                                      _bloc.timeTo = _timeTo;
+                                      _bloc.timeFrom = _timeFrom;
                                       _showBodyReportFour();
                                     }
                                   },

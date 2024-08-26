@@ -27,30 +27,32 @@ class ClueScreen extends StatefulWidget {
 
 class _ClueScreenState extends State<ClueScreen> {
   late final GlobalKey<ScaffoldState> _drawerKey;
-  late final ManagerBloc managerBloc;
+  late final ManagerBloc _blocManager;
   late final GetListClueBloc _bloc;
-  String title = ModuleMy.getNameModuleMy(
-    ModuleMy.DAU_MOI,
-    isTitle: true,
-  );
+  String _title = '';
 
   @override
   void initState() {
+    _getDataFirst();
     _drawerKey = GlobalKey();
     _bloc = GetListClueBloc.of(context);
-    managerBloc =
+    _blocManager =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
-    managerBloc.getManager(module: Module.DAU_MOI);
+    _blocManager.getManager(module: Module.DAU_MOI);
     UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     super.initState();
   }
 
-  _reloadLanguage() async {
-    await _bloc.loadMoreController.reloadData();
-    title = ModuleMy.getNameModuleMy(
+  _getDataFirst() {
+    _title = ModuleMy.getNameModuleMy(
       ModuleMy.DAU_MOI,
       isTitle: true,
     );
+  }
+
+  _reloadLanguage() async {
+    await _bloc.loadMoreController.reloadData();
+    _getDataFirst();
     setState(() {});
   }
 
@@ -65,7 +67,7 @@ class _ClueScreenState extends State<ClueScreen> {
     return Scaffold(
       key: _drawerKey,
       resizeToAvoidBottomInset: false,
-      appBar: AppbarBase(_drawerKey, title),
+      appBar: AppbarBase(_drawerKey, _title),
       drawer: MainDrawer(
         drawerKey: _drawerKey,
         moduleMy: ModuleMy.DAU_MOI,
@@ -80,7 +82,7 @@ class _ClueScreenState extends State<ClueScreen> {
           backgroundColor: COLORS.ff1AA928,
           onPressed: () {
             AppNavigator.navigateForm(
-              title: '${getT(KeyT.add)} ${title}',
+              title: '${getT(KeyT.add)} ${_title}',
               type: ADD_CLUE,
             );
           },
@@ -94,16 +96,16 @@ class _ClueScreenState extends State<ClueScreen> {
             children: [
               AppValue.vSpaceSmall,
               StreamBuilder<List<TreeNodeData>>(
-                  stream: managerBloc.managerTrees,
+                  stream: _blocManager.managerTrees,
                   builder: (context, snapshot) {
                     return SearchBase(
-                      hint: '${getT(KeyT.find)} ${title.toLowerCase()}',
+                      hint: '${getT(KeyT.find)} ${_title.toLowerCase()}',
                       leadIcon: itemSearch(),
                       endIcon: (snapshot.data ?? []).isNotEmpty
                           ? itemSearchFilterTree()
                           : null,
                       onClickRight: () {
-                        showManagerFilter(context, managerBloc, (v) {
+                        showManagerFilter(context, _blocManager, (v) {
                           _bloc.ids = v;
                           _bloc.loadMoreController.reloadData();
                         });

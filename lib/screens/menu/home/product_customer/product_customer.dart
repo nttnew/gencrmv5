@@ -30,18 +30,15 @@ class ProductCustomerScreen extends StatefulWidget {
 class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   late final ProductCustomerModuleBloc _bloc;
-  late final String title;
-  late final ManagerBloc managerBloc;
+  late final String _title;
+  late final ManagerBloc _blocManager;
 
   @override
   void initState() {
-    managerBloc =
+    _getDataFirst();
+    _blocManager =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
-    managerBloc.getManager(module: Module.SAN_PHAM_KH);
-    title = ModuleMy.getNameModuleMy(
-      ModuleMy.SAN_PHAM_KH,
-      isTitle: true,
-    );
+    _blocManager.getManager(module: Module.SAN_PHAM_KH);
     UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     _bloc = ProductCustomerModuleBloc.of(context);
     _bloc.getFilter();
@@ -54,17 +51,16 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
     super.deactivate();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  _getDataFirst() {
+    _title = ModuleMy.getNameModuleMy(
+      ModuleMy.CUSTOMER,
+      isTitle: true,
+    );
   }
 
   _reloadLanguage() async {
     await _bloc.loadMoreController.reloadData();
-    title = ModuleMy.getNameModuleMy(
-      ModuleMy.CUSTOMER,
-      isTitle: true,
-    );
+    _getDataFirst();
     setState(() {});
   }
 
@@ -80,12 +76,12 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
         },
         moduleMy: ModuleMy.SAN_PHAM_KH,
       ),
-      appBar: AppbarBase(_drawerKey, title),
+      appBar: AppbarBase(_drawerKey, _title),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: COLORS.ff1AA928,
         onPressed: () => AppNavigator.navigateForm(
-          title: '${getT(KeyT.add)} $title',
+          title: '${getT(KeyT.add)} $_title',
           type: PRODUCT_CUSTOMER_TYPE,
         ),
         child: Icon(Icons.add, size: 40),
@@ -136,11 +132,11 @@ class _ProductCustomerScreenState extends State<ProductCustomerScreen> {
                       },
                     ),
                     TreeFilter(
-                      treeStream: managerBloc.managerTrees,
+                      treeStream: _blocManager.managerTrees,
                       onTap: () {
                         showManagerFilter(
                           context,
-                          managerBloc,
+                          _blocManager,
                           (v) {
                             _bloc.ids = v;
                             _bloc.loadMoreController.reloadData();

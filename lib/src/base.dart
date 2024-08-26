@@ -398,28 +398,39 @@ class ModuleText {
   static const String HOP_DONG = 'them_hop_dong';
   static const String HOP_DONG_FLASH = 'them_phieu_dich_vu';
   static const String CONG_VIEC = 'them_cong_viec';
-  static const String CSKH = 'them_ho_tro';
+  static const String SUPPORT = 'them_ho_tro';
   static const String THEM_MUA_XE = 'them_mua_xe';
   static const String THEM_BAN_XE = 'them_ban_xe';
   static const String THEM_SAN_PHAM_KH = 'them_sanphamkh';
+  static const String CUSTOMER_ORGANIZATION = 'them_khach_hang_to_chuc';
+  static const String CALL = 'call';
+  static const String CONG_VIEC_CHECK_IN = 'CONG_VIEC_CHECK_IN';
+  static const String SUPPORT_CHECK_IN = 'CONG_VIEC_CHECK_IN';
 
-  static String getIconMenu(String id) {
-    if (ModuleText.CUSTOMER == id) {
+  static String getIconMenu(String _moduleTextId) {
+    if (ModuleText.CUSTOMER == _moduleTextId) {
       return ICONS.IC_CUSTOMER_3X_PNG;
-    } else if (ModuleText.DAU_MOI == id) {
+    } else if (ModuleText.DAU_MOI == _moduleTextId) {
       return ICONS.IC_CLUE_3X_PNG;
-    } else if (ModuleText.LICH_HEN == id) {
+    } else if (ModuleText.LICH_HEN == _moduleTextId) {
       return ICONS.IC_CHANCE_3X_PNG;
-    } else if (ModuleText.HOP_DONG == id) {
+    } else if (ModuleText.HOP_DONG == _moduleTextId) {
       return ICONS.IC_CONTRACT_3X_PNG;
-    } else if (ModuleText.HOP_DONG_FLASH == id) {
+    } else if (ModuleText.HOP_DONG_FLASH == _moduleTextId) {
       return ICONS.IC_CONTRACT_3X_PNG;
-    } else if (ModuleText.CONG_VIEC == id) {
+    } else if (ModuleText.CONG_VIEC == _moduleTextId) {
       return ICONS.IC_WORK_3X_PNG;
-    } else if (ModuleText.CSKH == id) {
+    } else if (ModuleText.SUPPORT == _moduleTextId) {
       return ICONS.IC_SUPPORT_3X_PNG;
-    } else if (ModuleText.THEM_SAN_PHAM_KH == id) {
+    } else if (ModuleText.THEM_SAN_PHAM_KH == _moduleTextId) {
       return ICONS.IC_CHANCE_3X_PNG;
+    } else if (ModuleText.CALL == _moduleTextId) {
+      return ICONS.IC_PHONE_C_PNG;
+    } else if (ModuleText.CUSTOMER_ORGANIZATION == _moduleTextId) {
+      return ICONS.IC_BUILD_SVG;
+    } else if (ModuleText.CONG_VIEC_CHECK_IN == _moduleTextId ||
+        ModuleText.SUPPORT_CHECK_IN == _moduleTextId) {
+      return ICONS.IC_LOCATION_SVG;
     }
     return ICONS.IC_WORK_3X_PNG;
   }

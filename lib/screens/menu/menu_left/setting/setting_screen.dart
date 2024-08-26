@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/bloc/blocs.dart';
@@ -8,7 +7,6 @@ import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../l10n/key_text.dart';
-import '../../../../models/button_menu_model.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../storages/share_local.dart';
@@ -27,38 +25,91 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  List<ButtonMenuModel> listMenu = [];
-  late final BehaviorSubject<bool> supportBiometric;
-  late final BehaviorSubject<bool> fingerPrintIsCheck;
-  String? canLoginWithFingerPrint;
-  List<LanguagesResponse> resultLanguage = [];
-  late final LocalAuthentication auth;
-  bool isReload = false;
+  late final BehaviorSubject<bool> _supportBiometric;
+  late final BehaviorSubject<bool> _fingerPrintIsCheck;
+  String? _canLoginWithFingerPrint;
+  List<LanguagesResponse> _resultLanguage = [];
+  late final LocalAuthentication _auth;
+  List<ModelSetting> _listSetting = [];
 
-  List<ModelSetting> listSetting = [];
+  @override
+  void initState() {
+    _listSetting.add(
+      ModelSetting(
+        KeyT.account_information,
+        ICONS.IC_USER_PNG,
+        () {
+          AppNavigator.navigateInformationAccount();
+        },
+      ),
+    );
+    _listSetting.add(
+      ModelSetting(
+        KeyT.introduce,
+        ICONS.IC_ABOUT_US_PNG,
+        () {
+          AppNavigator.navigateAboutUs();
+        },
+      ),
+    );
+    _listSetting.add(
+      ModelSetting(
+        KeyT.policy_terms,
+        ICONS.IC_POLICY_PNG,
+        () {
+          AppNavigator.navigatePolicy();
+        },
+      ),
+    );
+    _listSetting.add(
+      ModelSetting(
+        KeyT.change_password,
+        ICONS.IC_CHANGE_PASS_WORK_PNG,
+        () {
+          AppNavigator.navigateChangePassword();
+        },
+      ),
+    );
+    _getListLanguagesBE();
+    _auth = LocalAuthentication();
+    _fingerPrintIsCheck = BehaviorSubject();
+    _supportBiometric = BehaviorSubject();
+    _canLoginWithFingerPrint =
+        shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT);
+    if (_canLoginWithFingerPrint == null ||
+        _canLoginWithFingerPrint == '' ||
+        _canLoginWithFingerPrint == 'false') {
+      _fingerPrintIsCheck.add(false);
+    } else {
+      if (_canLoginWithFingerPrint == 'true') {
+        _fingerPrintIsCheck.add(true);
+      }
+    }
+    _checkBiometricEnable();
+    super.initState();
+  }
 
-  Future<void> checkBiometricEnable() async {
-    final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+  Future<void> _checkBiometricEnable() async {
+    final bool canAuthenticateWithBiometrics = await _auth.canCheckBiometrics;
     if (!canAuthenticateWithBiometrics) {
       return;
     }
-
     final List<BiometricType> availableBiometrics =
-        await auth.getAvailableBiometrics();
+        await _auth.getAvailableBiometrics();
     if (availableBiometrics.isNotEmpty) {
-      supportBiometric.add(true);
+      _supportBiometric.add(true);
     }
   }
 
-  Future<void> useBiometric({required bool value}) async {
+  Future<void> _useBiometric({required bool value}) async {
     if (!value) {
-      fingerPrintIsCheck.sink.add(false);
-      shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "false");
+      _fingerPrintIsCheck.sink.add(false);
+      shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, 'false');
       return;
     }
     try {
       final String reason = getT(KeyT.login_with_fingerprint_face_id);
-      final bool didAuthenticate = await auth.authenticate(
+      final bool didAuthenticate = await _auth.authenticate(
         localizedReason: reason,
         options: const AuthenticationOptions(
           useErrorDialogs: false,
@@ -66,8 +117,8 @@ class _SettingScreenState extends State<SettingScreen> {
         ),
       );
       if (didAuthenticate) {
-        fingerPrintIsCheck.add(true);
-        shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, "true");
+        _fingerPrintIsCheck.add(true);
+        shareLocal.putString(PreferencesKey.LOGIN_FINGER_PRINT, 'true');
       } else {
         ShowDialogCustom.showDialogBase(
           title: getT(KeyT.notification),
@@ -79,71 +130,14 @@ class _SettingScreenState extends State<SettingScreen> {
     }
   }
 
-  void getListLanguagesBE() {
-    String data = shareLocal.getString(PreferencesKey.LANGUAGE_BE) ?? "";
-    if (data != '' && resultLanguage != []) {
+  void _getListLanguagesBE() {
+    String data = shareLocal.getString(PreferencesKey.LANGUAGE_BE) ?? '';
+    if (data != '' && _resultLanguage != []) {
       final result = json.decode(data) as List<dynamic>;
-      resultLanguage =
+      _resultLanguage =
           result.map((e) => LanguagesResponse.fromJson(e)).toList();
       LoginBloc.of(context).getLanguage();
     }
-  }
-
-  @override
-  void initState() {
-    listSetting.add(
-      ModelSetting(
-        KeyT.account_information,
-        ICONS.IC_USER_PNG,
-        () {
-          AppNavigator.navigateInformationAccount();
-        },
-      ),
-    );
-    listSetting.add(
-      ModelSetting(
-        KeyT.introduce,
-        ICONS.IC_ABOUT_US_PNG,
-        () {
-          AppNavigator.navigateAboutUs();
-        },
-      ),
-    );
-    listSetting.add(
-      ModelSetting(
-        KeyT.policy_terms,
-        ICONS.IC_POLICY_PNG,
-        () {
-          AppNavigator.navigatePolicy();
-        },
-      ),
-    );
-    listSetting.add(
-      ModelSetting(
-        KeyT.change_password,
-        ICONS.IC_CHANGE_PASS_WORK_PNG,
-        () {
-          AppNavigator.navigateChangePassword();
-        },
-      ),
-    );
-    getListLanguagesBE();
-    auth = LocalAuthentication();
-    fingerPrintIsCheck = BehaviorSubject();
-    supportBiometric = BehaviorSubject();
-    canLoginWithFingerPrint =
-        shareLocal.getString(PreferencesKey.LOGIN_FINGER_PRINT);
-    if (canLoginWithFingerPrint == null ||
-        canLoginWithFingerPrint == "" ||
-        canLoginWithFingerPrint == "false") {
-      fingerPrintIsCheck.add(false);
-    } else {
-      if (canLoginWithFingerPrint == "true") {
-        fingerPrintIsCheck.add(true);
-      }
-    }
-    checkBiometricEnable();
-    super.initState();
   }
 
   @override
@@ -159,13 +153,13 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            itemCount: listSetting.length,
+            itemCount: _listSetting.length,
             itemBuilder: (BuildContext context, int index) {
               return Column(
                 children: [
                   InkWell(
                     onTap: () {
-                      listSetting[index].onTap();
+                      _listSetting[index].onTap();
                     },
                     child: Container(
                       padding: EdgeInsets.only(
@@ -174,8 +168,8 @@ class _SettingScreenState extends State<SettingScreen> {
                         left: 20,
                       ),
                       child: WidgetItemListMenu(
-                        icon: listSetting[index].image,
-                        title: getT(listSetting[index].keyTitle),
+                        icon: _listSetting[index].image,
+                        title: getT(_listSetting[index].keyTitle),
                       ),
                     ),
                   ),
@@ -221,13 +215,9 @@ class _SettingScreenState extends State<SettingScreen> {
                       dropdownMaxHeight: 200,
                       onChanged: (LanguagesResponse? value) {},
                       barrierColor: Colors.grey.withOpacity(0.4),
-                      items: resultLanguage
+                      items: _resultLanguage
                           .map((items) => DropdownMenuItem<LanguagesResponse>(
                                 onTap: () async {
-                                  isReload = items.name !=
-                                      (shareLocal.getString(
-                                              PreferencesKey.LANGUAGE_NAME) ??
-                                          '');
                                   LoginBloc.of(context).setLanguage(items);
                                   await LoginBloc.of(context).getMenuMain();
                                   widget.onSelectLang();
@@ -258,10 +248,10 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
           ),
           StreamBuilder<bool>(
-            stream: supportBiometric,
+            stream: _supportBiometric,
             builder: (_, supportBiometric) {
               return StreamBuilder<bool>(
-                stream: fingerPrintIsCheck,
+                stream: _fingerPrintIsCheck,
                 builder: (context, snapshot) {
                   return Container(
                     margin: EdgeInsets.only(
@@ -275,7 +265,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         Expanded(
                           child: WidgetText(
                             title:
-                                "${getT(KeyT.login_with_fingerprint_face_id)}: ",
+                                '${getT(KeyT.login_with_fingerprint_face_id)}: ',
                             style: AppStyle.DEFAULT_16.copyWith(
                               color: COLORS.GREY,
                             ),
@@ -291,7 +281,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                     .the_device_has_not_setup_fingerprint_face),
                               );
                             } else {
-                              useBiometric(value: value);
+                              _useBiometric(value: value);
                             }
                           },
                         ),

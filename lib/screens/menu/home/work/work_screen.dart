@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'package:gen_crm/bloc/work/work_bloc.dart';
+import 'package:gen_crm/screens/menu/widget/floating_action_button.dart';
+import 'package:gen_crm/src/models/model_generator/customer_clue.dart';
 import 'package:gen_crm/src/models/model_generator/work.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/screens/menu/home/work/widget/index.dart';
-import 'package:gen_crm/widgets/widget_text.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
@@ -26,39 +27,37 @@ class WorkScreen extends StatefulWidget {
 
 class _WorkScreenState extends State<WorkScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  String title = '';
-  List<String> listAdd = [];
+  String _title = '';
+  List<Customer> _listAdd = [];
   final _key = GlobalKey<ExpandableFabState>();
-  late final ManagerBloc managerBloc;
+  late final ManagerBloc _blocManager;
   late final WorkBloc _bloc;
 
   @override
   void initState() {
     _getDataFirst();
     _bloc = WorkBloc.of(context);
-    managerBloc =
+    _blocManager =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
-    managerBloc.getManager(module: Module.CONG_VIEC);
+    _blocManager.getManager(module: Module.CONG_VIEC);
     UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     super.initState();
   }
 
-  _handleRouter(String value) {
-    AppNavigator.navigateForm(
-      title: value,
-      type: ADD_JOB,
-      isCheckIn: listAdd.first == value,
-    );
-  }
-
   _getDataFirst() {
-    title = ModuleMy.getNameModuleMy(
+    _title = ModuleMy.getNameModuleMy(
       ModuleMy.CONG_VIEC,
       isTitle: true,
     );
-    listAdd = [
-      '${getT(KeyT.add)} ${getT(KeyT.check_in).toLowerCase()}',
-      '${getT(KeyT.add)} ${title.toLowerCase()}'
+    _listAdd = [
+      Customer.two(
+        id: ModuleText.CONG_VIEC_CHECK_IN,
+        name: '${getT(KeyT.add)} ${getT(KeyT.check_in).toLowerCase()}',
+      ),
+      Customer.two(
+        id: ModuleText.CONG_VIEC,
+        name: '${getT(KeyT.add)} ${_title.toLowerCase()}',
+      ),
     ];
   }
 
@@ -87,88 +86,8 @@ class _WorkScreenState extends State<WorkScreen> {
         moduleMy: ModuleMy.CONG_VIEC,
       ),
       floatingActionButtonLocation: ExpandableFab.location,
-      floatingActionButton: ExpandableFab(
-        key: _key,
-        distance: 65,
-        type: ExpandableFabType.up,
-        child: Icon(Icons.add, size: 40),
-        closeButtonStyle: const ExpandableFabCloseButtonStyle(
-          child: Icon(Icons.close),
-          foregroundColor: COLORS.WHITE,
-          backgroundColor: COLORS.ff1AA928,
-        ),
-        backgroundColor: COLORS.ff1AA928,
-        overlayStyle: ExpandableFabOverlayStyle(
-          blur: 5,
-        ),
-        children: listAdd
-            .map(
-              (e) => InkWell(
-                onTap: () async {
-                  final state = _key.currentState;
-                  if (state != null) {
-                    if (state.isOpen) {
-                      await _handleRouter(e);
-                      state.toggle();
-                    }
-                  }
-                },
-                child: Row(
-                  children: [
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: COLORS.WHITE,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: COLORS.BLACK.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                          )
-                        ],
-                      ),
-                      child: WidgetText(
-                        title: e,
-                        style: AppStyle.DEFAULT_18_BOLD.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(
-                        left: 8,
-                        right: 8,
-                      ),
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: COLORS.BLACK.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                          )
-                        ],
-                        color: COLORS.WHITE,
-                        shape: BoxShape.circle,
-                      ),
-                      child: SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: Image.asset(
-                          ICONS.IC_WORK_3X_PNG,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )
-            .toList(),
-      ),
-      appBar: AppbarBase(_drawerKey, title),
+      floatingActionButton: floatingActionButton(_key, _listAdd),
+      appBar: AppbarBase(_drawerKey, _title),
       body: ViewLoadMoreBase(
         isShowAll: _bloc.listType,
         child: SingleChildScrollView(
@@ -176,16 +95,16 @@ class _WorkScreenState extends State<WorkScreen> {
             children: [
               AppValue.vSpaceSmall,
               StreamBuilder<List<TreeNodeData>>(
-                  stream: managerBloc.managerTrees,
+                  stream: _blocManager.managerTrees,
                   builder: (context, snapshot) {
                     return SearchBase(
-                      hint: '${getT(KeyT.find)} ${title.toLowerCase()}',
+                      hint: '${getT(KeyT.find)} ${_title.toLowerCase()}',
                       leadIcon: itemSearch(),
                       endIcon: (snapshot.data ?? []).isNotEmpty
                           ? itemSearchFilterTree()
                           : null,
                       onClickRight: () {
-                        showManagerFilter(context, managerBloc, (v) {
+                        showManagerFilter(context, _blocManager, (v) {
                           _bloc.ids = v;
                           _bloc.loadMoreController.reloadData();
                         });
@@ -219,7 +138,7 @@ class _WorkScreenState extends State<WorkScreen> {
           return WorkCardWidget(
             item: snap,
             onTap: () => AppNavigator.navigateDetailWork(
-              int.parse(snap.id ?? '0'),
+              int.tryParse(snap.id ?? '') ?? 0,
             ),
           );
         },

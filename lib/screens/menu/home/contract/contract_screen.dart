@@ -24,31 +24,32 @@ class ContractScreen extends StatefulWidget {
 
 class _ContractScreenState extends State<ContractScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  String title = '';
-  late final ManagerBloc managerBloc;
+  String _title = '';
+  late final ManagerBloc _blocManager;
   late final ContractBloc _bloc;
 
   @override
   void initState() {
+    _getDataFirst();
     _bloc = ContractBloc.of(context);
-    managerBloc =
+    _blocManager =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
-    managerBloc.getManager(module: Module.HOP_DONG);
+    _blocManager.getManager(module: Module.HOP_DONG);
     UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     _bloc.add(InitGetContractEvent());
-    title = ModuleMy.getNameModuleMy(
+    super.initState();
+  }
+
+  _getDataFirst() {
+    _title = ModuleMy.getNameModuleMy(
       ModuleMy.HOP_DONG,
       isTitle: true,
     );
-    super.initState();
   }
 
   _reloadLanguage() async {
     await _bloc.loadMoreController.reloadData();
-    title = ModuleMy.getNameModuleMy(
-      ModuleMy.HOP_DONG,
-      isTitle: true,
-    );
+    _getDataFirst();
     setState(() {});
   }
 
@@ -63,7 +64,7 @@ class _ContractScreenState extends State<ContractScreen> {
     return Scaffold(
       key: _drawerKey,
       resizeToAvoidBottomInset: false,
-      appBar: AppbarBase(_drawerKey, title),
+      appBar: AppbarBase(_drawerKey, _title),
       drawer: MainDrawer(
         drawerKey: _drawerKey,
         onReload: () async {
@@ -78,7 +79,7 @@ class _ContractScreenState extends State<ContractScreen> {
           backgroundColor: COLORS.ff1AA928,
           onPressed: () {
             AppNavigator.navigateForm(
-              title: '${getT(KeyT.add)} ${title.toLowerCase()}',
+              title: '${getT(KeyT.add)} ${_title.toLowerCase()}',
               type: ADD_CONTRACT,
             );
           },
@@ -92,16 +93,16 @@ class _ContractScreenState extends State<ContractScreen> {
             children: [
               AppValue.vSpaceSmall,
               StreamBuilder<List<TreeNodeData>>(
-                  stream: managerBloc.managerTrees,
+                  stream: _blocManager.managerTrees,
                   builder: (context, snapshot) {
                     return SearchBase(
-                      hint: '${getT(KeyT.find)} ${title.toLowerCase()}',
+                      hint: '${getT(KeyT.find)} ${_title.toLowerCase()}',
                       leadIcon: itemSearch(),
                       endIcon: (snapshot.data ?? []).isNotEmpty
                           ? itemSearchFilterTree()
                           : null,
                       onClickRight: () {
-                        showManagerFilter(context, managerBloc, (v) {
+                        showManagerFilter(context, _blocManager, (v) {
                           _bloc.ids = v;
                           _bloc.loadMoreController.reloadData();
                         });
@@ -133,7 +134,7 @@ class _ContractScreenState extends State<ContractScreen> {
         itemWidget: (int index, data) {
           ContractItemData snap = data;
           return ItemContract(
-            onRefreshForm: (){
+            onRefreshForm: () {
               _bloc.loadMoreController.reloadData();
             },
             data: snap,

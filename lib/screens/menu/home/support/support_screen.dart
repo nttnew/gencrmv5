@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:gen_crm/bloc/unread_list_notification/unread_list_notifi_bloc.dart';
 import 'package:gen_crm/bloc/support/support_bloc.dart';
+import 'package:gen_crm/screens/menu/widget/floating_action_button.dart';
 import 'package:gen_crm/src/models/model_generator/support.dart';
 import '../../../../bloc/manager_filter/manager_bloc.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
+import '../../../../src/models/model_generator/customer_clue.dart';
 import '../../../../src/src_index.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/drop_down_base.dart';
@@ -13,7 +15,6 @@ import '../../../../widgets/listview/list_load_infinity.dart';
 import '../../../../widgets/search_base.dart';
 import '../../../../widgets/tree/tree_node_model.dart';
 import '../../../../widgets/tree/tree_widget.dart';
-import '../../../../widgets/widget_text.dart';
 import '../../menu_left/menu_drawer/main_drawer.dart';
 import 'widget/item_support.dart';
 
@@ -27,48 +28,42 @@ class SupportScreen extends StatefulWidget {
 class _SupportScreenState extends State<SupportScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   final _key = GlobalKey<ExpandableFabState>();
-  String title = ModuleMy.getNameModuleMy(
-    ModuleMy.CSKH,
-    isTitle: true,
-  );
-  List<String> listAdd = [
-    '${getT(KeyT.add)} ${getT(KeyT.check_in).toLowerCase()}',
-    '${getT(KeyT.add)} ${ModuleMy.getNameModuleMy(
-      ModuleMy.CSKH,
-      isTitle: true,
-    ).toLowerCase()}'
-  ];
-  late final ManagerBloc managerBloc;
+  String _title = '';
+  List<Customer> _listAdd = [];
+  late final ManagerBloc _blocManager;
   late final SupportBloc _bloc;
 
   @override
   void initState() {
     _bloc = SupportBloc.of(context);
-    managerBloc =
+    _getDataFirst();
+    _blocManager =
         ManagerBloc(userRepository: ManagerBloc.of(context).userRepository);
-    managerBloc.getManager(module: Module.HO_TRO);
+    _blocManager.getManager(module: Module.HO_TRO);
     UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     super.initState();
   }
 
-  _handleRouter(String value) {
-    AppNavigator.navigateForm(
-      title: value,
-      type: ADD_SUPPORT,
-      isCheckIn: listAdd.first == value,
+  _getDataFirst() {
+    _title = ModuleMy.getNameModuleMy(
+      ModuleMy.CSKH,
+      isTitle: true,
     );
+    _listAdd = [
+      Customer.two(
+        id: ModuleText.SUPPORT_CHECK_IN,
+        name: '${getT(KeyT.add)} ${getT(KeyT.check_in).toLowerCase()}',
+      ),
+      Customer.two(
+        id: ModuleText.SUPPORT,
+        name: '${getT(KeyT.add)} ${_title.toLowerCase()}',
+      ),
+    ];
   }
 
   _reloadLanguage() async {
     await _bloc.loadMoreController.reloadData();
-    listAdd = [
-      '${getT(KeyT.add)} ${getT(KeyT.check_in).toLowerCase()}',
-      '${getT(KeyT.add)} ${title.toLowerCase()}'
-    ];
-    title = ModuleMy.getNameModuleMy(
-      ModuleMy.CSKH,
-      isTitle: true,
-    );
+    _getDataFirst();
     setState(() {});
   }
 
@@ -91,88 +86,8 @@ class _SupportScreenState extends State<SupportScreen> {
         },
       ),
       floatingActionButtonLocation: ExpandableFab.location,
-      floatingActionButton: ExpandableFab(
-        key: _key,
-        distance: 65,
-        type: ExpandableFabType.up,
-        child: Icon(Icons.add, size: 40),
-        closeButtonStyle: const ExpandableFabCloseButtonStyle(
-          child: Icon(Icons.close),
-          foregroundColor: COLORS.WHITE,
-          backgroundColor: COLORS.ff1AA928,
-        ),
-        backgroundColor: COLORS.ff1AA928,
-        overlayStyle: ExpandableFabOverlayStyle(
-          blur: 5,
-        ),
-        children: listAdd
-            .map(
-              (e) => InkWell(
-                onTap: () async {
-                  final state = _key.currentState;
-                  if (state != null) {
-                    if (state.isOpen) {
-                      await _handleRouter(e);
-                      state.toggle();
-                    }
-                  }
-                },
-                child: Row(
-                  children: [
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: COLORS.WHITE,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: COLORS.BLACK.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                          )
-                        ],
-                      ),
-                      child: WidgetText(
-                        title: e,
-                        style: AppStyle.DEFAULT_18_BOLD.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(
-                        left: 8,
-                        right: 8,
-                      ),
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: COLORS.BLACK.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                          )
-                        ],
-                        color: COLORS.WHITE,
-                        shape: BoxShape.circle,
-                      ),
-                      child: SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: Image.asset(
-                          ICONS.IC_SUPPORT_3X_PNG,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )
-            .toList(),
-      ),
-      appBar: AppbarBase(_drawerKey, title),
+      floatingActionButton: floatingActionButton(_key, _listAdd),
+      appBar: AppbarBase(_drawerKey, _title),
       body: ViewLoadMoreBase(
         isShowAll: _bloc.listType,
         child: SingleChildScrollView(
@@ -180,16 +95,16 @@ class _SupportScreenState extends State<SupportScreen> {
             children: [
               AppValue.vSpaceSmall,
               StreamBuilder<List<TreeNodeData>>(
-                  stream: managerBloc.managerTrees,
+                  stream: _blocManager.managerTrees,
                   builder: (context, snapshot) {
                     return SearchBase(
-                      hint: "${getT(KeyT.find)} ${title.toLowerCase()}",
+                      hint: '${getT(KeyT.find)} ${_title.toLowerCase()}',
                       leadIcon: itemSearch(),
                       endIcon: (snapshot.data ?? []).isNotEmpty
                           ? itemSearchFilterTree()
                           : null,
                       onClickRight: () {
-                        showManagerFilter(context, managerBloc, (v) {
+                        showManagerFilter(context, _blocManager, (v) {
                           _bloc.ids = v;
                           _bloc.loadMoreController.reloadData();
                         });
