@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gen_crm/l10n/key_text.dart';
-import 'package:gen_crm/screens/menu/widget/box_item.dart';
+import 'package:gen_crm/screens/widget/box_item.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:get/get.dart';

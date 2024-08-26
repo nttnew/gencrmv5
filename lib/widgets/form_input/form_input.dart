@@ -4,7 +4,7 @@ import 'package:gen_crm/src/models/model_generator/add_customer.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../screens/menu/widget/widget_label.dart';
+import '../../screens/widget/widget_label.dart';
 import '../../src/src_index.dart';
 
 class FormInputBase extends StatefulWidget {

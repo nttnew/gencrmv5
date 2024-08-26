@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gen_crm/screens/menu/widget/widget_label.dart';
+import 'package:gen_crm/screens/widget/widget_label.dart';
 import 'package:gen_crm/src/src_index.dart';
 import '../src/models/model_generator/add_customer.dart';
 

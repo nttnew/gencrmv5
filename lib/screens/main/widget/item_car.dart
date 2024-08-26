@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gen_crm/l10n/key_text.dart';
-import 'package:gen_crm/screens/menu/widget/box_item.dart';
+import 'package:gen_crm/screens/widget/box_item.dart';
 import 'package:gen_crm/widgets/line_horizontal_widget.dart';
 import '../../../src/app_const.dart';
 import '../../../src/models/model_generator/xe_dich_vu_response.dart';
 import '../../../src/src_index.dart';
 import '../../../widgets/widget_text.dart';
-import '../../menu/widget/information.dart';
+import '../../widget/information.dart';
 
 class ItemCar extends StatelessWidget {
   const ItemCar({

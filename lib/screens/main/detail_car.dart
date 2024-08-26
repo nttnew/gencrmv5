@@ -13,8 +13,8 @@ import '../../src/src_index.dart';
 import '../../widgets/cupertino_loading.dart';
 import '../../widgets/widget_appbar.dart';
 import '../../widgets/widget_text.dart';
-import '../menu/widget/error_item.dart';
-import '../menu/widget/information.dart';
+import '../widget/error_item.dart';
+import '../widget/information.dart';
 
 class DetailCar extends StatefulWidget {
   const DetailCar({

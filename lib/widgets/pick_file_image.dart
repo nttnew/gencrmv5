@@ -11,7 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../../../../src/src_index.dart';
 import '../bloc/contract/attack_bloc.dart';
 import '../../l10n/key_text.dart';
-import '../screens/menu/form/widget/preview_image.dart';
+import '../screens/form/widget/preview_image.dart';
 import 'package:image/image.dart' as img;
 import 'btn_save.dart';
 import 'loading_api.dart';

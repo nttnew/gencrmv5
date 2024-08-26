@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gen_crm/screens/menu/widget/widget_label.dart';
+import 'package:gen_crm/screens/widget/widget_label.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../models/model_data_add.dart';
