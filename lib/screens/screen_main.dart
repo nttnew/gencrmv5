@@ -9,12 +9,12 @@ import 'package:gen_crm/screens/main/main_car.dart';
 import 'package:gen_crm/widgets/widget_appbar.dart';
 import 'package:gen_crm/models/index.dart';
 import 'package:gen_crm/src/src_index.dart';
-import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 import '../bloc/login/login_bloc.dart';
 import '../../l10n/key_text.dart';
 import '../src/app_const.dart';
 import '../storages/share_local.dart';
 import '../widgets/widget_fingerprint_faceid.dart';
+import 'main/main_default.dart';
 import 'menu/menu_left/menu_drawer/main_drawer.dart';
 import 'menu/widget/floating_action_button.dart';
 
@@ -28,6 +28,24 @@ class _ScreenMainState extends State<ScreenMain> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   List<ButtonMenuModel> _listMenu = [];
   late LoginBloc _blocLogin;
+
+  @override
+  void initState() {
+    _blocLogin = LoginBloc.of(context);
+    _showFaceId();
+    GetInfoAccBloc.of(context).add(InitGetInforAcc(isLoading: false));
+    UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
+    UnreadNotificationBloc.of(context).add(
+      InitGetListUnReadNotificationEvent(
+        BASE_URL.PAGE_DEFAULT,
+        isLoading: false,
+      ),
+    );
+    _getMenu();
+    _blocLogin.getListMenuFlash();
+    _blocLogin.getChiNhanh();
+    super.initState();
+  }
 
   void _getMenu() async {
     _listMenu = [];
@@ -84,24 +102,6 @@ class _ScreenMainState extends State<ScreenMain> {
               AppNavigator.navigateReport();
             }),
       );
-  }
-
-  @override
-  void initState() {
-    _blocLogin = LoginBloc.of(context);
-    _showFaceId();
-    GetInfoAccBloc.of(context).add(InitGetInforAcc(isLoading: false));
-    UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
-    UnreadNotificationBloc.of(context).add(
-      InitGetListUnReadNotificationEvent(
-        BASE_URL.PAGE_DEFAULT,
-        isLoading: false,
-      ),
-    );
-    _getMenu();
-    _blocLogin.getListMenuFlash();
-    _blocLogin.getChiNhanh();
-    super.initState();
   }
 
   void _showFaceId() async {
@@ -198,88 +198,14 @@ class _ScreenMainState extends State<ScreenMain> {
                 ? MainCar(
                     listMenu: _listMenu,
                   )
-                : _main(),
+                : MainDefault(
+                    listMenu: _listMenu,
+                  ),
           ],
         ),
       ),
     );
   }
-
-  _main() => Container(
-        padding: EdgeInsets.all(8),
-        child: Wrap(
-          children: _listMenu.asMap().entries.map((entry) {
-            final value = entry.value;
-            final i = entry.key;
-            final hAll = MediaQuery.of(context).size.height -
-                AppValue.heightsAppBar -
-                MediaQuery.of(context).padding.top -
-                16;
-            final wAll = MediaQuery.of(context).size.width - 16;
-            final h = hAll / (_listMenu.length / 2).ceil();
-            final w = (wAll / 2);
-            bool isMaxWidth = false;
-            if (_listMenu.length % 2 != 0) {
-              isMaxWidth = (i + 1) == _listMenu.length;
-            }
-            return WidgetAnimator(
-              key: Key(value.title.toString()),
-              incomingEffect: WidgetTransitionEffects.incomingScaleDown(
-                duration: Duration(milliseconds: 800),
-              ),
-              child: Container(
-                height: h,
-                width: isMaxWidth ? wAll : w,
-                padding: EdgeInsets.all(8),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    backgroundColor: value.backgroundColor,
-                    minimumSize: Size(0, 0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(
-                          10,
-                        ),
-                      ),
-                    ),
-                  ),
-                  onPressed: () => value.onTap(),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        top: 8,
-                        right: 0,
-                        left: 0,
-                        child: SizedBox(
-                          width: (isMaxWidth ? wAll : w) - 16,
-                          child: Text(
-                            value.title,
-                            style: AppStyle.DEFAULT_16_BOLD.copyWith(
-                              color: isMaxWidth ? COLORS.WHITE : null,
-                              fontSize: isMaxWidth ? 20 : null,
-                            ),
-                            maxLines: 2,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 8,
-                        right: 8,
-                        child: Image.asset(
-                          ICONS.IC_NEXT_SCREEN_PNG,
-                          height: 32,
-                          color: isMaxWidth ? COLORS.WHITE : null,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
-        ),
-      );
 
   @override
   void dispose() {

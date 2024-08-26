@@ -7,6 +7,7 @@ import 'package:gen_crm/src/models/model_generator/login_response.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../l10n/key_text.dart';
+import '../../../../models/setting_model.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/src_index.dart';
 import '../../../../storages/share_local.dart';
@@ -341,16 +342,4 @@ class _SettingScreenState extends State<SettingScreen> {
           ),
         ],
       );
-}
-
-class ModelSetting {
-  String keyTitle;
-  String image;
-  Function onTap;
-
-  ModelSetting(
-    this.keyTitle,
-    this.image,
-    this.onTap,
-  );
 }

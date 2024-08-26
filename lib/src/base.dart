@@ -250,6 +250,7 @@ const PDF_CONG_VIEC = '2';
 const PDF_CO_HOI = '3';
 const PDF_HO_TRO = '6';
 // job cv customer: khách hang support ho tro contact đầu mối
+
 String getURLModule(String module) {
   if (module == Module.HOP_DONG) {
     return 'contract';
@@ -318,16 +319,16 @@ class ModuleMy {
     bool isTitle = false,
     bool isTxtNull = false,
   }) {
-    String menu = shareLocal.getString(PreferencesKey.MENU);
-    List listM = jsonDecode(menu);
-    for (final value in listM) {
-      String id = value['id'];
-      String name = value['name'];
-      if (id == txt) {
+    String _menu = shareLocal.getString(PreferencesKey.MENU);
+    List _listM = jsonDecode(_menu);
+    for (final value in _listM) {
+      String _id = value['id'];
+      String _name = value['name'];
+      if (_id == txt) {
         if (isTitle) {
-          return name;
+          return _name;
         } else {
-          return name.toLowerCase();
+          return _name.toLowerCase();
         }
       }
     }
