@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
@@ -28,10 +27,14 @@ class _ScreenMainState extends State<ScreenMain> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   List<ButtonMenuModel> _listMenu = [];
   late LoginBloc _blocLogin;
+  int _seconds = 2; // thời gian giữa hai lần nhấn
+  DateTime? _lastPressedTime; // Thời gian nhấn nút back gần nhất
+  late final Duration _backPressInterval; // Khoảng thời gian giữa hai lần nhấn
 
   @override
   void initState() {
     _blocLogin = LoginBloc.of(context);
+    _backPressInterval = Duration(seconds: _seconds);
     _showFaceId();
     GetInfoAccBloc.of(context).add(InitGetInforAcc(isLoading: false));
     UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
@@ -133,15 +136,28 @@ class _ScreenMainState extends State<ScreenMain> {
         _key,
         _blocLogin.listMenuFlash,
       ),
-      body: DoubleBackToCloseApp(
-        snackBar: SnackBar(
-          content: Text(
-            getT(KeyT.press_again_to_exit),
-            style: AppStyle.DEFAULT_16.copyWith(
-              color: COLORS.WHITE,
-            ),
-          ),
-        ),
+      body: WillPopScope(
+        onWillPop: () async {
+          if (_key.currentState?.isOpen ?? false) {
+            _key.currentState?.toggle();
+            return Future.value(false); // Không thoát ứng dụng
+          } else {
+            final DateTime now = DateTime.now();
+            if (_lastPressedTime == null ||
+                now.difference(_lastPressedTime!) > _backPressInterval) {
+              // Nếu khoảng thời gian giữa hai lần nhấn lớn hơn _backPressInterval
+              _lastPressedTime = now;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(getT(KeyT.press_again_to_exit)),
+                  duration: Duration(seconds: _seconds),
+                ),
+              );
+              return Future.value(false); // Không thoát ứng dụng
+            }
+            return Future.value(true); // Thoát ứng dụng
+          }
+        },
         child: Column(
           children: [
             BlocBuilder<GetInfoAccBloc, GetInforAccState>(
