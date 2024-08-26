@@ -58,8 +58,6 @@ class _ScreenMainState extends State<ScreenMain> {
       if (id == ModuleMy.HOP_DONG) {
         String titleReport = name + ' ${getT(KeyT.doing)}';
         shareLocal.putString(PreferencesKey.NAME_REPORT, titleReport);
-      } else if (id == ModuleMy.CUSTOMER) {
-        shareLocal.putString(PreferencesKey.NAME_CUSTOMER, name);
       }
       _listMenu.add(
         ButtonMenuModel(
@@ -148,51 +146,34 @@ class _ScreenMainState extends State<ScreenMain> {
           children: [
             BlocBuilder<GetInfoAccBloc, GetInforAccState>(
                 builder: (context, state) {
+              String? _title;
+              String _avatar = '';
               if (state is UpdateGetInforAccState) {
-                return WidgetAppbar(
-                  title: isCarCrm()
-                      ? state.inforAcc.ten_viet_tat
-                      : state.inforAcc.fullname,
-                  textColor: COLORS.BLACK,
-                  right: rightAppBar(),
-                  left: GestureDetector(
-                    onTap: () {
-                      if (_drawerKey.currentContext != null &&
-                          !_drawerKey.currentState!.isDrawerOpen) {
-                        _drawerKey.currentState!.openDrawer();
-                      }
-                    },
-                    child: WidgetNetworkImage(
-                      isAvatar: true,
-                      image: state.inforAcc.avatar ?? '',
-                      width: 45,
-                      height: 45,
-                      borderRadius: 25,
-                    ),
-                  ),
-                );
-              } else {
-                return WidgetAppbar(
-                  title: '',
-                  textColor: COLORS.BLACK,
-                  right: rightAppBar(),
-                  left: GestureDetector(
-                    onTap: () {
-                      if (_drawerKey.currentContext != null &&
-                          !_drawerKey.currentState!.isDrawerOpen) {
-                        _drawerKey.currentState!.openDrawer();
-                      }
-                    },
-                    child: WidgetNetworkImage(
-                      isAvatar: true,
-                      image: '',
-                      width: 45,
-                      height: 45,
-                      borderRadius: 25,
-                    ),
-                  ),
-                );
+                _title = isCarCrm()
+                    ? state.inforAcc.ten_viet_tat
+                    : state.inforAcc.fullname;
+                _avatar = state.inforAcc.avatar ?? '';
               }
+              return WidgetAppbar(
+                title: _title,
+                textColor: COLORS.BLACK,
+                right: rightAppBar(),
+                left: GestureDetector(
+                  onTap: () {
+                    if (_drawerKey.currentContext != null &&
+                        !_drawerKey.currentState!.isDrawerOpen) {
+                      _drawerKey.currentState!.openDrawer();
+                    }
+                  },
+                  child: WidgetNetworkImage(
+                    isAvatar: true,
+                    image: _avatar,
+                    width: 45,
+                    height: 45,
+                    borderRadius: 25,
+                  ),
+                ),
+              );
             }),
             isCarCrm()
                 ? MainCar(

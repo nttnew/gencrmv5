@@ -84,7 +84,7 @@ class UserRepository {
         shareLocal.getString(PreferencesKey.TOKEN) != null)
       DioProvider.instance(
         token: shareLocal.getString(PreferencesKey.TOKEN),
-        sess: shareLocal.getString(PreferencesKey.SESS),
+        sess: shareLocal.getString(PreferencesKey.SESSION),
       );
     else
       DioProvider.instance();

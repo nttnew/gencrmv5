@@ -54,7 +54,7 @@ class _LogoAppState extends State<SplashPage>
 
   getBaseUrl() async {
     baseUrl = await shareLocal.getString(PreferencesKey.URL_BASE) ?? '';
-    String? sess = await shareLocal.getString(PreferencesKey.SESS);
+    String? sess = await shareLocal.getString(PreferencesKey.SESSION);
     String? token = await shareLocal.getString(PreferencesKey.TOKEN);
     DioProvider.instance(
         sess: sess ?? '', baseUrl: baseUrl, token: token ?? '');

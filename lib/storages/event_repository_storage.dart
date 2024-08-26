@@ -40,19 +40,19 @@ class EventRepositoryStorage implements EventRepository {
   }
 
   @override
-  Future<String> loadInforUser() async {
-    final response = await shareLocal.getString(PreferencesKey.INFOR_USER);
+  Future<String> loadInfoUser() async {
+    final response = await shareLocal.getString(PreferencesKey.INFO_USER);
     if (response != null) {
       return response;
     } else {
-      await shareLocal.putString(PreferencesKey.INFOR_USER, "");
+      await shareLocal.putString(PreferencesKey.INFO_USER, "");
       return await shareLocal.getString(PreferencesKey.USER);
     }
   }
 
   @override
-  Future saveInforUser(String inforUser) async {
-    await shareLocal.putString(PreferencesKey.USER, inforUser.toString());
+  Future saveInfoUser(String infoUser) async {
+    await shareLocal.putString(PreferencesKey.USER, infoUser.toString());
   }
 
   @override

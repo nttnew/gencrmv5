@@ -426,7 +426,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         PreferencesKey.DATA_CALL, jsonEncode(response.data));
     await localRepository.saveUser(jsonEncode(response.data));
     await shareLocal.putString(
-        PreferencesKey.SESS, response.data?.session_id ?? '');
+        PreferencesKey.SESSION, response.data?.session_id ?? '');
     await shareLocal.putString(
         PreferencesKey.TOKEN, response.data?.token ?? '');
     await shareLocal.putBools(PreferencesKey.FIRST_TIME, true);
@@ -439,7 +439,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     await shareLocal.putString(
         PreferencesKey.USER_ADDRESS, response.data?.info_user?.dia_chi ?? "");
     await shareLocal.putString(
-        PreferencesKey.USER_FULLNAME, response.data?.info_user?.fullname ?? "");
+        PreferencesKey.USER_FULL_NAME, response.data?.info_user?.fullname ?? "");
     await shareLocal.putString(
         PreferencesKey.URL_AVATAR, response.data?.info_user?.avatar ?? "");
     await shareLocal.putString(
@@ -540,7 +540,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         shareLocal.getString(PreferencesKey.TOKEN) != null)
       DioProvider.instance(
           token: shareLocal.getString(PreferencesKey.TOKEN),
-          sess: shareLocal.getString(PreferencesKey.SESS));
+          sess: shareLocal.getString(PreferencesKey.SESSION));
   }
 
   Future<void> reloadLang() async {
