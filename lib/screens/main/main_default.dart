@@ -29,7 +29,7 @@ class MainDefault extends StatelessWidget {
             isMaxWidth = (i + 1) == listMenu.length;
           }
           return WidgetAnimator(
-            key: Key(value.title.toString()),
+            key: Key(value.title.toString()+i.toString()),
             incomingEffect: WidgetTransitionEffects.incomingScaleDown(
               duration: Duration(milliseconds: 800),
             ),
