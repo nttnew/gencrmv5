@@ -130,6 +130,7 @@ class Versions {
   String? phienBan;
   String? phienBanId;
   String? soCho;
+  String? soChoId;
 
   Versions({
     this.hangXe,
@@ -144,6 +145,7 @@ class Versions {
     this.phienBan,
     this.phienBanId,
     this.soCho,
+    this.soChoId,
   });
 
   Versions.fromJson(Map<String, dynamic> json) {
@@ -159,6 +161,7 @@ class Versions {
     phienBan = _checkNull(json['phien_ban']);
     phienBanId = _checkNull(json['phien_ban_id']);
     soCho = _checkNull(json['so_cho']);
+    soChoId = _checkNull(json['so_cho_id']);
   }
 
   String? _checkNull(dynamic value) {
@@ -179,6 +182,7 @@ class Versions {
     data['phien_ban'] = this.phienBan;
     data['phien_ban_id'] = this.phienBanId;
     data['so_cho'] = this.soCho;
+    data['so_cho_id'] = this.soChoId;
     return data;
   }
 }

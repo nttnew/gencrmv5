@@ -220,7 +220,8 @@ class _SettingScreenState extends State<SettingScreen> {
                       items: _resultLanguage
                           .map((items) => DropdownMenuItem<LanguagesResponse>(
                                 onTap: () async {
-                                  GetInfoAccBloc.of(context).add(InitGetInfoAcc());
+                                  GetInfoAccBloc.of(context)
+                                      .add(InitGetInfoAcc());
                                   LoginBloc.of(context).setLanguage(items);
                                   await LoginBloc.of(context).getMenuMain();
                                   widget.onSelectLang();

@@ -107,6 +107,8 @@ class ServiceVoucherBloc
         return dongXe?.name ?? dataName;
       case 'hang_x_xe':
         return hangXe?.name ?? dataName;
+      case 'so_cho':
+        return soCho?.name ?? dataName;
       default:
         return '';
     }
@@ -129,6 +131,8 @@ class ServiceVoucherBloc
         return dongXe?.id ?? dataId;
       case 'hang_x_xe':
         return hangXe?.id ?? dataId;
+      case 'so_cho':
+        return soCho?.id ?? dataId;
       default:
         return '';
     }
@@ -141,6 +145,7 @@ class ServiceVoucherBloc
       case 'kieu_dang':
       case 'dong_xe':
       case 'hang_x_xe':
+      case 'so_cho':
         return true;
       default:
         return false;
@@ -264,6 +269,7 @@ class ServiceVoucherBloc
         if (_checkString(obj.soCho)) {
           list.add(HangXe(
             name: obj.soCho,
+            id: int.tryParse(obj.soChoId ?? ''),
           ));
         }
       }
