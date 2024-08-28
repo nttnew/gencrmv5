@@ -36,7 +36,7 @@ class _ScreenMainState extends State<ScreenMain> {
     _blocLogin = LoginBloc.of(context);
     _backPressInterval = Duration(seconds: _seconds);
     _showFaceId();
-    GetInfoAccBloc.of(context).add(InitGetInforAcc(isLoading: false));
+    GetInfoAccBloc.of(context).add(InitGetInfoAcc(isLoading: false));
     UnreadNotificationBloc.of(context).add(CheckNotification(isLoading: false));
     UnreadNotificationBloc.of(context).add(
       InitGetListUnReadNotificationEvent(
@@ -160,15 +160,15 @@ class _ScreenMainState extends State<ScreenMain> {
         },
         child: Column(
           children: [
-            BlocBuilder<GetInfoAccBloc, GetInforAccState>(
+            BlocBuilder<GetInfoAccBloc, GetInfoAccState>(
                 builder: (context, state) {
               String? _title;
               String _avatar = '';
-              if (state is UpdateGetInforAccState) {
+              if (state is UpdateGetInfoAccState) {
                 _title = isCarCrm()
-                    ? state.inforAcc.ten_viet_tat
-                    : state.inforAcc.fullname;
-                _avatar = state.inforAcc.avatar ?? '';
+                    ? state.infoAcc.ten_viet_tat
+                    : state.infoAcc.fullname;
+                _avatar = state.infoAcc.avatar ?? '';
               }
               return WidgetAppbar(
                 title: _title,

@@ -10,28 +10,28 @@ import '../../widgets/loading_api.dart';
 part 'get_infor_acc_event.dart';
 part 'get_infor_acc_state.dart';
 
-class GetInfoAccBloc extends Bloc<GetInforAccEvent, GetInforAccState> {
+class GetInfoAccBloc extends Bloc<GetInfoAccEvent, GetInfoAccState> {
   final UserRepository userRepository;
 
   GetInfoAccBloc({required UserRepository userRepository})
       : userRepository = userRepository,
-        super(InitGetInforAccState());
+        super(InitGetInfoAccState());
 
   @override
-  Stream<GetInforAccState> mapEventToState(GetInforAccEvent event) async* {
-    if (event is InitGetInforAcc) {
+  Stream<GetInfoAccState> mapEventToState(GetInfoAccEvent event) async* {
+    if (event is InitGetInfoAcc) {
       yield* _getInfoAcc(event.isLoading ?? true);
     }
   }
 
-  Stream<GetInforAccState> _getInfoAcc(bool isLoading) async* {
+  Stream<GetInfoAccState> _getInfoAcc(bool isLoading) async* {
     try {
       if (isLoading) Loading().showLoading();
-      yield LoadingInforAccState();
+      yield LoadingInfoAccState();
       final response = await userRepository.getInfoAcc();
       if (isSuccess(response.code)) {
         if (isLoading) Loading().popLoading();
-        yield UpdateGetInforAccState(response.data!);
+        yield UpdateGetInfoAccState(response.data!);
       } else {
         if (isLoading) Loading().popLoading();
         yield ErrorGetInForAccState(response.msg ?? '');

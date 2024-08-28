@@ -1,25 +1,25 @@
 part of 'get_infor_acc_bloc.dart';
 
-abstract class GetInforAccState extends Equatable {
-  const GetInforAccState();
+abstract class GetInfoAccState extends Equatable {
+  const GetInfoAccState();
   @override
   List<Object?> get props => [];
 }
 
-class InitGetInforAccState extends GetInforAccState {}
+class InitGetInfoAccState extends GetInfoAccState {}
 
-class UpdateGetInforAccState extends GetInforAccState {
-  final InfoAcc inforAcc;
+class UpdateGetInfoAccState extends GetInfoAccState {
+  final InfoAcc infoAcc;
 
-  const UpdateGetInforAccState(this.inforAcc);
+  const UpdateGetInfoAccState(this.infoAcc);
 
   @override
-  List<Object> get props => [inforAcc];
+  List<Object> get props => [infoAcc];
 }
 
-class LoadingInforAccState extends GetInforAccState {}
+class LoadingInfoAccState extends GetInfoAccState {}
 
-class ErrorGetInForAccState extends GetInforAccState {
+class ErrorGetInForAccState extends GetInfoAccState {
   final String msg;
 
   ErrorGetInForAccState(this.msg);

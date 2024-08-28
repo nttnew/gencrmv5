@@ -13,6 +13,7 @@ import '../../../../src/src_index.dart';
 import '../../../../storages/share_local.dart';
 import '../../../../widgets/appbar_base.dart';
 import '../../../../widgets/widget_text.dart';
+import '../../../bloc/get_infor_acc/get_infor_acc_bloc.dart';
 import '../menu_drawer/widget_item_list_menu.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -219,6 +220,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       items: _resultLanguage
                           .map((items) => DropdownMenuItem<LanguagesResponse>(
                                 onTap: () async {
+                                  GetInfoAccBloc.of(context).add(InitGetInfoAcc());
                                   LoginBloc.of(context).setLanguage(items);
                                   await LoginBloc.of(context).getMenuMain();
                                   widget.onSelectLang();

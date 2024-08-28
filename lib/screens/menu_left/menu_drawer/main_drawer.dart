@@ -106,94 +106,64 @@ class _MainDrawerState extends State<MainDrawer> {
               color: getBackgroundWithIsCar(),
             ),
             height: AppValue.heights * 0.18,
-            child: BlocBuilder<GetInfoAccBloc, GetInforAccState>(
+            child: BlocBuilder<GetInfoAccBloc, GetInfoAccState>(
               builder: (context, state) {
-                if (state is UpdateGetInforAccState) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      WidgetNetworkImage(
-                        isAvatar: true,
-                        image: state.inforAcc.avatar ?? '',
-                        width: 75,
-                        height: 75,
-                        borderRadius: 75,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: Container(
-                          height: 75,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              WidgetText(
-                                title: isCarCrm()
-                                    ? state.inforAcc.ten_viet_tat
-                                    : state.inforAcc.fullname ?? '',
-                                style: AppStyle.DEFAULT_16_BOLD.copyWith(
-                                  color: isCarCrm() ? COLORS.WHITE : null,
-                                ),
-                                maxLine: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              AppValue.vSpaceTiny,
-                              WidgetText(
-                                title: state.inforAcc.department_name ?? '',
-                                style: AppStyle.DEFAULT_16.copyWith(
-                                  color: isCarCrm() ? COLORS.WHITE : null,
-                                ),
-                                maxLine: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                    ],
-                  );
-                } else {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      WidgetNetworkImage(
-                        isAvatar: true,
-                        image: '',
-                        width: 75,
-                        height: 75,
-                        borderRadius: 75,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Container(
+                String avatar = '';
+                String? title;
+                String? departmentName;
+                if (state is UpdateGetInfoAccState) {
+                  avatar = state.infoAcc.avatar ?? '';
+                  title = isCarCrm()
+                      ? state.infoAcc.ten_viet_tat
+                      : state.infoAcc.fullname;
+                  departmentName = state.infoAcc.department_name;
+                }
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    WidgetNetworkImage(
+                      isAvatar: true,
+                      image: avatar,
+                      width: 75,
+                      height: 75,
+                      borderRadius: 75,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: Container(
                         height: 75,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             WidgetText(
-                              title: '',
-                              style: AppStyle.DEFAULT_16_BOLD,
+                              title: title,
+                              style: AppStyle.DEFAULT_16_BOLD.copyWith(
+                                color: isCarCrm() ? COLORS.WHITE : null,
+                              ),
+                              maxLine: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                             AppValue.vSpaceTiny,
                             WidgetText(
-                              title: '',
-                              style: AppStyle.DEFAULT_16,
+                              title: departmentName,
+                              style: AppStyle.DEFAULT_16.copyWith(
+                                color: isCarCrm() ? COLORS.WHITE : null,
+                              ),
+                              maxLine: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                    ],
-                  );
-                }
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                  ],
+                );
               },
             ),
           ),

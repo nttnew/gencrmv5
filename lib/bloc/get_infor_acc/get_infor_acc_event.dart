@@ -1,14 +1,14 @@
 part of 'get_infor_acc_bloc.dart';
 
-abstract class GetInforAccEvent extends Equatable {
+abstract class GetInfoAccEvent extends Equatable {
   @override
   List<Object?> get props => [];
 
-  GetInforAccEvent();
+  GetInfoAccEvent();
 }
 
-class InitGetInforAcc extends GetInforAccEvent {
-  InitGetInforAcc({this.isLoading});
+class InitGetInfoAcc extends GetInfoAccEvent {
+  InitGetInfoAcc({this.isLoading});
 
   final bool? isLoading;
 }

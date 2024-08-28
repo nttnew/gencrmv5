@@ -65,7 +65,7 @@ class _InformationAccountState extends State<InformationAccount> {
 
   @override
   void initState() {
-    GetInfoAccBloc.of(context).add(InitGetInforAcc());
+    GetInfoAccBloc.of(context).add(InitGetInfoAcc());
     _emailFocusNode.addListener(() {
       if (!_emailFocusNode.hasFocus) {
         context.read<InfoAccBloc>().add(EmailUnfocused());
@@ -93,7 +93,7 @@ class _InformationAccountState extends State<InformationAccount> {
               GetSnackBarUtils.removeSnackBar();
               ShowDialogCustom.showDialogBase(
                 onTap1: () {
-                  GetInfoAccBloc.of(context).add(InitGetInforAcc());
+                  GetInfoAccBloc.of(context).add(InitGetInfoAcc());
                   AppNavigator.navigateBack();
                 },
                 title: getT(KeyT.success),
@@ -111,15 +111,15 @@ class _InformationAccountState extends State<InformationAccount> {
               );
             }
           },
-          child: BlocBuilder<GetInfoAccBloc, GetInforAccState>(
+          child: BlocBuilder<GetInfoAccBloc, GetInfoAccState>(
             builder: (context, state) {
-              if (state is UpdateGetInforAccState) {
+              if (state is UpdateGetInfoAccState) {
                 final bloc = InfoAccBloc.of(context);
-                initEmail = state.inforAcc.email ?? '';
-                initFullName = state.inforAcc.fullname ?? '';
-                initAddress = state.inforAcc.address ?? '';
-                initPhone = state.inforAcc.phone ?? '';
-                urlAvatar = state.inforAcc.avatar ?? '';
+                initEmail = state.infoAcc.email ?? '';
+                initFullName = state.infoAcc.fullname ?? '';
+                initAddress = state.infoAcc.address ?? '';
+                initPhone = state.infoAcc.phone ?? '';
+                urlAvatar = state.infoAcc.avatar ?? '';
                 bloc.add(EmailChanged(initEmail));
                 bloc.add(PhoneChanged(initPhone));
                 return Column(
@@ -254,7 +254,7 @@ class _InformationAccountState extends State<InformationAccount> {
               } else if (state is Error) {
                 return ErrorItem(
                   onPressed: () =>
-                      GetInfoAccBloc.of(context).add(InitGetInforAcc()),
+                      GetInfoAccBloc.of(context).add(InitGetInfoAcc()),
                   error: getT(KeyT.an_error_occurred),
                 );
               } else {
