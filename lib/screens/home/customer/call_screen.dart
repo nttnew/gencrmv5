@@ -89,175 +89,182 @@ class _CallGencrmScreenState extends ConsumerState<CallGencrmScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              StreamBuilder<Set<CallHistoryModel>>(
-                  stream: listSearchCallHistory,
-                  builder: (context, snapshot) {
-                    final listSearch = snapshot.data ?? {};
-                    return listSearch.length > 0
-                        ? Expanded(
-                            child: Container(
-                              child: ListView.builder(
-                                itemCount: listSearch.length,
-                                itemBuilder: (context, index) => _itemSearch(
-                                  () {
-                                    _controller.text =
-                                        listSearch.elementAt(index).phone;
-                                  },
-                                  listSearch.elementAt(index),
-                                  _controller.text,
+          child: Container(
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height -
+                  AppValue.heightsAppBar -
+                  MediaQuery.of(context).padding.top,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                StreamBuilder<Set<CallHistoryModel>>(
+                    stream: listSearchCallHistory,
+                    builder: (context, snapshot) {
+                      final listSearch = snapshot.data ?? {};
+                      return listSearch.length > 0
+                          ? Expanded(
+                              child: Container(
+                                child: ListView.builder(
+                                  itemCount: listSearch.length,
+                                  itemBuilder: (context, index) => _itemSearch(
+                                    () {
+                                      _controller.text =
+                                          listSearch.elementAt(index).phone;
+                                    },
+                                    listSearch.elementAt(index),
+                                    _controller.text,
+                                  ),
                                 ),
                               ),
+                            )
+                          : SizedBox();
+                    }),
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        showBottomGenCRM(
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 32,
                             ),
-                          )
-                        : SizedBox();
-                  }),
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      showBottomGenCRM(
-                        child: Container(
-                          margin: EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 32,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: listCallHistory.length,
+                              itemBuilder: (context, index) => _itemHistory(() {
+                                _controller.text = listCallHistory[index].phone;
+                                Get.back();
+                              }, listCallHistory[index],
+                                  (index + 1) == listCallHistory.length),
+                            ),
                           ),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: listCallHistory.length,
-                            itemBuilder: (context, index) => _itemHistory(() {
-                              _controller.text = listCallHistory[index].phone;
-                              Get.back();
-                            }, listCallHistory[index],
-                                (index + 1) == listCallHistory.length),
-                          ),
-                        ),
-                      );
-                    },
-                    child: Image.asset(
-                      ICONS.IC_HISTORY_CALL_PNG,
-                      height: 24,
-                      width: 24,
-                    ),
-                  ),
-                  Expanded(
-                    child: TextFormField(
-                      focusNode: _focusNode,
-                      controller: _controller,
-                      textAlign: TextAlign.center,
-                      showCursor: true,
-                      readOnly: true,
-                      style: styleNumber.copyWith(fontSize: 45),
-                      decoration: InputDecoration(
-                        enabledBorder: InputBorder.none,
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      ClipboardData? clipboardData =
-                          await Clipboard.getData(Clipboard.kTextPlain);
-                      if (clipboardData != null &&
-                          int.tryParse(clipboardData.text ?? '') != null) {
-                        if ((clipboardData.text?.length ?? 0) > 12) {
-                          _controller.text =
-                              clipboardData.text.toString().substring(0, 12);
-                        } else {
-                          _controller.text = clipboardData.text ?? '';
-                        }
-                        _controller.selection = TextSelection.fromPosition(
-                            TextPosition(offset: _controller.text.length));
-                      }
-                    },
-                    child: Image.asset(
-                      ICONS.IC_PASTE_PNG,
-                      width: 20,
-                      height: 20,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: [numberText(1), numberText(2), numberText(3)],
-              ),
-              Row(
-                children: [numberText(4), numberText(5), numberText(6)],
-              ),
-              Row(
-                children: [numberText(7), numberText(8), numberText(9)],
-              ),
-              Row(
-                children: [numberText(0)],
-              ),
-              SizedBox(
-                height: 60,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(
-                    width: 80,
-                    height: 80,
-                  ),
-                  ActionButton(
-                    title: "hangup",
-                    onPressed: () {
-                      pitelCall.outGoingCall(
-                        phoneNumber: _controller.text,
-                        handleRegisterCall: _handleRegisterCall,
-                      );
-                      // _handleCall(context, true);
-                    },
-                    icon: Icons.call,
-                    fillColor: COLORS.GREEN,
-                  ),
-                  GestureDetector(
-                    onLongPress: () {
-                      if (_controller.text.isNotEmpty) _controller.text = '';
-                    },
-                    onTap: () {
-                      if (_controller.text.isNotEmpty) {
-                        if (_controller.selection.baseOffset ==
-                            _controller.selection.extentOffset) {
-                          deleteTextAtPosition(
-                              _controller.selection.extentOffset - 1);
-                        } else {
-                          deleteTextRange(_controller.selection.baseOffset,
-                              _controller.selection.extentOffset - 1);
-                        }
-                      }
-                    },
-                    child: Container(
-                      color: Colors.transparent,
-                      padding: const EdgeInsets.only(
-                        bottom: 28,
-                        top: 14,
-                        right: 20,
-                        left: 20,
-                      ),
+                        );
+                      },
                       child: Image.asset(
-                        ICONS.IC_DELETE_TEXT_PNG,
-                        width: 32,
-                        height: 32,
-                        fit: BoxFit.contain,
+                        ICONS.IC_HISTORY_CALL_PNG,
+                        height: 24,
+                        width: 24,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 60,
-              ),
-            ],
+                    Expanded(
+                      child: TextFormField(
+                        focusNode: _focusNode,
+                        controller: _controller,
+                        textAlign: TextAlign.center,
+                        showCursor: true,
+                        readOnly: true,
+                        style: styleNumber.copyWith(fontSize: 45),
+                        decoration: InputDecoration(
+                          enabledBorder: InputBorder.none,
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        ClipboardData? clipboardData =
+                            await Clipboard.getData(Clipboard.kTextPlain);
+                        if (clipboardData != null &&
+                            int.tryParse(clipboardData.text ?? '') != null) {
+                          if ((clipboardData.text?.length ?? 0) > 12) {
+                            _controller.text =
+                                clipboardData.text.toString().substring(0, 12);
+                          } else {
+                            _controller.text = clipboardData.text ?? '';
+                          }
+                          _controller.selection = TextSelection.fromPosition(
+                              TextPosition(offset: _controller.text.length));
+                        }
+                      },
+                      child: Image.asset(
+                        ICONS.IC_PASTE_PNG,
+                        width: 20,
+                        height: 20,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [numberText(1), numberText(2), numberText(3)],
+                ),
+                Row(
+                  children: [numberText(4), numberText(5), numberText(6)],
+                ),
+                Row(
+                  children: [numberText(7), numberText(8), numberText(9)],
+                ),
+                Row(
+                  children: [numberText(0)],
+                ),
+                SizedBox(
+                  height: 60,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                      width: 80,
+                      height: 80,
+                    ),
+                    ActionButton(
+                      title: "hangup",
+                      onPressed: () {
+                        pitelCall.outGoingCall(
+                          phoneNumber: _controller.text,
+                          handleRegisterCall: _handleRegisterCall,
+                        );
+                        // _handleCall(context, true);
+                      },
+                      icon: Icons.call,
+                      fillColor: COLORS.GREEN,
+                    ),
+                    GestureDetector(
+                      onLongPress: () {
+                        if (_controller.text.isNotEmpty) _controller.text = '';
+                      },
+                      onTap: () {
+                        if (_controller.text.isNotEmpty) {
+                          if (_controller.selection.baseOffset ==
+                              _controller.selection.extentOffset) {
+                            deleteTextAtPosition(
+                                _controller.selection.extentOffset - 1);
+                          } else {
+                            deleteTextRange(_controller.selection.baseOffset,
+                                _controller.selection.extentOffset - 1);
+                          }
+                        }
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        padding: const EdgeInsets.only(
+                          bottom: 28,
+                          top: 14,
+                          right: 20,
+                          left: 20,
+                        ),
+                        child: Image.asset(
+                          ICONS.IC_DELETE_TEXT_PNG,
+                          width: 32,
+                          height: 32,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 60,
+                ),
+              ],
+            ),
           ),
         ),
       ),
