@@ -337,6 +337,38 @@ Future<List<File>?> getImage() async {
   return null;
 }
 
+Future<File?> getImageOne() async {
+  try {
+    // Kiểm tra quyền truy cập thư viện ảnh
+    var status = await Permission.photos.status;
+    if (!status.isGranted) {
+      // Yêu cầu quyền nếu chưa được cấp
+      status = await Permission.photos.request();
+    }
+
+    // Nếu quyền đã được cấp, mở thư viện ảnh
+    if (status.isGranted) {
+      final result = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (result?.path != null) {
+        return File(result?.path ?? '');
+      }
+    } else {
+      ShowDialogCustom.showDialogBase(
+        title: getT(KeyT.notification),
+        content: getT(KeyT.you_have_not_granted_access_to_photos),
+        textButton2: getT(KeyT.go_to_setting),
+        onTap2: () {
+          openAppSettings();
+          Get.back();
+        },
+      );
+    }
+  } on PlatformException catch (e) {
+    throw e;
+  }
+  return null;
+}
+
 Future<List<File>?> pickFile() async {
   List<File>? listFilePiker;
   FilePickerResult? result =
@@ -349,7 +381,7 @@ Future<List<File>?> pickFile() async {
 
 Future<File> compressImage(
   File imageFile, {
-  int maxSizeInBytes = 200000000000000,// bỏ resize
+  int maxSizeInBytes = 200000000000000, // bỏ resize
 }) async {
   //done 2mb
   try {
