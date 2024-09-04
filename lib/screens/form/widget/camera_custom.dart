@@ -118,7 +118,7 @@ class _CameraCustomState extends State<CameraCustom> {
                     }
                   },
                   child: Container(
-                    padding: EdgeInsets.all(12),
+                    padding: EdgeInsets.all(10),
                     height: MediaQuery.of(context).size.width / 6,
                     width: MediaQuery.of(context).size.width / 6,
                     child: Image.asset(
@@ -144,14 +144,14 @@ class _CameraCustomState extends State<CameraCustom> {
                     switchCamera();
                   },
                   child: Container(
-                    padding: EdgeInsets.all(12),
+                    padding: EdgeInsets.all(10),
                     height: MediaQuery.of(context).size.width / 6,
                     width: MediaQuery.of(context).size.width / 6,
                     child: Container(
-                      padding: EdgeInsets.all(6),
+                      padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: COLORS.BLACK.withOpacity(0.3),
+                        color: COLORS.BLACK.withOpacity(0.2),
                       ),
                       child: Image.asset(
                         ICONS.IC_CHANGE_CAMERA_PNG,
