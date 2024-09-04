@@ -59,8 +59,8 @@ android {
     defaultConfig {
         applicationId "vn.gen_crm"
         targetSdkVersion 34
-        versionCode 285//versionNew
-        versionName "2.8.5"
+        versionCode 286//versionNew
+        versionName "2.8.6"
         minSdkVersion 21
         multiDexEnabled true
     }
