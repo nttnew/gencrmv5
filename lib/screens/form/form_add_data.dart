@@ -1014,18 +1014,15 @@ class _FormAddDataState extends State<FormAddData> {
                                                               indexChild,
                                                             );
                                                           } else {
-                                                            _addData[indexParent]
-                                                                .data[
-                                                                    indexChild]
-                                                                .isHide = true;
                                                             _addReloadField(
                                                                 dataItem, '');
                                                             _addDataV(
                                                                 indexParent,
                                                                 indexChild,
                                                                 '');
-                                                            return SizedBox
-                                                                .shrink();
+                                                            return widgetHide(
+                                                                indexParent,
+                                                                indexChild);
                                                           }
                                                         });
                                                   } else {
@@ -1244,7 +1241,8 @@ class _FormAddDataState extends State<FormAddData> {
                                             _idNganHang = '${v ?? ''}';
                                           },
                                         );
-                                      return SizedBox.shrink();
+                                      return widgetHide(
+                                          indexParent, indexChild);
                                     })
                                 : checkLocation(data) // TH Select địa chỉ
                                     ? LocationWidget(
@@ -1498,8 +1496,15 @@ class _FormAddDataState extends State<FormAddData> {
                                                                       v);
                                                                 },
                                                               )
-                                                            : SizedBox.shrink()
-        : SizedBox.shrink();
+                                                            : widgetHide(
+                                                                indexParent,
+                                                                indexChild)
+        : widgetHide(indexParent, indexChild);
+  }
+
+  Widget widgetHide(int indexParent, int indexChild) {
+    _addData[indexParent].data[indexChild].isHide = true;
+    return SizedBox.shrink();
   }
 
   bool _isNull(data) {
