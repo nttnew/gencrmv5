@@ -7,6 +7,7 @@ class ModelDataAdd {
   String? type;
   String? title;
   bool? isCK; //data = 'CK'
+  bool? isHide; //isHide = 'true' ẩn
 
   ModelDataAdd({
     this.label,

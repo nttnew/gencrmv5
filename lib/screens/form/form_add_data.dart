@@ -1004,12 +1004,20 @@ class _FormAddDataState extends State<FormAddData> {
                                                           if (_checkListShow(
                                                               listShowParents,
                                                               value)) {
+                                                            _addData[indexParent]
+                                                                .data[
+                                                                    indexChild]
+                                                                .isHide = false;
                                                             return _getBody(
                                                               dataItem,
                                                               indexParent,
                                                               indexChild,
                                                             );
                                                           } else {
+                                                            _addData[indexParent]
+                                                                .data[
+                                                                    indexChild]
+                                                                .isHide = true;
                                                             _addReloadField(
                                                                 dataItem, '');
                                                             _addDataV(
@@ -1512,10 +1520,12 @@ class _FormAddDataState extends State<FormAddData> {
         final typeAdd = _addData[i].data[j].type;
         final txtValidateAdd = _addData[i].data[j].title.toString() + SPECIAL;
         final isRequiredAdd = _addData[i].data[j].required == 1;
+        final isHide = _addData[i].data[j].isHide == true;
 
         if (_isNull(valueAdd) &&
             isRequiredAdd &&
-            !(_isGetData && labelAdd == 'khach_hang_sp')) {
+            !(_isGetData && labelAdd == 'khach_hang_sp') &&
+            !isHide) {
           isCheckValidate = true;
           txtValidate = txtValidateAdd;
           break;
