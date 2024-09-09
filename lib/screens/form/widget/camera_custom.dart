@@ -29,6 +29,7 @@ class _CameraCustomState extends State<CameraCustom> {
     _cameraController = CameraController(
       cameras![selectedCameraIdx],
       ResolutionPreset.high,
+      enableAudio: false,
     );
 
     _cameraController!.initialize().then((_) {

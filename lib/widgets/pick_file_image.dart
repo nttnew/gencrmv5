@@ -347,7 +347,8 @@ Future<File?> getImageOne() async {
     }
 
     // Nếu quyền đã được cấp, mở thư viện ảnh
-    if (status.isGranted) {
+    if (status.isGranted || Platform.isIOS || Platform.isMacOS) {
+      //os k cần check quyền
       final result = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (result?.path != null) {
         return File(result?.path ?? '');
