@@ -406,7 +406,7 @@ class ModuleText {
   static const String CUSTOMER_ORGANIZATION = 'them_khach_hang_to_chuc';
   static const String CALL = 'call';
   static const String CONG_VIEC_CHECK_IN = 'CONG_VIEC_CHECK_IN';
-  static const String SUPPORT_CHECK_IN = 'CONG_VIEC_CHECK_IN';
+  static const String SUPPORT_CHECK_IN = 'SUPPORT_CHECK_IN';
 
   static String getIconMenu(String _moduleTextId) {
     if (ModuleText.CUSTOMER == _moduleTextId) {
