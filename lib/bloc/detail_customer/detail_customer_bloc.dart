@@ -67,7 +67,8 @@ class DetailCustomerBloc
           if (itemName != null && itemName.id != '')
             name = itemName.value_field.toString();
         } catch (e) {
-          throw e;
+          sdt = '';
+          name = '';
         }
         yield UpdateGetDetailCustomerState(
           response.data?.customer_info ?? [],
