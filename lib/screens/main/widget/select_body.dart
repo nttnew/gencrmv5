@@ -8,8 +8,8 @@ showModalSelect(
   List<List<dynamic>> listData,
   Function(List<dynamic>?) onTap, {
   String? init,
-}) {
-  return showBottomGenCRM(
+}) async {
+  return await showBottomGenCRM(
     child: SelectBody(
       init: init,
       title: title,

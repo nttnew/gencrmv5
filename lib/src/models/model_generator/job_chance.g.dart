@@ -35,6 +35,7 @@ Map<String, dynamic> _$DataFormAddToJson(DataFormAdd instance) =>
       'status_job': instance.status_job,
       'start_date': instance.start_date,
       'color': instance.color,
+      'recording_url': instance.recording_url,
       'product_customer': instance.product_customer,
     };
 

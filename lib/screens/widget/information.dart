@@ -14,6 +14,7 @@ import '../../../widgets/dialog_call.dart';
 import '../../../widgets/line_horizontal_widget.dart';
 import '../../../widgets/widget_text.dart';
 import '../form/widget/preview_image.dart';
+import 'item_status.dart';
 
 class InfoBase extends StatelessWidget {
   const InfoBase({
@@ -296,27 +297,31 @@ class ItemInfo extends StatelessWidget {
     InfoItem? item,
     bool isNameSP,
   ) {
-    return GestureDetector(
-      onTap: () {
-        if (item?.is_link == true) {
-          _navigateTypeScreen(item);
-        }
-      },
-      child: WidgetText(
-        title:
-            '${item?.value_field ?? ''}'.replaceAll(r'\n', '\n').htmlToString(),
-        textAlign: TextAlign.right,
-        style: AppStyle.DEFAULT_14.copyWith(
-          decoration: item?.is_link == true ? TextDecoration.underline : null,
-          color: item?.is_link == true
-              ? Colors.blue
-              : isNameSP
-                  ? COLORS.ORANGE_IMAGE
-                  : null,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-    );
+    return (item?.options?.isEmpty ?? true)
+        ? GestureDetector(
+            onTap: () {
+              if (item?.is_link == true) {
+                _navigateTypeScreen(item);
+              }
+            },
+            child: WidgetText(
+              title: '${item?.value_field ?? ''}'
+                  .replaceAll(r'\n', '\n')
+                  .htmlToString(),
+              textAlign: TextAlign.right,
+              style: AppStyle.DEFAULT_14.copyWith(
+                decoration:
+                    item?.is_link == true ? TextDecoration.underline : null,
+                color: item?.is_link == true
+                    ? Colors.blue
+                    : isNameSP
+                        ? COLORS.ORANGE_IMAGE
+                        : null,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          )
+        : ItemStatus(item: item,);
   }
 
   Widget _widgetCheckBox(

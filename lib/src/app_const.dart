@@ -581,8 +581,8 @@ showBottomGenCRM({
   bool enableDrag = true,
   double radius = 10,
   bool isConstraints = false,
-}) =>
-    showModalBottomSheet(
+}) async =>
+    await showModalBottomSheet(
       enableDrag: enableDrag,
       isDismissible: isDismissible,
       context: Get.context!,

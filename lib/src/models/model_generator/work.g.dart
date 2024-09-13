@@ -48,6 +48,7 @@ Map<String, dynamic> _$WorkItemDataToJson(WorkItemData instance) =>
       'start_date': instance.start_date,
       'location': instance.location,
       'di_dong': instance.di_dong,
+      'recording_url': instance.recording_url,
       'customer': instance.customer,
       'product_customer': instance.product_customer,
     };
@@ -112,6 +113,7 @@ Map<String, dynamic> _$DetailWorkResponseToJson(DetailWorkResponse instance) =>
       'data': instance.data,
       'location': instance.location,
       'di_dong': instance.di_dong,
+      'recording_url': instance.recording_url,
       'checkin': instance.checkin,
       'checkout': instance.checkout,
     };

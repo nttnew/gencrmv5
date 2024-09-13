@@ -32,6 +32,7 @@ Map<String, dynamic> _$JobCustomerDataToJson(JobCustomerData instance) =>
       'user': instance.user,
       'color': instance.color,
       'total_note': instance.total_note,
+      'recording_url': instance.recording_url,
       'product_customer': instance.product_customer,
     };
 

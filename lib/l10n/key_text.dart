@@ -20,6 +20,7 @@ String getT(String key) {
 
 class KeyT {
   static const String audio = "audio";
+  static const String update = "update";
   static const String unknown = "unknown";
   static const String add_new_car = "add_new_car";
   static const String login = "login";

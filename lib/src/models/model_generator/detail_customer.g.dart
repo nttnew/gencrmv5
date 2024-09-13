@@ -40,10 +40,17 @@ InfoItem _$InfoItemFromJson(Map<String, dynamic> json) => InfoItem(
       json['field_name'] as String?,
       json['is_type'] as String?,
       json['data_type'] as String?,
+      json['color'] as String?,
       (json['action'] as num?)?.toInt(),
       (json['is_image'] as num?)?.toInt(),
       json['is_call'] as bool?,
       json['is_link'] as bool?,
+      (json['options'] as List<dynamic>?)
+          ?.map((e) => OptionModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      json['apiUpdate'] == null
+          ? null
+          : ApiUpdateModel.fromJson(json['apiUpdate'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$InfoItemToJson(InfoItem instance) => <String, dynamic>{
@@ -55,11 +62,14 @@ Map<String, dynamic> _$InfoItemToJson(InfoItem instance) => <String, dynamic>{
       'field_name': instance.field_name,
       'is_type': instance.is_type,
       'data_type': instance.data_type,
+      'color': instance.color,
       'value_field': instance.value_field,
       'action': instance.action,
       'is_image': instance.is_image,
       'is_call': instance.is_call,
       'is_link': instance.is_link,
+      'options': instance.options,
+      'apiUpdate': instance.apiUpdate,
     };
 
 CustomerSale _$CustomerSaleFromJson(Map<String, dynamic> json) => CustomerSale(
@@ -150,4 +160,29 @@ Map<String, dynamic> _$DetailCustomerResponseToJson(
       'msg': instance.msg,
       'code': instance.code,
       'data': instance.data,
+    };
+
+OptionModel _$OptionModelFromJson(Map<String, dynamic> json) => OptionModel(
+      json['id'] as String?,
+      json['name'] as String?,
+      json['color'] as String?,
+    );
+
+Map<String, dynamic> _$OptionModelToJson(OptionModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'color': instance.color,
+    };
+
+ApiUpdateModel _$ApiUpdateModelFromJson(Map<String, dynamic> json) =>
+    ApiUpdateModel(
+      json['link'] as String?,
+      json['params'],
+    );
+
+Map<String, dynamic> _$ApiUpdateModelToJson(ApiUpdateModel instance) =>
+    <String, dynamic>{
+      'link': instance.link,
+      'params': instance.params,
     };

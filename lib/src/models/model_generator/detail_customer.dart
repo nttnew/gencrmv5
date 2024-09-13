@@ -36,10 +36,13 @@ class InfoItem {
       name_field,
       field_name,
       is_type,
-      data_type;
+      data_type,
+      color;
   final dynamic value_field;
   final int? action, is_image;
   final bool? is_call, is_link;
+  final List<OptionModel>? options;
+  final ApiUpdateModel? apiUpdate;
 
   InfoItem(
     this.label_field,
@@ -51,10 +54,13 @@ class InfoItem {
     this.field_name,
     this.is_type,
     this.data_type,
+    this.color,
     this.action,
     this.is_image,
     this.is_call,
     this.is_link,
+    this.options,
+    this.apiUpdate,
   );
 
   factory InfoItem.fromJson(Map<String, dynamic> json) =>
@@ -141,4 +147,32 @@ class DetailCustomerResponse extends BaseResponse {
       _$DetailCustomerResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$DetailCustomerResponseToJson(this);
+}
+
+@JsonSerializable()
+class OptionModel {
+  final String? id, name, color;
+
+  OptionModel(this.id, this.name, this.color);
+
+  factory OptionModel.fromJson(Map<String, dynamic> json) =>
+      _$OptionModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$OptionModelToJson(this);
+}
+
+@JsonSerializable()
+class ApiUpdateModel {
+  final String? link;
+  final dynamic params;
+
+  ApiUpdateModel(
+    this.link,
+    this.params,
+  );
+
+  factory ApiUpdateModel.fromJson(Map<String, dynamic> json) =>
+      _$ApiUpdateModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ApiUpdateModelToJson(this);
 }
