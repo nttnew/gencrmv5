@@ -159,6 +159,7 @@ class _DetailProductCustomerScreenState
                 statusJob: _item.status,
                 totalComment: _item.totalNote,
                 color: _item.color,
+                recordUrl: _item.recordingUrl,
               );
             },
             controller: _bloc.controllerCv,

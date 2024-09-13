@@ -16,6 +16,7 @@ JobCustomerData _$JobCustomerDataFromJson(Map<String, dynamic> json) =>
       json['user'] as String?,
       json['color'] as String?,
       json['total_note'] as String?,
+      json['recording_url'] as String?,
       json['product_customer'] == null
           ? null
           : Customer.fromJson(json['product_customer'] as Map<String, dynamic>),

@@ -17,6 +17,7 @@ DataFormAdd _$DataFormAddFromJson(Map<String, dynamic> json) => DataFormAdd(
       json['status_job'] as String?,
       json['start_date'] as String?,
       json['color'] as String?,
+      json['recording_url'] as String?,
       json['product_customer'] == null
           ? null
           : Customer.fromJson(json['product_customer'] as Map<String, dynamic>),

@@ -6,6 +6,7 @@ import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widget_text.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../../src/models/model_generator/work.dart';
+import '../../../widget/audio_widget.dart';
 
 class WorkCardWidget extends StatefulWidget {
   WorkCardWidget({
@@ -102,6 +103,7 @@ class _WorkCardWidgetState extends State<WorkCardWidget> {
             text: widget.item.start_date ?? '',
             icon: ICONS.IC_ICON4_SVG,
           ),
+          AudioWidget(audioUrl: widget.item.recording_url ?? ''),
           itemTextEnd(
             isAvatar: true,
             title: widget.item.user_work_name ?? '',

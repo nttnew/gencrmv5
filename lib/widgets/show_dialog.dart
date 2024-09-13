@@ -36,10 +36,11 @@ class ShowDialogCustom {
     Widget? child,
     VoidCallback? onTap2,
     Function? onWhen,
+    bool barrierDismissible=false,
   }) {
     showDialog<void>(
       context: Get.context!,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: barrierDismissible, // user must tap button!
       builder: (BuildContext context) {
         return Scaffold(
           backgroundColor: Colors.transparent,

@@ -36,6 +36,7 @@ class DetailWorkBloc extends Bloc<DetailWorkEvent, DetailWorkState> {
           response.di_dong,
           response.checkin,
           response.checkout,
+          response.recording_url,
         );
       } else {
         yield ErrorGetDetailWorkState(response.msg ?? '');

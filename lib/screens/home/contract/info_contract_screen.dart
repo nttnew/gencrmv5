@@ -318,6 +318,7 @@ class _DetailInfoContractState extends State<DetailInfoContract> {
                                       startDate: item.start_date,
                                       totalComment: item.total_comment,
                                       productCustomer: item.product_customer,
+                                      recordUrl: item.recording_url,
                                     );
                                   },
                                   controller: _bloc.controllerCV,

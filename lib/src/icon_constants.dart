@@ -55,6 +55,9 @@ class ICONS {
   static const String IC_GROSS_PNG = 'assets/icons/gross.png';
   static const String IC_USER_NEW_PNG = 'assets/icons/user.png';
   static const String IC_SEARCH_PNG = 'assets/icons/search.png';
+  static const String IC_PLAY_PNG = 'assets/icons/play.png';
+  static const String IC_PAUSE_PNG = 'assets/icons/pause.png';
+  static const String IC_AUDIO_PNG = 'assets/icons/audio.png';
 
   static const String IC_CUSTOMER_3X_PNG = 'assets/icons/Custumer_3x.png';
   static const String IC_CLUE_3X_PNG = 'assets/icons/Clue_3x.png';

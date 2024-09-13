@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/src_index.dart';
 import '../../../../../src/models/model_generator/customer_clue.dart';
+import '../../../widget/audio_widget.dart';
 import '../../../widget/box_item.dart';
 
 class WorkCardWidget extends StatelessWidget {
@@ -13,6 +14,7 @@ class WorkCardWidget extends StatelessWidget {
   final String? color;
   final Customer? productCustomer;
   final Customer? customer;
+  final String? recordUrl;
   final Function onTap;
 
   WorkCardWidget({
@@ -25,6 +27,7 @@ class WorkCardWidget extends StatelessWidget {
     required this.productCustomer,
     required this.onTap,
     this.customer,
+    required this.recordUrl,
   });
 
   @override
@@ -63,7 +66,7 @@ class WorkCardWidget extends StatelessWidget {
                       ? COLORS.TEXT_BLUE_BOLD
                       : null,
               onTap: () {
-                if (productCustomer?.id != '' && productCustomer?.id != null){
+                if (productCustomer?.id != '' && productCustomer?.id != null) {
                   AppNavigator.navigateDetailProductCustomer(
                     productCustomer?.id ?? '',
                   );
@@ -73,7 +76,9 @@ class WorkCardWidget extends StatelessWidget {
             text: statusJob ?? '',
             icon: ICONS.IC_ICON3_SVG,
           ),
+          AudioWidget(audioUrl: recordUrl ?? ''),
           itemTextEnd(
+            marginD: 6,
             title: startDate ?? '',
             content: totalComment.toString(),
             icon: ICONS.IC_ICON4_SVG,

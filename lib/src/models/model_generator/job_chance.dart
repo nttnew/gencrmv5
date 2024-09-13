@@ -16,22 +16,24 @@ class DataFormAdd {
       name_customer,
       status_job,
       start_date,
-      color;
+      color,
+      recording_url;
   final Customer? product_customer;
 
   DataFormAdd(
-      this.id,
-      this.total_comment,
-      this.name_job,
-      this.user_work_id,
-      this.user_work_name,
-      this.user_work_avatar,
-      this.name_customer,
-      this.status_job,
-      this.start_date,
-      this.color,
-      this.product_customer,
-      );
+    this.id,
+    this.total_comment,
+    this.name_job,
+    this.user_work_id,
+    this.user_work_name,
+    this.user_work_avatar,
+    this.name_customer,
+    this.status_job,
+    this.start_date,
+    this.color,
+    this.recording_url,
+    this.product_customer,
+  );
 
   factory DataFormAdd.fromJson(Map<String, dynamic> json) =>
       _$DataFormAddFromJson(json);

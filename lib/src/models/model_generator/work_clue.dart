@@ -17,7 +17,8 @@ class WorkClueData {
       user_work_id,
       user_work_name,
       user_work_avatar,
-      color;
+      color,
+      recording_url;
   int? total_comment;
   final Customer? product_customer;
 
@@ -34,6 +35,7 @@ class WorkClueData {
     this.user_work_avatar,
     this.total_comment,
     this.color,
+    this.recording_url,
     this.product_customer,
   });
 

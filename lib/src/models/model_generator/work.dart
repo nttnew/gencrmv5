@@ -22,7 +22,8 @@ class WorkItemData {
       status_color,
       start_date,
       location,
-      di_dong;
+      di_dong,
+      recording_url;
   final Customer? customer, product_customer;
 
   WorkItemData(
@@ -41,6 +42,7 @@ class WorkItemData {
     this.start_date,
     this.location,
     this.di_dong,
+    this.recording_url,
     this.customer,
     this.product_customer,
   );
@@ -85,13 +87,14 @@ class WorkResponse extends BaseResponse {
 class DetailWorkResponse extends BaseResponse {
   final List<InfoDataModel>? data;
   final int? location;
-  final String? di_dong;
+  final String? di_dong,recording_url;
   final CheckInLocation? checkin, checkout;
 
   DetailWorkResponse(
     this.data,
     this.location,
     this.di_dong,
+    this.recording_url,
     this.checkin,
     this.checkout,
   );

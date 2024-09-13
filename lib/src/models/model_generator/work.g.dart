@@ -22,6 +22,7 @@ WorkItemData _$WorkItemDataFromJson(Map<String, dynamic> json) => WorkItemData(
       json['start_date'] as String?,
       json['location'] as String?,
       json['di_dong'] as String?,
+      json['recording_url'] as String?,
       json['customer'] == null
           ? null
           : Customer.fromJson(json['customer'] as Map<String, dynamic>),
@@ -91,6 +92,7 @@ DetailWorkResponse _$DetailWorkResponseFromJson(Map<String, dynamic> json) =>
           .toList(),
       (json['location'] as num?)?.toInt(),
       json['di_dong'] as String?,
+      json['recording_url'] as String?,
       json['checkin'] == null
           ? null
           : CheckInLocation.fromJson(json['checkin'] as Map<String, dynamic>),

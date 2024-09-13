@@ -287,12 +287,13 @@ Widget itemTextEnd({
   bool isSvg = true,
   bool isAvatar = false,
   Color? colorIcon,
+  double? marginD,
 }) {
   return Container(
     margin: !isAvatar
         ? null
         : EdgeInsets.only(
-            top: 8,
+            top: marginD ?? 8,
           ),
     decoration: !isAvatar
         ? null
@@ -306,7 +307,7 @@ Widget itemTextEnd({
     child: Container(
       margin: isAvatar
           ? EdgeInsets.only(
-              top: 8,
+              top: marginD ?? 8,
             )
           : null,
       child: Row(
@@ -355,6 +356,7 @@ Widget itemTextEnd({
                 colorIcon: colorIcon,
                 colorText: colorTitle,
                 onTap: onTapTitle,
+                paddingTop: marginD,
               ),
             ),
           SizedBox(

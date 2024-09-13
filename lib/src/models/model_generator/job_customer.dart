@@ -14,7 +14,7 @@ class JobCustomerData {
       start_date,
       user,
       color,
-      total_note;
+      total_note,recording_url;
   final Customer? product_customer;
 
   JobCustomerData(
@@ -26,6 +26,7 @@ class JobCustomerData {
     this.user,
     this.color,
     this.total_note,
+    this.recording_url,
     this.product_customer,
   );
 

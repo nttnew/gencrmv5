@@ -4,6 +4,7 @@ import 'package:gen_crm/src/app_const.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../../../src/models/model_generator/job_customer.dart';
 import '../../../../../../src/src_index.dart';
+import '../../../../widget/audio_widget.dart';
 
 class WorkCardWidget extends StatelessWidget {
   WorkCardWidget({
@@ -54,7 +55,9 @@ class WorkCardWidget extends StatelessWidget {
                 ? HexColor(data.color!)
                 : COLORS.PRIMARY_COLOR,
           ),
+          AudioWidget(audioUrl: data.recording_url ?? ''),
           itemTextEnd(
+            marginD: 6,
             title: AppValue.formatDate(data.start_date ?? ''),
             content: data.total_note ?? '',
             icon: ICONS.IC_ICON4_SVG,

@@ -85,6 +85,7 @@ class DataList {
   String? status;
   String? color;
   String? starDate;
+  String? recordingUrl;
   dynamic callId;
   dynamic ghiChuCallid;
   dynamic location;
@@ -102,6 +103,7 @@ class DataList {
     this.status,
     this.color,
     this.starDate,
+    this.recordingUrl,
     this.callId,
     this.ghiChuCallid,
     this.location,
@@ -124,6 +126,7 @@ class DataList {
     status = json['status'];
     color = json['color'];
     starDate = json['start_date'];
+    recordingUrl = json['recording_url'];
     callId = json['call_id'];
     ghiChuCallid = json['ghi_chu_callid'];
     location = json['location'];
@@ -147,6 +150,7 @@ class DataList {
     data['status'] = this.status;
     data['color'] = this.color;
     data['start_date'] = this.starDate;
+    data['recording_url'] = this.recordingUrl;
     data['call_id'] = this.callId;
     data['ghi_chu_callid'] = this.ghiChuCallid;
     data['location'] = this.location;

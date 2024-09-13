@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_crm/bloc/work/detail_work_bloc.dart';
 import 'package:gen_crm/bloc/work/work_bloc.dart';
 import 'package:gen_crm/screens/home/customer/widget/list_note.dart';
+import 'package:gen_crm/screens/widget/audio_widget.dart';
+import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
 import '../../../../../src/src_index.dart';
 import '../../../../bloc/checkin_bloc/checkin_bloc.dart';
@@ -27,7 +29,8 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
   int _id = Get.arguments ?? '';
   String _title = '';
   int? _location;
-  String? _diDong;
+  String _diDong = '';
+  String _audio = '';
   bool _isCheckDone = false;
   List<ModuleThaoTac> _list = [];
   late final ListNoteBloc _blocNote;
@@ -52,13 +55,14 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
 
   _checkLocation(SuccessDetailWorkState state) {
     _location = state.location;
-    _diDong = state.diDong;
+    _diDong = state.diDong ?? '';
     _isCheckDone = isCheckDataLocation(state.checkOut);
+    _audio = state.audioUrl ?? '';
   }
 
   _getThaoTac() {
     _list = [];
-    if (_diDong != null && _diDong != '')
+    if (_diDong != '')
       _list.add(
         ModuleThaoTac(
           isSvg: false,
@@ -70,6 +74,34 @@ class _DetailWorkScreenState extends State<DetailWorkScreen> {
               context,
               handelListSdt(_diDong),
               name: '',
+            );
+          },
+        ),
+      );
+
+    if (_audio != '')
+      _list.add(
+        ModuleThaoTac(
+          isSvg: false,
+          title: getT(KeyT.audio),
+          icon: ICONS.IC_AUDIO_PNG,
+          onThaoTac: () {
+            Get.back();
+            ShowDialogCustom.showDialogScreenBase(
+              isPop: true,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    getT(KeyT.audio),
+                    style: AppStyle.DEFAULT_16_BOLD,
+                  ),
+                  AudioBase(
+                    audioUrl: _audio,
+                    isDetail: true,
+                  ),
+                ],
+              ),
             );
           },
         ),

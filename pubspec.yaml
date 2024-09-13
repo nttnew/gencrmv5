@@ -84,6 +84,7 @@ dependencies:
   camera: ^0.10.5+9
   path: ^1.8.3
   widget_and_text_animator: ^1.1.5
+  audioplayers: ^5.2.1
 
 dependency_overrides:
   watcher: 1.1.0

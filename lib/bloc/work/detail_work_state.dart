@@ -14,6 +14,7 @@ class SuccessDetailWorkState extends DetailWorkState {
   final CheckInLocation? checkIn, checkOut;
   final int? location;
   final String? diDong;
+  final String? audioUrl;
 
   SuccessDetailWorkState(
     this.dataList,
@@ -21,10 +22,18 @@ class SuccessDetailWorkState extends DetailWorkState {
     this.diDong,
     this.checkIn,
     this.checkOut,
+    this.audioUrl,
   );
 
   @override
-  List<Object?> get props => [dataList, location];
+  List<Object?> get props => [
+        dataList,
+        location,
+        checkIn,
+        checkOut,
+        diDong,
+        audioUrl,
+      ];
 }
 
 class LoadingDetailWorkState extends DetailWorkState {}

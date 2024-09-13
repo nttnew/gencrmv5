@@ -264,6 +264,7 @@ class _InfoChancePageState extends State<InfoChancePage> {
                                       startDate: item.start_date,
                                       totalComment: item.total_comment,
                                       productCustomer: item.product_customer,
+                                      recordUrl: item.recording_url,
                                     );
                                   },
                                   controller: _bloc.controllerCV,

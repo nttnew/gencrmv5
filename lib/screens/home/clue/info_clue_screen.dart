@@ -215,6 +215,7 @@ class _DetailInfoClueState extends State<DetailInfoClue> {
                                       statusJob: item.status_job,
                                       totalComment: item.total_comment,
                                       color: item.color,
+                                      recordUrl: item.recording_url,
                                     );
                                   },
                                   controller: _bloc.controllerCV,
