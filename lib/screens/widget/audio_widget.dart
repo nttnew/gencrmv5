@@ -1,5 +1,9 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:dio/dio.dart'; // Thư viện để tải file
+import 'package:path_provider/path_provider.dart'; // Thư viện để lấy thư mục tạm
 import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/src_index.dart';
 import '../../widgets/item_file.dart';
@@ -39,10 +43,10 @@ class AudioBase extends StatefulWidget {
 
 class _AudioBaseState extends State<AudioBase> {
   late AudioPlayer _audioPlayer;
-  bool isPlaying = true;
-  Duration duration = Duration.zero;
-  Duration position = Duration.zero;
-  bool isMuted = false;
+  bool _isPlaying = true;
+  Duration _duration = Duration.zero;
+  Duration _position = Duration.zero;
+  bool _isMuted = false;
 
   @override
   void initState() {
@@ -53,24 +57,27 @@ class _AudioBaseState extends State<AudioBase> {
     _audioPlayer.onDurationChanged.listen((newDuration) {
       if (mounted)
         setState(() {
-          duration = newDuration;
+          _duration = newDuration;
         });
     });
 
     _audioPlayer.onPositionChanged.listen((newPosition) {
       if (mounted)
         setState(() {
-          position = newPosition;
+          if (Platform.isIOS && _duration.inMilliseconds == 0)
+            _duration = newPosition;
+          _position = newPosition;
         });
     });
 
-    _audioPlayer.onPlayerStateChanged.listen((state) {
+    _audioPlayer.onPlayerStateChanged.listen((state) async {
       if (mounted)
         setState(() {
-          isPlaying = state == PlayerState.playing;
+          _isPlaying = state == PlayerState.playing;
         });
     });
-    playPauseAudio(isInit: true);
+
+    _playPauseAudio(isInit: true);
   }
 
   @override
@@ -79,39 +86,48 @@ class _AudioBaseState extends State<AudioBase> {
     super.dispose();
   }
 
-  void toggleMute() {
+  void _toggleMute() {
     setState(() {
-      isMuted = !isMuted;
+      _isMuted = !_isMuted;
       _audioPlayer
-          .setVolume(isMuted ? 0 : 1); // 0 là mute, 1 là âm lượng tối đa
+          .setVolume(_isMuted ? 0 : 1); // 0 là mute, 1 là âm lượng tối đa
     });
   }
 
-  void download() {
-    launchInBrowser(Uri.parse(widget.audioUrl));
+  Future<String> _downloadAudio(String url) async {
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    String filePath = '$tempPath/audio.mp3';
+
+    Dio dio = Dio();
+    await dio.download(url, filePath);
+
+    return filePath;
   }
 
-  Future<void> playPauseAudio({bool isInit = false}) async {
+  Future<void> _playPauseAudio({bool isInit = false}) async {
     if (isInit) {
-      // Set URL để có thể lấy duration ngay lập tức
-      await _audioPlayer.setSourceUrl(widget.audioUrl);
-
-      // Lấy duration ngay sau khi set URL (nếu đã có sẵn)
-      if (_audioPlayer.source != null) {
-        final totalDuration = await _audioPlayer.getDuration();
-        if (totalDuration != null && mounted) {
-          setState(() {
-            duration = totalDuration;
-          });
-        }
+      if (Platform.isIOS) {
+        // Nếu là iOS thì tải file về trước khi phát
+        String filePath = await _downloadAudio(widget.audioUrl);
+        await _audioPlayer.setSource(DeviceFileSource(filePath));
+      } else {
+        // Android phát từ URL
+        await _audioPlayer.setSourceUrl(widget.audioUrl);
       }
     }
 
-    if (isPlaying) {
+    if (_isPlaying) {
       await _audioPlayer.pause();
     } else {
-      await _audioPlayer.play(UrlSource(widget.audioUrl));
+      await _audioPlayer.play(Platform.isIOS
+          ? DeviceFileSource(await _downloadAudio(widget.audioUrl))
+          : UrlSource(widget.audioUrl));
     }
+  }
+
+  void _download() {
+    launchInBrowser(Uri.parse(widget.audioUrl));
   }
 
   @override
@@ -126,14 +142,14 @@ class _AudioBaseState extends State<AudioBase> {
         children: [
           Slider(
             min: 0,
-            max: duration.inSeconds.toDouble(),
-            value: position.inSeconds.toDouble(),
+            max: _duration.inSeconds.toDouble(),
+            value: _position.inSeconds.toDouble(),
             activeColor: getBackgroundWithIsCar(),
             thumbColor: getBackgroundWithIsCar(),
             inactiveColor: getBackgroundWithIsCar().withOpacity(0.4),
             onChanged: (value) async {
-              position = Duration(seconds: value.toInt());
-              await _audioPlayer.seek(position);
+              _position = Duration(seconds: value.toInt());
+              await _audioPlayer.seek(_position);
             },
           ),
           Padding(
@@ -142,11 +158,11 @@ class _AudioBaseState extends State<AudioBase> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  formatDuration(position),
+                  _formatDuration(_position),
                   style: AppStyle.DEFAULT_14,
                 ),
                 Text(
-                  formatDuration(duration),
+                  _formatDuration(_duration),
                   style: AppStyle.DEFAULT_14,
                 ),
               ],
@@ -157,13 +173,11 @@ class _AudioBaseState extends State<AudioBase> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: EdgeInsets.only(
-                  left: 16,
-                ),
+                padding: EdgeInsets.only(left: 16),
                 child: GestureDetector(
-                  onTap: playPauseAudio,
+                  onTap: _playPauseAudio,
                   child: Image.asset(
-                    isPlaying ? ICONS.IC_PAUSE_PNG : ICONS.IC_PLAY_PNG,
+                    _isPlaying ? ICONS.IC_PAUSE_PNG : ICONS.IC_PLAY_PNG,
                     width: 20,
                     height: 20,
                   ),
@@ -173,10 +187,10 @@ class _AudioBaseState extends State<AudioBase> {
                 children: [
                   GestureDetector(
                     child: Icon(
-                      isMuted ? Icons.volume_off : Icons.volume_up,
+                      _isMuted ? Icons.volume_off : Icons.volume_up,
                       color: COLORS.BLACK,
                     ),
-                    onTap: toggleMute,
+                    onTap: _toggleMute,
                   ),
                   AppValue.hSpace10,
                   GestureDetector(
@@ -184,7 +198,7 @@ class _AudioBaseState extends State<AudioBase> {
                       Icons.download,
                       color: COLORS.BLACK,
                     ),
-                    onTap: download,
+                    onTap: _download,
                   ),
                   AppValue.hSpace10,
                 ],
@@ -199,13 +213,11 @@ class _AudioBaseState extends State<AudioBase> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             GestureDetector(
-              onTap: playPauseAudio,
+              onTap: _playPauseAudio,
               child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 8,
-                ),
+                padding: const EdgeInsets.only(right: 8),
                 child: Image.asset(
-                  isPlaying ? ICONS.IC_PAUSE_PNG : ICONS.IC_PLAY_PNG,
+                  _isPlaying ? ICONS.IC_PAUSE_PNG : ICONS.IC_PLAY_PNG,
                   width: 20,
                   height: 20,
                 ),
@@ -216,11 +228,11 @@ class _AudioBaseState extends State<AudioBase> {
               child: Row(
                 children: [
                   Text(
-                    formatDuration(position) + ' / ',
+                    _formatDuration(_position) + ' / ',
                     style: AppStyle.DEFAULT_14,
                   ),
                   Text(
-                    formatDuration(duration),
+                    _formatDuration(_duration),
                     style: AppStyle.DEFAULT_14,
                   ),
                 ],
@@ -229,26 +241,26 @@ class _AudioBaseState extends State<AudioBase> {
             Expanded(
               child: Slider(
                 min: 0,
-                max: duration.inSeconds.toDouble(),
-                value: position.inSeconds.toDouble(),
+                max: _duration.inSeconds.toDouble(),
+                value: _position.inSeconds.toDouble(),
                 activeColor: COLORS.PRIMARY_COLOR1,
                 thumbColor: COLORS.PRIMARY_COLOR1,
                 inactiveColor: COLORS.PRIMARY_COLOR1.withOpacity(0.4),
                 onChanged: (value) async {
-                  position = Duration(seconds: value.toInt());
-                  await _audioPlayer.seek(position);
+                  _position = Duration(seconds: value.toInt());
+                  await _audioPlayer.seek(_position);
                 },
               ),
             ),
             IconButton(
-              icon: Icon(isMuted ? Icons.volume_off : Icons.volume_up),
-              onPressed: toggleMute,
+              icon: Icon(_isMuted ? Icons.volume_off : Icons.volume_up),
+              onPressed: _toggleMute,
             ),
           ],
         ),
       );
 
-  String formatDuration(Duration duration) {
+  String _formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     String oneDigits(int n) => n.toString().padLeft(1, '0');
     final minutes = duration.inMinutes > 9
