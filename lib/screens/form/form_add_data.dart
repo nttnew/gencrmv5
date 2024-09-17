@@ -1371,10 +1371,12 @@ class _FormAddDataState extends State<FormAddData> {
                                           final v = data.join(',');
                                           _addDataV(indexParent, indexChild, v);
                                         },
-                                        value: (_getDataV(
-                                                    indexParent, indexChild) !=
-                                                null&&_getDataV(
-                                            indexParent, indexChild)!='')
+                                        value: (_getDataV(indexParent,
+                                                        indexChild) !=
+                                                    null &&
+                                                _getDataV(indexParent,
+                                                        indexChild) !=
+                                                    '')
                                             ? _getDataV(indexParent, indexChild)
                                                 .split(',')
                                             : (data.field_set_value != null &&
