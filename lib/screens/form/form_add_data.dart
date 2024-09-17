@@ -1271,9 +1271,13 @@ class _FormAddDataState extends State<FormAddData> {
                                         onSuccess: (v) {
                                           _addDataV(indexParent, indexChild, v);
                                         },
-                                        initData: data.field_value,
-                                        initText:
-                                            _getDataV(indexParent, indexChild),
+                                        initData: data.field_value, //todo edit
+                                        initText: _getDataV(
+                                                        indexParent, indexChild)
+                                                    .runtimeType ==
+                                                String // vì string là lấy từ api còn k thì k cần init_text
+                                            ? _getDataV(indexParent, indexChild)
+                                            : null,
                                       )
                                     : data.field_parent != null // TH reload api
                                         ? StreamBuilder<String>(
@@ -1367,10 +1371,17 @@ class _FormAddDataState extends State<FormAddData> {
                                           final v = data.join(',');
                                           _addDataV(indexParent, indexChild, v);
                                         },
-                                        value: (data.field_set_value != null &&
-                                                data.field_set_value != '')
-                                            ? data.field_set_value.split(',')
-                                            : [],
+                                        value: (_getDataV(
+                                                    indexParent, indexChild) !=
+                                                null&&_getDataV(
+                                            indexParent, indexChild)!='')
+                                            ? _getDataV(indexParent, indexChild)
+                                                .split(',')
+                                            : (data.field_set_value != null &&
+                                                    data.field_set_value != '')
+                                                ? data.field_set_value
+                                                    .split(',')
+                                                : [],
                                       )
                                     : data.field_type == 'DATE'
                                         ? WidgetInputDate(

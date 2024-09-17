@@ -32,10 +32,20 @@ class _InputMultipleWidgetState extends State<InputMultipleWidget> {
   @override
   void initState() {
     _focusNode = FocusNode();
+    _init();
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant InputMultipleWidget oldWidget) {
+    _init();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  _init(){
     if (widget.value?.isNotEmpty ?? false) {
       arr = widget.value ?? [];
     }
-    super.initState();
   }
 
   @override

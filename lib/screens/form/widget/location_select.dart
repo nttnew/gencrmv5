@@ -45,7 +45,10 @@ class _LocationWidgetState extends State<LocationWidget> {
 
   @override
   void didUpdateWidget(covariant LocationWidget oldWidget) {
-    if (widget.initText != null) dataTitle = widget.initText!;
+    if (widget.initText != null) {
+      dataTitle = widget.initText!;
+      initData = null;
+    }
     super.didUpdateWidget(oldWidget);
   }
 
