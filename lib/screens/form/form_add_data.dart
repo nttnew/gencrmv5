@@ -163,6 +163,16 @@ class _FormAddDataState extends State<FormAddData> {
     return null;
   }
 
+  _setData(String key, dynamic value, {bool? isUpdate}) {
+    for (int i = 0; i < _addData.length; i++) {
+      for (int j = 0; j < _addData[i].data.length; j++) {
+        if (_addData[i].data[j].label == key) {
+          _addData[i].data[j].value = value;
+        }
+      }
+    }
+  }
+
   bool _checkThanhToan() {
     _idNganHang = '';
     if (_type != ADD_PAYMENT && _type != EDIT_PAYMENT) return false;
@@ -1141,6 +1151,15 @@ class _FormAddDataState extends State<FormAddData> {
     }
   }
 
+  _setDataMapCheck(Map<String, dynamic>? _dataM) {
+    if (_dataM?.isNotEmpty ?? false) {
+      _dataM!.forEach((key, value) {
+        _setData(key, value, isUpdate: true);
+      });
+      setState(() {});
+    }
+  }
+
   Widget _getBody(
     CustomerIndividualItemData data,
     int indexParent,
@@ -1219,10 +1238,12 @@ class _FormAddDataState extends State<FormAddData> {
                                 })
                             : FieldText(
                                 data: data,
-                                onChange: (v) {
+                                onChange: (v, mapV) {
                                   _tinhAuto(data, v);
                                   _addDataV(indexParent, indexChild, v);
+                                  _setDataMapCheck(mapV);
                                 },
+                                init: _getDataV(indexParent, indexChild),
                               )
                         : data.field_type == 'SELECT'
                             // case hiện chọn ngân hàng
@@ -1251,6 +1272,8 @@ class _FormAddDataState extends State<FormAddData> {
                                           _addDataV(indexParent, indexChild, v);
                                         },
                                         initData: data.field_value,
+                                        initText:
+                                            _getDataV(indexParent, indexChild),
                                       )
                                     : data.field_parent != null // TH reload api
                                         ? StreamBuilder<String>(
@@ -1465,8 +1488,8 @@ class _FormAddDataState extends State<FormAddData> {
                                                                     })
                                                                 : FieldText(
                                                                     data: data,
-                                                                    onChange:
-                                                                        (v) {
+                                                                    onChange: (v,
+                                                                        mapV) {
                                                                       _tinhAuto(
                                                                           data,
                                                                           v);
@@ -1477,7 +1500,12 @@ class _FormAddDataState extends State<FormAddData> {
                                                                       _addCheckSoTien(
                                                                           data:
                                                                               data);
+                                                                      _setDataMapCheck(
+                                                                          mapV);
                                                                     },
+                                                                    init: _getDataV(
+                                                                        indexParent,
+                                                                        indexChild),
                                                                   )
                                                         : data.field_type ==
                                                                 'images'

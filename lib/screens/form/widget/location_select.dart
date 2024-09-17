@@ -16,10 +16,12 @@ class LocationWidget extends StatefulWidget {
     required this.data,
     required this.onSuccess,
     this.initData,
+    this.initText,
   }) : super(key: key);
   final CustomerIndividualItemData data;
   final Function onSuccess;
   final dynamic initData;
+  final String? initText;
 
   @override
   State<LocationWidget> createState() => _LocationWidgetState();
@@ -39,6 +41,12 @@ class _LocationWidgetState extends State<LocationWidget> {
       });
     }
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant LocationWidget oldWidget) {
+    if (widget.initText != null) dataTitle = widget.initText!;
+    super.didUpdateWidget(oldWidget);
   }
 
   @override

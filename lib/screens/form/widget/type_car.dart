@@ -6,11 +6,9 @@ import '../../../../bloc/add_service_voucher/add_service_bloc.dart';
 import '../../../../models/model_item_add.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
 import '../../../../src/src_index.dart';
-import '../../../../storages/share_local.dart';
 import '../../../../widgets/widget_text.dart';
 import '../../widget/widget_label.dart';
 import 'select_car.dart';
-import 'package:flutter/foundation.dart' as Foundation;
 
 class TypeCarBase extends StatefulWidget {
   const TypeCarBase({
@@ -46,23 +44,11 @@ class _TypeCarBaseState extends State<TypeCarBase> {
   Future<void> getDataApi(String id) async {
     idDF = id;
     try {
-      var headers = {
-        'Authorization': shareLocal.getString(PreferencesKey.TOKEN),
-      };
-      var dio = Dio();
-      dio
-        ..options.connectTimeout =
-            Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds
-        ..options.receiveTimeout =
-            Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds;
-      if (Foundation.kDebugMode) {
-        dio.interceptors.add(dioLogger());
-      }
+      var dio = DioProvider.dio;
       var response = await dio.request(
         '${widget.data.field_parent?.field_url}?${widget.data.field_parent?.field_keyparam}=$id',
         options: Options(
           method: 'GET',
-          headers: headers,
         ),
       );
 

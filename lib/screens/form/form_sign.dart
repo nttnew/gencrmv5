@@ -243,7 +243,7 @@ class _FormAddSignState extends State<FormAddSign>
                   ? (data.field_special ?? '') == 'none-edit'
                       ? FieldText(
                           data: data,
-                          onChange: (v) {
+                          onChange: (v,mapV) {
                             _addData[indexParent].data[indexChild].value = v;
                           })
                       : data.field_type == 'SELECT'
@@ -403,7 +403,7 @@ class _FormAddSignState extends State<FormAddSign>
                                                                       data:
                                                                           data,
                                                                       onChange:
-                                                                          (v) {
+                                                                          (v,mapV) {
                                                                         _addData[indexParent]
                                                                             .data[indexChild]
                                                                             .value = v;
@@ -413,7 +413,7 @@ class _FormAddSignState extends State<FormAddSign>
                                                                       data:
                                                                           data,
                                                                       onChange:
-                                                                          (v) {
+                                                                          (v,mapV) {
                                                                         _addData[indexParent]
                                                                             .data[indexChild]
                                                                             .value = v;

@@ -1,15 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' as Foundation;
 import '../../../../api_resfull/dio_provider.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../models/model_item_add.dart';
-import '../../../../src/base.dart';
 import '../../../../src/color.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
-import '../../../../src/preferences_key.dart';
 import '../../../../src/styles.dart';
-import '../../../../storages/share_local.dart';
 import '../../widget/widget_label.dart';
 
 class FieldTextAPi extends StatefulWidget {
@@ -60,23 +56,11 @@ class _FieldTextAPiState extends State<FieldTextAPi> {
   Future<void> getDataApi(String id) async {
     _idDF = id;
     try {
-      var headers = {
-        'Authorization': shareLocal.getString(PreferencesKey.TOKEN),
-      };
-      var dio = Dio();
-      dio
-        ..options.connectTimeout =
-            Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds
-        ..options.receiveTimeout =
-            Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds;
-      if (Foundation.kDebugMode) {
-        dio.interceptors.add(dioLogger());
-      }
+      var dio = DioProvider.dio;
       var response = await dio.request(
         '${widget.data.field_parent?.field_url}?${widget.data.field_parent?.field_keyparam}=$id',
         options: Options(
           method: 'GET',
-          headers: headers,
         ),
       );
 

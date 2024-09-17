@@ -44,6 +44,9 @@ CustomerIndividualItemData _$CustomerIndividualItemDataFromJson(
       json['is_load'] as bool?,
       json['isShowParrent'] as bool?,
       json['showparents'] as List<dynamic>?,
+      json['api'] == null
+          ? null
+          : ApiModel.fromJson(json['api'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$CustomerIndividualItemDataToJson(
@@ -72,6 +75,7 @@ Map<String, dynamic> _$CustomerIndividualItemDataToJson(
       'is_load': instance.is_load,
       'isShowParrent': instance.isShowParrent,
       'showparents': instance.showparents,
+      'api': instance.api,
     };
 
 ChuKyResponse _$ChuKyResponseFromJson(Map<String, dynamic> json) =>
@@ -187,4 +191,14 @@ Map<String, dynamic> _$FieldParentToJson(FieldParent instance) =>
       'field_keyparam': instance.field_keyparam,
       'keysearch': instance.keysearch,
       'field_url': instance.field_url,
+    };
+
+ApiModel _$ApiModelFromJson(Map<String, dynamic> json) => ApiModel(
+      json['link'] as String?,
+      json['params'],
+    );
+
+Map<String, dynamic> _$ApiModelToJson(ApiModel instance) => <String, dynamic>{
+      'link': instance.link,
+      'params': instance.params,
     };

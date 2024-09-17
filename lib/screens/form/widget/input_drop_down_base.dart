@@ -1,9 +1,7 @@
-import 'package:flutter/foundation.dart' as Foundation;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/src/extensionss/common_ext.dart';
 import 'package:gen_crm/src/src_index.dart';
-import 'package:gen_crm/storages/share_local.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../../src/models/model_generator/add_customer.dart';
 import '../../../../../widgets/widget_text.dart';
@@ -56,23 +54,11 @@ class _InputDropdownState extends State<InputDropdownBase> {
 
   Future<void> getDataApi(String id) async {
     try {
-      var headers = {
-        'Authorization': shareLocal.getString(PreferencesKey.TOKEN),
-      };
-      var dio = Dio();
-      dio
-        ..options.connectTimeout =
-            Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds
-        ..options.receiveTimeout =
-            Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds;
-      if (Foundation.kDebugMode) {
-        dio.interceptors.add(dioLogger());
-      }
+      var dio = DioProvider.dio;
       var response = await dio.request(
         '${widget.data.field_parent?.field_url}?${widget.data.field_parent?.field_keyparam}=$id',
         options: Options(
           method: 'GET',
-          headers: headers,
         ),
       );
 
@@ -117,23 +103,11 @@ class _InputDropdownState extends State<InputDropdownBase> {
 
   void getList() async {
     try {
-      var headers = {
-        'Authorization': shareLocal.getString(PreferencesKey.TOKEN),
-      };
-      var dio = Dio();
-      dio
-        ..options.connectTimeout =
-            Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds
-        ..options.receiveTimeout =
-            Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds;
-      if (Foundation.kDebugMode) {
-        dio.interceptors.add(dioLogger());
-      }
+      var dio = DioProvider.dio;
       var response = await dio.request(
         '${widget.data.field_search?.field_url}',
         options: Options(
           method: 'GET',
-          headers: headers,
         ),
       );
 
@@ -364,24 +338,12 @@ class _DropDownSearchApiState extends State<DropDownSearchApi> {
     int page = BASE_URL.PAGE_DEFAULT,
   }) async {
     try {
-      var headers = {
-        'Authorization': shareLocal.getString(PreferencesKey.TOKEN),
-      };
-      var dio = Dio();
-      dio
-        ..options.connectTimeout =
-            Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds
-        ..options.receiveTimeout =
-            Duration(milliseconds: BASE_URL.connectionTimeout).inMilliseconds;
-      if (Foundation.kDebugMode) {
-        dio.interceptors.add(dioLogger());
-      }
+      var dio = DioProvider.dio;
       var response = await dio.request(
         '${widget.data.field_search?.field_url}?${widget.data.field_search?.field_keyparam}=$page&'
         '${widget.data.field_search?.keysearch}=$_txtSearch',
         options: Options(
           method: 'GET',
-          headers: headers,
         ),
       );
 

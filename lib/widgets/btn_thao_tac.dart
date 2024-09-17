@@ -12,7 +12,8 @@ class ButtonCustom extends StatelessWidget {
     this.backgroundColor,
     this.paddingAll,
     this.textColor,
-    this.marginVertical, this.style,
+    this.marginVertical,
+    this.style,
   }) : super(key: key);
 
   final Function()? onTap;
@@ -61,30 +62,39 @@ class ButtonSmall extends StatelessWidget {
     required this.onTap,
     this.title,
     this.backGround,
+    this.isWrap = false,
+    this.child, this.borderRadius,
   }) : super(key: key);
 
   final Function() onTap;
   final String? title;
   final Color? backGround;
+  final bool isWrap;
+  final Widget? child;
+  final double? borderRadius;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+        tapTargetSize: isWrap ? MaterialTapTargetSize.shrinkWrap : null,
+        padding: isWrap ? EdgeInsets.zero : null,
+        minimumSize: isWrap ? Size(0, 0) : null,
         backgroundColor: backGround ?? getBackgroundWithIsCar(),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(7),
+          borderRadius: BorderRadius.circular(borderRadius??7),
         ),
       ),
       onPressed: () => onTap(),
-      child: Text(
-        title ?? getT(KeyT.action),
-        style: AppStyle.DEFAULT_14_BOLD.copyWith(
-          color: getColorWithIsCar(),
-        ),
-        textAlign: TextAlign.center,
-        maxLines: 2,
-      ),
+      child: child ??
+          Text(
+            title ?? getT(KeyT.action),
+            style: AppStyle.DEFAULT_14_BOLD.copyWith(
+              color: getColorWithIsCar(),
+            ),
+            textAlign: TextAlign.center,
+            maxLines: 2,
+          ),
     );
   }
 }

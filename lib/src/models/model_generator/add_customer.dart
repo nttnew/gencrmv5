@@ -26,6 +26,7 @@ class CustomerIndividualItemData {
   final bool? is_load;
   final bool? isShowParrent;
   final List<dynamic>? showparents;
+  final ApiModel? api;
 
   CustomerIndividualItemData(
     this.field_id,
@@ -51,6 +52,7 @@ class CustomerIndividualItemData {
     this.is_load,
     this.isShowParrent,
     this.showparents,
+    this.api,
   );
 
   CustomerIndividualItemData.two({
@@ -77,6 +79,7 @@ class CustomerIndividualItemData {
     this.is_load,
     this.isShowParrent,
     this.showparents,
+    this.api,
   });
 
   getLabel() =>
@@ -202,4 +205,20 @@ class FieldParent {
       _$FieldParentFromJson(json);
 
   Map<String, dynamic> toJson() => _$FieldParentToJson(this);
+}
+
+@JsonSerializable()
+class ApiModel {
+  final String? link;
+  final dynamic params;
+
+  ApiModel(
+    this.link,
+    this.params,
+  );
+
+  factory ApiModel.fromJson(Map<String, dynamic> json) =>
+      _$ApiModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ApiModelToJson(this);
 }

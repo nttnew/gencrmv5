@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:gen_crm/widgets/loading_api.dart';
 import '../../../../l10n/key_text.dart';
 import '../../../../src/app_const.dart';
 import '../../../../src/models/model_generator/add_customer.dart';
 import '../../../../src/src_index.dart';
+import '../../../api_resfull/dio_provider.dart';
+import '../../../widgets/btn_thao_tac.dart';
 import '../../widget/widget_label.dart';
 
 class FieldText extends StatefulWidget {
@@ -15,7 +20,7 @@ class FieldText extends StatefulWidget {
     this.isNoneEdit = false,
   }) : super(key: key);
   final CustomerIndividualItemData data;
-  final Function(String) onChange;
+  final Function(String, Map<String, dynamic>?) onChange;
   final String? init;
   final double? soTien;
   final bool isNoneEdit;
@@ -28,33 +33,99 @@ class _FieldTextState extends State<FieldText> {
   late final CustomerIndividualItemData data;
   TextEditingController _textEditingController = TextEditingController();
 
-  @override
   void initState() {
-    data = widget.data;
-    _textEditingController.addListener(() {
-      widget.onChange(
-          data.field_type == 'MONEY' || data.field_type == 'TEXT_NUMERIC'
-              ? _textEditingController.text.replaceAll('.', '')
-              : _textEditingController.text);
-    });
-    if ((widget.data.field_set_value != null &&
-            widget.data.field_set_value != '') ||
-        widget.init != null)
-      _textEditingController.text = data.field_type == 'MONEY' ||
-              data.field_type == 'TEXT_NUMERIC'
-          ? AppValue.formatMoney(
-              widget.init ??
-                  '${widget.data.field_set_value ?? ''}'.replaceAll('.', ''),
-              isD: false,
-            )
-          : widget.init ?? '${widget.data.field_set_value ?? ''}';
     super.initState();
+
+    // Lấy dữ liệu từ widget
+    data = widget.data;
+
+    // Lắng nghe thay đổi từ TextEditingController
+    _textEditingController.addListener(_handleTextChanged);
+
+    // Đặt giá trị ban đầu cho TextEditingController nếu có
+    _initializeTextController();
+  }
+
+  void _handleTextChanged() {
+    // Xử lý thay đổi khi người dùng nhập vào TextEditingController
+    final String newText =
+        data.field_type == 'MONEY' || data.field_type == 'TEXT_NUMERIC'
+            ? _textEditingController.text.replaceAll('.', '')
+            : _textEditingController.text;
+
+    // Gọi hàm onChange từ widget
+    widget.onChange(newText, null);
+  }
+
+  void _initializeTextController() {
+    // Kiểm tra giá trị khởi tạo hoặc giá trị được set trước đó
+    final bool hasInitialValue = widget.data.field_set_value != null &&
+        widget.data.field_set_value.isNotEmpty;
+    final bool hasInit = widget.init != null;
+
+    if (hasInitialValue || hasInit) {
+      // Định dạng giá trị nếu là MONEY hoặc TEXT_NUMERIC
+      if (data.field_type == 'MONEY' || data.field_type == 'TEXT_NUMERIC') {
+        _textEditingController.text = AppValue.formatMoney(
+          widget.init ?? widget.data.field_set_value.replaceAll('.', ''),
+          isD: false,
+        );
+      } else {
+        // Đặt giá trị khởi tạo cho các loại khác
+        _textEditingController.text =
+            widget.init ?? widget.data.field_set_value;
+      }
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant FieldText oldWidget) {
+    _initializeTextController();
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
   void dispose() {
     _textEditingController.dispose();
     super.dispose();
+  }
+
+  Future<void> getDataApi() async {
+    Loading().showLoading();
+    final ApiModel _dataApi = widget.data.api!;
+    final String param = jsonEncode(_dataApi.params)
+        .toString()
+        .replaceAll('{value}', _textEditingController.text);
+    try {
+      var dio = DioProvider.dio;
+      var response = await dio.request(
+        _dataApi.link!,
+        options: Options(
+          method: 'POST',
+        ),
+        data: param,
+      );
+      Loading().popLoading();
+      if (response.statusCode == 200) {
+        if (response.data['code'] == 200) {
+          if (response.data['data'] != null) {
+            final res = response.data['data'] as Map<String, dynamic>;
+            widget.onChange(_textEditingController.text, res);
+          }
+        } else {
+          ShowDialogCustom.showDialogBase(
+            title: getT(KeyT.notification),
+            content: response.data['msg'].toString(),
+          );
+        }
+      }
+    } catch (e) {
+      Loading().popLoading();
+      ShowDialogCustom.showDialogBase(
+        title: getT(KeyT.notification),
+        content: getT(KeyT.an_error_occurred),
+      );
+    }
   }
 
   @override
@@ -92,17 +163,26 @@ class _FieldTextState extends State<FieldText> {
                               ? TextInputType.none
                               : TextInputType.text,
               decoration: InputDecoration(
-                contentPadding: paddingBaseForm,
-                label: WidgetLabel(data),
-                counterText: '',
-                counterStyle: TextStyle(fontSize: 0),
-                hintStyle: hintTextStyle,
-                border: OutlineInputBorder(),
-                isDense: true,
-                hintText: getT(KeyT.enter) +
-                    ' ' +
-                    (data.field_label ?? '').toLowerCase(),
-              ),
+                  contentPadding: paddingBaseForm,
+                  label: WidgetLabel(data),
+                  counterText: '',
+                  counterStyle: TextStyle(fontSize: 0),
+                  hintStyle: hintTextStyle,
+                  border: OutlineInputBorder(),
+                  isDense: true,
+                  hintText: getT(KeyT.enter) +
+                      ' ' +
+                      (data.field_label ?? '').toLowerCase(),
+                  suffixIconConstraints:
+                      data.api != null ? BoxConstraints() : null,
+                  suffixIcon: data.api != null
+                      ? ButtonCheck(
+                          onTap: () {
+                            getDataApi();
+                          },
+                          textEditingController: _textEditingController,
+                        )
+                      : null),
               textCapitalization: TextCapitalization.sentences,
             ),
           ),
@@ -135,5 +215,60 @@ class _FieldTextState extends State<FieldText> {
         ],
       ),
     );
+  }
+}
+
+class ButtonCheck extends StatefulWidget {
+  const ButtonCheck({
+    Key? key,
+    required this.textEditingController,
+    required this.onTap,
+  }) : super(key: key);
+  final TextEditingController textEditingController;
+  final Function onTap;
+
+  @override
+  State<ButtonCheck> createState() => _ButtonCheckState();
+}
+
+class _ButtonCheckState extends State<ButtonCheck> {
+  @override
+  void initState() {
+    widget.textEditingController.addListener(() {
+      setState(() {});
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.textEditingController.text.trim() != ''
+        ? Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: 8,
+            ),
+            child: ButtonSmall(
+              onTap: () {
+                widget.onTap();
+              },
+              borderRadius: 4,
+              isWrap: true,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
+                child: Text(
+                  getT(KeyT.check),
+                  style: AppStyle.DEFAULT_14.copyWith(
+                    fontSize: 10,
+                    color: COLORS.WHITE,
+                  ),
+                ),
+              ),
+              backGround: COLORS.ORANGE_IMAGE,
+            ),
+          )
+        : SizedBox.shrink();
   }
 }
