@@ -176,7 +176,7 @@ class _AttachmentState extends State<Attachment> {
         SnackBar(
           content: Text(
             '${getT(KeyT.add_attachment)} '
-            '${value == SUCCESS ? getT(KeyT.success.toLowerCase()) : '${getT(KeyT.fail.toLowerCase())}: ${value}'}!',
+            '${value == SUCCESS ? getT(KeyT.success).toLowerCase() : '${getT(KeyT.fail).toLowerCase()}: ${value}'}!',
           ),
         ),
       );
