@@ -169,14 +169,14 @@ class _AttachmentState extends State<Attachment> {
             module: getURLModule(widget.typeModule),
             isAfter: isAfter)
         .then((value) {
-      if (value) {
+      if (value == SUCCESS) {
         _bloc.getFile(int.parse(widget.id), widget.typeModule);
       }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             '${getT(KeyT.add_attachment)} '
-            '${value == true ? getT(KeyT.success.toLowerCase()) : getT(KeyT.fail.toLowerCase())}!',
+            '${value == SUCCESS ? getT(KeyT.success.toLowerCase()) : '${getT(KeyT.fail.toLowerCase())}: ${value}'}!',
           ),
         ),
       );

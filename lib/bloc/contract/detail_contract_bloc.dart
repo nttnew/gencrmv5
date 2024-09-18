@@ -75,12 +75,12 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
 
   Future<void> getFile(int id, String module) async {
     final response = await userRepository.getFile(module: module, id: id);
-    try{
+    try {
       if ((response.code == BASE_URL.SUCCESS) ||
           (response.code == BASE_URL.SUCCESS_200)) {
         listFileStream.add(response.data?.list ?? []);
       }
-    }catch(e){
+    } catch (e) {
       listFileStream.add([]);
     }
   }
@@ -117,23 +117,29 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
     return mes;
   }
 
-  Future<bool> uploadFile({
+  Future<String> uploadFile({
     required String id,
     required List<File> listFile,
     required String module,
     bool? isAfter,
   }) async {
-    final responseUpload = await userRepository.uploadMultiFileBase(
-      id: id,
-      files: listFile,
-      module: module,
-      isAfter: isAfter,
-    );
-    if ((responseUpload.code == BASE_URL.SUCCESS) ||
-        (responseUpload.code == BASE_URL.SUCCESS_200)) {
-      return true;
-    } else {
-      return false;
+    String _data = getT(KeyT.fail);
+    try {
+      final responseUpload = await userRepository.uploadMultiFileBase(
+        id: id,
+        files: listFile,
+        module: module,
+        isAfter: isAfter,
+      );
+      if (isSuccess(responseUpload.code)) {
+        _data = SUCCESS;
+        return _data;
+      } else {
+        _data = responseUpload.msg ?? '';
+        return _data;
+      }
+    } catch (e) {
+      return _data;
     }
   }
 

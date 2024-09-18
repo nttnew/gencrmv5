@@ -54,6 +54,7 @@ const String PRODUCT_TYPE = 'PRODUCT_TYPE';
 const String PRODUCT_TYPE_EDIT = 'PRODUCT_TYPE_EDIT';
 const String ADD_PAYMENT = 'ADD_PAYMENT';
 const String EDIT_PAYMENT = 'EDIT_PAYMENT';
+const String SUCCESS = 'SUCCESS';
 
 const LOADING = 'loading';
 String CA_NHAN = 'ca_nhan';
