@@ -30,7 +30,7 @@ class _ItemStatusState extends State<ItemStatus> {
     _itemInit = [
       widget.item?.id ?? '',
       widget.item?.value_field ?? '',
-      widget.item?.color,
+      widget.item?.color ?? '#000000',
     ];
     _isSuccess.listen((value) {
       if (value) setState(() {});
@@ -94,7 +94,7 @@ class _ItemStatusState extends State<ItemStatus> {
         textAlign: TextAlign.right,
         style: AppStyle.DEFAULT_14.copyWith(
           decoration: TextDecoration.underline,
-          color: HexColor(_itemInit[2] ?? '#000000'),
+          color: HexColor(_itemInit[2]),
           fontWeight: FontWeight.w700,
         ),
       ),
