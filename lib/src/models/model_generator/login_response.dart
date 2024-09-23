@@ -7,7 +7,7 @@ class InfoUserLogin {
   final String? user_id, department_id;
   final String? department_name, fullname, avatar, email, phone, dia_chi;
   final int? enable_callcenter;
-  final InfoSetupCallcenterRes? info_setup_callcenter;
+  final InfoSetupCallCenterRes? info_setup_callcenter;
   final String? extension, password_extension, group;
 
   InfoUserLogin(
@@ -75,7 +75,7 @@ class LoginResponse extends BaseResponse {
 }
 
 @JsonSerializable()
-class InfoSetupCallcenterRes {
+class InfoSetupCallCenterRes {
   final String? outbound,
       port,
       port_app,
@@ -90,7 +90,7 @@ class InfoSetupCallcenterRes {
       domain_mobile;
   final int? type_call;
 
-  InfoSetupCallcenterRes({
+  InfoSetupCallCenterRes({
     this.outbound,
     this.port,
     this.port_app,
@@ -106,7 +106,7 @@ class InfoSetupCallcenterRes {
     this.domain_mobile,
   });
 
-  factory InfoSetupCallcenterRes.fromJson(Map<String, dynamic> json) =>
+  factory InfoSetupCallCenterRes.fromJson(Map<String, dynamic> json) =>
       _$InfoSetupCallcenterResFromJson(json);
   Map<String, dynamic> toJson() => _$InfoSetupCallcenterResToJson(this);
 }

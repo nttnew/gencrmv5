@@ -230,6 +230,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   void logout(BuildContext context) async {
     shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.UNREGISTER);
+    shareLocal.putString(PreferencesKey.DATA_CALL, '');
     PitelClient.getInstance().logoutExtension(getSipInfo());
     // FirebaseConfig.deleteTokenFcm();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -273,7 +274,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Future<void> getDataCall() async {
-    String data = await shareLocal.getString(PreferencesKey.DATA_CALL) ?? "";
+    String data = await shareLocal.getString(PreferencesKey.DATA_CALL) ?? '';
     if (data != '') {
       final result = json.decode(data);
       loginData = LoginData.fromJson(result);
@@ -438,8 +439,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         PreferencesKey.USER_PHONE, response.data?.info_user?.phone ?? "");
     await shareLocal.putString(
         PreferencesKey.USER_ADDRESS, response.data?.info_user?.dia_chi ?? "");
-    await shareLocal.putString(
-        PreferencesKey.USER_FULL_NAME, response.data?.info_user?.fullname ?? "");
+    await shareLocal.putString(PreferencesKey.USER_FULL_NAME,
+        response.data?.info_user?.fullname ?? "");
     await shareLocal.putString(
         PreferencesKey.URL_AVATAR, response.data?.info_user?.avatar ?? "");
     await shareLocal.putString(

@@ -64,10 +64,9 @@ class _FieldTextState extends State<FieldText> {
     final bool hasInit = widget.init != null;
 
     if (hasInitialValue || hasInit) {
-      // Định dạng giá trị nếu là MONEY hoặc TEXT_NUMERIC
       if (data.field_type == 'MONEY' || data.field_type == 'TEXT_NUMERIC') {
         _textEditingController.text = AppValue.formatMoney(
-          widget.init ?? widget.data.field_set_value.replaceAll('.', ''),
+          widget.init?.replaceAll('.', '') ?? widget.data.field_set_value.replaceAll('.', ''),
           isD: false,
         );
       } else {

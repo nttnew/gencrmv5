@@ -19,7 +19,7 @@ InfoUserLogin _$InfoUserLoginFromJson(Map<String, dynamic> json) =>
       (json['enable_callcenter'] as num?)?.toInt(),
       json['info_setup_callcenter'] == null
           ? null
-          : InfoSetupCallcenterRes.fromJson(
+          : InfoSetupCallCenterRes.fromJson(
               json['info_setup_callcenter'] as Map<String, dynamic>),
       json['extension'] as String?,
       json['password_extension'] as String?,
@@ -95,9 +95,9 @@ Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
       'data': instance.data,
     };
 
-InfoSetupCallcenterRes _$InfoSetupCallcenterResFromJson(
+InfoSetupCallCenterRes _$InfoSetupCallcenterResFromJson(
         Map<String, dynamic> json) =>
-    InfoSetupCallcenterRes(
+    InfoSetupCallCenterRes(
       outbound: json['outbound'] as String?,
       port: json['port'] as String?,
       port_app: json['port_app'] as String?,
@@ -114,7 +114,7 @@ InfoSetupCallcenterRes _$InfoSetupCallcenterResFromJson(
     );
 
 Map<String, dynamic> _$InfoSetupCallcenterResToJson(
-        InfoSetupCallcenterRes instance) =>
+        InfoSetupCallCenterRes instance) =>
     <String, dynamic>{
       'outbound': instance.outbound,
       'port': instance.port,
