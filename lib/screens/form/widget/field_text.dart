@@ -60,13 +60,14 @@ class _FieldTextState extends State<FieldText> {
   void _initializeTextController() {
     // Kiểm tra giá trị khởi tạo hoặc giá trị được set trước đó
     final bool hasInitialValue = widget.data.field_set_value != null &&
-        widget.data.field_set_value.isNotEmpty;
+        widget.data.field_set_value != '';
     final bool hasInit = widget.init != null;
 
     if (hasInitialValue || hasInit) {
       if (data.field_type == 'MONEY' || data.field_type == 'TEXT_NUMERIC') {
         _textEditingController.text = AppValue.formatMoney(
-          widget.init?.replaceAll('.', '') ?? widget.data.field_set_value.replaceAll('.', ''),
+          widget.init?.replaceAll('.', '') ??
+              widget.data.field_set_value.replaceAll('.', ''),
           isD: false,
         );
       } else {
