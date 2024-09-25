@@ -1271,7 +1271,7 @@ class _FormAddDataState extends State<FormAddData> {
                                         onSuccess: (v) {
                                           _addDataV(indexParent, indexChild, v);
                                         },
-                                        initData: data.field_value, //todo edit
+                                        initData: data.field_value, //edit
                                         initText: _getDataV(
                                                         indexParent, indexChild)
                                                     .runtimeType ==

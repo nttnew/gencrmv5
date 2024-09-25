@@ -65,11 +65,17 @@ class _FieldTextState extends State<FieldText> {
 
     if (hasInitialValue || hasInit) {
       if (data.field_type == 'MONEY' || data.field_type == 'TEXT_NUMERIC') {
-        _textEditingController.text = AppValue.formatMoney(
-          widget.init?.replaceAll('.', '') ??
-              widget.data.field_set_value.replaceAll('.', ''),
-          isD: false,
-        );
+        if (widget.init != null && widget.init?.trim() != '') {
+          _textEditingController.text = AppValue.formatMoney(
+            widget.init!.replaceAll('.', ''),
+            isD: false,
+          );
+        } else {
+          _textEditingController.text = AppValue.formatMoney(
+            widget.data.field_set_value.replaceAll('.', ''),
+            isD: false,
+          );
+        }
       } else {
         // Đặt giá trị khởi tạo cho các loại khác
         _textEditingController.text =

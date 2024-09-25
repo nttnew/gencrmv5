@@ -49,6 +49,8 @@ class FirebaseConfig {
       PushNotifAndroid.handleNotification(message); // lib pitel
       final RemoteNotification? notification = message.notification;
       if (notification != null) {
+        // trong app thì đây là màn hình login
+        // xoá token check case logout
         UnreadNotificationBloc.of(context)
             .add(CheckNotification(isLoading: false));
         unawaited(
