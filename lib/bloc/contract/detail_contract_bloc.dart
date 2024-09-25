@@ -76,8 +76,7 @@ class DetailContractBloc extends Bloc<ContractEvent, DetailContractState> {
   Future<void> getFile(int id, String module) async {
     final response = await userRepository.getFile(module: module, id: id);
     try {
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         listFileStream.add(response.data?.list ?? []);
       }
     } catch (e) {

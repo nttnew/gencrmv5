@@ -66,7 +66,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
               fullName: state.fullName.value,
               email: state.email.value,
               password: state.password.value);
-          if (response.code == BASE_URL.SUCCESS) {
+          if (isSuccess(response.code)) {
             AppNavigator.navigateBack();
             yield state.copyWith(
                 status: FormzStatus.submissionSuccess,

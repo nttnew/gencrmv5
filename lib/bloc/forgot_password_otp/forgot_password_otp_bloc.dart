@@ -34,7 +34,7 @@ class ForgotPasswordOTPBloc
           username: event.username,
           timestamp: AppValue.DATE_TIME_FORMAT.format(DateTime.now()),
         );
-        if (response.code == BASE_URL.SUCCESS_200) {
+        if (isSuccess(response.code)) {
           yield ForgotPassOtpSuccess();
         } else
           yield ErrorForgotOtp(response.msg ?? '');

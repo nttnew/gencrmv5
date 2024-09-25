@@ -45,9 +45,5 @@ class DioProvider {
 }
 
 PrettyDioLogger dioLogger() {
-  return PrettyDioLogger(
-    requestHeader: true,
-    requestBody: true,
-    maxWidth: 120
-  );
+  return PrettyDioLogger(requestHeader: true, requestBody: true, maxWidth: 120);
 }

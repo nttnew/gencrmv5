@@ -84,8 +84,7 @@ class ReadNotificationBloc
     try {
       //list id,id,...
       final response = await userRepository.deleteNotification(id);
-      if ((response.code == BASE_URL.SUCCESS) ||
-          (response.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response.code)) {
         yield DeleteReadNotificationState();
       } else
         yield ErrorDeleteReadNotificationState(response.msg ?? '');

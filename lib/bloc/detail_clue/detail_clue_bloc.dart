@@ -34,8 +34,7 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
     try {
       yield LoadingDetailClueState();
       final responseDetailClue = await userRepository.getDetailClue(id);
-      if ((responseDetailClue.code == BASE_URL.SUCCESS) ||
-          (responseDetailClue.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(responseDetailClue.code)) {
         yield GetDetailClueState(responseDetailClue.data ?? []);
       } else {
         yield ErrorGetDetailClueState(responseDetailClue.msg ?? '');
@@ -51,8 +50,7 @@ class GetDetailClueBloc extends Bloc<GetDetailClueEvent, DetailClueState> {
       yield LoadingDetailClueState();
       final responseDetailClue =
           await userRepository.deleteContact({BASE_URL.ID: id});
-      if ((responseDetailClue.code == BASE_URL.SUCCESS) ||
-          (responseDetailClue.code == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(responseDetailClue.code)) {
         yield SuccessDeleteClueState();
       } else {
         yield ErrorDeleteClueState(responseDetailClue.msg ?? '');

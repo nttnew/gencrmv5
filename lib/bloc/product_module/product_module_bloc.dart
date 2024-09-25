@@ -32,8 +32,7 @@ class ProductModuleBloc extends Bloc<ProductModuleEvent, ProductModuleState> {
 
   void getFilter() async {
     final response = await userRepository.getGroupProduct();
-    if ((response.code == BASE_URL.SUCCESS) ||
-        (response.code == BASE_URL.SUCCESS_200)) {
+    if (isSuccess(response.code)) {
       listType.add(response.data?.cats ?? []);
     }
   }

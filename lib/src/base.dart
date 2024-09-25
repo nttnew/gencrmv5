@@ -223,8 +223,8 @@ class BASE_URL {
 
   static const SUCCESS = 0;
   static const SUCCESS_200 = 200;
-  static const SUCCESS_999 = 999;
-  static const FAIL = 9100;
+  static const FAIL_999 = 999;
+  static const FAIL_101 = 101;
 
   static const ACTIVE = 1;
   static const LOCK = 0;
@@ -440,4 +440,5 @@ class ModuleText {
 bool isSuccess(int? code) =>
     code == BASE_URL.SUCCESS || code == BASE_URL.SUCCESS_200;
 
-bool isFail(int? code) => code == BASE_URL.SUCCESS_999;
+bool isFail(int? code) =>
+    code == BASE_URL.FAIL_999 || code == BASE_URL.FAIL_101;

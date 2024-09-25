@@ -32,7 +32,7 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
           email: event.email,
           timestamp: AppValue.DATE_TIME_FORMAT.format(DateTime.now()),
         );
-        if (response.code == BASE_URL.SUCCESS_200) {
+        if (isSuccess(response.code)) {
           yield ResetPassSuccess();
         } else
           yield ErrorReset(response.msg ?? '');

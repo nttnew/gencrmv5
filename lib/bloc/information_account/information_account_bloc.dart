@@ -48,8 +48,7 @@ class InfoAccBloc extends Bloc<InfoAccEvent, InfoAccState> {
               email: state.email.value,
               address: event.address,
               avatar: event.avatar);
-          if (response.code == BASE_URL.SUCCESS_200 ||
-              response.code == BASE_URL.SUCCESS) {
+          if (isSuccess(response.code)) {
             yield state.copyWith(
                 status: FormzStatus.submissionSuccess, message: response.msg);
           } else {
@@ -73,8 +72,7 @@ class InfoAccBloc extends Bloc<InfoAccEvent, InfoAccState> {
               phone: event.phone,
               email: state.email.value,
               address: event.address);
-          if (response.code == BASE_URL.SUCCESS_200 ||
-              response.code == BASE_URL.SUCCESS) {
+          if (isSuccess(response.code)) {
             yield state.copyWith(
                 status: FormzStatus.submissionSuccess, message: response.msg);
           } else {

@@ -95,7 +95,7 @@ class ChangePasswordBloc
               username: shareLocal.getString(PreferencesKey.USER_NAME),
               oldpass: state.oldPassword.value,
               newpass: state.newPassword.value);
-          if (response.code == BASE_URL.SUCCESS_200) {
+          if (isSuccess(response.code)) {
             yield state.copyWith(
                 status: FormzStatus.submissionSuccess, message: response.msg);
           } else {

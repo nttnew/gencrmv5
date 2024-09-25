@@ -133,7 +133,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       Loading().popLoading();
       if (isSuccess(statusCode)) {
         return '';
-      } else if (statusCode == BASE_URL.SUCCESS_999) {
+      } else if (isFail(statusCode)) {
         loginSessionExpired();
       } else {
         return msg;
@@ -163,7 +163,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       if (isSuccess(statusCode)) {
         return '';
-      } else if (statusCode == BASE_URL.SUCCESS_999) {
+      } else if (isFail(statusCode)) {
         loginSessionExpired();
       } else {
         return msg;
@@ -334,7 +334,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             device_token: event.device_token,
           );
           shareLocal.putString(PreferencesKey.DEVICE_TOKEN, event.device_token);
-          if (response.code == BASE_URL.SUCCESS) {
+          if (isSuccess(response.code)) {
             shareLocal.putString(
                 PreferencesKey.CAR_CRM, response.data?.carCRM.toString() ?? '');
 
@@ -392,7 +392,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             device_token: event.device_token,
           );
           shareLocal.putString(PreferencesKey.DEVICE_TOKEN, event.device_token);
-          if (response.code == BASE_URL.SUCCESS) {
+          if (isSuccess(response.code)) {
             shareLocal.putString(
                 PreferencesKey.CAR_CRM, response.data?.carCRM.toString() ?? '');
             DioProvider.instance(
@@ -519,7 +519,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<void> getLanguageAPI() async {
     try {
       final response = await userRepository.getLanguage();
-      if ((response['error'] == BASE_URL.SUCCESS_200)) {
+      if (isSuccess(response['error'])) {
         await shareLocal.putString(
             PreferencesKey.LANGUAGE_BE_ALL, jsonEncode(response['data']));
       }

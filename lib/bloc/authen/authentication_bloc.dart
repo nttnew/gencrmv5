@@ -76,8 +76,7 @@ class AuthenticationBloc
             null,
             null,
           );
-          if ((response.code == BASE_URL.SUCCESS) ||
-              (response.code == BASE_URL.SUCCESS_200)) {
+          if (isSuccess(response.code)) {
             yield AuthenticationState.authenticated();
           } else
             yield AuthenticationState.unauthenticated();

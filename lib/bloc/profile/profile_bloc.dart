@@ -29,7 +29,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       try {
         final response =
             await _userRepository.postUpdateProfile(infoUser: infoUser);
-        if (response.code == BASE_URL.SUCCESS) {
+        if (isSuccess(response.code)) {
           yield SuccessProfileState();
         } else
           yield FalseProfileState(
@@ -52,7 +52,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             address: infoUser.address);
         final response =
             await _userRepository.postUpdateProfileNotImage(infoUser: data);
-        if (response.code == BASE_URL.SUCCESS) {
+        if (isSuccess(response.code)) {
           yield SuccessProfileState();
         } else
           yield FalseProfileState(

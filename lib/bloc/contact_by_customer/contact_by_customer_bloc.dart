@@ -59,7 +59,7 @@ class ContactByCustomerBloc
 
   Future<void> getXe(String id, {isAddCarNew = false}) async {
     final res = await userRepository.getXe(id: id);
-    if ((res.code == BASE_URL.SUCCESS) || (res.code == BASE_URL.SUCCESS_200)) {
+    if (isSuccess(res.code)) {
       listXe.add(res.data?.products ?? []);
     }
     if (isAddCarNew)
