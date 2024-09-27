@@ -56,6 +56,10 @@ const String ADD_PAYMENT = 'ADD_PAYMENT';
 const String EDIT_PAYMENT = 'EDIT_PAYMENT';
 const String SUCCESS = 'SUCCESS';
 
+const String LOGIN = 'login';
+const String LOGOUT = 'logout';
+const String LOGOUT_NOTIFICATION = 'LOGOUT_NOTIFICATION';
+
 const LOADING = 'loading';
 String CA_NHAN = 'ca_nhan';
 String TO_CHUC = 'to_chuc';

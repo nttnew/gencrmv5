@@ -2,6 +2,7 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_crm/bloc/blocs.dart';
 import 'package:gen_crm/screens/login/widget/index.dart';
+import 'package:gen_crm/src/app_const.dart';
 import 'package:gen_crm/src/src_index.dart';
 import 'package:gen_crm/widgets/widgets.dart';
 import 'package:get/get.dart';
@@ -23,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     shareLocal.putString(PreferencesKey.REGISTER_MSG, LoginBloc.UNREGISTER);
-    isLogin = Get.arguments == 'login';
+    isLogin = Get.arguments == LOGIN;
     super.initState();
   }
 

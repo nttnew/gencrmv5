@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:gen_crm/src/extensionss/string_ext.dart';
 import 'package:gen_crm/widgets/showToastM.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -30,7 +31,7 @@ class _ItemStatusState extends State<ItemStatus> {
     _itemInit = [
       widget.item?.id ?? '',
       widget.item?.value_field ?? '',
-      widget.item?.color ?? '#000000',
+      checkColor(widget.item?.color),
     ];
     _isSuccess.listen((value) {
       if (value) setState(() {});
@@ -94,10 +95,18 @@ class _ItemStatusState extends State<ItemStatus> {
         textAlign: TextAlign.right,
         style: AppStyle.DEFAULT_14.copyWith(
           decoration: TextDecoration.underline,
-          color: HexColor(_itemInit[2]),
+          color: HexColor(checkColor(_itemInit[2])),
           fontWeight: FontWeight.w700,
         ),
       ),
     );
+  }
+
+  String checkColor(dynamic data) {
+    if (data.toString().isTextNotNull()) {
+      return data.toString();
+    } else {
+      return "#000000";
+    }
   }
 }

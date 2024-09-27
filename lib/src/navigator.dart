@@ -13,7 +13,7 @@ class AppNavigator {
   static navigateSplash() async => await Get.toNamed(ROUTE_NAMES.SPLASH);
 
   static navigateLogin() async =>
-      await Get.toNamed(ROUTE_NAMES.LOGIN, arguments: 'login');
+      await Get.toNamed(ROUTE_NAMES.LOGIN, arguments: LOGIN);
 
   static navigateDetailSupport(String id, {Function? onRefreshForm}) async =>
       await Get.toNamed(
@@ -87,7 +87,7 @@ class AppNavigator {
       await Get.toNamed(ROUTE_NAMES.ADD_SUPPORT);
 
   static navigateLogout() async =>
-      await Get.offAllNamed(ROUTE_NAMES.LOGIN, arguments: 'logout');
+      await Get.offAllNamed(ROUTE_NAMES.LOGIN, arguments: LOGOUT);
 
   static navigateMain({dynamic data}) async =>
       await Get.offAllNamed(ROUTE_NAMES.MAIN, arguments: data);
