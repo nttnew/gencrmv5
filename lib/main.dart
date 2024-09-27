@@ -60,6 +60,7 @@ Future main() async {
   UserRepository userRepository = UserRepository();
   await FirebaseConfig.initFireBase();
   await FirebaseConfig.requestPermission();
+  NotificationHandler.init();
   runApp(
     MultiRepositoryProvider(
       providers: [

@@ -41,7 +41,7 @@ class NotificationLocalService {
 
   Future<void> createChanel() async {
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
-      'coral_channel', // id
+      'gencrm_channel', // id
       'High Importance Notifications', // title
       description:
           'This channel is used for important notifications.', // description

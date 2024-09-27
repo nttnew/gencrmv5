@@ -18,6 +18,7 @@ import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../firebase/firebase_config.dart';
 import '../../src/preferences_key.dart';
 import '../../storages/share_local.dart';
 
@@ -33,12 +34,14 @@ class InitCallApp extends ConsumerStatefulWidget {
   ConsumerState<InitCallApp> createState() => _InitCallAppState();
 }
 
-class _InitCallAppState extends ConsumerState<InitCallApp> {
+class _InitCallAppState extends ConsumerState<InitCallApp>
+    with WidgetsBindingObserver {
   final PitelCall _pitelCall = PitelClient.getInstance().pitelCall;
   BehaviorSubject<SipInfoData> _sipInfo = BehaviorSubject();
   @override
   void initState() {
     _init();
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
@@ -104,6 +107,28 @@ class _InitCallAppState extends ConsumerState<InitCallApp> {
     final pitelSetting =
         await pitelClient.setExtensionInfo(_sipInfo.value, pushNotifParams);
     ref.read(pitelSettingProvider.notifier).state = pitelSetting;
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.reload();
+    print('fuck---------$state');
+    if (state == AppLifecycleState.resumed) {
+      String? title = await prefs.getString(PreferencesKey.LOGOUT_STATUS);
+      print('fuck---------$title');
+      if (title == LOGOUT_NOTIFICATION) {
+        logoutNotification();
+        await prefs.setString(PreferencesKey.LOGOUT_STATUS, '');
+      }
+      super.didChangeAppLifecycleState(state);
+    }
   }
 
   @override
